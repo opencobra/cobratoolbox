@@ -14,7 +14,9 @@ global CBTDIR
 
 % require the specified toolboxes and solvers, along with a UNIX OS
 % linprog does not seem to work properly on this problem...
-solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab'});
+% quadMinos and dqqMinos seem to have problems with this rproblem too,
+% leading to suboptimal solutions.
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
 
 % save the current path
 currentDir = pwd;
@@ -31,9 +33,9 @@ origmodel = getDistributedModel('ecoli_core_model.mat'); %For all models in the 
 %Set the default solver
 changeCobraSolver(solverPkgs.LP{1},'LP');
 
-[~, isInternalRxn] = findStoichConsistentSubset(model, 0, 0);
+[~, isInternalRxn] = findStoichConsistentSubset(origmodel, 0, 0);
 cycleRxns = {'FRD7'; 'SUCDi'}; % Form a stoichiometrically balanced cycle
-isCycleRxn = ismember(model.rxns, cycleRxns);
+isCycleRxn = ismember(origmodel.rxns, cycleRxns);
 
 try
     parTest = true;

@@ -83,6 +83,8 @@ end
 % Match model reaction sets
 commonRxns = ismember(model1.rxns,model2.rxns);
 nCommon = sum(commonRxns);
+model1pos = commonRxns;
+model2pos = ismember(model2.rxns,model1.rxns(commonRxns));
 if (nCommon == 0)
     error('No common rxns in the models');
 end
@@ -109,8 +111,15 @@ if (verbFlag)
     fprintf('%f seconds\n',FBAsol1.time+FBAsol2.time);
 end
 
+LPproblem1 = buildLPproblemFromModel(model1);
+LPproblem2 = buildLPproblemFromModel(model2);
+[nCtrs1,nVars1]  = size(LPproblem1.A);
+[nCtrs2,nVars2]  = size(LPproblem2.A);
+
 % Minimize the difference between flux solutions
-if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
+if (FBAsol1.stat == 1 && FBAsol1.stat == 1)
+    
+    
     f1 = FBAsol1.f;
     f2 = FBAsol2.f;
     if (strcmp(osenseStr,'max'))
@@ -120,6 +129,7 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
         f1 = ceil(f1/tol)*tol;
         f2 = ceil(f2/tol)*tol;
     end
+    
     % Set up the optimization problem
     % min sum(delta+ + delta-)
     % 1: S1*v1 = 0
@@ -130,18 +140,24 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
     % 6: c2'v2 >= f2
     %
     % delta+,delta- >= 0
-    A = [model1.S sparse(nMets1,nRxns2+2*nCommon);
-        sparse(nMets2,nRxns1) model2.S sparse(nMets2,2*nCommon);
-        createDeltaMatchMatrix(model1.rxns,model2.rxns)
-        model1.c' sparse(1,nRxns2+2*nCommon);
-        sparse(1,nRxns1) model2.c' sparse(1,2*nCommon);];
-    c = [zeros(nRxns1+nRxns2,1);ones(2*nCommon,1)];
-    lb = [model1.lb;model2.lb;zeros(2*nCommon,1)];
-    ub = [model1.ub;model2.ub,;10000*ones(2*nCommon,1)];
-    b = [model1.b;model2.b;zeros(2*nCommon,1);f1;f2];
-    clear csense;
-    csense(1:(nMets1+nMets2)) = 'E';
-    csense(end+1:end+2*nCommon) = 'G';
+    
+    deltaMatrix = speye(nCommon);
+    model1Rxns = sparse(nCommon,nVars1);
+    model1Rxns(:,model1pos) = deltaMatrix;
+    model2Rxns = sparse(nCommon,nVars2);
+    model2Rxns(:,model2pos) = deltaMatrix;
+    
+    A = [LPproblem1.A,sparse(nCtrs1,nVars2+2*nCommon);... % 1
+         sparse(nCtrs2,nVars1),LPproblem2.A,sparse(nCtrs2,2*nCommon);... % 2
+         model1Rxns,-model2Rxns,deltaMatrix,sparse(nCommon,nCommon);... % 3
+         -model1Rxns,model2Rxns,sparse(nCommon,nCommon),deltaMatrix;... % 4
+         LPproblem1.c',sparse(1,nVars2+2*nCommon);... % 5
+         sparse(1,nVars2),LPproblem2.c',sparse(1,2*nCommon)];% 6             
+    c = [zeros(nVars1+nVars2,1);ones(2*nCommon,1)];
+    lb = [LPproblem1.lb;LPproblem2.lb;zeros(2*nCommon,1)];
+    ub = [LPproblem1.ub;LPproblem2.ub,;10000*ones(2*nCommon,1)];
+    b = [LPproblem1.b;LPproblem2.b;zeros(2*nCommon,1);f1;f2];
+    csense = [LPproblem1.csense; LPproblem2.csense;repmat('G',2*nCommon,1)];
     if (strcmp(osenseStr,'max'))
         csense(end+1:end+2) = 'G';
     else
@@ -165,7 +181,7 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
         solution1.f = f1;
         solution2.f = f2;
         solution1.x = LPsol.full(1:nRxns1);
-        solution2.x = LPsol.full(nRxns1+1:nRxns1+nRxns2);
+        solution2.x = LPsol.full(nVars1+1:nVars1+nRxns2);
     else
         totalFluxDiff = [];
         solution1.f = [];
@@ -174,32 +190,32 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
         solution2.x = [];
     end
 
-    if (LPsol.stat > 0 & minFluxFlag)
-        A = [model1.S sparse(nMets1,nRxns2+2*nCommon+2*nRxns1+2*nRxns2);
-            sparse(nMets2,nRxns1) model2.S sparse(nMets2,2*nCommon+2*nRxns1+2*nRxns2);];
+    if (LPsol.stat > 0 && minFluxFlag)
+        A = [LPproblem1.A sparse(nCtrs1,nVars2+2*nCommon+2*nRxns1+2*nRxns2);
+            sparse(nCtrs2,nVars1) LPproblem2.A sparse(nCtrs2,2*nCommon+2*nRxns1+2*nRxns2);];
         A = [A;
-            createDeltaMatchMatrix(model1.rxns,model2.rxns) sparse(2*nCommon,2*nRxns1+2*nRxns2)];
+            model1Rxns,-model2Rxns,deltaMatrix,sparse(nCommon,nCommon+2*nRxns1+2*nRxns2);... % 3
+            -model1Rxns,model2Rxns,sparse(nCommon,nCommon),deltaMatrix, sparse(nCommon,2*nRxns1+2*nRxns2)];
         A = [A;
-            speye(nRxns1,nRxns1) sparse(nRxns1,nRxns2) sparse(nRxns1,2*nCommon) speye(nRxns1,nRxns1) sparse(nRxns1,nRxns1+2*nRxns2);
-            -speye(nRxns1,nRxns1) sparse(nRxns1,nRxns2) sparse(nRxns1,2*nCommon) sparse(nRxns1,nRxns1) speye(nRxns1,nRxns1) sparse(nRxns1,2*nRxns2);
-            sparse(nRxns2,nRxns1) speye(nRxns2,nRxns2) sparse(nRxns2,2*nCommon) sparse(nRxns2,2*nRxns1) speye(nRxns2,nRxns2) sparse(nRxns2,nRxns2);
-            sparse(nRxns2,nRxns1) -speye(nRxns2,nRxns2) sparse(nRxns2,2*nCommon) sparse(nRxns2,2*nRxns1) sparse(nRxns2,nRxns2) speye(nRxns2,nRxns2);];
+            speye(nRxns1,nRxns1), sparse(nRxns1,nVars1-nRxns1), sparse(nRxns1,nVars2) sparse(nRxns1,2*nCommon) speye(nRxns1,nRxns1) sparse(nRxns1,nRxns1+2*nRxns2);
+            -speye(nRxns1,nRxns1), sparse(nRxns1,nVars1-nRxns1) sparse(nRxns1,nVars2) sparse(nRxns1,2*nCommon) sparse(nRxns1,nRxns1) speye(nRxns1,nRxns1) sparse(nRxns1,2*nRxns2);
+            sparse(nRxns2,nVars1) speye(nRxns2,nRxns2), sparse(nRxns2,nVars2-nRxns2) sparse(nRxns2,2*nCommon) sparse(nRxns2,2*nRxns1) speye(nRxns2,nRxns2) sparse(nRxns2,nRxns2);
+            sparse(nRxns2,nVars1) -speye(nRxns2,nRxns2), sparse(nRxns2,nVars2-nRxns2) sparse(nRxns2,2*nCommon) sparse(nRxns2,2*nRxns1) sparse(nRxns2,nRxns2) speye(nRxns2,nRxns2);];
         A = [A;
-            model1.c' sparse(1,nRxns2+2*nCommon+2*nRxns1+2*nRxns2);
-            sparse(1,nRxns1) model2.c' sparse(1,2*nCommon+2*nRxns1+2*nRxns2);
-            sparse(1,nRxns1+nRxns2) ones(1,2*nCommon) sparse(1,2*nRxns1+2*nRxns2)];
+            LPproblem1.c' sparse(1,nVars2+2*nCommon+2*nRxns1+2*nRxns2);
+            sparse(1,nVars1) LPproblem2.c' sparse(1,2*nCommon+2*nRxns1+2*nRxns2);
+            sparse(1,nVars1+nVars2) ones(1,2*nCommon) sparse(1,2*nRxns1+2*nRxns2)];
         % Construct the RHS vector
-        b = [zeros(nMets1+nMets2+2*nCommon+2*nRxns1+2*nRxns2,1);f1;f2;ceil(totalFluxDiff/tol)*tol];
+        b = [LPproblem1.b; LPproblem2.b;zeros(2*nCommon+2*nRxns1+2*nRxns2,1);f1;f2;ceil(totalFluxDiff/tol)*tol];
 
         % Construct the objective (sum of all delta+ and delta-)
-        c = [zeros(nRxns1+nRxns2+2*nCommon,1);ones(2*nRxns1+2*nRxns2,1)];
+        c = [zeros(nVars1+nVars2+2*nCommon,1);ones(2*nRxns1+2*nRxns2,1)];
 
         % Construct the ub/lb
         % delta+ and delta- are in [0 10000]
-        lb = [model1.lb;model2.lb;zeros(2*nCommon+2*nRxns1+2*nRxns2,1)];
-        ub = [model1.ub;model2.ub;10000*ones(2*nCommon+2*nRxns1+2*nRxns2,1)];
-        csense(1:(nMets1+nMets2)) = 'E';
-        csense((nMets1+nMets2)+1:(nMets1+nMets2+2*nCommon+2*nRxns1+2*nRxns2)) = 'G';
+        lb = [LPproblem1.lb;LPproblem2.lb;zeros(2*nCommon+2*nRxns1+2*nRxns2,1)];
+        ub = [LPproblem1.ub;LPproblem2.ub;10000*ones(2*nCommon+2*nRxns1+2*nRxns2,1)];
+        csense = [LPproblem1.csense;LPproblem2.csense; repmat('G',2*nCommon+2*nRxns1+2*nRxns2,1)];
         if (strcmp(osenseStr,'max'))
             csense(end+1:end+2) = 'G';
         else
@@ -220,7 +236,7 @@ if (FBAsol1.stat > 0 && FBAsol1.stat > 0)
 
         if (LPsol.stat > 0)
             solution1.x = LPsol.full(1:nRxns1);
-            solution2.x = LPsol.full(nRxns1+1:nRxns1+nRxns2);
+            solution2.x = LPsol.full(nVars1+1:nVars1+nRxns2);
         end
 
     end

@@ -165,7 +165,7 @@ solution = solveCobraLP(lp);
 if solution.stat == 1
     v1 = solution.full(1:n);
 else
-    v1 = zeros(size(v0));
+    error('No solution found for a problem that by definition has a solution.\nTry using a different solver');
 end
 
 end

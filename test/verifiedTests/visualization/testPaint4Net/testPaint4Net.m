@@ -9,7 +9,7 @@
 
 % Check requirements
 requiredToolboxes = {'bioinformatics_toolbox'};  % This is the Global optimization toolbox
-solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes);
+solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'useMinimalNumberOfSolvers',true);
 
 % save the current path
 currentDir = pwd;
@@ -36,7 +36,7 @@ try
         end
     end
     % parpool is running, don'T test dqqMinos and quadMinos
-    solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'excludeSolvers',{'dqqMinos','quadMinos'});
+    solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'excludeSolvers',{'dqqMinos','quadMinos'},'useMinimalNumberOfSolvers',true);
 catch
     disp('Trying Non Parallel')
 end

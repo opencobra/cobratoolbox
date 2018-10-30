@@ -12,7 +12,7 @@ currentDir = pwd;
 
 %This tests requires gurobi
 requireOneSolverOf = {'tomlab_cplex','ibm_cplex', 'gurobi'};
-solverPkgs = prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf); 
+solverPkgs = prepareTest('needsLP',true,'needsQP',true,'requireOneSolverOf', requireOneSolverOf); 
 
 
 % initialize the test
@@ -21,6 +21,9 @@ cd(fileDir);
 
 % test variables
 model = getDistributedModel('ecoli_core_model.mat');
+changeCobraSolver(solverPkgs.LP{1}, 'LP');
+fprintf('Reducing model with %s ...\n',solverPkgs.LP{1})
+
 modelRed = reduceModel(model);
 selectedRxns = modelRed.rxns(22:25);
 target = modelRed.rxns(20); % 'EX_ac(e)'
@@ -33,6 +36,10 @@ deletions = modelRed.rxns(21);
 
 for k = 1:numel(solverPkgs.QP)
     changeCobraSolver(solverPkgs.QP{k}, 'QP');
+    if any(ismember(solverPkgs.QP{k}, solverPkgs.LP))        
+        changeCobraSolver(solverPkgs.QP{k}, 'LP');
+    end
+    fprintf('Testing AnalyzeGCdesign with %s ...\n',solverPkgs.LP{k})
     improvedRxnsM = {};
     intermediateSlnsM = {};            
     [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions);

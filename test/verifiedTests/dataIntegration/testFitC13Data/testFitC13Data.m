@@ -39,7 +39,8 @@ try
 catch
     disp('Trying Non Parallel')
 end
-
+%This should, under normal circumstances be matlab and an efficient LP
+%solver
 changeCobraSolver(solvers.NLP{1}, 'NLP', 0);
 changeCobraSolver(solvers.LP{1}, 'LP', 0);
 

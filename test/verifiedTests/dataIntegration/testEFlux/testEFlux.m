@@ -12,7 +12,8 @@ fileDir = fileparts(which('testEFlux.m'));
 cd(fileDir);
 
 % requires access to GEO to download data.
-solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/');
+% Matlabs tolerances and precision seem incompatible for this function.
+solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab'});
 
 model = getDistributedModel('ecoli_core_model.mat');
 model = removeGenes(model,'s0001','keepReactions',true);
@@ -25,9 +26,17 @@ expressionControl.target = cellfun(@(x) x(1:5),aerobic.Data(:,1),'Uniform',false
 expressionCondition.preprocessed = false;
 expressionCondition.value = cell2mat(anaerobic.Data(:,2));
 expressionCondition.target = cellfun(@(x) x(1:5),anaerobic.Data(:,1),'Uniform',false);
+% There is a potential cycle between reaction 44 and 89 in the model.
+% an additional cycle exists for reactions 42,43,68,92, which we will also
+% ignore.
+% we will ignore those reactions for the assertions.
+toAssert = true(numel(model.rxns),1);
+toAssert([42,43,68,92,44,89]) = false;
+
 % return to original directory
 for k = 1:numel(solverPkgs.LP)
     changeCobraSolver(solverPkgs.LP{k},'LP');
+    fprintf('Testing EFlux with %s ...\n',solverPkgs.LP{k})
     [fChangeOrig,~,solContOrig,solCondOrig] = eFlux(model,expressionControl,expressionCondition);
     %anaerobic growth less than aerobic.
     assert(fChangeOrig < 1); 
@@ -39,8 +48,9 @@ for k = 1:numel(solverPkgs.LP)
     %since this is punished with a value of 1, this is exactly the same as
     %the original solution. 
     assert(abs(fChangeSoft-fChangeOrig) < 1e-4);
-    assert(all(abs(solContOrig.x-solContSoft.x) < 1e-4));
-    assert(all(abs(solCondOrig.x-solCondSoft.x) < 1e-4));
+    
+    assert(all(abs(solContOrig.x(toAssert)-solContSoft.x(toAssert)) < 1e-4));
+    assert(all(abs(solCondOrig.x(toAssert)-solCondSoft.x(toAssert)) < 1e-4));
     % Different use of gpr rules
     [fChange,~,solCont,solCond] = eFlux(model,expressionControl,expressionCondition,'minSum',false);
     % results are still similar.

@@ -14,6 +14,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
 %                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available
 %                   - `excludeSolvers`: Names of solvers which should never be used for the test (because they fail)
+%                   - `useMinimalNumberOfSolvers`: Always use only one solver. This option allows tests which only use FBA to generate input, but where no expicit linear programming code is present, to only validate on one solver (default: false).
 %                   - `needsLP`: Whether a LP solver is required (default: false)
 %                   - `needsMILP`: Whether a MILP solver is required (default: false)
 %                   - `needsQP`: Whether a QP solver is required (default: false)
