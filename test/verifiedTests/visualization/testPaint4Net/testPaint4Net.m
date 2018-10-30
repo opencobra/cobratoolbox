@@ -28,13 +28,15 @@ try
     % Shut down any existing pool
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
-
+    
     if myCluster.NumWorkers >= minWorkers
         poolobj = gcp('nocreate');  % if no pool, do not create new one.
         if isempty(poolobj)
             parpool(minWorkers);  % launch minWorkers workers
         end
     end
+    % parpool is running, don'T test dqqMinos and quadMinos
+    solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'excludeSolvers',{'dqqMinos','quadMinos'});
 catch
     disp('Trying Non Parallel')
 end

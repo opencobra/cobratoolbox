@@ -4,8 +4,10 @@
 %     - tests the sampleCbModel function using the E. coli Core Model
 %
 
-%Check Requirements
-solverPkgs = prepareTest('needsUnix',true, 'needsLP',true); %TODO: Check, whether UNIX is really still required for the test.
+% Check Requirements
+% quad minos and dqqMinos cannot be used due to parallel processing
+% for some reason, matlab fails on this system if it runs in parallel.
+solverPkgs = prepareTest('needsUnix',true, 'needsLP',true, 'excludeSolvers',{'dqqMinos','quadMinos','matlab'}); %TODO: Check, whether UNIX is really still required for the test.
 
 
 % save the current path

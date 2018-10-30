@@ -19,41 +19,35 @@ cd(fileDir);
 
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex', 'gurobi', 'tomlab_cplex'};
+% for some reason, linprog cannot cope with fastcore LP9
+% quadMinos and dqqMinos don't work with parallel processing
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
 
-%load a model
-model = readCbModel('FastCoreTest.mat','modelName','ConsistentRecon2');
-load('FastCoreTest.mat','coreInd');
+% load a model
+model = getDistributedModel('ecoli_core_model.mat');
 
-k = 1;
-while k < length(solverPkgs)+1 % note: only run with 1 solver, not with all 3
+% inactives (these are known inactive reactions under the normal conditions
+inactives = {'EX_fru(e)', 'EX_fum(e)','EX_gln_L(e)', 'EX_mal_L(e)', 'FRUpts2', 'FUMt2_2', 'GLNabc','MALt2_2' };
 
+% eliminate these reactions so that the model is consistent
+model = removeRxns(model,inactives);
+% test a reduction to the glycolytic pathway (+ exchanges)
+glycolysis = findRxnsFromSubSystem(model,'Glycolysis/Gluconeogenesis');
+
+% set parameters
+epsilon = 1e-4;
+printLevel = 2;
+modeFlag = 0;
+
+
+for k = 1:length(solverPkgs.LP)
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    if solverOK == 1
-        fprintf('   Testing FASTCORE using %s ... \n', solverPkgs{k});
-
-        %randomly pick some reactions
-        epsilon=1e-4;
-        printLevel=0;
-        A = fastcore(model, coreInd, epsilon, printLevel);
-
-        %test, whether all of the core fluxes can carry flux
-        reducedmodel = removeRxns(model,setdiff(model.rxns,A.rxns));
-        corereacs = intersect(reducedmodel.rxns,model.rxns(coreInd));
-        reducedmodel.csense(1:numel(reducedmodel.mets)) = 'E';
-        reducedmodel.c(:) = 0;
-        [minFlux,maxFlux] = fluxVariability(reducedmodel,[],[],corereacs);
-
-        assert(all(minFlux < epsilon | maxFlux > epsilon))
-
-        % end the loop
-        k = length(solverPkgs);
-    end
-    k = k + 1;
-
-    % output a success message
-    fprintf('Done.\n');
+    solverOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
+    fprintf('   Testing FASTCORE using %s ... \n', solverPkgs.LP{k});
+    fcModel = fastcore(model,find(ismember(model.rxns,glycolysis)),epsilon,printLevel);
+    assert(all(ismember(glycolysis,fcModel.rxns)));    
+    [mins,maxs] = fluxVariability(fcModel,0);
+    assert(all(max([abs(mins),abs(maxs)],[],2)>epsilon));
 end
 
 % change the directory

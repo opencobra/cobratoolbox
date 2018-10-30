@@ -1087,6 +1087,9 @@ switch solver
             stat = 1; % optimal solution found
             f = f*osense;
             y = osense*lambda.eqlin;
+            if isfield(lambda,'ineqlin')
+                y = [y;osense*lambda.ineqlin];
+            end
             w = osense*(lambda.upper-lambda.lower);
             s = LPproblem.b - LPproblem.A*x;
         elseif (origStat < 0)
@@ -1454,11 +1457,11 @@ elseif strcmp(solver,'mps')
 end
 
 % check the optimality conditions for variaous solvers
+
 if ~strcmp(solver, 'mps')
     if solution.stat == 1
         if any(strcmp(solver,{'pdco', 'matlab', 'glpk', 'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
             if ~isempty(solution.slack) && ~isempty(solution.full)
-
                 % determine the residual 1
                 res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
                 res1(~isfinite(res1))=0;

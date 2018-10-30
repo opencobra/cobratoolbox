@@ -88,7 +88,8 @@ parser.addParamValue('requiredToolboxes', {}, @iscell);
 parser.addParamValue('requiredSolvers', {}, @iscell);
 parser.addParamValue('useSolversIfAvailable', {}, @iscell);
 parser.addParamValue('requireOneSolverOf', {}, @iscell);
-parser.addParamValue('excludeSolvers', {}, @iscell);
+parser.addParamValue('excludeSolvers', {}, @(x) iscell(x) || ischar(x) );
+parser.addParamValue('useMinimalNumberOfSolvers', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMILP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsNLP', false, @(x) islogical(x) || x == 1 || x == 0);
@@ -118,11 +119,14 @@ toolboxes = union(parser.Results.toolboxes, parser.Results.requiredToolboxes);
 requiredSolvers = parser.Results.requiredSolvers;
 possibleSolvers = parser.Results.requireOneSolverOf;
 excludedSolvers = parser.Results.excludeSolvers;
+if ischar(excludedSolvers)
+    excludedSolvers = {excludedSolvers};
+end
 preferredSolvers = parser.Results.useSolversIfAvailable;
 
 needsWebAddress = parser.Results.needsWebAddress;
 needsWebRead = parser.Results.needsWebRead;
-
+useMinimalNumberOfSolvers = parser.Results.useMinimalNumberOfSolvers;
 runtype = getenv('CI_RUNTYPE');
 
 errorMessage = {};
@@ -337,7 +341,9 @@ end
 % collect the Used Solvers.
 solversToUse = struct();
 problemTypes = OPT_PROB_TYPES;
-if strcmpi(runtype, 'extensive')
+% if this is the extensive test suite, and the solver use not just about
+% testing whether the actual work succeeded.
+if strcmpi(runtype, 'extensive') && ~useMinimalNumberOfSolvers
     solversToUse = solversForTest;
     %exclude pdco if not explicitly requested and available, as it does
     %have issues at the moment.
