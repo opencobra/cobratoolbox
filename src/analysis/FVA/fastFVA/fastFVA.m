@@ -234,20 +234,20 @@ for i = 1:nCPLEXparams
     valuesCPLEXparams(i) = getfield(cpxControl, namesCPLEXparams{i});
 end
 
-% retrieve the b vector of the model file
-b = model.b;
+% create an LP problem
+LPproblem = buildLPproblemFromModel(model);
 
 % define the stoichiometric matrix to be solved
-if isfield(model, 'A') && (matrixAS == 'A')
-    A = model.A;
-    csense = model.csense(:);
+if matrixAS == 'A'
+    [A,b,csense,lb,ub,c] = deal(LPproblem.A,LPproblem.b,LPproblem.csense,LPproblem.lb,LPproblem.ub,LPproblem.c);
     if printLevel > 0
         fprintf(' >> Solving Model.A. (coupled) - Generalized\n');
     end
 else
-    A = model.S;
-    csense = char('E' * ones(size(A, 1), 1));
-    b = b(1:size(A, 1));
+    if ~isfield(model,'csense')
+        model.csense = repmat('E',size(model.S,1),1);
+    end
+    [A,b,csense,lb,ub,c] = deal(model.S,model.b,model.csense,model.lb,model.ub,model.c);
     if printLevel > 0
         fprintf(' >> Solving Model.S. (uncoupled) \n');
     end
@@ -352,15 +352,15 @@ if nworkers <= 1
         fprintf(' \n WARNING: The Sequential Version might take a long time.\n\n');
     end
     if bExtraOutputs1
-        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = FVAc(c, A, b, csense, lb, ub, ...
                                                                                                    optPercentage, obj, rxnsKey, ...
                                                                                                    1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     elseif bExtraOutputs
-        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+        [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax] = FVAc(c, A, b, csense, lb, ub, ...
                                                                        optPercentage, obj, rxnsKey, ...
                                                                        1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     else
-        [minFlux, maxFlux, optsol, ret] = FVAc(model.c, A, b, csense, model.lb, model.ub, ...
+        [minFlux, maxFlux, optsol, ret] = FVAc(c, A, b, csense, lb, ub, ...
                                                optPercentage, obj, rxnsKey, ...
                                                1, cpxControl, valuesCPLEXparams, rxnsOptMode, logFileDir, printLevel);
     end
