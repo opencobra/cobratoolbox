@@ -17,34 +17,34 @@ fileDir = fileparts(which('testFASTCC'));
 cd(fileDir);
 
 %load a model
-model = readCbModel('FastCoreTest.mat','modelName','modelR204');
+model = getDistributedModel('ecoli_core_model.mat');
+% create a model with fructose
+modelWithFru = changeRxnBounds(model,'EX_fru(e)',-100,'l');
 
-%randomly pick some reactions
+% set paarmeters
 epsilon = 1e-4;
 printLevel = 2;
 modeFlag = 0;
 
+%by default, fructose updatek, fumarate uptake and corresponding reactions
+%cannot be used.
+inactives = {'EX_fru(e)', 'EX_fum(e)','EX_gln_L(e)', 'EX_mal_L(e)', 'FRUpts2', 'FUMt2_2', 'GLNabc','MALt2_2' };
+fructoseRelated = {'EX_fru(e)', 'FRUpts2'};
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex', 'gurobi', 'tomlab_cplex'};
+solverPkgs = prepareTest('needsLP',true);
 
-k = 1;
-while k < length(solverPkgs)+1 % note: only run with 1 solver, not with all 3
-
+for k = 1:length(solverPkgs.LP)
     % change the COBRA solver (LP)
-    solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-    if solverOK == 1
-        fprintf('   Testing FASTCC using %s ... \n', solverPkgs{k});
-
-        A = fastcc(model, epsilon, printLevel,modeFlag);
-
-        assert(numel(A) == 5317)
-
-        % end the loop
-        k = length(solverPkgs);
-    end
-    k = k + 1;
-
+    solverOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
+    fprintf('   Testing FASTCC using %s ... \n', solverPkgs.LP{k});
+    A = fastcc(model, epsilon, printLevel,modeFlag);
+    assert(isempty(setxor(setdiff(model.rxns,model.rxns(A)),inactives)));
+    % Open up the Fructose channel
+    A = fastcc(modelWithFru, epsilon, printLevel,modeFlag);
+    % now, everything from the inactives except the fructose reactions are
+    % not in A
+    assert(isempty(setxor(setdiff(modelWithFru.rxns,modelWithFru.rxns(A)),setdiff(inactives,fructoseRelated))));
     % output a success message
     fprintf('Done.\n');
 end
