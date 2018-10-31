@@ -13,7 +13,10 @@ global CBTDIR
 % define the features required to run the test
 
 % require the specified toolboxes and solvers, along with a UNIX OS
-solverPkgs = prepareTest('needsLP', true);
+% linprog does not seem to work properly on this problem...
+% quadMinos and dqqMinos seem to have problems with this rproblem too,
+% leading to suboptimal solutions.
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
 
 % save the current path
 currentDir = pwd;
@@ -26,10 +29,13 @@ tol = getCobraSolverParams('LP', 'feasTol');
 
 % load the model
 %Either:
-model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
-[~, isInternalRxn] = findStoichConsistentSubset(model, 0, 0);
+origmodel = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
+%Set the default solver
+changeCobraSolver(solverPkgs.LP{1},'LP');
+
+[~, isInternalRxn] = findStoichConsistentSubset(origmodel, 0, 0);
 cycleRxns = {'FRD7'; 'SUCDi'}; % Form a stoichiometrically balanced cycle
-isCycleRxn = ismember(model.rxns, cycleRxns);
+isCycleRxn = ismember(origmodel.rxns, cycleRxns);
 
 try
     parTest = true;
@@ -46,7 +52,7 @@ for k = 1:length(solverPkgs.LP)
     fprintf(' -- Running testCycleFreeFlux using the solver interface: %s ... ', solverPkgs.LP{k});
 
     solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-
+    model = origmodel;
     if solverLPOK
         % Remove cycle from a single FBA solution
         solution = optimizeCbModel(model);
@@ -73,7 +79,7 @@ for k = 1:length(solverPkgs.LP)
         
         % Remove cycle from a set of flux vectors
         model.lb(find(isCycleRxn, 1)) = 0; % Reset lower bound on FRD7
-        [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 0, 'max', model.rxns, 0, 1, 'FBA');
+        [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 0, 'max', model.rxns(1:3), 0, 1, 'FBA');
         V0 = [Vmin, Vmax];
         n = size(model.S, 2);
         C = [eye(n), eye(n)];

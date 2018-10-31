@@ -9,7 +9,7 @@
 
 % Check requirements
 requiredToolboxes = {'bioinformatics_toolbox'};  % This is the Global optimization toolbox
-solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes);
+solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'useMinimalNumberOfSolvers',true);
 
 % save the current path
 currentDir = pwd;
@@ -28,13 +28,15 @@ try
     % Shut down any existing pool
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
-
+    
     if myCluster.NumWorkers >= minWorkers
         poolobj = gcp('nocreate');  % if no pool, do not create new one.
         if isempty(poolobj)
             parpool(minWorkers);  % launch minWorkers workers
         end
     end
+    % parpool is running, don'T test dqqMinos and quadMinos
+    solvers = prepareTest('needsLP', true, 'toolboxes', requiredToolboxes, 'excludeSolvers',{'dqqMinos','quadMinos'},'useMinimalNumberOfSolvers',true);
 catch
     disp('Trying Non Parallel')
 end
