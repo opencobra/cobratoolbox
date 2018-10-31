@@ -13,22 +13,25 @@ currentDir = pwd;
 % initialize the test
 cd(fileparts(which(mfilename)));
 
+% set the tolerance
+tol = 1e-6;
 
 % Generate 2 matrix of the same size
- P= [12 62; 93 3]
- Q= [1 23; 43 1]
- 
- % Reference data 
- KLDis_1 = KLDis(P,Q)
-  %save('refData_KLDis_1.mat', 'KLDis_1');
- % Test  if a function throws an error or warning message
-assert(verifyCobraFunctionError('KLDis','inputs', {P, Q'},'testMessage', 'Input2 has the wrong dimension'));
+P = [1 2; 2 1];
+Q = [3 2; 2 3];
 
 % run the function 
-KLD=KLDis(P,Q);
+KLD = KLDis(P,Q);
 
 % compare the scaled matrix against the reference data
-assert(isequal(KLD, KLDis_1))
+assert(norm(KLD - 0.12723233459191 * [1; 1]) < tol)
+
+Q2 = [inf inf]; 
+P2 = [inf inf];
+
+% Test if KLDis throws an error
+assert(verifyCobraFunctionError('KLDis','inputs', {P, Q(:,1)}, 'testMessage', 'the number of columns in P and Q should be the same'));
+assert(verifyCobraFunctionError('KLDis','inputs', {P2, Q2}, 'testMessage', 'the inputs contain non-finite values!'));
 
 % change the directory
 cd(currentDir)
