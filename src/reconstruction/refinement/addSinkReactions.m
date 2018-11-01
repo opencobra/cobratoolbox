@@ -21,13 +21,15 @@ function [model, rxnsInModel] = addSinkReactions(model, metabolites, lb, ub)
 %
 % .. Author: - Ines Thiele 05/06/08
 
-if ~iscell(metabolites)
-    error('Metabolites must be in a cell array, even if it is only one');
+if ~iscell(metabolites) & ischar(metabolites)
+    % assumes it is a single metabolite in a char vector
+    metabolites = {metabolites}
 end
 if any(~ismember(metabolites,model.mets))
     notFound = metabolites(~ismember(metabolites,model.mets)); 
     warning('%s\n','The following metabolites were not found in model and will be added:',notFound{:});
 end
+
 
 nMets = length(metabolites);
 if nargin < 3
