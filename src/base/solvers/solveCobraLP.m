@@ -1076,9 +1076,7 @@ switch solver
             bg = b(csense == 'G');
             Al = A(csense == 'L',:);
             bl = b(csense == 'L');
-            clear A;
             A = [Al;-Ag];
-            clear b;
             b = [bl;-bg];
             [x,f,origStat,output,lambda] = clinprog(c*osense,A,b,Aeq,beq,lb,ub,linprogOptions);
         end
@@ -1087,12 +1085,29 @@ switch solver
             stat = 1; % optimal solution found
             f = f*osense;
             y = osense*lambda.eqlin;
+            if isfield(lambda,'ineqlin')
+                y = [y;osense*lambda.ineqlin];
+            end
             w = osense*(lambda.upper-lambda.lower);
             s = LPproblem.b - LPproblem.A*x;
-        elseif (origStat < 0)
+        elseif (origStat < -1)
             stat = 0; % infeasible
+        elseif origStat == -1
+            stat = 3; % Maybe some partial success
+            try
+                f = f*osense;
+                y = osense*lambda.eqlin;
+                if isfield(lambda,'ineqlin')
+                    y = [y;osense*lambda.ineqlin];
+                end
+                w = osense*(lambda.upper-lambda.lower);
+                s = LPproblem.b - LPproblem.A*x;
+            catch ME
+                % if values cant be assigned, we report a fail.
+                stat = 0;
+            end
         else
-            stat = -1; % Solution did not converge
+            stat = -1;
         end
 
     case 'tomlab_cplex'
@@ -1454,11 +1469,11 @@ elseif strcmp(solver,'mps')
 end
 
 % check the optimality conditions for variaous solvers
+
 if ~strcmp(solver, 'mps')
     if solution.stat == 1
         if any(strcmp(solver,{'pdco', 'matlab', 'glpk', 'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex'}))
             if ~isempty(solution.slack) && ~isempty(solution.full)
-
                 % determine the residual 1
                 res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
                 res1(~isfinite(res1))=0;

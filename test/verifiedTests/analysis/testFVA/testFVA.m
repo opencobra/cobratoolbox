@@ -20,8 +20,9 @@ cd(fileDir);
 % set the tolerance
 tol = 1e-4;
 
-% define the solver packages to be used to run this test
-solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'});
+% define the solver packages to be used to run this test, can't use
+% dqq/Minos for the parallel part.
+solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'},'excludeSolvers',{'dqqMinos','quadMinos'});
 
 
 
@@ -44,15 +45,23 @@ catch
     %No Parallel pool. Thats fine
 end
 loopToyModel = createToyModelForgapFind();
-for k = 1:length(solverPkgs.LP)
-    
+for k = 1:length(solverPkgs.LP)    
+    currentSolver = solverPkgs.LP{k};
+    doQP = false;
+    doMILP = false;
+    if ismember(currentSolver,solverPkgs.QP)
+        solverQPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+        doQP = true & solverQPOK;
+    end
+    if ismember(currentSolver,solverPkgs.MILP)
+        solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+        doMILP = true & solverMILPOK;
+    end
     % change the COBRA solver (LP)
-    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-    solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
-    solverMILPOK = changeCobraSolver(solverPkgs.MILP{k}, 'MILP', 0);
-    
-    if solverLPOK && solverQPOK && solverMILPOK
-        fprintf('   Testing flux variability analysis using %s for LP, %s for QP and %s for MILP... ', solverPkgs.LP{k},solverPkgs.QP{k},solverPkgs.MILP{k});
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);    
+        
+    if solverLPOK 
+        fprintf('   Testing flux variability analysis using %s ... ', solverPkgs.LP{k});
         
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', ...
             'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
@@ -76,12 +85,13 @@ for k = 1:length(solverPkgs.LP)
             maxMinusMin = maxFlux(i) - minFlux(i);
             maxTMinusMinT = maxFluxT(i) - minFluxT(i);
             assert(maxMinusMin - tol <= maxTMinusMinT)
-            assert(maxTMinusMinT <= maxMinusMin + tol)
-            
-            % print the labels
-            printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i) - minFlux(i)], true, 3);
+            assert(maxTMinusMinT <= maxMinusMin + tol)            
         end
-        
+        if ~doQP || ~doMILP
+            % Do the rest only for those solvers, which do have QP and MILP
+            % support.
+            continue
+        end
         % Vmin and Vmax test
         % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
         rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};
@@ -132,6 +142,8 @@ end
 %Finally, test FVA without parrallel toolbox. This is only necessary, if
 %there
 pttoolboxPath = which('parpool');
+% here, we can use dqq and quadMinos again, because this is not parallel.
+solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'});
 if ~isempty(pttoolboxPath)
     %We also have to shut down the parallel pool, as otherwise problems
     %occur with the pool.
@@ -143,10 +155,19 @@ if ~isempty(pttoolboxPath)
     rmpath(cpath);
     for k = 1:length(solverPkgs.LP)
         solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-        solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
-        solverMILPOK = changeCobraSolver(solverPkgs.MILP{k}, 'MILP', 0);        
-        if solverLPOK && solverQPOK && solverMILPOK
-            fprintf('   Testing non parallel flux variability analysis using %s for LP, %s for QP and %s for MILP... ', solverPkgs.LP{k},solverPkgs.QP{k},solverPkgs.MILP{k});
+        currentSolver = solverPkgs.LP{k};
+        doQP = false;
+        doMILP = false;
+        if ismember(currentSolver,solverPkgs.QP)
+            solverQPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+            doQP = true & solverQPOK;
+        end
+        if ismember(currentSolver,solverPkgs.MILP)
+            solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+            doMILP = true & solverMILPOK;
+        end
+        if solverLPOK 
+            fprintf('   Testing non parallel flux variability analysis using %s ', solverPkgs.LP{k});
             
             rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK', 'PPS', ...
                 'G6PDH2r', 'PGL', 'GND', 'RPI', 'RPE', 'TKT1', 'TKT2', 'TALA'};
@@ -172,10 +193,12 @@ if ~isempty(pttoolboxPath)
                 assert(maxMinusMin - tol <= maxTMinusMinT)
                 assert(maxTMinusMinT <= maxMinusMin + tol)
                 
-                % print the labels
-                printLabeledData(model.rxns(i), [minFlux(i) maxFlux(i) maxFlux(i) - minFlux(i)], true, 3);
             end
-            
+            if ~doQP || ~doMILP
+                % Do the rest only for those solvers, which do have QP and MILP
+                % support.
+                continue
+            end
             % Vmin and Vmax test
             % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
             rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};

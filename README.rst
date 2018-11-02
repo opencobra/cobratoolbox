@@ -93,7 +93,7 @@ Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
 .. raw:: html
 
    <p align="center">
-   <img src="https://cdn.rawgit.com/opencobra/MATLAB.devTools/develop/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
+   <img src="https://cdn.jsdelivr.net/gh/opencobra/MATLAB.devTools@e735bd91310e8ef10fab4d3c21833a85bf4b8159/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
    </p>
 
 

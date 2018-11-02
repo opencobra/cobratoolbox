@@ -80,7 +80,7 @@ for field = 1:length(fieldNames)
         case 'cell'
             model.(fieldNames{field}) =cell(xdim,ydim);
             % need to both check, whether the eval is a char AND if it is empty.
-            if ischar(eval(defaultValue)) && strcmp(eval(defaultValue),'') 
+            if xdim > 0 && ischar(eval(defaultValue)) && strcmp(eval(defaultValue),'') 
                 model.(fieldNames{field})(:) = {''};
             else
                 for i = 1:xdim

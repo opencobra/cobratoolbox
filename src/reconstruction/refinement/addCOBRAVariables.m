@@ -37,11 +37,26 @@ p = inputParser();
 p.CaseSensitive = false;
 p.addRequired('model',@isstruct);
 p.addRequired('idList',@iscell);
-p.addParameter('lb',columnVector(-1000*ones(size(idList))),@(x) isnumeric(x) && numel(x) == numel(idList));
-p.addParameter('ub',columnVector(1000*ones(size(idList))),@(x) isnumeric(x) && numel(x) == numel(idList));
-p.addParameter('c',columnVector(zeros(size(idList))),@(x) isnumeric(x) && numel(x) == numel(idList));
+p.addParameter('lb',columnVector(-1000*ones(size(idList))),@(x) isnumeric(x) && (numel(x) == numel(idList) || numel(x) == 1));
+p.addParameter('ub',columnVector(1000*ones(size(idList))),@(x) isnumeric(x) && (numel(x) == numel(idList) || numel(x) == 1));
+p.addParameter('c',columnVector(zeros(size(idList))),@(x) isnumeric(x) &&( numel(x) == numel(idList) || numel(x) == 1));
 p.addParameter('Names',idList, @(x) (iscell(x) && numel(x) == numel(idList)) || ischar(x) && numel(idList == 1));
 p.parse(model,idList,varargin{:});
+
+lb = p.Results.lb;
+if numel(lb) == 1
+    lb = ones(numel(idList),1)*lb;
+end
+
+ub = p.Results.ub;
+if numel(ub) == 1
+    ub = ones(numel(idList),1)*ub;
+end
+
+c = p.Results.c;
+if numel(c) == 1
+    c = ones(numel(idList),1)*c;
+end
 
 if any(ismember(model.rxns,idList))
     duplicateIDs = unique(model.rxns(ismember(model.rxns,idList)));    
@@ -65,6 +80,9 @@ else
     end
 end
 
+% this is all checks done, now lets get to work.
+[~,nVars] = size(model.E);
+
 if ~isfield(model,'evarNames') && ~any(strcmp(p.UsingDefaults,'Names'))
     % if the field does not yet exist, and we got actual names, we need to
     % create the field.
@@ -72,15 +90,11 @@ if ~isfield(model,'evarNames') && ~any(strcmp(p.UsingDefaults,'Names'))
 end
 
 
-% this is all checks done, now lets get to work.
-[~,nVars] = size(model.E);
-
-
 % extend the IDs.
 model.evars = [model.evars; columnVector(idList)];
-model.evarlb = [model.evarlb; columnVector(p.Results.lb)];
-model.evarub = [model.evarub; columnVector(p.Results.ub)];
-model.evarc = [model.evarc; columnVector(p.Results.c)];
+model.evarlb = [model.evarlb; columnVector(lb)];
+model.evarub = [model.evarub; columnVector(ub)];
+model.evarc = [model.evarc; columnVector(c)];
 
 if isfield(model,'evarNames')
     model.evarNames = [model.evarNames; columnVector(p.Results.Names)];

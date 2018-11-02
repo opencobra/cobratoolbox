@@ -24,22 +24,23 @@ solverPkgs = prepareTest('needsLP',true, 'requiredSolvers',{'glpk'});
 model = createToyModelForMinimizeFlux();
 
 for k = 1:length(solverPkgs.LP)
+    currentmodel = model;
     changeCobraSolver(solverPkgs.LP{k},'LP');
     % qpng does not support this model size, so we don't use quadratic
     % minimzation.
-    sol = minimizeModelFlux(model,'min','one');
+    sol = minimizeModelFlux(currentmodel,'min','one');
     assert(sol.x(end) == 0);
-    sol = minimizeModelFlux(model);
+    sol = minimizeModelFlux(currentmodel);
     assert(sol.x(end) == 12000); %Since its reversible, exchangers cycle and all rev reactions cycle.
-    sol = minimizeModelFlux(model,'max','one'); %same as before.
+    sol = minimizeModelFlux(currentmodel,'max','one'); %same as before.
     assert(sol.x(end) == 12000); %Since its reversible, exchangers cycle and all rev reactions cycle.
-    model.osenseStr = 'min';
-    modelChanged = changeRxnBounds(model,'R3',5,'l');
+    currentmodel.osenseStr = 'min';
+    modelChanged = changeRxnBounds(currentmodel,'R3',5,'l');
     sol = minimizeModelFlux(modelChanged);
     assert(sol.x(end) == 20); %Can only come from the cycle
     sol = minimizeModelFlux(modelChanged,'max');
     assert(sol.x(end) == 11000); %MAx flux through C-> E and Exchangers, + 3 reactions from the cycle.
-    modelChanged = changeRxnBounds(model,'EX_E',5,'l'); %Force production of E
+    modelChanged = changeRxnBounds(currentmodel,'EX_E',5,'l'); %Force production of E
     sol = minimizeModelFlux(modelChanged);
     modelChanged = rmfield(modelChanged,'osenseStr');
     assert(sol.x(end) == 25); %Flux -> A -> B -> C -> E -> 

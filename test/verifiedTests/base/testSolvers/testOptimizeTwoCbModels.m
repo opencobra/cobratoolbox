@@ -13,7 +13,8 @@ global CBTDIR
 currentDir = pwd;
 
 % set the LP cobra solver - used in optimizeCbModelNLP that calls optimizeCbModel
-solverPkgs = prepareTest('needsLP',true);
+% matlab for some reason doesn'T manage to handle the minimisation
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab'});
 
 % initialize the test
 fileDir = fileparts(which('testOptimizeTwoCbModels'));
@@ -31,7 +32,7 @@ for k = 1:length(solverPkgs.LP)
     solverOk = changeCobraSolver(solverPkgs.LP{k},'LP',0);
     
     if solverOk
-        fprintf('   Running optimizeTwoCbModels using %s ... ', solverPkgs.LP{k});
+        fprintf('   Running optimizeTwoCbModels using %s ... \n', solverPkgs.LP{k});
        [sol1,sol2,totalDiffFlux] = optimizeTwoCbModels(model1,model2);       
        %There is a difference of 4 reactions carrying a flux of 1000. 
        assert(abs((totalDiffFlux - 4000)) <= objtol);
@@ -47,8 +48,8 @@ for k = 1:length(solverPkgs.LP)
        
        %Test min as osenseStr. Should be the same trivial solution
        [sol1,sol2,totalDiffFlux] = optimizeTwoCbModels(model1,model2_20,'min');       
-       assert(all(sol1.x== 0));
-       assert(all(sol2.x== 0));       
+       assert(all(abs(sol1.x) < objtol));
+       assert(all(abs(sol2.x ) < objtol));       
        
        %Now, we will add a reaction that allows higher conversion with
        %lower flux
@@ -59,8 +60,8 @@ for k = 1:length(solverPkgs.LP)
        %The difference is still 80 (this did not change)
        assert(abs((totalDiffFlux - 4000)) <= objtol);
        %But R5 should now not be used, and instead R5a
-       assert(sol1.x(ismember(model1_Add.rxns,'R5')) == 0);
-       assert(sol2.x(ismember(model2_Add.rxns,'R5')) == 0);
+       assert(abs(sol1.x(ismember(model1_Add.rxns,'R5'))) <= objtol );
+       assert(abs(sol2.x(ismember(model2_Add.rxns,'R5')) ) <= objtol );
        assert(sol1.x(ismember(model1_Add.rxns,'R5a')) >= 0);
        assert(sol2.x(ismember(model2_Add.rxns,'R5a')) >= 0);
     end

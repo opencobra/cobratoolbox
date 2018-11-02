@@ -32,8 +32,10 @@ elseif strcmp(basefield,'mets')
     else
         searchvector = model.mets;
     end
-else
-    error('Can only look up additional positions for the rxns and mets fields');
+elseif isfield(model,basefield) && iscellstr(model.(basefield))
+    searchvector = model.(basefield);
+else    
+    error('Basefield has to be a  field representing a cell array of strings in the model');
 end
    
 [pres,pos] = ismember(ids,searchvector);
