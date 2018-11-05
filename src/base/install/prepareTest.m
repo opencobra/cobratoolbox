@@ -9,7 +9,8 @@ function [solversToUse] = prepareTest(varargin)
 % OPTIONAL INPUTS:
 %    varagin:      `ParameterName` value pairs with the following options:
 %
-%                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name) (default: {})
+%                   - `toolboxes` or `requiredToolboxes`: Names of required toolboxes (the license feature name).(default: {})
+%                   - `minimalMatlabSolverVersion`: Minimal version of the optimization toolbox required to use the matlab solver.(default: 0)
 %                   - `requiredSolvers`: Names of all solvers that MUST be available. If not empty, the resulting solvers struct will contain cell arrays (default: {})
 %                   - `useSolversIfAvailable`: Names of solvers that should be used if available. If not empty, the resulting solvers struct will contain cell arrays (will not throw an error if not). (default: {})
 %                   - `requireOneSolverOf`: Names of solvers, at least one of which has to be available
@@ -86,6 +87,8 @@ end
 parser = inputParser();
 parser.addParamValue('toolboxes', {}, @iscell);
 parser.addParamValue('requiredToolboxes', {}, @iscell);
+parser.addParamValue('minimalMatlabSolverVersion',0,@isnumeric);
+
 parser.addParamValue('requiredSolvers', {}, @iscell);
 parser.addParamValue('useSolversIfAvailable', {}, @iscell);
 parser.addParamValue('requireOneSolverOf', {}, @iscell);
@@ -102,6 +105,7 @@ parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWebAddress', '', @ischar);
 parser.addParamValue('needsWebRead', false, @(x) islogical(x) || x == 1 || x == 0);
+
 
 parser.parse(varargin{:});
 
@@ -129,6 +133,8 @@ needsWebAddress = parser.Results.needsWebAddress;
 needsWebRead = parser.Results.needsWebRead;
 useMinimalNumberOfSolvers = parser.Results.useMinimalNumberOfSolvers;
 runtype = getenv('CI_RUNTYPE');
+
+minimalMatlabSolverVersion = parser.Results.minimalMatlabSolverVersion;
 
 errorMessage = {};
 infoMessage = {};
@@ -190,6 +196,17 @@ end
 
 % restrict the solvers available for this test
 solversForTest = availableSolvers;
+
+if any(ismember(solversForTest.LP,'matlab'))
+    boxes = ver();
+    optBox = find(ismember({boxes.Name},'Optimization Toolbox'));
+    if ~isempty(optBox)
+        optVer = boxes(optBox).Version;
+        if str2double(optVer) < minimalMatlabSolverVersion                
+            excludedSolvers = [columnVector(excludedSolvers);'matlab'];
+        end
+    end
+end
 
 if ~isempty(excludedSolvers)
     solverTypes = fieldnames(availableSolvers);

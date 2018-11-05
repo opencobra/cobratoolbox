@@ -22,7 +22,10 @@ tol = 1e-4;
 
 % define the solver packages to be used to run this test, can't use
 % dqq/Minos for the parallel part.
-solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'},'excludeSolvers',{'dqqMinos','quadMinos'});
+solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,...
+                         'useSolversIfAvailable',{'ibm_cplex'},...
+                         'excludeSolvers',{'dqqMinos','quadMinos'},...
+                         'minimalMatlabSolverVersion',8.0);
 
 
 
@@ -143,7 +146,7 @@ end
 %there
 pttoolboxPath = which('parpool');
 % here, we can use dqq and quadMinos again, because this is not parallel.
-solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'});
+solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'},'minimalMatlabSolverVersion',8.0);
 if ~isempty(pttoolboxPath)
     %We also have to shut down the parallel pool, as otherwise problems
     %occur with the pool.
