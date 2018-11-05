@@ -23,7 +23,9 @@ tol = 1e-4;
 
 % test solver packages
 useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek'};
-solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);
+% pdco is a normalizing solver not a general purpose QP solver, so it will
+% fail the test
+solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'pdco'});
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
