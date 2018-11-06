@@ -14,26 +14,30 @@ function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 %   lod_mM:            Detection limits in mM
 %
 % .. Author: - Maike K. Aurich 27/05/15
-%  Modified by Loic Marx
+%  Modified by Loic Marx, November 2018
 
 % input checking
 if length(lod_ngmL) == 1
+    
     lod_ngmL = repmat(lod_ngmL, 1, length(theo_mass)); 
+    
     % throw a warning
-    warning('The inputs have different size');
+    warning('The inputs have different size but we managed to fix this problem');
+    
 end    
 
 if length(lod_ngmL) ~= length(theo_mass)
-    error('both inputs do not have the same size');
+    
+    error('The length of the inputs are not the same');
 end
 
-lod_gL = lod_ngmL* 0.000001;
+lod_gL = lod_ngmL * 0.000001;
 
 lod_mM = zeros(length(lod_gL), 1);
 
-for i=1:length(lod_gL)
+for i=1 : length(lod_gL)
 
-    lod_mM(i)= lod_gL(i)/theo_mass(i)*1000;
+    lod_mM(i) = lod_gL(i)/theo_mass(i)*1000;
 
 end
 

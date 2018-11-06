@@ -9,34 +9,45 @@
 %
    
 
-% save the current path
+% Save the current path
 currentDir = pwd;
 
-% initialize the test
+% Initialize the test
 fileDir = fileparts(which('testcalculateLODs'));
+
 cd(fileDir);
 
-% calculate reference value
-theo_mass = [1, 2];
-v_ref = 1e-3 * [1; 0.5];
-
-%calculate inputs
+% Defining the inputs
 lod_ngmL = 1;
 
+theo_mass = [1, 2];
+
+% Calculate the reference value
+
+v_ref = 1e-3 * [1; 0.5];
+
+% Calculate the actual value by using the function
+
 calculateLOD = calculateLODs(theo_mass,lod_ngmL);
-% Comparison to ref value
+
+% Comparison between calculate value and ref value
 
 assert(isequal(calculateLOD, v_ref))
-% throwing an error if the dimensions are not equal
+
+% Throwing an error if the dimensions of both inputs are not equal
 lod_ngmL_unequal = [1, 2, 3];
 
 assert(verifyCobraFunctionError('calculateLODs', 'inputs', {theo_mass,lod_ngmL_unequal'}, 'testMessage', 'both inputs do not have the same size'));
-% Testing the case where lod_ngmL is a vector of the same size as theo_mass
 
+% If both inputs are two vectors of the same size
 lod_ngmL_vector = [1, 2];
+
 v_ref_vector = 1e-3 * [1; 1];
-% Comparison to the ref value
+
+% Comparison between the values calculated when the inputs have the same size and the reference value
 calculateLOD_vector = calculateLODs(theo_mass,lod_ngmL_vector);
+
 assert(isequal(calculateLOD_vector, v_ref_vector));
-% change the directory
+
+% Change the directory
 cd(currentDir)
