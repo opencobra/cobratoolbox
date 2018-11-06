@@ -16,7 +16,7 @@ cd(fileDir);
 solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab'});
 
 model = getDistributedModel('ecoli_core_model.mat');
-model = removeGenes(model,'s0001','keepReactions',true);
+model = removeGenesFromModel(model,'s0001','keepReactions',true);
 geoaddress = 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?form=text&acc=%s&view=full';
 anaerobic = geosoftread(urlread(sprintf(geoaddress,'GSM1010240')));
 aerobic = geosoftread(urlread(sprintf(geoaddress,'GSM1126445')));

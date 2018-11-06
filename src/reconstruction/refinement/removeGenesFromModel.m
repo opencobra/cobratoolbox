@@ -1,4 +1,4 @@
-function [model, affectedRxns, originalGPRs, deletedReaction] = removeGenes(model, geneList, varargin)
+function [model, affectedRxns, originalGPRs, deletedReaction] = removeGenesFromModel(model, geneList, varargin)
 % Removes the given genes from the model. GPR rules will be adjusted to reflect the removal.
 % By default, the rules are converted to DNF and all clauses containing any of the given
 % genes are removed. Note, that this function is not supposed to be used to model
@@ -6,7 +6,7 @@ function [model, affectedRxns, originalGPRs, deletedReaction] = removeGenes(mode
 %
 % USAGE:
 %
-%    [model, affectedRxns, originalGPRs, deletedReactions] = deleteModelGenes(model, geneList)
+%    [model, affectedRxns, originalGPRs, deletedReactions] = removeGenesFromModel(model, geneList)
 %
 % INPUT:
 %    model:               COBRA model with the appropriate constrains for a
