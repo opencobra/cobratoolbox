@@ -18,22 +18,22 @@ function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 
 % input checking
 if length(lod_ngmL) == 1
-    lod_ngmL = repmat(lod_ngmL, length(theo_mass)) 
+    lod_ngmL = repmat(lod_ngmL, 1, length(theo_mass)); 
     % throw a warning
-warning(The inputs have different size but we fixed it)
+    warning('The inputs have different size');
 end    
 
-if length(lod_ngmL) ~= 1
-    error ('both inputs do not have the same size')
+if length(lod_ngmL) ~= length(theo_mass)
+    error('both inputs do not have the same size');
 end
 
 lod_gL = lod_ngmL* 0.000001;
 
-lod_mM =[];
+lod_mM = zeros(length(lod_gL), 1);
 
 for i=1:length(lod_gL)
 
-    lod_mM(i,1)= lod_gL(i,1)/theo_mass(i,1)*1000;
+    lod_mM(i)= lod_gL(i)/theo_mass(i)*1000;
 
 end
 
