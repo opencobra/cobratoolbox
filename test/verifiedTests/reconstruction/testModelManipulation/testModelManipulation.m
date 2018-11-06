@@ -455,14 +455,14 @@ modelMod = changeGeneAssociation(modelMod,modelMod.rxns{3},ruleWithoutG2);
 fprintf('>> Done \n\n >> Testing Gene removal...\n');
 
 %Test removal of a gene
-modelMod1 = removeGenes(modelMod,'G1');
+modelMod1 = removeGenesFromModel(modelMod,'G1');
 % now, rules{1} and rules{3} should be equal;
 fp = FormulaParser();
 rule = fp.parseFormula(modelMod1.rules{1});
 rule2 = fp.parseFormula(modelMod1.rules{3});
 assert(rule2.isequal(rule));
 % and now without keeping the clauses
-modelMod2 = removeGenes(modelMod,'G1','keepClauses',false);
+modelMod2 = removeGenesFromModel(modelMod,'G1','keepClauses',false);
 fp = FormulaParser();
 rule = fp.parseFormula(modelMod2.rules{1});
 rule2 = fp.parseFormula(modelMod2.rules{2});

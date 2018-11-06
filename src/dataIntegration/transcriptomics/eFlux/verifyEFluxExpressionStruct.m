@@ -17,7 +17,7 @@ if isfield(expression,'preprocessed') && ~expression.preprocessed
     % checkoptional field preprocessed
     % This leads to -1 for unassociated genes
     if ~isempty(setdiff(model.genes,expression.target))
-        error('The following genes are lacking assignments:\n%s\nAll genes need to be assigned in order to use eFlux. You can remove genes by using the removeGenes function',strjoin(setdiff(model.genes,expression.target),'\n')); 
+        error('The following genes are lacking assignments:\n%s\nAll genes need to be assigned in order to use eFlux. You can remove genes by using the removeGenesFromModel function',strjoin(setdiff(model.genes,expression.target),'\n')); 
     end                
 end
 % check sizes of the value/target fields. They must be of equal size.
