@@ -2206,15 +2206,15 @@ Model FieldDefinitions.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.reconstruction.refinement.removeGenes">
-<code class="descname">removeGenes</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/reconstruction/refinement/removeGenes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeGenes" title="Permalink to this definition">¶</a></dt>
+<dt id="src.reconstruction.refinement.removeGenesFromModel">
+<code class="descname">removeGenesFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/reconstruction/refinement/removeGenesFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.refinement.removeGenesFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the given genes from the model. GPR rules will be adjusted to reflect the removal.
 By default, the rules are converted to DNF and all clauses containing any of the given
 genes are removed. Note, that this function is not supposed to be used to model
 single gene deletions.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[model, affectedRxns, originalGPRs, deletedReactions] = deleteModelGenes(model, geneList)</div></blockquote>
+<div>[model, affectedRxns, originalGPRs, deletedReactions] = removeGenesFromModel(model, geneList)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
