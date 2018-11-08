@@ -21,17 +21,14 @@ if length(lod_ngmL) == 1
     
     lod_ngmL = repmat(lod_ngmL, 1, length(theo_mass)); 
     
-    % throw a warning
-    warning('The inputs have different size but we managed to fix this problem');
-    
 end    
 
-if length(lod_ngmL) ~= length(theo_mass)
+if numel(lod_ngmL) ~= numel(theo_mass)
     
-    error('The length of the inputs are not the same');
+    error('The number of elements in the input vectors do not match. They have to be either the same size, or lod_ngmL has to be a single value which is used for all elements');
 end
 
-lod_gL = lod_ngmL * 0.000001;
+lod_gL = lod_ngmL * 1e-6; 
 
 lod_mM = zeros(length(lod_gL), 1);
 
