@@ -14,7 +14,7 @@ function [lod_mM] = calculateLODs(theo_mass,lod_ngmL)
 %   lod_mM:            Detection limits in mM
 %
 % .. Author: - Maike K. Aurich 27/05/15
-%  Modified by Loic Marx, November 2018
+%    Modified by Loic Marx, November 2018
 
 % input checking
 if length(lod_ngmL) == 1
