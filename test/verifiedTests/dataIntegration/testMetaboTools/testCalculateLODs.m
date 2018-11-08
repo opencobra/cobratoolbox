@@ -37,7 +37,7 @@ assert(isequal(calculateLOD, v_ref))
 % Throwing an error if the dimensions of both inputs are not equal
 lod_ngmL_unequal = [1, 2, 3];
 
-assert(verifyCobraFunctionError('calculateLODs', 'inputs', {theo_mass,lod_ngmL_unequal'}, 'testMessage', 'both inputs do not have the same size'));
+assert(verifyCobraFunctionError('calculateLODs', 'inputs', {theo_mass,lod_ngmL_unequal'}, 'testMessage', 'The number of elements in the input vectors do not match. They have to be either the same size, or lod_ngmL has to be a single value which is used for all elements'));
 
 % If both inputs are two vectors of the same size
 lod_ngmL_vector = [1, 2];
