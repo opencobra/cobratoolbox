@@ -26,7 +26,7 @@ modelWConst = addCOBRAConstraints(model,{'R1'},400); % R1 restricted to a maximu
 
 %When detectDeadEnds is changed according to Ronans suggestion, we need to test
 %multiple solvers.
-solverPkgs = prepareTest('needsLP', true);
+solverPkgs = prepareTest('needsLP', true, 'minimalMatlabSolverVersion',8.0);
 tol = 1e-4;
 for k = 1:length(solverPkgs.LP)
     % set the solver
