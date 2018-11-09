@@ -340,7 +340,8 @@ for jTest = 1:2
                 for j3 = 1:numel(vRef)
                     if abs(vRef(j3)) < 1e-5
                         assert(abs(vRef(j3) - v(j3)) < 1e-5)
-                    else
+                    else    
+                        fprintf('%2.8f <-> %2.8f', vRef(j3), v(j3));
                         assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                     end
                 end
