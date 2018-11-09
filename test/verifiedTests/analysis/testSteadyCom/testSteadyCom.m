@@ -489,8 +489,8 @@ for jTest = 1:2
             end
             % remove all created files
 
-            rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
-            rmdir([pwd filesep 'testSteadyComFVAsavePar'], 's')
+            rmdir([fileDir filesep 'testSteadyComFVAsave'], 's')
+            rmdir([fileDir filesep 'testSteadyComFVAsavePar'], 's')
         else
             disp('Skipping Parallel Test, No Parallel toolbox installed');
         end

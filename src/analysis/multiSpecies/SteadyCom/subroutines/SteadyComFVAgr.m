@@ -308,6 +308,7 @@ if threads == 1
         % continue from previous saved file
         if ~isempty(saveFVA)
             if exist([saveFVA '.mat'], 'file')
+                fprintf('In non parallel mode found save file at %s\n', which([saveFVA '.mat']));
                 load([saveFVA '.mat'], 'i0', 'minFlux', 'maxFlux', 'minFD', 'maxFD');
                 if i0 == nRxnFVA
                     fprintf('FVA was already finished previously and saved in %s.mat.\n', saveFVA);
@@ -373,6 +374,7 @@ else
     if ~isempty(saveFVA)
         %check if previous results from single-thread computation exist
         if exist([saveFVA '.mat'], 'file')
+            fprintf('In parallel mode found save file at %s\n', which([saveFVA '.mat']));
             load([saveFVA '.mat'], 'i0');
             i0P = i0;
             clear i0
