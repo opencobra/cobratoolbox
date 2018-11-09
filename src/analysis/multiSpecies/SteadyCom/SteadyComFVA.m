@@ -286,11 +286,14 @@ if ~isempty(saveFVA)
             kDisp = 0;
         end
     end
-    [folder,filename] = fileparts(saveFVA);
-    if ~isempty(folder) && ~isfolder(folder)
+    directory = strsplit(saveFVA,filesep);
+    if numel(directory) > 1
         % not saving in the current directory. Create the directory.
-        mkdir(folder);
-    end        
+        directory = strjoin([{pwd}, directory(1:end-1)],filesep);
+        if ~exist(directory, 'dir')
+            mkdir(directory);
+        end
+    end
     if ibm_cplex
         LPmodel = LP.Model;  % the Cplex dynamic object is not good for saving
         LPstart = LP.Start;

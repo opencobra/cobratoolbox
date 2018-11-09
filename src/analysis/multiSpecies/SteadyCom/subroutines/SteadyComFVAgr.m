@@ -279,10 +279,13 @@ if threads ~= 1 && ~isfield(parameters, 'solver')
 end
 % check save directory
 if ~isempty(saveFVA)
-    [directory,filename] = fileparts(saveFVA);
-    if ~isempty(directory) && ~isdir(directory)
+    directory = strsplit(saveFVA,filesep);
+    if numel(directory) > 1
         % not saving in the current directory. Check existence
-        mkdir(directory);        
+        directory = strjoin([{pwd}, directory(1:end-1)],filesep);
+        if ~exist(directory, 'dir')
+            mkdir(directory);
+        end
     end
 end
 if verbFlag

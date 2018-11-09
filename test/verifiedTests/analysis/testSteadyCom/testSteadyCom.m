@@ -21,11 +21,6 @@ prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 % initialize the test
 fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
-% Make sure, that no old data exists!
-if exist([fileDir filesep 'testSteadyComFVAsave'])
-    rmdir([fileDir filesep 'testSteadyComFVAsave'],'s');    
-end
-
 %Test for parallel toolbox
 try
     poolobj = gcp('nocreate');% create a toy model
@@ -346,7 +341,7 @@ for jTest = 1:2
                     if abs(vRef(j3)) < 1e-5
                         assert(abs(vRef(j3) - v(j3)) < 1e-5)
                     else    
-                        fprintf('%2.8f <-> %2.8f\n', vRef(j3), v(j3));
+                        fprintf('%2.8f <-> %2.8f', vRef(j3), v(j3));
                         assert(abs(vRef(j3) - v(j3)) / abs(vRef(j3)) < tolPercent)
                     end
                 end
