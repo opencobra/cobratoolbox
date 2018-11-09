@@ -31,7 +31,7 @@ calculate_conc2Rate = conc2Rate(1,2,3,500*1e-12);
 tol = 1e-4;
 assert(norm(calculate_conc2Rate - v_ref) < tol);
 
-% less than 3 inputs, CellWeight = 500 * 1e-12 g and the doubling time T = 24 and
+% less than 3 inputs, CellWeight = 500 * 1e-12 g and the doubling time T = 24
 metConc = 1;
 cellConc = 2;
 cellWeight = 500 * 1e-12;
