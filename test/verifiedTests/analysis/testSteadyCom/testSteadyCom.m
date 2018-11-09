@@ -21,8 +21,6 @@ prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 % initialize the test
 fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
-
-fprintf('The test is running in the following folder:\n%s\n',fileDir);
 % Make sure, that no old data exists!
 if isfolder([fileDir filesep 'testSteadyComFVAsave'])
     fprintf('The save folder exists and will be deleted at %s\n', [fileDir filesep 'testSteadyComFVAsave'] );
