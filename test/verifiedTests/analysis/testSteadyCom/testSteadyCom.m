@@ -22,7 +22,8 @@ prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
 % Make sure, that no old data exists!
-if exist([fileDir filesep 'testSteadyComFVAsave'])
+if isfolder([fileDir filesep 'testSteadyComFVAsave'])
+    fprintf('The save folder exists and will be deleted at %s\n', [fileDir filesep 'testSteadyComFVAsave'] );
     rmdir([fileDir filesep 'testSteadyComFVAsave'],'s');    
 end
 
