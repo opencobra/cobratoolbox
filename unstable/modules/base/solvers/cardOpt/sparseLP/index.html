@@ -251,7 +251,7 @@
 <span id="id1"></span><h1>sparseLP<a class="headerlink" href="#sparselp" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.base.solvers.cardOpt.sparseLP"></span><dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.computeMutualCoherence">
-<code class="descname">computeMutualCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/base/solvers/cardOpt/sparseLP/computeMutualCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.computeMutualCoherence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">computeMutualCoherence</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/base/solvers/cardOpt/sparseLP/computeMutualCoherence.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.computeMutualCoherence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes mutual coherence</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -274,7 +274,7 @@ mutual coherence</li>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.evalObj">
-<code class="descname">evalObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/base/solvers/cardOpt/sparseLP/evalObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.evalObj" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evalObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/base/solvers/cardOpt/sparseLP/evalObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.evalObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the value of the sparseLP objective function</p>
 <p>obj = evalObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);</p>
 <p><strong>Inputs</strong></p>
@@ -315,7 +315,7 @@ Current value of the objective function</li>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.optimizeCardinality">
-<code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeCardinality</code><span class="sig-paren">(</span><em>problem</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.optimizeCardinality" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
 The <cite>l0</cite> norm is approximated by a capped-<cite>l1</cite> function.
 :math:<a href="#id2"><span class="problematic" id="id3">`</span></a>min c&#8217;(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0</p>
@@ -412,7 +412,7 @@ z=solution.xyz(problem.r);</p>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.sparseLP">
-<code class="descname">sparseLP</code><span class="sig-paren">(</span><em>model</em>, <em>approximation</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/base/solvers/cardOpt/sparseLP/sparseLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseLP</code><span class="sig-paren">(</span><em>model</em>, <em>approximation</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/base/solvers/cardOpt/sparseLP/sparseLP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.sparseLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the sparse LP
 <span class="math">\(min ||x||_0\)</span> subject to linear constraints
 See <cite>Le Thi et al., DC approximation approaches for sparse optimization,
@@ -490,7 +490,7 @@ bestApprox:        Best approximation</p>
 
 <dl class="function">
 <dt id="src.base.solvers.cardOpt.sparseLP.updateObj">
-<code class="descname">updateObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/base/solvers/cardOpt/sparseLP/updateObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.updateObj" title="Permalink to this definition">¶</a></dt>
+<code class="descname">updateObj</code><span class="sig-paren">(</span><em>x</em>, <em>theta</em>, <em>pNeg</em>, <em>pPos</em>, <em>epsilonP</em>, <em>alpha</em>, <em>approximation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/base/solvers/cardOpt/sparseLP/updateObj.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.updateObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the linear objective - variables (x,t)</p>
 <p>c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);</p>
 <p><strong>Inputs</strong></p>
@@ -584,7 +584,7 @@ New objective function</li>
     <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

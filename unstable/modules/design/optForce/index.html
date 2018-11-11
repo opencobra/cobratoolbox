@@ -237,7 +237,7 @@
 <span id="id1"></span><h1>optForce<a class="headerlink" href="#optforce" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.design.optForce"></span><dl class="function">
 <dt id="src.design.optForce.FVAOptForce">
-<code class="descname">FVAOptForce</code><span class="sig-paren">(</span><em>model</em>, <em>constrW</em>, <em>constrM</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/FVAOptForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.FVAOptForce" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FVAOptForce</code><span class="sig-paren">(</span><em>model</em>, <em>constrW</em>, <em>constrM</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/FVAOptForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.FVAOptForce" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates flux ranges for each reaction in the wild-type
 strain and in the mutant strain. Constraints should be specified for at
 least one strain (wild-type or mutant)</p>
@@ -332,7 +332,7 @@ dimensions (number of reactions) x 3</li>
 
 <dl class="function">
 <dt id="src.design.optForce.analyzeOptForceSol">
-<code class="descname">analyzeOptForceSol</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>solution</em>, <em>relax</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/analyzeOptForceSol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.analyzeOptForceSol" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analyzeOptForceSol</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>solution</em>, <em>relax</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/analyzeOptForceSol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.analyzeOptForceSol" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will calculate the minimum and maximum rates for target
 production when applying a set of interventions (upregulations,
 downregulations, knockouts) in the model. Flux for each intervened
@@ -416,7 +416,7 @@ max growth rate</li>
 
 <dl class="function">
 <dt id="src.design.optForce.findMustL">
-<code class="descname">findMustL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/findMustL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustL" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/findMustL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustL" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
 <cite>MustL</cite> set.</p>
@@ -600,7 +600,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.findMustLL">
-<code class="descname">findMustLL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/findMustLL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustLL" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustLL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/findMustLL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustLL" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of optForce, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 <cite>MustLL</cite> set.</p>
@@ -784,7 +784,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.findMustU">
-<code class="descname">findMustU</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/findMustU.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustU" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustU</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/findMustU.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustU" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a first order
 <cite>MustU</cite> set.</p>
@@ -967,7 +967,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.findMustUL">
-<code class="descname">findMustUL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/findMustUL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustUL" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustUL</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/findMustUL.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustUL" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 <cite>MustUL</cite> set.</p>
@@ -1150,7 +1150,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.findMustUU">
-<code class="descname">findMustUU</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/findMustUU.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustUU" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMustUU</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/findMustUU.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.findMustUU" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
 bilevel mixed integer linear programming  problem to find a second order
 <cite>MustUU</cite> set.</p>
@@ -1334,7 +1334,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.optForce">
-<code class="descname">optForce</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/optForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.optForce" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optForce</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>biomassRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/optForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.optForce" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function runs the third step of <cite>optForce</cite> that is to solve a
 bilevel mixed integer linear programming problem to find sets of
 interventions that lead to an increased production of a particular target</p>
@@ -1642,7 +1642,7 @@ e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/jou
 
 <dl class="function">
 <dt id="src.design.optForce.saveInputsMustSetsFirstOrder">
-<code class="descname">saveInputsMustSetsFirstOrder</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/saveInputsMustSetsFirstOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsFirstOrder" title="Permalink to this definition">¶</a></dt>
+<code class="descname">saveInputsMustSetsFirstOrder</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/saveInputsMustSetsFirstOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsFirstOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function saves all the inputs needed to run functions to find first
 order Must Sets (<cite>MustU, `MustL</cite>) The inputs will be stored in
 inputFolder.</p>
@@ -1725,7 +1725,7 @@ File containing the constraints used</li>
 
 <dl class="function">
 <dt id="src.design.optForce.saveInputsMustSetsSecondOrder">
-<code class="descname">saveInputsMustSetsSecondOrder</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/saveInputsMustSetsSecondOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsSecondOrder" title="Permalink to this definition">¶</a></dt>
+<code class="descname">saveInputsMustSetsSecondOrder</code><span class="sig-paren">(</span><em>model</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>constrOpt</em>, <em>excludedRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/saveInputsMustSetsSecondOrder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsSecondOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function saves all the inputs needed to run functions to find second
 order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite> and <cite>MustUL</cite>) The inputs will be stored in
 inputFolder.</p>
@@ -1817,7 +1817,7 @@ File containing the excluded reactions</li>
 
 <dl class="function">
 <dt id="src.design.optForce.saveInputsOptForce">
-<code class="descname">saveInputsOptForce</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>nSets</em>, <em>constrOpt</em>, <em>excludedURxns</em>, <em>excludedLRxns</em>, <em>excludedKRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/design/optForce/saveInputsOptForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsOptForce" title="Permalink to this definition">¶</a></dt>
+<code class="descname">saveInputsOptForce</code><span class="sig-paren">(</span><em>model</em>, <em>targetRxn</em>, <em>mustU</em>, <em>mustL</em>, <em>minFluxesW</em>, <em>maxFluxesW</em>, <em>minFluxesM</em>, <em>maxFluxesM</em>, <em>k</em>, <em>nSets</em>, <em>constrOpt</em>, <em>excludedURxns</em>, <em>excludedLRxns</em>, <em>excludedKRxns</em>, <em>inputFolder</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/design/optForce/saveInputsOptForce.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.design.optForce.saveInputsOptForce" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function saves all the inputs needed to run functions to find second
 order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite> and <cite>MustUL</cite>) The inputs will be stored in
 inputFolder.</p>
@@ -1995,7 +1995,7 @@ File containing the maximum number of sets found by <cite>optForce</cite></li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

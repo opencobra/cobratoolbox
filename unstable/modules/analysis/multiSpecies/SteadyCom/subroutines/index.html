@@ -272,7 +272,7 @@
 <span id="id1"></span><h1>Subroutines<a class="headerlink" href="#subroutines" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.multiSpecies.SteadyCom.subroutines"></span><dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex">
-<code class="descname">SteadyComCplex</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>solverParams</em>, <em>LP</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComCplex</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>solverParams</em>, <em>LP</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComCplex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm. Call the CPLEX dynamic object directly.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -438,7 +438,7 @@ structure with the following fields:<ul>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr">
-<code class="descname">SteadyComFVAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComFVAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComFVAgr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flux variability analysis for community model at community steady-state at a given growth rate. Called by <cite>SteadyComFVA</cite>
 The function is capable of saving intermediate results and continuing from previous results
 if the file path is given in <cite>options.saveFVA</cite>. It also allows switch from single thread to parallel
@@ -533,7 +533,7 @@ the growth rate at which FVA is performed</li>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr">
-<code class="descname">SteadyComPOAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComPOAgr</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>LP</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComPOAgr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
 at community steady-state at a given growth rate. Called by <cite>SteadyComPOA</cite>. See <cite>tutorial_SteadyCom</cite> for more details.</p>
 <p><strong>Usage</strong></p>
@@ -645,7 +645,7 @@ when <cite>rxnNameList{i}</cite> is fixed at the <cite>k</cite>-th value, <cite>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines">
-<code class="descname">SteadyComSubroutines</code><span class="sig-paren">(</span><em>purpose</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/b09d45321775c68d6843de2abdf870ec133ab39a/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComSubroutines</code><span class="sig-paren">(</span><em>purpose</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.subroutines.SteadyComSubroutines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls different subroutines for <cite>SteadyCom</cite> functions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -717,7 +717,7 @@ various input for different subroutines</li>
     <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
