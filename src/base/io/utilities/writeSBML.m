@@ -552,51 +552,55 @@ end
 
 %% Set the objective sense of the FBC objective according to the osenseStr in
 %the model.
-objectiveSense = 'maximize';
-
-if isfield(model,'osenseStr') && strcmpi(model.osenseStr,'min')
-    objectiveSense = 'minimize';
-end
-
-tmp_fbc_objective=getSBMLDefaultStruct('SBML_FBC_OBJECTIVE',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
-tmp_fbc_objective.fbc_id = 'obj';
-tmp_fbc_objective.fbc_type = objectiveSense;
-sbmlModel.fbc_activeObjective = 'obj';
-
-tmp_fbc_objective.fbc_fluxObjective=getSBMLDefaultStruct('SBML_FBC_FLUXOBJECTIVE',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
-
 %%%%% multiple objectives
 if ~isnumeric(model.c)
     model.c=double(cell2mat(model.c)); % convert the variable type to double
 end
-% check=~isempty(model.c(model.c~=0)) the following block is necessry for
-% libSBML library 5.11
-% % % % % % % if isempty(model.c(model.c~=0)) % if no objective function is defined, the first reaction is set as the objective function.
-% % % % % % %     model.c(1)=1;
-% % % % % % % end
-%if ~isempty(model.c(model.c~=0))
-% Construct a default structure of objective reactions and set intial values.
-%     fbc_objective.fbc_fluxObjective=fbc_fluxObjective;
-ind=find(model.c); % Find the index numbers for the objective reactions
-% The fields of a COBRA model are converted into respective fields of a FBCv2 structure.
-if isempty(ind)
-    tmp_fbc_objective.fbc_fluxObjective.fbc_coefficient=0; % no objective function is set
-    sbmlModel.fbc_objective=tmp_fbc_objective;
-else
-    for i=1:length(ind)
-        %     model.c(ind(i));
-        values=model.c(model.c~=0);
-        tmp_fbc_objective.fbc_fluxObjective.fbc_reaction=sbmlModel.reaction(ind(i)).id; % the reaction.id contains the  % model.rxns{ind(i)};
-        tmp_fbc_objective.fbc_fluxObjective.fbc_coefficient=values(i);
-        tmp_fbc_objective.fbc_fluxObjective.isSetfbc_coefficient=1;
-        if i==1
-            sbmlModel.fbc_objective=tmp_fbc_objective;
-        else
-            sbmlModel.fbc_objective.fbc_fluxObjective=[sbmlModel.fbc_objective.fbc_fluxObjective,tmp_fbc_objective.fbc_fluxObjective];
+if ~all(model.c == 0)
+    
+    
+    objectiveSense = 'maximize';
+    
+    if isfield(model,'osenseStr') && strcmpi(model.osenseStr,'min')
+        objectiveSense = 'minimize';
+    end
+    
+    tmp_fbc_objective=getSBMLDefaultStruct('SBML_FBC_OBJECTIVE',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
+    tmp_fbc_objective.fbc_id = 'obj';
+    tmp_fbc_objective.fbc_type = objectiveSense;
+    sbmlModel.fbc_activeObjective = 'obj';
+    
+    tmp_fbc_objective.fbc_fluxObjective=getSBMLDefaultStruct('SBML_FBC_FLUXOBJECTIVE',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
+    
+    
+    % check=~isempty(model.c(model.c~=0)) the following block is necessry for
+    % libSBML library 5.11
+    % % % % % % % if isempty(model.c(model.c~=0)) % if no objective function is defined, the first reaction is set as the objective function.
+    % % % % % % %     model.c(1)=1;
+    % % % % % % % end
+    %if ~isempty(model.c(model.c~=0))
+    % Construct a default structure of objective reactions and set intial values.
+    %     fbc_objective.fbc_fluxObjective=fbc_fluxObjective;
+    ind=find(model.c); % Find the index numbers for the objective reactions
+    % The fields of a COBRA model are converted into respective fields of a FBCv2 structure.
+    if isempty(ind)
+        tmp_fbc_objective.fbc_fluxObjective.fbc_coefficient=0; % no objective function is set
+        sbmlModel.fbc_objective=tmp_fbc_objective;
+    else
+        for i=1:length(ind)
+            %     model.c(ind(i));
+            values=model.c(model.c~=0);
+            tmp_fbc_objective.fbc_fluxObjective.fbc_reaction=sbmlModel.reaction(ind(i)).id; % the reaction.id contains the  % model.rxns{ind(i)};
+            tmp_fbc_objective.fbc_fluxObjective.fbc_coefficient=values(i);
+            tmp_fbc_objective.fbc_fluxObjective.isSetfbc_coefficient=1;
+            if i==1
+                sbmlModel.fbc_objective=tmp_fbc_objective;
+            else
+                sbmlModel.fbc_objective.fbc_fluxObjective=[sbmlModel.fbc_objective.fbc_fluxObjective,tmp_fbc_objective.fbc_fluxObjective];
+            end
         end
     end
 end
-
 
 
 
