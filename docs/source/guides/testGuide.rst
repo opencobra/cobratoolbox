@@ -272,7 +272,7 @@ should not be needed to test a parallel function efficiently.
 .. rubric:: 6. Body of test
 
 
-The test. If the solvers are essential for the functionality tested in this test use:
+The test itself. If the solvers are essential for the functionality tested in this test use:
 
 .. code-block:: matlab
 
@@ -286,9 +286,9 @@ The test. If the solvers are essential for the functionality tested in this test
         fprintf('Done.\n');
     end
 
-this is important, as the testing system will also run other solvers on the test in its nightly build. That way, 
-we can determine solvers which work with a specific method, and those which don't (potentially due to precision problems or other issues).
-If the solvers are only used to test the outputs of a function for correctness use:
+This is important, as the continuous integration system will run other solvers on the test in its nightly build. That way, 
+we can determine solvers that work with a specific method, and those that do not (potentially due to precision problems or other issues).
+If the solvers are only used to test the outputs of a function for correctness, use:
 
 .. code-block:: matlab
 
