@@ -16,18 +16,23 @@ fileDir = fileparts(which('testsetConstraintsOnBiomassReaction'));
 cd(fileDir);
 
 %define inputs
-rxnID = findRxnIDs(model,rxns)
-rxnID = find(strcmp(model.model.rxns,rxns));
-
-model = load('ecoli_core_model.mat');
+model = getDistributedModel('ecoli_core_model.mat');
 dT = 24
 tolerance = 20
-of = find('ACALD')
+of = model.rxns
+ 
 %Calcule the reference value
-
 ub =   0.0347;
 lb =   0.0231;
-model = changeRxnBounds(model,of,lb,'l');
-modelBM = changeRxnBounds(model,of,ub,'u');
+tol = 1e-4;
 
+model_refdata = setConstraintsOnBiomassReaction(model,of, dT, tolerance)
+
+%Test if the upperbound and the lowerbound are the same as the references values
+ 
+
+for k = 1:length(model.rxns)
+assert(norm(model_refdata.ub(k)- ub) < tol);
+assert(norm(model_refdata.lb(k)- lb) < tol);
+end 
 
