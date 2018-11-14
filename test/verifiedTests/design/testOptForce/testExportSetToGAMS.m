@@ -31,12 +31,11 @@ for k = 2:length(model.rxns)-1
   assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
 end
 
+% Test for 1 input: exportSetToGAMS(model.rxns)
+assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns}, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'))
 
- % If nargin >2 
- for k = 2:length(model.rxns)-1
-assert(verifyCobraFunctionError('testexportSetToGAMS', 'inputs', {model.rxns(k-1), (cellstr(rxnsRef{k}(2:end-1)))}, 'testMessage','All inputs for the function exportSetToGAMS must be specified'));
- end
-
+% Test for 3 inputs
+assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns, model.rxns, model.rxns, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'}))
 
 
 
