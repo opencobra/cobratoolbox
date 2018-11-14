@@ -13,7 +13,7 @@ function [flux] = conc2Rate(metConc, cellConc, t, cellWeight)
 %    t:             Time in hours
 %    cellWeight:    gDW per cell
 %
-% OUTPUT:.   
+% OUTPUT:   
 %    flux:          mmol/gDW/hr
 %
 % .. Author: - Ines Thiele 07/22/09
