@@ -16,26 +16,25 @@ fileDir = fileparts(which('testexportSetToGAMS'));
 cd(fileDir);
 
 % If nargin = 2 : 
-model = load('ecoli_core_model.mat');
-set = model.model.rxns; 
-fileName = 'Reactions.txt';
+model = getDistributedModel('ecoli_core_model.mat');
+fileName = 'refData_reactions.txt';
 
-exportSetToGAMS(model.model.rxns, 'Reactions.txt');
-exportSetToGAMS(model.model.rxns, 'Reactions.m')
+% read in the file
+rxnsRef = textread(fileName, '%s', 'delimiter', '\n');
 
+% test if the first and end cells are equal to /
+assert(isequal(rxnsRef{1}, '/'))
+assert(isequal(rxnsRef{end}, '/'))
 
-% TextFolder = dlmread('Reactions.txt');  
-% save('Reactions.mat','TextFolder');
+% test if all the other cells correspond to the reaction names
+for k=2:length(model.rxns)-1
+    assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
+end
 
-v_ref = model.model.rxns
- assert(isequal(value - v_ref))
  
  % If nargin >2 
  
-assert(verifyCobraFunctionError('testexportSetToGAMS', 'inputs', {model.model.rxns,fileName'}, 'testMessage', 'The number of elements in the input vectors do not match. They have to be either the same size, or lod_ngmL has to be a single value which is used for all elements'));
+%assert(verifyCobraFunctionError('testexportSetToGAMS', 'inputs', {model.rxns, fileName}, 'testMessage', 'The number of elements in the input vectors do not match. They have to be either the same size, or lod_ngmL has to be a single value which is used for all elements'));
 
-% Nargin <2
-% if nargin <2: 
-%      error('Not enough input arguments');
-% end
+
 
