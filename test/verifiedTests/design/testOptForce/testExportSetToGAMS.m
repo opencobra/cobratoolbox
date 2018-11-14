@@ -34,7 +34,4 @@ end
 % Test for 1 input: exportSetToGAMS(model.rxns)
 assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns}, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'))
 
-% Test for 3 inputs
-assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns, model.rxns, model.rxns}, 'testMessage', 'Too many input arguments.'))
-
 

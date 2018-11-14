@@ -26,7 +26,7 @@ function [] = exportSetToGAMS(set, fileName)
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 %            - Modified by Loic Marx , November 2018
 
-if nargin ~= 2  %input handling
+if nargin < 2  %input handling
     error('All inputs for the function exportSetToGAMS must be specified');
 end
 
