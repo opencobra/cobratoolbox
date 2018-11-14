@@ -27,14 +27,16 @@ assert(isequal(rxnsRef{1}, '/'))
 assert(isequal(rxnsRef{end}, '/'))
 
 % test if all the other cells correspond to the reaction names
-for k=2:length(model.rxns)-1
-    assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
+for k = 2:length(model.rxns)-1
+  assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
 end
 
- 
+
  % If nargin >2 
- 
-%assert(verifyCobraFunctionError('testexportSetToGAMS', 'inputs', {model.rxns, fileName}, 'testMessage', 'The number of elements in the input vectors do not match. They have to be either the same size, or lod_ngmL has to be a single value which is used for all elements'));
+ for k = 2:length(model.rxns)-1
+assert(verifyCobraFunctionError('testexportSetToGAMS', 'inputs', {model.rxns(k-1), (cellstr(rxnsRef{k}(2:end-1)))}, 'testMessage','All inputs for the function exportSetToGAMS must be specified'));
+ end
+
 
 
 
