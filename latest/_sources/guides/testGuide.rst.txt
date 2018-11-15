@@ -218,12 +218,12 @@ The following sections shall be included in a test file:
 .. code-block:: matlab
 
     global CBTDIR
+    
+    % save the current path and switch to the test path
+    currentDir = cd(fileparts(which('fileName'))); 
 
-    % save the current path
-    currentDir = pwd;
-
-    % initialize the test
-    cd(fileparts(which('fileName')));
+    % get the path of the test folder	    
+    testPath = pwd;
 
 .. rubric:: 3. Define the solver packages to be tested and the tolerance
 
@@ -239,9 +239,12 @@ The following sections shall be included in a test file:
 
 .. code-block:: matlab
 
-    % load the model
-    load([CBTDIR filesep 'test' filesep 'models' filesep 'testModel.mat'], 'model');
-    load('testData_functionToBeTested.mat');
+    % load a model distributed by the toolbox
+    getDistributedModel('testModel.mat');
+    % load a particular model for this test:
+    readCbModel([testPath filesep 'SpecificModel.mat'])
+    % load reference data
+    load([testPath filesep 'testData_functionToBeTested.mat']);
 
 Please only load *small* models, i.e. less than ``100`` reactions. If
 you want to use a non-standard test model that is already available
@@ -249,13 +252,6 @@ online, please make a pull request with the URL entry to the
 `COBRA.models repository <https://github.com/cobrabot/COBRA.models>`__.
 
 :warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
-
-.. code-block:: matlab
-
-    global CBTDIR
-
-    % load the ecoli core model
-    load([CBTDIR filesep 'test' filesep 'models' filesep 'ecoli_core_model.mat'], 'model');
 
 .. rubric:: 5. Create a parallel pool
 
@@ -275,7 +271,8 @@ should not be needed to test a parallel function efficiently.
 
 .. rubric:: 6. Body of test
 
-The test. If multiple solvers were requested by ‘useIfAvailable’, run:
+
+The test itself. If the solvers are essential for the functionality tested in this test use:
 
 .. code-block:: matlab
 
@@ -289,17 +286,19 @@ The test. If multiple solvers were requested by ‘useIfAvailable’, run:
         fprintf('Done.\n');
     end
 
-If only one solver is requested:
+This is important, as the continuous integration system will run other solvers on the test in its nightly build. That way, 
+we can determine solvers that work with a specific method, and those that do not (potentially due to precision problems or other issues).
+If the solvers are only used to test the outputs of a function for correctness, use:
 
 .. code-block:: matlab
 
-    solverLPOK = changeCobraSolver(solvers.LP, 'LP', 0);
+    solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
     % <your test goes here>
 
     % output a success message
     fprintf('Done.\n');
 
-.. rubric:: 7. Change to the current directory
+.. rubric:: 7. Return to the original directory
 
 .. code-block:: matlab
 
