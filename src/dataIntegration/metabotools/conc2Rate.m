@@ -13,17 +13,18 @@ function [flux] = conc2Rate(metConc, cellConc, t, cellWeight)
 %    t:             Time in hours
 %    cellWeight:    gDW per cell
 %
-% OUTPUT:
+% OUTPUT:   
 %    flux:          mmol/gDW/hr
 %
 % .. Author: - Ines Thiele 07/22/09
+%            - Modified by  Loic Marx, November 2018
 
 if nargin < 4
-    CellWeight = 500 * 1e-12; % g
+    cellWeight = 500 * 1e-12; % g
 end
 
 if nargin < 3
-    T = 24; % hr; doubling time
+    t = 24; % hr; doubling time
 end
 
 flux = metConc/(cellConc*cellWeight*t*1000);
