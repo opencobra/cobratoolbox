@@ -21,7 +21,7 @@ function results = verifyModel(model, varargin)
 %                   * 'stoichiometricConsistency' (checks for Stoichiometric Consisteny, according to `Gevorgyan, Bioinformatics, 2008`) (Default: false)
 %                   * 'deadEndMetabolites' (metabolites which can either not be produced, or consumed) (Default: false)
 %                   * 'simpleCheck' returns false if this is not a valid model and true if it is a valid model, ignored if any other option is selected. (Default: false)
-%                   * 'requiredFields' sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                   * 'requiredFields' sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {'S', 'lb', 'ub', 'c', 'rxns', 'mets', 'genes', 'rules'})
 %                   * 'checkDatabaseIDs', check whether the database identifiers in specified fields (please have a look at the documentation), match to the expected patterns for those databases.
 %                   * 'silentCheck', do not print any information. Only applies to the model structure check. (default is to print info)
 %                   * 'restrictToFields' restricts the check to the listed fields. This will lead to requiredFields being reduced to those fields present in the restricted fields. If an empty cell array is provided no restriction is applied. (default: {})
