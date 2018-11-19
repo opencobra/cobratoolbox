@@ -1,4 +1,4 @@
-function model = fastSetupCreator2(models, microbeNames, host, objre)
+function model = fastSetupCreator(models, microbeNames, host, objre)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
