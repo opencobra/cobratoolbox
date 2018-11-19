@@ -101,6 +101,10 @@ mergefunction = {maxmerge, nanmerge,cellmerge,...
 		cellmerge,cellmerge,cellmerge,...
 		cellmerge,cellmerge,cellmerge};    
 
+% get the defined field properties.    
+definedFields = getDefinedFieldProperties();
+    
+    
 if isfield(model,'A') && isfield(model,'S')
     if printLevel >=1
         warning('The inserted Model contains an old style coupling matrix (A). The MAtrix will be converted into a Coupling Matrix (C) and fields will be adapted.')
@@ -117,22 +121,62 @@ if isfield(model,'A') && isfield(model,'S')
     model.dsense = dsense;
     model.d = d;
     % now, we assume, that those are the only modified fields, if not,
-    % something is seriously broken.
+    % something is seriously broken.    
     model.mets = columnVector(model.mets(1:nMets));
     model.b = columnVector(model.b(1:nMets));
     model.csense = columnVector(model.csense(1:nMets));
     model = rmfield(model,'A');
+    
 end
     
-    
+
+% convert old fields to current fields. 
 for i = 1:numel(oldFields)
-    if (isfield(model,oldFields{i}))
+    % if it is a model field
+    if (isfield(model,oldFields{i}))        
         fieldRef = [newFields{i}(1:3) 's'];
         expectedSize = numel(model.(fieldRef));
         if numel(model.(oldFields{i})) == expectedSize
+            % check, that the expected size is correct. If not, skip.
             if ~isfield(model,newFields{i})
                 model.(newFields{i})= model.(oldFields{i});
             else
+                % if, for whatever reason, this model has both fields
+                % (happens, and not a good idea....), we will correct both of those fields (which might have empty entries)                
+                if iscell(model.(oldFields{i})) 
+                    if strcmp(mergefunction{i}, cellmerge)
+                        %fix [] present instead of '' in
+                        emptyPos = cellfun(@(x) isnumeric(x) && isempty(x), model.(oldFields{i}));
+                        model.(oldFields{i})(emptyPos) = {''};
+                    else
+                        % this indicates, that we even have the wrong type
+                        % of structure...
+                        numericPos = cellfun(@(x) isnumeric(x), model.(oldFields{i}));
+                        emptyPos = cellfun(@(x) isempty(x), model.(oldFields{i}));
+                        % now, if these are reaction confidence scores,
+                        % they might be provided as strings representing
+                        % numbers....                        
+                        if any(~numericPos)
+                            model.(oldFields{i})(~numericPos) = cellfun(@(x) str2num(x),model.(oldFields{i})(~numericPos),'Uniform',0);
+                        end                                                
+                        model.(oldFields{i})(emptyPos) = {0};                        
+                        model.(oldFields{i}) = cell2mat(model.(oldFields{i}));
+                    end
+                end                
+                if iscell(model.(newFields{i})) 
+                    if strcmp(mergefunction{i}, cellmerge)
+                        %fix [] present instead of '' in
+                        emptyPos = cellfun(@(x) isnumeric(x) && isempty(x), model.(newFields{i}));
+                        model.(newFields{i})(emptyPos) = {''};
+                    else
+                        % this indicates, that we even have the wrong type
+                        % of structure...
+                        emptyPos = cellfun(@(x) isnumeric(x) && isempty(x), model.(newFields{i}));
+                        model.(newFields{i})(emptyPos) = {NaN};
+                        model.(newFields{i}) = cell2mat(model.(newFields{i}));
+                    end
+                end                
+                
                 if numel(model.(newFields{i})) == expectedSize
                     merger = strrep(mergefunction{i},'$OLD$',oldFields{i});
                     merger = strrep(merger,'$NEW$',newFields{i});
@@ -220,7 +264,6 @@ if isfield(model,'rxnConfidenceScores')
     end
 end
 
-definedFields = getDefinedFieldProperties();
 %Check whether those are defined Cell fields
 %And whether they are assumed to be all chars.
 definedCharCells = definedFields(~cellfun(@isempty, regexp(definedFields(:,4),'iscell\(x\)')) & ~cellfun(@isempty, regexp(definedFields(:,4),'all\(cellfun\(@\(.\) *ischar')),1);
@@ -237,10 +280,18 @@ for i = 1: numel(modelfields)
     end
 end
 
-if isfield(model,'subSystems')
-    %Convert subSystems to Cell Arrays of Cell Arrays.
-    if ischar([model.subSystems{:}])
-        model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);
+if isfield(model,'subSystems')        
+    done = false;
+    charPos = cellfun(@(x) ischar(x), model.subSystems);
+    if all(charPos)
+        model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);            
+        done = true;
+    elseif any(charPos)
+        model.subSystems(charPos) = cellfun(@(x) {x}, model.subSystems(charPos),'UniformOutput',0);                        
+    end    
+    if ~done
+        numericPos = cellfun(@(x) isnumeric(x), model.subSystems);                
+        model.subSystems(numericPos) = {{''}};
     end
 end
 %reset warnings
@@ -273,4 +324,10 @@ if isfield(model,'metChEBIID')
         model.metChEBIID(numericIDs) = cellfun(@num2str, model.metChEBIID(numericIDs),'Uniform',0);
     end
 end
+
+% adjust a genes field which is 0x0 (should be 0x1)
+if size(model.genes,1) == 0 && size(model.genes,2) == 0 
+    model.genes = cell(0,1);
+end
+
     
