@@ -379,15 +379,12 @@ if (solution.stat == 1)
     % solution found. Set corresponding values
     solution.x = solution.full(1:nRxns);
     solution.v = solution.x;
-    if isfield(model,'E')
-        solution.vars_v = solution.full(nRxns+1:nRxns+nVars);
-    end
     % handle the objective, otherwise another objective value could be 
     % returned and we only want to return the value of the defined
     % model objective
     if isfield(model,'E')
-        solution.v_vars = solution.full(nRxns+1:nRxns+nVars);        
-        solution.f = model.c'*solution.v + model.evarsc * solution.v_vars; % We need to consider the 
+        solution.vars_v = solution.full(nRxns+1:nRxns+nVars);        
+        solution.f = model.c'*solution.v + model.evarc' * solution.vars_v; % We need to consider the 
     else
         solution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
     end
@@ -424,7 +421,7 @@ if (solution.stat == 1)
     if isfield(solution,'slack')
         if ~isempty(solution.slack)
             if isfield(model,'C')
-                solution.ctrs_s = solution.ctrs_slack(nMets+1:nMets+nCtrs,1);
+                solution.ctrs_s = solution.slack(nMets+1:nMets+nCtrs,1);
             end
             solution.slack=solution.slack(1:nMets,1);            
         end
@@ -438,6 +435,9 @@ if (solution.stat == 1)
         solution.w = solution.rcost; 
         solution.s = solution.slack;
     end
+    fieldOrder = {'full';'obj';'rcost';'dual';'slack';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'f';'x';'v';'w';'y';'s'};
+    presentfields = ismember(fieldOrder,fieldnames(solution));
+    solution = reorderstructure(solution,fieldOrder{presentfields});
 else
     %some sort of error occured.
     if printLevel>0
