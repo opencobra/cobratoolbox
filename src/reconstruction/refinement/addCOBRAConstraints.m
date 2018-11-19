@@ -24,14 +24,21 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %                                       (default: ('L'))
 %                   * ConstraintID:     the Name of the constraint. by
 %                                       (default: 'ConstraintXYZ' with XYZ being the initial 
-%                                       position in the mets vector)
+%                                       position in the ctrs vector)
 %                                       or a cell array of Strings for
 %                                       multiple Constraints
 %                   * checkDuplicates:  check whether the constraint already
 %                                       exists, and if it does, don't add it (default: false)
 %
 % OUTPUT:
-%    modelConstrained:  constrained model
+%    modelConstrained:      The constrained model containing the added
+%                           constraints in the respective fields:
+%                            * `.C` - The constraint matrix containing coefficients for reactions
+%                            * `.ctrs` - The constraint IDs
+%                            * `.dsense` - The constraint senses
+%                            * `.d` the constraint right hand side values
+%                            *  Optional: `D`, the matrix conatining coefficients for additional variables.
+%                           
 %
 % EXAMPLE:
 %    Add a constraint that leads to EX_glc and EX_fru not carrying a
@@ -40,6 +47,16 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %    Assume Reaction 4 to be 2 A -> D and reaction 5 being A -> F. Create a
 %    constraint that requires that the two reactions remove at least 4 units of A:
 %    model = addCOBRAConstraints(model, model.rxns(4:5), 4, 'c', [2 1], 'dsense', 'G')
+%
+% NOTE:
+%    This function will, if not present create the `C`, `ctrs`, `dsense`, `d` and,
+%    if additional variables (i.e. the `E` matrix) is present, the `D`
+%    field as defined in the model field definitions. The `C` field containts
+%    the constraint coefficients referring to reactions, while the `D`
+%    field contains the Constraint coefficients referring to additional
+%    variables. `d` represents the right hand side of constraints and
+%    `dsense` the sense (lower -'L' , equal - 'E' or greater than - 'G') of the constraint.
+%    `ctrs` stores unique IDs for the constraints.
 %
 % Author: Thomas Pfau, Nov 2017
 
