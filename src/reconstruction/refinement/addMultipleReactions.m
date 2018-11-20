@@ -9,7 +9,7 @@ function newmodel = addMultipleReactions(model,rxnIDs,metList,Stoichiometries,va
 %
 % INPUTS:
 %    model:             The model to add the Metabolite batch to.
-%    rxnIDs:            The IDs of the reactions that shall be added.
+%    rxnIDs:            The IDs of the reactions that shall be added (cell Array).
 %    metList:           A list of metabolites for which stoichiometric coefficients are given
 %    Stoichiometries:   A Stoichiometric matrix of dimension
 %                       numel(metList) x numel(rxnID).
@@ -72,6 +72,11 @@ if any(metPos == 0)
     error('The following Metabolites are not part of the model:\n%s',strjoin(metList(metPos==0)));
 end
 
+% check rxnIDs
+if ~iscell(rxnIDs)
+    error('rxnIDs has to be a cell array of strings!')
+end
+
 if checkIDsForTypeExist(model,rxnIDs,'rxns')
     [tf,dups] = checkIDsForTypeExist(model,rxnIDs,'rxns');
     if any(ismember(model.rxns,dups))
@@ -99,6 +104,7 @@ model.rxns= [model.rxns;columnVector(rxnIDs)];
 
 for field = 1:2:numel(varargin)
     cfield = varargin{field};
+    values = varargin{field+1};
     %Anything thats not a model field or not a specialised field is
     %ignored.
     if strcmp(cfield,'printLevel')
@@ -112,12 +118,20 @@ for field = 1:2:numel(varargin)
         warning('Field %s is excluded.',cfield);
         continue;
     end
-    
-    if ~isfield(model,cfield)
+    % if we reach this point we can transpose it savely
+    values = columnVector(values);
+    if any(size(values) ~= columnVector(size(rxnIDs)))
+        if size(values,2) ~=1
+            error('The supplied field %s has dimension %ix%i. But should be a %ix1 vector',cfield,size(values),numel(rxnIDs));
+        else
+            error('The supplied field %s has %i elements but it should have %i elements, one for each element in rxnIDs.',cfield,numel(values),numel(rxnIDs));
+        end
+    end
+    if ~isfield(model,cfield)        
         model = createEmptyFields(model,cfield);
-        model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(varargin{field+1});  
+        model.(cfield)((end-numel(varargin{field+1})+1):end) = columnVector(values);  
     else
-        model.(cfield) = [model.(cfield);columnVector(varargin{field+1})];
+        model.(cfield) = [model.(cfield);columnVector(values)];
     end       
 end
 newmodel = extendModelFieldsForType(model,'rxns','originalSize',nRxns);
