@@ -76,9 +76,8 @@ end
 
 % Starting personalized simulations
 for k = startIter:(patNumb + 1)
- idInfo = cell2mat(sampName((k - 1), 1))
- load(strcat('microbiota_model_samp_', idInfo, '.mat'));
- model = microbiota_model;
+ idInfo = cell2mat(sampName((k - 1), 1));
+ model = readCbModel(strcat('microbiota_model_samp_', idInfo, '.mat')); 
  for j = 1:length(model.rxns)
     if strfind(model.rxns{j}, 'biomass')
        model.lb(j) = 0;
