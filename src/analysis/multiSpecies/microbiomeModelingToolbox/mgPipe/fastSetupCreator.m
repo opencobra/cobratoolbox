@@ -64,14 +64,16 @@ nMets = numel(umets);
 stoich = [-speye(nMets),-speye(nMets),sparse(nMets,nMets),sparse(nMets,nMets);...
           sparse(nMets,nMets),speye(nMets),-speye(nMets),sparse(nMets,nMets);...
           sparse(nMets,nMets),sparse(nMets,nMets),speye(nMets),-speye(nMets)];
-lbs = [repmat(-1000,nMets,1);zeros(nMets,1);zeros(nMets,1);repmat(-1000,nMets,1)];
+lbs = [repmat(-1000,nMets,1),zeros(nMets,1),zeros(nMets,1),repmat(-1000,nMets,1)];
 ubs = repmat(1000,4*nMets,1);
 rxnNames = [strcat('EX_',dummy.mets(1:nMets));...
             strcat('DUt_',strrep(umets,'[e]',''));...
             strcat('UFEt_',strrep(umets,'[e]',''));...
             strcat('EX_',strrep(umets, '[e]', '[fe]'))];
 dummy = addMultipleReactions(dummy,rxnNames,mets,stoich,'lb',lbs,'ub',ubs');
-
+order = [1:nMets;nMets+1:2*nMets;2*nMets+1:3*nMets;3*nMets+1:4*nMets];
+order = order(:);
+dummy = updateFieldOrderForType(dummy,'rxns',order);
 %Now, we could 'reorder' this reaction list but I'm not sure its necessary.
 % 
 % cnt = 0;
@@ -166,7 +168,7 @@ end
 %% create a new extracellular space [u] for microbes, code runs in parallel
 modelStorage = cell(size(models));
 % MexGJoined=MexGHost;
-parfor j = 1:size(models, 1)
+for j = 1:size(models, 1)
     % for j=1:size(models,1)%to enable sequential mode
     model = models{j, 1};
     model = convertOldStyleModel(model);
