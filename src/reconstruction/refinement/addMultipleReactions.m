@@ -120,7 +120,7 @@ for field = 1:2:numel(varargin)
     end
     % if we reach this point we can transpose it savely
     values = columnVector(values);
-    if any(size(values) ~= columnVector(size(rxnIDs)))
+    if any(size(values) ~= size(columnVector(rxnIDs)))
         if size(values,2) ~=1
             error('The supplied field %s has dimension %ix%i. But should be a %ix1 vector',cfield,size(values),numel(rxnIDs));
         else
