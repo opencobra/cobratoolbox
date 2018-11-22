@@ -76,13 +76,14 @@ end
 
 % Starting personalized simulations
 for k = startIter:(patNumb + 1)
- idInfo = cell2mat(sampName((k - 1), 1));
- model = readCbModel(strcat('microbiota_model_samp_', idInfo, '.mat')); 
- for j = 1:length(model.rxns)
-    if strfind(model.rxns{j}, 'biomass')
-       model.lb(j) = 0;
+    idInfo = cell2mat(sampName((k - 1), 1));
+    microbiota_model=readCbModel(strcat('microbiota_model_samp_', idInfo,'.mat'))
+    model = microbiota_model;
+    for j = 1:length(model.rxns)
+        if strfind(model.rxns{j}, 'biomass')
+            model.lb(j) = 0;
+        end
     end
- end
     model = changeObjective(model, 'EX_microbeBiomass[fe]');
     AllRxn = model.rxns;
     RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));
@@ -107,134 +108,134 @@ for k = startIter:(patNumb + 1)
         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
         inFesMat{k, 1} = model.name
     else
-    presol{k, 1} = solution_allOpen.obj;
-  if extSolve==0
-      AllRxn = model.rxns;
-      FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
-      DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
-      FecalRxn = AllRxn(FecalInd);
-      FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
-      DietRxn = AllRxn(DietInd);
-       if rDiet==1
-          [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn);
-           sma=maxFlux;
-           sma2=minFlux
-          [minFlux,maxFlux]=guidedSim(model,fvaType,DietRxn);
-          smi=minFlux;
-          smi2=maxFlux
-          maxFlux=sma;
-          minFlux=smi;
-          fvaCt{1,(k-1)}=ID;
-          nsCt{1,(k-1)}=ID;
-          for i =1:length(FecalRxn)
-            [truefalse, index] = ismember(FecalRxn(i), ID);
-            fvaCt{1,(k-1)}{index,2}=minFlux(i,1);
-            fvaCt{1,(k-1)}{index,3}=maxFlux(i,1);
-            nsCt{1,(k-1)}{index,2}=smi2(i,1);
-            nsCt{1,(k-1)}{index,3}=sma2(i,1);
-          end
-     end
-  else
-       microbiota_model=model
-       mkdir(strcat(resPath,'Rich'))
-       save([resPath 'Rich' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')      
-  end
-
-
-% Using standard diet
-
-model_sd=model;
-[adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota')
-[model_sd] = useDiet(model_sd, adaptedDiet,0)
-    if exist('unfre') ==1 %option to directly add other essential nutrients
-       warning('Feasibility forced with addition of essential nutrients')
-       model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l')
-    end
-solution_sDiet=solveCobraLP(buildLPproblemFromModel(model_sd));
-% solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
-presol{k,2}=solution_sDiet.obj
- if solution_sDiet.stat==0
-    warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-    inFesMat{k,2}= model.name
- else
-
-  if extSolve==0
-      [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
-       sma=maxFlux;
-       sma2=minFlux
-       [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
-       smi=minFlux;
-       smi2=maxFlux
-       maxFlux=sma;
-       minFlux=smi;
-
-       fvaCt{2,(k-1)}=ID;
-       nsCt{2,(k-1)}=ID;
-        for i =1:length(FecalRxn)
-            [truefalse, index] = ismember(FecalRxn(i), ID);
-            fvaCt{2,(k-1)}{index,2}=minFlux(i,1);
-            fvaCt{2,(k-1)}{index,3}=maxFlux(i,1);
-            nsCt{2,(k-1)}{index,2}=smi2(i,1);
-            nsCt{2,(k-1)}{index,3}=sma2(i,1);
+        presol{k, 1} = solution_allOpen.obj;
+        if extSolve==0
+            AllRxn = model.rxns;
+            FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
+            DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
+            FecalRxn = AllRxn(FecalInd);
+            FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
+            DietRxn = AllRxn(DietInd);
+            if rDiet==1
+                [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn);
+                sma=maxFlux;
+                sma2=minFlux;
+                [minFlux,maxFlux]=guidedSim(model,fvaType,DietRxn);
+                smi=minFlux;
+                smi2=maxFlux;
+                maxFlux=sma;
+                minFlux=smi;
+                fvaCt{1,(k-1)}=ID;
+                nsCt{1,(k-1)}=ID;
+                for i =1:length(FecalRxn)
+                    [truefalse, index] = ismember(FecalRxn(i), ID);
+                    fvaCt{1,(k-1)}{index,2}=minFlux(i,1);
+                    fvaCt{1,(k-1)}{index,3}=maxFlux(i,1);
+                    nsCt{1,(k-1)}{index,2}=smi2(i,1);
+                    nsCt{1,(k-1)}{index,3}=sma2(i,1);
+                end
+            end
+        else
+            microbiota_model=model;
+            mkdir(strcat(resPath,'Rich'))
+            save([resPath 'Rich' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
         end
-  else
-  microbiota_model=model_sd;
-  mkdir(strcat(resPath,'Standard'))
-  save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
-  end
-
-if extSolve==0
-   save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
-
-end
-
-
-% Using personalized diet not documented in MgPipe and bug checked yet!!!!
-
-if pDiet==1
-  model_pd=model;
- [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
- usedIDs = Strings(1,2:end)';
- % diet exchange reactions
- DietNames = Strings(2:end,1);
-% Diet exchanges for all individuals
- Diets(:,k-1) = cellstr(num2str((Numbers(1:end,k-1))));
- DietID = {DietNames{:,1} ; Diets{:,k-1}}';
- DietID = regexprep(DietID,'EX_','Diet_EX_');
- DietID = regexprep(DietID,'\(e\)','\[d\]');
- 
- model_pd = setDietConstraints(model_pd,DietID);
- solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd))
- %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
- presol{k,3}=solution_pdiet.obj
- if isnan(solution_pdiet.obj)
-    warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-    inFesMat{k,3}= model.name
- else
-
-  if extSolve==0
-        [minFlux,maxFlux]=guidedSim(model_pd,fvaType,FecalRxn);
-       sma=maxFlux;
-       [minFlux,maxFlux]=guidedSim(model_pd,fvaType,DietRxn);
-       smi=minFlux;
-       maxFlux=sma;
-       minFlux=smi;
-      fvaCt{3,(k-1)}=ID;
- for i =1:length(FecalRxn)
- [truefalse, index] = ismember(FecalRxn(i), ID);
- fvaCt{3,(k-1)}{index,2}=minFlux(i,1);
- fvaCt{3,(k-1)}{index,3}=maxFlux(i,1);
-  end
-  else
-  microbiota_model=model_pd
-    mkdir(strcat(resPath,'Personalized'))
-    save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
-  end
-
-
- end
-    end
-    end
+        
+        
+        % Using standard diet
+        
+        model_sd=model;
+        [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
+        [model_sd] = useDiet(model_sd, adaptedDiet,0);
+        if exist('unfre') ==1 %option to directly add other essential nutrients
+            warning('Feasibility forced with addition of essential nutrients')
+            model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l');
+        end
+        solution_sDiet=solveCobraLP(buildLPproblemFromModel(model_sd));
+        % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
+        presol{k,2}=solution_sDiet.obj;
+        if solution_sDiet.stat==0
+            warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
+            inFesMat{k,2}= model.name;
+        else
+            
+            if extSolve==0
+                [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
+                sma=maxFlux;
+                sma2=minFlux;
+                [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
+                smi=minFlux;
+                smi2=maxFlux;
+                maxFlux=sma;
+                minFlux=smi;
+                
+                fvaCt{2,(k-1)}=ID;
+                nsCt{2,(k-1)}=ID;
+                for i =1:length(FecalRxn)
+                    [truefalse, index] = ismember(FecalRxn(i), ID);
+                    fvaCt{2,(k-1)}{index,2}=minFlux(i,1);
+                    fvaCt{2,(k-1)}{index,3}=maxFlux(i,1);
+                    nsCt{2,(k-1)}{index,2}=smi2(i,1);
+                    nsCt{2,(k-1)}{index,3}=sma2(i,1);
+                end
+            else
+                microbiota_model=model_sd;
+                mkdir(strcat(resPath,'Standard'))
+                save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
+            end
+            
+            if extSolve==0
+                save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
+                
+            end
+            
+            
+            % Using personalized diet not documented in MgPipe and bug checked yet!!!!
+            
+            if pDiet==1
+                model_pd=model;
+                [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
+                usedIDs = Strings(1,2:end)';
+                % diet exchange reactions
+                DietNames = Strings(2:end,1);
+                % Diet exchanges for all individuals
+                Diets(:,k-1) = cellstr(num2str((Numbers(1:end,k-1))));
+                DietID = {DietNames{:,1} ; Diets{:,k-1}}';
+                DietID = regexprep(DietID,'EX_','Diet_EX_');
+                DietID = regexprep(DietID,'\(e\)','\[d\]');
+                
+                model_pd = setDietConstraints(model_pd,DietID);
+                solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd))
+                %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
+                presol{k,3}=solution_pdiet.obj;
+                if isnan(solution_pdiet.obj)
+                    warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
+                    inFesMat{k,3}= model.name;
+                else
+                    
+                    if extSolve==0
+                        [minFlux,maxFlux]=guidedSim(model_pd,fvaType,FecalRxn);
+                        sma=maxFlux;
+                        [minFlux,maxFlux]=guidedSim(model_pd,fvaType,DietRxn);
+                        smi=minFlux;
+                        maxFlux=sma;
+                        minFlux=smi;
+                        fvaCt{3,(k-1)}=ID;
+                        for i =1:length(FecalRxn)
+                            [truefalse, index] = ismember(FecalRxn(i), ID);
+                            fvaCt{3,(k-1)}{index,2}=minFlux(i,1);
+                            fvaCt{3,(k-1)}{index,3}=maxFlux(i,1);
+                        end
+                    else
+                        microbiota_model=model_pd;
+                        mkdir(strcat(resPath,'Personalized'))
+                        save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
+                    end
+                    
+                    
+                end
+            end
+        end
     end
 end
 
