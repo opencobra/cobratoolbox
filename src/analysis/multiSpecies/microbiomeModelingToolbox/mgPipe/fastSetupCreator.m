@@ -168,7 +168,7 @@ end
 %% create a new extracellular space [u] for microbes, code runs in parallel
 modelStorage = cell(size(models));
 % MexGJoined=MexGHost;
-for j = 1:size(models, 1)
+parfor j = 1:size(models, 1)
     % for j=1:size(models,1)%to enable sequential mode
     model = models{j, 1};
     model = convertOldStyleModel(model);
