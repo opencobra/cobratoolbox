@@ -57,8 +57,9 @@ exch = setdiff(exch, rmBio);
 % Create dummy model with [d], [u], and [fe] rxns
 dummy = createModel();
 umets = unique(exch);
+orderedMets = unique([strrep(exch, '[e]', '[d]'); strrep(exch, '[e]', '[u]'); strrep(exch, '[e]', '[fe]')]);
 mets = [strrep(umets, '[e]', '[d]'); strrep(umets, '[e]', '[u]'); strrep(umets, '[e]', '[fe]')];
-dummy = addMultipleMetabolites(dummy,mets);
+dummy = addMultipleMetabolites(dummy,orderedMets);
 
 nMets = numel(umets);
 stoich = [-speye(nMets),-speye(nMets),sparse(nMets,nMets),sparse(nMets,nMets);...
@@ -66,7 +67,7 @@ stoich = [-speye(nMets),-speye(nMets),sparse(nMets,nMets),sparse(nMets,nMets);..
           sparse(nMets,nMets),sparse(nMets,nMets),speye(nMets),-speye(nMets)];
 lbs = [repmat(-1000,nMets,1);zeros(nMets,1);zeros(nMets,1);repmat(-1000,nMets,1)];
 ubs = repmat(1000,4*nMets,1);
-rxnNames = [strcat('EX_',dummy.mets(1:nMets));...
+rxnNames = [strcat('EX_',mets(1:nMets));...
             strcat('DUt_',strrep(umets,'[e]',''));...
             strcat('UFEt_',strrep(umets,'[e]',''));...
             strcat('EX_',strrep(umets, '[e]', '[fe]'))];
