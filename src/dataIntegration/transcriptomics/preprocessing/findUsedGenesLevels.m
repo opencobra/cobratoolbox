@@ -36,9 +36,14 @@ gene_expr=[];
 gene_id = model.genes;
 
 for i = 1:numel(gene_id)
-        
-    cur_ID = gene_id{i};
-	dataID=find(ismember(exprData.gene,cur_ID));
+    
+    if isnumeric(gene_id(i))
+        cur_ID = gene_id(i);
+        dataID=find(exprData.gene==cur_ID);
+    else
+        cur_ID = gene_id{i};
+        dataID=find(ismember(exprData.gene,cur_ID));
+    end
 	if isempty (dataID)
     	gene_expr(i)=-1;        
     elseif length(dataID)==1

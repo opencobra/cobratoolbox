@@ -16,6 +16,11 @@ function geneID = findGeneIDs(model, geneList)
 
 if (iscell(geneList))
     [tmp,geneID] = ismember(geneList,model.genes);
+elseif (isnumeric(geneList))
+    geneID=[];
+    for i=1:length(geneList)
+    geneID(end+1)=find(model.genes==geneList(i));
+    end
 else
     geneID = find(strcmp(model.genes,geneList));
     if (isempty(geneID))
