@@ -17,9 +17,5 @@ function [metCompartments, uniqueCompartments] = getCompartment(mets)
 %       - Ronan M.T. Fleming
 %       - Hulda SH, Nov. 2012   Switched from for loop to regular expression
 
-pat = '(?<abbr>[^\[]+)\[(?<compartment>[^\]]+)\]';
-metStruct = regexp(mets,pat,'names'); % m x 1 cell array with fields abbr and compartment in each cell
-metStruct = [metStruct{:}]'; % Convert from cell array to double
-metCompartments = {metStruct.compartment}; % Concatenate compartment fields
-metCompartments = reshape(metCompartments,length(metCompartments),1);
+metCompartments = extractCompartmentsFromMets(mets);
 uniqueCompartments = unique(metCompartments);

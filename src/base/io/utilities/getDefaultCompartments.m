@@ -8,8 +8,8 @@ function [ compSymbolList, compNameList  ] = getDefaultCompartments( )
 %    compNameList:         Names of the default compartments.
 %
 % .. Authors: Thomas Pfau May 2017
-    compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','u'};
-    compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Unknown'};
+    compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','u','y','k'};
+    compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Lumen','Glycosome','Unknown'};
 
 end
 
