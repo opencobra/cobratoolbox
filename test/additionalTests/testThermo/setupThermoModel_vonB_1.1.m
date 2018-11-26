@@ -28,7 +28,7 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 %                           Not required if cid are specified.
 % cid                       m x 1 cell array of KEGG Compound identifiers.
 %                           Not required if molfiledir is specified.
-% model.metCompartments     m x 1 array of metabolite compartment
+% model.metComps     m x 1 array of metabolite compartment
 %                           assignments. Not required if metabolite
 %                           identifiers are strings of the format ID[*]
 %                           where * is the appropriate compartment
@@ -37,7 +37,7 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 % OPTIONAL INPUTS
 % T                 Temperature in Kelvin. 
 % cellCompartments  c x 1 array of compartment identifiers. Should match
-%                   the compartment identifiers in model.metCompartments.
+%                   the compartment identifiers in model.metComps.
 % ph                c x 1 array of compartment specific pH values in the
 %                   range 4.7 to 9.3.
 % is                c x 1 array of compartment specific ionic strength
@@ -115,7 +115,7 @@ function modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,is
 
 %% Configure inputs
 if ~isfield(model,'metCompartments')
-    model.metCompartments = [];
+    model.metComps = [];
 end
 if ~exist('T','var')
     T = [];
@@ -145,7 +145,7 @@ end
 % Store original identifiers
 omets = model.mets;
 orxns = model.rxns;
-ometCompartments = model.metCompartments;
+ometCompartments = model.metComps;
 ocellCompartments = cellCompartments;
 
 model = configureSetupThermoModelInputs(model,T,cellCompartments,ph,is,chi,xmin,xmax,confidenceLevel,0);
@@ -250,8 +250,8 @@ model.rxns = orxns;
 if length(model.cellCompartments) == length(ocellCompartments)
     model.cellCompartments = ocellCompartments;
 end
-if length(model.metCompartments) == length(ometCompartments)
-    model.metCompartments = ometCompartments;
+if length(model.metComps) == length(ometCompartments)
+    model.metComps = ometCompartments;
 end
 
 % Rename output model

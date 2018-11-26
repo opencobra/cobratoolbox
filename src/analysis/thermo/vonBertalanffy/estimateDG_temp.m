@@ -20,7 +20,7 @@ function model = estimateDG_temp(model)
 %                  values in mol/L.
 %                * .chi - `c x 1` array of compartment specific electrical
 %                  potential values in mV.
-%                * .metCompartments - `m x 1` cell array of compartment assignments for
+%                * .metComps - `m x 1` cell array of compartment assignments for
 %                  metabolites in `model.mets`. Compartment identifiers
 %                  should be the same as in `model.cellCompartments`.
 %                * .DfG0 - `m x 1` array of standard Gibbs energies of formation.
@@ -66,9 +66,9 @@ F = 96485.3365e-3; % Faraday constant in kC/mol
 model.DfG0_pseudoisomers = [];
 model.DfGt0 = zeros(length(model.mets), 1);
 for i = 1:length(model.mets)
-    pH  = model.ph(strcmp(model.cellCompartments,model.metCompartments{i}));
-    I   = model.is(strcmp(model.cellCompartments,model.metCompartments{i}));
-    chi = model.chi(strcmp(model.cellCompartments,model.metCompartments{i}));
+    pH  = model.ph(strcmp(model.cellCompartments,model.metComps{i}));
+    I   = model.is(strcmp(model.cellCompartments,model.metComps{i}));
+    chi = model.chi(strcmp(model.cellCompartments,model.metComps{i}));
 
     if 1
         %Elad and Hulda's code
@@ -137,7 +137,7 @@ model.DrGt0 = St' * model.DfGt0;
 % Adjust DrGt0 for transport across membranes
 fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
 
-metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.cellCompartments)),repmat(model.cellCompartments',length(model.metCompartments),1));
+metCompartmentBool = strcmp(repmat(model.metComps,1,length(model.cellCompartments)),repmat(model.cellCompartments',length(model.metComps),1));
 
 model_nHs = zeros(size(model.mets));
 for i = 1:length(model.mets)
