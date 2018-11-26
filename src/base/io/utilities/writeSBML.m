@@ -135,15 +135,7 @@ end
 % Construct a list of compartment names
 % List to hold the compartment ids.
 tmp_metCompartment = {};
-% separate metabolite and compartment to obtain a list of compartments
-[tokens tmp_met_struct] = regexp(model.mets,'(?<met>.+)\[(?<comp>.+)\]','tokens','names'); % add the third type for parsing the string such as "M_10fthf5glu_c"
-%if we have any compartment, we will use unknown as compartment ID for
-%metabolites without compartment.
-if any(~cellfun(@isempty, tmp_met_struct))
-    unknownComp = 'u';
-else
-    unknownComp = 'c';
-end
+
 
 species_struct = getSBMLDefaultStruct('Species',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 
@@ -210,17 +202,8 @@ for i=1:size(model.mets, 1)
     %% here notes can be formulated to include more annotations.
     tmp_species.id=tmp_met;
     tmp_species.metaid = tmp_species.id;
-    tmp_species.name=tmp_metName;
-    
-    try
-        tmp_species.compartment=[compPrefix, convertSBMLID(tmp_met_struct{i}.comp)];
-        %% Clean up the species names
-        tmp_metCompartment{ i } = convertSBMLID(tmp_met_struct{i}.comp); % remove illegal symbols
-    catch   % if no compartment symbol is found in the metabolite names
-        tmp_species.compartment=[compPrefix, convertSBMLID(unknownComp)];
-        %% Clean up the species names
-        tmp_metCompartment{ i } = unknownComp; % remove illegal symbols
-    end
+    tmp_species.name=tmp_metName;    
+	tmp_species.compartment=[compPrefix, convertSBMLID(model.metComp{i})];            
     tmp_species.fbc_charge=tmp_metCharge;
     tmp_species.fbc_chemicalFormula=tmp_metFormulas;
     tmp_species.isSetfbc_charge=tmp_isSetfbc_charge;
@@ -269,34 +252,25 @@ end
 
 %% Add a list of unique compartments.
 
-tmp_metCompartment = unique(tmp_metCompartment);
 
 tmp_compartment=getSBMLDefaultStruct('Compartment',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
     
 
-convertedComps = convertSBMLID(model.comps);
-for i=1:size(tmp_metCompartment,2)
-    if ~isempty(tmp_metCompartment) % in the case of an empty model
-        tmp_id = convertSBMLID(tmp_metCompartment{1,i});
-        tmp_symbol_index = find(strcmp(convertedComps,tmp_id));
+for i=1:numel(model.comps)
+        tmp_id = convertSBMLID(model.comps{i});
         %Check that symbol is in compSymbolList
-        if ~isempty(tmp_symbol_index)
-            tmp_name = model.compNames{tmp_symbol_index};
+        if isfield(model, 'compNames')
+            tmp_name = model.compNames{i};
         else
             warning on;
             warning(['Unknown compartment: ' tmp_id '.' tmp_id ' can be specified in compSymbolList and compNameList.']);
-            tmp_name=['unknownCompartment',num2str(i)];
-        end
-        tmp_id = convertSBMLID(tmp_id);
-        
-        %    sbmlModel = Model_addCompartment(sbmlModel, sbml_tmp_compartment);
-        
+            tmp_name=getCompartmentNameForID(model.comps{i});
+        end       
+        %    sbmlModel = Model_addCompartment(sbmlModel, sbml_tmp_compartment);        
         tmp_compartment.id= [compPrefix, tmp_id];
         tmp_compartment.metaid = tmp_compartment.id;
         tmp_compartment.name=tmp_name;
-        tmp_compartment.annotation = makeSBMLAnnotationString(model,tmp_compartment.metaid,'comp',i);
-    end
-    
+        tmp_compartment.annotation = makeSBMLAnnotationString(model,tmp_compartment.metaid,'comp',i);    
     if i==1
         sbmlModel.compartment=tmp_compartment;
     else

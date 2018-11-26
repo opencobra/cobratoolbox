@@ -123,34 +123,13 @@ xlwrite(fileName,tmpData,'Reaction List');
 
 MetaboliteXlsFields = {'Abbreviation','Description','Charged formula','Charge','Compartment','KEGG ID',...
     'PubChem ID','ChEBI ID','InChi string','SMILES','HMDB ID'};
-MetaboliteModelFields = {'mets','metNames','metFormulas','metCharges','metCompartments','metKEGGID',...
+MetaboliteModelFields = {'mets','metNames','metFormulas','metCharges','metComps','metKEGGID',...
     'metPubChemID','metChEBIID','metInChIString','metSmiles','metHMDBID'};
-%detemine compartments
+%determine compartments
 [tokens tmp_met_struct] = regexp(model.mets,'(?<met>.+)\[(?<comp>.+)\]$','tokens','names'); % add the third type for parsing the string such as "M_10fthf5glu_c"
 %if we have any compartment, we will use unknown as compartment ID for
 %metabolites without compartment.
-if any(cellfun(@isempty, tmp_met_struct))
-    unknownComp = 'u';
-    unknownCompName = 'Unknown';
-else
-    unknownComp = 'c';
-    unknownCompName = 'Cytosol';
-end
-if ~any(ismember(compSymbols,unknownComp))
-    compSymbols{end+1} = unknownComp;
-    compNames{end+1} = unknownCompName;
-end
 
-model.metCompartments = cell(size(model.mets));
-
-for i = 1:numel(tmp_met_struct)
-    if isempty(tmp_met_struct{i})
-        model.mets{i} = [model.mets{i} '[' unknownComp ']'];
-        model.metCompartments{i} = compNames(ismember(compSymbols,unknownComp));
-    else
-        model.metCompartments{i} = compNames(ismember(compSymbols,tmp_met_struct{i}.comp));
-    end
-end
 actualFieldNames = fieldnames(model);
 usedFields = ismember(MetaboliteModelFields,actualFieldNames);
 ExcelFields = MetaboliteXlsFields(usedFields);
