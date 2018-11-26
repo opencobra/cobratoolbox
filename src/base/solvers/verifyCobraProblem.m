@@ -52,7 +52,7 @@ if ~isfield(XPproblem, 'A')
     disp('Required field A not found');
     statusOK = -1;
     return;
-elseif any(isnan(XPproblem.A))
+elseif any(isnan(XPproblem.A(:)))
     [r c] = find(isnan(XPproblem.A));
     strCoords = '';
     for i=1:length(r)
@@ -212,7 +212,7 @@ validLP = true;
 
 if isfield(XPproblem,'F')
     [nRows nCols] = size(XPproblem.F);
-    if any(isnan(XPproblem.F))
+    if any(isnan(XPproblem.F(:)))
         [r c]= find(isnan(XPproblem.F));
         strCoords = '';
         for i=1:length(r)
