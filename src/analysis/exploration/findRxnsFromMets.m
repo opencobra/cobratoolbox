@@ -17,6 +17,7 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %                        * `printFlag` - as above, will overwrite a `printFlag` set individually (Default: false)
 %                        * `producersOnly` - Only return reactions which produce any of the given metabolites. (Default: false)
 %                        * `consumersOnly` - Only return reactions which consume any of the given metabolites. (Default: false)
+%                        * `exclusive` - Only return those reactions, which do not contain any metabolites but those given (Default: false)
 %
 % OUTPUTS:
 %    rxnList:           List of reactions
@@ -47,6 +48,7 @@ parser.addParameter('producersOnly',false,@(x) (isnumeric(x) && (x==1 || x ==0))
 parser.addParameter('consumersOnly',false,@(x) (isnumeric(x) && (x==1 || x ==0)) || islogical(x));
 parser.addParameter('printFlag',verbFlag,@(x) isnumeric(x) );
 parser.addParameter('verbFlag',verbFlag,@(x) isnumeric || islogical(x) ); % backward compatability
+parser.addParameter('exclusive',false,@(x)  (isnumeric(x) && (x==1 || x ==0)) || islogical(x));
 
 parser.parse(varargin{:});
 %Verbosity flag backward compatability
@@ -61,15 +63,15 @@ end
 containsAll = parser.Results.containsAll;
 producersOnly = parser.Results.producersOnly;
 consumersOnly = parser.Results.consumersOnly;
-
+exclusive = parser.Results.exclusive;
 
 %Find met indicies
 index = ismember(model.mets,metList);
-
-if producersOnly && consumersOnly
+others = sum(model.S(~index,:) ~= 0)';
+if producersOnly && consumersOnly    
     producers = sum(model.S(index,:) > 0,1)';
     consumers = sum(model.S(index,:) < 0,1)';
-    rels = producers > 0 & model.ub > 0 | consumers > 0 & model.lb < 0 | producers > 0 & model.lb < 0 | consumers > 0 & model.ub > 0;    
+    rels = producers > 0 & model.ub > 0 | consumers > 0 & model.lb < 0 | producers > 0 & model.lb < 0 | consumers > 0 & model.ub > 0;        
     totals = producers + consumers;
 elseif producersOnly
     producers = sum(model.S(index,:) > 0,1)';
@@ -85,6 +87,12 @@ else
     totals = sum(model.S(index,:) ~= 0,1);
     rels = totals > 0;
 end
+
+if exclusive
+    %exclude anything that has other reactants.
+    rels = rels & others' == 0;
+end
+    
 
 if containsAll
    rxnList = model.rxns(totals == numel(metList) & rels);
