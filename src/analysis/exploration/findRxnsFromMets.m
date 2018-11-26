@@ -4,19 +4,19 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %
 % USAGE:
 %
-%    [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)
+%    [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, printFlag)
 %
 % INPUTS:
 %    model:             COBRA model structure
 %    metList:           Metabolite list
 %
 % OPTIONAL INPUTS:
-%    verbFlag:          Print reaction formulas to screen (Default = false)
+%    printFlag:          Print reaction formulas to screen (Default = false)
 %    Property/Value:    Allowed Properties are:
-%                       'containsAll' (True/False) - If true only reactions
-%                       containing all metabolites in metList are returned
-%                       'verbFlag' (True/False) as above, will overwrite a
-%                       `verbFlag` set individually
+%                        * `containsAll` - If true only reactions containing all metabolites in metList are returned (Default: false)
+%                        * `printFlag` - as above, will overwrite a `printFlag` set individually (Default: false)
+%                        * `producersOnly` - Only return reactions which produce any of the given metabolites. (Default: false)
+%                        * `consumersOnly` - Only return reactions which consume any of the given metabolites. (Default: false)
 %
 % OUTPUTS:
 %    rxnList:           List of reactions
@@ -41,34 +41,61 @@ if mod(numel(varargin), 2) == 1 % the first argument has to be verbFlag, the rem
     end
 end
 
-if numel(varargin) > 1 % we have already checked whether we have a verbFlag, now we can go for property/value pairs
-    for i=1:2:numel(varargin)
-        key = varargin{i};
-        value = varargin{i+1};
-        switch key
-            case 'containsAll'
-                containsAll = value;
-            case 'verbFlag'
-                verbFlag = value;
-            otherwise
-                msg = sprintf('Unexpected key %s',key)
-                error(msg);
-        end
+parser = inputParser();
+parser.addParameter('containsAll',false,@(x) (isnumeric(x) && (x==1 || x ==0)) || islogical(x));
+parser.addParameter('producersOnly',false,@(x) (isnumeric(x) && (x==1 || x ==0)) || islogical(x));
+parser.addParameter('consumersOnly',false,@(x) (isnumeric(x) && (x==1 || x ==0)) || islogical(x));
+parser.addParameter('printFlag',verbFlag,@(x) isnumeric(x) );
+parser.addParameter('verbFlag',verbFlag,@(x) isnumeric || islogical(x) ); % backward compatability
 
-    end
+parser.parse(varargin{:});
+%Verbosity flag backward compatability
+if ismember('verbFlag',parser.UsingDefaults)
+    verbFlag = parser.Results.printFlag;
+elseif ismember('printFlag',parser.UsingDefaults)
+    verbFlag = parser.Results.verbFag;
+else
+    verbFlag = max([parser.Results.printFlag,parser.Results.verbFlag]);
 end
+
+containsAll = parser.Results.containsAll;
+producersOnly = parser.Results.producersOnly;
+consumersOnly = parser.Results.consumersOnly;
+
 
 %Find met indicies
 index = ismember(model.mets,metList);
+
+if producersOnly && consumersOnly
+    producers = sum(model.S(index,:) > 0,1)';
+    consumers = sum(model.S(index,:) < 0,1)';
+    rels = producers > 0 & model.ub > 0 | consumers > 0 & model.lb < 0 | producers > 0 & model.lb < 0 | consumers > 0 & model.ub > 0;    
+    totals = producers + consumers;
+elseif producersOnly
+    producers = sum(model.S(index,:) > 0,1)';
+    consumers = sum(model.S(index,:) < 0,1)';
+    rels = producers > 0 & model.ub > 0 | consumers > 0 & model.lb < 0;    
+    totals = producers + consumers;
+elseif consumersOnly
+    producers = sum(model.S(index,:) > 0,1)';
+    consumers = sum(model.S(index,:) < 0,1)';
+    rels = producers > 0 & model.lb < 0 | consumers > 0 & model.ub > 0;        
+    totals = producers + consumers;
+else
+    totals = sum(model.S(index,:) ~= 0,1);
+    rels = totals > 0;
+end
+
 if containsAll
-   rxnList = model.rxns(sum(model.S(index,:) ~= 0,1) == numel(metList));
+   rxnList = model.rxns(totals == numel(metList) & rels);
 else
     %rxns = repmat(model.rxns,1,length(index));
     %find reactions i.e. all columns with at least one non zero value
-    rxnList = model.rxns(sum(model.S(index,:)~=0,1) > 0);
+    rxnList = model.rxns(totals > 0 & rels);
 end
 
-if (nargout > 1) | verbFlag
+
+if (nargout > 1) || verbFlag
     if ~isempty(rxnList)
         rxnFormulaList = printRxnFormula(model,rxnList,verbFlag);
     else
