@@ -8,7 +8,14 @@ function  [typeFields,longNames] = getCobraTypeFields()
 %    longNames:         More descriptive long names of the fields.
 %
 
-fieldProps = getDefinedFieldProperties();
-typeFields = fieldProps([fieldProps{:,9}],1);
-longNames = fieldProps([fieldProps{:,9}],10);
+persistent types
+persistent names
+
+if isempty(types)
+    fieldProps = getDefinedFieldProperties();
+    types = fieldProps([fieldProps{:,9}],1);
+    names = fieldProps([fieldProps{:,9}],10);
+end
+typeFields = types;
+longNames = names;
 

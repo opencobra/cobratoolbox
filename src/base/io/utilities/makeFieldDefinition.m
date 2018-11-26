@@ -27,7 +27,7 @@ switch fieldType
     % build defaults based on the field type
     case 'cell'
         defaultValidator = '@iscell(x)';
-        defaultValue = '';
+        defaultValue = {''};
     case 'char'
         defaultValidator = '@ischar(x)';
         defaultValue = ' ';
@@ -41,6 +41,9 @@ switch fieldType
         defaultValidator = '@issparse(x) && islogical(x)';
         defaultValue = false;
     case 'numeric'
+        defaultValidator = '@isnumeric(x)';
+        defaultValue = 0;
+    case 'double'
         defaultValidator = '@isnumeric(x)';
         defaultValue = 0;
     case 'struct'

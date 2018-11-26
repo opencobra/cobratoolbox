@@ -228,8 +228,9 @@ for i = 1:numel(fields2)
 end
 %We assume, that we only have column vectors here...
 modelNew = extendModelFieldsForType(modelNew,type,'originalSize',nType2,'targetSize',nType1+nType2);
+
 for i = 1:numel(fields2)
-    default = modelNew.(fields2{i})(end);
+    default = getDefaultsForField(model1,type,'fieldName',fields2{i},'fieldtype',class(modelNew.(fields2{i})));
     modelNew.(fields2{i})(nType1+1:end) = model2.(fields2{i});
     modelNew.(fields2{i})(1:nType1) = default;
 end
