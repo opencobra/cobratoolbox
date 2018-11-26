@@ -4,7 +4,7 @@ function modelNew = mergeModelFieldPositions(model,type,positions,mergeFunctions
 %
 % INPUTS:
 %    model:           The model with the fields to merge
-%    type:            the field type to merge ( rxns, mets, comps or genes)
+%    type:            the field type to merge one of the fields returned by `getCobraTypeFields()`
 %    positions:       The positions in the given field type to merge either as indices or as logical array.
 %
 % OPTIONAL INPUTS:

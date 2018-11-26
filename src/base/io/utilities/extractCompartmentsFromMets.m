@@ -26,5 +26,11 @@ if ischar(defaultCompartment)
 end
 
 metComps = regexprep(mets,'.*\[([^\]]+)\]','$1');
-emptyComps = cellfun(@(x,y) strcmp(x,y), metComps,mets);
-metComps(emptyComps) = {defaultCompartment};
+if ischar(mets) 
+    if strcmp(metComps,mets)
+        metComps = 'k';   
+    end
+else    
+    emptyComps = cellfun(@(x,y) strcmp(x,y), metComps,mets);
+    metComps(emptyComps) = {defaultCompartment};
+end

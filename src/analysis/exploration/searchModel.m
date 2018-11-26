@@ -32,8 +32,7 @@ similarity = parser.Results.similarity;
 printLevel = parser.Results.printLevel;
 
 % first collect some potential fields, which are known.
-baseFields = {'rxns','mets','vars','ctrs','genes','comps','prots'};
-baseFieldNames = {'reactions', 'metabolites', 'variables', 'constraints', 'genes', 'compartments', 'proteins'};
+[baseFields,baseFieldNames] = getCobraTypeFields();
 
 %filter the base fields:
 fieldsPresentInModel = ismember(baseFields,fieldnames(model));

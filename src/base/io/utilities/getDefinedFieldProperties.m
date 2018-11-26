@@ -24,16 +24,16 @@ function [fields] = getDefinedFieldProperties(varargin)
 %    Default:
 %
 %      * X{:,1} are the field names
-%      * X{:,2} are the associated fields for the first dimension (i.e.
-%        size(model.(X{A,1}),1) == size(model.(X{A,2}),1) has to evaluate
-%        to true
-%      * X{:,3} are the associated fields for the second dimension (i.e.
-%        size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
-%        to true
-%      * X{:,4} are evaluateable statements, which have to evaluate to true for
-%        the model to be valid, these mainly check the content types.
-%      * X{:,5} are default values (or evaluateable strings for cell
-%        arrays)
+%      * X{:,2} are the associated fields for the first dimension (i.e. size(model.(X{A,1}),1) == size(model.(X{A,2}),1) has to evaluate to true
+%      * X{:,3} are the associated fields for the second dimension (i.e. size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate to true
+%      * X{:,4} are evaluateable statements, which have to evaluate to true for the model to be valid, these mainly check the content types.
+%      * X{:,5} are default values (or evaluateable strings for cell arrays)
+%      * X{:,6} are logical values indicating  whether the field is a basic field
+%      * X{:,7} are chars indicating the value type of the field (e.g. numeric, logical, char cell etc)
+%      * X{:,8} are logical values indicating  whether the field is a field required for FBA
+%      * X{:,9} are logical values indicating  whether the field is a type field
+%      * X{:,10} are more descriptive long names for the fields
+%        
 %    E.g.
 %
 %      `x = model.(X{A, 1})`;
@@ -142,8 +142,8 @@ if isempty(CBT_PROG_FIELD_PROPS)
      end
     %Get the indices for database, qualifier and reference.
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
-    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.BasicFields(relrows),raw.FieldBasisType,raw.FBAFields(relrows)];
-    progInfo = cell(0,8);
+    relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.BasicFields(relrows),raw.FieldBasisType,raw.FBAFields(relrows),raw.TypeFields(relrows), raw.LongName(relrows)];
+    progInfo = cell(0,10);
     for i = 1:size(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
@@ -168,7 +168,9 @@ if isempty(CBT_PROG_FIELD_PROPS)
         basic = eval(eval(relarray{i,6}));        
         FieldType = relarray{i,7};  
         FBA = eval(eval(relarray{i,8}));        
-        progInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default,basic,FieldType,FBA};
+        Types = eval(eval(relarray{i,9}));   
+        LongNames = relarray{i,10};  
+        progInfo(i,:) = { relarray{i,1},xval,yval,relarray{i,4}, default,basic,FieldType,FBA,Types, LongNames};
     end
     CBT_PROG_FIELD_PROPS = progInfo;
 end

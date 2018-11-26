@@ -54,6 +54,8 @@ model.genes=cell(0,1);
 model.osenseStr = 'max';
 model.csense = char();
 model.rxnGeneMat = sparse(0,0);
+model.metComps = cell(0,1);
+model.comps = cell(0,1);
 %If no arguments are provided, return this empty model.
 if nargin < 1
     return;

@@ -7,8 +7,8 @@ function model = extendModelFieldsForType(model, type, varargin)
 % INPUTS:
 %
 %    model:              the model to update
-%    type:               the Type of field to update one of 
-%                        ('rxns','mets','comps','genes','evars','ctrs')
+%    type:               the Type of field to update one of the defined
+%                        field types (getCobraTypeFields())
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
@@ -39,7 +39,7 @@ function model = extendModelFieldsForType(model, type, varargin)
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
 
 
-PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs'}';
+PossibleTypes = getCobraTypeFields();
 
 
 parser = inputParser();
@@ -133,6 +133,23 @@ for field = 1:numel(fields)
                 newValues{end+1,1} = currentvalue;
             end
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,newValues, targetSize-originalSize);
+            if strcmp(cfield,'metComps') % this needs a special treatment, as this could indicate, that we need to also update the comps vector
+                ucomps = unique(model.metComps);
+                newComps = setdiff(ucomps,model.comps);
+                if ~isempty(newComps)
+                    % ok, we have something new.
+                    if isempty(setdiff(model.comps,{'c'})) && isempty(setdiff(ucomps,'k'))
+                        % we only had the cytosol before and we have only
+                        % unassigned metabolites. So we will add them to
+                        % the cytosol
+                        model.metComps(:) = {'c'};
+                    else
+                        % add them as they are
+                        model = addCompartments(model,newComps);                        
+                    end
+                    
+                end
+            end
         case 'sparselogical'            
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,logical(defaultValue), targetSize-originalSize);                        
         case 'numeric'
