@@ -43,6 +43,9 @@ if ischar(annotationQualifier)
     annotationQualifier = {annotationQualifier};
 end
 
+if annotatedField(end) == 's'
+    annotatedField = annotatedField(1:end-1);
+end
 
 knownMappings = getDatabaseMappings(annotatedField);
 
