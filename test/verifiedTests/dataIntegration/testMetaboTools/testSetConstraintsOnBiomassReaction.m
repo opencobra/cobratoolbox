@@ -5,8 +5,6 @@
 %
 % Authors:
 %     - Loic Marx, November 2018
-%
-%
 
 % save the current path
 currentDir = pwd;
@@ -15,24 +13,22 @@ currentDir = pwd;
 fileDir = fileparts(which('testsetConstraintsOnBiomassReaction'));
 cd(fileDir);
 
-%define inputs
+% define inputs
 model = getDistributedModel('ecoli_core_model.mat');
-dT = 24
-tolerance = 20
-of = model.rxns
- 
-%Calcule the reference value
-ub =   0.0347;
-lb =   0.0231;
+dT = 24;
+tolerance = 20;
+id = findRxnIDs(model, checkObjective(model));
+of = model.rxns(id);
+
+% calcule the reference data
+ub = 0.0347;
+lb = 0.0231;
 tol = 1e-4;
+model_refData = setConstraintsOnBiomassReaction(model, of, dT, tolerance);
 
-model_refdata = setConstraintsOnBiomassReaction(model,of, dT, tolerance)
+% test if the upperbound and the lowerbound are the same as the references values
+assert(norm(model_refData.ub(id) - ub) < tol);
+assert(norm(model_refData.lb(id) - lb) < tol);
 
-%Test if the upperbound and the lowerbound are the same as the references values
- 
-
-for k = 1:length(model.rxns)
-assert(norm(model_refdata.ub(k)- ub) < tol);
-assert(norm(model_refdata.lb(k)- lb) < tol);
-end 
-
+% change back to the current directory
+cd(currentDir);
