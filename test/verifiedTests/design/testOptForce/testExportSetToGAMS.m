@@ -29,12 +29,12 @@ for k = 2:length(model.rxns)-1
 assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
 end
 
-% runing the function 
+% run the function 
 exportSetToGAMS(model.rxns, 'Reactions.txt');
 
-% comparing to the ref data
-RefData = textread('Reactions.txt', '%s', 'delimiter', '\n');
-assert(isequal(RefData, rxnsRef))
+% compare to the ref data
+refData = textread('Reactions.txt', '%s', 'delimiter', '\n');
+assert(isequal(refData, rxnsRef))
 
 % test for 1 input: exportSetToGAMS(model.rxns)
 assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns}, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'))
