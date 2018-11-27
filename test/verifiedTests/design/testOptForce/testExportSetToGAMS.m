@@ -5,8 +5,6 @@
 %
 % Authors:
 %     - Loic Marx, November 2018
-%
-%
 
 % save the current path
 currentDir = pwd;
@@ -15,7 +13,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testexportSetToGAMS'));
 cd(fileDir);
 
-% If nargin = 2 : 
+% if nargin = 2 : 
 model = getDistributedModel('ecoli_core_model.mat');
 fileName = 'refData_reactions.txt';
 
@@ -28,10 +26,13 @@ assert(isequal(rxnsRef{end}, '/'))
 
 % test if all the other cells correspond to the reaction names
 for k = 2:length(model.rxns)-1
-  assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
+assert(isequal(cellstr(rxnsRef{k}(2:end-1)), model.rxns(k-1)));
 end
 
-% Test for 1 input: exportSetToGAMS(model.rxns)
+% runing the function 
+exportSetToGAMS(model.rxns, 'Reactions.txt');
+
+% test for 1 input: exportSetToGAMS(model.rxns)
 assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns}, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'))
 
 
