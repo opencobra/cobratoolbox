@@ -32,6 +32,10 @@ end
 % runing the function 
 exportSetToGAMS(model.rxns, 'Reactions.txt');
 
+% comparing to the ref data
+RefData = textread('Reactions.txt', '%s', 'delimiter', '\n');
+assert(isequal(RefData, rxnsRef))
+
 % test for 1 input: exportSetToGAMS(model.rxns)
 assert(verifyCobraFunctionError('exportSetToGAMS', 'inputs', {model.rxns}, 'testMessage', 'All inputs for the function exportSetToGAMS must be specified'))
 
