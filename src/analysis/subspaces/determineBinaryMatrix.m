@@ -16,9 +16,9 @@ function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determin
 %
 % .. Author: - Laurent Heirendt, June 2018
 
-    Shat = S; % initialize the binary matrix
-    Shat(S > 0) = 1; % products, produced -> kin
-    Shat(S < 0) = -1; % reactants, consumed -> kout
+    Shat = S;  % initialize the binary matrix
+    Shat(S > 0) = 1;  % products, produced -> kin
+    Shat(S < 0) = -1;  % reactants, consumed -> kout
 
     % determine the row connectivity
     Shatabs = abs(Shat);
