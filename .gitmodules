@@ -50,3 +50,8 @@
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
 	ignore = dirty
+[submodule "external/RAVEN"]
+	path = external/RAVEN
+	url = https://github.com/SysBioChalmers/RAVEN.git
+    ignore = dirty
+    branch = integrationCOBRA
