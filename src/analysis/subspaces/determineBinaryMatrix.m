@@ -29,7 +29,7 @@ function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determin
     end
 
     % determine the column connectivity
-    if nargout > 5
+    if nargout > 3
         nconnect = sort(sum(Shat, 1), 'descend');
     end
 end
