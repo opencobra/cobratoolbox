@@ -10,8 +10,8 @@ function [fieldNames,dbIDs,relations] = getAnnotationFieldName(annotatedField,da
 %                                (e.g. 'rxn', 'model', 'comp', ...)
 %    database:                   The database names of the annotation. (e.g.
 %                                kegg)
-%    annotationQualifier:        The annotation qualifier (see
-%                                http://co.mbine.org/standards/qualifiers for possible qualifiers)
+%    annotationQualifier:        The annotation qualifier (see http://co.mbine.org/standards/qualifiers 
+%                                for possible qualifiers)
 %
 % OPTIONAL INPUTS:
 %    qualifierSelection:         Exclude the qualifiers from mappings (default: {}).
@@ -43,9 +43,7 @@ if ischar(annotationQualifier)
     annotationQualifier = {annotationQualifier};
 end
 
-if annotatedField(end) == 's'
-    annotatedField = annotatedField(1:end-1);
-end
+annotatedField = regexprep(annotatedField,'s$','');
 
 knownMappings = getDatabaseMappings(annotatedField);
 

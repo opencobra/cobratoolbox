@@ -17,7 +17,7 @@ function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargi
 %                   either the identifiers.org prefix or the exact name!
 %    ids:           The IDs to set for each element. Either a char array if
 %                   only a single element is annotated, or a cell array of
-%                   chars if multiple elements are annotated.
+%                   chars if multiple elements are annotated. 
 %
 % OPTIONAL INPUTS:
 %    varargin:      Additional parameters either as parameter/value pairs
@@ -33,31 +33,35 @@ function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargi
 
 definedModelFields = getDefinedFieldProperties();
 % these are all base fields
-baseFields = union(definedModelFields(cellfun(@ischar,definedModelFields(:,2)),2),definedModelFields(cellfun(@ischar,definedModelFields(:,3)),3));
+baseFields = getCobraTypeFields();
 
 % get the defined databases
 dbs = getRegisteredDatabases();
 
 % we assume everything is a cell array, so we translate provided char
-% arrays.
+% arrays. and bring them into the right format.
 if ischar(ids)
     ids = {ids};
 end
+ids = columnVector(ids);
+
+% get correctly formated elemntIDs
 if ischar(elementIDs)
     elementIDs = {elementIDs};
 end
+elementIDs = columnVector(elementIDs);
 
 % check the databases
 if ischar(databases)
     databases = repmat({databases},numel(ids),1);
 end
-
+databases = columnVector(databases);
 
 % parse the input
 parser = inputParser();
 parser.addParameter('referenceField','',@(x) isempty(x) || any(strcmpi(baseFields,x)) || strcmpi('model',x));
 parser.addParameter('annotationTypes',repmat({'bio'},numel(elementIDs),1),@(x) (ischar(x) && any(strcmpi(x,{'model','bio'}))) ...
-                                                                               || (iscell(x) && all(cellfun(@(y) any(strcmpi(y,{'model','bio'}))))));
+                                                                               || (iscell(x) && all(cellfun(@(y) any(strcmpi(y,{'model','bio'})),x))));
 parser.addParameter('annotationQualifiers',repmat({'is'},numel(elementIDs),1),@(x) ischar(x) || iscellstr(x));
 parser.addParameter('replaceAnnotation',false,@(x) islogical(x) || (isnumeric(x) && (x == 1 || x == 0)));
 parser.addParameter('printLevel',0,@isnumeric);

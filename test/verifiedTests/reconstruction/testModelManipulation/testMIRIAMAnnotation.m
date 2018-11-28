@@ -95,3 +95,6 @@ assert(strcmp(annotations.cvterms(~isDerivedFromPos).qualifierType,'bioQualifier
 
 % and also named iJO1366
 assert(strcmp(annotations.cvterms(~isDerivedFromPos).ressources.id,'iJO1366')) 
+
+%Test finished.
+fprintf('>> Done ...\n');
