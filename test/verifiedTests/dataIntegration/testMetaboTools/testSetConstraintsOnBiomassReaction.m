@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testsetConstraintsOnBiomassReaction'));
+fileDir = fileparts(which(mfilename));
 cd(fileDir);
 
 % define inputs
