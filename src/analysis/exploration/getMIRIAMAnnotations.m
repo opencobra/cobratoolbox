@@ -13,19 +13,21 @@ function annotations = getMIRIAMAnnotations(model, type, varargin)
 %    varagin:           Additional arguments as parameter/value pairs.
 %                        * bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in `getBioQualifiers()` will be used
 %                        * ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type 's'])). 
-%
+%                        * databases - Database identifiers to extract (default: all)
 % OUTPUT:
-%    annotations:       A struct array with the following structure:
-%                        * .annotation -> A Struct array with one element per element of the given type.
-%                        * .annotation.cvterms -> A Struct array of controlled vocabulary terms with one element per qualifier used
-%                        * .annotation.cvterms.qualifier -> the bioQualifier for this all ressourcesof this cvterm 
-%                        * .annotation.cvterms.qualifierType -> the Qualifier type (modelQualifier or bioQualifier) for all ressources of this cvterm 
-%                        * .annotation.cvterms.ressources -> struct with the following fields:
-%                        * .annotation.cvterms.ressources.database -> the database for this ressource.
-%                        * .annotation.cvterms.ressources.id-> The ID in the database for this ressource.
+%    annotations:       A struct array with the following structure:                        
+%                        * annotations.cvterms -> A Struct array of controlled vocabulary terms with one element per qualifier used
+%                        * annotations.cvterms.qualifier -> the bioQualifier for this all ressourcesof this cvterm 
+%                        * annotations.cvterms.qualifierType -> the Qualifier type (modelQualifier or bioQualifier) for all ressources of this cvterm 
+%                        * annotations.cvterms.ressources -> struct with the following fields:
+%                        * annotations.cvterms.ressources.database -> the database for this ressource.
+%                        * annotations.cvterms.ressources.id-> The ID in the database for this ressource.
+%                        * annotations.id the associated with the cv term
 
 
 [defaultBioQualifiers,standardQualifiers] = getBioQualifiers();
+type = regexprep(type,'s$','');
+
 if ~strcmpi(type,'model')
     defaultIDs = model.([lower(type) 's']);
 else
@@ -34,13 +36,30 @@ end
 
 parser = inputParser();
 
+resultTypes = {'sbmlstruct','list','cellist'};
+
+
 parser.addParameter('bioQualifiers',defaultBioQualifiers,@(x) ischar(x) || iscell(x))
-parser.addParameter('ids',defaultIDs,@(x) ischar(x) || iscell(x));
+parser.addParameter('ids',defaultIDs,@(x) ischar(x) || iscell(x) || isnumeric(x) || islogical(x));
+parser.addParameter('databases','all',@(x) ischar(x) || iscell(x));
 
 parser.parse(varargin{:});
 
 bioQualifiers = parser.Results.bioQualifiers;
+if ischar(bioQualifiers)
+    bioQualifiers = {bioQualifiers};
+end
 ids = parser.Results.ids;
+dbsToReturn = parser.Results.databases;
+% make sure this is a cell array if its not all
+if ischar(dbsToReturn) && ~strcmp(dbsToReturn,'all')
+    dbsToReturn = {dbsToReturn};
+end
+
+% extract positional IDs
+if isnumeric(ids) || islogical(ids)
+    ids = model.([lower(type) 's'])(ids);
+end
 
 % we have to handle some things special for model annotations (e.g. they can
 % have model qualifiers)
@@ -54,7 +73,11 @@ else
     numElements = length(ids);
     modelAnnot = false;
     modelQualString = '';
-    relPos = ismember(model.([type 's']),ids);
+    [pres,pos] = ismember(ids,model.([type 's']));
+    relPos = pos(pres);
+    if  numel(relPos) ~= numElements
+        error('The following IDs were not part of model.%s:\n%s',[type, 's'],strjoin(setdiff(ids,model.([type 's'])(relPos)),'\n'));
+    end
 end
 
 modelFields = fieldnames(model);
@@ -72,6 +95,17 @@ databaseFields = databaseFields(ismember(databaseFields(:,2),standardQualifiers(
 relfields = modelFields(cellfun(@(x) strncmp(x,type,length(type)),modelFields));        
 annotationsFields = relfields(cellfun(@(x) any(cellfun(@(y) strncmp(x,[type, y],length([type y])),bioQualifiers)),relfields));
 
+if ~ischar(dbsToReturn)
+    databaseFields = databaseFields(ismember(lower(databaseFields(:,1)),lower(dbsToReturn)),:);
+    % build all possible target fields given the qualifiers and the 
+    [qualifiers,databases] = cellfun(@(x) getBioQualifierAndDBFromFieldName(x),annotationsFields,'Uniform',false);
+    rels = ismember(qualifiers,bioQualifiers) & ismember(databases,dbsToReturn);
+else
+    [qualifiers] = cellfun(@(x) getBioQualifierAndDBFromFieldName(x),annotationsFields,'Uniform',false);
+    rels = ismember(qualifiers,bioQualifiers);
+end
+    
+annotationsFields = annotationsFields(rels);
 % now, we can initialize the result cell array. 
 % this array has the following form:
 % Dim1 -> one entry per element
@@ -116,6 +150,10 @@ for i = 1:numel(annotationsFields)
         cQual = cQual(2:end);
     end
     cSource = convertSBMLID(regexprep(cField,'ID$',''),false);
+	if ~ischar(dbsToReturn) && ~any(strcmpi(cSource,dbsToReturn))
+        % if not all, or the db doesn't match the description, skip it.
+        continue
+    end
     resultArray(:,arrayDim2Pos,:) = [repmat({cQualType},numElements,1),repmat({cQual},numElements,1),repmat({cSource},numElements,1),cValues];
     arrayDim2Pos = arrayDim2Pos + 1;
 end
@@ -171,7 +209,7 @@ for i = 1:numElements
                 cRessourceStruct(numel(cIDArray)).id = '';
                 [cRessourceStruct(:).id] = deal(cIDArray{:});
                 [cRessourceStruct(:).database] = deal(cDBArray{:});
-                cStruct.ressources = cRessourceStruct();           
+                cStruct.ressources = cRessourceStruct;           
                 currentCVtermsStruct(cvtermsIndex) = cStruct;
                 cvtermsIndex = cvtermsIndex + 1;                           
             end
