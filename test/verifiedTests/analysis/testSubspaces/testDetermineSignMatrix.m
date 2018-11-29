@@ -17,7 +17,7 @@ model = createToyModelForLifting(false);
 load([currentDir filesep 'refData_determineBinaryMatrix.mat']);
 
 % run the function with full output
-[test_Shat, test_Shatabs, test_mconnect, test_nconnect, test_mconnectin, test_mconnectout] = determineBinaryMatrix(model.S);
+[test_Shat, test_Shatabs, test_mconnect, test_nconnect, test_mconnectin, test_mconnectout] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
@@ -27,7 +27,7 @@ assert(isequal(test_mconnectin, mconnectin))
 assert(isequal(test_mconnectout, mconnectout))
 
 % run the function with partial output
-[test_Shat, test_Shatabs, test_test_mconnect, test_nconnect] = determineBinaryMatrix(model.S);
+[test_Shat, test_Shatabs, test_test_mconnect, test_nconnect] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
@@ -35,7 +35,7 @@ assert(isequal(test_mconnect, mconnect))
 assert(isequal(test_nconnect, nconnect))
 
 % run the function with minimal output
-[test_Shat, test_Shatabs] = determineBinaryMatrix(model.S);
+[test_Shat, test_Shatabs] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
