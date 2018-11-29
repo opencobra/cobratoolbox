@@ -1,9 +1,10 @@
-function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineSignMatrix(S)
+function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineSignMatrix(S, sorted)
 % Determine the binaryform of the stoichiometric matrix S and the connectivity vectors
 %
 % INPUT:
 %
 %    S:            Stoichiometric matrix of size m x n (m rows, n columns)
+%    sorted:       Boolean flag to sort the connectivity vectors (default: false)
 %
 % OUTPUTS:
 %
@@ -16,6 +17,10 @@ function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determin
 %
 % .. Author: - Laurent Heirendt, June 2018
 
+    if ~exist('sorted', 'var')
+        sorted = false;
+    end
+
     Shat = S;  % initialize the binary matrix
     Shat = sign(S);
     % Note:
@@ -25,9 +30,15 @@ function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determin
     % determine the row connectivity
     Shatabs = abs(Shat);
     if nargout > 2
-        mconnect = sort(sum(Shatabs, 2), 'descend');
+        mconnect = sum(Shatabs, 2);
         mconnectin = sum(Shat == 1, 2);
         mconnectout = sum(Shat == -1, 2);
+
+        if sorted
+            mconnect = sort(mconnect, 'descend');
+            mconnectin = sort(mconnectin, 'descend');
+            mconnectout = sort(mconnectout, 'descend');
+        end
     end
 
     % determine the column connectivity
