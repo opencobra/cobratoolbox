@@ -1,9 +1,9 @@
-function [annotations, qualifiers] = getAnnotationList(model, database, ids, varargin)
+function [annotations, qualifiers] = getAnnotations(model, database, ids, varargin)
 % get a cell array of Strings containing the annotations stored for the ids
 % in the given field for the given database.
 %
 % USAGE:
-%
+%    [annotations, qualifiers] = getAnnotations(model, database, ids, varargin)
 % 
 % INPUTS:
 %    model:         A COBRA style model structure

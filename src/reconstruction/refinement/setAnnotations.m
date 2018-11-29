@@ -1,8 +1,8 @@
-function model = setAnnotation(model, values, varargin)
+function model = setAnnotations(model, values, varargin)
 % Set the annotations for a given set of IDs.
 %
 % USAGE:
-%    model = setAnnotation(model, values, field, ids, database, varargin)
+%    model = setAnnotations(model, values, field, ids, database, varargin)
 % 
 % INPUTS:
 %    model:         A COBRA style model structure
