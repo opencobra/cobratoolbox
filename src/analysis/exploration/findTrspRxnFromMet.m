@@ -29,21 +29,21 @@ for i=1:numel(metList)
     Name_met=metList{i};
 
     % Find the reactions involving the metabolite
-    rxnsMets=findRxnsFromMets(model,Name_met);
-    formulas = printRxnFormula(model,rxnsMets,false);
-
-    for j=1:numel(formulas)
-        metaboliteList = parseRxnFormula(formulas{j});
-        [baseMetNames,compSymbols,uniqueMetNames,uniqueCompSymbols] = parseMetNames(metaboliteList);
-
-        if sum(strcmp(baseMetNames,[Name_met(1:end-3)]))== 2 && sum(strcmp(uniqueMetNames,[Name_met(1:end-3)]))== 1
-            if ~isempty(compFlag)
-                if sum(strcmp(uniqueCompSymbols,compFlag))== 1
-                    TrspRxns(end+1)=rxnsMets(j);
-                end
-            else
-                TrspRxns(end+1)=rxnsMets(j);
-            end
-        end
+    origMetPos = ismember(model.mets,Name_met);
+    rxnMetIDs = model.S(origMetPos,:) ~=0;
+    relReacs = model.rxns(rxnMetIDs);
+    targetsubs = model.S(origMetPos,rxnMetIDs) < 0;
+    targetProd = model.S(origMetPos,rxnMetIDs) > 0;
+    [~,metID] = extractCompartmentsFromMets(Name_met);        
+    otherpos = cellfun(@(x) ~isempty(strfind(x,metID)) && isempty(strfind(x,Name_met)),model.mets);
+    otherS = model.S(otherpos,rxnMetIDs);
+    if ~isempty(compFlag)
+        matchComp = ismember(model.metComps(otherpos),compFlag);
+    else
+        matchComp = true(sum(otherpos),1);
     end
+    othersubs = any(otherS(matchComp,:) < 0,1);
+    otherProd = any(otherS(matchComp,:) > 0,1);
+    rels = othersubs & targetProd | otherProd & targetsubs;
+    TrspRxns = [TrspRxns,relReacs(rels)];   
 end
