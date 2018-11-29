@@ -1,4 +1,4 @@
-function metComps = extractCompartmentsFromMets(mets, defaultCompartment)
+function [metComps,metIDs] = extractCompartmentsFromMets(mets, defaultCompartment)
 % function to extract the compartment IDs from a list of metabolite IDs
 % (assuming the compartments are stored in '\[[^\]+]\]$' expressions, while
 % giving a default expression to empty elements.
@@ -25,12 +25,21 @@ if ischar(defaultCompartment)
     defaultCompartment = {defaultCompartment};
 end
 
-metComps = regexprep(mets,'.*\[([^\]]+)\]','$1');
-if ischar(mets) 
-    if strcmp(metComps,mets)
-        metComps = 'k';   
+metMatches = regexp(mets,'(?<metID>.*)\[(?<compID>[^\]]+)\]','names');
+if isempty(metMatches) 
+    if ischar(mets)
+        metIDs = mets;
+        metComps = 'k';       
+    else
+        metIDs = mets;
+        metComps = {'k'};       
     end
-else    
-    emptyComps = cellfun(@(x,y) strcmp(x,y), metComps,mets);
+else        
+    metComps = cell(numel(mets),1);
+    metIDs = cell(numel(mets),1);
+    emptyComps = cellfun(@isempty, metMatches);    
+    metComps(~emptyComps) = cellfun(@(x) x.compID,metMatches(~emptyComps),'Uniform',0);
     metComps(emptyComps) = {defaultCompartment};
+    metIDs(~emptyComps) = cellfun(@(x) x.metID,metMatches(~emptyComps),'Uniform',0);
+    metIDs(emptyComps) = mets(emptyComps);
 end
