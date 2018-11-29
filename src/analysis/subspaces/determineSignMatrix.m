@@ -1,5 +1,5 @@
-function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineBinaryMatrix(S)
-% Determine the binary form of the stoichiometric matrix S
+function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineSignMatrix(S)
+% Determine the binaryform of the stoichiometric matrix S and the connectivity vectors
 %
 % INPUT:
 %

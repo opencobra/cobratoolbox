@@ -1,4 +1,4 @@
-% The COBRAToolbox: testDetermineBinaryMatrix.m
+% The COBRAToolbox: testDetermineSignMatrix.m
 %
 % Purpose:
 %     - test the function to determine the binary version of the stoichiometric matrix S
