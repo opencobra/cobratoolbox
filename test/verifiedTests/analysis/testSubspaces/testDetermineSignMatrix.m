@@ -27,7 +27,7 @@ assert(isequal(test_mconnectin, mconnectin))
 assert(isequal(test_mconnectout, mconnectout))
 
 % run the function with partial output
-[test_Shat, test_Shatabs, test_test_mconnect, test_nconnect] = determineSignMatrix(model.S);
+[test_Shat, test_Shatabs, test_mconnect, test_nconnect] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
@@ -35,10 +35,16 @@ assert(isequal(test_mconnect, mconnect))
 assert(isequal(test_nconnect, nconnect))
 
 % run the function with minimal output
-[test_Shat, test_Shatabs] = determineSignMatrix(model.S);
+[test_Shat, test_Shatabs, test_mconnect, test_nconnect] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
+
+% test the sorted flag
+[test_Shat, test_Shatabs, test_mconnect, test_nconnect] = determineSignMatrix(model.S, true);
+
+assert(isequal(test_mconnect, sort(mconnect, 'descend')));
+assert(isequal(test_nconnect, sort(nconnect, 'descend')));
 
 % change the directory
 cd(currentDir)
