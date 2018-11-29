@@ -15,7 +15,10 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testConvertOldStyleModel'));
 cd(fileDir);
+% prepare the test, i.e. require LP solver
+solverPkgs = prepareTest('needsLP',true,'useMinimalNumberOfSolvers',true);
 
+changeCobraSolver(solverPkgs.LP{1},'LP');
 % Test with 
 fprintf('>> Testing Model conversion and field merging:\n');
 %Explicitly load the model by load to ensure that its an old style model
@@ -90,5 +93,48 @@ end
 assert(all(cellfun(@(x,y) isequal(x,y), modelnew.metHMDBID(randpos),model.metHMDB(randpos))));
 newpos = setdiff(1:numel(model.mets),randpos);
 assert(all(cellfun(@(x,y) isequal(x,y), modelnew.metHMDBID(newpos),model.metHMDBID(newpos))));
+
+% test microbiota Models
+testModel = getDistributedModel('ecoli_core_model.mat');
+% add an A Matrix
+o2Ex = double(ismember(testModel.rxns,'EX_o2(e)'));
+acEx = double(ismember(testModel.rxns,'EX_ac(e)'));
+co2Ex = double(ismember(testModel.rxns,'EX_co2(e)'));
+ConstraintMatrix = sparse([o2Ex';acEx';co2Ex']);
+addMets = {'O2Lim';'acLim';'co2Lim'};
+addb = [-10;3;5];
+addcsense = ['G';'E';'L']; % Uptake of less than 10 o2, export of less than 5 co2 and exactly 3 ac
+modelWithConstraints = addCOBRAConstraints(testModel,testModel.rxns,addb,'dsense',addcsense,'c',ConstraintMatrix,'ConstraintID',addMets);
+% now build the same model with a:
+modelWithA = testModel;
+modelWithA.A = [modelWithA.S;ConstraintMatrix];
+modelWithA.b = [modelWithA.b;addb];
+modelWithA.csense = [modelWithA.csense;addcsense];
+modelWithA.mets = [modelWithA.mets;addMets];
+modelWithA.osense = -1;
+% the solutions should be the same.
+sol = optimizeCbModel(modelWithConstraints);
+solWithA = solveCobraLP(modelWithA);
+modelWithA = rmfield(modelWithA,'osense');
+assert(isequal(solWithA.obj,sol.f))
+warning on
+modelConverted = convertOldStyleModel(modelWithA);
+% assert that the proper warning was shown
+warnmessage = 'The inserted Model contains an old style coupling matrix (A). The MAtrix will be converted into a Coupling Matrix (C) and fields will be adapted.';
+assert(isequal(warnmessage,lastwarn));
+% the two models with added constraints and converted A should be the same.
+assert(isSameCobraModel(modelConverted,modelWithConstraints));
+
+[nMets,nRxns] = size(testModel.S);
+% now, test partially invalid old style fields
+testModel.confidenceScores = arrayfun(@num2str, randi(4,nRxns,1),'Uniform',0);
+testModel.confidenceScores(3) = {[]};
+testModel.subSystems(10) = {[]};
+assert(~verifyModel(testModel,'simpleCheck',true));
+fixedModel = convertOldStyleModel(testModel);
+% confidenceScores got converted.
+assert(fixedModel.rxnConfidenceScores(3) == 0);
+% this should again be valid, subSystems Field is fixed and confidence Scores properly converted..
+assert(verifyModel(fixedModel,'simpleCheck',true));
 % change the directory
 cd(currentDir)

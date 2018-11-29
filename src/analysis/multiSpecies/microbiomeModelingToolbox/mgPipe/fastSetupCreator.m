@@ -55,39 +55,59 @@ exch = setdiff(exch, rmBio);
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns
-dummy = makeDummyModel(3 * size(exch, 1), 4 * size(exch, 1));
-dummy.mets = unique([strrep(exch, '[e]', '[d]'); strrep(exch, '[e]', '[u]'); strrep(exch, '[e]', '[fe]')]);
-cnt = 0;
-for j = 1:size(exch, 1)
-    mdInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[d]')));
-    muInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[u]')));  % finding indexes for elements of all exchange
-    mfeInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[fe]')));
-    % diet exchange
-    cnt = cnt + 1;
-    dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[d]'));
-    dummy.S(mdInd, cnt) = -1;
-    dummy.lb(cnt, 1) = -1000;
-    dummy.ub(cnt, 1) = 1000;
-    % diet-lumen transport
-    cnt = cnt + 1;  % counts rxns
-    dummy.rxns{cnt, 1} = strcat('DUt_', strrep(exch{j, 1}, '[e]', ''));
-    dummy.S(mdInd, cnt) = -1;  % taken up from diet
-    dummy.S(muInd, cnt) = 1;  % secreted into lumen
-    dummy.ub(cnt, 1) = 1000;
-    % lumen-feces transport
-    cnt = cnt + 1;  % counts rxns
-    dummy.rxns{cnt, 1} = strcat('UFEt_', strrep(exch{j, 1}, '[e]', ''));
-    dummy.S(muInd, cnt) = -1;  % taken up from lumen
-    dummy.S(mfeInd, cnt) = 1;  % secreted into feces
-    dummy.ub(cnt, 1) = 1000;
-    % feces exchange
-    cnt = cnt + 1;  % counts rxns
-    dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[fe]'));
-    dummy.S(mfeInd, cnt) = -1;
-    dummy.lb(cnt, 1) = -1000;
-    dummy.ub(cnt, 1) = 1000;
-end
-dummy.S = sparse(dummy.S);
+dummy = createModel();
+umets = unique(exch);
+orderedMets = unique([strrep(exch, '[e]', '[d]'); strrep(exch, '[e]', '[u]'); strrep(exch, '[e]', '[fe]')]);
+mets = [strrep(umets, '[e]', '[d]'); strrep(umets, '[e]', '[u]'); strrep(umets, '[e]', '[fe]')];
+dummy = addMultipleMetabolites(dummy,orderedMets);
+
+nMets = numel(umets);
+stoich = [-speye(nMets),-speye(nMets),sparse(nMets,nMets),sparse(nMets,nMets);...
+          sparse(nMets,nMets),speye(nMets),-speye(nMets),sparse(nMets,nMets);...
+          sparse(nMets,nMets),sparse(nMets,nMets),speye(nMets),-speye(nMets)];
+lbs = [repmat(-1000,nMets,1);zeros(nMets,1);zeros(nMets,1);repmat(-1000,nMets,1)];
+ubs = repmat(1000,4*nMets,1);
+rxnNames = [strcat('EX_',mets(1:nMets));...
+            strcat('DUt_',strrep(umets,'[e]',''));...
+            strcat('UFEt_',strrep(umets,'[e]',''));...
+            strcat('EX_',strrep(umets, '[e]', '[fe]'))];
+dummy = addMultipleReactions(dummy,rxnNames,mets,stoich,'lb',lbs,'ub',ubs');
+order = [1:nMets;nMets+1:2*nMets;2*nMets+1:3*nMets;3*nMets+1:4*nMets];
+order = order(:);
+dummy = updateFieldOrderForType(dummy,'rxns',order);
+%Now, we could 'reorder' this reaction list but I'm not sure its necessary.
+% 
+% cnt = 0;
+% for j = 1:size(exch, 1)
+%     mdInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[d]')));
+%     muInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[u]')));  % finding indexes for elements of all exchange
+%     mfeInd = find(ismember(dummy.mets, strrep(exch{j, 1}, '[e]', '[fe]')));
+%     % diet exchange
+%     cnt = cnt + 1;
+%     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[d]'));
+%     dummy.S(mdInd, cnt) = -1;
+%     dummy.lb(cnt, 1) = -1000;
+%     dummy.ub(cnt, 1) = 1000;
+%     % diet-lumen transport
+%     cnt = cnt + 1;  % counts rxns
+%     dummy.rxns{cnt, 1} = strcat('DUt_', strrep(exch{j, 1}, '[e]', ''));
+%     dummy.S(mdInd, cnt) = -1;  % taken up from diet
+%     dummy.S(muInd, cnt) = 1;  % secreted into lumen
+%     dummy.ub(cnt, 1) = 1000;
+%     % lumen-feces transport
+%     cnt = cnt + 1;  % counts rxns
+%     dummy.rxns{cnt, 1} = strcat('UFEt_', strrep(exch{j, 1}, '[e]', ''));
+%     dummy.S(muInd, cnt) = -1;  % taken up from lumen
+%     dummy.S(mfeInd, cnt) = 1;  % secreted into feces
+%     dummy.ub(cnt, 1) = 1000;
+%     % feces exchange
+%     cnt = cnt + 1;  % counts rxns
+%     dummy.rxns{cnt, 1} = strcat('EX_', strrep(exch{j, 1}, '[e]', '[fe]'));
+%     dummy.S(mfeInd, cnt) = -1;
+%     dummy.lb(cnt, 1) = -1000;
+%     dummy.ub(cnt, 1) = 1000;
+% end
+% dummy.S = sparse(dummy.S);
 
 %% create a new extracellular space [b] for host
 if ~isempty(host)
@@ -96,13 +116,15 @@ exRxns = host.rxns(strncmp('EX_', host.rxns, 3));  % find exchanges in host
 exMetRxns = find(sum(abs(host.S(exMets, :)), 1) ~= 0);  % find reactions that contain mets from [e]
 exMetRxns = exMetRxns';
 exMetRxnsMets = find(sum(abs(host.S(:, exMetRxns)), 2) ~= 0);  % get all metabolites of [e] containing rxns
-dummyHostB = makeDummyModel(size(exMetRxnsMets, 1), size(exMetRxns, 1));
-dummyHostB.rxns = strcat({'Host_'}, host.rxns(exMetRxns), {'b'});
-dummyHostB.mets = strcat({'Host_'}, regexprep(host.mets(exMetRxnsMets), '\[e\]', '\[b\]'));  % replace [e] with [b]
-dummyHostB.S = host.S(exMetRxnsMets, exMetRxns);
-dummyHostB.c = host.c(exMetRxns);
-dummyHostB.lb = host.lb(exMetRxns);
-dummyHostB.ub = host.ub(exMetRxns);
+dummyHostB = createModel(); %makeDummyModel(size(exMetRxnsMets, 1), size(exMetRxns, 1));
+dummyHostB = addMultipleMetabolites(dummyHostB,strcat({'Host_'}, regexprep(host.mets(exMetRxnsMets), '\[e\]', '\[b\]')));
+dummyHostB = addMultipleReactions(dummyHostB,strcat({'Host_'}, host.rxns(exMetRxns), {'b'}),host.S(exMetRxnsMets, exMetRxns),'c',host.c(exMetRxns),'lb',host.lb(exMetRxns),'ub',host.ub(exMetRxns));
+%dummyHostB.rxns = ;
+%dummyHostB.mets = strcat({'Host_'}, regexprep(host.mets(exMetRxnsMets), '\[e\]', '\[b\]'));  % replace [e] with [b]
+%dummyHostB.S = host.S(exMetRxnsMets, exMetRxns);
+%dummyHostB.c = host.c(exMetRxns);
+%dummyHostB.lb = host.lb(exMetRxns);
+%dummyHostB.ub = host.ub(exMetRxns);
 
 
 % remove exchange reactions from host while leaving demand and sink
@@ -115,22 +137,31 @@ host.rxns = strcat({'Host_'}, host.rxns);
 [host] = mergeTwoModels(dummyHostB, host, 2, false);
 
 % Change remaining [e] (transporters) to [u] to transport diet metabolites
-exMets2 = find(~cellfun(@isempty, strfind(host.mets, '[e]')));  % again, find all mets that appear in [e]
+exMets2 = ~cellfun(@isempty, strfind(host.mets, '[e]'));  % again, find all mets that appear in [e]
 % exMetRxns2=find(sum(host.S(exMets2,:),1)~=0);%find reactions that contain mets from [e]
 % exMetRxns2=exMetRxns2';
 % exMetRxnsMets2=find(sum(host.S(:,exMetRxns2),2)~=0);%get all metabolites of [e] containing rxns
 % host.mets=regexprep(host.mets,'\[e\]','\[u\]');%replace [e] with [u]
-dummyHostEU = makeDummyModel(2 * size(exMets2, 1), size(exMets2, 1));
-dummyHostEU.mets = [strrep(strrep(host.mets(exMets2), 'Host_', ''), '[e]', '[u]'); host.mets(exMets2)];
-for j = 1:size(exMets2, 1)
-    dummyHostEU.rxns{j, 1} = strrep(strcat('Host_IEX_', strrep(host.mets{exMets2(j), 1}, 'Host_', ''), 'tr'), '[e]', '[u]');
-    metU = find(ismember(dummyHostEU.mets, strrep(strrep(host.mets{exMets2(j)}, 'Host_', ''), '[e]', '[u]')));
-    metE = find(ismember(dummyHostEU.mets, host.mets{exMets2(j)}));
-    dummyHostEU.S(metU, j) = 1;
-    dummyHostEU.S(metE, j) = -1;
-    dummyHostEU.lb(j) = -1000;
-    dummyHostEU.ub(j) = 1000;
-end
+dummyHostEU = createModel();
+%makeDummyModel(2 * size(exMets2, 1), size(exMets2, 1));
+hostmets = host.mets(exMets2);
+dummyHostEUmets = [strrep(strrep(hostmets, 'Host_', ''), '[e]', '[u]'); hostmets];
+dummyHostEU = addMultipleMetabolites(dummyHostEU,dummyHostEUmets);
+nMets = numel(hostmets);
+S = [-speye(nMets),speye(nMets)];
+lbs = repmat(-1000,nMets,1);
+ubs = repmat(1000,nMets,1);
+names = strrep(strcat('Host_IEX_', strrep(hostmets, 'Host_', ''), 'tr'), '[e]', '[u]');
+dummyHostEU = addMultipleReactions(dummyHostEU,names,dummyHostEUmets,S,'lb',lbs,'ub',ubs);
+% for j = 1:size(exMets2, 1)
+%     dummyHostEU.rxns{j, 1} = strrep(strcat('Host_IEX_', strrep(host.mets{exMets2(j), 1}, 'Host_', ''), 'tr'), '[e]', '[u]');
+%     metU = find(ismember(dummyHostEU.mets, strrep(strrep(host.mets{exMets2(j)}, 'Host_', ''), '[e]', '[u]')));
+%     metE = find(ismember(dummyHostEU.mets, host.mets{exMets2(j)}));
+%     dummyHostEU.S(metU, j) = 1;
+%     dummyHostEU.S(metE, j) = -1;
+%     dummyHostEU.lb(j) = -1000;
+%     dummyHostEU.ub(j) = 1000;
+% end
 [host] = mergeTwoModels(dummyHostEU, host, 2, false);
 end
 
@@ -144,18 +175,17 @@ parfor j = 1:size(models, 1)
     model = convertOldStyleModel(model);
     exmod = model.rxns(strncmp('EX_', model.rxns, 3));  % find exchange reactions
     eMets = model.mets(~cellfun(@isempty, strfind(model.mets, '[e]')));  % exchanged metabolites
-    dummyMicEU = makeDummyModel(2 * size(eMets, 1), size(eMets, 1));
-    dummyMicEU.mets = [strcat(strcat(microbeNames{j, 1}, '_'), regexprep(eMets, '\[e\]', '\[u\]')); regexprep(eMets, '\[e\]', '\[u\]')];
-    for k = 1:size(eMets, 1)
-        dummyMicEU.rxns{k, 1} = strcat(strcat(microbeNames{j, 1}, '_'), 'IEX_', regexprep(eMets{k}, '\[e\]', '\[u\]'), 'tr');
-        metU = find(ismember(dummyMicEU.mets, strcat(strcat(microbeNames{j, 1}, '_'), regexprep(eMets{k}, '\[e\]', '\[u\]'))));
-        metE = find(ismember(dummyMicEU.mets, regexprep(eMets{k}, '\[e\]', '\[u\]')));
-        dummyMicEU.S(metU, k) = 1;
-        dummyMicEU.S(metE, k) = -1;
-        dummyMicEU.lb(k) = -1000;
-        dummyMicEU.ub(k) = 1000;
-    end
-    model = removeRxns(model, exmod)
+    dummyMicEU = createModel();    
+    %dummyMicEU = makeDummyModel(2 * size(eMets, 1), size(eMets, 1));
+    dummyMicEUmets = [strcat(strcat(microbeNames{j, 1}, '_'), regexprep(eMets, '\[e\]', '\[u\]')); regexprep(eMets, '\[e\]', '\[u\]')];
+    dummyMicEU = addMultipleMetabolites(dummyMicEU,dummyMicEUmets);
+    nMets = numel(eMets);
+    S = [speye(nMets);-speye(nMets)];
+    lbs = repmat(-1000,nMets,1);
+    ubs = repmat(1000,nMets,1);
+    names = strcat(strcat(microbeNames{j, 1}, '_'), 'IEX_', regexprep(eMets, '\[e\]', '\[u\]'), 'tr');
+    dummyMicEU = addMultipleReactions(dummyMicEU,names,dummyMicEUmets,S,'lb',lbs,'ub',ubs);
+    model = removeRxns(model, exmod);
     model.rxns = strcat(strcat(microbeNames{j, 1}, '_'), model.rxns);
     model.mets = strcat(strcat(microbeNames{j, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
     [model] = mergeTwoModels(dummyMicEU, model, 2, false);

@@ -109,9 +109,9 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                          * f - Objective value
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
-%                          * y - Dual
-%                          * w - Reduced costs
-%                          * s - Slacks
+%                          * y - Dual for the metabolites
+%                          * w - Reduced costs of the reactions
+%                          * s - Slacks of the metabolites
 %                          * stat - Solver status in standardized form:
 %
 %                            * `-1` - No solution reported (timelimit, numerical problem etc)
@@ -119,6 +119,16 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                            * `2` - Unbounded solution
 %                            * `0` - Infeasible
 %                          * origStat - Original status returned by the specific solver
+%                    
+%                    If the input model contains `C` the following fields are added to the solution:
+%
+%                          * ctrs_y - the duals for the constraints from C
+%                          * ctrs_slack - Slacks of the additional constraints
+%
+%                    If the model contains the `E` field, the following fields are added to the solution:
+%
+%                          * vars_v - The optimal primal values of the variables
+%                          * vars_w - The reduced costs of the additional variables from E 
 %
 % .. Author:
 %       - Markus Herrgard       9/16/03
@@ -211,6 +221,14 @@ LPproblem = buildLPproblemFromModel(model);
 if ~(verifyCobraProblem(LPproblem, [], [], false) == 1)
     warning('invalid problem');
     return;
+end
+
+if isfield(model,'C')
+    nCtrs = size(model.C,1);
+end
+
+if isfield(model,'E')
+    nVars = size(model.E,2);
 end
 
 %%
@@ -358,17 +376,19 @@ end
 
 % Store results
 if (solution.stat == 1)
-    %solution found.
+    % solution found. Set corresponding values
     solution.x = solution.full(1:nRxns);
-
-    if isfield(solution,'dual')
-        if ~isempty(solution.dual)
-            solution.dual=solution.dual(1:size(LPproblem.A,1),1);
-        end
+    solution.v = solution.x;
+    % handle the objective, otherwise another objective value could be 
+    % returned and we only want to return the value of the defined
+    % model objective
+    if isfield(model,'E')
+        solution.vars_v = solution.full(nRxns+1:nRxns+nVars);        
+        solution.f = model.c'*solution.v + model.evarc' * solution.vars_v; % We need to consider the 
+    else
+        solution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
     end
-
-    %this line IS necessary.
-    solution.f = model.c'*solution.full(1:nRxns); %objective from original optimization problem.
+    % Check objective quality
     if abs(solution.f - objective) > .01
         if strcmp(minNorm,'one')
             display('optimizeCbModel.m warning:  objective appears to have changed while minimizing taxicab norm');
@@ -376,14 +396,51 @@ if (solution.stat == 1)
             error('optimizeCbModel.m: minimizing Euclidean norm did not work')
         end
     end
-
+    
+    % handle the duals, reducing them to fields in the model.
+    if isfield(solution,'dual')
+        if ~isempty(solution.dual)
+            if isfield(model,'C')
+                solution.ctrs_y = solution.dual(nMets+1:nMets+nCtrs,1);
+            end
+            solution.dual=solution.dual(1:nMets,1);            
+        end    
+    end            
+    
+    % handle reduced costs 
+    if isfield(solution,'rcost')
+        if ~isempty(solution.rcost)
+            if isfield(model,'E')
+                solution.vars_w = solution.rcost(nRxns+1:nRxns+nVars,1);
+            end
+            solution.rcost=solution.rcost(1:nRxns,1);            
+        end
+    end     
+    
+    % handle slacks
+    if isfield(solution,'slack')
+        if ~isempty(solution.slack)
+            if isfield(model,'C')
+                solution.ctrs_s = solution.slack(nMets+1:nMets+nCtrs,1);
+            end
+            solution.slack=solution.slack(1:nMets,1);            
+        end
+    end     
+    
     %if (~primalOnlyFlag && allowLoops && any(~minNorm)) % LP rcost/dual only correct if not doing minNorm
     % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
     % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan
     if (~primalOnlyFlag && allowLoops)
-        solution.y = solution.dual;
-        solution.w = solution.rcost;
+        solution.y = solution.dual;          
+        solution.w = solution.rcost; 
+        solution.s = solution.slack;
     end
+    fieldOrder = {'full';'obj';'rcost';'dual';'slack';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'f';'x';'v';'w';'y';'s'};
+    % reorder fields for better reradability
+    currentfields = fieldnames(solution);
+    presentfields = ismember(fieldOrder,currentfields);
+    absentfields = ~ismember(currentfields,fieldOrder);
+    solution = orderfields(solution,[currentfields(absentfields),fieldOrder(presentfields)]);
 else
     %some sort of error occured.
     if printLevel>0
@@ -391,22 +448,11 @@ else
     end
     solution.f = 0;
     solution.x = [];
+    solution.v = solution.x;
 end
 
 solution.time = etime(clock, t1);
-solution.v = solution.x;%eventually we should depreciate solution.x
-if solution.stat == 1
-    %If this has a solution
-    solution.v = solution.v(1:nRxns); %v should only include reaction fluxes    
-    if (~primalOnlyFlag && allowLoops)
-        if size(solution.w,1) >= nRxns
-            solution.w = solution.w(1:nRxns); %w should only include reaction fluxes       
-        end
-        if size(solution.y,1) >= nMets
-            solution.y = solution.y(1:nMets); %y should only include reduced costs.
-        end
-    end
-end
+
 
 
 

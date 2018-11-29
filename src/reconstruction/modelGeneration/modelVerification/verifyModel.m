@@ -21,7 +21,7 @@ function results = verifyModel(model, varargin)
 %                   * 'stoichiometricConsistency' (checks for Stoichiometric Consisteny, according to `Gevorgyan, Bioinformatics, 2008`) (Default: false)
 %                   * 'deadEndMetabolites' (metabolites which can either not be produced, or consumed) (Default: false)
 %                   * 'simpleCheck' returns false if this is not a valid model and true if it is a valid model, ignored if any other option is selected. (Default: false)
-%                   * 'requiredFields' sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {'S', 'b', 'csense', 'lb', 'ub', 'c', 'osense', 'rxns', 'mets', 'genes', 'rules'})
+%                   * 'requiredFields' sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {'S', 'lb', 'ub', 'c', 'rxns', 'mets', 'genes', 'rules'})
 %                   * 'checkDatabaseIDs', check whether the database identifiers in specified fields (please have a look at the documentation), match to the expected patterns for those databases.
 %                   * 'silentCheck', do not print any information. Only applies to the model structure check. (default is to print info)
 %                   * 'restrictToFields' restricts the check to the listed fields. This will lead to requiredFields being reduced to those fields present in the restricted fields. If an empty cell array is provided no restriction is applied. (default: {})
@@ -384,14 +384,16 @@ for i = 1:numel(presentFields)
             else
                 x_pres = numel(model.(xFieldMatch));
             end
+            errorMessage = sprintf('%s: Size of %s does not match elements in %s', xFieldMatch,testedField,xFieldMatch);
         elseif isnumeric(xFieldMatch)
+            errorMessage = sprintf('X Size of %s was %i. Expected %i',testedField, x_size,x_pres);
             x_pres = xFieldMatch;
         end
         if x_pres ~= x_size
             if ~isfield(results.Errors,'inconsistentFields')
                 results.Errors.inconsistentFields = struct();
             end
-            results.Errors.inconsistentFields.(testedField) = sprintf('%s: Size of %s does not match elements in %s', xFieldMatch,testedField,xFieldMatch);
+            results.Errors.inconsistentFields.(testedField) = errorMessage;
         end
     end
     if checkY
@@ -405,14 +407,16 @@ for i = 1:numel(presentFields)
             else
                 y_pres = numel(model.(yFieldMatch));
             end
+            errorMessage = sprintf('%s: Size of %s does not match elements in %s', yFieldMatch,testedField,yFieldMatch);
         elseif isnumeric(yFieldMatch)
             y_pres = yFieldMatch;
+            errorMessage = sprintf('Y Size of %s was %i. Expected %i',testedField, y_size,y_pres);
         end
         if y_pres ~= y_size
             if ~isfield(results.Errors,'inconsistentFields')
                 results.Errors.inconsistentFields = struct();
             end
-            results.Errors.inconsistentFields.(testedField) = sprintf('%s: Size of %s does not match elements in %s', yFieldMatch,testedField,yFieldMatch);
+            results.Errors.inconsistentFields.(testedField) = errorMessage;
         end
     end
     %Test the field content properties
