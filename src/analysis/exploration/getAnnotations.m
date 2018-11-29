@@ -28,15 +28,16 @@ function [annotations, qualifiers] = getAnnotations(model, database, ids, vararg
 %    qualifiers:        A Cell array of the same format as the annotations,
 %                       except that each element corresponds to the
 %                       qualifier associated with the respective ID, only
-%                       relevane if multiple qualifiers are provided
+%                       relevant if multiple qualifiers are provided.
+%                       Cannot be combined with resultType SBMLStruct
 % 
 
-resultTypes = {'sbmlstruct','list','cellist'};
+resultTypes = {'sbmlstruct','list','celllist'};
 
 parser = inputParser();
 parser.addParameter('qualifier','is',@(x) all(ismember(x,getBioQualifiers())));
-parser.addParameter('resultType','list',@(x) any(ismember(lower(x),resultTypes)));
-parser.addParameter('field','all',@(x) ischar(x) && any(ismember(x, union('model',getCobraTypeFields()))));
+parser.addParameter('resultType','list',@(x) any(ismember(lower(x),lower(resultTypes))));
+parser.addParameter('field','all',@(x) (ischar(x)) && any(ismember(x, union('model',getCobraTypeFields()))));
 parser.parse(varargin{:});
 
 resultType = parser.Results.resultType;
@@ -46,73 +47,45 @@ field = parser.Results.field;
 % special case model. we will handle this separately.
 if strcmp('model',field)
     %obtain the matching model annotations
-    annotations = getMIRIAMAnnotations(model,'model','databases',{database},...
+    structannotations = getMIRIAMAnnotations(model,'model','databases',{database},...
         'bioQualifiers',{qualifier});
-    % convert to list, if necessary
-    if ~strcmpi(resultType,'sbmlstruct')
-        quals = {annotations.cvterms.qualifier};
+else
+    structannotations = getMIRIAMAnnotations(model,'referenceField', field,'databases',{database},...
+                                         'ids', ids,'bioQualifiers',{qualifier});
+end
+
+% for a struct, we already have the functionality. And we are done already.
+if ~strcmpi(resultType,'sbmlstruct')  
+    annotations = cell(numel(structannotations),1);    
+    qualifiers = cell(numel(structannotations),1);    
+    for element = 1:numel(structannotations)
+        quals = {structannotations(element).cvterms.qualifier};
         lannotations = {};
-        qualifiers = {};
+        lqualifiers = {};
         % every element needs to be converted
-        for i = 1:numel(annotations.cvterms)
-            cAnnotations = {annotations.cvterms(i).ressources.id};
+        for i = 1:numel(structannotations(element).cvterms)
+            cAnnotations = {structannotations(element).cvterms(i).ressources.id};
             cQuals = repmat(quals(i),1,numel(cAnnotations));
             lannotations = [lannotations, cAnnotations];
-            qualifiers = [qualifiers, cQuals];
-        end     
-        annotations = lannotations;
+            lqualifiers = [lqualifiers, cQuals];
+        end
+        annotations{element} = lannotations;
+        qualifiers{element} = lqualifiers;
     end
-    % convert to a cellstring, 
+    % convert to a cellstring,
     if strcmpi(resultType,'list')
-        annotations = {strjoin(annotations,'; ')};
-        qualifiers = {strjoin(qualifiers,'; ')};
+        annotations = cellfun(@(x) strjoin(x,'; '),annotations,'Uniform',0);
+        qualifiers = cellfun(@(x) strjoin(x,'; '),qualifiers,'Uniform',0);
     end
-    return
-end
-
-% we only have to handle IDs if there is a non model annotation requested
-if ischar(ids)
-    ids = {ids};
-end
-% a char array is the same a s a cell array of a single char for the
-% purposes of this function.
-origids = ids;
-% convert a cell
-if iscell(ids)
-    [pres,pos] = ismember(ids,model.(field));    
-    ids = pos(pres);
-    if numel(origids) ~= numel(ids)
-        error('The following ids are missing from model.%s:\n%s\n',field,strjoin(setdiff(origids,model.(field)(ids)),'\n'));
+    if ischar(ids) || strcmp('model',field)
+        annotations = annotations{1};
+        qualifiers = qualifiers{1};
     end
-end
-% convert a logic array
-if islogical(ids)
-    ids = find(ids);    
-end
-% 
-
-%for a struct, we already have the functionality.
-if strcmpi(resultType,'sbmlstruct')
-    annotations = getMIRIAMAnnotations(model,field,'databases',{database},...
-                                       'ids', model.(field)(ids),'bioQualifiers',{qualifier});
-    return
-end
-
-targetField = getAnnotationFieldName(field,lower(database),qualifier);
-% get the actual field name.
-if iscell(targetField)
-    targetField = targetField{1};
-end
-
-% extract the values from the annotation field.
-if isfield(model,targetField)
-    annotations = model.(targetField)(ids);
 else
-    annotations = cell(numel(ids),1);
+     annotations = structannotations;
 end
 
-if strcmp(resultType,'celllist')
-    annotations = cellfun(@(x) strsplit(x,'; '),annotations,'Uniform', 0);
+
 end
 
 

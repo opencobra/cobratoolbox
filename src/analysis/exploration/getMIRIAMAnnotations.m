@@ -1,19 +1,18 @@
-function annotations = getMIRIAMAnnotations(model, type, varargin)
+function annotations = getMIRIAMAnnotations(model, varargin)
 % Get the MIRIAM Annotations a struct array of annotation structs for the given type
 %
 % USAGE:
-%    annotations = getMIRIAMAnnotations(model,field,...)
+%    annotations = getMIRIAMAnnotations(model, varargin)
 %
 % INPUTS:
 %    model:             The COBRA  model structure. 
-%    type:              the basic field to get annotations for (e.g. rxn, met, or
-%                       model
 %
 % OPTIONAL INPUTS:
 %    varagin:           Additional arguments as parameter/value pairs.
-%                        * bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in `getBioQualifiers()` will be used
-%                        * ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type 's'])). 
-%                        * databases - Database identifiers to extract (default: all)
+%                        * `referenceField` - The reference field to look up the IDs (or the whole field if no ID is porivded). If not provided, the function will try to determine all anotations for the given IDs for all base fields. 
+%                        * `bioQualifiers` - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in `getBioQualifiers()` will be used
+%                        * `ids` - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type 's'])). 
+%                        * `databases` - Database identifiers to extract (default: all)
 % OUTPUT:
 %    annotations:       A struct array with the following structure:                        
 %                        * annotations.cvterms -> A Struct array of controlled vocabulary terms with one element per qualifier used
@@ -26,34 +25,109 @@ function annotations = getMIRIAMAnnotations(model, type, varargin)
 
 
 [defaultBioQualifiers,standardQualifiers] = getBioQualifiers();
-type = regexprep(type,'s$','');
 
-if ~strcmpi(type,'model')
-    defaultIDs = model.([lower(type) 's']);
-else
-    defaultIDs = {'model'};
-end
+defaultFields = intersect(getCobraTypeFields(),fieldnames(model));
+
+
 
 parser = inputParser();
-
-resultTypes = {'sbmlstruct','list','cellist'};
-
-
+parser.addParameter('referenceField','all',@(x) (ischar(x) || iscell(x)) && all(ismember(regexprep(x,'s$',''),union(regexprep(defaultFields,'s$',''),{'all','model'}))));
 parser.addParameter('bioQualifiers',defaultBioQualifiers,@(x) ischar(x) || iscell(x))
-parser.addParameter('ids',defaultIDs,@(x) ischar(x) || iscell(x) || isnumeric(x) || islogical(x));
 parser.addParameter('databases','all',@(x) ischar(x) || iscell(x));
-
+parser.KeepUnmatched = true;
+% get the potential reference fields.
 parser.parse(varargin{:});
 
+if isfield(model,'modelID')
+    modelID = {model.modelID};
+else
+    modelID = {'model'};
+end
+
+type = regexprep(parser.Results.referenceField,'s$','');
+if strcmp(type,'all')
+    type = union('model',defaultFields);
+end
+
+% check whether type is a cell array (requires special treatment).
+if iscell(type)
+    defaultIDs = {};
+    for i = 1:numel(type)        
+        cField = type{i};
+        if strcmp(cField,'model')
+            % skip
+            continue;
+        end
+        if isfield(model,cField)
+            defaultIDs = union(defaultIDs,model.(cField));
+        end
+    end
+    if any(ismember(type,'model')) 
+        defaultIDs = [modelID;defaultIDs];
+    end
+    idValidationFunction = @(x) (ischar(x) || iscell(x)) && all(ismember(x,defaultIDs));
+elseif ~strcmpi(type,'model')
+    defaultIDs = model.([lower(type) 's']);
+    idValidationFunction = @(x) (ischar(x) || iscell(x)) && all(ismember(x,defaultIDs)) || isnumeric(x) && max(x) < numel(defaultIDs) || islogical(x) && max(find(x)) < numel(defaultIDs);
+else
+    defaultIDs = modelID;
+    idValidationFunction = @(x) ischar(x);
+end
+parser.addParameter('ids',defaultIDs,idValidationFunction);
+parser.KeepUnmatched = false;
+% parse again to check the IDs.
+parser.parse(varargin{:});
+ids = parser.Results.ids;
+
+% determine the bioQualifiers to check
 bioQualifiers = parser.Results.bioQualifiers;
 if ischar(bioQualifiers)
     bioQualifiers = {bioQualifiers};
 end
-ids = parser.Results.ids;
+
+% select the databases to check
 dbsToReturn = parser.Results.databases;
 % make sure this is a cell array if its not all
 if ischar(dbsToReturn) && ~strcmp(dbsToReturn,'all')
     dbsToReturn = {dbsToReturn};
+end
+
+% in case we have a single id, we will convert it into a cell array.
+if ischar(ids)
+    ids = {ids};
+end
+
+if iscell(type)
+    annotations = struct('id',{},'cvterms',struct('qualifier',{},'qualifierType',{},'ressources',struct('id',{},'database',{})));    
+    annotations(numel(ids)).id = ids(numel(ids));
+    for i = 1:numel(type)         
+       cField = type{i};
+       if strcmp(cField,'model')
+           % skip the model, handled separately
+           continue;
+       end
+       [idpres] = find(ismember(ids,model.(cField)));
+       if ~isempty(idpres)
+           result = getMIRIAMAnnotations(model,'ids',ids(idpres),'referenceField',cField,...
+               'databases', dbsToReturn, 'bioQualifiers',bioQualifiers);
+           for elem = 1:numel(idpres)
+               if isempty(annotations(idpres(elem)).cvterms)
+                   %no assignments yet, so we set it.
+                   annotations(idpres(elem)) = result(elem);
+               else
+                   annotations(idpres(elem)).cvterms = [annotations(idpres(elem)).cvterms,result(elem).cvterms];
+               end
+           end
+       end
+    end
+    % also handle the model field if requested.
+    if any(ismember(modelID,ids)) && any(ismember(type,'model'))
+        result = getMIRIAMAnnotations(model,'referenceField','model',...
+                                          'databases', dbsToReturn, 'bioQualifiers',bioQualifiers);
+        annotations(1).id = ids{1};
+        annotations(1).cvterms = result.cvterms;
+    end
+    return
 end
 
 % extract positional IDs
@@ -68,7 +142,11 @@ if strcmp(type,'model')
     annotations = cell(1);
     modelAnnot = true;
     bioQualifiers = [strcat('m',bioQualifiers),strcat('b',bioQualifiers)];    
-    ids = {'model'};
+    if isfield(model,'modelID')
+        ids = {model.modelID};
+    else
+        ids = {'model'};
+    end
 else
     numElements = length(ids);
     modelAnnot = false;
@@ -173,7 +251,10 @@ annotations(numElements).id = '';
 
 for i = 1:numElements
     cvtermsIndex = 1;
+    % initialize the elements
     annotations(i).id = ids{i};
+    annotations(i).cvterms = cvtermStruct;
+    % fill the actual cvterms (if any)
     currentCVtermsStruct = cvtermStruct;    
     % take all qualifierTypes which have non empty entries for this element
     relArray = resultArray(i,:,:);
@@ -219,3 +300,5 @@ for i = 1:numElements
 end
 
 end
+
+

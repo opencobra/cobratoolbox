@@ -162,6 +162,11 @@ if annotateModel
             for annotQual = 1:numel(annotationQualifiers)
                 cQual = annotationQualifiers{annotQual};
                 relForAnnot = strcmp(annotationQualifier,annotationQualifiers(annotQual));
+                if ~any(relForType & relForDB & relForAnnot)
+                    % this is not a valid combination of DB, Annotation and
+                    % qualifier type, so skip it, don't add fields
+                    continue
+                end
                 % now, build the field, if it does not exist.
                 fieldName = getAnnotationFieldName('model',cdb,cQual);
                 fieldName = regexprep(fieldName{1},'^model',['model' cQualType(1)]);
@@ -169,7 +174,7 @@ if annotateModel
                 % if the field does not exist or the annotation is supposed
                 % to be replaced we simply recreate the field. otherwise we
                 % join data from the field with the new annotation.
-                if replaceAnnotation || ~isfield(model,'fieldName')
+                if replaceAnnotation || ~isfield(model,fieldName)
                     model.(fieldName) = strjoin(annotation, '; ');
                 else                    
                     model.(fieldName) = strjoin(union(strsplit(model.(fieldName),'; '),annotation),'; ');                        

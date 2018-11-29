@@ -4,6 +4,8 @@
 %     - testMIRIAMAnnotation tests the addMIRIAMAnnotation, and
 %     getMIRIAMAnnotation functions. By testing whether newly added
 %     annotations show up in the obtained annotations.
+%     - It also tests the get/set/addAnnotation functions to see, whether
+%     they work as expected.
 %
 % Authors:
 %     - Thomas Pfau Jun 2018
@@ -57,13 +59,13 @@ assert(strcmp(modelWithID.rxnisbrendaID{1},validBrendaID));
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
 
 % and lets test getMIRIAMAnnotations
-annotations = getMIRIAMAnnotations(model,'rxn','ids',model.rxns(1));
+annotations = getMIRIAMAnnotations(model,'referenceField','rxn','ids',model.rxns(1));
 
 % this is all empty. There are no terms on the basic model.
 assert(isempty(annotations.cvterms))
 
 % now check that the Brenda Terms are correct
-annotations = getMIRIAMAnnotations(modelWithID,'rxn','ids',model.rxns(1));
+annotations = getMIRIAMAnnotations(modelWithID,'ids',model.rxns(1));
 assert(strcmp(annotations.cvterms(1).qualifier,'is'))
 assert(strcmp(annotations.cvterms(1).qualifierType,'bioQualifier'))
 
@@ -81,7 +83,7 @@ modelWithID = addMIRIAMAnnotations(modelWithID,'','bigg.model','iJO1366','refere
 assert(isfield(modelWithID,'modelbisbigg__46__modelID'));
 assert(strcmp(modelWithID.modelbisbigg__46__modelID, 'iJO1366'));
 
-annotations = getMIRIAMAnnotations(modelWithID,'model');
+annotations = getMIRIAMAnnotations(modelWithID,'referenceField','model');
 isDerivedFromPos = ismember({annotations.cvterms.qualifier},'isDerivedFrom');
 
 % this is a model qualifier
@@ -96,5 +98,40 @@ assert(strcmp(annotations.cvterms(~isDerivedFromPos).qualifierType,'bioQualifier
 % and also named iJO1366
 assert(strcmp(annotations.cvterms(~isDerivedFromPos).ressources.id,'iJO1366')) 
 
+% now, test the annotation functions 
+modelWithModelID = rmfield(modelWithID,'rxnisbrendaID');
+
+% test addition of model annotations via a annotation struct
+modelWithID2 = addAnnotations(model,annotations,'referenceField','model');
+assert(isSameCobraModel(modelWithModelID,modelWithID2));
+
+% Get the list of annotations for reaction 1
+annots = getAnnotations(modelWithID,'brenda',modelWithID.rxns(1:3));
+% no annotations for the second and third element
+assert(isempty(annots{2}) && isempty(annots{3}))
+% proper annotation for the first element (i.e. all annotations are there.
+assert(isempty(setxor(strsplit(annots{1},'; '), additionalIDs)));
+
+% get output as a cell array of cell arrays
+annots = getAnnotations(modelWithID,'brenda',modelWithID.rxns(1:3),'resultType','cellList');
+assert(isempty(annots{2}) && isempty(annots{3}))
+% no difference in the order.
+assert(isempty(setxor(annots{1}, additionalIDs)));
+
+% test qualifiers correct
+[annots,qualifiers] = getAnnotations(modelWithID,'brenda',modelWithID.rxns{1});
+assert(numel(strsplit(qualifiers,'; ')) == 3 && all(strcmp(strsplit(qualifiers,'; '),'is')));
+
+% test addition
+modelWithID = addAnnotations(modelWithID,'1.2.3.4','annotationQualifier','isDescribedBy','database','brenda','ids',modelWithID.rxns{1});
+assert(isfield(modelWithID,'rxnisDescribedBybrendaID'))
+assert(strcmp(modelWithID.rxnisDescribedBybrendaID{1},'1.2.3.4'))
+
+% retrieve the additional (in addition to existing ones)
+[annots,qualifiers] = getAnnotations(modelWithID,'brenda',modelWithID.rxns{1},'resultType','celllist','qualifier',getBioQualifiers());
+assert(isempty(setxor(annots,additionalIDs)))
+assert(numel(annots) == 4)
+
+% 
 %Test finished.
 fprintf('>> Done ...\n');
