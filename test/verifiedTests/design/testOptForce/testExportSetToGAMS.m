@@ -10,7 +10,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testexportSetToGAMS'));
+fileDir = fileparts(which(mfilename));
 cd(fileDir);
 
 % if nargin < 2
