@@ -278,7 +278,7 @@ vector, for multiple simultaneous addition;</li>
 <li><dl class="first docutils">
 <dt>ConstraintID:     the Name of the constraint. by</dt>
 <dd>(default: &#8216;ConstraintXYZ&#8217; with XYZ being the initial
-position in the mets vector)
+position in the ctrs vector)
 or a cell array of Strings for
 multiple Constraints</dd>
 </dl>
@@ -294,9 +294,20 @@ multiple Constraints</dd>
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
+<div><ul>
+<li><p class="first"><strong>modelConstrained</strong> &#8211;
+The constrained model containing the added
+constraints in the respective fields:</p>
+<blockquote>
 <div><ul class="simple">
-<li><strong>modelConstrained</strong> &#8211;
-constrained model</li>
+<li><cite>.C</cite> - The constraint matrix containing coefficients for reactions</li>
+<li><cite>.ctrs</cite> - The constraint IDs</li>
+<li><cite>.dsense</cite> - The constraint senses</li>
+<li><cite>.d</cite> the constraint right hand side values</li>
+<li>Optional: <cite>D</cite>, the matrix conatining coefficients for additional variables.</li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Example</strong></p>
@@ -307,6 +318,17 @@ constrained model</li>
 <span class="n">constraint</span> <span class="n">that</span> <span class="n">requires</span> <span class="n">that</span> <span class="n">the</span> <span class="n">two</span> <span class="n">reactions</span> <span class="n">remove</span> <span class="n">at</span> <span class="n">least</span> <span class="mi">4</span> <span class="n">units</span> <span class="n">of</span> <span class="n">A</span><span class="p">:</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">addCOBRAConstraints</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">rxns</span><span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;dsense&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function will, if not present create the <cite>C</cite>, <cite>ctrs</cite>, <cite>dsense</cite>, <cite>d</cite> and,
+if additional variables (i.e. the <cite>E</cite> matrix) is present, the <cite>D</cite>
+field as defined in the model field definitions. The <cite>C</cite> field containts
+the constraint coefficients referring to reactions, while the <cite>D</cite>
+field contains the Constraint coefficients referring to additional
+variables. <cite>d</cite> represents the right hand side of constraints and
+<cite>dsense</cite> the sense (lower -&#8216;L&#8217; , equal - &#8216;E&#8217; or greater than - &#8216;G&#8217;) of the constraint.
+<cite>ctrs</cite> stores unique IDs for the constraints.</p>
 </div>
 <p>Author: Thomas Pfau, Nov 2017</p>
 </dd></dl>
@@ -359,11 +381,35 @@ idlist
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
+<div><ul>
+<li><p class="first"><strong>model</strong> &#8211;
+constrained model containing the new variables in the
+respective fields (<cite>E</cite>,`evars`,`evarub`,`evarlb`,`evarc`)</p>
+<blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-constrained model</li>
+<li><cite>.E</cite> - The coefficient matrix for coefficients of metabolites for the variables</li>
+<li><cite>.evars</cite> - The variable IDs</li>
+<li><cite>.evarlb</cite> - The variable lower bounds</li>
+<li><cite>.evarub</cite> - The variable upper bounds</li>
+<li><cite>.evarc</cite> - The variable objective coefficient</li>
+<li>Optional: <cite>D</cite>, the matrix conatining coefficients for additional variables.</li>
 </ul>
 </div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function will, if not present create the <cite>E</cite>, <cite>evars</cite>, <cite>evarlb</cite>, <cite>evarub</cite>, <cite>evarc</cite> and,
+if additional Constraints (i.e. the <cite>C</cite> matrix) is present, the <cite>D</cite>
+field as defined in the model field definitions. The <cite>E</cite> matrix containts
+the Variable coefficients referring to metabolites, while the <cite>D</cite>
+field contains the variable coefficients referring to additional
+Constraints from <cite>C</cite>. <cite>evars</cite> contains the IDs of the additional
+variables, with one entrey per column of <cite>E</cite>. <cite>evarlb</cite> and <cite>evarub</cite>
+represent the lower and upper bounds of the variables respectively.
+<cite>evarc</cite> are objective coefficients of the variables.</p>
+</div>
 <p>Author: Thomas Pfau, Oct 2018</p>
 </dd></dl>
 
@@ -666,7 +712,7 @@ all used metabolites to be already present in the model.</p>
 <li><strong>model</strong> &#8211;
 The model to add the Metabolite batch to.</li>
 <li><strong>rxnIDs</strong> &#8211;
-The IDs of the reactions that shall be added.</li>
+The IDs of the reactions that shall be added (cell Array).</li>
 <li><strong>metList</strong> &#8211;
 A list of metabolites for which stoichiometric coefficients are given</li>
 <li><strong>Stoichiometries</strong> &#8211;

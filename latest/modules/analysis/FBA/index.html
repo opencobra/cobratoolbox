@@ -531,14 +531,16 @@ appoximation type of zero-norm (only available when minNorm=&#8217;zero&#8217;) 
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
+<div><ul>
+<li><p class="first"><strong>solution</strong> &#8211;
+solution object:</p>
+<blockquote>
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-solution object:<ul>
 <li>f - Objective value</li>
 <li>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</li>
-<li>y - Dual</li>
-<li>w - Reduced costs</li>
-<li>s - Slacks</li>
+<li>y - Dual for the metabolites</li>
+<li>w - Reduced costs of the reactions</li>
+<li>s - Slacks of the metabolites</li>
 <li>stat - Solver status in standardized form:<ul>
 <li><cite>-1</cite> - No solution reported (timelimit, numerical problem etc)</li>
 <li><cite>1</cite> - Optimal solution</li>
@@ -548,6 +550,21 @@ solution object:<ul>
 </li>
 <li>origStat - Original status returned by the specific solver</li>
 </ul>
+</div></blockquote>
+<p>If the input model contains <cite>C</cite> the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>ctrs_y - the duals for the constraints from C</li>
+<li>ctrs_slack - Slacks of the additional constraints</li>
+</ul>
+</div></blockquote>
+<p>If the model contains the <cite>E</cite> field, the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>vars_v - The optimal primal values of the variables</li>
+<li>vars_w - The reduced costs of the additional variables from E</li>
+</ul>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
