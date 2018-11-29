@@ -1004,7 +1004,7 @@ same as above, but in a cell array</li>
 metabolite listed in metList participates.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, verbFlag)</div></blockquote>
+<div>[rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, printFlag)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -1017,14 +1017,15 @@ Metabolite list</li>
 <p><strong>Optional inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>verbFlag</strong> &#8211;
+<li><strong>printFlag</strong> &#8211;
 Print reaction formulas to screen (Default = false)</li>
 <li><strong>Property/Value</strong> &#8211;
 Allowed Properties are:
-&#8216;containsAll&#8217; (True/False) - If true only reactions
-containing all metabolites in metList are returned
-&#8216;verbFlag&#8217; (True/False) as above, will overwrite a
-<cite>verbFlag</cite> set individually</li>
+* <cite>containsAll</cite> - If true only reactions containing all metabolites in metList are returned (Default: false)
+* <cite>printFlag</cite> - as above, will overwrite a <cite>printFlag</cite> set individually (Default: false)
+* <cite>producersOnly</cite> - Only return reactions which produce any of the given metabolites. (Default: false)
+* <cite>consumersOnly</cite> - Only return reactions which consume any of the given metabolites. (Default: false)
+* <cite>exclusive</cite> - Only return those reactions, which do not contain any metabolites but those given (Default: false)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>

@@ -366,7 +366,14 @@ List of genes to be deleted (default = all genes)</li>
 <li><strong>verbFlag</strong> &#8211;
 Verbose output (Default false)</li>
 <li><strong>uniqueGene</strong> &#8211;
-Run unique gene deletion (default = 0).</li>
+Run unique gene deletion. This option will remove
+transcript information from the model and test
+complete gene knockouts instead of transcript
+knockouts. If this flag is set, all genes in the
+model have to have transcript information at the end of their
+name as a &#8216;.&#8217; followed by a number. If only a part of
+the genes has transcript information, this option will be
+ignored (default = 0)</li>
 </ul>
 </div></blockquote>
 <p><strong>Outputs</strong></p>

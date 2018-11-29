@@ -386,11 +386,11 @@ The following sections shall be included in a test file:</p>
 <p class="rubric">2. Test initialization</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
 
-<span class="c">% save the current path</span>
-<span class="n">currentDir</span> <span class="p">=</span> <span class="n">pwd</span><span class="p">;</span>
+<span class="c">% save the current path and switch to the test path</span>
+<span class="n">currentDir</span> <span class="p">=</span> <span class="n">cd</span><span class="p">(</span><span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;fileName&#39;</span><span class="p">)));</span>
 
-<span class="c">% initialize the test</span>
-<span class="n">cd</span><span class="p">(</span><span class="n">fileparts</span><span class="p">(</span><span class="n">which</span><span class="p">(</span><span class="s">&#39;fileName&#39;</span><span class="p">)));</span>
+<span class="c">% get the path of the test folder</span>
+<span class="n">testPath</span> <span class="p">=</span> <span class="n">pwd</span><span class="p">;</span>
 </pre></div>
 </div>
 <p class="rubric">3. Define the solver packages to be tested and the tolerance</p>
@@ -402,9 +402,12 @@ The following sections shall be included in a test file:</p>
 </pre></div>
 </div>
 <p class="rubric">4. Load a model and/or reference data</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% load the model</span>
-<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;testModel.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
-<span class="n">load</span><span class="p">(</span><span class="s">&#39;testData_functionToBeTested.mat&#39;</span><span class="p">);</span>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% load a model distributed by the toolbox</span>
+<span class="n">getDistributedModel</span><span class="p">(</span><span class="s">&#39;testModel.mat&#39;</span><span class="p">);</span>
+<span class="c">% load a particular model for this test:</span>
+<span class="n">readCbModel</span><span class="p">([</span><span class="n">testPath</span> <span class="n">filesep</span> <span class="s">&#39;SpecificModel.mat&#39;</span><span class="p">])</span>
+<span class="c">% load reference data</span>
+<span class="n">load</span><span class="p">([</span><span class="n">testPath</span> <span class="n">filesep</span> <span class="s">&#39;testData_functionToBeTested.mat&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p>Please only load <em>small</em> models, i.e.&nbsp;less than <code class="docutils literal"><span class="pre">100</span></code> reactions. If
@@ -419,12 +422,6 @@ online, please make a pull request with the URL entry to the
 </tr>
 </tbody>
 </table>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">CBTDIR</span>
-
-<span class="c">% load the ecoli core model</span>
-<span class="n">load</span><span class="p">([</span><span class="n">CBTDIR</span> <span class="n">filesep</span> <span class="s">&#39;test&#39;</span> <span class="n">filesep</span> <span class="s">&#39;models&#39;</span> <span class="n">filesep</span> <span class="s">&#39;ecoli_core_model.mat&#39;</span><span class="p">],</span> <span class="s">&#39;model&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
 <p class="rubric">5. Create a parallel pool</p>
 <p>This is only necessary for tests that test a function that runs in
 parallel.</p>
@@ -445,7 +442,7 @@ parallel.</p>
 </table>
 <p>should not be needed to test a parallel function efficiently.</p>
 <p class="rubric">6. Body of test</p>
-<p>The test. If multiple solvers were requested by ‘useIfAvailable’, run:</p>
+<p>The test itself. If the solvers are essential for the functionality tested in this test use:</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">)</span>
     <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39; -- Running &lt;testFile&gt; using the solver interface: %s ... &#39;</span><span class="p">,</span> <span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="n">k</span><span class="p">});</span>
 
@@ -457,15 +454,17 @@ parallel.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>If only one solver is requested:</p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">,</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<p>This is important, as the continuous integration system will run other solvers on the test in its nightly build. That way,
+we can determine solvers that work with a specific method, and those that do not (potentially due to precision problems or other issues).
+If the solvers are only used to test the outputs of a function for correctness, use:</p>
+<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="n">solverLPOK</span> <span class="p">=</span> <span class="n">changeCobraSolver</span><span class="p">(</span><span class="n">solvers</span><span class="p">.</span><span class="n">LP</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span> <span class="s">&#39;LP&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="c">% &lt;your test goes here&gt;</span>
 
 <span class="c">% output a success message</span>
 <span class="n">fprintf</span><span class="p">(</span><span class="s">&#39;Done.\n&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p class="rubric">7. Change to the current directory</p>
+<p class="rubric">7. Return to the original directory</p>
 <div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="c">% change the directory</span>
 <span class="n">cd</span><span class="p">(</span><span class="n">currentDir</span><span class="p">)</span>
 </pre></div>
