@@ -43,8 +43,13 @@ function [metComps,metIDs] = extractCompartmentsFromMets(mets, varargin)
 parser = inputParser();
 parser.addParameter('defaultCompartment','k',@ischar);
 parser.addParameter('compartmentRegExp','(?<metID>.*)\[(?<compID>[^\]]+)\]',@ischar);
-
 parser.parse(varargin{:});
+
+if isempty(mets)
+    metIDs = cell(0,1);
+    metComps = cell(0,1);
+    return
+end
 
 defaultCompartment = parser.Results.defaultCompartment;
 compartmentRegExp = parser.Results.compartmentRegExp;
