@@ -350,5 +350,12 @@ elseif ~isfield(model,'metComps')
     model.compNames = model.comps;
     model.compNames(pos(pres)) = compNames(pres);    
 end
-    
+
+if isfield(model,'rxnSBOTerms')
+    numericIDs = cellfun(@isnumeric, model.rxnSBOTerms);
+    % convert the SBO terms to proper Identifiers
+    model.rxnSBOTerms(numericIDs) = cellfun(@(x) ['SBO:' repmat('0',1,7-length(num2str(x))), num2str(x)],model.rxnSBOTerms(numericIDs), 'Uniform',0);
+    numericIDs = cellfun(@(x) ~isempty(regexp(x,'^\d+$','ONCE')),model.rxnSBOTerms);
+    model.rxnSBOTerms(numericIDs) = cellfun(@(x) ['SBO:' repmat('0',1,7-length(x)), x],model.rxnSBOTerms(numericIDs), 'Uniform',0);
+end
     
