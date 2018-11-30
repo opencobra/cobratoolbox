@@ -217,7 +217,9 @@ end
 if ~isfield(model,'csense')
     model.csense = repmat('E',numel(model.mets),1);
 else
-    model.csense = columnVector(model.csense);
+    if size(model.csense,1) ~= 0
+        model.csense = columnVector(model.csense);
+    end
 end
 
 if ~isfield(model, 'genes')
