@@ -29,7 +29,7 @@ model = alphabetizeModel(model);
 modelMod = model;
 modelMod.mets(1:30) = strrep(model.mets(1:30),'[c]','[c+s.i]');
 modelMod.comps = {'c','e','c+s.i'}';
-
+modelMod.compNames = {'Cytoplasm','Extracellular','Something Strange'}';
 models = {model,modelMod};
 
 writeTypes = {'mat', 'sbml', 'xlsx'};
@@ -38,6 +38,7 @@ writeTypes = {'mat', 'sbml', 'xlsx'};
 if ~verLessThan('matlab', '8.6')
     % write out and read in different file types
     for i = 1:length(writeTypes)
+        fprintf('>> Testing %s IO ...\n',writeTypes{i});
         for j = 1:length(models)
             model = models{j};
             % write model
@@ -84,6 +85,7 @@ if ~verLessThan('matlab', '8.6')
                 delete(['testData.', writeTypes{i}]);
             end
         end
+        fprintf('>> Done ...\n',writeTypes{i});
     end
 else
     fprintf('\ntestWriteCbModel is not compatible with this version of MATLAB. Please upgrade your version of MATLAB.\n\n');
