@@ -43,15 +43,17 @@ parser.parse(varargin{:});
 resultType = parser.Results.resultType;
 qualifier = parser.Results.qualifier;
 field = parser.Results.field;
-
+if ischar(qualifier)
+    qualifier = {qualifier};
+end
 % special case model. we will handle this separately.
 if strcmp('model',field)
     %obtain the matching model annotations
     structannotations = getMIRIAMAnnotations(model,'model','databases',{database},...
-        'bioQualifiers',{qualifier});
+        'bioQualifiers',qualifier);
 else
     structannotations = getMIRIAMAnnotations(model,'referenceField', field,'databases',{database},...
-                                         'ids', ids,'bioQualifiers',{qualifier});
+                                         'ids', ids,'bioQualifiers',qualifier);
 end
 
 % for a struct, we already have the functionality. And we are done already.

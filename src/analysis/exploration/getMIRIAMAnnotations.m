@@ -286,7 +286,7 @@ for i = 1:numElements
             end
             if ~isempty(cIDArray)
                 % if we have at least one ID
-                cRessourcestruct = ressourceStruct;
+                cRessourceStruct = ressourceStruct;
                 cRessourceStruct(numel(cIDArray)).id = '';
                 [cRessourceStruct(:).id] = deal(cIDArray{:});
                 [cRessourceStruct(:).database] = deal(cDBArray{:});
