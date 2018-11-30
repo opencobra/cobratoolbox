@@ -16,6 +16,8 @@ function [sortedList, sortedCount] = countUnique(list)
 % .. Authors: Markus Herrgard 3/17/07
 
 [uniqList, tmp, index] = unique(list);
+% initialize
+count = zeros(length(uniqList),1);
 
 for i = 1:length(uniqList)
     count(i) = sum(index == i);
