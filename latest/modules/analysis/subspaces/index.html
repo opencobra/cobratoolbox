@@ -481,6 +481,38 @@ MinSpan vectors for COBRA model</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.subspaces.determineSignMatrix">
+<code class="descname">determineSignMatrix</code><span class="sig-paren">(</span><em>S</em>, <em>sorted</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/subspaces/determineSignMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.determineSignMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the binaryform of the stoichiometric matrix S and the connectivity vectors</p>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>S</strong> &#8211;
+Stoichiometric matrix of size m x n (m rows, n columns)</li>
+<li><strong>sorted</strong> &#8211;
+Boolean flag to sort the connectivity vectors (default: false)</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Shat</strong> &#8211;
+Binary form of the stoichiometric matrix</li>
+<li><strong>Shatabs</strong> &#8211;
+Absolute value of Shat</li>
+<li><strong>mconnect</strong> &#8211;
+Compound connectivity (connectivity number; sum of the number of non-zero entries in a row)</li>
+<li><strong>nconnect</strong> &#8211;
+Reaction participation number (sum of the number of non-zero entries in a column)</li>
+<li><strong>mconnectin</strong> &#8211;
+Produced compound connectivity</li>
+<li><strong>mconnectout</strong> &#8211;
+Consumed compound connectivity</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.subspaces.fourFundamentalSubpaces">
 <code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/subspaces/fourFundamentalSubpaces.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate linearly independent bases the four fundamental subspaces of <cite>S</cite> using LUSOL or SVD</p>
