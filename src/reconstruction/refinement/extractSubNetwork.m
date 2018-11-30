@@ -24,8 +24,8 @@ function subModel = extractSubNetwork(model, rxnList, metList, updateGenes)
 %         and model.rxns is used to select the subnetwork.
 %         Replaced metNames with metList, to avoid similar confusion.
 %         Added the fields - rxnNames, rules and metCharge to subModel.
-%       - Thomas Pfau June 2017 - switched to use of
-%         removeRxns/removeMetabolites
+%       - Thomas Pfau June 2017 - switched to use of removeRxns/removeMetabolites
+%       - Thomas Pfau 2018 - Updating compartments when removing metabolites
 
 selRxns = ismember(model.rxns,rxnList);
 subS = model.S(:,selRxns);
