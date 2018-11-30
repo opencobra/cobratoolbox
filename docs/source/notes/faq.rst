@@ -190,7 +190,7 @@ pull requests is given
 General
 -------
 
-After loading a model, I get errors when using it  with toolbox functions. What can I do?
+After loading a model, I get errors when using it with toolbox functions. What can I do?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you used ``load('filename.mat')`` to load your model, you may encounter
