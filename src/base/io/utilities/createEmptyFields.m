@@ -88,7 +88,7 @@ for field = 1:length(fieldNames)
                     model.(fieldNames{field}){i} = currentvalue;
                 end
             end
-        case 'numeric'
+        case {'numeric', 'double'}
             model.(fieldNames{field}) = repmat(defaultValue,xdim,ydim);            
         case 'sparselogical'
             model.(fieldNames{field}) = sparse(repmat(logical(defaultValue),xdim,ydim));            

@@ -27,28 +27,28 @@ switch fieldType
     % build defaults based on the field type
     case 'cell'
         defaultValidator = '@iscell(x)';
-        defaultValue = {''};
+        defaultValue = '{''''}';
     case 'char'
         defaultValidator = '@ischar(x)';
         defaultValue = ' ';
     case 'sparse'
         defaultValidator = '@issparse(x) && isnumeric(x)';
-        defaultValue = 0;
+        defaultValue = '0';
     case 'logical'
         defaultValidator = '@islogical(x)';
-        defaultValue = false;
+        defaultValue = 'false';
     case 'sparselogical'
         defaultValidator = '@issparse(x) && islogical(x)';
-        defaultValue = false;
+        defaultValue = 'false';
     case 'numeric'
         defaultValidator = '@isnumeric(x)';
-        defaultValue = 0;
+        defaultValue = '0';
     case 'double'
         defaultValidator = '@isnumeric(x)';
-        defaultValue = 0;
+        defaultValue = '0';
     case 'struct'
         defaultValidator = '@isstruct(x)';
-        defaultValue = struct();
+        defaultValue = 'struct()';
     otherwise
         error('Field Type is invalid!');
 end
@@ -59,17 +59,17 @@ parser.addRequired('ydim',@(x) ischar(x) || isnumeric(x));
 parser.addRequired('fieldType',@ischar);
 
 parser.addParameter('FBAField',false,@islogical);
-parser.addRequired('LongName',fieldName,@ischar);
-parser.addRequired('TypeField',false,@islogical);
-parser.addRequired('BasicField',false,@islogical);
-parser.addRequired('Validator',defaultValidator,@ischar);
-parser.addRequired('defaultValue',defaultValue,@ischar);
+parser.addParameter('LongName',fieldName,@ischar);
+parser.addParameter('TypeField',false,@islogical);
+parser.addParameter('BasicField',false,@islogical);
+parser.addParameter('Validator',defaultValidator,@ischar);
+parser.addParameter('defaultValue',defaultValue,@ischar);
 
 % parse the inputs
 parser.parse(fieldName,xdim,ydim,fieldType,varargin{:});
 
 % fill the definition
-fieldDef = cell(10,1);
+fieldDef = cell(1,10);
 fieldDef{1} = parser.Results.fieldName;
 fieldDef{2} = parser.Results.xdim;
 fieldDef{3} = parser.Results.ydim;
