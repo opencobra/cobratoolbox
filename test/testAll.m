@@ -95,7 +95,7 @@ if launchTestSuite
     profile on;
 
     if COVERAGE
-        coverageFile = 'coverage2.json';
+        coverageFile = 'coverage.json';
         % Get the ignored Files from gitIgnore
         % only retain the lines that end with .txt and .m and
         % are not comments and point to files in the /src folder
