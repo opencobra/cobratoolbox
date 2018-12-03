@@ -29,7 +29,7 @@ else
 end
 
 
-cplexProblem.DisplayFunc = @(x) redirect(outputfile);
+cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
 % set tolerances
 cplexProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
 cplexProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
@@ -45,7 +45,7 @@ end
 cplexProblem = setCplexParam(cplexProblem, solverParams);
 end
 
-function redirect(l)
+function redirect(outFile,l)
 % Write the line of log output
-fprintf(outputfile, '%s\n', l);
+fprintf(outFile, '%s\n', l);
 end
