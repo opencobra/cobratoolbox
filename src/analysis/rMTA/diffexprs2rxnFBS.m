@@ -1,10 +1,11 @@
-function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, separate_transcript, logFC, pval)
+function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, SeparateTranscript, logFC, pval)
 % Returns Forward - Backward - Unchanged (+1;0;-1) for each reaction.
 % (+1)R_f    (-1)R_b     (0)unchanged
 %
 % USAGE:
 %
-%    rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, separate_transcript, logFC, pval)
+%    rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, ...
+%                        'SeparateTranscript', '', 'logFC', 0, 'pval',0.05)
 %
 % INPUT:
 %    model:             The COBRA Model structure
@@ -17,7 +18,7 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, separate_transcript,
 %    Vref:              Reference flux of the model
 %
 % OPTIONAL INPUT:
-%    separate_transcript:   Character used to separate
+%    SeparateTranscript:    Character used to separate
 %                           different transcripts of a gene. (default: '').
 %    logFC:             minimum log2 (fold change) requiered (default = 0).
 %    pval:              maximum p-value admited (default = 0.05).
@@ -39,34 +40,30 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, separate_transcript,
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 %       - Francisco J. Planes, 26/10/2018, University of Navarra, TECNUN School of Engineering.
 
-% if no separate_transcript required, default = ''
-if ~exist('separate_transcript','var')
-    separate_transcript = '';
-end
-
-% if no logFC required, default = 0
-if ~exist('logFC','var')
-    logFC = 0;
-end
-
-% if no p-value required, default = 0.05
-if ~exist('pval','var')
-    pval = 0.05;
-end
+% Parser of optional inputs
+p = inputParser;
+p.CaseSensitive = false;
+addParameter(p,'SeparateTranscript','');
+addParameter(p,'logFC',0);
+addParameter(p,'pval',0.05);
+parse(p);
+SeparateTranscript = p.Results.SeparateTranscript;
+logFC = p.Results.logFC;
+pval = p.Results.pval;
 
 % Traslate omics data from gene level to reaction level
-if ~isempty(separate_transcript)
-    aux_table = table(strtok(model.genes,separate_transcript),model.genes,'VariableNames',{'gene' 'transcript'});
+if ~isempty(SeparateTranscript)
+    aux_table = table(strtok(model.genes,SeparateTranscript),model.genes,'VariableNames',{'gene' 'transcript'});
     diff_exprs = innerjoin(aux_table, diff_exprs, 'Keys','gene');
 	diff_exprs.gene = diff_exprs.transcript;
 end
 
 % Minimun Fold Change to admit the changes
-idx = abs(diff_exprs.logFC)>logFC;
+idx = abs(diff_exprs.logFC) > logFC;
 diff_exprs = diff_exprs(idx,:);
 
 % Maximum p-value to admit the changes
-idx = abs(diff_exprs.pval)<=pval;
+idx = abs(diff_exprs.pval) <= pval;
 diff_exprs = diff_exprs(idx,:);
 
 pos_up = diff_exprs.logFC > 0;     % source state bigger than target state
@@ -92,13 +89,13 @@ geneFBS = -geneFBS;
 % Change to Cobra format
 geneFBS = struct('gene',{model.genes},'value',geneFBS);
 
-if isempty(separate_transcript)
+if isempty(SeparateTranscript)
     fprintf('\tGene expression changes calculated\n');
     fprintf('\tThere are %u genes that are differentially expressed\n',sum(geneFBS.value~=0));
 else
     fprintf('\tGene expression changes calculated\n');
     fprintf('\tThere are %u trainscripts that are differentially expressed\n',sum(geneFBS.value~=0));
-    [~,idx] = unique(strtok(geneFBS.gene,separate_transcript));
+    [~,idx] = unique(strtok(geneFBS.gene,SeparateTranscript));
     fprintf('\tThere are %u genes that are differentially expressed\n',sum(geneFBS.value(idx)~=0));
 end
 
