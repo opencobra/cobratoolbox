@@ -64,6 +64,7 @@ if SOLVERS.ibm_cplex.installed && isempty(CBT_MIQP_SOLVER)
     CplexModel.rhs = b_U;
     CplexModel.lhs = b_L;
     CplexModel.Q = CplexModel.F;
+    CplexModel.obj = CplexModel.c;
     CplexModel.ctype = CplexModel.vartype;
     CplexModel.sense = 'minimize';
     

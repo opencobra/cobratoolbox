@@ -126,7 +126,7 @@ F(v(posS),v(posS)) =  2 * (1-alpha) .* eye(length(posS));
 OptimizationModel = struct();
 [OptimizationModel.A, OptimizationModel.lb, OptimizationModel.ub] = deal(A, lb, ub);
 [OptimizationModel.b, OptimizationModel.csense] = deal(b, csense);
-[OptimizationModel.obj, OptimizationModel.F] = deal(c, F);
+[OptimizationModel.c, OptimizationModel.F] = deal(c, F);
 [OptimizationModel.osense, OptimizationModel.vartype] = deal(+1, vartype); % +1 for minimization
 
 %save the index of the variables
