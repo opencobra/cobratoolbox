@@ -19,7 +19,8 @@ for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
     lines = strsplit(text,'\n','CollapseDelimiters',false);
-    codeLines = columnVector(find(cellfun(@(x) iscodeLine(strtrim(x)),lines)));
+    prevLines = [{''},lines(1:end-1)];
+    codeLines = columnVector(find(cellfun(@(x,y) isCodeLine(x,y),lines,prevLines)));
     relevantLines = zeros(numel(codeLines),2);
     relevantLines(:,1) = codeLines;
     relevantLines(:,2) = zeros(size(codeLines));
@@ -30,18 +31,4 @@ end
 
 profile on
 
-end
-
-function tf = iscodeLine(lineOfFile)
-if length(lineOfFile) > 0 && ... %There is something in the line
-        length(strfind(lineOfFile(1), '%')) ~= 1  && ... %The line is not commented
-        length(strfind(lineOfFile, 'end')) ~= 1 && ... %Its not an 'end'
-        length(strfind(lineOfFile, 'otherwise')) ~= 1 && ... %'its not an otherwise from a switch statement
-        length(strfind(lineOfFile, 'else')) ~= 1  && ... %its not an else from an if
-        length(strfind(lineOfFile, 'case')) ~= 1 && ... %its not a individual case from aswitch statement
-        length(strfind(lineOfFile, 'function')) ~= 1 % its not the function header
-    tf = true;
-else
-    tf = false;
-end
 end

@@ -25,12 +25,12 @@ for i = 1:numel(coverageData)
     if i > 1
         fprintf(jsonFile,',');
     end
-    fprintf(jsonFile,'{ "name": "%s",\n',strrep(coverageData(i).fileName,CBTDIR,''));
+    fprintf(jsonFile,'{ "name": "%s",\n',strrep(coverageData(i).fileName,[CBTDIR filesep],''));
     [md5] = getMD5Checksum(coverageData(i).fileName);
-    fprintf(jsonFile,'{ "source_digest": "%s",\n',md5);
+    fprintf(jsonFile,'"source_digest": "%s",\n',md5);
     coverage = repmat({'null'},coverageData(i).lineCount,1);
     coverage(coverageData(i).relevantLines(:,1)) = arrayfun(@num2str, coverageData(i).relevantLines(:,2),'Uniform',0);
-    fprintf(jsonFile,'{ "coverage": [%s]\n}\n',strjoin(coverage,','));
+    fprintf(jsonFile,'"coverage": [%s]\n }\n',strjoin(coverage,','));
     
 end
 
