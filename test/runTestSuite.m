@@ -90,7 +90,6 @@ end
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
-writeCoverage(coverageData);
 % change back to the original directory.
 cd(currentDir)
 end

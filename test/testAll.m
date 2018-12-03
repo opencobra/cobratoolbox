@@ -56,11 +56,10 @@ cd(CBTDIR);
 % run the official initialisation script
 if launchTestSuite
 
-    if ~isempty(getenv('MOCOV_PATH')) && ~isempty(getenv('JSONLAB_PATH'))
-        addpath(genpath(getenv('MOCOV_PATH')))
+    if ~isempty(getenv('JSONLAB_PATH'))
         addpath(genpath(getenv('JSONLAB_PATH')))
         COVERAGE = true;
-        fprintf('MoCov and JsonLab are on path, coverage will be computed.\n')
+        fprintf('JsonLab is on the path, coverage will be computed.\n')
     else
         COVERAGE = false;
     end
@@ -96,6 +95,7 @@ if launchTestSuite
     profile on;
 
     if COVERAGE
+        coverageFile = 'coverage2.json';
         % Get the ignored Files from gitIgnore
         % only retain the lines that end with .txt and .m and
         % are not comments and point to files in the /src folder
@@ -171,7 +171,7 @@ try
         originalUserPath = path;
         
         % run the tests in the subfolder verifiedTests/ recursively
-        [result, resultTable] = runTestSuite();
+        [result, resultTable, coverageData] = runTestSuite();
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);
@@ -180,17 +180,9 @@ try
 
         % count the number of covered lines of code
         if COVERAGE
-            % write coverage based on profile('info')
-            fprintf('Running MoCov ... \n')
-            mocov('-cover', 'src', ...
-                '-profile_info', ...
-                '-cover_json_file', 'coverage.json', ...
-                '-cover_html_dir', 'coverage_html', ...
-                '-cover_method', 'profile', ...
-                '-verbose');
-
+            writeCoverage(coverageData, coverageFile);
             % load the coverage file
-            data = loadjson('coverage.json', 'SimplifyCell', 1);
+            data = loadjson(coverageFile, 'SimplifyCell', 1);
 
             sf = data.source_files;
             clFiles = zeros(length(sf), 1);

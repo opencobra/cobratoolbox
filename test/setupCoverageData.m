@@ -28,7 +28,7 @@ for i = 1:length(files)
     coverageStruct(i).lineCount = numel(lines);
 end
 
-
+profile on
 
 end
 
