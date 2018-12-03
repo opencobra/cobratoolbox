@@ -1,4 +1,4 @@
-function [results, resultTable] = runTestSuite(testNames)
+function [results, resultTable, coverageData] = runTestSuite(testNames)
 % This function runs all tests (i.e. files starting with 'test' in the
 % CBTDIR/test/ folder and returns the status.
 % It can distinguish between skipped and Failed tests. A test is considered
@@ -6,21 +6,22 @@ function [results, resultTable] = runTestSuite(testNames)
 %
 % INPUTS:
 %
-%    testNames:     only run tests matching the regexp given in testNames.
+%    testNames:        only run tests matching the regexp given in testNames.
 %
 % OUTPUTS:
 %
-%    results:       A structure array with one entry per test and the following fields:
+%    results:          A structure array with one entry per test and the following fields:
 %
-%                    - `.passed`: true if the test passed otherwise false
-%                    - `.skipped`: true if the test was skipped otherwise false
-%                    - `.failed`: true if the test failed, or was skipped, otherwise false
-%                    - `.status`: a string representing the status of the test ('failed','skipped' or'passed')
-%                    - `.fileName`: the fileName of the test
-%                    - `.time`: the duration of the test (if passed otherwise NaN)
-%                    - `.statusMessage`: Informative string about potential problems
-%                    - `.Error`: Error message received from a failed or skipped test
-%    resultTable:   A Table with details of the results.
+%                       - `.passed`: true if the test passed otherwise false
+%                       - `.skipped`: true if the test was skipped otherwise false
+%                       - `.failed`: true if the test failed, or was skipped, otherwise false
+%                       - `.status`: a string representing the status of the test ('failed','skipped' or'passed')
+%                       - `.fileName`: the fileName of the test
+%                       - `.time`: the duration of the test (if passed otherwise NaN)
+%                       - `.statusMessage`: Informative string about potential problems
+%                       - `.Error`: Error message received from a failed or skipped test
+%    resultTable:      A Table with details of the results.
+%    coverageData:     Coverage data for all files.
 %
 % Author:
 %    - Thomas Pfau Jan 2018.
@@ -34,9 +35,9 @@ end
 % go to the test directory.
 testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
-
+coverageData = setupCoverageData();
 % get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'testModelManipulation.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
@@ -81,6 +82,7 @@ for i = 1:numel(testFileNames)
             fprintf('Reason:\n%s\n',trace);
         end
     end
+    coverageData = updateCoverageData(coverageData);
     fprintf('\n\n****************************************************\n');
 end
 
@@ -88,7 +90,7 @@ end
 resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
                             [results.failed]',[results.time]',{results.statusMessage}',...
                             'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
-
+writeCoverage(coverageData);
 % change back to the original directory.
 cd(currentDir)
 end

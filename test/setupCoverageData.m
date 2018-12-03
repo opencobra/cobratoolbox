@@ -19,10 +19,13 @@ for i = 1:length(files)
     cFileName = files{i};
     text = fileread(cFileName);
     lines = strsplit(text,'\n','CollapseDelimiters',false);
-    relevantLines = columnVector(find(cellfun(@(x) iscodeLine(strtrim(x)),lines)));
-    relevantLines = [relevantLines,zeros(size(relevantLines))];
+    codeLines = columnVector(find(cellfun(@(x) iscodeLine(strtrim(x)),lines)));
+    relevantLines = zeros(numel(codeLines),2);
+    relevantLines(:,1) = codeLines;
+    relevantLines(:,2) = zeros(size(codeLines));
     coverageStruct(i).fileName = cFileName;
     coverageStruct(i).relevantLines = relevantLines;
+    coverageStruct(i).lineCount = numel(lines);
 end
 
 

@@ -1,4 +1,4 @@
-function coverageData = updateCoverageData(coverageData, profilerStats )
+function coverageData = updateCoverageData(coverageData)
 % Updates the coverage data according to the data provided in the profile
 % Status (from profile('info')
 % USAGE:
@@ -15,7 +15,10 @@ function coverageData = updateCoverageData(coverageData, profilerStats )
 %                        * .fileName - the file name
 %                        * .coverage - a n x 2 double array with n being the number of relevant lines in the file, while the first column indicates the line number and the second column indicates the number of executions
 
+profilerStats = profile('info');
 functionTable = profilerStats.FunctionTable;
+% clear the profiler and turn it back on
+profile clear;
 profiledFiles = {functionTable.FileName};
 [FilePres,FilePos] = ismember(profiledFiles,{coverageData.fileName});
 updateInfo = find(FilePres);
@@ -26,4 +29,5 @@ for i = 1:numel(updateInfo)
     [linePres,linePos] = ismember(ExecutedLines(:,1),coverageData(cCovPos).relevantLines(:,1));
     coverageData(cCovPos).relevantLines(linePos(linePres),2) = coverageData(cCovPos).relevantLines(linePos(linePres),2) + ExecutedLines(linePres,2);
 end
+profile on;
 
