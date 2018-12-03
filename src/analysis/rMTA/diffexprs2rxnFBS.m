@@ -46,7 +46,7 @@ p.CaseSensitive = false;
 addParameter(p,'SeparateTranscript','');
 addParameter(p,'logFC',0);
 addParameter(p,'pval',0.05);
-parse(p);
+parse(p, varargin{:});
 SeparateTranscript = p.Results.SeparateTranscript;
 logFC = p.Results.logFC;
 pval = p.Results.pval;

@@ -61,11 +61,11 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 p = inputParser;
 % check requiered arguments
 addRequired(p, 'model');
-addRequired(p, 'rxnFBS');
-addRequired(p, 'Vref');
+addRequired(p, 'rxnFBS',@isnumeric);
+addRequired(p, 'Vref',@isnumeric);
 % Check optional arguments
-addOptional(p, 'alpha', 0.66);
-addOptional(p, 'epsilon', 0);
+addOptional(p, 'alpha', 0.66, @isnumeric);
+addOptional(p, 'epsilon', 0, @isnumeric);
 % Add optional name-value pair argument
 addParameter(p, 'rxnKO', false);
 addParameter(p, 'timelimit', inf);
@@ -73,7 +73,7 @@ addParameter(p, 'SeparateTranscript', '');
 addParameter(p, 'numWorkers', 0);
 addParameter(p, 'printLevel', 1);
 % extract variables from parser
-parse(p);
+parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
 epsilon = p.Results.epsilon;
 rxnKO = p.Results.rxnKO;
@@ -204,7 +204,7 @@ else
         end
         clear cplex_model
         if printLevel >0
-            fprintf('\n\tAll MIQP problems performed\n');
+            fprintf('\tAll MIQP problems performed\n');
         end
         i = 0;
     end
@@ -297,7 +297,7 @@ else
     end
     clear cplex_model cplex_moma
     if printLevel >0
-        fprintf('\n\tAll MOMA problems performed\n');
+        fprintf('\tAll MOMA problems performed\n');
     end
     moma = true;
 end
@@ -367,7 +367,7 @@ else
             try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
         end
         clear cplex_model
-        fprintf('\n\tAll MIQP problems performed\n');
+        fprintf('\tAll MIQP problems performed\n');
         k = 0;
     end
     worst = true;

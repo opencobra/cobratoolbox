@@ -37,7 +37,7 @@ p = inputParser;
 p.CaseSensitive = false;
 addParameter(p,'unique_epsilon',false);
 addParameter(p,'minimum',1e-3);
-parse(p);
+parse(p, varargin{:});
 
 % initialize array with epsilons for each reaction
 n = size(samples,2);

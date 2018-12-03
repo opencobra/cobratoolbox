@@ -36,9 +36,10 @@ function [geneKO] = calculateGeneKOMatrix(model, varargin)
 
 %% Check the input information
 p = inputParser;
-addOptional(p, 'SeparateTranscript', '');
+addRequired(p, 'model');
+addOptional(p, 'SeparateTranscript', '', @ischar);
 addOptional(p, 'printLevel', 1);
-parse(p);
+parse(p, model, varargin{:});
 
 % define gene set
 genes = unique(strtok(model.genes, p.Results.SeparateTranscript));
@@ -57,7 +58,7 @@ for gen = 1:ngenes
     end
     
 %     transcripts = model.genes(startsWith(model.genes,[genes{gen} SeparateTranscript]));
-    transcripts = model.genes(strcmp(strtok(model.genes,SeparateTranscript),genes{gen})); % to support R2015b
+    transcripts = model.genes(strcmp(strtok(model.genes,p.Results.SeparateTranscript),genes{gen})); % to support R2015b
     [~, hasEffect, constrRxnNames] = deleteModelGenes(model, transcripts);
     
     if hasEffect
@@ -67,7 +68,7 @@ for gen = 1:ngenes
     end
 end
 if p.Results.printLevel > 0
-    fprintf('\n\tGeneKOMatrix calculated\n');
+    fprintf('\tGeneKOMatrix calculated\n');
 end
 
 % geneKO

@@ -67,11 +67,11 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 p = inputParser;
 % check requiered arguments
 addRequired(p, 'model');
-addRequired(p, 'rxnFBS');
-addRequired(p, 'Vref');
+addRequired(p, 'rxnFBS', @isnumeric);
+addRequired(p, 'Vref', @isnumeric);
 % Check optional arguments
-addOptional(p, 'alpha', 0.66);
-addOptional(p, 'epsilon', 0);
+addOptional(p, 'alpha', 0.66, @isnumeric);
+addOptional(p, 'epsilon', 0, @isnumeric);
 % Add optional name-value pair argument
 addParameter(p, 'rxnKO', false);
 addParameter(p, 'timelimit', inf);
@@ -79,7 +79,7 @@ addParameter(p, 'SeparateTranscript', '');
 addParameter(p, 'numWorkers', 0);
 addParameter(p, 'printLevel', 1);
 % extract variables from parser
-parse(p);
+parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
 epsilon = p.Results.epsilon;
 rxnKO = p.Results.rxnKO;
@@ -184,7 +184,7 @@ while i_alpha < num_alphas
     end
     clear cplex_model
     if printLevel >0
-        fprintf('\n\tAll MIQP problems performed\n');
+        fprintf('\tAll MIQP problems performed\n');
     end
     i = 0;
 end

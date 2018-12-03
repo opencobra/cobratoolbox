@@ -28,15 +28,20 @@ function OptimizationModel = MTA_model(model,rxnFBS,Vref,varargin)
 p = inputParser;
 % check requiered arguments
 addRequired(p, 'model');
-addRequired(p, 'rxnFBS');
-addRequired(p, 'Vref');
+addRequired(p, 'rxnFBS',@isnumeric);
+addRequired(p, 'Vref',@isnumeric);
 % Check optional arguments
 addOptional(p, 'alpha', 0.66);
 addOptional(p, 'epsilon', zeros(size(model.rxns)));
 % extract variables from parser
-parse(p);
+parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
 epsilon = p.Results.epsilon;
+
+% sometimes epsilon can be given as a single value
+if numel(epsilon)==1
+    epsilon = epsilon * ones(size(model.rxns));
+end
 
 
 %% --- set the CPLEX model ---
