@@ -20,10 +20,6 @@ if exist('uni.lu.md5.MD5','class') ~= 8
     import uni.lu.md5.MD5;
 end
 
-persistent md5calc
-
-if isempty(md5calc)
-    md5calc = MD5();
-end
+md5calc = MD5();
 
 md5sum = char(md5calc.getMD5CheckSum(fileName));
