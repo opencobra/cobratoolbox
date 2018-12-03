@@ -283,63 +283,20 @@ switch solver
    case 'ibm_cplex'
         % Free academic licenses for the IBM CPLEX solver can be obtained from
         % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
-
-        cplexlp = Cplex();
-        if (~isempty(csense))
-            b_L(csense == 'E') = b(csense == 'E');
-            b_U(csense == 'E') = b(csense == 'E');
-            b_L(csense == 'G') = b(csense == 'G');
-            b_U(csense == 'G') = inf;
-            b_L(csense == 'L') = -inf;
-            b_U(csense == 'L') = b(csense == 'L');
-        elseif isfield(MILPproblem, 'b_L') && isfield(MILPproblem, 'b_U')
-            b_L = MILPproblem.b_L;
-            b_U = MILPproblem.b_U;
-        else
-            b_L = b;
-            b_U = b;
-        end
-        intVars = (vartype == 'B') | (vartype == 'I');
-        % intVars
-        % pause;
-        cplexlp.Model.A = A;
-        cplexlp.Model.rhs = b_U;
-        cplexlp.Model.lhs = b_L;
-        cplexlp.Model.ub = ub;
-        cplexlp.Model.lb = lb;
-        cplexlp.Model.obj = osense * c;
-        cplexlp.Model.name = 'CobraMIQP';
-        cplexlp.Model.Q = F;
-        % Make sure, that the vartype is in the correct orientation, cplex
-        % is quite picky here..
-        if size(vartype,1) > size(vartype,2)
-            vartype = vartype';
-        end
-        cplexlp.Model.ctype = vartype;
-
-
-        cplexlp.Param.timelimit.Cur = cobraParams.timeLimit;
-        cplexlp.Param.output.writelevel.Cur = cobraParams.printLevel;
+        CplexMIQPProblem = buildCplexProblemFromCOBRAStruct(MIQPproblem);
+        [CplexMIQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexMIQPProblem,cobraParams,solverParams,'MIQP');
         
-        if cobraParams.printLevel == 0  % set display function as empty
-            cplexlp.DisplayFunc=[];
-        end
-        % set tolerances
-        cplexlp.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
-        cplexlp.Param.mip.tolerances.absmipgap.Cur =  cobraParams.absMipGapTol;
-        cplexlp.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-        cplexlp.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
-        cplexlp.Param.mip.tolerances.integrality.Cur =  cobraParams.intTol;
+        %Update Tolerance According to actual setting
+        cobraParams.feasTol = CplexMIQPProblem.Param.simplex.tolerances.feasibility.Cur;
 
-        % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
-        cplexlp = setCplexParam(cplexlp, solverParams);
 
-        % Set up callback to print out intermediate solutions
-        % only set this up if you know that you actually need these
-        % results.  Otherwise do not specify intSolInd and contSolInd
-
-        % Solve problem
-        Result = cplexlp.solve();
+        % optimize the problem
+        Result = CplexMIQPProblem.solve();
+    
+        if logToFile
+            % Close the output file
+            fclose(logFile);
+        end        
 
         % Get results
         stat = Result.status;

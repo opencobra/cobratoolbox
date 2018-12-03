@@ -22,6 +22,7 @@ switch solverType
                       'optTol', ...         % optimality tolerance
                       'solver', ...         % solver to use (overriding set solver)
                       'debug', ...          % run debgugging code
+                      'logFile', ...        % file (location) to write logs to
                       'lifting'};           % whether to lift a problem
 
     case 'QP'
@@ -30,6 +31,7 @@ switch solverType
                       'saveInput', ...      % save the input to a file (specified)
                       'feasTol',...         % feasibility tolerance
                       'optTol',...          % optimality tolerance
+                      'logFile', ...        % file (location) to write logs to
                       'solver'};            % the solver to use
 
 
@@ -55,6 +57,7 @@ switch solverType
                       'absMipGapTol', ...   % absolute MIP Gap tolerance
                       'printLevel', ...     % print level
                       'saveInput',...       % save the input to a file (specified)
+                      'logFile', ...        % file (location) to write logs to
                       'solver'};            % the solver to use
 
     case 'NLP'

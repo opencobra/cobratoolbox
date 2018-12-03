@@ -146,42 +146,22 @@ switch solver
         end
         %%
      case 'ibm_cplex'
-        if (~isempty(csense))
-            b_L(csense == 'E') = b(csense == 'E');
-            b_U(csense == 'E') = b(csense == 'E');
-            b_L(csense == 'G') = b(csense == 'G');
-            b_U(csense == 'G') = inf;
-            b_L(csense == 'L') = -inf;
-            b_U(csense == 'L') = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
-
-        %Set up the linear part
-        CplexQPProblem = Cplex();
-        CplexQPProblem.Model.A = A;
-        CplexQPProblem.Model.lb = lb;
-        CplexQPProblem.Model.ub = ub;
-        CplexQPProblem.Model.rhs = b_U;
-        CplexQPProblem.Model.lhs = b_L;
-        CplexQPProblem.Model.obj = osense*c;
-        CplexQPProblem.Model.Q = F;
-        %optional parameters
-        if cobraParams.printLevel == 0  % set display function as empty
-            CplexQPProblem.DisplayFunc=[];
-        end
-        CplexQPProblem.Param.output.writelevel.Cur = cobraParams.printLevel;
-        CplexQPProblem.Param.qpmethod.Cur = 1;
-        CplexQPProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-        CplexQPProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
-        % Set IBM-Cplex-specific parameters
-        CplexQPProblem = setCplexParam(CplexQPProblem, solverParams, cobraParams.printLevel);
-        %Set the feasibility Tolerance if it changed.
+     % Initialize the CPLEX object
+        CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+        [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,cobraParams,solverParams,'QP');
+        
+        %Update Tolerance According to actual setting
         cobraParams.feasTol = CplexQPProblem.Param.simplex.tolerances.feasibility.Cur;
 
 
+        % optimize the problem
         Result = CplexQPProblem.solve();
+    
+        if logToFile
+            % Close the output file
+            fclose(logFile);
+        end        
+        
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
         end
