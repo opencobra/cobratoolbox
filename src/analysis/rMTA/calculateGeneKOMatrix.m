@@ -1,27 +1,43 @@
-
 function [geneKO] = calculateGeneKOMatrix(model, varargin)
 % Build a rxn-gene matrix such that the i-th column indicates what
 % reactions become inactive because of the i-th gene's knock-out.
 %
 % USAGE:
 %
-%    geneKO = calculateGeneKOMatrix(model)
+%    geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel)
 %
 % INPUT:
 %    model:             The COBRA Model structure
 %
+% OPTIONAL INPUT (name-value pair):
+%    SeparateTranscript - Character used to separate
+%                         different transcripts of a gene. (default = '')
+%                         Example: SeparateTranscript = ''
+%                                   gene 10005.1    ==>    gene 10005.1
+%                                   gene 10005.2    ==>    gene 10005.2
+%                                   gene 10005.3    ==>    gene 10005.3
+%                                  SeparateTranscript = '.'
+%                                   gene 10005.1
+%                                   gene 10005.2    ==>    gene 10005
+%                                   gene 10005.3
+%    printLevel        Integer. 1 if the process is wanted to be shown
+%                      on the screen, 0 otherwise. (default = 1)
+% 
 % OUTPUT:
 %    geneKO:            Struct which contains matrix with blocked 
 %                       reactions for each gene in the metabolic model,
 %                       name of reactions and name of genes.
 %
-% .. Authors: - Luis V. Valcarcel, Oct 2017
+% .. Authors:
+%       - Luis V. Valcarcel, Oct 2017, University of Navarra, CIMA & TECNUN School of Engineering.
+% .. Revisions:
+%       - Luis V. Valcarcel, 03/11/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 
 
 %% Check the input information
 p = inputParser;
-addParameter(p, 'SeparateTranscript', '');
-addParameter(p, 'printLevel', 1);
+addOptional(p, 'SeparateTranscript', '');
+addOptional(p, 'printLevel', 1);
 parse(p);
 
 % define gene set
@@ -40,7 +56,8 @@ for gen = 1:ngenes
         showprogress(gen/ngenes, 'Calculate Gene Knock-out matrix');
     end
     
-    transcripts = model.genes(startsWith(model.genes,[genes{gen} SeparateTranscript]));
+%     transcripts = model.genes(startsWith(model.genes,[genes{gen} SeparateTranscript]));
+    transcripts = model.genes(strcmp(strtok(model.genes,SeparateTranscript),genes{gen})); % to support R2015b
     [~, hasEffect, constrRxnNames] = deleteModelGenes(model, transcripts);
     
     if hasEffect

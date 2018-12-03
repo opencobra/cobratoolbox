@@ -57,23 +57,15 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %       - Francisco J. Planes, 26/10/2018, University of Navarra, TECNUN School of Engineering.
 
 
-
-%% Check solver to be used
-try
-    Cplex('a');
-catch
-    error('This version rMTA only works with IBM CPLEX')
-end
-
 %% Check the input information
 p = inputParser;
 % check requiered arguments
-addRequired(p, 'model')
-addRequired(p, 'rxnFBS')
-addRequired(p, 'Vref')
+addRequired(p, 'model');
+addRequired(p, 'rxnFBS');
+addRequired(p, 'Vref');
 % Check optional arguments
-addOptional(p, 'alpha', 0.66)
-addOptional(p, 'epsilon', 0)
+addOptional(p, 'alpha', 0.66);
+addOptional(p, 'epsilon', 0);
 % Add optional name-value pair argument
 addParameter(p, 'rxnKO', false);
 addParameter(p, 'timelimit', inf);
@@ -110,7 +102,7 @@ if rxnKO
     geneKO.rxns = model.rxns;
     geneKO.rxns = speye(numel(model.rxns));
 else
-    geneKO = calculateGeneKOMatrix(model,SeparateTranscript);
+    geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel);
 end
 
 % Reduce the size of the problem;

@@ -1,9 +1,9 @@
-function CplexModel = MTA_model(model,rxnFBS,Vref,alpha,epsilon)
-% Returns the CPLEX model needed to perform the MTA
+function OptimizationModel = MTA_model(model,rxnFBS,Vref,varargin)
+% Returns the Optimization model needed to perform the MTA
 %
 % USAGE:
 % 
-%       CplexModel = MTA_model(model,rxnFBS,Vref,alpha,epsilon)
+%       OptimizationModel = MTA_model(model,rxnFBS,Vref,alpha,epsilon)
 %
 % INPUT:
 %    model:            Metabolic model (COBRA format)
@@ -14,9 +14,9 @@ function CplexModel = MTA_model(model,rxnFBS,Vref,alpha,epsilon)
 %    epsilon           minimun disturbance for each reaction, (default = 0)
 %
 % OUTPUTS:
-%    CplexModel:       CPLEX model struct that includes the stoichiometric
-%                      contrains, the thermodinamic constrains and the
-%                      binary variables.
+%    OptimizationModel      CPLEX model struct that includes the 
+%                           stoichiometric contrains, the thermodinamic 
+%                           constrains and the binary variables.
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
@@ -25,20 +25,19 @@ function CplexModel = MTA_model(model,rxnFBS,Vref,alpha,epsilon)
 
 
 %% --- check the inputs ---
+p = inputParser;
+% check requiered arguments
+addRequired(p, 'model');
+addRequired(p, 'rxnFBS');
+addRequired(p, 'Vref');
+% Check optional arguments
+addOptional(p, 'alpha', 0.66);
+addOptional(p, 'epsilon', zeros(size(model.rxns)));
+% extract variables from parser
+parse(p);
+alpha = p.Results.alpha;
+epsilon = p.Results.epsilon;
 
-if nargin<3
-    ME = MException('InputMTA_Model:InputData', ...
-        'There are not enough input arguments.');
-    throw(ME);
-end
-
-if ~exist('alpha','var')
-    alpha = 0.66;
-end
-
-if ~exist('epsilon','var')
-    epsilon = zeros(size(model.rxns));
-end
 
 %% --- set the CPLEX model ---
 
@@ -57,8 +56,8 @@ lb(v) = model.lb;
 ub(v) = model.ub;
 
 %type of variables
-ctype(1:n_var) = 'B';
-ctype(v) = 'C';
+vartype(1:n_var) = 'B';
+vartype(v) = 'C';
 
 % constrains
 Eq1 = 1:length(model.mets);                 % Stoichiometric matrix
@@ -66,10 +65,12 @@ Eq2 = (1:length(y_plus_F)) + Eq1(end);      % Changes in Forward
 Eq3 = (1:length(y_plus_F)) + Eq2(end);      % Change or not change in Forward
 Eq4 = (1:length(y_plus_B)) + Eq3(end);      % Changes in Backward
 Eq5 = (1:length(y_plus_B)) + Eq4(end);      % Change or not change in Backward
-n_cons = Eq5(end);
+nCon = Eq5(end);
 
 % generate constrain matrix
-A = spalloc(n_cons, n_var, nnz(model.S) + 5*length(Eq2) + 5*length(Eq4));
+A = spalloc(nCon, n_var, nnz(model.S) + 5*length(Eq2) + 5*length(Eq4));
+b = zeros(nCon,1);
+csense = char(zeros(nCon,1));
 
 posF = find(rxnFBS == +1);
 posB = find(rxnFBS == -1);
@@ -77,34 +78,34 @@ posS = find(rxnFBS == 0);
 
 % First contraint, stoichiometric
 A(Eq1,v) = model.S;
-lhs(Eq1) = 0;
-rhs(Eq1) = 0;
+b(Eq1) = 0;
+csense(Eq1) = 'E';
 
 % Second contraint, Change or not change in Forward
 A(Eq2,v(posF)) = eye(length(posF));
 A(Eq2,y_plus_F) = - ( Vref(posF) + epsilon(posF) ) .* eye(length(posF));
 A(Eq2,y_minus_F) = - model.lb(posF) .* eye(length(posF));
-lhs(Eq2) = 0;
-rhs(Eq2) = inf;
+b(Eq2) = 0;
+csense(Eq2) = 'G';
 
 % Third contraint, Change or not change in Forward
 A(Eq3,y_plus_F) = eye(length(Eq3));
 A(Eq3,y_minus_F) = eye(length(Eq3));
-lhs(Eq3) = 1;
-rhs(Eq3) = 1;
+b(Eq3) = 1;
+csense(Eq3) = 'E';
 
 % Fourth contraint, Backward changes
 A(Eq4,posB) = eye(length(posB));
 A(Eq4,y_plus_B) = - ( Vref(posB) - epsilon(posB) ) .* eye(length(posB));
 A(Eq4,y_minus_B) = - model.ub(posB) .* eye(length(posB));
-lhs(Eq4) = -inf;
-rhs(Eq4) = 0;
+b(Eq4) = 0;
+csense(Eq4) = 'L';
 
 % Fiveth contraint, Change or not change in Backward
 A(Eq5,y_plus_B) = eye(length(Eq5));
 A(Eq5,y_minus_B) = eye(length(Eq5));
-lhs(Eq5) = 1;
-rhs(Eq5) = 1;
+b(Eq5) = 1;
+csense(Eq5) = 'E';
 
 % Objective fuction
 % linear part
@@ -113,21 +114,21 @@ c(y_minus_F) = alpha/2;
 c(y_minus_B) = alpha/2;
 c(v(posS)) = -2 * Vref(posS) * (1-alpha);
 % quadratic part
-Q = spalloc(n_var,n_var,length(posS));
-Q(v(posS),v(posS)) =  2 * (1-alpha) .* eye(length(posS));
+F = spalloc(n_var,n_var,length(posS));
+F(v(posS),v(posS)) =  2 * (1-alpha) .* eye(length(posS));
 
 % save the resultant model
-CplexModel = struct();
-[CplexModel.A, CplexModel.lb, CplexModel.ub] = deal(A, lb, ub);
-[CplexModel.lhs, CplexModel.rhs] = deal(lhs, rhs);
-[CplexModel.obj, CplexModel.Q] = deal(c, Q);
-[CplexModel.sense, CplexModel.ctype] = deal('minimize', ctype);
+OptimizationModel = struct();
+[OptimizationModel.A, OptimizationModel.lb, OptimizationModel.ub] = deal(A, lb, ub);
+[OptimizationModel.b, OptimizationModel.csense] = deal(b, csense);
+[OptimizationModel.obj, OptimizationModel.F] = deal(c, F);
+[OptimizationModel.osense, OptimizationModel.vartype] = deal(+1, vartype); % +1 for minimization
 
 %save the index of the variables
-CplexModel.idx_variables.v = v;
-CplexModel.idx_variables.y_plus_F = y_plus_F;
-CplexModel.idx_variables.y_minus_F = y_minus_F;
-CplexModel.idx_variables.y_plus_B = y_plus_B;
-CplexModel.idx_variables.y_minus_B = y_minus_B;
+OptimizationModel.idx_variables.v = v;
+OptimizationModel.idx_variables.y_plus_F = y_plus_F;
+OptimizationModel.idx_variables.y_minus_F = y_minus_F;
+OptimizationModel.idx_variables.y_plus_B = y_plus_B;
+OptimizationModel.idx_variables.y_minus_B = y_minus_B;
 
 end

@@ -1,4 +1,4 @@
-function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, SeparateTranscript, logFC, pval)
+function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 % Returns Forward - Backward - Unchanged (+1;0;-1) for each reaction.
 % (+1)R_f    (-1)R_b     (0)unchanged
 %
