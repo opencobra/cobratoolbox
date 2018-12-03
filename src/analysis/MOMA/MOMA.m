@@ -156,7 +156,7 @@ if (solutionWT.stat > 0)
 
     if minNormFlag
         QPproblem = buildLPproblemFromModel(modelDel);
-        QPproblem.c(1:nRxns) = -2*solutionWT.x;
+        QPproblem.c(1:nRxns1) = -2*solutionWT.x;
         QPproblem.F = sparse(size(QPproblem.A,2));
         QPproblem.F(1:nRxns2,1:nRxns2) = 2*speye(nRxns2);
         

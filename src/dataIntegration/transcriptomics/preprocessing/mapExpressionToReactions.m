@@ -1,4 +1,4 @@
-function [expressionRxns parsedGPR] = mapExpressionToReactions(model, expressionData, minSum)                                          
+function [expressionRxns, parsedGPR, gene_used] = mapExpressionToReactions(model, expressionData, minSum)                                          
 % Determines the expression data associated to each reaction present in
 % the model 
 %
@@ -27,9 +27,7 @@ if ~exist('minSum','var')
 end
 
 parsedGPR = GPRparser(model,minSum);% Extracting GPR data from model
-
 % Find wich genes in expression data are used in the model
 [gene_id, gene_expr] = findUsedGenesLevels(model,expressionData);
-
 % Link the gene to the model reactions
-expressionRxns = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum);
+[expressionRxns, gene_used] = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum);

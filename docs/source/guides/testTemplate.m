@@ -17,11 +17,11 @@ requiredSolvers = { 'dqqMinos', 'matlab' };
 % require the specified toolboxes and solvers, along with a UNIX OS
 solversPkgs = prepareTest('reqSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needUnix', true);
 
-% save the current path
-currentDir = pwd;
+% save the current path and initialize the test
+currentDir = cd(fileparts(which(mfilename)));
 
-% initialize the test
-cd(fileparts(which(mfilename)));
+% determine the test path for references
+testPath = pwd;
 
 % set the tolerance
 tol = 1e-8;
@@ -33,7 +33,7 @@ model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test
 model = readCbModel('testModel.mat','modelName','NameOfTheModelStruct'); %For all models which are part of this particular test.
 
 %Load reference data
-load('testData_functionToBeTested.mat');
+load([testPath filesep 'testData_functionToBeTested.mat']);
 
 %{
 % This is only necessary for tests that test a function that runs in parallel.

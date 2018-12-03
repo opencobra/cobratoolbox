@@ -30,44 +30,50 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = {'mosek', 'ibm_cplex', 'tomlab_cplex', 'gurobi'};
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', 'pdco');
 
 % define solver tolerances
 QPtol = 0.02;
 LPtol = 0.0001;
 
-for k = 1:length(solverPkgs)
-    fprintf(' -- Running testMOMA using the solver interface: %s ... ', solverPkgs{k});
-
-    solverQPOK = changeCobraSolver(solverPkgs{k}, 'QP', 0);
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
-
-    if solverLPOK && solverQPOK
-        % test deleteModelGenes
-        [modelOut, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, 'b3956'); % gene for reaction PPC
-
-        % run MOMA
-        sol = MOMA(model, modelOut);
-
-        if sol.stat == 1
-            assert(abs(0.8463 - sol.f) < QPtol)
-        end
-        
-        % run linearMOMA
-        sol = linearMOMA(model, modelOut);
-
-        assert(abs(0.8608 - sol.f) < LPtol)
-        
-        %run linear moma with minimal fluxes
-        solMin = linearMOMA(model, modelOut,'max',1);
-        assert(abs(0.8608 - solMin.f) < LPtol)
-        
-        %We know that at least in this case, the flux sum is actually
-        %smaller.
-        assert(sum(abs(sol.x)) > sum(abs(solMin.x)))
+for k = 1:length(solverPkgs.QP)
+    % select the same solver for QP and LP (if available)
+    if ~any(ismember(solverPkgs.QP{k},solverPkgs.LP))        
+        lpSolver = solverPkgs.LP{1};
     else
-        fprintf('\nMOMA requires a QP solver to be installed. QPNG does not work.\n');
+        lpSolver = solverPkgs.QP{k};
     end
+    fprintf(' -- Running testMOMA using the solver %s for QP and %s for LP ... ', solverPkgs.QP{k}, lpSolver);
+
+    solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
+    solverLPOK = changeCobraSolver(lpSolver, 'LP', 0);
+    
+    % test deleteModelGenes
+    [modelOut, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, 'b3956'); % gene for reaction PPC
+    
+    % run MOMA
+    sol = MOMA(model, modelOut);
+    
+    assert(abs(0.8463 - sol.f) < QPtol)
+    
+    % run MOMA with minNormFlag
+    sol = MOMA(model, modelOut, 'max', 0, true);
+    
+    assert(abs(sol.f - 0.8392) < QPtol)
+    
+    % run linearMOMA
+    sol = linearMOMA(model, modelOut);
+    
+    assert(abs(0.8608 - sol.f) < LPtol)
+    
+    
+    %run linear moma with minimal fluxes
+    solMin = linearMOMA(model, modelOut,'max',1);
+    assert(abs(0.8608 - solMin.f) < LPtol)
+    
+    %We know that at least in this case, the flux sum is actually
+    %smaller.
+    assert(sum(abs(sol.x)) > sum(abs(solMin.x)))
 
     % output a success message
     fprintf('Done.\n');

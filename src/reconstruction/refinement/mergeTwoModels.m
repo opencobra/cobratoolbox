@@ -34,15 +34,22 @@ if ~exist('mergeGenes','var') || isempty(mergeGenes)
     mergeGenes = true;
 end
 
+modelNew = struct();
+
 %select the choosen objective, and remove the other.
 if objrxnmodel == 2
-    model1.c(:) = 0;
+    model1.c(:) = 0;    
+    if isfield(model2,'osenseStr')
+        modelNew.osenseStr = model2.osenseStr;
+    end
 else
     model2.c(:) = 0;
+    if isfield(model1,'osenseStr')
+        modelNew.osenseStr = model1.osenseStr;
+    end
 end
 
 %First, we have to merge the genes field, to be able to update the rules field.
-modelNew = struct();
 if mergeGenes
     showprogress(0, 'Combining Genes in Progress ...');
     
@@ -153,9 +160,11 @@ end
 if mergeGenes && (isfield(model1,'rxnGeneMat') || isfield(model2, 'rxnGeneMat'))
     %recreating the rxnGeneMat
     modelNew = buildRxnGeneMat(modelNew);    
-else
+end
+if ~mergeGenes
+    % clear all gene information
     modelNew.rules = repmat({''},size(modelNew.rxns));
-    modelNew.genes = {};    
+    modelNew.genes = cell(0,1);    
 end
 
 %Making the comps fields unique

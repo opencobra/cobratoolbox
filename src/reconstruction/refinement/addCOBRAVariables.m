@@ -24,7 +24,24 @@ function model = addCOBRAVariables(model, idList, varargin)
 %                   * Names:            Descriptive names of the variables.
 %                                       (default: idList)
 % OUTPUT:
-%    model:  constrained model
+%    model:         constrained model containing the new variables in the
+%                   respective fields (`E`,`evars`,`evarub`,`evarlb`,`evarc`)
+%                    * `.E` - The coefficient matrix for coefficients of metabolites for the variables
+%                    * `.evars` - The variable IDs
+%                    * `.evarlb` - The variable lower bounds
+%                    * `.evarub` - The variable upper bounds
+%                    * `.evarc` - The variable objective coefficient
+%                    *  Optional: `D`, the matrix conatining coefficients for additional variables.
+% NOTE:
+%    This function will, if not present create the `E`, `evars`, `evarlb`, `evarub`, `evarc` and,
+%    if additional Constraints (i.e. the `C` matrix) is present, the `D`
+%    field as defined in the model field definitions. The `E` matrix containts
+%    the Variable coefficients referring to metabolites, while the `D`
+%    field contains the variable coefficients referring to additional
+%    Constraints from `C`. `evars` contains the IDs of the additional
+%    variables, with one entrey per column of `E`. `evarlb` and `evarub` 
+%    represent the lower and upper bounds of the variables respectively.
+%    `evarc` are objective coefficients of the variables.
 %
 % Author: Thomas Pfau, Oct 2018
 
