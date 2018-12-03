@@ -13,12 +13,33 @@ currentDir = pwd;
 fileDir = fileparts(which(mfilename));
 cd(fileDir);
 
-% define inputs
-model = getDistributedModel('ecoli_core_model.mat');
-theshold = 10e-6
+% define the solver packages to be used to run this test, can't use
+% dqq/Minos for the parallel part.
+solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'}, 'excludeSolvers',{'dqqMinos','quadMinos'}, 'minimalMatlabSolverVersion',8.0);
 
-model_RefData =  extractConditionSpecificModel(model,theshold)
-rxnID = findRxnIDs(model_RefData,model.rxns)
+% load model 
+model = createToyModelForLifting(false);
+
+% create a parallel pool
+try
+    minWorkers = 2;
+    myCluster = parcluster(parallel.defaultClusterProfile);
+    %No parallel pool
+    if myCluster.NumWorkers >= minWorkers
+        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        if isempty(poolobj)
+            parpool(minWorkers);  % launch minWorkers workers
+        end
+    end
+catch
+    %No Parallel pool. Thats fine
+end
+
+% Define input 
+
+threshold = 10e-6
+
+modelPruned =  extractConditionSpecificModel(model,threshold);
 
 % change back to the current directory
 cd(currentDir);
