@@ -27,12 +27,12 @@ catch ME
 end
 if (~isempty(Problem.csense))
     % build the rhs/lhs of the problem.
-    b_L(Problem.csense == 'E') = b(Problem.csense == 'E');
-    b_U(Problem.csense == 'E') = b(Problem.csense == 'E');
-    b_L(Problem.csense == 'G') = b(Problem.csense == 'G');
+    b_L(Problem.csense == 'E') = Problem.b(Problem.csense == 'E');
+    b_U(Problem.csense == 'E') = Problem.b(Problem.csense == 'E');
+    b_L(Problem.csense == 'G') = Problem.b(Problem.csense == 'G');
     b_U(Problem.csense == 'G') = inf;
     b_L(Problem.csense == 'L') = -inf;
-    b_U(Problem.csense == 'L') = b(Problem.csense == 'L');
+    b_U(Problem.csense == 'L') = Problem.b(Problem.csense == 'L');
 elseif isfield(Problem.csense, 'b_L') && isfield(Problem, 'b_U')
     % or extract them 
     b_L = Problem.b_L;
@@ -51,12 +51,12 @@ cplexProblem.Model.lb = Problem.lb;
 cplexProblem.Model.obj = Problem.osense * Problem.c;
 
 if isfield(Problem,'vartype')
-    cplexProblem.Model.ctype = Problem.varType;
+    cplexProblem.Model.ctype = columnVector(Problem.vartype)';
 end
 if isfield(Problem,'x0')
-    cplexlp.Start.x = Problem.x0;
+    cplexProblem.Start.x = Problem.x0;
 end
 
 if isfield(Problem,'F')
-    cplexlp.Model.Q = F;
+    cplexProblem.Model.Q = Problem.F;
 end
