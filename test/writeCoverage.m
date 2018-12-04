@@ -18,7 +18,7 @@ function writeCoverage(coverageData, outputFile)
 
 global CBTDIR
 
-jsonFile = fopen([CBTDIR filesep 'coverage2.json'],'w');
+jsonFile = fopen(outputFile,'w');
 fprintf(jsonFile,'{\n"service_job_id": "none",\n"service_name": "none",\n"source_files": [\n');
 
 for i = 1:numel(coverageData)
