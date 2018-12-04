@@ -50,3 +50,6 @@
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
 	ignore = dirty
+[submodule "test/testSuite"]
+	path = test/testSuite
+	url = https://github.com/tpfau/MatTest.git

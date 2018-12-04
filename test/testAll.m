@@ -3,7 +3,7 @@ global CBTDIR
 global GUROBI_PATH
 global ILOG_CPLEX_PATH
 global TOMLAB_PATH
-
+global CBT_MISSING_REQUIREMENTS_ERROR_ID 
 c = clock;
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
 fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
@@ -171,7 +171,8 @@ try
         originalUserPath = path;
         
         % run the tests in the subfolder verifiedTests/ recursively
-        [result, resultTable, coverageData] = runTestSuite();
+        [result, resultTable, coverageData] = runTestSuite(['verifiedTests' filesep '**' filesep 'test*.m'],...
+                                                            CBT_MISSING_REQUIREMENTS_ERROR_ID, [CBTDIR filesep 'test']);
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);
