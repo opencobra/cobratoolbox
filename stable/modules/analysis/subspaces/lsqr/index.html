@@ -270,7 +270,7 @@
 <span id="id1"></span><h1>Lsqr<a class="headerlink" href="#lsqr" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.lsqr"></span><dl class="function">
 <dt id="src.analysis.subspaces.lsqr.aprod">
-<code class="descname">aprod</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>x</em>, <em>iw</em>, <em>rw</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/subspaces/lsqr/aprod.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.aprod" title="Permalink to this definition">¶</a></dt>
+<code class="descname">aprod</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>x</em>, <em>iw</em>, <em>rw</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/subspaces/lsqr/aprod.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.aprod" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the simplest example for testing  LSQR.
 <span class="math">\(A = rw\)</span>.
 If <cite>mode = 1</cite>, <cite>aprod</cite> computes <span class="math">\(y = A x\)</span>.
@@ -280,7 +280,7 @@ for some matrix  <cite>A</cite>.</p>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.lsqr.cgls">
-<code class="descname">cgls</code><span class="sig-paren">(</span><em>Aname</em>, <em>shift</em>, <em>b</em>, <em>m</em>, <em>n</em>, <em>kmax</em>, <em>tol</em>, <em>prnt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/subspaces/lsqr/cgls.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.cgls" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cgls</code><span class="sig-paren">(</span><em>Aname</em>, <em>shift</em>, <em>b</em>, <em>m</em>, <em>n</em>, <em>kmax</em>, <em>tol</em>, <em>prnt</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/subspaces/lsqr/cgls.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.cgls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a symmetric system</p>
 <p><span class="math">\((A^T A + shift I)x = A^T b\)</span> or <span class="math">\(N x = A^T b\)</span>,</p>
 <p>where <cite>A</cite> is a general <cite>m</cite> by <cite>n</cite> matrix and shift may be positive or negative.
@@ -347,7 +347,7 @@ is a simple modification.</p>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.lsqr.lsqr">
-<code class="descname">lsqr</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>aprodname</em>, <em>b</em>, <em>damp</em>, <em>atol</em>, <em>btol</em>, <em>conlim</em>, <em>itnlim</em>, <em>show</em>, <em>covindex</em>, <em>userstop</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/subspaces/lsqr/lsqr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lsqr</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>aprodname</em>, <em>b</em>, <em>damp</em>, <em>atol</em>, <em>btol</em>, <em>conlim</em>, <em>itnlim</em>, <em>show</em>, <em>covindex</em>, <em>userstop</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/subspaces/lsqr/lsqr.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqr" title="Permalink to this definition">¶</a></dt>
 <dd><p>LSQR solves  <span class="math">\(A x = b\)</span>  or  <span class="math">\(min ||b - A x||_2\)</span>  if <span class="math">\(damp = 0\)</span>,
 or <span class="math">\(min ||(b) - (A) x||\)</span> otherwise.
 <span class="math">\(||(0) (damp\ I)||2\)</span>
@@ -461,7 +461,7 @@ LSQR and CRAIG, BIT 35, 588-604</cite>.</li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.lsqr.lsqraprod">
-<code class="descname">lsqraprod</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>x</em>, <em>iw</em>, <em>rw</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/subspaces/lsqr/lsqraprod.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqraprod" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lsqraprod</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>x</em>, <em>iw</em>, <em>rw</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/subspaces/lsqr/lsqraprod.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqraprod" title="Permalink to this definition">¶</a></dt>
 <dd><p>if <cite>mode = 1</cite>, <cite>lsqraprod</cite> computes <span class="math">\(y = A x\)</span>,
 if <cite>mode = 2</cite>, <cite>lsqraprod</cite> computes <span class="math">\(y = A^T x\)</span>
 for some matrix <cite>A</cite>.</p>
@@ -481,7 +481,7 @@ It uses the leading <cite>m n</cite> submatrix from:</p>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.lsqr.lsqrtest">
-<code class="descname">lsqrtest</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>damp</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/analysis/subspaces/lsqr/lsqrtest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqrtest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lsqrtest</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>damp</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/subspaces/lsqr/lsqrtest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqrtest" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <span class="math">\(m = n\)</span> and <span class="math">\(damp = 0\)</span>, this sets up a system <span class="math">\(A x = b\)</span>
 and calls <cite>lsqr.m</cite> to solve it.  Otherwise, the usual
 least-squares or damped least-squares problem is solved.

@@ -249,7 +249,7 @@
 <span id="id1"></span><h1>modelVerification<a class="headerlink" href="#modelverification" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.modelVerification"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.modelVerification.verifyModel">
-<code class="descname">verifyModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/74dc79a5e603972e55a47b65af2ef3ddc2f15079/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">verifyModel</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the model for consistency with the COBRA Toolbox</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -278,7 +278,7 @@ Options are:</p>
 <li>&#8216;stoichiometricConsistency&#8217; (checks for Stoichiometric Consisteny, according to <cite>Gevorgyan, Bioinformatics, 2008</cite>) (Default: false)</li>
 <li>&#8216;deadEndMetabolites&#8217; (metabolites which can either not be produced, or consumed) (Default: false)</li>
 <li>&#8216;simpleCheck&#8217; returns false if this is not a valid model and true if it is a valid model, ignored if any other option is selected. (Default: false)</li>
-<li>&#8216;requiredFields&#8217; sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {&#8216;S&#8217;, &#8216;b&#8217;, &#8216;csense&#8217;, &#8216;lb&#8217;, &#8216;ub&#8217;, &#8216;c&#8217;, &#8216;osense&#8217;, &#8216;rxns&#8217;, &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rules&#8217;})</li>
+<li>&#8216;requiredFields&#8217; sets the fields which are required, the argument must be firectly followed by the list of required fields. (Default: {&#8216;S&#8217;, &#8216;lb&#8217;, &#8216;ub&#8217;, &#8216;c&#8217;, &#8216;rxns&#8217;, &#8216;mets&#8217;, &#8216;genes&#8217;, &#8216;rules&#8217;})</li>
 <li>&#8216;checkDatabaseIDs&#8217;, check whether the database identifiers in specified fields (please have a look at the documentation), match to the expected patterns for those databases.</li>
 <li>&#8216;silentCheck&#8217;, do not print any information. Only applies to the model structure check. (default is to print info)</li>
 <li>&#8216;restrictToFields&#8217; restricts the check to the listed fields. This will lead to requiredFields being reduced to those fields present in the restricted fields. If an empty cell array is provided no restriction is applied. (default: {})</li>

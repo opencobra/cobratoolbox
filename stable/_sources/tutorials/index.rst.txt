@@ -24,6 +24,8 @@ Analysis
 * :doc:`tutorialPFBA`
 * :doc:`tutorialAtomicallyResolveReconstruction`
 * :doc:`tutorialBrowseNetwork`
+* :doc:`tutorialMicrobeMicrobeInteractions`
+* :doc:`tutorialHostMicrobeInteractions`
 * :doc:`tutorialMgPipe`
 * :doc:`tutorialMinSpan`
 * :doc:`tutorialFBA`
@@ -129,8 +131,6 @@ Reconstruction
 
 * :doc:`tutorialConstrainingModels`
 * :doc:`tutorialAdditionalConstraintsAndVariables`
-* :doc:`tutorialMicrobeMicrobeInteractions`
-* :doc:`tutorialHostMicrobeInteractions`
 * :doc:`tutorialCOBRAconcepts`
 * :doc:`tutorialReconToFBAmodel`
 * :doc:`tutorialCreateSubnetworkRecon`
