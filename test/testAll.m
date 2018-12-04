@@ -259,6 +259,7 @@ catch ME
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         % only exit on jenkins.
         disp(ME.message)
+        disp(ME.getReport());
         exit(1);
     else
         % switch back to the folder we were in and rethrow the error

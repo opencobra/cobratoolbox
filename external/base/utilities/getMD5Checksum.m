@@ -16,7 +16,9 @@ function [md5sum] = getMD5Checksum(fileName)
 %    Based on comments in: https://stackoverflow.com/questions/415953/how-can-i-generate-an-md5-hash
 
 if exist('uni.lu.md5.MD5','class') ~= 8
-    javaaddpath([fileparts(which(mfilename)) filesep 'MD5.jar'])
+    jarPath = [fileparts(which(mfilename)) filesep 'MD5.jar'];
+    fprintf('Adding Java path: %s\n',jarPath);
+    javaaddpath(jarPath)    
     import uni.lu.md5.*;
 end
 
