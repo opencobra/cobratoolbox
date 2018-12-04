@@ -41,6 +41,25 @@ if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
     cplexProblem.Param.timelimit.Cur = cobraParams.timeLimit;
 end
 
+if strcmp(problemType','QP' || strcmp(problemType,'MIQP')
+    switch cobraParams.method
+        case -1 % automatic
+            cplexProblem.Param.qpmethod.Cur = 0;
+        case 0
+            cplexProblem.Param.qpmethod.Cur = 1;
+        case 1
+            cplexProblem.Param.qpmethod.Cur = 2;
+        case 2
+            cplexProblem.Param.qpmethod.Cur = 4;
+        case 3
+            cplexProblem.Param.qpmethod.Cur = 6;
+        case 5
+            cplexProblem.Param.qpmethod.Cur = 3;
+        otherwise
+            cplexProblem.Param.qpmethod.Cur = 0;
+    end
+end
+
 % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
 cplexProblem = setCplexParam(cplexProblem, solverParams);
 end

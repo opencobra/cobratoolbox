@@ -49,23 +49,23 @@ end
 persistent valDef
 if isempty(valDef)
     % Default Values
-    
+    % For descriptions of the different settings please have a look at 
+    % getCobraSolverParamsOptionsForType
     valDef.minNorm = 0;
-    valDef.objTol = 1e-6; %used in optimizeTwoCbModels
+    valDef.objTol = 1e-6; 
     valDef.optTol = 1e-9;
     valDef.feasTol = 1e-9;
     valDef.printLevel = 0;
     valDef.primalOnly = 0;
-    valDef.timeLimit = 1e36; % this should indicate No time limit per default
+    valDef.timeLimit = 1e36; 
     valDef.iterationLimit = 1000;
     valDef.logFile = ['Cobra' solverType 'Solver.log'];
     valDef.saveInput = [];
     valDef.PbName = [solverType 'problem'];
     valDef.debug = 0;
     valDef.lifting = 0;
-       
-    % GUROBI parameters
-    valDef.method = -1; % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
+           
+    valDef.method = -1; 
     
     % CPLEX parameters
     valDef.DATACHECK = 1;

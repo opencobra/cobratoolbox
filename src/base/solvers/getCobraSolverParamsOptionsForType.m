@@ -26,7 +26,7 @@ switch solverType
                       'lifting'};           % whether to lift a problem
 
     case 'QP'
-        paramNames = {'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent (if supported by the solver)
+        paramNames = {'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'printLevel', ...     % print level
                       'saveInput', ...      % save the input to a file (specified)
                       'feasTol',...         % feasibility tolerance
@@ -50,6 +50,7 @@ switch solverType
 
     case 'MIQP'
         paramNames = {'timeLimit', ...      % maximum time before stopping computation (if supported by the solver)
+                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'feasTol',...         % feasibility tolerance
                       'optTol',...          % optimality tolerance
                       'intTol', ...         % integer tolerance (accepted derivation from integer numbers)
