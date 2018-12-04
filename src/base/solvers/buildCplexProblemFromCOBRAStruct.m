@@ -44,8 +44,8 @@ else
 end
 
 cplexProblem.Model.A = Problem.A;
-cplexProblem.Model.rhs = b_U;
-cplexProblem.Model.lhs = b_L;
+cplexProblem.Model.rhs = columnVector(b_U);
+cplexProblem.Model.lhs = columnVector(b_L);
 cplexProblem.Model.ub = Problem.ub;
 cplexProblem.Model.lb = Problem.lb;
 cplexProblem.Model.obj = Problem.osense * Problem.c;
