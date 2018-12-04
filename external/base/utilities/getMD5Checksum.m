@@ -17,7 +17,7 @@ function [md5sum] = getMD5Checksum(fileName)
 
 if exist('uni.lu.md5.MD5','class') ~= 8
     javaaddpath([fileparts(which(mfilename)) filesep 'MD5.jar'])
-    import uni.lu.md5.MD5;
+    import uni.lu.md5.*;
 end
 
 md5calc = MD5();

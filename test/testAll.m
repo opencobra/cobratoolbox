@@ -258,6 +258,7 @@ catch ME
     removeTempFiles(testDirPath, testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         % only exit on jenkins.
+        disp(ME.message)
         exit(1);
     else
         % switch back to the folder we were in and rethrow the error
