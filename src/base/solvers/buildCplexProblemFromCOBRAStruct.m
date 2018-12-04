@@ -53,6 +53,7 @@ cplexProblem.Model.obj = Problem.osense * Problem.c;
 if isfield(Problem,'vartype')
     cplexProblem.Model.ctype = columnVector(Problem.vartype)';
 end
+
 if isfield(Problem,'x0')
     cplexProblem.Start.x = Problem.x0;
 end
