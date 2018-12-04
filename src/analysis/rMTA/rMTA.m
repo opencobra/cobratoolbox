@@ -225,28 +225,17 @@ fprintf('-------------------\n');
 fprintf('Step 2 in progress: MOMA\n');
 timerVal = tic;
 
-% Create the CPLEX model
-% variables
-v = 1:length(model.rxns);
-ctype(v) = 'C';
-n_var = v(end);
-
-% Objective fuction
-% linear part
-c(v) = -2*Vref;
-% quadratic part
-Q = 2*eye(n_var);
-
-cplex_model_moma.A = model.S;
-cplex_model_moma.lb = model.lb;
-cplex_model_moma.ub = model.ub;
-cplex_model_moma.lhs = zeros(size(model.mets));
-cplex_model_moma.rhs = zeros(size(model.mets));
-cplex_model_moma.obj = c;
-cplex_model_moma.Q = Q;
-cplex_model_moma.sense = 'minimize';
-cplex_model_moma.ctype = ctype;
-fprintf('\tcplex model for MOMA built\n');
+QPproblem = struct();
+QPproblem.A = model.S;
+QPproblem.lb = model.lb;
+QPproblem.ub = model.ub;
+QPproblem.b = zeros(size(model.mets));
+QPproblem.csense = char(zeros(size(model.mets)));
+QPproblem.csense(:) = 'E';
+QPproblem.c = -2*Vref;
+QPproblem.F = 2*eye(numel(model.rxns));
+QPproblem.osense = +1; %'minimize'
+fprintf('\tQPproblem model for MOMA built\n');
 
 % perform the MOMA problem for each rxn's knock-out
 clear v_res success unsuccess
@@ -263,16 +252,14 @@ else
         for w = 1:100
             j = j+1;
             KOrxn = find(geneKO.matrix(:,j));
-            clear cplex_moma
-            cplex_moma = Cplex('MOMA');
-            cplex_moma.Model = cplex_model_moma;
-            cplex_moma.DisplayFunc = [];
-            cplex_moma.Model.ub(KOrxn) = 0;
-            cplex_moma.Model.lb(KOrxn) = 0;
-            cplex_moma.solve();
+            clear QPproblem_aux
+            QPproblem_aux = QPproblem;
+            QPproblem_aux.ub(KOrxn) = 0;
+            QPproblem_aux.lb(KOrxn) = 0;
+            MOMAsolution = solveCobraQP(QPproblem_aux, 'printLevel', 1);
             % if we knock off the system, invalid solution
-            if cplex_moma.Solution.status==101 ||cplex_moma.Solution.status==1
-                v_res = cplex_moma.Solution.x;
+            if MOMAsolution.stat==1
+                v_res = MOMAsolution.full;
                 Vres.mMTA(:,j) = v_res;
                 if ~isempty(KOrxn) && norm(v_res)<1    % the norm(Vref) ~= 1e4
                     score_moma(j) = -Inf;

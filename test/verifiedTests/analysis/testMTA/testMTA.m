@@ -8,7 +8,8 @@
 %
 
 global CBTDIR
-prepareTest('needsMIQP', true, 'useSolversIfAvailable', {'tomlab', 'ibm_cplex', 'gurobi'});
+% prepareTest('needsMIQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'});
+prepareTest('needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'});
 
 % save the current path
 currentDir = pwd;
@@ -18,7 +19,7 @@ testDir = fileparts(which('testMTA'));
 cd(testDir);
 
 % define the solver packages to be used to run this test
-solverPkgs = {'ibm_cplex', 'tomlab', 'gurobi'};
+solverPkgs = {'ibm_cplex', 'tomlab_cplex', 'gurobi'};
 
 % Create Toy example model
 ReactionFormulas = {' -> A', 'A -> B', 'A -> C', 'C -> D',...
@@ -59,9 +60,9 @@ assert(verifyCobraFunctionError('rMTA', 'inputs', {model, rxnFBS, Vref, 0.5, 'a'
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});
 
-    solverLPOK = changeCobraSolver(solverPkgs{k}, 'MIQP', 0);
+    solverOK = changeCobraSolver(solverPkgs{k}, 'all', 0);
 
-    if solverLPOK || strcmp(solverPkgs{k},'ibm_cplex')
+    if solverOK || strcmp(solverPkgs{k},'ibm_cplex')
         % Calculate MTA and check solutions
         [TSscore,deletedGenes] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.');
         assert(TSscore(strcmp(deletedGenes,'g2'))<0)
