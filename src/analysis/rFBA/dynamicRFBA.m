@@ -118,7 +118,7 @@ noGrowthCount = 0;
 showprogress(0,'Dynamic regulatory FBA analysis in progress ...');
 for stepNo = 1:nSteps
     % Run FBA
-    sol = optimizeCbModel(modelDR,'max',true);
+    sol = optimizeCbModel(modelDR,'max'); % Maximize the constraint model.
     mu = sol.f;
 
     if (sol.stat ~= 1 | mu == 0) % end if no growth for 10 steps

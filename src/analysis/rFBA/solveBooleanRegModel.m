@@ -44,7 +44,7 @@ for i = 1:length(model.regulatoryGenes)
 end
 drGenes = intersect(model.genes,drGenes); % remove genes not associated with rxns
 modelDR = deleteModelGenes(model,drGenes); % set rxns to 0
-fbasolDR = optimizeCbModel(modelDR,'max',true);
+fbasolDR = optimizeCbModel(modelDR,'max'); % maximize under the constraints set by the deleted genes.
 
 % if rxn flux = 0, set state to false
 finalInputs2States = [];
