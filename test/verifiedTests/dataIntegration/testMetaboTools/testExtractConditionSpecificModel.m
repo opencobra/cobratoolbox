@@ -36,10 +36,23 @@ catch
 end
 
 % Define input 
-
 threshold = 10e-6
 
-modelPruned =  extractConditionSpecificModel(model,threshold);
+% generate data
+modelPruned =  extractConditionSpecificModel(model, threshold);
+
+% calculate reference data 
+[minFlux,maxFlux] = fluxVariability(model, 0);
+Flux = [minFlux maxFlux];  
+for i = 1 : 8;% length of the model
+    x = length (find (abs(Flux(i,:))<=10e-6))==2; % 10e-6 is the threshold
+    Blockedrxns(i,1) = x;
+end
+Blocked = model.rxns(Blockedrxns);
+refData = removeRxns(model,Blocked(:,1));
+
+% comparison between refData and generated data
+assert(isequal(refData, modelPruned))
 
 % change back to the current directory
 cd(currentDir);
