@@ -37,7 +37,7 @@ testDir = [CBTDIR filesep 'test'];
 currentDir = cd(testDir);
 coverageData = setupCoverageData();
 % get all names of test files
-testFiles = rdir(['verifiedTests' filesep '**' filesep 'test*.m']);
+testFiles = rdir(['verifiedTests' filesep '**' filesep 'testModelManipulation*.m']);
 testFileNames = {testFiles.name};
 testFileNames = testFileNames(~cellfun(@(x) isempty(regexp(x,testNames,'ONCE')),testFileNames));
 
