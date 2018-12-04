@@ -89,10 +89,14 @@ if launchTestSuite
     end
 
     % define a success exit code
-    exit_code = 0;
-
+    exit_code = 0;   
+    
     % enable profiler
     profile on;
+    
+    % get the source Files
+    sourceFiles = getFilesInDir('type', 'tracked', 'dirToList','src','restrictToPattern', '^.*\.m$', 'checkSubFolders', true);
+    
 
     if COVERAGE
         coverageFile = 'coverage.json';
@@ -105,7 +109,6 @@ if launchTestSuite
         ignoreFiles = getIgnoredFiles(ignoredPatterns, filterPatterns);
 
         % check the code quality
-        listFiles = getFilesInDir('type', 'tracked', 'restrictToPattern', '^.*\.m$', 'checkSubFolders', true);
 
         % count the number of failed code quality checks per file
         nMsgs = 0;
@@ -113,9 +116,9 @@ if launchTestSuite
         nEmptyLines = 0;
         nCommentLines = 0;
 
-        for i = 1:length(listFiles)
-            nMsgs = nMsgs + length(checkcode(listFiles{i}));
-            fid = fopen(listFiles{i});
+        for i = 1:length(sourceFiles)
+            nMsgs = nMsgs + length(checkcode(sourceFiles{i}));
+            fid = fopen(sourceFiles{i});
 
             while ~feof(fid)
                 lineOfFile = strtrim(char(fgetl(fid)));
@@ -172,7 +175,8 @@ try
         
         % run the tests in the subfolder verifiedTests/ recursively
         [result, resultTable, coverageData] = runTestSuite(['verifiedTests' filesep '**' filesep 'test*.m'],...
-                                                            CBT_MISSING_REQUIREMENTS_ERROR_ID, [CBTDIR filesep 'test']);
+                                                            CBT_MISSING_REQUIREMENTS_ERROR_ID, [CBTDIR filesep 'test'],...
+                                                            sourceFiles);
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);
