@@ -150,7 +150,7 @@ while i_alpha < num_alphas
     end
     
     % Create the CPLEX model
-    CplexModelBest = MTA_model (model, rxnFBS_best, Vref, alpha(i_alpha), epsilon);
+    CplexModelBest = buildMTAproblemFromModel(model, rxnFBS_best, Vref, alpha(i_alpha), epsilon);
     if printLevel >0
         fprintf('\tcplex model for MTA built\n');
     end
