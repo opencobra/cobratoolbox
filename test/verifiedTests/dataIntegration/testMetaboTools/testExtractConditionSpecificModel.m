@@ -1,7 +1,7 @@
-% The COBRA Toolbox: testexportSetToGAMS
+% The COBRA Toolbox: testextractConditionSpecificModel.m
 %
 % Purpose:
-%     - test exportSetToGAMS function
+%     - test the extractConditionSpecificModel function
 %
 % Authors:
 %     - Loic Marx, December 2018
@@ -15,16 +15,19 @@ cd(fileDir);
 
 % define the solver packages to be used to run this test, can't use
 % dqq/Minos for the parallel part.
-solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'useSolversIfAvailable',{'ibm_cplex'}, 'excludeSolvers',{'dqqMinos','quadMinos'}, 'minimalMatlabSolverVersion',8.0);
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers', {'dqqMinos', 'quadMinos'});
 
-% load model 
-model = createToyModelForLifting(false);
+% load reference data
+load('refData_extractConditionSpecificModel.mat')
+
+% load model
+model = createToyModelForLifting(true);
 
 % create a parallel pool
 try
     minWorkers = 2;
     myCluster = parcluster(parallel.defaultClusterProfile);
-    %No parallel pool
+    % no parallel pool
     if myCluster.NumWorkers >= minWorkers
         poolobj = gcp('nocreate');  % if no pool, do not create new one.
         if isempty(poolobj)
@@ -32,27 +35,17 @@ try
         end
     end
 catch
-    %No Parallel pool. Thats fine
+    % No Parallel pool.
 end
 
-% Define input 
-threshold = 10e-6
+% Define input
+threshold = 1e-6;
 
 % generate data
-modelPruned =  extractConditionSpecificModel(model, threshold);
-
-% calculate reference data 
-[minFlux,maxFlux] = fluxVariability(model, 0);
-Flux = [minFlux maxFlux];  
-for i = 1 : 8;% length of the model
-    x = length (find (abs(Flux(i,:))<=10e-6))==2; % 10e-6 is the threshold
-    Blockedrxns(i,1) = x;
-end
-Blocked = model.rxns(Blockedrxns);
-refData = removeRxns(model,Blocked(:,1));
+modelPruned = extractConditionSpecificModel(model, threshold);
 
 % comparison between refData and generated data
-assert(isequal(refData, modelPruned))
+assert(isequal(modelPruned_ref, modelPruned))
 
 % change back to the current directory
 cd(currentDir);
