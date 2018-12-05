@@ -30,7 +30,7 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', 'pdco');
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', {'qpng','pdco'});
 
 % define solver tolerances
 QPtol = 0.02;
