@@ -230,10 +230,18 @@ switch solver
         ctype(('G'==csense))='L';
         ctype(('E'==csense))='E';
         ctype(('L'==csense))='U';
-
+        %qpng requires the equality constraint matrx to be of full rank. We
+        %will therefore split it into two.
+        QPNGA = QPproblem.A(ctype == 'L' | ctype == 'U',:);
+        QPNGB = QPproblem.b(ctype == 'L' | ctype == 'U');
+        QPNGA = [QPNGA;QPproblem.A(ctype == 'E',:);QPproblem.A(ctype == 'E',:)];
+        QPNGB = [QPNGB;QPproblem.b(ctype == 'E');QPproblem.b(ctype == 'E')];
+        ctype = [ctype(ctype == 'L' | ctype == 'U');repmat('U',sum(ctype=='E'),1);repmat('L',sum(ctype=='E'),1)];
+        
+        
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+        [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPNGA), QPNGB, ctype, QPproblem.lb, QPproblem.ub, x0);
 
         f = 0.5*x'*QPproblem.F*x + c'*x;
 
