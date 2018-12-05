@@ -170,7 +170,7 @@ else
         end
         
         % Create the CPLEX model
-        CplexModelBest = MTA_model (model, rxnFBS_best, Vref, alpha(i_alpha), epsilon);
+        CplexModelBest = buildMTAproblemFromModel(model, rxnFBS_best, Vref, alpha(i_alpha), epsilon);
         if printLevel >0
             fprintf('\tcplex model for MTA built\n');
         end
@@ -225,23 +225,12 @@ fprintf('-------------------\n');
 fprintf('Step 2 in progress: MOMA\n');
 timerVal = tic;
 
-QPproblem = struct();
-QPproblem.A = model.S;
-QPproblem.lb = model.lb;
-QPproblem.ub = model.ub;
-if isfield(model, 'b')
-    QPproblem.b = model.b;
-else
-    QPproblem.b = zeros(size(model.mets));
-end
-if isfield(model, 'csense')
-    QPproblem.csense = model.csense;
-else
-    QPproblem.csense = char(zeros(size(model.mets)));
-    QPproblem.csense(:) = 'E';
-end
-QPproblem.c = -2*Vref;
-QPproblem.F = 2*eye(numel(model.rxns));
+QPproblem = buildLPproblemFromModel(model);
+[~,nRxns] = size(model.S);
+[~,nVars] = size(QPproblem.A);
+QPproblem.c(1:nRxns) = -2*Vref;
+QPproblem.F = sparse(nVars,nVars);
+QPproblem.F(1:nRxns,1:nRxns) = 2*speye(nRxns);
 QPproblem.osense = +1; %'minimize'
 fprintf('\tQPproblem model for MOMA built\n');
 
@@ -264,7 +253,7 @@ else
             QPproblem_aux = QPproblem;
             QPproblem_aux.ub(KOrxn) = 0;
             QPproblem_aux.lb(KOrxn) = 0;
-            MOMAsolution = solveCobraQP(QPproblem_aux, 'printLevel', 1);
+            MOMAsolution = solveCobraQP(QPproblem_aux, 'printLevel', 0);
             % if we knock off the system, invalid solution
             if MOMAsolution.stat==1
                 v_res = MOMAsolution.full;
@@ -330,7 +319,7 @@ else
             fprintf('\tStart rMTA worst scenario case for alpha = %1.2f \n',alpha(k_alpha));
         end
         
-        CplexModelWorst = MTA_model(model, rxnFBS_worst, Vref,  alpha(k_alpha), epsilon);
+        CplexModelWorst = buildMTAproblemFromModel(model, rxnFBS_worst, Vref,  alpha(k_alpha), epsilon);
         if printLevel >0
             fprintf('\tcplex model for MTA built\n');
         end
