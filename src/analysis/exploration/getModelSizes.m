@@ -15,7 +15,7 @@ function [nRxns, nMets, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
 %    nGenes:    The number of genes in the model
 %    nComps:    The number of compartments in the model
 
-[nRxns,nMets] = size(model.S);
+[nMets,nRxns] = size(model.S);
 
 nCtrs = 0;
 nVars = 0;
