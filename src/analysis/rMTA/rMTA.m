@@ -229,9 +229,17 @@ QPproblem = struct();
 QPproblem.A = model.S;
 QPproblem.lb = model.lb;
 QPproblem.ub = model.ub;
-QPproblem.b = zeros(size(model.mets));
-QPproblem.csense = char(zeros(size(model.mets)));
-QPproblem.csense(:) = 'E';
+if isfield(model, 'b')
+    QPproblem.b = model.b;
+else
+    QPproblem.b = zeros(size(model.mets));
+end
+if isfield(model, 'csense')
+    QPproblem.csense = model.csense;
+else
+    QPproblem.csense = char(zeros(size(model.mets)));
+    QPproblem.csense(:) = 'E';
+end
 QPproblem.c = -2*Vref;
 QPproblem.F = 2*eye(numel(model.rxns));
 QPproblem.osense = +1; %'minimize'
