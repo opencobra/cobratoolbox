@@ -41,7 +41,7 @@ if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
     cplexProblem.Param.timelimit.Cur = cobraParams.timeLimit;
 end
 
-if strcmp(problemType','QP') || strcmp(problemType,'MIQP')
+if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
     switch cobraParams.method
         case -1 % automatic
             cplexProblem.Param.qpmethod.Cur = 0;
