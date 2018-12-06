@@ -1252,6 +1252,39 @@ A struct array with the following structure:
 </dd></dl>
 
 <dl class="function">
+<dt id="src.analysis.exploration.getModelSizes">
+<code class="descname">getModelSizes</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/exploration/getModelSizes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.getModelSizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the sizes of the basic fields of the model structure</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> &#8211;
+A COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>nMets</strong> &#8211;
+The number of metabolites in the model</li>
+<li><strong>nRxns</strong> &#8211;
+The number of reactions in the model</li>
+<li><strong>nCtrs</strong> &#8211;
+The number of constraints in the model</li>
+<li><strong>nVars</strong> &#8211;
+The number of variables in the model</li>
+<li><strong>nGenes</strong> &#8211;
+The number of genes in the model</li>
+<li><strong>nComps</strong> &#8211;
+The number of compartments in the model</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.exploration.getModelSubSystems">
 <code class="descname">getModelSubSystems</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/exploration/getModelSubSystems.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.getModelSubSystems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all subSystems present in a model</p>

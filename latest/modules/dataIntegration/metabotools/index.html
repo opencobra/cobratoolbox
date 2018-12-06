@@ -585,18 +585,18 @@ For length of inputA/B, relative difference</li>
 
 <dl class="function">
 <dt id="src.dataIntegration.metabotools.extractConditionSpecificModel">
-<code class="descname">extractConditionSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>theshold</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/dataIntegration/metabotools/extractConditionSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.extractConditionSpecificModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extractConditionSpecificModel</code><span class="sig-paren">(</span><em>model</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/dataIntegration/metabotools/extractConditionSpecificModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dataIntegration.metabotools.extractConditionSpecificModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The function prunes a subnetwork based on a user-defined threshold. The subnetwork does not contain blocked reactions. Please note that Recon has blocked reactions which will always be removed. Thus, not all reactions are removed as a consequence of the data integration.
 Depends on fastFVA, fluxVariability analysis</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[modelPruned] = extractConditionSpecificModel(model, theshold)</div></blockquote>
+<div>[modelPruned] = extractConditionSpecificModel(model, threshold)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 Global metabolic model (Recon) - constrained</li>
-<li><strong>theshold</strong> &#8211;
+<li><strong>threshold</strong> &#8211;
 Fluxes below the threshold will be considered zero and respective reactions as blocked, e.g., 10e-6.</li>
 </ul>
 </div></blockquote>
