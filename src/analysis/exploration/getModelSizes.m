@@ -1,15 +1,15 @@
-function [nRxns, nMets, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
+function [nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
 % Get the sizes of the basic fields of the model structure
 %
 % USAGE:
-% [nRxns, nMets, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
+%    [nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
 %
 % INPUT:
 %    model:     A COBRA model structure
 %
-% OUTPUT:
-%    nRxns:     The number of reactions in the model
+% OUTPUTS:
 %    nMets:     The number of metabolites in the model
+%    nRxns:     The number of reactions in the model
 %    nCtrs:     The number of constraints in the model
 %    nVars:     The number of variables in the model
 %    nGenes:    The number of genes in the model
