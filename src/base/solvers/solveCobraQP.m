@@ -155,9 +155,12 @@ switch solver
 
         % optimize the problem
         Result = CplexQPProblem.solve();
-        residual = QPproblem.osense*QPproblem.c  + QPproblem.F*Result.x - QPproblem.A' * Result.dual - Result.reducedcost;
-        tmp=norm(residual,inf);        
-        
+        if isfield(Result,'x')
+            residual = QPproblem.osense*QPproblem.c  + QPproblem.F*Result.x - QPproblem.A' * Result.dual - Result.reducedcost;
+            tmp=norm(residual,inf);        
+        else
+            tmp = 0;
+        end        
         if (Result.status == 6 || tmp > cobraParams.feasTol ) && cobraParams.method == -1 
             % we had an automatic try and cplex returned a non optimal
             % solution, or a solution that is not good enough. This sometimes happens 
