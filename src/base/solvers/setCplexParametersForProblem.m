@@ -44,7 +44,7 @@ end
 if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
     switch cobraParams.method
         case -1 % automatic
-            cplexProblem.Param.qpmethod.Cur = 0;
+            cplexProblem.Param.qpmethod.Cur = 1; % we can choose whatever we want, so lets do primal simplex as it is the most stable option
         case 0
             cplexProblem.Param.qpmethod.Cur = 1;
         case 1
