@@ -18,10 +18,11 @@ function epsilon = calculateEPSILON(samples, rxnFBS, varargin)
 %                       from the rules and differential expression analysis.
 % 
 % OPTIONAL INPUT:
-%    unique_epsilon:    boolean varible. True = unique epsilon, False =
-%                       each reaction has different epsilon (default=false) 
-%    minimum:           Minimun value for epsilon requiered (default=1e-3)
-%
+%    varargin:  `ParameterName` value pairs with the following options:
+% 
+%                - `unique_epsilon`: True = unique epsilon, False = each reaction has different epsilon (default=false) 
+%                - `minimum`: Minimun value for epsilon requiered (default=1e-3)
+% 
 % OUTPUT:
 %    epsilon            Numeric value or array with the epsilon for the different reactions
 % 
@@ -34,10 +35,12 @@ function epsilon = calculateEPSILON(samples, rxnFBS, varargin)
 
 % parse optional arguments
 p = inputParser;
+addRequired(p, 'samples', @isnumeric);
+addRequired(p, 'rxnFBS', @isnumeric);
 p.CaseSensitive = false;
-addParameter(p,'unique_epsilon',false);
-addParameter(p,'minimum',1e-3);
-parse(p, varargin{:});
+addParameter(p, 'unique_epsilon', false);
+addParameter(p, 'minimum', 1e-3, @(x)isnumeric(x)&&isscalar(x));
+parse(p, samples, rxnFBS, varargin{:});
 
 % initialize array with epsilons for each reaction
 n = size(samples,2);

@@ -38,7 +38,7 @@ function [geneKO] = calculateGeneKOMatrix(model, varargin)
 p = inputParser;
 addRequired(p, 'model');
 addOptional(p, 'SeparateTranscript', '', @ischar);
-addOptional(p, 'printLevel', 1);
+addOptional(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 parse(p, model, varargin{:});
 
 % define gene set

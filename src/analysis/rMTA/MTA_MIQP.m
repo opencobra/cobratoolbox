@@ -28,9 +28,9 @@ p = inputParser;
 addRequired(p, 'OptimizationModel');
 addRequired(p, 'KOrxn');
 % Check optional arguments
-addOptional(p, 'numWorkers', 0);
-addOptional(p, 'timeLimit', inf);
-addOptional(p, 'printLevel', 1);
+addParameter(p, 'numWorkers', 0,@(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'timeLimit', inf,@(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'printLevel', 1,@(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, OptimizationModel, KOrxn, varargin{:});
 numWorkers = p.Results.numWorkers;

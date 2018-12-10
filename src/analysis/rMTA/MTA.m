@@ -29,11 +29,11 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %                     reaction (default = 0)
 % 
 % OPTIONAL INPUT (name-value pair):
-%    rxnKO            Binary value. Calculate knock outs at reaction level 
+%    `rxnKO`          Binary value. Calculate knock outs at reaction level 
 %                     instead of gene level. (default = false)
-%    timelimit        Time limit for the calculation of each knockout.
+%    `timelimit`      Time limit for the calculation of each knockout.
 %                     (default = inf)
-%    SeparateTranscript - Character used to separate
+%    `SeparateTranscript` - Character used to separate
 %                         different transcripts of a gene. (default = '')
 %                         Example: SeparateTranscript = ''
 %                                   gene 10005.1    ==>    gene 10005.1
@@ -43,10 +43,10 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %                                   gene 10005.1
 %                                   gene 10005.2    ==>    gene 10005
 %                                   gene 10005.3
-%    numWorkers        Integer: is the maximun number of workers
+%    `numWorkers`      Integer: is the maximun number of workers
 %                      used by the solver. 0 = automatic, 1 = sequential,
 %                         >1 = parallel. (default = 0)
-%    printLevel        Integer. 1 if the process is wanted to be shown
+%    `printLevel`      Integer. 1 if the process is wanted to be shown
 %                      on the screen, 0 otherwise. (default = 1)
 %
 % OUTPUTS:
@@ -74,10 +74,10 @@ addOptional(p, 'alpha', 0.66, @isnumeric);
 addOptional(p, 'epsilon', 0, @isnumeric);
 % Add optional name-value pair argument
 addParameter(p, 'rxnKO', false);
-addParameter(p, 'timelimit', inf);
-addParameter(p, 'SeparateTranscript', '');
-addParameter(p, 'numWorkers', 0);
-addParameter(p, 'printLevel', 1);
+addParameter(p, 'timelimit', inf, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
+addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
@@ -163,7 +163,7 @@ while i_alpha < num_alphas
         for w = 1:100
             i = i+1;
             KOrxn = find(geneKO.matrix(:,i));
-            v_res = MTA_MIQP (CplexModelBest, KOrxn, numWorkers, timelimit, printLevel);
+            v_res = MTA_MIQP (CplexModelBest, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel);
             Vres{i_alpha}(:,i) = v_res;
             if ~isempty(KOrxn) && norm(v_res)>1
                 TSscore(i,i_alpha) = MTA_TS(v_res,Vref,rxnFBS_best);

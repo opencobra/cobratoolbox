@@ -28,11 +28,11 @@ function OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,varargin
 p = inputParser;
 % check requiered arguments
 addRequired(p, 'model');
-addRequired(p, 'rxnFBS',@isnumeric);
-addRequired(p, 'Vref',@isnumeric);
+addRequired(p, 'rxnFBS', @isnumeric);
+addRequired(p, 'Vref', @isnumeric);
 % Check optional arguments
-addOptional(p, 'alpha', 0.66);
-addOptional(p, 'epsilon', zeros(size(model.rxns)));
+addOptional(p, 'alpha', 0.66, @isnumeric);
+addOptional(p, 'epsilon', zeros(size(model.rxns)), @isnumeric);
 % extract variables from parser
 parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;

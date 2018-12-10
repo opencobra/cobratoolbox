@@ -9,7 +9,7 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %
 % INPUT:
 %    model:             The COBRA Model structure
-%    diff_exprs:        MATLB Table including the information of the
+%    diff_exprs:        MATLAB Table including the information of the
 %                       differentially expressed genes.
 %                       Required columns (with theses names):
 %                           - gene ( ID of gene, same as in the meabolic model)
@@ -18,10 +18,11 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %    Vref:              Reference flux of the model
 %
 % OPTIONAL INPUT:
-%    SeparateTranscript:    Character used to separate
-%                           different transcripts of a gene. (default: '').
-%    logFC:             minimum log2 (fold change) requiered (default = 0).
-%    pval:              maximum p-value admited (default = 0.05).
+%    varargin:  `ParameterName` value pairs with the following options:
+% 
+%                - `SeparateTranscript`: Character used to separate different transcripts of a gene. (default: '')
+%                - `logFC`: minimum log2 (fold change) requiered (default = 0)
+%                - `pval`: maximum p-value admited (default = 0.05)
 %
 % OUTPUT:
 %    rxnFBS             array containting the information of altered  
@@ -43,9 +44,9 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 % Parser of optional inputs
 p = inputParser;
 p.CaseSensitive = false;
-addParameter(p,'SeparateTranscript','');
-addParameter(p,'logFC',0);
-addParameter(p,'pval',0.05);
+addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
+addParameter(p, 'logFC', 0, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'pval', 0.05, @(x)isnumeric(x)&&isscalar(x));
 parse(p, varargin{:});
 SeparateTranscript = p.Results.SeparateTranscript;
 logFC = p.Results.logFC;
@@ -57,6 +58,10 @@ if ~isempty(SeparateTranscript)
     diff_exprs = innerjoin(aux_table, diff_exprs, 'Keys','gene');
 	diff_exprs.gene = diff_exprs.transcript;
 end
+
+% Check that genes are in the model
+assert(sum(ismember(diff_exprs.gene,model.genes))>0,...
+    'Gene ID are not in the model. Revise gene ID in input table or SeparateTranscript option parameter')
 
 % Minimun Fold Change to admit the changes
 idx = abs(diff_exprs.logFC) > logFC;
