@@ -340,12 +340,19 @@ if isfield(model,'metCompartments')
     model.metComps = model.metCompartments;
     model = rmfield(model,'metCompartments');
 elseif ~isfield(model,'metComps')
-    model.metComps = extractCompartmentsFromMets(model.mets);
+    newComps = extractCompartmentsFromMets(model.mets);
     % if we have no assigned compartments, then everything is moved to the
     % cytosol.
-    if all(strcmp(model.metComps,'k'))
-        model.metComps(:) = {'c'}; 
+    if all(strcmp(newComps,'k')) 
+        % this could indicate that the source is a BiGG model, lets try this.
+        biggComps = extractCompartmentsFromMets(model.mets,'compartmentRegExp','^(?<metID>.*?)_(?<compID>[a-z][a-z0-9]?)(_([A-Z][A-Z0-9]?))?$');
+        if all(strcmp(biggComps,'k')) 
+            newComps(:) = {'c'}; 
+        else
+            newComps = biggComps;
+        end
     end
+    model.metComps = newComps;
     model.comps = unique(model.metComps);
     [compSymbol,compNames] = getDefaultCompartments();
     [pres,pos] = ismember(compSymbol,model.comps);
