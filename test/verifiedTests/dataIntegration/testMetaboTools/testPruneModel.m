@@ -19,10 +19,12 @@ load('refData_pruneModel.mat')
 % define input
 model = getDistributedModel('ecoli_core_model.mat');
 biomassRxn = model.rxns(13);
-minGrowth = 1; 
+minGrowth = 1; % this value is for testing only 
 
 % generate data
-modelPruned = pruneModel(model, minGrowth, biomassRxn);
+[modelUpdated, modelPruned, Ex_Rxns] = pruneModel(model, minGrowth, biomassRxn);
 
 % comparison between refData and generated data
-assert(isequal(modelPruned_Ref, modelPruned))
+assert(isequal(modelUpdated_ref, modelUpdated))
+assert(isequal(modelPruned_ref, modelPruned))
+assert(isequal(Ex_Rxns_ref, Ex_Rxns))
