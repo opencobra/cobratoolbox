@@ -1,4 +1,4 @@
-% The COBRA Toolbox: setMediumConstraints.m
+% The COBRA Toolbox: testSetMediumConstraints.m
 %
 % Purpose:
 %     - test the setMediumConstraints function
