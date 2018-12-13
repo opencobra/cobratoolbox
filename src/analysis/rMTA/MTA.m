@@ -2,7 +2,10 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 % Calculate Metabolic Transformation Analysis (MTA) using the the
 % solver CPLEX.
 % Code was prepared to be able to be stopped and be launched again by using
-% a temporally file called 'temp_MTA.mat'.
+% a temporary file called 'temp_MTA.mat'.
+% Outputs are cell array for each alpha (one simulation by alpha). It
+% there is only one alpha, content of cell will be returned
+%
 %
 % The code here has been based on:
 %   Yizhak, K., Gabay, O., Cohen, H., & Ruppin, E. (2013).
@@ -12,28 +15,25 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %
 % USAGE:
 %
-%    [TSscore,deletedGenes,Vout] = MTA(model, rxnFBS, Vref,...
-%                                       alpha, epsilon, varargin)
+%    [TSscore,deletedGenes,Vout] = MTA(model, rxnFBS, Vref, alpha, epsilon, varargin)
 %
 % INPUTS:
-%    model:           Metabolic model structure (COBRA Toolbox format).
-%    rxnFBS:          Array that contains the desired change: Forward,
-%                     Backward and Unchanged (+1;0;-1). This is calculated
-%                     from the rules and differential expression analysis.
-%    Vref:            Reference flux of the source state.
+%    model:               Metabolic model structure (COBRA Toolbox format).
+%    rxnFBS:              Array that contains the desired change: Forward,
+%                         Backward and Unchanged (+1;0;-1). This is calculated
+%                         from the rules and differential expression analysis.
+%    Vref:                Reference flux of the source state.
 %
-% OPTIONAL INPUT:
-%    alpha:           Numeric value or array. Parameter of the quadratic
-%                     problem (default = 0.66)
-%    epsilon:         Numeric value or array. Minimun perturbation for each
-%                     reaction (default = 0)
-% 
-% OPTIONAL INPUT (name-value pair):
-%    `rxnKO`          Binary value. Calculate knock outs at reaction level 
-%                     instead of gene level. (default = false)
-%    `timelimit`      Time limit for the calculation of each knockout.
-%                     (default = inf)
-%    `SeparateTranscript` - Character used to separate
+% OPTIONAL INPUTS:
+%    alpha:               Numeric value or array. Parameter of the quadratic
+%                         problem (default = 0.66)
+%    epsilon:             Numeric value or array. Minimun perturbation for each
+%                         reaction (default = 0)
+%    rxnKO:               Binary value. Calculate knock outs at reaction level
+%                         instead of gene level. (default = false)
+%    timelimit:           Time limit for the calculation of each knockout.
+%                         (default = inf)
+%    SeparateTranscript:  Character used to separate
 %                         different transcripts of a gene. (default = '')
 %                         Example: SeparateTranscript = ''
 %                                   gene 10005.1    ==>    gene 10005.1
@@ -43,29 +43,25 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %                                   gene 10005.1
 %                                   gene 10005.2    ==>    gene 10005
 %                                   gene 10005.3
-%    `numWorkers`      Integer: is the maximun number of workers
-%                      used by the solver. 0 = automatic, 1 = sequential,
+%    numWorkers:          Integer: is the maximun number of workers
+%                         used by the solver. 0 = automatic, 1 = sequential,
 %                         >1 = parallel. (default = 0)
-%    `printLevel`      Integer. 1 if the process is wanted to be shown
-%                      on the screen, 0 otherwise. (default = 1)
+%    printLevel:          Integer. 1 if the process is wanted to be shown
+%                         on the screen, 0 otherwise. (default = 1)
 %
 % OUTPUTS:
-%    Outputs are cell array for each alpha (one simulation by alpha). It
-%    there is only one alpha, content of cell will be returned
-%    TSscore:         Transformation score by each transformation
-%    deletedGenes:    The list of genes/reactions removed in each knock-out
-%    Vres:            Matrix of resulting fluxes
+%    TSscore:             Transformation score by each transformation
+%    deletedGenes:        The list of genes/reactions removed in each knock-out
+%    Vres:                Matrix of resulting fluxes
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
-% .. Revisions:
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 %       - Francisco J. Planes, 26/10/2018, University of Navarra, TECNUN School of Engineering.
 
+p = inputParser; % check the input information
 
-%% Check the input information
-p = inputParser;
-% check requiered arguments
+% check required arguments
 addRequired(p, 'model');
 addRequired(p, 'rxnFBS', @isnumeric);
 addRequired(p, 'Vref', @isnumeric);
@@ -148,13 +144,13 @@ while i_alpha < num_alphas
     if printLevel >0
         fprintf('\tStart MTA best scenario case for alpha = %1.2f \n',alpha(i_alpha));
     end
-    
+
     % Create the CPLEX model
     CplexModelBest = buildMTAproblemFromModel(model, rxnFBS_best, Vref, alpha(i_alpha), epsilon);
     if printLevel >0
         fprintf('\tcplex model for MTA built\n');
     end
-    
+
     % perform the MIQP problem for each rxn's knock-out
     if printLevel >0
         showprogress(0, '    MIQP Iterations for MTA');
