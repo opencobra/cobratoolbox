@@ -1,11 +1,11 @@
-function score = MTA_TS(Vout,Vref,rxnFBS)
+function [score] = MTA_TS(Vout,Vref,rxnFBS)
 % Returns the TS score of a particular solution of the MTA perturbation
 % algorithm.
 %
 % USAGE:
-% 
+%
 %       score = MTA_TS(v_res,vref,Model,success,unsuccess)
-% 
+%
 % INPUT:
 %    Vout:             Solution flux of MIQP formulation for each case
 %    Vref:             Reference flux of source state
@@ -17,12 +17,9 @@ function score = MTA_TS(Vout,Vref,rxnFBS)
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
-% .. Revisions:
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 
-
-%Indexation of variables
-v_rF = find(rxnFBS==+1);
+v_rF = find(rxnFBS==+1); % indexation of variables
 v_rB = find(rxnFBS==-1);
 v_r = [v_rF; v_rB];     % the order is neccesary, as the success array has been defined in that order
 v_s = find(rxnFBS==0);
