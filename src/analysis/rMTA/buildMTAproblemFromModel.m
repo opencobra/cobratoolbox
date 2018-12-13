@@ -2,30 +2,27 @@ function OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,varargin
 % Returns the COBRA Optimization model needed to perform the MTA
 %
 % USAGE:
-% 
+%
 %       OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,alpha,epsilon)
 %
 % INPUT:
-%    model:            Metabolic model (COBRA format)
-%    rxnFBS:           Forward, Backward and Unchanged (+1;0;-1) values
-%                      corresponding to each reaction.
-%    Vref:             Reference flux of the source state.
-%    alpha:            parameter of the quadratic problem (default = 0.66)
-%    epsilon           minimun disturbance for each reaction, (default = 0)
+%    model:                 Metabolic model (COBRA format)
+%    rxnFBS:                Forward, Backward and Unchanged (+1;0;-1) values
+%                           corresponding to each reaction.
+%    Vref:                  Reference flux of the source state.
+%    alpha:                 parameter of the quadratic problem (default = 0.66)
+%    epsilon                minimun disturbance for each reaction, (default = 0)
 %
 % OUTPUTS:
-%    OptimizationModel      COBRA model struct that includes the 
-%                           stoichiometric contrains, the thermodinamic 
+%    OptimizationModel:     COBRA model struct that includes the
+%                           stoichiometric contrains, the thermodinamic
 %                           constrains and the binary variables.
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
-% .. Revisions:
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 
-
-%% --- check the inputs ---
-p = inputParser;
+p = inputParser; % check the inputs
 % check requiered arguments
 addRequired(p, 'model');
 addRequired(p, 'rxnFBS', @isnumeric);
