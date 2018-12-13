@@ -1,7 +1,6 @@
 function epsilon = calculateEPSILON(samples, rxnFBS, varargin)
 % Calculate the minimum required flux change (epsilon) for reactions to be
 % considered as significantly changed with p-value of 0.05
-%
 % The code below is based on the method presented in:
 %    Yizhak, K., Gabay, O., Cohen, H., & Ruppin, E. (2013). Model-based
 %    identification of drug targets that revert disrupted metabolism and
@@ -24,7 +23,7 @@ function epsilon = calculateEPSILON(samples, rxnFBS, varargin)
 %                - `minimum`: Minimun value for epsilon requiered (default=1e-3)
 %
 % OUTPUT:
-%    epsilon            Numeric value or array with the epsilon for the different reactions
+%    epsilon:           Numeric value or array with the epsilon for the different reactions
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 06/07/2015, University of Navarra, CIMA & TECNUN School of Engineering.
