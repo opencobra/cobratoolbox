@@ -22,7 +22,7 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %             - Modified by Loic Marx, December 2018
 
 if ~exist('biomassRxn','var')
-    biomassRxn = 'biomass_reaction2';
+    biomassRxn = checkObjective(model);
 end
 
 modelUpdated = model;
