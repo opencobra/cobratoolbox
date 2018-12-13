@@ -1,4 +1,4 @@
-function [v_res, solution] = MTA_MIQP (OptimizationModel, KOrxn, varargin)
+function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 % Returns the OptimizationModel solution of a particular MTA problem and
 % an specific model
 %
