@@ -5,8 +5,6 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 % a temporary file called 'temp_MTA.mat'.
 % Outputs are cell array for each alpha (one simulation by alpha). It
 % there is only one alpha, content of cell will be returned
-%
-%
 % The code here has been based on:
 %   Yizhak, K., Gabay, O., Cohen, H., & Ruppin, E. (2013).
 %   'Model-based identification of drug targets that revert disrupted
@@ -33,19 +31,19 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %                         instead of gene level. (default = false)
 %    timelimit:           Time limit for the calculation of each knockout.
 %                         (default = inf)
-%    SeparateTranscript:  Character used to separate
-%                         different transcripts of a gene. (default = '')
-%                         Example: SeparateTranscript = ''
-%                                   gene 10005.1    ==>    gene 10005.1
-%                                   gene 10005.2    ==>    gene 10005.2
-%                                   gene 10005.3    ==>    gene 10005.3
-%                                  SeparateTranscript = '.'
-%                                   gene 10005.1
-%                                   gene 10005.2    ==>    gene 10005
-%                                   gene 10005.3
+%    SeparateTranscript:  Character used to separate different transcripts of a gene. (default = '').
+%                         Examples:
+%                             - SeparateTranscript = ''
+%                                   - gene 10005.1    ==>    gene 10005.1
+%                                   - gene 10005.2    ==>    gene 10005.2
+%                                   - gene 10005.3    ==>    gene 10005.3
+%                             - SeparateTranscript = '.'
+%                                   - gene 10005.1
+%                                   - gene 10005.2    ==>    gene 10005
+%                                   - gene 10005.3
 %    numWorkers:          Integer: is the maximun number of workers
 %                         used by the solver. 0 = automatic, 1 = sequential,
-%                         >1 = parallel. (default = 0)
+%                         > 1 = parallel. (default = 0)
 %    printLevel:          Integer. 1 if the process is wanted to be shown
 %                         on the screen, 0 otherwise. (default = 1)
 %
