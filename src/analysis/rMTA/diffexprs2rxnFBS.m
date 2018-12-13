@@ -4,8 +4,7 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %
 % USAGE:
 %
-%    rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, ...
-%                        'SeparateTranscript', '', 'logFC', 0, 'pval',0.05)
+%    rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, 'SeparateTranscript', '', 'logFC', 0, 'pval',0.05)
 %
 % INPUT:
 %    model:             The COBRA Model structure
@@ -14,22 +13,22 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %                       Required columns (with theses names):
 %                           - gene ( ID of gene, same as in the meabolic model)
 %                           - logFC (SOURCE VS TARGET)
-%                           - pval (p-value or adjusted-p-value)     
+%                           - pval (p-value or adjusted-p-value)
 %    Vref:              Reference flux of the model
 %
-% OPTIONAL INPUT:
-%    varargin:  `ParameterName` value pairs with the following options:
-% 
-%                - `SeparateTranscript`: Character used to separate different transcripts of a gene. (default: '')
-%                - `logFC`: minimum log2 (fold change) requiered (default = 0)
-%                - `pval`: maximum p-value admited (default = 0.05)
+% OPTIONAL INPUTS:
+%    varargin:          `ParameterName` value pairs with the following options:
+%
+%                           - `SeparateTranscript`: Character used to separate different transcripts of a gene. (default: '')
+%                           - `logFC`: minimum log2 (fold change) requiered (default = 0)
+%                           - `pval`: maximum p-value admited (default = 0.05)
 %
 % OUTPUT:
-%    rxnFBS             array containting the information of altered  
-%                       reactions: Forward - Backward - Unchanged 
+%    rxnFBS:             array containting the information of altered
+%                       reactions: Forward - Backward - Unchanged
 %                       (+1;0;-1);
-% 
-% Note:
+%
+% .. Note:
 %    It is highly recommended to use as diff_exprs the TopTable result from
 %    limma in R and change names if neccesary.
 %    In the tutorial there is further information to load data from GEO or
@@ -37,12 +36,10 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 25/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
-% .. Revisions:
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
 %       - Francisco J. Planes, 26/10/2018, University of Navarra, TECNUN School of Engineering.
 
-% Parser of optional inputs
-p = inputParser;
+p = inputParser; % check input information
 p.CaseSensitive = false;
 addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
 addParameter(p, 'logFC', 0, @(x)isnumeric(x)&&isscalar(x));
@@ -86,7 +83,7 @@ geneFBS = zeros(length(model.genes),1);
 geneFBS(idx) = geneFBS_aux;
 
 % If a gene is down-regulated in the source state,the flux activity should
-% be increased. Similarly, if a gene is up-regulated in the source state, 
+% be increased. Similarly, if a gene is up-regulated in the source state,
 % the flux activity should be decreased.
 % For this reason we change the sign of geneFBS (target vs source here).
 geneFBS = -geneFBS;
@@ -127,9 +124,9 @@ rxnFBS(strcmp(model.grRules,'')) = 0; % non-mapped reactions have no change in a
 
 % We have considered all reactions as Forward reactions. GeneFBS gives the
 % information whatever a reaction should increase activity in absolute
-% values. 
+% values.
 % For Forward reactions, (+1) increase flux, (-1) decrease flux
-% For Backward reactions, (+1) decrease flux (increase in absolute values), 
+% For Backward reactions, (+1) decrease flux (increase in absolute values),
 % (-1) increase flux, (decrease in absolute values)
 rxnFBS(Vref < 0) = - rxnFBS(Vref < 0);
 fprintf('\tReaction expression changes calculated\n');
