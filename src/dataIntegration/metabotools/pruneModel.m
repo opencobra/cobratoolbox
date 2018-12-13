@@ -18,7 +18,8 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %                   (attention this seems to cause issues with GPRs)
 %    Ex_Rxns:       List of exchange reactions in pruned model
 %
-% .. Author: - Ines Thiele, 02/2014
+% .. Authors: - Ines Thiele, 02/2014
+%             - Modified by Loic Marx, December 2018
 
 if ~exist('biomassRxn','var')
     biomassRxn = 'biomass_reaction2';
@@ -37,9 +38,6 @@ epsilon =1e-4;
 cnt =1;
 for t=1:length(modelForPruningPruned.rxns)
     if  strfind(modelForPruningPruned.rxns{t}, 'EX_')
-        Ex_Rxns(cnt,1) =modelForPruningPruned.rxns(t); %make exchange reaction list
-        cnt=cnt+1;
-    elseif  strfind(modelForPruningPruned.rxns{t}, 'Ex_')
         Ex_Rxns(cnt,1) =modelForPruningPruned.rxns(t); %make exchange reaction list
         cnt=cnt+1;
     end
