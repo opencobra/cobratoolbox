@@ -13,7 +13,7 @@ currentDir = pwd;
 fileDir = fileparts(which(mfilename));
 cd(fileDir);
 
-% load reference data
+% load reference data with constraint
 load('refData_setMediumConstraints.mat');
 
 % define input
@@ -32,9 +32,22 @@ customizedConstraints_lb = 1;
 customizedConstraints_ub = 2;
 close_exchanges = 1; % 1 : close exchange , 0: open exchange 
 
+% set up the tolerance
+tol = 1e-4;
+
 % generate data
 [modelMedium, basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges);
 
-% comparison between refData and generated data
-assert(isequal(modelMedium_ref, modelMedium))
+% load reference data without constraint
+load('refData_noConstraints.mat');
+
+% if customizedConstraints, customizedConstraints_ub, customizedConstraints_lb close_exchanges are not defined 
+[modelMedium_noCustomizedConstraints, basisMedium_noCustomizedConstraints] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb);
+
+% comparison between refData and generated data for lowerband 
+assert(norm(modelMedium_ref.lb - modelMedium.lb) < tol)
 assert(isequal(basisMedium_ref, basisMedium))
+
+% comparison between refData without constraint and generated data for lowerband
+assert(norm(modelMedium_Ref_noCustomizedConstraints.lb - modelMedium_noCustomizedConstraints.lb) < tol)
+assert(isequal(basisMedium_Ref_noCustomizedConstraints, basisMedium))
