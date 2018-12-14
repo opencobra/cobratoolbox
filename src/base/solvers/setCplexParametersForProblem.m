@@ -1,15 +1,17 @@
 function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, problemType)
 % Set the parameters for a specific problem from the COBRA Parameter
 % structure and a solver specific parameter structre (latter has
-% precedence)
+% precedence). The cobra parameters structure contains fields as specified in 
+% `getCobraSolverParamsOptionsForType`, while solverParams needs to
+% contain a structure compatible with `setCplexParam`.
 % USAGE:
 %    cplexProblem = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, ProblemType)
 %
 % INPUTS:
 %    cplexProblem:      the Cplex() object to set the parameters
-%    cobraParams:       the COBRA parameter structure
-%    solverParams:      the solver specific parameter structure (must be a
-%                       valid input to `setCplexParam`;
+%    cobraParams:       the COBRA parameter structure, with parameters as defined in
+%                       `getCobraSolverParamsOptionsForType`
+%    solverParams:      the solver specific parameter structure has to be compatible with `setCplexParam`
 %    problemType:       The type of Problem ('LP','MILP','QP','MIQP').
 %
 
