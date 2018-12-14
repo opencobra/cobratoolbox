@@ -11,17 +11,19 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %    minGrowth:     minimal Growth rate to be set on biomass reaction
 %    biomassRxn:    biomass reaction name (default: 'biomass_reaction2')
 %
-% OUTPUTS: 
+% OUTPUTS:
 %    modelUpdated:  same as input model but constraints on blocked reactions
 %                   are set to be 0
 %    modelPruned:   pruned model, where all blocked reactions are removed
 %                   (attention this seems to cause issues with GPRs)
 %    Ex_Rxns:       List of exchange reactions in pruned model
 %
-% .. Author: - Ines Thiele, 02/2014
+% .. Authors: - Ines Thiele, 02/2014
+%             - Modified by Loic Marx, December 2018
 
 if ~exist('biomassRxn','var')
-    biomassRxn = 'biomass_reaction2';
+    biomassRxn = checkObjective(model);
+    biomassRxn = biomassRxn{1};
 end
 
 modelUpdated = model;
@@ -37,9 +39,6 @@ epsilon =1e-4;
 cnt =1;
 for t=1:length(modelForPruningPruned.rxns)
     if  strfind(modelForPruningPruned.rxns{t}, 'EX_')
-        Ex_Rxns(cnt,1) =modelForPruningPruned.rxns(t); %make exchange reaction list
-        cnt=cnt+1;
-    elseif  strfind(modelForPruningPruned.rxns{t}, 'Ex_')
         Ex_Rxns(cnt,1) =modelForPruningPruned.rxns(t); %make exchange reaction list
         cnt=cnt+1;
     end
