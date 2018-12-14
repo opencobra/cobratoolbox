@@ -11,7 +11,7 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %    minGrowth:     minimal Growth rate to be set on biomass reaction
 %    biomassRxn:    biomass reaction name (default: 'biomass_reaction2')
 %
-% OUTPUTS: 
+% OUTPUTS:
 %    modelUpdated:  same as input model but constraints on blocked reactions
 %                   are set to be 0
 %    modelPruned:   pruned model, where all blocked reactions are removed
@@ -23,6 +23,7 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 
 if ~exist('biomassRxn','var')
     biomassRxn = checkObjective(model);
+    biomassRxn = biomassRxn{1};
 end
 
 modelUpdated = model;
