@@ -13,7 +13,7 @@ currentDir = pwd;
 fileDir = fileparts(which(mfilename));
 cd(fileDir);
 
-% load reference data with constraint
+% load reference data 
 load('refData_setMediumConstraints.mat');
 
 % define input
@@ -38,16 +38,15 @@ tol = 1e-4;
 % generate data
 [modelMedium, basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges);
 
-% load reference data without constraint
-load('refData_noConstraints.mat');
-
 % if customizedConstraints, customizedConstraints_ub, customizedConstraints_lb close_exchanges are not defined 
 [modelMedium_noCustomizedConstraints, basisMedium_noCustomizedConstraints] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb);
 
-% comparison between refData and generated data for lowerband 
-assert(norm(modelMedium_ref.lb - modelMedium.lb) < tol)
+% comparison between refData and generated data 
+assert(norm(modelMedium_ref.lb - modelMedium.lb) < tol) %lowerband
+assert(norm(modelMedium_ref.ub - modelMedium.ub) < tol) %upperband
 assert(isequal(basisMedium_ref, basisMedium))
 
-% comparison between refData without constraint and generated data for lowerband
-assert(norm(modelMedium_Ref_noCustomizedConstraints.lb - modelMedium_noCustomizedConstraints.lb) < tol)
+% comparison between refData without constraint and generated data without constraints inputs
+assert(norm(modelMedium_Ref_noCustomizedConstraints.lb - modelMedium_noCustomizedConstraints.lb) < tol) %lowerband
+assert(norm(modelMedium_Ref_noCustomizedConstraints.ub - modelMedium_noCustomizedConstraints.ub) < tol) %upperband
 assert(isequal(basisMedium_Ref_noCustomizedConstraints, basisMedium_noCustomizedConstraints))
