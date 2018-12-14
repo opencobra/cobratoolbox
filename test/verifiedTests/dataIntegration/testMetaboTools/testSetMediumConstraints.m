@@ -50,4 +50,4 @@ assert(isequal(basisMedium_ref, basisMedium))
 
 % comparison between refData without constraint and generated data for lowerband
 assert(norm(modelMedium_Ref_noCustomizedConstraints.lb - modelMedium_noCustomizedConstraints.lb) < tol)
-assert(isequal(basisMedium_Ref_noCustomizedConstraints, basisMedium))
+assert(isequal(basisMedium_Ref_noCustomizedConstraints, basisMedium_noCustomizedConstraints))
