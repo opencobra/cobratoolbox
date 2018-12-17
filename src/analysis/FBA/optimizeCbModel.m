@@ -436,11 +436,11 @@ if (solution.stat == 1)
         solution.s = solution.slack;
     end
     fieldOrder = {'full';'obj';'rcost';'dual';'slack';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'f';'x';'v';'w';'y';'s'};
-    % reorder fields for better reradability
+    % reorder fields for better readability
     currentfields = fieldnames(solution);
     presentfields = ismember(fieldOrder,currentfields);
     absentfields = ~ismember(currentfields,fieldOrder);
-    solution = orderfields(solution,[currentfields(absentfields),fieldOrder(presentfields)]);
+    solution = orderfields(solution,[currentfields(absentfields);fieldOrder(presentfields)]);
 else
     %some sort of error occured.
     if printLevel>0
