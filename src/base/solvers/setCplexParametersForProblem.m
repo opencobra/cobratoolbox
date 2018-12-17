@@ -35,6 +35,8 @@ cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
 % set tolerances
 cplexProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
 cplexProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
+cplexProblem.Param.network.tolerances.feasibility.Cur = cobraParams.feasTol;
+cplexProblem.Param.barrier.convergetol.Cur = cobraParams.feasTol;
 if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
     % Set Integer specific parameters.
     cplexProblem.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
@@ -46,7 +48,7 @@ end
 if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
     switch cobraParams.method
         case -1 % automatic
-            cplexProblem.Param.qpmethod.Cur = 1; % we can choose whatever we want, so lets do primal simplex as it is the most stable option
+            cplexProblem.Param.qpmethod.Cur = -1;
         case 0
             cplexProblem.Param.qpmethod.Cur = 1;
         case 1

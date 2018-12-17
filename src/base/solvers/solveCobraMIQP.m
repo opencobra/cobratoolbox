@@ -292,15 +292,6 @@ switch solver
 
         % optimize the problem
         Result = CplexMIQPProblem.solve();
-    
-        if Result.status == 6 && cobraParams.method == -1 
-            % we had an automatic try and cplex returned a non optimal
-            % solution. This sometimes happens with automatic solver
-            % selection, and using the simplex solver 'can' correct this
-            % behaviour, so lets give it a try.
-            CplexQPProblem.Param.qpmethod = 1;
-            Result = CplexQPProblem.solve();
-        end
         
         if logToFile
             % Close the output file
