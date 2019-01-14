@@ -202,7 +202,7 @@ if any(ismember(solversForTest.LP,'matlab'))
     optBox = find(ismember({boxes.Name},'Optimization Toolbox'));
     if ~isempty(optBox)
         optVer = boxes(optBox).Version;
-        if str2double(optVer) < minimalMatlabSolverVersion                
+        if str2double(optVer) < minimalMatlabSolverVersion
             excludedSolvers = [columnVector(excludedSolvers);'matlab'];
         end
     end
@@ -363,8 +363,7 @@ problemTypes = OPT_PROB_TYPES;
 % testing whether the actual work succeeded.
 if strcmpi(runtype, 'extensive') && ~useMinimalNumberOfSolvers
     solversToUse = solversForTest;
-    %exclude pdco if not explicitly requested and available, as it does
-    %have issues at the moment.
+    % exclude pdco if not explicitly requested and available, as it has issues at the moment.
     if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
         solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
         solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
