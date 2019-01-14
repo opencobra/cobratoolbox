@@ -30,7 +30,8 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', {'qpng','pdco'});
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', {'qpng','pdco', 'mosek'});
+% Note: On Linux, version > 8.0.+ has issues
 
 % define solver tolerances
 QPtol = 0.02;
@@ -38,7 +39,7 @@ LPtol = 0.0001;
 
 for k = 1:length(solverPkgs.QP)
     % select the same solver for QP and LP (if available)
-    if ~any(ismember(solverPkgs.QP{k},solverPkgs.LP))        
+    if ~any(ismember(solverPkgs.QP{k},solverPkgs.LP))
         lpSolver = solverPkgs.LP{1};
     else
         lpSolver = solverPkgs.QP{k};
@@ -47,30 +48,30 @@ for k = 1:length(solverPkgs.QP)
 
     solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
     solverLPOK = changeCobraSolver(lpSolver, 'LP', 0);
-    
+
     % test deleteModelGenes
     [modelOut, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, 'b3956'); % gene for reaction PPC
-    
+
     % run MOMA
     sol = MOMA(model, modelOut);
-    
+
     assert(abs(0.8463 - sol.f) < QPtol)
-    
+
     % run MOMA with minNormFlag
     sol = MOMA(model, modelOut, 'max', 0, true);
-    
+
     assert(abs(sol.f - 0.8392) < QPtol)
-    
+
     % run linearMOMA
     sol = linearMOMA(model, modelOut);
-    
+
     assert(abs(0.8608 - sol.f) < LPtol)
-    
-    
+
+
     %run linear moma with minimal fluxes
     solMin = linearMOMA(model, modelOut,'max',1);
     assert(abs(0.8608 - solMin.f) < LPtol)
-    
+
     %We know that at least in this case, the flux sum is actually
     %smaller.
     assert(sum(abs(sol.x)) > sum(abs(solMin.x)))
