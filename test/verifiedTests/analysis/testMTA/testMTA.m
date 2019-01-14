@@ -127,7 +127,7 @@ assert(verifyCobraFunctionError('diffexprs2rxnFBS', 'inputs', {model, diff_exprs
 
 fprintf('Done.\n');
 
-% remove the file create
+% remove the file created during the test
 delete('0');
 
 % Set seed to default value
