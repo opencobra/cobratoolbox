@@ -15,7 +15,8 @@ fileDir = fileparts(which('testFindSubsystemOfGenes'));
 cd(fileDir);
 
 % get the inputs
-load('testInputsEpistasisVisualization.mat', 'Coli','genesColi');
+Coli = readCbModel('testInputsEpistasisVisualization.mat','modelName','Coli');
+load('testInputsEpistasisVisualization.mat', 'genesColi');
 
 % get the outputs
 load('testInputsEpistasisVisualization.mat','rxns','subsys','subsysGenes','usys');
