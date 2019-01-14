@@ -8,8 +8,9 @@
 %
 
 global CBTDIR
-% prepareTest('needsMIQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'});
-solversToUse = prepareTest('needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'});
+
+solversToUse = prepareTest('needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'}, 'excludeSolvers', {'qpng'});
+% Note: the solver QPNG cannot be used with this test
 
 % save the current path
 currentDir = pwd;
@@ -58,7 +59,7 @@ solverPkgs = solversToUse.QP;
 % Test solving for different solvers
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});
-    
+
     % Eliminate temp files if they exist
     if exist([currentDir filesep 'temp_MTA.mat'], 'file')
         delete temp_MTA.mat
@@ -66,15 +67,15 @@ for k = 1:length(solverPkgs)
     if exist([currentDir filesep 'temp_rMTA.mat'], 'file')
         delete temp_rMTA.mat
     end
-    
+
     solverOK = changeCobraSolver(solverPkgs{k}, 'all', 0);
-    
+
     if solverOK || strcmp(solverPkgs{k},'ibm_cplex')
         % Calculate MTA and check solutions
         [TSscore,deletedGenes] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.');
         assert(TSscore(strcmp(deletedGenes,'g2'))<0)
         assert(TSscore(strcmp(deletedGenes,'g4'))>0)
-        
+
         % Calculate rMTA  and check solutions
         [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'SeparateTranscript','.');
         assert(TSscore.rTS(strcmp(deletedGenes,'g2'))<0)
@@ -82,7 +83,7 @@ for k = 1:length(solverPkgs)
     else
         warning('The test testMTA cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
     end
-    
+
     % output a success message
     fprintf('Done.\n');
 end
@@ -125,6 +126,10 @@ assert(verifyCobraFunctionError('diffexprs2rxnFBS', 'inputs', {model, diff_exprs
 assert(verifyCobraFunctionError('diffexprs2rxnFBS', 'inputs', {model, diff_exprs, Vref}))
 
 fprintf('Done.\n');
+
+% remove the file create
+delete('0');
+
 % Set seed to default value
 rng('default')
 % change the directory
