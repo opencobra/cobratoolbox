@@ -49,6 +49,8 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %         from BIGG Models database that have _e instead of [e] as compartment IDs
 %       - Almut Heinken, 06.03.2018-changed to parameter-input pairs
 %       - Laurent Heirendt, 16/3/2018 - backward compatibility
+%       - Almut Heinken, 15.01.2019-fixed compatibility issue with reconstructions
+%         from KBase database that have [e0] instead of [e] as compartment IDs
 %
 % NOTE:
 %    This function assumes, that exchange reactions are identified by
@@ -118,6 +120,22 @@ metIndices =~cellfun(@isempty, regexp(modelHost.mets, '_e$'));
 modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '_e', '[e]');
 end
 
+%% Ensure compatibility with reconstructions from KBase database
+for i = 1:modelNumber
+    model = models{i, 1};
+    metIndices =~cellfun(@isempty, regexp(model.mets, '\[e0\]$'));
+    model.mets(metIndices) = strrep(model.mets(metIndices), '[e0]', '[e]');
+    % need workaround for biomass metabolite, otherwise the resulting joint
+    % model will be unable to carry biomass flux
+    if ~isempty(find(ismember(model.mets,'cpd11416[c0]')))
+        model=addDemandReaction(model,'cpd11416[c0]');
+    end
+    models{i, 1} = model;
+end
+if ~isempty(modelHost)
+metIndices =~cellfun(@isempty, regexp(modelHost.mets, '\[e0\]$'));
+modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '[e0]', '[e]');
+end
 %% define some variables
 eTag = 'u';
 exTag = 'e';
