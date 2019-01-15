@@ -65,7 +65,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
         <link rel="next" title="rumba" href="../rumba/index.html"/>
-        <link rel="prev" title="rFBA" href="../rFBA/index.html"/> 
+        <link rel="prev" title="rMTA" href="../rMTA/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -168,6 +168,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">robustnessAnalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
@@ -261,7 +262,7 @@
 <span id="robustnessanalysis"></span><h1>robustnessAnalysis<a class="headerlink" href="#module-src.analysis.robustnessAnalysis" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.doubleRobustnessAnalysis">
-<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs robustness analysis for a pair of reactions of
 interest and an objective of interest</p>
 <p><strong>Usage</strong></p>
@@ -308,7 +309,7 @@ reaction flux value</li>
 
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.phenotypePhasePlane">
-<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/robustnessAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
+<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots three phenotype phase planes for two reactions.  The first plot is
 a double robustness analysis, a kind of 3D surface plot.  The second
 two plots show the shadow prices of the metabolites from the two control
@@ -354,7 +355,7 @@ a matrix of <cite>rxn</cite> 2 shadow prices</li>
 
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.robustnessAnalysis">
-<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/robustnessAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs robustness analysis for a reaction of
 interest and an objective of interest</p>
 <p><strong>Usage</strong></p>
@@ -412,7 +413,7 @@ reaction flux value</li>
         <a href="../rumba/index.html" class="btn btn-default float-right" title="rumba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../rFBA/index.html" class="btn btn-default" title="rFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rMTA/index.html" class="btn btn-default" title="rMTA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
