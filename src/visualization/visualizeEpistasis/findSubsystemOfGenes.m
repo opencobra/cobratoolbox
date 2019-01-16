@@ -1,23 +1,29 @@
 function [rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes(model,genes)
-%[rxns,cmptmt,cmptGenes,uComp]=findSubsystemOfGenes(model,genes,pseudoFlag)
 % This function is used to find out which genes belong to which subsystem
-
-% INPUT:
-% model:    model to which genes belong to
-% genes (optional): genes in question, if not provided will do it for all
-% the genes
-% pseudoFlag (optional): true, if pseudoDeletion; false otherwise (default)
-% OUTPUT:
-% rxns:     Reactions governed by these genes
-% subsys:   subsystem(s) to which the gene belongs to
-% subsysGenes:Which Genes are involved in each subsystem, subsystem
-%           name given by the cell array, usys
-% uSys:    unique subsys
 %
-% Written by:
-% Chintan Joshi when at CSU in 2014. See figures in following publication:
-% Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
-% depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589.
+% USAGE:
+%
+%     [rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes(model,genes)
+%
+% INPUT:
+%     model:    model to which genes belong to
+%     genes:    genes in question, if not provided will do it for all
+%               the genes, default: model.genes
+%
+% OUTPUT:
+%     rxns:         Reactions governed by these genes
+%     subsys:       subsystem(s) to which the gene belongs to
+%     subsysGenes:  which Genes are involved in each subsystem, subsystem
+%                   name given by the cell array, usys
+%     uSys:         unique subsystems
+%
+% NOTE:
+%    See figures in following publication:
+%    Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
+%    depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
+%
+% AUTHORS:
+%    Chintan Joshi 10/26/2018
 
 if (nargin<2)
     genes=model.genes;

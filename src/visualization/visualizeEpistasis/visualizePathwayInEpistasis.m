@@ -7,23 +7,32 @@ function [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
 % type of interaction. The color of the edge represents if the interactions
 % are positive negative or mixed. The with of the edge represent the total number
 % of interactions between any two given pathways.
-
+%
+% USAGE:
+%
+%     [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
+%
 % INPUT:
-% % Nall: a structure representing the epistatic interaction networks:
-% % % % Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
-% % % % Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.
-% % radius: radius of the generic circles for clock diagram.
-
+%     Nall:          a structure representing the epistatic interaction networks:
+%                    Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
+%                    Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.
+%     radius:        radius of the generic circles for clock diagram.
+%     pathwayNames:  subSystem names corresponding to matrices in Nall
+%                    structure
+%
 % OUTPUT:
-% % both: contains both positive and negative interactions
-% % pos: contains only positive interactions
-% % neg: contains only negative interactions
-
-% Written by:
-% Chintan Joshi when at CSU in 2014. See figures in following publication:
-% Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
-% depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
-% ...... made modifications to label the nodes using pathway names, 10/26/2018 
+%     both:          contains both positive and negative interactions
+%     pos:           contains only positive interactions
+%     neg:           contains only negative interactions
+%
+% NOTE:
+%    See figures in following publication:
+%    Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
+%    depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
+%
+% AUTHORS:
+%    Chintan Joshi 10/26/2018
+%    Chintan Joshi; made modifications to label the nodes using pathway names, 10/26/2018 
 
 if nargin<2
     radius=40;
