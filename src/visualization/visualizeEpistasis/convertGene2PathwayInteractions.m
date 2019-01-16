@@ -1,4 +1,4 @@
-function [neg,zer,nd,pos]=convertGene2PathwayInteractions(E,epSys,uSys)
+function [neg, zer, nd, pos] = convertGene2PathwayInteractions(E, epSys, uSys)
 % This function was written to find out the type of epistatic interactions
 % that either exist between two different or within same subsystem
 %
@@ -30,29 +30,29 @@ function [neg,zer,nd,pos]=convertGene2PathwayInteractions(E,epSys,uSys)
 % .. Authors:
 %     - Chintan Joshi 10/26/2018
 
-if (nargin<3)
-    uSys = unique(convertMyCell2List(epSys,2));
+if (nargin < 3)
+    uSys = unique(convertMyCell2List(epSys, 2));
 end
 
 negE = (E < -0.25);
 zerE = (E >= -0.25) & (E < 0.25);
 ndE = (E >= 0.25) & (E < 0.85);
 posE = (E >= 0.85);
-g1=0;
-g2=0;
-pos = zeros(length(uSys),length(uSys)); neg = pos; nd = pos; zer = pos;
-for i=1:length(uSys)
-    index1 = cellfun(@strcmp,epSys,repmat(uSys(i),length(epSys),1));
-    for j=1:length(uSys)
-        index2 = cellfun(@strcmp,epSys,repmat(uSys(j),length(epSys),1));
-        pos(i,j) = sum(sum(posE(index1,index2)));
-        neg(i,j) = sum(sum(negE(index1,index2)));
-        nd(i,j) = sum(sum(ndE(index1,index2)));
-        zer(i,j) = sum(sum(zerE(index1,index2)));
+g1 = 0;
+g2 = 0;
+pos = zeros(length(uSys), length(uSys)); neg = pos; nd = pos; zer = pos;
+for i = 1:length(uSys)
+    index1 = cellfun(@strcmp, epSys, repmat(uSys(i), length(epSys), 1));
+    for j = 1:length(uSys)
+        index2 = cellfun(@strcmp, epSys, repmat(uSys(j), length(epSys), 1));
+        pos(i, j) = sum(sum(posE(index1, index2)));
+        neg(i, j) = sum(sum(negE(index1, index2)));
+        nd(i, j) = sum(sum(ndE(index1, index2)));
+        zer(i, j) = sum(sum(zerE(index1, index2)));
     end
 end
 
-function B = convertMyCell2List(A,dimSense)
+function B = convertMyCell2List(A, dimSense)
 
 % This function linearizes a cell array if some of the cells in the array are another embbedded cell arrays.
 % (hence, two degrees of cell array)
@@ -62,17 +62,17 @@ function B = convertMyCell2List(A,dimSense)
 % A=cell array to be linearized.
 % dimSense=determines if inner cells are row (dimSense=1) vectors or columns (dimSense=2, default)
 
-cnt=0;
-if nargin<2
-    dimSense=2;
+cnt = 0;
+if nargin < 2
+    dimSense = 2;
 end
-for i=1:length(A)
-    for j=1:length(A{i,1})
-        cnt=cnt+1;
-        if dimSense==1
-            B{cnt,1}=A{i,1}{1,j};
-        elseif dimSense==2
-            B{cnt,1}=A{i,1}{j,1};
+for i = 1:length(A)
+    for j = 1:length(A{i, 1})
+        cnt = cnt + 1;
+        if dimSense == 1
+            B{cnt, 1} = A{i, 1}{1, j};
+        elseif dimSense == 2
+            B{cnt, 1} = A{i, 1}{j, 1};
         end
     end
 end
