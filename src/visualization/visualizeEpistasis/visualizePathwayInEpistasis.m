@@ -28,11 +28,11 @@ function [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
 % NOTE:
 %    See figures in following publication:
 %    Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
-%    depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
+%    depend upon environmental conditions", Mol. BioSyst., 10, 2578-2589.
 %
-% AUTHORS:
-%    Chintan Joshi 10/26/2018
-%    Chintan Joshi; made modifications to label the nodes using pathway names, 10/26/2018 
+% .. Authors:
+%      - Chintan Joshi 10/26/2018
+%      - Chintan Joshi; made modifications to label the nodes using pathway names, 10/26/2018
 
 if nargin<2
     radius=40;
@@ -70,7 +70,7 @@ end
 % conversion to circular cordinates
 theta=linspace(0,2*pi,length(pos)+1);
 theta=theta(1:end-1);
-[x,y]=pol2cart(theta,1); 
+[x,y]=pol2cart(theta,1);
 tx=x;ty=y;
 x=x*0.9;y=y*0.9;
 [indp1,indp2]=ind2sub(size(pos),find(pos(:)));

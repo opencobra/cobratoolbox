@@ -11,9 +11,9 @@ function [neg,zer,nd,pos]=convertGene2PathwayInteractions(E,epSys,uSys)
 %    epSys: Subsystems belonging to the gene at that index (a second
 %           order cell array) Each cell array may contain one or more
 %           subsystems.
-%           e.g. for first gene or reaction in E: 
+%           e.g. for first gene or reaction in E:
 %           epCmpt{1,1} = {'Glycolysis';'TCA cycle'}
-%    uSys:  Unique Subsystems in the epCmpt (use this arguments if 
+%    uSys:  Unique Subsystems in the epCmpt (use this arguments if
 %           interested in interactions between selected subsystems in the epSys)
 %
 % OUTPUTS:
@@ -25,10 +25,10 @@ function [neg,zer,nd,pos]=convertGene2PathwayInteractions(E,epSys,uSys)
 % NOTE:
 %    See figures in following publication:
 %    Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
-%    depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
+%    depend upon environmental conditions", Mol. BioSyst., 10, 2578-2589.
 %
-% AUTHORS: 
-%    Chintan Joshi 10/26/2018
+% .. Authors:
+%     - Chintan Joshi 10/26/2018
 
 if (nargin<3)
     uSys = unique(convertMyCell2List(epSys,2));
@@ -45,9 +45,9 @@ for i=1:length(uSys)
     index1 = cellfun(@strcmp,epSys,repmat(uSys(i),length(epSys),1));
     for j=1:length(uSys)
         index2 = cellfun(@strcmp,epSys,repmat(uSys(j),length(epSys),1));
-        pos(i,j) = sum(sum(posE(index1,index2))); 
+        pos(i,j) = sum(sum(posE(index1,index2)));
         neg(i,j) = sum(sum(negE(index1,index2)));
-        nd(i,j) = sum(sum(ndE(index1,index2))); 
+        nd(i,j) = sum(sum(ndE(index1,index2)));
         zer(i,j) = sum(sum(zerE(index1,index2)));
     end
 end

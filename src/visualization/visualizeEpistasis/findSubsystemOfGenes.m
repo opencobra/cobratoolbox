@@ -20,10 +20,10 @@ function [rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes(model,g
 % NOTE:
 %    See figures in following publication:
 %    Joshi CJ and Prasad A, 2014, "Epistatic interactions among metabolic genes
-%    depend upon environmental conditions", Mol. BioSyst., 10, 2578– 2589. 
+%    depend upon environmental conditions", Mol. BioSyst., 10, 2578-2589.
 %
-% AUTHORS:
-%    Chintan Joshi 10/26/2018
+% .. Authors:
+%      - Chintan Joshi 10/26/2018
 
 if (nargin<2)
     genes=model.genes;
