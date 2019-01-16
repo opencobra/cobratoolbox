@@ -275,7 +275,7 @@
 <span id="id1"></span><h1>additionalAnalysis<a class="headerlink" href="#additionalanalysis" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis"></span><dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices">
-<code class="descname">analyseObjectiveShadowPrices</code><span class="sig-paren">(</span><em>modelList</em>, <em>objectiveList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyseObjectiveShadowPrices.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analyseObjectiveShadowPrices</code><span class="sig-paren">(</span><em>modelList</em>, <em>objectiveList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyseObjectiveShadowPrices.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function determines the shadow prices indicating metabolites that
 are relevant for the flux through one or multiple objective functions
 optimized in one or more COBRA model structures. The objective functions
@@ -338,27 +338,24 @@ model</p>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance">
-<code class="descname">calculateReactionAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>modelPath</em>, <em>taxonomy</em>, <em>rxnsList</em>, <em>numWorkers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateReactionAbundance</code><span class="sig-paren">(</span><em>abundancePath</em>, <em>modelPath</em>, <em>rxnsList</em>, <em>numWorkers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
 plots the total abundance of reactions of interest in a given microbiome
 sample based on the strain-level composition.
 Reaction presence or absence in each strain is derived from the reaction content
 of the respective AGORA model. Two outputs are given: the total abundance,
-and optionally the abundance on different taxonomical levels.</p>
+and the abundance on different taxonomical levels.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>ReactionAbundance =calculateReactionAbundance(abundance, modelPath, taxonomy, rxnsList, numWorkers)</div></blockquote>
+<div>ReactionAbundance =calculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)</div></blockquote>
 <p><strong>Inputs</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>abundance</strong> &#8211;
-Table of relative abundances with AGORA model
-IDs of the strains as rows and sample IDs as columns</li>
+<li><strong>abundancePath</strong> &#8211;
+Path to the .csv file with the abundance data.
+Example: &#8216;cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv&#8217;</li>
 <li><strong>modelPath</strong> &#8211;
 Folder containing the strain-specific AGORA models</li>
-<li><strong>taxonomy</strong> &#8211;
-Table with information on the taxonomy of each
-AGORA model strain</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional inputs</strong></p>
@@ -383,11 +380,12 @@ all reactions are computed.</li>
 </li>
 </ul>
 </div></blockquote>
+<p>read the csv file with the abundance data</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance">
-<code class="descname">correlateFluxWithTaxonAbundance</code><span class="sig-paren">(</span><em>abundance</em>, <em>fluxes</em>, <em>taxonomy</em>, <em>corrMethod</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/6d1a91c793fb723324b8f927cd726f6272b4b620/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">correlateFluxWithTaxonAbundance</code><span class="sig-paren">(</span><em>abundancePath</em>, <em>fluxes</em>, <em>corrMethod</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
 plots the correlations between fluxes for one or more reactions of
 interest in a number of microbiome samples and the relative microbe
@@ -396,20 +394,23 @@ The function should be used after running mgPipe to identify correlations
 between the computed metabolic profiles and specific taxa in the samples.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>[FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>[FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxes, taxonomy, corrMethod)</div></blockquote>
+<p><strong>Input</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>abundance</strong> &#8211;
-Table of relative abundances with AGORA model IDs
-of the strains as rows and sample IDs as columns</li>
-<li><strong>fluxes</strong> &#8211;
-Table of fluxes for reactions of interest with
-reaction IDs in microbiome community models as rows
-and sample IDs as columns</li>
-<li><strong>taxonomy</strong> &#8211;
-Table with information on the taxonomy of each
-AGORA model strain</li>
+<div><ul>
+<li><p class="first"><strong>abundancePath</strong> &#8211;
+Path to the .csv file with the abundance data.</p>
+<blockquote>
+<div><p>Needs to be in same format as example file
+&#8216;cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv&#8217;</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>fluxes:           Table of fluxes for reactions of interest with</dt>
+<dd><p class="first last">reaction IDs in microbiome community models as rows
+and sample IDs as columns</p>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -432,6 +433,7 @@ p-values corresponding to each calculated
 correlation</li>
 </ul>
 </div></blockquote>
+<p>read the csv file with the abundance data</p>
 </dd></dl>
 
 </div>
