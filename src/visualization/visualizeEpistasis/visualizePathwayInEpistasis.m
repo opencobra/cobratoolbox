@@ -1,4 +1,4 @@
-function [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
+function [both, pos, neg] = visualizePathwayInEpistasis(Nall, radius, pathwayNames)
 % This function creates a circular network such that all the nodes are
 % arranged in a circle. The nodes represent a pathway, the color of the
 % node represents whether the interactions within a pathway are none, positive,
@@ -34,73 +34,73 @@ function [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
 %      - Chintan Joshi 10/26/2018
 %      - Chintan Joshi; made modifications to label the nodes using pathway names, 10/26/2018
 
-if nargin<2
-    radius=40;
+if nargin < 2
+    radius = 40;
 end
 
-pos=Nall.pos;
-neg=Nall.neg;
-both=Nall.pos+Nall.neg;
-indn=[]; indp=[]; mix_=[];
-ps=find(diag(pos)~=0); ns=find(diag(neg)~=0); nps=find(diag(both)~=0);
+pos = Nall.pos;
+neg = Nall.neg;
+both = Nall.pos + Nall.neg;
+indn = []; indp = []; mix_ = [];
+ps = find(diag(pos) ~= 0); ns = find(diag(neg) ~= 0); nps = find(diag(both) ~= 0);
 if ~isempty(nps) && ~isempty(ps)
-    indp=intersect(ps,nps);
+    indp = intersect(ps, nps);
 end
 if ~isempty(nps) && ~isempty(ns)
-    indn=intersect(ns,nps);
+    indn = intersect(ns, nps);
 end
 if isempty(indn)
-    p_=indp; n_=[]; mix_=[];
+    p_ = indp; n_ = []; mix_ = [];
 elseif isempty(indp)
-    p_=[]; n_=indn; mix_=[];
+    p_ = []; n_ = indn; mix_ = [];
 else
-    p_=setdiff(indp,indn); n_=setdiff(indn,indp); mix_=intersect(indp,indn);
+    p_ = setdiff(indp, indn); n_ = setdiff(indn, indp); mix_ = intersect(indp, indn);
 end
 % keeps only those that have both but not either type of interactions alone
-c=0;
-for i=1:length(both)
-    for j=1:length(both)
-        if both(i,j)~=0 && pos(i,j)~=0 && neg(i,j)~=0
-            c=c+1;
-            indm1(c,1)=i;
-            indm2(c,1)=j;
+c = 0;
+for i = 1:length(both)
+    for j = 1:length(both)
+        if both(i, j) ~= 0 && pos(i, j) ~= 0 && neg(i, j) ~= 0
+            c = c + 1;
+            indm1(c, 1) = i;
+            indm2(c, 1) = j;
         end
     end
 end
 % conversion to circular cordinates
-theta=linspace(0,2*pi,length(pos)+1);
-theta=theta(1:end-1);
-[x,y]=pol2cart(theta,1);
-tx=x;ty=y;
-x=x*0.9;y=y*0.9;
-[indp1,indp2]=ind2sub(size(pos),find(pos(:)));
-[indn1,indn2]=ind2sub(size(neg),find(neg(:)));
+theta = linspace(0, 2 * pi, length(pos) + 1);
+theta = theta(1:end - 1);
+[x, y] = pol2cart(theta, 1);
+tx = x; ty = y;
+x = x * 0.9; y = y * 0.9;
+[indp1, indp2] = ind2sub(size(pos), find(pos(:)));
+[indn1, indn2] = ind2sub(size(neg), find(neg(:)));
 gc = [0.23 0.44 0.34];
 rc = [0.58 0.39 0.39];
-yc = [255 204 102]/255;
-subplot(3,3,5);
+yc = [255 204 102] / 255;
+subplot(3, 3, 5);
 % plot the structure of the clock diagram
-plot(x,y,'.','MarkerEdgeColor',[150 150 150]./255,'markersize',1);hold on
+plot(x, y, '.', 'MarkerEdgeColor', [150 150 150]./255, 'markersize', 1); hold on
 % label the the texts for each point in clock diagram
-for i=1:length(x)
-    textAngle = (i-1)*360/length(x); % calculate the angle for text
-    text(tx(i),ty(i),pathwayNames(i),'Rotation',textAngle);
+for i = 1:length(x)
+    textAngle = (i - 1) * 360 / length(x);  % calculate the angle for text
+    text(tx(i), ty(i), pathwayNames(i), 'Rotation', textAngle);
 end
 if ~isempty(indp1)
-    arrayfun(@(p,q)line([x(p),x(q)],[y(p),y(q)],'Color',gc,'LineWidth',pos(p,q)),indp1,indp2); % plot inter-pathway positive interactions
+    arrayfun(@(p, q)line([x(p), x(q)], [y(p), y(q)], 'Color', gc, 'LineWidth', pos(p, q)), indp1, indp2);  % plot inter-pathway positive interactions
 end
 if ~isempty(indn1)
-    arrayfun(@(p,q)line([x(p),x(q)],[y(p),y(q)],'Color',rc,'LineWidth',neg(p,q)),indn1,indn2); % plot inter-pathway negative interactions
+    arrayfun(@(p, q)line([x(p), x(q)], [y(p), y(q)], 'Color', rc, 'LineWidth', neg(p, q)), indn1, indn2);  % plot inter-pathway negative interactions
 end
 if exist('indm1')
-    arrayfun(@(p,q)line([x(p),x(q)],[y(p),y(q)],'Color',yc,'LineWidth',both(p,q)),indm1,indm2); % plot inter pathway both types of interactions
+    arrayfun(@(p, q)line([x(p), x(q)], [y(p), y(q)], 'Color', yc, 'LineWidth', both(p, q)), indm1, indm2);  % plot inter pathway both types of interactions
 end
 % plot intra-pathway interactions
-plot(x,y,'.','MarkerEdgeColor',[150 150 150]./255,'markersize',radius);
-plot(x(p_),y(p_),'.','MarkerEdgeColor',gc,'markersize',radius+length(p_)*3);
-plot(x(n_),y(n_),'.','MarkerEdgeColor',rc,'markersize',radius+length(n_)*3);
-plot(x(mix_),y(mix_),'.','MarkerEdgeColor',yc,'markersize',radius+length(mix_)*3);
-set(gca,'DataAspectRatio',[1 1 1]);
+plot(x, y, '.', 'MarkerEdgeColor', [150 150 150]./255, 'markersize', radius);
+plot(x(p_), y(p_), '.', 'MarkerEdgeColor', gc, 'markersize', radius + length(p_) * 3);
+plot(x(n_), y(n_), '.', 'MarkerEdgeColor', rc, 'markersize', radius + length(n_) * 3);
+plot(x(mix_), y(mix_), '.', 'MarkerEdgeColor', yc, 'markersize', radius + length(mix_) * 3);
+set(gca, 'DataAspectRatio', [1 1 1]);
 
 axis equal off;
 hold off;
