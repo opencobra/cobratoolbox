@@ -1,12 +1,12 @@
 % % The COBRAToolbox: testConvertGene2PathwayInteractions.m
 % %
 % % Purpose:
-% %     - testConvertGene2PathwayInteractions tests the whether convertGene2PathwayInteractions 
+% %     - testConvertGene2PathwayInteractions tests the whether convertGene2PathwayInteractions
 % %     is working correctly
 % %
 % % Author:
 % %     - Original file: Chintan J Joshi - 11/29/2018
-% 
+%
 % save the current path
 currentDir = pwd;
 
@@ -15,10 +15,10 @@ fileDir = fileparts(which('testConvertGene2PathwayInteractions'));
 cd(fileDir);
 
 % get the inputs
-load('testInputsEpistasisVisualization.mat', 'epiColi','subsys','usys');
+load('refData_visualizeEpistasis.mat', 'epiColi','subsys','usys');
 
 % get the outputs
-load('testInputsEpistasisVisualization.mat','Nall');
+load('refData_visualizeEpistasis.mat','Nall');
 
 % list of solver packages: none needed
 

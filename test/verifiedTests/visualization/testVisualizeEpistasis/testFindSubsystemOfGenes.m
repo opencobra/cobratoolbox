@@ -1,12 +1,12 @@
 % % The COBRAToolbox: testFindSubsystemOfGenes.m
 % %
 % % Purpose:
-% %     - testFindSubsystemOfGenes tests the whether findSubystemOfGenes 
+% %     - testFindSubsystemOfGenes tests the whether findSubystemOfGenes
 % %     is working correctly
 % %
 % % Author:
 % %     - Original file: Chintan J Joshi - 11/29/2018
-% 
+%
 % save the current path
 currentDir = pwd;
 
@@ -15,11 +15,11 @@ fileDir = fileparts(which('testFindSubsystemOfGenes'));
 cd(fileDir);
 
 % get the inputs
-Coli = readCbModel('testInputsEpistasisVisualization.mat','modelName','Coli');
-load('testInputsEpistasisVisualization.mat', 'genesColi');
+Coli = readCbModel('refData_visualizeEpistasis.mat','modelName','Coli');
+load('refData_visualizeEpistasis.mat', 'genesColi');
 
 % get the outputs
-load('testInputsEpistasisVisualization.mat','rxns','subsys','subsysGenes','usys');
+load('refData_visualizeEpistasis.mat','rxns','subsys','subsysGenes','usys');
 
 % list of solver packages: none needed
 
