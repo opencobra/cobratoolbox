@@ -1,24 +1,24 @@
-% % The COBRAToolbox: testVisualizePathwayInEpistasis.m
-% %
-% % Purpose:
-% %     - testConvertGene2PathwayInteractions tests the whether visualizePathwayInEpistasis 
-% %     is working correctly
-% %
-% % Author:
-% %     - Original file: Chintan J Joshi - 11/29/2018
-% 
+% The COBRAToolbox: testVisualizePathwayInEpistasis.m
+%
+% Purpose:
+%      - testConvertGene2PathwayInteractions tests the whether visualizePathwayInEpistasis
+%      is working correctly
+%
+%  Author:
+%      - Original file: Chintan J Joshi - 11/29/2018
+%
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testVisualizePathwayInEpistasis'));
+fileDir = fileparts(which('testVisualizeEpistasis'));
 cd(fileDir);
 
 % get the inputs
-load('testInputsEpistasisVisualization.mat', 'Nall','usys');
+load('refData_visualizeEpistasis.mat', 'Nall','usys');
 
 % get the outputs
-load('testInputsEpistasisVisualization.mat','np','pos','neg');
+load('refData_visualizeEpistasis.mat','np','pos','neg');
 
 % list of solver packages: none needed
 
