@@ -34,15 +34,15 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %                                     abundance data
 
 % read the csv file with the abundance data
-abundance=readtable(abundancePath, 'ReadVariableNames', false);
-abundance=table2cell(abundance);
-if isnumeric(abundance{2,1})
-    abundance(:,1)=[];
+abundance = readtable(abundancePath, 'ReadVariableNames', false);
+abundance = table2cell(abundance);
+if isnumeric(abundance{2, 1})
+    abundance(:, 1) = [];
 end
 
 % Get the taxonomy information
-taxonomy=readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-taxonomy=table2cell(taxonomy);
+taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
+taxonomy = table2cell(taxonomy);
 
 if ~exist('corrMethod', 'var')  % Define correlation coefficient method if not entered
     corrMethod = 'Pearson';
