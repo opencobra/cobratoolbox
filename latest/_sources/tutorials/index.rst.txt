@@ -39,6 +39,7 @@ Analysis
 * :doc:`tutorialSparseFBA_freeATPtest`
 * :doc:`tutorialSparseLP`
 * :doc:`tutorialVonBertalanffy`
+* :doc:`tutorialSimulateAGORAGrowthInDiets`
 * :doc:`tutorialUniformSampling`
 * :doc:`tutorialVariationalKinetics`
 * :doc:`tutorialRobustnessPhPP`
