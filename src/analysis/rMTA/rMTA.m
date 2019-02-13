@@ -26,6 +26,8 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %                        score. (default = 100)
 %    rxnKO:              Binary value. Calculate knock outs at reaction level
 %                        instead of gene level. (default = false)
+%    listKO:             Cell array containing the name of genes or 
+%                        reactions to knockout. (default = all)
 %    timelimit:          Time limit for the calculation of each knockout. (default = inf)
 %    SeparateTranscript: Character used to separate
 %                        different transcripts of a gene. (default = '')
@@ -65,6 +67,7 @@ addOptional(p, 'epsilon', 0, @isnumeric);
 % Add optional name-value pair argument
 addParameter(p, 'parameterK', 100, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'rxnKO', false);
+addParameter(p, 'listKO', {}, @(x)iscell(x));
 addParameter(p, 'timelimit', inf, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
 addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
@@ -76,6 +79,7 @@ alpha = p.Results.alpha;
 epsilon = p.Results.epsilon;
 parameterK = p.Results.parameterK;
 rxnKO = p.Results.rxnKO;
+listKO = p.Results.listKO;
 timelimit = p.Results.timelimit;
 SeparateTranscript = p.Results.SeparateTranscript;
 numWorkers = p.Results.numWorkers;
@@ -102,6 +106,23 @@ if rxnKO
     geneKO.matrix = speye(numel(model.rxns));
 else
     geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel);
+end
+
+% Reduce the to the number of requiered KOs
+if ~isempty(listKO)
+    if  rxnKO
+        listKO = unique(listKO);
+        assert(all(ismember(listKO,geneKO.genes)),'Reactions in listKO are not in the model');
+    elseif isempty(SeparateTranscript)
+        listKO = unique(listKO);
+        assert(all(ismember(listKO,geneKO.genes)),'Genes in listKO are not in the model');
+    else
+        listKO = unique(strtok(listKO,SeparateTranscript));
+        assert(all(ismember(listKO,geneKO.genes)),'Genes in listKO are not in the model');
+    end
+    idx = ismember(geneKO.genes,listKO);
+    geneKO.genes = geneKO.genes(idx);
+    geneKO.matrix = geneKO.matrix(:,idx);
 end
 
 % Reduce the size of the problem;

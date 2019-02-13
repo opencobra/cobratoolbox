@@ -80,6 +80,21 @@ for k = 1:length(solverPkgs)
         [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'SeparateTranscript','.');
         assert(TSscore.rTS(strcmp(deletedGenes,'g2'))<0)
         assert(TSscore.rTS(strcmp(deletedGenes,'g4'))>0)
+        
+        % Calculate rMTA by certain reactions
+        [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'rxnKO',1, 'listKO',{'r2', 'r3', 'r6'}); 
+        assert(TSscore.rTS(strcmp(deletedGenes,'r2'))<0)
+        assert(TSscore.rTS(strcmp(deletedGenes,'r3'))>0)
+        
+        % Calculate rMTA by certain genes
+        [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'SeparateTranscript','.', 'listKO',{'g2', 'g4'});
+        assert(TSscore.rTS(strcmp(deletedGenes,'g2'))<0)
+        assert(TSscore.rTS(strcmp(deletedGenes,'g4'))>0)
+        
+        % Calculate old rMTA  and check solutions
+        [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'SeparateTranscript','.', 'deprecated_rTS',1);
+        assert(TSscore.old_rTS(strcmp(deletedGenes,'g2'))<0)
+        assert(TSscore.old_rTS(strcmp(deletedGenes,'g4'))>0)
     else
         warning('The test testMTA cannot run using the solver interface: %s. The solver interface is not installed or not configured properly.\n', solverPkgs{k});
     end
