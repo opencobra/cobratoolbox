@@ -69,6 +69,7 @@ addParameter(p, 'timelimit', inf, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
 addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'deprecated_rTS', 0, @(x)islogical(x)||isscalar(x));
 % extract variables from parser
 parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
@@ -79,7 +80,7 @@ timelimit = p.Results.timelimit;
 SeparateTranscript = p.Results.SeparateTranscript;
 numWorkers = p.Results.numWorkers;
 printLevel = p.Results.printLevel;
-
+deprecated_rTS = p.Results.deprecated_rTS;
 
 if printLevel >0
     fprintf('===================================\n');
@@ -417,7 +418,9 @@ TSscore.bTS = score_best;
 TSscore.mTS = score_moma;
 TSscore.wTS = score_worst;
 TSscore.rTS = score_rMTA;
-TSscore.old_rTS = score_rMTA_old;
+if deprecated_rTS
+    TSscore.old_rTS = score_rMTA_old;
+end
 
 delete('temp_rMTA.mat')
 end
