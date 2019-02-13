@@ -22,6 +22,8 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %                        problem (default = 0.66)
 %    epsilon:            Numeric value or array. Minimun perturbation for each
 %                        reaction (default = 0)
+%    parameterK:         Numeric value value. Parameter to calculate rTS 
+%                        score. (default = 100)
 %    rxnKO:              Binary value. Calculate knock outs at reaction level
 %                        instead of gene level. (default = false)
 %    timelimit:          Time limit for the calculation of each knockout. (default = inf)
@@ -61,6 +63,7 @@ addRequired(p, 'Vref',@isnumeric);
 addOptional(p, 'alpha', 0.66, @isnumeric);
 addOptional(p, 'epsilon', 0, @isnumeric);
 % Add optional name-value pair argument
+addParameter(p, 'parameterK', 100, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'rxnKO', false);
 addParameter(p, 'timelimit', inf, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
@@ -70,6 +73,7 @@ addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
 epsilon = p.Results.epsilon;
+parameterK = p.Results.parameterK;
 rxnKO = p.Results.rxnKO;
 timelimit = p.Results.timelimit;
 SeparateTranscript = p.Results.SeparateTranscript;
@@ -94,7 +98,7 @@ num_alphas = numel(alpha);
 if rxnKO
     geneKO.genes = model.rxns;
     geneKO.rxns = model.rxns;
-    geneKO.rxns = speye(numel(model.rxns));
+    geneKO.matrix = speye(numel(model.rxns));
 else
     geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel);
 end
@@ -249,7 +253,7 @@ else
             QPproblem_aux.lb(KOrxn) = 0;
             MOMAsolution = solveCobraQP(QPproblem_aux, 'printLevel', 0);
             % if we knock off the system, invalid solution
-            if MOMAsolution.stat==1
+            if MOMAsolution.stat==(+1) || MOMAsolution.stat==(-1)
                 v_res = MOMAsolution.full;
                 Vres.mMTA(:,j) = v_res;
                 if ~isempty(KOrxn) && norm(v_res)<1    % the norm(Vref) ~= 1e4
@@ -381,27 +385,30 @@ deletedGenes = geneKO.genes;
 %% ---- STEP 5 : Calculate the rMTA TS score ----
 
 score_rMTA = zeros(numel(geneKO.genes),num_alphas);
+score_rMTA_old = zeros(numel(geneKO.genes),num_alphas);
 
 for i = 1:num_alphas
     T = table(geneKO.genes, score_best(:,i), score_moma, score_worst(:,i));
-    T.Properties.VariableNames = {'gene_ID','score_best','score_moma','score_worst'};
+    T.Properties.VariableNames = {'gene_ID','bTS','mTS','wTS'};
 
     % if wTS or bTS are infinite, delete the solution
-    T.score_moma(T.score_best<-1e30) = -inf;
-    T.score_moma(T.score_worst<-1e30) = -inf;
-
-    % rMTA score
-    score_aux = T.score_best - T.score_worst;
-    score_aux = score_aux .* T.score_moma;
-    idx = (T.score_best<0 & T.score_moma<0 & score_aux>0);
-    score_aux(idx) = -score_aux(idx);
-    idx = (T.score_best<0 & score_aux>0);
-    score_aux(idx) = -score_aux(idx);
-    idx = (T.score_best<T.score_worst & score_aux>0);
-    score_aux(idx) = -score_aux(idx);
-
-    % store
-    score_rMTA(:,i) = score_aux;
+    T.mTS(T.bTS<-1e30) = -inf;
+    T.mTS(T.wTS<-1e30) = -inf;   
+    
+    % rMTA
+    aux1 = T.bTS-T.wTS;
+    aux1 = aux1*parameterK;
+    aux2 = zeros(size(aux1));
+    aux2(T.wTS<0 & T.bTS>0 & T.mTS>0) = 1;
+    score_rMTA(:,i) = T.mTS .* (aux1.^aux2);
+    
+    % old rMTA
+    aux1 = abs(T.bTS-T.wTS).*abs(T.mTS);
+    aux_idx = T.bTS<T.wTS | T.mTS<0 | T.bTS<0;
+    aux1(aux_idx)= -abs(aux1(aux_idx));
+    score_rMTA_old(:,i) = T.mTS .* (aux1.^aux2);
+    clear aux1 aux2 aux_idx
+    
 end
 
 % save results
@@ -410,6 +417,7 @@ TSscore.bTS = score_best;
 TSscore.mTS = score_moma;
 TSscore.wTS = score_worst;
 TSscore.rTS = score_rMTA;
+TSscore.old_rTS = score_rMTA_old;
 
 delete('temp_rMTA.mat')
 end

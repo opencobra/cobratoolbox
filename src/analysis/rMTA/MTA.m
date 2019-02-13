@@ -98,7 +98,7 @@ num_alphas = numel(alpha);
 if rxnKO
     geneKO.genes = model.rxns;
     geneKO.rxns = model.rxns;
-    geneKO.rxns = speye(numel(model.rxns));
+    geneKO.matrix = speye(numel(model.rxns));
 else
     geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel);
 end
