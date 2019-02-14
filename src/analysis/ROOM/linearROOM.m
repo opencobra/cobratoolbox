@@ -53,9 +53,9 @@ addRequired(p, 'model');
 addRequired(p, 'WTflux', @(x)isnumeric(x)&&isvector(x));
 addRequired(p, 'rxnKO', @(x)iscell(x));
 % Check optional arguments
-addOptional(p, 'delta', 0.03, @(x)isnumeric(x)&&isscalar(x));
-addOptional(p, 'epsilon', 0.001, @(x)isnumeric(x)&&isscalar(x));
-addOptional(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'delta', 0.03, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'epsilon', 0.001, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, model, fluxWT, rxnKO, varargin{:});
 delta = p.Results.delta;

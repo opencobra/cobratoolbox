@@ -49,14 +49,14 @@ for k = 1:length(solverPkgs)
 
     if solverOK
         % Calculate ROOM and check solutions
-        fluxROOM = ROOM(model, WT_flux, {'v6'},1e-5,1e-5);
+        fluxROOM = ROOM(model, WT_flux, {'v6'},'delta', 1e-5, 'epsilon', 1e-5);
         assert(norm(fluxROOM-predictedROOMsol)<1e-2)
         
-        [fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, WT_flux, {'v6'},1e-6,1e-6);
+        [fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, WT_flux, {'v6'},'delta',1e-6,'epsilon',1e-6);
         assert(norm(fluxROOM-predictedROOMsol)<1e-2)
         assert(abs(totalFluxDiff^2-75)<1e-2)
         
-        [fluxROOM2, solutionROOM2, totalFluxDiff2] = linearROOM(model, WT_flux, {'v6'},1e-6,1e-6);
+        [fluxROOM2, solutionROOM2, totalFluxDiff2] = linearROOM(model, WT_flux, {'v6'},'delta',1e-6,'epsilon',1e-6);
         assert(norm(fluxROOM-predictedROOMsol)<1e-2)
         assert(abs(totalFluxDiff^2-75)<1e-2)
 
