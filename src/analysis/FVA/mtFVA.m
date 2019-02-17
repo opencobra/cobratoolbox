@@ -37,7 +37,7 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   % included in Matlab's JAVA installtion)
   disp('Compiling JAVA classes.');
   curr_dir= pwd();
-  cd(cobra_binary_dir)
+  cd(fullfile(CBTDIR, 'src', 'analysis', 'FVA'));
   if ispc
      status= system(sprintf('javac -cp "%s" CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
       cplex_jar), '-echo');   
@@ -45,10 +45,14 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
     status= system(sprintf('javac -cp ''%s'' CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
       cplex_jar), '-echo');
   end
-  cd(curr_dir);
   if status
+    cd(curr_dir);
     error('Could not compile JAVA classes.');
   end
+  movefile('CplexFVARunnable.class', cobra_binary_dir);
+  movefile('SignedTaskCounter.class', cobra_binary_dir);
+  movefile('CplexFVA.class', cobra_binary_dir);
+  cd(curr_dir);
   disp('Compilation finished.');
 end
 
