@@ -20,7 +20,7 @@
 	ignore = dirty
 [submodule "test/models"]
 	path = test/models
-	url = https://github.com/cobrabot/COBRA.models
+	url = https://github.com/artenobot/COBRA.models
 	ignore = dirty
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
