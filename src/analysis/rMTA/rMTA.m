@@ -112,13 +112,13 @@ end
 if ~isempty(listKO)
     if  rxnKO
         listKO = unique(listKO);
-        assert(all(ismember(listKO,geneKO.genes)),'Reactions in listKO are not in the model');
+        assert(all(ismember(listKO,geneKO.genes)), 'Reactions in listKO are not in the model');
     elseif isempty(SeparateTranscript)
         listKO = unique(listKO);
-        assert(all(ismember(listKO,geneKO.genes)),'Genes in listKO are not in the model');
+        assert(all(ismember(listKO,geneKO.genes)), 'Genes in listKO are not in the model');
     else
         listKO = unique(strtok(listKO,SeparateTranscript));
-        assert(all(ismember(listKO,geneKO.genes)),'Genes in listKO are not in the model');
+        assert(all(ismember(listKO,geneKO.genes)), 'Genes in listKO are not in the model');
     end
     idx = ismember(geneKO.genes,listKO);
     geneKO.genes = geneKO.genes(idx);
