@@ -2,7 +2,6 @@
 #   deploy tutorials of the COBRA Toolbox
 
 # set the local branch
-GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"'
 echo $GIT_LOCAL_BRANCH
 
 # update the cobra tutorials repository
