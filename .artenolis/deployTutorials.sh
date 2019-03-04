@@ -6,7 +6,7 @@ GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"'
 echo $GIT_LOCAL_BRANCH
 
 # update the cobra tutorials repository
-cd ~/artenolis/COBRA.tutorials
+cd $ARTENOLIS_ROOT_PATH_MAC/COBRA.tutorials
 git stash
 git checkout $GIT_LOCAL_BRANCH
 git pull origin $GIT_LOCAL_BRANCH
