@@ -443,6 +443,7 @@ if deprecated_rTS
     TSscore.old_rTS = score_rMTA_old;
 end
 
+% remove temporal file
 delete('temp_rMTA.mat')
 end
 
