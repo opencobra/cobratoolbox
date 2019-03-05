@@ -10,7 +10,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %   options:                 structure field containing method specific
 %                            informations
 %       .solver:                 Use either 'GIMME','iMAT','INIT','MBA',
-%                                'mCADRE','fastCore'
+%                                'mCADRE','fastCore','swiftcore'
 %
 %       .additionalparam:        see NOTE section below
 %
@@ -24,7 +24,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                            check. Will only be used if funcModel = 1
 %                            Is a structure with possible fields of epsilon
 %                            (numeric, min nonzero mass), modeFlag (return
-%                            flux mode, 0/1), and method ('fastcc','dc')
+%                            flux mode, 0/1), and method ('swiftcc','fastcc','dc')
 %
 % OUTPUTS:
 %	tissueModel:                     extracted model
@@ -102,6 +102,15 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                                    nonzero (default 1e-4)
 %       options.printLevel*          0 = silent, 1 = summary, 2 = debug (default 0)
 %
+%   for swiftcore
+%       options.core                 indices of reactions in cobra model that are part of the
+%                                    core set of reactions
+%       options.reduction*           boolean enabling the metabolic network reduction preprocess 
+%       options.weights*             weight vector for the penalties associated with each reaction
+%       options.LPsolver*            the LP solver to be used; the currently available options are
+%                                    'gurobi', 'linprog', and 'cplex' with the default value of 
+%                                    'gurobi'. It fallbacks to the COBRA LP solver interface if 
+%                                    another supported solver is called or 'gurobi' is not available.
 %
 %
 % .. Authors:
@@ -110,6 +119,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       - IT 05/27/10 Adjusted manual input for alt. splice form
 %       - AB 08/05/10 Final Corba 2.0 Version
 %       - Anne Richelle, May 2017 - integration of new extraction methods
+%       - Mojtaba Tefagh, March 2019 - integration of swiftcore
 
 
 if ~exist('exRxnRemove','var') || isempty(exRxnRemove)
@@ -174,6 +184,17 @@ else
             end
             if ~isfield(options,'epsilon'),options.epsilon=1e-4;end
             if ~isfield(options,'printLevel'),options.printLevel=0;end
+        case 'swiftcore'
+            if ~isfield(options,'core')
+                error('The required option field "core" is not defined for swiftcore method')                
+            end
+            if ~isfield(options,'LPsolver')
+                solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
+                options.LPsolver = solvers.LP{1};
+            end
+            if ~isfield(options,'reduction'),options.reduction=false;end
+            if ~isfield(options,'weights'),options.weights=ones(length(model.lb),1);end
+            if ~isfield(model,'rev'),model.rev=double(model.lb<0);end
     end
 end
 
@@ -197,13 +218,16 @@ switch options.solver
         tissueModel = mCADRE(model, options.ubiquityScore, options.confidenceScores, options.protectedRxns, options.checkFunctionality, options.eta, options.tol);
     case 'fastCore'
         tissueModel = fastcore(model, options.core, options.epsilon, options.printLevel);
+    case 'swiftcore'
+        tissueModel = swiftcore(model.S, model.rev, options.core, options.weights, options.reduction, options.LPsolver);
 end
 
 
 if funcModel ==1
     paramConsistency.epsilon=1e-10;
     paramConsistency.modeFlag=0;
-    paramConsistency.method='fastcc';
+    paramConsistency.method='swiftcc';
+    if ~isfield(tissueModel,'rev'),tissueModel.rev=double(tissueModel.lb<0);end
     givenParams = fieldnames(optionalParams);
     for i = 1:length(givenParams)
         paramConsistency.(givenParams{i}) = optionalParams.(givenParams{i});
