@@ -1,6 +1,6 @@
 function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
 % Finds the subset of `S` that is flux consistent using various algorithms,
-% but `fastcc` from `fastcore` by default
+% but `swiftcc` from `swiftcore` by default
 %
 % USAGE:
 %
@@ -39,7 +39,7 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 if ~exist('param','var')
     param.epsilon=1e-4;
     param.modeFlag=0;
-    param.method='fastcc';
+    param.method='swiftcc';
 end
 
 if ~isfield(param,'epsilon')
@@ -53,7 +53,7 @@ else
     modeFlag=param.modeFlag;
 end
 if ~isfield(param,'method')
-    method='fastcc';
+    method='swiftcc';
 else
     method=param.method;
 end
