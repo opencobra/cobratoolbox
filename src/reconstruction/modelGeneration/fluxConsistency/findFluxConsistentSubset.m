@@ -1,6 +1,6 @@
 function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
 % Finds the subset of `S` that is flux consistent using various algorithms,
-% but `fastcc` from `fastcore` by default
+% but `swiftcc` from `swiftcore` by default
 %
 % USAGE:
 %
@@ -13,10 +13,10 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %
 % OPTIONAL INPUTS:
 %    param:                      contains:
-%
+%                                  * param.LPsolver - the LP solver to be used  
 %                                  * param.epsilon - (1e-4) minimum nonzero mass
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
-%                                  * param.method - {'fastcc', 'dc'}
+%                                  * param.method - {'swiftcc', 'fastcc', 'dc'}
 %    printLevel:                 verbose level
 %
 % OUTPUTS:
@@ -31,12 +31,14 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * .fluxInConsistentMetBool
 %                                  * .fluxInConsistentRxnBool
 %
-% .. Author: - Ronan Fleming, 2017
+% .. Authors: 
+%       - Ronan Fleming, 2017
+%       - Mojtaba Tefagh, March 2019 - integration of swiftcc
 
 if ~exist('param','var')
     param.epsilon=1e-4;
     param.modeFlag=0;
-    param.method='fastcc';
+    param.method='swiftcc';
 end
 
 if ~isfield(param,'epsilon')
@@ -50,7 +52,7 @@ else
     modeFlag=param.modeFlag;
 end
 if ~isfield(param,'method')
-    method='fastcc';
+    method='swiftcc';
 else
     method=param.method;
 end
@@ -84,6 +86,13 @@ fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
 sol = optimizeCbModel(model);
 if (sol.stat == 1)
     switch method
+        case 'swiftcc'
+            if ~isfield(param,'LPsolver')
+                solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
+                param.LPsolver = solvers.LP{1};
+            end
+            indFluxConsist = swiftcc(model.S, model.rev, param.LPsolver);
+            fluxConsistentRxnBoolTemp(indFluxConsist) = 1;
         case {'fastcc','null_fastcc'}
             %fast consistency check code from Nikos Vlassis et al
             % INPUT
