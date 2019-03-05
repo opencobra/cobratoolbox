@@ -219,15 +219,16 @@ switch options.solver
     case 'fastCore'
         tissueModel = fastcore(model, options.core, options.epsilon, options.printLevel);
     case 'swiftcore'
-        tissueModel = swiftcore(model.S, model.rev, options.core, options.weights, options.reduction, options.LPsolver);
+        coreRxnBool = swiftcore(model.S, model.rev, options.core, options.weights, options.reduction, options.LPsolver);
+        tissueModel = removeRxns(model, model.rxns(~coreRxnBool));
+        tissueModel = removeUnusedGenes(tissueModel);
 end
 
 
 if funcModel ==1
     paramConsistency.epsilon=1e-10;
     paramConsistency.modeFlag=0;
-    paramConsistency.method='swiftcc';
-    if ~isfield(tissueModel,'rev'),tissueModel.rev=double(tissueModel.lb<0);end
+    paramConsistency.method='fastcc';
     givenParams = fieldnames(optionalParams);
     for i = 1:length(givenParams)
         paramConsistency.(givenParams{i}) = optionalParams.(givenParams{i});
