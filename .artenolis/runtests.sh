@@ -69,7 +69,7 @@ else
 fi
 
 if [ "$ARCH" == "Linux" ]; then
-    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
+    $ARTENOLIS_SOFT_PATH/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
