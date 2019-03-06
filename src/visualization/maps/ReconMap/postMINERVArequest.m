@@ -28,7 +28,7 @@ function [ response ] = postMINERVArequest(login, password, map, googleLicenseCo
 %    xmlresponse = urlread(minerva_servlet, 'POST', content);
 
     headerlength = ' ';
-   loginURL = strcat({'curl'}, {headerlength} , {'-X POST -c - --data "login='}, login, {'&password='}, password, {'" https://www.vmh.life/minerva/api/doLogin/'});
+   loginURL = strcat({'curl'}, {headerlength} , {'-X POST -k -c - --data "login='}, login, {'&password='}, password, {'" https://www.vmh.life/minerva/api/doLogin/'});
    [x , command_out] = system(char(loginURL));
    if isempty(regexp(command_out, 'Invalid credentials'))
        [startIndex,endIndex] = regexp(command_out,'MINERVA_AUTH_TOKEN\s+(.*)$');
