@@ -27,13 +27,9 @@ after_success:
       python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
       export GIT_LOCAL_BRANCH=${GIT_BRANCH##origin/};
       echo $GIT_LOCAL_BRANCH;
-      # send the file on the current branch and launch it
       scp "$(pwd)/.artenolis/deployTutorials.sh" jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC;
-      # launch the deployment script for tutorials
       ssh -t jenkins@lcsbs-mac-pro.uni.lux 'source ~/.profile && GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && sh $ARTENOLIS_ROOT_PATH_MAC/deployTutorials.sh';
-      # download the tutorials folder from the mac slave
-      scp -r jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC/scratch/tutorials $ARTENOLIS_DATA_PATH/cobratoolbox/.
-
+      scp -r jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC/scratch/tutorials $ARTENOLIS_DATA_PATH/cobratoolbox/.;
       cd $ARTENOLIS_DATA_PATH/repos/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
       cd $ARTENOLIS_DATA_PATH/repos/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
