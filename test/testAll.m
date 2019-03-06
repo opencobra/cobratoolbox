@@ -25,7 +25,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
     else
         launchTestSuite = false;
     end
-else            
+else
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
     restoredefaultpath()
@@ -169,7 +169,7 @@ try
     if launchTestSuite
         % save the userpath
         originalUserPath = path;
-        
+
         % run the tests in the subfolder verifiedTests/ recursively
         [result, resultTable] = runTestSuite();
 
