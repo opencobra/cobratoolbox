@@ -75,7 +75,7 @@ if [ "$ARCH" == "Linux" ]; then
 
 elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
-    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash < test/testAll.m
+    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodisplay -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "windows" ]; then
     # change to the build directory
