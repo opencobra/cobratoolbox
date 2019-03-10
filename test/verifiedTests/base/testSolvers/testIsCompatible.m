@@ -18,8 +18,9 @@ cd(fileDir);
 
 matlabVersion = ['R' version('-release')];
 
+%{
 if isunix && strcmp(matlabVersion, 'R2016b')
-    % GUROBI 8.0.0 is compatible on UNIX when running R2016b    
+    % GUROBI 8.0.0 is compatible on UNIX when running R2016b
     compatibleStatus = isCompatible('gurobi', 1, '8.0.0');
     assert(compatibleStatus == 1);
 
@@ -29,6 +30,7 @@ if isunix && strcmp(matlabVersion, 'R2016b')
 
     % NOTE: for untested solvers, the compatibility matrix must be established
 end
+%}
 
 if isunix && ~ismac
     % loop through all solver names
