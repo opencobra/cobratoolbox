@@ -26,6 +26,8 @@ printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMo
 
 text1 = fileread('refData_printLabeledData.txt');
 text2 = fileread(fileName);
+text1 = regexprep(text1,'[^a-zA-Z0-9]','');
+text2 = regexprep(text2,'[^a-zA-Z0-9]','');
 assert(strcmp(text1, text2));
 
 data = [2, NaN, NaN; 2, NaN, NaN; 2, NaN, NaN];
