@@ -22,9 +22,15 @@ function component = partition(model, solver, algorithm)
 %    component:    the index set of the reactions constituting the maximum  
 %                  flux consistent metabolic subnetwork
 %
+% NOTE:
+%
+%    requires bioinformatics toolbox
+%
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University
 
+    assert(license('test', 'bioinformatics_toolbox') == 1, ...
+        'The required Bioinformatics toolbox is not available!');
     S = model.S;
     rev = model.rev;
     lb = model.lb;

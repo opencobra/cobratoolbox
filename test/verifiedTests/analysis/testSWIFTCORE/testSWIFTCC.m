@@ -33,10 +33,6 @@ assert(all(A == consistent));
 fprintf('\n -- Running swiftcc using the %s solver...\n\n', solvers.LP{1});
 consistent = swiftcc(model.S, model.rev, solvers.LP{1});
 assert(all(A == consistent));
-fprintf('\n -- Running swiftcc++ using the %s solver...\n\n', solvers.LP{1});
-component = partition(model, solvers.LP{1}, 'swift');
-assert(all(component(consistent)));
-assert(length(consistent) == sum(component));
 
 % output a success message
 fprintf('\nDone.\n');
