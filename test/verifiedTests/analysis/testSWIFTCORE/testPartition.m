@@ -30,8 +30,8 @@ solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
 
 fprintf('\n -- Running swiftcc++ using the %s solver...\n\n', solvers.LP{1});
 component = partition(model, solvers.LP{1}, 'swift');
-assert(all(component(consistent)));
-assert(length(consistent) == sum(component));
+assert(all(component(A)));
+assert(length(A) == sum(component));
 
 % output a success message
 fprintf('\nDone.\n');
