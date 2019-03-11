@@ -109,7 +109,7 @@ end
 ROOMmodel = changeRxnBounds(ROOMmodel, rxnKO, 0, 'b');
 % change objective function
 ROOMmodel.c(:) = 0;
-ROOMmodel.evarc(:) = 1;
+ROOMmodel.evarc(cellfun(@length,regexp(ROOMmodel.evars,'^binary_'))==1) = 1;
 ROOMmodel.osenseStr = 'min';
 
 solutionROOM = optimizeCbModel(ROOMmodel);

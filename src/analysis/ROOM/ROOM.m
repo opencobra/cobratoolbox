@@ -109,7 +109,7 @@ end
 ROOMmodel = changeRxnBounds(ROOMmodel, rxnKO, 0, 'b');
 % change objective function
 ROOMmodel.c(:) = 0;
-ROOMmodel.evarc(startsWith(ROOMmodel.evars,'binary_')) = 1;
+ROOMmodel.evarc(cellfun(@length,regexp(ROOMmodel.evars,'^binary_'))==1) = 1;
 ROOMmodel.osenseStr = 'min';
 
 MILPproblem = buildLPproblemFromModel(ROOMmodel);
