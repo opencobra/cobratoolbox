@@ -95,8 +95,8 @@ createLocalVariables(){
     rstPath="$COBRAToolboxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
     pngPath="$pdfPath/tutorials/$tutorialFolder"
 
-    pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
-    pngHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.png"
+    pdfHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/$tutorialName.pdf"
+    pngHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/$tutorialName.png"
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
