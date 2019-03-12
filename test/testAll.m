@@ -157,7 +157,7 @@ if launchTestSuite
 
         % set the new badge
         if ~isempty(strfind(getenv('HOME'), 'jenkins'))
-            coverageBadgePath = [getenv('ARTENOLIS_DATA_PATH') filesep 'cobratoolbox' filesep 'badges' filesep];
+            coverageBadgePath = [getenv('ARTENOLIS_DATA_PATH') filesep 'cobratoolbox' filesep 'codegrade' filesep];
             system(['cp ' coverageBadgePath 'codegrade-', grade, '.svg '  coverageBadgePath 'codegrade.svg']);
         end
     end
