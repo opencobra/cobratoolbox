@@ -15,7 +15,7 @@ How to contribute
 
 .. |macos| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
@@ -25,7 +25,7 @@ How to contribute
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="windows">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html

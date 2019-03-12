@@ -146,7 +146,7 @@ Git commit messages
 
 .. |macos| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
@@ -201,7 +201,7 @@ Git commit messages
 
 .. |apple| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="apple">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="apple">
 
 
 .. |art| raw:: html

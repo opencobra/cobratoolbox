@@ -3,12 +3,12 @@ How to cite
 
 .. include:: ../../README.rst
    :start-after: begin-how-to-cite-marker
-   :end-before: end-how-to-cite-marker 
+   :end-before: end-how-to-cite-marker
 
 
 .. |macos| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
@@ -18,7 +18,7 @@ How to cite
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/apple.png" height="20px" width="20px" alt="windows">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
@@ -54,7 +54,7 @@ How to cite
 .. |latest| raw:: html
 
    <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-   
+
 
 .. |forum| raw:: html
 
