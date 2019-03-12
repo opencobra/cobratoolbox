@@ -196,7 +196,7 @@ Git commit messages
 
 .. |bug| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bug.png" height="20px" width="20px" alt="bug">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/bug.png" height="20px" width="20px" alt="bug">
 
 
 .. |apple| raw:: html
