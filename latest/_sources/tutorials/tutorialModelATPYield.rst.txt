@@ -1,6 +1,6 @@
 .. _tutorialModelATPYield:
 
-Test physiologically relevant ATP yields from different carbon sources for a metabolic model 
+Test physiologically relevant ATP yields from different carbon sources for a metabolic model
 =============================================================================================
 
 
@@ -9,7 +9,7 @@ Test physiologically relevant ATP yields from different carbon sources for a met
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/reconstruction/modelATPYield/tutorial_modelATPYield.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/reconstruction/modelATPYield/tutorial_modelATPYield.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>

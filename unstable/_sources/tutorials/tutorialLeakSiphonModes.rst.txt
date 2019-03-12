@@ -1,6 +1,6 @@
 .. _tutorialLeakSiphonModes:
 
-Find leakage and siphon modes in a reconstruction  
+Find leakage and siphon modes in a reconstruction
 ===================================================
 
 
@@ -9,7 +9,7 @@ Find leakage and siphon modes in a reconstruction
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/reconstruction/leakSiphonModes/tutorial_leakSiphonModes.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/reconstruction/leakSiphonModes/tutorial_leakSiphonModes.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>

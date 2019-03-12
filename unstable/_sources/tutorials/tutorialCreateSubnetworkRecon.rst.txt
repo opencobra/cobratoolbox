@@ -1,6 +1,6 @@
 .. _tutorialCreateSubnetworkRecon:
 
-Create a generic subnetwork from Recon 3D 
+Create a generic subnetwork from Recon 3D
 ==========================================
 
 
@@ -9,7 +9,7 @@ Create a generic subnetwork from Recon 3D
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/reconstruction/createSubnetworkRecon/tutorial_createSubnetworkRecon.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/reconstruction/createSubnetworkRecon/tutorial_createSubnetworkRecon.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>
