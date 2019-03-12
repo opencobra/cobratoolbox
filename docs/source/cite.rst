@@ -43,7 +43,7 @@ How to cite
 
 .. |bulb| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/bulb.png" height="20px" width="20px" alt="bulb">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/bulb.png" height="20px" width="20px" alt="bulb">
 
 
 .. |tutorials| raw:: html
