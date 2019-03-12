@@ -206,7 +206,7 @@ Git commit messages
 
 .. |art| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/art.png" height="20px" width="20px" alt="art">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/art.png" height="20px" width="20px" alt="art">
 
 
 .. |fire| raw:: html
