@@ -136,12 +136,11 @@ instructions
 -  A guide for reporting an **issue** is `here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
 
 If you want to use ``git`` via the command line interface and need help,
-these `training slides <https://uni-lu.github.io/slides/>`__ will get
-you started. This
+this
 `guide <https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github>`__
 or the official `GitHub
 guide <https://help.github.com/articles/creating-a-pull-request/>`__
-also come in handy.
+come in handy.
 
 
 .. end-how-to-contribute-marker
