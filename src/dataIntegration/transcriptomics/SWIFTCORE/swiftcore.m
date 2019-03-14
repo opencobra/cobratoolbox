@@ -94,7 +94,7 @@ function [reconstruction, LP] = swiftcore(S, rev, coreInd, weights, reduction, v
     else
         [Q, R, ~] = qr(transpose(S(:, weights == 0)));
         Z = Q(:, sum(abs(diag(R)) > tol)+1:end);
-        blocked(weights == 0) = vecnorm(Z, 2, 2) < tol;
+        blocked(weights == 0) = diag(Z*Z.') < tol^2;
     end
     % phase two of unblocking the reversible reactions
     while any(blocked)
