@@ -13,7 +13,7 @@ function surfNet(varargin)
 % OPTIONAL INPUTS:
 %    metrxn:             mets or rxns names, can be a cell array of multiple rxns and mets, or simply a string 
 %                        (default: objective reactions or a random reaction)
-%  (the arguments below can also be inputted as name-value pairs)
+%  (the arguments below can also be inputted as name-value pairs and partial matching is supported)
 %    metNameFlag:        print model.metNames in reaction formulas. (default: false)
 %    flux:               flux vectors for the model, a #reactions x #columns matrix. (default: [])
 %                        If given, the producing and consuming reactions displayed are in accordance with the flux direction.
@@ -33,7 +33,7 @@ function surfNet(varargin)
 %    surfNet(model, 'glc-D[c]', 'f', flux)  % for starting at glucose and show reactions with non-zero flux in 'flux' only
 %    surfNet(model, 'EX_glc-D(e)', 's', 0)  % to show the reaction formulas only but not the details of metabolites during navigation
 %    surfNet(model, 'EX_glc-D(e)', 'p', {'default', 'metKEGGID'})  % to print also the charge for each metabolite printed
-%    surfNet(model, 'EX_glc-D(e)', 'p', {'d', 'metK'})  % support partial matching
+%    surfNet(model, 'EX_glc-D(e)', 'p', {'d', 'metK'})  % support unambiguous partial matching
 %    surfNet(model, {'glc-D[c]'; 'fru[c]'})  % to view several mets and rxns
 
 fluxTol = 1e-8;  % tolerance for non-zero fluxes
