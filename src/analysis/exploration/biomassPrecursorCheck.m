@@ -175,5 +175,7 @@ if checkConservedQuantities && ~isempty(missingMets)
     missingCofs = cofactorPair(~producible);
     metCofs = [cofactorPair{:}];
     % exclude those metabolites in cofactor pairs from missingMets
-    missingMets = missingMets(~ismember(missingMets, metCofs(:)));
+    if ~isempty(metCofs)
+        missingMets = missingMets(~ismember(missingMets, metCofs(:)));
+    end
 end
