@@ -31,19 +31,19 @@ solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
 fprintf('\n -- Running QFCA w/o reduction and using the default linprog solver...\n\n');
 [~, fctableD, blockedD] = QFCA(model, false);
 assert(all(blockedD == blocked));
-assert(all(fctableD == fctable, 'all'));
+assert(all(fctableD(:) == fctable(:)));
 fprintf('\n -- Running QFCA w/ reduction and using the default linprog solver...\n\n');
 [~, fctableR, blockedR] = QFCA(model, true);
 assert(all(blockedR == blocked));
-assert(all(fctableR == fctable, 'all'));
+assert(all(fctableR(:) == fctable(:)));
 fprintf('\n -- Running QFCA w/o reduction and using the %s solver...\n\n', solvers.LP{1});
 [~, fctableG, blockedG] = QFCA(model, false, solvers.LP{1});
 assert(all(blockedG == blocked));
-assert(all(fctableG == fctable, 'all'));
+assert(all(fctableG(:) == fctable(:)));
 fprintf('\n -- Running QFCA w/ reduction and using the %s solver...\n\n', solvers.LP{1});
 [~, fctableRG, blockedRG] = QFCA(model, true, solvers.LP{1});
 assert(all(blockedRG == blocked));
-assert(all(fctableRG == fctable, 'all'));
+assert(all(fctableRG(:) == fctable(:)));
 
 % output a success message
 fprintf('\nDone.\n');
