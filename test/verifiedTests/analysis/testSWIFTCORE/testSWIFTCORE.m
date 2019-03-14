@@ -10,7 +10,7 @@
 global CBTDIR
 
 % require the specified toolboxes and solvers
-solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'ibm_cplex'});
+solvers = prepareTest('needsLP', true);
 
 % save the current path
 currentDir = pwd;
