@@ -59,6 +59,12 @@ missingCofsStr = cellfun(@(x) strjoin(x, '|'), missingCofs, 'UniformOutput', fal
 assert(isempty(setxor(missingCofsStr, {'G|H'})))
 assert(isempty(presentCofs))
 
+% check for the case with missing mets and no conserved cofactor pairs at all
+model = addReaction(model, 'Ex_G', 'reactionFormula', 'G <=>');
+model = addReaction(model, 'Ex_H', 'reactionFormula', 'H <=>');
+model = changeRxnBounds(model, 'Ex_A', 0, 'b');
+[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, true, true);
+
 % test error
 assert(verifyCobraFunctionError('biomassPrecursorCheck','input',{model},'outputArgCount',3,'testMessage', ...
     sprintf('coupledMets are not being calculated if checkCoupling is not set to true!\n%s', ...
