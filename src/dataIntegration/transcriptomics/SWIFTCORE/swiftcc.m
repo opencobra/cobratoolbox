@@ -41,10 +41,9 @@ function consistent = swiftcc(S, rev, varargin)
     
     %% identifying the blocked reversible reactions
     [Q, R, ~] = qr(transpose(S(:, consistent)));
-    Z = Q(:, sum(abs(diag(R)) > tol)+1:end);
+    Z = Q(rev(consistent) == 1, sum(abs(diag(R)) > tol)+1:end);
     
     %% finding the consistent reactions of the original metabolic network
-    consistent(consistent & rev == 1) = vecnorm(Z(rev(consistent) == 1, :), ...
-        2, 2) > tol;
+    consistent(consistent & rev == 1) = diag(Z*Z.') > tol^2;
     consistent = find(consistent);
 end
