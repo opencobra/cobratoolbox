@@ -3,7 +3,9 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %
 % USAGE:
 %
-%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)
+%    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
+%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)
+%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
 %
 % INPUT:
 %    model:            COBRA model structure
@@ -16,8 +18,15 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %    rxnNameList:      List of reactions for which FVA is performed
 %                      (Default = all reactions in the model)
 %    printLevel:       Verbose level (default: 0)
-%    allowLoops:       Whether loops are allowed in solution. (Default = true)
+%    allowLoops:       Whether loops are allowed in solution or which method to block loops. (Default = true)
 %                      See `optimizeCbModel` for description
+%                        * 1 (or true) : loops allowed
+%                        * 0 (or false): loops not allowed. Default use LLC-NS to find loopless solutions
+%                        * 'original'  : original loopless FVA 
+%                        * 'fastSNP'   : loopless FVA with with Fast-SNP preprocessing of nullspace
+%                        * 'LLC-NS'    : localized loopless FVA using information from nullsapce
+%                        * 'LLC-EFM'   : localized loopless FVA using information from EFMs. 
+%                                        Require CalculateFluxModes.m from EFMtool to calculate EFMs.
 %    method:           when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):
 %
 %                        * 'FBA'    : standards FBA solution
@@ -138,19 +147,11 @@ if exist('CBT_LP_PARAMS', 'var')
     end
 end
 
-%%%% They are not incompatible. Loopless flux distributions are not
-%%%% necessarily minimal with respect to any norms available in the option.
-%%%% This is very likely when there are different loopless pathways giving the same
-%%%% max/min flux for the target reaction. And 
-%%%% The converse is also not necessarily true. An FBA (LP) solution after
-%%%% minimizing any norms may still contain loops, as long as there is a
-%%%% loop that is essential for the max/min flux for the target reaction.
-
-%Return if minNorm is not FBA but allowloops is set to false
-%This is currently not supported as it requires mechanisms that are likely
-%incompatible.
+% Return if minNorm is minOrigSol but allowloops is set to false
 if ~allowLoops && minNorm && strcmp(method,'minOrigSol')
-    error('minOrigSol is meant for finding a minimally adjusted solution from an FBA solution.\nCannot return solutions allowLoops is set to false.\nIf you want solutions without loops please set method to ''FBA'', ''2-norm'', ''1-norm'' or ''0-norm''.');
+    error(['minOrigSol is meant for finding a minimally adjusted solution from an FBA solution. ', ...
+        'Cannot return solutions if allowLoops is set to false. ', ...
+        'If you want solutions without loops please set method to ''FBA'', ''2-norm'', ''1-norm'' or ''0-norm''.']);
 end
 
 % Determine constraints for the correct space (0-100% of the full space)
@@ -294,7 +295,10 @@ end
 QuickProblem.osense = -1;
 switch loopMethod
     case {'original', 'fastSNP'}
-        sol = solveCobraMILP(QuickProblem);
+        % Set a short time limit or do not this at all for MILP with loop law
+        % because if the model and the number of reactions in the objective is large, 
+        % it is non-trivial for solvers to find the optimal solution under the loop law.
+        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10);
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
@@ -303,9 +307,12 @@ switch loopMethod
     case 'none'
         sol = solveCobraLP(QuickProblem);
 end
+
 %If we reach this point, we can be certain, that there is a solution, i.e.
 %if the stat is not 1, we have to check all reactions.
-if sol.stat == 1
+feasTol = getCobraSolverParams('LP', 'feasTol');
+if (allowLoops && (sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= feasTol)) ...
+        || (~allowLoops && (sol.stat == 1 || sol.stat == 3))
     relSol = sol.full(Order(Presence));
     %Obtain fluxes at their boundaries
     maxSolved = model.ub(Order(Presence)) == relSol;
@@ -321,7 +328,10 @@ end
 QuickProblem.osense = 1;
 switch loopMethod
     case {'original', 'fastSNP'}
-        sol = solveCobraMILP(QuickProblem);
+        % Set a short time limit or do not this at all for MILP with loop law
+        % because if the model and the number of reactions in the objective is large, 
+        % it is non-trivial for solvers to find the optimal solution under the loop law.
+        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10);
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
@@ -330,7 +340,8 @@ switch loopMethod
     case 'none'
         sol = solveCobraLP(QuickProblem);
 end
-if sol.stat == 1
+if (allowLoops && (sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= feasTol)) ...
+        || (~allowLoops && (sol.stat == 1 || sol.stat == 3))
     relSol = sol.full(Order(Presence));
     %Again obtain fluxes at their boundaries
     maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
@@ -629,9 +640,9 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
         elseif LPsolution.stat == 1        
             Flux = getObjectiveFlux(LPsolution, LPproblem);
         else
-            error(['A Solution could not be found!\nThis should not be possible but can happen',...
+            error(sprintf(['A Solution could not be found!\nThis should not be possible but can happen',...
                    'if the used solver cannot properly handle unboundedness, or if there are numerical issues.\n',...
-                   'Please try to use a different solver.\n'])
+                   'Please try to use a different solver.\n']))
         end
     else
         LPsolution = sol;
@@ -687,11 +698,11 @@ if allowLoops
             V=momaSolution.x;     
     end
 else
-    V = minNormForMILP(LPproblem, nRxns, method);
+    V = minNormForMILP(LPproblem, LPsolution, nRxns, method);
 end
 end
 
-function V = minNormForMILP(MILPproblem, nRxns, method)
+function V = minNormForMILP(MILPproblem, MILPsolution, nRxns, method)
 % It will be great if sparseFBA can somehow support MILP problems
 [m, n] = size(MILPproblem.A);
 switch method
@@ -701,6 +712,8 @@ switch method
         MILPproblem.F = [speye(nRxns,nRxns), sparse(nRxns, n - nRxns); ...
             sparse(n - nRxns, n)];
         MILPproblem.osense = 1;
+        % supplying a known initial solution has a much higher chance for the solver to return a solution
+        MILPproblem.x0 = MILPsolution.full;
                 %quadratic optimization
         solution = solveCobraMIQP(MILPproblem);
         V = solution.full(1:nRxns);
@@ -715,6 +728,8 @@ switch method
         MILPproblem.vartype = [MILPproblem.vartype(:); repmat('C', nRxns, 1)];
         MILPproblem.lb = [MILPproblem.lb; zeros(nRxns, 1)];
         MILPproblem.ub = [MILPproblem.ub; max(abs([MILPproblem.lb(1:nRxns), MILPproblem.ub(1:nRxns)]), [],  2)];
+        % supplying a known initial solution has a much higher chance for the solver to return a solution
+        MILPproblem.x0 = [MILPsolution.full; abs(MILPsolution.full(1:nRxns))];
         solution = solveCobraMILP(MILPproblem);
         V = solution.full(1:nRxns);
     case '0-norm'
@@ -729,6 +744,12 @@ switch method
         MILPproblem.vartype = [MILPproblem.vartype(:); repmat('B', nRxns, 1)];
         MILPproblem.lb = [MILPproblem.lb; zeros(nRxns, 1)];
         MILPproblem.ub = [MILPproblem.ub; ones(nRxns, 1)];
+        intTol = getCobraSolverParams('MILP', 'intTol');
+        % supplying a known initial solution has a much higher chance for the solver to return a solution
+        V = MILPsolution.full(1:nRxns);
+        V(V > 0 & MILPproblem.ub(1:nRxns) > 0 & V ./ MILPproblem.ub(1:nRxns) <= intTol) = 0;
+        V(V < 0 & MILPproblem.lb(1:nRxns) < 0 & V ./ MILPproblem.lb(1:nRxns) <= intTol) = 0;
+        MILPproblem.x0 = [MILPsolution.full; V ~= 0];
         solution = solveCobraMILP(MILPproblem);
         V = solution.full(1:nRxns);
     case 'FBA'
@@ -828,7 +849,7 @@ if ~useRxnLink
             MILPproblemLLC.b(llcInfo.con.vU(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = bigM;
             MILPproblemLLC.b(llcInfo.con.gU(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = bigM;
             MILPproblemLLC.b(llcInfo.con.vL(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = -bigM;
-            MILPproblemLLC.b(llcInfo.con.gL(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = bigM;
+            MILPproblemLLC.b(llcInfo.con.gL(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = -bigM;
             % fix variables not affecting optimality and feasibility
             MILPproblemLLC.lb(llcInfo.var.g(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = 0;
             MILPproblemLLC.ub(llcInfo.var.g(llcInfo.rxnInLoopIds(llcInfo.conComp == jCon))) = 0;
@@ -849,7 +870,7 @@ else
     MILPproblemLLC.b(llcInfo.con.vU(llcInfo.rxnInLoopIds(id))) = bigM;
     MILPproblemLLC.b(llcInfo.con.gU(llcInfo.rxnInLoopIds(id))) = bigM;
     MILPproblemLLC.b(llcInfo.con.vL(llcInfo.rxnInLoopIds(id))) = -bigM;
-    MILPproblemLLC.b(llcInfo.con.gL(llcInfo.rxnInLoopIds(id))) = bigM;
+    MILPproblemLLC.b(llcInfo.con.gL(llcInfo.rxnInLoopIds(id))) = -bigM;
 
     % pre-determine variables not connected to the reaction for FVA
     % except reactions required to be always constrained
