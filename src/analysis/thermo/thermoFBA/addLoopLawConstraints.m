@@ -1,4 +1,4 @@
-function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, preprocessing, loopInfo, printLevel)
+function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, preprocessing, loopInfo)
 % Adds loop law constraints to LP problem or MILP problem.
 %
 % USAGE:
@@ -138,9 +138,8 @@ end
 
 linternal = size(Ninternal,2);
 
-nint = length(find(isInternal));
-temp = sparse(nint, n);
-temp(:, rxnIndex(isInternal)) = speye(nint);
+nint = sum(isInternal);
+temp = sparse(1:nint, rxnIndex(isInternal), 1, nint, n);
 
 if strncmpi(preprocessing, 'llc', 3)
     % store the variable and constraint orders in the MILP problem for method = 2
@@ -208,18 +207,18 @@ if method == 1 % two variables (ar, af)
     
 elseif method == 2 % One variables (a)
     MILPproblem.A = [LPproblem.A, sparse(m,2*nint);   % Ax = b (from original LPproblem)
-        temp, -10000*speye(nint), sparse(nint, nint); % v < 10000*af
-        temp, -10000*speye(nint), sparse(nint, nint); % v > -10000 + 10000*af
-        sparse(nint, n), -101*speye(nint), speye(nint);  % E < 100 af - ar
-        sparse(nint, n), -101*speye(nint), speye(nint);  % E > af - 100 ar
+        temp, -10000*speye(nint), sparse(nint, nint); % v - 10000 a <=  0
+        temp, -10000*speye(nint), sparse(nint, nint); % v - 10000 a >= -10000
+        sparse(nint, n), -101*speye(nint), speye(nint);  % E - 101 a <= -1
+        sparse(nint, n), -101*speye(nint), speye(nint);  % E - 101 a >= -100
         sparse(linternal, n + nint), Ninternal']; % N*E = 0
     
     MILPproblem.b = [LPproblem.b; % Ax = b (from original problem)
-        zeros(nint,1); % v < 10000*af
-        -10000*ones(nint, 1); % v > -10000 + 10000*af
-        -ones(nint,1); % e<
-        -100*ones(nint, 1); % e>
-        zeros(linternal,1)];
+        zeros(nint,1); % v - 10000 a <=  0
+        -10000*ones(nint, 1); % v - 10000 a >= -10000
+        -ones(nint,1); % E - 101 a <= -1
+        -100*ones(nint, 1); % E - 101 a >= -100
+        zeros(linternal,1)]; % N*E = 0
     
     MILPproblem.c = [LPproblem.c;
         zeros(2*nint,1)];
@@ -235,10 +234,10 @@ elseif method == 2 % One variables (a)
     if isfield(LPproblem, 'vartype')
         MILPproblem.vartype = LPproblem.vartype;  % keep variables same as previously.
     else
-        for i = 1:n, MILPproblem.vartype(end+1,1) = 'C';end; %otherwise define as continuous (used for all LP problems)
+        MILPproblem.vartype = repmat('C', n, 1); %otherwise define as continuous (used for all LP problems)
     end
-    for i = 1:nint, MILPproblem.vartype(end+1,1) = 'B';end; % a variables
-    for i = 1:nint, MILPproblem.vartype(end+1,1) = 'C';end; % G variables
+    % a variables, E variables
+    MILPproblem.vartype = [MILPproblem.vartype(:); repmat('B', nint, 1); repmat('C', nint, 1)];
     
     if isfield(LPproblem, 'F') % used in QP problems
         MILPproblem.F = sparse(size(MILPproblem.A,2),   size(MILPproblem.A,2));
