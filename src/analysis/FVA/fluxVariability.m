@@ -138,12 +138,21 @@ if exist('CBT_LP_PARAMS', 'var')
     end
 end
 
+%%%% They are not incompatible. Loopless flux distributions are not
+%%%% necessarily minimal with respect to any norms available in the option.
+%%%% This is very likely when there are different loopless pathways giving the same
+%%%% max/min flux for the target reaction. And 
+%%%% The converse is also not necessarily true. An FBA (LP) solution after
+%%%% minimizing any norms may still contain loops, as long as there is a
+%%%% loop that is essential for the max/min flux for the target reaction.
+
 %Return if minNorm is not FBA but allowloops is set to false
 %This is currently not supported as it requires mechanisms that are likely
 %incompatible.
-if ~allowLoops && minNorm && ~strcmp(method,'FBA')
-    error('Cannot return solutions with special properties if allowLoops is set to false.\nIf you want solutions without loops please set method to ''FBA''.');
+if ~allowLoops && minNorm && strcmp(method,'minOrigSol')
+    error('minOrigSol is meant for finding a minimally adjusted solution from an FBA solution.\nCannot return solutions allowLoops is set to false.\nIf you want solutions without loops please set method to ''FBA'', ''2-norm'', ''1-norm'' or ''0-norm''.');
 end
+
 % Determine constraints for the correct space (0-100% of the full space)
 if sum(model.c ~= 0) > 0
     hasObjective = true;
@@ -151,9 +160,6 @@ else
     hasObjective = false;
 end
 
-%%%%%%%if printLevel == 1
-%    showprogress(0,'Flux variability analysis in progress ...');
-%end
 if printLevel > 1
     fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
 end
@@ -633,45 +639,106 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
     end
     % minimise the Euclidean norm of the optimal flux vector to remove loops -Ronan
     if minNorm == 1
-        V = getMinNorm(LPproblem, LPsolution, nRxns, Flux, model, method);
+        if allowLoops
+            V = getMinNorm(LPproblem, LPsolution, nRxns, Flux, model, method, allowLoops);
+        else
+            V = getMinNorm(MILPproblem, LPsolution, nRxns, Flux, model, method, allowLoops);
+        end
     end
 end
 
 
-function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method)
+function V = getMinNorm(LPproblem,LPsolution,nRxns,cFlux, model, method, allowLoops)
 % get the Flux distribution for the specified min norm.
 
-    if strcmp(method, '2-norm')
-        QPproblem=LPproblem;
-        QPproblem.lb(LPproblem.c~=0) = cFlux - 1e-12;
-        QPproblem.ub(LPproblem.c~=0) = cFlux + 1e12;
-        QPproblem.c(:)=0;
-        %Minimise Euclidean norm using quadratic programming
-        QPproblem.F = [speye(nRxns,nRxns), sparse(nRxns,size(LPproblem.A,2)-nRxns);...
-                      sparse(size(LPproblem.A,2)-nRxns,size(LPproblem.A,2))];
-        QPproblem.osense = 1;
-        %quadratic optimization
-        solution = solveCobraQP(QPproblem);
-        V=solution.full(1:nRxns,1);
-    elseif strcmp(method, '1-norm')
-        vSparse = sparseFBA(LPproblem, 'min', 0, 0, 'l1');
-        V = vSparse;
-    elseif strcmp(method, '0-norm')
-        vSparse = sparseFBA(LPproblem, 'min', 0, 0);
-        V = vSparse;
-    elseif strcmp(method, 'FBA')
-        V=LPsolution.full(1:nRxns);
-    elseif strcmp(method, 'minOrigSol')
-        % we take the original model, and constrain the objective reaction
-        % accordingly.
-        LPproblemMOMA = model;                
-        LPproblemMOMA.lb(LPproblem.c(1:nRxns)~=0) = cFlux - 1e-11;
-        LPproblemMOMA.ub(LPproblem.c(1:nRxns)~=0) = cFlux + 1e-11;        
-        momaSolution = linearMOMA(model,LPproblemMOMA);
-        V=momaSolution.x;
+if strcmp(method, 'FBA')
+    V = LPsolution.full(1:nRxns);
+    return
+end
+% update LPproblem to fix objective function value for 1-norm and
+% 0-norm to work
+LPproblem.lb(LPproblem.c ~= 0) = cFlux - 1e-12;
+LPproblem.ub(LPproblem.c ~= 0) = cFlux + 1e-12;
+if allowLoops
+    switch method
+        case '2-norm'
+            QPproblem=LPproblem;
+            QPproblem.lb(LPproblem.c~=0) = cFlux - 1e-12;
+            QPproblem.ub(LPproblem.c~=0) = cFlux + 1e12;
+            QPproblem.c(:)=0;
+            %Minimise Euclidean norm using quadratic programming
+            QPproblem.F = [speye(nRxns,nRxns), sparse(nRxns,size(LPproblem.A,2)-nRxns);...
+                sparse(size(LPproblem.A,2)-nRxns,size(LPproblem.A,2))];
+            QPproblem.osense = 1;
+            %quadratic optimization
+            solution = solveCobraQP(QPproblem);
+            V=solution.full(1:nRxns,1);
+        case '1-norm'
+            V = sparseFBA(LPproblem, 'min', 0, 0, 'l1');
+        case '0-norm'
+            V = sparseFBA(LPproblem, 'min', 0, 0);
+        case 'minOrigSol'
+            % we take the original model, and constrain the objective reaction
+            % accordingly.
+            LPproblemMOMA = model;
+            LPproblemMOMA.lb(LPproblem.c(1:nRxns)~=0) = cFlux - 1e-11;
+            LPproblemMOMA.ub(LPproblem.c(1:nRxns)~=0) = cFlux + 1e-11;
+            momaSolution = linearMOMA(model,LPproblemMOMA);
+            V=momaSolution.x;     
     end
+else
+    V = minNormForMILP(LPproblem, nRxns, method);
+end
 end
 
+function V = minNormForMILP(MILPproblem, nRxns, method)
+% It will be great if sparseFBA can somehow support MILP problems
+[m, n] = size(MILPproblem.A);
+switch method
+    case '2-norm'
+        MILPproblem.c(:)=0;
+        %Minimise Euclidean norm using quadratic programming
+        MILPproblem.F = [speye(nRxns,nRxns), sparse(nRxns, n - nRxns); ...
+            sparse(n - nRxns, n)];
+        MILPproblem.osense = 1;
+                %quadratic optimization
+        solution = solveCobraMIQP(MILPproblem);
+        V = solution.full(1:nRxns);
+    case '1-norm'
+        MILPproblem.A = [MILPproblem.A,             sparse(m, nRxns); ... original problem
+            sparse(1:nRxns, 1:nRxns, 1, nRxns, n),  -speye(nRxns); ...  v - |v| <= 0
+            sparse(1:nRxns, 1:nRxns, -1, nRxns, n), -speye(nRxns)]; %  -v - |v| <= 0
+        MILPproblem.b = [MILPproblem.b; zeros(nRxns * 2, 1)];
+        MILPproblem.csense = [MILPproblem.csense(:); repmat('L', nRxns * 2, 1)];
+        MILPproblem.c = [zeros(n, 1); ones(nRxns, 1)];
+        MILPproblem.osense = 1;
+        MILPproblem.vartype = [MILPproblem.vartype(:); repmat('C', nRxns, 1)];
+        MILPproblem.lb = [MILPproblem.lb; zeros(nRxns, 1)];
+        MILPproblem.ub = [MILPproblem.ub; max(abs([MILPproblem.lb(1:nRxns), MILPproblem.ub(1:nRxns)]), [],  2)];
+        solution = solveCobraMILP(MILPproblem);
+        V = solution.full(1:nRxns);
+    case '0-norm'
+        % use binary switch
+        MILPproblem.A = [MILPproblem.A,             sparse(m, nRxns); ... original problem
+            sparse(1:nRxns, 1:nRxns, 1, nRxns, n),  sparse(1:nRxns, 1:nRxns, -MILPproblem.ub(1:nRxns), nRxns, nRxns); ...   v - ub*a <= 0
+            sparse(1:nRxns, 1:nRxns, -1, nRxns, n),  sparse(1:nRxns, 1:nRxns, MILPproblem.lb(1:nRxns), nRxns, nRxns)];  %  -v + lb*a <= 0
+        MILPproblem.b = [MILPproblem.b; zeros(nRxns * 2, 1)];
+        MILPproblem.c = [zeros(n, 1); ones(nRxns, 1)];
+        MILPproblem.csense = [MILPproblem.csense(:); repmat('L', nRxns * 2, 1)];
+        MILPproblem.osense = 1;
+        MILPproblem.vartype = [MILPproblem.vartype(:); repmat('B', nRxns, 1)];
+        MILPproblem.lb = [MILPproblem.lb; zeros(nRxns, 1)];
+        MILPproblem.ub = [MILPproblem.ub; ones(nRxns, 1)];
+        solution = solveCobraMILP(MILPproblem);
+        V = solution.full(1:nRxns);
+    case 'FBA'
+        V=LPsolution.full(1:nRxns);
+    case 'minOrigSol'
+        warning('method ''minOrigSol'' not supported with ''allowLoops'' turned on. Return the ''FBA'' solution');
+        V=LPsolution.full(1:nRxns);
+end
+        
+end
 
 function flux = getObjectiveFlux(LPsolution,LPproblem)
 % Determine the current flux based on an LPsolution, the original LPproblem
