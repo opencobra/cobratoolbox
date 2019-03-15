@@ -49,9 +49,7 @@ function flux = core(S, rev, blocked, weights, solver)
     if strcmp(solver, 'gurobi') % gurobi
         params.outputflag = 0;
         result = gurobi(model, params);
-        if strcmp(result.status, 'OPTIMAL')
-            flux = result.x(1:n);
-        else
+        if ~strcmp(result.status, 'OPTIMAL')
             warning('Optimization was stopped with status %s\n', result.status);
         end
     elseif strcmp(solver, 'linprog') % linprog
@@ -65,9 +63,7 @@ function flux = core(S, rev, blocked, weights, solver)
         problem.solver = 'linprog';
         problem.options = optimset('Display', 'off');
         [result.x, result.objval, result.status, ~] = linprog(problem);
-        if result.status == 1
-            flux = result.x(1:n);
-        else
+        if result.status ~= 1
             warning('Optimization was stopped with status %d\n', result.status);
         end
     elseif strcmp(solver, 'cplex') % cplex
@@ -79,9 +75,7 @@ function flux = core(S, rev, blocked, weights, solver)
         problem.lb = model.lb;
         problem.ub = model.ub;
         [result.x, result.objval, result.status] = cplexlp(problem);
-        if result.status == 1
-            flux = result.x(1:n);
-        else
+        if result.status ~= 1
             warning('Optimization was stopped with status %d\n', result.status);
         end
     else % COBRA
@@ -95,10 +89,9 @@ function flux = core(S, rev, blocked, weights, solver)
         result.x = solution.full;
         result.objval = solution.obj;
         result.status = solution.stat;
-        if result.status == 1
-            flux = result.x(1:n);
-        else
+        if result.status ~= 1
             warning('Optimization was stopped with status %d\n', result.status);
         end
     end
+    flux = result.x(1:n);
 end
