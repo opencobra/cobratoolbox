@@ -351,7 +351,7 @@ switch loopMethod
         % no need to regenerate the preprocessing information. They remain unchanged
 end
 
-if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on parallel computing by default
+if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on parpool by default
     if printLevel == 1
         showprogress(0,'Flux variability analysis in progress ...');
     end
@@ -361,9 +361,9 @@ if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on paral
             switch loopMethod
                 case {'none', 'original', 'fastSNP'}
                     LPproblem.osense = 1;
-                    [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i});
+                    [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i},MILPproblem);
                     LPproblem.osense = -1;
-                    [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i});
+                    [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,LPproblem,0, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i},MILPproblem);
                 otherwise
                     % use LLCs
                     i0 = findRxnIDs(model, rxnNameList(i));
@@ -478,16 +478,16 @@ else % parallel job.  pretty much does the same thing.
     environment = getEnvironment();
     
     if minNorm        
-        for i = 1:length(rxnNameList)
+        parfor i = 1:length(rxnNameList)
             restoreEnvironment(environment,0);
             parLPproblem = LPproblem;
             parMILPproblem = MILPproblem;
             switch loopMethod
                 case {'none', 'original', 'fastSNP'}
                     parLPproblem.osense = 1;
-                    [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i}, parMILPproblem);
+                    [minFlux(i),Vmin(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMinSols{i},parMILPproblem);
                     parLPproblem.osense = -1;
-                    [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i}, parMILPproblem);
+                    [maxFlux(i),Vmax(:,i)] = calcSolForEntry(model,rxnNameList,i,parLPproblem,1, method, allowLoops,printLevel,minNorm,cpxControl,preCompMaxSols{i},parMILPproblem);
                 otherwise
                     % apply localized loopless constraints
                     i0 = findRxnIDs(model, rxnNameList(i));
@@ -529,7 +529,7 @@ else % parallel job.  pretty much does the same thing.
     else
         mins = -inf*ones(length(rxnListMin),1);
         LPproblem.osense = 1;
-        for i = 1:length(rxnListMin)
+        parfor i = 1:length(rxnListMin)
             restoreEnvironment(environment,0);
             parLPproblem = LPproblem;
             parMILPproblem = MILPproblem;
@@ -542,18 +542,16 @@ else % parallel job.  pretty much does the same thing.
                     if ~alwaysLLC && ~loopInfo.rxnInLoops(i0, 1)
                         % solve as LP is fine if no LLCs are always on and the
                         % reverse direction of the current reaction is not in cycles
-                        mins(i) = calcSolForEntry(model,rxnNameList,i,parLPproblem,0,method, 1, printLevel,minNorm,cpxControl,[], []);
+                        mins(i) = calcSolForEntry(model,rxnListMax,i,parLPproblem,0,method, 1, printLevel,minNorm,cpxControl,[], []);
                     else
+                        rxnID = [];
                         if loopInfo.rxnInLoops(i0, 1)  % if the reverse direction of rxn i0 is in cycles
-                            % apply LLCs only to the always-on set of reactions
-                            rxnID = [];
-                        else
                             % apply LLCs to the always-on set + objective reaction that is in cycles
                             rxnID = i0;
                         end
                         % update bounds and rhs
                         parMILPproblem = updateLLCs(parMILPproblem, conCompAlwaysOn, rxnInLoopsAlwaysOn, loopInfo, rxnID, useRxnLink);
-                        mins(i) = calcSolForEntry(model,rxnNameList,i,parLPproblem,0,method, allowLoops, printLevel,minNorm,cpxControl,[], parMILPproblem);
+                        mins(i) = calcSolForEntry(model,rxnListMin,i,parLPproblem,0,method, allowLoops, printLevel,minNorm,cpxControl,[], parMILPproblem);
                     end
             end
         end
@@ -562,7 +560,7 @@ else % parallel job.  pretty much does the same thing.
         %calc maximiums
         maxs = inf*ones(length(rxnListMax),1);
         LPproblem.osense = -1;
-        for i = 1:length(rxnListMax)        
+        parfor i = 1:length(rxnListMax)        
             restoreEnvironment(environment,0);
             parLPproblem = LPproblem;
             parMILPproblem = MILPproblem;
@@ -575,18 +573,16 @@ else % parallel job.  pretty much does the same thing.
                      if ~alwaysLLC && ~loopInfo.rxnInLoops(i0, 2)
                          % solve as LP is fine if no LLCs are always on and the
                          % forward direction of the current reaction is not in cycles
-                         maxs(i) = calcSolForEntry(model,rxnNameList,i, parLPproblem,0, method, 1, printLevel,minNorm,cpxControl,[], []);
+                         maxs(i) = calcSolForEntry(model,rxnListMax,i, parLPproblem,0, method, 1, printLevel,minNorm,cpxControl,[], []);
                      else
+                         rxnID = [];
                          if loopInfo.rxnInLoops(i0, 2)  % if the forward direction of rxn i0 is in cycles
-                             % apply LLCs only to the always-on set of reactions
-                             rxnID = [];
-                         else
                              % apply LLCs to the always-on set + objective reaction that is in cycles
                              rxnID = i0;
                          end
                          % update bounds and rhs
                          parMILPproblem = updateLLCs(parMILPproblem, conCompAlwaysOn, rxnInLoopsAlwaysOn, loopInfo, rxnID, useRxnLink);
-                         maxs(i) = calcSolForEntry(model,rxnNameList,i, parLPproblem,0, method, allowLoops, printLevel,minNorm,cpxControl,[], parMILPproblem);
+                         maxs(i) = calcSolForEntry(model,rxnListMax,i, parLPproblem,0, method, allowLoops, printLevel,minNorm,cpxControl,[], parMILPproblem);
                      end
              end
         end
@@ -627,9 +623,9 @@ function [Flux,V] = calcSolForEntry(model,rxnNameList,i,LPproblem,parallelMode, 
         elseif LPsolution.stat == 1        
             Flux = getObjectiveFlux(LPsolution, LPproblem);
         else
-            error(sprintf(['A Solution could not be found!\nThis should not be possible but can happen',...
+            error(['A Solution could not be found!\nThis should not be possible but can happen',...
                    'if the used solver cannot properly handle unboundedness, or if there are numerical issues.\n',...
-                   'Please try to use a different solver.\n']))
+                   'Please try to use a different solver.\n'])
         end
     else
         LPsolution = sol;
