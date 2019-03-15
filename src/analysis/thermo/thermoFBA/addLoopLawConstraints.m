@@ -109,12 +109,14 @@ if ~exist('loopInfo', 'var') || isempty(loopInfo)
             Ninternal = sparseNull(sparse(Sn));
             loopInfo.N = sparse(size(S, 2), size(Ninternal, 2));
             loopInfo.N(isInternal, :) = Ninternal;
+            loopInfo.isInternal = isInternal;
         case 'fastSNP'
             % Fast-SNP (Saa and Nielson, 2016)
             Ninternal = fastSNP(model);
             loopInfo.N = Ninternal;
             isInternal = any(Ninternal, 2);
             Ninternal = Ninternal(isInternal, :);
+            loopInfo.isInternal = isInternal;
         otherwise
             % LLC preprocessing. Solve one single MILP (Chan et al., 2017)
             [loopInfo.rxnInLoops, Ninternal] = findMinNull(model, 1);
@@ -122,6 +124,7 @@ if ~exist('loopInfo', 'var') || isempty(loopInfo)
             loopInfo.N = Ninternal;
             isInternal = any(Ninternal, 2);
             Ninternal = Ninternal(isInternal, :);
+            loopInfo.isInternal = isInternal;
             if strcmpi(preprocessing, 'LLC-EFM')
                 % find connections by EFMs between reactions in cycles
                 loopInfo.rxnLink = getRxnLink(model, loopInfo.conComp, loopInfo.rxnInLoops);
@@ -129,7 +132,7 @@ if ~exist('loopInfo', 'var') || isempty(loopInfo)
     end
 else
     % nullspace matrix given as input
-    isInternal = any(loopInfo.N, 2);
+    isInternal = loopInfo.isInternal;
     Ninternal = loopInfo.N(isInternal, :);
 end
 
