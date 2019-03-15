@@ -4,22 +4,22 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 % knockout, among all the reactions included in the model or a given subset
 % of them. Tobalina et al., 2016 (Bioinformatics); von Kamp and Klamt, 2014
 % (PLoS Computational Biology).
-% 
+%
 % USAGE:
-% 
+%
 %    [mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)
-% 
+%
 % INPUTS:
 %    model_struct:    Metabolic model structure (COBRA Toolbox format).
 %    n_mcs:           Number of MCSs to calculate.
 %    max_len_mcs:     Number of reactions in the largest MCS to be calculated.
-% 
+%
 % OPTIONAL INPUT:
 %    options:         Structure with fields:
-% 
+%
 %                       * .KO - Selected reaction knockout. Default: [].
-%                       * .rxn_set - Cell array containing the set of 
-%                         reactions ('rxns') among which the MCSs are 
+%                       * .rxn_set - Cell array containing the set of
+%                         reactions ('rxns') among which the MCSs are
 %                         wanted to be calculated. Default: [] (all reactions
 %                         are included).
 %                       * .timelimit - Time limit for the calculation of MCSs
@@ -35,12 +35,12 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 %                       sequential, >1 = parallel. Default = 0;
 %                       * .printLevel - 1 if the process is wanted to be
 %                         shown on the screen, 0 otherwise. Default: 1.
-% 
+%
 % OUTPUTS:
 %    mcs:         Cell array containing the calculated MCSs.
-%    mcs_time:    Calculation times of the different processes in 
+%    mcs_time:    Calculation times of the different processes in
 %                 the algorithm.
-% 
+%
 % EXAMPLE:
 %    %With optional values
 %    [mcs, mcs_time] = calculateMCS(modelR204, 100, 10, options)
@@ -51,16 +51,16 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 %    %options.target_b = 1e-4
 %    %options.forceLength = 0
 %    %options.printLevel = 0
-% 
-%    %Without optional values 
+%
+%    %Without optional values
 %    [mcs, mcs_time] = calculateMCS(model, 100, 10)
-% 
+%
 % .. Authors:
-%       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
 % .. Revisions:
-%       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
 
 % Check the installation of cplex
@@ -227,7 +227,7 @@ if isempty(KO)
 
 % Cplex - sense of the optimization
     sense = 'minimize';
-    
+
 % Cplex - Introduce all data in a Cplex structure
     cplex = Cplex('MCS');
     Model = struct();
@@ -253,7 +253,7 @@ if isempty(KO)
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers);
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
@@ -261,7 +261,7 @@ if isempty(KO)
         sP.preprocessing.presolve, sP.preprocessing.reduce,..., ...
         sP.preprocessing.relax, sP.preprocessing.symmetry] = deal(50, 1, 2, 1, 1, 50, 1, 50, 1, 3, 1, 1);
     cplex = setCplexParam(cplex, sP);
-    
+
     if printLevel == 0
         cplex.DisplayFunc = [];
     end
@@ -311,7 +311,7 @@ if isempty(KO)
                 mcs_time{n_time+1, 1} = 'TOTAL MCSs';
                 mcs_time{n_time+1, 2} = toc(time_aa);
                 return;
-            end     
+            end
         end
         try save('tmp.mat', 'mcs', 'mcs_time'); end
         try largest_mcs = max(cellfun(@length, mcs)); end
@@ -458,7 +458,7 @@ else
         a(var_group.eps(ivar)) = 1;
         cplex.addIndicators(var_group.z(ivar), 0, a, 'L', 0);
     end
-    
+
 % Cplex Indicators
     % z = 0  -->  epsilon <= M
     for ivar = 1:length(var_group.z)
@@ -470,7 +470,7 @@ else
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers);
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
@@ -527,7 +527,7 @@ else
                 mcs_time{n_time+1, 1} = 'TOTAL MCSs';
                 mcs_time{n_time+1, 2} = toc(time_aa);
                 return;
-            end     
+            end
         end
         try save('tmp.mat', 'mcs', 'mcs_time'); end
         try largest_mcs = max(cellfun(@length, mcs)); end

@@ -42,6 +42,7 @@ Analysis
    rFBA/index
    rMTA/index
    robustnessAnalysis/index
+   ROOM/index
    rumba/index
    sampling/index
    sparseFBA/index

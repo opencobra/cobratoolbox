@@ -3,23 +3,23 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 % available in CPLEX, namely cplex.populate(), with or without selecting a
 % given knockout, among all the genes included in the model or a given
 % subset of them. Apaolaza et al., 2017 (Nature Communications).
-% 
+%
 % USAGE:
-% 
+%
 %    [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)
-% 
+%
 % INPUTS:
 %    model_name:      Name of the metabolic model under study (in order to
 %                     identify the G matrix).
 %    model_struct:    Metabolic model structure (COBRA Toolbox format).
 %    n_gmcs:          Number of gMCSs to calculate.
 %    max_len_gmcs:    Number of genes in the largest gMCS to be calculated.
-% 
+%
 % OPTIONAL INPUT:
 %    options:         Structure with fields:
-% 
+%
 %                       * .KO - Selected gene knockout. Default: [].
-%                       * .gene_set - Cell array containing the set of 
+%                       * .gene_set - Cell array containing the set of
 %                         genes among which the gMCSs are wanted to be calculated.
 %                         Default: [] (all genes are included).
 %                       * .timelimit - Time limit for the calculation of gMCSs
@@ -28,13 +28,13 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %                         task to be disrupted. Default: 1e-3;
 %                       * .separate_transcript - Character used to discriminate
 %                         different transcripts of a gene. Default: ''.
-%                         Example: separate_transcript = ''      
-%                                   gene 10005.1    ==>    gene 10005.1    
+%                         Example: separate_transcript = ''
+%                                   gene 10005.1    ==>    gene 10005.1
 %                                   gene 10005.2    ==>    gene 10005.2
-%                                   gene 10005.3    ==>    gene 10005.3 
-%                                  separate_transcript = '.'      
-%                                   gene 10005.1    
-%                                   gene 10005.2    ==>    gene 10005 
+%                                   gene 10005.3    ==>    gene 10005.3
+%                                  separate_transcript = '.'
+%                                   gene 10005.1
+%                                   gene 10005.2    ==>    gene 10005
 %                                   gene 10005.3
 %                       * .forceLength - 1 if the constraint limiting the
 %                         length of the gMCSs is to be active (recommended for
@@ -45,12 +45,12 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %                       sequential, >1 = parallel. Default = 0;
 %                       * .printLevel - 1 if the process is wanted to be
 %                         shown on the screen, 0 otherwise. Default: 1.
-% 
+%
 % OUTPUTS:
 %    gmcs:         Cell array containing the calculated gMCSs.
-%    gmcs_time:    Calculation times of the different processes in 
+%    gmcs_time:    Calculation times of the different processes in
 %                  the algorithm.
-% 
+%
 % EXAMPLE:
 %    %With optional values
 %    [gmcs, gmcs_time] = calculateGeneMCS('Recon2.v04', modelR204, 100, 10, options)
@@ -62,16 +62,16 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    %options.separate_transcript = '.';
 %    %options.forceLength = 0
 %    %options.printLevel = 0
-% 
-%    %Without optional values 
+%
+%    %Without optional values
 %    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 100, 10)
-% 
+%
 % .. Authors:
-%       - Iñigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 30/01/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
 % .. Revisions:
-%       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
 
 % Check the installation of cplex
@@ -188,12 +188,12 @@ if ~isempty(gene_set)
     if n_relations > 0
         cell_related_1 = mat2cell(related(:, 1), ones(size(related, 1), 1), 1);
         cell_pos_set = mat2cell(pos_set, ones(n_poss_KO, 1), 1);
-        cell_related_1 = cellfun(@num2str, cell_related_1, 'UniformOutput', false);    
+        cell_related_1 = cellfun(@num2str, cell_related_1, 'UniformOutput', false);
         cell_pos_set = cellfun(@num2str, cell_pos_set, 'UniformOutput', false);
         tmp_related_1 = cellfun(@ismember, cell_related_1, repmat({cell_pos_set}, size(related, 1), 1), 'UniformOutput', false);
         tmp_related_1 = logical(cell2mat(tmp_related_1));
         related = related(tmp_related_1, :);
-        n_relations = size(related, 1);    
+        n_relations = size(related, 1);
         pos_set(:, 2) = 1:length(pos_set);
         tmp_related = related(:);
         n_tmp_related = length(tmp_related);
@@ -236,7 +236,7 @@ if isempty(KO)
         cons.forceLength = cons.forceBioCons(end)+1:cons.forceBioCons(end)+1;
     end
     n_cons = cons.forceLength(end);
-    
+
 % Cplex - A matrix
     A = sparse(zeros(n_cons, n_vars));
     A(cons.Ndual, var.u) = S';
@@ -297,7 +297,7 @@ if isempty(KO)
 
 % Cplex - sense of the optimization
     sense = 'minimize';
-    
+
 % Cplex - Introduce all data in a Cplex structure
     cplex = Cplex('geneMCS');
     Model = struct();
@@ -322,7 +322,7 @@ if isempty(KO)
 
 % Cplex Parameters
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers);
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...
@@ -388,7 +388,7 @@ else
 % CALCULATE gMCSs WITH A GIVEN KNOCKOUT
 % Select the row(s) in G_ind related to the KO under study
     n_G_ind = length(G_ind);
-    tmp = repmat({KO}, n_G_ind, 1);    
+    tmp = repmat({KO}, n_G_ind, 1);
     dp = cellfun(@ismember, tmp, G_ind);
 
 % Define variables
@@ -416,9 +416,9 @@ else
     if n_relations > 0
         cons.relations = cons.linearComb(end)+1:cons.linearComb(end)+n_relations;
         cons.forceLength = cons.relations(end)+1:cons.relations(end)+1;
-    else  
+    else
         cons.forceLength = cons.linearComb(end)+1:cons.linearComb(end)+1;
-    end    
+    end
     n_cons = cons.forceLength(end);
 
 % Cplex - A matrix
@@ -459,7 +459,7 @@ else
     try lhs(cons.relations) = 0; end
     if forceLength == 1
         lhs(cons.forceLength) = 1;
-    end    
+    end
 
 % Cplex - ub and lb vectors
     ub(var.u, 1) = inf;
@@ -540,7 +540,7 @@ else
         a(var_group.eps(ivar)) = 1;
         cplex.addIndicators(var_group.z(ivar), 0, a, 'L', 0);
     end
-    
+
 % Cplex Indicators
     % z = 0  -->  epsilon <= M
     for ivar = 1:length(var_group.z)
@@ -552,7 +552,7 @@ else
 % Cplex Parameters
     sP = struct();
     [sP.mip.tolerances.integrality, sP.mip.strategy.heuristicfreq, sP.mip.strategy.rinsheur] = deal(integrality_tolerance, 1000, 50);
-    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers); 
+    [sP.emphasis.mip, sP.output.clonelog, sP.timelimit, sP.threads] = deal(4, -1, max(10, timelimit), numWorkers);
     [sP.preprocessing.aggregator, sP.preprocessing.boundstrength, ...
         sP.preprocessing.coeffreduce, sP.preprocessing.dependency, ...
         sP.preprocessing.dual, sP.preprocessing.fill,...

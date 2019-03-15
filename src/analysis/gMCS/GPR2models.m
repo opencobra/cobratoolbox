@@ -21,7 +21,7 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %                       * 1 - sequential
 %                       * 2+ - parallel
 %    printLevel:        show the reactions created in models.
-%                       * 0 - shows nothing 
+%                       * 0 - shows nothing
 %                       * 1 - shows progress by reactions (default)
 %                       * 2+ - shows everything (reaction and network generation)
 %
@@ -31,10 +31,10 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %                       rule for each reaction.
 %
 % .. Authors:
-%       - Iñigo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, Aug 2017, University of Navarra, TECNUN School of Engineering.
-%       - Iñigo Apaolaza, April 2018, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, April 2018, University of Navarra, TECNUN School of Engineering.
 
 if (nargin < 5 || isempty(printLevel))
     printLevel = 1; % Default is show progress
@@ -100,13 +100,13 @@ parfor (i=1:length(selected_rxns),poolsize)
     % include metabolic reaction as objective metabolite
     model.mets{1} = RXN;
     % Add objective function
-    model.rxns{1} = RXN; 
+    model.rxns{1} = RXN;
     model.S(1,1) = -1;
-    
+
     % Check if there is any gene related to this reaction and add them
     genes = metabolic_model.genes(metabolic_model.rxnGeneMat(selected_rxns(i),:)>0);
     if length(genes)>1
-        model.mets = vertcat(RXN, genes); % Include genes in the model 
+        model.mets = vertcat(RXN, genes); % Include genes in the model
 %         model = addMetabolite(model,genes);
         model.genes = genes;
         fp = FormulaParser();
@@ -130,12 +130,12 @@ parfor (i=1:length(selected_rxns),poolsize)
     model.rxns(demand_idx) = strcat('DM_',genes);
     model.rxns = model.rxns';
     model.S(gene_idx,demand_idx) = eye(length(genes));
-    
+
     % converge isoforms (if neccesary)
     if ~isempty(separate_transcript) && length(genes)>1
         model = convergeTranscripts2Gene(model, separate_transcript);
     end
-    
+
     % Generate rest of fields
     idx_rxns = (1:length(model.rxns))';
     idx_mets = (1:length(model.mets))';
@@ -152,7 +152,7 @@ parfor (i=1:length(selected_rxns),poolsize)
     model.lb = model.lb';
     model.ub = model.ub';
     model.rules = model.rules';
-    
+
     % Store the model
     networks{i} = model;
 end
@@ -177,7 +177,7 @@ function model = modelParser(model,genes,head,node_parent,parent,printLevel)
 %     g1 & g2 & g3 is one layer in the model,   RXN = g1 + g2 + g3
 %     (g1 | g2) & g3 is a two layer model:      RXN = (g1 | g2) + g3
 %                                               (g1 | g2) = g1
-%                                               (g1 | g2) = g2   
+%                                               (g1 | g2) = g2
 
 
 
@@ -241,7 +241,7 @@ for gen=1:length(genes)
         [~, rxn_idx] = find((model.S(node_idx(i),:)<0));
         rxn_name = model.rxns(rxn_idx);
         % in this reaction, change (node -> rule) for (gene -> rule)
-        model = changeRxnMets(model, node_name, genes(gen), rxn_name);   
+        model = changeRxnMets(model, node_name, genes(gen), rxn_name);
     end
     % remove stoichimetri of intermediate nodes
     model.S(node_idx,:)=0;
@@ -263,10 +263,10 @@ function model = convergeTranscripts2Gene(model, separate_transcripts)
 % Some COBRA models have transcripts instead of genes. Most of the
 % transcripts have the same functionallity, so we can converge them as the
 % same gene.
-% Ej:       gene 10005.1    
-%           gene 10005.2        ==>     gene 10005 
+% Ej:       gene 10005.1
+%           gene 10005.2        ==>     gene 10005
 %           gene 10005.3
-% 
+%
 % This is done for every gene of the model at exchange reaction level
 
 % seach demand reactions
