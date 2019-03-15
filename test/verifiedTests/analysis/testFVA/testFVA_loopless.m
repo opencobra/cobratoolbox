@@ -21,11 +21,11 @@ cd(fileDir);
 tol = 1e-4;
 
 % load the model
-%model = readCbModel('Ec_iJR904.mat');
-%load('refData_looplessFVA.mat');
-model = createToyModelForgapFind();
-optPercent = 99;
-rxnNameList = model.rxns;
+model = readCbModel('Ec_iJR904.mat');
+load('refData_looplessFVA.mat');
+% model = createToyModelForgapFind();
+% optPercent = 1;
+% rxnNameList = model.rxns;
 
 runOrder = 1:2;
 try
@@ -48,10 +48,13 @@ for jRun = 2%runOrder
             %occur with the pool.
             poolobj = gcp('nocreate');
             delete(poolobj);
-            %Now, lets remove the parallel processing stuff from the path. and
-            %reintroduce it in the end.
-            cpath = fileparts(pttoolboxPath);
-            rmpath(cpath);
+            
+            %%%% this is pretty dangerous if errors occur and the script
+            %%%% does not run through
+%             %Now, lets remove the parallel processing stuff from the path. and
+%             %reintroduce it in the end.
+%             cpath = fileparts(pttoolboxPath);
+%             rmpath(cpath);
         end
         printText = 'single-thread';
     elseif jRun == 2
@@ -109,8 +112,8 @@ for jRun = 2%runOrder
                     [minFluxT, maxFluxT] = fluxVariability(model, optPercent, 'max', rxnNameList, 0, str{:});
                     t = toc;
                     fprintf('%s method takes %.2f sec to finish\n', str{:}, t);
-                    assert(max(abs(minFluxT - minFtoy)) < tol)
-                    assert(max(abs(maxFluxT - maxFtoy)) < tol)
+                    assert(max(abs(minFluxT - minF)) < tol)
+                    assert(max(abs(maxFluxT - maxF)) < tol)
                 end
                 
                 
@@ -118,10 +121,10 @@ for jRun = 2%runOrder
         end
     end
     
-    if jRun == 1 && ~isempty(pttoolboxPath)
-        % Readd the path.
-        addpath(cpath);
-    end
+%     if jRun == 1 && ~isempty(pttoolboxPath)
+%         % Readd the path.
+%         addpath(cpath);
+%     end
 end
 
 % change the directory
