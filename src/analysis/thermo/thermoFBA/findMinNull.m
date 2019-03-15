@@ -370,7 +370,7 @@ cpu0 = cputime;
 t = tic;
     
 rxnCyc = any(rxnInLoops, 2);
-N = getNullSpace(model.S(any(model.S(:, rxnCyc), 2), rxnCyc), 0);
+N = sparseNull(model.S(any(model.S(:, rxnCyc), 2), rxnCyc));
 [row, col, entry] = find(N);
 rxnCyc = find(rxnCyc);
 row = rxnCyc(row);
