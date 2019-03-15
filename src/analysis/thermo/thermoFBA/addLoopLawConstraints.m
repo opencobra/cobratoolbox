@@ -328,11 +328,14 @@ nCon = 0;
 vCur = false(size(N, 1), 1);
 while any(conComp == 0 & any(N, 2))
     vCur(:) = false;
+    % find the first reaction not in any connected component yet
     vCur(find(conComp == 0 & any(N, 2), 1)) = true;
     nCon = nCon + 1;
     nCur = 0;
+    % loop until no new reaction is added
     while nCur < sum(vCur)
         nCur = sum(vCur);
+        % get any reactions sharing the same columns in the current component
         vCur(any(N(:, any(N(vCur, :), 1)), 2)) = true;
     end
     conComp(vCur) = nCon;

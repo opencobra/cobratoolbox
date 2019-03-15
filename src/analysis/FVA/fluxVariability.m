@@ -840,7 +840,7 @@ else
     rxnOn = rxnInLoopsAlwaysOn;
     rxnOn(rxnID) = true;
     % reactions in cycles not sharing EFMs with the current rxn and
-    % not one of the reactions required to have no flux through cycles
+    % not being one of the reactions required to have no flux through cycles
     id = ~any(llcInfo.rxnLink(rxnOn, :), 1)' & any(llcInfo.rxnInLoops, 2);
 %     for iRxn = find(rxnOn(:))'
         
