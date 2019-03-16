@@ -20,7 +20,7 @@ testPass = fileparts(which('testSWIFTCORE.m'));
 cd(testPass);
 
 % load the model
-model = getDistributedModel('iAF1260.mat');
+model = getDistributedModel('ecoli_core_model.mat');
 model.rev = double(model.lb < 0);
 A = swiftcc(model.S, model.rev);
 model.S = model.S(:, A);
