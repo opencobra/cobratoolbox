@@ -43,11 +43,8 @@ stoichDigit = 6;  % at most print six decimal places for stoichiometric coeffici
 field2printDefault = {{'metNames', 'metFormulas', 'metCharges'}, {'rxnNames', 'lb', 'ub', 'grRules'}};
 %{'metNames'; 'metFormulas'; 'rxnNames'; 'lb'; 'ub'; 'grRules'; 'metCharges'};
 
-% get Matlab version for version dependent code
-verChar = regexp(version, '\(R(\d+)([a-zA-Z])\)$', 'tokens', 'once');
-verYear = str2double(verChar{1});
-verSub = verChar{2};
-useIsString = verYear >= 2017 || (verYear == 2016 && strcmp(verSub, 'b'));
+% function handle to check cell string inputs
+useIsString = ~isempty(which('isstring'));
 isCellString = @(x) iscellstr(x) || (useIsString && isstring(x));
 %% Handle input arguments
 % define persistent variables for iterative calling
