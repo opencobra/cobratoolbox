@@ -32,8 +32,9 @@ rxnInLoops = {'THMDt2r';'GALUi';'ADNt2';'NDPK1';'THMDt2';'SERt4';'ADK1';'GALU';'
 rxnNotInLoops = {'DADA';'GLYt2r';'EX_2ddglcn(e)';'DMPPS';'EX_xan(e)';'ASPCT';'HKNTDH';'UAG2Ei';'ORNabc';'DHAD1'};
 rxnTest = [rxnInLoops; rxnNotInLoops];
 optPercent = 99;
-% results obtained using the previous version of fluxVariability with allowLoops = 0 (on March 15, 2019)
-%[rxnNameList, optPercent, minF, maxF] = deal(refData.rxnNameList, refData.optPercent, refData.minF, refData.maxF);
+% results obtained using the previous version of fluxVariability with allowLoops = 0 (on March 18, 2019)
+refData = load('refData_looplessFVA.mat');
+[minF, maxF] = deal(refData.minFwoLoops, refData.maxFwoLoops);
 
 runOrder = 1:2;
 try
@@ -113,13 +114,13 @@ for jRun = runOrder
                     tic;
                     [minFluxT, maxFluxT] = fluxVariability(model, optPercent, 'max', rxnTest, 2, method{j});
                     t(j) = toc;
-                    if j == 1
-                        minF = minFluxT;
-                        maxF = maxFluxT;
-                    else
-                        assert(max(abs(minFluxT - minF)) < tol)
-                        assert(max(abs(maxFluxT - maxF)) < tol)
-                    end
+                    %                     if j == 1
+                    %                         minF = minFluxT;
+                    %                         maxF = maxFluxT;
+                    %                     else
+                    assert(max(abs(minFluxT - minF)) < tol)
+                    assert(max(abs(maxFluxT - maxF)) < tol)
+                    %                     end
                 end
                 fprintf('\n\n');
                 for j = 1:numel(method)
@@ -127,13 +128,14 @@ for jRun = runOrder
                 end
                 
                 if doQP && doMIQP
-                    % return flux distributions
+                    %% return flux distributions
                     
                     % test for one reaction in loops and one not in loops
-                    rxnTestForFluxes = [3; 14];
+                    rxnTestForFluxes = [1; 11];
+                    
                     method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
                     minNormMethod = {'FBA', '0-norm', '1-norm', '2-norm'};
-                    %%
+                    
                     solverParams = repmat({struct()}, numel(minNormMethod), 1);
                     % minimizing 0-norm with presolve on may be inaccurate
                     switch currentSolver
@@ -181,7 +183,7 @@ for jRun = runOrder
                         % For flux distributions for minFlux
                         % check that solutions with minNormMethod = 0-norm should have small 2-norms
                         minValue = min(min(normMin(:, :, 1)));
-                        assert(all(normMin(:, 2, 1) < 1.02 * minValue))  % a larger deviation needs to be allowed for 0-norm minimization
+                        assert(all(normMin(:, 2, 1) < 1.03 * minValue))  % a larger deviation allowed for 0-norm minimization
                         % check that solutions with minNormMethod = 1-norm should have small 1-norms
                         minValue = min(normMin(:, :, 2), [], 2);
                         assert(all(normMin(:, 3, 2) <= minValue))
@@ -194,7 +196,7 @@ for jRun = runOrder
                         % For flux distributions for maxFlux
                         % check that solutions with minNormMethod = 0-norm should have small 2-norms
                         minValue = min(min(normMax(:, :, 1)));
-                        assert(all(normMax(:, 2, 1) < 1.02 * minValue)) % a larger deviation needs to be allowed for 0-norm minimization
+                        assert(all(normMax(:, 2, 1) < 1.03 * minValue)) % a larger deviation allowed for 0-norm minimization
                         % check that solutions with minNormMethod = 1-norm should have small 1-norms
                         minValue = min(normMax(:, :, 2), [], 2);
                         assert(all(normMax(:, 3, 2) <= minValue))
