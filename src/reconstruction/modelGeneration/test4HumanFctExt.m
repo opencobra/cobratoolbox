@@ -34,9 +34,11 @@ if nargin<3
     optionSinks = 0; % do not close
 end
 
+model = findSExRxnInd(model);
+
 if optionSinks
     % close sink reactions
-    model.lb(strcmp('sink_',model.rxns))=0;
+    model.lb(model.SinkRxnBool)=0;
 end
 
 TestSolution = [];
@@ -222,8 +224,10 @@ for i=1:length(new_mets)
     A = ismember(M,met);
     model.mets(A,1)= original_mets(i,1);
 end
-% close sink reactions
-model.lb(strmatch('DM_',model.rxns))=0;
+% close demand reactions
+% Note that this will CLOSE ATP demand reaction, which findSExRxnInd keeps
+% open!
+model.lb(strncmp('DM_',model.rxns, 3))=0;
 %aerobic
 model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=0;
 
@@ -278,10 +282,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     if ~isnan(TestSolution(k,1)); TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)]; end ;k = k +1;clear FBA
     %% do not apply base medium for Harvey
     if strcmp(test,'Harvey') == 0
-        model = modelOri;
+        model = modelOri; % What is this line doing?
         mediumCompounds = {'EX_co2(e)', 'EX_h(e)', 'EX_h2o(e)', 'EX_hco3(e)', 'EX_nh4(e)', 'EX_o2(e)', 'EX_pi(e)', 'EX_so4(e)'};
         ions={'EX_ca2(e)', 'EX_cl(e)', 'EX_co(e)', 'EX_fe2(e)', 'EX_fe3(e)', 'EX_k(e)', 'EX_na1(e)', 'EX_i(e)', 'EX_sel(e)'};
-        I = strmatch('EX_', modelOri.rxns);
+        I = modelOri.rxns(modelOri.ExchRxnBool & ~modelOri.biomassBool);
 
         for i=1:length(I)
             Ex= I(i);
@@ -4716,12 +4720,14 @@ if strcmp(test,'IECOri')
     TestSolutionName{k,1} = 'Regeneration of citrate (TCA cycle) - CSm';
     k = k +1;clear FBA
 
-    % 46); Histidine to FIGLU
+    % 46); Histidine to FORGLU
     model=modelOri;
     model=changeRxnBounds(model,'EX_o2(e)',-1,'l');
     model=changeObjective(model,'IZPN');
-    FBA=optimizeCbModel(model,'min');
     FBA=optimizeCbModel(model,'max');
+    TestSolution(k,1) = FBA.f; TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    TestSolutionName{k,1} = 'production of forglu from histidine - IZPN';
+    k = k +1;clear FBA
 
     % 47); binding of guar gum fiber to bile acids
     model=modelOri;
@@ -4915,7 +4921,6 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %% glutamine to glucose conversion - G6PPer
     if any(strcmp('G6PPer',model.rxns))
         model=changeObjective(model,'G6PPer',1);
-        FBA = optimizeCbModel(model,'max','zero');
         FBA = optimizeCbModel(model,'max','zero');
         TestSolution(k,1) = FBA.f; TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     else
