@@ -1,4 +1,4 @@
-function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, preprocessing, loopInfo)
+function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, loopInfo)
 % Adds loop law constraints to LP problem or MILP problem.
 %
 % USAGE:
@@ -25,13 +25,15 @@ function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIn
 %    method:         Indicator which method to use:
 %                    * 1 - Two variables for each reaction af, ar
 %                    * 2 - One variable for each reaction af (default)
-%    reduce_vars:    eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
-%    preprocessing:  'original': use the original nullspace for internal reactions (Schellenberger et al., 2009)
-%                    'fastSNP':  use the minimal feasible nullspace found by Fast-SNP (Saa and Nielson, 2016)
-%                    'LLC-NS':   (default): use the minimal feasible nullspace found by solving a MILP (Chan et al., 2017)
-%                    'LLC-EFM':  find whether reactions in cycles are connected by EFMs or not 
-%                                for faster localized loopless constraints (Chan et al., 2017)
-%    loopInfo:       Use previously calculated data to save preprocessing time
+%    reduce_vars:    Eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
+%    loopInfo:       Structure containing at least a field named 'method', 
+%                    for the method chosen to build loop constraints whose value can be:
+%                    * 'original': use the original nullspace for internal reactions (Schellenberger et al., 2009)
+%                    * 'fastSNP' : use the minimal feasible nullspace found by Fast-SNP (Saa and Nielson, 2016)
+%                    * 'LLC-NS'  : (default): use the minimal feasible nullspace found by solving a MILP (Chan et al., 2017)
+%                    * 'LLC-EFM' : find whether reactions in cycles are connected by EFMs or not 
+%                                  for faster localized loopless constraints (Chan et al., 2017)
+%                    Can contain other fields for LLC preprocessing which might be updated during this function
 %
 % OUTPUT:
 %    MILPproblem:    Problem structure containing the following fields describing an MILP problem:
@@ -39,6 +41,8 @@ function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIn
 %                      * A, b, c, lb, ub - same as before but longer
 %                      * vartype - variable type of the MILP problem ('C', and 'B')
 %                      * `x0 = []` - Needed for `solveMILPproblem`
+%
+%    loopInfo:       Structure containing preprocessing data for using localized loop constraints (LLCs)
 %
 % .. Author: - Jan Schellenberger Sep 27, 2009
 
@@ -48,8 +52,14 @@ end
 if ~exist('reduce_vars','var') || isempty(reduce_vars)
     reduce_vars = 1;
 end
-if ~exist('preprocessing', 'var') || isempty(preprocessing)
-    preprocessing = 'LLC-NS';
+if ~exist('loopInfo', 'var') || isempty(loopInfo)
+    loopInfo = struct();
+end
+if ~isfield(loopInfo, 'method')
+    loopInfo.method = 'LLC-NS';
+end
+if ~isfield(loopInfo, 'printLevel')
+    loopInfo.printLevel = 0;
 end
 
 % different ways of doing it.  I'm still playing with this.
@@ -81,9 +91,8 @@ S = model.S;
 [m,n] = size(LPproblem.A);
 
 % find nullspace matrix
-if ~exist('loopInfo', 'var') || isempty(loopInfo)
-    loopInfo = struct();
-    switch preprocessing
+if ~all(isfield(loopInfo, {'N', 'isInternal'}))
+    switch loopInfo.method
         case 'original'
             % original implementation (Schellenberger et al., 2009)
             if ~isfield(model,'SIntRxnBool')
@@ -105,11 +114,12 @@ if ~exist('loopInfo', 'var') || isempty(loopInfo)
             end
             
             Sn = S(:, isInternal);
-            
+
             Ninternal = sparseNull(sparse(Sn));
             loopInfo.N = sparse(size(S, 2), size(Ninternal, 2));
             loopInfo.N(isInternal, :) = Ninternal;
             loopInfo.isInternal = isInternal;
+            
         case 'fastSNP'
             % Fast-SNP (Saa and Nielson, 2016)
             Ninternal = fastSNP(model);
@@ -125,9 +135,19 @@ if ~exist('loopInfo', 'var') || isempty(loopInfo)
             isInternal = any(Ninternal, 2);
             Ninternal = Ninternal(isInternal, :);
             loopInfo.isInternal = isInternal;
-            if strcmpi(preprocessing, 'LLC-EFM')
+            loopInfo.useRxnLink = false;
+            if strcmpi(loopInfo.method, 'LLC-EFM')
                 % find connections by EFMs between reactions in cycles
                 loopInfo.rxnLink = getRxnLink(model, loopInfo.conComp, loopInfo.rxnInLoops);
+                % Check if EFMs are found
+                if ~isempty(loopInfo.rxnLink)
+                    if loopInfo.printLevel
+                        fprintf('Use connections from EFMs to implement LLCs\n');
+                    end
+                    loopInfo.useRxnLink = true;
+                elseif loopInfo.printLevel
+                    fprintf('Unable to find EFMs. Use connections from nullspace to implement LLCs\n');
+                end
             end
     end
 else
@@ -141,7 +161,7 @@ linternal = size(Ninternal,2);
 nint = sum(isInternal);
 temp = sparse(1:nint, rxnIndex(isInternal), 1, nint, n);
 
-if strncmpi(preprocessing, 'llc', 3)
+if strncmpi(loopInfo.method, 'llc', 3)
     % store the variable and constraint orders in the MILP problem for method = 2
     loopInfo.con.vU = (m + 1):(m + nint);
     loopInfo.con.vL = (m + nint + 1):(m + nint * 2);
