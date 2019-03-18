@@ -28,8 +28,8 @@ end
 % load the model
 model = readCbModel('Ec_iJR904.mat');
 % randomly picked reactions in or not in loops
-rxnInLoops = {'ABUTt2';'VPAMT';'ALARi';'GLUt2r';'VPAMT';'LCADi';'ALAR';'VALTA';'VPAMT';'GALUi'};
-rxnNotInLoops = {'MMCD';'CHRPL';'FUCt';'HISTP';'DHPPD';'TRE6PP';'GLCNt2r';'GLCRt2r';'ALCD19';'EX_but(e)'};
+rxnInLoops = {'THMDt2r';'GALUi';'ADNt2';'NDPK1';'THMDt2';'SERt4';'ADK1';'GALU';'LCAD';'PPCSCT'};
+rxnNotInLoops = {'DADA';'GLYt2r';'EX_2ddglcn(e)';'DMPPS';'EX_xan(e)';'ASPCT';'HKNTDH';'UAG2Ei';'ORNabc';'DHAD1'};
 rxnTest = [rxnInLoops; rxnNotInLoops];
 optPercent = 99;
 % results obtained using the previous version of fluxVariability with allowLoops = 0 (on March 15, 2019)
@@ -44,7 +44,7 @@ try
     end
 end
 % test both single-thread and parallel computation
-for jRun = 2% runOrder
+for jRun = runOrder
     cont = true;
     if jRun == 1
         % test FVA without parrallel toolbox.
