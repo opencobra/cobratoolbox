@@ -21,17 +21,22 @@ cplexProblem.Param.barrier.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.simplex.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.sifting.display.Cur = cobraParams.printLevel;
 
-if isscalar(cobraParams.logFile) && cobraParams.logFile == 1
-    % allow print to command window by setting solverParams.logFile == 1
-    logFile = 1;
-    logToFile = false;
+if isscalar(cobraParams.logFile)
+    if cobraParams.logFile == 1
+        % allow print to command window by setting solverParams.logFile == 1
+        logToFile = false;
+        cplexProblem.DisplayFunc = @(x) redirect(1,x);
+    else
+        % any other scalar will be assumed to indicate no logging
+        logFile = 0;
+        logToFile = false;
+    end
 else
     logFile = fopen(cobraParams.logFile,'a');
     logToFile = true;
+    cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
 end
 
-
-cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
 % set tolerances
 cplexProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
 cplexProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
