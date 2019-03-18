@@ -241,8 +241,8 @@ else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-minFlux = model.lb(ismember(model.rxns, rxnNameList));
-maxFlux = model.ub(ismember(model.rxns, rxnNameList));
+minFlux = model.lb(findRxnIDs(model, rxnNameList));
+maxFlux = model.ub(findRxnIDs(model, rxnNameList));
 [preCompMaxSols, preCompMinSols] = deal(cell(nRxns, 1));
 [Vmax, Vmin] = deal([]);
 if minNorm
