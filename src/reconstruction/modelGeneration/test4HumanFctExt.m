@@ -285,7 +285,7 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
         model = modelOri; % What is this line doing?
         mediumCompounds = {'EX_co2(e)', 'EX_h(e)', 'EX_h2o(e)', 'EX_hco3(e)', 'EX_nh4(e)', 'EX_o2(e)', 'EX_pi(e)', 'EX_so4(e)'};
         ions={'EX_ca2(e)', 'EX_cl(e)', 'EX_co(e)', 'EX_fe2(e)', 'EX_fe3(e)', 'EX_k(e)', 'EX_na1(e)', 'EX_i(e)', 'EX_sel(e)'};
-        I = modelOri.rxns(modelOri.ExchRxnBool & ~modelOri.biomassBool);
+        I = find(modelOri.ExchRxnBool & ~modelOri.biomassBool);
 
         for i=1:length(I)
             Ex= I(i);
