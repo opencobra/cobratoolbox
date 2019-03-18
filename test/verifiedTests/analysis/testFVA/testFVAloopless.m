@@ -27,9 +27,13 @@ end
 
 % load the model
 model = readCbModel('Ec_iJR904.mat');
-refData = load('refData_looplessFVA.mat');
+% randomly picked reactions in or not in loops
+rxnInLoops = {'ABUTt2';'VPAMT';'ALARi';'GLUt2r';'VPAMT';'LCADi';'ALAR';'VALTA';'VPAMT';'GALUi'};
+rxnNotInLoops = {'MMCD';'CHRPL';'FUCt';'HISTP';'DHPPD';'TRE6PP';'GLCNt2r';'GLCRt2r';'ALCD19';'EX_but(e)'};
+rxnTest = [rxnInLoops; rxnNotInLoops];
+optPercent = 99;
 % results obtained using the previous version of fluxVariability with allowLoops = 0 (on March 15, 2019)
-[rxnNameList, optPercent, minF, maxF] = deal(refData.rxnNameList, refData.optPercent, refData.minF, refData.maxF);
+%[rxnNameList, optPercent, minF, maxF] = deal(refData.rxnNameList, refData.optPercent, refData.minF, refData.maxF);
 
 runOrder = 1:2;
 try
@@ -40,7 +44,7 @@ try
     end
 end
 % test both single-thread and parallel computation
-for jRun = runOrder
+for jRun = 2% runOrder
     cont = true;
     if jRun == 1
         % test FVA without parrallel toolbox.
@@ -107,65 +111,102 @@ for jRun = runOrder
                 t = zeros(numel(method), 1);
                 for j = 1:numel(method)
                     tic;
-                    [minFluxT, maxFluxT] = fluxVariability(model, optPercent, 'max', rxnNameList, 2, method{j});
+                    [minFluxT, maxFluxT] = fluxVariability(model, optPercent, 'max', rxnTest, 2, method{j});
                     t(j) = toc;
-                    assert(max(abs(minFluxT - minF)) < tol)
-                    assert(max(abs(maxFluxT - maxF)) < tol)
+                    if j == 1
+                        minF = minFluxT;
+                        maxF = maxFluxT;
+                    else
+                        assert(max(abs(minFluxT - minF)) < tol)
+                        assert(max(abs(maxFluxT - maxF)) < tol)
+                    end
                 end
                 fprintf('\n\n');
                 for j = 1:numel(method)
-                    fprintf('%s method takes %.2f sec to finish loopless FVA for %d reactions\n', method{j}, t(j), numel(rxnNameList));
+                    fprintf('%s method takes %.2f sec to finish loopless FVA for %d reactions\n', method{j}, t(j), numel(rxnTest));
                 end
                 
-                % return flux distributions
-                method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
-                minNormMethod = {'FBA', '2-norm', '1-norm', '0-norm'};
-                [minFluxT, maxFluxT] = deal(zeros(numel(method), numel(minNormMethod)));
-                [Vmin, Vmax] = deal(zeros(numel(model.rxns), numel(method), numel(minNormMethod)));
-                for j = 1:numel(method)
-                    for j2 = 1:numel(minNormMethod)
-                        tic;
-                        [minFluxT(j, j2), maxFluxT(j, j2), Vmin(:, j, j2), Vmax(:, j, j2)] = fluxVariability(model, optPercent, 'max', rxnNameList(26), 2, method{j}, minNormMethod{j2});
-                        t(j, j2) = toc;
-                        assert(abs(minFluxT(j, j2)  - minF(26)) < tol)
-                        assert(abs(maxFluxT(j, j2)  - maxF(26)) < tol)
+                if doQP && doMIQP
+                    % return flux distributions
+                    
+                    % test for one reaction in loops and one not in loops
+                    rxnTestForFluxes = [3; 14];
+                    method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
+                    minNormMethod = {'FBA', '0-norm', '1-norm', '2-norm'};
+                    %%
+                    solverParams = repmat({struct()}, numel(minNormMethod), 1);
+                    % minimizing 0-norm with presolve on may be inaccurate
+                    switch currentSolver
+                        case 'gurobi'
+                            solverParams{2}.Presolve = 0;
+                        case 'ibm_cplex'
+                            solverParams{2}.presolvenode = 0;
                     end
-                end
-                % calculate the norms from the solutions
-                [normMin, normMax] = deal(zeros(numel(method), numel(minNormMethod), 3));
-                for j = 1:numel(method)
-                    for j2 = 1:numel(minNormMethod)
-                        % 0-norm
-                        normMin(j, j2, 1) = sum(abs(Vmin(:, j, j2)) > 1e-12);
-                        % 1-norm
-                        normMin(j, j2, 2) = sum(abs(Vmin(:, j, j2)));
-                        % 2-norm
-                        normMin(j, j2, 3) = Vmin(:, j, j2)' * Vmin(:, j, j2);
+                    
+                    for i = 1:numel(rxnTestForFluxes)
+                        [minFluxT, maxFluxT] = deal(zeros(numel(method), numel(minNormMethod)));
+                        [Vmin, Vmax] = deal(zeros(numel(model.rxns), numel(method), numel(minNormMethod)));
                         
-                        % 0-norm
-                        normMax(j, j2, 1) = sum(abs(Vmax(:, j, j2)) > 1e-12);
-                        % 1-norm
-                        normMax(j, j2, 2) = sum(abs(Vmax(:, j, j2)));
-                        % 2-norm
-                        normMax(j, j2, 3) = Vmax(:, j, j2)' * Vmax(:, j, j2);
+                        for j = 1:numel(method)
+                            for j2 = 1:numel(minNormMethod)
+                                tic;                                
+                                [minFluxT(j, j2), maxFluxT(j, j2), Vmin(:, j, j2), Vmax(:, j, j2)] = ...
+                                    fluxVariability(model, optPercent, 'max', rxnTest(rxnTestForFluxes(i)), 2, method{j}, minNormMethod{j2}, solverParams{j2});
+                                t(j, j2) = toc;
+                                assert(abs(minFluxT(j, j2)  - minF(rxnTestForFluxes(i))) < tol)
+                                assert(abs(maxFluxT(j, j2)  - maxF(rxnTestForFluxes(i))) < tol)
+                            end
+                        end
+                        % calculate the norms from the solutions
+                        
+                        [normMin, normMax] = deal(zeros(numel(method), numel(minNormMethod), 3));
+                        for j = 1:numel(method)
+                            for j2 = 1:numel(minNormMethod)
+                                % 0-norm
+                                normMin(j, j2, 1) = sum(abs(Vmin(:, j, j2)) > 1e-8);
+                                % 1-norm
+                                normMin(j, j2, 2) = sum(abs(Vmin(:, j, j2)));
+                                % 2-norm
+                                normMin(j, j2, 3) = Vmin(:, j, j2)' * Vmin(:, j, j2);
+                                
+                                % 0-norm
+                                normMax(j, j2, 1) = sum(abs(Vmax(:, j, j2)) > 1e-8);
+                                % 1-norm
+                                normMax(j, j2, 2) = sum(abs(Vmax(:, j, j2)));
+                                % 2-norm
+                                normMax(j, j2, 3) = Vmax(:, j, j2)' * Vmax(:, j, j2);
+                            end
+                        end
+                        
+                        % For flux distributions for minFlux
+                        % check that solutions with minNormMethod = 0-norm should have small 2-norms
+                        minValue = min(min(normMin(:, :, 1)));
+                        assert(all(normMin(:, 2, 1) < 1.02 * minValue))  % a larger deviation needs to be allowed for 0-norm minimization
+                        % check that solutions with minNormMethod = 1-norm should have small 1-norms
+                        minValue = min(normMin(:, :, 2), [], 2);
+                        assert(all(normMin(:, 3, 2) <= minValue))
+                        assert(all(normMin(:, 3, 2) < (1 + 1e-5) * min(normMin(:, 3, 2))))
+                        % check that solutions with minNormMethod = 0-norm should have small 0-norms
+                        minValue = min(normMin(:, :, 3), [], 2);
+                        assert(all(normMin(:, 4, 3) <= minValue))
+                        assert(all(normMin(:, 4, 3) < (1 + 1e-5) * min(normMin(:, 4, 3))))
+                        
+                        % For flux distributions for maxFlux
+                        % check that solutions with minNormMethod = 0-norm should have small 2-norms
+                        minValue = min(min(normMax(:, :, 1)));
+                        assert(all(normMax(:, 2, 1) < 1.02 * minValue)) % a larger deviation needs to be allowed for 0-norm minimization
+                        % check that solutions with minNormMethod = 1-norm should have small 1-norms
+                        minValue = min(normMax(:, :, 2), [], 2);
+                        assert(all(normMax(:, 3, 2) <= minValue))
+                        assert(all(normMax(:, 3, 2) < (1 + 1e-5) * min(normMax(:, 3, 2))))
+                        % check that solutions with minNormMethod = 0-norm should have small 0-norms
+                        minValue = min(normMax(:, :, 3), [], 2);
+                        assert(all(all(normMax(:, 4, 3) <= minValue)))
+                        assert(all(normMax(:, 4, 3) < (1 + 1e-5) * min(normMax(:, 4, 3))))
+                        
+                        normAll(i, :) = {normMin, normMax};
                     end
                 end
-                % check that solutions with minNormMethod = 2-norm should have small 2-norms
-                min2norm = min(min(normMin(:, :, 3)));
-                assert(all((normMin(:, 2, 3) - min2norm) / min2norm < 0.05))
-                % check that solutions with minNormMethod = 1-norm should have small 1-norms
-                min1norm = min(min(normMin(:, :, 2)));
-                assert(all((normMin(:, 3, 2) - min1norm) / min1norm < 0.05))
-                % check that solutions with minNormMethod = 0-norm should have small 0-norms
-                min0norm = min(min(normMin(:, :, 1)));
-                assert(all((normMin(:, 4, 1) - min0norm) / min0norm < 0.05))
-                
-                max2norm = min(min(normMax(:, :, 3)));
-                assert(all((normMax(:, 2, 3) - max2norm) / max2norm < 0.05))
-                max1norm = min(min(normMin(:, :, 2)));
-                assert(all((normMax(:, 3, 2) - max1norm) / max1norm < 0.05))
-                max0norm = min(min(normMin(:, :, 1)));
-                assert(all((normMax(:, 4, 1) - max0norm) / max0norm < 0.05))    
             end
         end
     end
