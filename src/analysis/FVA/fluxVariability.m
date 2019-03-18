@@ -573,8 +573,9 @@ end
 function V = getMinNormWoLoops(MILPproblem, MILPsolution, nRxns, cFlux, method, solverParams)
 % It will be great if sparseFBA can somehow support MILP problems
 [m, n] = size(MILPproblem.A);
-MILPproblem.lb(MILPproblem.c ~= 0) = cFlux - 1e-12;
-MILPproblem.ub(MILPproblem.c ~= 0) = cFlux + 1e-12;
+% too small gap between lb and ub may cause numerical difficulty for solvers
+MILPproblem.lb(MILPproblem.c ~= 0) = floor(cFlux * 1e9) / 1e9;
+MILPproblem.ub(MILPproblem.c ~= 0) = ceil(cFlux * 1e9) / 1e9;
 switch method
     case '2-norm'
         MILPproblem.c(:)=0;
