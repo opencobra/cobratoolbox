@@ -262,6 +262,7 @@ switch solver
         [MIQPproblem.A,MIQPproblem.rhs,MIQPproblem.obj,MIQPproblem.sense] = deal(sparse(MIQPproblem.A),MIQPproblem.b,MIQPproblem.c,MIQPproblem.csense);
         resultgurobi = gurobi(MIQPproblem,params);
         solStat = resultgurobi.status;
+        [x, f] = deal([]);
         if strcmp(resultgurobi.status,'OPTIMAL')
            stat = 1; % Optimal solution found
 
