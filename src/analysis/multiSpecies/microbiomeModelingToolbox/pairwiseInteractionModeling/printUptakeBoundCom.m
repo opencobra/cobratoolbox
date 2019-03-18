@@ -12,6 +12,10 @@ function [printMatrix, printMet] = printUptakeBoundCom(model, SpFlag, metFlag)
 % OPTIONAL INPUTS:
 %    SpFlag:   true to show individual uptake rates though community uptake is not allowed (default false)
 %    metFlag:  true to print with `model.metNames` (default false) 
+%
+% OUTPUTS:
+%    printMatrix: matrix of the uptake bounds being printed
+%    printMet:    column of metabolites whose uptake bounds are printed
 
 if nargin < 2 || isempty(SpFlag)
     SpFlag = false;
