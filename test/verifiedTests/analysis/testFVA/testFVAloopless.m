@@ -70,7 +70,7 @@ for jRun = runOrder
         try
             minWorkers = 2;
             myCluster = parcluster(parallel.defaultClusterProfile);
-            %No parallel pool
+            % No parallel pool
             if myCluster.NumWorkers >= minWorkers
                 poolobj = gcp('nocreate');  % if no pool, do not create new one.
                 if isempty(poolobj)
@@ -78,7 +78,7 @@ for jRun = runOrder
                 end
             end
         catch
-            %No Parallel pool. Thats fine
+            % No Parallel pool. Thats fine
             cont = false;
         end
         printText = 'parallel';
@@ -114,13 +114,8 @@ for jRun = runOrder
                     tic;
                     [minFluxT, maxFluxT] = fluxVariability(model, optPercent, 'max', rxnTest, 2, method{j});
                     t(j) = toc;
-                    %                     if j == 1
-                    %                         minF = minFluxT;
-                    %                         maxF = maxFluxT;
-                    %                     else
                     assert(max(abs(minFluxT - minF)) < tol)
                     assert(max(abs(maxFluxT - maxF)) < tol)
-                    %                     end
                 end
                 fprintf('\n\n');
                 for j = 1:numel(method)
@@ -128,7 +123,7 @@ for jRun = runOrder
                 end
                 
                 if doQP && doMIQP
-                    %% return flux distributions
+                    % return flux distributions
                     
                     % test for one reaction in loops and one not in loops
                     rxnTestForFluxes = [1; 11];
@@ -206,7 +201,6 @@ for jRun = runOrder
                         assert(all(all(normMax(:, 4, 3) <= minValue)))
                         assert(all(normMax(:, 4, 3) < (1 + 1e-5) * min(normMax(:, 4, 3))))
                         
-                        normAll(i, :) = {normMin, normMax};
                     end
                 end
             end
