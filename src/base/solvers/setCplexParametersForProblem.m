@@ -1,7 +1,7 @@
 function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, problemType)
 % Set the parameters for a specific problem from the COBRA Parameter
 % structure and a solver specific parameter structre (latter has
-% precedence). The cobra parameters structure contains fields as specified in 
+% precedence). The cobra parameters structure contains fields as specified in
 % `getCobraSolverParamsOptionsForType`, while solverParams needs to
 % contain a structure compatible with `setCplexParam`.
 % USAGE:
@@ -24,6 +24,7 @@ cplexProblem.Param.sifting.display.Cur = cobraParams.printLevel;
 if isscalar(cobraParams.logFile)
     if cobraParams.logFile == 1
         % allow print to command window by setting solverParams.logFile == 1
+        logFile = cobraParams.logFile;
         logToFile = false;
         cplexProblem.DisplayFunc = @(x) redirect(1,x);
     else
