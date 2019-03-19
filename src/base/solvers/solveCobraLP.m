@@ -1191,82 +1191,22 @@ switch solver
         % iBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
 
         % Initialize the CPLEX object
-        try
-            ILOGcplex = Cplex('fba');
-        catch ME
-            error('CPLEX not installed or licence server not up')
-        end
-        % complex ILOG-CPLEX interface
-        if ~isempty(csense)
-            % set up constant vectors for CPLEX
-            b_L(csense == 'E',1) = b(csense == 'E');
-            b_U(csense == 'E',1) = b(csense == 'E');
-            b_L(csense == 'G',1) = b(csense == 'G');
-            b_U(csense == 'G',1) = Inf;
-            b_L(csense == 'L',1) = -Inf;
-            b_U(csense == 'L',1) = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
-        ILOGcplex.Model.sense = 'minimize';
-
-        % Now populate the problem with the data
-        ILOGcplex.Model.obj   = osense*c;
-        ILOGcplex.Model.lb    = lb;
-        ILOGcplex.Model.ub    = ub;
-        ILOGcplex.Model.A     = LPproblem.A;
-        ILOGcplex.Model.lhs   = b_L;
-        ILOGcplex.Model.rhs   = b_U;
-
-        % ILOGcplex.Param.lpmethod.Cur
-        % Determines which algorithm is used. Currently, the behavior of the Automatic setting is that CPLEX almost
-        % always invokes the dual simplex method. The one exception is when solving the relaxation of an MILP model
-        % when multiple threads have been requested. In this case, the Automatic setting will use the concurrent optimization
-        % method. The Automatic setting may be expanded in the future so that CPLEX chooses the method
-        % based on additional problem characteristics.
-        %  0 Automatic
-        % 1 Primal Simplex
-        % 2 Dual Simplex
-        % 3 Network Simplex (Does not work for almost all stoichiometric matrices)
-        % 4 Barrier (Interior point method)
-        % 5 Sifting
-        % 6 Concurrent Dual, Barrier and Primal
-        % Default: 0
-
-        % Assign all parameters
-        % solverParams in this case can be e.g.:
-        % solverParams = struct();
-        % [solverParams.simplex.display, solverParams.tune.display, solverParams.barrier.display,...
-        %      solverParams.sifting.display, solverParams.conflict.display] = deal(0);
-        % [solverParams.simplex.tolerances.optimality, solverParams.simplex.tolerances.feasibility] = deal(1e-9);
-        % See Cplex().Param for all possible parameters
-
-        % use the feasTol and optTol from Cobra toolbox if exist
-        ILOGcplex.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-        ILOGcplex.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
-        ILOGcplex.Param.lpmethod.Cur = 0;
-
-        % set the print level
-        if cobraParams.printLevel==0
-            ILOGcplex.DisplayFunc=[];
-        else
-            % print level
-            ILOGcplex.Param.barrier.display.Cur = cobraParams.printLevel;
-            ILOGcplex.Param.simplex.display.Cur = cobraParams.printLevel;
-            ILOGcplex.Param.sifting.display.Cur = cobraParams.printLevel;
-        end
-
-        % update parameters according to the solverParams settings
-        ILOGcplex = setCplexParam(ILOGcplex, solverParams, cobraParams.printLevel);
-
+        ILOGcplex = buildCplexProblemFromCOBRAStruct(LPproblem);
+        [ILOGcplex, logFile, logToFile] = setCplexParametersForProblem(ILOGcplex,cobraParams,solverParams,'LP');
+        
         %Update Tolerance According to actual setting
         cobraParams.feasTol = ILOGcplex.Param.simplex.tolerances.feasibility.Cur;
 
 
         % optimize the problem
         ILOGcplex.solve();
-
+    
+        if logToFile
+            % Close the output file
+            fclose(logFile);
+        end
+        
+        
         origStat   = ILOGcplex.Solution.status;
         stat = origStat;
         if origStat==1
