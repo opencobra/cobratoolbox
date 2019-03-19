@@ -287,8 +287,14 @@ elseif calcMetMwRange && any(metK == metI)
     model = metMw; % range for the MW of the metabolite of interest as the 1st output
     return
 end
-% Check if there are mets with duplicated IDs, which will make the computation problematic.
-findDuplicatedMets(model);
+% Check if there are mets/rxns with duplicated IDs, which will make the computation problematic.
+[model, isUnique] = checkCobraModelUnique(model, true);
+if ~isUnique
+    % rerun with the fixed model
+    [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, varargout] = computeMetFormulae(model, varargin{:});
+    varargout = {varargout};
+    return
+end
 
 metKform = cellfun(@isempty, model.metFormulas(metK));
 if any(metKform)
@@ -994,22 +1000,4 @@ while k > 0
     k = floor(index / N);
 end
 s = [charSet(index + 1) s];
-end
-
-function metDup = findDuplicatedMets(model)
-[mUni, ia, ib] = unique(model.mets);
-if numel(mUni) < numel(model.mets)
-    metDup = {};
-    for j = 1:numel(ia)
-        vDup = (ib == ia(j));
-        if sum(vDup) > 1
-            metDup = [metDup; {find(vDup)}, mUni(ia(j))];
-        end
-    end
-    s = sprintf('There are metabolits with duplicated IDs:\n');
-    for j = 1:size(metDup, 1)
-        s = sprintf('%s#%s: %s\n', s, strjoin(strtrim(cellstr(num2str(metDup{j, 1}(:)))), ','), metDup{j, 2});
-    end
-    error(s)
-end
 end
