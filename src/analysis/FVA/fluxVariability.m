@@ -83,12 +83,12 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 
 global CBT_LP_PARAMS
 
-optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParam', 'advind', 'threads'}; 
-defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),      0,       []};
+optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads'}; 
+defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       []};
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
-    @(x) @(x) isscalar(x) & isnumeric(x) & x >= 0, ...  % printLevel
+    @(x) isscalar(x) & isnumeric(x) & x >= 0, ...  % printLevel
     @(x) isscalar(x) || ischar(x), ...    % allowLoops
     @(x) ischar(x), ...  % method
     @isstruct, ...  % solverParams
@@ -96,98 +96,13 @@ validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPerc
     @(x) isscalar(x) & isnumeric(x) ...  % threads
     };  
 
-pSpos = 1;
-% parse the inputs accordingly.
-paramValueInput = false;
-if ~isempty(varargin)
-    %Check if we have parameter/value inputs.
-    for pSpos = 1:numel(varargin)
-        if isstruct(varargin{pSpos})
-            if pSpos == 7 && numel(varargin) > 7  
-                % For backward compatibility, the 7-th optional input solverParam is a solver parameter structure
-                % Put it as the last argument, as if the standard way of inputting solver-specific parameter structure
-                % but if solverParam is the last optional input, then no need to change. But need to break with the paramValueInput flag on
-                varargin = [varargin(1:(pSpos - 1)), varargin((pSpos + 1):end), varargin(pSpos)];
-            else
-                % its a struct, so yes, we do have additional inputs.
-                paramValueInput = true;
-                break;
-            end
-        end
-        if ischar(varargin{pSpos}) && (any(strncmpi(varargin{pSpos}, optArgin, length(varargin{pSpos}))) ...
-                || any(ismember(varargin{pSpos}, [cobraOptionsLP(:); cobraOptionsMILP(:)])))
-            % its a keyword (support partial matching), so yes, we have paramValu input.
-            paramValueInput = true;
-            break
-        end    
-    end
-end
+% get all potentially supplied COBRA parameter names
+problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 
-parser = inputParser();
-% parameters not matched to function input keywords
-otherParams = struct();
-if ~paramValueInput
-    % we only have values specific to this function. Parse the data.
-    for jArg = 1:numel(optArgin)
-        parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end    
-    parser.parse(varargin{1:min(numel(varargin),numel(optArgin))});  
-    varargin = {};
-else
-    % we do have solve specific parameters, so we need to also
-    optArgs = varargin(1:pSpos-1);
-    varargin = varargin(pSpos:end);
-    for jArg = 1:numel(optArgs)
-        parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end
-    % if 'solverParams' is inputted as a keyword. Delete the keyword and move the parameter structure 
-    % to the end to be consistent with the standard cobra way of input
-    idSolverParams = cellfun(@(x) strncmpi(x, 'solverParams', length(x)), varargin);
-    if any(idSolverParams)
-        f = find(idSolverParams);
-        varargin = [varargin(1:(f - 1)), varargin((f + 1):end), varargin(f + 1)];
-    end
-    if mod(numel(varargin),2) == 1
-        % this should indicate, that there is an LP solver struct somewhere!
-        for i = 1:2:numel(varargin)
-            if isstruct(varargin{i})
-                % move the solver-specific parameter structure to the end
-                varargin = [varargin(1:i-1),varargin(i+1:end),varargin(i)];
-            end
-        end
-    end
-    
-    % convert the input parameters into N x 2 [name; value] cell array
-    nameValueParams = inputParamsToCells(varargin);
-    % now, we create a new parser, that parses all algorithm specific
-    % inputs.
-    for jArg = numel(optArgs)+1:numel(optArgin)
-        parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});
-    end
-    % and extract the parameters from the field names, as CaseSensitive = 0
-    % only works for parameter/value pairs but not for fieldnames.
-    functionParams = {};
-    % build the parameter/value pairs array
-    for i = 1:size(nameValueParams, 1)
-        if ~any(strncmpi(nameValueParams{1, i}, optArgin, length(nameValueParams{1, i})))
-            otherParams.(nameValueParams{1, i}) = nameValueParams{2, i};
-        else
-            functionParams(end+1:end+2) = nameValueParams(:, i)';
-        end
-    end
-    % and parse them.
-    parser.CaseSensitive = 0;
-    parser.parse(optArgs{:},functionParams{:});
-end
+[funParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams');
 
-optPercentage = parser.Results.optPercentage;
-osenseStr = parser.Results.osenseStr;
-rxnNameList = parser.Results.rxnNameList;
-printLevel = parser.Results.printLevel;
-allowLoops = parser.Results.allowLoops;
-method = parser.Results.method;
-advind = parser.Results.advind;
-threads = parser.Results.threads;
+% solverParams not outputted as a function parameter since it is individually handled and embedded in solverVarargin
+[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, advind, threads] = deal(funParams{:});
 
 allowLoopsError = false;
 loopMethod = '';
@@ -216,43 +131,6 @@ if allowLoopsError
     error('"allowLoops" must be one of the following: 1 (usual FVA), 0 (default using ''LLC-NS''), ''original'', ''fastSNP'', ''LLC-NS'' or ''LLC-EFM''')
 end
 
-% define cobra solver parameters based on which types of problems to be solved
-minNorm = 0;
-if nargout >= 3
-    minNorm = 1;
-end
-problemType = {'LP'};
-if ~allowLoops || (minNorm && strcmp(method, '0-norm'))
-    problemType(end + 1) = {'MILP'};
-end
-if minNorm && strcmp(method, '2-norm')
-    if (allowLoops || strncmp(loopMethod, 'LLC', 3)) 
-        problemType(end + 1) = {'QP'};
-    end
-    if ~allowLoops
-        problemType(end + 1) = {'MIQP'};
-    end
-end
-
-% get the cobra parameters for all problem.
-[cobraOptions, cobraParams, solverVarargin] = deal(struct());
-% fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter structure
-solverParams = otherParams;
-for str = problemType(:)'
-    cobraOptions.(str{1}) = getCobraSolverParamsOptionsForType(str{1});
-    cobraParams.(str{1}) = parseSolverParameters(str{1}, otherParams);
-    solverParams = rmfield(solverParams, intersect(cobraOptions.(str{1}), fieldnames(solverParams)));
-end
-% now solverParams is the true solver-specific parameter structure
-for str = problemType(:)'
-    % and also convert the cobra options into parameter/value pair lists.
-    solverVarargin.(str{1}) = cell(1, 1 + 2 * numel(cobraOptions.(str{1})));
-    solverVarargin.(str{1}){1} = solverParams;
-    for i = 1:numel(cobraOptions.(str{1}))
-        solverVarargin.(str{1})([2*i, 2*i+1]) = {cobraOptions{i}, cobraParams.(str{1}).(cobraOptions{i})};
-    end
-end
-
 %Stop if there are reactions, which are not part of the model
 if any(~ismember(rxnNameList,model.rxns))
     presence = ismember(rxnNameList,model.rxns);
@@ -263,9 +141,12 @@ end
 [~, nRxns] = size(model.S);
 
 % LP solution tolerance
-tol = 1e-6;
+[minNorm, tol] = deal(1e-6);
 if exist('CBT_LP_PARAMS', 'var') && isfield(CBT_LP_PARAMS, 'objTol')
     tol = CBT_LP_PARAMS.objTol;
+end
+if nargout >= 3
+    minNorm = 1;
 end
 
 % Return if minNorm is minOrigSol but allowloops is set to false
@@ -798,27 +679,4 @@ function flux = getObjectiveFlux(LPsolution,LPproblem)
     else
         flux = LPsolution.full(Index);
     end
-end
-
-function nameValueParams = inputParamsToCells(inputParams)
-% convert the input parameters into N x 2 [name; value] cell array
-[nameValueParams, paramErr] = deal({}, false);
-for j = 1:2:numel(inputParams)
-    if j < numel(inputParams)
-        if ischar(inputParams{j})
-            nameValueParams(:, end + 1) = columnVector(inputParams(j:(j + 1)));
-        else
-            paramErr = true;
-            break
-        end
-    elseif isstruct(inputParams{j})
-        nameValueParams = [nameValueParams, [columnVector(fieldnames(inputParams{j}))'; columnVector(struct2cell(inputParams{j}))']];
-    else
-        paramErr = true;
-    end
-end
-if paramErr
-    error(sprintf(['Invalid Parameters supplied.\nParameters have to be supplied either as parameter/value pairs, or as struct.\n', ...
-        'A combination is possible, if the last or first input argument is a struct, and all other arguments']))
-end
 end
