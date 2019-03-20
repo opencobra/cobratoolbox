@@ -4,24 +4,26 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 % USAGE:
 %
 %    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
-%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)
-%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind)
+%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads)
+%    [...] = fluxVariability(model, ..., 'name', value, ..., solverParams)
+%    [...] = fluxVariability(model, ..., paramStruct)
 %
 % INPUT:
 %    model:            COBRA model structure
 %
 % OPTIONAL INPUTS:
+%   (support name-value argument inputs or a single [function + solver] parameter structure input)
 %    optPercentage:    Only consider solutions that give you at least a certain
 %                      percentage of the optimal solution (Default = 100
 %                      or optimal solutions only)
-%    osenseStr:        Objective sense ('min' or 'max') (Default = 'max')
+%    osenseStr:        Objective sense, 'min' or 'max' (default)
 %    rxnNameList:      List of reactions for which FVA is performed
 %                      (Default = all reactions in the model)
-%    printLevel:       Verbose level (default: 0)
-%    allowLoops:       Whether loops are allowed in solution or which method to block loops. (Default = true)
-%                      See `optimizeCbModel` for description
-%                        * 1 (or true) : loops allowed
-%                        * 0 (or false): loops not allowed. Default use LLC-NS to find loopless solutions
+%    printLevel:       Verbose level (default: 0). 1 to show a progress bar. 2 to print results for each reaction
+%    allowLoops:       Whether loops are allowed in solution or which method to block loops.
+%
+%                        * 1 (or true) : loops allowed (default)
+%                        * 0 (or false): loops not allowed. Use LLC-NS to find loopless solutions
 %                        * 'original'  : original loopless FVA 
 %                        * 'fastSNP'   : loopless FVA with with Fast-SNP preprocessing of nullspace
 %                        * 'LLC-NS'    : localized loopless FVA using information from nullsapce
@@ -35,22 +37,41 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                        * '2-norm' : minimizes the vector 2-norm
 %                        * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
-%   solverParams:      solver-specific parameter structure
+%   solverParams:      solver-specific parameter structure. Can also be inputted as the first or last arguement 
+%                      if using name-value argument inputs (with or without the keyword 'solverParams').
+%                      Can also be inputted as part of a parameter structure together with other function parameters
 %
 %   advind:            switch to use the solution basis
 %
 %                           - 0 : default
 %                           - 1 : uses the original problem solution basis as advanced basis
 %
+%  threads:            number of threads used for the analysis
+%                        * 1, 2, 3, ...: number of threads
+%                        * 0:            defaulted number of threads for the parallel computing toolbox
+%                        (default to be 1 if no parpool is activited, otherwise use the existing parpool)
+%
+% paramStruct:         one single parameter structure including any of the inputs above and the solver-specific parameter
+%
 % OUTPUTS:
 %    minFlux:          Minimum flux for each reaction
 %    maxFlux:          Maximum flux for each reaction
 %
 % OPTIONAL OUTPUT:
-%    Vmin:             Matrix of column flux vectors, where each column is a
-%                      separate minimization.
-%    Vmax:             Matrix of column flux vectors, where each column is a
-%                      separate maximization.
+%    Vmin:             Matrix of column flux vectors, where each column is a separate minimization.
+%    Vmax:             Matrix of column flux vectors, where each column is a separate maximization.
+%
+% EXAMPLES:
+%    FVA for all rxns at 100% max value of the objective function:
+%        [minFlux, maxFlux] = fluxVariability(model);  
+%    Loopless FVA for rxns in `rxnNames` at <= 90% min value of the objective function, print results for each reaction:
+%        [minFlux, maxFlux] = fluxVariability(model, 90, 'min', rxnNames, 2, 0);
+%    Same as the 1st example, but also return the corresponding flux distributions with 2-norm minimized:
+%        [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, [], [],    [],       0, 1, '2-norm');
+%    Name-value inputs, with Cobra LP parameter `feasTol` and solver-specific (gurobi) parameter `Presolve`:
+%        [minFlux, maxFlux] = fluxVariability(model, 'optPercentage', 99, 'allowLoops', 'original', 'threads', 0, 'feasTol', 1e-8, struct('Presolve', 0));
+%    Single parameter structure input including function, Cobra LP and solver parameters:
+%        [minFlux, maxFlux] = fluxVariability(model, struct('optPercentage', 99, 'allowLoops', 'original', 'threads', 0, 'feasTol', 1e-8, 'Presolve', 0)); 
 %
 % .. Authors:
 %       - Markus Herrgard  8/21/06 Original code.
@@ -62,8 +83,8 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 
 global CBT_LP_PARAMS
 
-optArgin = {     'optPercentage', 'osenseStr', 'rxnNameList', 'printLevel', 'allowLoops', 'method', 'advind', 'threads'}; 
-defaultValues = {100,             'max',       [],            [],           true,         '2-norm',  [],       1};
+optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParam', 'advind', 'threads'}; 
+defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),      0,       []};
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
@@ -103,7 +124,8 @@ if ~isempty(varargin)
 end
 
 parser = inputParser();
-
+% parameters not matched to function input keywords
+otherParams = struct();
 if ~paramValueInput
     % we only have values specific to this function. Parse the data.
     for jArg = 1:numel(optArgin)
@@ -118,12 +140,19 @@ else
     for jArg = 1:numel(optArgs)
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
     end
+    % if 'solverParams' is inputted as a keyword. Delete the keyword and move the parameter structure 
+    % to the end to be consistent with the standard cobra way of input
+    idSolverParams = cellfun(@(x) strncmpi(x, 'solverParams', length(x)), varargin);
+    if any(idSolverParams)
+        f = find(idSolverParams);
+        varargin = [varargin(1:(f - 1)), varargin((f + 1):end), varargin(f + 1)];
+    end
     if mod(numel(varargin),2) == 1
         % this should indicate, that there is an LP solver struct somewhere!
         for i = 1:2:numel(varargin)
             if isstruct(varargin{i})
-                % reorder varargin
-                varargin = [varargin{1:i-1},varargin{i+1:end},varargin(i)];
+                % move the solver-specific parameter structure to the end
+                varargin = [varargin(1:i-1),varargin(i+1:end),varargin(i)];
             end
         end
     end
@@ -137,12 +166,11 @@ else
     end
     % and extract the parameters from the field names, as CaseSensitive = 0
     % only works for parameter/value pairs but not for fieldnames.
-    solverParams = struct();
     functionParams = {};
     % build the parameter/value pairs array
     for i = 1:size(nameValueParams, 1)
         if ~any(strncmpi(nameValueParams{1, i}, optArgin, length(nameValueParams{1, i})))
-            solverParams.(nameValueParams{1, i}) = nameValueParams{2, i};
+            otherParams.(nameValueParams{1, i}) = nameValueParams{2, i};
         else
             functionParams(end+1:end+2) = nameValueParams(:, i)';
         end
@@ -188,7 +216,8 @@ if allowLoopsError
     error('"allowLoops" must be one of the following: 1 (usual FVA), 0 (default using ''LLC-NS''), ''original'', ''fastSNP'', ''LLC-NS'' or ''LLC-EFM''')
 end
 
-% define cobra solver parameters based on whcih types of problems to be solved
+% define cobra solver parameters based on which types of problems to be solved
+minNorm = 0;
 if nargout >= 3
     minNorm = 1;
 end
@@ -205,55 +234,24 @@ if minNorm && strcmp(method, '2-norm')
     end
 end
 
-
 % get the cobra parameters for all problem.
-cobraOptions = struct();
-for str = {'LP', 'MILP', 'QP', 'MIQP'}
-cobraOptionsLP = getCobraSolverParamsOptionsForType('LP');
-cobraOptionsMILP = getCobraSolverParamsOptionsForType('MILP');
-[cobraParamsLP, solverParams] = parseSolverParameters('LP');
-    cobraParamsMILP = parseSolverParameters('MILP');
-            % parameter structure input. Convert into cell
-    [cobraParamsLP, nameValueParams] = parseSolverParameters('LP',varargin{:});
-    cobraParamsMILP = parseSolverParameters('MILP',varargin{:});
+[cobraOptions, cobraParams, solverVarargin] = deal(struct());
+% fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter structure
+solverParams = otherParams;
+for str = problemType(:)'
+    cobraOptions.(str{1}) = getCobraSolverParamsOptionsForType(str{1});
+    cobraParams.(str{1}) = parseSolverParameters(str{1}, otherParams);
+    solverParams = rmfield(solverParams, intersect(cobraOptions.(str{1}), fieldnames(solverParams)));
 end
-    
-if 1
+% now solverParams is the true solver-specific parameter structure
+for str = problemType(:)'
     % and also convert the cobra options into parameter/value pair lists.
-    vararginLP = cell(1,1 + 2 * numel(cobraOptionsLP));
-    vararginLP{1} = solverParamsLP;
-    for i = 1:numel(cobraOptions)
-        cOption = cobraOptions{i};
-        varargin([2*i, 2*i+1]) = {cOption,cobraParams.(cOption)};
+    solverVarargin.(str{1}) = cell(1, 1 + 2 * numel(cobraOptions.(str{1})));
+    solverVarargin.(str{1}){1} = solverParams;
+    for i = 1:numel(cobraOptions.(str{1}))
+        solverVarargin.(str{1})([2*i, 2*i+1]) = {cobraOptions{i}, cobraParams.(str{1}).(cobraOptions{i})};
     end
 end
-
-if nargin < 2 || isempty(optPercentage)
-    optPercentage = 100;
-end
-if nargin < 3 || isempty(osenseStr)
-    [osenseStr,~] = getObjectiveSense(model);
-end
-if nargin < 4 || isempty(rxnNameList)
-    rxnNameList = model.rxns;
-end
-if nargin < 5 || isempty(printLevel)
-    printLevel = 0;
-end
-if nargin < 6 || isempty(allowLoops)
-    allowLoops = true;
-end
-if nargin < 7 || isempty(method)
-    method = '2-norm';
-end
-if nargin < 8 || isempty(solverParams)
-    solverParams = struct();
-end
-if nargin < 9 || isempty(advind)
-   advind = 0;
-end
-
-
 
 %Stop if there are reactions, which are not part of the model
 if any(~ismember(rxnNameList,model.rxns))
@@ -265,7 +263,7 @@ end
 [~, nRxns] = size(model.S);
 
 % LP solution tolerance
-[minNorm, tol] = deal(0, 1e-6);
+tol = 1e-6;
 if exist('CBT_LP_PARAMS', 'var') && isfield(CBT_LP_PARAMS, 'objTol')
     tol = CBT_LP_PARAMS.objTol;
 end
@@ -294,7 +292,7 @@ loopInfo = struct('method', loopMethod, 'printLevel', printLevel);
 
 % Solve initial (normal) LP
 if allowLoops
-    tempSolution = solveCobraLP(LPproblem, solverParams);
+    tempSolution = solveCobraLP(LPproblem, solverVarargin.LP{:});
 else
     % Both Fast-SNP and solving an MILP return a minimal feasible nullspace
     if printLevel
@@ -314,14 +312,14 @@ else
     [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, 1:nRxns, [], [], loopInfo);
     
     if ~strncmp(loopMethod, 'LLC', 3)
-        tempSolution = solveCobraMILP(MILPproblem, solverParams);
+        tempSolution = solveCobraMILP(MILPproblem, solverVarargin.MILP{:});
     else
         % preprocessing for LLCs
         [solveLP, MILPproblem, loopInfo] = processingLLCs('preprocess', loopInfo, LPproblem, model, nRxns, osenseStr, MILPproblem);
         if solveLP
-            tempSolution = solveCobraLP(LPproblem, solverParams);
+            tempSolution = solveCobraLP(LPproblem, solverVarargin.LP{:});
         else
-            tempSolution = solveCobraMILP(MILPproblem, solverParams);
+            tempSolution = solveCobraMILP(MILPproblem, solverVarargin.MILP{:});
         end
     end
 end
@@ -362,21 +360,34 @@ LPproblem.S = LPproblem.A;  % needed for sparse optimisation
 %     allowLoops=1;
 % end
 
+
 v = ver;
 PCT = 'Parallel Computing Toolbox';
-poolsize = 0;
+parpoolOn = false;
 if  any(strcmp(PCT, {v.Name})) && license('test', 'Distrib_Computing_Toolbox')
     try
-        p = gcp('nocreate');
+        parpoolOn = ~isempty(gcp('nocreate'));
         PCT_status = 1;
-        if ~isempty(p)
-            poolsize = p.NumWorkers;
-        end
     catch
         PCT_status = 0;
     end
 else
-    PCT_status=0;  % Parallel Computing Toolbox not found.
+    PCT_status = 0;  % Parallel Computing Toolbox not found.
+end
+parallelJob = false;
+if isempty(threads) && PCT_status  % no input for threads and parallel toolbox exists
+    % do parallel job if a parpool already exists, otherwise not
+    parallelJob = parpoolOn;
+elseif ~isempty(threads) && threads ~= 1 && PCT_status  % explicit input for parallel job
+    parallelJob = true;
+    if ~parpoolOn
+        % create a parpool if no existing one
+        if threads <= 0  % <= 0 for the default number of workers
+            parpool;
+        elseif threads > 1  % otherwise specified number of workers
+            parpool(threads);
+        end
+    end
 end
 
 minFlux = model.lb(findRxnIDs(model, rxnNameList));
@@ -407,14 +418,18 @@ switch loopMethod
         % Set a short time limit or do not this at all for MILP with loop law
         % because if the model and the number of reactions in the objective is large, 
         % it is non-trivial for solvers to find the optimal solution under the loop law.
-        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverParams);
+        idTimeLimit = strcmp(solverVarargin.MILP, 'timeLimit');
+        if any(idTimeLimit)
+            idTimeLimit(find(idTimeLimit) + 1) = true;
+        end
+        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverVarargin.MILP{~idTimeLimit});
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
         sol.full = NaN(nRxns, 1);
         sol.stat = 0;
     case 'none'
-        sol = solveCobraLP(QuickProblem, solverParams);
+        sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
 end
 
 %If we reach this point, we can be certain, that there is a solution, i.e.
@@ -442,14 +457,14 @@ switch loopMethod
         % Set a short time limit or do not this at all for MILP with loop law
         % because if the model and the number of reactions in the objective is large, 
         % it is non-trivial for solvers to find the optimal solution under the loop law.
-        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverParams);
+        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverVarargin.MILP{~idTimeLimit});
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
         sol.full = NaN(nRxns, 1);
         sol.stat = 0;
     case 'none'
-        sol = solveCobraLP(QuickProblem, solverParams);
+        sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
 end
 if (allowLoops && (sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= feasTol)) ...
         || (~allowLoops && (sol.stat == 1 || sol.stat == 3))
@@ -480,13 +495,12 @@ switch loopMethod
         LPproblemLLC = LPproblem;
 end
 
-if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on parpool by default
+if ~parallelJob  % single-thread FVA
     if printLevel == 1
-        showprogress(0,'Flux variability analysis in progress ...');
+        showprogress(0,'Single-thread flux variability analysis in progress ...');
     elseif printLevel > 1
         fprintf('%4s\t%4s\t%10s\t%9s\t%9s\n','No','Perc','Name','Min','Max');
     end
-    
     
     % Do this to keep the progress printing in place
     for i = 1:length(rxnNameList)
@@ -510,7 +524,7 @@ if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on parpo
             end
         end
         
-        [minFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverParams, preCompMinSols{i}, 1);
+        [minFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMinSols{i}, 1);
         
         % store the flux distribution
         if minNorm
@@ -534,7 +548,7 @@ if ~PCT_status || poolsize == 0 % aka nothing is active and do not turn on parpo
             end
         end
         
-        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverParams, preCompMaxSols{i}, -1);
+        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMaxSols{i}, -1);
         
         % store the flux distribution
         if minNorm
@@ -553,7 +567,7 @@ else % parallel job.  pretty much does the same thing.
     environment = getEnvironment();
     
     if printLevel == 1
-        fprintf('Flux variability analysis in progress ...\n');
+        fprintf('Parallel flux variability analysis in progress ...\n');
     elseif printLevel > 1
         fprintf('%4s\t%10s\t%9s\t%9s\n','No','Name','Min','Max');
     end
@@ -582,7 +596,7 @@ else % parallel job.  pretty much does the same thing.
             end
         end
         
-        [minFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverParams, preCompMinSols{i}, 1);
+        [minFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMinSols{i}, 1);
         
         % store the flux distribution
         if minNorm
@@ -607,7 +621,7 @@ else % parallel job.  pretty much does the same thing.
             end
         end
         
-        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverParams, preCompMaxSols{i}, -1);
+        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMaxSols{i}, -1);
         
         % store the flux distribution
         if minNorm
@@ -624,7 +638,7 @@ maxFlux = columnVector(maxFlux);
 minFlux = columnVector(minFlux);
 end
 
-function [Flux, V] = calcSolForEntry(model, rxnID, LPproblem, method, allowLoops, minNorm, solverParams, sol, osense)
+function [Flux, V] = calcSolForEntry(model, rxnID, LPproblem, method, allowLoops, minNorm, solverVarargin, sol, osense)
 
 %Set the correct objective
 LPproblem.osense = sign(osense);
@@ -633,10 +647,10 @@ LPproblem.c(rxnID) = 1;
 if isempty(sol)
     if allowLoops
         % solve LP
-        LPsolution = solveCobraLP(LPproblem, solverParams);
+        LPsolution = solveCobraLP(LPproblem, solverVarargin.LP{:});
     else
         % solve MILP
-        LPsolution = solveCobraMILP(LPproblem, solverParams);
+        LPsolution = solveCobraMILP(LPproblem, solverVarargin.MILP{:});
     end
     
     % take the maximum flux from the flux vector, not from the obj -Ronan
@@ -667,14 +681,14 @@ end
 V = [];
 if minNorm
     if allowLoops
-        V = getMinNorm(LPproblem, LPsolution, numel(model.rxns), Flux, model, method, solverParams);
+        V = getMinNorm(LPproblem, LPsolution, numel(model.rxns), Flux, model, method, solverVarargin);
     else
-        V = getMinNormWoLoops(LPproblem, LPsolution, numel(model.rxns), Flux, method, solverParams);
+        V = getMinNormWoLoops(LPproblem, LPsolution, numel(model.rxns), Flux, method, solverVarargin);
     end
 end
 end
 
-function V = getMinNorm(LPproblem, LPsolution, nRxns, cFlux, model, method, solverParams)
+function V = getMinNorm(LPproblem, LPsolution, nRxns, cFlux, model, method, solverVarargin)
 % get the Flux distribution for the specified min norm.
 
 % update LPproblem to fix objective function value for 1-norm and
@@ -689,7 +703,7 @@ switch method
             sparse(size(LPproblem.A, 2) - nRxns, size(LPproblem.A, 2))];
         LPproblem.osense = 1;
         %quadratic optimization
-        solution = solveCobraQP(LPproblem, solverParams);
+        solution = solveCobraQP(LPproblem, solverVarargin.QP{:});
         V = solution.full(1:nRxns, 1);
     case '1-norm'
         V = sparseFBA(LPproblem, 'min', 0, 0, 'l1');
@@ -708,7 +722,7 @@ switch method
 end
 end
 
-function V = getMinNormWoLoops(MILPproblem, MILPsolution, nRxns, cFlux, method, solverParams)
+function V = getMinNormWoLoops(MILPproblem, MILPsolution, nRxns, cFlux, method, solverVarargin)
 % It will be great if sparseFBA can somehow support MILP problems
 [m, n] = size(MILPproblem.A);
 % too small gap between lb and ub may cause numerical difficulty for solvers
@@ -724,7 +738,7 @@ switch method
         % supplying a known initial solution has a much higher chance for the solver to return a solution
         MILPproblem.x0 = MILPsolution.full;
                 %quadratic optimization
-        solution = solveCobraMIQP(MILPproblem, solverParams);
+        solution = solveCobraMIQP(MILPproblem, solverVarargin.MIQP{:});
         V = solution.full(1:nRxns);
     case '1-norm'
         MILPproblem.A = [MILPproblem.A,             sparse(m, nRxns); ... original problem
@@ -739,7 +753,7 @@ switch method
         MILPproblem.ub = [MILPproblem.ub; max(abs([MILPproblem.lb(1:nRxns), MILPproblem.ub(1:nRxns)]), [],  2)];
         % supplying a known initial solution has a much higher chance for the solver to return a solution
         MILPproblem.x0 = [MILPsolution.full; abs(MILPsolution.full(1:nRxns))];
-        solution = solveCobraMILP(MILPproblem, solverParams);
+        solution = solveCobraMILP(MILPproblem, solverVarargin.MILP{:});
         V = solution.full(1:nRxns);
     case '0-norm'
         % use binary switch
@@ -759,7 +773,7 @@ switch method
         V(V > 0 & MILPproblem.ub(1:nRxns) > 0 & V ./ MILPproblem.ub(1:nRxns) <= intTol) = 0;
         V(V < 0 & MILPproblem.lb(1:nRxns) < 0 & V ./ MILPproblem.lb(1:nRxns) <= intTol) = 0;
         MILPproblem.x0 = [MILPsolution.full; V ~= 0];
-        solution = solveCobraMILP(MILPproblem, solverParams);
+        solution = solveCobraMILP(MILPproblem, solverVarargin.MILP{:});
         V = solution.full(1:nRxns);
     case 'FBA'
         V= MILPsolution.full(1:nRxns);
