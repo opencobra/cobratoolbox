@@ -12,6 +12,14 @@ function paramNames = getCobraSolverParamsOptionsForType(solverType)
 %    paramNames:        The possible parameters that can be set for the
 %                       given solver Type (depends on the solver Type
 
+if iscell(solverType)
+    paramNames = {};
+    for j = 1:numel(solverType)
+        paramNames = [paramNames, getCobraSolverParamsOptionsForType(solverType{j})];
+    end
+    paramNames = unique(paramNames);
+    return
+end
 switch solverType
     case 'LP'
         paramNames = {'minNorm', ...        % type of normalization used.
