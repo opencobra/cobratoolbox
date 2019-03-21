@@ -18,12 +18,12 @@ cd(fileDir);
 tol = 1e-4;
 
 % relax the feasibility tolerance a little bit to have better stability
-problemType = {'LP', 'MILP', 'MIQP'};
-feasTol = zeros(numel(problemType), 1);
-for j = 1:numel(problemType)
-    feasTol(j) = getCobraSolverParams(problemType{j}, 'feasTol');
-    changeCobraSolverParams(problemType{j}, 'feasTol', 1e-8);
-end
+% problemType = {'LP', 'MILP', 'MIQP'};
+% feasTol = zeros(numel(problemType), 1);
+% for j = 1:numel(problemType)
+%     feasTol(j) = getCobraSolverParams(problemType{j}, 'feasTol');
+%     changeCobraSolverParams(problemType{j}, 'feasTol', 1e-8);
+% end
 
 % load the model
 model = readCbModel('Ec_iJR904.mat');
@@ -42,14 +42,14 @@ try
         parpool(2);
     end
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,...
-        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},...
+        'useSolversIfAvailable',{'gurobi'},...
         'excludeSolvers',{'dqqMinos','quadMinos'},...
         'minimalMatlabSolverVersion',8.0);
     threadsForFVA = [1, 2];
 catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
-    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},'minimalMatlabSolverVersion',8.0);
+    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,'useSolversIfAvailable',{'gurobi'},'minimalMatlabSolverVersion',8.0);
 end
 
 printText = {'single-thread', 'parallel'};
@@ -103,7 +103,7 @@ for threads = threadsForFVA
                 method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
                 minNormMethod = {'FBA', '0-norm', '1-norm', '2-norm'};
                 
-                solverParams = repmat({struct()}, numel(minNormMethod), 1);
+                solverParams = repmat({struct('intTol', 1e-9, 'feasTol', 1e-8)}, numel(minNormMethod), 1);
                 % minimizing 0-norm with presolve on may be inaccurate
                 switch currentSolver
                     case 'gurobi'

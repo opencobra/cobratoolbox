@@ -141,7 +141,7 @@ end
 [~, nRxns] = size(model.S);
 
 % LP solution tolerance
-[minNorm, tol] = deal(1e-6);
+[minNorm, tol] = deal(0, 1e-6);
 if exist('CBT_LP_PARAMS', 'var') && isfield(CBT_LP_PARAMS, 'objTol')
     tol = CBT_LP_PARAMS.objTol;
 end
@@ -303,7 +303,7 @@ switch loopMethod
         if any(idTimeLimit)
             idTimeLimit(find(idTimeLimit) + 1) = true;
         end
-        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverVarargin.MILP{~idTimeLimit});
+        sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
@@ -338,7 +338,7 @@ switch loopMethod
         % Set a short time limit or do not this at all for MILP with loop law
         % because if the model and the number of reactions in the objective is large, 
         % it is non-trivial for solvers to find the optimal solution under the loop law.
-        sol = solveCobraMILP(QuickProblem, 'timeLimit', 10, solverVarargin.MILP{~idTimeLimit});
+        sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
     case {'LLC-NS', 'LLC-EFM'}
         % skip this if using LLCs
         sol = struct;
