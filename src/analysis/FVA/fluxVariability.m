@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind, useMtFVA)
 % Performs flux variablity analysis
 %
 % USAGE:
@@ -77,6 +77,9 @@ end
 if nargin < 9
    advind = 0;
 end
+if nargin < 10
+    useMtFVA= false;
+end
 if isempty(optPercentage)
     optPercentage = 100;
 end
@@ -88,6 +91,10 @@ end
 if any(~ismember(rxnNameList,model.rxns))
     presence = ismember(rxnNameList,model.rxns);
     error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
+end
+
+if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
+   error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
 end
 
 % Set up the problem size
@@ -189,7 +196,7 @@ solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
 PCT = 'Parallel Computing Toolbox';
-if  any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
+if ~useMtFVA && any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
     try
         p = gcp('nocreate');
         PCT_status=1;
@@ -259,8 +266,13 @@ end
 rxnListMin = rxnNameList(~minSolved);
 rxnListMax = rxnNameList(~maxSolved);
 
-
-if ~PCT_status %aka nothing is active
+if useMtFVA
+    [~, idxMin]= ismember(rxnListMin, model.rxns);
+    [~, idxMax]= ismember(rxnListMax, model.rxns);
+    [fvalb, fvaub]= mtFVA(LPproblem, [idxMax(:); -idxMin(:)], cpxControl);
+    minFlux(idxMin)= fvalb(idxMin);
+    maxFlux(idxMax)= fvaub(idxMax);
+elseif ~PCT_status %aka nothing is active
     if minNorm
         for i = 1:length(rxnNameList)
         
