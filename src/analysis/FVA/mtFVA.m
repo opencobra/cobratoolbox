@@ -1,21 +1,21 @@
-function [minFlux, maxFlux]= mtFVA(model, rxnsIdx)
+function [minFlux, maxFlux]= mtFVA(LPproblem, rxnsIdx, cpxControl)
 % Perform flux variability analysis using multi-threading (via a JAVA VM)
 % and CPLEX as solver.
 %
 % USAGE:
 %
-%    [minFlux, maxFlux] = mtFVA(model, rxnsIdx)
+%    [minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)
 %
 % INPUT:
-%    model:       COBRA model structure, all rows in model.S are currently
-%                 treated as equality constraints 
+%    LPproblem:   COBRA LPproblem structure
 %
-% OPTIONAL INPUTS:
 %    rxnsIdx:     Vector of reaction indices for which to run the
 %                 optimizations; a positive index indicates a maximization,
 %                 a negative index a minimization of the respective
 %                 reaction; by default the fluxes through all reactions are
 %                 minimzed and maximized
+%
+%   cpxControl:   used as parameter for setCplexParam
 %
 % OUTPUTS:
 %    minFlux:     Minimum flux for each reaction
@@ -23,10 +23,11 @@ function [minFlux, maxFlux]= mtFVA(model, rxnsIdx)
 %
 %
 % .. Authors:
-%       - Axel von Kamp  2/15/19
+%       - Axel von Kamp  3/21/19
 
 global ILOG_CPLEX_PATH
 global CBTDIR
+global CBT_LP_PARAMS;
 
 [cplex_root, arch]= fileparts(ILOG_CPLEX_PATH);
 cplex_root= fileparts(cplex_root);
@@ -56,22 +57,27 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   disp('Compilation finished.');
 end
 
-[numMets, numRxns]= size(model.S);
-minFlux= NaN(numRxns, 1);
-maxFlux= NaN(numRxns, 1);
-
-if nargin < 2
-  rxnsIdx= 1:numRxns;
-  rxnsIdx= [rxnsIdx, -rxnsIdx]; % positive index: maximization, negative index: minimization
-end
+[numRows, numCols]= size(LPproblem.S);
+minFlux= NaN(numCols, 1);
+maxFlux= NaN(numCols, 1);
 
 cgp= Cplex(); % only used for saving the model and reading the results later
-cgp.Model.A= model.S;
-cgp.Model.lhs= sparse([], [], [], numMets, 1);
-cgp.Model.rhs= sparse([], [], [], numMets, 1);
-cgp.Model.lb= model.lb;
-cgp.Model.ub= model.ub;
-cgp.Model.obj= sparse([], [], [], numRxns, 1); % needed for consistent array lengths
+cgp.Model.A= LPproblem.A;
+cgp.Model.lhs= LPproblem.b;
+cgp.Model.lhs(LPproblem.csense == 'L')= -Inf;
+cgp.Model.rhs= LPproblem.b;
+cgp.Model.rhs(LPproblem.csense == 'G')= Inf;
+cgp.Model.lb= LPproblem.lb;
+cgp.Model.ub= LPproblem.ub;
+cgp.Model.obj= sparse([], [], [], numCols, 1); % needed for consistent array lengths
+
+if isfield(CBT_LP_PARAMS, 'feasTol')
+  cgp.Param.simplex.tolerances.feasibility.Cur= CBT_LP_PARAMS.feasTol;
+end
+if isfield(CBT_LP_PARAMS, 'optTol')
+  cgp.Param.simplex.tolerances.feasibility.Cur= CBT_LP_PARAMS.optTol;
+end
+cgp= setCplexParam(cgp, cpxControl, true);
 
 fname= tempname();
 lpfile= [fname, '.sav'];
