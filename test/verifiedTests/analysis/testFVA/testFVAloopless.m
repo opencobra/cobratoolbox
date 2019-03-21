@@ -17,16 +17,9 @@ cd(fileDir);
 % set the tolerance
 tol = 1e-4;
 
-% relax the feasibility tolerance a little bit to have better stability
-% problemType = {'LP', 'MILP', 'MIQP'};
-% feasTol = zeros(numel(problemType), 1);
-% for j = 1:numel(problemType)
-%     feasTol(j) = getCobraSolverParams(problemType{j}, 'feasTol');
-%     changeCobraSolverParams(problemType{j}, 'feasTol', 1e-8);
-% end
-
 % load the model
 model = readCbModel('Ec_iJR904.mat');
+
 % randomly picked reactions in or not in loops
 rxnInLoops = {'THMDt2r';'GALUi';'ADNt2';'NDPK1';'THMDt2';'SERt4';'ADK1';'GALU';'LCAD';'PPCSCT'};
 rxnNotInLoops = {'DADA';'GLYt2r';'EX_2ddglcn(e)';'DMPPS';'EX_xan(e)';'ASPCT';'HKNTDH';'UAG2Ei';'ORNabc';'DHAD1'};
@@ -34,7 +27,12 @@ rxnTest = [rxnInLoops; rxnNotInLoops];
 optPercent = 99;
 % results obtained using the previous version of fluxVariability with allowLoops = 0 (on March 18, 2019)
 refData = load('refData_looplessFVA.mat');
-[minF, maxF] = deal(refData.minFwoLoops, refData.maxFwoLoops);
+[minF, maxF, minFluxAllRxns, maxFluxAllRxns] = deal(refData.minFwoLoops, refData.maxFwoLoops, refData.minFluxAllRxns, refData.maxFluxAllRxns);
+% use the stored FVA results without objective function to tighten the bounds 
+% for unconstrained reactions (lb = -1000 or ub = 1000) for easier MIP calculation
+% do the rounding off to avoid numerical difficulty for solvers
+model.lb(model.lb == -1000) = floor(minFluxAllRxns(model.lb == -1000));
+model.ub(model.ub == 1000) = ceil(maxFluxAllRxns(model.ub == 1000));
 
 threadsForFVA = 1;
 try
@@ -42,14 +40,15 @@ try
         parpool(2);
     end
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,...
-        'useSolversIfAvailable',{'gurobi'},...
+        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},...
         'excludeSolvers',{'dqqMinos','quadMinos'},...
         'minimalMatlabSolverVersion',8.0);
     threadsForFVA = [1, 2];
 catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
-    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,'useSolversIfAvailable',{'gurobi'},'minimalMatlabSolverVersion',8.0);
+    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,...
+        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},'minimalMatlabSolverVersion',8.0);
 end
 
 printText = {'single-thread', 'parallel'};
@@ -149,39 +148,40 @@ for threads = threadsForFVA
                     
                     % For flux distributions for minFlux
                     % check that solutions with minNormMethod = 0-norm should have small 0-norms
-                    minValue = min(min(normMin(:, :, 1)));
-                    assert(all(normMin(:, 2, 1) < 1.03 * minValue))  % a larger deviation allowed for 0-norm minimization
+                    minValue = min(normMin(:, :, 1), [], 2);
+                    assert(all(normMin(:, 2, 1) <= minValue))
+                    % a larger deviation allowed for 0-norm minimization,
+                    % since the approximation algorithm used by sparseFBA
+                    % for 0-norm might find a 0-norm slightly higher than
+                    % solving the original MILP
+                    assert(all(normMin(:, 2, 1) < 1.02 * min(minValue)))
                     % check that solutions with minNormMethod = 1-norm should have small 1-norms
                     minValue = min(normMin(:, :, 2), [], 2);
                     assert(all(normMin(:, 3, 2) <= minValue))
-                    assert(all(normMin(:, 3, 2) < (1 + 1e-5) * min(normMin(:, 3, 2))))
+                    assert(all(normMin(:, 3, 2) < (1 + tol) * min(minValue)))
                     % check that solutions with minNormMethod = 2-norm should have small 2-norms
                     minValue = min(normMin(:, :, 3), [], 2);
                     assert(all(normMin(:, 4, 3) <= minValue))
-                    assert(all(normMin(:, 4, 3) < (1 + 1e-5) * min(normMin(:, 4, 3))))
+                    assert(all(normMin(:, 4, 3) < (1 + tol) * min(minValue)))
                     
                     % For flux distributions for maxFlux
                     % check that solutions with minNormMethod = 0-norm should have small 2-norms
-                    minValue = min(min(normMax(:, :, 1)));
-                    assert(all(normMax(:, 2, 1) < 1.03 * minValue)) % a larger deviation allowed for 0-norm minimization
+                    minValue = min(normMax(:, :, 1), [], 2);
+                    assert(all(normMax(:, 2, 1) <= minValue))
+                    assert(all(normMax(:, 2, 1) < 1.02 * min(minValue))) % a larger deviation allowed for 0-norm minimization
                     % check that solutions with minNormMethod = 1-norm should have small 1-norms
                     minValue = min(normMax(:, :, 2), [], 2);
                     assert(all(normMax(:, 3, 2) <= minValue))
-                    assert(all(normMax(:, 3, 2) < (1 + 1e-5) * min(normMax(:, 3, 2))))
+                    assert(all(normMax(:, 3, 2) < (1 + tol) * min(minValue)))
                     % check that solutions with minNormMethod = 0-norm should have small 0-norms
                     minValue = min(normMax(:, :, 3), [], 2);
                     assert(all(all(normMax(:, 4, 3) <= minValue)))
-                    assert(all(normMax(:, 4, 3) < (1 + 1e-5) * min(normMax(:, 4, 3))))
+                    assert(all(normMax(:, 4, 3) < (1 + tol) * min(minValue)))
                     
                 end
             end
         end
     end
-end
-
-% restore the feasibility tolerance
-for j = 1:numel(problemType)
-    changeCobraSolverParams(problemType{j}, 'feasTol', feasTol(j));
 end
 
 % change the directory
