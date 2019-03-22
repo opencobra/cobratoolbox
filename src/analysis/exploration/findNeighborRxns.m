@@ -58,6 +58,10 @@ neighborRxns = {};
 neighborGenes = {};
 mets = [];
 
+if (isempty(intersect('rxnGeneMat', fieldnames(model))))
+    model = buildRxnGeneMat(model);
+end
+
 % get model ids for common mets by first mapping to their compartment specific names
 if ~withComp
 	commonCompartmentalizedMets = {};
@@ -70,6 +74,12 @@ else
 	commonCompartmentalizedMets = commonMets;
 end
 commonMetsIndex = findMetIDs(model, commonCompartmentalizedMets);
+maxMetIndex = 0;
+genePos = false(size(model.genes));
+neighborRxns = cell(size(0));
+neighborGenes = cell(size(0));
+
+
 
 % start to find neighbors
 for i = 1:numel(rxns)
@@ -77,33 +87,38 @@ for i = 1:numel(rxns)
 	runningRxnIndex  = numel(neighborRxns);
 	runningGeneIndex = numel(neighborGenes);
 	rxn = rxns{i};
+    currentRxnID = findRxnIDs(model,rxn);
 
 	%get the metabolites in the rxn and exclude common ones
 	metIndex = find(model.S(:,findRxnIDs(model,rxn)));
 	metIndex = setdiff(metIndex,commonMetsIndex);
 
-
 	%get the rxns for each met
-	nRxnIndexs = {};
-	for i = 1:length(metIndex)
-    	nRxnIndexs{i} = find(model.S(metIndex(i),:));
-	end
+	nRxnIndexs = cell(50, 1);
+	for j = 1:length(metIndex)
+    	nRxnIndexs{j} = find(model.S(metIndex(j),:));
+        % remove target rxn from list
+        nRxnIndexs{j} = setdiff(nRxnIndexs{j}, currentRxnID);
+        maxMetIndex = max(length(nRxnIndexs{j}), maxMetIndex);
+    	neighborRxns{runningRxnIndex + j} = model.rxns(nRxnIndexs{j});
+    end
 
-	% remove target rxn from list
-	for i = 1:length(metIndex)
-    	nRxnIndexs{i} = setdiff(nRxnIndexs{i},findRxnIDs(model,rxn));
-	end
-
-	for i = 1:length(metIndex)
-    	neighborRxns{runningRxnIndex + i} = model.rxns(nRxnIndexs{i});
-	end
-
-	%get genes for each rxn
-	for i = 1:length(metIndex)
-        allpos = regexp(model.rules(nRxnIndexs{i}),'x\((?<IDs>[0-9]+)\)','names');        
-        genes = cellfun(@(x) cellfun(@str2num, {x.IDs}),allpos, 'UniformOutput', 0);
-        neighborGenes{runningGeneIndex + i} = cellfun(@(x) strjoin(model.genes(unique(x)),'; '),genes,'Uni',false);
-	end
+    %get genes for each rxn
+    for j = 1:length(metIndex)
+        allpos = logical(model.rxnGeneMat(nRxnIndexs{j}, :));
+        if asSingleArray
+            genePos = genePos | any(allpos', 2);
+        else
+        genes2 = cell(length(nRxnIndexs{j}), 1);
+        for k=1:size(allpos, 1)
+            genes2{k, 1} = strjoin(model.genes(allpos(k, :)), '; ');
+        end
+        neighborGenes{runningGeneIndex + j} = genes2;
+        end
+    end
+    if asSingleArray
+        neighborGenes = model.genes(genePos);
+    end
 
 	mets = unique([mets; model.mets(metIndex)]);
 end
@@ -111,21 +126,21 @@ end
 
 if asSingleArray
 	neighborRxnsTmp  = neighborRxns;
-	neighborGenesTmp = neighborGenes;
-	neighborRxns  = {};
-	neighborGenes = {};
+	neighborRxns  = repmat({''}, maxMetIndex, 1);
+    currentIndex = 1;
 	for i=1:numel(neighborRxnsTmp)
-		neighborRxns  = [neighborRxns; neighborRxnsTmp{i}];
-		neighborGenes = [neighborGenes; neighborGenesTmp{i}];
+        indexStep = length(neighborRxnsTmp{i});
+		neighborRxns(currentIndex:(currentIndex+indexStep - 1), 1)  = neighborRxnsTmp{i};
+        currentIndex = currentIndex + indexStep;
 	end
 	neighborRxns  = unique(neighborRxns);
-	neighborGenes = unique(neighborGenes);
 	% remove empty GPR
 	neighborGenes= neighborGenes(~cellfun(@isempty, neighborGenes));
+    neighborRxns = neighborRxns(~cellfun(@isempty, neighborRxns));
 end
 
 % recursively find higher order neighbors
-if order >=2 & asSingleArray
+if order >=2 && asSingleArray
 	[recursiveNeighborRxns, recursiveNeighborGenes, recursiveMets] = ...
 		findNeighborRxns(model, neighborRxns', asSingleArray, order -1 ,  commonMets);
 	neighborRxns = unique([neighborRxns; recursiveNeighborRxns]);
