@@ -99,7 +99,7 @@ validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPerc
 % get all potentially supplied COBRA parameter names
 problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 
-[funParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams');
+[funParams, cobraParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams');
 
 % solverParams not outputted as a function parameter since it is individually handled and embedded in solverVarargin
 [optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, advind, threads] = deal(funParams{:});

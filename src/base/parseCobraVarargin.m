@@ -1,11 +1,11 @@
-function [funParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, defaultValues, validator, problemTypes, keyForSolverParams)
+function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, defaultValues, validator, problemTypes, keyForSolverParams)
 % Parse varargin for a COBRA function to obtain function inputs and
 % cobra-problem-specific parameters. Used to handle inputs for functions
 % supporting all of (i) direct argument inputs, (ii) name-value inputs, and
 % (iii) parameter structure inputss
 %
 % USAGE:
-%    [funParams, solverVaragin] = parseCobraVarargin(optArgin, defaultValues, validator, problemTypes, varArgIn)
+%    [funParams, cobraParams, solverVaragin] = parseCobraVarargin(optArgin, defaultValues, validator, problemTypes, varArgIn)
 %
 % INPUTS:
 %    varArgIn:          cell array of additional inputs for the function (= varargin in that function)
@@ -27,6 +27,8 @@ function [funParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, de
 % OUTPUTS:
 %    funParams:          cell array of optional argument inputs corresponding to optArgin.
 %                         Can be assigned in the function easily by [argIn1, argIn2, ...] = deal(funParams{:})
+%    cobraParams:        structure containing parsed cobra parameters for each problem type in `problemTypes`, 
+%                        to be used within the cobra function being written.
 %    solverVaragin:      structure containing parsed cobra-problem-specific addition inputs for each problem type in `problemTypes`,
 %                        e.g., solverVarargin.LP contains the additional inputs for solveCobraLP,
 %                        called as solveCobraLP(LPproblem, solverVarargin.LP{:})
@@ -44,10 +46,12 @@ pSpos = 1;
 % parse the inputs accordingly.
 paramValueInput = false;
 if ~isempty(varArgIn)
-    %Check if we have parameter/value inputs.
+    % Check if we have parameter/value inputs.
     
-    % if `solverParams` (solver-specific parameters) is an explicit function input argument (which is not
-    % encouraged since together with other Cobra parameters it can be inputted after the function arguments),
+    % Handle the case where `keyForSolverParams` (solver-specific parameters) is an explicit function input argument 
+    % (which is NOT encouraged when writing cobra functions because the solver-specific parameter 
+    %  structure as a convention among cobra functions can be inputted as a structure without keyword ),
+    
     % detect if it is supplied as a direct input.
     % Order of solverParams in the direct input (0 if not in there):
     PosSolverParams = 0;
@@ -72,9 +76,9 @@ if ~isempty(varArgIn)
     for pSpos = 1:numel(varArgIn)
         if isstruct(varArgIn{pSpos})
             if pSpos == PosSolverParams && numel(varArgIn) > 7  
-                % For backward compatibility, the 7-th optional input solverParam is a solver parameter structure
+                % if PosSolverParams is non-zero and a solver-specific parameter structure is a direct input
                 % Put it as the last argument, as if the standard way of inputting solver-specific parameter structure
-                % but if solverParam is the last optional input, then no need to change. But need to break with the paramValueInput flag on
+                % but if the structure is the last optional input, then no need to change. But need to break with the paramValueInput flag on
                 varArgIn = [varArgIn(1:(pSpos - 1)), varArgIn((pSpos + 1):end), varArgIn(pSpos)];
             else
                 % its a struct, so yes, we do have additional inputs.
@@ -109,7 +113,7 @@ else
     end
     % if 'solverParams' is inputted as a keyword. Delete the keyword and move the parameter structure 
     % to the end to be consistent with the standard cobra way of input
-    idSolverParams = cellfun(@(x) strncmpi(x, 'solverParams', length(x)), varArgIn);
+    idSolverParams = cellfun(@(x) ischar(x) && strncmpi(x, 'solverParams', length(x)), varArgIn);
     if any(idSolverParams)
         f = find(idSolverParams);
         varArgIn = [varArgIn(1:(f - 1)), varArgIn((f + 1):end), varArgIn(f + 1)];
@@ -124,7 +128,7 @@ else
         end
     end
     
-    % convert the input parameters into N x 2 [name; value] cell array
+    % convert the input parameters into 2 x N [name; value] cell array
     nameValueParams = inputParamsToCells(varArgIn);
     % now, we create a new parser, that parses all algorithm specific
     % inputs.
