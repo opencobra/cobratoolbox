@@ -17,12 +17,12 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 % OPTIONAL INPUTS:
 %    problemTypes:       cell array of cobra supported optimization problems needed to solve in the function
 %                        (default {'LP', 'MILP', 'QP', 'MIQP'})
-%    keyForSolverParams: the keyword for solver-specific parameter structure in optArgin 
-%                        if solver-specific parameter structure is an explicit optional input argument in optArgi,
-%                        which is NOT encouraged when writing cobra functions because the solver-specific parameter 
-%                        structure as a convention among cobra functions can be inputted as a structure without keyword 
-%                        and is handled this way in this parsing process. If this is the case, provide the keyword and 
-%                        it will be handled (default '')
+%    keyForSolverParams: the keyword for solver-specific parameter structure in `optArgin` if solver-specific parameter structure
+%                        is an explicit optional input argument in optArgi (which is NOT encouraged when writing cobra functions
+%                        because the solver-specific parameter structure as a convention among cobra functions can be inputted 
+%                        without keyword and is handled this way in this parsing process). 
+%                        If this is the case, provide the keyword and it will be handled (default ''). Note that in this case
+%                        the solver parameter structure will not be included in `funParams` but instead integrated in `solverVaragin`
 %
 % OUTPUTS:
 %    funParams:          cell array of optional argument inputs corresponding to optArgin.
@@ -34,10 +34,15 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 %                        called as solveCobraLP(LPproblem, solverVarargin.LP{:})
 
 if nargin < 5 || isempty(problemTypes)
-    problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
+    problemTypes = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
+elseif any(~ismember(problemTypes, {'LP', 'MILP', 'QP', 'MIQP', 'NLP'}))
+    if ischar(problemTypes), problemTypes = {problemTypes}; end
+    error('Input %s for `ProblemTypes` not supported. Only ''LP'', ''MILP'', ''QP'' and ''MIQP'' are supported', strjoin(problemTypes, ', '))
 end
 if nargin < 6
     keyForSolverParams = '';
+elseif ~ischar(keyForSolverParams)
+    error('Input `keyForSolverParams` must be a string')
 end
 
 cobraOptions = getCobraSolverParamsOptionsForType(problemTypes);
@@ -50,24 +55,26 @@ if ~isempty(varArgIn)
     
     % Handle the case where `keyForSolverParams` (solver-specific parameters) is an explicit function input argument 
     % (which is NOT encouraged when writing cobra functions because the solver-specific parameter 
-    %  structure as a convention among cobra functions can be inputted as a structure without keyword ),
+    %  structure as a convention among cobra functions can be inputted as a structure without keyword )
     
-    % detect if it is supplied as a direct input.
-    % Order of solverParams in the direct input (0 if not in there):
+    % If this is the case, detect if it is supplied as a direct input or name-value argument:
+    % Order of `keyForSolverParams` in the optional input optArgin (0 if not in there):
     PosSolverParams = 0;
     idTmp = strcmp(optArgin, keyForSolverParams);
     if any(idTmp)
-        % if the keyword is found (i.e., solver parameters inputted as name-value argument)
-        % remove the keyword and put the structure at the end
-        sPInVin = find(strcmp(varArgIn, keyForSolverParams));
+        % check if `keyForSolverParams` is supplied as name-value input
+        sPInVin = find(cellfun(@(x) ischar(x) && strncmpi(x, keyForSolverParams, length(x)), varArgIn));
         if ~isempty(sPInVin) && numel(sPInVin) ~= numel(varArgIn)
+            % if the keyword is found (i.e., solver parameters inputted as name-value argument)
+            % remove the keyword and put the structure at the end
             varArgIn = [varArgIn(1:(sPInVin - 1)), ...
                 varArgIn((sPInVin + 2):end), varArgIn(sPInVin + 1)];
         else
-            % keyword not found, may be a direct input
+            % keyword not found in varargin, could still be a direct input. Detected below
             PosSolverParams = find(idTmp);
         end
-        % remove the keyword from optArgin, defaultValues and validator
+        % remove the keyword from optArgin, defaultValues and validator. It will not
+        % be in the output funParams, but integrated into solverVaragin instead
         optArgin = optArgin(~idTmp);
         defaultValues = defaultValues(~idTmp);
         validator = validator(~idTmp);
@@ -75,10 +82,12 @@ if ~isempty(varArgIn)
         
     for pSpos = 1:numel(varArgIn)
         if isstruct(varArgIn{pSpos})
-            if pSpos == PosSolverParams && numel(varArgIn) > 7  
+            if pSpos == PosSolverParams && numel(varArgIn) > PosSolverParams  
                 % if PosSolverParams is non-zero and a solver-specific parameter structure is a direct input
-                % Put it as the last argument, as if the standard way of inputting solver-specific parameter structure
-                % but if the structure is the last optional input, then no need to change. But need to break with the paramValueInput flag on
+                % Put it as the last argument, as if the standard way of inputting solver-specific parameter structure.
+                % Then continue to see if the next input is a direct input.
+                % If the structure is the last optional input, then no need to change. 
+                % But need to break with the paramValueInput flag on
                 varArgIn = [varArgIn(1:(pSpos - 1)), varArgIn((pSpos + 1):end), varArgIn(pSpos)];
             else
                 % its a struct, so yes, we do have additional inputs.
@@ -88,7 +97,7 @@ if ~isempty(varArgIn)
         end
         if ischar(varArgIn{pSpos}) && (any(strncmpi(varArgIn{pSpos}, optArgin, length(varArgIn{pSpos}))) ...
                 || any(ismember(varArgIn{pSpos}, cobraOptions)))
-            % its a keyword (support partial matching), so yes, we have paramValu input.
+            % its a keyword (partial matching supported), so yes, we have paramValue input.
             paramValueInput = true;
             break
         end    
@@ -105,18 +114,12 @@ if ~paramValueInput
     end    
     parser.parse(varArgIn{1:min(numel(varArgIn),numel(optArgin))});  
 else
-    % we do have solve specific parameters, so we need to also
+    % we do have solve specific parameters. 
+    % Add the setting for the detected direct input to the parser first
     optArgs = varArgIn(1:pSpos-1);
     varArgIn = varArgIn(pSpos:end);
     for jArg = 1:numel(optArgs)
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
-    end
-    % if 'solverParams' is inputted as a keyword. Delete the keyword and move the parameter structure 
-    % to the end to be consistent with the standard cobra way of input
-    idSolverParams = cellfun(@(x) ischar(x) && strncmpi(x, 'solverParams', length(x)), varArgIn);
-    if any(idSolverParams)
-        f = find(idSolverParams);
-        varArgIn = [varArgIn(1:(f - 1)), varArgIn((f + 1):end), varArgIn(f + 1)];
     end
     if mod(numel(varArgIn),2) == 1
         % this should indicate, that there is an LP solver struct somewhere!
@@ -130,8 +133,7 @@ else
     
     % convert the input parameters into 2 x N [name; value] cell array
     nameValueParams = inputParamsToCells(varArgIn);
-    % now, we create a new parser, that parses all algorithm specific
-    % inputs.
+    % now, add the setting for the detected parameter-value inputs
     for jArg = numel(optArgs)+1:numel(optArgin)
         parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});
     end
@@ -151,7 +153,7 @@ else
     parser.parse(optArgs{:},functionParams{:});
 end
 
-% fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter structure
+% fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter
 
 % get the true solver-specific parameter structure by excluding all cobra options
 solverParams = rmfield(otherParams, intersect(cobraOptions, fieldnames(otherParams)));
