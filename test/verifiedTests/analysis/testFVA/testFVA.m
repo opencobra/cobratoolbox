@@ -23,6 +23,8 @@ tol = 1e-4;
 % load the model
 model = readCbModel('Ec_iJR904.mat');
 load('testFVAData.mat');
+minFlux = minFlux(:);
+maxFlux = maxFlux(:);
 loopToyModel = createToyModelForgapFind();
 
 threadsForFVA = 1;
@@ -30,15 +32,16 @@ try
     if isempty(gcp('nocreate'))
         parpool(2);
     end
-    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,...
-        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},...
+    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
+        'useSolversIfAvailable',{'ibm_cplex'; 'gurobi'},...
         'excludeSolvers',{'dqqMinos','quadMinos'},...
         'minimalMatlabSolverVersion',8.0);
-    threadsForFVA = [1, 2];
+    threadsForFVA = [2, 1];
 catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
-    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true,'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},'minimalMatlabSolverVersion',8.0);
+    solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
+        'useSolversIfAvailable',{'ibm_cplex'; 'gurobi'},'minimalMatlabSolverVersion',8.0);
 end
 
 printText = {'single-thread', 'parallel'};
@@ -92,15 +95,92 @@ for threads = threadsForFVA
                 assert(maxMinusMin - tol <= maxTMinusMinT)
                 assert(maxTMinusMinT <= maxMinusMin + tol)
             end
-
+            
+             % test parameter-value inputs
+             rxnTest = rxnNames(1:5);
+             inputToTest = {{90, 'max', 'rxnNameList', rxnTest}; ...
+                 {90, 'osenseStr', 'max', 'rxnNameList', rxnTest, 'allowLoops', 1}; ...
+                 {'optPercentage', 90, 'rxnNameList', rxnTest}; ...
+                 {'opt', 90, 'r', rxnTest}};  % test partial matching
+             for j = 1:numel(inputToTest)
+                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
+                 assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+                 assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+             end
+             
+             % test ambiguous partial matching
+             assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
+                    'input', {model, 'o', 90, 'rxnNameList', rxnTest}, ...
+                    'testMessage', '''o'' matches multiple parameter names: ''optPercentage'', ''osenseStr''. To avoid ambiguity, specify the complete name of the parameter.'))
+             
+             % test cobra parameters (saveInput gives easily detectable readouts)
+             inputToTest = {{90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}; ...
+                 {90, 'rxnNameList', rxnTest, struct('saveInput', 'testFVAparamValue')}; ...
+                 {'optPercentage', 90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}};
+             if exist('testFVAparamValue.mat', 'file')
+                 delete('testFVAparamValue.mat')
+             end
+             for j = 1:numel(inputToTest)
+                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
+                 assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+                 assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+                 assert(logical(exist('testFVAparamValue.mat', 'file')))
+                 delete('testFVAparamValue.mat')
+             end
+             
+            % test cobra + solver-specific parameters
+            solverParams = {};
+            if strcmp(currentSolver, 'gurobi')
+                % 0 time allowed, infeasible
+                solverParams = struct('saveInput', 'testFVAparamValue', 'TimeLimit', 0);
+            elseif strcmp(currentSolver, 'ibm_cplex')
+                % no iteration allowed, infeasible 
+                solverParams = struct('saveInput', 'testFVAparamValue', 'lpmethod', 1);
+                solverParams.simplex.limits.iterations = 0; 
+            end
+            if ~isempty(solverParams)
+                assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
+                    'input', {model, 90,  solverParams, 'rxnNameList', rxnTest}, ...
+                    'testMessage', 'The FVA could not be run because the model is infeasible or unbounded'))
+                assert(logical(exist('testFVAparamValue.mat', 'file')))
+                delete('testFVAparamValue.mat')
+            end
+            
+            % all inputs in one single structure
+            inputStruct = struct('opt', 90, 'saveInput', 'testFVAparamValue');
+            inputStruct.rxn = rxnTest;
+            [minFluxT, maxFluxT] = fluxVariability(model, inputStruct);
+            assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+            assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+            assert(logical(exist('testFVAparamValue.mat', 'file')))
+            delete('testFVAparamValue.mat')
+            
+            if strcmp(currentSolver, 'gurobi')
+                inputStruct.TimeLimit = 0;
+                inputStruct.BarIterLimit = 0;
+                inputStruct.IterationLimit = 0;
+            elseif strcmp(currentSolver, 'ibm_cplex')
+                inputStruct.lpmethod = 1;
+                inputStruct.simplex.limits.iterations = 0; 
+                inputStruct.timelimit = 0;
+                inputStruct.barrier.limits.iteration = 0;
+            end
+            if strcmp(currentSolver, 'gurobi') || strcmp(currentSolver, 'ibm_cplex')
+                assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
+                    'input', {model, inputStruct}, ...
+                    'testMessage', 'The FVA could not be run because the model is infeasible or unbounded'))
+                assert(logical(exist('testFVAparamValue.mat', 'file')))
+                delete('testFVAparamValue.mat')
+            end
+            
             % Vmin and Vmax test
             % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
-            rxnNames = {'PGI', 'PFK', 'FBP', 'FBA'};
+            rxnNamesForV = {'PGI', 'PFK', 'FBP', 'FBA'};
             
             % testing default FVA with 2 printLevels
             for j = 0:1
                 fprintf('    Testing flux variability with printLevel %s:\n', num2str(j));
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNames, j, 1, 'threads', threads);
+                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, j, 1, 'threads', threads);
                 assert(~isequal(Vmin, []));
                 assert(~isequal(Vmax, []));
             end
@@ -115,18 +195,19 @@ for threads = threadsForFVA
                 
             for j = 1:length(testMethods)
                 fprintf('    Testing flux variability with test method %s:\n', testMethods{j});
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNames, 1, 1, testMethods{j}, 'threads', threads);
+                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
                 assert(~isequal(Vmin, []));
                 assert(~isequal(Vmax, []));
+
                 % this only works on cplex! all other solvers fail this
                 % test.... However, we should test it on the CI for
                 % functionality checks.
                 % (It didn't work probably because of the wrong ordering
                 % previously used)
                 %if strcmp(solverPkgs.QP{k},'ibm_cplex')
-                constraintModel = addCOBRAConstraints(model,{'PFK'},1);
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNames, 1, 1, testMethods{j}, 'threads', threads);
-                assert(maxFluxT(ismember(rxnNames,'PFK')) - 1 <= tol);
+                constraintModel = addCOBRAConstraints(model, {'PFK'}, 1);
+                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
+                assert(maxFluxT(ismember(rxnNamesForV,'PFK')) - 1 <= tol);
                 assert(~isequal(Vmin, []));
                 assert(~isequal(Vmax, []));
                 %end
@@ -134,12 +215,13 @@ for threads = threadsForFVA
             
             if doMILP
                 % output a success message
-                [minF,maxF] = fluxVariability(loopToyModel,1,'max',{'R1','R4'},0,0);
-                assert(abs(maxF(2))< tol); %While R4 can carry a flux of 1000, it can't do so without a loop
-                assert(abs(maxF(1) -500) < tol); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
-                assert(abs(minF(1)-5) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+                [minF, maxF] = fluxVariability(loopToyModel, 1, 'max', {'R1', 'R4'}, 0, 0);
+                assert(abs(maxF(2)) < tol); %While R4 can carry a flux of 1000, it can't do so without a loop
+                assert(abs(maxF(1) - 500) < tol); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
+                assert(abs(minF(1) - 5) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
                 assert(abs(minF(2)) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
-                assert(verifyCobraFunctionError('fluxVariability','outputArgCount',4,'input',{loopToyModel,1,'max',{'R1','R4'},0,0, 'minOrigSol', 'threads', threads}));
+                assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 4, ...
+                    'input', {loopToyModel, 1, 'max', {'R1', 'R4'}, 0, 0, 'minOrigSol', 'threads', threads}));
                 
                 %The below is an odd assertion, but since the minimal solution for reaction 1 is the minimal solution of the system,
                 %it has to be the same as the maximal solution for the second tested
@@ -195,5 +277,6 @@ for threads = threadsForFVA
 
 end
 
+            
 % change the directory
 cd(currentDir)

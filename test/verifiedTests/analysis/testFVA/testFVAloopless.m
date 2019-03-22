@@ -43,7 +43,7 @@ try
         'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},...
         'excludeSolvers',{'dqqMinos','quadMinos'},...
         'minimalMatlabSolverVersion',8.0);
-    threadsForFVA = [1, 2];
+    threadsForFVA = [2, 1];
 catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
