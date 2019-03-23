@@ -132,11 +132,17 @@ for threads = threadsForFVA
             solverParams = {};
             if strcmp(currentSolver, 'gurobi')
                 % 0 time allowed, infeasible
-                solverParams = struct('saveInput', 'testFVAparamValue', 'TimeLimit', 0);
+                solverParams = struct('saveInput', 'testFVAparamValue');
+                solverParams.TimeLimit = 0;
+                solverParams.BarIterLimit = 0;
+                solverParams.IterationLimit = 0;
             elseif strcmp(currentSolver, 'ibm_cplex')
                 % no iteration allowed, infeasible 
-                solverParams = struct('saveInput', 'testFVAparamValue', 'lpmethod', 1);
+                solverParams = struct('saveInput', 'testFVAparamValue');
                 solverParams.simplex.limits.iterations = 0; 
+                solverParams.lpmethod = 1;
+                solverParams.timelimit = 0;
+                solverParams.barrier.limits.iteration = 0;
             end
             if ~isempty(solverParams)
                 assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
@@ -202,15 +208,20 @@ for threads = threadsForFVA
                 % this only works on cplex! all other solvers fail this
                 % test.... However, we should test it on the CI for
                 % functionality checks.
-                % (It didn't work probably because of the wrong ordering
-                % previously used)
-                %if strcmp(solverPkgs.QP{k},'ibm_cplex')
-                constraintModel = addCOBRAConstraints(model, {'PFK'}, 1);
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
-                assert(maxFluxT(ismember(rxnNamesForV,'PFK')) - 1 <= tol);
-                assert(~isequal(Vmin, []));
-                assert(~isequal(Vmax, []));
-                %end
+                
+                if any(strcmp(currentSolver, {'gurobi', 'ibm_cplex'}))
+                    constraintModel = addCOBRAConstraints(model, {'PFK'}, 1);
+                    if strcmp(solverPkgs.QP{k},'ibm_cplex')
+                        [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
+                    else
+                        % using automatic determination of LP method for solving QP seems to return wrong dual values...
+                        % Fixing it to either primal simplex or barrier appears to work...
+                        [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(constraintModel, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads, struct('Method', 0));
+                    end
+                    assert(maxFluxT(ismember(rxnNamesForV,'PFK')) - 1 <= tol);
+                    assert(~isequal(Vmin, []));
+                    assert(~isequal(Vmax, []));
+                end
             end
             
             if doMILP
