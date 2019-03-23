@@ -18,9 +18,9 @@ cd(fileDir);
 
 % set all cobra parameters to default values
 [paramNames, paramDefault] = deal(struct());
-for str = {'LP', 'MILP'}
+for str = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'}
     paramNames.(str{1}) = getCobraSolverParamsOptionsForType(str{1});
-    paramDefault.(str{1}) = cell(numel(paramNames.(str{1})), 1);
+    paramDefault.(str{1}) = cell(1, numel(paramNames.(str{1})));
     [paramDefault.(str{1}){:}] = getCobraSolverParams(str{1}, paramNames.(str{1}), 'default');
     for j = 1:numel(paramNames.(str{1}))
         changeCobraSolverParams(str{1}, paramNames.(str{1}){j}, paramDefault.(str{1}){j});
@@ -30,16 +30,24 @@ end
 optArgin = {'aIn', 'aIn2', 'bIn'};
 defaultValues = {[], 'test', 2};
 validator = {@(x) true, @ischar, @(x) isscalar(x) & isnumeric(x)};
-problemTypes = {'LP', 'MILP'};
 
 % test getting default values
-[funParams, cobraParams, solverVarargin] = parseCobraVarargin({}, optArgin, defaultValues, validator, problemTypes);
+[funParams, cobraParams, solverVarargin] = parseCobraVarargin({}, optArgin, defaultValues, validator, {'LP', 'MILP', 'QP', 'MIQP', 'NLP'});
 [aIn, aIn2, bIn] = deal(funParams{:});
 assert(isequal(aIn, []) & isequal(aIn2, 'test') & isequal(bIn, 2))
-assert(isequal(cobraParams.LP, struct('minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-09,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0)))
-assert(isequal(cobraParams.MILP, struct('intTol',1.00000000000000e-12,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-09,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0)))
-assert(isequal(solverVarargin.LP, {struct(),'minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-09,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0}))
-assert(isequal(solverVarargin.MILP, {struct(),'intTol',1.00000000000000e-12,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-09,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0}))
+for str = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'}
+    cobraParamsCorrect = [paramNames.(str{1}); paramDefault.(str{1})];
+    cobraParamsCorrectStruct = struct(cobraParamsCorrect{:});
+    % all fields the same except 'solver'
+    assert(isequal(rmfield(cobraParams.(str{1}), 'solver'), rmfield(cobraParamsCorrectStruct, 'solver')))
+    % first argument in solverVarargin being empty structure
+    assert(isequal(solverVarargin.(str{1}){1}, struct()))
+    % all other fields the same except 'solver'
+    assert(isequal(rmfield(struct(solverVarargin.(str{1}){2:end}), 'solver'), rmfield(struct(cobraParamsCorrect{:}), 'solver')))
+end
+
+problemTypes = {'LP', 'MILP'};
+
 
 % test all direct inputs
 [funParams, cobraParams, solverVarargin] = parseCobraVarargin({{'cobraIsFun'}, 'testDirectInputs', 999}, optArgin, defaultValues, validator, problemTypes);
@@ -141,14 +149,24 @@ assert(isequal(solverVarargin.LP, {struct('Presolve', 0),'minNorm',0,'printLevel
 assert(isequal(solverVarargin.MILP, {struct('Presolve', 0),'intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0}))
 
 % aIn is an explicit solver param input
-[funParams, cobraParams, solverVarargin] = parseCobraVarargin({struct('Presolve', 0), struct('feasTol', 1e-8, 'intTol', 1e-9, 'bIn', 1e-8)}, optArgin, defaultValues, validator, problemTypes, 'aIn');
+[funParams, cobraParams, solverVarargin] = parseCobraVarargin({struct('Presolve', 0), 'aIn2correct', 'feasTol', 1e-8, 'intTol', 1e-9, 'bIn', 1e-8, 'IterationLimit', 1000}, optArgin, defaultValues, validator, problemTypes, 'aIn');
 assert(numel(funParams) == 2)
 [aIn2, bIn] = deal(funParams{:});
-assert(isequal(aIn, 'whatever') & isequal(aIn2, 'test') & isequal(bIn, 1e-8))
+assert(isequal(aIn2, 'aIn2correct') & isequal(bIn, 1e-8))
 assert(isequal(cobraParams.LP, struct('minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0)))
 assert(isequal(cobraParams.MILP, struct('intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0)))
-assert(isequal(solverVarargin.LP, {struct('Presolve', 0),'minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0}))
-assert(isequal(solverVarargin.MILP, {struct('Presolve', 0),'intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0}))
+assert(isequal(solverVarargin.LP, {struct('IterationLimit', 1000, 'Presolve', 0),'minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0}))
+assert(isequal(solverVarargin.MILP, {struct('IterationLimit', 1000, 'Presolve', 0),'intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0}))
+
+% aIn is an explicit solver param input and is inputted as parameter-value argument
+[funParams, cobraParams, solverVarargin] = parseCobraVarargin({'aIn2', 'aIn2correct', 'feasTol', 1e-8, 'aIn', struct('Presolve', 0, 'IterationLimit', 1000), 'intTol', 1e-9, 'bIn', 1e-8}, optArgin, defaultValues, validator, problemTypes, 'aIn');
+assert(numel(funParams) == 2)
+[aIn2, bIn] = deal(funParams{:});
+assert(isequal(aIn2, 'aIn2correct') & isequal(bIn, 1e-8))
+assert(isequal(cobraParams.LP, struct('minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0)))
+assert(isequal(cobraParams.MILP, struct('intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0)))
+assert(isequal(solverVarargin.LP, {struct('IterationLimit', 1000, 'Presolve', 0),'minNorm',0,'printLevel',0,'primalOnly',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0,'logFile','CobraLPSolver.log','lifting',0}))
+assert(isequal(solverVarargin.MILP, {struct('IterationLimit', 1000, 'Presolve', 0),'intTol',1.00000000000000e-9,'relMipGapTol',1.00000000000000e-12,'absMipGapTol',1.00000000000000e-12,'timeLimit',1.00000000000000e+36,'logFile','CobraMILPSolver.log','printLevel',0,'saveInput',[],'feasTol',1.00000000000000e-08,'optTol',1.00000000000000e-09,'solver','gurobi','debug',0}))
 
 
 assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
