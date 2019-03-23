@@ -107,6 +107,7 @@ end
 parser = inputParser();
 % parameters not matched to function input keywords
 otherParams = struct();
+knownSolverParamFields = {};
 if ~paramValueInput
     % we only have values specific to this function. Parse the data.
     for jArg = 1:numel(optArgin)
@@ -129,6 +130,13 @@ else
                 varArgIn = [varArgIn(1:i-1),varArgIn(i+1:end),varArgIn(i)];
             end
         end
+        if numel(varArgIn) > 1
+            % both parameter-value inputs and parameter structure input
+            % exist. Assume the parameter structure is solver-specific.
+            % This is to allow control when function keywords coincide with
+            % solver parameter names.
+            knownSolverParamFields = fieldnames(varArgIn{end});
+        end
     end
     
     % convert the input parameters into 2 x N [name; value] cell array
@@ -142,7 +150,10 @@ else
     functionParams = {};
     % build the parameter/value pairs array
     for i = 1:size(nameValueParams, 2)
-        if ~any(strncmpi(nameValueParams{1, i}, optArgin, length(nameValueParams{1, i})))
+        if ~any(strncmpi(nameValueParams{1, i}, optArgin, length(nameValueParams{1, i}))) ...
+                || any(strcmp(knownSolverParamFields, nameValueParams{1, i}))
+            % if it does not match any function keywords or is in the
+            % solver-specific parameter structure
             otherParams.(nameValueParams{1, i}) = nameValueParams{2, i};
         else
             functionParams(end+1:end+2) = nameValueParams(:, i)';
@@ -156,7 +167,10 @@ end
 % fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter
 
 % get the true solver-specific parameter structure by excluding all cobra options
-solverParams = rmfield(otherParams, intersect(cobraOptions, fieldnames(otherParams)));
+% no need to protect assumed solver-specific parameters here because the format of cobra
+% option keywords should not coincide with solver parameters (at least for gurobi and Cplex)
+fieldToExclude = intersect(cobraOptions, fieldnames(otherParams));
+solverParams = rmfield(otherParams, fieldToExclude);
 
 % get the cobra parameters for each problem type.
 [cobraParams, solverVarargin] = deal(struct());

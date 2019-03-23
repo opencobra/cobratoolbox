@@ -387,6 +387,7 @@ if ~parallelJob  % single-thread FVA
     for i = 1:length(rxnNameList)
         
         rxnID = findRxnIDs(model, rxnNameList(i));
+        objVector = sparse(rxnID, 1, 1, nRxns, 1);
         
         %Calc minimums
         allowLoopsI = allowLoops;
@@ -394,8 +395,7 @@ if ~parallelJob  % single-thread FVA
         % For LLCs, solve LP if the problem constraints do not necessitate the
         % loop law and the target reaction has its reverse diretion in loops
         if (~minSolved(i) || minNorm) && strncmpi(loopMethod, 'LLC', 3)
-            [allowLoopsI, MILPproblem] = processingLLCs('update', loopInfo, 'min', ...
-                MILPproblem, sparse(rxnID, 1, 1, nRxns, 1));
+            [allowLoopsI, MILPproblem] = processingLLCs('update', loopInfo, 'min', MILPproblem, objVector);
             if allowLoopsI
                 % solving LP is sufficient
                 LPproblem = LPproblemLLC;
@@ -418,8 +418,7 @@ if ~parallelJob  % single-thread FVA
         % For LLCs, solve LP if the problem constraints do not necessitate the
         % loop law and the target reaction has its forward diretion in loops
         if (~maxSolved(i) || minNorm) && strncmpi(loopMethod, 'LLC', 3)
-            [allowLoopsI, MILPproblem] = processingLLCs('update', loopInfo, 'max', ...
-                MILPproblem, sparse(rxnID, 1, 1, nRxns, 1));
+            [allowLoopsI, MILPproblem] = processingLLCs('update', loopInfo, 'max', MILPproblem, objVector);
             if allowLoopsI
                 % solving LP is sufficient
                 LPproblem = LPproblemLLC;
@@ -458,6 +457,7 @@ else % parallel job.  pretty much does the same thing.
         parLPproblem = LPproblem;
         
         rxnID = findRxnIDs(model, rxnNameList(i));
+        objVector = sparse(rxnID, 1, 1, nRxns, 1);
         
         %Calc minimums
         allowLoopsI = allowLoops;
@@ -465,9 +465,7 @@ else % parallel job.  pretty much does the same thing.
         % For LLCs, solve LP if the problem constraints do not necessitate the
         % loop law and the target reaction has its reverse diretion in loops
         if (~minSolved(i) || minNorm) && strncmpi(loopMethod, 'LLC', 3)
-            parMILPproblem = MILPproblem;
-            [allowLoopsI, parMILPproblem] = processingLLCs('update', loopInfo, 'min', ...
-                parMILPproblem, sparse(rxnID, 1, 1, nRxns, 1));
+            [allowLoopsI, parMILPproblem] = processingLLCs('update', loopInfo, 'min', MILPproblem, objVector);
             if allowLoopsI
                 % solving LP is sufficient
                 parLPproblem = LPproblemLLC;
@@ -490,9 +488,7 @@ else % parallel job.  pretty much does the same thing.
         % For LLCs, solve LP if the problem constraints do not necessitate the
         % loop law and the target reaction has its forward diretion in loops
         if (~maxSolved(i) || minNorm) && strncmpi(loopMethod, 'LLC', 3)
-            parMILPproblem = MILPproblem;
-            [allowLoopsI, parMILPproblem] = processingLLCs('update', loopInfo, 'max', ...
-                parMILPproblem, sparse(rxnID, 1, 1, nRxns, 1));
+            [allowLoopsI, parMILPproblem] = processingLLCs('update', loopInfo, 'max', MILPproblem, objVector);
             if allowLoopsI
                 % solving LP is sufficient
                 parLPproblem = LPproblemLLC;
