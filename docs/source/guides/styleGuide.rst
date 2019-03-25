@@ -211,7 +211,7 @@ Git commit messages
 
 .. |fire| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/fire.png" height="20px" width="20px" alt="fire">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/fire.png" height="20px" width="20px" alt="fire">
 
 
 .. |green_heart| raw:: html
