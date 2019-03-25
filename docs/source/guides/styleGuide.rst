@@ -191,7 +191,7 @@ Git commit messages
 
 .. |computer| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/computer.png" height="20px" width="20px" alt="computer">
 
 
 .. |bug| raw:: html

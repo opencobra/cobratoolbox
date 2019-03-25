@@ -125,7 +125,7 @@ Provide more context by answering these **questions**:
 
 .. |computer| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/computer.png" height="20px" width="20px" alt="computer">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/computer.png" height="20px" width="20px" alt="computer">
 
 
 .. |tutorials| raw:: html
