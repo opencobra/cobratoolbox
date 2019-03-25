@@ -216,7 +216,7 @@ Git commit messages
 
 .. |green_heart| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/green_heart.png" height="20px" width="20px" alt="green_heart">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/green_heart.png" height="20px" width="20px" alt="green_heart">
 
 
 .. |memo| raw:: html
