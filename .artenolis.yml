@@ -24,7 +24,7 @@ after_success:
     - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" && "$JENKINS_PULL_REQUEST" != "True" ]]; then
       export PATH="/home/jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
-      python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
+      python $ARTENOLIS_SCRIPTS_PATH/src/github_stats.py $(pwd)/docs/source/list_contributors.rst;
       export GIT_LOCAL_BRANCH=${GIT_BRANCH##origin/};
       echo $GIT_LOCAL_BRANCH;
       cd $ARTENOLIS_DATA_PATH/repos/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
