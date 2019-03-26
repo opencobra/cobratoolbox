@@ -11,7 +11,7 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    - bash .artenolis/runtests.sh
+    #- bash .artenolis/runtests.sh
 
 after_success:
 
@@ -27,9 +27,6 @@ after_success:
       python $ARTENOLIS_SCRIPTS_PATH/src/github_stats.py $(pwd)/docs/source/list_contributors.rst;
       export GIT_LOCAL_BRANCH=${GIT_BRANCH##origin/};
       echo $GIT_LOCAL_BRANCH;
-      scp "$(pwd)/.artenolis/deployTutorials.sh" jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC;
-      ssh -t jenkins@lcsbs-mac-pro.uni.lux 'source ~/.profile && GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && sh $ARTENOLIS_ROOT_PATH_MAC/deployTutorials.sh';
-      scp -r jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC/scratch/tutorials $ARTENOLIS_DATA_PATH/cobratoolbox/.;
       cd $ARTENOLIS_DATA_PATH/repos/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
       cd $ARTENOLIS_DATA_PATH/repos/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
