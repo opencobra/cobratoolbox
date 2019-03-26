@@ -170,6 +170,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
@@ -305,6 +306,10 @@ reaction (default = 0)</p>
 <li><p class="first"><strong>rxnKO</strong> &#8211;
 Binary value. Calculate knock outs at reaction level
 instead of gene level. (default = false)</p>
+</li>
+<li><p class="first"><strong>listKO</strong> &#8211;
+Cell array containing the name of genes or
+reactions to knockout. (default = all)</p>
 </li>
 <li><p class="first"><strong>timelimit</strong> &#8211;
 Time limit for the calculation of each knockout.
@@ -626,9 +631,17 @@ problem (default = 0.66)</p>
 Numeric value or array. Minimun perturbation for each
 reaction (default = 0)</p>
 </li>
+<li><p class="first"><strong>parameterK</strong> &#8211;
+Numeric value value. Parameter to calculate rTS
+score. (default = 100)</p>
+</li>
 <li><p class="first"><strong>rxnKO</strong> &#8211;
 Binary value. Calculate knock outs at reaction level
 instead of gene level. (default = false)</p>
+</li>
+<li><p class="first"><strong>listKO</strong> &#8211;
+Cell array containing the name of genes or
+reactions to knockout. (default = all)</p>
 </li>
 <li><p class="first"><strong>timelimit</strong> &#8211;
 Time limit for the calculation of each knockout. (default = inf)</p>

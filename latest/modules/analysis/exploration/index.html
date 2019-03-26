@@ -170,6 +170,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
@@ -1456,16 +1457,24 @@ value that is considered as +Inf (or desired maximum cutoff value)</li>
 
 <dl class="function">
 <dt id="src.analysis.exploration.printFluxBounds">
-<code class="descname">printFluxBounds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/exploration/printFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.printFluxBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">printFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/exploration/printFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.exploration.printFluxBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints the reactionID and upper/lower flux bounds.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
-<div>printFluxBounds(model)</div></blockquote>
+<div>printFluxBounds(model, rxns)</div></blockquote>
 <p><strong>Input</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 The model to print</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxns</strong> &#8211;
+a string array of reaction ids for which flux bounds need to
+be printed</li>
 </ul>
 </div></blockquote>
 </dd></dl>

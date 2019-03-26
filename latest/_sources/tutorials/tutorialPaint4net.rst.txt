@@ -1,7 +1,7 @@
 .. _tutorialPaint4net:
 
-Paint4Net: visualisation toolbox for COBRA
-==========================================
+tutorialNoName
+==============
 
 
 .. raw:: html
@@ -9,7 +9,7 @@ Paint4Net: visualisation toolbox for COBRA
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/visualization/paint4Net/tutorial_paint4net.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/visualization/paint4Net/tutorial_paint4net.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>

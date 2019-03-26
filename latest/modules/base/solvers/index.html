@@ -324,6 +324,44 @@ NLP problem structure</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="src.base.solvers.buildCplexProblemFromCOBRAStruct">
+<code class="descname">buildCplexProblemFromCOBRAStruct</code><span class="sig-paren">(</span><em>Problem</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/solvers/buildCplexProblemFromCOBRAStruct.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildCplexProblemFromCOBRAStruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a cplex object from the given LP problem in COBRA Format
+<strong>Usage</strong></p>
+<blockquote>
+<div>cplexProblem = buildCplexProblemFromCOBRAStruct(LPproblem)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>LPproblem</strong> &#8211;
+A COBRA style Problem with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>.A - The equality and in equality matrix</li>
+<li>.b - The right hand side values of the constraints</li>
+<li>.ub - the upper bounds of the variables</li>
+<li>.lb - the lower bounds of the variables</li>
+<li>.osense - The objective sense (-1 for max, 1 for min)</li>
+<li>.c - the objective coefficient vector for the linear part</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>OPTIONAL:</dt>
+<dd><ul class="first last simple">
+<li>.F - The objective coefficient matrix for the quadratic part.</li>
+<li>.varType - The variable types for mixed integer problems (&#8216;I&#8217;, integer, &#8216;C&#8217;, continous,&#8217;B&#8217; binary)</li>
+<li>.b_L - left hand sides of the constraints (will only be used if csense is empty)</li>
+<li>.csense - The constraint senses, Default assumption is all &#8216;E&#8217;</li>
+<li>.x0 - Basis to use</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.base.solvers.buildLPproblemFromModel">
 <code class="descname">buildLPproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>checked</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.</p>
@@ -1464,8 +1502,12 @@ Structure contain the reformulated LP to be solved.</li>
 <dl class="function">
 <dt id="src.base.solvers.setCplexParam">
 <code class="descname">setCplexParam</code><span class="sig-paren">(</span><em>LP</em>, <em>solverParams</em>, <em>verbFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/solvers/setCplexParam.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.setCplexParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the parameters of the IBM ILOG CPLEX object according to the structure <cite>solverParams</cite></p>
-<p><strong>Usage</strong></p>
+<dd><p>Sets the parameters of the IBM ILOG CPLEX object according to the structure <cite>solverParams</cite>
+The <cite>solverParams</cite> structure has to contain the same structure as the
+Cplex.Param structue in a Cplex object. But values can be set by directly
+setting the respective parameter instead of the <cite>Cur</cite> value which would
+be necessary if directly modifying the Cplex.Param structure.
+<strong>Usage</strong></p>
 <blockquote>
 <div>LP = setCplexParam(LP, solverParams, verbFlag);</div></blockquote>
 <p><strong>Inputs</strong></p>
@@ -1485,6 +1527,34 @@ true to show which parameter input is problematic if any (optional, default true
 </li>
 </ul>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.base.solvers.setCplexParametersForProblem">
+<code class="descname">setCplexParametersForProblem</code><span class="sig-paren">(</span><em>cplexProblem</em>, <em>cobraParams</em>, <em>solverParams</em>, <em>problemType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/solvers/setCplexParametersForProblem.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.solvers.setCplexParametersForProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters for a specific problem from the COBRA Parameter
+structure and a solver specific parameter structre (latter has
+precedence). The cobra parameters structure contains fields as specified in
+<cite>getCobraSolverParamsOptionsForType</cite>, while solverParams needs to
+contain a structure compatible with <cite>setCplexParam</cite>.
+<strong>Usage</strong></p>
+<blockquote>
+<div>cplexProblem = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, ProblemType)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>cplexProblem</strong> &#8211;
+the Cplex() object to set the parameters</li>
+<li><strong>cobraParams</strong> &#8211;
+the COBRA parameter structure, with parameters as defined in
+<cite>getCobraSolverParamsOptionsForType</cite></li>
+<li><strong>solverParams</strong> &#8211;
+the solver specific parameter structure has to be compatible with <cite>setCplexParam</cite></li>
+<li><strong>problemType</strong> &#8211;
+The type of Problem (&#8216;LP&#8217;,&#8217;MILP&#8217;,&#8217;QP&#8217;,&#8217;MIQP&#8217;).</li>
+</ul>
+</div></blockquote>
+<p>set the printLevel to the cobra Parameters</p>
 </dd></dl>
 
 <dl class="function">

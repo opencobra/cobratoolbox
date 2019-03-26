@@ -1,7 +1,7 @@
 .. _tutorialMgPipe:
 
-Creation and simulation of personalized microbiota models through metagenomic data integration
-==============================================================================================
+tutorialNoName
+==============
 
 
 .. raw:: html
@@ -9,7 +9,7 @@ Creation and simulation of personalized microbiota models through metagenomic da
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/analysis/microbiomeModelingToolbox/tutorial_mgPipe.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/analysis/microbiomeModelingToolbox/tutorial_mgPipe.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>

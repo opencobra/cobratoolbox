@@ -1,7 +1,7 @@
 .. _tutorialMetabotoolsI:
 
-Metabotools tutorial I
-======================
+tutorialNoName
+==============
 
 
 .. raw:: html
@@ -9,7 +9,7 @@ Metabotools tutorial I
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/dataIntegration/metabotools/tutorial_I/tutorial_metabotoolsI.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/dataIntegration/metabotools/tutorial_I/tutorial_metabotoolsI.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>

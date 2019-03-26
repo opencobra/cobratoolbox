@@ -1,7 +1,7 @@
 .. _tutorialHostMicrobeInteractions:
 
-Computation and analysis of rescued lethal gene deletions in a host-microbe model
-=================================================================================
+tutorialNoName
+==============
 
 
 .. raw:: html
@@ -9,7 +9,7 @@ Computation and analysis of rescued lethal gene deletions in a host-microbe mode
     <div class="wrapper">
         <ul class="metro">
             <li class="small-tile-text color_class5 scale-10">
-                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/analysis/hostMicrobeInteractions/tutorial_hostMicrobeInteractions.pdf">
+                <a class="tile" style="width: 90px; height: 90px;" href="https://prince.lcsb.uni.lu/userContent/tutorials/analysis/hostMicrobeInteractions/tutorial_hostMicrobeInteractions.pdf">
                     <img src="https://prince.lcsb.uni.lu/img/icon5.png" height="90px" alt="PDF file">
                 </a>
                 <div>Download PDF</div>
