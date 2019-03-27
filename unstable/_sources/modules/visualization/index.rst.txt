@@ -27,6 +27,7 @@ Visualization
    cellDesigner/index
    maps/index
    metabolicCartography/index
+   visualizeEpistasis/index
 
 .. raw:: html
 

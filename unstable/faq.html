@@ -175,6 +175,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#what-do-all-these-labels-on-issues-and-prs-mean">What do all these labels on issues and PRs mean?</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#after-loading-a-model-i-get-errors-when-using-it-with-toolbox-functions-what-can-i-do">After loading a model, I get errors when using it with toolbox functions. What can I do?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
@@ -265,6 +269,10 @@
 <li><a class="reference internal" href="#github-contributing" id="id14">Github &amp; Contributing</a><ul>
 <li><a class="reference internal" href="#how-may-i-update-a-submodule" id="id15">How may I update a submodule?</a></li>
 <li><a class="reference internal" href="#what-do-all-these-labels-on-issues-and-prs-mean" id="id16">What do all these labels on issues and PRs mean?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#general" id="id17">General</a><ul>
+<li><a class="reference internal" href="#after-loading-a-model-i-get-errors-when-using-it-with-toolbox-functions-what-can-i-do" id="id18">After loading a model, I get errors when using it with toolbox functions. What can I do?</a></li>
 </ul>
 </li>
 </ul>
@@ -415,6 +423,24 @@ $ git push origin update-submodule
 <p>A comprehensive list of labels and their description for the issues and
 pull requests is given
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/labels.html">here</a>.</p>
+</div>
+</div>
+<div class="section" id="general">
+<h2><a class="toc-backref" href="#id17">General</a><a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="after-loading-a-model-i-get-errors-when-using-it-with-toolbox-functions-what-can-i-do">
+<h3><a class="toc-backref" href="#id18">After loading a model, I get errors when using it with toolbox functions. What can I do?</a><a class="headerlink" href="#after-loading-a-model-i-get-errors-when-using-it-with-toolbox-functions-what-can-i-do" title="Permalink to this headline">¶</a></h3>
+<p>If you used <code class="docutils literal"><span class="pre">load('filename.mat')</span></code> to load your model, you may encounter
+unexpected errors.  Please only use <code class="docutils literal"><span class="pre">readCbModel('filename.mat')</span></code>.  Many
+models stored in a MATLAB format (.mat) contain outdated data structures, which
+are no longer compatible with the COBRA Toolbox. The <code class="docutils literal"><span class="pre">readCbModel()</span></code> function
+tries to convert these models to the current format and will inform you whether
+this was successful or not.</p>
+<p>If the <code class="docutils literal"><span class="pre">readCbModel()</span></code> call was unsuccessful, please use <code class="docutils literal"><span class="pre">load</span></code> again to
+load your model struct and run <code class="docutils literal"><span class="pre">verifyModel(model)</span></code> to determine which fields
+in the model are problematic.  You can then either try to correct the fields,
+or remove them, if they are not necessary for your analysis.</p>
+<p>If this does not solve your problem, feel free to report an issue as described
+<a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/issueGuide.html">here</a>.</p>
 </div>
 </div>
 </div>

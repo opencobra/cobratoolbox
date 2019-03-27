@@ -168,7 +168,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
@@ -261,7 +263,7 @@
 <span id="id1"></span><h1>FBA<a class="headerlink" href="#fba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.FBA"></span><dl class="function">
 <dt id="src.analysis.FBA.changeObjective">
-<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/changeObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeObjective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/changeObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeObjective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes the objective function of a constraint-based model</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -293,7 +295,7 @@ COBRA model structure with new objective</li>
 
 <dl class="function">
 <dt id="src.analysis.FBA.changeRxnBounds">
-<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/changeRxnBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/changeRxnBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes upper or lower bounds of a reaction or a set of reactions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -331,7 +333,7 @@ COBRA model structure with modified reaction bounds</li>
 
 <dl class="function">
 <dt id="src.analysis.FBA.enumerateOptimalSolutions">
-<code class="descname">enumerateOptimalSolutions</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/enumerateOptimalSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.enumerateOptimalSolutions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">enumerateOptimalSolutions</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/enumerateOptimalSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.enumerateOptimalSolutions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a set of optimal flux distributions
 spanning the optimal set</p>
 <p><strong>Usage</strong></p>
@@ -359,7 +361,7 @@ solution structure<ul>
 
 <dl class="function">
 <dt id="src.analysis.FBA.minimizeModelFlux">
-<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/minimizeModelFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/minimizeModelFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds the minimum flux through the network and returns the
 minimized flux and an irreversible model</p>
 <p><strong>Usage</strong></p>
@@ -430,7 +432,7 @@ irreversible version of &#8216;model&#8217;</li>
 
 <dl class="function">
 <dt id="src.analysis.FBA.optimizeCbModel">
-<code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>zeroNormApprox</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/optimizeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>zeroNormApprox</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/optimizeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a flux balance analysis problem</p>
 <p>Solves LP problems of the form</p>
 <div class="math">
@@ -531,14 +533,16 @@ appoximation type of zero-norm (only available when minNorm=&#8217;zero&#8217;) 
 </div></blockquote>
 <p><strong>Output</strong></p>
 <blockquote>
+<div><ul>
+<li><p class="first"><strong>solution</strong> &#8211;
+solution object:</p>
+<blockquote>
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-solution object:<ul>
 <li>f - Objective value</li>
 <li>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</li>
-<li>y - Dual</li>
-<li>w - Reduced costs</li>
-<li>s - Slacks</li>
+<li>y - Dual for the metabolites</li>
+<li>w - Reduced costs of the reactions</li>
+<li>s - Slacks of the metabolites</li>
 <li>stat - Solver status in standardized form:<ul>
 <li><cite>-1</cite> - No solution reported (timelimit, numerical problem etc)</li>
 <li><cite>1</cite> - Optimal solution</li>
@@ -548,6 +552,21 @@ solution object:<ul>
 </li>
 <li>origStat - Original status returned by the specific solver</li>
 </ul>
+</div></blockquote>
+<p>If the input model contains <cite>C</cite> the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>ctrs_y - the duals for the constraints from C</li>
+<li>ctrs_slack - Slacks of the additional constraints</li>
+</ul>
+</div></blockquote>
+<p>If the model contains the <cite>E</cite> field, the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>vars_v - The optimal primal values of the variables</li>
+<li>vars_w - The reduced costs of the additional variables from E</li>
+</ul>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -566,7 +585,7 @@ case when no solution is returned, by checking the value of <cite>solution.stat<
 
 <dl class="function">
 <dt id="src.analysis.FBA.randomObjFBASol">
-<code class="descname">randomObjFBASol</code><span class="sig-paren">(</span><em>model</em>, <em>initArgs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/16f5c5bd3854e30c34f82c97bd73c0c83598ed19/src/analysis/FBA/randomObjFBASol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.randomObjFBASol" title="Permalink to this definition">¶</a></dt>
+<code class="descname">randomObjFBASol</code><span class="sig-paren">(</span><em>model</em>, <em>initArgs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/randomObjFBASol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.randomObjFBASol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves an FBA problem with a random objective function</p>
 <p><strong>Usage</strong></p>
 <blockquote>

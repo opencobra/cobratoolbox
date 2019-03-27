@@ -40,7 +40,9 @@ Analysis
    parsimoniousFBA/index
    relaxedFBA/index
    rFBA/index
+   rMTA/index
    robustnessAnalysis/index
+   ROOM/index
    rumba/index
    sampling/index
    sparseFBA/index

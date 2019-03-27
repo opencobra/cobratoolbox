@@ -187,4 +187,25 @@ A comprehensive list of labels and their description for the issues and
 pull requests is given
 `here <https://opencobra.github.io/cobratoolbox/docs/labels.html>`__.
 
+General
+-------
+
+After loading a model, I get errors when using it with toolbox functions. What can I do?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you used ``load('filename.mat')`` to load your model, you may encounter
+unexpected errors.  Please only use ``readCbModel('filename.mat')``.  Many
+models stored in a MATLAB format (.mat) contain outdated data structures, which
+are no longer compatible with the COBRA Toolbox. The ``readCbModel()`` function
+tries to convert these models to the current format and will inform you whether
+this was successful or not.
+
+If the ``readCbModel()`` call was unsuccessful, please use ``load`` again to
+load your model struct and run ``verifyModel(model)`` to determine which fields
+in the model are problematic.  You can then either try to correct the fields,
+or remove them, if they are not necessary for your analysis.
+
+If this does not solve your problem, feel free to report an issue as described
+`here <https://opencobra.github.io/cobratoolbox/docs/issueGuide.html>`__.
+
 .. end-faq-marker
