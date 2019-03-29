@@ -40,7 +40,7 @@
 	ignore = dirty
 [submodule "external/base/utilities/rdir"]
 	path = external/base/utilities/rdir
-	url = https://github.com/uni-lu/rdir.git
+	url = https://github.com/LCSB-BioCore/rdir.git
 	ignore = dirty
 [submodule "external/analysis/mptoolbox"]
 	path = external/analysis/mptoolbox

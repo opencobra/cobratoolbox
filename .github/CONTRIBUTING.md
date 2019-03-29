@@ -14,4 +14,4 @@ How to contribute
 - More information on formatting the documentation is [here](https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html)
 - A guide for reporting an **issue** is [here](https://opencobra.github.io/cobratoolbox/docs/issueGuide.html).
 
-If you want to use `git` via the command line interface and need help, these [training slides](https://uni-lu.github.io/slides/) will get you started. This [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) also come in handy.
+If you want to use `git` via the command line interface and need help, this [guide](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github) or the official [GitHub guide](https://help.github.com/articles/creating-a-pull-request/) come in handy.
