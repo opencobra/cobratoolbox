@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox dataIntegration">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_dataIntegration_wb.png" alt="dataIntegration"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_dataIntegration_wb.png" alt="dataIntegration"></div>
      <div class="sectionTitle"><h3>Data integration</h3></div>
      <div class="row">
        <div class="col-xs-6">
