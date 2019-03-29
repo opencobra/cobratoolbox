@@ -1,7 +1,7 @@
 .. raw:: html
 
    <p align="center">
-     <img class="readme_logo" src="https://prince.lcsb.uni.lu/img/logos/logo.png" height="160px"/>
+     <img class="readme_logo" src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" height="160px"/>
    </p>
 
 

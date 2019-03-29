@@ -84,7 +84,7 @@ that you select **Checkout as-is, commit Unix-style line endings**.
 .. raw:: html
 
    <div align="center">
-   <img src="https://prince.lcsb.uni.lu/img/installation_git_windows_0.png" height="280px" alt="git windows">&nbsp;&nbsp;&nbsp;<img src="https://prince.lcsb.uni.lu/img/installation_git_windows_1.png" height="280px" alt="git windows">.
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/installation_git_windows_0.png" height="280px" alt="git windows">&nbsp;&nbsp;&nbsp;<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/installation_git_windows_1.png" height="280px" alt="git windows">.
    </div>
 
 .. end-requirements-marker
