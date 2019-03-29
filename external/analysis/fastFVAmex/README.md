@@ -1,10 +1,10 @@
 # Generating a system-specific MEX file - fastFVA
 
-<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png"
+<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png"
 height="20px" alt="warning"> Please make sure that you have CPLEX installed.
 You must have IBM/ILOG CPLEX, and not the TOMLAB version.
 
-<img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png"
+<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png"
 height="20px" alt="warning"> IBM ILOG CPLEX must be properly installed as
 explained [here](https://opencobra.github.io/cobratoolbox/docs/solvers.html).
 

@@ -58,32 +58,32 @@ If you need support, please feel free to post your question in our |ImageLink|_.
 
 .. |linux| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
 
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
 
 
 .. |matlab| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
 
 
 .. |tada| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" width="20px" alt="tada">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
 
 
 .. |thumbsup| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
 
 .. |bulb| raw:: html

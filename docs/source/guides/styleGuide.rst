@@ -151,32 +151,32 @@ Git commit messages
 
 .. |linux| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/linux.png" height="20px" width="20px" alt="linux">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
 
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/windows.png" height="20px" width="20px" alt="windows">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
 
 
 .. |matlab| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/matlab.png" height="20px" width="20px" alt="matlab">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
 
 
 .. |tada| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/tada.png" height="20px" width="20px" alt="tada">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
 
 
 .. |thumbsup| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
 
 .. |bulb| raw:: html
@@ -186,7 +186,7 @@ Git commit messages
 
 .. |pencil| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/pencil.png" height="20px" width="20px" alt="pencil">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil">
 
 
 .. |computer| raw:: html
@@ -221,22 +221,22 @@ Git commit messages
 
 .. |memo| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/memo.png" height="20px" width="20px" alt="memo">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/memo.png" height="20px" width="20px" alt="memo">
 
 
 .. |penguin| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/penguin.png" height="20px" width="20px" alt="penguin">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/penguin.png" height="20px" width="20px" alt="penguin">
 
 
 .. |racehorse| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/racehorse.png" height="20px" width="20px" alt="racehorse">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/racehorse.png" height="20px" width="20px" alt="racehorse">
 
 
 .. |white_check_mark| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
 
 
 .. |tutorials| raw:: html
