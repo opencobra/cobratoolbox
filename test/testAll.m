@@ -28,7 +28,7 @@ if isempty(strfind(getenv('HOME'), 'jenkins'))
 else
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
-    restoredefaultpath()
+    restoredefaultpath;
     launchTestSuite = true;
 end
 
