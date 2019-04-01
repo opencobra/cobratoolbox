@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox base">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_base_wb.png" alt="base"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_base_wb.png" alt="base"></div>
      <div class="sectionTitle"><h3>Base</h3></div>
      <div class="row">
        <div class="col-xs-6">
