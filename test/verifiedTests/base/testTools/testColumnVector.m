@@ -47,5 +47,9 @@ end
 assert(size(vec1, 1) == size(vec, 2))
 assert(size(vec1, 2) == size(vec, 1))
 
+% check correct manipulation of empty column and row vectors
+assert(isequal(size(columnVector(zeros(0, 1))), [0, 1]))
+assert(isequal(size(columnVector(zeros(1, 0))), [0, 1]))
+
 % change the directory
 cd(currentDir)

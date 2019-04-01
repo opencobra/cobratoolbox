@@ -17,7 +17,7 @@ function vecT = columnVector(vec)
 
 [n, m] = size(vec);
 
-if n < m
+if (m ~= 1 && n < m) || n == 1
     vecT = vec';
 else
     vecT = vec;

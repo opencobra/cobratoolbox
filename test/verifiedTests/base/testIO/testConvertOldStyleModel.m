@@ -136,5 +136,12 @@ fixedModel = convertOldStyleModel(testModel);
 assert(fixedModel.rxnConfidenceScores(3) == 0);
 % this should again be valid, subSystems Field is fixed and confidence Scores properly converted..
 assert(verifyModel(fixedModel,'simpleCheck',true));
+
+% if the old style A is the same as S (no additional constraint), test that convertOldStyleModel returns the correct empty vectors
+modelWithA = fixedModel;
+modelWithA.A = fixedModel.S;
+modelConverted = convertOldStyleModel(modelWithA);
+assert(verifyModel(modelConverted,'simpleCheck',true));
+
 % change the directory
 cd(currentDir)
