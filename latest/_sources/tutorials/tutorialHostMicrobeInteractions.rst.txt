@@ -1,7 +1,7 @@
 .. _tutorialHostMicrobeInteractions:
 
-tutorialNoName
-==============
+Computation and analysis of rescued lethal gene deletions in a host-microbe model
+=================================================================================
 
 
 .. raw:: html

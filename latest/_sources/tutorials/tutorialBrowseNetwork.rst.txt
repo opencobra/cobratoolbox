@@ -1,7 +1,7 @@
 .. _tutorialBrowseNetwork:
 
-tutorialNoName
-==============
+Browse Networks in the Matlab Command Window Using surfNet
+==========================================================
 
 
 .. raw:: html

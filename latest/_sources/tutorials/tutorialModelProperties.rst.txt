@@ -1,7 +1,7 @@
 .. _tutorialModelProperties:
 
-tutorialNoName
-==============
+Create an overview table with model properties
+==============================================
 
 
 .. raw:: html

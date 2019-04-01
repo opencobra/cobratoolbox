@@ -1,7 +1,7 @@
 .. _tutorialEssentialRxns4MultipleModels:
 
-tutorialNoName
-==============
+Reaction essentiality across multiple models
+============================================
 
 
 .. raw:: html

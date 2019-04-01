@@ -1,7 +1,7 @@
 .. _tutorialFBA:
 
-tutorialNoName
-==============
+Flux Balance Analysis (FBA)
+===========================
 
 
 .. raw:: html

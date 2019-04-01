@@ -1,7 +1,7 @@
 .. _tutorialRemoteVisualisation:
 
-tutorialNoName
-==============
+Metabolic visualisation in ReconMap (Minerva) 
+==============================================
 
 
 .. raw:: html

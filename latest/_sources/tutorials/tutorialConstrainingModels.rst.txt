@@ -1,7 +1,7 @@
 .. _tutorialConstrainingModels:
 
-tutorialNoName
-==============
+Adding biological constraints to a flux balance model
+=====================================================
 
 
 .. raw:: html

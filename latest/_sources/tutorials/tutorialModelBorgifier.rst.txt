@@ -1,7 +1,7 @@
 .. _tutorialModelBorgifier:
 
-tutorialNoName
-==============
+How to use modelBorgifier
+=========================
 
 
 .. raw:: html

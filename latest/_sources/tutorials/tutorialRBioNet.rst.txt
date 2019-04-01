@@ -1,7 +1,7 @@
 .. _tutorialRBioNet:
 
-tutorialNoName
-==============
+Generation and manipulation of reconstructions with rBioNet
+===========================================================
 
 
 .. raw:: html

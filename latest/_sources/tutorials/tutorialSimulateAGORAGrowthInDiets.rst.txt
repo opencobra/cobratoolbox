@@ -1,7 +1,7 @@
 .. _tutorialSimulateAGORAGrowthInDiets:
 
-tutorialNoName
-==============
+Simulation of growth of human gut microbes on different diets
+=============================================================
 
 
 .. raw:: html
