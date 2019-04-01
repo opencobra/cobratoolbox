@@ -11,7 +11,7 @@ script:
     - cd $CURRENT_DIR
 
     # launch the tests
-    - bash .artenolis/runtests.sh
+    #- bash .artenolis/runtests.sh
 
 after_success:
 
