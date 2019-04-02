@@ -14,6 +14,7 @@ function [model, isUnique] = checkCobraModelUnique(model, renameFlag)
 %
 % OUTPUT:
 %    model:         COBRA model structure
+%    isUnique:      true if the model is unique
 %
 % .. Authors:
 %       - Markus Herrgard 10/17/07
