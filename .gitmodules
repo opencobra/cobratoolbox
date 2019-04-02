@@ -20,7 +20,7 @@
 	ignore = dirty
 [submodule "test/models"]
 	path = test/models
-	url = https://github.com/artenobot/COBRA.models
+	url = https://github.com/LCSB-BioCore/COBRA.models
 	ignore = dirty
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling
@@ -44,7 +44,7 @@
 	ignore = dirty
 [submodule "external/analysis/mptoolbox"]
 	path = external/analysis/mptoolbox
-	url = https://github.com/cobrabot/mptoolbox.git
+	url = https://github.com/LCSB-BioCore/mptoolbox.git
 	ignore = dirty
 [submodule "external/analysis/octave-networks-toolbox"]
 	path = external/analysis/octave-networks-toolbox
