@@ -117,7 +117,7 @@ if checkConservedQuantities && ~isempty(missingMets)
         % no atom transition network is supplied. Just find elementary modes of the left null space
         EMV = findElementaryMoietyVectors(model);
     else
-        % atpm transition network is supplied.
+        % atom transition network is supplied.
         EMV = identifyConservedMoieties(model, ATN);
         types = classifyMoieties(EMV, model.S);
         EMV = EMV(:, strcmp(types, 'Internal'));
