@@ -1,9 +1,9 @@
-git+https://github.com/uni-lu/sphinx.git@develop#egg=sphinx
+git+https://github.com/LCSB-BioCore/sphinx.git@develop#egg=sphinx
 recommonmark
 git+https://github.com/syarra/sphinxcontrib-matlabdomain#egg=sphinxcontrib-matlabdomain
 sphinxcontrib-fulltoc
 sphinx_rtd_theme
-git+https://github.com/uni-lu/sphinx_cobra_theme.git@develop#egg=sphinx_cobra_theme
-git+https://github.com/syarra/Documenter.py@develop#egg=documenter
-git+https://github.com/uni-lu/sphinxcontrib-napoleon.git@develop#egg=sphinxcontrib_napoleon
+git+https://github.com/LCSB-BioCore/sphinx_cobra_theme.git@develop#egg=sphinx_cobra_theme
+git+https://github.com/syarra/Documenter.py@master#egg=documenter
+git+https://github.com/LCSB-BioCore/sphinxcontrib-napoleon.git@develop#egg=sphinxcontrib_napoleon
 pyGithub

@@ -324,11 +324,11 @@ function initCobraToolbox(updateToolbox)
                      'mosek',struct(),...
                      'matlab',struct());
     % active support - supported solvers
-    SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP', 'MIQP'};
+    SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
     SOLVERS.dqqMinos.type = {'LP'};
     SOLVERS.glpk.type = {'LP', 'MILP'};
     SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP'};
+    SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
     SOLVERS.matlab.type = {'LP', 'NLP'};
     SOLVERS.mosek.type = {'LP', 'QP'};
     SOLVERS.pdco.type = {'LP', 'QP'};

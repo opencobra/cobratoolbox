@@ -95,8 +95,8 @@ createLocalVariables(){
     rstPath="$COBRAToolboxPath/docs/source/tutorials" # should be changed later to mimic structure of the src folder.
     pngPath="$pdfPath/tutorials/$tutorialFolder"
 
-    pdfHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.pdf"
-    pngHyperlink="https://prince.lcsb.uni.lu/userContent/tutorials/$tutorialFolder/$tutorialName.png"
+    pdfHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/$tutorialName.pdf"
+    pngHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/$tutorialName.png"
     htmlHyperlink="https://prince.lcsb.uni.lu/cobratoolbox/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     mlxHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.mlx"
     mHyperlink="https://github.com/opencobra/COBRA.tutorials/raw/master/$tutorialFolder/$tutorialName.m"
@@ -318,7 +318,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             echo $readmePath
             mkdir -p $readmePath
             echo "<p align=\"center\">" > $readmePath/README.md
-            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_pdf.png\" height=\"90px\" alt=\"pdf\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_mlx.png\" height=\"90px\" alt=\"MLX\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_m.png\" height=\"90px\" alt=\"M file\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/img/icon_view.png\" height=\"90px\" alt=\"view\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/img/icon_tut.png\" height=\"90px\" alt=\"tutorials\"></a>" >> $readmePath/README.md
+            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_pdf.png\" height=\"90px\" alt=\"pdf\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_mlx.png\" height=\"90px\" alt=\"MLX\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_m.png\" height=\"90px\" alt=\"M file\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_view.png\" height=\"90px\" alt=\"view\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_tut.png\" height=\"90px\" alt=\"tutorials\"></a>" >> $readmePath/README.md
             echo "<br><br>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
 
@@ -366,7 +366,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                 echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
                 echo "   <div class=\"tutorialSectionBox $section\">" >> $rstPath/index.rst
-                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/img/icon_${section}_wb.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"https://prince.lcsb.uni.lu/cobratoolbox/img/icon_${section}_wb.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}<a class=\"headerlink\" href=\"#$section\" title=\"Permalink to this headline\">¶</a></h3></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionContent\">" >> $rstPath/index.rst
                 echo >> $rstPath/index.rst
@@ -386,9 +386,4 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
 
 fi
 
-if [ $buildPNG = true ] || [ $buildPDF = true ]; then
-    scp -P 8022 -r "$pdfPath/tutorials" sbg-jenkins@10.240.6.84:/home/sbg-jenkins/tmp/.
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/var/lib/jenkins/userContent/.
-    scp -P 8022 -r "$pdfPath/tutorials" jenkins@prince-server.lcsb.uni.lux:/mnt/isilon-dat/.
-fi
 

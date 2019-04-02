@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox design">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_design_wb.png" alt="design"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_design_wb.png" alt="design"></div>
      <div class="sectionTitle"><h3>Design</h3></div>
      <div class="row">
        <div class="col-xs-6">

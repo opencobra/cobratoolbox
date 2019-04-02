@@ -1,42 +1,42 @@
 function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model, separate_isoform, numWorkers, printLevel)
 % Build the G matrix required for the calculation of genetic Minimal Cut
 % Sets (gMCSs).
-% 
+%
 % USAGE:
-% 
+%
 %    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)
-% 
+%
 % INPUTS:
 %    model_name:          Name of the metabolic model under study.
 %    model_struct:        Metabolic model structure (COBRA Toolbox format).
 %    separate_isoform:    Character used to discriminate different isoforms of a gene.
-% 
+%
 % OPTIONAL INPUTS:
 %    numWorkers:        Maximum number of workers
 %                       * 0 - maximum provided by the system (automatic)
 %                       * 1 - sequential
 %                       * 2+ - parallel
 %    printLevel:        show the reactions created in models.
-%                       * 0 - shows nothing 
+%                       * 0 - shows nothing
 %                       * 1 - shows progress by reactions (default)
 %                       * 2+ - shows everything (reaction and network generation)
-% 
+%
 % OUTPUTS:
 %    G:             G matrix.
 %    G_ind:         Gene knockouts associated with each row in the G matrix.
 %    related:       Relationships among rows of the G matrix.
 %    n_genes_KO:    Number of genes whose knockout is added by each row of the G matrix.
 %    G_time:        Calculation times for each of the steps.
-% 
+%
 % EXAMPLE:
-% 
+%
 %    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix('Recon2.v04', modelR204, '.')
-% 
+%
 % .. Authors:
-%       - Iñigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 16/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 19/11/2017, University of Navarra, TECNUN School of Engineering.
 %       - Francisco J. Planes, 20/11/2017, University of Navarra, TECNUN School of Engineering.
-%       - Iñigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 
 time_a = tic;
 % Generate name for temporary folder
@@ -194,7 +194,7 @@ k = 0;
 for i = 1:n_rxns_or_and
     load([tmpFolderName filesep 'rxn_level_gMCSs_by_rxn' filesep 'rxn_level_gMCSs_' model_name '_rxn' num2str(pos_rxns_or_and(i)) '.mat']);
     n_act_mcs = length(act_mcs);
-    
+
     for j = 1:n_act_mcs
         act_G_ind = act_mcs{j};
         if ~iscell(act_G_ind) && isnan(act_G_ind)
@@ -255,7 +255,7 @@ for i = 1:n_tmp_G_ind
         else
             act_G_ind = sort(tmp_G_ind{i});
         end
-        
+
         pos_equal = cellfun(@isequal, G_ind, repmat({act_G_ind}, length(G_ind), 1));
         if sum(pos_equal) > 0
             G(pos_equal, :) = G(pos_equal, :) + tmp_G(i, :);
@@ -284,7 +284,7 @@ for i = 1:n_G_ind
         if sum(ismember(G_ind{pos(j)}, act_G_ind)) == n_act_G_ind
             G(pos(j), :) = G(pos(j), :) + G(i, :);
         end
-    end        
+    end
 end
 G = double(G>0);
 

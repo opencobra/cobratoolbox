@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox visualization">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_visualization_wb.png" alt="visualization"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_visualization_wb.png" alt="visualization"></div>
      <div class="sectionTitle"><h3>Visualization</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -27,6 +27,7 @@ Visualization
    cellDesigner/index
    maps/index
    metabolicCartography/index
+   visualizeEpistasis/index
 
 .. raw:: html
 

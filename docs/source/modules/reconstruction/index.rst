@@ -11,7 +11,7 @@
 .. raw:: html
 
    <div class="tutorialSectionBox reconstruction">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction_wb.png" alt="reconstruction"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_reconstruction_wb.png" alt="reconstruction"></div>
      <div class="sectionTitle"><h3>Reconstruction</h3></div>
      <div class="row">
        <div class="col-xs-6">

@@ -1,4 +1,4 @@
-function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)
+function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxes, corrMethod)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the correlations between fluxes for one or more reactions of
 % interest in a number of microbiome samples and the relative microbe
@@ -8,16 +8,15 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %
 % USAGE
 %
-%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance, fluxes, taxonomy, corrMethod)
+%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxes, taxonomy, corrMethod)
 %
 % INPUTS:
-%     abundance:        Table of relative abundances with AGORA model IDs
-%                       of the strains as rows and sample IDs as columns
+%    abundancePath:     Path to the .csv file with the abundance data.
+%                       Needs to be in same format as example file
+%                       'cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv'
 %     fluxes:           Table of fluxes for reactions of interest with
 %                       reaction IDs in microbiome community models as rows
 %                       and sample IDs as columns
-%     taxonomy:         Table with information on the taxonomy of each
-%                       AGORA model strain
 %
 % OPTIONAL INPUTS:
 %     corrMethod:       Method to compute the linear correlation
@@ -31,6 +30,19 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %                       correlation
 %
 % .. Author: Almut Heinken, 03/2018
+%                           10/2018:  changed input to location of the csv file with the
+%                                     abundance data
+
+% read the csv file with the abundance data
+abundance = readtable(abundancePath, 'ReadVariableNames', false);
+abundance = table2cell(abundance);
+if isnumeric(abundance{2, 1})
+    abundance(:, 1) = [];
+end
+
+% Get the taxonomy information
+taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
+taxonomy = table2cell(taxonomy);
 
 if ~exist('corrMethod', 'var')  % Define correlation coefficient method if not entered
     corrMethod = 'Pearson';
@@ -78,7 +90,7 @@ for i = 2:size(abundance, 2)
                 % variable
                 findinSampleAbun = find(strcmp(findTax, SampleAbundance.(TaxonomyLevels{t})(1, :)));
                 % sum up the relative abundance
-                SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
+                SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
             end
         end
     end

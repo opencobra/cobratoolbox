@@ -49,6 +49,8 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %         from BIGG Models database that have _e instead of [e] as compartment IDs
 %       - Almut Heinken, 06.03.2018-changed to parameter-input pairs
 %       - Laurent Heirendt, 16/3/2018 - backward compatibility
+%       - Almut Heinken, 15.01.2019-fixed compatibility issue with reconstructions
+%         from KBase database that have [e0] instead of [e] as compartment IDs
 %
 % NOTE:
 %    This function assumes, that exchange reactions are identified by
@@ -118,6 +120,22 @@ metIndices =~cellfun(@isempty, regexp(modelHost.mets, '_e$'));
 modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '_e', '[e]');
 end
 
+%% Ensure compatibility with reconstructions from KBase database
+for i = 1:modelNumber
+    model = models{i, 1};
+    metIndices =~cellfun(@isempty, regexp(model.mets, '\[e0\]$'));
+    model.mets(metIndices) = strrep(model.mets(metIndices), '[e0]', '[e]');
+    % need workaround for biomass metabolite, otherwise the resulting joint
+    % model will be unable to carry biomass flux
+    if ~isempty(find(ismember(model.mets, 'cpd11416[c0]')))
+        model = addDemandReaction(model, 'cpd11416[c0]');
+    end
+    models{i, 1} = model;
+end
+if ~isempty(modelHost)
+metIndices =~cellfun(@isempty, regexp(modelHost.mets, '\[e0\]$'));
+modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '[e0]', '[e]');
+end
 %% define some variables
 eTag = 'u';
 exTag = 'e';
@@ -149,7 +167,7 @@ end
 
 if ~isempty(modelHost)
     %% with a host
-    exmod = modelHost.rxns(strmatch('EX', modelHost.rxns)); 
+    exmod = modelHost.rxns(strmatch('EX', modelHost.rxns));
 
     % modelHost = removeRxns(modelHost,ExRH);
     % ExRH = modelHost.rxns(selExcH);
@@ -157,17 +175,16 @@ if ~isempty(modelHost)
     % ExRH(strmatch('DM',modelHost.rxns(selExcH)))=[];
 
     % create a new extracellular space for host
-    %find all metabolites in e
-    relMetIndex = cellfun(@(x) ~isempty(strfind(x, '[e]')),modelHost.mets);
+    % find all metabolites in e
+    relMetIndex = cellfun(@(x) ~isempty(strfind(x, '[e]')), modelHost.mets);
     relMets = modelHost.mets(relMetIndex);
-    relRxns = findRxnsFromMets(modelHost,relMets); %These are all reactions which are relevant
-    rxnIndices = ismember(modelHost.rxns,relRxns);
-    Stoich = modelHost.S(:,rxnIndices);
+    relRxns = findRxnsFromMets(modelHost, relMets);  % These are all reactions which are relevant
+    rxnIndices = ismember(modelHost.rxns, relRxns);
+    Stoich = modelHost.S(:, rxnIndices);
     changedMets = regexprep(modelHost.mets, '\[e\]', '\[b\]');
-    modelHost = addMultipleMetabolites(modelHost,setdiff(changedMets,modelHost.mets));
-    modelHost = addMultipleReactions(modelHost,strcat(modelHost.rxns(rxnIndices),'b'),changedMets,Stoich,'lb',modelHost.lb(rxnIndices),...
-                                    'ub',modelHost.ub(rxnIndices),'c',modelHost.c(rxnIndices),'subSystems',repmat({'Host Exchange'},numel(relRxns),1));
-
+    modelHost = addMultipleMetabolites(modelHost, setdiff(changedMets, modelHost.mets));
+    modelHost = addMultipleReactions(modelHost, strcat(modelHost.rxns(rxnIndices), 'b'), changedMets, Stoich, 'lb', modelHost.lb(rxnIndices), ...
+                                    'ub', modelHost.ub(rxnIndices), 'c', modelHost.c(rxnIndices), 'subSystems', repmat({'Host Exchange'}, numel(relRxns), 1));
 
     % remove exchange reactions from host while leaving demand and sink reactions
     modelHost = removeRxns(modelHost, exmod);
@@ -241,13 +258,13 @@ modelNew = model;
 % add name tag to all metabolites and reactions in model
 modelNew.mets = strcat(nameTag, model.mets);
 modelNew.rxns = strcat(nameTag, model.rxns);
-%Get the relevant metabolites
+% Get the relevant metabolites
 relMetsIndex = cellfun(@(x) ~isempty(strfind(x,'biomass[c]')) || ~isempty(strfind(x,['[', exTag, ']'])),modelNew.mets);
 relMets = modelNew.mets(relMetsIndex);
-%Define the names of the interspace metabolites
+% Define the names of the interspace metabolites
 MexG = regexprep(strrep(relMets,nameTag,''),strcat('\[', exTag, '\]'), strcat('\[', eTag, '\]'));
 varinput = {};
-%Add metNames and metFormulas, if present in the original model
+% Add metNames and metFormulas, if present in the original model
 if isfield(modelNew,'metNames')
     varinput{end+1} = 'metNames';
     varinput{end+1} = modelNew.metNames(relMetsIndex);
@@ -256,20 +273,20 @@ if isfield(modelNew,'metFormulas')
     varinput{end+1} = 'metFormulas';
     varinput{end+1} = modelNew.metFormulas(relMetsIndex);
 end
-%Add all new Metabolites
+% Add all new Metabolites
 modelNew = addMultipleMetabolites(modelNew, MexG, varinput{:});
 
 nExchange = numel(relMets);
-%Set the exchanger Stoichiometries (met[e] -> met[u])
+% Set the exchanger Stoichiometries (met[e] -> met[u])
 stoich = [-speye(nExchange);speye(nExchange)];
-%Set the names of the exchangers
+% Set the names of the exchangers
 rxnNames =  strcat(nameTag, 'IEX_', MexG, 'tr');
-%Set the bounds
+% Set the bounds
 lbs = repmat(-1000,nExchange,1);
 ubs = repmat(1000,nExchange,1);
-%Set the subSystem
+% Set the subSystem
 subSystems = repmat({'Transport, intercellular'},nExchange,1);
-%Add all Reactions in one go.
+% Add all Reactions in one go.
 modelNew = addMultipleReactions(modelNew,rxnNames,[relMets;MexG],stoich,'lb',lbs,'ub',ubs,'subSystems',subSystems);
 
 end

@@ -6,12 +6,14 @@ normal=$(tput sgr0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 
+currentBranch="${GIT_BRANCH##origin/}"
+
 echo "Checking if the test suite should be run..."
 if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
    commitHashs=($(git cherry $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
 else
    echo " -- environment variable GIT_PREVIOUS_SUCCESSFUL_COMMIT is not set (or empty)."
-   commitHashs=($(git log develop..HEAD -q --pretty=%H 2>&1))
+   commitHashs=($(git log develop..$currentBranch -q --pretty=%H 2>&1))
 fi
 
 # check if all commit messages contains only [documentation]
@@ -43,7 +45,7 @@ if [[ "$artenolisForce" = false ]]; then
     if [[ ! -z $GIT_PREVIOUS_SUCCESSFUL_COMMIT ]]; then
     modifiedFiles=($(git diff --name-only $GIT_PREVIOUS_SUCCESSFUL_COMMIT HEAD 2>&1))
     else
-    modifiedFiles=($(git log develop..HEAD -q --pretty=%H | tail -1 2>&1))
+    modifiedFiles=($(git log develop..$currentBranch -q --pretty=%H | tail -1 2>&1))
     fi
 
     onlyDocFiles=true
@@ -69,20 +71,20 @@ else
 fi
 
 if [ "$ARCH" == "Linux" ]; then
-    /mnt/prince-data/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
+    $ARTENOLIS_SOFT_PATH/MATLAB/$MATLAB_VER/bin/./matlab -nodesktop -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "macOS" ]; then
     caffeinate -u &
-    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodesktop -nosplash < test/testAll.m
+    /Applications/MATLAB_$MATLAB_VER.app/bin/matlab -nodisplay -nosplash < test/testAll.m
 
 elif [ "$ARCH" == "windows" ]; then
     # change to the build directory
     echo " -- changing to the build directory --"
-    cd "D:\\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCHVERSION"
+    cd "$ARTENOLIS_DATA_PATH\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$NODE_LABELS"
 
     echo " -- launching MATLAB --"
     unset Path
-    nohup "D:\\MATLAB\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "restoredefaultpath; cd D:\\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$ARCHVERSION; cd test; testAll;" & PID=$!
+    nohup "$ARTENOLIS_SOFT_PATH\MATLAB\\$MATLAB_VER\\\bin\\matlab.exe" -nojvm -nodesktop -nosplash -useStartupFolderPref -logfile output.log -wait -r "restoredefaultpath; cd $ARTENOLIS_DATA_PATH\jenkins\\workspace\\$CI_PROJECT_NAME\\MATLAB_VER\\$MATLAB_VER\\label\\$NODE_LABELS; cd test; testAll;" & PID=$!
 
     # follow the log file
     tail -n0 -F --pid=$! output.log 2>/dev/null

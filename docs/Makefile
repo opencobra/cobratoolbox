@@ -53,7 +53,7 @@ html:
 	@echo "Creating modules index page."
 	bash createModulesPage.sh
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -t=~/tmp/COBRA.tutorials -c=~/tmp/cobratoolbox -p=~/tmp -m=rst
+	bash prepareTutorials.sh -t=$(ARTENOLIS_DATA_PATH)/repos/COBRA.tutorials -c=$(ARTENOLIS_DATA_PATH)/repos/cobratoolbox -p=$(ARTENOLIS_DATA_PATH)/cobratoolbox -m=rst
 	@echo "Generating list of suggestions for the websearch."
 	python generateJSONList.py
 	@echo

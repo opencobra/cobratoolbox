@@ -203,12 +203,12 @@ Windows 10
 
 .. |white_check_mark| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
 
 .. |warning| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/warning.png" height="20px" width="20px" alt="warning">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
 
 .. |x| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/jenkins/userContent/x.png" height="20px" width="20px" alt="warning">
+   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning">

@@ -211,6 +211,8 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
         solStat = stat;
+        
+        
     case 'gurobi'
      % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
@@ -278,6 +280,44 @@ switch solver
            stat = -1; % Solution not optimal or solver problem
         end
         %%
+   case 'ibm_cplex'
+        % Free academic licenses for the IBM CPLEX solver can be obtained from
+        % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
+        CplexMIQPProblem = buildCplexProblemFromCOBRAStruct(MIQPproblem);
+        [CplexMIQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexMIQPProblem,cobraParams,solverParams,'MIQP');
+        
+        %Update Tolerance According to actual setting
+        cobraParams.feasTol = CplexMIQPProblem.Param.simplex.tolerances.feasibility.Cur;
+
+
+        % optimize the problem
+        Result = CplexMIQPProblem.solve();
+        
+        if logToFile
+            % Close the output file
+            fclose(logFile);
+        end        
+
+        % Get results
+        stat = Result.status;
+        if (stat == 101 || stat == 102 || stat == 1)
+            solStat = 1; % Opt integer within tolerance
+            % Return solution if problem is feasible, bounded and optimal
+            x = Result.x;
+            f = osense*Result.objval;
+        elseif (stat == 103 || stat == 3)
+            solStat = 0; % Integer infeas
+        elseif (stat == 118 || stat == 119 || stat == 2)
+            solStat = 2; % Unbounded
+        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
+            solStat = -1; % No integer solution exists
+        else
+            solStat = 3; % Other problem, but integer solution exists
+        end
+        if exist([pwd filesep 'clone1.log'],'file')
+            delete('clone1.log')
+        end        
+        
     otherwise
         if isempty(solver)
             error('There is no solver for MIQP problems available');
