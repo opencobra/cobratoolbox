@@ -50,7 +50,7 @@ end
 if isnumeric(mets)
     mets = strtrim(cellstr(num2str(mets)));
 end
-mets = regexprep(mets,'(\[\w\])$',''); % Remove compartment assignment
+mets = regexprep(mets,'(\[[^\]]+\])$',''); % Remove compartment assignment
 
 if ~exist('includeRs','var')
     includeRs = 1;

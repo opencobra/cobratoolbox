@@ -14,7 +14,6 @@ function [defaultCompartmentSymbolList, defaultCompartmentNameList] = getDefault
 %
 % .. Author: - Thomas Pfau May 2017
 
-defaultCompartmentSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','y'};
-defaultCompartmentNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Glycosome'};
+[defaultCompartmentSymbolList,defaultCompartmentNameList] = getDefaultCompartments();
 
 end

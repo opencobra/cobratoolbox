@@ -32,7 +32,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 % .. Authors: 
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
 
-PossibleTypes = {'rxns','mets','comps','genes','ctrs','evars'};
+PossibleTypes = getCobraTypeFields();
 
 
 parser = inputParser();

@@ -1,7 +1,7 @@
 function [matchingFields,dimensions] = getModelFieldsForType(model, type, varargin)
 % Get the fields in the model which are associated with the given type.
 % USAGE:
-%     matchingFields = getModelFieldsForType(model, type, varargin)
+%     matchingFields = getModelFieldsForType(model, type, fieldSize)
 %
 % INPUTS:
 %
@@ -10,9 +10,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %                        ('rxns','mets','comps','genes','ctrs','evars')
 %
 % OPTIONAL INPUTS:
-%    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
-%
-%                     - 'fieldSize', the original size of the field (if
+%    fieldSize:         the original size of the field (if
 %                       mets was already adjusted, this size will be used
 %                       to determine matching fields.
 %   
@@ -33,7 +31,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 
 
 
-PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs'};
+PossibleTypes = getCobraTypeFields();
 
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));

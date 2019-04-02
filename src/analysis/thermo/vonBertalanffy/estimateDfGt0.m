@@ -20,7 +20,7 @@ function model = estimateDfGt0(model, confidenceLevel)
 %                            values in mol/L.
 %                          * .chi - `c x 1` array of compartment specific electrical
 %                            potential values in mV.
-%                          * .metCompartments - `m x 1` cell array of compartment assignments for
+%                          * .metComps - `m x 1` cell array of compartment assignments for
 %                            metabolites in `model.mets`. Compartment identifiers
 %                            should be the same as in model.compartments.
 %                          * .DfG0 - `m x 1` array of standard Gibbs energies of formation.
@@ -84,9 +84,9 @@ for i = 1:length(model.mets)
     if hBool(i) && 0
         disp(model.mets{i})
     end
-    pH  = model.ph(strcmp(model.compartments,model.metCompartments{i}));
-    I   = model.is(strcmp(model.compartments,model.metCompartments{i}));
-    chi = model.chi(strcmp(model.compartments,model.metCompartments{i}));
+    pH  = model.ph(strcmp(model.compartments,model.metComps{i}));
+    I   = model.is(strcmp(model.compartments,model.metComps{i}));
+    chi = model.chi(strcmp(model.compartments,model.metComps{i}));
     pseudoisomer = model.pseudoisomers(i);
     pseudoisomer.zs=double(pseudoisomer.zs);%TODO fix the propagation of int64
 
@@ -218,7 +218,7 @@ end
 % % Adjust DrGt0 for transport across membranes
 % fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
 %
-% metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.compartments)),repmat(model.compartments',length(model.metCompartments),1));
+% metCompartmentBool = strcmp(repmat(model.metComps,1,length(model.compartments)),repmat(model.compartments',length(model.metComps),1));
 %
 % model_nHs = zeros(size(model.mets));
 % for i = 1:length(model.mets)

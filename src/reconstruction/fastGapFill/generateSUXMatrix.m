@@ -86,17 +86,12 @@ MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.Matri
 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.rxns),1)=3; %exchange and transport reactions
 
 function model = CheckMetName(model)
-% checks if model.mets has () or [] for compartment
-if ~isempty(strfind(model.mets,'(c)')) ||~isempty(strfind(model.mets,'(e)'))
-    for i = 1 :length(model.mets)
-        model.mets{i} = regexprep(model.mets{i},'(','[');
-        model.mets{i} = regexprep(model.mets{i},')',']');
-    end
-end
+% replace () compartment localisation
+model.mets = regexprep(model.mets,'\(([^]])\)$','[$1]');
 % fixes metabolites names if no compartment has been added to metabolites.
 % It assumes that the metabolites without compartment are in the cytosol
-    for i = 1 :length(model.mets)
-        if  isempty(regexp(model.mets{i},'\(\w\)')) && isempty(regexp(model.mets{i},'\[\w\]'))
-            model.mets{i} = strcat(model.mets{i},'[c]');
-        end
+for i = 1 :length(model.mets)
+    if  isempty(regexp(model.mets{i},'\[[^\]]+\]$'))
+        model.mets{i} = strcat(model.mets{i}, model.metComps{i});
     end
+end

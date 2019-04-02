@@ -127,7 +127,7 @@ for i = 1:numel(nonDefaults)
     %extend the varargins for the addMultipleMetabolites call.
     multiArgs((2*(i-1)+1):(2*i)) = {translation{argpos,2},val};
 end
-
-newmodel = addMultipleMetabolites(model,metID,multiArgs{:});
+metComps = extractCompartmentsFromMets(metID);
+newmodel = addMultipleMetabolites(model,metID,multiArgs{:},'metComps',metComps);
 
 end

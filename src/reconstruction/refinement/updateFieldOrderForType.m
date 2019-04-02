@@ -7,7 +7,7 @@ function model = updateFieldOrderForType(model,type,newOrder)
 %
 %    model:              the model to update
 %    type:               the Type of field to update one of 
-%                        ('rxns','mets','comps','genes')
+%                        the fields returned by `getCobraTypeFields()`
 %    newOrder:           The new Order. must be of the same size as the
 %                        requested model.(type) field.
 %
@@ -21,7 +21,7 @@ function model = updateFieldOrderForType(model,type,newOrder)
 
 parser = inputParser();
 parser.addRequired('model',@isstruct);
-parser.addRequired('type',@(x) any(ismember(x,{'rxns','mets','comps','genes','proteins'})));
+parser.addRequired('type',@(x) any(ismember(x,getCobraTypeFields)));
 parser.addRequired('newOrder',@(x) isnumeric(x) && all(ismember(newOrder,1:numel(model.(type)))));
 
 parser.parse(model,type,newOrder);

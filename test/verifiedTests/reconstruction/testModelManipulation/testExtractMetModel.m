@@ -17,22 +17,32 @@ cd(fileDir);
 model = getDistributedModel('Recon2.v04.mat');
 %compare against explicitly loaded models to conserve the ids.
 load('testExtractMetModel.mat', 'emptyModel', 'atpModel', 'pppg9Level0', 'pppg9Level1');
-
+pppg9Level0 = readCbModel('testExtractMetModel.mat','modelName','pppg9Level0');
+%Adapt source description
+pppg9Level0.description = model.description;
 % Test getting level 0 (just reactions that involve a metaoblite)
 model2 = extractMetModel(model, 'pppg9', 0, 1);
 assert(isSameCobraModel(model2, pppg9Level0));
 
 % Test getting level 1 (include one reaction away from reactions that involve a metaoblite)
+pppg9Level1 = readCbModel('testExtractMetModel.mat','modelName','pppg9Level1');
+pppg9Level1.description = model.description;
 model2 = extractMetModel(model, 'pppg9', 1, 1);
 assert(isSameCobraModel(model2, pppg9Level1));
 
 % Test asking for a very common metabolite, empty model should be returned
+emptyModel = readCbModel('testExtractMetModel.mat','modelName','emptyModel');
+emptyModel.description = model.description;
 model2 = extractMetModel(model, 'atp', 0, 1);
 assert(isSameCobraModel(model2, emptyModel));
 
 % Test asking for a very common metabolite, with high limit on connectivity
+atpModel = readCbModel('testExtractMetModel.mat','modelName','atpModel');
+atpModel.description = model.description;
 model2 = extractMetModel(model, 'atp', 0, 1, 99999);
 assert(isSameCobraModel(model2, atpModel));
+
+fprintf('>> Done ...\n');
 
 %return to original directory
 cd(currentDir)

@@ -150,7 +150,7 @@ if ~isempty(computedSpeciesData)
     for m=1:nMet
         metAbbr = model.mets(m);
         metAbbr = metAbbr{1};
-        metcompartment = find(model.cellCompartments==model.metCompartments{m});
+        metcompartment = find(model.cellCompartments==model.metComps{m});
 
         if strcmp('succ[e]',model.mets{m})
             pause(eps)
@@ -217,7 +217,7 @@ gibbscoeff = (9.20483*model.T)/10^3 - (1.284668*model.T^2)/10^5 + (4.95199*model
 for m=1:nMet
     metAbbr = model.mets(m);
     metAbbr = metAbbr{1};
-    metcompartment = find(model.cellCompartments==model.metCompartments{m});
+    metcompartment = find(model.cellCompartments==model.metComps{m});
 
     albertyMatch=0;
     if ~any(strcmp(metAbbr(1:end-3),exceptions))

@@ -88,15 +88,15 @@ if 1
     end
 
     [metCompartments,~]=getCompartment(model.mets);
-    model.metCompartments=metCompartments;
+    model.metComps=metCompartments;
 
     metdGfH=zeros(nMet,1);
     metCHI=zeros(nMet,1);
     for i=1:nMet
-        bool=strcmp(model.metCompartments{i},model.compartments);
+        bool=strcmp(model.metComps{i},model.compartments);
         if ~any(bool) || nnz(bool)>1
             disp(model.mets{i})
-            disp(model.metCompartments{i})
+            disp(model.metComps{i})
             error('All metabolites must be associated with one compartment')
         end
         metdGfH(i)= -gasConstant*T*log(10)*model.ph(bool);
@@ -143,7 +143,7 @@ else
     % Adjust DrGt0 for transport across membranes
     fprintf('Assuming that only metabolite species in model.metFormulas are transported across membranes.\n');
 
-    metCompartmentBool = strcmp(repmat(model.metCompartments,1,length(model.compartments)),repmat(model.compartments',length(model.metCompartments),1));
+    metCompartmentBool = strcmp(repmat(model.metComps,1,length(model.compartments)),repmat(model.compartments',length(model.metComps),1));
 
     model_nHs = zeros(size(model.mets));
     for i = 1:length(model.mets)

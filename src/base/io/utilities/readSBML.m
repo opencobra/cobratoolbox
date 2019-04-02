@@ -457,10 +457,9 @@ else
             model.mets = strcat(model.mets,'[',convertSBMLID(metComps,false),']');
         end
         %Otherwise we have a set up model.
-    end
-    
-    
+    end        
 end
+model.metComps = metComps;
 
 end
 

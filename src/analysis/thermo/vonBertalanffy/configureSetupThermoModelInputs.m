@@ -22,7 +22,7 @@ function model = configureSetupThermoModelInputs(model, T, compartments, ph, is,
 %    model:
 
 if ~isfield(model,'metCompartments')
-    model.metCompartments = [];
+    model.metComps = [];
 end
 if ~exist('T','var')
     T = [];
@@ -75,26 +75,26 @@ if any(isnan(model.metCharges))
     error(['Charges missing for metabolites:' sprintf('%s\n',model.mets{isnan(model.metCharges)}) 'Set model.metCharges to 0 for metabolites with unknown charges. \n']);
 end
 
-% Check for model.metCompartments
-if isempty(model.metCompartments)
+% Check for model.metComps
+if isempty(model.metComps)
     fprintf('\nField metCompartments is missing from model structure. Attempting to create it.\n')
     if ~any(cellfun('isempty',regexp(model.mets,'\[\w\]$')))
-        model.metCompartments = getCompartment(model.mets);
+        model.metComps = getCompartment(model.mets);
         fprintf('Attempt to create field metCompartments successful.\n')
     else
         error('Could not create field metCompartments. Please do so manually.\n')
     end
 end
 
-model.metCompartments = reshape(model.metCompartments,length(model.metCompartments),1);
-if ischar(model.metCompartments)
-    model.metCompartments = strtrim(cellstr(model.metCompartments));
+model.metComps = reshape(model.metComps,length(model.metComps),1);
+if ischar(model.metComps)
+    model.metComps = strtrim(cellstr(model.metComps));
 end
-if isnumeric(model.metCompartments)
-    model.metCompartments = strtrim(cellstr(num2str(model.metCompartments)));
+if isnumeric(model.metComps)
+    model.metComps = strtrim(cellstr(num2str(model.metComps)));
 end
-if any(cellfun('isempty',model.metCompartments))
-    error(['Compartment assignments missing for metabolites:\n' sprintf('%s\n',model.mets{cellfun('isempty',model.metCompartments)}) 'All metabolites must be assigned to a cell compartment.']);
+if any(cellfun('isempty',model.metComps))
+    error(['Compartment assignments missing for metabolites:\n' sprintf('%s\n',model.mets{cellfun('isempty',model.metComps)}) 'All metabolites must be assigned to a cell compartment.']);
 end
 
 % Configure temperature
@@ -134,7 +134,7 @@ if length(ph) ~= nCompartments || length(is) ~= nCompartments || length(chi) ~= 
    error('The variables compartments, ph, is, and chi should have equal length.')
 end
 
-missingCompartments = setdiff(unique(model.metCompartments),compartments);
+missingCompartments = setdiff(unique(model.metComps),compartments);
 if ~isempty(missingCompartments)
     default_ph = 7; % Default pH
     default_is = 0; % Default ionic strength in mol/L
@@ -194,8 +194,8 @@ end
 
 hi = find(strcmp(model.metFormulas,'H')); % Indices of protons
 for i = 1:length(hi)
-   model.concMin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)}))); % Set concentrations of protons according to pH
-   model.concMax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metCompartments{hi(i)})));
+   model.concMin(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metComps{hi(i)}))); % Set concentrations of protons according to pH
+   model.concMax(hi(i)) = 10^(-model.ph(strcmp(model.compartments,model.metComps{hi(i)})));
 end
 
 h2oi = find(strcmp(model.metFormulas,'H2O')); % Indices of water

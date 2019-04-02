@@ -337,6 +337,7 @@ if isempty(strmatch('Compartment',metHeaders,'exact'))
     %matchingmets has already the right order.
     model.comps = columnVector(compartmentAbbr(ismember(compartmentAbbr,Comps)));
     model.compNames = columnVector(compartments(ismember(compartmentAbbr,Comps)));
+    model.metComps = Comps;
     model.mets = columnVector(matchingmets);
 else
     %if Compartments is present, we will create a translation table
@@ -380,6 +381,7 @@ else
     end
     model.compNames = columnVector(CompNames);
     model.mets = columnVector(matchingmets);
+    model.metComps = extractCompartmentsFromMets(model.mets);
 end
 %%Set metNames
 if ~isempty(strmatch('Description',metHeaders,'exact'))

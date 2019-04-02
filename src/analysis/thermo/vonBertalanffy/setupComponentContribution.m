@@ -19,7 +19,7 @@ function model = setupComponentContribution(model, molFileDir, cid, printLevel)
 %                     * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas for
 %                       protons should be H, and formulas for water should be H2O.
 %                     * .metCharges - `m x 1` numerical array of metabolite charges.
-%                     * .metCompartments - optional `m x 1` array of metabolite compartment
+%                     * .metComps - optional `m x 1` array of metabolite compartment
 %                       assignments. Not required if metabolite
 %                       identifiers are strings of the format `ID[*]`
 %                       where * is the appropriate compartment identifier.

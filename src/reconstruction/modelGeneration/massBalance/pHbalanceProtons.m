@@ -80,7 +80,7 @@ end
 
 A=sparse(nMet,length(model.compartments));
 for m=1:nMet
-    A(m,strcmp(model.metCompartments{m},model.compartments))=1; %TODO streamline
+    A(m,strcmp(model.metComps{m},model.compartments))=1; %TODO streamline
 end
 
 compartmentHindex=zeros(length(model.compartments),1);
@@ -168,7 +168,7 @@ for n=1:nRxn
     if model.SIntRxnBool(n)
         if massBalancedBool(n)
             %model.compartments of all metabolites involved in reactions
-            metCompartments = model.metCompartments(model.S(:,n)~=0);
+            metCompartments = model.metComps(model.S(:,n)~=0);
             rxnUniqueMetCompartments=unique(metCompartments);
 
             %dont change reaction if any one of the metabolites has a NaN for
@@ -204,7 +204,7 @@ for n=1:nRxn
                 if any(model.S(:,n)~=0 & ~boolH)
 
                     %model.compartments of non-proton metabolites involved in reactions
-                    metCompartmentsNotH = model.metCompartments(model.S(:,n)~=0 & ~boolH);
+                    metCompartmentsNotH = model.metComps(model.S(:,n)~=0 & ~boolH);
                     uniqueCompartmentsNotH=unique(metCompartmentsNotH);
 
                     if length(rxnUniqueMetCompartments)>length(uniqueCompartmentsNotH)
@@ -217,7 +217,7 @@ for n=1:nRxn
                         %      equation: 'adp[c] + 4 h[e] + pi[c]  <=> atp[c] + h2o[c] + 3 h[c] '
 
                         %assumes the reconstruction transport reaction is elementally balanced for H
-                        compartBool = strcmp(uniqueCompartmentsNotH{1},model.metCompartments);
+                        compartBool = strcmp(uniqueCompartmentsNotH{1},model.metComps);
                         metRxnCompartBool = model.S(:,n)~=0 & compartBool & ~boolH;
                         %                     if 0
                         %                         model.mets(model.S(:,n)~=0)
@@ -286,7 +286,7 @@ for n=1:nRxn
                             %metabolite defined by the reconstrution.
 
                             %first compartment
-                            compartBool1 = strcmp(uniqueCompartmentsNotH{1},model.metCompartments);
+                            compartBool1 = strcmp(uniqueCompartmentsNotH{1},model.metComps);
                             %boolean for non-proton metabolites in first compartment
                             metCompartBool1 = model.S(:,n)~=0 & compartBool1 & ~boolH;
                             %index for stoichiometric coefficient of first compartment
@@ -314,7 +314,7 @@ for n=1:nRxn
                             %                         end
 
                             %second compartment
-                            compartBool2 = strcmp(uniqueCompartmentsNotH{2},model.metCompartments);
+                            compartBool2 = strcmp(uniqueCompartmentsNotH{2},model.metComps);
                             %boolean for non-proton metabolites in first compartment
                             metCompartBool2 = model.S(:,n)~=0 & compartBool2 & ~boolH;
                             %index for stoichiometric coefficient of first compartment

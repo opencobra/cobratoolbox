@@ -4,7 +4,7 @@ function [compartmentMetabolites] = findMetFromCompartment(model, compartment)
 %
 % USAGE:
 %
-%    [compartmentMetabolites] = findMetFromCompartment(model,Compartment)
+%    [compartmentMetabolites] = findMetFromCompartment(model,compartment)
 %
 % INPUTS:
 %    model:                     COBRA model strcture
@@ -15,17 +15,9 @@ function [compartmentMetabolites] = findMetFromCompartment(model, compartment)
 %
 % .. Authors:
 %       - written by Diana El Assal 27/10/15
+%       - updated to use metComps by Thomas Pfau, Nov 2018
 
-[metabolites]=[model.mets]; % Form a matrix with the metabolites and its identifiers
 %Find the metabolites in the compartment of interest (e.g. '[m], '[n]')
-compartmentMets=strfind(model.mets, compartment);
-index=find(~cellfun(@isempty, compartmentMets));
-compartmentMets=model.mets(index);
+compartment = regexprep(compartment, '\[([^\]]+\])\]','$1'); % compartments is a cell array list of compartments to keep (e.g. {'[e]','[c]','[m]'})
+compartmentMetabolites = model.mets(ismember(model.metComps,compartment));
 
-%Find all metabolite identifiers
-for i=1:size(compartmentMets,1);
-    num=find(ismember(metabolites(:,1),compartmentMets{i,1}));
-    if ~isempty(num);
-        compartmentMetabolites(i,:)=metabolites(num,:);
-    end
-end

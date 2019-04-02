@@ -202,9 +202,9 @@ for m=1:nMet
         %is=IS.(model.mets(m)(end-1));
         %chi=CHI.(model.mets(m)(end-1));
 
-        pHr=model.ph(find(strcmp(model.cellCompartments,model.metCompartments(m))));
-        is=model.is(find(strcmp(model.cellCompartments,model.metCompartments(m))));
-        chi=model.chi(find(strcmp(model.cellCompartments,model.metCompartments(m))));
+        pHr=model.ph(find(strcmp(model.cellCompartments,model.metComps(m))));
+        is=model.is(find(strcmp(model.cellCompartments,model.metComps(m))));
+        chi=model.chi(find(strcmp(model.cellCompartments,model.metComps(m))));
 
         if ~isnan(dGzero)
             %get charge (at pHr 7)

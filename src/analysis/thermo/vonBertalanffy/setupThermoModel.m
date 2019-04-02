@@ -21,7 +21,7 @@ function model = setupThermoModel(model, confidenceLevel)
 %                          * .metCharges - `m x 1` numerical array of metabolite charges.
 %                          * .T - Temperature in Kelvin.
 %                          * .compartments - `c x 1` array of compartment identifiers. Should match
-%                            the compartment identifiers in model.metCompartments.
+%                            the compartment identifiers in model.metComps.
 %                          * .ph - `c x 1` array of compartment specific pH values in the
 %                            range 4.7 to 9.3.
 %                          * .is - `c x 1` array of compartment specific ionic strength

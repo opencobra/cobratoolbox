@@ -56,7 +56,7 @@ end
 %so, lets see, which fields we get for mets:
 [matchingMetFields,dimensions] = getModelFieldsForType(model,'mets');
 %This should be:
-assert(isempty(setxor(matchingMetFields,{'mets','b','metNames','csense','S'})) && numel(matchingMetFields) == 5); %No duplicates!
+assert(isempty(setxor(matchingMetFields,{'metComps','mets','b','metNames','csense','S'})) && numel(matchingMetFields) == 6); %No duplicates!
 %And S should have dimension 1, and only 1.
 assert(all(dimensions(ismember(matchingMetFields,'S')) == 1)); %all to make sure that duplicate appearences are covered. 
 
@@ -79,7 +79,7 @@ model.mets{end+1,1} = 'NewMet';
 %than mets
 [matchingMetFields,dimensions] = getModelFieldsForType(model,'mets','fieldSize',length(model.mets)-1);
 %This should be all except mets:
-assert(isempty(setxor(matchingMetFields,{'b','metNames','csense','S'})) && numel(matchingMetFields) == 4); %No duplicates!
+assert(isempty(setxor(matchingMetFields,{'metComps','b','metNames','csense','S'})) && numel(matchingMetFields) == 5); %No duplicates!
 %And S should have dimension 1, and only 1.
 assert(all(dimensions(ismember(matchingMetFields,'S')) == 1)); %all to make sure that duplicate appearences are covered. 
 
@@ -104,7 +104,7 @@ assert(dimensions(ismember(matchingRxnFields,'something')) == 1);
 %So, lets extend the model to update all of those metabolite derived fields
 model = extendModelFieldsForType(model,'mets');
 [matchingMetFields,dimensions] = getModelFieldsForType(model,'mets');
-assert(isempty(setxor(matchingMetFields,{'mets','b','metNames','csense','S'})) && numel(matchingMetFields) == 5);
+assert(isempty(setxor(matchingMetFields,{'metComps', 'mets','b','metNames','csense','S'})) && numel(matchingMetFields) == 6);
 assert(length(model.something) == 8) %This field was not modified, as it could not be clearly associated with mets.
 
 fprintf('Testing removeFieldEntriesForType ...\n');

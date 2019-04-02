@@ -91,15 +91,18 @@ nanmerge = 'model.$NEW$(isnan(model.$NEW$)) = model.$OLD$(isnan(model.$NEW$));';
 
 oldFields = {'confidenceScores','metCharge','ecNumbers',...
 		  'KEGGID','metKeggID','rxnKeggID',...
-		  'metInchiString', 'metSmile', 'metHMDB'};
+		  'metInchiString', 'metSmile', 'metHMDB','metCHEBIID',...
+          'rxnsboTerm'};
 
 newFields = {'rxnConfidenceScores', 'metCharges','rxnECNumbers',...
 		'metKEGGID','metKEGGID','rxnKEGGID',...
-		'metInChIString', 'metSmiles','metHMDBID'};
+		'metInChIString', 'metSmiles','metHMDBID','metChEBIID',...
+        'rxnSBOTerms'};
 
 mergefunction = {maxmerge, nanmerge,cellmerge,...
 		cellmerge,cellmerge,cellmerge,...
-		cellmerge,cellmerge,cellmerge};    
+		cellmerge,cellmerge,cellmerge,cellmerge,...
+        cellmerge};    
 
 % get the defined field properties.    
 definedFields = getDefinedFieldProperties();
@@ -214,7 +217,9 @@ end
 if ~isfield(model,'csense')
     model.csense = repmat('E',numel(model.mets),1);
 else
-    model.csense = columnVector(model.csense);
+    if size(model.csense,1) ~= 0
+        model.csense = columnVector(model.csense);
+    end
 end
 
 if ~isfield(model, 'genes')
@@ -330,4 +335,36 @@ if size(model.genes,1) == 0 && size(model.genes,2) == 0
     model.genes = cell(0,1);
 end
 
+
+if isfield(model,'metCompartments')
+    model.metComps = model.metCompartments;
+    model = rmfield(model,'metCompartments');
+elseif ~isfield(model,'metComps')
+    newComps = extractCompartmentsFromMets(model.mets);
+    % if we have no assigned compartments, then everything is moved to the
+    % cytosol.
+    if all(strcmp(newComps,'k')) 
+        % this could indicate that the source is a BiGG model, lets try this.
+        biggComps = extractCompartmentsFromMets(model.mets,'compartmentRegExp','^(?<metID>.*?)_(?<compID>[a-z][a-z0-9]?)(_([A-Z][A-Z0-9]?))?$');
+        if all(strcmp(biggComps,'k')) 
+            newComps(:) = {'c'}; 
+        else
+            newComps = biggComps;
+        end
+    end
+    model.metComps = newComps;
+    model.comps = unique(model.metComps);
+    [compSymbol,compNames] = getDefaultCompartments();
+    [pres,pos] = ismember(compSymbol,model.comps);
+    model.compNames = model.comps;
+    model.compNames(pos(pres)) = compNames(pres);    
+end
+
+if isfield(model,'rxnSBOTerms')
+    numericIDs = cellfun(@isnumeric, model.rxnSBOTerms);
+    % convert the SBO terms to proper Identifiers
+    model.rxnSBOTerms(numericIDs) = cellfun(@(x) ['SBO:' repmat('0',1,7-length(num2str(x))), num2str(x)],model.rxnSBOTerms(numericIDs), 'Uniform',0);
+    numericIDs = cellfun(@(x) ~isempty(regexp(x,'^\d+$','ONCE')),model.rxnSBOTerms);
+    model.rxnSBOTerms(numericIDs) = cellfun(@(x) ['SBO:' repmat('0',1,7-length(x)), x],model.rxnSBOTerms(numericIDs), 'Uniform',0);
+end
     
