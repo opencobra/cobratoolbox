@@ -137,5 +137,44 @@ for j = 1:numel(cofactorCannot)
 end
 delete([pwd filesep 'testBiomassPrecursorCheck.txt'])
 
+% test identifying internally conserved moieties using atom transition network
+% load the dopamine synthesis model
+modelDir = fileparts(which('subDas.mat'));
+model = load('subDas.mat');
+model = model.model;
+% build the atom transition network using the data
+ATN = buildAtomTransitionNetwork(model, [modelDir filesep 'atomMapped']);
+
+% add a hypothetical biomass reaction to the model
+model = addReaction(model, 'BIOMASS', 'reactionFormula', '0.1 dopa[c] + 0.1 h2o[c] + 0.2 thbpt[c] -> 0.2 dhbpt[c]', 'objectiveCoef', 1);
+
+% test using left null space to approximate conserved moieties first
+[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, 1, 1);
+assert(isempty(missingMets) & isempty(coupledMets) & isempty(missingCofs))
+assert(isempty(setxor(presentMets, {'h2o[c]', 'dopa[c]'})))
+assert(numel(presentCofs) == 1 & isempty(setxor(presentCofs{1}, {'thbpt[c]', 'dhbpt[c]'})))
+
+% test using ATN. Results should be the same
+[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, 1, 1, ATN);
+assert(isempty(missingMets) & isempty(coupledMets) & isempty(missingCofs))
+assert(isempty(setxor(presentMets, {'h2o[c]', 'dopa[c]'})))
+assert(numel(presentCofs) == 1 & isempty(setxor(presentCofs{1}, {'thbpt[c]', 'dhbpt[c]'})))
+
+% now block formate uptake. Nothing can be produced
+model = changeRxnBounds(model, 'E6', 0, 'l');
+
+% test using left null space to approximate conserved moieties first
+[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, 1, 1);
+assert(isempty(presentMets) & isempty(coupledMets) & isempty(presentCofs))
+assert(isempty(setxor(missingMets, {'h2o[c]', 'dopa[c]'})))
+assert(numel(missingCofs) == 1 & isempty(setxor(missingCofs{1}, {'thbpt[c]', 'dhbpt[c]'})))
+
+% test using ATN. Results should be the same
+[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, 1, 1, ATN);
+assert(isempty(presentMets) & isempty(coupledMets) & isempty(presentCofs))
+assert(isempty(setxor(missingMets, {'h2o[c]', 'dopa[c]'})))
+assert(numel(missingCofs) == 1 & isempty(setxor(missingCofs{1}, {'thbpt[c]', 'dhbpt[c]'})))
+
+
 % change the directory
 cd(currentDir)
