@@ -2,7 +2,7 @@ function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFl
 % Identifies all blocked metabolites (anything downstream of a gap)
 % in a model.  MILP algorithm that finds gaps that may be missed by simple
 % inspection of the S matrix. To find every gap in a model, change the rxn
-% bounds on all exchange reactionst to allow uptake of every metabolite.
+% bounds on all exchange reactions to allow uptake of every metabolite.
 %
 % USAGE:
 %
