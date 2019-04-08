@@ -7,6 +7,7 @@ function V = LP9(K, P, model, LPproblem, epsilon)
 %
 % .. Authors: -  Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013
 %             LCSB / LSRU, University of Luxembourg
+%   2019/04/08: Agnieszka Wegrzyn - updated the function to work with models with coupling constraints
 
     scalingfactor = 1e5;
 
@@ -24,7 +25,7 @@ function V = LP9(K, P, model, LPproblem, epsilon)
     f = [zeros(n2,1); ones(np,1)];
 
     % equalities
-    Aeq = [LPproblem.A, sparse(m,np)];
+    Aeq = [LPproblem.A, sparse(m2,np)]; %changed the size of sparse() to match the size of LPproblem.A
     beq = LPproblem.b;
 
     % inequalities
