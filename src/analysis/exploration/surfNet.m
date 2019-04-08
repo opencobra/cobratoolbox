@@ -51,6 +51,7 @@ persistent pathLocal  % function output
 persistent modelLocal  % local model for next iteration
 persistent rxnFields  % rxn fields to be printed
 persistent metFields  % met fields to be printed
+persistent geneFields % gene fields to be printed
 persistent fluxLocal  % flux matrix
 
 optionalArgin = {'metNameFlag', 'flux', 'nonzeroFluxFlag', 'showMets', 'printFields', 'charPerLine', 'iterOptions'};
@@ -62,20 +63,19 @@ if isempty(varargin)
     varargin = {[]};
 end
 checkMetRxnOrNameValue = false;
+searchQueryTerm = false;
 while jArg <= numel(varargin)
     if jArg == 1
         if isstruct(varargin{jArg})  % 1st input being a COBRA model
             % non-empty model input resets modelLocal, pathLocal and fluxLocal (initial function call)
-            [modelLocal, pathLocal, fluxLocal] = deal(varargin{jArg}, {}, []);
+            [modelLocal, pathLocal, fluxLocal] = deal(varargin{jArg}, cell(0, 2), []);
             checkFields = true;  % check model's fields to be printed
         elseif isempty(modelLocal)
             error('The persistent variable modelLocal in surfNet is empty. Please supply a COBRA model.');
         elseif ~isempty(varargin{jArg})
-            %[stat, warnMsg] = MetRxnOrNameValue(varargin{jArg}, modelLocal, optionalArgin, isCellString);
             checkMetRxnOrNameValue = true;
         end
     elseif jArg == 2  % check whether the 2nd input is metrxn
-        %[stat, warnMsg] = MetRxnOrNameValue(varargin{jArg}, modelLocal, optionalArgin, isCellString);
         checkMetRxnOrNameValue = true;
     elseif ischar(varargin{jArg}) && (jArg ~= 7 || ~isfield(modelLocal, varargin{jArg}))
         break  % name-value pair input begins
@@ -87,21 +87,21 @@ while jArg <= numel(varargin)
         tempargin((end + 1):(end + 2)) = [optionalArgin(jArg - 2); varargin(jArg)];
     end
     if checkMetRxnOrNameValue
-        [stat, warnMsg] = deal(1, '');
+        stat = 1;
         if ~isempty(varargin{jArg})
-            if ischar(varargin{jArg})
-                if ~(findRxnIDs(modelLocal, varargin{jArg}) || findMetIDs(modelLocal, varargin{jArg}))
-                    stat = 2;  % input being name-value pair
-                    if ~any(strncmpi(varargin{jArg}, optionalArgin, numel(varargin{jArg})))
-                        [stat, warnMsg] = deal(3, varargin{jArg});  % incorrect char input
-                    end
-                end
-            elseif ~isCellString(varargin{jArg})
-                [stat, warnMsg] = deal(3, 'metrxn input');
+            if ~isCellString(varargin{jArg}) && ~ischar(varargin{jArg})
+                warning('The query term must be either a string or an array of string.')
+                return
             else
-                ismetrxn = findRxnIDs(modelLocal, varargin{jArg}) | findMetIDs(modelLocal, varargin{jArg});
-                if ~all(ismetrxn)
-                    [stat, warnMsg] = deal(3, strjoin(varargin{jArg}(~ismetrxn), ', '));
+                ismetrxn = findRxnIDs(modelLocal, varargin{jArg}) | findMetIDs(modelLocal, varargin{jArg}) | findGeneIDs(modelLocal, varargin{jArg});
+                if ischar(varargin{jArg}) && ~ismetrxn
+                    if any(strncmpi(varargin{jArg}, optionalArgin, numel(varargin{jArg})))
+                        stat = 2;  % input being name-value pair
+                    else
+                        stat = 3;  % neither model met, rxn, gene nor keyword
+                    end
+                elseif ~all(ismetrxn)
+                    stat = 3;
                 end
             end
         end
@@ -113,8 +113,8 @@ while jArg <= numel(varargin)
         elseif stat == 2  % input being name-value pair
             break
         elseif stat == 3  % incorrect input
-            warning('%s is/are neither metabolite(s) nor reaction(s) of the model.', warnMsg)
-            return
+            % not met, rxn or gene
+            [metrxn, jArg, searchQueryTerm] = deal(varargin{jArg}, 2, true);  % skip jArg = 2 if the 1st input needs to be searched
         end
     end
     jArg = jArg + 1;
@@ -174,30 +174,20 @@ else
     % check if .grRules exists. If not, try to get .grRules from .rules and .genes
     printGrRules = strcmp(field2print{2}, 'grRules');
 end
+
+runGenerateGrRules = false;
 if any(printGrRules)
-    if ~isfield(modelLocal, 'grRules') || all(cellfun(@isempty, modelLocal.grRules))
-        % if .grRules does not exist or is all empty
-        if isfield(modelLocal, 'rules') && any(~cellfun(@isempty, modelLocal.rules))
-            % if non-empty .rules exists
-            if any(~cellfun(@isempty, modelLocal.genes))
-                % if non-empty .genes exist, generate .grRules
-                modelLocal = generateGrRules(modelLocal);
-            else
-                % else print .rules
-                if isCellString(field2print)
-                    field2print{printGrRules} = 'rules';
-                else
-                    field2print{2}{printGrRules} = 'rules';
-                end
-            end
+    if (~isfield(modelLocal, 'grRules') || all(cellfun(@isempty, modelLocal.grRules))) ...
+        && (~isfield(modelLocal, 'rules') || all(cellfun(@isempty, modelLocal.rules)))
+        % print nothing about GPR
+        if isCellString(field2print)
+            field2print(printGrRules) = [];
         else
-            % else print nothing about GPR
-            if isCellString(field2print)
-                field2print(printGrRules) = [];
-            else
-                field2print{2}(printGrRules) = [];
-            end
+            field2print{2}(printGrRules) = [];
         end
+    else
+        % either nonempty .grRules exists or nonempty .rules + .genes exist
+        runGenerateGrRules = true;
     end
 end
 % options for showing previous steps
@@ -249,6 +239,10 @@ end
 selfCallCommand = ['surfNet([], ''%s'', ' sprintf('%d, %s, %d, %d, [], %d);', ...
     metNameFlag, fluxInputSelfCall, nonzeroFluxSelfCall, showMets, nCharBreak)];
 
+if runGenerateGrRules
+    modelLocal = generateGrRules(modelLocal, selfCallCommand);
+    modelLocal.grRules = modelLocal.grRulesLinked;
+end
 % if a reaction or metabolite is not given
 if ~showPrev && isempty(metrxn)
     if any(modelLocal.c) && (isempty(fluxLocal) || any(abs(fluxLocal(modelLocal.c ~= 0, 1)) > fluxTol))
@@ -397,7 +391,13 @@ if checkFields
     
     % define metFields and rxnFields
     metFields = field2print{1}(:);
-    rxnFields = field2print{2}(:);    
+    rxnFields = field2print{2}(:);
+    
+    % print every related field for gene objects
+    isGeneField = (strncmp(fn, 'gene', 4) | strncmp(fn, 'prot', 4)) & ~strcmp(fn, 'genes') & structfun(@numel, modelLocal) == numel(modelLocal.genes);
+    geneFields = fn(isGeneField);
+    [ynG, idG] = ismember({'geneNames', 'proteins'}, geneFields);
+    geneFields = [geneFields(idG(ynG)); geneFields(setdiff(1:numel(geneFields), idG(ynG)))];
 end
 
 % raise error after checking model to avoid errors in iterative calls
@@ -408,6 +408,8 @@ end
 % print lb, ub or not
 [showLB, showUB] = deal(any(strcmp(rxnFields, 'lb')), any(strcmp(rxnFields, 'ub')));
 rxnFieldsForInfo = rxnFields(~ismember(rxnFields, {'lb', 'ub'}));
+%isRxnFieldGrRules = strcmp(rxnFieldsForInfo, 'grRules');
+%printGrRules = any(isRxnFieldGrRules);
 for j = 1:numel(rxnFieldsForInfo)
     if isnumeric(modelLocal.(rxnFieldsForInfo{j}))
         modelLocal.(rxnFieldsForInfo{j}) = num2cell(modelLocal.(rxnFieldsForInfo{j}));
@@ -424,36 +426,15 @@ if showPrev
     fprintf('\n');
     nChar = 0;
     for jPast = 1:size(pathLocal, 1)
-        % print each of the previous metabolites navigated
-        if ~isempty(pathLocal{jPast, 1})
-            if metNameFlag
-                % print the metabolite name
-                namePrint = modelLocal.metNames{findMetIDs(modelLocal, pathLocal{jPast, 1})};
-            else
-                % or print the metabolite abbreviation
-                namePrint = pathLocal{jPast, 1};
-            end
-            % line break if exceeding character per line
-            if nChar > 0 && nChar + length(namePrint) + 2 > nCharBreakReal
-                fprintf('\n');
-                nChar = 0;
-            end
-            nChar = nChar + length(namePrint) + 2;
-            
-            printHyperlink(sprintf(selfCallCommand, pathLocal{jPast, 1}), namePrint, 0);
-            fprintf('>>'); 
+        % line break if exceeding character per line
+        if nChar > 0 && nChar + length(pathLocal{jPast, 2}) + 2 > nCharBreakReal
+            fprintf('\n');
+            nChar = 0;
         end
-        % print each of the previous reactions navigated
-        if ~isempty(pathLocal{jPast, 2})
-            % line break if exceeding character per line
-            if nChar > 0 && nChar + length(pathLocal{jPast, 2}) > nCharBreakReal
-                fprintf('\n');
-                nChar = 0;
-            end
-            nChar = nChar + length(pathLocal{jPast, 2}) + 2;
-            printHyperlink(sprintf(selfCallCommand, pathLocal{jPast, 2}), pathLocal{jPast, 2}, 0);
-            fprintf('>>');
-        end     
+        nChar = nChar + length(pathLocal{jPast, 2}) + 2;
+            
+        printHyperlink(sprintf(selfCallCommand, pathLocal{jPast, 1}), pathLocal{jPast, 2}, 0);
+        fprintf('>>');
     end
     fprintf('\n');
     return
@@ -464,6 +445,10 @@ if iscell(metrxn)
     if numel(metrxn) == 1
         metrxn = metrxn{1};
     else
+        if searchQueryTerm
+            % if some terms are ambiguous, print those unambiguous first
+            metrxn = [columnVector(metrxn(ismetrxn)); columnVector(metrxn(~ismetrxn))];
+        end
         iterOptionsCell.printShowPrev = false;
         for jMR = 1:numel(metrxn)
             if jMR == numel(metrxn)
@@ -479,6 +464,139 @@ if iscell(metrxn)
     end
 end
 
+%% search the model if the query term is ambiguous
+if searchQueryTerm
+    fprintf('%s is/are not metabolite(s), reaction(s) or gene(s) of the model.\nSearching for related objects:\n', metrxn)
+    searchResults = searchModel(modelLocal, metrxn, 'printLevel', 0);
+    if isfield(searchResults, 'mets')
+        m = findMetIDs(modelLocal, {searchResults.mets.id});
+        % max. met's length
+        dispLen1 = max(cellfun(@length, modelLocal.mets(m)));
+        dis1 = ['  %-' num2str(dispLen1) 's'];
+        % max. met's ID length
+        dispLen2 = max(m);
+        dis1 = ['  %-' num2str(ceil(log10(dispLen2)) + 1) 's' dis1];
+        dis2 = [' #%-' num2str(ceil(log10(dispLen2)) + 1) 'd'];
+        fprintf(['\n' dis1 '  '], 'id', 'Met');
+        for jF = 1:numel(metFields)
+            if jF > 1
+                fprintf(', ');
+            end
+            fprintf('%s', metFields{jF});
+        end
+        fprintf(', matches\n');
+        
+        for j = 1:numel(m)
+            % print metabolite ID
+            fprintf([dis2 '  '], m(j));
+            % print metabolite with hyperlink
+            printHyperlink(sprintf(selfCallCommand, modelLocal.mets{m(j)}), modelLocal.mets{m(j)}, dispLen1);
+            fprintf('  ');
+            % print met fields
+            metRxnInfo = [metFields(:)', {'matches'}; [columnVector(cellfun(@(x) modelLocal.(x){m(j)}, metFields, 'UniformOutput', false))', ...
+                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.mets(j), 'UniformOutput', false), ', ')]];
+            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+        end
+    end
+    if isfield(searchResults, 'rxns')
+        r = findRxnIDs(modelLocal, {searchResults.rxns.id});
+        % max. met's length
+        dispLen1 = max(cellfun(@length, modelLocal.rxns(r)));
+        dis1 = ['  %-' num2str(dispLen1) 's'];
+        % max. met's ID length
+        dispLen2 = max(r);
+        dis1 = ['  %-' num2str(ceil(log10(dispLen2)) + 1) 's' dis1];
+        dis2 = [' #%-' num2str(ceil(log10(dispLen2)) + 1) 'd'];
+        fprintf(['\n' dis1 '  '], 'id', 'Rxn');
+        if fluxInputExist
+            fprintf('(flux)');
+        end
+        if showLB && showUB
+            fprintf('LB / UB');
+        elseif showLB
+            fprintf('LB');
+        elseif showUB
+            fprintf('UB');
+        end
+        for jF = 1:numel(rxnFieldsForInfo)
+            fprintf(', %s', rxnFieldsForInfo{jF});
+        end
+        fprintf(', matches\n');
+        for j = 1:numel(r)
+            % print reaction flux
+            fprintf([dis2 '  '], r(j));
+            % print reaction id with hyperlink
+            printHyperlink(sprintf(selfCallCommand, modelLocal.rxns{r(j)}), modelLocal.rxns{r(j)}, dispLen1);
+            % print reaction flux
+            fluxStr = '';
+            if fluxInputExist
+                fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, true), ', ') ')'];
+            end
+            fprintf(fluxStr);
+            fprintf('  ');
+            
+            % print bounds
+            if showLB && showUB
+                fprintf('%s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+            elseif showLB
+                fprintf('%s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax));
+            elseif showUB
+                fprintf('%s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+            end
+            
+            % print rxn info
+            metRxnInfo = [rxnFieldsForInfo(:)', {'matches'}; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))', ...
+                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.rxns(j), 'UniformOutput', false), ', ')];
+            printMetRxnInfo(metRxnInfo, 1, 0, 'rxnNames', ordMagMin, ordMagMax);
+            
+            % print reaction formula
+            flux = [];
+            if fluxInputExist
+                flux = fluxLocal(id);
+            end
+            fprintf(['%-' num2str(ceil(log10(dispLen2)) + 1) 's  '], '');
+            printRxnFormulaLinked(modelLocal, modelLocal.rxns{r(j)}, 1, metNameFlag, flux, nCharBreakReal, selfCallCommand);
+            fprintf('\n');
+        end
+    end
+    if isfield(searchResults, 'genes')
+        m = findGeneIDs(modelLocal, {searchResults.genes.id});
+        % max. met's length
+        dispLen1 = max(cellfun(@length, modelLocal.genes(m)));
+        dis1 = ['  %-' num2str(dispLen1) 's'];
+        % max. met's ID length
+        dispLen2 = max(m);
+        dis1 = ['  %-' num2str(ceil(log10(dispLen2)) + 1) 's' dis1];
+        dis2 = [' #%-' num2str(ceil(log10(dispLen2)) + 1) 'd'];
+        fprintf(['\n' dis1 '  '], 'id', 'Gene');
+        for jF = 1:numel(geneFields)
+            if jF > 1
+                fprintf(', ');
+            end
+            fprintf('%s', geneFields{jF});
+        end
+        if ~isempty(geneFields)
+            fprintf(', ')
+        end
+        fprintf('matches\n');
+        
+        for j = 1:numel(m)
+            % print metabolite ID
+            fprintf([dis2 '  '], m(j));
+            % print metabolite with hyperlink
+            printHyperlink(sprintf(selfCallCommand, modelLocal.genes{m(j)}), modelLocal.genes{m(j)}, dispLen1);
+            fprintf('  ');
+            % print met fields
+            metRxnInfo = [geneFields(:)', {'matches'}; [columnVector(cellfun(@(x) modelLocal.(x){m(j)}, geneFields, 'UniformOutput', false))', ...
+                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.genes(j), 'UniformOutput', false), ', ')]];
+            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+        end
+    end
+    if ~any(isfield(searchResults, {'mets', 'rxns', 'genes'}))
+        warning('No related mets, rxns or genes are found from the search. Please try other query terms.')
+    end
+    return
+end
 %% input is a reaction
 % string indicating non-zero fluxes or not for printing
 nzFluxPrint = '';
@@ -496,126 +614,185 @@ else
     direction = 1;
 end
 
-id = findRxnIDs(modelLocal, metrxn);
-if id ~= 0
-    if isempty(pathLocal)
-        pathLocal = {'', ''}; 
-    end
-    if ~isempty(pathLocal{end, 2})
-        pathLocal(end + 1, :) = {'', ''}; 
-    end
-    pathLocal{end, 2} = metrxn;
-    
-    % print reaction flux
-    fluxStr = '';
-    if ~isempty(fluxLocal)
-        fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(id,:), ordMagMin, ordMagMax, true), ', ') ')'];
-    end
-    fprintf('\nRxn #%d  %s%s', id, metrxn, fluxStr);
-    
-    % print bounds
-    if showLB && showUB
-        fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
-    elseif showLB
-        fprintf(', LB: %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax));
-    elseif showUB
-        fprintf(', UB: %s', numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
-    end
-    
-    % print rxn info
-    metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, rxnFieldsForInfo, 'UniformOutput', false))'];
-    printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
-    
-    % print reaction formula
-    flux = [];
-    if fluxInputExist
-        flux = fluxLocal(id);
-    end
-    printRxnFormulaLinked(modelLocal, metrxn, 1, metNameFlag, flux, nCharBreakReal, selfCallCommand);
-    %printFormulae(formPart, dict, arrow, metNameFlag, nonzeroFluxFlag, showMets, fluxInputExist, nCharBreak, nCharBreakReal);
+% determine if the query object is a reaction, metabolite or gene.
+object = {'rxn'; 'met'; 'gene'};
+id = [findRxnIDs(modelLocal, metrxn), findMetIDs(modelLocal, metrxn), findGeneIDs(modelLocal, metrxn)];
+if nnz(id) > 1
+    warning('%s corresponds to a %s at the same time. Only show results for the %s. Consider renaming.', ...
+        metrxn, strjoin(object(id ~= 0), ', '), object{find(id, 1)})
+end
+object = object{find(id, 1)};
+id = id(find(id, 1));
 
-    % print reactants and products in detail
-    if showMets
-        m = findRxnIDs(modelLocal, metrxn);
-        m = [{find(modelLocal.S(:, m) < 0)}; {find(modelLocal.S(:, m) > 0)}];
-        % max. met's length
-        dispLen1 = max(cellfun(@length, modelLocal.mets([m{1};m{2}])));
-        dis1 = ['  %-' num2str(dispLen1) 's'];
-        % max. met's ID length
-        dispLen2 = max([m{1};m{2}]);
-        dis1 = ['  %-' num2str(ceil(log10(dispLen2)) + 1) 's' dis1];
-        dis2 = [' #%-' num2str(ceil(log10(dispLen2)) + 1) 'd'];
-        fprintf(['\n' dis1 '  Stoich     '], 'id', 'Met');
-        for jF = 1:numel(metFields)
-            if jF > 1
-                fprintf(', ');
-            end
-            fprintf('%s', metFields{jF});
+pathLocal(end + 1, 1:2) = {metrxn};
+switch object
+    case 'rxn'
+        % print reaction flux
+        fluxStr = '';
+        if ~isempty(fluxLocal)
+            fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(id,:), ordMagMin, ordMagMax, true), ', ') ')'];
         end
-        fprintf('\n');
-        for jRP = 1:numel(m)
-            if jRP == 1
-                fprintf('Reactant:\n');
-            else
-                fprintf('Product:\n');
-            end
-            for j = 1:numel(m{jRP})
-                % format the printing of the stoichiometric coefficient
-                if floor(modelLocal.S(m{jRP}(j), id)) ~= modelLocal.S(m{jRP}(j), id)
-                % use exponential notation if there are too many decimal places
-                    d = 0;
-                    x = modelLocal.S(m{jRP}(j), id);
-                    while x ~= round(x, d) && d <= stoichDigit
-                        d = d + 1;
-                    end
-                    if round(x, d) == 0
-                        stForm = '%-9.2e';
-                    else
-                        stForm = ['%-9.' num2str(d) 'f'];
-                    end
-                else
-                    stForm = '%-9.0f';
+        fprintf('\nRxn #%d  %s%s', id, metrxn, fluxStr);
+        
+        % print bounds
+        if showLB && showUB
+            fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
+        elseif showLB
+            fprintf(', LB: %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax));
+        elseif showUB
+            fprintf(', UB: %s', numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
+        end
+        
+        % print rxn info
+        metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, rxnFieldsForInfo, 'UniformOutput', false))'];
+        printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
+        
+        % print reaction formula
+        flux = [];
+        if fluxInputExist
+            flux = fluxLocal(id);
+        end
+        printRxnFormulaLinked(modelLocal, metrxn, 1, metNameFlag, flux, nCharBreakReal, selfCallCommand);
+        
+        % print reactants and products in detail
+        if showMets
+            m = findRxnIDs(modelLocal, metrxn);
+            m = [{find(modelLocal.S(:, m) < 0)}; {find(modelLocal.S(:, m) > 0)}];
+            % max. met's length
+            dispLen1 = max(cellfun(@length, modelLocal.mets([m{1};m{2}])));
+            dis1 = ['  %-' num2str(dispLen1) 's'];
+            % max. met's ID length
+            dispLen2 = max([m{1};m{2}]);
+            dis1 = ['  %-' num2str(ceil(log10(dispLen2)) + 1) 's' dis1];
+            dis2 = [' #%-' num2str(ceil(log10(dispLen2)) + 1) 'd'];
+            fprintf(['\n' dis1 '  Stoich     '], 'id', 'Met');
+            for jF = 1:numel(metFields)
+                if jF > 1
+                    fprintf(', ');
                 end
-                % print metabolite ID
-                fprintf([dis2 '  '], m{jRP}(j));
-                % print metabolite with hyperlink
-                printHyperlink(sprintf(selfCallCommand, modelLocal.mets{m{jRP}(j)}), modelLocal.mets{m{jRP}(j)}, dispLen1);
-                % print stoichiometric coefficients and other called fields
-                fprintf(['  ' stForm '  '], full(modelLocal.S(m{jRP}(j), id)));
-                % print met fields
-                metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){m{jRP}(j)}, metFields, 'UniformOutput', false))'];
-                printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+                fprintf('%s', metFields{jF});
+            end
+            fprintf('\n');
+            for jRP = 1:numel(m)
+                if jRP == 1
+                    fprintf('Reactant:\n');
+                else
+                    fprintf('Product:\n');
+                end
+                for j = 1:numel(m{jRP})
+                    % format the printing of the stoichiometric coefficient
+                    if floor(modelLocal.S(m{jRP}(j), id)) ~= modelLocal.S(m{jRP}(j), id)
+                        % use exponential notation if there are too many decimal places
+                        d = 0;
+                        x = modelLocal.S(m{jRP}(j), id);
+                        while x ~= round(x, d) && d <= stoichDigit
+                            d = d + 1;
+                        end
+                        if round(x, d) == 0
+                            stForm = '%-9.2e';
+                        else
+                            stForm = ['%-9.' num2str(d) 'f'];
+                        end
+                    else
+                        stForm = '%-9.0f';
+                    end
+                    % print metabolite ID
+                    fprintf([dis2 '  '], m{jRP}(j));
+                    % print metabolite with hyperlink
+                    printHyperlink(sprintf(selfCallCommand, modelLocal.mets{m{jRP}(j)}), modelLocal.mets{m{jRP}(j)}, dispLen1);
+                    % print stoichiometric coefficients and other called fields
+                    fprintf(['  ' stForm '  '], full(modelLocal.S(m{jRP}(j), id)));
+                    % print met fields
+                    metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){m{jRP}(j)}, metFields, 'UniformOutput', false))'];
+                    printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+                end
+            end
+        else
+            fprintf('\n');
+        end
+    case 'met'
+        %% input is a metabolite
+        fprintf('\nMet #%d  %s', id, modelLocal.mets{id});
+        
+        if metNameFlag
+            pathLocal{end, 2} = modelLocal.metNames{id};
+        end
+        
+        % print met fields
+        metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, metFields, 'UniformOutput', false))'];
+        printMetRxnInfo(metRxnInfo, 1, true, {'metNames'; 'metFormulas'}, ordMagMin, ordMagMax);
+        fprintf('\n');
+        
+        for jCP = 1:2
+            if jCP == 1
+                % print consuming reactions (taking into account of flux direction if given)
+                r = find(modelLocal.S(id, :) .* direction < 0);
+                fprintf('Consuming reactions%s:', nzFluxPrint);
+            else
+                % print producing reactions (taking into account of flux direction if given)
+                r = find(modelLocal.S(id, :) .* direction > 0);
+                fprintf('Producing reactions%s:', nzFluxPrint);
+            end
+            if isempty(r)
+                fprintf(' none\n');
+            else
+                % print all connected reactions
+                fprintf('\n');
+                for j = 1:numel(r)
+                    % print reaction info
+                    fprintf('  #%d  ', r(j));
+                    printHyperlink(sprintf(selfCallCommand, modelLocal.rxns{r(j)}), modelLocal.rxns{r(j)}, 0);
+                    
+                    % print flux
+                    fluxStr = '';
+                    if ~isempty(fluxLocal)
+                        fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, true), ', ') ')'];
+                    end
+                    fprintf('%s', fluxStr);
+                    
+                    % print bounds
+                    if showLB && showUB
+                        fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                    elseif showLB
+                        fprintf(', LB: %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax));
+                    elseif showUB
+                        fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                    end
+                    
+                    % print rxn info
+                    metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))'];
+                    printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
+                    
+                    % print reaction formula
+                    flux = [];
+                    if fluxInputExist
+                        flux = fluxLocal(r(j));
+                    end
+                    printRxnFormulaLinked(modelLocal, modelLocal.rxns{r(j)}, 1, metNameFlag, flux, nCharBreakReal, selfCallCommand);
+                    
+                    fprintf('\n');
+                end
             end
         end
-    else
+    case 'gene'
+        %% input is a gene
+        fprintf('\nGene #%d  %s', id, modelLocal.genes{id});
+        
+        % print gene related fields
+        geneInfo = [geneFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, geneFields, 'UniformOutput', false))'];
+        printMetRxnInfo(geneInfo, 1, true, [], ordMagMin, ordMagMax);
         fprintf('\n');
-    end
-else
-    %% input is a metabolite
-    id = findMetIDs(modelLocal, metrxn);
-    pathLocal(end + 1, :) = {metrxn, ''};
-    fprintf('\nMet #%d  %s', id, modelLocal.mets{id});
-
-    % print met fields
-    metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, metFields, 'UniformOutput', false))'];
-    printMetRxnInfo(metRxnInfo, 1, true, {'metNames'; 'metFormulas'}, ordMagMin, ordMagMax);
-    fprintf('\n');
-    
-    for jCP = 1:2
-        if jCP == 1
-            % print consuming reactions (taking into account of flux direction if given)
-            r = find(modelLocal.S(id, :) .* direction < 0);
-            fprintf('Consuming reactions%s:', nzFluxPrint);
-        else
-            % print producing reactions (taking into account of flux direction if given)
-            r = find(modelLocal.S(id, :) .* direction > 0);
-            fprintf('Producing reactions%s:', nzFluxPrint);
-        end
-        if isempty(r)
+        
+        r = findRxnsFromGenes(modelLocal, modelLocal.genes{id});
+        % the result structure should contain at most one field
+        rFn = fieldnames(r);
+        
+        if isempty(rFn)
             fprintf(' none\n');
         else
+            r = findRxnIDs(modelLocal, r.(rFn{1})(:, 1));
             % print all connected reactions
-            fprintf('\n');
+            fprintf('Reactions involving the gene:\n');
             for j = 1:numel(r)
                 % print reaction info
                 fprintf('  #%d  ', r(j));
@@ -636,11 +813,11 @@ else
                 elseif showUB
                     fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
                 end
-
+                
                 % print rxn info
                 metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))'];
                 printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
-
+                
                 % print reaction formula
                 flux = [];
                 if fluxInputExist
@@ -651,7 +828,7 @@ else
                 fprintf('\n');
             end
         end
-    end
+        
 end
 
 % print the button for showing previously navigated mets and rxns
