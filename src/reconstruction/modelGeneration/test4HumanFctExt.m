@@ -800,10 +800,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     % model.c(ismember(model.rxns,'sink_glu-L(c)'))=1;
     %   FBA = optimizeCbModel(model,'max','zero');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'akg(c) -> glu-L(c)';
     % k = k + 1;
-    clear FBA
+    % clear FBA
     %% akg[c] -> glu-L[c] % I adjusted lb since otherwise not feasible
     model = modelOri;
     
@@ -2817,10 +2817,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     % model.c(ismember(model.rxns,'sink_chsterol(r)'))=1;
     %   FBA = optimizeCbModel(model,'max','zero');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'hmgcoa(x) -> chsterol(r)';
     % k = k + 1;
-    clear FBA
+    % clear FBA
     %% hpyr -> 2pg
     model = modelOri;
     [model] = addSinkReactions(model,{'hpyr(c)','2pg(c)'},[-1 -1; 0 100]);
@@ -3342,10 +3342,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     % model.c(ismember(model.rxns,'sink_34dhoxpeg(c)'))=1;
     %   FBA = optimizeCbModel(model,'max','zero');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'npphr(c) -> 34dhoxpeg(c)';
     % k = k + 1;
-    clear FBA
+    % clear FBA
     %% o2- -> h2o2 -> o2 + h2o
     model = modelOri;
     [model] = addSinkReactions(model,{'o2s(c)','h2o2(c)'},[-1 -1; 0 100]);
@@ -3843,10 +3843,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     % model.c(ismember(model.rxns,'sink_dsTn_antigen(g)'))=1;
     %   FBA = optimizeCbModel(model,'max','zero');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'Ser/Thr[g] + udpacgal[g] -> dsTn_antigen[g]';
     % k = k + 1;
-    clear FBA
+    % clear FBA
     %% Ser/Thr[g] + udpacgal[g] -> Tn_antigen[g] % dsTn_antigen does not exists
     % - I used Tn_antigen instead %changing lb has no effect
     model = modelOri;
@@ -4195,10 +4195,10 @@ if strcmp(test,'Recon1') || strcmp(test,'all') || strcmp(test,'Harvey')
     % model.c(ismember(model.rxns,'sink_tchola(x)'))=1;
     %   FBA = optimizeCbModel(model,'max','zero');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'thcholstoich(x) -> tchola(x)';
     % k = k + 1;
-    clear FBA
+    % clear FBA
     %% thr-L -> ppcoa
     model = modelOri;
     model.lb(ismember(model.rxns,'EX_o2(e)'))=-40;model.ub(ismember(model.rxns,'EX_o2(e)'))=-1;
@@ -6228,32 +6228,32 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %FBA=optimizeCbModel(model,'min');
     %FBA=optimizeCbModel(model,'max');
     % TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    % TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'uptake and secretion of cholic acid - CHOLATEt2u'; % SHOULD THIS BE MIN?
     % k = k + 1;
-    clear FBA
+    % clear FBA
     if any(strcmp('CHOLATEt3',model.rxns))
         model=changeObjective(model,'CHOLATEt3',1);
         FBA = optimizeCbModel(model,'max','zero');
         TestSolution(k,1) = FBA.f;
         TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
-        TestSolutionName{k,1} = 'uptake of cholic acid - CHOLATEt3';
     else
         TestSolution(k,1) = NaN;
     end
+    TestSolutionName{k,1} = 'uptake of cholic acid - CHOLATEt3';
     k = k + 1;
     clear FBA
     
     %     if any(strcmp('CHOLATEt3',model.rxns))
     %         FBA=optimizeCbModel(model,'min');
     %         TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    %         TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     %     else
     %         TestSolution(k,1) = NaN;
     %     end
     %     TestSolutionName{k,1} = 'secretion of cholic acid - CHOLATEt3';
     %  k = k + 1;
-    clear FBA
+    %  clear FBA
     
     %% Uptake and secretion of glycocholate
     model=modelOri;
@@ -6264,10 +6264,10 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %FBA=optimizeCbModel(model,'min');
     %FBA=optimizeCbModel(model,'max');
     %TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    %TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     %TestSolutionName{k,1} = 'uptake and secretion of cholic glycocholate - GCHOLAt2u';
     %k = k + 1;
-    clear FBA
+    %clear FBA
     if any(strcmp('GCHOLAt3',model.rxns))
         model=changeObjective(model,'GCHOLAt3',1);
         %FBA=optimizeCbModel(model,'min');
@@ -6284,13 +6284,13 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %     if any(strcmp('GCHOLAt3',model.rxns))
     %         FBA=optimizeCbModel(model,'min');
     %         TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    %         TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     %     else
     %         TestSolution(k,1) = NaN;
     %     end
     %     TestSolutionName{k,1} = 'secretion of cholic glycocholate - GCHOLAt3';
     %  k = k + 1;
-    clear FBA
+    %  clear FBA
     
     %% Uptake and secretion of tauro-cholate
     model=modelOri;
@@ -6301,10 +6301,10 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %FBA=optimizeCbModel(model,'min');
     %FBA=optimizeCbModel(model,'max');
     %TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    %TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     % TestSolutionName{k,1} = 'uptake and secretion of tauro-cholate - TCHOLAt2u';
     %k = k + 1;
-    clear FBA
+    %clear FBA
     if any(strcmp('TCHOLAt3',model.rxns))
         model=changeObjective(model,'TCHOLAt3',1);
         % FBA=optimizeCbModel(model,'min');
@@ -6320,7 +6320,7 @@ if strcmp(test,'IEC') || strcmp(test,'all')|| strcmp(test,'Harvey')
     %     if any(strcmp('TCHOLAt3',model.rxns))
     %         FBA=optimizeCbModel(model,'min');
     %         TestSolution(k,1) = FBA.f;
-    TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
+    %         TestedRxns = [TestedRxns; model.rxns(abs(FBA.x)>tol)];
     %     else
     %         TestSolution(k,1) = NaN;
     %     end
