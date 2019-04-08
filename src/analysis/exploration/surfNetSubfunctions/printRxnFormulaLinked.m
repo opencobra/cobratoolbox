@@ -1,5 +1,22 @@
 function p = printRxnFormulaLinked(model, rxnAbbrList, printFlag, metNameFlag, flux, nCharBreak, commandUsingMet)
-
+% print reaction formulae in which the metabolites are hyperlinked to run a
+% specific command involving the metabolites when displayed in the Matlab
+% command window. Called by `surfNet.m`.
+%
+% USAGE:
+%    p = printRxnFormulaLinked(model, rxnAbbrList, printFlag, metNameFlag, flux, nCharBreak, commandUsingMet)
+%
+% INPUTS:
+%    model:                COBRA model
+%
+% OPTIONAL INPUTS:
+%    rxnAbbrList:          cell array of reactions to be printed (default all reactions)
+%    printFlag:            true to print, otherwise return the strings only (default true)
+%    metNameFlag:          true to display met names in *.metNames instead of *.mets (default false)  
+%    flux:                 the flux of the reaction. When non-empty, determine the arrow for the formula accordingly
+%    nCharBreak:           max. number of character printed on each line
+%    commandUsingMet:      string of Matlab command for the genes in the model, e.g., 'fprintf(''%s'')' where %s
+%                          will be replaced by the metabolites (default [], not adding the field for hyperlinked grRules)
 if nargin < 2 || isempty(rxnAbbrList)
     rxnAbbrList = model.rxns;
 end

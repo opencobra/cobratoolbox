@@ -37,7 +37,9 @@ function surfNet(varargin)
 %    surfNet(model, {'glc-D[c]'; 'fru[c]'})  % to view several mets and rxns
 
 fluxTol = 1e-8;  % tolerance for non-zero fluxes
-[ordMagMax, ordMagMin] = deal(7, -5);  % the largest and smallest order of magnitude for which numbers lie outside are displayed in scientific notation
+% the largest and smallest order of magnitude for which numbers lie outside are displayed in scientific notation
+% and the maximum number of characters for the numbers in formatted strings
+[ordMagMax, ordMagMin, nCharMax] = deal(7, -5, 8);
 stoichDigit = 6;  % at most print six decimal places for stoichiometric coefficients
 % default fields to be printed
 field2printDefault = {{'metNames', 'metFormulas', 'metCharges'}, {'rxnNames', 'lb', 'ub', 'grRules'}};
@@ -532,18 +534,19 @@ if searchQueryTerm
             % print reaction flux
             fluxStr = '';
             if fluxInputExist
-                fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, true), ', ') ')'];
+                fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, nCharMax, true), ', ') ')'];
             end
             fprintf(fluxStr);
             fprintf('  ');
             
             % print bounds
             if showLB && showUB
-                fprintf('%s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                fprintf('%s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax), ...
+                    numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
             elseif showLB
-                fprintf('%s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax));
+                fprintf('%s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax));
             elseif showUB
-                fprintf('%s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                fprintf('%s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
             end
             
             % print rxn info
@@ -631,22 +634,23 @@ switch object
         % print reaction flux
         fluxStr = '';
         if ~isempty(fluxLocal)
-            fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(id,:), ordMagMin, ordMagMax, true), ', ') ')'];
+            fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(id,:), ordMagMin, ordMagMax, nCharMax, true), ', ') ')'];
         end
         fprintf('\nRxn #%d  %s%s', id, metrxn, fluxStr);
         
         % print bounds
         if showLB && showUB
-            fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
+            fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax, nCharMax), ...
+                numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax, nCharMax));
         elseif showLB
-            fprintf(', LB: %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax));
+            fprintf(', LB: %s', numToFormattedString(modelLocal.lb(id), ordMagMin, ordMagMax, nCharMax));
         elseif showUB
-            fprintf(', UB: %s', numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax));
+            fprintf(', UB: %s', numToFormattedString(modelLocal.ub(id), ordMagMin, ordMagMax, nCharMax));
         end
         
         % print rxn info
         metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, rxnFieldsForInfo, 'UniformOutput', false))'];
-        printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
+        printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax, nCharMax);
         
         % print reaction formula
         flux = [];
@@ -705,7 +709,7 @@ switch object
                     fprintf(['  ' stForm '  '], full(modelLocal.S(m{jRP}(j), id)));
                     % print met fields
                     metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){m{jRP}(j)}, metFields, 'UniformOutput', false))'];
-                    printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+                    printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax, nCharMax);
                 end
             end
         else
@@ -721,7 +725,7 @@ switch object
         
         % print met fields
         metRxnInfo = [metFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, metFields, 'UniformOutput', false))'];
-        printMetRxnInfo(metRxnInfo, 1, true, {'metNames'; 'metFormulas'}, ordMagMin, ordMagMax);
+        printMetRxnInfo(metRxnInfo, 1, true, {'metNames'; 'metFormulas'}, ordMagMin, ordMagMax, nCharMax);
         fprintf('\n');
         
         for jCP = 1:2
@@ -747,22 +751,22 @@ switch object
                     % print flux
                     fluxStr = '';
                     if ~isempty(fluxLocal)
-                        fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, true), ', ') ')'];
+                        fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, nCharMax, true), ', ') ')'];
                     end
                     fprintf('%s', fluxStr);
                     
                     % print bounds
                     if showLB && showUB
-                        fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                        fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
                     elseif showLB
-                        fprintf(', LB: %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax));
+                        fprintf(', LB: %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax));
                     elseif showUB
-                        fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                        fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
                     end
                     
                     % print rxn info
                     metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))'];
-                    printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
+                    printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax, nCharMax);
                     
                     % print reaction formula
                     flux = [];
@@ -781,7 +785,7 @@ switch object
         
         % print gene related fields
         geneInfo = [geneFields(:)'; columnVector(cellfun(@(x) modelLocal.(x){id}, geneFields, 'UniformOutput', false))'];
-        printMetRxnInfo(geneInfo, 1, true, [], ordMagMin, ordMagMax);
+        printMetRxnInfo(geneInfo, 1, true, [], ordMagMin, ordMagMax, nCharMax);
         fprintf('\n');
         
         r = findRxnsFromGenes(modelLocal, modelLocal.genes{id});
@@ -802,22 +806,22 @@ switch object
                 % print flux
                 fluxStr = '';
                 if ~isempty(fluxLocal)
-                    fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, true), ', ') ')'];
+                    fluxStr = [' (' strjoin(numToFormattedString(fluxLocal(r(j),:), ordMagMin, ordMagMax, nCharMax, true), ', ') ')'];
                 end
                 fprintf('%s', fluxStr);
                 
                 % print bounds
                 if showLB && showUB
-                    fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                    fprintf(', Bd: %s / %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax), numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
                 elseif showLB
-                    fprintf(', LB: %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax));
+                    fprintf(', LB: %s', numToFormattedString(modelLocal.lb(r(j)), ordMagMin, ordMagMax, nCharMax));
                 elseif showUB
-                    fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax));
+                    fprintf(', UB: %s', numToFormattedString(modelLocal.ub(r(j)), ordMagMin, ordMagMax, nCharMax));
                 end
                 
                 % print rxn info
                 metRxnInfo = [rxnFieldsForInfo(:)'; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))'];
-                printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax);
+                printMetRxnInfo(metRxnInfo, 1, true, 'rxnNames', ordMagMin, ordMagMax, nCharMax);
                 
                 % print reaction formula
                 flux = [];

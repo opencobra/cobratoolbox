@@ -1,5 +1,16 @@
 function flag = isValidPrintFields(fields)
-% for checking the input for printFields
+% Subroutine called by `surfNet` for validating the input for printFields
+% (fields to be printed when calling surfNet)
+%
+% USAGE:
+%    flag = isValidPrintFields(fields)
+%
+% INPUT:
+%    fields:    field content from a COBRA model
+%
+% OUTPUT:
+%    flag:      true if the content can be printed by surfNet
+
 flag = false;
 isCellString = @(x) iscellstr(x) || (exist('isstring', 'builtin') && isstring(x));
 if ~(ischar(fields) || isCellString(fields)  || (numel(fields) == 2 && all(cellfun(isCellString, fields))))
