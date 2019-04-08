@@ -162,7 +162,7 @@ if ~any(strcmp(parser.UsingDefaults, 'printFields')) && isCellString(field2print
         field2print = [field2printDefaultInModel; field2print(setdiff(1:numel(field2print), idFieldDefault))];
     end
 end
-if isCellString(field2print)
+if checkFields && isCellString(field2print)
     % make sure the fields are unique
     field2print = unique(field2print, 'stable');
     % check if .grRules exists. If not, try to get .grRules from .rules and .genes
@@ -176,7 +176,7 @@ else
 end
 
 runGenerateGrRules = false;
-if any(printGrRules)
+if checkFields && any(printGrRules)
     if (~isfield(modelLocal, 'grRules') || all(cellfun(@isempty, modelLocal.grRules))) ...
         && (~isfield(modelLocal, 'rules') || all(cellfun(@isempty, modelLocal.rules)))
         % print nothing about GPR
@@ -239,7 +239,7 @@ end
 selfCallCommand = ['surfNet([], ''%s'', ' sprintf('%d, %s, %d, %d, [], %d);', ...
     metNameFlag, fluxInputSelfCall, nonzeroFluxSelfCall, showMets, nCharBreak)];
 
-if runGenerateGrRules
+if runGenerateGrRules  % generate grRules with hyperlinks
     modelLocal = generateGrRules(modelLocal, selfCallCommand);
     modelLocal.grRules = modelLocal.grRulesLinked;
 end
@@ -464,6 +464,8 @@ if iscell(metrxn)
     end
 end
 
+% update the query history
+pathLocal(end + 1, 1:2) = {metrxn};
 %% search the model if the query term is ambiguous
 if searchQueryTerm
     fprintf('%s is/are not metabolite(s), reaction(s) or gene(s) of the model.\nSearching for related objects:\n', metrxn)
@@ -581,12 +583,12 @@ if searchQueryTerm
         fprintf('matches\n');
         
         for j = 1:numel(m)
-            % print metabolite ID
+            % print gene ID
             fprintf([dis2 '  '], m(j));
-            % print metabolite with hyperlink
+            % print gene with hyperlink
             printHyperlink(sprintf(selfCallCommand, modelLocal.genes{m(j)}), modelLocal.genes{m(j)}, dispLen1);
             fprintf('  ');
-            % print met fields
+            % print gene fields
             metRxnInfo = [geneFields(:)', {'matches'}; [columnVector(cellfun(@(x) modelLocal.(x){m(j)}, geneFields, 'UniformOutput', false))', ...
                 strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.genes(j), 'UniformOutput', false), ', ')]];
             printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
@@ -624,7 +626,6 @@ end
 object = object{find(id, 1)};
 id = id(find(id, 1));
 
-pathLocal(end + 1, 1:2) = {metrxn};
 switch object
     case 'rxn'
         % print reaction flux
