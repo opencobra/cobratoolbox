@@ -33,6 +33,12 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %                           - 0 : default
 %                           - 1 : uses the original problem solution basis as advanced basis
 %
+%   useMtFVA:          run FVA multi-threaded via an external JVM with CPLEX as solver
+%                      does not return Vmin, Vmax; requires allowLoops = true and method = 'FBA'
+%
+%                           - 0 : default, do not use mtFVA
+%                           - 1 : use mtFVA
+%
 % OUTPUTS:
 %    minFlux:          Minimum flux for each reaction
 %    maxFlux:          Maximum flux for each reaction
@@ -207,8 +213,6 @@ else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-minFlux = model.lb(ismember(model.rxns,rxnNameList));
-maxFlux = model.ub(ismember(model.rxns,rxnNameList));
 preCompMaxSols = cell(nRxns,1);
 preCompMinSols = cell(nRxns,1);
 
@@ -217,6 +221,8 @@ preCompMinSols = cell(nRxns,1);
 %reactions.
 QuickProblem = LPproblem;
 [Presence,Order] = ismember(rxnNameList,model.rxns);
+minFlux = model.lb(Order);
+maxFlux = model.ub(Order);
 QuickProblem.c(:) = 0;
 QuickProblem.c(Order(Presence)) = 1;
 if ~allowLoops
@@ -270,8 +276,8 @@ if useMtFVA
     [~, idxMin]= ismember(rxnListMin, model.rxns);
     [~, idxMax]= ismember(rxnListMax, model.rxns);
     [fvalb, fvaub]= mtFVA(LPproblem, [idxMax(:); -idxMin(:)], cpxControl);
-    minFlux(idxMin)= fvalb(idxMin);
-    maxFlux(idxMax)= fvaub(idxMax);
+    minFlux= fvalb(Order);
+    maxFlux= fvaub(Order);
 elseif ~PCT_status %aka nothing is active
     if minNorm
         for i = 1:length(rxnNameList)
