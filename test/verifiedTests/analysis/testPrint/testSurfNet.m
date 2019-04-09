@@ -39,9 +39,9 @@ diary('surfNet.txt');
 % start with a metabolite
 metrxn = '13dpg[c]';
 surfNet(model, metrxn);
-% continue with a reaction
+% continue with a reaction (through clicking only)
 surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0);
-% continue with a metabolite
+% continue with a metabolite (through clicking only)
 surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0);
 % print objective reactions given no second input
 surfNet(model);
@@ -49,13 +49,13 @@ surfNet(model);
 surfNet(model, {'GAPD'; 'FBA'}, [], [], [], 0);
 % print *.metNames in reaction formulae
 surfNet(model, {'13dpg[c]'; 'GAPD'}, 1);
-% show previous steps
-surfNet([], [], 1, NaN, 0, 1, [], 0, struct('showPrev', true));
+% show previous steps (through clicking only)
+surfNet([], [], 1, NaN, 0, 1, [], 0, [], struct('showPrev', true));
 
 % print with a fixed number of characters per line
 surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], [], [], [], 0, [], 60);
-% show previous steps
-surfNet([], [], 0, NaN, 0, 0, [], 60, struct('showPrev', true));
+% show previous steps (through clicking only)
+surfNet([], [], 0, NaN, 0, 0, [], 60, [], struct('showPrev', true));
 
 % print connected reactions and the corresponding fluxes in a flux vector
 surfNet(model, 'pyr[c]', [], s.x, 0);
@@ -73,6 +73,15 @@ model2.newMetProp{findMetIDs(model2, '13dpg[c]')} = {'c', 'd'};
 surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], {'metFormulas', 'subSystems', ...
     'grRules', 'b', 'c', 'ub', 'newRxnProp', 'newMetProp', 'newRxnProp2', 'newMetProp2'});
 surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], 'lb');
+
+% starting with a gene
+surfNet(model, 'b1241')
+% continue with another gene shown in the reactions
+surfNet([], 'b1478', 0, NaN, 0, 1, [], 0);
+
+% test the search function
+surfNet(model, 'glucose')
+surfNet(model, 'glucose', 't', 0.6)  % with a more relaxed threshold
 
 diary off;
 
@@ -111,7 +120,7 @@ while j1 <= numel(text1) && j2 <= numel(text2)
             j2skip = j2skip + 1;
         end
         while j1 + j1skip <= numel(text1) && ~strcmp(text1(j1 + j1skip), text2(j2))
-            j1skip = j1skip + 1;
+           j1skip = j1skip + 1;
         end
         % take the closer identical character from the two strings
         [j1, j2] = deal(j1 + (j1skip <= j2skip) * j1skip, j2 + (j1skip > j2skip) * j2skip);
@@ -136,7 +145,6 @@ surfNet(model2, '13dpg[c]', [], [], [], [], {'S'});
 surfNet(model2, '13dpg[c]', [], [], [], [], {{}, {'rxnGeneMat'}});
 % non-existing met/rxn or incorrect input type
 surfNet(model2, 'NOTEXIST');
-surfNet({'NOTEXIST1', 'NOTEXIST2', 'GAPD'});
 surfNet({{}});
 
 diary off;
@@ -157,9 +165,9 @@ delete('surfNet.txt');
 fprintf('Compare the printed warnings with the expected results ...\n')
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.')))
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.')))
-assert(~isempty(strfind(textSurfNet, 'Warning: NOTEXIST is/are neither metabolite(s) nor reaction(s) of the model.'))) 
-assert(~isempty(strfind(textSurfNet, 'Warning: NOTEXIST1, NOTEXIST2 is/are neither metabolite(s) nor reaction(s) of the model.'))) 
-assert(~isempty(strfind(textSurfNet, 'Warning: metrxn input is/are neither metabolite(s) nor reaction(s) of the model.'))) 
+assert(~isempty(strfind(textSurfNet, '''NOTEXIST'' is not a metabolite, reaction or gene of the model. Searching for related objects:')))
+assert(~isempty(strfind(textSurfNet, 'Warning: No related mets, rxns or genes are found from the search. Please try other query terms.'))) 
+assert(~isempty(strfind(textSurfNet, 'Warning: The query term must be either a string or an array of string.'))) 
 fprintf('\nSuccess. Finish testing warning output of surfNet.\n')
 
 % print a random reaction when the 2nd input 'metrxn' is not given and
@@ -223,9 +231,15 @@ for j = 1:3
 end
 surfNet(model, metrxn);
 
+for j = 1:3
+    if exist(['surfNet' num2str(j) '.txt'], 'file')
+        delete(['surfNet' num2str(j) '.txt'])
+    end
+end
+
 % reference data
 diary('surfNet1.txt')
-surfNet([], 'GAPD');
+surfNet(model, 'GAPD');
 surfNet([], [], [], [], [], 0);
 % print a list of reactions without showing details of metabolites
 surfNet(model, {'GAPD'; 'FBA'}, [], [], [], 0);
@@ -244,7 +258,7 @@ diary('surfNet2.txt')
 surfNet(model, 'GAPD');
 surfNet('showMets', 0);
 surfNet(model, {'GAPD'; 'FBA'}, 'showMets', 0)
-surfNet({'13dpg[c]'; 'GAPD'}, 'metNameFlag', 1);
+surfNet(model, {'13dpg[c]'; 'GAPD'}, 'metNameFlag', 1);
 surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], 'showMets', 0, 'charPerLine', 60);
 surfNet(model, 'pyr[c]', 'flux', s.x, 'nonzeroFluxFlag', 0);
 surfNet(model, 'pyr[c]', 'flux', s.x);
@@ -257,7 +271,7 @@ diary('surfNet3.txt')
 surfNet(model, 'GAPD');
 surfNet('s', 0);
 surfNet(model, {'GAPD'; 'FBA'}, 's', 0)
-surfNet({'13dpg[c]'; 'GAPD'}, 'm', 1);
+surfNet(model, {'13dpg[c]'; 'GAPD'}, 'm', 1);
 surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], 's', 0, 'c', 60);
 surfNet(model, 'pyr[c]', 'f', s.x, 'n', 0);
 surfNet(model, 'pyr[c]', 'f', s.x);
