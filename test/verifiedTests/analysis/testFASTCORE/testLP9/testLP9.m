@@ -5,8 +5,7 @@
 %     coupling constraints)
 %
 % Authors:
-%     - fix compatibility for models with coupling constraints: Agnieszka
-%     Wegrzyn 2016/03/06
+%     Agnieszka Wegrzyn 2019/04/09, fix compatibility for models with coupling constraints 
 %
 
 global CBTDIR
@@ -26,10 +25,7 @@ testPath = pwd;
 % load the model
 model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test/models folder and subfolders
 
-% load input variables for the function
-load('options.mat');
-
-% load reference data
+% load reference data and input variables
 load('testData_LP9.mat');
 
 % load 
@@ -40,10 +36,10 @@ for k = 1:length(solversPkgs.LP)
 
     if solverLPOK
         % created test data for new version
-        V_test = LP9(options.K, options.P, model, options.LPproblem, options.epsilon);
-        Sol_test = model.c'*V_test;
+        V = LP9(options.K, options.P, model, options.LPproblem, options.epsilon);
+        solTest = model.c'*V;
     end
-    assert(isequal(Sol_original,Sol_test), '\nResults (V) are not consistent between old and new version of LP9\n')
+    assert(isequal(solOri,solTest), '\nResults are not consistent between old and new version of LP9\n')
     % output a success message
     fprintf('\nDone.\n');
 end
