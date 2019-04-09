@@ -29,7 +29,7 @@ if isAnnotation
     distAndPos = cell2mat(cellfun(@(x) [min(x),find(x == min(x),1)],distances,'Uniform',0));
     bestAnnot = arrayfun(@(x,y) splittedFields{x}{y},(1:size(distAndPos,1))',distAndPos(:,2),'Uniform',0);
     if length(searchString) < 4
-        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(searchString))),betAnnot);
+        relVals = ~cellfun(@(x) isempty(strfind(lower(x),lower(searchString))),bestAnnot);
     else
         relVals = distAndPos(:,1) <= (1-minSim) * length(searchString);
     end
