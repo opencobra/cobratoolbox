@@ -39,7 +39,10 @@ if ~isfield(model, 'genes') && isfield(model, 'rules')
     maxGeneId = 0;
 end
 % generate model.grRules from model.rules and model.genes
-model.grRules = model.rules;
+model.grRules = strrep(model.rules, '|', 'or');
+model.grRules = strrep(model.grRules, '&', 'and');
+model.grRules = strrep(model.grRules, '~', 'not');
+
 if addGrRulesLinked
     model.grRulesLinked = model.grRules;
 end

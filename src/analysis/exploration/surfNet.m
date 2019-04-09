@@ -4,16 +4,17 @@ function surfNet(varargin)
 % window using mouse once the starting point is called by command.
 %
 % USAGE:
-%    surfNet(model, metrxn, metNameFlag, flux, nonzeroFluxFlag, showMets, printFields, charPerLine)
-%    surfNet(model, metrxn, ... , 'name', 'value', ...)
+%    surfNet(model, object, metNameFlag, flux, nonzeroFluxFlag, showMets, printFields, charPerLine, similarity)
+%    surfNet(model, object, ... , 'parameter', 'value', ...)
 %
 % INPUT:
 %    model:              COBRA model
 %
 % OPTIONAL INPUTS:
-%    metrxn:             mets or rxns names, can be a cell array of multiple rxns and mets, or simply a string 
+%    object:             met, rxn or gene names, can be a cell array of multiple rxns, mets and genes, or simply a string 
+%                        If the input is none of the above, will search related mets, rxns and genes using `searchModel.m`
 %                        (default: objective reactions or a random reaction)
-%  (the arguments below can also be inputted as name-value pairs and partial matching is supported)
+%  (the arguments below can also be inputted as parameter/value pairs and partial matching is supported)
 %    metNameFlag:        print model.metNames in reaction formulas. (default: false)
 %    flux:               flux vectors for the model, a #reactions x #columns matrix. (default: [])
 %                        If given, the producing and consuming reactions displayed are in accordance with the flux direction.
@@ -23,6 +24,8 @@ function surfNet(varargin)
 %                        Default: {'metNames','metFormulas','rxnNames','lb','ub','grRules'}
 %                        Use, e.g., {'default', 'rxnNotes'}, to print model.rxnNotes in addition to the defaulted fields.
 %    charPerLine:        max. no. of characters per line for reaction formulas (default 0, the current width of the command window)
+%    thresholdSim:       threshold for the similarity of the results to be printed from searching the model for `object`
+%                        if `object` is not a met, rxn or gene. Default 0.8. See the parameter `similarity` in `searchModel.m` 
 %
 % EXAMPLES:
 %
@@ -34,8 +37,9 @@ function surfNet(varargin)
 %    surfNet(model, 'EX_glc-D(e)', 's', 0)  % to show the reaction formulas only but not the details of metabolites during navigation
 %    surfNet(model, 'EX_glc-D(e)', 'p', {'default', 'metKEGGID'})  % to print also the charge for each metabolite printed
 %    surfNet(model, 'EX_glc-D(e)', 'p', {'d', 'metK'})  % support unambiguous partial matching
-%    surfNet(model, {'glc-D[c]'; 'fru[c]'})  % to view several mets and rxns
-
+%    surfNet(model, {'glc-D[c]'; 'fru[c]'; 'b1779'})  % to view several mets, rxns, genes
+%    surfNet(model, 'glucose')  % search the model for mets, rxns, or genes similar to the term 'glucose'
+%    surfNet(model, 'glucose', 't', 0.6)  % search with a lower similarity threshold
 fluxTol = 1e-8;  % tolerance for non-zero fluxes
 % the largest and smallest order of magnitude for which numbers lie outside are displayed in scientific notation
 % and the maximum number of characters for the numbers in formatted strings
@@ -56,10 +60,10 @@ persistent metFields  % met fields to be printed
 persistent geneFields % gene fields to be printed
 persistent fluxLocal  % flux matrix
 
-optionalArgin = {'metNameFlag', 'flux', 'nonzeroFluxFlag', 'showMets', 'printFields', 'charPerLine', 'iterOptions'};
-defaultValues = {false, [], true, true, field2printDefault, 0, []};
+optionalArgin = {'metNameFlag', 'flux', 'nonzeroFluxFlag', 'showMets', 'printFields', 'charPerLine', 'thresholdSim', 'iterOptions'};
+defaultValues = {false, [], true, true, field2printDefault, 0, 0.8, []};
 validator = {@isscalar, @(x) isnumeric(x), @isscalar, @isscalar, ...
-    @isValidPrintFields, @isscalar, @(x) true};
+    @isValidPrintFields, @isscalar, @isscalar, @(x) true};
 [metrxn, tempargin, checkFields, stat, jArg] = deal([], {}, false, 0, 1);
 if isempty(varargin)
     varargin = {[]};
@@ -81,7 +85,8 @@ while jArg <= numel(varargin)
         checkMetRxnOrNameValue = true;
     elseif ischar(varargin{jArg}) && (jArg ~= 7 || ~isfield(modelLocal, varargin{jArg}))
         break  % name-value pair input begins
-    elseif jArg > 9 || (jArg == 9 && ~isempty(varargin{1}))
+    elseif jArg > 10 || (jArg == 10 && ~isempty(varargin{1}))
+        % the last input argument used only for iterative calling, i.e., empty first argument
         error('Too many input arguments');
     elseif ~isempty(varargin{jArg}) || jArg == 4
         % convert direct inputs to name-value pair inputs. Only pass empty input for flux.
@@ -144,6 +149,7 @@ nonzeroFluxFlag  = parser.Results.nonzeroFluxFlag;
 showMets = parser.Results.showMets;
 field2print = parser.Results.printFields(:);
 nCharBreak = parser.Results.charPerLine;
+similarity = parser.Results.thresholdSim;
 iterOptions = parser.Results.iterOptions;
 
 if nonzeroFluxFlag ~= 1 && nonzeroFluxFlag > 0
@@ -238,8 +244,8 @@ if fluxInputExist
     [fluxInputSelfCall, nonzeroFluxSelfCall] = deal('[]', nonzeroFluxFlag);
 end
 % compiled command for self calling
-selfCallCommand = ['surfNet([], ''%s'', ' sprintf('%d, %s, %d, %d, [], %d);', ...
-    metNameFlag, fluxInputSelfCall, nonzeroFluxSelfCall, showMets, nCharBreak)];
+selfCallCommand = ['surfNet([], ''%s'', ' sprintf('%d, %s, %d, %d, [], %d, %f);', ...
+    metNameFlag, fluxInputSelfCall, nonzeroFluxSelfCall, showMets, nCharBreak, similarity)];
 
 if runGenerateGrRules  % generate grRules with hyperlinks
     modelLocal = generateGrRules(modelLocal, selfCallCommand);
@@ -457,9 +463,9 @@ if iscell(metrxn)
                 iterOptionsCell.printShowPrev = true;
             end
             if isempty(fluxLocal)
-                surfNet([], metrxn{jMR}, metNameFlag, NaN, 0, showMets, [], nCharBreak, iterOptionsCell);
+                surfNet([], metrxn{jMR}, metNameFlag, NaN, 0, showMets, [], nCharBreak, similarity, iterOptionsCell);
             else
-                surfNet([], metrxn{jMR}, metNameFlag, [], nonzeroFluxFlag, showMets, [], nCharBreak, iterOptionsCell);
+                surfNet([], metrxn{jMR}, metNameFlag, [], nonzeroFluxFlag, showMets, [], nCharBreak, similarity, iterOptionsCell);
             end
         end
         return
@@ -470,8 +476,8 @@ end
 pathLocal(end + 1, 1:2) = {metrxn};
 %% search the model if the query term is ambiguous
 if searchQueryTerm
-    fprintf('%s is/are not metabolite(s), reaction(s) or gene(s) of the model.\nSearching for related objects:\n', metrxn)
-    searchResults = searchModel(modelLocal, metrxn, 'printLevel', 0);
+    fprintf('''%s'' is not a metabolite, reaction or gene of the model.\nSearching for related objects:\n', metrxn)
+    searchResults = searchModel(modelLocal, metrxn, 'printLevel', 0, 'similarity', similarity);
     if isfield(searchResults, 'mets')
         m = findMetIDs(modelLocal, {searchResults.mets.id});
         % max. met's length
@@ -839,11 +845,11 @@ end
 % print the button for showing previously navigated mets and rxns
 if printShowPrev
     if ~isempty(fluxLocal)
-        fprintf('\n<a href="matlab: surfNet([], [], %d, [], %d, %d, [], %d, struct(''showPrev'', true));">%s</a>\n', ...
-            metNameFlag, nonzeroFluxFlag, showMets, nCharBreak, 'Show previous steps...');
+        fprintf('\n<a href="matlab: surfNet([], [], %d, [], %d, %d, [], %d, %f, struct(''showPrev'', true));">%s</a>\n', ...
+            metNameFlag, nonzeroFluxFlag, showMets, nCharBreak, similarity, 'Show previous steps...');
     else
-        fprintf('\n<a href="matlab: surfNet([], [], %d, NaN, 0, %d, [], %d, struct(''showPrev'', true));">%s</a>\n', ...
-            metNameFlag, showMets, nCharBreak, 'Show previous steps...');
+        fprintf('\n<a href="matlab: surfNet([], [], %d, NaN, 0, %d, [], %d, %f, struct(''showPrev'', true));">%s</a>\n', ...
+            metNameFlag, showMets, nCharBreak, similarity, 'Show previous steps...');
     end
 end
 end
