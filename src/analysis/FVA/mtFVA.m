@@ -57,9 +57,9 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   disp('Compilation finished.');
 end
 
-[numRows, numCols]= size(LPproblem.S);
-minFlux= NaN(numCols, 1);
-maxFlux= NaN(numCols, 1);
+[~, numCols]= size(LPproblem.S);
+minFlux= LPproblem.lb;
+maxFlux= LPproblem.ub;
 
 cgp= Cplex(); % only used for saving the model and reading the results later
 cgp.Model.A= LPproblem.A;
@@ -75,7 +75,7 @@ if isfield(CBT_LP_PARAMS, 'feasTol')
   cgp.Param.simplex.tolerances.feasibility.Cur= CBT_LP_PARAMS.feasTol;
 end
 if isfield(CBT_LP_PARAMS, 'optTol')
-  cgp.Param.simplex.tolerances.feasibility.Cur= CBT_LP_PARAMS.optTol;
+  cgp.Param.simplex.tolerances.optimality.Cur= CBT_LP_PARAMS.optTol;
 end
 cgp= setCplexParam(cgp, cpxControl, true);
 
