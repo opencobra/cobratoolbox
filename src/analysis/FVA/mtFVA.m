@@ -37,18 +37,26 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   % compilation only necessary once, needs the JAVA compiler javac (not
   % included in Matlab's JAVA installtion)
   disp('Compiling JAVA classes.');
+  status= system('javac -version');
+  if status ~= 0
+    error('Cannot call JAVA compiler; please check if ''javac'' is available on your system.')
+  end
+  javaVer= version('-java');
+  javaVer= regexp(javaVer, '(\d+\.\d+)', 'tokens');
+  javaVer= javaVer{1}{1};
+  
   curr_dir= pwd();
   cd(fullfile(CBTDIR, 'src', 'analysis', 'FVA'));
   if ispc
-     status= system(sprintf('javac -cp "%s" CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
-      cplex_jar), '-echo');   
+     status= system(sprintf('javac -cp "%s" -target %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
+      cplex_jar, javaVer));   
   else
-    status= system(sprintf('javac -cp ''%s'' CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
-      cplex_jar), '-echo');
+    status= system(sprintf('javac -cp ''%s'' -target %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
+      cplex_jar, javaVer));
   end
   if status
     cd(curr_dir);
-    error('Could not compile JAVA classes.');
+    error('Failed to compile JAVA classes.');
   end
   movefile('CplexFVARunnable.class', cobra_binary_dir);
   movefile('SignedTaskCounter.class', cobra_binary_dir);
