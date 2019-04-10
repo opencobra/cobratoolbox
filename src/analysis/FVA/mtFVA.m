@@ -48,11 +48,11 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   curr_dir= pwd();
   cd(fullfile(CBTDIR, 'src', 'analysis', 'FVA'));
   if ispc
-     status= system(sprintf('javac -cp "%s" -target %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
-      cplex_jar, javaVer));   
+     status= system(sprintf('javac -cp "%s" -target %s -source %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
+      cplex_jar, javaVer, javaVer));   
   else
-    status= system(sprintf('javac -cp ''%s'' -target %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
-      cplex_jar, javaVer));
+    status= system(sprintf('javac -cp ''%s'' -target %s -source %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
+      cplex_jar, javaVer, javaVer));
   end
   if status
     cd(curr_dir);
