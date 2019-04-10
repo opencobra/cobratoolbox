@@ -1,9 +1,9 @@
-function [N, resInfo] = fastSNPcobra(model, varargin)
+function [N, resInfo] = fastSNP(model, varargin)
 % Generate a minimal feasible basis for all internal cycles using the method
 % Fast-SNP introduced in Saa and Nielson, Bioinformatics, 2016.
 %
 % USAGE:
-%    N = fastSNPcobra(model, 'name', 'value', ...)
+%    N = fastSNP(model, 'name', 'value', ...)
 %
 % INPUTS
 %    model:             COBRA model

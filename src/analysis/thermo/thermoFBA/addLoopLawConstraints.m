@@ -138,7 +138,7 @@ if ~all(isfield(loopInfo, {'N', 'isInternal'}))
             loopInfo.useRxnLink = false;
             if strcmpi(loopInfo.method, 'LLC-EFM')
                 % find connections by EFMs between reactions in cycles
-                loopInfo.rxnLink = getRxnLink(model, loopInfo.conComp, loopInfo.rxnInLoops);
+                loopInfo.rxnLink = connectedRxnsByEFM(model, loopInfo.conComp, loopInfo.rxnInLoops);
                 % Check if EFMs are found
                 if ~isempty(loopInfo.rxnLink)
                     if loopInfo.printLevel
@@ -334,75 +334,3 @@ else
     method
 end
 end
-
-function conComp = connectedRxnsInNullSpace(N)
-% find connected components for reactions in cycles given a minimal feasible
-% nullspace as defined in Chan et al., 2017. Loopless constraints are required only 
-% for the connected components involving reactions required to have no flux 
-% through cycles (the target set) in the resultant flux distribution
-% Reactions in the same connected component have the same conComp(j).
-% Reactions not in any cycles, thus not in any connected components have conComp(j) = 0.
-conComp = zeros(size(N, 1), 1);
-nCon = 0;
-vCur = false(size(N, 1), 1);
-while any(conComp == 0 & any(N, 2))
-    vCur(:) = false;
-    % find the first reaction not in any connected component yet
-    vCur(find(conComp == 0 & any(N, 2), 1)) = true;
-    nCon = nCon + 1;
-    nCur = 0;
-    % loop until no new reaction is added
-    while nCur < sum(vCur)
-        nCur = sum(vCur);
-        % get any reactions sharing the same columns in the current component
-        vCur(any(N(:, any(N(vCur, :), 1)), 2)) = true;
-    end
-    conComp(vCur) = nCon;
-end
-end
-
-function rxnLink = getRxnLink(model, conComp, rxnInLoops)
-% rxnLink is a n-by-n matrix (n = #rxns). rxnLink(i, j) = 1 ==> reactions i
-% and j are connected by an EFM representing an elementary cycle.
-
-% the path to EFMtool
-efmToolpath = which('CalculateFluxModes.m');
-if isempty(efmToolpath)
-    rxnLink = [];
-    %     fprintf('EFMtool not in Matlab path. Unable to calculate EFMs.\n')
-    return
-end
-efmToolpath = strsplit(efmToolpath, filesep);
-efmToolpath = strjoin(efmToolpath(1: end - 1), filesep);
-p = pwd;
-cd(efmToolpath)
-% EFMtool call options
-options = CreateFluxModeOpts('sign-only', true, 'level', 'WARNING');
-
-rxnLink = sparse(size(model.S, 2), size(model.S, 2));
-for jC = 1:max(conComp)
-    % for each connected component, find the EFM matrix
-    try
-        S = model.S(:, conComp == jC);
-        S = S(any(S, 2), :);
-        % revert the stoichiometries for reactions that are in cycles only in the reverse direction
-        S(:, rxnInLoops(conComp == jC, 1) & ~rxnInLoops(conComp == jC, 2)) = -S(:, rxnInLoops(conComp == jC, 1) & ~rxnInLoops(conComp == jC, 2));
-        rev = all(rxnInLoops(conComp == jC, :), 2);
-        efms = CalculateFluxModes(full(S), double(rev), options);
-        % calling Java too rapidly may have problems in tests
-        pause(1e-4)
-        efms = efms.efms;
-        rxnJC = find(conComp == jC);
-        for j = 1:numel(rxnJC)
-            rxnLink(rxnJC(j), rxnJC) = any(efms(:, efms(j, :) ~= 0), 2)';
-        end
-    catch msg
-        fprintf('Error encountered during calculation of EFMs:\n%s', getReport(msg))
-        rxnLink = [];
-        return
-    end
-end
-cd(p)
-
-end
-
