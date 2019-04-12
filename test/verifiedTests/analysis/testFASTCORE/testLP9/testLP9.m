@@ -5,7 +5,7 @@
 %     coupling constraints)
 %
 % Authors:
-%     Agnieszka Wegrzyn 2019/04/09, fix compatibility for models with coupling constraints 
+%     Agnieszka Wegrzyn 2019/04/09, fix compatibility for models with coupling constraints
 %
 
 global CBTDIR
@@ -14,7 +14,7 @@ global CBTDIR
 requiredSolvers = {'gurobi'};
 
 % require the specified toolboxes and solvers, along with a UNIX OS
-solversPkgs = prepareTest('requiredSolvers', requiredSolvers);
+solversPkgs = prepareTest('requiredSolvers', requiredSolvers, 'excludeSolvers', {'matlab', 'lp_solve'});
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));
@@ -28,7 +28,7 @@ model = getDistributedModel('ecoli_core_model.mat'); %For all models in the test
 % load reference data and input variables
 load('testData_LP9.mat');
 
-% load 
+% load
 for k = 1:length(solversPkgs.LP)
     fprintf(' -- Running testLP9.m using the solver interface: %s ... ', solversPkgs.LP{k});
 
