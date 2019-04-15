@@ -4,7 +4,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 % USAGE:
 %
 %    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
-%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads)
+%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics)
 %    [...] = fluxVariability(model, ..., 'name', value, ..., solverParams)
 %    [...] = fluxVariability(model, ..., paramStruct)
 %
@@ -37,21 +37,23 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                        * '2-norm' : minimizes the vector 2-norm
 %                        * 'minOrigSol' : minimizes the euclidean distance of each vector to the original solution vector
 %
-%   solverParams:      solver-specific parameter structure. Can also be inputted as the first or last arguement 
+%    solverParams:     solver-specific parameter structure. Can also be inputted as the first or last arguement 
 %                      if using name-value argument inputs (with or without the keyword 'solverParams').
 %                      Can also be inputted as part of a parameter structure together with other function parameters
 %
-%   advind:            switch to use the solution basis
+%    advind:           switch to use the solution basis
 %
 %                           - 0 : default
 %                           - 1 : uses the original problem solution basis as advanced basis
 %
-%  threads:            number of threads used for the analysis
+%    threads:          number of threads used for the analysis
 %                        * 1, 2, 3, ...: number of threads
 %                        * 0:            defaulted number of threads for the parallel computing toolbox
 %                        (default to be 1 if no parpool is activited, otherwise use the existing parpool)
 %
-% paramStruct:         one single parameter structure including any of the inputs above and the solver-specific parameter
+%    heuristics:       true to accelerate FVA by solving some heuristic problems beforehand (default true if numel(rxnNameList) >= 5)
+%
+%    paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter
 %
 % OUTPUTS:
 %    minFlux:          Minimum flux for each reaction
@@ -69,7 +71,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %    Same as the 1st example, but also return the corresponding flux distributions with 2-norm minimized:
 %        [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, [], [],    [],       0, 1, '2-norm');
 %    Name-value inputs, with Cobra LP parameter `feasTol` and solver-specific (gurobi) parameter `Presolve`:
-%        [minFlux, maxFlux] = fluxVariability(model, 'optPercentage', 99, 'allowLoops', 'original', 'threads', 0, 'feasTol', 1e-8, struct('Presolve', 0));
+%        [minFlux, maxFlux] = fluxVariability(model, 'optPercentage', 99, 'allowLoops', 0, 'threads', 0, 'feasTol', 1e-8, struct('Presolve', 0));
 %    Single parameter structure input including function, Cobra LP and solver parameters:
 %        [minFlux, maxFlux] = fluxVariability(model, struct('optPercentage', 99, 'allowLoops', 'original', 'threads', 0, 'feasTol', 1e-8, 'Presolve', 0)); 
 %
@@ -83,8 +85,8 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 
 global CBT_LP_PARAMS
 
-optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads'}; 
-defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       []};
+optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads', 'heuristics'}; 
+defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       [],         []};
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
@@ -93,7 +95,8 @@ validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPerc
     @(x) ischar(x), ...  % method
     @isstruct, ...  % solverParams
     @(x) true, ...  % advind
-    @(x) isscalar(x) & isnumeric(x) ...  % threads
+    @(x) isscalar(x) & isnumeric(x), ...  % threads
+    @(x) isscalar(x) && (islogical(x) | isnumeric(x)) ...  % heuristics
     };  
 
 % get all potentially supplied COBRA parameter names
@@ -102,7 +105,7 @@ problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams');
 
 % solverParams not outputted as a function parameter since it is individually handled and embedded in solverVarargin
-[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, advind, threads] = deal(funParams{:});
+[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, advind, threads, heuristics] = deal(funParams{:});
 
 allowLoopsError = false;
 loopMethod = '';
@@ -273,93 +276,120 @@ end
 
 minFlux = model.lb(findRxnIDs(model, rxnNameList));
 maxFlux = model.ub(findRxnIDs(model, rxnNameList));
-[preCompMaxSols, preCompMinSols] = deal(cell(nRxns, 1));
+[preCompMaxSols, preCompMinSols] = deal(cell(numel(rxnNameList), 1));
+[maxSolved, minSolved] = deal(false(numel(rxnNameList), 1));
 [Vmax, Vmin] = deal([]);
 if minNorm
     [Vmax, Vmin] = deal(zeros(nRxns, numel(rxnNameList)));
 end
-%We will calculate a min and max sum flux solution.
-%This solution will (hopefully) provide multiple solutions for individual
-%reactions.
-QuickProblem = LPproblem;
-[Presence, Order] = ismember(rxnNameList, model.rxns);
-QuickProblem.c(:) = 0;
-QuickProblem.c(Order(Presence)) = 1;
-if any(strcmp(loopMethod, {'original', 'fastSNP'}))
-    % Skip this when using localized loopless constraints (LLCs) for two reasons:
-    % 1. With loopless constraints, one does not expect to have many reactions hitting the bounds
-    % 2. LLCs invoke a subset of all loopless constraints and the associated binary
-    %    variables. Maximize everything at once will require invoking almost all binary variables
-    QuickProblem = addLoopLawConstraints(QuickProblem, model, 1:nRxns, [], [], loopInfo);
-end
-%Maximise all reactions
-QuickProblem.osense = -1;
-switch loopMethod
-    case {'original', 'fastSNP'}
-        % Set a short time limit or do not this at all for MILP with loop law
-        % because if the model and the number of reactions in the objective is large, 
-        % it is non-trivial for solvers to find the optimal solution under the loop law.
-        idTimeLimit = strcmp(solverVarargin.MILP, 'timeLimit');
-        if any(idTimeLimit)
-            idTimeLimit(find(idTimeLimit) + 1) = true;
-        end
-        sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
-    case {'LLC-NS', 'LLC-EFM'}
-        % skip this if using LLCs
-        sol = struct;
-        sol.full = NaN(nRxns, 1);
-        sol.stat = 0;
-    case 'none'
-        sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
-end
 
-%If we reach this point, we can be certain, that there is a solution, i.e.
-%if the stat is not 1, we have to check all reactions.
-feasTol = getCobraSolverParams('LP', 'feasTol');
-if (allowLoops && (sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= feasTol)) ...
-        || (~allowLoops && (sol.stat == 1 || sol.stat == 3))  % accept if there is a feasible solution for the MILP
-    relSol = sol.full(Order(Presence));
-    %Obtain fluxes at their boundaries
-    maxSolved = model.ub(Order(Presence)) == relSol;
-    minSolved = model.lb(Order(Presence)) == relSol;
-    % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
-    preCompSol = {true};
-    if minNorm
-        preCompSol = {sol};
-    end
-    [preCompMaxSols(maxSolved), preCompMinSols(minSolved)] = deal(preCompSol);
-else
-    [maxSolved, minSolved] = deal(false(numel(rxnNameList), 1));
+if isempty(heuristics)
+    heuristics = numel(rxnNameList) >= 5;
 end
-%Minimise reactions
-QuickProblem.osense = 1;
-switch loopMethod
-    case {'original', 'fastSNP'}
-        % Set a short time limit or do not this at all for MILP with loop law
-        % because if the model and the number of reactions in the objective is large, 
-        % it is non-trivial for solvers to find the optimal solution under the loop law.
-        sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
-    case {'LLC-NS', 'LLC-EFM'}
-        % skip this if using LLCs
-        sol = struct;
-        sol.full = NaN(nRxns, 1);
-        sol.stat = 0;
-    case 'none'
-        sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
-end
-if (allowLoops && (sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= feasTol)) ...
-        || (~allowLoops && (sol.stat == 1 || sol.stat == 3))
-    relSol = sol.full(Order(Presence));
-    %Again obtain fluxes at their boundaries
-    maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
-    minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
-    % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
-    preCompSol = {true};
-    if minNorm
-        % This is only necessary, if we want a min norm.
-        preCompSol = {sol};
+if heuristics
+    %We will calculate a min and max sum flux solution.
+    %This solution will (hopefully) provide multiple solutions for individual
+    %reactions.
+    QuickProblem = LPproblem;
+    [Presence, Order] = ismember(rxnNameList, model.rxns);
+    QuickProblem.c(:) = 0;
+    QuickProblem.c(Order(Presence)) = 1;
+    if any(strcmp(loopMethod, {'original', 'fastSNP'}))
+        % Skip this when using localized loopless constraints (LLCs) for two reasons:
+        % 1. With loopless constraints, one does not expect to have many reactions hitting the bounds
+        % 2. LLCs invoke a subset of all loopless constraints and the associated binary
+        %    variables. Maximize everything at once will require invoking almost all binary variables
+        QuickProblem = addLoopLawConstraints(QuickProblem, model, 1:nRxns, [], [], loopInfo);
     end
-    [preCompMaxSols((model.ub(Order(Presence)) == relSol)), preCompMinSols((model.lb(Order(Presence)) == relSol))] = deal(preCompSol);
+    %Maximise all reactions
+    QuickProblem.osense = -1;
+    quickSolultionFound = false;
+    switch loopMethod
+        case {'original', 'fastSNP'}
+            % Set a short time limit or do not this at all for MILP with loop law
+            % because if the model and the number of reactions in the objective is large,
+            % it is non-trivial for solvers to find the optimal solution under the loop law.
+            idTimeLimit = strcmp(solverVarargin.MILP, 'timeLimit');
+            if any(idTimeLimit)
+                idTimeLimit(find(idTimeLimit) + 1) = true;
+            end
+            sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
+            if sol.stat == 1 || (sol.stat == 3 && ~isempty(sol.full))
+                % accept if there is a feasible solution for the MILP
+                quickSolultionFound = true;
+            end
+        case 'none'
+            sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
+            if sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= cobraParams.LP.feasTol
+                quickSolultionFound = true;
+            end
+    end
+    
+    % If we reach this point, we can be certain, that there is a solution, i.e.
+    % if the stat is not 1, we have to check all reactions.
+    if quickSolultionFound  % accept if there is a feasible solution for the MILP
+        relSol = sol.full(Order(Presence));
+        % Obtain fluxes at their boundaries
+        maxSolved = model.ub(Order(Presence)) == relSol;
+        minSolved = model.lb(Order(Presence)) == relSol;
+        % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
+        preCompSol = {true};
+        if minNorm
+            preCompSol = {sol};
+        end
+        [preCompMaxSols(maxSolved), preCompMinSols(minSolved)] = deal(preCompSol);
+    end
+
+    %Minimise reactions
+    QuickProblem.osense = 1;
+    quickSolultionFound = false;
+    switch loopMethod
+        case {'original', 'fastSNP'}
+            % Set a short time limit or do not this at all for MILP with loop law
+            % because if the model and the number of reactions in the objective is large,
+            % it is non-trivial for solvers to find the optimal solution under the loop law.
+            sol = solveCobraMILP(QuickProblem, solverVarargin.MILP{~idTimeLimit}, 'timeLimit', 10);
+            if sol.stat == 1 || (sol.stat == 3 && ~isempty(sol.full))
+                % accept if there is a feasible solution for the MILP
+                quickSolultionFound = true;
+            end
+        case 'none'
+            sol = solveCobraLP(QuickProblem, solverVarargin.LP{:});
+            if sol.stat == 1 || checkSolFeas(QuickProblem, sol) <= cobraParams.LP.feasTol
+                quickSolultionFound = true;
+            end
+    end
+    
+    if quickSolultionFound
+        relSol = sol.full(Order(Presence));
+        %Again obtain fluxes at their boundaries
+        maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
+        minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
+        % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
+        preCompSol = {true};
+        if minNorm
+            % This is only necessary, if we want a min norm.
+            preCompSol = {sol};
+        end
+        [preCompMaxSols((model.ub(Order(Presence)) == relSol)), preCompMinSols((model.lb(Order(Presence)) == relSol))] = deal(preCompSol);
+    end
+    
+    % solve one LP to find all blocked irreversible reactions
+    if any((model.lb(Order(Presence)) >= 0 | model.ub(Order(Presence)) <= 0) & ~(minSolved & maxSolved))
+        [~, sol] = findBlockedIrrRxns(model, [], solverVarargin.LP{:});
+        % for reactions with fluxes < feasTol, we can safely say that they are blocked
+        rxnBlocked = (abs(sol.full(1:nRxns)) < cobraParams.LP.feasTol) & (model.lb >= 0 | model.ub <= 0);
+        maxSolvedCur = rxnBlocked | sol.full(1:nRxns) == model.ub;
+        minSolvedCur = rxnBlocked | sol.full(1:nRxns) == model.lb;
+        % update the pre-computed solutions
+        preCompSol = {true};
+        if minNorm
+            preCompSol = {sol};
+        end
+        [preCompMaxSols(maxSolvedCur(Order(Presence))), preCompMinSols(minSolvedCur(Order(Presence)))] = deal(preCompSol);
+        % update minFlux and maxFlux for blocked reactions
+        [minFlux(rxnBlocked(Order(Presence))), maxFlux(rxnBlocked(Order(Presence)))] = deal(0);
+    end
 end
 
 % generate the loopless problem beforehand instead of during each loop
