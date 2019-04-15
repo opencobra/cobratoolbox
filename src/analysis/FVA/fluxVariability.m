@@ -90,13 +90,13 @@ defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,   
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
-    @(x) isscalar(x) & isnumeric(x) & x >= 0, ...  % printLevel
-    @(x) isscalar(x) || ischar(x), ...    % allowLoops
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) & x >= 0, ...  % printLevel
+    @(x) isscalar(x) | ischar(x), ...    % allowLoops
     @(x) ischar(x), ...  % method
     @isstruct, ...  % solverParams
     @(x) true, ...  % advind
-    @(x) isscalar(x) & isnumeric(x), ...  % threads
-    @(x) isscalar(x) && (islogical(x) | isnumeric(x)) ...  % heuristics
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)), ...  % threads
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) ...  % heuristics
     };  
 
 % get all potentially supplied COBRA parameter names
