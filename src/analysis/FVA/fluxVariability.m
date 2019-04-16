@@ -51,7 +51,10 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                        * 0:            defaulted number of threads for the parallel computing toolbox
 %                        (default to be 1 if no parpool is activited, otherwise use the existing parpool)
 %
-%    heuristics:       true to accelerate FVA by solving some heuristic problems beforehand (default true if numel(rxnNameList) >= 5)
+%    heuristics:       level of heuristics to accelerate FVA. 
+%                      0: no heuristics (default if rxnNameList has < 5 reactions)
+%                      1: solve max-sum-flux and min-sum-flux LPs to get reactions which already hit the bounds
+%                      2: solve additionally a single LP to find all blocked irreversible reactions (default if rxnNameList has >= 5 reactions)
 %
 %    paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter
 %
@@ -276,7 +279,14 @@ end
 
 minFlux = model.lb(findRxnIDs(model, rxnNameList));
 maxFlux = model.ub(findRxnIDs(model, rxnNameList));
-[preCompMaxSols, preCompMinSols] = deal(cell(numel(rxnNameList), 1));
+% preCompMaxSols(i) = k => the k-th heuristic solution solves max v_i
+% k = 1: no heuristic solution
+% k = 2: reactions that hit bounds during max-sum-flux heuristic
+% k = 3: reactions that hit bounds during min-sum-flux heuristic
+% k = 4: reactions that hit bounds during blocked-irreversible-reaction heuristic
+% k = 5: blocked reactions found during blocked-irreversible-reaction heuristic
+[preCompMaxSols, preCompMinSols] = deal(ones(numel(rxnNameList), 1));
+heuristicSolutions = cell(5, 1);
 [maxSolved, minSolved] = deal(false(numel(rxnNameList), 1));
 [Vmax, Vmin] = deal([]);
 if minNorm
@@ -284,16 +294,21 @@ if minNorm
 end
 
 if isempty(heuristics)
-    heuristics = numel(rxnNameList) >= 5;
+    if numel(rxnNameList) >= 5
+        heuristics = 2;
+    else
+        heuristics = 0;
+    end
 end
+% each cell in rxnNameList must be a reaction at this point, otherwise there would be error earlier
+Order = findRxnIDs(model, rxnNameList);
 if heuristics
     %We will calculate a min and max sum flux solution.
     %This solution will (hopefully) provide multiple solutions for individual
     %reactions.
     QuickProblem = LPproblem;
-    [Presence, Order] = ismember(rxnNameList, model.rxns);
     QuickProblem.c(:) = 0;
-    QuickProblem.c(Order(Presence)) = 1;
+    QuickProblem.c(Order) = 1;
     if any(strcmp(loopMethod, {'original', 'fastSNP'}))
         % Skip this when using localized loopless constraints (LLCs) for two reasons:
         % 1. With loopless constraints, one does not expect to have many reactions hitting the bounds
@@ -328,16 +343,13 @@ if heuristics
     % If we reach this point, we can be certain, that there is a solution, i.e.
     % if the stat is not 1, we have to check all reactions.
     if quickSolultionFound  % accept if there is a feasible solution for the MILP
-        relSol = sol.full(Order(Presence));
         % Obtain fluxes at their boundaries
-        maxSolved = model.ub(Order(Presence)) == relSol;
-        minSolved = model.lb(Order(Presence)) == relSol;
-        % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
-        preCompSol = {true};
-        if minNorm
-            preCompSol = {sol};
-        end
-        [preCompMaxSols(maxSolved), preCompMinSols(minSolved)] = deal(preCompSol);
+        maxSolved = model.ub(Order) == sol.full(Order);
+        minSolved = model.lb(Order) == sol.full(Order);
+        % If preCompMaxSols/preCompMinSols is non-empty, no need to solve LP again
+        sol.heuristics = 'maxSumFlux';
+        heuristicSolutions{2} = sol;
+        [preCompMaxSols(maxSolved), preCompMinSols(minSolved)] = deal(2);
     end
 
     %Minimise reactions
@@ -361,34 +373,13 @@ if heuristics
     end
     
     if quickSolultionFound
-        relSol = sol.full(Order(Presence));
         %Again obtain fluxes at their boundaries
-        maxSolved = maxSolved | (model.ub(Order(Presence)) == relSol);
-        minSolved = minSolved | (model.lb(Order(Presence)) == relSol);
-        % If preCompMaxSols/preCompMinSols is true or non-empty, no need to solve LP again
-        preCompSol = {true};
-        if minNorm
-            % This is only necessary, if we want a min norm.
-            preCompSol = {sol};
-        end
-        [preCompMaxSols((model.ub(Order(Presence)) == relSol)), preCompMinSols((model.lb(Order(Presence)) == relSol))] = deal(preCompSol);
-    end
-    
-    % solve one LP to find all blocked irreversible reactions
-    if any((model.lb(Order(Presence)) >= 0 | model.ub(Order(Presence)) <= 0) & ~(minSolved & maxSolved))
-        [~, sol] = findBlockedIrrRxns(model, [], solverVarargin.LP{:});
-        % for reactions with fluxes < feasTol, we can safely say that they are blocked
-        rxnBlocked = (abs(sol.full(1:nRxns)) < cobraParams.LP.feasTol) & (model.lb >= 0 | model.ub <= 0);
-        maxSolvedCur = rxnBlocked | sol.full(1:nRxns) == model.ub;
-        minSolvedCur = rxnBlocked | sol.full(1:nRxns) == model.lb;
-        % update the pre-computed solutions
-        preCompSol = {true};
-        if minNorm
-            preCompSol = {sol};
-        end
-        [preCompMaxSols(maxSolvedCur(Order(Presence))), preCompMinSols(minSolvedCur(Order(Presence)))] = deal(preCompSol);
-        % update minFlux and maxFlux for blocked reactions
-        [minFlux(rxnBlocked(Order(Presence))), maxFlux(rxnBlocked(Order(Presence)))] = deal(0);
+        maxSolved = maxSolved | (model.ub(Order) == sol.full(Order));
+        minSolved = minSolved | (model.lb(Order) == sol.full(Order));
+        % If preCompMaxSols/preCompMinSols is non-empty, no need to solve LP again
+        sol.heuristics = 'minSumFlux';
+        heuristicSolutions{3} = sol;
+        [preCompMaxSols(model.ub(Order) == sol.full(Order)), preCompMinSols(model.lb(Order) == sol.full(Order))] = deal(3);
     end
 end
 
@@ -405,6 +396,51 @@ switch loopMethod
         loopInfo.rhs0 = MILPproblem.b;
         LPproblemLLC = LPproblem;
 end
+
+if heuristics > 1
+    % solve one LP to find all blocked irreversible reactions
+    if any((model.lb(Order) >= 0 | model.ub(Order) <= 0) & ~(minSolved & maxSolved))
+        [~, sol] = findBlockedIrrRxns(model, [], solverVarargin.LP{:});
+        % for irreversible reactions with fluxes < feasTol, we can safely say that they are blocked
+        sol.full(abs(sol.full) < cobraParams.LP.feasTol) = 0;
+        rxnBlocked = (sol.full(Order) == 0) & (model.lb(Order) >= 0 | model.ub(Order) <= 0);
+        rxnHitUB = (sol.full(Order) == model.ub(Order)) & ~rxnBlocked & ~maxSolved;
+        rxnHitLB = (sol.full(Order) == model.lb(Order)) & ~rxnBlocked & ~minSolved;
+        sol.heuristics = 'hitBounds';
+        if any(rxnHitUB) || any(rxnHitLB)
+            % store the heuristic solutions
+            heuristicSolutions{4} = sol;
+            [preCompMaxSols(rxnHitUB), preCompMinSols(rxnHitLB)] = deal(4);
+        end
+        if any(rxnBlocked)
+            if minNorm
+                % if flux distributions are to be returned, get one for one of the blocked reactions. It works for all blocked reactions
+                allowLoopsI = allowLoops;
+                % For LLCs, solve LP if the problem constraints do not necessitate the loop law and the target reaction has its forward diretion in loops
+                if strncmpi(loopMethod, 'LLC', 3)
+                    [allowLoopsI, MILPproblem] = processingLLCs('update', loopInfo, 'max', MILPproblem, zeros(nRxns, 1));
+                    if allowLoopsI
+                        % solving LP is sufficient
+                        LPproblem = LPproblemLLC;
+                    else
+                        % need to solve MILP
+                        LPproblem = MILPproblem;
+                    end
+                end
+                
+                [~, V] = calcSolForEntry(model, Order(find(rxnBlocked, 1)), LPproblem, method, allowLoopsI, minNorm, solverVarargin, sol, 1);
+                sol.fluxMinNorm = V;
+            end
+             % store the heuristic solutions
+             sol.heuristics = 'blockedIrr';
+             heuristicSolutions{5} = sol;
+             [preCompMaxSols(rxnBlocked), preCompMinSols(rxnBlocked)] = deal(5);
+        end
+       
+        [minSolved, maxSolved] = deal(minSolved | rxnBlocked | rxnHitLB, maxSolved | rxnBlocked | rxnHitUB);
+    end
+end
+
 
 if ~parallelJob  % single-thread FVA
     if printLevel == 1
@@ -435,7 +471,7 @@ if ~parallelJob  % single-thread FVA
             end
         end
         
-        [minFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMinSols{i}, 1);
+        [minFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, heuristicSolutions{preCompMinSols(i)}, 1);
         
         % store the flux distribution
         if minNorm
@@ -458,7 +494,7 @@ if ~parallelJob  % single-thread FVA
             end
         end
         
-        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMaxSols{i}, -1);
+        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,LPproblem, method, allowLoopsI, minNorm, solverVarargin, heuristicSolutions{preCompMaxSols(i)}, -1);
         
         % store the flux distribution
         if minNorm
@@ -505,7 +541,7 @@ else % parallel job.  pretty much does the same thing.
             end
         end
         
-        [minFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMinSols{i}, 1);
+        [minFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, heuristicSolutions{preCompMinSols(i)}, 1);
         
         % store the flux distribution
         if minNorm
@@ -528,7 +564,7 @@ else % parallel job.  pretty much does the same thing.
             end
         end
         
-        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, preCompMaxSols{i}, -1);
+        [maxFlux(i), V] = calcSolForEntry(model, rxnID ,parLPproblem, method, allowLoopsI, minNorm, solverVarargin, heuristicSolutions{preCompMaxSols(i)}, -1);
         
         % store the flux distribution
         if minNorm
@@ -573,21 +609,19 @@ if isempty(sol)
             'Please try to use a different solver.\n']))
     end
 else
-    % sol = true or sol is a solution structure. FVA value must be equal to
-    % upper bound or lower bound depending on the optimization sense
-    if osense == 1
-        Flux = model.lb(rxnID);
-    elseif osense == -1
-        Flux = model.ub(rxnID);
-    end
+    % use pre-computed solutions from heuristics
+    Flux = sol.full(rxnID);
     if minNorm
         LPsolution = sol;
-    end 
+    end    
 end
 
 V = [];
 if minNorm
-    if allowLoops
+    if ~isempty(sol) && strcmp(sol.heuristics, 'blockedIrr')
+        % use the solution calculated during heuristics
+        V = sol.fluxMinNorm;
+    elseif allowLoops
         V = getMinNorm(LPproblem, LPsolution, numel(model.rxns), Flux, model, method, solverVarargin);
     else
         V = getMinNormWoLoops(LPproblem, LPsolution, numel(model.rxns), Flux, method, solverVarargin);
@@ -625,7 +659,7 @@ switch method
         LPproblemMOMA.lb(LPproblem.c(1:nRxns)~=0) = cFlux - 1e-11;
         LPproblemMOMA.ub(LPproblem.c(1:nRxns)~=0) = cFlux + 1e-11;
         momaSolution = linearMOMA(model,LPproblemMOMA);
-        V=momaSolution.x;
+        V = momaSolution.x;
 end
 end
 
