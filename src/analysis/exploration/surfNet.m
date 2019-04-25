@@ -504,8 +504,8 @@ if searchQueryTerm
             fprintf('  ');
             % print met fields
             metRxnInfo = [metFields(:)', {'matches'}; [columnVector(cellfun(@(x) modelLocal.(x){m(j)}, metFields, 'UniformOutput', false))', ...
-                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.mets(j), 'UniformOutput', false), ', ')]];
-            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+                strjoin(arrayfun(@(x) [x.source ':' x.value], searchResults.mets(j).matches, 'UniformOutput', false), ', ')]];
+            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax, nCharMax);
         end
     end
     if isfield(searchResults, 'rxns')
@@ -557,8 +557,8 @@ if searchQueryTerm
             
             % print rxn info
             metRxnInfo = [rxnFieldsForInfo(:)', {'matches'}; columnVector(cellfun(@(x) modelLocal.(x){r(j)}, rxnFieldsForInfo, 'UniformOutput', false))', ...
-                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.rxns(j), 'UniformOutput', false), ', ')];
-            printMetRxnInfo(metRxnInfo, 1, 0, 'rxnNames', ordMagMin, ordMagMax);
+                strjoin(arrayfun(@(x) [x.source ':' x.value], searchResults.rxns(j).matches, 'UniformOutput', false), ', ')];
+            printMetRxnInfo(metRxnInfo, 1, 0, 'rxnNames', ordMagMin, ordMagMax, nCharMax);
             
             % print reaction formula
             flux = [];
@@ -599,8 +599,8 @@ if searchQueryTerm
             fprintf('  ');
             % print gene fields
             metRxnInfo = [geneFields(:)', {'matches'}; [columnVector(cellfun(@(x) modelLocal.(x){m(j)}, geneFields, 'UniformOutput', false))', ...
-                strjoin(arrayfun(@(x) [x.matches.source ':' x.matches.value], searchResults.genes(j), 'UniformOutput', false), ', ')]];
-            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax);
+                strjoin(arrayfun(@(x) [x.source ':' x.value], searchResults.genes(j).matches, 'UniformOutput', false), ', ')]];
+            printMetRxnInfo(metRxnInfo, 2, false, '', ordMagMin, ordMagMax, nCharMax);
         end
     end
     if ~any(isfield(searchResults, {'mets', 'rxns', 'genes'}))
@@ -608,7 +608,17 @@ if searchQueryTerm
     end
     return
 end
-%% input is a reaction
+
+%% determine if the query object is a reaction, metabolite or gene.
+object = {'rxn'; 'met'; 'gene'};
+id = [findRxnIDs(modelLocal, metrxn), findMetIDs(modelLocal, metrxn), findGeneIDs(modelLocal, metrxn)];
+if nnz(id) > 1
+    warning('%s corresponds to a %s at the same time. Only show results for the %s. Consider renaming.', ...
+        metrxn, strjoin(object(id ~= 0), ', '), object{find(id, 1)})
+end
+object = object{find(id, 1)};
+id = id(find(id, 1));
+
 % string indicating non-zero fluxes or not for printing
 nzFluxPrint = '';
 if ~isempty(fluxLocal)
@@ -625,18 +635,9 @@ else
     direction = 1;
 end
 
-% determine if the query object is a reaction, metabolite or gene.
-object = {'rxn'; 'met'; 'gene'};
-id = [findRxnIDs(modelLocal, metrxn), findMetIDs(modelLocal, metrxn), findGeneIDs(modelLocal, metrxn)];
-if nnz(id) > 1
-    warning('%s corresponds to a %s at the same time. Only show results for the %s. Consider renaming.', ...
-        metrxn, strjoin(object(id ~= 0), ', '), object{find(id, 1)})
-end
-object = object{find(id, 1)};
-id = id(find(id, 1));
-
 switch object
     case 'rxn'
+        %% input is a reaction
         % print reaction flux
         fluxStr = '';
         if ~isempty(fluxLocal)

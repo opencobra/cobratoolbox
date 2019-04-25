@@ -82,7 +82,7 @@ surfNet([], 'b1478', 0, NaN, 0, 1, [], 0);
 % test the search function
 surfNet(model, 'glucose')
 surfNet(model, 'glucose', 't', 0.6)  % with a more relaxed threshold
-
+surfNet(model, 'ATP')  % a query term with multiple matches in the same object
 diary off;
 
 % load the text files
