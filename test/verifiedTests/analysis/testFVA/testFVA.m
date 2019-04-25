@@ -96,38 +96,50 @@ for threads = threadsForFVA
                 assert(maxTMinusMinT <= maxMinusMin + tol)
             end
             
-             % test parameter-value inputs
-             rxnTest = rxnNames(1:5);
-             inputToTest = {{90, 'max', 'rxnNameList', rxnTest}; ...
-                 {90, 'osenseStr', 'max', 'rxnNameList', rxnTest, 'allowLoops', 1}; ...
-                 {'optPercentage', 90, 'rxnNameList', rxnTest}; ...
-                 {'opt', 90, 'r', rxnTest}};  % test partial matching
-             for j = 1:numel(inputToTest)
-                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
-                 assert(max(abs(minFluxT - minFlux(1:5))) < tol)
-                 assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
-             end
-             
-             % test ambiguous partial matching
-             assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
-                    'input', {model, 'o', 90, 'rxnNameList', rxnTest}, ...
-                    'testMessage', '''o'' matches multiple parameter names: ''optPercentage'', ''osenseStr''. To avoid ambiguity, specify the complete name of the parameter.'))
-             
-             % test cobra parameters (saveInput gives easily detectable readouts)
-             inputToTest = {{90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}; ...
-                 {90, 'rxnNameList', rxnTest, struct('saveInput', 'testFVAparamValue')}; ...
-                 {'optPercentage', 90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}};
-             if exist('testFVAparamValue.mat', 'file')
-                 delete('testFVAparamValue.mat')
-             end
-             for j = 1:numel(inputToTest)
-                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
-                 assert(max(abs(minFluxT - minFlux(1:5))) < tol)
-                 assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
-                 assert(logical(exist('testFVAparamValue.mat', 'file')))
-                 delete('testFVAparamValue.mat')
-             end
-             
+            % test FVA for a single reaction inputted as string
+            [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', rxnNames{1}, 'threads', threads);
+            assert(abs(minFluxT - minFlux(1)) < tol)
+            assert(abs(maxFluxT - maxFlux(1)) < tol)
+            
+            % test with or without heuristics
+            for h = 1:3
+                [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', rxnNames(1:5), 'heuristics', h, 'threads', threads);
+                assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+                assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+            end
+            
+            % test parameter-value inputs
+            rxnTest = rxnNames(1:5);
+            inputToTest = {{90, 'max', 'rxnNameList', rxnTest}; ...
+                {90, 'osenseStr', 'max', 'rxnNameList', rxnTest, 'allowLoops', 1}; ...
+                {'optPercentage', 90, 'rxnNameList', rxnTest}; ...
+                {'opt', 90, 'r', rxnTest}};  % test partial matching
+            for j = 1:numel(inputToTest)
+                [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
+                assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+                assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+            end
+            
+            % test ambiguous partial matching
+            assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
+                'input', {model, 'o', 90, 'rxnNameList', rxnTest}, ...
+                'testMessage', '''o'' matches multiple parameter names: ''optPercentage'', ''osenseStr''. To avoid ambiguity, specify the complete name of the parameter.'))
+            
+            % test cobra parameters (saveInput gives easily detectable readouts)
+            inputToTest = {{90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}; ...
+                {90, 'rxnNameList', rxnTest, struct('saveInput', 'testFVAparamValue')}; ...
+                {'optPercentage', 90, struct('saveInput', 'testFVAparamValue'), 'rxnNameList', rxnTest}};
+            if exist('testFVAparamValue.mat', 'file')
+                delete('testFVAparamValue.mat')
+            end
+            for j = 1:numel(inputToTest)
+                [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
+                assert(max(abs(minFluxT - minFlux(1:5))) < tol)
+                assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+                assert(logical(exist('testFVAparamValue.mat', 'file')))
+                delete('testFVAparamValue.mat')
+            end
+            
             % test cobra + solver-specific parameters
             solverParams = {};
             if strcmp(currentSolver, 'gurobi')
@@ -137,9 +149,9 @@ for threads = threadsForFVA
                 solverParams.BarIterLimit = 0;
                 solverParams.IterationLimit = 0;
             elseif strcmp(currentSolver, 'ibm_cplex')
-                % no iteration allowed, infeasible 
+                % no iteration allowed, infeasible
                 solverParams = struct('saveInput', 'testFVAparamValue');
-                solverParams.simplex.limits.iterations = 0; 
+                solverParams.simplex.limits.iterations = 0;
                 solverParams.lpmethod = 1;
                 solverParams.timelimit = 0;
                 solverParams.barrier.limits.iteration = 0;
@@ -167,7 +179,7 @@ for threads = threadsForFVA
                 inputStruct.IterationLimit = 0;
             elseif strcmp(currentSolver, 'ibm_cplex')
                 inputStruct.lpmethod = 1;
-                inputStruct.simplex.limits.iterations = 0; 
+                inputStruct.simplex.limits.iterations = 0;
                 inputStruct.timelimit = 0;
                 inputStruct.barrier.limits.iteration = 0;
             end
@@ -198,13 +210,13 @@ for threads = threadsForFVA
             else
                 testMethods = {'FBA', '0-norm', '1-norm', 'minOrigSol'};
             end
-                
+            
             for j = 1:length(testMethods)
                 fprintf('    Testing flux variability with test method %s:\n', testMethods{j});
                 [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
                 assert(~isequal(Vmin, []));
                 assert(~isequal(Vmax, []));
-
+                
                 % this only works on cplex! all other solvers fail this
                 % test.... However, we should test it on the CI for
                 % functionality checks.
@@ -266,7 +278,7 @@ for threads = threadsForFVA
                 assert(sum(abs(minSols1(:, 2) - sol1)) < tol)
                 assert(sum(abs(maxSols1(:, 1) - sol2)) < tol)
                 assert(sum(abs(maxSols1(:, 2) - sol1)) < tol)
-            
+                
                 if doMIQP
                     [minF2, maxF2, minSols2, maxSols2] = fluxVariability(loopToyModel, 1, 'max', {'R1','R4'}, 0, 0, '2-norm', solverParams, 'threads', threads);
                     fprintf('\n2-norm minimized flux distributions for minimizing R1, R4 and maximizing R1, R4:\n');

@@ -137,6 +137,9 @@ if allowLoopsError
     error('"allowLoops" must be one of the following: 1 (usual FVA), 0 (default using ''LLC-NS''), ''original'', ''fastSNP'', ''LLC-NS'' or ''LLC-EFM''')
 end
 
+if ischar(rxnNameList)
+    rxnNameList = {rxnNameList};
+end
 %Stop if there are reactions, which are not part of the model
 if any(~ismember(rxnNameList,model.rxns))
     presence = ismember(rxnNameList,model.rxns);
