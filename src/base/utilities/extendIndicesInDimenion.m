@@ -20,10 +20,14 @@ function added = extendIndicesInDimenion(input,dimension,value, sizeIncrease)
 % NOTE:  
 %     Based on https://stackoverflow.com/questions/22537326/on-shape-agnostic-slicing-of-ndarrays
 
-
 inputDimensions = ndims(input);
 S.subs = repmat({':'},1,inputDimensions);
 S.subs{dimension} = (size(input,dimension)+1):(size(input,dimension)+sizeIncrease);
 S.type = '()';
-added = subsasgn(input,S,value);
+if ~istable(input)
+    added = subsasgn(input,S,value);
+else
+    % this can only happen for the first dimension, everything else will
+    % error!
+    added = [input;repmat(value,sizeIncrease,1)];
 end
