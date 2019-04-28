@@ -7,7 +7,7 @@ function defValue = getDefaultValue(value)
 % INPUT:
 %    value:     The value to get a default for
 %
-% OUTPUT: 
+% OUTPUT:
 %    defValue:    The default value for the given values type.
 
     if isnumeric(value)
@@ -15,7 +15,7 @@ function defValue = getDefaultValue(value)
         defValue = cast(NaN,valClass);
         defValue = repmat(defValue,size(value));
     elseif isstring(value)
-        defValue = "";
+        defValue = string('');
     elseif ischar(value)
         defValue = '';
     elseif islogical(value)
