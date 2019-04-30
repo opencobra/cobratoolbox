@@ -431,7 +431,18 @@ for i = 1:numel(presentFields)
         if ~isfield(results.Errors,'inconsistentFields')
             results.Errors.propertiesNotMatched = struct();
         end
-        results.Errors.propertiesNotMatched.(testedField) = 'Field does not match the required properties';
+        % determine at which position(s) the field does not match the
+        % properties.
+        valid = false(numel(model.(testedField)),1);
+        temp = x;
+        for cpos = 1:numel(model.(testedField))
+            % we will walk over all elements. This will only give one index.
+            x = temp(cpos);
+            valid(cpos) = eval(fieldProperties{presentFields(i),4});
+        end
+        invalidPos = find(~valid);
+        invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
+        results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s', invalidPosString);
     end
 
 end
