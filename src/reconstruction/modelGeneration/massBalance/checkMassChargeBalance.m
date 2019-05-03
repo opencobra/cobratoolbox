@@ -50,7 +50,7 @@ if ~exist('printLevel', 'var')
 end
 
 if ~isfield(model,'SIntRxnBool')
-    model = findSExRxnInd(model); % Figure out which reactions are internal if they haven't been defined
+    model.SIntRxnBool=true(nRxn,1);%assume all reactions are supposed to be internal if no other info provided
 end
 
 if ~exist('fileName','var')
