@@ -173,11 +173,13 @@ switch solver
             f = Result.objval;
         end
         origStat = Result.status;
+        % See detailed table of result codes in
+        % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
         if (origStat == 1 || origStat == 101)
             stat = 1; % Optimal
         elseif (origStat == 3 || origStat == 4 || origStat == 103)
-            stat = 1; % Infeasible
-        elseif (origStat == 2)
+            stat = 0; % Infeasible
+        elseif (origStat == 2 || origStat == 118 || origStat == 119)
             stat = 2; % Unbounded
         else
             stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
