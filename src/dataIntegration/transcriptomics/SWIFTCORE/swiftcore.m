@@ -9,11 +9,11 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %    model:        the metabolic network with fields:
 %                    * .S - the associated sparse stoichiometric matrix
 %                    * .lb - lower bounds on reaction rates
-%                    * .ub - lower bounds on reaction rates
+%                    * .ub - upper bounds on reaction rates
 %                    * .rxns - the cell array of reaction abbreviations
 %                    * .mets - the cell array of metabolite abbreviations
 %    coreInd:      the set of indices corresponding to the core reactions
-%    weights:      weight vector for the penalties associated with each reaction
+%    weights:      the weight vector for the penalties associated with each reaction
 %    tol:          zero-tolerance, i.e., the smallest flux value considered nonzero
 %    reduction:    boolean enabling the metabolic network reduction preprocess 
 % 
@@ -24,8 +24,8 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %               another supported solver is called.
 %
 % OUTPUTS:
-%    reconstruction:    the consistent metabolic network reconstructed from the 
-%                       core reactions
+%    reconstruction:    the flux consistent metabolic network reconstructed  
+%                       from the core reactions
 %    reconInd:          the 0-1 indicator vector of the reactions constituting
 %                       the reconstruction
 %    LP:                the number of solved LPs
@@ -34,6 +34,7 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %
 %    For the choice of the weight vector, use c*ones(n, 1) where c is an
 %    arbitrary constant c > 1 if you have no preference over reactions.
+%    Also, note that the input model is assumed to be flux consistent.
 %
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University
