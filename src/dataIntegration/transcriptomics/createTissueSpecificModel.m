@@ -105,6 +105,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %   for swiftcore
 %       options.core                 indices of reactions in cobra model that are part of the
 %                                    core set of reactions
+%       options.tol*                 smallest flux value that is considered nonzero (default 1e-10)
 %       options.reduction*           boolean enabling the metabolic network reduction preprocess 
 %       options.weights*             weight vector for the penalties associated with each reaction
 %       options.LPsolver*            the LP solver to be used; the currently available options are
@@ -192,6 +193,7 @@ else
                 solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
                 options.LPsolver = solvers.LP{1};
             end
+            if ~isfield(options,'tol'),options.tol=1e-10;end
             if ~isfield(options,'reduction'),options.reduction=false;end
             if ~isfield(options,'weights'),options.weights=ones(length(model.lb),1);end
             if ~isfield(model,'rev'),model.rev=double(model.lb<0);end
@@ -219,9 +221,7 @@ switch options.solver
     case 'fastCore'
         tissueModel = fastcore(model, options.core, options.epsilon, options.printLevel);
     case 'swiftcore'
-        coreRxnBool = swiftcore(model.S, model.rev, options.core, options.weights, options.reduction, options.LPsolver);
-        tissueModel = removeRxns(model, model.rxns(~coreRxnBool));
-        tissueModel = removeUnusedGenes(tissueModel);
+        tissueModel = swiftcore(model, options.core, options.weights, options.tol, options.reduction, options.LPsolver);
 end
 
 
