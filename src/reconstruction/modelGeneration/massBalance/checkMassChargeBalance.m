@@ -60,7 +60,7 @@ end
 Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
 
 E=sparse(nMet, length(Elements));
-massImbalance=sparse(nRxn, length(Elements));
+massImbalance=zeros(nRxn, length(Elements));
 missingFormulaeBool=cellfun(@isempty, model.metFormulas);
 for j = 1 : length(Elements)
     if j==1
@@ -246,3 +246,4 @@ end
 
 %nonzero rows corresponding to completely mass balanced reactions
 balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
+massImbalance = sparse(massImbalance);
