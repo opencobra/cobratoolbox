@@ -5,6 +5,7 @@
 %
 % Author:
 %     - CI: integration: Laurent Heirendt - March 2017
+%     - swift integration: Mojtaba Tefagh, May 2019
 
 % FASTCORE functions must have the CPLEX library included in order to run
 global ILOG_CPLEX_PATH
@@ -80,7 +81,12 @@ for k = 1:length(solverPkgs)
 
     if solverOK
         %Test full FastGapFill
-        [AddedRxns] = submitFastGapFill(modelFile, dbFile, dictFile, [], 'test_sampleWeights.tsv', true, [], [], listCompartments);
+        [AddedRxns] = submitGapFill(false, modelFile, dbFile, dictFile, [], 'test_sampleWeights.tsv', true, [], [], listCompartments);
+
+        assert(sum(cellfun(@(s) ~isempty(strfind('RXN1013', s)), AddedRxns.rxns)) == 1)
+        
+        %Test full swiftGapFill
+        [AddedRxns] = submitGapFill(true, modelFile, dbFile, dictFile, [], 'test_sampleWeights.tsv', true, [], [], listCompartments);
 
         assert(sum(cellfun(@(s) ~isempty(strfind('RXN1013', s)), AddedRxns.rxns)) == 1)
 
