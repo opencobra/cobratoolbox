@@ -118,8 +118,8 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
     else
         % identifying the blocked reversible reactions
         [~, D, V] = svds(S(:, weights == 0), 10, 'smallest');
-        blocked(weights == 0) = vecnorm(V(:, diag(D) < ...
-            norm(S(:, weights == 0), 'fro')*eps(class(S))), Inf, 2) < tol;
+        V = V(:, diag(D) < norm(S(:, weights == 0), 'fro')*eps(class(S)));
+        blocked(weights == 0) = all(abs(V) < tol, 2);
     end
     % phase two of unblocking the reversible reactions
     while any(blocked)
