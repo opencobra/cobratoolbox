@@ -425,8 +425,10 @@ if compatibleStatus == 1 || compatibleStatus == 2
             catch ME
                 solverOK = false;
             end
-            if verLessThan('matlab', '9') && ~verLessThan('matlab', '8.6')  % >2015b
-                warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
+            matver=split(version,".");
+            matver=str2double(strcat(char(matver(1)),'.',char(matver(2))));
+            if matver < 8.6
+            warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
             end
         case {'lp_solve', 'qpng', 'pdco', 'gurobi_mex'}
             solverOK = checkSolverInstallationFile(solverName, solverName, printLevel);
@@ -479,7 +481,7 @@ if solverOK
         % validate with a simple problem.
         problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
         try
-            eval(['solveCobra' solverType '(problem,''printLevel'',0);']);            
+            eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
         catch ME
             if printLevel > 0
                 disp(ME.message);
