@@ -151,7 +151,7 @@ assert(max(abs(biomassMwRange - 919.7837)) < 1)
 assert(atpMwRange(1) == atpMwRange(2) & abs(atpMwRange(1) - 503.1493) < 1)
 assert(strcmp(atpFormula{1}, atpFormula{2}) &  strcmp(atpFormula{1}, model.metFormulas{findMetIDs(model, 'atp[c]')}))
 
-% call without change balancing
+% call without charge balancing
 modelWoCharge = model;
 modelWoCharge.metCharges(:) = NaN;
 [modelWoCharge, metFormulae] = computeMetFormulae(modelWoCharge, metKnown);
@@ -178,6 +178,7 @@ while ~isequal(l, -1)
     text = [text ' ' l];
     l = fgets(f);
 end
+fclose(f);
 assert(~isempty(strfind(text, 'Critical failure: no feasible solution is found.')))
 delete('testBiomassMW_diary.txt')
 
@@ -203,6 +204,38 @@ assert(all(ismember(NwoDeadend(:, all(NwoDeadend >= 0, 1))' ~= 0, solInfo.N' ~= 
 [yn, id] = ismember(ele2, ele);
 assert(all(yn))
 assert(sum(any(abs(metEle2 - metEle(:, id)) > 1e-5, 2)) < 5)
+
+% supplying the elementary moiety vectors and the corresponding formulae
+cmNames = repmat({''}, 1, size(solInfo.N, 2));
+% H1R, H2R, ..., HnR for the first, second, ..., n-th moieties
+numCellStr = cellfun(@num2str, num2cell((1:sum(solInfo.cmUnknown))'), 'UniformOutput', false);
+cmNames(solInfo.cmUnknown) = strcat('H', numCellStr, 'R');
+[model3, metFormulae3, ele3, metEle3, rxnBalance3, S_fill3, solInfo3] = ...
+    computeMetFormulae(model, metKnown, 'calcCMs', solInfo.N, 'nameCMs', cmNames);
+% check that the results are the same as the previous if we directly
+% replace the generic elements in the previous solution with the supplied formulae
+ct = 0;
+for j = 1:numel(solInfo.cmFormulae)
+    if solInfo.cmUnknown(j)
+        ct = ct + 1;
+        model2.metFormulas = strrep(model2.metFormulas, solInfo.cmFormulae{j}, ['H' num2str(ct) 'R']);
+    end
+end
+% get elemental matrix
+[metEle2, ele2] = getElementalComposition(model2.metFormulas);
+[yn, id] = ismember(ele2, ele3);
+% ele3 from the algorithm contains 'Charge' as an element. ele2 does not.
+assert(all(yn) && numel(ele2) == numel(ele3) - 1)
+% check that the inferred formulae are the same
+assert(max(max(abs(metEle2 - metEle3(:, id)))) < 1e-5)
+
+% check that the identified moieties involving dead end metabolites are correct 
+[~, removedMets] = removeDeadEnds(model);
+metDeadId = findMetIDs(model, removedMets);
+% all identified moieties involve dead end mets
+assert(all(any(solInfo.N(metDeadId, solInfo.cmDeadend), 1)))
+% other moieties do not invovle dead end mets
+assert(~any(any(solInfo.N(metDeadId, ~solInfo.cmDeadend), 1)))
 
 % no metabolite for filling inconsistency
 [model2, metFormulae2, ele2, metEle2, rxnBalance2, S_fill, solInfo, LP] = ...
