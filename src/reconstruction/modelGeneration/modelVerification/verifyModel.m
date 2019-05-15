@@ -447,7 +447,7 @@ for i = 1:numel(presentFields)
         end
         invalidPos = find(~valid);
         invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
-        fieldIndent = repmat(' ',1,length(testedField));
+        fieldIndent = repmat(' ',1,length(testedField)+2);
         results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s%s', fieldIndent, invalidPosString);
     end
 
