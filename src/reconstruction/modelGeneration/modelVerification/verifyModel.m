@@ -438,11 +438,17 @@ for i = 1:numel(presentFields)
         for cpos = 1:numel(model.(testedField))
             % we will walk over all elements. This will only give one index.
             x = temp(cpos);
-            valid(cpos) = eval(fieldProperties{presentFields(i),4});
+            try
+                valid(cpos) = eval(fieldProperties{presentFields(i),4});
+            catch
+                % we need to catch any errors here as we evaluate, and an
+                % invalid evaluation also indicates an invalid field
+            end
         end
         invalidPos = find(~valid);
         invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
-        results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s', invalidPosString);
+        fieldIndent = repmat(' ',1,length(testedField));
+        results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s%s', fieldIndent, invalidPosString);
     end
 
 end
