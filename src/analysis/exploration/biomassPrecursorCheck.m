@@ -1,4 +1,4 @@
-function [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)
+function [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities, ATN)
 % Checks if biomass precursors are able to be synthesized.
 %
 % USAGE:
@@ -14,7 +14,10 @@ function [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = bio
 %    checkConservedQuantities:  true to check whether the cofactor pairs containing conserved moieties 
 %                               (defined by the network structure) can be synthesized 
 %                               (e.g., ATP, NAD, NADPH, ACCOA, AA-charged tRNA, fatty acyl-ACP). 
-%                               They will otherwise be identified as missingMets (Default: false)       
+%                               They will otherwise be identified as missingMets (Default: false)
+%    ATN:               atom transition network outputed by `buildAtomTransitionNetwork`
+%                       If provided, true internal conserved moieties will be identified 
+%                       and used for checking conserved quantities (default [])
 %
 % OUTPUTS:
 %    missingMets:    List of biomass precursors that are not able to be synthesized
@@ -35,6 +38,9 @@ if ~exist('checkCoupling','var') || isempty(checkCoupling)
 end
 if ~exist('checkConservedQuantities', 'var') || isempty(checkConservedQuantities)
     checkConservedQuantities = 0;
+end
+if ~exist('ATN', 'var')
+    ATN = [];
 end
 
 if checkCoupling && ~checkConservedQuantities && nargout > 3
@@ -107,7 +113,15 @@ presentMets = columnVector(presentMets);
 
 if checkConservedQuantities && ~isempty(missingMets)
     % detect cofactor pairs in the biomass reaction. They contain conserved moieties.
-    EMV = findElementaryMoietyVectors(model);
+    if isempty(ATN)
+        % no atom transition network is supplied. Just find elementary modes of the left null space
+        EMV = findElementaryMoietyVectors(model);
+    else
+        % atom transition network is supplied.
+        EMV = identifyConservedMoieties(model, ATN);
+        types = classifyMoieties(EMV, model.S);
+        EMV = EMV(:, strcmp(types, 'Internal'));
+    end
     % biomass metabolites that contain conserved moieties
     mCofactor = any(model.S(:, colS_biomass) ~= 0, 2) & any(EMV, 2);
     % elementary moieties involved in biomass production
@@ -175,5 +189,7 @@ if checkConservedQuantities && ~isempty(missingMets)
     missingCofs = cofactorPair(~producible);
     metCofs = [cofactorPair{:}];
     % exclude those metabolites in cofactor pairs from missingMets
-    missingMets = missingMets(~ismember(missingMets, metCofs(:)));
+    if ~isempty(metCofs)
+        missingMets = missingMets(~ismember(missingMets, metCofs(:)));
+    end
 end
