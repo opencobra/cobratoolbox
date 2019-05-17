@@ -1,4 +1,4 @@
-function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, defaultValues, validator, problemTypes, keyForSolverParams)
+function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, defaultValues, validator, problemTypes, keyForSolverParams, emptyForDefault)
 % Parse varargin for a COBRA function to obtain function inputs and
 % cobra-problem-specific parameters. Used to handle inputs for functions
 % supporting all of (i) direct argument inputs, (ii) name-value inputs, and
@@ -23,6 +23,7 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 %                        without keyword and is handled this way in this parsing process). 
 %                        If this is the case, provide the keyword and it will be handled (default ''). Note that in this case
 %                        the solver parameter structure will not be included in `funParams` but instead integrated in `solverVaragin`
+%    emptyForDefault:      True to interpret empty inputs for positional arguments as using the default values (default false)
 %
 % OUTPUTS:
 %    funParams:          cell array of optional argument inputs corresponding to optArgin.
@@ -39,10 +40,13 @@ elseif any(~ismember(problemTypes, {'LP', 'MILP', 'QP', 'MIQP', 'NLP'}))
     if ischar(problemTypes), problemTypes = {problemTypes}; end
     error('Input %s for `ProblemTypes` not supported. Only ''LP'', ''MILP'', ''QP'' and ''MIQP'' are supported', strjoin(problemTypes, ', '))
 end
-if nargin < 6
+if nargin < 6 || isempty(keyForSolverParams)
     keyForSolverParams = '';
 elseif ~ischar(keyForSolverParams)
     error('Input `keyForSolverParams` must be a string')
+end
+if nargin < 7
+    emptyForDefault = false;
 end
 
 cobraOptions = getCobraSolverParamsOptionsForType(problemTypes);
@@ -110,16 +114,32 @@ otherParams = struct();
 knownSolverParamFields = {};
 if ~paramValueInput
     % we only have values specific to this function. Parse the data.
-    for jArg = 1:numel(optArgin)
+    nArg = min(numel(varArgIn),numel(optArgin));
+    optArgOrder = 1:numel(optArgin);
+    if emptyForDefault
+        argDefault = cellfun(@isempty, varArgIn(1:nArg));
+        % re-order the positional arguments such that all non-empty inputs go first
+        nArg = sum(~argDefault);
+        optArgOrder = [columnVector(find(~argDefault)); columnVector(setdiff(1:numel(optArgin), find(~argDefault)))]';
+    end
+    for jArg = optArgOrder
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
     end    
-    parser.parse(varArgIn{1:min(numel(varArgIn),numel(optArgin))});  
+    parser.parse(varArgIn{optArgOrder(1:nArg)});  
 else
     % we do have solve specific parameters. 
     % Add the setting for the detected direct input to the parser first
     optArgs = varArgIn(1:pSpos-1);
     varArgIn = varArgIn(pSpos:end);
-    for jArg = 1:numel(optArgs)
+    optArgOrder = 1:numel(optArgin);
+    nOptArg = pSpos - 1;
+    if emptyForDefault
+        argDefault = cellfun(@isempty, optArgs);
+        % move the empty positional arguments to parameter/value arguments
+        optArgOrder = [columnVector(find(~argDefault)); columnVector(setdiff(1:numel(optArgin), find(~argDefault)))]';
+        nOptArg = sum(~argDefault);
+    end
+    for jArg = optArgOrder(1:nOptArg)
         parser.addOptional(optArgin{jArg}, defaultValues{jArg}, validator{jArg});        
     end
     if mod(numel(varArgIn),2) == 1
@@ -142,7 +162,7 @@ else
     % convert the input parameters into 2 x N [name; value] cell array
     nameValueParams = inputParamsToCells(varArgIn);
     % now, add the setting for the detected parameter-value inputs
-    for jArg = numel(optArgs)+1:numel(optArgin)
+    for jArg = optArgOrder((nOptArg + 1):numel(optArgin))
         parser.addParameter(optArgin{jArg}, defaultValues{jArg}, validator{jArg});
     end
     % and extract the parameters from the field names, as CaseSensitive = 0
@@ -161,7 +181,7 @@ else
     end
     % and parse them.
     parser.CaseSensitive = 0;
-    parser.parse(optArgs{:},functionParams{:});
+    parser.parse(optArgs{optArgOrder(1:nOptArg)}, functionParams{:});
 end
 
 % fields in otherParams = cobraParams (name-value inputs for solveCobraXXX) + solver-specific parameter
