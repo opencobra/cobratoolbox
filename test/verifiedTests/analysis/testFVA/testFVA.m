@@ -47,27 +47,25 @@ end
 printText = {'single-thread', 'parallel'};
 
 % test both single-thread and parallel (if available) computation
-for threads = threadsForFVA
-    
-    for k = 1:length(solverPkgs.LP)
-        % change the COBRA solver (LP)
-        solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-        currentSolver = solverPkgs.LP{k};
-        doQP = false;
-        doMILP = false;
-        if ismember(currentSolver,solverPkgs.QP)
-            solverQPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
-            doQP = true & solverQPOK;
-        end
-        if ismember(currentSolver,solverPkgs.MILP)
-            solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'MILP', 0);
-            doMILP = true & solverMILPOK;
-        end
-        if ismember(currentSolver,solverPkgs.MIQP)
-            solverMIQPOK = changeCobraSolver(solverPkgs.LP{k}, 'MIQP', 0);
-            doMIQP = true & solverQPOK;
-        end
-        
+for k = 1:length(solverPkgs.LP)
+    % change the COBRA solver (LP)
+    solverLPOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
+    currentSolver = solverPkgs.LP{k};
+    doQP = false;
+    doMILP = false;
+    if ismember(currentSolver,solverPkgs.QP)
+        solverQPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+        doQP = true & solverQPOK;
+    end
+    if ismember(currentSolver,solverPkgs.MILP)
+        solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'MILP', 0);
+        doMILP = true & solverMILPOK;
+    end
+    if ismember(currentSolver,solverPkgs.MIQP)
+        solverMIQPOK = changeCobraSolver(solverPkgs.LP{k}, 'MIQP', 0);
+        doMIQP = true & solverQPOK;
+    end
+    for threads = threadsForFVA
         if solverLPOK
             fprintf('   Testing %s flux variability analysis using %s ... \n', printText{threads}, solverPkgs.LP{k});
             
@@ -246,18 +244,6 @@ for threads = threadsForFVA
                 assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 4, ...
                     'input', {loopToyModel, 1, 'max', {'R1', 'R4'}, 0, 0, 'minOrigSol', 'threads', threads}));
                 
-                %The below is an odd assertion, but since the minimal solution for reaction 1 is the minimal solution of the system,
-                %it has to be the same as the maximal solution for the second tested
-                %Reaction.
-                % The assertion below works for minimizing 1-norm or 2-norm.
-                % But simply 'FBA' does not necessarily guarantee minimal
-                % solution because 'FBA' method does not do anything to
-                % minimize the flux distribution
-                % For 0-norm, it is also not necessarily minimal because the number of active
-                % reaction being minimal does not imply the flux values are
-                % Checked with the underlying MILPproblem in fluxVariability,
-                % non-minimal solutions were also optimal to the MILPproblem
-                % using 'FBA' or '0-norm'
                 solverParams = struct();
                 if strcmp(currentSolver, 'gurobi')
                     solverParams = struct('Presolve', 0);
