@@ -335,6 +335,14 @@ assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
     'input', {{}, optArgin, defaultValues, validator, 'ABC'}, ...
     'testMessage', 'Input ABC for `ProblemTypes` not supported. Only ''LP'', ''MILP'', ''QP'' and ''MIQP'' are supported'))
 
-                
+% test support for interpreting empty positional inputs as default values
+funParams = parseCobraVarargin({'input1value', [], 123}, optArgin, defaultValues, validator,  [], [], true);
+% error if emptyForDefault flag not true
+assert(isequal(funParams, {'input1value', 'test', 123}))
+assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
+    'input', {{'input1value', [], 123}, optArgin, defaultValues, validator}, ...
+    'testMessage', 'The value of ''aIn2'' is invalid. It must satisfy the function: ischar.'))
+
+           
 % change the directory
 cd(currentDir)
