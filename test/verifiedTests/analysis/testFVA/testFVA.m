@@ -25,7 +25,29 @@ model = readCbModel('Ec_iJR904.mat');
 load('testFVAData.mat');
 minFlux = minFlux(:);
 maxFlux = maxFlux(:);
-loopToyModel = createToyModelForgapFind();
+
+% model and data for loopless FVA
+loopToyModel = createToyModelForLooplessFVA();
+% results obtained using the previous version of fluxVariability (on May 17, 2019)
+toyfvaResultsRef = [0, 1; ...
+    0, 0.5; ...
+    0, 1000; ...
+    -999.1, 1; ...
+    -999.1, 1; ...
+    -1, -0.9; ...
+    -1, 0; ...
+    -1, 0; ...
+    0.9, 1];
+toyllfvaResultsRef = [0, 1; ...
+    0, 0.5; ...
+    0, 1; ...
+    0, 1; ...
+    0, 1; ...
+    -1, -0.9; ...
+    -1, 0; ...
+    -1, 0; ...
+    0.9, 1];
+llfvaOptPercent = 90;
 
 threadsForFVA = 1;
 try
@@ -33,7 +55,7 @@ try
         parpool(2);
     end
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
-        'useSolversIfAvailable',{'ibm_cplex'; 'gurobi'},...
+        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},...
         'excludeSolvers',{'dqqMinos','quadMinos'},...
         'minimalMatlabSolverVersion',8.0);
     threadsForFVA = [2, 1];
@@ -41,7 +63,7 @@ catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
-        'useSolversIfAvailable',{'ibm_cplex'; 'gurobi'},'minimalMatlabSolverVersion',8.0);
+        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'},'minimalMatlabSolverVersion',8.0);
 end
 
 printText = {'single-thread', 'parallel'};
@@ -53,6 +75,7 @@ for k = 1:length(solverPkgs.LP)
     currentSolver = solverPkgs.LP{k};
     doQP = false;
     doMILP = false;
+    doMIQP = false;
     if ismember(currentSolver,solverPkgs.QP)
         solverQPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
         doQP = true & solverQPOK;
@@ -234,51 +257,122 @@ for k = 1:length(solverPkgs.LP)
                 end
             end
             
+            % test for loopless FVA
             if doMILP
-                % output a success message
-                [minF, maxF] = fluxVariability(loopToyModel, 1, 'max', {'R1', 'R4'}, 0, 0);
-                assert(abs(maxF(2)) < tol); %While R4 can carry a flux of 1000, it can't do so without a loop
-                assert(abs(maxF(1) - 500) < tol); % Due to downstream reactions which have to carry "double" flux, this reaction can at most carry a flux of 500)
-                assert(abs(minF(1) - 5) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
-                assert(abs(minF(2)) < tol); %We require at least a flux of 10 through the objective (1% of 1000). This requires a flux of 5 through R1.
+                % test FVA allowing loops first
+                [minF, maxF] = fluxVariability(loopToyModel, 'opt', llfvaOptPercent);
+                assert(abs(max(minF - toyfvaResultsRef(:, 1))) < tol)
+                assert(abs(max(maxF - toyfvaResultsRef(:, 2))) < tol)
+                
+                % verify that if flux distributions are required outputs,
+                % method 'minOrigSol` returns error with allowLoops not on
+                assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 3, ...
+                    'input', {loopToyModel, llfvaOptPercent, 'max', [], 0, 0, 'minOrigSol', 'threads', threads}));
                 assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 4, ...
-                    'input', {loopToyModel, 1, 'max', {'R1', 'R4'}, 0, 0, 'minOrigSol', 'threads', threads}));
+                    'input', {loopToyModel, llfvaOptPercent, 'max', [], 0, 0, 'minOrigSol', 'threads', threads}));
                 
                 solverParams = struct();
                 if strcmp(currentSolver, 'gurobi')
                     solverParams = struct('Presolve', 0);
                 end
-                [minF1, maxF1, minSols1, maxSols1] = fluxVariability(loopToyModel, 1, 'max', {'R1','R4'}, 0, 0, '1-norm', solverParams, 'threads', threads);
-                fprintf('\n1-norm minimized flux distributions for minimizing R1, R4 and maximizing R1, R4:\n');
-                disp([minSols1, maxSols1]);
-                assert(max(abs(minF1 - [5; 0])) < tol)
-                assert(max(abs(maxF1 - [500; 0])) < tol)
-                
-                % the corresponding norm-minimized solutions
-                % min R1, max and min R4
-                sol1 = [5; 5; 10; 0; 0; 0; 0; 0; 0; -5; 10];
-                % max R1
-                sol2 = [5; 5; 10; 0; 0; 0; 0; 0; 0; -5; 10] * 100;
-                
-                assert(sum(abs(minSols1(:, 1) - sol1)) < tol)
-                assert(sum(abs(minSols1(:, 2) - sol1)) < tol)
-                assert(sum(abs(maxSols1(:, 1) - sol2)) < tol)
-                assert(sum(abs(maxSols1(:, 2) - sol1)) < tol)
-                
-                if doMIQP
-                    [minF2, maxF2, minSols2, maxSols2] = fluxVariability(loopToyModel, 1, 'max', {'R1','R4'}, 0, 0, '2-norm', solverParams, 'threads', threads);
-                    fprintf('\n2-norm minimized flux distributions for minimizing R1, R4 and maximizing R1, R4:\n');
-                    disp([minSols2, maxSols2]);
-                    assert(max(abs(minF2 - [5; 0])) < tol)
-                    assert(max(abs(maxF2 - [500; 0])) < tol)
-                    
-                    % MIQP seems not to perfectly satisfy the optimality tolerance (1e-9).
-                    % Check the % deviation of the 2-norm from the optimal solution
-                    assert((norm(minSols2(:, 1), 2) ^ 2 / norm(sol1, 2) ^ 2) - 1 < tol)
-                    assert((norm(minSols2(:, 2), 2) ^ 2 / norm(sol1, 2) ^ 2) - 1 < tol)
-                    assert((norm(maxSols2(:, 1), 2) ^ 2 / norm(sol2, 2) ^ 2) - 1 < tol)
-                    assert((norm(maxSols2(:, 2), 2) ^ 2 / norm(sol1, 2) ^ 2) - 1 < tol)
-                end
+               % check that different methods for loopless FVA give the same results
+               method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
+               t = zeros(numel(method), 1);
+               for j = 1:numel(method)
+                   tic;
+                   [minFluxT, maxFluxT] = fluxVariability(loopToyModel, llfvaOptPercent, ...
+                       'max', [], 2, method{j}, 'threads', threads);
+                   t(j) = toc;
+                   assert(max(abs(minFluxT - toyllfvaResultsRef(:, 1))) < tol)
+                   assert(max(abs(maxFluxT - toyllfvaResultsRef(:, 2))) < tol)
+               end
+               fprintf('\n\n');
+               for j = 1:numel(method)
+                   fprintf('%s method takes %.2f sec to finish loopless FVA for %d reactions\n', method{j}, t(j), numel(rxnTest));
+               end
+               
+               if doQP && doMIQP
+                   % return flux distributions
+                   
+                   % test for one reaction in loops and one not in loops
+                   rxnTestForFluxes = [1; 3];
+                   
+                   method = {'original', 'fastSNP', 'LLC-NS', 'LLC-EFM'};
+                   minNormMethod = {'FBA', '0-norm', '1-norm', '2-norm'};
+                   
+                   solverParams = repmat({struct('intTol', 1e-9, 'feasTol', 1e-8)}, numel(minNormMethod), 1);
+                   % minimizing 0-norm with presolve on may be inaccurate
+                   switch currentSolver
+                       case 'gurobi'
+                           solverParams{2}.Presolve = 0;
+                       case 'ibm_cplex'
+                           solverParams{2}.presolvenode = 0;
+                   end
+                   
+                   rxnTest = 'Ex_E';
+                   rxnTestId = findRxnIDs(loopToyModel, rxnTest);
+                   [minFluxT, maxFluxT] = deal(zeros(numel(method), numel(minNormMethod)));
+                   [Vmin, Vmax] = deal(zeros(numel(model.rxns), numel(method), numel(minNormMethod)));
+                   
+                   for j = 1:numel(method)
+                       for j2 = 1:numel(minNormMethod)
+                           tic;
+                           [minFluxT(j, j2), maxFluxT(j, j2), Vmin(:, j, j2), Vmax(:, j, j2)] = ...
+                               fluxVariability(loopToyModel, optPercent, 'max', rxnTest, 2, method{j}, minNormMethod{j2}, solverParams{j2}, 'threads', threads);
+                           t(j, j2) = toc;
+                           assert(abs(minFluxT(j, j2)  - toyllfvaResultsRef(rxnTestId, 1)) < tol)
+                           assert(abs(maxFluxT(j, j2)  - toyllfvaResultsRef(rxnTestId, 2)) < tol)
+                       end
+                   end
+                   % calculate the norms from the solutions
+                   
+                   [normMin, normMax] = deal(zeros(numel(method), numel(minNormMethod), 3));
+                   for j = 1:numel(method)
+                       for j2 = 1:numel(minNormMethod)
+                           % 0-norm
+                           normMin(j, j2, 1) = sum(abs(Vmin(:, j, j2)) > 1e-8);
+                           % 1-norm
+                           normMin(j, j2, 2) = sum(abs(Vmin(:, j, j2)));
+                           % 2-norm
+                           normMin(j, j2, 3) = Vmin(:, j, j2)' * Vmin(:, j, j2);
+                           
+                           % 0-norm
+                           normMax(j, j2, 1) = sum(abs(Vmax(:, j, j2)) > 1e-8);
+                           % 1-norm
+                           normMax(j, j2, 2) = sum(abs(Vmax(:, j, j2)));
+                           % 2-norm
+                           normMax(j, j2, 3) = Vmax(:, j, j2)' * Vmax(:, j, j2);
+                       end
+                   end
+                   
+                   % For flux distributions for minFlux
+                   % check that solutions with minNormMethod = 0-norm should have small 0-norms
+                   minValue = min(normMin(:, :, 1), [], 2);
+                   % a larger deviation allowed for 0-norm minimization using different methods,
+                   % since the approximation algorithm used by sparseFBA
+                   % for 0-norm might find a 0-norm slightly higher than
+                   % solving the original MILP
+                   assert(all(normMin(:, 2, 1) <= min(minValue) + 5))
+                   % check that solutions with minNormMethod = 1-norm should have small 1-norms
+                   minValue = min(normMin(:, :, 2), [], 2);
+                   assert(all(normMin(:, 3, 2) <= (1 + tol) * min(minValue)))
+                   % check that solutions with minNormMethod = 2-norm should have small 2-norms
+                   minValue = min(normMin(:, :, 3), [], 2);
+                   assert(all(normMin(:, 4, 3) <= (1 + tol) * min(minValue)))
+                   
+                   % For flux distributions for maxFlux
+                   % check that solutions with minNormMethod = 0-norm should have small 0-norms
+                   minValue = min(normMax(:, :, 1), [], 2);
+                   % a larger deviation allowed for 0-norm minimization
+                   assert(all(normMax(:, 2, 1) <= min(minValue) + 5))
+                   % check that solutions with minNormMethod = 1-norm should have small 1-norms
+                   minValue = min(normMax(:, :, 2), [], 2);
+                   assert(all(normMax(:, 3, 2) <= (1 + tol) * min(minValue)))
+                   % check that solutions with minNormMethod = 2-norm should have small 2-norms
+                   minValue = min(normMax(:, :, 3), [], 2);
+                   assert(all(normMax(:, 4, 3) <= (1 + tol) * min(minValue)))
+                   
+               end
             end
             fprintf('Done.\n');
         end
