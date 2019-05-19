@@ -28,26 +28,28 @@ maxFlux = maxFlux(:);
 
 % model and data for loopless FVA
 loopToyModel = createToyModelForLooplessFVA();
-% results obtained using the previous version of fluxVariability (on May 17, 2019)
-toyfvaResultsRef = [0, 1; ...
+llfvaOptPercent = 90;
+% expected results [min | max]
+toyfvaResultsRef = [...
+    0, 1; ...
     0, 0.5; ...
     0, 1000; ...
-    -999.1, 1; ...
-    -999.1, 1; ...
+    -99.91, 0.1; ...
+    -99.91, 0.1; ...
     -1, -0.9; ...
     -1, 0; ...
     -1, 0; ...
     0.9, 1];
-toyllfvaResultsRef = [0, 1; ...
+toyllfvaResultsRef = [ ...
+    0, 1; ...
     0, 0.5; ...
     0, 1; ...
-    0, 1; ...
-    0, 1; ...
+    0, 0.1; ...
+    0, 0.1; ...
     -1, -0.9; ...
     -1, 0; ...
     -1, 0; ...
     0.9, 1];
-llfvaOptPercent = 90;
 
 threadsForFVA = 1;
 try
@@ -104,7 +106,7 @@ for k = 1:length(solverPkgs.LP)
             rxnID = findRxnIDs(model, rxnNames);
             
             % check if each flux value corresponds to a pre-calculated value
-            for i = 1:size(rxnID)
+            for i = 1:numel(rxnID)
                 % test the components of the minFlux and maxFlux vectors
                 assert(minFlux(i) - tol <= minFluxT(i))
                 assert(minFluxT(i) <= minFlux(i) + tol)
@@ -130,15 +132,15 @@ for k = 1:length(solverPkgs.LP)
             end
             
             % test parameter-value inputs
-            rxnTest = rxnNames(1:5);
+            rxnTest = rxnNames(1);
             inputToTest = {{90, 'max', 'rxnNameList', rxnTest}; ...
                 {90, 'osenseStr', 'max', 'rxnNameList', rxnTest, 'allowLoops', 1}; ...
                 {'optPercentage', 90, 'rxnNameList', rxnTest}; ...
                 {'opt', 90, 'r', rxnTest}};  % test partial matching
             for j = 1:numel(inputToTest)
                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
-                assert(max(abs(minFluxT - minFlux(1:5))) < tol)
-                assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+                assert(max(abs(minFluxT - minFlux(1))) < tol)
+                assert(max(abs(maxFluxT - maxFlux(1))) < tol)
             end
             
             % test ambiguous partial matching
@@ -155,8 +157,8 @@ for k = 1:length(solverPkgs.LP)
             end
             for j = 1:numel(inputToTest)
                 [minFluxT, maxFluxT] = fluxVariability(model, inputToTest{j}{:});
-                assert(max(abs(minFluxT - minFlux(1:5))) < tol)
-                assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+                assert(max(abs(minFluxT - minFlux(1))) < tol)
+                assert(max(abs(maxFluxT - maxFlux(1))) < tol)
                 assert(logical(exist('testFVAparamValue.mat', 'file')))
                 delete('testFVAparamValue.mat')
             end
@@ -189,8 +191,8 @@ for k = 1:length(solverPkgs.LP)
             inputStruct = struct('opt', 90, 'saveInput', 'testFVAparamValue');
             inputStruct.rxn = rxnTest;
             [minFluxT, maxFluxT] = fluxVariability(model, inputStruct);
-            assert(max(abs(minFluxT - minFlux(1:5))) < tol)
-            assert(max(abs(maxFluxT - maxFlux(1:5))) < tol)
+            assert(max(abs(minFluxT - minFlux(1))) < tol)
+            assert(max(abs(maxFluxT - maxFlux(1))) < tol)
             assert(logical(exist('testFVAparamValue.mat', 'file')))
             delete('testFVAparamValue.mat')
             
@@ -312,66 +314,42 @@ for k = 1:length(solverPkgs.LP)
                    rxnTest = 'Ex_E';
                    rxnTestId = findRxnIDs(loopToyModel, rxnTest);
                    [minFluxT, maxFluxT] = deal(zeros(numel(method), numel(minNormMethod)));
-                   [Vmin, Vmax] = deal(zeros(numel(model.rxns), numel(method), numel(minNormMethod)));
+                   [Vmin, Vmax] = deal(zeros(numel(loopToyModel.rxns), numel(method), numel(minNormMethod)));
                    
                    for j = 1:numel(method)
                        for j2 = 1:numel(minNormMethod)
                            tic;
                            [minFluxT(j, j2), maxFluxT(j, j2), Vmin(:, j, j2), Vmax(:, j, j2)] = ...
-                               fluxVariability(loopToyModel, optPercent, 'max', rxnTest, 2, method{j}, minNormMethod{j2}, solverParams{j2}, 'threads', threads);
+                               fluxVariability(loopToyModel, llfvaOptPercent, 'max', rxnTest, 2, method{j}, minNormMethod{j2}, solverParams{j2}, 'threads', threads);
                            t(j, j2) = toc;
                            assert(abs(minFluxT(j, j2)  - toyllfvaResultsRef(rxnTestId, 1)) < tol)
                            assert(abs(maxFluxT(j, j2)  - toyllfvaResultsRef(rxnTestId, 2)) < tol)
+                           if j2 == 2 && j <= 2
+                               % min 0-norm. Use R3 instead of R4 + R5
+                               % But only necessarily true for original and fastSNP method because LLC determines that
+                               % solving LPs is enough, which will invoke sparseFBA to approximate min-L0 solutions,
+                               % which may not be the exact minimum solution
+                               assert(abs(Vmin(3, j, j2) - 0.9) < tol)
+                               assert(abs(Vmin(4, j, j2)) < tol)
+                               assert(abs(Vmin(5, j, j2)) < tol)
+                               assert(abs(Vmax(3, j, j2) - 1) < tol)
+                               assert(abs(Vmax(4, j, j2)) < tol)
+                               assert(abs(Vmax(5, j, j2)) < tol)
+                           elseif j2 == 3
+                               % min 1-norm
+                               assert(abs(Vmin(3, j, j2)) < tol)
+                               assert(abs(Vmin(4, j, j2) - 0.09) < tol)
+                               assert(abs(Vmin(5, j, j2) - 0.09) < tol)
+                               assert(abs(Vmax(3, j, j2)) < tol)
+                               assert(abs(Vmax(4, j, j2) - 0.1) < tol)
+                               assert(abs(Vmax(5, j, j2) - 0.1) < tol)
+                           elseif j2 == 4
+                               % min 2-norm will make all rxns active
+                               assert(all(abs(Vmin(:, j, j2)) > tol))
+                               assert(all(abs(Vmax(:, j, j2)) > tol))
+                           end
                        end
                    end
-                   % calculate the norms from the solutions
-                   
-                   [normMin, normMax] = deal(zeros(numel(method), numel(minNormMethod), 3));
-                   for j = 1:numel(method)
-                       for j2 = 1:numel(minNormMethod)
-                           % 0-norm
-                           normMin(j, j2, 1) = sum(abs(Vmin(:, j, j2)) > 1e-8);
-                           % 1-norm
-                           normMin(j, j2, 2) = sum(abs(Vmin(:, j, j2)));
-                           % 2-norm
-                           normMin(j, j2, 3) = Vmin(:, j, j2)' * Vmin(:, j, j2);
-                           
-                           % 0-norm
-                           normMax(j, j2, 1) = sum(abs(Vmax(:, j, j2)) > 1e-8);
-                           % 1-norm
-                           normMax(j, j2, 2) = sum(abs(Vmax(:, j, j2)));
-                           % 2-norm
-                           normMax(j, j2, 3) = Vmax(:, j, j2)' * Vmax(:, j, j2);
-                       end
-                   end
-                   
-                   % For flux distributions for minFlux
-                   % check that solutions with minNormMethod = 0-norm should have small 0-norms
-                   minValue = min(normMin(:, :, 1), [], 2);
-                   % a larger deviation allowed for 0-norm minimization using different methods,
-                   % since the approximation algorithm used by sparseFBA
-                   % for 0-norm might find a 0-norm slightly higher than
-                   % solving the original MILP
-                   assert(all(normMin(:, 2, 1) <= min(minValue) + 5))
-                   % check that solutions with minNormMethod = 1-norm should have small 1-norms
-                   minValue = min(normMin(:, :, 2), [], 2);
-                   assert(all(normMin(:, 3, 2) <= (1 + tol) * min(minValue)))
-                   % check that solutions with minNormMethod = 2-norm should have small 2-norms
-                   minValue = min(normMin(:, :, 3), [], 2);
-                   assert(all(normMin(:, 4, 3) <= (1 + tol) * min(minValue)))
-                   
-                   % For flux distributions for maxFlux
-                   % check that solutions with minNormMethod = 0-norm should have small 0-norms
-                   minValue = min(normMax(:, :, 1), [], 2);
-                   % a larger deviation allowed for 0-norm minimization
-                   assert(all(normMax(:, 2, 1) <= min(minValue) + 5))
-                   % check that solutions with minNormMethod = 1-norm should have small 1-norms
-                   minValue = min(normMax(:, :, 2), [], 2);
-                   assert(all(normMax(:, 3, 2) <= (1 + tol) * min(minValue)))
-                   % check that solutions with minNormMethod = 2-norm should have small 2-norms
-                   minValue = min(normMax(:, :, 3), [], 2);
-                   assert(all(normMax(:, 4, 3) <= (1 + tol) * min(minValue)))
-                   
                end
             end
             fprintf('Done.\n');
