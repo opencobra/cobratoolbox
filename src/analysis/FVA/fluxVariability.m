@@ -407,8 +407,13 @@ if heuristics > 1
         % for irreversible reactions with fluxes < feasTol, we can safely say that they are blocked
         sol.full(abs(sol.full) < cobraParams.LP.feasTol) = 0;
         rxnBlocked = (sol.full(Order) == 0) & (model.lb(Order) >= 0 | model.ub(Order) <= 0);
-        rxnHitUB = (sol.full(Order) == model.ub(Order)) & ~rxnBlocked & ~maxSolved;
-        rxnHitLB = (sol.full(Order) == model.lb(Order)) & ~rxnBlocked & ~minSolved;
+        if allowLoops
+            rxnHitUB = (sol.full(Order) == model.ub(Order)) & ~rxnBlocked & ~maxSolved;
+            rxnHitLB = (sol.full(Order) == model.lb(Order)) & ~rxnBlocked & ~minSolved;
+        else
+            % the reactions that hit bounds in the LP may not hit bounds under the loopless condition
+            [rxnHitUB, rxnHitLB] = deal(false(numel(rxnNameList), 1));
+        end
         sol.heuristics = 'hitBounds';
         if any(rxnHitUB) || any(rxnHitLB)
             % store the heuristic solutions
