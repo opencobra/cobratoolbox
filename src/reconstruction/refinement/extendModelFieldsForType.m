@@ -72,6 +72,7 @@ dimensions = dimensions(Pos(Pres));
 for field = 1:numel(fields)
     cfield = fields{field,1};
     cfieldDef = fieldDefinitions(ismember(fieldDefinitions(:,1),cfield),:);
+    cdim = dimensions(field);
     if isempty(cfieldDef)
         %this indicates, that no clear field Definition exists. So lets
         %make some assumptions:
@@ -92,12 +93,19 @@ for field = 1:numel(fields)
         if islogical(model.(cfield))
             fieldType = 'sparselogical';
             defaultvalue = false;
-        end                
+        end  
+        if istable(model.(cfield))
+            % this is impossible as we don't know how to extend it...
+            if cdim ~= 1
+                error('Requested the extension of a table field (%s) in the second dimension. This is impossible, as the type of the new Variable and its name are unknown',cfield);
+            end
+            fieldType = 'table';
+            defaultValue = getDefaultTableRow(model.(cfield));
+        end
     else
         fieldType = cfieldDef{7};
         defaultValue = cfieldDef{5};
     end
-    cdim = dimensions(field);
     fieldDims = size(model.(cfield));    
     %Matlab will screw up multi-dimensional arrays when the are of size 1
     %or zero in a dimension... So for now, we only handle two dimensional
@@ -124,8 +132,6 @@ for field = 1:numel(fields)
         end
     end
     switch fieldType
-        case 'sparse'
-            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
         case 'cell'
             newValues = cell(0,1);
             for i = originalSize+1:targetSize
@@ -135,10 +141,9 @@ for field = 1:numel(fields)
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,newValues, targetSize-originalSize);
         case 'sparselogical'            
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,logical(defaultValue), targetSize-originalSize);                        
-        case 'numeric'
+        case {'numeric','char','table','sparse'}
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
-        case 'char'
-            model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
+
     end
 end
 end

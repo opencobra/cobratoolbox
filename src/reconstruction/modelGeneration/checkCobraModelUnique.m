@@ -1,4 +1,4 @@
-function model = checkCobraModelUnique(model, renameFlag)
+function [model, isUnique] = checkCobraModelUnique(model, renameFlag)
 % Checks uniqueness of reaction and metabolite names
 %
 % USAGE:
@@ -14,6 +14,7 @@ function model = checkCobraModelUnique(model, renameFlag)
 %
 % OUTPUT:
 %    model:         COBRA model structure
+%    isUnique:      true if the model has unique reaction and metabolite names
 %
 % .. Authors:
 %       - Markus Herrgard 10/17/07
@@ -23,9 +24,11 @@ if nargin < 2
     renameFlag = false;
 end
 
+isUnique = true;
 [rxnName, rxnCnt] = countUnique(model.rxns);
 rxnInd = find(rxnCnt > 1);
 if ~isempty(rxnInd)
+    isUnique = false;
     fprintf('Model contains non-unique reaction names - consider renaming reactions using checkCobraModelUnique\n');
     for i = 1:length(rxnInd)
         thisRxnName = rxnName{rxnInd(i)};
@@ -44,6 +47,7 @@ end
 [metName, metCnt] = countUnique(model.mets);
 metInd = find(metCnt > 1);
 if ~isempty(metInd)
+    isUnique = false;
     fprintf('Model contains non-unique metabolite names - consider renaming metabolites using checkCobraModelUnique\n');
     for i = 1:length(metInd)
         thisMetName = metName{metInd(i)};

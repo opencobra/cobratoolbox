@@ -27,6 +27,9 @@ model = getDistributedModel('ecoli_core_model.mat');
 fprintf('>> Testing Metabolite Batch Addition...\n');
 metNames = {'A','b','c'};
 metFormulas = {'C','CO2','H2OKOPF'};
+
+%Also, implicitly test whether tables are handled correctly
+model.tableField = table(model.mets,model.mets);
 modelBatch = addMultipleMetabolites(model,metNames,'metCharges', [ -1 1 0],...
     'metFormulas', metFormulas, 'metKEGGID',{'C000012','C000023','C000055'});
 assert(all(ismember(metNames,modelBatch.mets)));
@@ -35,6 +38,8 @@ assert(isequal(modelBatch.metFormulas(pos(pres)),columnVector(metFormulas)));
 assert(isequal(modelBatch.metCharges(pos(pres)),[-1; 1;0]));
 assert(verifyModel(modelBatch,'simpleCheck',true));
 assert(isfield(modelBatch,'metKEGGID'));
+assert(isequal(size(modelBatch.tableField,1),size(modelBatch.mets,1)));
+assert(isequal(size(modelBatch.tableField,2),size(model.tableField,2)));
 
 %Assert duplication check
 assert(verifyCobraFunctionError('addMultipleMetabolites', 'inputs',{model,model.mets(1:3)}))

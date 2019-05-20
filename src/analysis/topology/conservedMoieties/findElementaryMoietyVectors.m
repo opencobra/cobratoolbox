@@ -70,6 +70,11 @@ LP.csense = char(['E' * ones(1, nR), 'L' * ones(1, nM)]);
 sol = solveCobraLP(LP, varargin{:});
 metCM = sol.full(1:nM) >= 1 - 1e-6;
 
+if ~any(metCM)
+    % no conserved moiety at all
+    EMV = sparse(nM, 0);
+    return
+end
 % the reduced stoichiometric matrix containing all rxns and mets involving conserved moieties
 S = full(model.S(metCM, any(model.S(metCM, :), 1)));
 
