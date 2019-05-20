@@ -263,7 +263,7 @@
 <span id="id1"></span><h1>rMTA<a class="headerlink" href="#rmta" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.rMTA"></span><dl class="function">
 <dt id="src.analysis.rMTA.MTA">
-<code class="descname">MTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/MTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Metabolic Transformation Analysis (MTA) using the the
 solver CPLEX.
 Code was prepared to be able to be stopped and be launched again by using
@@ -355,7 +355,7 @@ Matrix of resulting fluxes</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.MTA_MIQP">
-<code class="descname">MTA_MIQP</code><span class="sig-paren">(</span><em>OptimizationModel</em>, <em>KOrxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA_MIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_MIQP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA_MIQP</code><span class="sig-paren">(</span><em>OptimizationModel</em>, <em>KOrxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/MTA_MIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_MIQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the OptimizationModel solution of a particular MTA problem and
 an specific model</p>
 <p><strong>Usage</strong></p>
@@ -388,7 +388,7 @@ Cplex solution struct</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.MTA_TS">
-<code class="descname">MTA_TS</code><span class="sig-paren">(</span><em>Vout</em>, <em>Vref</em>, <em>rxnFBS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA_TS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_TS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA_TS</code><span class="sig-paren">(</span><em>Vout</em>, <em>Vref</em>, <em>rxnFBS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/MTA_TS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_TS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the TS score of a particular solution of the MTA perturbation
 algorithm.</p>
 <p><strong>Usage</strong></p>
@@ -417,7 +417,7 @@ TS score for each case</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.buildMTAproblemFromModel">
-<code class="descname">buildMTAproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/buildMTAproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.buildMTAproblemFromModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildMTAproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/buildMTAproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.buildMTAproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the COBRA Optimization model needed to perform the MTA</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -450,7 +450,7 @@ constrains and the binary variables.</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.calculateEPSILON">
-<code class="descname">calculateEPSILON</code><span class="sig-paren">(</span><em>samples</em>, <em>rxnFBS</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/calculateEPSILON.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateEPSILON" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateEPSILON</code><span class="sig-paren">(</span><em>samples</em>, <em>rxnFBS</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/calculateEPSILON.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateEPSILON" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the minimum required flux change (epsilon) for reactions to be
 considered as significantly changed with p-value of 0.05
 The code below is based on the method presented in:</p>
@@ -494,7 +494,7 @@ Numeric value or array with the epsilon for the different reactions</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.calculateGeneKOMatrix">
-<code class="descname">calculateGeneKOMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/calculateGeneKOMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateGeneKOMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateGeneKOMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/calculateGeneKOMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateGeneKOMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a rxn-gene matrix such that the i-th column indicates what
 reactions become inactive because of the i-th gene&#8217;s knock-out.</p>
 <p><strong>Usage</strong></p>
@@ -543,7 +543,7 @@ name of reactions and name of genes.</li>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.diffexprs2rxnFBS">
-<code class="descname">diffexprs2rxnFBS</code><span class="sig-paren">(</span><em>model</em>, <em>diff_exprs</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/diffexprs2rxnFBS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.diffexprs2rxnFBS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">diffexprs2rxnFBS</code><span class="sig-paren">(</span><em>model</em>, <em>diff_exprs</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/diffexprs2rxnFBS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.diffexprs2rxnFBS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Forward - Backward - Unchanged (+1;0;-1) for each reaction.
 (+1)R_f    (-1)R_b     (0)unchanged</p>
 <p><strong>Usage</strong></p>
@@ -597,7 +597,7 @@ reactions: Forward - Backward - Unchanged
 
 <dl class="function">
 <dt id="src.analysis.rMTA.rMTA">
-<code class="descname">rMTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/rMTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.rMTA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rMTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/2ed83d14eb0e7877856c34ae10f192013b8cdffe/src/analysis/rMTA/rMTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.rMTA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate robust Metabolic Transformation Analysis (rMTA) using the
 solver CPLEX.
 Code was prepared to be able to be stopped and be launched again by using
