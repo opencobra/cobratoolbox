@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -170,6 +170,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
@@ -279,7 +280,7 @@
 <span id="id1"></span><h1>vonBertalanffy<a class="headerlink" href="#vonbertalanffy" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.vonBertalanffy"></span><dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.assignQuantDir">
-<code class="descname">assignQuantDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/assignQuantDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.assignQuantDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignQuantDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/assignQuantDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.assignQuantDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Quantitatively assigns reaction directionality based on estimated bounds
 on transformed reaction Gibbs energies</p>
 <p><strong>Usage</strong></p>
@@ -317,7 +318,7 @@ direction, and 0 for reversible reactions.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs">
-<code class="descname">configureSetupThermoModelInputs</code><span class="sig-paren">(</span><em>model</em>, <em>T</em>, <em>compartments</em>, <em>ph</em>, <em>is</em>, <em>chi</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">configureSetupThermoModelInputs</code><span class="sig-paren">(</span><em>model</em>, <em>T</em>, <em>compartments</em>, <em>ph</em>, <em>is</em>, <em>chi</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.configureSetupThermoModelInputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures inputs to <cite>setupThermoModel</cite> (sets defaults etc.). All optional inputs are empty by default.</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -351,7 +352,7 @@ direction, and 0 for reversible reactions.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDG_temp">
-<code class="descname">estimateDG_temp</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/estimateDG_temp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDG_temp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDG_temp</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/estimateDG_temp.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDG_temp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed Gibbs energies of formation for metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -405,7 +406,7 @@ energies of formation in kJ/mol.<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDfGt0">
-<code class="descname">estimateDfGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/estimateDfGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDfGt0" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDfGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/estimateDfGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDfGt0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed Gibbs energies of formation for metabolites</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -472,7 +473,7 @@ energies of formation in kJ/mol.<ul>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimateDrGt0">
-<code class="descname">estimateDrGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/estimateDrGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDrGt0" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimateDrGt0</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/estimateDrGt0.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimateDrGt0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates bounds on transformed Gibbs energies for metabolites and
 reactions in model.</p>
 <p><strong>Usage</strong></p>
@@ -524,7 +525,7 @@ energies in kJ/mol.</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.estimate_pKa">
-<code class="descname">estimate_pKa</code><span class="sig-paren">(</span><em>mets</em>, <em>inchi</em>, <em>npKas</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/estimate_pKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimate_pKa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">estimate_pKa</code><span class="sig-paren">(</span><em>mets</em>, <em>inchi</em>, <em>npKas</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/estimate_pKa.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.estimate_pKa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates pKa values with ChemAxon&#8217;s Calculator plugins and determines
 all physiologically relevant pseudoisomers.</p>
 <p><strong>Usage</strong></p>
@@ -585,7 +586,7 @@ cxcalc is part of Marvin Beans, available by academic licence from ChemAxon</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.getCompartment">
-<code class="descname">getCompartment</code><span class="sig-paren">(</span><em>mets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/getCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.getCompartment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCompartment</code><span class="sig-paren">(</span><em>mets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/getCompartment.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.getCompartment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the compartment for each metabolite, and the unique compartments</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -611,7 +612,7 @@ cell array of unique compartment identifiers</li>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.setupComponentContribution">
-<code class="descname">setupComponentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>cid</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/setupComponentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupComponentContribution" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setupComponentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>cid</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/setupComponentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupComponentContribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed reaction Gibbs energy and directionality
 at in vivo conditions in multicompartmental metabolic reconstructions.
 Has external dependencies on the COBRA toolbox, the component
@@ -683,7 +684,7 @@ component contribution method for estimation of standard Gibbs energies.</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.setupThermoModel">
-<code class="descname">setupThermoModel</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/setupThermoModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupThermoModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setupThermoModel</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/setupThermoModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.setupThermoModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates standard transformed reaction Gibbs energy and directionality
 at in vivo conditions in multicompartmental metabolic reconstructions.
 Has external dependencies on the COBRA toolbox, the component
@@ -781,7 +782,7 @@ component contribution method for estimation of standard Gibbs energies.</p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds">
-<code class="descname">thermoConstrainFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em>, <em>DrGt0_Uncertainty_Cutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/vonBertalanffy/thermoConstrainFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">thermoConstrainFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>confidenceLevel</em>, <em>DrGt0_Uncertainty_Cutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/vonBertalanffy/thermoConstrainFluxBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.vonBertalanffy.thermoConstrainFluxBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thermodynamically constrain reaction bounds.</p>
 <p><strong>Usage</strong></p>
 <blockquote>

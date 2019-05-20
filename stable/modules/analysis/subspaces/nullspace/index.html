@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -170,6 +170,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
@@ -271,7 +272,7 @@
 <span id="id1"></span><h1>Nullspace<a class="headerlink" href="#nullspace" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.nullspace"></span><dl class="function">
 <dt id="src.analysis.subspaces.nullspace.echelonNullspace">
-<code class="descname">echelonNullspace</code><span class="sig-paren">(</span><em>S</em>, <em>side</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/nullspace/echelonNullspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.echelonNullspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">echelonNullspace</code><span class="sig-paren">(</span><em>S</em>, <em>side</em>, <em>tol</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/subspaces/nullspace/echelonNullspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.echelonNullspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Echelon form of the:
 left nullspace, <span class="math">\(L S = [-L0\ I] P S = 0\)</span>
 or right nullspace <span class="math">\(S L = S ([-L0\ I] P)^T = 0\)</span>.</p>
@@ -328,7 +329,7 @@ Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite><
 
 <dl class="function">
 <dt id="src.analysis.subspaces.nullspace.getNullSpace">
-<code class="descname">getNullSpace</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/nullspace/getNullSpace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.getNullSpace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getNullSpace</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/subspaces/nullspace/getNullSpace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.getNullSpace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the nullspace of <cite>S</cite> for <cite>full(S)</cite> or <span class="math">\(rank(S) == m\)</span>.
 If full row rank i.e. <cite>rank(S) = m</cite>, it&#8217;s much faster to work with a sparse LU.</p>
 <p><strong>Usage</strong></p>
@@ -361,7 +362,7 @@ scalar giving rank of <cite>S</cite></li>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.nullspace.nullSpaceOperator">
-<code class="descname">nullSpaceOperator</code><span class="sig-paren">(</span><em>S</em>, <em>scale</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/nullspace/nullSpaceOperator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullSpaceOperator" title="Permalink to this definition">¶</a></dt>
+<code class="descname">nullSpaceOperator</code><span class="sig-paren">(</span><em>S</em>, <em>scale</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/subspaces/nullspace/nullSpaceOperator.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullSpaceOperator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses LUSOL to compute a nullspace operator <cite>nullS</cite>
 We assume <cite>S</cite> is <cite>m x n</cite> with <span class="math">\(m &lt; n\)</span> with rank <cite>r</cite>.
 First <cite>nullS = nullSpaceOperator(S)</cite>
@@ -408,7 +409,7 @@ see also <a class="reference external" href="https://web.stanford.edu/group/SOL/
 
 <dl class="function">
 <dt id="src.analysis.subspaces.nullspace.nullSpaceOperatorApply">
-<code class="descname">nullSpaceOperatorApply</code><span class="sig-paren">(</span><em>nullS</em>, <em>V</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/nullspace/nullSpaceOperatorApply.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullSpaceOperatorApply" title="Permalink to this definition">¶</a></dt>
+<code class="descname">nullSpaceOperatorApply</code><span class="sig-paren">(</span><em>nullS</em>, <em>V</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/subspaces/nullspace/nullSpaceOperatorApply.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullSpaceOperatorApply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a sparse matrix <cite>W</cite> from <cite>V</cite> such that <span class="math">\(S W = 0\)</span>.
 First, <cite>nullS = nullSpaceOperator(S)</cite>
 computes a structure <cite>nullS</cite> from an <cite>m x n</cite> sparse matrix <cite>S</cite> <span class="math">\((m &lt; n)\)</span>, with rank <cite>r</cite>.</p>
@@ -422,7 +423,7 @@ The aim is to obtain <cite>W</cite> without forming <cite>Z</cite> explicitly.</
 
 <dl class="function">
 <dt id="src.analysis.subspaces.nullspace.nullspaceLUSOLapply2Modes">
-<code class="descname">nullspaceLUSOLapply2Modes</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>V</em>, <em>nullS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullspaceLUSOLapply2Modes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">nullspaceLUSOLapply2Modes</code><span class="sig-paren">(</span><em>mode</em>, <em>m</em>, <em>n</em>, <em>V</em>, <em>nullS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.nullspace.nullspaceLUSOLapply2Modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the matrix vector product with the operator nullspace
 function handle of the form <cite>y = pdMat(mode, m, n, x)</cite></p>
 <p><strong>Usage</strong></p>

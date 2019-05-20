@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -170,6 +170,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
@@ -262,7 +263,7 @@
 <span id="id1"></span><h1>relaxedFBA<a class="headerlink" href="#relaxedfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.relaxedFBA"></span><dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxFBA_cappedL1">
-<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state constraints to make the FBA problem feasible.
 The zero-norm is appproximated by capped-L1 norm</p>
 <p><strong>Usage</strong></p>
@@ -330,7 +331,7 @@ s.t. ~&amp;~ S v + r = b \\
 
 <dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxedFBA">
-<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state
 constraints to make the FBA problem feasible. The optional parameters,
 excludedReactions and excludedMetabolites override all other relaxation options.</p>

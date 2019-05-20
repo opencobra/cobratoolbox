@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -262,7 +262,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.modelGeneration"></span><dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkCobraModelUnique">
-<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkCobraModelUnique</code><span class="sig-paren">(</span><em>model</em>, <em>renameFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks uniqueness of reaction and metabolite names</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -282,18 +282,20 @@ Renames non-unique reaction names and metabolites
 (Default = false)</li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<p><strong>Outputs</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><strong>model</strong> &#8211;
 COBRA model structure</li>
+<li><strong>isUnique</strong> &#8211;
+true if the model has unique reaction and metabolite names</li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkDuplicateRxn">
-<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkDuplicateRxn</code><span class="sig-paren">(</span><em>model</em>, <em>method</em>, <em>removeFlag</em>, <em>printLevel</em>, <em>boundsFlag</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks model for duplicate reactions and removes them.
 By default, it detects the columns of <cite>S</cite> that are identical upto scalar
 multiplication</p>
@@ -332,7 +334,7 @@ Reaction numbers in model that were (should be) kept</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.checkObjective">
-<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">checkObjective</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/checkObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkObjective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out the Stoichiometric Coefficients for each
 Metabolite, with the name of the objective</p>
 <p><strong>Usage</strong></p>
@@ -356,7 +358,7 @@ Objective reaction abbreviation</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.detectDeadEnds">
-<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">detectDeadEnds</code><span class="sig-paren">(</span><em>model</em>, <em>removeExternalMets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of indices of metabolites which either participate in only
 one reaction or can only be produced or consumed (i.e. all reactions involving
 the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds).</p>
@@ -391,7 +393,7 @@ only be produced or consumed.</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.fastLeakTest">
-<code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fastLeakTest</code><span class="sig-paren">(</span><em>model</em>, <em>testRxns</em>, <em>demandTest</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests if any metabolites in a model are leaking. A metabolite is leaking
 if the exchange reaction can carry secretion flux in the closed model (no
 uptake flux through any exchange reactions is permitted).</p>
@@ -425,7 +427,7 @@ Flux vector for computed exchange reactions in the closed model</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.removeDeadEnds">
-<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">removeDeadEnds</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes all dead end metabolites and reactions from the
 model</p>
 <p><strong>Usage</strong></p>
@@ -454,7 +456,7 @@ List of removed reactions</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.setConstraintsIrrevModel">
-<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setConstraintsIrrevModel</code><span class="sig-paren">(</span><em>constrOpt</em>, <em>model</em>, <em>modelIrrev</em>, <em>rev2irrev</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets constraints for a subset of <cite>rxns</cite> while
 converting reversible to irreversible reaction names and handling the
 constraint directions correctly</p>
@@ -498,7 +500,7 @@ Constraint options in irrev model<ul>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.test4HumanFctExt">
-<code class="descname">test4HumanFctExt</code><span class="sig-paren">(</span><em>model</em>, <em>test</em>, <em>optionSinks</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">test4HumanFctExt</code><span class="sig-paren">(</span><em>model</em>, <em>test</em>, <em>optionSinks</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
 <dd><p>test for the ~288 human functions</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -531,7 +533,7 @@ array containing the names  for the different tests</li>
 
 <dl class="function">
 <dt id="src.reconstruction.modelGeneration.testATPYieldFromCsources">
-<code class="descname">testATPYieldFromCsources</code><span class="sig-paren">(</span><em>model</em>, <em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">testATPYieldFromCsources</code><span class="sig-paren">(</span><em>model</em>, <em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
 <dd><p>computes the ATP yield from various carbon sources in Recon2 or Recon3.</p>
 <p><strong>Usage</strong></p>
 <blockquote>

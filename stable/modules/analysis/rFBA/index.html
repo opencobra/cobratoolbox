@@ -88,7 +88,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -170,6 +170,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">rFBA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
@@ -262,7 +263,7 @@
 <span id="id1"></span><h1>rFBA<a class="headerlink" href="#rfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.rFBA"></span><dl class="function">
 <dt id="src.analysis.rFBA.dynamicRFBA">
-<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rFBA/dynamicRFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dynamicRFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/rFBA/dynamicRFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs dynamic rFBA simulation using the static optimization approach</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -327,7 +328,7 @@ described in <em>[Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)]</em>.</p>
 
 <dl class="function">
 <dt id="src.analysis.rFBA.optimizeRegModel">
-<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rFBA/optimizeRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">optimizeRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialRegState</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/rFBA/optimizeRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the steady state solution of a model with Boolean regulatory constraints</p>
 <p><strong>Usage</strong></p>
 <blockquote>
@@ -364,7 +365,7 @@ calculated</li>
 
 <dl class="function">
 <dt id="src.analysis.rFBA.solveBooleanRegModel">
-<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solveBooleanRegModel</code><span class="sig-paren">(</span><em>model</em>, <em>initialState</em>, <em>inputs1States</em>, <em>inputs2States</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/rFBA/solveBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the next state of the regulatory network based on the current state.
 Called by <cite>optimizeRegModel</cite> and <cite>dynamicRFBA</cite></p>
 <p><strong>Usage</strong></p>
