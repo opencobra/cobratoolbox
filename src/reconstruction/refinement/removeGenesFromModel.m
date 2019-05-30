@@ -58,7 +58,7 @@ end
 % get the affected reactions
 if isfield(model,'rxnGeneMat')
     % if the rxnGeneMat is present, we simply derive it from there
-    relreacs = find(any(model.rxnGeneMat(:,pos(pres))'));
+    relreacs = find(any(model.rxnGeneMat(:,pos(pres)),2));
 elseif isfield(model,'rules')
     relreacs = find(~cellfun(@isempty, regexp(model.rules,['x\((' strjoin(cellfun(@num2str , num2cell(pos(pres)),'uniform',0),'|'), ')\)'])));
 else
