@@ -11,7 +11,8 @@ function [model, affectedRxns, originalGPRs, deletedReaction] = removeGenesFromM
 % INPUT:
 %    model:               COBRA model with the appropriate constrains for a
 %                         particular condition
-%    geneList:            List of genes to be deleted
+%    geneList:            List of genes to be deleted as cell array, or a
+%                         single gene as char
 %
 % OPTIONAL INPUTS:
 %    varargin:            Additional Parameter/value pairs or a parameter
@@ -38,12 +39,16 @@ parser.parse(varargin{:});
 keepReactions = parser.Results.keepReactions;
 keepClauses = parser.Results.keepClauses;
 
-% get the gene Positions
+% Convert single gene IDs for better handling.
+if ischar(geneList)
+    geneList = {geneList};
+end
 
+% get the gene Position
 [pres,pos] = ismember(geneList,model.genes);
 
 if any(~pres)
-    warning('The following genes were not part of the model:\n%s',geneList(~pres));
+    warning('The following genes were not part of the model:\n%s',strjoin(geneList(~pres),', '));
 end
 % if rules does not exist, but grRules does, create it.
 if isfield(model,'grRules') && ~isfield(model,'rules')

@@ -468,6 +468,13 @@ rule = fp.parseFormula(modelMod2.rules{1});
 rule2 = fp.parseFormula(modelMod2.rules{2});
 assert(rule2.isequal(rule));
 
+% Test the warning for an invalid gene
+modelMod1 = removeGenesFromModel(modelMod,'G231');
+assert(isequal(sprintf('The following genes were not part of the model:\nG231'),lastwarn));
+modelMod1 = removeGenesFromModel(modelMod,{'G231','G27'});
+assert(isequal(sprintf('The following genes were not part of the model:\nG231, G27'),lastwarn));
+
+
 fprintf('>> Done\n');
 
 % change the directory
