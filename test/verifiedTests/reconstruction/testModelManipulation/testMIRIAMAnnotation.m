@@ -20,7 +20,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 try
     dbs = getRegisteredDatabases();
 catch
-    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, strjoin('Could not get the data from identifiers.org. Check your internet Connection.'));
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, sprintf('Could not get the data from identifiers.org. Check your internet Connection.'));
 end
 
 errorMessage = sprintf('The following databases are not defined on identifiers.org:\n%s',strjoin({'NonExistentDB'},'\n'));
