@@ -10,32 +10,23 @@ function modelOut = removeZeroFluxRxns(model, rxns)
 %    new_Model = removeZeroFluxRxns(model, reactions)
 %
 % INPUTS:
-%    model:                 COBRA model structure (must define `.rxns`, `.lb`, `.ub`)
+%    model:                      COBRA model structure (must define `.c`, `.lb`, `.ub`, `.S`, `.rxns`, `.mets`)
 %
 %OPTIONAL INPUT
-%    reactions:             Cell array of reaction names in the model
+%    reactions:                Cell array of reaction names in the model
 %
 % OUTPUT:
 %    new_model:             Curated model, the model with removed reactions
-%                           incapable of having a flux value, and corrected
-%                           upper and lower bounds.
+%                                     incapable of having a flux value, and corrected
+%                                     upper and lower bounds.
 %
 % .. Author: - Farid Zare  5/31/2019
+%...Further modifications suggested by: -Thomas Pfau 6/1/2019
 
-if ~isstruct(model)
-    error('Input model must be structure');
-end
+checkModel = verifyModel(model,'FBAOnly',true,'simpleCheck', true);
 
-if ~isfield(model, 'rxns')
-    error('Input model should contain `.rxns` field');
-end
-
-if ~isfield(model, 'lb')
-    error('Input model should contain `.lb` field');
-end
-
-if ~isfield(model, 'ub')
-    error('Input model should contain `.ub` field');
+if ~checkModel
+    error('The input model is invalid. Please check the model with ''verifyModel(model)'' and correct all indicated errors');
 end
 
 if nargin < 2
@@ -43,34 +34,18 @@ if nargin < 2
 end
 
 modelOut = model;
-h = waitbar(0 , 'Working On Model... ');
-rxnsLength = length(rxns);
 
-for i = 1 : rxnsLength
-    
-    str = ['Working On Model...         ' + string(round(i / rxnsLength, 2) * 100) + '%'] ;
-    
-    if ishandle(h)
-        waitbar(i / rxnsLength, h, str);
-    else
-        warning('The process is terminated by the user');
-        break
-    end
-    
-    %Set each reaction as objective and apply FBA
-    model = changeObjective(model, rxns(i));
-    solMin = optimizeCbModel(model, 'min');
-    solMax = optimizeCbModel(model, 'max');
-    
-    %Set bounds to their feasible values in the network
-    rxnID = findRxnIDs(model, rxns(i) );
-    modelOut.lb(rxnID) = solMin.f;
-    modelOut.ub(rxnID) = solMax.f;
-    
-end
+[minFlux, maxFlux] = fluxVariability(modelOut, 0, 'max', rxns);
 
-index = modelOut.ub ==0 & modelOut.lb == 0;
+%Set bounds to their feasible values in the network
+modelOut.lb = minFlux;
+modelOut.ub = maxFlux;
+
+%Difining a threshold
+feasTol = getCobraSolverParams('LP','feasTol');
+index = abs(modelOut.ub) < feasTol & abs(modelOut.lb) < feasTol;
+
+%Remove reactions with fluxes in range of threshold
 modelOut = removeRxns(modelOut, modelOut.rxns(index));
-delete(h)
 
 end
