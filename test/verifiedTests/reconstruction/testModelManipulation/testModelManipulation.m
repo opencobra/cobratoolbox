@@ -43,9 +43,15 @@ model.lb = [0, 0, 0, 0, 0, 0, 0]';
 model.ub = [20, 20, 20, 20, 20, 20, 20]';
 model.rxns = {'GLCt1'; 'HEX1'; 'PGI'; 'PFK'; 'FBP'; 'FBA'; 'TPI'};
 model.mets = {'glc-D[e]'; 'glc-D'; 'atp'; 'H'; 'adp'; 'g6p';'f6p'; 'fdp'; 'pi'; 'h2o'; 'g3p'; 'dhap'};
+model.genes = {'testGene'};
 sc =  [-1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0];
 mets_length = length(model.mets);
 rxns_length = length(model.rxns);
+
+% Need to test adding exchange reaction to make sure the new model is valid
+% before manipulation of origial model
+modelWEx = addExchangeRxn(model, {'glc-D[e]'; 'glc-D'});
+assert(verifyModel(modelWEx,'simpleCheck',true,'requiredFields',{}))
 
 % adding a reaction to the model
 model = addReaction(model, 'EX_glc', model.mets, sc, 0, 0, 20);

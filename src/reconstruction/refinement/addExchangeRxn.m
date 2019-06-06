@@ -71,7 +71,7 @@ AddedExchRxn = strcat('EX_',metList);
 %Set the stoichiometry ( met[x] <=>)
 stoich = -speye(numel(metList));
 %Set the subSystem to "Exchange"
-subSystems = repmat({'Exchange'},numel(metList),1);
+subSystems = repmat({{'Exchange'}},numel(metList),1);
 %Add all Exchangers
 newModel = addMultipleReactions(newModel,AddedExchRxn,metList,stoich,'lb',lb,'ub',ub,'subSystems',subSystems);
 
