@@ -2268,7 +2268,8 @@ single gene deletions.</p>
 COBRA model with the appropriate constrains for a
 particular condition</li>
 <li><strong>geneList</strong> &#8211;
-List of genes to be deleted</li>
+List of genes to be deleted as cell array, or a
+single gene as char</li>
 </ul>
 </div></blockquote>
 <p><strong>Optional input</strong></p>
@@ -2294,7 +2295,8 @@ COBRA model with the selected genes deleted</li>
 <li><strong>affectedRxns</strong> &#8211;
 A list of reactions which have their rules altered</li>
 <li><strong>originalGPRs</strong> &#8211;
-The original GPR rules for the affected reactions</li>
+The original GPR rules for the affected reactions
+in grRules format.</li>
 <li><strong>deletedReactions</strong> &#8211;
 The list of reactions removed from the model (if
 keepReaction was false).</li>
