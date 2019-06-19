@@ -42,7 +42,7 @@ if nargin <2
 end
 
 % read the csv file with the abundance data
-metagenome_abundance = readtable(MetagenomeAbundancePath, 'ReadVariableNames', false);
+metagenome_abundance = readtable(MetagenomeAbundancePath, 'ReadVariableNames', false,'FileType','text','delimiter','tab');
 metagenome_abundance = table2cell(metagenome_abundance);
 metagenome_abundance{1,1}='';
 
@@ -138,4 +138,4 @@ for i=2:size(translatedAbundances,2)
     end
 end
 
-end
+end 
