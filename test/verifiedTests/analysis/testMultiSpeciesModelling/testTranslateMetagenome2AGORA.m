@@ -30,10 +30,10 @@ if size(translatedAbundances,1)>1
     translatedOrgs=translatedAbundances(2:end,1);
     translatedOrgs=strrep(translatedOrgs,'pan','');
     translatedOrgs=strrep(translatedOrgs,'_',' ');
-    
+
     % Find the overlap between translated organisms and AGORA organisms
     C = intersect(translatedOrgs,orgList);
-    
+
     % Verify that all output organisms overlap with AGORA organisms
     assert(length(translatedOrgs) == length(C))
 end
@@ -45,5 +45,3 @@ end
 
 % output a success message
 fprintf('Done.\n');
-
-
