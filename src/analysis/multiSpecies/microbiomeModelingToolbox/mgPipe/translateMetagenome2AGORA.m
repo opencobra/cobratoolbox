@@ -40,7 +40,6 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 if nargin <2
     sequencingDepth='s__';
 end
-
 % read the csv file with the abundance data
 metagenome_abundance = readtable(MetagenomeAbundancePath, 'ReadVariableNames', false,'FileType','text','delimiter','tab');
 metagenome_abundance = table2cell(metagenome_abundance);
@@ -91,22 +90,33 @@ delRows=[];
 cnt=1;
 for i=2:size(metagenome_abundance,1)
     findSDepth=strsplit(metagenome_abundance{i,1},'|');
+    % remove taxon entries without any mapping
+    delArray=[];
+    delCnt=1;
+    for j=1:length(findSDepth)
+        if any(strcmp(findSDepth{j},{'s__','g__','f__','o__','c__'}))
+            delArray(delCnt)=j;
+            delCnt=delCnt+1;
+        end
+    end
+    findSDepth(delArray)=[];
     if length(findSDepth)>1
-        if strncmp(findSDepth{1,end},sequencingDepth,3) && length(findSDepth{1,end})>3
-            % if the genus information is missing on the species level
-            if strcmp(sequencingDepth,'s__')
-                sname=strrep(findSDepth{1,end},sequencingDepth,'');
-                gname=strrep(findSDepth{1,end-1},'g__','');
-                if ~strncmp(gname,sname,length(gname)) && isempty(strfind(sname,'_'))
-                    metagenome_abundance{i,1}=strcat(gname,'_',sname);
+            % only get the sequencing level you are looking for
+            if strncmp(findSDepth{1,end},sequencingDepth,3) && length(findSDepth{1,end})>3
+                % if the genus information is missing on the species level
+                if strncmp(findSDepth{1,end},'s__',3)
+                    sname=strrep(findSDepth{1,end},sequencingDepth,'');
+                    gname=strrep(findSDepth{1,end-1},'g__','');
+                    if ~strncmp(gname,sname,length(gname)) && isempty(strfind(sname,'_'))
+                        metagenome_abundance{i,1}=strcat(gname,'_',sname);
+                    end
                 else
                     metagenome_abundance{i,1}=findSDepth{1,end};
                 end
+            else
+                delRows(cnt,1)=i;
+                cnt=cnt+1;
             end
-        else
-            delRows(cnt,1)=i;
-            cnt=cnt+1;
-        end
     end
 end
 metagenome_abundance(delRows,:)=[];
@@ -117,6 +127,17 @@ metagenome_abundance(~cellfun(@isempty, strfind(metagenome_abundance(:,1),'_uncl
 
 % replace unknown species with pan-genus model
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_cf','');
+
+% summarize duplicate entries
+[uniqueA i j] = unique(metagenome_abundance(:,1),'stable');
+indexToDupes = find(not(ismember(1:numel(metagenome_abundance(:,1)),i)));
+for i=1:length(indexToDupes)
+    findOtherEntry=setdiff(find(strcmp(metagenome_abundance(:,1),metagenome_abundance{indexToDupes(i),1})),indexToDupes(i));
+    for j=2:size(metagenome_abundance,2)
+        metagenome_abundance{findOtherEntry,j}=num2str(str2double(metagenome_abundance{findOtherEntry,j})+str2double(metagenome_abundance{indexToDupes(i),j}));
+    end
+end
+metagenome_abundance(indexToDupes,:)=[];
 
 % match and find overlapping IDs
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),sequencingDepth,'');
@@ -133,8 +154,14 @@ translatedAbundances=metagenome_abundance;
 % normalize the abundances so that sum for each individual is 1
 normalizedAbundances=translatedAbundances;
 for i=2:size(translatedAbundances,2)
-    for j=2:size(translatedAbundances,1)
-        normalizedAbundances{j,i}=num2str(str2double(translatedAbundances(j,i))/sum(str2double(translatedAbundances(2:end,i))));
+    if sum(str2double(translatedAbundances(2:end,i)))>0
+        for j=2:size(translatedAbundances,1)
+            normalizedAbundances{j,i}=num2str(str2double(translatedAbundances(j,i))/sum(str2double(translatedAbundances(2:end,i))));
+        end
+    else
+        for j=2:size(translatedAbundances,1)
+            normalizedAbundances{j,i}=translatedAbundances{j,i};
+        end
     end
 end
 
