@@ -1026,6 +1026,58 @@ reactions repertoire</li>
 </div></blockquote>
 </dd></dl>
 
+<dl class="function">
+<dt id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.translateMetagenome2AGORA">
+<code class="descname">translateMetagenome2AGORA</code><span class="sig-paren">(</span><em>MetagenomeAbundancePath</em>, <em>sequencingDepth</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.translateMetagenome2AGORA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates organism identifiers in a published metagenomic or 16S rRNA
+data file with organism abundances (retrieved e.g., from  MetaPhlAn) to
+AGORA pan-model IDs. This will not catch every case since the format of
+input files with abundance data greatly varies. Feel free to modify this
+function and submit a pull request to enable more input files to be
+translated to AGORA. Moreover, slight spelling variations in taxa across
+input files may  result to taxa not being mapped. Check the unmappedRows
+output to identify these cases and modify the function accordingly.
+Pan-models that can be used to create microbiome models in mgPipe can be
+created with the function createPanModels.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>MetagenomeAbundancePath   String containing the path to csv file with</strong> &#8211;</p>
+<p>organism abundance data retrieved from
+16S rRNA or metagenomic samples (example:
+&#8216;SRP065497_taxonomy_abundances_v3.0.csv&#8217;).</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>sequencingDepth           Sequencing depth on the taxonomical level</strong> &#8211;</p>
+<p>in the input data (e.g., genus, species).
+Allowed inputs are &#8216;<a href="#id2"><span class="problematic" id="id3">p__</span></a>&#8216;, &#8216;<a href="#id2"><span class="problematic" id="id4">c__</span></a>&#8216;, &#8216;<a href="#id2"><span class="problematic" id="id5">o__</span></a>&#8216;,
+&#8216;<a href="#id2"><span class="problematic" id="id6">f__</span></a>&#8216;, &#8216;<a href="#id2"><span class="problematic" id="id7">g__</span></a>&#8216;, &#8216;<a href="#id2"><span class="problematic" id="id8">s__</span></a>&#8216;. Default: &#8216;<a href="#id2"><span class="problematic" id="id9">s__</span></a>&#8216;</p>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>translatedAbundances      Abundances with organism names from the</strong> &#8211;</p>
+<p>input file translated to AGORA pan-model IDs</p>
+</li>
+<li><p class="first"><strong>normalizedAbundances      Translated abundances normalized so they sum</strong> &#8211;</p>
+<p>up to 1 for each sample</p>
+</li>
+<li><p class="first"><strong>unmappedRows              Taxa on the selected taxonomical level that</strong> &#8211;</p>
+<p>could not be mapped to AGORA pan-models</p>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 </div>
 
 
