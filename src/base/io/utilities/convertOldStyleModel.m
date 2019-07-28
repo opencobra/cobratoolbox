@@ -318,7 +318,7 @@ if isfield(model,'comps') && ischar(model.comps)
 end
 
 if isfield(model,'metChEBIID')
-    %some provide the chebi IDs as numbers, while the rest is string..
+    % some provide the chebi IDs as numbers, while the rest is string..
     numericIDs = cellfun(@isnumeric, model.metChEBIID);
     if any(numericIDs)
         model.metChEBIID(numericIDs) = cellfun(@num2str, model.metChEBIID(numericIDs),'Uniform',0);
@@ -331,3 +331,19 @@ if size(model.genes,1) == 0 && size(model.genes,2) == 0
 end
 
     
+% now, this is specific to Recon2, which has a invalid () in the rules (and
+% grRules) field which need to be corrected
+if isfield(model,'rules') && numel(model.rules) >= 2173
+    % This could be recon 2. Lets test if the rule matches
+    reconRule = '(x(1039)) | (x(1040)) | (x(1041)) | (x(1042)) | (x(1043)) | (x(1044)) | (x(1045)) | (x(1046)) | (x(1047)) | (x(1048)) | (x(1049)) | (x(1050)) | ()';
+    if strcmp(model.rules{2173},reconRule)
+        % this is the very same rule sans | () in the end
+        correctedRule = '(x(1039)) | (x(1040)) | (x(1041)) | (x(1042)) | (x(1043)) | (x(1044)) | (x(1045)) | (x(1046)) | (x(1047)) | (x(1048)) | (x(1049)) | (x(1050))';
+        model.rules{2173} = correctedRule;
+        % also update the according grRules position.
+        model = creategrRulesField(model, 2173);
+    end
+end
+
+
+
