@@ -58,14 +58,14 @@ end
 if isfield(model, 'geneNames')
     model.geneNames = regexprep(model.geneNames,'-','_DASH_');
     model.geneNames = regexprep(model.geneNames,'\.','_POINT_');
-else%to stay compatible with old style models
+else %to stay compatible with old style models
     model.geneNames = regexprep(model.genes,'-','_DASH_');
     model.geneNames = regexprep(model.geneNames,'\.','_POINT_');
 end
 genes = regexprep(genes,'-','_DASH_');
 genes = regexprep(genes,'\.','_POINT_');
 
-%find where the genes are located in the geneNames
+% find where the genes are located in the geneNames
 GeneID = zeros(size(genes));
 [~, geneIndModel, inModel] = intersect(model.geneNames, genes);
 GeneID(inModel) = geneIndModel;%set location of genes in model
@@ -73,7 +73,9 @@ GeneID(inModel) = geneIndModel;%set location of genes in model
 results = struct();
 ListResults = {};
 if any(GeneID == 0)
-    warning('A gene was not found in the model!')
+    notpresent = GeneID == 0;
+    missingGenes = strjoin(genes(notpresent),',\n');
+    warning('The following gene(s) were not fond in the model:\n%s',missingGenes)
     if any(GeneID > 0)
         Ind = find(GeneID == 0);
         GeneID(Ind) = [];
