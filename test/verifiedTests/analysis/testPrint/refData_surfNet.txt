@@ -3,402 +3,460 @@ Met #1  13dpg[c], 3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
 
 Consuming reactions: none
 Producing reactions:
-  #49  <a href="matlab: surfNet([], 'GAPD', 0, 'none', 0, 1, [], 0);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 0, 'none', 0, 1, [], 0);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase
-<a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">atp[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">adp[c]</a>  
+  #49  <a href="matlab: surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 1, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 0, NaN, 0, 1, [], 0, 0.800000);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase, grRules: <a href="matlab: surfNet([], 'b2926', 0, NaN, 0, 1, [], 0, 0.800000);">b2926</a>
+<a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
+Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 1, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
   id   Met       Stoich     metNames, metFormulas
 Reactant:
- #33   <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">  g3p[c]</a>  -1         Glyceraldehyde-3-phosphate, C3H5O6P
- #50   <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">  nad[c]</a>  -1         Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
- #60   <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">   pi[c]</a>  -1         Phosphate, HO4P
+ #33   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  g3p[c]</a>  -1         Glyceraldehyde-3-phosphate, C3H5O6P
+ #50   <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  nad[c]</a>  -1         Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
+ #60   <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">   pi[c]</a>  -1         Phosphate, HO4P
 Product:
- #1    <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a>  1          3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
- #43   <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">    h[c]</a>  1          H, H
- #51   <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);"> nadh[c]</a>  1          Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
+ #1    <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a>  1          3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
+ #43   <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">    h[c]</a>  1          H, H
+ #51   <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);"> nadh[c]</a>  1          Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
 Met #33  g3p[c], Glyceraldehyde-3-phosphate, C3H5O6P
 
 Consuming reactions:
-  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, 'none', 0, 1, [], 0);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 1, [], 0);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 1, [], 0);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 1, [], 0);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + 
-  0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 1, [], 0);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, 'none', 0, 1, [], 0);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, 'none', 0, 1, [], 0);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 1, [], 0);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + 
-  13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 1, [], 0);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 1, [], 0);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 1, [], 0);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 1, [], 0);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 1, [], 0);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 1, [], 0);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 1, [], 0);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 1, [], 0);">nadp[c]</a> + 
-  59.81 <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a>  
-  #49  <a href="matlab: surfNet([], 'GAPD', 0, 'none', 0, 1, [], 0);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
-  #91  <a href="matlab: surfNet([], 'TALA', 0, 'none', 0, 1, [], 0);">TALA</a>, Bd: -1000 / 1000, transaldolase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 's7p[c]', 0, 'none', 0, 1, [], 0);">s7p[c]</a> <=> <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 1, [], 0);">e4p[c]</a> + <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 1, [], 0);">f6p[c]</a>  
+  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, NaN, 0, 1, [], 0, 0.800000);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">r5p[c]</a> 
+  ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a> 
+  #49  <a href="matlab: surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 1, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #91  <a href="matlab: surfNet([], 'TALA', 0, NaN, 0, 1, [], 0, 0.800000);">TALA</a>, Bd: -1000 / 1000, transaldolase, grRules: (<a href="matlab: surfNet([], 'b2464', 0, NaN, 0, 1, [], 0, 0.800000);">b2464</a> or <a href="matlab: surfNet([], 'b0008', 0, NaN, 0, 1, [], 0, 0.800000);">b0008</a>)
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 's7p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">s7p[c]</a>   <=>   <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">e4p[c]</a> + <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">f6p[c]</a> 
 Producing reactions:
-  #40  <a href="matlab: surfNet([], 'FBA', 0, 'none', 0, 1, [], 0);">FBA</a>, Bd: -1000 / 1000, fructose-bisphosphate aldolase
-<a href="matlab: surfNet([], 'fdp[c]', 0, 'none', 0, 1, [], 0);">fdp[c]</a> <=> <a href="matlab: surfNet([], 'dhap[c]', 0, 'none', 0, 1, [], 0);">dhap[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a>  
-  #93  <a href="matlab: surfNet([], 'TKT1', 0, 'none', 0, 1, [], 0);">TKT1</a>, Bd: -1000 / 1000, transketolase
-<a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 1, [], 0);">r5p[c]</a> + <a href="matlab: surfNet([], 'xu5p-D[c]', 0, 'none', 0, 1, [], 0);">xu5p-D[c]</a> <=> <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 's7p[c]', 0, 'none', 0, 1, [], 0);">s7p[c]</a>  
-  #94  <a href="matlab: surfNet([], 'TKT2', 0, 'none', 0, 1, [], 0);">TKT2</a>, Bd: -1000 / 1000, transketolase
-<a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 1, [], 0);">e4p[c]</a> + <a href="matlab: surfNet([], 'xu5p-D[c]', 0, 'none', 0, 1, [], 0);">xu5p-D[c]</a> <=> <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 1, [], 0);">f6p[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a>  
-  #95  <a href="matlab: surfNet([], 'TPI', 0, 'none', 0, 1, [], 0);">TPI</a>, Bd: -1000 / 1000, triose-phosphate isomerase
-<a href="matlab: surfNet([], 'dhap[c]', 0, 'none', 0, 1, [], 0);">dhap[c]</a> <=> <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a>  
+  #40  <a href="matlab: surfNet([], 'FBA', 0, NaN, 0, 1, [], 0, 0.800000);">FBA</a>, Bd: -1000 / 1000, fructose-bisphosphate aldolase, grRules: (<a href="matlab: surfNet([], 'b2097', 0, NaN, 0, 1, [], 0, 0.800000);">b2097</a> or <a href="matlab: surfNet([], 'b1773', 0, NaN, 0, 1, [], 0, 0.800000);">b1773</a> or <a href="matlab: surfNet([], 'b2925', 0, NaN, 0, 1, [], 0, 0.800000);">b2925</a>)
+<a href="matlab: surfNet([], 'fdp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">fdp[c]</a>   <=>   <a href="matlab: surfNet([], 'dhap[c]', 0, NaN, 0, 1, [], 0, 0.800000);">dhap[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> 
+  #93  <a href="matlab: surfNet([], 'TKT1', 0, NaN, 0, 1, [], 0, 0.800000);">TKT1</a>, Bd: -1000 / 1000, transketolase, grRules: ( <a href="matlab: surfNet([], 'b2935', 0, NaN, 0, 1, [], 0, 0.800000);">b2935</a>  or  <a href="matlab: surfNet([], 'b2465', 0, NaN, 0, 1, [], 0, 0.800000);">b2465</a> )
+<a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">r5p[c]</a> + <a href="matlab: surfNet([], 'xu5p-D[c]', 0, NaN, 0, 1, [], 0, 0.800000);">xu5p-D[c]</a>   <=>   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 's7p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">s7p[c]</a> 
+  #94  <a href="matlab: surfNet([], 'TKT2', 0, NaN, 0, 1, [], 0, 0.800000);">TKT2</a>, Bd: -1000 / 1000, transketolase, grRules: ( <a href="matlab: surfNet([], 'b2935', 0, NaN, 0, 1, [], 0, 0.800000);">b2935</a>  or  <a href="matlab: surfNet([], 'b2465', 0, NaN, 0, 1, [], 0, 0.800000);">b2465</a> )
+<a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">e4p[c]</a> + <a href="matlab: surfNet([], 'xu5p-D[c]', 0, NaN, 0, 1, [], 0, 0.800000);">xu5p-D[c]</a>   <=>   <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">f6p[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> 
+  #95  <a href="matlab: surfNet([], 'TPI', 0, NaN, 0, 1, [], 0, 0.800000);">TPI</a>, Bd: -1000 / 1000, triose-phosphate isomerase, grRules: <a href="matlab: surfNet([], 'b3919', 0, NaN, 0, 1, [], 0, 0.800000);">b3919</a>
+<a href="matlab: surfNet([], 'dhap[c]', 0, NaN, 0, 1, [], 0, 0.800000);">dhap[c]</a>   <=>   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-Rxn #13  Biomass_Ecoli_core_w_GAM, Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 1, [], 0);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 1, [], 0);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 1, [], 0);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + 
-  0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 1, [], 0);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, 'none', 0, 1, [], 0);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, 'none', 0, 1, [], 0);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 1, [], 0);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + 
-  13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 1, [], 0);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 1, [], 0);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 1, [], 0);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 1, [], 0);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 1, [], 0);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 1, [], 0);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 1, [], 0);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 1, [], 0);">nadp[c]</a> + 
-  59.81 <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a>  
+Rxn #13  Biomass_Ecoli_core_w_GAM, Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">r5p[c]</a> 
+  ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a> 
   id   Met       Stoich     metNames, metFormulas
 Reactant:
- #3    <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">  3pg[c]</a>  -1.496     3-Phospho-D-glycerate, C3H4O7P
- #10   <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 1, [], 0);">accoa[c]</a>  -3.7478    Acetyl-CoA, C23H34N7O17P3S
- #17   <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">  atp[c]</a>  -59.81     ATP, C10H12N5O13P3
- #23   <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 1, [], 0);">  e4p[c]</a>  -0.361     D-Erythrose-4-phosphate, C4H7O7P
- #26   <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 1, [], 0);">  f6p[c]</a>  -0.0709    D-Fructose-6-phosphate, C6H11O9P
- #33   <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">  g3p[c]</a>  -0.129     Glyceraldehyde-3-phosphate, C3H5O6P
- #34   <a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 1, [], 0);">  g6p[c]</a>  -0.205     D-Glucose-6-phosphate, C6H11O9P
- #36   <a href="matlab: surfNet([], 'gln-L[c]', 0, 'none', 0, 1, [], 0);">gln-L[c]</a>  -0.2557    L-Glutamine, C5H10N2O3
- #38   <a href="matlab: surfNet([], 'glu-L[c]', 0, 'none', 0, 1, [], 0);">glu-L[c]</a>  -4.9414    L-Glutamate, C5H8NO4
- #41   <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 1, [], 0);">  h2o[c]</a>  -59.81     H2O, H2O
- #50   <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">  nad[c]</a>  -3.547     Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
- #53   <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 1, [], 0);">nadph[c]</a>  -13.0279   Nicotinamide-adenine-dinucleotide-phosphate-reduced, C21H26N7O17P3
- #58   <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 1, [], 0);">  oaa[c]</a>  -1.7867    Oxaloacetate, C4H2O5
- #59   <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 1, [], 0);">  pep[c]</a>  -0.5191    Phosphoenolpyruvate, C3H2O6P
- #62   <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 1, [], 0);">  pyr[c]</a>  -2.8328    Pyruvate, C3H3O3
- #66   <a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 1, [], 0);">  r5p[c]</a>  -0.8977    alpha-D-Ribose-5-phosphate, C5H9O8P
+ #3    <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  3pg[c]</a>  -1.496     3-Phospho-D-glycerate, C3H4O7P
+ #10   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">accoa[c]</a>  -3.7478    Acetyl-CoA, C23H34N7O17P3S
+ #17   <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  atp[c]</a>  -59.81     ATP, C10H12N5O13P3
+ #23   <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  e4p[c]</a>  -0.361     D-Erythrose-4-phosphate, C4H7O7P
+ #26   <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  f6p[c]</a>  -0.0709    D-Fructose-6-phosphate, C6H11O9P
+ #33   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  g3p[c]</a>  -0.129     Glyceraldehyde-3-phosphate, C3H5O6P
+ #34   <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  g6p[c]</a>  -0.205     D-Glucose-6-phosphate, C6H11O9P
+ #36   <a href="matlab: surfNet([], 'gln-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">gln-L[c]</a>  -0.2557    L-Glutamine, C5H10N2O3
+ #38   <a href="matlab: surfNet([], 'glu-L[c]', 0, NaN, 0, 1, [], 0, 0.800000);">glu-L[c]</a>  -4.9414    L-Glutamate, C5H8NO4
+ #41   <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  h2o[c]</a>  -59.81     H2O, H2O
+ #50   <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  nad[c]</a>  -3.547     Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
+ #53   <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadph[c]</a>  -13.0279   Nicotinamide-adenine-dinucleotide-phosphate-reduced, C21H26N7O17P3
+ #58   <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  oaa[c]</a>  -1.7867    Oxaloacetate, C4H2O5
+ #59   <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  pep[c]</a>  -0.5191    Phosphoenolpyruvate, C3H2O6P
+ #62   <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  pyr[c]</a>  -2.8328    Pyruvate, C3H3O3
+ #66   <a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  r5p[c]</a>  -0.8977    alpha-D-Ribose-5-phosphate, C5H9O8P
 Product:
- #13   <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">  adp[c]</a>  59.81      ADP, C10H12N5O10P2
- #14   <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 1, [], 0);">  akg[c]</a>  4.1182     2-Oxoglutarate, C5H4O5
- #21   <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 1, [], 0);">  coa[c]</a>  3.7478     Coenzyme-A, C21H32N7O16P3S
- #43   <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">    h[c]</a>  59.81      H, H
- #51   <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);"> nadh[c]</a>  3.547      Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
- #52   <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 1, [], 0);"> nadp[c]</a>  13.0279    Nicotinamide-adenine-dinucleotide-phosphate, C21H25N7O17P3
- #60   <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">   pi[c]</a>  59.81      Phosphate, HO4P
+ #13   <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  adp[c]</a>  59.81      ADP, C10H12N5O10P2
+ #14   <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  akg[c]</a>  4.1182     2-Oxoglutarate, C5H4O5
+ #21   <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  coa[c]</a>  3.7478     Coenzyme-A, C21H32N7O16P3S
+ #43   <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">    h[c]</a>  59.81      H, H
+ #51   <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);"> nadh[c]</a>  3.547      Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
+ #52   <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 1, [], 0, 0.800000);"> nadp[c]</a>  13.0279    Nicotinamide-adenine-dinucleotide-phosphate, C21H25N7O17P3
+ #60   <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">   pi[c]</a>  59.81      Phosphate, HO4P
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 0, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 0, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 0, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 0);">nadh[c]</a>  
+Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 0, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 0, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 0, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 0, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 0, 0.800000);">nadh[c]</a> 
 
-Rxn #40  FBA, Bd: -1000 / 1000, fructose-bisphosphate aldolase
-<a href="matlab: surfNet([], 'fdp[c]', 0, 'none', 0, 0, [], 0);">fdp[c]</a> <=> <a href="matlab: surfNet([], 'dhap[c]', 0, 'none', 0, 0, [], 0);">dhap[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 0, [], 0);">g3p[c]</a>  
+Rxn #40  FBA, Bd: -1000 / 1000, fructose-bisphosphate aldolase, grRules: (<a href="matlab: surfNet([], 'b2097', 0, NaN, 0, 0, [], 0, 0.800000);">b2097</a> or <a href="matlab: surfNet([], 'b1773', 0, NaN, 0, 0, [], 0, 0.800000);">b1773</a> or <a href="matlab: surfNet([], 'b2925', 0, NaN, 0, 0, [], 0, 0.800000);">b2925</a>)
+<a href="matlab: surfNet([], 'fdp[c]', 0, NaN, 0, 0, [], 0, 0.800000);">fdp[c]</a>   <=>   <a href="matlab: surfNet([], 'dhap[c]', 0, NaN, 0, 0, [], 0, 0.800000);">dhap[c]</a> + <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 0, [], 0, 0.800000);">g3p[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 0, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 0, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
 Met #1  13dpg[c], 3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
 
 Consuming reactions: none
 Producing reactions:
-  #49  <a href="matlab: surfNet([], 'GAPD', 1, 'none', 0, 1, [], 0);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 1, 'none', 0, 1, [], 0);">Glyceraldehyde-3-phosphate</a> + <a href="matlab: surfNet([], 'nad[c]', 1, 'none', 0, 1, [], 0);">Nicotinamide-adenine-dinucleotide</a> + <a href="matlab: surfNet([], 'pi[c]', 1, 'none', 0, 1, [], 0);">Phosphate</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 1, 'none', 0, 1, [], 0);">3-Phospho-D-glyceroyl-phosphate</a> 
-  + <a href="matlab: surfNet([], 'h[c]', 1, 'none', 0, 1, [], 0);">H</a> + <a href="matlab: surfNet([], 'nadh[c]', 1, 'none', 0, 1, [], 0);">Nicotinamide-adenine-dinucleotide-reduced</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 1, 'none', 0, 1, [], 0);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase
-<a href="matlab: surfNet([], '3pg[c]', 1, 'none', 0, 1, [], 0);">3-Phospho-D-glycerate</a> + <a href="matlab: surfNet([], 'atp[c]', 1, 'none', 0, 1, [], 0);">ATP</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 1, 'none', 0, 1, [], 0);">3-Phospho-D-glyceroyl-phosphate</a> + <a href="matlab: surfNet([], 'adp[c]', 1, 'none', 0, 1, [], 0);">ADP</a>  
+  #49  <a href="matlab: surfNet([], 'GAPD', 1, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 1, NaN, 0, 1, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Glyceraldehyde-3-phosphate</a> + <a href="matlab: surfNet([], 'nad[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Nicotinamide-adenine-dinucleotide</a> + <a href="matlab: surfNet([], 'pi[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Phosphate</a> 
+  <=>   <a href="matlab: surfNet([], '13dpg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">3-Phospho-D-glyceroyl-phosphate</a> + <a href="matlab: surfNet([], 'h[c]', 1, NaN, 0, 1, [], 0, 0.800000);">H</a> + <a href="matlab: surfNet([], 'nadh[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Nicotinamide-adenine-dinucleotide-reduced</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 1, NaN, 0, 1, [], 0, 0.800000);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase, grRules: <a href="matlab: surfNet([], 'b2926', 1, NaN, 0, 1, [], 0, 0.800000);">b2926</a>
+<a href="matlab: surfNet([], '3pg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">3-Phospho-D-glycerate</a> + <a href="matlab: surfNet([], 'atp[c]', 1, NaN, 0, 1, [], 0, 0.800000);">ATP</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">3-Phospho-D-glyceroyl-phosphate</a> + <a href="matlab: surfNet([], 'adp[c]', 1, NaN, 0, 1, [], 0, 0.800000);">ADP</a> 
 
-Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 1, 'none', 0, 1, [], 0);">Glyceraldehyde-3-phosphate</a> + <a href="matlab: surfNet([], 'nad[c]', 1, 'none', 0, 1, [], 0);">Nicotinamide-adenine-dinucleotide</a> + <a href="matlab: surfNet([], 'pi[c]', 1, 'none', 0, 1, [], 0);">Phosphate</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 1, 'none', 0, 1, [], 0);">3-Phospho-D-glyceroyl-phosphate</a> 
-  + <a href="matlab: surfNet([], 'h[c]', 1, 'none', 0, 1, [], 0);">H</a> + <a href="matlab: surfNet([], 'nadh[c]', 1, 'none', 0, 1, [], 0);">Nicotinamide-adenine-dinucleotide-reduced</a>  
+Rxn #49  GAPD, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 1, NaN, 0, 1, [], 0, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Glyceraldehyde-3-phosphate</a> + <a href="matlab: surfNet([], 'nad[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Nicotinamide-adenine-dinucleotide</a> + <a href="matlab: surfNet([], 'pi[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Phosphate</a> 
+  <=>   <a href="matlab: surfNet([], '13dpg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">3-Phospho-D-glyceroyl-phosphate</a> + <a href="matlab: surfNet([], 'h[c]', 1, NaN, 0, 1, [], 0, 0.800000);">H</a> + <a href="matlab: surfNet([], 'nadh[c]', 1, NaN, 0, 1, [], 0, 0.800000);">Nicotinamide-adenine-dinucleotide-reduced</a> 
   id   Met       Stoich     metNames, metFormulas
 Reactant:
- #33   <a href="matlab: surfNet([], 'g3p[c]', 1, 'none', 0, 1, [], 0);">  g3p[c]</a>  -1         Glyceraldehyde-3-phosphate, C3H5O6P
- #50   <a href="matlab: surfNet([], 'nad[c]', 1, 'none', 0, 1, [], 0);">  nad[c]</a>  -1         Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
- #60   <a href="matlab: surfNet([], 'pi[c]', 1, 'none', 0, 1, [], 0);">   pi[c]</a>  -1         Phosphate, HO4P
+ #33   <a href="matlab: surfNet([], 'g3p[c]', 1, NaN, 0, 1, [], 0, 0.800000);">  g3p[c]</a>  -1         Glyceraldehyde-3-phosphate, C3H5O6P
+ #50   <a href="matlab: surfNet([], 'nad[c]', 1, NaN, 0, 1, [], 0, 0.800000);">  nad[c]</a>  -1         Nicotinamide-adenine-dinucleotide, C21H26N7O14P2
+ #60   <a href="matlab: surfNet([], 'pi[c]', 1, NaN, 0, 1, [], 0, 0.800000);">   pi[c]</a>  -1         Phosphate, HO4P
 Product:
- #1    <a href="matlab: surfNet([], '13dpg[c]', 1, 'none', 0, 1, [], 0);">13dpg[c]</a>  1          3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
- #43   <a href="matlab: surfNet([], 'h[c]', 1, 'none', 0, 1, [], 0);">    h[c]</a>  1          H, H
- #51   <a href="matlab: surfNet([], 'nadh[c]', 1, 'none', 0, 1, [], 0);"> nadh[c]</a>  1          Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
+ #1    <a href="matlab: surfNet([], '13dpg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a>  1          3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
+ #43   <a href="matlab: surfNet([], 'h[c]', 1, NaN, 0, 1, [], 0, 0.800000);">    h[c]</a>  1          H, H
+ #51   <a href="matlab: surfNet([], 'nadh[c]', 1, NaN, 0, 1, [], 0, 0.800000);"> nadh[c]</a>  1          Nicotinamide-adenine-dinucleotide-reduced, C21H27N7O14P2
 
-<a href="matlab: surfNet([], [], 1, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 1, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-<a href="matlab: surfNet([], '13dpg[c]', 1, 'none', 0, 1, [], 0);">3-Phospho-D-glyceroyl-phosphate</a>>><a href="matlab: surfNet([], 'GAPD', 1, 'none', 0, 1, [], 0);">GAPD</a>>>
+<a href="matlab: surfNet([], '13dpg[c]', 1, NaN, 0, 1, [], 0, 0.800000);">3-Phospho-D-glyceroyl-phosphate</a>>><a href="matlab: surfNet([], 'GAPD', 1, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>>>
 
 Met #1  13dpg[c], 3-Phospho-D-glyceroyl-phosphate, C3H4O10P2
 
 Consuming reactions: none
 Producing reactions:
-  #49  <a href="matlab: surfNet([], 'GAPD', 0, 'none', 0, 0, [], 60);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 0, [], 60);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 0, [], 60);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 0, [], 60);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 0, 'none', 0, 0, [], 60);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase
-<a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 0, [], 60);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a>  
+  #49  <a href="matlab: surfNet([], 'GAPD', 0, NaN, 0, 0, [], 60, 0.800000);">GAPD</a>, Bd: -1000 / 1000, glyceraldehyde-3-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 0, [], 60, 0.800000);">b1779</a>
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 0, NaN, 0, 0, [], 60, 0.800000);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase, grRules: <a href="matlab: surfNet([], 'b2926', 0, NaN, 0, 0, [], 60, 0.800000);">b2926</a>
+<a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> 
 
-Rxn #1  ACALD, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating)
-<a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> <=> <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
+Rxn #1  ACALD, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating), grRules: (<a href="matlab: surfNet([], 'b0351', 0, NaN, 0, 0, [], 60, 0.800000);">b0351</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 0, [], 60, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
+  + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
 
 Met #2  2pg[c], D-Glycerate-2-phosphate, C3H4O7P
 
 Consuming reactions:
-  #18  <a href="matlab: surfNet([], 'ENO', 0, 'none', 0, 0, [], 60);">ENO</a>, Bd: -1000 / 1000, enolase
-<a href="matlab: surfNet([], '2pg[c]', 0, 'none', 0, 0, [], 60);">2pg[c]</a> <=> <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 0, [], 60);">pep[c]</a>  
-  #77  <a href="matlab: surfNet([], 'PGM', 0, 'none', 0, 0, [], 60);">PGM</a>, Bd: -1000 / 1000, phosphoglycerate mutase
-<a href="matlab: surfNet([], '2pg[c]', 0, 'none', 0, 0, [], 60);">2pg[c]</a> <=> <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a>  
+  #18  <a href="matlab: surfNet([], 'ENO', 0, NaN, 0, 0, [], 60, 0.800000);">ENO</a>, Bd: -1000 / 1000, enolase, grRules: <a href="matlab: surfNet([], 'b2779', 0, NaN, 0, 0, [], 60, 0.800000);">b2779</a>
+<a href="matlab: surfNet([], '2pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">2pg[c]</a>   <=>   <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pep[c]</a> 
+  #77  <a href="matlab: surfNet([], 'PGM', 0, NaN, 0, 0, [], 60, 0.800000);">PGM</a>, Bd: -1000 / 1000, phosphoglycerate mutase, grRules: (<a href="matlab: surfNet([], 'b3612', 0, NaN, 0, 0, [], 60, 0.800000);">b3612</a> or <a href="matlab: surfNet([], 'b4395', 0, NaN, 0, 0, [], 60, 0.800000);">b4395</a> or <a href="matlab: surfNet([], 'b0755', 0, NaN, 0, 0, [], 60, 0.800000);">b0755</a>)
+<a href="matlab: surfNet([], '2pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">2pg[c]</a>   <=>   <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> 
 Producing reactions: none
 
-Rxn #2  ACALDt, Bd: -1000 / 1000, acetaldehyde reversible transport
-<a href="matlab: surfNet([], 'acald[e]', 0, 'none', 0, 0, [], 60);">acald[e]</a> <=> <a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a>  
+Rxn #2  ACALDt, Bd: -1000 / 1000, acetaldehyde reversible transport, grRules: <a href="matlab: surfNet([], 's0001', 0, NaN, 0, 0, [], 60, 0.800000);">s0001</a>
+<a href="matlab: surfNet([], 'acald[e]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[e]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> 
 
 Met #3  3pg[c], 3-Phospho-D-glycerate, C3H4O7P
 
 Consuming reactions:
-  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, 'none', 0, 0, [], 60);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 0, [], 60);">e4p[c]</a> 
-  + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 0, [], 60);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 0, [], 60);">g3p[c]</a> + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 0, [], 60);">g6p[c]</a> + 
-  0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, 'none', 0, 0, [], 60);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, 'none', 0, 0, [], 60);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> + 
-  3.547 <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 0, [], 60);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 0, [], 60);">oaa[c]</a> + 
-  0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 0, [], 60);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 0, [], 60);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 0, [], 60);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 0, [], 60);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> 
-  + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 0, [], 60);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 0, [], 60);">pi[c]</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 0, 'none', 0, 0, [], 60);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase
-<a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 0, [], 60);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a>  
+  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, NaN, 0, 0, [], 60, 0.800000);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a> 
+  + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, NaN, 0, 0, [], 60, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, NaN, 0, 0, [], 60, 0.800000);">glu-L[c]</a> 
+  + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadph[c]</a> 
+  + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pyr[c]</a> 
+  + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">r5p[c]</a>   ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">akg[c]</a> 
+  + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pi[c]</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 0, NaN, 0, 0, [], 60, 0.800000);">PGK</a>, Bd: -1000 / 1000, phosphoglycerate kinase, grRules: <a href="matlab: surfNet([], 'b2926', 0, NaN, 0, 0, [], 60, 0.800000);">b2926</a>
+<a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> 
 Producing reactions:
-  #77  <a href="matlab: surfNet([], 'PGM', 0, 'none', 0, 0, [], 60);">PGM</a>, Bd: -1000 / 1000, phosphoglycerate mutase
-<a href="matlab: surfNet([], '2pg[c]', 0, 'none', 0, 0, [], 60);">2pg[c]</a> <=> <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a>  
+  #77  <a href="matlab: surfNet([], 'PGM', 0, NaN, 0, 0, [], 60, 0.800000);">PGM</a>, Bd: -1000 / 1000, phosphoglycerate mutase, grRules: (<a href="matlab: surfNet([], 'b3612', 0, NaN, 0, 0, [], 60, 0.800000);">b3612</a> or <a href="matlab: surfNet([], 'b4395', 0, NaN, 0, 0, [], 60, 0.800000);">b4395</a> or <a href="matlab: surfNet([], 'b0755', 0, NaN, 0, 0, [], 60, 0.800000);">b0755</a>)
+<a href="matlab: surfNet([], '2pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">2pg[c]</a>   <=>   <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> 
 
-Rxn #3  ACKr, Bd: -1000 / 1000, acetate kinase
-<a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> <=> <a href="matlab: surfNet([], 'actp[c]', 0, 'none', 0, 0, [], 60);">actp[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a>  
+Rxn #3  ACKr, Bd: -1000 / 1000, acetate kinase, grRules: (<a href="matlab: surfNet([], 'b3115', 0, NaN, 0, 0, [], 60, 0.800000);">b3115</a> or <a href="matlab: surfNet([], 'b2296', 0, NaN, 0, 0, [], 60, 0.800000);">b2296</a> or <a href="matlab: surfNet([], 'b1849', 0, NaN, 0, 0, [], 60, 0.800000);">b1849</a>)
+<a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], 'actp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">actp[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> 
 
 Met #4  6pgc[c], 6-Phospho-D-gluconate, C6H10O10P
 
 Consuming reactions:
-  #57  <a href="matlab: surfNet([], 'GND', 0, 'none', 0, 0, [], 60);">GND</a>, Bd: 0 / 1000, phosphogluconate dehydrogenase
-<a href="matlab: surfNet([], '6pgc[c]', 0, 'none', 0, 0, [], 60);">6pgc[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 0, [], 60);">nadp[c]</a> -> <a href="matlab: surfNet([], 'co2[c]', 0, 'none', 0, 0, [], 60);">co2[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 0, [], 60);">nadph[c]</a> + <a href="matlab: surfNet([], 'ru5p-D[c]', 0, 'none', 0, 0, [], 60);">ru5p-D[c]</a>  
+  #57  <a href="matlab: surfNet([], 'GND', 0, NaN, 0, 0, [], 60, 0.800000);">GND</a>, Bd: 0 / 1000, phosphogluconate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b2029', 0, NaN, 0, 0, [], 60, 0.800000);">b2029</a>
+<a href="matlab: surfNet([], '6pgc[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgc[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadp[c]</a>   ->   <a href="matlab: surfNet([], 'co2[c]', 0, NaN, 0, 0, [], 60, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadph[c]</a> + <a href="matlab: surfNet([], 'ru5p-D[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ru5p-D[c]</a> 
 Producing reactions:
-  #76  <a href="matlab: surfNet([], 'PGL', 0, 'none', 0, 0, [], 60);">PGL</a>, Bd: 0 / 1000, 6-phosphogluconolactonase
-<a href="matlab: surfNet([], '6pgl[c]', 0, 'none', 0, 0, [], 60);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> -> <a href="matlab: surfNet([], '6pgc[c]', 0, 'none', 0, 0, [], 60);">6pgc[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
+  #76  <a href="matlab: surfNet([], 'PGL', 0, NaN, 0, 0, [], 60, 0.800000);">PGL</a>, Bd: 0 / 1000, 6-phosphogluconolactonase, grRules: <a href="matlab: surfNet([], 'b0767', 0, NaN, 0, 0, [], 60, 0.800000);">b0767</a>
+<a href="matlab: surfNet([], '6pgl[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a>   ->   <a href="matlab: surfNet([], '6pgc[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgc[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
 
-Rxn #4  ACONTa, Bd: -1000 / 1000, aconitase (half-reaction A, Citrate hydro-lyase)
-<a href="matlab: surfNet([], 'cit[c]', 0, 'none', 0, 0, [], 60);">cit[c]</a> <=> <a href="matlab: surfNet([], 'acon-C[c]', 0, 'none', 0, 0, [], 60);">acon-C[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a>  
+Rxn #4  ACONTa, Bd: -1000 / 1000, aconitase (half-reaction A, Citrate hydro-lyase), grRules: (<a href="matlab: surfNet([], 'b0118', 0, NaN, 0, 0, [], 60, 0.800000);">b0118</a> or <a href="matlab: surfNet([], 'b1276', 0, NaN, 0, 0, [], 60, 0.800000);">b1276</a>)
+<a href="matlab: surfNet([], 'cit[c]', 0, NaN, 0, 0, [], 60, 0.800000);">cit[c]</a>   <=>   <a href="matlab: surfNet([], 'acon-C[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acon-C[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a> 
 
 Met #5  6pgl[c], 6-phospho-D-glucono-1-5-lactone, C6H9O9P
 
 Consuming reactions:
-  #76  <a href="matlab: surfNet([], 'PGL', 0, 'none', 0, 0, [], 60);">PGL</a>, Bd: 0 / 1000, 6-phosphogluconolactonase
-<a href="matlab: surfNet([], '6pgl[c]', 0, 'none', 0, 0, [], 60);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> -> <a href="matlab: surfNet([], '6pgc[c]', 0, 'none', 0, 0, [], 60);">6pgc[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
+  #76  <a href="matlab: surfNet([], 'PGL', 0, NaN, 0, 0, [], 60, 0.800000);">PGL</a>, Bd: 0 / 1000, 6-phosphogluconolactonase, grRules: <a href="matlab: surfNet([], 'b0767', 0, NaN, 0, 0, [], 60, 0.800000);">b0767</a>
+<a href="matlab: surfNet([], '6pgl[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a>   ->   <a href="matlab: surfNet([], '6pgc[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgc[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
 Producing reactions:
-  #48  <a href="matlab: surfNet([], 'G6PDH2r', 0, 'none', 0, 0, [], 60);">G6PDH2r</a>, Bd: -1000 / 1000, glucose 6-phosphate dehydrogenase
-<a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 0, [], 60);">g6p[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 0, [], 60);">nadp[c]</a> <=> <a href="matlab: surfNet([], '6pgl[c]', 0, 'none', 0, 0, [], 60);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 0, [], 60);">nadph[c]</a>  
+  #48  <a href="matlab: surfNet([], 'G6PDH2r', 0, NaN, 0, 0, [], 60, 0.800000);">G6PDH2r</a>, Bd: -1000 / 1000, glucose 6-phosphate dehydrogenase, grRules: <a href="matlab: surfNet([], 'b1852', 0, NaN, 0, 0, [], 60, 0.800000);">b1852</a>
+<a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g6p[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadp[c]</a>   <=>   <a href="matlab: surfNet([], '6pgl[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadph[c]</a> 
 
-Rxn #5  ACONTb, Bd: -1000 / 1000, aconitase (half-reaction B, Isocitrate hydro-lyase)
-<a href="matlab: surfNet([], 'acon-C[c]', 0, 'none', 0, 0, [], 60);">acon-C[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> <=> <a href="matlab: surfNet([], 'icit[c]', 0, 'none', 0, 0, [], 60);">icit[c]</a>  
+Rxn #5  ACONTb, Bd: -1000 / 1000, aconitase (half-reaction B, Isocitrate hydro-lyase), grRules: (<a href="matlab: surfNet([], 'b0118', 0, NaN, 0, 0, [], 60, 0.800000);">b0118</a> or <a href="matlab: surfNet([], 'b1276', 0, NaN, 0, 0, [], 60, 0.800000);">b1276</a>)
+<a href="matlab: surfNet([], 'acon-C[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acon-C[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a>   <=>   <a href="matlab: surfNet([], 'icit[c]', 0, NaN, 0, 0, [], 60, 0.800000);">icit[c]</a> 
 
 Met #6  ac[c], Acetate, C2H3O2
 
 Consuming reactions:
-  #3  <a href="matlab: surfNet([], 'ACKr', 0, 'none', 0, 0, [], 60);">ACKr</a>, Bd: -1000 / 1000, acetate kinase
-<a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> <=> <a href="matlab: surfNet([], 'actp[c]', 0, 'none', 0, 0, [], 60);">actp[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a>  
+  #3  <a href="matlab: surfNet([], 'ACKr', 0, NaN, 0, 0, [], 60, 0.800000);">ACKr</a>, Bd: -1000 / 1000, acetate kinase, grRules: (<a href="matlab: surfNet([], 'b3115', 0, NaN, 0, 0, [], 60, 0.800000);">b3115</a> or <a href="matlab: surfNet([], 'b2296', 0, NaN, 0, 0, [], 60, 0.800000);">b2296</a> or <a href="matlab: surfNet([], 'b1849', 0, NaN, 0, 0, [], 60, 0.800000);">b1849</a>)
+<a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], 'actp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">actp[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> 
 Producing reactions:
-  #6  <a href="matlab: surfNet([], 'ACt2r', 0, 'none', 0, 0, [], 60);">ACt2r</a>, Bd: -1000 / 1000, acetate reversible transport via proton symport
-<a href="matlab: surfNet([], 'ac[e]', 0, 'none', 0, 0, [], 60);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, 'none', 0, 0, [], 60);">h[e]</a> <=> <a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
+  #6  <a href="matlab: surfNet([], 'ACt2r', 0, NaN, 0, 0, [], 60, 0.800000);">ACt2r</a>, Bd: -1000 / 1000, acetate reversible transport via proton symport, grRules: 
+<a href="matlab: surfNet([], 'ac[e]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, NaN, 0, 0, [], 60, 0.800000);">h[e]</a>   <=>   <a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
 
-Rxn #6  ACt2r, Bd: -1000 / 1000, acetate reversible transport via proton symport
-<a href="matlab: surfNet([], 'ac[e]', 0, 'none', 0, 0, [], 60);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, 'none', 0, 0, [], 60);">h[e]</a> <=> <a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
+Rxn #6  ACt2r, Bd: -1000 / 1000, acetate reversible transport via proton symport, grRules: 
+<a href="matlab: surfNet([], 'ac[e]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, NaN, 0, 0, [], 60, 0.800000);">h[e]</a>   <=>   <a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
 
 Met #7  ac[e], Acetate, C2H3O2
 
 Consuming reactions:
-  #6  <a href="matlab: surfNet([], 'ACt2r', 0, 'none', 0, 0, [], 60);">ACt2r</a>, Bd: -1000 / 1000, acetate reversible transport via proton symport
-<a href="matlab: surfNet([], 'ac[e]', 0, 'none', 0, 0, [], 60);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, 'none', 0, 0, [], 60);">h[e]</a> <=> <a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
-  #20  <a href="matlab: surfNet([], 'EX_ac(e)', 0, 'none', 0, 0, [], 60);">EX_ac(e)</a>, Bd: 0 / 1000, Acetate exchange
-<a href="matlab: surfNet([], 'ac[e]', 0, 'none', 0, 0, [], 60);">ac[e]</a> ->  
+  #6  <a href="matlab: surfNet([], 'ACt2r', 0, NaN, 0, 0, [], 60, 0.800000);">ACt2r</a>, Bd: -1000 / 1000, acetate reversible transport via proton symport, grRules: 
+<a href="matlab: surfNet([], 'ac[e]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, NaN, 0, 0, [], 60, 0.800000);">h[e]</a>   <=>   <a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
+  #20  <a href="matlab: surfNet([], 'EX_ac(e)', 0, NaN, 0, 0, [], 60, 0.800000);">EX_ac(e)</a>, Bd: 0 / 1000, Acetate exchange, grRules: 
+<a href="matlab: surfNet([], 'ac[e]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[e]</a>   -> 
 Producing reactions: none
 
-Rxn #7  ADK1, Bd: -1000 / 1000, adenylate kinase
-<a href="matlab: surfNet([], 'amp[c]', 0, 'none', 0, 0, [], 60);">amp[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> <=> 2 <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a>  
+Rxn #7  ADK1, Bd: -1000 / 1000, adenylate kinase, grRules: <a href="matlab: surfNet([], 'b0474', 0, NaN, 0, 0, [], 60, 0.800000);">b0474</a>
+<a href="matlab: surfNet([], 'amp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">amp[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a>   <=>   2 <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> 
 
 Met #8  acald[c], Acetaldehyde, C2H4O
 
 Consuming reactions:
-  #1  <a href="matlab: surfNet([], 'ACALD', 0, 'none', 0, 0, [], 60);">ACALD</a>, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating)
-<a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> <=> <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
+  #1  <a href="matlab: surfNet([], 'ACALD', 0, NaN, 0, 0, [], 60, 0.800000);">ACALD</a>, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating), grRules: (<a href="matlab: surfNet([], 'b0351', 0, NaN, 0, 0, [], 60, 0.800000);">b0351</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 0, [], 60, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
+  + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
 Producing reactions:
-  #2  <a href="matlab: surfNet([], 'ACALDt', 0, 'none', 0, 0, [], 60);">ACALDt</a>, Bd: -1000 / 1000, acetaldehyde reversible transport
-<a href="matlab: surfNet([], 'acald[e]', 0, 'none', 0, 0, [], 60);">acald[e]</a> <=> <a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a>  
-  #10  <a href="matlab: surfNet([], 'ALCD2x', 0, 'none', 0, 0, [], 60);">ALCD2x</a>, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol)
-<a href="matlab: surfNet([], 'etoh[c]', 0, 'none', 0, 0, [], 60);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> <=> <a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
+  #2  <a href="matlab: surfNet([], 'ACALDt', 0, NaN, 0, 0, [], 60, 0.800000);">ACALDt</a>, Bd: -1000 / 1000, acetaldehyde reversible transport, grRules: <a href="matlab: surfNet([], 's0001', 0, NaN, 0, 0, [], 60, 0.800000);">s0001</a>
+<a href="matlab: surfNet([], 'acald[e]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[e]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> 
+  #10  <a href="matlab: surfNet([], 'ALCD2x', 0, NaN, 0, 0, [], 60, 0.800000);">ALCD2x</a>, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol), grRules: (<a href="matlab: surfNet([], 'b0356', 0, NaN, 0, 0, [], 60, 0.800000);">b0356</a> or <a href="matlab: surfNet([], 'b1478', 0, NaN, 0, 0, [], 60, 0.800000);">b1478</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 0, [], 60, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'etoh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
 
-Rxn #8  AKGDH, Bd: 0 / 1000, 2-Oxoglutarate dehydrogenase
-<a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 0, [], 60);">akg[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> -> <a href="matlab: surfNet([], 'co2[c]', 0, 'none', 0, 0, [], 60);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a> + <a href="matlab: surfNet([], 'succoa[c]', 0, 'none', 0, 0, [], 60);">succoa[c]</a>  
+Rxn #8  AKGDH, Bd: 0 / 1000, 2-Oxoglutarate dehydrogenase, grRules: ( <a href="matlab: surfNet([], 'b0116', 0, NaN, 0, 0, [], 60, 0.800000);">b0116</a>  and  <a href="matlab: surfNet([], 'b0726', 0, NaN, 0, 0, [], 60, 0.800000);">b0726</a>  and  <a href="matlab: surfNet([], 'b0727', 0, NaN, 0, 0, [], 60, 0.800000);">b0727</a> )
+<a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">akg[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   ->   <a href="matlab: surfNet([], 'co2[c]', 0, NaN, 0, 0, [], 60, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  + <a href="matlab: surfNet([], 'succoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">succoa[c]</a> 
 
 Met #9  acald[e], Acetaldehyde, C2H4O
 
 Consuming reactions:
-  #2  <a href="matlab: surfNet([], 'ACALDt', 0, 'none', 0, 0, [], 60);">ACALDt</a>, Bd: -1000 / 1000, acetaldehyde reversible transport
-<a href="matlab: surfNet([], 'acald[e]', 0, 'none', 0, 0, [], 60);">acald[e]</a> <=> <a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a>  
-  #21  <a href="matlab: surfNet([], 'EX_acald(e)', 0, 'none', 0, 0, [], 60);">EX_acald(e)</a>, Bd: 0 / 1000, Acetaldehyde exchange
-<a href="matlab: surfNet([], 'acald[e]', 0, 'none', 0, 0, [], 60);">acald[e]</a> ->  
+  #2  <a href="matlab: surfNet([], 'ACALDt', 0, NaN, 0, 0, [], 60, 0.800000);">ACALDt</a>, Bd: -1000 / 1000, acetaldehyde reversible transport, grRules: <a href="matlab: surfNet([], 's0001', 0, NaN, 0, 0, [], 60, 0.800000);">s0001</a>
+<a href="matlab: surfNet([], 'acald[e]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[e]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> 
+  #21  <a href="matlab: surfNet([], 'EX_acald(e)', 0, NaN, 0, 0, [], 60, 0.800000);">EX_acald(e)</a>, Bd: 0 / 1000, Acetaldehyde exchange, grRules: 
+<a href="matlab: surfNet([], 'acald[e]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[e]</a>   -> 
 Producing reactions: none
 
-Rxn #9  AKGt2r, Bd: -1000 / 1000, 2-oxoglutarate reversible transport via symport
-<a href="matlab: surfNet([], 'akg[e]', 0, 'none', 0, 0, [], 60);">akg[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, 'none', 0, 0, [], 60);">h[e]</a> <=> <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 0, [], 60);">akg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
+Rxn #9  AKGt2r, Bd: -1000 / 1000, 2-oxoglutarate reversible transport via symport, grRules: <a href="matlab: surfNet([], 'b2587', 0, NaN, 0, 0, [], 60, 0.800000);">b2587</a>
+<a href="matlab: surfNet([], 'akg[e]', 0, NaN, 0, 0, [], 60, 0.800000);">akg[e]</a> + <a href="matlab: surfNet([], 'h[e]', 0, NaN, 0, 0, [], 60, 0.800000);">h[e]</a>   <=>   <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">akg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
 
 Met #10  accoa[c], Acetyl-CoA, C23H34N7O17P3S
 
 Consuming reactions:
-  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, 'none', 0, 0, [], 60);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 0, [], 60);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, 'none', 0, 0, [], 60);">e4p[c]</a> 
-  + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, 'none', 0, 0, [], 60);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 0, [], 60);">g3p[c]</a> + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, 'none', 0, 0, [], 60);">g6p[c]</a> + 
-  0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, 'none', 0, 0, [], 60);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, 'none', 0, 0, [], 60);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> + 
-  3.547 <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, 'none', 0, 0, [], 60);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 0, [], 60);">oaa[c]</a> + 
-  0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, 'none', 0, 0, [], 60);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 0, [], 60);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, 'none', 0, 0, [], 60);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 0, [], 60);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, 'none', 0, 0, [], 60);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> 
-  + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, 'none', 0, 0, [], 60);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 0, [], 60);">pi[c]</a>  
-  #15  <a href="matlab: surfNet([], 'CS', 0, 'none', 0, 0, [], 60);">CS</a>, Bd: 0 / 1000, citrate synthase
-<a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> + <a href="matlab: surfNet([], 'oaa[c]', 0, 'none', 0, 0, [], 60);">oaa[c]</a> -> <a href="matlab: surfNet([], 'cit[c]', 0, 'none', 0, 0, [], 60);">cit[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a>  
-  #62  <a href="matlab: surfNet([], 'MALS', 0, 'none', 0, 0, [], 60);">MALS</a>, Bd: 0 / 1000, malate synthase
-<a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'glx[c]', 0, 'none', 0, 0, [], 60);">glx[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, 'none', 0, 0, [], 60);">h2o[c]</a> -> <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'mal-L[c]', 0, 'none', 0, 0, [], 60);">mal-L[c]</a>  
-  #82  <a href="matlab: surfNet([], 'PTAr', 0, 'none', 0, 0, [], 60);">PTAr</a>, Bd: -1000 / 1000, phosphotransacetylase
-<a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 0, [], 60);">pi[c]</a> <=> <a href="matlab: surfNet([], 'actp[c]', 0, 'none', 0, 0, [], 60);">actp[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a>  
+  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, NaN, 0, 0, [], 60, 0.800000);">Biomass_Ecoli_core_w_GAM</a>, Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">atp[c]</a> 
+  + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, NaN, 0, 0, [], 60, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, NaN, 0, 0, [], 60, 0.800000);">glu-L[c]</a> 
+  + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadph[c]</a> 
+  + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pyr[c]</a> 
+  + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, NaN, 0, 0, [], 60, 0.800000);">r5p[c]</a>   ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">akg[c]</a> 
+  + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pi[c]</a> 
+  #15  <a href="matlab: surfNet([], 'CS', 0, NaN, 0, 0, [], 60, 0.800000);">CS</a>, Bd: 0 / 1000, citrate synthase, grRules: <a href="matlab: surfNet([], 'b0720', 0, NaN, 0, 0, [], 60, 0.800000);">b0720</a>
+<a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a> + <a href="matlab: surfNet([], 'oaa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">oaa[c]</a>   ->   <a href="matlab: surfNet([], 'cit[c]', 0, NaN, 0, 0, [], 60, 0.800000);">cit[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
+  #62  <a href="matlab: surfNet([], 'MALS', 0, NaN, 0, 0, [], 60, 0.800000);">MALS</a>, Bd: 0 / 1000, malate synthase, grRules: ( <a href="matlab: surfNet([], 'b4014', 0, NaN, 0, 0, [], 60, 0.800000);">b4014</a>  or  <a href="matlab: surfNet([], 'b2976', 0, NaN, 0, 0, [], 60, 0.800000);">b2976</a> )
+<a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'glx[c]', 0, NaN, 0, 0, [], 60, 0.800000);">glx[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h2o[c]</a>   ->   <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'mal-L[c]', 0, NaN, 0, 0, [], 60, 0.800000);">mal-L[c]</a> 
+  #82  <a href="matlab: surfNet([], 'PTAr', 0, NaN, 0, 0, [], 60, 0.800000);">PTAr</a>, Bd: -1000 / 1000, phosphotransacetylase, grRules: (<a href="matlab: surfNet([], 'b2297', 0, NaN, 0, 0, [], 60, 0.800000);">b2297</a> or <a href="matlab: surfNet([], 'b2458', 0, NaN, 0, 0, [], 60, 0.800000);">b2458</a>)
+<a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], 'actp[c]', 0, NaN, 0, 0, [], 60, 0.800000);">actp[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> 
 Producing reactions:
-  #1  <a href="matlab: surfNet([], 'ACALD', 0, 'none', 0, 0, [], 60);">ACALD</a>, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating)
-<a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> <=> <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
-  #71  <a href="matlab: surfNet([], 'PDH', 0, 'none', 0, 0, [], 60);">PDH</a>, Bd: 0 / 1000, pyruvate dehydrogenase
-<a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 0, [], 60);">pyr[c]</a> -> <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, 'none', 0, 0, [], 60);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
-  #73  <a href="matlab: surfNet([], 'PFL', 0, 'none', 0, 0, [], 60);">PFL</a>, Bd: 0 / 1000, pyruvate formate lyase
-<a href="matlab: surfNet([], 'coa[c]', 0, 'none', 0, 0, [], 60);">coa[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, 'none', 0, 0, [], 60);">pyr[c]</a> -> <a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a> + <a href="matlab: surfNet([], 'for[c]', 0, 'none', 0, 0, [], 60);">for[c]</a>  
+  #1  <a href="matlab: surfNet([], 'ACALD', 0, NaN, 0, 0, [], 60, 0.800000);">ACALD</a>, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating), grRules: (<a href="matlab: surfNet([], 'b0351', 0, NaN, 0, 0, [], 60, 0.800000);">b0351</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 0, [], 60, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> 
+  + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  #71  <a href="matlab: surfNet([], 'PDH', 0, NaN, 0, 0, [], 60, 0.800000);">PDH</a>, Bd: 0 / 1000, pyruvate dehydrogenase, grRules: ( <a href="matlab: surfNet([], 'b0114', 0, NaN, 0, 0, [], 60, 0.800000);">b0114</a>  and  <a href="matlab: surfNet([], 'b0115', 0, NaN, 0, 0, [], 60, 0.800000);">b0115</a>  and  <a href="matlab: surfNet([], 'b0116', 0, NaN, 0, 0, [], 60, 0.800000);">b0116</a> )
+<a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, NaN, 0, 0, [], 60, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
+  #73  <a href="matlab: surfNet([], 'PFL', 0, NaN, 0, 0, [], 60, 0.800000);">PFL</a>, Bd: 0 / 1000, pyruvate formate lyase, grRules: (((<a href="matlab: surfNet([], 'b0902', 0, NaN, 0, 0, [], 60, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b0903', 0, NaN, 0, 0, [], 60, 0.800000);">b0903</a>) and <a href="matlab: surfNet([], 'b2579', 0, NaN, 0, 0, [], 60, 0.800000);">b2579</a>) or (<a href="matlab: surfNet([], 'b0902', 0, NaN, 0, 0, [], 60, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b0903', 0, NaN, 0, 0, [], 60, 0.800000);">b0903</a>) or (<a href="matlab: surfNet([], 'b0902', 0, NaN, 0, 0, [], 60, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b3114', 0, NaN, 0, 0, [], 60, 0.800000);">b3114</a>) or (<a href="matlab: surfNet([], 'b3951', 0, NaN, 0, 0, [], 60, 0.800000);">b3951</a> and <a href="matlab: surfNet([], 'b3952', 0, NaN, 0, 0, [], 60, 0.800000);">b3952</a>))
+<a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, NaN, 0, 0, [], 60, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'for[c]', 0, NaN, 0, 0, [], 60, 0.800000);">for[c]</a> 
 
-Rxn #10  ALCD2x, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol)
-<a href="matlab: surfNet([], 'etoh[c]', 0, 'none', 0, 0, [], 60);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 0, [], 60);">nad[c]</a> <=> <a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 0, [], 60);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 0, [], 60);">nadh[c]</a>  
+Rxn #10  ALCD2x, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol), grRules: (<a href="matlab: surfNet([], 'b0356', 0, NaN, 0, 0, [], 60, 0.800000);">b0356</a> or <a href="matlab: surfNet([], 'b1478', 0, NaN, 0, 0, [], 60, 0.800000);">b1478</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 0, [], 60, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'etoh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 0, [], 60, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 0, [], 60, 0.800000);">nadh[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 0, [], 60, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 0, [], 60, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-<a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 0, [], 60);">13dpg[c]</a>>><a href="matlab: surfNet([], 'ACALD', 0, 'none', 0, 0, [], 60);">ACALD</a>>><a href="matlab: surfNet([], '2pg[c]', 0, 'none', 0, 0, [], 60);">2pg[c]</a>>><a href="matlab: surfNet([], 'ACALDt', 0, 'none', 0, 0, [], 60);">ACALDt</a>>><a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 0, [], 60);">3pg[c]</a>>><a href="matlab: surfNet([], 'ACKr', 0, 'none', 0, 0, [], 60);">ACKr</a>>><a href="matlab: surfNet([], '6pgc[c]', 0, 'none', 0, 0, [], 60);">6pgc[c]</a>>>
-<a href="matlab: surfNet([], 'ACONTa', 0, 'none', 0, 0, [], 60);">ACONTa</a>>><a href="matlab: surfNet([], '6pgl[c]', 0, 'none', 0, 0, [], 60);">6pgl[c]</a>>><a href="matlab: surfNet([], 'ACONTb', 0, 'none', 0, 0, [], 60);">ACONTb</a>>><a href="matlab: surfNet([], 'ac[c]', 0, 'none', 0, 0, [], 60);">ac[c]</a>>><a href="matlab: surfNet([], 'ACt2r', 0, 'none', 0, 0, [], 60);">ACt2r</a>>><a href="matlab: surfNet([], 'ac[e]', 0, 'none', 0, 0, [], 60);">ac[e]</a>>><a href="matlab: surfNet([], 'ADK1', 0, 'none', 0, 0, [], 60);">ADK1</a>>>
-<a href="matlab: surfNet([], 'acald[c]', 0, 'none', 0, 0, [], 60);">acald[c]</a>>><a href="matlab: surfNet([], 'AKGDH', 0, 'none', 0, 0, [], 60);">AKGDH</a>>><a href="matlab: surfNet([], 'acald[e]', 0, 'none', 0, 0, [], 60);">acald[e]</a>>><a href="matlab: surfNet([], 'AKGt2r', 0, 'none', 0, 0, [], 60);">AKGt2r</a>>><a href="matlab: surfNet([], 'accoa[c]', 0, 'none', 0, 0, [], 60);">accoa[c]</a>>><a href="matlab: surfNet([], 'ALCD2x', 0, 'none', 0, 0, [], 60);">ALCD2x</a>>>
+<a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">13dpg[c]</a>>><a href="matlab: surfNet([], 'ACALD', 0, NaN, 0, 0, [], 60, 0.800000);">ACALD</a>>><a href="matlab: surfNet([], '2pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">2pg[c]</a>>><a href="matlab: surfNet([], 'ACALDt', 0, NaN, 0, 0, [], 60, 0.800000);">ACALDt</a>>><a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 0, [], 60, 0.800000);">3pg[c]</a>>><a href="matlab: surfNet([], 'ACKr', 0, NaN, 0, 0, [], 60, 0.800000);">ACKr</a>>><a href="matlab: surfNet([], '6pgc[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgc[c]</a>>>
+<a href="matlab: surfNet([], 'ACONTa', 0, NaN, 0, 0, [], 60, 0.800000);">ACONTa</a>>><a href="matlab: surfNet([], '6pgl[c]', 0, NaN, 0, 0, [], 60, 0.800000);">6pgl[c]</a>>><a href="matlab: surfNet([], 'ACONTb', 0, NaN, 0, 0, [], 60, 0.800000);">ACONTb</a>>><a href="matlab: surfNet([], 'ac[c]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[c]</a>>><a href="matlab: surfNet([], 'ACt2r', 0, NaN, 0, 0, [], 60, 0.800000);">ACt2r</a>>><a href="matlab: surfNet([], 'ac[e]', 0, NaN, 0, 0, [], 60, 0.800000);">ac[e]</a>>><a href="matlab: surfNet([], 'ADK1', 0, NaN, 0, 0, [], 60, 0.800000);">ADK1</a>>>
+<a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[c]</a>>><a href="matlab: surfNet([], 'AKGDH', 0, NaN, 0, 0, [], 60, 0.800000);">AKGDH</a>>><a href="matlab: surfNet([], 'acald[e]', 0, NaN, 0, 0, [], 60, 0.800000);">acald[e]</a>>><a href="matlab: surfNet([], 'AKGt2r', 0, NaN, 0, 0, [], 60, 0.800000);">AKGt2r</a>>><a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 0, [], 60, 0.800000);">accoa[c]</a>>><a href="matlab: surfNet([], 'ALCD2x', 0, NaN, 0, 0, [], 60, 0.800000);">ALCD2x</a>>>
 
 Met #62  pyr[c], Pyruvate, C3H3O3
 
 Consuming reactions:
-  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, [], 0, 1, [], 0);">Biomass_Ecoli_core_w_GAM</a> (0.87392), Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, [], 0, 1, [], 0);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, [], 0, 1, [], 0);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, [], 0, 1, [], 0);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, [], 0, 1, [], 0);">g3p[c]</a> + 
-  0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, [], 0, 1, [], 0);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, [], 0, 1, [], 0);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, [], 0, 1, [], 0);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, [], 0, 1, [], 0);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0);">nad[c]</a> + 
-  13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, [], 0, 1, [], 0);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, [], 0, 1, [], 0);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, [], 0, 1, [], 0);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, [], 0, 1, [], 0);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, [], 0, 1, [], 0);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, [], 0, 1, [], 0);">nadp[c]</a> + 
-  59.81 <a href="matlab: surfNet([], 'pi[c]', 0, [], 0, 1, [], 0);">pi[c]</a>  
-  #71  <a href="matlab: surfNet([], 'PDH', 0, [], 0, 1, [], 0);">PDH</a> (9.28253), Bd: 0 / 1000, pyruvate dehydrogenase
-<a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a> -> <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0);">nadh[c]</a>  
-  #73  <a href="matlab: surfNet([], 'PFL', 0, [], 0, 1, [], 0);">PFL</a> (0), Bd: 0 / 1000, pyruvate formate lyase
-<a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0);">coa[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a> -> <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0);">accoa[c]</a> + <a href="matlab: surfNet([], 'for[c]', 0, [], 0, 1, [], 0);">for[c]</a>  
-  #81  <a href="matlab: surfNet([], 'PPS', 0, [], 0, 1, [], 0);">PPS</a> (0), Bd: 0 / 1000, phosphoenolpyruvate synthase
-<a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0);">atp[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, [], 0, 1, [], 0);">h2o[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a> -> <a href="matlab: surfNet([], 'amp[c]', 0, [], 0, 1, [], 0);">amp[c]</a> + 2 <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0);">pep[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, [], 0, 1, [], 0);">pi[c]</a>  
+  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, [], 0, 1, [], 0, 0.800000);">Biomass_Ecoli_core_w_GAM</a> (0.873922), Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, [], 0, 1, [], 0, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0, 0.800000);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, [], 0, 1, [], 0, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, [], 0, 1, [], 0, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, [], 0, 1, [], 0, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, [], 0, 1, [], 0, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, [], 0, 1, [], 0, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, [], 0, 1, [], 0, 0.800000);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, [], 0, 1, [], 0, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0, 0.800000);">nad[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, [], 0, 1, [], 0, 0.800000);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, [], 0, 1, [], 0, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, [], 0, 1, [], 0, 0.800000);">r5p[c]</a> 
+  ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, [], 0, 1, [], 0, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, [], 0, 1, [], 0, 0.800000);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, [], 0, 1, [], 0, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, [], 0, 1, [], 0, 0.800000);">pi[c]</a> 
+  #71  <a href="matlab: surfNet([], 'PDH', 0, [], 0, 1, [], 0, 0.800000);">PDH</a> (9.282533), Bd: 0 / 1000, pyruvate dehydrogenase, grRules: ( <a href="matlab: surfNet([], 'b0114', 0, [], 0, 1, [], 0, 0.800000);">b0114</a>  and  <a href="matlab: surfNet([], 'b0115', 0, [], 0, 1, [], 0, 0.800000);">b0115</a>  and  <a href="matlab: surfNet([], 'b0116', 0, [], 0, 1, [], 0, 0.800000);">b0116</a> )
+<a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #73  <a href="matlab: surfNet([], 'PFL', 0, [], 0, 1, [], 0, 0.800000);">PFL</a> (0), Bd: 0 / 1000, pyruvate formate lyase, grRules: (((<a href="matlab: surfNet([], 'b0902', 0, [], 0, 1, [], 0, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b0903', 0, [], 0, 1, [], 0, 0.800000);">b0903</a>) and <a href="matlab: surfNet([], 'b2579', 0, [], 0, 1, [], 0, 0.800000);">b2579</a>) or (<a href="matlab: surfNet([], 'b0902', 0, [], 0, 1, [], 0, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b0903', 0, [], 0, 1, [], 0, 0.800000);">b0903</a>) or (<a href="matlab: surfNet([], 'b0902', 0, [], 0, 1, [], 0, 0.800000);">b0902</a> and <a href="matlab: surfNet([], 'b3114', 0, [], 0, 1, [], 0, 0.800000);">b3114</a>) or (<a href="matlab: surfNet([], 'b3951', 0, [], 0, 1, [], 0, 0.800000);">b3951</a> and <a href="matlab: surfNet([], 'b3952', 0, [], 0, 1, [], 0, 0.800000);">b3952</a>))
+<a href="matlab: surfNet([], 'coa[c]', 0, [], 0, 1, [], 0, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'accoa[c]', 0, [], 0, 1, [], 0, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'for[c]', 0, [], 0, 1, [], 0, 0.800000);">for[c]</a> 
+  #81  <a href="matlab: surfNet([], 'PPS', 0, [], 0, 1, [], 0, 0.800000);">PPS</a> (0), Bd: 0 / 1000, phosphoenolpyruvate synthase, grRules: <a href="matlab: surfNet([], 'b1702', 0, [], 0, 1, [], 0, 0.800000);">b1702</a>
+<a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0, 0.800000);">atp[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, [], 0, 1, [], 0, 0.800000);">h2o[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'amp[c]', 0, [], 0, 1, [], 0, 0.800000);">amp[c]</a> + 2 <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0, 0.800000);">pep[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, [], 0, 1, [], 0, 0.800000);">pi[c]</a> 
 Producing reactions:
-  #45  <a href="matlab: surfNet([], 'FRUpts2', 0, [], 0, 1, [], 0);">FRUpts2</a> (0), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating)
-<a href="matlab: surfNet([], 'fru[e]', 0, [], 0, 1, [], 0);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'f6p[c]', 0, [], 0, 1, [], 0);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #50  <a href="matlab: surfNet([], 'GLCpts', 0, [], 0, 1, [], 0);">GLCpts</a> (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 0, 1, [], 0);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'g6p[c]', 0, [], 0, 1, [], 0);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #61  <a href="matlab: surfNet([], 'LDH_D', 0, [], 0, 1, [], 0);">LDH_D</a> (0), Bd: -1000 / 1000, D lactate dehydrogenase
-<a href="matlab: surfNet([], 'lac-D[c]', 0, [], 0, 1, [], 0);">lac-D[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0);">nad[c]</a> <=> <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0);">nadh[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #65  <a href="matlab: surfNet([], 'ME1', 0, [], 0, 1, [], 0);">ME1</a> (0), Bd: 0 / 1000, malic enzyme (NAD)
-<a href="matlab: surfNet([], 'mal-L[c]', 0, [], 0, 1, [], 0);">mal-L[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0);">nad[c]</a> -> <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0);">nadh[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #66  <a href="matlab: surfNet([], 'ME2', 0, [], 0, 1, [], 0);">ME2</a> (0), Bd: 0 / 1000, malic enzyme (NADP)
-<a href="matlab: surfNet([], 'mal-L[c]', 0, [], 0, 1, [], 0);">mal-L[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, [], 0, 1, [], 0);">nadp[c]</a> -> <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0);">co2[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, [], 0, 1, [], 0);">nadph[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #83  <a href="matlab: surfNet([], 'PYK', 0, [], 0, 1, [], 0);">PYK</a> (1.75818), Bd: 0 / 1000, pyruvate kinase
-<a href="matlab: surfNet([], 'adp[c]', 0, [], 0, 1, [], 0);">adp[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0);">atp[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
-  #84  <a href="matlab: surfNet([], 'PYRt2r', 0, [], 0, 1, [], 0);">PYRt2r</a> (0), Bd: -1000 / 1000, pyruvate reversible transport via proton symport
-<a href="matlab: surfNet([], 'h[e]', 0, [], 0, 1, [], 0);">h[e]</a> + <a href="matlab: surfNet([], 'pyr[e]', 0, [], 0, 1, [], 0);">pyr[e]</a> <=> <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0);">pyr[c]</a>  
+  #45  <a href="matlab: surfNet([], 'FRUpts2', 0, [], 0, 1, [], 0, 0.800000);">FRUpts2</a> (0), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating), grRules: (<a href="matlab: surfNet([], 'b1817', 0, [], 0, 1, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 0, 1, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 0, 1, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 0, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 0, 1, [], 0, 0.800000);">b2416</a>)
+<a href="matlab: surfNet([], 'fru[e]', 0, [], 0, 1, [], 0, 0.800000);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'f6p[c]', 0, [], 0, 1, [], 0, 0.800000);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #50  <a href="matlab: surfNet([], 'GLCpts', 0, [], 0, 1, [], 0, 0.800000);">GLCpts</a> (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS, grRules: ((<a href="matlab: surfNet([], 'b2417', 0, [], 0, 1, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1101', 0, [], 0, 1, [], 0, 0.800000);">b1101</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 0, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 0, 1, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b1817', 0, [], 0, 1, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 0, 1, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 0, 1, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 0, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 0, 1, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b2417', 0, [], 0, 1, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1621', 0, [], 0, 1, [], 0, 0.800000);">b1621</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 0, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 0, 1, [], 0, 0.800000);">b2416</a>))
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 0, 1, [], 0, 0.800000);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'g6p[c]', 0, [], 0, 1, [], 0, 0.800000);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #61  <a href="matlab: surfNet([], 'LDH_D', 0, [], 0, 1, [], 0, 0.800000);">LDH_D</a> (0), Bd: -1000 / 1000, D lactate dehydrogenase, grRules: (<a href="matlab: surfNet([], 'b2133', 0, [], 0, 1, [], 0, 0.800000);">b2133</a> or <a href="matlab: surfNet([], 'b1380', 0, [], 0, 1, [], 0, 0.800000);">b1380</a>)
+<a href="matlab: surfNet([], 'lac-D[c]', 0, [], 0, 1, [], 0, 0.800000);">lac-D[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0, 0.800000);">nadh[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #65  <a href="matlab: surfNet([], 'ME1', 0, [], 0, 1, [], 0, 0.800000);">ME1</a> (0), Bd: 0 / 1000, malic enzyme (NAD), grRules: <a href="matlab: surfNet([], 'b1479', 0, [], 0, 1, [], 0, 0.800000);">b1479</a>
+<a href="matlab: surfNet([], 'mal-L[c]', 0, [], 0, 1, [], 0, 0.800000);">mal-L[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 0, 1, [], 0, 0.800000);">nad[c]</a>   ->   <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 0, 1, [], 0, 0.800000);">nadh[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #66  <a href="matlab: surfNet([], 'ME2', 0, [], 0, 1, [], 0, 0.800000);">ME2</a> (0), Bd: 0 / 1000, malic enzyme (NADP), grRules: <a href="matlab: surfNet([], 'b2463', 0, [], 0, 1, [], 0, 0.800000);">b2463</a>
+<a href="matlab: surfNet([], 'mal-L[c]', 0, [], 0, 1, [], 0, 0.800000);">mal-L[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, [], 0, 1, [], 0, 0.800000);">nadp[c]</a>   ->   <a href="matlab: surfNet([], 'co2[c]', 0, [], 0, 1, [], 0, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, [], 0, 1, [], 0, 0.800000);">nadph[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #83  <a href="matlab: surfNet([], 'PYK', 0, [], 0, 1, [], 0, 0.800000);">PYK</a> (1.758177), Bd: 0 / 1000, pyruvate kinase, grRules: (<a href="matlab: surfNet([], 'b1854', 0, [], 0, 1, [], 0, 0.800000);">b1854</a> or <a href="matlab: surfNet([], 'b1676', 0, [], 0, 1, [], 0, 0.800000);">b1676</a>)
+<a href="matlab: surfNet([], 'adp[c]', 0, [], 0, 1, [], 0, 0.800000);">adp[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 0, 1, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'atp[c]', 0, [], 0, 1, [], 0, 0.800000);">atp[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #84  <a href="matlab: surfNet([], 'PYRt2r', 0, [], 0, 1, [], 0, 0.800000);">PYRt2r</a> (0), Bd: -1000 / 1000, pyruvate reversible transport via proton symport, grRules: 
+<a href="matlab: surfNet([], 'h[e]', 0, [], 0, 1, [], 0, 0.800000);">h[e]</a> + <a href="matlab: surfNet([], 'pyr[e]', 0, [], 0, 1, [], 0, 0.800000);">pyr[e]</a>   <=>   <a href="matlab: surfNet([], 'h[c]', 0, [], 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 0, 1, [], 0, 0.800000);">pyr[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, [], 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, [], 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
 Met #62  pyr[c], Pyruvate, C3H3O3
 
 Consuming reactions with non-zero fluxes :
-  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, [], 1, 1, [], 0);">Biomass_Ecoli_core_w_GAM</a> (0.87392), Bd: 0 / 1000, Biomass Objective Function with GAM
-1.496 <a href="matlab: surfNet([], '3pg[c]', 0, [], 1, 1, [], 0);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, [], 1, 1, [], 0);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, [], 1, 1, [], 0);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, [], 1, 1, [], 0);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 1, [], 0);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, [], 1, 1, [], 0);">g3p[c]</a> + 
-  0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 1, [], 0);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, [], 1, 1, [], 0);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, [], 1, 1, [], 0);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, [], 1, 1, [], 0);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, [], 1, 1, [], 0);">nad[c]</a> + 
-  13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, [], 1, 1, [], 0);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, [], 1, 1, [], 0);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, [], 1, 1, [], 0);">r5p[c]</a> -> 
-  59.81 <a href="matlab: surfNet([], 'adp[c]', 0, [], 1, 1, [], 0);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, [], 1, 1, [], 0);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, [], 1, 1, [], 0);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, [], 1, 1, [], 0);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, [], 1, 1, [], 0);">nadh[c]</a> + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, [], 1, 1, [], 0);">nadp[c]</a> + 
-  59.81 <a href="matlab: surfNet([], 'pi[c]', 0, [], 1, 1, [], 0);">pi[c]</a>  
-  #71  <a href="matlab: surfNet([], 'PDH', 0, [], 1, 1, [], 0);">PDH</a> (9.28253), Bd: 0 / 1000, pyruvate dehydrogenase
-<a href="matlab: surfNet([], 'coa[c]', 0, [], 1, 1, [], 0);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 1, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0);">pyr[c]</a> -> <a href="matlab: surfNet([], 'accoa[c]', 0, [], 1, 1, [], 0);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, [], 1, 1, [], 0);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 1, 1, [], 0);">nadh[c]</a>  
+  #13  <a href="matlab: surfNet([], 'Biomass_Ecoli_core_w_GAM', 0, [], 1, 1, [], 0, 0.800000);">Biomass_Ecoli_core_w_GAM</a> (0.873922), Bd: 0 / 1000, Biomass Objective Function with GAM, grRules: 
+1.496 <a href="matlab: surfNet([], '3pg[c]', 0, [], 1, 1, [], 0, 0.800000);">3pg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'accoa[c]', 0, [], 1, 1, [], 0, 0.800000);">accoa[c]</a> + 59.81 <a href="matlab: surfNet([], 'atp[c]', 0, [], 1, 1, [], 0, 0.800000);">atp[c]</a> + 0.361 <a href="matlab: surfNet([], 'e4p[c]', 0, [], 1, 1, [], 0, 0.800000);">e4p[c]</a> + 0.0709 <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 1, [], 0, 0.800000);">f6p[c]</a> + 0.129 <a href="matlab: surfNet([], 'g3p[c]', 0, [], 1, 1, [], 0, 0.800000);">g3p[c]</a> 
+  + 0.205 <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 1, [], 0, 0.800000);">g6p[c]</a> + 0.2557 <a href="matlab: surfNet([], 'gln-L[c]', 0, [], 1, 1, [], 0, 0.800000);">gln-L[c]</a> + 4.9414 <a href="matlab: surfNet([], 'glu-L[c]', 0, [], 1, 1, [], 0, 0.800000);">glu-L[c]</a> + 59.81 <a href="matlab: surfNet([], 'h2o[c]', 0, [], 1, 1, [], 0, 0.800000);">h2o[c]</a> + 3.547 <a href="matlab: surfNet([], 'nad[c]', 0, [], 1, 1, [], 0, 0.800000);">nad[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadph[c]', 0, [], 1, 1, [], 0, 0.800000);">nadph[c]</a> + 1.7867 <a href="matlab: surfNet([], 'oaa[c]', 0, [], 1, 1, [], 0, 0.800000);">oaa[c]</a> + 0.5191 <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0, 0.800000);">pep[c]</a> + 2.8328 <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0, 0.800000);">pyr[c]</a> + 0.8977 <a href="matlab: surfNet([], 'r5p[c]', 0, [], 1, 1, [], 0, 0.800000);">r5p[c]</a> 
+  ->   59.81 <a href="matlab: surfNet([], 'adp[c]', 0, [], 1, 1, [], 0, 0.800000);">adp[c]</a> + 4.1182 <a href="matlab: surfNet([], 'akg[c]', 0, [], 1, 1, [], 0, 0.800000);">akg[c]</a> + 3.7478 <a href="matlab: surfNet([], 'coa[c]', 0, [], 1, 1, [], 0, 0.800000);">coa[c]</a> + 59.81 <a href="matlab: surfNet([], 'h[c]', 0, [], 1, 1, [], 0, 0.800000);">h[c]</a> + 3.547 <a href="matlab: surfNet([], 'nadh[c]', 0, [], 1, 1, [], 0, 0.800000);">nadh[c]</a> 
+  + 13.0279 <a href="matlab: surfNet([], 'nadp[c]', 0, [], 1, 1, [], 0, 0.800000);">nadp[c]</a> + 59.81 <a href="matlab: surfNet([], 'pi[c]', 0, [], 1, 1, [], 0, 0.800000);">pi[c]</a> 
+  #71  <a href="matlab: surfNet([], 'PDH', 0, [], 1, 1, [], 0, 0.800000);">PDH</a> (9.282533), Bd: 0 / 1000, pyruvate dehydrogenase, grRules: ( <a href="matlab: surfNet([], 'b0114', 0, [], 1, 1, [], 0, 0.800000);">b0114</a>  and  <a href="matlab: surfNet([], 'b0115', 0, [], 1, 1, [], 0, 0.800000);">b0115</a>  and  <a href="matlab: surfNet([], 'b0116', 0, [], 1, 1, [], 0, 0.800000);">b0116</a> )
+<a href="matlab: surfNet([], 'coa[c]', 0, [], 1, 1, [], 0, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, [], 1, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0, 0.800000);">pyr[c]</a>   ->   <a href="matlab: surfNet([], 'accoa[c]', 0, [], 1, 1, [], 0, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'co2[c]', 0, [], 1, 1, [], 0, 0.800000);">co2[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, [], 1, 1, [], 0, 0.800000);">nadh[c]</a> 
 Producing reactions with non-zero fluxes :
-  #50  <a href="matlab: surfNet([], 'GLCpts', 0, [], 1, 1, [], 0);">GLCpts</a> (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 1, [], 0);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 1, [], 0);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0);">pyr[c]</a>  
-  #83  <a href="matlab: surfNet([], 'PYK', 0, [], 1, 1, [], 0);">PYK</a> (1.75818), Bd: 0 / 1000, pyruvate kinase
-<a href="matlab: surfNet([], 'adp[c]', 0, [], 1, 1, [], 0);">adp[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, [], 1, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'atp[c]', 0, [], 1, 1, [], 0);">atp[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0);">pyr[c]</a>  
+  #50  <a href="matlab: surfNet([], 'GLCpts', 0, [], 1, 1, [], 0, 0.800000);">GLCpts</a> (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS, grRules: ((<a href="matlab: surfNet([], 'b2417', 0, [], 1, 1, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1101', 0, [], 1, 1, [], 0, 0.800000);">b1101</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 1, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b1817', 0, [], 1, 1, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 1, 1, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 1, 1, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 1, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b2417', 0, [], 1, 1, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1621', 0, [], 1, 1, [], 0, 0.800000);">b1621</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 1, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 1, [], 0, 0.800000);">b2416</a>))
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 1, [], 0, 0.800000);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 1, [], 0, 0.800000);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0, 0.800000);">pyr[c]</a> 
+  #83  <a href="matlab: surfNet([], 'PYK', 0, [], 1, 1, [], 0, 0.800000);">PYK</a> (1.758177), Bd: 0 / 1000, pyruvate kinase, grRules: (<a href="matlab: surfNet([], 'b1854', 0, [], 1, 1, [], 0, 0.800000);">b1854</a> or <a href="matlab: surfNet([], 'b1676', 0, [], 1, 1, [], 0, 0.800000);">b1676</a>)
+<a href="matlab: surfNet([], 'adp[c]', 0, [], 1, 1, [], 0, 0.800000);">adp[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, [], 1, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 1, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'atp[c]', 0, [], 1, 1, [], 0, 0.800000);">atp[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 1, [], 0, 0.800000);">pyr[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, [], 1, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, [], 1, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-Rxn #26  EX_fru(e) (0, -10), Bd: 0 / 1000, D-Fructose exchange
-<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0);">fru[e]</a> ->  
+Rxn #26  EX_fru(e) (0, -10), Bd: 0 / 1000, D-Fructose exchange, grRules: 
+<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0, 0.800000);">fru[e]</a>   -> 
 
-Rxn #28  EX_glc(e) (-10, 0), Bd: -10 / 1000, D-Glucose exchange
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0);">glc-D[e]</a> <=>  
+Rxn #28  EX_glc(e) (-10, 0), Bd: -10 / 1000, D-Glucose exchange, grRules: 
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0, 0.800000);">glc-D[e]</a>   <- 
 
-Rxn #45  FRUpts2 (0, 10), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating)
-<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0);">pyr[c]</a>  
+Rxn #45  FRUpts2 (0, 10), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating), grRules: (<a href="matlab: surfNet([], 'b1817', 0, [], 1, 0, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 1, 0, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 1, 0, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>)
+<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0, 0.800000);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0, 0.800000);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0, 0.800000);">pyr[c]</a> 
 
-Rxn #50  GLCpts (10, 0), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0);">pyr[c]</a>  
+Rxn #50  GLCpts (10, 0), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS, grRules: ((<a href="matlab: surfNet([], 'b2417', 0, [], 1, 0, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1101', 0, [], 1, 0, [], 0, 0.800000);">b1101</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b1817', 0, [], 1, 0, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 1, 0, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 1, 0, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b2417', 0, [], 1, 0, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1621', 0, [], 1, 0, [], 0, 0.800000);">b1621</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>))
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0, 0.800000);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0, 0.800000);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0, 0.800000);">pyr[c]</a> 
 
-Rxn #74  PGI (4.86086, -5.13914), Bd: -1000 / 1000, glucose-6-phosphate isomerase
-<a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0);">g6p[c]</a> <=> <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0);">f6p[c]</a>  
+Rxn #74  PGI (4.861, -5.139), Bd: -1000 / 1000, glucose-6-phosphate isomerase, grRules: <a href="matlab: surfNet([], 'b4025', 0, [], 1, 0, [], 0, 0.800000);">b4025</a>
+<a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0, 0.800000);">g6p[c]</a>   ->   <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0, 0.800000);">f6p[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, [], 1, 0, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, [], 1, 0, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
-Rxn #26  EX_fru(e) (0, -10), Bd: 0 / 1000, D-Fructose exchange
-<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0);">fru[e]</a> ->  
+Rxn #26  EX_fru(e) (0, -10), Bd: 0 / 1000, D-Fructose exchange, grRules: 
+<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0, 0.800000);">fru[e]</a>   -> 
 
-Rxn #28  EX_glc(e) (-10, 0), Bd: -10 / 1000, D-Glucose exchange
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0);">glc-D[e]</a> <=>  
+Rxn #28  EX_glc(e) (-10, 0), Bd: -10 / 1000, D-Glucose exchange, grRules: 
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0, 0.800000);">glc-D[e]</a>   <- 
 
-Rxn #45  FRUpts2 (0, 10), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating)
-<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0);">pyr[c]</a>  
+Rxn #45  FRUpts2 (0, 10), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating), grRules: (<a href="matlab: surfNet([], 'b1817', 0, [], 1, 0, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 1, 0, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 1, 0, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>)
+<a href="matlab: surfNet([], 'fru[e]', 0, [], 1, 0, [], 0, 0.800000);">fru[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0, 0.800000);">f6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0, 0.800000);">pyr[c]</a> 
 
-Rxn #50  GLCpts (10, 0), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS
-<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0);">pep[c]</a> -> <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0);">pyr[c]</a>  
+Rxn #50  GLCpts (10, 0), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS, grRules: ((<a href="matlab: surfNet([], 'b2417', 0, [], 1, 0, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1101', 0, [], 1, 0, [], 0, 0.800000);">b1101</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b1817', 0, [], 1, 0, [], 0, 0.800000);">b1817</a> and <a href="matlab: surfNet([], 'b1818', 0, [], 1, 0, [], 0, 0.800000);">b1818</a> and <a href="matlab: surfNet([], 'b1819', 0, [], 1, 0, [], 0, 0.800000);">b1819</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>) or (<a href="matlab: surfNet([], 'b2417', 0, [], 1, 0, [], 0, 0.800000);">b2417</a> and <a href="matlab: surfNet([], 'b1621', 0, [], 1, 0, [], 0, 0.800000);">b1621</a> and <a href="matlab: surfNet([], 'b2415', 0, [], 1, 0, [], 0, 0.800000);">b2415</a> and <a href="matlab: surfNet([], 'b2416', 0, [], 1, 0, [], 0, 0.800000);">b2416</a>))
+<a href="matlab: surfNet([], 'glc-D[e]', 0, [], 1, 0, [], 0, 0.800000);">glc-D[e]</a> + <a href="matlab: surfNet([], 'pep[c]', 0, [], 1, 0, [], 0, 0.800000);">pep[c]</a>   ->   <a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0, 0.800000);">g6p[c]</a> + <a href="matlab: surfNet([], 'pyr[c]', 0, [], 1, 0, [], 0, 0.800000);">pyr[c]</a> 
 
-Rxn #74  PGI (4.86086, -5.13914), Bd: -1000 / 1000, glucose-6-phosphate isomerase
-<a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0);">g6p[c]</a> <=> <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0);">f6p[c]</a>  
+Rxn #74  PGI (4.861, -5.139), Bd: -1000 / 1000, glucose-6-phosphate isomerase, grRules: <a href="matlab: surfNet([], 'b4025', 0, [], 1, 0, [], 0, 0.800000);">b4025</a>
+<a href="matlab: surfNet([], 'g6p[c]', 0, [], 1, 0, [], 0, 0.800000);">g6p[c]</a>   ->   <a href="matlab: surfNet([], 'f6p[c]', 0, [], 1, 0, [], 0, 0.800000);">f6p[c]</a> 
 
-<a href="matlab: surfNet([], [], 0, [], 1, 0, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, [], 1, 0, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
 Met #1  13dpg[c], C3H4O10P2, b: 0, newMetProp: c|d, newMetProp2: E
 
 Consuming reactions: none
 Producing reactions:
-  #49  <a href="matlab: surfNet([], 'GAPD', 0, 'none', 0, 1, [], 0);">GAPD</a>, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: b1779, c: 0, newRxnProp: a|b, newRxnProp2: C
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 0, 'none', 0, 1, [], 0);">PGK</a>, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: b2926, c: 0, newRxnProp: , newRxnProp2: C
-<a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">atp[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">adp[c]</a>  
+  #49  <a href="matlab: surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 1, [], 0, 0.800000);">b1779</a>, c: 0, newRxnProp: a|b, newRxnProp2: C
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 0, NaN, 0, 1, [], 0, 0.800000);">PGK</a>, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: <a href="matlab: surfNet([], 'b2926', 0, NaN, 0, 1, [], 0, 0.800000);">b2926</a>, c: 0, newRxnProp: , newRxnProp2: C
+<a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> 
 
-Rxn #49  GAPD, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: b1779, c: 0, newRxnProp: a|b, newRxnProp2: C
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
+Rxn #49  GAPD, UB: 1000, subSystems: Glycolysis/Gluconeogenesis, grRules: <a href="matlab: surfNet([], 'b1779', 0, NaN, 0, 1, [], 0, 0.800000);">b1779</a>, c: 0, newRxnProp: a|b, newRxnProp2: C
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
   id   Met       Stoich     metFormulas, b, newMetProp, newMetProp2
 Reactant:
- #33   <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">  g3p[c]</a>  -1         C3H5O6P, 0, , E
- #50   <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">  nad[c]</a>  -1         C21H26N7O14P2, 0, , E
- #60   <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">   pi[c]</a>  -1         HO4P, 0, , E
+ #33   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  g3p[c]</a>  -1         C3H5O6P, 0, , E
+ #50   <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  nad[c]</a>  -1         C21H26N7O14P2, 0, , E
+ #60   <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">   pi[c]</a>  -1         HO4P, 0, , E
 Product:
- #1    <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a>  1          C3H4O10P2, 0, c|d, E
- #43   <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">    h[c]</a>  1          H, 0, , E
- #51   <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);"> nadh[c]</a>  1          C21H27N7O14P2, 0, , E
+ #1    <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a>  1          C3H4O10P2, 0, c|d, E
+ #43   <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">    h[c]</a>  1          H, 0, , E
+ #51   <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);"> nadh[c]</a>  1          C21H27N7O14P2, 0, , E
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
 
 Met #1  13dpg[c]
 
 Consuming reactions: none
 Producing reactions:
-  #49  <a href="matlab: surfNet([], 'GAPD', 0, 'none', 0, 1, [], 0);">GAPD</a>, LB: -1000
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
-  #75  <a href="matlab: surfNet([], 'PGK', 0, 'none', 0, 1, [], 0);">PGK</a>, LB: -1000
-<a href="matlab: surfNet([], '3pg[c]', 0, 'none', 0, 1, [], 0);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, 'none', 0, 1, [], 0);">atp[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, 'none', 0, 1, [], 0);">adp[c]</a>  
+  #49  <a href="matlab: surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0, 0.800000);">GAPD</a>, LB: -1000
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #75  <a href="matlab: surfNet([], 'PGK', 0, NaN, 0, 1, [], 0, 0.800000);">PGK</a>, LB: -1000
+<a href="matlab: surfNet([], '3pg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">3pg[c]</a> + <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> 
 
 Rxn #49  GAPD, LB: -1000
-<a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">pi[c]</a> <=> <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);">nadh[c]</a>  
+<a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">g3p[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
   id   Met       Stoich     
 Reactant:
- #33   <a href="matlab: surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);">  g3p[c]</a>  -1         
- #50   <a href="matlab: surfNet([], 'nad[c]', 0, 'none', 0, 1, [], 0);">  nad[c]</a>  -1         
- #60   <a href="matlab: surfNet([], 'pi[c]', 0, 'none', 0, 1, [], 0);">   pi[c]</a>  -1         
+ #33   <a href="matlab: surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  g3p[c]</a>  -1         
+ #50   <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">  nad[c]</a>  -1         
+ #60   <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">   pi[c]</a>  -1         
 Product:
- #1    <a href="matlab: surfNet([], '13dpg[c]', 0, 'none', 0, 1, [], 0);">13dpg[c]</a>  1          
- #43   <a href="matlab: surfNet([], 'h[c]', 0, 'none', 0, 1, [], 0);">    h[c]</a>  1          
- #51   <a href="matlab: surfNet([], 'nadh[c]', 0, 'none', 0, 1, [], 0);"> nadh[c]</a>  1          
+ #1    <a href="matlab: surfNet([], '13dpg[c]', 0, NaN, 0, 1, [], 0, 0.800000);">13dpg[c]</a>  1          
+ #43   <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">    h[c]</a>  1          
+ #51   <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);"> nadh[c]</a>  1          
 
-<a href="matlab: surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true));">Show previous steps...</a>
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
+
+Gene #35  b1241
+
+Reactions involving the gene:
+  #1  <a href="matlab: surfNet([], 'ACALD', 0, NaN, 0, 1, [], 0, 0.800000);">ACALD</a>, Bd: -1000 / 1000, acetaldehyde dehydrogenase (acetylating), grRules: (<a href="matlab: surfNet([], 'b0351', 0, NaN, 0, 1, [], 0, 0.800000);">b0351</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 1, [], 0, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 1, [], 0, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'coa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">coa[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'accoa[c]', 0, NaN, 0, 1, [], 0, 0.800000);">accoa[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+  #10  <a href="matlab: surfNet([], 'ALCD2x', 0, NaN, 0, 1, [], 0, 0.800000);">ALCD2x</a>, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol), grRules: (<a href="matlab: surfNet([], 'b0356', 0, NaN, 0, 1, [], 0, 0.800000);">b0356</a> or <a href="matlab: surfNet([], 'b1478', 0, NaN, 0, 1, [], 0, 0.800000);">b1478</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 1, [], 0, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'etoh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 1, [], 0, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
+
+Gene #39  b1478
+
+Reactions involving the gene:
+  #10  <a href="matlab: surfNet([], 'ALCD2x', 0, NaN, 0, 1, [], 0, 0.800000);">ALCD2x</a>, Bd: -1000 / 1000, alcohol dehydrogenase (ethanol), grRules: (<a href="matlab: surfNet([], 'b0356', 0, NaN, 0, 1, [], 0, 0.800000);">b0356</a> or <a href="matlab: surfNet([], 'b1478', 0, NaN, 0, 1, [], 0, 0.800000);">b1478</a> or <a href="matlab: surfNet([], 'b1241', 0, NaN, 0, 1, [], 0, 0.800000);">b1241</a>)
+<a href="matlab: surfNet([], 'etoh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">etoh[c]</a> + <a href="matlab: surfNet([], 'nad[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nad[c]</a>   <=>   <a href="matlab: surfNet([], 'acald[c]', 0, NaN, 0, 1, [], 0, 0.800000);">acald[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'nadh[c]', 0, NaN, 0, 1, [], 0, 0.800000);">nadh[c]</a> 
+
+<a href="matlab: surfNet([], [], 0, NaN, 0, 1, [], 0, 0.800000, struct('showPrev', true));">Show previous steps...</a>
+'glucose' is not a metabolite, reaction or gene of the model.
+Searching for related objects:
+
+  id   Met       metNames, metFormulas, matches
+ #35   <a href="matlab: surfNet([], 'glc-D[e]', 0, NaN, 0, 1, [], 0, 0.800000);">glc-D[e]</a>  D-Glucose, C6H12O6, metNames:D-Glucose
+
+  id   Rxn        LB / UB, rxnNames, grRules, matches
+ #28   <a href="matlab: surfNet([], 'EX_glc(e)', 0, NaN, 0, 1, [], 0, 0.800000);">EX_glc(e)</a>  -10 / 1000, D-Glucose exchange, , rxnNames:D-Glucose exchange
+     <a href="matlab: surfNet([], 'glc-D[e]', 0, NaN, 0, 1, [], 0, 0.800000);">glc-D[e]</a>   <=> 
+'glucose' is not a metabolite, reaction or gene of the model.
+Searching for related objects:
+
+  id   Met       metNames, metFormulas, matches
+ #35   <a href="matlab: surfNet([], 'glc-D[e]', 0, NaN, 0, 1, [], 0, 0.600000);">glc-D[e]</a>  D-Glucose, C6H12O6, metNames:D-Glucose
+ #34   <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.600000);">  g6p[c]</a>  D-Glucose-6-phosphate, C6H11O9P, metNames:D-Glucose-6-phosphate
+
+  id   Rxn        LB / UB, rxnNames, grRules, matches
+ #28   <a href="matlab: surfNet([], 'EX_glc(e)', 0, NaN, 0, 1, [], 0, 0.600000);">EX_glc(e)</a>  -10 / 1000, D-Glucose exchange, , rxnNames:D-Glucose exchange
+     <a href="matlab: surfNet([], 'glc-D[e]', 0, NaN, 0, 1, [], 0, 0.600000);">glc-D[e]</a>   <=> 
+ #74   <a href="matlab: surfNet([], 'PGI', 0, NaN, 0, 1, [], 0, 0.600000);">      PGI</a>  -1000 / 1000, glucose-6-phosphate isomerase, <a href="matlab: surfNet([], 'b4025', 0, NaN, 0, 1, [], 0, 0.600000);">b4025</a>, rxnNames:glucose-6-phosphate isomerase
+     <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.600000);">g6p[c]</a>   <=>   <a href="matlab: surfNet([], 'f6p[c]', 0, NaN, 0, 1, [], 0, 0.600000);">f6p[c]</a> 
+ #48   <a href="matlab: surfNet([], 'G6PDH2r', 0, NaN, 0, 1, [], 0, 0.600000);">  G6PDH2r</a>  -1000 / 1000, glucose 6-phosphate dehydrogenase, <a href="matlab: surfNet([], 'b1852', 0, NaN, 0, 1, [], 0, 0.600000);">b1852</a>, rxnNames:glucose 6-phosphate dehydrogenase
+     <a href="matlab: surfNet([], 'g6p[c]', 0, NaN, 0, 1, [], 0, 0.600000);">g6p[c]</a> + <a href="matlab: surfNet([], 'nadp[c]', 0, NaN, 0, 1, [], 0, 0.600000);">nadp[c]</a>   <=>   <a href="matlab: surfNet([], '6pgl[c]', 0, NaN, 0, 1, [], 0, 0.600000);">6pgl[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.600000);">h[c]</a> + <a href="matlab: surfNet([], 'nadph[c]', 0, NaN, 0, 1, [], 0, 0.600000);">nadph[c]</a> 
+'ATP' is not a metabolite, reaction or gene of the model.
+Searching for related objects:
+
+  id   Met     metNames, metFormulas, matches
+ #17   <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a>  ATP, C10H12N5O13P3, metNames:ATP, mets:atp
+
+  id   Rxn     LB / UB, rxnNames, grRules, matches
+ #11   <a href="matlab: surfNet([], 'ATPM', 0, NaN, 0, 1, [], 0, 0.800000);">  ATPM</a>  8.39 / 1000, ATP maintenance requirement, , rxnNames:ATP maintenance requirement, rxns:ATPM
+     <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h2o[c]</a>   ->   <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> + <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a> 
+ #12   <a href="matlab: surfNet([], 'ATPS4r', 0, NaN, 0, 1, [], 0, 0.800000);">ATPS4r</a>  -1000 / 1000, ATP synthase (four protons for one ATP), (((<a href="matlab: surfNet([], 'b3736', 0, NaN, 0, 1, [], 0, 0.800000);">b3736</a> and <a href="matlab: surfNet([], 'b3737', 0, NaN, 0, 1, [], 0, 0.800000);">b3737</a> and <a href="matlab: surfNet([], 'b3738', 0, NaN, 0, 1, [], 0, 0.800000);">b3738</a>) and (<a href="matlab: surfNet([], 'b3731', 0, NaN, 0, 1, [], 0, 0.800000);">b3731</a> and <a href="matlab: surfNet([], 'b3732', 0, NaN, 0, 1, [], 0, 0.800000);">b3732</a> and <a href="matlab: surfNet([], 'b3733', 0, NaN, 0, 1, [], 0, 0.800000);">b3733</a> and <a href="matlab: surfNet([], 'b3734', 0, NaN, 0, 1, [], 0, 0.800000);">b3734</a> and <a href="matlab: surfNet([], 'b3735', 0, NaN, 0, 1, [], 0, 0.800000);">b3735</a>)) or ((<a href="matlab: surfNet([], 'b3736', 0, NaN, 0, 1, [], 0, 0.800000);">b3736</a> and <a href="matlab: surfNet([], 'b3737', 0, NaN, 0, 1, [], 0, 0.800000);">b3737</a> and <a href="matlab: surfNet([], 'b3738', 0, NaN, 0, 1, [], 0, 0.800000);">b3738</a>) and (<a href="matlab: surfNet([], 'b3731', 0, NaN, 0, 1, [], 0, 0.800000);">b3731</a> and <a href="matlab: surfNet([], 'b3732', 0, NaN, 0, 1, [], 0, 0.800000);">b3732</a> and <a href="matlab: surfNet([], 'b3733', 0, NaN, 0, 1, [], 0, 0.800000);">b3733</a> and <a href="matlab: surfNet([], 'b3734', 0, NaN, 0, 1, [], 0, 0.800000);">b3734</a> and <a href="matlab: surfNet([], 'b3735', 0, NaN, 0, 1, [], 0, 0.800000);">b3735</a>) and <a href="matlab: surfNet([], 'b3739', 0, NaN, 0, 1, [], 0, 0.800000);">b3739</a>)), rxnNames:ATP synthase (four protons for one ATP), rxns:ATPS4r
+     <a href="matlab: surfNet([], 'adp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">adp[c]</a> + 4 <a href="matlab: surfNet([], 'h[e]', 0, NaN, 0, 1, [], 0, 0.800000);">h[e]</a> + <a href="matlab: surfNet([], 'pi[c]', 0, NaN, 0, 1, [], 0, 0.800000);">pi[c]</a>   <=>   <a href="matlab: surfNet([], 'atp[c]', 0, NaN, 0, 1, [], 0, 0.800000);">atp[c]</a> + <a href="matlab: surfNet([], 'h2o[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h2o[c]</a> + 3 <a href="matlab: surfNet([], 'h[c]', 0, NaN, 0, 1, [], 0, 0.800000);">h[c]</a> 
