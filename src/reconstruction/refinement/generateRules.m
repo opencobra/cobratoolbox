@@ -22,6 +22,10 @@ function [model] = generateRules(model, printLevel)
     if ~exist('printLevel', 'var')
         printLevel = 1;
     end
+    if ~isfield(model, 'grRules')
+        warning 'This function can be only be used on a model that has grRules field!\n';
+        return;
+    end
     [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
     allGenes =  unique([genes{~cellfun(@isempty,genes)}]); %Get the unique gene list
     if (~isfield(model, 'genes'))

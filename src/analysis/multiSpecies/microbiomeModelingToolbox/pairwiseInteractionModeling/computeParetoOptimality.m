@@ -68,19 +68,19 @@ end
 
 % Find the range of possible optimal values for both objective functions
 model = changeObjective(model, rxn1);
-model.osense = -1;
+model.osenseStr = 'max';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dmaxRxn1 = solution.obj;
 model = changeObjective(model, rxn2);
-model.osense = 1;
+model.osenseStr = 'min';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dminRxn1 = solution.obj;
 model = changeObjective(model, rxn2);
-model.osense = -1;
+model.osenseStr = 'max';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dmaxRxn2 = solution.obj;
 model = changeObjective(model, rxn2);
-model.osense = 1;
+model.osenseStr = 'min';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dminRxn2 = solution.obj;
 
@@ -90,7 +90,7 @@ rxnID1 = find(ismember(model.rxns, rxn1));
 rxnID2 = find(ismember(model.rxns, rxn2));
 
 % Start the computation of the Pareto frontier
-model.osense = -1;
+model.osenseStr = 'max';
 ParetoFrontier{1, 1} = 'Index';
 ParetoFrontier{1, 2} = rxn1;
 ParetoFrontier{1, 3} = rxn2;

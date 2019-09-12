@@ -22,16 +22,16 @@ after_success:
 
     # deploy documentation
     - if [[ "$MATLAB_VER" == "R2017b" && "$ARCH" == "Linux" && "$JENKINS_PULL_REQUEST" != "True" ]]; then
-      export PATH="/home/sbg-jenkins/.local/bin":$PATH;
+      export PATH="/home/jenkins/.local/bin":$PATH;
       pip install --upgrade --user -r docs/requirements.txt;
-      python ~/github_stats.py $(pwd)/docs/source/list_contributors.rst;
+      python $ARTENOLIS_SCRIPTS_PATH/src/github_stats.py $(pwd)/docs/source/list_contributors.rst;
       export GIT_LOCAL_BRANCH=${GIT_BRANCH##origin/};
       echo $GIT_LOCAL_BRANCH;
-      ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH && cd ~/tmp/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH';
-      ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH && cd ~/tmp/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init';
-      ssh -t sbg-jenkins@10.184.148.14 'GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && echo $GIT_LOCAL_BRANCH && cd ~/tmp/cobratoolbox && ~/tmp/cobratoolbox/docs/prepareTutorials.sh -c=~/tmp/cobratoolbox -t=~/tmp/COBRA.tutorials -p=~/tmp -m=html,pdf,png';
-      cd ~/tmp/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
-      cd ~/tmp/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init;
+      scp "$(pwd)/.artenolis/deployTutorials.sh" jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC/scratch/.;
+      ssh -t jenkins@lcsbs-mac-pro.uni.lux 'source ~/.profile && GIT_LOCAL_BRANCH='"'$GIT_LOCAL_BRANCH'"' && sh $ARTENOLIS_ROOT_PATH_MAC/scratch/deployTutorials.sh';
+      scp -r jenkins@lcsbs-mac-pro.uni.lux:$ARTENOLIS_ROOT_PATH_MAC/scratch/tutorials $ARTENOLIS_DATA_PATH/cobratoolbox/.;
+      cd $ARTENOLIS_DATA_PATH/repos/COBRA.tutorials && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH;
+      cd $ARTENOLIS_DATA_PATH/repos/cobratoolbox && git stash && git checkout $GIT_LOCAL_BRANCH && git pull origin $GIT_LOCAL_BRANCH && git submodule update --init;
       python -c "from documenter.deploy import Documentation; doc = Documentation('github.com/opencobra/cobratoolbox', local_upstream='$(pwd)', ci='jenkins'); doc.deploy()";
       bash .artenolis/generateZip.sh;
       fi

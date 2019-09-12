@@ -35,7 +35,8 @@ fclose(refFile);
 testFile = fopen('edgeAttributes.txt', 'r');
 testVar = fscanf(testFile, '%c');
 fclose(testFile);
-
+refVar = regexprep(refVar,'[^a-zA-Z0-9]','');
+testVar = regexprep(testVar,'[^a-zA-Z0-9]','');
 assert(isequal(refVar, testVar))
 
 refFile_2 = fopen('refData_ecoli_core_model_edgeAttributes.txt', 'r');
@@ -44,7 +45,8 @@ fclose(refFile_2);
 testFile_2 = fopen('ecoli_core_model_edgeAttributes.txt', 'r');
 testVar_2 = fscanf(testFile_2, '%c');
 fclose(testFile_2);
-
+refVar_2 = regexprep(refVar_2,'[^a-zA-Z0-9]','');
+testVar_2 = regexprep(testVar_2,'[^a-zA-Z0-9]','');
 assert(isequal(refVar_2, testVar_2))
 
 % removal of the created files

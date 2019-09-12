@@ -196,7 +196,7 @@ html_title = u'The COBRA Toolbox'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-html_logo = 'https://prince.lcsb.uni.lu/img/logos/logo.png'
+html_logo = 'https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32

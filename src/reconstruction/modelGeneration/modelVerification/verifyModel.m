@@ -278,5 +278,3 @@ valid = cellfun(@(x) isfield(model,x) && ...
     ~isfield(results.Errors,'inconsistentFields') || ...            %whether the fieldProperties field
     ~isfield(results.Errors.inconsistentFields,x)),FieldNames);  % is inconsistent, if it exists.
 end
-
-

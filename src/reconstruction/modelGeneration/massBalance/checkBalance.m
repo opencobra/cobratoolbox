@@ -29,6 +29,7 @@ function [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel,
 %    missingFormulaeBool:    boolean variable for missing formulae
 %
 % .. Author: - Ronan M.T. Fleming, July 2009
+%            - Uri David Akavia, May 2019
 
 if ~isfield(model,'metFormulas')
     error('model structure must contain model.metFormulas field')
@@ -39,7 +40,7 @@ end
 if ~exist('fileName','var')
     fileName='';
 end
-[nMet,nRxn]=size(model.S);
+nMet=size(model.S, 1);
 if ~exist('missingFormulaeBool','var')
     missingFormulaeBool=cellfun(@isempty, model.metFormulas);
 end
@@ -55,7 +56,7 @@ end
 E=zeros(nMet,1);
 firstMissing=0;
 for m=1:nMet
-    if isempty(model.metFormulas{m}) | missingFormulaeBool(m,1)
+    if isempty(model.metFormulas{m}) || missingFormulaeBool(m,1)
         missingFormulaeBool(m,1)=1;
         if printLevel==1
             fprintf('%s\t%s\n',int2str(m),[model.mets{m} ' has no formula'])
@@ -67,11 +68,6 @@ for m=1:nMet
             firstMissing=1;
             fprintf(fid,'%s\t%s\n',int2str(m),model.mets{m});
         end
-
-        % NaN will show up in dE for the corresponding reaction
-        % inidcating that the mass balance of the reaction is unknown.
-        E(m,1)=NaN;
-        % error('model structure must contain model.metForumlas field for each metabolite');
     else
         try
             E(m,1)=numAtomsOfElementInFormula(model.metFormulas{m},element,printLevel);
@@ -85,6 +81,11 @@ end
 
 dE=model.S'*E;
 dE(abs(dE) < 1e-12) = 0;
+% setting reactions with unknown metabolites to NaN
+% inidcating that the mass balance of the reaction is unknown.
+dE(any(model.S(missingFormulaeBool, :))) = NaN;
+% Setting E for unknown metaoblties to NaN
+E(missingFormulaeBool) = NaN;
 
 if exist('fid','var')
     fclose(fid);

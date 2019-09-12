@@ -57,7 +57,7 @@ for k = 1:length(solverPkgs.LP)
         doQP = true & solverQPOK;
     end
     if ismember(currentSolver,solverPkgs.MILP)
-        solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+        solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'MILP', 0);
         doMILP = true & solverMILPOK;
     end
     % change the COBRA solver (LP)
@@ -166,7 +166,7 @@ if ~isempty(pttoolboxPath)
             doQP = true & solverQPOK;
         end
         if ismember(currentSolver,solverPkgs.MILP)
-            solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'QP', 0);
+            solverMILPOK = changeCobraSolver(solverPkgs.LP{k}, 'MILP', 0);
             doMILP = true & solverMILPOK;
         end
         if solverLPOK 

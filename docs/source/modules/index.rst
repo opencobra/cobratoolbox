@@ -14,7 +14,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox analysis">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_analysis_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_analysis_wb.png"></div>
      <div class="sectionTitle"><h3>Analysis</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -50,7 +50,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox base">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_base_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_base_wb.png"></div>
      <div class="sectionTitle"><h3>Base</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -86,7 +86,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox dataIntegration">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_dataIntegration_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_dataIntegration_wb.png"></div>
      <div class="sectionTitle"><h3>Data integration</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -122,7 +122,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox design">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_design_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_design_wb.png"></div>
      <div class="sectionTitle"><h3>Design</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -158,7 +158,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox reconstruction">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_reconstruction_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_reconstruction_wb.png"></div>
      <div class="sectionTitle"><h3>Reconstruction</h3></div>
      <div class="row">
        <div class="col-xs-6">
@@ -194,7 +194,7 @@ Functions
 .. raw:: html
 
    <div class="tutorialSectionBox visualization">
-     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/img/icon_visualization_wb.png"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://prince.lcsb.uni.lu/cobratoolbox/img/icon_visualization_wb.png"></div>
      <div class="sectionTitle"><h3>Visualization</h3></div>
      <div class="row">
        <div class="col-xs-6">

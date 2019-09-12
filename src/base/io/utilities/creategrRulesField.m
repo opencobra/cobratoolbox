@@ -13,13 +13,15 @@ function model = creategrRulesField(model, positions)
 %
 %    positions:         The positions to update. Can be supplied either as 
 %                       logical array, double indices, or reaction names (Default: model.rxns)
+%                       If the model did not have grRules before, ALL rxns
+%                       will have grRules created
 %
 % OUTPUT:
 %    model:    The Output model with a grRules field
 %
 % .. Authors: - Thomas Pfau May 2017
 
-if ~exist('positions','var')
+if ~exist('positions','var') || ~isfield(model, 'grRules')
     pos = true(size(model.rxns));
 else
     if islogical(positions)
@@ -31,7 +33,7 @@ else
         elseif iscell(positions)
             pos = ismember(model.rxns,positions);
             if ~sum(pos) == numel(unique(positions))
-                error('The following reactions are not part of this model:\n%s\n',positions(~ismember(postions, model.rxns)));
+                error('The following reactions are not part of this model:\n%s\n',positions{~ismember(postions, model.rxns)});
             end
         end
         

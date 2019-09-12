@@ -15,7 +15,7 @@ global SOLVERS
 currentDir = pwd;
 
 requireOneSolverOf = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'};
-prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf); 
+prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 
 
 % initialize the test
@@ -62,14 +62,21 @@ modelJoint = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom | cCom, :)
 modelJoint = changeRxnBounds(modelJoint, modelJoint.infoCom.EXsp(bCom | cCom, :), 5, 'u');
 
 % TEST printUptakeBoundCom to look at the uptake bound for community model
+if exist('printUptakeBoundCom.txt', 'file')
+    delete('printUptakeBoundCom.txt');
+end
 diary('printUptakeBoundCom.txt');
-printUptakeBoundCom(modelJoint, 1);
+[printMatrix, printMet] = printUptakeBoundCom(modelJoint, 1);
 diary off;
 
+% check the printed text
 text1 = importdata('printUptakeBoundCom.txt');
 text2 = importdata('refData_printUptakeBoundCom.txt');
 assert(isequal(text1, text2));
 delete('printUptakeBoundCom.txt');  % remove the generated file
+% check the returned data is the same as what is printed
+assert(isequal(printMatrix, [-10, -1000, -1000; 0, -5, -5; 0, -5, -5]))
+assert(isequal(printMet, {'(1) a';'(2) b';'(3) c'}))
 
 % TEST createMultipleSpeciesModel and printUptakeBoundCom with a model with host organism
 % build a model with host
@@ -83,6 +90,9 @@ modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXsp(bCom | cCom,
 modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXhost(bCom | cCom, :), -5, 'l');
 modelWtHost = changeRxnBounds(modelWtHost, modelWtHost.infoCom.EXhost(aCom, :), 0, 'l');
 % print uptake bounds and compare
+if exist('printUptakeBoundCom_wt_host.txt', 'file')
+    delete('printUptakeBoundCom_wt_host.txt');
+end
 diary('printUptakeBoundCom_wt_host.txt');
 printUptakeBoundCom(modelWtHost, 1);
 diary off;
@@ -157,7 +167,7 @@ for jTest = 1:2
                 tol = 1e-2;  % tolerance for comparing results
         end
         tolPercent = 0.05;  % tolerance for percentage difference
-        
+
         % TEST SteadyCom
         % test different algoirthms
         data = load('refData_SteadyCom', 'result');
@@ -294,7 +304,7 @@ for jTest = 1:2
         assert(max(max(abs(minFlux - data.minFlux) ./ data.minFlux)) < tolPercent)
         assert(max(max(abs(maxFlux - data.maxFlux) ./ data.maxFlux)) < tolPercent)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
-        
+
         % test with an infeasible model
         [minFlux, maxFlux, ~, ~, GRvector] = SteadyComFVA(modelTest);
         assert(all(isnan(minFlux)) & all(isnan(maxFlux)) & isnan(GRvector));
@@ -305,7 +315,7 @@ for jTest = 1:2
         minFluxRef = [0.2856653; 0.3749391];
         maxFluxRef = [0.6250234; 0.7143061];
         assert(max(max(abs([minFlux, maxFlux] - [minFluxRef, maxFluxRef]) ./ [minFluxRef, maxFluxRef])) < tolPercent)
-        
+
         % test the sub-function without given growth rate
         [minFlux, maxFlux, ~, ~, ~, gr] = SteadyComFVAgr(modelJoint, struct('GRtol', 1e-6), [], 'feasTol', feasTol);
         assert(max(max(abs([minFlux, maxFlux] - [data.minFlux(:, 1), data.maxFlux(:, 1)]) ./ [data.minFlux(:, 1), data.maxFlux(:, 1)])) < tolPercent)
@@ -514,7 +524,7 @@ for jTest = 1:2
         assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tolPercent)
         assert(devSt < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
-        
+
         % test loading Cplex model
         if jTest == 1
             optionsLoad = struct('GRtol', 1e-6, 'loadModel', 'testSteadyComSaveModel', ...
@@ -575,8 +585,8 @@ for jTest = 1:2
         assert(max(max(max(abs(fluxRange - data.fluxRange) ./ abs(data.fluxRange)))) < tolPercent)
         assert(devSt < tol)
         assert(max(abs(GRvector - data.GRvector) ./ data.GRvector) < tolPercent)
-        
-        % test parallel computation        
+
+        % test parallel computation
         rmdir([pwd filesep 'testSteadyComPOA'], 's')
         if parWorks
             options.threads = 2;

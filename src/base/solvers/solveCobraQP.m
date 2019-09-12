@@ -146,42 +146,20 @@ switch solver
         end
         %%
      case 'ibm_cplex'
-        if (~isempty(csense))
-            b_L(csense == 'E') = b(csense == 'E');
-            b_U(csense == 'E') = b(csense == 'E');
-            b_L(csense == 'G') = b(csense == 'G');
-            b_U(csense == 'G') = inf;
-            b_L(csense == 'L') = -inf;
-            b_U(csense == 'L') = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
-
-        %Set up the linear part
-        CplexQPProblem = Cplex();
-        CplexQPProblem.Model.A = A;
-        CplexQPProblem.Model.lb = lb;
-        CplexQPProblem.Model.ub = ub;
-        CplexQPProblem.Model.rhs = b_U;
-        CplexQPProblem.Model.lhs = b_L;
-        CplexQPProblem.Model.obj = osense*c;
-        CplexQPProblem.Model.Q = F;
-        %optional parameters
-        if cobraParams.printLevel == 0  % set display function as empty
-            CplexQPProblem.DisplayFunc=[];
-        end
-        CplexQPProblem.Param.output.writelevel.Cur = cobraParams.printLevel;
-        CplexQPProblem.Param.qpmethod.Cur = 1;
-        CplexQPProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-        CplexQPProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
-        % Set IBM-Cplex-specific parameters
-        CplexQPProblem = setCplexParam(CplexQPProblem, solverParams, cobraParams.printLevel);
-        %Set the feasibility Tolerance if it changed.
+     % Initialize the CPLEX object
+        CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+        [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,cobraParams,solverParams,'QP');
+        
+        %Update Tolerance According to actual setting
         cobraParams.feasTol = CplexQPProblem.Param.simplex.tolerances.feasibility.Cur;
 
-
+        % optimize the problem
         Result = CplexQPProblem.solve();
+        if logToFile
+            % Close the output file
+            fclose(logFile);
+        end        
+        
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
         end
@@ -195,11 +173,13 @@ switch solver
             f = Result.objval;
         end
         origStat = Result.status;
+        % See detailed table of result codes in
+        % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
         if (origStat == 1 || origStat == 101)
             stat = 1; % Optimal
         elseif (origStat == 3 || origStat == 4 || origStat == 103)
-            stat = 1; % Infeasible
-        elseif (origStat == 2)
+            stat = 0; % Infeasible
+        elseif (origStat == 2 || origStat == 118 || origStat == 119)
             stat = 2; % Unbounded
         else
             stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
