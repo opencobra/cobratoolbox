@@ -50,3 +50,9 @@
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
 	ignore = dirty
+[submodule "external/base/samplers/looplessFluxSampler"]
+	path = external/base/samplers/looplessFluxSampler
+	url = https://github.com/rmtfleming/looplessFluxSampler
+[submodule "external/base/samplers/constrained-logconcave-sampler"]
+	path = external/base/samplers/constrained-logconcave-sampler
+	url = https://github.com/Bounciness/constrained-logconcave-sampler

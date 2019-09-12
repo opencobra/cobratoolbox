@@ -1,6 +1,13 @@
 function LPproblem = buildLPproblemFromModel(model, checked)
 % Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.
 %
+% 
+%.. math::
+%
+%    max/min  ~& c^T x \\
+%    s.t.     ~& [S, E; C, D] x <=> b ~~~~~~~~~~~:y \\
+%             ~& lb \leq x \leq ub~~~~:w
+%
 % USAGE:
 %
 %    LPproblem = buildLPproblemFromModel(model)
@@ -44,6 +51,8 @@ function LPproblem = buildLPproblemFromModel(model, checked)
 if ~exist('checked','var')
     checked = true;
 end
+
+%backward compatibility with old formulation of coupling constraints
 
 %Build some fields, if they don't exist
 

@@ -388,6 +388,9 @@ function initCobraToolbox(updateToolbox)
         [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
                                      SOLVERS.(supportedSolversNames{i}).type{1},...
                                      0, 2);
+        if strcmp(SOLVERS.(supportedSolversNames{i}),'gurobi')
+            disp(SOLVERS.(supportedSolversNames{i}));
+        end
         if solverOK
             SOLVERS.(supportedSolversNames{i}).working = true;
         end
