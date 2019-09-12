@@ -238,8 +238,11 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         end
     end
 
+    matver = split(version, ".");
+    matver = str2double(strcat(char(matver(1)), '.', char(matver(2))));
+
     % special case: cplex_direct
-    if strcmp(solverName, 'cplex_direct') && ~verLessThan('matlab', '8.4')
+    if strcmp(solverName, 'cplex_direct') && matver < 8.4
         compatibleStatus = 0;
         if printLevel > 0
             fprintf([' > ', 'cplex_direct is NOT compatible with MATLAB ', versionMatlab, ' on your operating system. Try using the tomlab_cplex interface.\n']);
