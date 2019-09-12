@@ -1,4 +1,4 @@
-function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind)
+function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, cpxControl, advind, useMtFVA)
 % Performs flux variablity analysis
 %
 % USAGE:
@@ -32,6 +32,12 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, 
 %
 %                           - 0 : default
 %                           - 1 : uses the original problem solution basis as advanced basis
+%
+%   useMtFVA:          run FVA multi-threaded via an external JVM with CPLEX as solver
+%                      does not return Vmin, Vmax; requires allowLoops = true and method = 'FBA'
+%
+%                           - 0 : default, do not use mtFVA
+%                           - 1 : use mtFVA
 %
 % OUTPUTS:
 %    minFlux:          Minimum flux for each reaction
@@ -77,6 +83,9 @@ end
 if nargin < 9
    advind = 0;
 end
+if nargin < 10
+    useMtFVA= false;
+end
 if isempty(optPercentage)
     optPercentage = 100;
 end
@@ -88,6 +97,10 @@ end
 if any(~ismember(rxnNameList,model.rxns))
     presence = ismember(rxnNameList,model.rxns);
     error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
+end
+
+if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
+   error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
 end
 
 % Set up the problem size
@@ -189,7 +202,7 @@ solutionPool = zeros(length(model.lb), 0);
 
 v=ver;
 PCT = 'Parallel Computing Toolbox';
-if  any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
+if ~useMtFVA && any(strcmp(PCT,{v.Name})) && license('test','Distrib_Computing_Toolbox')
     try
         p = gcp('nocreate');
         PCT_status=1;
@@ -200,8 +213,6 @@ else
     PCT_status=0;  % Parallel Computing Toolbox not found.
 end
 
-minFlux = model.lb(ismember(model.rxns,rxnNameList));
-maxFlux = model.ub(ismember(model.rxns,rxnNameList));
 preCompMaxSols = cell(nRxns,1);
 preCompMinSols = cell(nRxns,1);
 
@@ -210,6 +221,8 @@ preCompMinSols = cell(nRxns,1);
 %reactions.
 QuickProblem = LPproblem;
 [Presence,Order] = ismember(rxnNameList,model.rxns);
+minFlux = model.lb(Order);
+maxFlux = model.ub(Order);
 QuickProblem.c(:) = 0;
 QuickProblem.c(Order(Presence)) = 1;
 if ~allowLoops
@@ -259,8 +272,13 @@ end
 rxnListMin = rxnNameList(~minSolved);
 rxnListMax = rxnNameList(~maxSolved);
 
-
-if ~PCT_status %aka nothing is active
+if useMtFVA
+    [~, idxMin]= ismember(rxnListMin, model.rxns);
+    [~, idxMax]= ismember(rxnListMax, model.rxns);
+    [fvalb, fvaub]= mtFVA(LPproblem, [idxMax(:); -idxMin(:)], cpxControl);
+    minFlux= fvalb(Order);
+    maxFlux= fvaub(Order);
+elseif ~PCT_status %aka nothing is active
     if minNorm
         for i = 1:length(rxnNameList)
         

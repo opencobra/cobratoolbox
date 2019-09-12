@@ -78,7 +78,7 @@ for k = 1:length(solverPkgs.LP)
         rxnID = findRxnIDs(model, rxnNames);
         
         % check if each flux value corresponds to a pre-calculated value
-        for i = 1:size(rxnID)
+        for i = 1:length(rxnID)
             % test the components of the minFlux and maxFlux vectors
             assert(minFlux(i) - tol <= minFluxT(i))
             assert(minFluxT(i) <= minFlux(i) + tol)
