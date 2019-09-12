@@ -10,13 +10,14 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %    model:                      structure with field:
 %
 %                                  * .S - `m` x `n` stoichiometric matrix
+%                                  * .rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
 %
 % OPTIONAL INPUTS:
 %    param:                      contains:
-%
+%                                  * param.LPsolver - the LP solver to be used  
 %                                  * param.epsilon - (1e-4) minimum nonzero mass
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
-%                                  * param.method - {'fastcc', 'dc'}
+%                                  * param.method - {'swiftcc', 'fastcc', 'dc'}
 %    printLevel:                 verbose level
 %
 % OUTPUTS:
@@ -31,7 +32,9 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * .fluxInConsistentMetBool
 %                                  * .fluxInConsistentRxnBool
 %
-% .. Author: - Ronan Fleming, 2017
+% .. Authors: 
+%       - Ronan Fleming, 2017
+%       - Mojtaba Tefagh, March 2019 - integration of swiftcc
 
 if ~exist('param','var')
     param.epsilon=1e-4;
@@ -84,6 +87,13 @@ fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
 sol = optimizeCbModel(model);
 if (sol.stat == 1)
     switch method
+        case 'swiftcc'
+            if ~isfield(param,'LPsolver')
+                solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
+                param.LPsolver = solvers.LP{1};
+            end
+            indFluxConsist = swiftcc(model.S, model.rev, param.LPsolver);
+            fluxConsistentRxnBoolTemp(indFluxConsist) = 1;
         case {'fastcc','null_fastcc'}
             %fast consistency check code from Nikos Vlassis et al
             % INPUT
