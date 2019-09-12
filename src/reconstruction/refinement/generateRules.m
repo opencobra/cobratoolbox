@@ -27,11 +27,13 @@ function [model] = generateRules(model, printLevel)
     if (~isfield(model, 'genes'))
         newGenes = allGenes;
     else
+%         C = setdiff(A,B) for vectors A and B, returns the values in A that 
+%         are not in B with no repetitions. C will be sorted.
         newGenes = setdiff(allGenes,model.genes);
     end
     if ~isempty(newGenes)
         if printLevel
-            warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+            warning('Found the following genes in grRules that were not present in model.genes:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
         end
         model = addGenes(model,newGenes);
     end

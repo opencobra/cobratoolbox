@@ -11,7 +11,7 @@ function restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 %    S:                     `m x n` stoichiometric matrix
 %    rowBool:               `m x 1` boolean vector
 %    colBool:               `n x 1` boolean vector
-%    mode:                  'exclusive' or 'inclusive'
+%    mode:                  'exclusive' , 'inclusive' or 'partial'
 %
 % OUTPUT:
 %    restrictedRowBool:     `m x 1` boolean vector
