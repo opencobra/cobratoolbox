@@ -1,4 +1,4 @@
-function [expressionRxns, parsedGPR] = mapExpressionToReactions_efmviz(model, expressionData, minSum)                                          
+function [expressionRxns, parsedGPR] = mapExpressionToReactions(model, expressionData, minSum)                                          
 % Determines the expression data associated to each reaction present in
 % the model 
 %
@@ -22,9 +22,9 @@ function [expressionRxns, parsedGPR] = mapExpressionToReactions_efmviz(model, ex
 %
 % Original Authors:
 %       - Anne Richelle, May 2017 - integration of new extraction methods 
-% Adapted by Chaitra Sarathy to use significance levels along with
-% expression value and respective functions in efmviz
-% Last modified: Chaitra Sarathy, 13 Aug 2019
+%       - Modified by Chaitra Sarathy, Aug 2019, to include significance
+%       value as additional input
+
 if ~exist('minSum','var')
     minSum = false;
 end
@@ -32,7 +32,7 @@ end
 parsedGPR = GPRparser(model,minSum);% Extracting GPR data from model
 
 % Find wich genes in expression data are used in the model
-[gene_id, gene_expr, gene_sig] = findUsedGenesLevels_efmviz(model,expressionData);
+[gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model,expressionData);
 
 % Link the gene to the model reactions
-expressionRxns = selectGeneFromGPR_efmviz(model, gene_id, gene_expr, gene_sig, parsedGPR, minSum);
+expressionRxns = selectGeneFromGPR(model, gene_id, gene_expr, gene_sig, parsedGPR, minSum);

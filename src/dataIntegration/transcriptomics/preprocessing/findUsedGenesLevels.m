@@ -1,4 +1,4 @@
-function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels_efmviz(model, exprData, printLevel)
+function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, printLevel)
 % Returns vectors of gene identifiers and corresponding gene expression
 % levels for each gene present in the model ('model.genes').
 %
@@ -30,9 +30,8 @@ function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels_efmviz(model, expr
 %
 %   
 % Original Authors: - S. Opdam & A. Richelle May 2017
-% Adapted by Chaitra Sarathy to use significance levels along with
-% expression value 
-% Last modified: Chaitra Sarathy, 13 Aug 2019
+%       - Modified by Chaitra Sarathy, Aug 2019, to include significance
+%       value as additional input
 
 if ~exist('printLevel','var')
     printLevel = 0;

@@ -1,4 +1,4 @@
-function expressionRxns = selectGeneFromGPR_efmviz(model, gene_names, gene_exp, gene_sig, parsedGPR, minSum)
+function expressionRxns = selectGeneFromGPR(model, gene_names, gene_exp, gene_sig, parsedGPR, minSum)
 % Map gene expression to reaction expression using the GPR rules. An AND
 % will be replaced by MIN and an OR will be replaced by MAX.
 %
@@ -26,11 +26,10 @@ function expressionRxns = selectGeneFromGPR_efmviz(model, gene_names, gene_exp, 
 %                     reaction
 %           .rxnExp - expression for each rxn associated with each
 %                     reaction
+%
 % ORIGINAL AUTHOR: Anne Richelle, May 2017
-% Adapted by Chaitra Sarathy to use significance levels along with
-% expression value 
-% Last modified: Chaitra Sarathy, 13 Aug 2019
-
+%       - Modified by Chaitra Sarathy, Aug 2019, to include significance
+%       value as additional input
 
 if ~exist('minSum','var')
     minSum = false;
