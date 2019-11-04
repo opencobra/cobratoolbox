@@ -302,6 +302,19 @@ if isfield(model,'metChEBIID')
     end
 end
 
+if isfield(model,'metPubChemID')
+    % some provide the chebi IDs as numbers, while the rest is string..
+    numericIDs = cellfun(@isnumeric, model.metPubChemID);    
+    if any(numericIDs)
+        model.metPubChemID(numericIDs) = cellfun(@num2str, model.metPubChemID(numericIDs),'Uniform',0);
+    end
+    % should not be NaN but empty.
+    nanIDs = cellfun(@(x) strcmp(x,'NaN'),model.metPubChemID);
+    if any(nanIDs)
+        model.metPubChemID(nanIDs) = {''};
+    end
+end
+
 % adjust a genes field which is 0x0 (should be 0x1)
 if size(model.genes,1) == 0 && size(model.genes,2) == 0 
     model.genes = cell(0,1);
