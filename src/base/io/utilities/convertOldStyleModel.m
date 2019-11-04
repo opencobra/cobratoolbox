@@ -105,7 +105,7 @@ mergefunction = {maxmerge, nanmerge,cellmerge,...
 definedFields = getDefinedFieldProperties();
     
 %convert from old coupling constraints if necessary
-model = convertOldCouplingFormat(model);
+model = convertOldCouplingFormat(model, printLevel);
 
 % convert old fields to current fields. 
 for i = 1:numel(oldFields)
