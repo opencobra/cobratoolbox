@@ -425,7 +425,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
             catch ME
                 solverOK = false;
             end
-            matver=split(version,".");
+            matver=split(version,'.');
             matver=str2double(strcat(char(matver(1)),'.',char(matver(2))));
             if matver < 8.6
             warning('off', 'MATLAB:lang:badlyScopedReturnValue');  % take out warning message
