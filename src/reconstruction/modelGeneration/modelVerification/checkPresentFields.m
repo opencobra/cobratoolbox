@@ -94,6 +94,36 @@ for i = 1:numel(presentFields)
         results.Errors.propertiesNotMatched.(testedField) = ['Field does not match the required properties: model.' testedField ' is ' class(x) ' but must satisfy: ' fieldProperties{presentFields(i),4}];
     end
     
+         x = model.(testedField);
+    try
+        propertiesMatched = eval(fieldProperties{presentFields(i),4});
+    catch
+        propertiesMatched = false;
+    end
+    if ~propertiesMatched
+        if ~isfield(results.Errors,'inconsistentFields')
+            results.Errors.propertiesNotMatched = struct();
+        end
+        % determine at which position(s) the field does not match the
+        % properties.
+        valid = false(numel(model.(testedField)),1);
+        temp = x;
+        for cpos = 1:numel(model.(testedField))
+            % we will walk over all elements. This will only give one index.
+            x = temp(cpos);
+            try
+                valid(cpos) = eval(fieldProperties{presentFields(i),4});
+            catch
+                % we need to catch any errors here as we evaluate, and an
+                % invalid evaluation also indicates an invalid field
+            end
+        end
+        invalidPos = find(~valid);
+        invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
+        fieldIndent = repmat(' ',1,length(testedField)+2);
+        results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s%s', fieldIndent, invalidPosString);
+    end 
+    
 end
 %disp('done')
 end
