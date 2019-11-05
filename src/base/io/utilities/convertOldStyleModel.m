@@ -295,6 +295,9 @@ if isfield(model,'comps') && ischar(model.comps)
 end
 
 if isfield(model,'metChEBIID')
+    if isnumeric(model.metChEBIID)
+        model.metChEBIID = num2cell(model.metChEBIID);
+    end
     % some provide the chebi IDs as numbers, while the rest is string..
     numericIDs = cellfun(@isnumeric, model.metChEBIID);
     if any(numericIDs)
@@ -303,6 +306,9 @@ if isfield(model,'metChEBIID')
 end
 
 if isfield(model,'metPubChemID')
+	if isnumeric(model.metPubChemID)
+        model.metPubChemID = num2cell(model.metPubChemID);
+    end
     % some provide the chebi IDs as numbers, while the rest is string..
     numericIDs = cellfun(@isnumeric, model.metPubChemID);    
     if any(numericIDs)
@@ -331,6 +337,36 @@ if isfield(model,'rules') && numel(model.rules) >= 2173
         model.rules{2173} = correctedRule;
         % also update the according grRules position.
         model = creategrRulesField(model, 2173);
+    end
+end
+
+if isfield(model,'rxnNames')
+    cellNames = cellfun(@iscell, model.rxnNames);
+    if any(cellNames)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.rxnNames(cellNames) = cellfun(@(x) strjoin(x,'\n'),model.rxnNames(cellNames),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules')
+    cellRules = cellfun(@iscell, model.grRules);
+    if any(cellRules)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.grRules(cellRules) = cellfun(@(x) strjoin(x,' or '),model.grRules(cellRules),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules') && isfield(model, 'rules')
+    % test, whether there are rules which are empty for exsting grRules
+    % Some old models did this to "safe memory"
+    emptyGR = cellfun(@isempty, model.grRules);
+    emptyRules = cellfun(@isempty, model.rules);
+    rulesToFill = emptyRules & ~emptyGR;
+    if any(rulesToFill)
+        % lets just do everything since it seems unreliable.
+        model = generateRules(model);
     end
 end
 
