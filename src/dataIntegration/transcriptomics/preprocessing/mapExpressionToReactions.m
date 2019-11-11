@@ -1,11 +1,11 @@
-function [expressionRxns, parsedGPR, gene_used, signifRxns] = mapExpressionToReactions(model, expressionData, minSum, exprSig)                                          
+function [expressionRxns, parsedGPR, gene_used, signifRxns] = mapExpressionToReactions(model, expressionData, minSum)                                          
 % Determines the expression data associated to each reaction present in
 % the model 
 %
 % USAGE:
 %
 %    [expressionRxns parsedGPR, gene_used] = mapExpressionToReactions(model, expressionData) 
-%    [expressionRxns, parsedGPR, gene_used, signifRxns] =  mapExpressionToReactions(model, expressionData, minSum, exprSig)
+%    [expressionRxns, parsedGPR, gene_used, signifRxns] =  mapExpressionToReactions(model, expressionData, minSum)
 %
 % INPUTS:
 %	model                   model strusture
@@ -14,13 +14,13 @@ function [expressionRxns, parsedGPR, gene_used, signifRxns] = mapExpressionToRea
 %                               format as model.genes
 %       .value                  Vector containing corresponding expression
 %                               value (FPKM/RPKM)
+%       .sig:               [optional field] Vector containing significance values of
+%                           expression corresponding to expression values in
+%                           expressionData.value (ex. p-values)
 %
 % OPTIONAL INPUT:
 %    minSum:         instead of using min and max, use min for AND and Sum
 %                    for OR (default: false, i.e. use min)
-%    exprSig:        Vector containing significance values of
-%                    expression corresponding to expression values in
-%                    expressionData.value (ex. p-values)
 %
 % OUTPUTS:
 %   expressionRxns:         reaction expression, corresponding to model.rxns.
@@ -41,10 +41,10 @@ if ~exist('minSum','var')
     minSum = false;
 end
 
-if ~exist('exprSig','var') 
-    exprSigFlag = 0; 
-else
+if isfield(expressionData, 'sig') 
     exprSigFlag = 1; 
+else
+    exprSigFlag = 0;
 end 
 
 % Extracting GPR data from model
@@ -60,7 +60,7 @@ if exprSigFlag == 0
     
 else
     
-    [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, expressionData, exprSig);
+    [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, expressionData);
     [expressionRxns,  gene_used, signifRxns] = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum, gene_sig);
     
 end

@@ -1,11 +1,11 @@
-function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, exprSig, printLevel)
+function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, printLevel)
 % Returns vectors of gene identifiers and corresponding gene expression
 % levels for each gene present in the model ('model.genes').
 %
 % USAGE:
 %
 %    [gene_id, gene_expr] = findUsedGenesLevels(model, exprData)
-%    [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, exprSig, printLevel)
+%    [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData)
 %
 % INPUTS:
 %
@@ -15,11 +15,10 @@ function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, e
 %       .gene                cell array containing GeneIDs in the same
 %                            format as model.genes
 %       .value               Vector containing corresponding expression value (FPKM)
-
+%       .sig:                [optional field] Vector containing significance values of
+%                            expression corresponding to expression values in exprData.value (ex. p-values)
 %
 % OPTIONAL INPUTS:
-%    exprSig:            Vector containing significance values of
-%                        expression corresponding to expression values in exprData.value (ex. p-values)
 %    printLevel:         Printlevel for output (default 0);
 %
 % OUTPUTS:
@@ -42,10 +41,10 @@ if ~exist('printLevel','var')
     printLevel = 0;
 end
 
-if ~exist('exprSig','var') 
-    exprSigFlag = 0; 
+if isfield(exprData, 'sig') 
+    exprSigFlag = 1; 
 else
-    exprSigFlag = 1;
+    exprSigFlag = 0;
 end 
 
 gene_expr=[];
@@ -61,16 +60,16 @@ for i = 1:numel(gene_id)
         gene_expr(i)=-1;        
     elseif length(dataID)==1
         gene_expr(i)=exprData.value(dataID);
-        if exprSigFlag ~= 0 
-            gene_sig(i) = exprSig(dataID);
+        if exprSigFlag == 1 
+            gene_sig(i) = exprData.sig(dataID);
         end 
     elseif length(dataID)>1    	
         if printLevel > 0
             disp(['Double for ',num2str(cur_ID)])
         end
         gene_expr(i) = mean(exprData.value(dataID));
-        if exprSigFlag ~= 0 
-            gene_sig(i) = mean(exprSig(dataID));
+        if exprSigFlag == 1 
+            gene_sig(i) = mean(exprData.sig(dataID));
         end 
     end    
 end
