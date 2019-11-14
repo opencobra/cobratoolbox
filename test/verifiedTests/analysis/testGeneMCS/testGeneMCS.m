@@ -76,6 +76,10 @@ for k = 1:length(solverPkgs)
         options.KO = 'g5';
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         assert(isequal(gmcs,{{'g5'}}));
+        % Check the gMCS
+        [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gmcs);
+        assert(IsMinimal);
+        assert(IsCutSet);
         %assert using one worker
         options = struct();
         options.numWorkers = 1;
