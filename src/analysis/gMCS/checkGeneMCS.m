@@ -17,7 +17,6 @@ function [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gMCSs, isof
 %    isoform_separator:     genes in the model have different isoformes,
 %                           which are identificated by a separator from the
 %                           gene name. (Default = '').
-%    numWorkers:            Number of workers. (Default = 1).
 % 
 % OUTPUT:
 %    IsCutSet:              array which indicates the biomass producion if
@@ -86,7 +85,7 @@ for i = 1:numel(gMCSs)
 end
 
 
-th = 1e-3;
+th = 1e-4; % same as default target b for gMCS
 
 IsCutSet = BiomassCutSet < th;
 IsMinimal = BiomassMinimal > th;
