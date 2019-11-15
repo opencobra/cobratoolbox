@@ -8,7 +8,7 @@ function [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gMCSs, isof
 %
 % USAGE:
 %
-%    [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMinimalCutSets(model, gMCSs, isoform_separator)
+%    [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gMCSs, isoform_separator)
 %
 % INPUTS:
 %    model:                 Metabolic model in COBRA format.
@@ -133,7 +133,7 @@ if strcmp(isoform_separator,'')
 else
     geneList = [];
     for g = 1:numel(gMCS)
-        idx = startsWith(model_raw.genes,[gMCS{g} isoform_separator]);
+        idx = ~cellfun(@isempty, regexp(model_raw.genes,['^' gMCS{g} isoform_separator]));
         geneList = [geneList; model_raw.genes(idx)];
     end
     geneList = unique(geneList);
