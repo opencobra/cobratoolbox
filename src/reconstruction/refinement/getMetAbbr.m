@@ -1,14 +1,14 @@
-function [compartments, uniqueCompartments] = getCompartment(mets)
-% Gets the compartment for each metabolite, and the unique compartments,
+function [metAbbr, uniqueMetAbbrs] = getMetAbbr(mets)
+% Gets the abbreviation for each metabolite, and the unique abbreviations,
 % from metabolite abbreviation(s), each of which must have compartment
 % symbol concatentated on the right hand side (i.e. `metAbbr[*]`).
 %
 % USAGE:
 %
-%    [compartments, uniqueCompartments] = getCompartment(mets)
+%    [metAbbr, uniqueMetAbbrs] = getMetComp(mets)
 %
 % INPUT:
-%    mets:               char array with a single metabolite abbreviation
+%    metAbbr:               char array with a single metabolite abbreviation
 %                           or 
 %                           `m x 1` cell array of metabolite abbreviations 
 %                           
@@ -23,7 +23,6 @@ function [compartments, uniqueCompartments] = getCompartment(mets)
 %
 % .. Author:
 %       - Ronan M.T. Fleming
-%       - Hulda SH, Nov. 2012   Switched from for loop to regular expression
 
 bool=0;
 if ischar(mets)
@@ -35,11 +34,11 @@ end
 pat = '(?<abbr>[^\[]+)\[(?<compartment>[^\]]+)\]';
 metStruct = regexp(mets,pat,'names'); % m x 1 cell array with fields abbr and compartment in each cell
 metStruct = [metStruct{:}]'; % Convert from cell array to double
-compartments = {metStruct.compartment}; % Concatenate compartment fields
-compartments = reshape(compartments,length(compartments),1);
-uniqueCompartments = unique(compartments);
+metAbbr = {metStruct.abbr}; % Concatenate compartment fields
+metAbbr = reshape(metAbbr,length(metAbbr),1);
+uniqueMetAbbrs = unique(metAbbr);
 
 if bool==1
-    compartments = compartments{1};
-    uniqueCompartments = uniqueCompartments{1};
+    metAbbr = metAbbr{1};
+    uniqueMetAbbrs = uniqueMetAbbrs{1};
 end

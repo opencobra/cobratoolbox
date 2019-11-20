@@ -1,10 +1,10 @@
-function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, standariseRxn)
+function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, standariseRxn, rdtDir)
 % Compute atom mappings for reactions with implicit hydrogens in a
 % metabolic network using RDT algorithm
 %
 % USAGE:
 %
-%    unmappedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnDir, maxTime, standariseRxn)
+%    unmappedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, standariseRxn)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -24,12 +24,14 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
-%    rxnDir:        Path to directory that will contain the RXN files with
+%    outputDir:     Path to directory that will contain the RXN files with
 %                   atom mappings (default current directory).
 %    maxTime:       Maximum time assigned to compute atom mapping (default
 %                   1800s).
 %    standariseRxn: Logic value for standardising the atom mapped RXN file.
 %                   ChemAxon license is required (default TRUE).
+%    outputDir:     Path to directory that contain the Reaction Decoder file
+%                   rdtAlgorithm.jar (default is current directory).
 %
 % OUTPUTS:
 %    balancedRxns:	List of standadised atom mapped reactions.
@@ -64,16 +66,30 @@ end
 if nargin < 5 || isempty(standariseRxn)
     standariseRxn = true;
 end
-
+if exist('rtdDir','var')
+    rtdDir = [pwd filesep];
+else
+    % Make sure input path ends with directory separator
+    rtdDir = [regexprep(rdtDir,'(/|\\)$',''), filesep];
+end
 % Generating new directories
-mkdir([outputDir filesep 'rxnFiles'])
-mkdir([outputDir filesep 'atomMapped'])
-mkdir([outputDir filesep 'images'])
-mkdir([outputDir filesep 'txtData'])
+if ~exist([outputDir filesep 'rxnFiles'],'dir')
+    mkdir([outputDir filesep 'rxnFiles'])
+end
+if ~exist([outputDir filesep 'atomMapped'],'dir')
+    mkdir([outputDir filesep 'atomMapped'])
+end
+if ~exist([outputDir filesep 'images'],'dir')
+    mkdir([outputDir filesep 'images'])
+end
+if ~exist([outputDir filesep 'txtData'],'dir')
+    mkdir([outputDir filesep 'txtData'])
+end
 
-% Download the RDT algorithm
-if ~exist([outputDir filesep 'rdtAlgorithm.jar'], 'file')
-    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+% Download the RDT algorithm, if it is not present in the output directory
+if exist([rdtDir filesep 'rdtAlgorithm.jar'])~=2
+    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[rdtDir filesep 'rdtAlgorithm.jar']);
+    %urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
 end
 
 % Delete the protons (hydrogens) for the metabolic network
@@ -136,7 +152,7 @@ counterNotMapped = 0;
 counterUnbalanced = 0;
 for i=1:length(fnames)
     name = [outputDir 'rxnFiles' filesep fnames(bytes(i)).name];
-    command = ['timeout ' num2str(maxTime) 's java -jar ' outputDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
+    command = ['timeout ' num2str(maxTime) 's java -jar ' rdtDir filesep 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
     if ismac
         command = ['g' command];
     end
