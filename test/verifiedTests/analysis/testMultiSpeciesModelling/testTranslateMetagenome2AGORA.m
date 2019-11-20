@@ -25,15 +25,16 @@ system('curl -O https://www.ebi.ac.uk/metagenomics/api/v1/studies/MGYS00001248/p
 % few corresponding data points in the input file. Thus, these taxon levels
 % cannot be tested.
 taxLevels={
-    's__','Species'
-    'g__','Genus'
-    'f__','Family'
-    'o__','Order'
+    'Species'
+    'Genus'
+    'Family'
+    'Order'
     };
 
 for t=1:size(taxLevels,1)
     % Define the taxon level of the input file
-    orgList=unique(infoFile(2:end,find(strcmp(taxLevels{t,2},infoFile(1,:)))));
+    orgList=unique(infoFile(2:end,find(strcmp(taxLevels{t,1},infoFile(1,:)))));
+    orgList(strncmp('unclassified', orgList, 12)) = [];
     [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA('SRP065497_taxonomy_abundances_v3.0.tsv',taxLevels{t,1});
     % Verify that the output file is not empty
     assert(size(translatedAbundances,1)>1)
