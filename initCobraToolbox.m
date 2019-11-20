@@ -387,10 +387,7 @@ function initCobraToolbox(updateToolbox)
         %checked, whether they actually work and the SOLVERS field is set.
         [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
                                      SOLVERS.(supportedSolversNames{i}).type{1},...
-                                     0, 2);
-        if strcmp(SOLVERS.(supportedSolversNames{i}),'gurobi')
-            disp(SOLVERS.(supportedSolversNames{i}));
-        end
+                                     0, 2);        
         if solverOK
             SOLVERS.(supportedSolversNames{i}).working = true;
         end

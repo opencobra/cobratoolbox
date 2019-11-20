@@ -116,7 +116,8 @@ modelWithA.osense = -1;
 sol = optimizeCbModel(modelWithConstraints);
 solWithA = solveCobraLP(modelWithA);
 modelWithA = rmfield(modelWithA,'osense');
-assert(isequal(solWithA.obj,sol.f))
+optTol = getCobraSolverParams('LP','optTol');
+assert(abs(solWithA.obj-sol.f) < optTol)
 warning on
 modelConverted = convertOldStyleModel(modelWithA);
 % assert that the proper warning was shown

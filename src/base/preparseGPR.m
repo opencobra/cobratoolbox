@@ -15,14 +15,16 @@ function [preParsedGrRules,genes] = preparseGPR(grRules)
 % .. Author: -  Laurent Heirendt - December 2017
 
 %using regexprep all cells must be char row vectors.
-glt=length(grRules);
-for g=1:glt
-    if ~ischar(grRules{g})
-        if iscell(grRules{g})
-            tmp=grRules{g};
-            grRules{g}=tmp{1};
-        else
-            error(['grRules ' int2str(g)  ' is not a character array'])
+if iscell(grRules)
+    glt=length(grRules);
+    for g=1:glt
+        if ~ischar(grRules{g})
+            if iscell(grRules{g})
+                tmp=grRules{g};
+                grRules{g}=tmp{1};
+            else
+              error(['grRules ' int2str(g)  ' is not a character array'])
+            end
         end
     end
 end
