@@ -105,7 +105,7 @@ mergefunction = {maxmerge, nanmerge,cellmerge,...
 definedFields = getDefinedFieldProperties();
     
 %convert from old coupling constraints if necessary
-model = convertOldCouplingFormat(model);
+model = convertOldCouplingFormat(model, printLevel);
 
 % convert old fields to current fields. 
 for i = 1:numel(oldFields)
@@ -295,10 +295,29 @@ if isfield(model,'comps') && ischar(model.comps)
 end
 
 if isfield(model,'metChEBIID')
+    if isnumeric(model.metChEBIID)
+        model.metChEBIID = num2cell(model.metChEBIID);
+    end
     % some provide the chebi IDs as numbers, while the rest is string..
     numericIDs = cellfun(@isnumeric, model.metChEBIID);
     if any(numericIDs)
         model.metChEBIID(numericIDs) = cellfun(@num2str, model.metChEBIID(numericIDs),'Uniform',0);
+    end
+end
+
+if isfield(model,'metPubChemID')
+	if isnumeric(model.metPubChemID)
+        model.metPubChemID = num2cell(model.metPubChemID);
+    end
+    % some provide the chebi IDs as numbers, while the rest is string..
+    numericIDs = cellfun(@isnumeric, model.metPubChemID);    
+    if any(numericIDs)
+        model.metPubChemID(numericIDs) = cellfun(@num2str, model.metPubChemID(numericIDs),'Uniform',0);
+    end
+    % should not be NaN but empty.
+    nanIDs = cellfun(@(x) strcmp(x,'NaN'),model.metPubChemID);
+    if any(nanIDs)
+        model.metPubChemID(nanIDs) = {''};
     end
 end
 
@@ -318,6 +337,36 @@ if isfield(model,'rules') && numel(model.rules) >= 2173
         model.rules{2173} = correctedRule;
         % also update the according grRules position.
         model = creategrRulesField(model, 2173);
+    end
+end
+
+if isfield(model,'rxnNames')
+    cellNames = cellfun(@iscell, model.rxnNames);
+    if any(cellNames)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.rxnNames(cellNames) = cellfun(@(x) strjoin(x,'\n'),model.rxnNames(cellNames),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules')
+    cellRules = cellfun(@iscell, model.grRules);
+    if any(cellRules)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.grRules(cellRules) = cellfun(@(x) strjoin(x,' or '),model.grRules(cellRules),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules') && isfield(model, 'rules')
+    % test, whether there are rules which are empty for exsting grRules
+    % Some old models did this to "safe memory"
+    emptyGR = cellfun(@isempty, model.grRules);
+    emptyRules = cellfun(@isempty, model.rules);
+    rulesToFill = emptyRules & ~emptyGR;
+    if any(rulesToFill)
+        % lets just do everything since it seems unreliable.
+        model = generateRules(model);
     end
 end
 

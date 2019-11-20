@@ -52,12 +52,12 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
     fullCouplings = (1:n).';
     
     %% setting up the LP solver
-    if ~isempty(varargin)
-        solver = varargin{1};
-    else
-        solver = 'linprog';
+    global CBT_LP_SOLVER    
+    if ~isempty(varargin)           
+        warning('Changing the COBRA Solver according to the provided argument')
+        changeCobraSolver(varargin{1},'LP');          
     end
-    
+    solver = CBT_LP_SOLVER;
     %% finding the trivial full coupling relations if the reduction flag is true
     while reduction
         reduction = false;

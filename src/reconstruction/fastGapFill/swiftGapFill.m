@@ -51,7 +51,7 @@ consistMatricesSUX = assignRxnWeights(consistMatricesSUX, weights, weightsPerRea
 % solve problem by finding the most compact subnetwork containing all core
 % reactions
 
-[reconstruction, reconInd, LP] = swiftcore(consistMatricesSUX, consistMatricesSUX.C1, consistMatricesSUX.weights, tol, false, 'gurobi');
+[reconstruction, reconInd, LP] = swiftcore(consistMatricesSUX, consistMatricesSUX.C1, consistMatricesSUX.weights, tol, false);
 fprintf('number of solved LPs: %d\n', LP);
 
 % added reactions

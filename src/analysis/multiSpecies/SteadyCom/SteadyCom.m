@@ -610,7 +610,7 @@ if numel(minNorm) == 1 && minNorm == 1
         result.stat = [result.stat ' (min L1-norm)'];
     end
 end
-if GRmax > 0
+if GRmax > 0 && numel(sol.full) > 0
     result.vBM = flux(modelCom.indCom.spBm);
     result.BM = flux(n + 1 : n + nSp);
     result.BM(abs(result.BM) < 1e-8) = 0;
