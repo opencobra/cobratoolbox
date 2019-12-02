@@ -1,4 +1,4 @@
-function efmEnrichmentAnalysis(EFMRxns, model, exprData, GSCFileName, GSSFileName)
+function efmEnrichmentAnalysis(EFMRxns, model, exprData, GSCFileName, GSSFileName, minSum)
 % This function performs preprocessing for EFM enrichment. 
 % Two input files will be generated:
 % Gene Set Collection (GSC) file:  The gene set collection should describe the grouping of reactions into EFMs. 
@@ -18,23 +18,36 @@ function efmEnrichmentAnalysis(EFMRxns, model, exprData, GSCFileName, GSSFileNam
 %                               format as model.genes
 %       .value                  Vector containing corresponding expression
 %                               value (FPKM/RPKM)
-%       .sig                    Vector containing corresponding significance values
+%    exprSig         Vector containing corresponding significance values
 %    GSCFileName:    file name of GSC file
 %    GSSFileName:    file name of GSS file
+%    
+% OPTIONAL INPUTS:
+%    minSum:         boolean flag for how GPR rule must be used. 'false' means use
+%                    min for AND and max for OR (default), 'true' means use min for
+%                    AND and Sum for OR
 % 
 % OUTPUTS:
 %    Two files GSC File and GSS File are written in the working directory
 %
-% .. Author: Last modified: Chaitra Sarathy, 1 Oct 2019
+% .. Author: Last modified: Chaitra Sarathy, 1 Nov 2019
 
+if ~exist('minSum','var')
+    minSum = false;
+end
 
 generateGSC(EFMRxns, 1:length(EFMRxns), model, GSCFileName);
 
 % Generate GSS file
-expressionRxns = mapExpressionToReactions_efmviz(model, exprData, false);
-expressionRxns.rxnExp(expressionRxns.rxnExp==-1)=0;
+[expressionRxns, parsedGPR, gene_used, signifRxns] = mapExpressionToReactions(model, exprData, minSum);
+expressionRxns(expressionRxns==-1)=0;
 
-writetable(table(model.rxns, expressionRxns.rxnExp, expressionRxns.rxnSig), GSSFileName,'Delimiter',' ');
+writetable(table(model.rxns, expressionRxns, signifRxns), GSSFileName,'Delimiter',' ');
+
+% expressionRxns = mapExpressionToReactions(model, exprData, false);
+% expressionRxns.rxnExp(expressionRxns.rxnExp==-1)=0;
+% 
+% writetable(table(model.rxns, expressionRxns.rxnExp, expressionRxns.rxnSig), GSSFileName,'Delimiter',' ');
 
 end
 
