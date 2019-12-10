@@ -93,7 +93,15 @@ end
 
 if exist(fileName,'file') == 2
     try
-        [~, sheets] = xlsfinfo(fullfile(pwd, fileName));
+        try
+            [~, sheets] = xlsfinfo(fileName);
+        catch ME
+            if strcmp(ME.identifier,'MATLAB:xlsread:FileDoesNotExist')    
+                [~, sheets] = xlsfinfo(fullfile(pwd, fileName));
+            else
+                error(ME);
+            end
+        endD
         if ~all(ismember({'Reaction List','Metabolite List'},sheets))
             error(['The provided Excel Sheet (', fileName,') must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
                    '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
