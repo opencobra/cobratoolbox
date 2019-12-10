@@ -8,7 +8,7 @@ function model = createModel(varargin)
 %
 % INPUTS:
 %    rxnAbrList:        List of names of the new reactions
-%    rxnNameList:       List of names of the new reactions
+%    rxnNameList:       List of descriptive names of the new reactions
 %    rxnList:           List of reactions: format: {`A -> B + 2 C`}
 %                       If the compartment of a metabolite is not
 %                       specified, it is assumed to be cytoplasmic, i.e. [`c`]
