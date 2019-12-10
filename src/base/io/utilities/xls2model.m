@@ -101,7 +101,7 @@ if exist(fileName,'file') == 2
             else
                 error(ME);
             end
-        endD
+        end
         if ~all(ismember({'Reaction List','Metabolite List'},sheets))
             error(['The provided Excel Sheet (', fileName,') must contain a "Reaction List" and a "Metabolite List sheet as specified here:' sprintf('\n'),...
                    '<a href ="https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html">https://opencobra.github.io/cobratoolbox/docs/ExcelModelFileDefinition.html</a>']);
