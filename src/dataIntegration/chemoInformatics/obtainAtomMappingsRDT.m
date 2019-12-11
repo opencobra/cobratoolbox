@@ -1,10 +1,10 @@
-function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, standariseRxn)
+function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, rxnsToAM, hMapping, maxTime, standariseRxn)
 % Compute atom mappings for reactions with implicit hydrogens in a
 % metabolic network using RDT algorithm
 %
 % USAGE:
 %
-%    unmappedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnDir, maxTime, standariseRxn)
+%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, rxnsToAM, hMapping, maxTime, standariseRxn)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -24,12 +24,16 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
+%    rxnsToAM:      List of reactions to atom map (default: all in the 
+%                   model).
+%    hMapping:      Logic value to select if hydrogen atoms will be atom
+%                   mapped (default: TRUE).
 %    rxnDir:        Path to directory that will contain the RXN files with
-%                   atom mappings (default current directory).
+%                   atom mappings (default: current directory).
 %    maxTime:       Maximum time assigned to compute atom mapping (default
 %                   1800s).
 %    standariseRxn: Logic value for standardising the atom mapped RXN file.
-%                   ChemAxon license is required (default TRUE).
+%                   ChemAxon license is required (default: TRUE).
 %
 % OUTPUTS:
 %    balancedRxns:	List of standadised atom mapped reactions.
@@ -58,10 +62,16 @@ else
     % Make sure input path ends with directory separator
     outputDir = [regexprep(outputDir,'(/|\\)$',''), filesep];
 end
-if nargin < 4 || isempty(maxTime)
+if nargin < 4 || isempty(rxnsToAM)
+    rxnsToAM = model.rxns;
+end
+if nargin < 5 || isempty(hMapping)
+    hMapping = true;
+end
+if nargin < 6 || isempty(maxTime)
     maxTime = 1800;
 end
-if nargin < 5 || isempty(standariseRxn)
+if nargin < 7 || isempty(standariseRxn)
     standariseRxn = true;
 end
 
@@ -79,7 +89,7 @@ end
 % Delete the protons (hydrogens) for the metabolic network
 % From metabolites
 S = full(model.S);
-if isfield(model,'metFormulas')
+if ~hMapping && isfield(model,'metFormulas')
     hToDelete = ismember(model.metFormulas, 'H');
     S(hToDelete, :) = [];
     model.mets(hToDelete) = [];
@@ -94,7 +104,7 @@ end
 % Format inputs
 mets = model.mets;
 fmets = regexprep(mets, '(\[\w\])', '');
-rxns = model.rxns;
+rxns = rxnsToAM;
 clear model
 
 % Get list of MOL files
