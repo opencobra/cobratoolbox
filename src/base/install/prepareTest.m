@@ -1,4 +1,4 @@
-function [solversToUse] = prepareTest(varargin)
+ffunction [solversToUse] = prepareTest(varargin)
 % Checks the prerequisites of the test, and returns solvers depending on
 % the input parameters. If the requirements are NOT met, a
 % COBRA:RequirementsNotMet error is thrown.
