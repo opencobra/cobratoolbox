@@ -1,4 +1,4 @@
-function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList, metList, Stats, varargin)
+function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList, metList, Stats, score, mode, varargin)
 % Checks Tmodel for duplicate reactions and other mistakes,
 % that may have occured during reaction and metabolite matching. It
 % resolves these problems and merges the models, and confirms that Cmodel
@@ -17,11 +17,13 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    metList:      Array which desginates matched and new metabolites.
 %    Stats:        Structure that comes from reactionCompare. Weighting
 %                  information can be used and additional information addended.
+% OPTIONAL INPUTS:
 %    score:        The original scoring matrix, which may be used to correct
 %                  problematic reaction upon recomparison.
-%
-% OPTIONAL INPUTS:
+%    mode:         {('p'),'a'} 'Revisit only [p]roblematic reactions or [a]ll
+%                  reactions that problematic metabolites are involved in.
 %    'Verbose':    Print statements on progress.
+%
 %
 % OUTPUTS:
 %    TmodelC:      Combined `C` and `Tmodel`.
@@ -50,7 +52,20 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    64673 Zwingenberg, Germany
 %    www.brain-biotech.de
 
-global SCORE CMODEL TMODEL % Declare variables.
+if exist('score','var')
+    global SCORE CMODEL TMODEL % Declare variables.
+    SCORE = score ;
+else
+    global SCORE CMODEL TMODEL % Declare variables.
+end
+
+
+if ~exist('mode','var')
+    modeProvided=0;
+    mode='p';
+else
+    modeProvided=1;
+end
 CMODEL = CmodelIn ;
 TMODEL = TmodelIn ;
 % SCORE = score ;
@@ -156,9 +171,11 @@ while checkSimilarity
         % mark them as undeclared, call GUI, and loop.
         diffmets = logical(sum(abs(FluxCompare.diffS), 2)) ;
         metList(FluxCompare.CmetsSorti(diffmets)) = 0 ;
-        fprintf('Revisit only [p]roblematic reactions or [a]ll reactions that problematic metabolites are involved in?\n')
-        nowans = input('default = p ', 's') ;
-        if strcmp(nowans, 'a')
+        if ~modeProvided
+            fprintf('Revisit only [p]roblematic reactions or [a]ll reactions that problematic metabolites are involved in?\n')
+            mode = input('default = p ', 's') ;
+        end
+        if strcmp(mode, 'a')
             diffrxns = logical(sum(abs(FluxCompare.diffS), 1) + sum(FluxCompare.CmodelS(diffmets, :)) + sum(FluxCompare.CspawnS(diffmets, :))) ;
         else
             diffrxns = logical(sum(abs(FluxCompare.diffS), 1)) ;
