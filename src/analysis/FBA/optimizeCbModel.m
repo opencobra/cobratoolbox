@@ -352,6 +352,10 @@ elseif length(minNorm)> 1 || minNorm > 0
     if length(minNorm)==1
         minNorm=ones(nRxns,1)*minNorm;
     end
+    if length(minNorm)==4 && strcmp(minNorm,'1e-6')
+        minNorm=1e-6;
+        minNorm=ones(nRxns,1)*minNorm;
+    end
     LPproblem.F = spdiags(minNorm,0,nRxns,nRxns);
     LPproblem.osense=1;
 
