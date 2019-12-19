@@ -24,7 +24,15 @@ model = convertOldStyleModel(model);
 
 % get reactions for gene list, include gene not in model and nested cell
 geneList = {'b0115'; {'b0722'; 'MadeUp'}};
+
 [geneRxnsStruct, geneRxnsArray] = findRxnsFromGenes(model, geneList, 0, 1);
+
+%Check warning message
+warningmessage = lastwarn;
+assert(strfind(warningmessage,'MadeUp')>0);
+assert(isempty(strfind(warningmessage,'b0722')));
+assert(isempty(strfind(warningmessage,'b0115')));
+
 
 % find gene indeces of genes in model
 geneInd = find(ismember(model.genes, {'b0115'; 'b0722'}));

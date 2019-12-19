@@ -182,7 +182,7 @@ for k = 1:S(1) % Check all metabolites in model
         met_k{k,6} = metabolites{line,7};   %metPubChemID
         met_k{k,7} = metabolites{line,9};   %metInChIString
         met_k{k,8} = metabolites{line,11};  %metHMDB
-        met_k{k,9} = metabolites{line,12};  %metSmiles
+        met_k{k,9} = metabolites{line,10};  %metSmiles
     end
 end
 

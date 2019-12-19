@@ -25,7 +25,7 @@ function results = verifyModel(model, varargin)
 %                   * 'checkDatabaseIDs', check whether the database identifiers in specified fields (please have a look at the documentation), match to the expected patterns for those databases.
 %                   * 'silentCheck', do not print any information. Only applies to the model structure check. (default is to print info)
 %                   * 'restrictToFields' restricts the check to the listed fields. This will lead to requiredFields being reduced to those fields present in the restricted fields. If an empty cell array is provided no restriction is applied. (default: {})
-%                   * 'FBAOnly' checks only fields relevant for FBA (default: false) 
+%                   * 'FBAOnly' checks only fields relevant for FBA (default: false)
 %
 % OUTPUT:
 %
@@ -33,7 +33,7 @@ function results = verifyModel(model, varargin)
 %                 additional field `Errors` indicating the problems with the
 %                 model structure detected by the `verifyModel` function.
 %                 Results of additional options are returned in fields with
-%                 the respective names. 
+%                 the respective names.
 %
 % EXAMPLES:
 %    1) Do a simple Field check with the default required fields.
@@ -119,21 +119,21 @@ end
 if massBalance || chargeBalance
     doChargeBalance = false;
     if chargeBalance
-         if checkFields(results,'metCharges',model)
-             doChargeBalance = true;
-         else
-             results.chargeBalance = struct();
-             results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
-         end
+        if checkFields(results,'metCharges',model)
+            doChargeBalance = true;
+        else
+            results.chargeBalance = struct();
+            results.chargeBalance.missingFields = 'The metCharges field is missing. Cannot determine the charge Balance';
+        end
     end
     doMassBalance = false;
     if massBalance
-         if checkFields(results,'metFormulas',model)
-             doMassBalance = true;
-         else
-             results.massBalance = struct();
-             results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
-         end
+        if checkFields(results,'metFormulas',model)
+            doMassBalance = true;
+        else
+            results.massBalance = struct();
+            results.massBalance.missingFields = 'The metFormulas field is missing. Cannot determine the mass Balance';
+        end
     end
     
     if doMassBalance || doChargeBalance
@@ -149,17 +149,17 @@ if massBalance || chargeBalance
         [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model,0);
         %put the fields, if simpleCheck is active and there are imbalanced,
         %or if simplecheck is not active.
-        if doMassBalance && (~simpleCheck || any(imBalancedRxnBool))            
+        if doMassBalance && (~simpleCheck || any(imBalancedRxnBool))
             results.massBalance = struct();
             results.massBalance.massImbalance = massImbalance;
             results.massBalance.imBalancedMass = imBalancedMass;
             results.massBalance.imBalancedRxnBool = imBalancedRxnBool;
             results.massBalance.Elements = Elements;
             results.massBalance.missingFormulaeBool = missingFormulaeBool;
-            results.massBalance.balancedMetBool = balancedMetBool;            
+            results.massBalance.balancedMetBool = balancedMetBool;
         end
-        %Add the fields, if its either not a simple Check or if 
-        if doChargeBalance && (~simpleCheck || any(imBalancedCharge ~= 0))            
+        %Add the fields, if its either not a simple Check or if
+        if doChargeBalance && (~simpleCheck || any(imBalancedCharge ~= 0))
             results.chargeBalance = struct();
             results.chargeBalance.imBalanceCharge = imBalancedCharge;
         end
@@ -177,7 +177,7 @@ if fluxConsistency
         [mins,maxs] = fluxVariability(model);
         %if this is not a simple check, or we have reactions which can't
         %carry flux.
-        if ~simpleCheck || any( ~(abs(mins) > 1e-12)| (abs(maxs) > 1e-12)) 
+        if ~simpleCheck || any( ~(abs(mins) > 1e-12)| (abs(maxs) > 1e-12))
             results.fluxConsistency = struct();
             if isfield(model,'rxns')
                 results.fluxConsistency.consistentReactions = model.rxns((abs(mins) > 1e-12) | (abs(maxs) > 1e-12));
@@ -185,7 +185,7 @@ if fluxConsistency
             results.fluxConsistency.consistentReactionBool = ( (abs(mins) > 1e-12)| (abs(maxs) > 1e-12));
         end
     end
-
+    
 end
 
 if deadEndMetabolites
@@ -219,18 +219,18 @@ end
 if ~isempty(results) && ~silentCheck
     if isfield(results, 'Errors')
         problems = fieldnames(results.Errors);
-        disp('The following problems have been encountered in the model structure')
+        disp('verifyModel: The following problems have been encountered in the model structure')
         for i = 1:numel(problems)
             fprintf('%s:\n',problems{i})
-            problem_data = results.Errors.(problems{i});            
-            if isstruct(problem_data)             
+            problem_data = results.Errors.(problems{i});
+            if isstruct(problem_data)
                 problematic_fields = fieldnames(problem_data);
                 for field = 1: numel(problematic_fields)
-                    fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));                
+                    fprintf('%s: %s\n',problematic_fields{field}, results.Errors.(problems{i}).(problematic_fields{field}));
                 end
             else
                 for field = 1:numel(problem_data)
-                    fprintf('%s\n',problem_data{field});                
+                    fprintf('%s\n',problem_data{field});
                 end
             end
         end
@@ -248,67 +248,6 @@ end
 end
 
 
-function results = checkDatabaseIDs(model,results)
-% Checks the model for validity of database identifiers
-%
-% USAGE:
-%
-%    results = checkDatabaseIDs(model,results)
-%
-% INPUT:
-%    model:       a structure that represents the COBRA model.
-%    results:     the results structure for this test
-%
-% OUTPUT:
-%
-%    results:     a struct with problematic database ids added.
-%
-% .. Authors:
-%       - Thomas Pfau, May 2017
-
-dbMappings = getDefinedFieldProperties('Database',true);
-
-for i= 1:size(dbMappings,1)
-    if isfield(model,dbMappings{i,3})
-        fits = cellfun(@(x) isempty(x) || checkID(x,dbMappings{i,5}),model.(dbMappings{i,3}));
-        %Only add the something if we really have wrong IDs.
-        if any(~fits)
-            if ~isfield(results,'checkDatabaseIDs')
-                results.checkDatabaseIDs = struct();
-            end
-            if ~isfield(results.checkDatabaseIDs,'invalidIDs')
-                results.checkDatabaseIDs.invalidIDs = struct();
-            end
-            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3}) = cell(size(model.(dbMappings{i,3})));
-            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(:) = {'valid'};
-            results.checkDatabaseIDs.invalidIDs.(dbMappings{i,3})(~fits) = model.(dbMappings{i,3})(~fits);
-        end
-    end
-end
-end
-
-
-function accepted = checkID(id,pattern)
-% Checks the the given id(s), i.e. strings split by ; versus the pattern
-%
-% USAGE:
-%
-%    accepted = checkID(id,pattern)
-%
-% INPUT:
-%    id:          A String representing ids (potentially separated by ;)
-%    pattern:     The pattern to check the id(s) against.
-%
-% OUTPUT:
-%
-%    accepted:     Whether all ids are ok. 
-%
-% .. Authors:
-%       - Thomas Pfau, May 2017
-    ids = strsplit(id,';');
-    matches = regexp(ids,pattern);
-    accepted = all(~cellfun(@isempty,matches));    
-end
 
 function valid = checkFields(results,FieldNames,model)
 % Checks the given fields of the model in the results struct for
@@ -320,7 +259,7 @@ function valid = checkFields(results,FieldNames,model)
 %
 % INPUT:
 %    results:     the results structure for this test
-%    FieldNames:  The names of the fields to check. 
+%    FieldNames:  The names of the fields to check.
 %    model:       a structure that represents the COBRA model.
 %
 % OUTPUT:
@@ -338,101 +277,4 @@ valid = cellfun(@(x) isfield(model,x) && ...
     (~isfield(results,'Errors') || ...                              %This condition checks,
     ~isfield(results.Errors,'inconsistentFields') || ...            %whether the fieldProperties field
     ~isfield(results.Errors.inconsistentFields,x)),FieldNames);  % is inconsistent, if it exists.
-end
-
-
-function results = checkPresentFields(fieldProperties,model, results)
-% Check the model fields for consistency with the given fieldProperties and
-% update the results struct.
-%
-% USAGE:
-%
-%    results = checkPresentFields(fieldProperties,model, results)
-%
-% INPUT:
-%    fieldProperties:  field properties as obtained by
-%                      getDefinedFieldProperties
-%    model:            a structure that represents the COBRA model.
-%    results:          the results structure for this test
-%
-% OUTPUT:
-%
-%    results:          The updated results struct. 
-%
-% .. Authors:
-%       - Thomas Pfau, May 2017
-
-presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
-
-%Check all Field Sizes
-for i = 1:numel(presentFields)
-    testedField = fieldProperties{presentFields(i),1};
-    [x_size,y_size] = size(model.(testedField));
-    xFieldMatch = fieldProperties{presentFields(i),2};
-    yFieldMatch = fieldProperties{presentFields(i),3};
-
-    checkX = ~isnan(xFieldMatch);
-    checkY = ~isnan(yFieldMatch);
-    if checkX
-        if ischar(xFieldMatch)
-            if ~isfield(model,xFieldMatch)
-                x_pres = 0;
-                if ~isfield(results.Errors,'missingFields')
-                    results.Errors.missingFields = {};
-                end
-                results.Errors.missingFields(end+1) = {xFieldMatch};
-            else
-                x_pres = numel(model.(xFieldMatch));
-            end
-            errorMessage = sprintf('%s: Size of %s does not match elements in %s', xFieldMatch,testedField,xFieldMatch);
-        elseif isnumeric(xFieldMatch)
-            errorMessage = sprintf('X Size of %s was %i. Expected %i',testedField, x_size,x_pres);
-            x_pres = xFieldMatch;
-        end
-        if x_pres ~= x_size
-            if ~isfield(results.Errors,'inconsistentFields')
-                results.Errors.inconsistentFields = struct();
-            end
-            results.Errors.inconsistentFields.(testedField) = errorMessage;
-        end
-    end
-    if checkY
-        if ischar(yFieldMatch)
-            if ~isfield(model,yFieldMatch)
-                y_pres = 0;
-                if ~isfield(results.Errors,'missingFields')
-                    results.Errors.missingFields = {};
-                end
-                results.Errors.missingFields(end+1) = {yFieldMatch};
-            else
-                y_pres = numel(model.(yFieldMatch));
-            end
-            errorMessage = sprintf('%s: Size of %s does not match elements in %s', yFieldMatch,testedField,yFieldMatch);
-        elseif isnumeric(yFieldMatch)
-            y_pres = yFieldMatch;
-            errorMessage = sprintf('Y Size of %s was %i. Expected %i',testedField, y_size,y_pres);
-        end
-        if y_pres ~= y_size
-            if ~isfield(results.Errors,'inconsistentFields')
-                results.Errors.inconsistentFields = struct();
-            end
-            results.Errors.inconsistentFields.(testedField) = errorMessage;
-        end
-    end
-    %Test the field content properties
-    %x is necessary here, since it is used for the eval below!
-    x = model.(testedField);
-    try
-        propertiesMatched = eval(fieldProperties{presentFields(i),4});
-    catch
-        propertiesMatched = false;
-    end
-    if ~propertiesMatched
-        if ~isfield(results.Errors,'inconsistentFields')
-            results.Errors.propertiesNotMatched = struct();
-        end
-        results.Errors.propertiesNotMatched.(testedField) = 'Field does not match the required properties';
-    end
-
-end
 end

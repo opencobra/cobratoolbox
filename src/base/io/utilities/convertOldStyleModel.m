@@ -104,31 +104,8 @@ mergefunction = {maxmerge, nanmerge,cellmerge,...
 % get the defined field properties.    
 definedFields = getDefinedFieldProperties();
     
-    
-if isfield(model,'A') && isfield(model,'S')
-    if printLevel >=1
-        warning('The inserted Model contains an old style coupling matrix (A). The MAtrix will be converted into a Coupling Matrix (C) and fields will be adapted.')
-    end
-    nMets = size(model.S,1);
-    % get the Constraint data
-    C = model.A(nMets+1:end,:);     
-    ctrs = columnVector(model.mets(nMets+1:end));    
-    dsense =  columnVector(model.csense(nMets+1:end));
-    d = columnVector(model.b(nMets+1:end));
-    % set the constraint data
-    model.C = C;
-    model.ctrs = ctrs;
-    model.dsense = dsense;
-    model.d = d;
-    % now, we assume, that those are the only modified fields, if not,
-    % something is seriously broken.    
-    model.mets = columnVector(model.mets(1:nMets));
-    model.b = columnVector(model.b(1:nMets));
-    model.csense = columnVector(model.csense(1:nMets));
-    model = rmfield(model,'A');
-    
-end
-    
+%convert from old coupling constraints if necessary
+model = convertOldCouplingFormat(model, printLevel);
 
 % convert old fields to current fields. 
 for i = 1:numel(oldFields)
@@ -318,10 +295,29 @@ if isfield(model,'comps') && ischar(model.comps)
 end
 
 if isfield(model,'metChEBIID')
-    %some provide the chebi IDs as numbers, while the rest is string..
+    if isnumeric(model.metChEBIID)
+        model.metChEBIID = num2cell(model.metChEBIID);
+    end
+    % some provide the chebi IDs as numbers, while the rest is string..
     numericIDs = cellfun(@isnumeric, model.metChEBIID);
     if any(numericIDs)
         model.metChEBIID(numericIDs) = cellfun(@num2str, model.metChEBIID(numericIDs),'Uniform',0);
+    end
+end
+
+if isfield(model,'metPubChemID')
+	if isnumeric(model.metPubChemID)
+        model.metPubChemID = num2cell(model.metPubChemID);
+    end
+    % some provide the chebi IDs as numbers, while the rest is string..
+    numericIDs = cellfun(@isnumeric, model.metPubChemID);    
+    if any(numericIDs)
+        model.metPubChemID(numericIDs) = cellfun(@num2str, model.metPubChemID(numericIDs),'Uniform',0);
+    end
+    % should not be NaN but empty.
+    nanIDs = cellfun(@(x) strcmp(x,'NaN'),model.metPubChemID);
+    if any(nanIDs)
+        model.metPubChemID(nanIDs) = {''};
     end
 end
 
@@ -330,4 +326,49 @@ if size(model.genes,1) == 0 && size(model.genes,2) == 0
     model.genes = cell(0,1);
 end
 
-    
+% now, this is specific to Recon2, which has a invalid () in the rules (and
+% grRules) field which need to be corrected
+if isfield(model,'rules') && numel(model.rules) >= 2173
+    % This could be recon 2. Lets test if the rule matches
+    reconRule = '(x(1039)) | (x(1040)) | (x(1041)) | (x(1042)) | (x(1043)) | (x(1044)) | (x(1045)) | (x(1046)) | (x(1047)) | (x(1048)) | (x(1049)) | (x(1050)) | ()';
+    if strcmp(model.rules{2173},reconRule)
+        % this is the very same rule sans | () in the end
+        correctedRule = '(x(1039)) | (x(1040)) | (x(1041)) | (x(1042)) | (x(1043)) | (x(1044)) | (x(1045)) | (x(1046)) | (x(1047)) | (x(1048)) | (x(1049)) | (x(1050))';
+        model.rules{2173} = correctedRule;
+        % also update the according grRules position.
+        model = creategrRulesField(model, 2173);
+    end
+end
+
+if isfield(model,'rxnNames')
+    cellNames = cellfun(@iscell, model.rxnNames);
+    if any(cellNames)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.rxnNames(cellNames) = cellfun(@(x) strjoin(x,'\n'),model.rxnNames(cellNames),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules')
+    cellRules = cellfun(@iscell, model.grRules);
+    if any(cellRules)
+        % this means, that we have a rxnNames entry consisting of multiple
+        % entries. We will join this by linebreaks.
+        model.grRules(cellRules) = cellfun(@(x) strjoin(x,' or '),model.grRules(cellRules),'Uniform',false);
+    end
+end
+
+if isfield(model,'grRules') && isfield(model, 'rules')
+    % test, whether there are rules which are empty for exsting grRules
+    % Some old models did this to "safe memory"
+    emptyGR = cellfun(@isempty, model.grRules);
+    emptyRules = cellfun(@isempty, model.rules);
+    rulesToFill = emptyRules & ~emptyGR;
+    if any(rulesToFill)
+        % lets just do everything since it seems unreliable.
+        model = generateRules(model);
+    end
+end
+
+model = orderfields(model);
+

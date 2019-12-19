@@ -146,6 +146,10 @@ if any(~ismember(rxnNameList,model.rxns))
     error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
 end
 
+if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
+   error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
+end
+
 % Set up the problem size
 [~, nRxns] = size(model.S);
 
@@ -448,7 +452,6 @@ if heuristics > 1
         [minSolved, maxSolved] = deal(minSolved | rxnBlocked | rxnHitLB, maxSolved | rxnBlocked | rxnHitUB);
     end
 end
-
 
 if ~parallelJob  % single-thread FVA
     if printLevel == 1

@@ -159,5 +159,6 @@ end
 % Generate output structure
 ATN.A = A;
 ATN.mets = tMets;
+ATN.atns = tMetNrs; %also include the unique identity of that atom in the set of atoms
 ATN.rxns = tRxns;
 ATN.elements = elements;

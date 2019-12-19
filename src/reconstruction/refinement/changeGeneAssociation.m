@@ -50,6 +50,11 @@ end
 
 nGenes = length(model.genes);
 nGenesInit = nGenes;
+if (~isfield(model, 'rules') && isfield(model, 'grRules'))
+    model = generateRules(model);
+elseif (~isfield(model, 'rules') && ~isfield(model, 'grRules'))
+    model.rules = repmat({''}, size(model.rxns));
+end
 model.rules{rxnID,1} = '';
 if addRxnGeneMat ==1 
     model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);

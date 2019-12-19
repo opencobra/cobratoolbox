@@ -5,6 +5,7 @@ Transcriptomics
 
 .. toctree::
 
+   SWIFTCORE/index
    FASTCORE/index
    mCADRE/index
    MBA/index

@@ -29,7 +29,9 @@ rxnsDiff = model.rxns(abs(fluxMatrix(:, 1) - fluxMatrix(:, 2)) > 1e-6);
 [m, n] = size(model2.S);
 
 % remove old generated file
-delete('surfNet.txt');
+if exist('surfNet.txt', 'file')
+    delete('surfNet.txt');
+end
 
 % check normal functionalities
 diary('surfNet.txt');
@@ -37,23 +39,23 @@ diary('surfNet.txt');
 % start with a metabolite
 metrxn = '13dpg[c]';
 surfNet(model, metrxn);
-% continue with a reaction
-surfNet([], 'GAPD', 0, 'none', 0, 1, [], 0);
-% continue with a metabolite
-surfNet([], 'g3p[c]', 0, 'none', 0, 1, [], 0);
+% continue with a reaction (through clicking only)
+surfNet([], 'GAPD', 0, NaN, 0, 1, [], 0);
+% continue with a metabolite (through clicking only)
+surfNet([], 'g3p[c]', 0, NaN, 0, 1, [], 0);
 % print objective reactions given no second input
 surfNet(model);
 % print a list of reactions without showing details of metabolites
 surfNet(model, {'GAPD'; 'FBA'}, [], [], [], 0);
 % print *.metNames in reaction formulae
 surfNet(model, {'13dpg[c]'; 'GAPD'}, 1);
-% show previous steps
-surfNet([], [], 1, 'none', 0, 1, [], 0, struct('showPrev', true));
+% show previous steps (through clicking only)
+surfNet([], [], 1, NaN, 0, 1, [], 0, [], struct('showPrev', true));
 
 % print with a fixed number of characters per line
 surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], [], [], [], 0, [], 60);
-% show previous steps
-surfNet([], [], 0, 'none', 0, 0, [], 60, struct('showPrev', true));
+% show previous steps (through clicking only)
+surfNet([], [], 0, NaN, 0, 0, [], 60, [], struct('showPrev', true));
 
 % print connected reactions and the corresponding fluxes in a flux vector
 surfNet(model, 'pyr[c]', [], s.x, 0);
@@ -70,8 +72,17 @@ model2.newMetProp{findMetIDs(model2, '13dpg[c]')} = {'c', 'd'};
 [model2.newRxnProp2, model2.newMetProp2] = deal(char('C' * ones(n, 1)), char('E' * ones(m, 1)));  % character arrays
 surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], {'metFormulas', 'subSystems', ...
     'grRules', 'b', 'c', 'ub', 'newRxnProp', 'newMetProp', 'newRxnProp2', 'newMetProp2'});
-surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], {{}, {'lb'}});
+surfNet(model2, {'13dpg[c]'; 'GAPD'}, [], [], [], [], 'lb');
 
+% starting with a gene
+surfNet(model, 'b1241')
+% continue with another gene shown in the reactions
+surfNet([], 'b1478', 0, NaN, 0, 1, [], 0);
+
+% test the search function
+surfNet(model, 'glucose')
+surfNet(model, 'glucose', 't', 0.6)  % with a more relaxed threshold
+surfNet(model, 'ATP')  % a query term with multiple matches in the same object
 diary off;
 
 % load the text files
@@ -109,7 +120,7 @@ while j1 <= numel(text1) && j2 <= numel(text2)
             j2skip = j2skip + 1;
         end
         while j1 + j1skip <= numel(text1) && ~strcmp(text1(j1 + j1skip), text2(j2))
-            j1skip = j1skip + 1;
+           j1skip = j1skip + 1;
         end
         % take the closer identical character from the two strings
         [j1, j2] = deal(j1 + (j1skip <= j2skip) * j1skip, j2 + (j1skip > j2skip) * j2skip);
@@ -132,8 +143,9 @@ diary('surfNet.txt');
 % fields not printablable
 surfNet(model2, '13dpg[c]', [], [], [], [], {'S'});
 surfNet(model2, '13dpg[c]', [], [], [], [], {{}, {'rxnGeneMat'}});
-% non-existing met/rxn
+% non-existing met/rxn or incorrect input type
 surfNet(model2, 'NOTEXIST');
+surfNet({{}});
 
 diary off;
 
@@ -153,7 +165,9 @@ delete('surfNet.txt');
 fprintf('Compare the printed warnings with the expected results ...\n')
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.')))
 assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.')))
-assert(~isempty(strfind(textSurfNet, 'Warning: The 2nd input is neither a metabolite nor reaction of the model.')))
+assert(~isempty(strfind(textSurfNet, '''NOTEXIST'' is not a metabolite, reaction or gene of the model. Searching for related objects:')))
+assert(~isempty(strfind(textSurfNet, 'Warning: No related mets, rxns or genes are found from the search. Please try other query terms.'))) 
+assert(~isempty(strfind(textSurfNet, 'Warning: The query term must be either a string or an array of string.'))) 
 fprintf('\nSuccess. Finish testing warning output of surfNet.\n')
 
 % print a random reaction when the 2nd input 'metrxn' is not given and
@@ -171,7 +185,7 @@ try
     surfNet;
     assert(false)
 catch ME
-    assert(strcmp(ME.message, 'The persistent variable modelLocal in surfNet has been cleared. Please re-call the function.'))
+    assert(strcmp(ME.message, 'The persistent variable modelLocal in surfNet is empty. Please supply a COBRA model.'))
 end
 
 % incorrect flux matrix input
@@ -195,7 +209,7 @@ errMsg = {'The following field(s) is(are) not in the model: NOTEXIST'; ...
     'Incorrect size of the following rxn field(s): rxnABC\n', ...
     'The following rxn field(s) is(are) neither numeric nor cell array of characters: rxnABC']); ...
     ... % incorrect input format
-    ['Incorrect input for field2print. Must be (1) a cell array of two cells, ', ...
+    ['The value of ''printFields'' is invalid. Must be (1) a cell array of two cells, ', ...
     '1st cell being a character array for met fields and 2nd for rxn fields, ', ...
     'or (2) a character array of field names recognizable from the field names or the sizes.']};
 for j = 1:numel(incorrectFieldInput)
@@ -208,6 +222,76 @@ for j = 1:numel(incorrectFieldInput)
 end
 
 fprintf('\nSuccess. Finish testing error messages of surfNet.\n')
+
+% test name-value pair input
+for j = 1:3
+    if exist(['surfNet' num2str(j) '.txt'], 'file')
+        delete(['surfNet' num2str(j) '.txt']);
+    end
+end
+surfNet(model, metrxn);
+
+for j = 1:3
+    if exist(['surfNet' num2str(j) '.txt'], 'file')
+        delete(['surfNet' num2str(j) '.txt'])
+    end
+end
+
+% reference data
+diary('surfNet1.txt')
+surfNet(model, 'GAPD');
+surfNet([], [], [], [], [], 0);
+% print a list of reactions without showing details of metabolites
+surfNet(model, {'GAPD'; 'FBA'}, [], [], [], 0);
+% print *.metNames in reaction formulae
+surfNet(model, {'13dpg[c]'; 'GAPD'}, 1);
+% print with a fixed number of characters per line
+surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], [], [], [], 0, [], 60);
+surfNet(model, 'pyr[c]', [], s.x, 0);
+surfNet(model, 'pyr[c]', [], s.x);
+surfNet(model, rxnsDiff, [], fluxMatrix, [], 0);
+surfNet(model2, '13dpg[c]', [], [], [], [], {'default', 'lb', 'subSystems'});
+diary off
+
+% name-value pair input
+diary('surfNet2.txt')
+surfNet(model, 'GAPD');
+surfNet('showMets', 0);
+surfNet(model, {'GAPD'; 'FBA'}, 'showMets', 0)
+surfNet(model, {'13dpg[c]'; 'GAPD'}, 'metNameFlag', 1);
+surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], 'showMets', 0, 'charPerLine', 60);
+surfNet(model, 'pyr[c]', 'flux', s.x, 'nonzeroFluxFlag', 0);
+surfNet(model, 'pyr[c]', 'flux', s.x);
+surfNet(model, rxnsDiff, 'flux', fluxMatrix, 'showMets', 0);
+surfNet(model2, '13dpg[c]', 'printFields', {'default', 'lb', 'subSystems'});
+diary off
+
+% name-value pair input with partial matching
+diary('surfNet3.txt')
+surfNet(model, 'GAPD');
+surfNet('s', 0);
+surfNet(model, {'GAPD'; 'FBA'}, 's', 0)
+surfNet(model, {'13dpg[c]'; 'GAPD'}, 'm', 1);
+surfNet(model, [model.mets(1:10)'; model.rxns(1:10)'], 's', 0, 'c', 60);
+surfNet(model, 'pyr[c]', 'f', s.x, 'n', 0);
+surfNet(model, 'pyr[c]', 'f', s.x);
+surfNet(model, rxnsDiff, 'f', fluxMatrix, 's', 0);
+surfNet(model2, '13dpg[c]', 'p', {'d', 'lb', 'sub'});
+diary off
+
+textSurfNet = repmat({''}, 3, 1);
+for j = 1:3
+    f = fopen(['surfNet' num2str(j) '.txt'], 'r');
+    l = fgets(f);
+    while ~isequal(l, -1)
+        textSurfNet{j} = [textSurfNet{j}, l];
+        l = fgets(f);
+    end
+    fclose(f);
+    delete(['surfNet' num2str(j) '.txt']);
+end
+assert(isequal(textSurfNet{1}, textSurfNet{2}))
+assert(isequal(textSurfNet{1}, textSurfNet{3}))
 
 % change the directory
 cd(currentDir)

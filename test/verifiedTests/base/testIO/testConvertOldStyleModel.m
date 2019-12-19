@@ -116,11 +116,12 @@ modelWithA.osense = -1;
 sol = optimizeCbModel(modelWithConstraints);
 solWithA = solveCobraLP(modelWithA);
 modelWithA = rmfield(modelWithA,'osense');
-assert(isequal(solWithA.obj,sol.f))
+optTol = getCobraSolverParams('LP','optTol');
+assert(abs(solWithA.obj-sol.f) < optTol)
 warning on
 modelConverted = convertOldStyleModel(modelWithA);
 % assert that the proper warning was shown
-warnmessage = 'The inserted Model contains an old style coupling matrix (A). The MAtrix will be converted into a Coupling Matrix (C) and fields will be adapted.';
+warnmessage = 'The inserted Model contains an old style coupling matrix (A). The Matrix will be converted into a Coupling Matrix (C) and fields will be adapted.';
 assert(isequal(warnmessage,lastwarn));
 % the two models with added constraints and converted A should be the same.
 assert(isSameCobraModel(modelConverted,modelWithConstraints));
