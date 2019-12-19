@@ -147,11 +147,11 @@ if any(~ismember(rxnNameList,model.rxns))
 end
 
 if 0
-if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
-   error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
+    %TODO not clear how this is supposed to work - Ronan
+    if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
+        error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
+    end
 end
-end
-
 % Set up the problem size
 [~, nRxns] = size(model.S);
 
