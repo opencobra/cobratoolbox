@@ -83,6 +83,7 @@ end
 [A,b,F,c,lb,ub,csense,osense, vartype] = ...
     deal(MIQPproblem.A,MIQPproblem.b,MIQPproblem.F,MIQPproblem.c,MIQPproblem.lb,MIQPproblem.ub,...
     MIQPproblem.csense,MIQPproblem.osense, MIQPproblem.vartype);
+[x, f] = deal([]);
 
 t_start = clock;
 switch solver
@@ -262,6 +263,7 @@ switch solver
         [MIQPproblem.A,MIQPproblem.rhs,MIQPproblem.obj,MIQPproblem.sense] = deal(sparse(MIQPproblem.A),MIQPproblem.b,MIQPproblem.c,MIQPproblem.csense);
         resultgurobi = gurobi(MIQPproblem,params);
         solStat = resultgurobi.status;
+        
         if strcmp(resultgurobi.status,'OPTIMAL')
            stat = 1; % Optimal solution found
 

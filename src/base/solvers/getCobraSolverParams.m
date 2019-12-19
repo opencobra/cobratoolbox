@@ -102,6 +102,7 @@ switch solverType
         return;
 end
 
+varargout = cell(1, numel(paramNames));
 for i=1:length(paramNames)
     % set values to default
     if isfield(valDef,paramNames{i})

@@ -1,4 +1,4 @@
-function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars)
+function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIndex, method, reduce_vars, loopInfo)
 % Adds loop law constraints to LP problem or MILP problem.
 %
 % USAGE:
@@ -25,7 +25,15 @@ function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex, metho
 %    method:         Indicator which method to use:
 %                    * 1 - Two variables for each reaction af, ar
 %                    * 2 - One variable for each reaction af (default)
-%    reduce_vars:    eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
+%    reduce_vars:    Eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
+%    loopInfo:       Structure containing at least a field named 'method', 
+%                    for the method chosen to build loop constraints whose value can be:
+%                    * 'original': use the original nullspace for internal reactions (Schellenberger et al., 2009)
+%                    * 'fastSNP' : use the minimal feasible nullspace found by Fast-SNP (Saa and Nielson, 2016)
+%                    * 'LLC-NS'  : (default): use the minimal feasible nullspace found by solving a MILP (Chan et al., 2017)
+%                    * 'LLC-EFM' : find whether reactions in cycles are connected by EFMs or not 
+%                                  for faster localized loopless constraints (Chan et al., 2017)
+%                    Can contain other fields for LLC preprocessing which might be updated during this function
 %
 % OUTPUT:
 %    MILPproblem:    Problem structure containing the following fields describing an MILP problem:
@@ -34,15 +42,25 @@ function [MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex, metho
 %                      * vartype - variable type of the MILP problem ('C', and 'B')
 %                      * `x0 = []` - Needed for `solveMILPproblem`
 %
+%    loopInfo:       Structure containing preprocessing data for using localized loop constraints (LLCs)
+%
 % .. Author: - Jan Schellenberger Sep 27, 2009
 
-if ~exist('method','var')
+if ~exist('method','var') || isempty(method)
     method = 2;
 end
-if ~exist('reduce_vars','var')
+if ~exist('reduce_vars','var') || isempty(reduce_vars)
     reduce_vars = 1;
 end
-
+if ~exist('loopInfo', 'var') || isempty(loopInfo)
+    loopInfo = struct();
+end
+if ~isfield(loopInfo, 'method')
+    loopInfo.method = 'LLC-NS';
+end
+if ~isfield(loopInfo, 'printLevel')
+    loopInfo.printLevel = 0;
+end
 
 % different ways of doing it.  I'm still playing with this.
 if nargin < 3
@@ -72,36 +90,91 @@ MILPproblem = LPproblem;
 S = model.S;
 [m,n] = size(LPproblem.A);
 
-if ~isfield(model,'SIntRxnBool')
-    model = findSExRxnInd(model);
+% find nullspace matrix
+if ~all(isfield(loopInfo, {'N', 'isInternal'}))
+    switch loopInfo.method
+        case 'original'
+            % original implementation (Schellenberger et al., 2009)
+            if ~isfield(model,'SIntRxnBool')
+                model = findSExRxnInd(model);
+            end
+            isInternal = model.SIntRxnBool; % internal, presumably mass balanced reactions
+            if reduce_vars == 1
+                active = ~(model.lb ==0 & model.ub == 0);
+                S2 = S(:,active); % exclude rxns with ub/lb ==0
+                
+                N2 = sparseNull(sparse(S2));
+                N = zeros(length(active), size(N2,2));
+                N(active,:) = N2;
+                %size(N)
+                active = active & any(abs(N) > 1e-6, 2); % exclude rxns not in null space
+                %size(active)
+                %size(nontransport)
+                isInternal = isInternal & active;
+            end
+            
+            Sn = S(:, isInternal);
+
+            Ninternal = sparseNull(sparse(Sn));
+            loopInfo.N = sparse(size(S, 2), size(Ninternal, 2));
+            loopInfo.N(isInternal, :) = Ninternal;
+            loopInfo.isInternal = isInternal;
+            
+        case 'fastSNP'
+            % Fast-SNP (Saa and Nielson, 2016)
+            Ninternal = fastSNP(model);
+            loopInfo.N = Ninternal;
+            isInternal = any(Ninternal, 2);
+            Ninternal = Ninternal(isInternal, :);
+            loopInfo.isInternal = isInternal;
+        otherwise
+            % LLC preprocessing. Solve one single MILP (Chan et al., 2017)
+            [loopInfo.rxnInLoops, Ninternal] = findMinNull(model, 1);
+            loopInfo.conComp = connectedRxnsInNullSpace(Ninternal);
+            loopInfo.N = Ninternal;
+            isInternal = any(Ninternal, 2);
+            Ninternal = Ninternal(isInternal, :);
+            loopInfo.isInternal = isInternal;
+            loopInfo.useRxnLink = false;
+            if strcmpi(loopInfo.method, 'LLC-EFM')
+                % find connections by EFMs between reactions in cycles
+                loopInfo.rxnLink = connectedRxnsByEFM(model, loopInfo.conComp, loopInfo.rxnInLoops);
+                % Check if EFMs are found
+                if ~isempty(loopInfo.rxnLink)
+                    if loopInfo.printLevel
+                        fprintf('Use connections from EFMs to implement LLCs\n');
+                    end
+                    loopInfo.useRxnLink = true;
+                elseif loopInfo.printLevel
+                    fprintf('Unable to find EFMs. Use connections from nullspace to implement LLCs\n');
+                end
+            end
+    end
+else
+    % nullspace matrix given as input
+    isInternal = loopInfo.isInternal;
+    Ninternal = loopInfo.N(isInternal, :);
 end
-isInternal = model.SIntRxnBool; % internal, presumably mass balanced reactions
 
-if reduce_vars == 1
-    active = ~(model.lb ==0 & model.ub == 0);
-    S2 = S(:,active); % exclude rxns with ub/lb ==0
-    
-    N2 = sparseNull(sparse(S2));
-    N = zeros(length(active), size(N2,2));
-    N(active,:) = N2;
-    %size(N)
-    active = active & any(abs(N) > 1e-6, 2); % exclude rxns not in null space
-    %size(active)
-    %size(nontransport)
-    isInternal = isInternal & active;
-end
-
-Sn = S(:,isInternal);
-
-Ninternal = sparseNull(sparse(Sn));
-%max(max(abs(Ninternal)))
-%pause
 linternal = size(Ninternal,2);
 
-nint = length(find(isInternal));
-temp = sparse(nint, n);
-temp(:, rxnIndex(isInternal)) = speye(nint);
+nint = sum(isInternal);
+temp = sparse(1:nint, rxnIndex(isInternal), 1, nint, n);
 
+if strncmpi(loopInfo.method, 'llc', 3)
+    % store the variable and constraint orders in the MILP problem for method = 2
+    loopInfo.con.vU = (m + 1):(m + nint);
+    loopInfo.con.vL = (m + nint + 1):(m + nint * 2);
+    loopInfo.con.gU = (m + nint * 2 + 1):(m + nint * 3);
+    loopInfo.con.gL = (m + nint * 3 + 1):(m + nint * 4);
+    loopInfo.var.z = (n + 1):(n + nint);
+    loopInfo.var.g = (n + nint + 1):(n + nint * 2);
+    loopInfo.rxnInLoopIds = zeros(size(model.S, 2), 1);
+    loopInfo.rxnInLoopIds(any(loopInfo.rxnInLoops, 2)) = 1:nint;
+    loopInfo.Mv = 10000;  % big M for constraints on fluxes
+    loopInfo.Mg = 100;  % big M for constraints on enegy variables
+    loopInfo.BDg = 1000;  % default bound for energy variables    
+end
 
 if method == 1 % two variables (ar, af)
     MILPproblem.A = [LPproblem.A, sparse(m,3*nint);   % Ax = b (from original LPproblem)
@@ -154,18 +227,18 @@ if method == 1 % two variables (ar, af)
     
 elseif method == 2 % One variables (a)
     MILPproblem.A = [LPproblem.A, sparse(m,2*nint);   % Ax = b (from original LPproblem)
-        temp, -10000*speye(nint), sparse(nint, nint); % v < 10000*af
-        temp, -10000*speye(nint), sparse(nint, nint); % v > -10000 + 10000*af
-        sparse(nint, n), -101*speye(nint), speye(nint);  % E < 100 af - ar
-        sparse(nint, n), -101*speye(nint), speye(nint);  % E > af - 100 ar
+        temp, -10000*speye(nint), sparse(nint, nint); % v - 10000 a <=  0
+        temp, -10000*speye(nint), sparse(nint, nint); % v - 10000 a >= -10000
+        sparse(nint, n), -101*speye(nint), speye(nint);  % E - 101 a <= -1
+        sparse(nint, n), -101*speye(nint), speye(nint);  % E - 101 a >= -100
         sparse(linternal, n + nint), Ninternal']; % N*E = 0
     
     MILPproblem.b = [LPproblem.b; % Ax = b (from original problem)
-        zeros(nint,1); % v < 10000*af
-        -10000*ones(nint, 1); % v > -10000 + 10000*af
-        -ones(nint,1); % e<
-        -100*ones(nint, 1); % e>
-        zeros(linternal,1)];
+        zeros(nint,1); % v - 10000 a <=  0
+        -10000*ones(nint, 1); % v - 10000 a >= -10000
+        -ones(nint,1); % E - 101 a <= -1
+        -100*ones(nint, 1); % E - 101 a >= -100
+        zeros(linternal,1)]; % N*E = 0
     
     MILPproblem.c = [LPproblem.c;
         zeros(2*nint,1)];
@@ -181,10 +254,10 @@ elseif method == 2 % One variables (a)
     if isfield(LPproblem, 'vartype')
         MILPproblem.vartype = LPproblem.vartype;  % keep variables same as previously.
     else
-        for i = 1:n, MILPproblem.vartype(end+1,1) = 'C';end; %otherwise define as continuous (used for all LP problems)
+        MILPproblem.vartype = repmat('C', n, 1); %otherwise define as continuous (used for all LP problems)
     end
-    for i = 1:nint, MILPproblem.vartype(end+1,1) = 'B';end; % a variables
-    for i = 1:nint, MILPproblem.vartype(end+1,1) = 'C';end; % G variables
+    % a variables, E variables
+    MILPproblem.vartype = [MILPproblem.vartype(:); repmat('B', nint, 1); repmat('C', nint, 1)];
     
     if isfield(LPproblem, 'F') % used in QP problems
         MILPproblem.F = sparse(size(MILPproblem.A,2),   size(MILPproblem.A,2));
@@ -259,7 +332,5 @@ elseif method == 3 % like method 3 except reduced constraints.
 else
     display('method not found')
     method
-    pause;
 end
-
 end
