@@ -1,0 +1,29 @@
+1. Better way to avoid numerical problem
+2. dense vs sparse matrix operation (automatically switch between them)
+3. Demos showing how to use sample.m
+-Sample cube.
+-Sample netlib.
+-Sample bio polytope.
+-Sample a Gaussian.
+4. Create a observer
+5. better Printout
+6. 16 samples at the same time? Better use of SIMD.
+7. Better presolve
+Consider rows of matrix A.
+If there are two rows such that
+the non-zeros in row i is a subset of the non-zeros in row j.
+Then, we should row operation to remove one entry in row j.
+But one thing we must do, at ver 0.2 is at least do row-operations for rows
+of 2 non-zeros.
+I find that bio polytope, majority of rows has this. So, it can be a real
+benefit.
+8. Should we incorporate the test of correctness and mixing time?
+9. include CHAR?
+10. Sometimes splitDenseCols slow down the runtime!
+11. Linear system with PCG?
+12. There are many dataset in http://miplib.zib.de/set_benchmark.html
+13. Create a test for sampling from other distribution.
+    (At least from Guassian...)
+14. metropolis hastings filter
+1. have quad for presolve
+2. Whenever Linear System Solver failed, we can switch to quad

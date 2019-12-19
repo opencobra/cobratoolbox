@@ -10,7 +10,7 @@
 global CBTDIR
 
 % require the specified toolboxes and solvers
-solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
+solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi'});
 
 % save the current path
 currentDir = pwd;
