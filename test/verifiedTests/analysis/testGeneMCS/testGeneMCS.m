@@ -68,6 +68,10 @@ for k = 1:length(solverPkgs)
         options = struct();
         options.gene_set = model.genes([1 2 4 5 6]);
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
+            % Check the gMCS
+        [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gmcs);
+        assert(all(IsMinimal));
+        assert(all(IsCutSet));
         %Assert that all correct solutions are there
         assert(all(cellfun(@(x) any(cellfun(@(y) isempty(setxor(x,y)),gmcs)), {{'g5'},{'g1','g4'}})))
         %and, that there are no surplus solutions
@@ -76,6 +80,10 @@ for k = 1:length(solverPkgs)
         options.KO = 'g5';
         [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
         assert(isequal(gmcs,{{'g5'}}));
+        % Check the gMCS
+        [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gmcs);
+        assert(IsMinimal);
+        assert(IsCutSet);
         %assert using one worker
         options = struct();
         options.numWorkers = 1;

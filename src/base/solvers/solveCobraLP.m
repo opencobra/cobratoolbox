@@ -1130,7 +1130,7 @@ switch solver
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
-        tomlabProblem.PriLevOpt = printLevel;
+        tomlabProblem.PriLevOpt = cobraParams.printLevel;
 
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis) && ...
                 ~ismember('basis',fieldnames(solverParams))

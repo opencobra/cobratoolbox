@@ -21,6 +21,11 @@ cplexProblem.Param.barrier.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.simplex.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.sifting.display.Cur = cobraParams.printLevel;
 
+% turn off display output if printLevel is set to 0
+if cobraParams.printLevel == 0
+    cplexProblem.DisplayFunc = [];
+end
+
 if isscalar(cobraParams.logFile)
     if cobraParams.logFile == 1
         % allow print to command window by setting solverParams.logFile == 1
@@ -29,13 +34,23 @@ if isscalar(cobraParams.logFile)
         cplexProblem.DisplayFunc = @(x) redirect(1,x);
     else
         % any other scalar will be assumed to indicate no logging
+        % this also turns off cplex clonelog files.
         logFile = 0;
         logToFile = false;
+        cplexProblem.Param.output.clonelog.Cur = -1;
     end
-else
-    logFile = fopen(cobraParams.logFile,'a');
-    logToFile = true;
-    cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
+else 
+    if isempty(cobraParams.logFile)
+        % we assume that the logFile Parameter being empty indicates no
+        % logging requested.
+        logFile = 0;
+        logToFile = false;
+        cplexProblem.Param.output.clonelog.Cur = -1;
+    else
+        logFile = fopen(cobraParams.logFile,'a');
+        logToFile = true;
+        cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
+    end
 end
 
 % set tolerances

@@ -170,8 +170,8 @@ end
 %Making the comps fields unique
 if(isfield(modelNew, 'comps'))
     [ucomps,ia,ic] = unique(modelNew.comps);
-    toKeep = true(size(modelNew.comps));
-    toKeep(ia) = false;
+    toKeep = false(size(modelNew.comps));
+    toKeep(ia) = true;
     modelNew = removeFieldEntriesForType(modelNew,~toKeep,'comps',numel(toKeep));
 end
 showprogress(1.0, 'Finished merging models ...');

@@ -22,16 +22,22 @@ function [model] = generateRules(model, printLevel)
     if ~exist('printLevel', 'var')
         printLevel = 1;
     end
+    if ~isfield(model, 'grRules')
+        warning 'This function can be only be used on a model that has grRules field!\n';
+        return;
+    end
     [preParsedGrRules,genes] = preparseGPR(model.grRules);  % preparse all model.grRules
     allGenes =  unique([genes{~cellfun(@isempty,genes)}]); %Get the unique gene list
     if (~isfield(model, 'genes'))
         newGenes = allGenes;
     else
+%         C = setdiff(A,B) for vectors A and B, returns the values in A that 
+%         are not in B with no repetitions. C will be sorted.
         newGenes = setdiff(allGenes,model.genes);
     end
     if ~isempty(newGenes)
         if printLevel
-            warning('Found the following genes not present in the original model:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
+            warning('Found the following genes in grRules that were not present in model.genes:\n%s\nAdding them to the model.',strjoin(newGenes,'\n'));
         end
         model = addGenes(model,newGenes);
     end

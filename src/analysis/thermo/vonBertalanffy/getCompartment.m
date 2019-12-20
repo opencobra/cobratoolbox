@@ -1,25 +1,45 @@
-function [metCompartments, uniqueCompartments] = getCompartment(mets)
-% Gets the compartment for each metabolite, and the unique compartments
+function [compartments, uniqueCompartments] = getCompartment(mets)
+% Gets the compartment for each metabolite, and the unique compartments,
+% from metabolite abbreviation(s), each of which must have compartment
+% symbol concatentated on the right hand side (i.e. `metAbbr[*]`).
 %
 % USAGE:
 %
-%    [metCompartments, uniqueCompartments] = getCompartment(mets)
+%    [compartments, uniqueCompartments] = getCompartment(mets)
 %
 % INPUT:
-%    mets:                  `m x 1` cell array of metabolite abbreviations with compartment
-%                           concatentated on the right hand side (i.e. `metAbbr[*]`).
-%
+%    mets:               char array with a single metabolite abbreviation
+%                           or 
+%                           `m x 1` cell array of metabolite abbreviations 
+%                           
 % OUTPUTS:
-%    compartments:          `m x 1` cell array of compartment identifiers
-%    uniqueCompartments:    cell array of unique compartment identifiers
+%    compartments:          char array with a single compartment identifier
+%                           or 
+%                           `m x 1` cell array of compartment identifiers
+%
+%    uniqueCompartments:    char array with a single compartment identifier
+%                           or
+%                           cell array of unique compartment identifiers
 %
 % .. Author:
 %       - Ronan M.T. Fleming
 %       - Hulda SH, Nov. 2012   Switched from for loop to regular expression
 
+bool=0;
+if ischar(mets)
+    tmp{1}=mets;
+    mets=tmp;
+    bool=1;
+end
+
 pat = '(?<abbr>[^\[]+)\[(?<compartment>[^\]]+)\]';
 metStruct = regexp(mets,pat,'names'); % m x 1 cell array with fields abbr and compartment in each cell
 metStruct = [metStruct{:}]'; % Convert from cell array to double
-metCompartments = {metStruct.compartment}; % Concatenate compartment fields
-metCompartments = reshape(metCompartments,length(metCompartments),1);
-uniqueCompartments = unique(metCompartments);
+compartments = {metStruct.compartment}; % Concatenate compartment fields
+compartments = reshape(compartments,length(compartments),1);
+uniqueCompartments = unique(compartments);
+
+if bool==1
+    compartments = compartments{1};
+    uniqueCompartments = uniqueCompartments{1};
+end

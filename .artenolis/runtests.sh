@@ -25,6 +25,13 @@ do
         commitHash=$s
         commitMsg=$(git show $commitHash -q --pretty=%B 2>&1)
 
+        # for artenolis run if commitHash = fatal
+        if [[ $commitHash == *"fatal"* ]]; then
+            artenolisForce=true;
+            echo " -- fatal detected - CI run is forced."
+            break;
+        fi
+
         # Exit if commit message contains the string: [documentation]
         if [[ ! $commitMsg == *"[documentation]"* ]]; then
             allDocumentationLabel=false;

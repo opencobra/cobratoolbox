@@ -49,6 +49,10 @@ function [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties,
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 
+colNonZeroCount=(ATN.A~=0)'*ones(size(ATN.A,1),1);
+if any(colNonZeroCount~=2)
+    error('ATN.A does not correspond to a graph')
+end
 rbool = ismember(model.rxns,ATN.rxns); % True for reactions included in ATN
 mbool = any(model.S(:,rbool),2); % True for metabolites in ATN reactions
 
@@ -68,9 +72,27 @@ clear ATN
 
 % Convert incidence matrix to adjacency matrix for input to graph
 % algorithms
-[ah,~] = find(A == -1); % head nodes
-[at,~] = find(A == 1); % tail nodes
-adj = sparse([at;ah],[ah;at],ones(size([at;ah])));
+if 1
+    [ah,~] = find(A == -1); % head nodes
+    [at,~] = find(A == 1); % tail nodes
+    adj = sparse([at;ah],[ah;at],ones(size([at;ah])));
+else
+    %Graph Laplacian
+    La = A*A';
+    %Degree matrix
+    D = diag(diag(La));
+    
+    if 0
+        [ah,~] = find(A == -1); % head nodes
+        [at,~] = find(A == 1); % tail nodes
+        adj = sparse([at;ah],[ah;at],ones(size([at;ah])));
+        if norm(full(adj - (D - La)))~=0
+            error('failed to convert to adjacency matrix')
+        end
+    end
+    adj = D - La;
+    clear D La;
+end
 
 % Find connected components of underlying undirected graph.
 % Each component corresponds to an "atom conservation relation".

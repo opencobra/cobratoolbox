@@ -140,7 +140,7 @@ if ~parser.Results.checkSubFolders
     files = files(cellfun(@(x) isempty(regexp(x,regexptranslate('escape',filesep))),files));
 end
 
-files = strcat(absPath, filesep, files);
+files = strcat(repmat({absPath}, 1, length(files)), repmat({filesep}, 1, length(files)),files);
 
 %Filter according to the restriction pattern.
 if ~isempty(parser.Results.restrictToPattern)

@@ -9,7 +9,7 @@
 
 global CBTDIR
 
-solversToUse = prepareTest('needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'}, 'excludeSolvers', {'qpng'});
+solversToUse = prepareTest('needsMIQP',true, 'needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'}, 'excludeSolvers', {'qpng'});
 % Note: the solver QPNG cannot be used with this test
 
 % save the current path
@@ -54,7 +54,7 @@ assert(verifyCobraFunctionError('rMTA', 'inputs', {model, rxnFBS, Vref, 'a'}))
 assert(verifyCobraFunctionError('rMTA', 'inputs', {model, rxnFBS, Vref, 0.5, 'a'}))
 
 % define the solver packages to be used to run this test
-solverPkgs = solversToUse.QP;
+solverPkgs = solversToUse.MIQP;
 
 % Test solving for different solvers
 for k = 1:length(solverPkgs)

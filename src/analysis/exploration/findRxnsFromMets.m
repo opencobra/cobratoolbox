@@ -67,7 +67,6 @@ exclusive = parser.Results.exclusive;
 
 %Find met indicies
 index = ismember(model.mets,metList);
-others = sum(model.S(~index,:) ~= 0)';
 if producersOnly && consumersOnly    
     producers = sum(model.S(index,:) > 0,1)';
     consumers = sum(model.S(index,:) < 0,1)';
@@ -89,8 +88,9 @@ else
 end
 
 if exclusive
+    others = sum(model.S(~index,:) ~= 0);
     %exclude anything that has other reactants.
-    rels = rels & others' == 0;
+    rels = rels & others == 0;
 end
     
 

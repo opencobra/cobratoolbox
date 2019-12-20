@@ -126,7 +126,7 @@ if ~isa(LP, 'Cplex')
         end
     end
 
-    if isstruct(sol0)
+    if isstruct(sol)
         if nargin < 4
             tol = getCobraSolverParams('LP', {'feasTol'});
         end
