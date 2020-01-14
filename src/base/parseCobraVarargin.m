@@ -30,9 +30,10 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 %                         Can be assigned in the function easily by [argIn1, argIn2, ...] = deal(funParams{:})
 %    cobraParams:        structure containing parsed cobra parameters for each problem type in `problemTypes`, 
 %                        to be used within the cobra function being written.
-%    solverVaragin:      structure containing parsed cobra-problem-specific addition inputs for each problem type in `problemTypes`,
-%                        e.g., solverVarargin.LP contains the additional inputs for solveCobraLP,
-%                        called as solveCobraLP(LPproblem, solverVarargin.LP{:})
+%    solverVaragin:      structure containing parsed cobra-problem-specific addition inputs as a cell array for each problem type in `problemTypes`,
+%                        with the first cell being the solver-specific parameter structure
+%                        e.g., solverVarargin.LP contains the additional inputs for solveCobraLP, with solverVarargin.LP{1}
+%                        being the solver-specific parameter structure, called as solveCobraLP(LPproblem, solverVarargin.LP{:})
 
 if nargin < 5 || isempty(problemTypes)
     problemTypes = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};

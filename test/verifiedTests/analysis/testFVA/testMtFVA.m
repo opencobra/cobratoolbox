@@ -26,25 +26,19 @@ rxnNames = {'PGI', 'PFK', 'FBP', 'FBA', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK
 fprintf('    Testing flux variability for the following reactions:\n');
 disp(rxnNames);
 
-[minFluxS2, maxFluxS2] = fluxVariability(model, 90, 'max', rxnNames, 0, true, 'FBA', struct(), 0, 1);
-assert(max(abs(minFlux' - minFluxS2)) < tol)
-assert(max(abs(maxFlux' - maxFluxS2)) < tol)
+for j = 0:2
+    % test with different heuristics levels
+    [minFluxS2, maxFluxS2] = fluxVariability(model, 90, 'max', rxnNames, 0, true, 'FBA', struct(), 0, 1, j, 1);
+    assert(max(abs(minFlux' - minFluxS2)) < tol)
+    assert(max(abs(maxFlux' - maxFluxS2)) < tol)
+end
 
+% error if allowLoops is on
+assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 2, ...
+    'input', {model, 90, 'max', rxnNames, 0, false, 'FBA', struct(), 0, 1, 0, 1}, ...
+    'testMessage', 'mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax'))
 
-% changeCobraSolverParams('LP', 'feasTol', 1e-9);
-% changeCobraSolverParams('LP', 'optTol', 1e-9);
-% % standard FVA
-% [minFluxS, maxFluxS] = fluxVariability(model, 90, 'max', rxnNames, 0, true, 'FBA', struct(), 0, 0);
-% % FVA using mtFVA
-% [minFluxS2, maxFluxS2] = fluxVariability(model, 90, 'max', rxnNames, 0, true, 'FBA', struct(), 0, 1);
-% 
-% max(abs(minFluxS - minFluxS2))
-% max(abs(maxFluxS - maxFluxS2))
-% 
-% % standard FVA
-% [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', model.rxns, 0, true, 'FBA', struct(), 0, 0);
-% % FVA using mtFVA
-% [minFluxT2, maxFluxT2] = fluxVariability(model, 90, 'max', model.rxns, 0, true, 'FBA', struct(), 0, 1);
-% 
-% max(abs(minFluxT - minFluxT2))
-% max(abs(maxFluxT - maxFluxT2))
+% error if a method other than FBA is chosen
+assert(verifyCobraFunctionError('fluxVariability', 'outputArgCount', 4, ...
+    'input', {model, 90, 'max', rxnNames, 0, true, '0-norm', struct(), 0, 1, 0, 1}, ...
+    'testMessage', 'mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax'))
