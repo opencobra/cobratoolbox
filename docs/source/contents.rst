@@ -14,3 +14,5 @@ The COBRA Toolbox
    faq
    contributors
    funding
+   plan
+   contact
