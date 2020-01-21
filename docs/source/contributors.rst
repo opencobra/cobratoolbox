@@ -13,13 +13,13 @@ Contributors
         <div class="col-lg-2 text-center">
         </div>
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="Ronan Fleming" width="90px"></a>
-            <p><a href="http://wwwen.uni.lu/lcsb/research/systems_biochemistry">Ronan Fleming</a></p>
+            <a href="https://www.universiteitleiden.nl/en/staffmembers/ronan-fleming"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="https://avatars3.githubusercontent.com/u/2146874?v=3" alt="Ronan Fleming" width="90px"></a>
+            <p><a href="https://www.universiteitleiden.nl/en/staffmembers/ronan-fleming">Ronan Fleming</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/lcsb/research/mol_systems_physiology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/496e65732e546869656c6554484945494e33313830.jpg" alt="Ines Thiele" width="90px"></a>
-            <p><a href="http://wwwen.uni.lu/lcsb/research/mol_systems_physiology">Ines Thiele</a></p>
+            <a href="https://www.thielelab.eu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/496e65732e546869656c6554484945494e33313830.jpg" alt="Ines Thiele" width="90px"></a>
+            <p><a href="https://www.thielelab.eu/">Ines Thiele</a></p>
         </div>
 
         <div class="col-lg-2 text-center">
