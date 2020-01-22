@@ -61,6 +61,11 @@ for i = 1:length(MissingUptakes)
     adaptedDietConstraints{CLength + i, 2} = num2str(-0.1);
 end
 
+% fix any exchange nomenclature issues
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_adpcbl(e)', 'EX_adocbl(e)');
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_glc(e)', 'EX_glc_D(e)');
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_sbt-d(e)', 'EX_sbt_D(e)');
+
 % Allow uptake of certain dietary compounds that are currently not mapped in the
 % Diet Designer
 CLength = size(adaptedDietConstraints, 1);
@@ -102,9 +107,6 @@ if nargin > 2
     if isempty(solver)
         initCobraToolbox(false); %Don't update the toolbox automatically
     end
-    % inconsistency in reaction IDs..can currently only be fixed manually.
-    TestAdaptedDietConstraints = adaptedDietConstraints;
-    TestAdaptedDietConstraints(:, 1) = strrep(TestAdaptedDietConstraints(:, 1), 'EX_adocbl(e)', 'EX_adpcbl(e)');
     % list the AGORA models
     modelList = cellstr(ls([AGORAPath, '*.mat']));
     for i = 1:length(modelList)
@@ -130,10 +132,7 @@ end
 % microbiota models) by converting exchange reaction IDs. For the
 % microbiota setup, upper bounds are also constrained to enforce a certain
 % uptake of metabolites.
-if strcmp(setupUsed, 'AGORA')
-    % inconsistency in reaction IDs..can currently only be fixed manually.
-    adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_adocbl(e)', 'EX_adpcbl(e)');
-elseif strcmp(setupUsed, 'Pairwise')
+if strcmp(setupUsed, 'Pairwise')
     adaptedDietConstraints(:, 1) = regexprep(adaptedDietConstraints(:, 1), '\(e\)', '\[u\]');
 elseif strcmp(setupUsed, 'Microbiota')
     % add constraints on upper bounds based on uptake constraints in the
