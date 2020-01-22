@@ -41,8 +41,7 @@ end
 
 % load the models
 for i = 2:size(abundance, 1)
-%     model = readCbModel([modelPath filesep abundance{i, 1} '.mat']);
-load([modelPath filesep abundance{i, 1} '.mat']);
+    model = readCbModel([modelPath filesep abundance{i, 1} '.mat']);
     modelsList{i, 1} = model;
 end
 
