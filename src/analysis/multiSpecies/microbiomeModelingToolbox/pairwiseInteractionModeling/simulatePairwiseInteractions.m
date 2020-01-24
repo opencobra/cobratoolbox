@@ -1,4 +1,4 @@
-function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairedModels, pairedModelInfo, varargin)
+function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairwiseModelFolder, pairedModelInfo, varargin)
 % This function predicts the outcome of pairwise simulations in every
 % combination from a given list of pairwise models. The pairwise models
 % need to be created first with the function joinModelsPairwiseFromList.
@@ -38,7 +38,7 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 %     [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairedModels, pairedModelInfo, varargin)
 %
 % INPUTS:
-%     pairedModels:            Array of pairwise model structures to be simulated
+%     pairwiseModelFolder:     Folder where pairwise models are located
 %     pairedModelInfo:         Information on species joined in the pairwise models
 %
 % OPTIONAL INPUTS:
@@ -63,22 +63,21 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 %
 % .. Authors:
 %       - Almut Heinken, 02/2018
+%       - Almut Heinken, 02/2020: Inputs changed for more efficient computation 
 
 parser = inputParser();  % Parse input parameters
-parser.addRequired('pairedModels', @iscell);
+parser.addRequired('pairwiseModelFolder', @ischar);
 parser.addRequired('pairedModelInfo', @iscell);
 parser.addParameter('inputDiet', {}, @iscell)
 parser.addParameter('saveSolutionsFlag', false, @(x) isnumeric(x) || islogical(x))
-parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('sigD', 0.1, @(x) isnumeric(x))
 
-parser.parse(pairedModels, pairedModelInfo, varargin{:});
+parser.parse(pairwiseModelFolder, pairedModelInfo, varargin{:});
 
-pairedModels = parser.Results.pairedModels;
+pairwiseModelFolder = parser.Results.pairwiseModelFolder;
 pairedModelInfo = parser.Results.pairedModelInfo;
 inputDiet = parser.Results.inputDiet;
 saveSolutionsFlag = parser.Results.saveSolutionsFlag;
-numWorkers = parser.Results.numWorkers;
 sigD = parser.Results.sigD;
 
 if saveSolutionsFlag == true
@@ -100,119 +99,10 @@ pairwiseInteractions{1, 8} = 'Outcome_Model1';
 pairwiseInteractions{1, 9} = 'Outcome_Model2';
 pairwiseInteractions{1, 10} = 'Total_Outcome';
 
-if numWorkers > 0
-    % with parallelization
-    poolobj = gcp('nocreate');
-    if isempty(poolobj)
-        parpool(numWorkers)
-    end
-    global CBT_LP_SOLVER
-    solver = CBT_LP_SOLVER;
-
-    solutionPairedTemp = {};
-    solutionSingle1Temp = {};
-    solutionSingle2Temp = {};
-    iAFirstTemp = {};
-    iASecondTemp = {};
-    iABothTemp = {};
-    parfor i = 1:size(pairedModelInfo, 1)
-        changeCobraSolver(solver, 'LP');
-        % load the model
-        pairedModel = pairedModels{i};
-        % if a diet was input
-        if ~isempty(inputDiet)
-            pairedModel = useDiet(pairedModel, inputDiet);
-        end
-        % for each paired model, set both biomass objective functions as
-        % objectives
-        biomass1 = strcat(pairedModelInfo{i, 2}, '_', pairedModelInfo{i, 3});
-        biomass2 = strcat(pairedModelInfo{i, 4}, '_', pairedModelInfo{i, 5});
-        model1biomass = find(ismember(pairedModel.rxns, biomass1));
-        pairedModel.c(model1biomass, 1) = 1;
-        model2biomass = find(ismember(pairedModel.rxns, biomass2));
-        pairedModel.c(model2biomass, 1) = 1;
-        % enforce minimal growth
-        pairedModel = changeRxnBounds(pairedModel, biomass1, 0.001, 'l');
-        pairedModel = changeRxnBounds(pairedModel, biomass2, 0.001, 'l');
-        % calculate joint biomass
-        solutionPaired = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
-        solutionPairedTemp{i} = solutionPaired;
-        % separate growth
-        % silence model 2 and optimize model 1
-        % load the model again to avoid errors
-        pairedModel = pairedModels{i};
-        % if a diet was input
-        if ~isempty(inputDiet)
-            pairedModel = useDiet(pairedModel, inputDiet);
-        end
-        pairedModel = changeObjective(pairedModel, biomass1);
-        % disable flux through the second model
-        pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 4}, '_'), pairedModel.rxns)), 0, 'b');
-        % calculate single biomass
-        solutionSingle1 = solveCobraLP(buildLPproblemFromModel(pairedModel),false);
-        solutionSingle1Temp{i} = solutionSingle1;
-        % silence model 1 and optimize model 2
-        % load the model again to avoid errors
-        pairedModel = pairedModels{i};
-        % if a diet was input
-        if ~isempty(inputDiet)
-            pairedModel = useDiet(pairedModel, inputDiet);
-        end
-        pairedModel = changeObjective(pairedModel, biomass2);
-        % disable flux through the first model
-        pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
-        % calculate single biomass
-        solutionSingle2 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
-        solutionSingle2Temp{i} = solutionSingle2;
-
-        % interpret computed growth rates-only if solutions are feasible
-        if solutionPaired.stat ~= 0 && solutionSingle1.stat ~= 0 && solutionSingle2.stat ~= 0
-            [iAFirstModelTemp, iASecondModelTemp, iATotalTemp] = analyzePairwiseInteractions(solutionPaired.full(model1biomass), solutionPaired.full(model2biomass), solutionSingle1.full(model1biomass), solutionSingle2.full(model2biomass), sigD);
-            iAFirstTemp{i} = iAFirstModelTemp;
-            iASecondTemp{i} = iASecondModelTemp;
-            iABothTemp{i} = iATotalTemp;
-        end
-    end
-    for i = 1:size(pairedModelInfo, 1)
-        %% fill in all results
-        pairedModel = pairedModels{i};
-        biomass1 = strcat(pairedModelInfo{i, 2}, '_', pairedModelInfo{i, 3});
-        biomass2 = strcat(pairedModelInfo{i, 4}, '_', pairedModelInfo{i, 5});
-        model1biomass = find(ismember(pairedModel.rxns, biomass1));
-        model2biomass = find(ismember(pairedModel.rxns, biomass2));
-        % fill out the results table with the model information
-        pairwiseInteractions{i + 1, 1} = pairedModelInfo{i, 1};
-        pairwiseInteractions{i + 1, 2} = pairedModelInfo{i, 2};
-        pairwiseInteractions{i + 1, 3} = pairedModelInfo{i, 4};
-        % combined growth
-        pairwiseInteractions{i + 1, 4} = solutionPairedTemp{i}.full(model1biomass);
-        pairwiseInteractions{i + 1, 5} = solutionPairedTemp{i}.full(model2biomass);
-        pairwiseInteractions{i + 1, 6} = solutionSingle1Temp{i}.full(model1biomass);
-        pairwiseInteractions{i + 1, 7} = solutionSingle2Temp{i}.full(model2biomass);
-        % make sure that infeasible solutions are flagged
-        if solutionPairedTemp{i}.stat == 0 || solutionSingle1Temp{i}.stat == 0 || solutionSingle2Temp{i}.stat == 0
-            pairwiseInteractions{i + 1, 8} = 'Infeasible';
-            pairwiseInteractions{i + 1, 9} = 'Infeasible';
-            pairwiseInteractions{i + 1, 10} = 'Infeasible';
-        else
-            % save the results
-            pairwiseInteractions{i + 1, 8} = iAFirstTemp{i};
-            pairwiseInteractions{i + 1, 9} = iASecondTemp{i};
-            pairwiseInteractions{i + 1, 10} = iABothTemp{i};
-        end
-        %% store the solutions if storeSolutionFlag==true
-        if nargin > 3 && saveSolutionsFlag == true
-            pairwiseSolutions{i + 1, 1} = pairedModelInfo{i, 1};
-            pairwiseSolutions{i + 1, 2} = solutionPairedTemp{i};
-            pairwiseSolutions{i + 1, 3} = solutionSingle1Temp{i};
-            pairwiseSolutions{i + 1, 4} = solutionSingle2Temp{i};
-        end
-    end
-else
-    % without parallization
     for i = 1:size(pairedModelInfo, 1)
         % load the model
-        pairedModel = pairedModels{i};
+       load([pairwiseModelFolder filesep pairedModelInfo{i,1}]);
+       pairedModelOrg=pairedModel;
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -233,7 +123,7 @@ else
         % separate growth
         % silence model 2 and optimize model 1
         % load the model again to avoid errors
-        pairedModel = pairedModels{i};
+        pairedModel=pairedModelOrg;
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -245,7 +135,7 @@ else
         solutionSingle1 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
         % silence model 1 and optimize model 2
         % load the model again to avoid errors
-        pairedModel = pairedModels{i};
+        pairedModel=pairedModelOrg;
         % if a diet was input
         if ~isempty(inputDiet)
             pairedModel = useDiet(pairedModel, inputDiet);
@@ -289,8 +179,12 @@ else
             pairwiseSolutions{i + 1, 3} = solutionSingle1;
             pairwiseSolutions{i + 1, 4} = solutionSingle2;
         end
+        if floor(i/100)==i/100
+            % temporary save
+            save('pairwiseInteractions','pairwiseInteractions');
+            save('pairwiseSolutions','pairwiseSolutions');
+        end
     end
-end
 end
 
 function [iAFirstOrg, iASecondOrg, iATotal] = analyzePairwiseInteractions(pairedGrowthOrg1, pairedGrowthOrg2, singleGrowthOrg1, singleGrowthOrg2, sigD)
