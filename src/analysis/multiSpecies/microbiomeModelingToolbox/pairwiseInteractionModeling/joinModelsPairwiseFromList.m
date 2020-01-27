@@ -163,4 +163,6 @@ for i = 1:size(modelList, 1)
     end
 end
 
+save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+
 end
