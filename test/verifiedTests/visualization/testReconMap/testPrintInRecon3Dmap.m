@@ -21,7 +21,7 @@ cd(fileparts(which('testPrintInRecon3Dmap')));
 testMap = regexp( fileread('testMap.txt'), '\n', 'split')';
 
 % Generate new data
-printInRecon3Dmap(model.rxns);
+printInRecon3Dmap(findRxnsFromSubSystem(model, 'Citric acid cycle'));
 newMap = regexp( fileread('C__fakepath_data4ReconMap3_1.txt'), '\n', 'split')';
 
 % Test the data
