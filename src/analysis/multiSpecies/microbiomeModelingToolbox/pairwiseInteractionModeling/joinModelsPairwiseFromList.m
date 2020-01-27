@@ -111,7 +111,10 @@ for i = 1:size(modelList, 1)
             model2 = inputModels{k};
             pairedModelInfo{cnt, 4} = modelList{k};
             pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'bio', 3)));
+            % save file regularly
+            if floor(cnt/1000) == cnt/1000
             save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+            end
             
             if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])
                 pairedModels{cnt, 1} = pairedModelsTemp{k};
@@ -141,7 +144,10 @@ for i = 1:size(modelList, 1)
             pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'bio', 3)));
             pairedModelInfo{cnt, 4} = modelList{j};
             pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'bio', 3)));
-            save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+            % save file regularly
+            if floor(cnt/1000) == cnt/1000
+                save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+            end
             
             if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{j}, '.mat'])
                 [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag);
