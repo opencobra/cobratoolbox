@@ -103,7 +103,8 @@ for i=1:size(modelList,1)
         end
     else
         for j=1:length(objectiveList)
-            FBAsolution = computeSolForObj(model, objectiveList{j});
+            sol = computeSolForObj(model, objectiveList{j});
+            FBAsolution{j,1}=sol;
         end
     end
     solutions(:,i)=FBAsolution;
