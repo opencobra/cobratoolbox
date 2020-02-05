@@ -10,7 +10,7 @@
 global CBTDIR
 
 % require the specified toolboxes and solvers
-solvers = prepareTest('needsLP', true);
+solvers = prepareTest('needsLP', true, 'excludeSolvers', {'glpk'});
 
 % save the current path
 currentDir = pwd;
