@@ -238,7 +238,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         end
     end
 
-    matver = split(version, ".");
+    matver = split(version, '.');
     matver = str2double(strcat(char(matver(1)), '.', char(matver(2))));
 
     % special case: cplex_direct
