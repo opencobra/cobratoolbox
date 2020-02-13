@@ -48,5 +48,20 @@ assert(all(A.' == 1:length(A)));
 % output a success message
 fprintf('\nDone.\n');
 
+% load the model
+model = getDistributedModel('ecoli_core_model.mat');
+model.rev = double(model.lb < 0);
+A = fastcc(model, 1e-4, 0);
+
+fprintf('\n -- Running swiftcc using the default linprog solver...\n\n');
+consistent = swiftcc(model.S, model.rev);
+assert(all(A == consistent));
+fprintf('\n -- Running swiftcc using the %s solver...\n\n', solvers.LP{1});
+consistent = swiftcc(model.S, model.rev, solvers.LP{1});
+assert(all(A == consistent));
+
+% output a success message
+fprintf('\nDone.\n');
+
 % change the directory
 cd(currentDir)
