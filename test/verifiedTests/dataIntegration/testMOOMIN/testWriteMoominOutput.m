@@ -35,11 +35,29 @@ model.expression = expression;
 % test with different input variants
 fprintf(' -- Running testWriteMoominOutput ... ');
 writeMoominOutput(model, 'test.out');
+test = importdata('test.out');
+ref = importdata('ref_test.out');
+assert(isequal(test, ref));
 writeMoominOutput(model, 'test.out', 'format', 'json');
+test = importdata('test.out');
+ref = importdata('ref_test_json.out');
+assert(isequal(test, ref));
 writeMoominOutput(model, 'test.out', 'format', 'full');
+test = readtable('test.out', 'FileType', 'text');
+ref = readtable('ref_test_full.out', 'FileType', 'text');
+assert(isequal(test, ref));
 writeMoominOutput(model, 'test.out', 'type', 'input');
+test = importdata('test.out');
+ref = importdata('ref_test_input.out');
+assert(isequal(test, ref));
 writeMoominOutput(model, 'test.out', 'nSolution', 2);
-writeMoominOutput(model, 'test.out', 'string', 1);
+test = importdata('test.out');
+ref = importdata('ref_test_sol2.out');
+assert(isequal(test, ref));
+writeMoominOutput(model, 'test.out', 'string', 0);
+test = importdata('test.out');
+ref = importdata('ref_test_numbers.out');
+assert(isequal(test, ref));
 
 % delete the output file
 if exist('test.out')
