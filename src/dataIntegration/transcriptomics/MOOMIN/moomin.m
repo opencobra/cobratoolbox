@@ -72,16 +72,7 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 	useStoichiometry = 1;
 	enumerate = 1;
 	precision = 7;
-	
-	% suggested solver parameters, override by passing a parameter structure through
-	%	'solverParameters' option
-	tolerance = 1e-6;
-    solverParameters.intTol = tolerance;
-    solverParameters.absMipGapTol = tolerance;
-    solverParameters.feasTol = tolerance;
-    solverParameters.optTol = tolerance;
-	solverTimeLimit = 1000;
-	solverPrintLevel = 0;
+    solverParameters = struct;
 	
 	model.ub(:) = 100;
     model.lb(model.lb~=0) = -100;
@@ -103,9 +94,9 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 					case 'precision'
 						precision = varargin{1, i+1};
 					case 'solverTimeLimit'
-						solverTimeLimit = varargin{1, i+1};
+						solverParameters.timeLimit = varargin{1, i+1};
 					case 'solverPrintLevel'
-						solverPrintLevel = varargin{1, i+1};
+						solverParameters.printLevel = varargin{1, i+1};
 					case 'solverParameters'
 						solverParameters = varargin{1, i+1};
 					otherwise
@@ -114,7 +105,7 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 				end
 			end
 		end
-	end
+    end
 	
 	% find expression data for the model genes
 	[~, indInData, indInModel] = intersect(expression.GeneID, model.genes);
@@ -289,11 +280,9 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 	% loop to enumerate alternative optima
 	while cont
 		if useStoichiometry
-			solution = solveCobraMILP(MILPproblem, 'timeLimit', solverTimeLimit,...
-				'printLevel', solverPrintLevel, solverParameters);
+			solution = solveCobraMILP(MILPproblem, solverParameters);
 		else
-			solution = solveCobraMILP(MILPproblem, 'timeLimit', solverTimeLimit,...
-				'printLevel', solverPrintLevel, solverParameters);
+			solution = solveCobraMILP(MILPproblem, solverParameters);
 		end
 	
 		% write solution into output structure

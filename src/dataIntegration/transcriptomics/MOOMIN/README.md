@@ -13,6 +13,15 @@ In order to use MOOMIN, you need DE results obtained using Bayesian methods. In 
 You also need a metabolic network of the organism under study. You can read an SBML-file (.xml) using the COBRA-function
 "readSBML" or you can download a Matlab-structure containing a COBRA model directly if one is available.
 
+With genome-scale models, the MILP problem created by MOOMIN can become difficult to solve. If you are running into trouble, consider switching off stoichiometry ('stoichiometry', 0). You can also try passing these custom solver parameters to MOOMIN using the 'solverParameters' option:
+tolerance = 1e-6;
+solverParameters.intTol = tolerance;
+solverParameters.absMipGapTol = tolerance;
+solverParameters.feasTol = tolerance;
+solverParameters.optTol = tolerance;
+solverTimeLimit = 1000;
+solverPrintLevel = 0;
+
 # Citation
 If you use MOOMIN, please cite the original paper:
 Taneli Pusa, Mariana Galvão Ferrarini, Ricardo Andrade, Arnaud Mary, Alberto Marchetti-Spaccamela, Leen Stougie, Marie-France Sagot, MOOMIN – Mathematical explOration of ’Omics data on a MetabolIc Network, Bioinformatics, btz584, https://doi.org/10.1093/bioinformatics/btz584

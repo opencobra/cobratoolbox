@@ -54,8 +54,8 @@ for i=1:length(solvers.MILP)
 		% stoichiometric balance
 		assert(all(abs(A(1:nMets, 1:nRxns) * x(1:nRxns)) < tol));
 		% binary variables worked as intended
-		assert(all((x(1:nRxns) > 0) == (x(nRxns + 1:2 * nRxns))));
-		assert(all((x(1:nRxns) < 0) == (x(2 * nRxns + 1:end))));
+		assert(all( abs((x(1:nRxns) > 0) - x(nRxns + 1:2 * nRxns)) < tol ));
+		assert(all( abs((x(1:nRxns) < 0) - x(2 * nRxns + 1:end)) < tol ));
 	
 		% test the topological version
 		[outputModel, MILPsolutions, MILPproblem] = moomin(inputModel, expression, ...
@@ -68,9 +68,9 @@ for i=1:length(solvers.MILP)
 		A = MILPproblem.A;
 		b = MILPproblem.b;
 		x = MILPsolutions{1,1}.full;
-		assert(all(A(1:nRxns + nMets, :) * x <= b(1:nRxns + nMets)));
-		assert(all(A(nRxns + nMets + 1:nRxns + 3 * nMets, :) * x >=...
-			b(nRxns + nMets + 1:nRxns + 3 * nMets)));
+		assert(all( A(1:nRxns + nMets, :) * x - b(1:nRxns + nMets) < tol ));
+		assert(all( A(nRxns + nMets + 1:nRxns + 3 * nMets, :) * x -...
+			b(nRxns + nMets + 1:nRxns + 3 * nMets) > -tol ));
 	end
 	fprintf('Done.\n');
 end
