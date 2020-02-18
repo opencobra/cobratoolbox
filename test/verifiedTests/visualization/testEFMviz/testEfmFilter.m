@@ -1,21 +1,13 @@
-% The COBRAToolbox: <testNameOfSrcFile>.m
+% The COBRAToolbox: testEfmFilter.m
 %
 % Purpose:
-%     - <provide a short description of the purpose of the test
+%     - test if a given set of EFMs can be filtered to contain a reaction of interest
 %
 % Authors:
-%     - <major change>: <your name> <date>
-%
+%     - Created initial test script: Chaitra Sarathy 2 Dec 19
+%     - Updates to header docs: Chaitra Sarathy 19 Dec 19
 
 global CBTDIR
-
-% define the features required to run the test
-% requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
-
-% requiredSolvers = { 'dqqMinos', 'matlab' };
-
-% require the specified toolboxes and solvers, along with a UNIX OS
-% solversPkgs = prepareTest('reqSolvers', requiredSolvers, 'requiredToolboxes', requiredToolboxes, 'needUnix', true);
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));

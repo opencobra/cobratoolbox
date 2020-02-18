@@ -1,11 +1,11 @@
-% The COBRAToolbox: <testNameOfSrcFile>.m
+% The COBRAToolbox: testEfmImport.m
 %
 % Purpose:
-%     - <provide a short description of the purpose of the test
+%     - test if EFMs can be imported from an external file
 %
 % Authors:
-%     - <major change>: <your name> <date>
-%
+%     - Created initial test script: Chaitra Sarathy 2 Dec 19
+%     - Updates to header docs: Chaitra Sarathy 19 Dec 19
 
 global CBTDIR
 
