@@ -32,6 +32,7 @@ function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList,
 %     mergeGenes:         If true, genes in the joined models are merged and included
 %                         in the joined model structure (default: false)
 %     numWorkers:         Number of workers in parallel pool if desired
+%     pairwiseModelFolder Folder where pairwise models will be saved
 %
 % OUTPUTS:
 %     pairedModels:       Structue containing created pairwise models in all
@@ -40,6 +41,7 @@ function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList,
 %
 % .. Author:
 %      - Almut Heinken, 02/2018
+%      - Almut Heinken, 02/2020: Inputs changed for more efficient computation
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);
@@ -47,6 +49,7 @@ parser.addRequired('inputModels', @iscell);
 parser.addParameter('c', 400, @(x) isnumeric(x))
 parser.addParameter('u', 0, @(x) isnumeric(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
+parser.addParameter('pairwiseModelFolder', pwd, @(x) ischar(x))
 parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
 
 parser.parse(modelList, inputModels, varargin{:})
@@ -57,9 +60,17 @@ c = parser.Results.c;
 u = parser.Results.u;
 numWorkers = parser.Results.numWorkers;
 mergeGenesFlag = parser.Results.mergeGenesFlag;
+pairwiseModelFolder = parser.Results.pairwiseModelFolder;
 
 pairedModelInfo = {};
 cnt = 1;
+
+% check if any pairwise models already exist in output folder
+dInfo = dir(pairwiseModelFolder);
+existingModels={dInfo.name};
+existingModels=existingModels';
+existingModels(find(strcmp(existingModels(:,1),'.')),:)=[];
+existingModels(find(strcmp(existingModels(:,1),'..')),:)=[];
 
 % then join all models in modelList
 for i = 1:size(modelList, 1)
@@ -76,27 +87,41 @@ for i = 1:size(modelList, 1)
             models = {
                 model1
                 model2
-            };
+                };
             nameTagsModels = {
                 strcat(modelList{i}, '_')
                 strcat(modelList{k}, '_')
-            };
-            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'biomass', 7)))), c, u);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'biomass', 7)))), c, u);
-            pairedModelsTemp{k} = pairedModel;
+                };
+            if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])
+                [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag);
+                [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'bio', 3)))), c, u);
+                [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'bio', 3)))), c, u);
+                pairedModelsTemp{k} = pairedModel;
+            else
+                pairedModelsTemp{k} = {};
+            end
         end
         for k = i + 1:size(modelList, 1)
             % keep track of the generated models and populate the output file with
             % information on joined models
             model1 = inputModels{i};
-            pairedModelInfo{cnt, 1} = strcat('pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat');
+            pairedModelInfo{cnt, 1} = ['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'];
             pairedModelInfo{cnt, 2} = modelList{i};
-            pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'biomass', 7)));
+            pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'bio', 3)));
             model2 = inputModels{k};
             pairedModelInfo{cnt, 4} = modelList{k};
-            pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'biomass', 7)));
-            pairedModels{cnt, 1} = pairedModelsTemp{k};
+            pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'bio', 3)));
+            % save file regularly
+            if floor(cnt/1000) == cnt/1000
+            save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+            end
+            
+            if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])
+                pairedModels{cnt, 1} = pairedModelsTemp{k};
+                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],pairedModelsTemp{k});
+            else
+                pairedModels{cnt, 1} = {};
+            end
             cnt = cnt + 1;
         end
     else
@@ -107,23 +132,37 @@ for i = 1:size(modelList, 1)
             models = {
                 model1
                 model2
-            };
+                };
             nameTagsModels = {
                 strcat(modelList{i}, '_')
                 strcat(modelList{j}, '_')
-            };
-            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'biomass', 7)))), c, u);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'biomass', 7)))), c, u);
+                };
             % keep track of the generated models and populate the output file with
             % information on joined models
-            pairedModelInfo{cnt, 1} = strcat('pairedModel', '_', modelList{i}, '_', modelList{j}, '.mat');
+            pairedModelInfo{cnt, 1} = ['pairedModel', '_', modelList{i}, '_', modelList{j}, '.mat'];
             pairedModelInfo{cnt, 2} = modelList{i};
-            pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'biomass', 7)));
+            pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'bio', 3)));
             pairedModelInfo{cnt, 4} = modelList{j};
-            pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'biomass', 7)));
-            pairedModels{cnt, 1} = pairedModel;
+            pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'bio', 3)));
+            % save file regularly
+            if floor(cnt/1000) == cnt/1000
+                save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+            end
+            
+            if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{j}, '.mat'])
+                [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag);
+                [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'bio', 3)))), c, u);
+                [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'bio', 3)))), c, u);
+                pairedModels{cnt, 1} = pairedModel;
+                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],'pairedModel');
+            else
+                pairedModels{cnt, 1} = {};
+            end
             cnt = cnt + 1;
         end
     end
+end
+
+save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
+
 end

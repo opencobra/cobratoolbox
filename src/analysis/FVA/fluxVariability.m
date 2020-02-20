@@ -4,7 +4,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 % USAGE:
 %
 %    [minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
-%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics)
+%    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics, useMtFVA)
 %    [...] = fluxVariability(model, ..., 'name', value, ..., solverParams)
 %    [...] = fluxVariability(model, ..., paramStruct)
 %
@@ -56,6 +56,12 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                      1: solve max-sum-flux and min-sum-flux LPs to get reactions which already hit the bounds
 %                      2: solve additionally a single LP to find all blocked irreversible reactions (default if rxnNameList has >= 5 reactions)
 %
+%   useMtFVA:          run FVA multi-threaded via an external JVM with CPLEX as solver
+%                      does not return Vmin, Vmax; requires allowLoops = true and method = 'FBA'
+%
+%                           - 0 : default, do not use mtFVA
+%                           - 1 : use mtFVA
+%
 %    paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter
 %
 % OUTPUTS:
@@ -88,8 +94,8 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 
 global CBT_LP_PARAMS
 
-optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads', 'heuristics'}; 
-defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       [],         []};
+optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads', 'heuristics', 'useMtFVA'}; 
+defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       [],         [],           0};
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
@@ -100,6 +106,7 @@ validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPerc
     @(x) true, ...  % advind
     @(x) isscalar(x) & (islogical(x) | isnumeric(x)), ...  % threads
     @(x) isscalar(x) & (islogical(x) | isnumeric(x)) ...  % heuristics
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) ...  % useMtFVA
     };  
 
 % get all potentially supplied COBRA parameter names
@@ -108,7 +115,8 @@ problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams', true);
 
 % solverParams not outputted as a function parameter since it is individually handled and embedded in solverVarargin
-[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, advind, threads, heuristics] = deal(funParams{:});
+[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
+    advind, threads, heuristics, useMtFVA] = deal(funParams{:});
 
 allowLoopsError = false;
 loopMethod = '';
@@ -146,11 +154,8 @@ if any(~ismember(rxnNameList,model.rxns))
     error('There were reactions in the rxnList which are not part of the model:\n%s\n',strjoin(rxnNameList(~presence),'\n'));
 end
 
-if 0
-    %TODO not clear how this is supposed to work - Ronan
-    if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
-        error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
-    end
+if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
+    error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
 end
 % Set up the problem size
 [~, nRxns] = size(model.S);
@@ -160,7 +165,7 @@ end
 if exist('CBT_LP_PARAMS', 'var') && isfield(CBT_LP_PARAMS, 'objTol')
     tol = CBT_LP_PARAMS.objTol;
 end
-if nargout >= 3
+if nargout >= 3 && ~useMtFVA
     minNorm = 1;
 end
 
@@ -453,6 +458,24 @@ if heuristics > 1
        
         [minSolved, maxSolved] = deal(minSolved | rxnBlocked | rxnHitLB, maxSolved | rxnBlocked | rxnHitUB);
     end
+end
+
+if useMtFVA
+    for i = 1:length(rxnNameList)
+        % retrieve max/min values from heuristic solutions
+        if minSolved(i)
+            minFlux(i) = calcSolForEntry([], Order(i) ,LPproblem, method, allowLoops, minNorm, [], heuristicSolutions{preCompMinSols(i)}, 1);
+        end
+        if maxSolved(i)
+            maxFlux(i) = calcSolForEntry([], Order(i) ,LPproblem, method, allowLoops, minNorm, [], heuristicSolutions{preCompMaxSols(i)}, -1);
+        end
+    end
+    if any(~minSolved | ~maxSolved)
+        [fvalb, fvaub]= mtFVA(LPproblem, [columnVector(Order(~maxSolved)); columnVector(-Order(~minSolved))], solverVarargin.LP{1});
+        minFlux(~minSolved) = fvalb(Order(~minSolved));
+        maxFlux(~maxSolved) = fvaub(Order(~maxSolved));
+    end
+    return
 end
 
 if ~parallelJob  % single-thread FVA
