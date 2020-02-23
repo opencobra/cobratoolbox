@@ -314,10 +314,15 @@ if isempty(heuristics)
     else
         heuristics = 0;
     end
+    if printLevel > 0
+        fprintf(['> The level of heuristics has been set to ' num2str(heuristics) '.\n'])
+    end
 end
 
-if printLevel > 0
-    fprintf(['> The level of heuristics has been set to ' num2str(heuristics) '.\n'])
+% turn heuristics off for Mosek (don't solve the heuristic problem)
+if strcmp(cobraParams.LP.solver, 'mosek')
+    heuristics = 0;
+    warning([' > The level of heuristics has been set to 0 for the Mosek solver']);
 end
 
 % each cell in rxnNameList must be a reaction at this point, otherwise there would be error earlier
