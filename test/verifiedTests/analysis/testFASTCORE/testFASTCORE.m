@@ -46,7 +46,7 @@ for k = 1:length(solverPkgs.LP)
     fprintf('   Testing FASTCORE using %s ... \n', solverPkgs.LP{k});
     fcModel = fastcore(model,find(ismember(model.rxns,glycolysis)),epsilon,printLevel);
     assert(all(ismember(glycolysis,fcModel.rxns)));
-    [mins,maxs] = fluxVariability(fcModel,0, 'heuristics', 0, 'printLevel', 1);
+    [mins,maxs] = fluxVariability(fcModel,0, 'printLevel', 1);
     assert(all(max([abs(mins),abs(maxs)],[],2)>epsilon));
 end
 
