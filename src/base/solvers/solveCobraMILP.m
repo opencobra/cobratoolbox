@@ -288,7 +288,7 @@ switch solver
         % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
         cplexlp = buildCplexProblemFromCOBRAStruct(MILPproblem);
         [cplexlp, logFile, logToFile] = setCplexParametersForProblem(cplexlp,cobraParams,solverParams,'MILP');
-        
+
         % Solve problem
         Result = cplexlp.solve();
 
@@ -436,7 +436,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
 
         %Now, replace anything that is in the solver Specific field.
-        tomlabProblem = updateStruct(tomlabProblem.MIP.cpxControl,solverParams);
+        tomlabProblem.MIP = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
 
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
@@ -458,7 +458,6 @@ switch solver
         cobraContSolInd = MILPproblem.contSolInd;
         tomlabProblem.MIP.callbacks = [];
         tomlabProblem.PriLevOpt = 0;
-
 
         % Solve problem
         Result = tomRun('cplex', tomlabProblem);
