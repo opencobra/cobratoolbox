@@ -168,3 +168,9 @@ docs/source/_static/json/functions.json
 # videos
 *.flv
 *.mp4
+
+# external modules (legacy)
+external/Smith-Decomposition/
+external/gaimc/
+external/lusol/
+external/pdco/
