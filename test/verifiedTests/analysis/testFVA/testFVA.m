@@ -215,15 +215,17 @@ for k = 1:length(solverPkgs.LP)
             end
 
             % Vmin and Vmax test
-            % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
-            rxnNamesForV = {'PGI', 'PFK', 'FBP', 'FBA'};
+            if ~strcmp(currentSolver, 'mosek')
+                % Since the solution are dependant on solvers and cpus, the test will check the existence of nargout (weak test) over the 4 first reactions
+                rxnNamesForV = {'PGI', 'PFK', 'FBP', 'FBA'};
 
-            % testing default FVA with 2 printLevels
-            for j = 0:1
-                fprintf('    Testing flux variability with printLevel %s:\n', num2str(j));
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, j, 1, 'threads', threads);
-                assert(~isequal(Vmin, []));
-                assert(~isequal(Vmax, []));
+                % testing default FVA with 2 printLevels
+                for j = 0:1
+                    fprintf('    Testing flux variability with printLevel %s:\n', num2str(j));
+                    [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, j, 0, 'threads', threads);
+                    assert(~isequal(Vmin, []));
+                    assert(~isequal(Vmax, []));
+                end
             end
 
             % testing various methods
@@ -236,9 +238,11 @@ for k = 1:length(solverPkgs.LP)
 
             for j = 1:length(testMethods)
                 fprintf('    Testing flux variability with test method %s:\n', testMethods{j});
-                [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
-                assert(~isequal(Vmin, []));
-                assert(~isequal(Vmax, []));
+                if ~strcmp(currentSolver, 'mosek')
+                    [minFluxT, maxFluxT, Vmin, Vmax] = fluxVariability(model, 90, 'max', rxnNamesForV, 1, 1, testMethods{j}, 'threads', threads);
+                    assert(~isequal(Vmin, []));
+                    assert(~isequal(Vmax, []));
+                end
 
                 % this only works on cplex! all other solvers fail this
                 % test.... However, we should test it on the CI for
