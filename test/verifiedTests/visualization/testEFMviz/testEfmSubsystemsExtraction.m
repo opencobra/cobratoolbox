@@ -1,11 +1,11 @@
-% The COBRAToolbox: <testNameOfSrcFile>.m
+% The COBRAToolbox: testEfmSubsystemsExtraction.m
 %
 % Purpose:
-%     - <provide a short description of the purpose of the test
+%     - test if subsystems of reactions in a given set of EFMs can be identified
 %
 % Authors:
-%     - <major change>: <your name> <date>
-%
+%     - Created initial test script: Chaitra Sarathy 2 Dec 19
+%     - Updates to header docs: Chaitra Sarathy 19 Dec 19
 
 global CBTDIR
 
