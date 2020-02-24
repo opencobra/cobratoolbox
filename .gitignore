@@ -83,6 +83,7 @@ test/verifiedTests/analysis/testEnumerateOptimal/MILPProblem.mat
 test/verifiedTests/analysis/testThermo/MILPProblem.mat
 test/verifiedTests/design/MILPProblem.mat
 test/verifiedTests/design/testOptForce/TestOptForceM/
+test/verifiedTests/reconstruction/testModelBorgifier/SRP065497_taxonomy_abundances_v3.0.tsv
 
 # shared libraries
 *.so
