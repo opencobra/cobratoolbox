@@ -436,7 +436,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
 
         %Now, replace anything that is in the solver Specific field.
-        tomlabProblem.MIP = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
+        tomlabProblem.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
 
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
