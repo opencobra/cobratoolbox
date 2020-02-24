@@ -82,6 +82,7 @@ sampleCbModelTmp.mat
 test/verifiedTests/analysis/testEnumerateOptimal/MILPProblem.mat
 test/verifiedTests/analysis/testThermo/MILPProblem.mat
 test/verifiedTests/design/MILPProblem.mat
+test/verifiedTests/design/testOptForce/TestOptForceM/
 
 # shared libraries
 *.so
