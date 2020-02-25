@@ -49,9 +49,11 @@ fprintf('modelBorgifier: Testing model merging and extraction...\n')
 if usejava('awt') && usejava('desktop')
     mode='p';%avoid input
     [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats, score, mode);
+    %rematching is aborted, so the stats have to be redetermined
+    Stats = TmodelStats(Tmodel, Stats);
     assert(isfield(Stats, 'uniqueMetabolites'));
 end
-
+close all
 % change the directory back
 cd(currentDir)
 
