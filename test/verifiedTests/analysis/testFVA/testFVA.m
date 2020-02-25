@@ -63,9 +63,9 @@ try
     threadsForFVA = [2, 1];
 catch ME
     % test FVA without parrallel toolbox.
-    % here, we can use dqq quadMinos, and matlab, because this is not parallel.
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
         'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'; 'mosek'},...
+        'excludeSolvers',{'dqqMinos','quadMinos', 'matlab'},...
         'minimalMatlabSolverVersion',8.0);
 end
 
