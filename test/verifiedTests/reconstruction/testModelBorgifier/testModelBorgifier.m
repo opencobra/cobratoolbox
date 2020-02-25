@@ -46,7 +46,7 @@ load('testModelBorgifierData.mat');
 
 % merge models (based off of loaded match arrays) and test success
 fprintf('modelBorgifier: Testing model merging and extraction...\n')
-if usejava('awt')
+if usejava('awt') && usejava('desktop')
     mode='p';%avoid input
     [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats, score, mode);
     assert(isfield(Stats, 'uniqueMetabolites'));
