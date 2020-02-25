@@ -82,6 +82,8 @@ sampleCbModelTmp.mat
 test/verifiedTests/analysis/testEnumerateOptimal/MILPProblem.mat
 test/verifiedTests/analysis/testThermo/MILPProblem.mat
 test/verifiedTests/design/MILPProblem.mat
+test/verifiedTests/design/testOptForce/TestOptForceM/
+test/verifiedTests/reconstruction/testModelBorgifier/SRP065497_taxonomy_abundances_v3.0.tsv
 
 # shared libraries
 *.so
@@ -168,3 +170,9 @@ docs/source/_static/json/functions.json
 # videos
 *.flv
 *.mp4
+
+# external modules (legacy)
+external/Smith-Decomposition/
+external/gaimc/
+external/lusol/
+external/pdco/
