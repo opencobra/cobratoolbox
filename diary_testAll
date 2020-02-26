@@ -1,0 +1,137 @@
+testAll
+
+
+      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2020
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Test Suite
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |
+                                                  | 
+
+ -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: Y
+
+
+      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2020
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   <a href="http://opencobra.github.io/cobratoolbox">http://opencobra.github.io/cobratoolbox</a>
+                                                  | 
+
+ > Checking if git is installed ...  Done (version: 2.20.1).
+ > Checking if the repository is tracked using git ...  Done.
+ > Checking if curl is installed ...  Done.
+ > Checking if remote can be reached ...  Done.
+ > Initializing and updating submodules (this may take a while)... Done.
+ > Adding all the files of The COBRA Toolbox ...  Done.
+ > Define CB map output... set to svg.
+ > TranslateSBML is installed and working properly.
+ > Configuring solver environment variables ...
+   - [--*-] ILOG_CPLEX_PATH: /usr/local/bin/cplex/ibm/ILOG/CPLEX_Studio1210/cplex/matlab/x86-64_linux
+   - [-*--] GUROBI_PATH: /usr/local/bin/gurobi811/linux64/matlab
+   - [-*--] TOMLAB_PATH: /usr/local/bin/tomlab/tomsym
+   - [----] MOSEK_PATH: --> set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html">instructions</a> )
+   Done.
+ > Checking available solvers and solver interfaces ... Done.
+ > Setting default solvers ... Done.
+ > Saving the MATLAB path ... Done.
+   - The MATLAB path was saved as ~/pathdef.m.
+
+ > Summary of available solvers and solver interfaces
+
+			Support 	   LP 	 MILP 	   QP 	 MIQP 	  NLP
+	----------------------------------------------------------------------
+	gurobi       	active        	    1 	    1 	    1 	    1 	    -
+	ibm_cplex    	active        	    1 	    1 	    1 	    1 	    -
+	tomlab_cplex 	active        	    1 	    1 	    1 	    1 	    -
+	glpk         	active        	    1 	    1 	    - 	    - 	    -
+	mosek        	active        	    0 	    - 	    0 	    - 	    -
+	matlab       	active        	    1 	    - 	    - 	    - 	    1
+	cplex_direct 	active        	    1 	    1 	    1 	    - 	    -
+	dqqMinos     	active        	    1 	    - 	    1 	    - 	    -
+	cplex        	active        	    1 	    - 	    - 	    - 	    -
+	pdco         	active        	    1 	    - 	    1 	    - 	    -
+	quadMinos    	active        	    1 	    - 	    - 	    - 	    -
+	qpng         	passive       	    - 	    - 	    1 	    - 	    -
+	tomlab_snopt 	passive       	    - 	    - 	    - 	    - 	    1
+	lp_solve     	legacy        	    1 	    - 	    - 	    - 	    -
+	----------------------------------------------------------------------
+	Total        	-             	   11 	    5 	    7 	    3 	    2
+
+ + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.
+
+
+ > You can solve LP problems using: 'gurobi' - 'ibm_cplex' - 'tomlab_cplex' - 'glpk' - 'matlab' - 'dqqMinos' - 'pdco' - 'quadMinos' 
+ > You can solve MILP problems using: 'gurobi' - 'ibm_cplex' - 'tomlab_cplex' - 'glpk' 
+ > You can solve QP problems using: 'gurobi' - 'ibm_cplex' - 'tomlab_cplex' - 'dqqMinos' - 'pdco' - 'qpng' 
+ > You can solve MIQP problems using: 'gurobi' - 'ibm_cplex' - 'tomlab_cplex' 
+ > You can solve NLP problems using: 'matlab' - 'tomlab_snopt' 
+
+ > Checking for available updates ...
+ --> You cannot update your fork using updateCobraToolbox(). [3c3cea @ HHcompatability].
+     Please use the MATLAB.devTools (<a href="https://github.com/opencobra/MATLAB.devTools">https://github.com/opencobra/MATLAB.devTools</a>) to update your fork.
+****************************************************
+
+Running testBiomassPrecursorCheck
+
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+'/home/rfleming/work/sbgCloud/code/matlab/R2019a/sys/java/jre/glnxa64/jre/bin/java' -Xms1024m -Xmx1024m -XX:+UseParallelGC -XX:+UseAdaptiveSizePolicy -XX:+UseAdaptiveGCBoundary -XX:+UseTLAB -XX:+ResizeTLAB -XX:MaxPermSize=20m -cp lib/metabolic-efm-all.jar:lib/dom4j-1.6.1.jar:lib/junit-3.8.1.jar ch.javasoft.metabolic.efm.main.CalculateFluxModes -kind stoichiometry -stoich tmp/stoich.txt -rev tmp/revs.txt -meta tmp/mnames.txt -reac tmp/rnames.txt -arithmetic double -zero 1e-10 -out matlab tmp/efms.mat -compression default -log console -level WARNING -tmpdir '/home/rfleming/work/sbgCloud/software/CellNetAnalyzer/code/ext/efmtool/tmp' -maxthreads -1 -normalize min -adjacency-method pattern-tree-minzero -rowordering MostZerosOrAbsLexMin
+
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=20m; support was removed in 8.0
+Cofactors in the biomass reaction that CAN be synthesized:
+G  -> H 
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+'/home/rfleming/work/sbgCloud/code/matlab/R2019a/sys/java/jre/glnxa64/jre/bin/java' -Xms1024m -Xmx1024m -XX:+UseParallelGC -XX:+UseAdaptiveSizePolicy -XX:+UseAdaptiveGCBoundary -XX:+UseTLAB -XX:+ResizeTLAB -XX:MaxPermSize=20m -cp lib/metabolic-efm-all.jar:lib/dom4j-1.6.1.jar:lib/junit-3.8.1.jar ch.javasoft.metabolic.efm.main.CalculateFluxModes -kind stoichiometry -stoich tmp/stoich.txt -rev tmp/revs.txt -meta tmp/mnames.txt -reac tmp/rnames.txt -arithmetic double -zero 1e-10 -out matlab tmp/efms.mat -compression default -log console -level WARNING -tmpdir '/home/rfleming/work/sbgCloud/software/CellNetAnalyzer/code/ext/efmtool/tmp' -maxthreads -1 -normalize min -adjacency-method pattern-tree-minzero -rowordering MostZerosOrAbsLexMin
+
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=20m; support was removed in 8.0
+Cofactors in the biomass reaction that CAN be synthesized:
+G  -> H 
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+'/home/rfleming/work/sbgCloud/code/matlab/R2019a/sys/java/jre/glnxa64/jre/bin/java' -Xms1024m -Xmx1024m -XX:+UseParallelGC -XX:+UseAdaptiveSizePolicy -XX:+UseAdaptiveGCBoundary -XX:+UseTLAB -XX:+ResizeTLAB -XX:MaxPermSize=20m -cp lib/metabolic-efm-all.jar:lib/dom4j-1.6.1.jar:lib/junit-3.8.1.jar ch.javasoft.metabolic.efm.main.CalculateFluxModes -kind stoichiometry -stoich tmp/stoich.txt -rev tmp/revs.txt -meta tmp/mnames.txt -reac tmp/rnames.txt -arithmetic double -zero 1e-10 -out matlab tmp/efms.mat -compression default -log console -level WARNING -tmpdir '/home/rfleming/work/sbgCloud/software/CellNetAnalyzer/code/ext/efmtool/tmp' -maxthreads -1 -normalize min -adjacency-method pattern-tree-minzero -rowordering MostZerosOrAbsLexMin
+
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=20m; support was removed in 8.0
+Cofactors in the biomass reaction that CANNOT be synthesized:
+G  -> H 
+Adding the following reactions to the model:
+DM_E	E 	->	
+DM_F	F 	->	
+DM_G	G 	->	
+All model.subSystems are character arrays, so this format is retained.
+All model.subSystems are character arrays, so this format is retained.
+Adding the following reactions to the model:
+DM_3pg[c]	3pg[c] 	->	
+DM_accoa[c]	accoa[c] 	->	
+DM_atp[c]	atp[c] 	->	
+DM_e4p[c]	e4p[c] 	->	
+DM_f6p[c]	f6p[c] 	->	
+DM_g3p[c]	g3p[c] 	->	
+DM_g6p[c]	g6p[c] 	->	
+DM_gln-L[c]	gln-L[c] 	->	
+DM_glu-L[c]	glu-L[c] 	->	
+DM_h2o[c]	h2o[c] 	->	
+DM_nad[c]	nad[c] 	->	
+DM_nadph[c]	nadph[c] 	->	
+DM_oaa[c]	oaa[c] 	->	
+DM_pep[c]	pep[c] 	->	
+DM_pyr[c]	pyr[c] 	->	
+DM_r5p[c]	r5p[c] 	->	
+DM_metTest1[c]	metTest1[c] 	->	

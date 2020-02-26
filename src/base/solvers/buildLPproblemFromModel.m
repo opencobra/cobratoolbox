@@ -1,10 +1,10 @@
-function LPproblem = buildLPproblemFromModel(model, checked)
-% Builds an COBRA Toolbox LP problem structure from a COBRA Toolbox model structure.
+function LPproblem = buildLPproblemFromModel(model, verify)
+% Builds an COBRA Toolbox LP/QP problem structure from a COBRA Toolbox model structure.
 %
 % 
 %.. math::
 %
-%    max/min  ~& c^T x \\
+%    max/min  ~& c^T x + 0.5 x^T F x \\
 %    s.t.     ~& [S, E; C, D] x <=> b ~~~~~~~~~~~:y \\
 %             ~& lb \leq x \leq ub~~~~:w
 %
@@ -34,7 +34,9 @@ function LPproblem = buildLPproblemFromModel(model, checked)
 %                  * `.evarlb`: the lower bounds of the variables from E;
 %                  * `.evarc`: the objective coefficients of the variables from E;
 %                  * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
-%    checked:     Check the input (default: true);
+%                  * '.F': Positive semidefinite matrix for quadratic part of objective
+%
+%    verify:     Check the input (default: true);
 %
 % OUTPUT:
 %    LPproblem: A COBRA LPproblem structure with the following fields:
@@ -46,10 +48,10 @@ function LPproblem = buildLPproblemFromModel(model, checked)
 %                * `.ub`: Upper bound vector
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                * `.F`: Positive semidefinite matrix for quadratic part of objective
 
-
-if ~exist('checked','var')
-    checked = true;
+if ~exist('verify','var')
+    verify = true;
 end
 
 %backward compatibility with old formulation of coupling constraints
@@ -65,10 +67,16 @@ if ~isempty(basicFieldsToBuild)
 end
 
 
-if checked    
+if verify    
     res = verifyModel(model,'FBAOnly',true);
     if ~isempty(fieldnames(res))
         error('The input model does have inconsistent fields! Use verifyModel(model) for further information.')
+    end
+    
+    if isfield(model,'F')
+        if size(model.F,1)~=size(model.F,2)
+            error('model.F must be a square and positive definite matrix')
+        end
     end
 end
     
@@ -82,7 +90,19 @@ end
 if ~isempty(fieldsToBuild)
     model = createEmptyFields(model,fieldsToBuild);
 end
+
 LPproblem.A = [model.S,model.E;model.C,model.D];
+
+%add quadratic part
+if isfield(model,'F')
+    if size(model.F,1)~=size(LPproblem.A,2)
+        LPproblem.F = spdiags(zeros(size(LPproblem.A,2),1),0,size(LPproblem.A,2),size(LPproblem.A,2));
+        %assume that the remainder of the variables are not being quadratically
+        %minimised
+        LPproblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
+    end
+end
+
 LPproblem.ub = [model.ub;model.evarub];
 LPproblem.lb = [model.lb;model.evarlb];
 LPproblem.c = [model.c;model.evarc];

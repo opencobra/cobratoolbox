@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mexexts</title>
+  <meta name="keywords" content="mexexts">
+  <meta name="description" content="MEXEXTS List of Mex files extensions">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">m2html</a> &gt; <a href="index.html">private</a> &gt; mexexts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for m2html/private&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mexexts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>MEXEXTS List of Mex files extensions</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [ext, platform] = mexexts </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MEXEXTS List of Mex files extensions
+  MEXEXTS returns a cell array containing the Mex files platform
+  dependent extensions and another cell array containing the full names
+  of the corresponding platforms.
+
+  See also MEX, MEXEXT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="mfileparse.html" class="code" title="function s = mfileparse(mfile, mdirs, names, options)">mfileparse</a>	MFILEPARSE Parsing of an M-file to obtain synopsis, help and references</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [ext, platform] = mexexts</a>
+0002 <span class="comment">%MEXEXTS List of Mex files extensions</span>
+0003 <span class="comment">%  MEXEXTS returns a cell array containing the Mex files platform</span>
+0004 <span class="comment">%  dependent extensions and another cell array containing the full names</span>
+0005 <span class="comment">%  of the corresponding platforms.</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%  See also MEX, MEXEXT</span>
+0008 
+0009 <span class="comment">%  Copyright (C) 2003 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0010 <span class="comment">%  $Revision: 1.0 $Date: 2003/29/04 17:33:43 $</span>
+0011 
+0012 ext = {<span class="string">'.mexsol'</span> <span class="string">'.mexhpux'</span> <span class="string">'.mexhp7'</span> <span class="string">'.mexglx'</span> <span class="string">'.mexa64'</span> <span class="string">'.mexi64'</span> <span class="string">'.mexmac'</span> <span class="string">'.dll'</span> <span class="string">'.mexw32'</span> <span class="string">'.mexw64'</span>};
+0013 
+0014 platform = {<span class="string">'Sun Solaris'</span> <span class="string">'HP-UX'</span> <span class="string">'HP-UX'</span> <span class="string">'Linux PC'</span> <span class="string">'Linux AMD Opteron'</span> <span class="string">'Linux Intel Itanium2'</span> <span class="string">'MacIntosh'</span> <span class="string">'Windows'</span> <span class="string">'Windows 32'</span> <span class="string">'Windows 64'</span>};</pre></div>
+<hr><address>Generated on Tue 29-Oct-2019 21:04:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

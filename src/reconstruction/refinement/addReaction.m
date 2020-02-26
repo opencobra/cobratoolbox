@@ -34,7 +34,7 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %                         * systNameList - List of systematic names (Default empty)
 %                         * checkDuplicate - Check `S` matrix too see if a duplicate reaction is
 %                           already in the model (Deafult false)
-%                         * printLevel - default = 1
+%                         * printLevel - default = 0
 %
 % OUTPUTS:
 %    model:             COBRA model structure with new reaction
@@ -182,7 +182,7 @@ parser.addParamValue('objectiveCoef',defaultObjective,@(x) isempty(x) || isnumer
 parser.addParamValue('subSystem',defaultSubSystem, @(x) isempty(x) || ischar(x) || iscell(x) && all(cellfun(@(y) ischar(y),x)));
 parser.addParamValue('geneRule',defaultgeneRule, @(x) isempty(x) || ischar(x));
 parser.addParamValue('checkDuplicate',0, @(x) isnumeric(x) || islogical(x));
-parser.addParamValue('printLevel',1, @(x) isnumeric(x) );
+parser.addParamValue('printLevel',0, @(x) isnumeric(x) );
 parser.addParamValue('notes','', @ischar );
 parser.addParamValue('systNameList',defaultGeneNameList, @(x) isempty(x) || iscell(x));
 parser.addParamValue('geneNameList',defaultSystNameList, @(x) isempty(x) || iscell(x));

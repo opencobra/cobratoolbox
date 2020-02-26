@@ -138,6 +138,15 @@ for field = 1:numel(fields)
                 eval(['currentvalue = ' defaultValue ';']);
                 newValues{end+1,1} = currentvalue;
             end
+            %debug
+            if 0
+                cfield
+                if strcmp(cfield,'metChEBIID')
+                    pause(0.1)
+                end
+                %crashes if the class of model.(cfield) is not the same as
+                %class of newValues
+            end
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,newValues, targetSize-originalSize);
         case 'sparselogical'            
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,logical(defaultValue), targetSize-originalSize);                        

@@ -436,7 +436,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
 
         %Now, replace anything that is in the solver Specific field.
-        tomlabProblem = updateStruct(tomlabProblem.MIP.cpxControl,solverParams);
+        %tomlabProblem = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
 
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
@@ -459,9 +459,13 @@ switch solver
         tomlabProblem.MIP.callbacks = [];
         tomlabProblem.PriLevOpt = 0;
 
-
+        %tomlabProblem.P = 0;
+        %tomlabProblem.MENU = 0;
+        %tomlabProblem.probType='mip';
+        %tomlabProblem.x_0 = rand(size(A,1),1);
+        
         % Solve problem
-        Result = tomRun('cplex', tomlabProblem);
+        Result = tomRun('cplex', [], [], tomlabProblem);
 
         % Get results
         x = Result.x_k;

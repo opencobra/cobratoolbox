@@ -48,7 +48,9 @@ for k = 1:length(solverPkgs)
 end
 
 %Remove the output, to keep the toolbox updateable.
-delete([fileDir filesep 'MILPProblem.mat']);
+if exist([fileDir filesep 'MILPProblem.mat'],'file')
+    delete([fileDir filesep 'MILPProblem.mat']);
+end
 
 fprintf('Done...\n');
 cd(currentDir)
