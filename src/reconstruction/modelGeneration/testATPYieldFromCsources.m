@@ -58,7 +58,12 @@ if length(strmatch(strcat('EX_glc',extraCellCompOut),modelClosed.rxns))>0
 end
 
 % add reaction if it does not exist
-[modelClosed, rxnIDexists] = addReactionOri(modelClosed,'DM_atp_c_',  'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+if 0
+    [modelClosed, rxnIDexists] = addReactionOri(modelClosed,'DM_atp_c_',  'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+else
+    %COBRA v3 compatibility - Ronan
+    [modelClosed, rxnIDexists] = addReaction(modelClosed,'DM_atp_c_',  'reactionFormula', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+end
 if length(rxnIDexists)>0
     modelClosed.rxns{rxnIDexists} = 'DM_atp_c_'; % rename reaction in case that it exists already
 end

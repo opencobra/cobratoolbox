@@ -171,6 +171,7 @@ for jTest = 1:2
         % TEST SteadyCom
         % test different algoirthms
         data = load('refData_SteadyCom', 'result');
+        clear result
         for jAlg = 1:3
             options = struct();
             if jAlg == 1

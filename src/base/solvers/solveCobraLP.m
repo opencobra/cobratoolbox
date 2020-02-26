@@ -178,7 +178,7 @@ f = [];
 x = [];
 y = [];
 w = [];
-stat = [];
+stat = 0;
 origStat = [];
 origStatText = [];
 algorithm = 'default';
@@ -1546,7 +1546,7 @@ switch solver
         cobraSolverParams.feasTol = options.FeaTol;
         cobraSolverParams.optTol = options.OptTol;
     case 'mps'
-        fprintf(' > The interface to ''mps'' from solveCobraLP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
+        fprintf(' > The interface to ''mps'' from solveCobraLP is not supported anymore.\n -> Instead use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
         writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
     otherwise
@@ -1564,18 +1564,22 @@ if stat == -1
     end
 end
 
-%TODO: pull out slack variable from every solver interface (see list of solvers below)
-if ~exist('s','var')
-    % slack variables required for optimality condition check, if they are
-    % not already provided
-    s = b - A * x; 
-    %optimality condition check should still check for satisfaction of the
-    %optimality conditions
-    s(csense == 'E')=0;
+if stat==1 && ~strcmp(solver,'mps')
+    %TODO: pull out slack variable from every solver interface (see list of solvers below)
+    if ~exist('s','var')
+        % slack variables required for optimality condition check, if they are
+        % not already provided
+        s = b - A * x;
+        %optimality condition check should still check for satisfaction of the
+        %optimality conditions
+        s(csense == 'E')=0;
+    else
+        %optimality condition check should still check for satisfaction of the
+        %optimality conditions
+        s(csense == 'E')=0;
+    end
 else
-    %optimality condition check should still check for satisfaction of the
-    %optimality conditions
-    s(csense == 'E')=0;
+    s = [];
 end
 
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
@@ -1590,7 +1594,6 @@ elseif strcmp(solver,'mps')
 end
 
 % check the optimality conditions for various solvers
-
  %if ~any(strcmp(solver, {'mps','dqqMinos'}))
  if ~any(strcmp(solver, {'mps'}))
      if solution.stat == 1

@@ -30,7 +30,9 @@ if statusCNA
         % function [cnap, errval]= CNAgenerateMFNetwork(cnap,nodisp) in CellNetAnalyzer: API function CNAgenerateMFNetwork
         % has been updated to include new default fields, that do not
         % match, so remove them. Probably cnaModel_new needs to be updated.
-        cnaModel_new= rmfield(cnaModel_new,{'color1','color2','color3','color4','textColor','macroSynthColor','specBoxColor','unsaved_changes'});
+        if isfield(cnaModel_new,'color1')
+            cnaModel_new= rmfield(cnaModel_new,{'color1','color2','color3','color4','textColor','macroSynthColor','specBoxColor','unsaved_changes'});
+        end
         assert(isequaln(cnaModel_new, cnaModel));
     end
 

@@ -200,7 +200,7 @@ else
         switch loopMethod
             case 'original'
             % find the usual internal nullspace (Schellenberger et al., 2009)
-            fprintf('Use the original loop law\n');
+            fprintf('Use loop law MILP implementation by Schellenberger et al., 2009\n');
         case 'fastSNP'
             % find a minimal feasible nullspace Fast-SNP (Saa and Nielson, 2016)
             fprintf('Reduce complexity by nullspace preprocessing (Fast-SNP)\n')

@@ -6,7 +6,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 % 'tomlab_cplex', 'mosek' and 'qpng' (limited support for small problems)
 %
 % Solves problems of the type
-% :math:`min  0.5 x' * F * x + osense * c' * x`
+% :math:`min  osense * c' * x + 0.5 x' * F * x`
 % s/t :math:`lb <= x <= ub`
 % :math:`A * x  <=/=/>= b`
 %
@@ -129,7 +129,7 @@ switch solver
         
         %x primal variable
         %f objective value
-        f = osense*f;
+        %f = osense*f;
         %y dual to the b_L <=   Ax   <= b_U constraints 
         %w dual to the x_L <=    x   <= x_U constraints 
         
@@ -227,9 +227,10 @@ switch solver
         %%
      case 'ibm_cplex'
      % Initialize the CPLEX object
+     %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
         CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
         [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,cobraSolverParams,solverParams,'QP');
-                   
+        
         % optimize the problem
         Result = CplexQPProblem.solve();
         if logToFile
@@ -246,8 +247,11 @@ switch solver
         if isfield(Result, 'reducedcost')
             w = Result.reducedcost;
         end
-        if isfield(Result,'objval')  % Cplex solution may not have objval
-            f = QPproblem.c'*Result.x + 0.5*Result.x'*QPproblem.F*Result.x;
+        if isfield(Result, 'ax')
+            s = QPproblem.b - Result.ax;
+        end
+        if isfield(Result,'objval')
+            f = Result.objval;
         end
         origStat = Result.status;
         % See detailed table of result codes in
@@ -511,11 +515,12 @@ switch solver
         %regularisation
         d1=ones(size(Aeq,2),1)*1e-5;
         %dont minimise the norm of reactions in linear objective
-        d1(find(c~=0))=0;
+        d1(c~=0)=0;
         d2=1e-5;
            
-        [x,y,w,inform,PDitns,CGitns,time] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
+        [x,y,w,inform,~,~,time] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
         [f,~,~] = QPObj(x);
+        
         s = sparse(nMet,1);
         if isempty(indl) && isempty(indg)
             s = zeros(nMet,1);
@@ -526,7 +531,6 @@ switch solver
             w=w(1:nRxn);
         end
 
-  
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -703,6 +707,21 @@ switch solver
         %                       * .osense - Objective sense for the linear part (-1 max, +1 min)
         %                       * .csense - Constraint senses, a string containing the constraint sense for
         %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
+        
+                if 1
+        %take care of zero segments of F
+        jlt=size(QPproblem.F,1);
+        boolF=false(jlt,1);
+        for j=1:jlt
+            if any(QPproblem.F(j,:)) || any(QPproblem.F(:,j))
+                boolF(j)=1;
+            end
+        end
+        end
+        if ~all(boolF)
+            error('dqqMinos not validated for F matrices with zero rows/cols')
+        end
+        
         global CBTDIR %required for dqqMinos
         if ~isunix
             error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
@@ -783,6 +802,9 @@ switch solver
                         Feq, Aeq'];
         LPproblem.b = [beq;-1*QPproblem.osense*ceq];
         LPproblem.c = sparse(nAeq+mAeq,1);
+        
+
+        
         LPproblem.lb = [lbeq;-Inf*ones(mAeq,1)];
         LPproblem.ub = [ubeq; Inf*ones(mAeq,1)];
         LPproblem.osense = 1; %does not matter as objective is zero
@@ -862,9 +884,7 @@ switch solver
             %slack variables correspoding to A*x => b
             s(indg)= -sol.x(n+indg);
         end      
-        
-        f = QPproblem.c'* x + 0.5*x'*QPproblem.F*x;
-        
+               
         % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
         dqqStatMap = {-5, 'UNKNOWNERROR', -1;
             -4, 'DATAIGNORED',  -1;
@@ -896,6 +916,23 @@ switch solver
         end
 end
 %%
+
+if stat==1 && ~strcmp(solver,'mps')
+    %TODO: pull out slack variable from every solver interface (see list of solvers below)
+    if ~exist('s','var')
+        % slack variables required for optimality condition check, if they are
+        % not already provided
+        s = b - A * x;
+        %optimality condition check should still check for satisfaction of the
+        %optimality conditions
+        s(csense == 'E')=0;
+    else
+        %optimality condition check should still check for satisfaction of the
+        %optimality conditions
+        s(csense == 'E')=0;
+    end
+end
+
 t = etime(clock, t_start);
 solution.solver = solver;
 solution.stat = stat;
@@ -926,7 +963,7 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~strcmp(solver,'gurobi')%todo, debug gurobi QP
+        if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'gurobi','mosek'}))%todo, debug gurobi QP
             % determine the residual 2
             res2 = QPproblem.osense * QPproblem.c  + QPproblem.F*solution.full - QPproblem.A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
@@ -944,11 +981,11 @@ if solution.stat==1
         
         %set the value of the objective
         solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
-        if norm(solution.obj - f) > 1e-4
+        if norm(solution.obj - osense*f) > 1e-4
             warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
             fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
-                'while the value constructed from c''*x + 0.5*x''*F*x:', solution.obj,...
-                'while the value constructed from c''*x + x''*F*x :', QPproblem.c'*solution.full + solution.full'*QPproblem.F*solution.full)
+                'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
+                'while the value constructed from osense*c''*x + x''*F*x :', osense*QPproblem.c'*solution.full + solution.full'*QPproblem.F*solution.full)
         end
         
         %         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
