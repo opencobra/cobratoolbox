@@ -18,14 +18,29 @@ currentDir = pwd;
 fileDir = fileparts(which('testSolveCobraQP'));
 cd(fileDir);
 
+printLevel=0;
+        
 % set the tolerance
 tol = 1e-4;
 
-% test solver packages
-useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek'};
-% pdco is a normalizing solver not a general purpose QP solver, so it will
-% fail the test
-solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'pdco'});
+if 1
+    % test solver packages
+    useIfAvailable = {'tomlab_cplex','ibm_cplex','qpng','ibm_cplex','mosek','pdco'};
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);%,'excludeSolvers',{'pdco'});
+else
+    % test solver packages
+    %useIfAvailable = {'pdco'};
+    useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek','pdco'};
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable); % 'excludeSolvers',{'gurobi'}); %not working 
+end
+
+if 1
+    %when adding a new solver, it may not be working initially so it will
+    %not appear in solverPkgs so bypass it temporarily to run the tests to
+    %debug the interface to the solver
+    solverPkgs.QP{end}='dqqMinos';
+end
+
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
@@ -67,8 +82,8 @@ for k = 1:length(solverPkgs.QP)
     if solverOK
 
         fprintf('   Running testSolveCobraQP using %s ... ', solverPkgs.QP{k});
-
-        QPsolution = solveCobraQP(QPproblem, 'printLevel', 0);
+       
+        QPsolution = solveCobraQP(QPproblem, 'printLevel', printLevel);
 
         % Check QP results with expected answer.
         assert(any(abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]));
@@ -76,7 +91,7 @@ for k = 1:length(solverPkgs.QP)
         if strcmp(solverPkgs.QP{k}, 'ibm_cplex') && isunix
             % Note: On windows, the timelimit parameter has no effect
             % test IBM-Cplex-specific parameters. No good example for testing this. Just test time limit
-            QPsolution = solveCobraQP(QPproblem, struct('timelimit', 0.0), 'printLevel', 0);
+            QPsolution = solveCobraQP(QPproblem, struct('timelimit', 0.0), 'printLevel', printLevel);
             % no solution because zero time is given and cplex status = 11
             assert(isempty(QPsolution.full) & isempty(QPsolution.obj) & QPsolution.origStat == 11)
         end
@@ -86,9 +101,9 @@ for k = 1:length(solverPkgs.QP)
         % output a success message
         
         %Test solving maximisation of linear part
-        QPsolution3 = solveCobraQP(QPproblem3);
+        QPsolution3 = solveCobraQP(QPproblem3,'printLevel', printLevel);
         assert(all(abs(QPsolution3.full - 1)< tol)); %We optimize for 0.5x^2 not x^2
-        fprintf('Done.\n');
+        fprintf('Done.\n\n');
     end
 end
 

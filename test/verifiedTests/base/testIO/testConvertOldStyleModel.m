@@ -131,7 +131,8 @@ assert(isSameCobraModel(modelConverted,modelWithConstraints));
 testModel.confidenceScores = arrayfun(@num2str, randi(4,nRxns,1),'Uniform',0);
 testModel.confidenceScores(3) = {[]};
 testModel.subSystems(10) = {[]};
-assert(~verifyModel(testModel,'simpleCheck',true));
+res = verifyModel(testModel,'simpleCheck',true);
+assert(res == 1);
 fixedModel = convertOldStyleModel(testModel);
 % confidenceScores got converted.
 assert(fixedModel.rxnConfidenceScores(3) == 0);

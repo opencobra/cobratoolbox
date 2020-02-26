@@ -36,7 +36,7 @@ end
 
 if nargin < 1 || isempty(rootPathCPLEX)
     % Set the CPLEX file path
-    index = strfind(ILOG_CPLEX_PATH, 'cplex') + 4;
+    index = strfind(ILOG_CPLEX_PATH, ['cplex' filesep 'matlab']) + 4;
     rootPathCPLEX = ILOG_CPLEX_PATH(1:index);
 end
 

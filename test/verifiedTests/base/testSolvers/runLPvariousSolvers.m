@@ -211,7 +211,7 @@ for k = 1:length(solverPkgs)
         end
     end
 
-    if strcmp(solver, 'cplex_direct') || strcmp(solver, 'glpk') || strcmp(solver, 'matlab') || strcmp(solver, 'tomlab_cplex')
+    if strcmp(solver, 'cplex_direct') || strcmp(solver, 'glpk') || strcmp(solver, 'matlab') || strcmp(solver, 'tomlab_cplex') || strcmp(solver, 'cplexlp')
         solverOK = changeCobraSolver(solver, 'LP', 0);
         if solverOK
             solution{i} = solveCobraLP(model);
@@ -291,13 +291,13 @@ for i = 1:ilt
         if isempty(solution{i}.dual)
             tmp_dual = NaN;
         else
-            tmp_dual = solution{i}.dual(randdual);
+            tmp_dual = full(solution{i}.dual(randdual));
         end
 
         if isempty(solution{i}.rcost)
             tmp_rcost = NaN;
         else
-            tmp_rcost = solution{i}.rcost(randrcost);
+            tmp_rcost = full(solution{i}.rcost(randrcost));
         end
         fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, tmp_dual, tmp_rcost, solution{i}.solver, solution{i}.algorithm)
         all_obj(i) = solution{i}.obj;

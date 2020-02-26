@@ -1,0 +1,121 @@
+  
+
+         ==============================
+         S N O P T  7.7.1    (Nov 2018)
+         ==============================
+      VERIFY LEVEL                        -1
+      CRASH TOLERANCE         1.00000000E-10
+      ITERATIONS LIMIT            1000000000
+      MAJOR ITERATIONS LIMIT            1000
+      DERIVATIVE LEVEL                     3
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         0
+ Insert file............         0       New basis file ........         0       (Printer)..............         9
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         0
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency       100       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........1000000000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.000       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)         2       Prtl price section (-I)         2
+ QP Partial price.......         1       Prtl price section ( A)         2       Prtl price section (-I)         2
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars         0       Major optimality tol...  2.00E-06       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......         1       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....         1       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Derivative linesearch..                 Derivative level.......         3
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........        -1
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....    100.00       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....     10.00       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows              2           0           1           1           0
+ Columns           2           0           0           2           0
+
+ No. of matrix elements                    3     Density      75.000
+ Biggest                          0.0000E+00  (excluding fixed columns,
+ Smallest                         0.0000E+00   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints       2
+ Nonlinear variables         0     Linear variables         2
+ Jacobian  variables         0     Objective variables      0
+ Total constraints           2     Total variables          2
+1
+ 
+
+ Itn      0: Feasible linear constraints
+1
+ 
+ SNOPTB EXIT   0 -- finished successfully
+ SNOPTB INFO   1 -- optimality conditions satisfied
+
+ Problem name                 NLPprobl
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 0.0E+00   Max pi                      2 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas             0 0.0E+00
+1
+ 
+ Name           NLPprobl                 Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+       3  r      1 D  BS          .               .               .               .               .           1
+       4  r      2    BS          .               .                None            None         -1.0          2
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    EQ          .              1.0              .               .              1.0          3
+       2  x      2    EQ          .              1.0              .               .              1.0          4
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.00 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.00 seconds
+ Time for objective function                    0.00 seconds

@@ -11,6 +11,8 @@
 
 global CBTDIR
 
+clear options
+
 %save original directory
 currentDir = pwd;
 
