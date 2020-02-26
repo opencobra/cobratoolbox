@@ -790,7 +790,7 @@ function edit_select_match_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -800,7 +800,7 @@ function edit_rxn_num_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -810,7 +810,7 @@ function edit_score_table_name_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -820,7 +820,7 @@ function edit_num_matches_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject,' BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -830,7 +830,7 @@ function edit_cmodel_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -840,7 +840,7 @@ function edit_tmodel_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -850,7 +850,7 @@ function edit_low_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -860,7 +860,7 @@ function edit_margin_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -870,7 +870,7 @@ function edit_high_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
@@ -880,25 +880,25 @@ function slider_minscore_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-if isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc
     set(hObject, 'BackgroundColor', [.9 .9 .9]);
 end
 end
 
 function edit_metmatch_low_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
 
 function edit_metmatch_margin_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end
 
 function edit_metmatch_high_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
+if ispc 
     set(hObject, 'BackgroundColor', 'white');
 end
 end

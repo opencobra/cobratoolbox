@@ -1,4 +1,4 @@
-function [rebuiltModel] = rebuildModel(model)
+function [rebuiltModel] = rebuildModel(model,database)
 %
 % Rebuilds a genome-scale reconstruction with Virtual Metabolic Human (VMH) 
 % metabolic and reaction nomenclature while ensuring quality control through
@@ -9,6 +9,8 @@ function [rebuiltModel] = rebuildModel(model)
 %
 % INPUT
 %    model         COBRA model structure
+%    database      Structure containing rBioNet reaction and metabolite
+%                  database
 % 
 % OUTPUT
 %    rebuiltModel  Quality-controlled COBRA model structure
@@ -16,18 +18,6 @@ function [rebuiltModel] = rebuildModel(model)
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 12/2018: adapted to function.
-
-
-%% get the reaction and metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab', 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-end
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab', 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
 
 model=convertOldStyleModel(model);
 
@@ -56,18 +46,20 @@ rbio=struct;
 % get as much data as possible from the rBioNet database to avoid errors carrying over
 for i=1:length(model.rxns)
     if ~strncmp('bio',model.rxns{i,1},3)
-        model.rxns{i,1}=database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 1};
+        % find reaction index
+        rInd=find(ismember(database.reactions(:, 1), model.rxns{i,1}));
+        model.rxns{i,1}=database.reactions{rInd, 1};
         model.grRules{i,1}=model.grRules{i};
-        model.rxnNames{i,1}=database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 2};
-        model.subSystems{i,1}=database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 11};
-        if database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 4}==1
+        model.rxnNames{i,1}=database.reactions{rInd, 2};
+        model.subSystems{i,1}=database.reactions{rInd, 11};
+        if strcmp(database.reactions{rInd, 4},'1')
             model.lb(i,1)=-1000;
             model.ub(i,1)=1000;
-        elseif database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 4}==0
+        elseif strcmp(database.reactions{rInd, 4},'0')
             model.lb(i,1)=0;
             model.ub(i,1)=1000;
         end
-        model.formulas{i,1}=database.reactions{find(ismember(database.reactions(:, 1), model.rxns{i,1})), 3};
+        model.formulas{i,1}=database.reactions{rInd, 3};
     else
         model.rxns{i,1}=model.rxns{i};
         model.grRules{i,1}=model.grRules{i};
@@ -122,11 +114,6 @@ model.description.date=date;
 
 % set biomass reaction as objective function
 model=changeObjective(model,bAbb);
-
-% open all exchanges
-exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
-model = changeRxnBounds(model, exchanges, -1000, 'l');
-model = changeRxnBounds(model, exchanges, 1000, 'u');
 
 rebuiltModel=convertOldStyleModel(model);
 end

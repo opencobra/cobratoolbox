@@ -11,13 +11,6 @@
 % save the current path
 currentDir = pwd;
 
-global CBTDIR
-pth=which('initCobraToolbox.m');
-CBTDIR = pth(1:end-(length('initCobraToolbox.m')+1));
-
-% status is 0 if failed, 1 when all scripts run successfully.
-status = 0 ;
-
 % initialize the test
 cd(fileparts(which('testModelBorgifier.m')));
 
@@ -28,97 +21,39 @@ fprintf('modelBorgifier: Loading iIT341 model.\n')
 Tmodel = getDistributedModel('iIT341.xml','iIT341');
 
 % verify models are appropriate for comparison and test success
-fprintf('modelBorgifier: Testing Cmodel verification... ')
-try
-    Cmodel = verifyModelBorg(Cmodel, 'keepName');
-catch
-    fprintf('failed.\n')
-    return
-end
-if isfield(Cmodel, 'rxnID')
-    fprintf('success.\n')
-else
-    fprintf('failed.\n')
-    return
-end
+fprintf('modelBorgifier: Testing Cmodel verification...\n')
+Cmodel = verifyModelBorg(Cmodel, 'keepName');
 assert(isfield(Cmodel, 'rxnID'))
 
-fprintf('modelBorgifier: Testing Tmodel verification... ')
-try
-    Tmodel = verifyModelBorg(Tmodel, 'keepName');
-catch
-    fprintf('failed.\n')
-    return
-end
-if isfield(Tmodel, 'rxnID')
-    fprintf('success.\n')
-else
-    fprintf('failed.\n')
-    return
-end
-assert(isfield(Tmodel, 'rxnID'))
+fprintf('modelBorgifier: Testing Tmodel verification...\n')
+Tmodel = verifyModelBorg(Tmodel, 'keepName');
+assert(isfield(Tmodel, 'rxnID'));
 
 % Test building of the template model
-fprintf('modelBorgifier: Testing Tmodel building... ')
-try
-    Tmodel = buildTmodel(Tmodel);
-catch
-    fprintf('failed.\n')
-    return
-end
-if isfield(Tmodel, 'Models')
-    fprintf('success.\n')
-else
-    fprintf('failed.\n')
-    return
-end
+fprintf('modelBorgifier: Testing Tmodel building...\n')
+Tmodel = buildTmodel(Tmodel);
 assert(isfield(Tmodel, 'Models'))
 
 % compare models and test success
-fprintf('modelBorgifier: Testing model comparison... ')
-try
-    [Cmodel, Tmodel, score, Stats] = compareCbModels(Cmodel, Tmodel);
-catch
-    fprintf('failed.\n')
-    return
-end
-if sum(sum(sum(score))) ~= 0
-    fprintf('success.\n')
-else
-    fprintf('failed.\n')
-    return
-end
+fprintf('modelBorgifier: Testing model comparison...\n')
+[Cmodel, Tmodel, score, Stats] = compareCbModels(Cmodel, Tmodel);
 assert(sum(sum(sum(score))) ~= 0)
 
 % this loads rxnList and metList, which would normally be made by the GUI
 fprintf('modelBorgifier: Loading test matching arrays.\n')
 load('testModelBorgifierData.mat');
-% [rxnList, metList, Stats] = reactionCompare(Cmodel, Tmodel, score);
+%[rxnList, metList, Stats] = reactionCompare(Cmodel, Tmodel, score);
 
-if 0
-    %not clear how to stop this test asking for keyboard or gui input,
-    %bypassing it for now. 19 Dec 2019, Ronan Fleming.
-    
-    % merge models (based off of loaded match arrays) and test success
-    fprintf('modelBorgifier: Testing model merging and extraction... ')
+% merge models (based off of loaded match arrays) and test success
+fprintf('modelBorgifier: Testing model merging and extraction...\n')
+if usejava('awt') && usejava('desktop')
     mode='p';%avoid input
-    try
-        [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats);
-    catch
-        fprintf('failed.\n')
-        return
-    end
-    if isfield(Stats, 'uniqueMetabolites')
-        fprintf('success.\n')
-    else
-        fprintf('failed.\n')
-        return
-    end
-    assert(isfield(Stats, 'uniqueMetabolites'))
+    [TmodelC, Cspawn, Stats] = mergeModelsBorg(Cmodel, Tmodel, rxnList, metList, Stats, score, mode);
+    %rematching is aborted, so the stats have to be redetermined
+    Stats = TmodelStats(Tmodel, Stats);
+    assert(isfield(Stats, 'uniqueMetabolites'));
 end
-
-status = 1 ; % everything is cool.
-
+close all
 % change the directory back
 cd(currentDir)
 

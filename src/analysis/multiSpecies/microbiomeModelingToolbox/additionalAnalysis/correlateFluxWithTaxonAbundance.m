@@ -1,4 +1,4 @@
-function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxes, corrMethod)
+function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, corrMethod)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the correlations between fluxes for one or more reactions of
 % interest in a number of microbiome samples and the relative microbe
@@ -8,15 +8,15 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %
 % USAGE
 %
-%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxes, taxonomy, corrMethod)
+%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, taxonomy, corrMethod)
 %
 % INPUTS:
 %    abundancePath:     Path to the .csv file with the abundance data.
 %                       Needs to be in same format as example file
 %                       'cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv'
-%     fluxes:           Table of fluxes for reactions of interest with
-%                       reaction IDs in microbiome community models as rows
-%                       and sample IDs as columns
+%     fluxPath:         Path to the .csv file with the fluxes for reactions 
+%                       of interest with sample IDs as rows and reaction
+%                       IDs in microbiome community models as columns
 %
 % OPTIONAL INPUTS:
 %     corrMethod:       Method to compute the linear correlation
@@ -32,6 +32,8 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 % .. Author: Almut Heinken, 03/2018
 %                           10/2018:  changed input to location of the csv file with the
 %                                     abundance data
+%                           01/2020:  adapted to be suitable for pan-models, and
+%                                     changed flux input to a csv file.
 
 % read the csv file with the abundance data
 abundance = readtable(abundancePath, 'ReadVariableNames', false);
@@ -39,6 +41,9 @@ abundance = table2cell(abundance);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
+
+fluxes = readtable(fluxPath, 'ReadVariableNames', false);
+fluxes = table2cell(fluxes);
 
 % Get the taxonomy information
 taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
@@ -77,20 +82,42 @@ for t = 1:size(TaxonomyLevels, 1)
         end
     end
 end
+
 % Go through the abundance data and summarize taxon abundances for each
 % strain in at least one sample
+
+% Find the right column for the input data (strains, species,..)
+abundance(:,1)=regexprep(abundance(:,1),'pan','','once');
+inputTaxa={};
+for i=2:size(taxonomy,2)
+    taxa=strrep(taxonomy(:,i),' ','_');
+    taxa=strrep(taxa,'.','_');
+    taxa=strrep(taxa,'/','_');
+    taxa=strrep(taxa,'-','_');
+    taxa=strrep(taxa,'__','_');
+    if length(intersect(abundance(2:end,1),taxa))==size(abundance,1)-1
+        inputTaxa=taxa;
+        inputCol=i;
+    end
+end
+if isempty(inputTaxa)
+    error('Some taxa in the abundance file are not found in the taxonomy file!')
+end
+
 for i = 2:size(abundance, 2)
     for j = 2:size(abundance, 1)
         for t = 1:size(TaxonomyLevels, 1)
             % find the taxon for the current strain
             taxonCol = find(strcmp(taxonomy(1, :), TaxonomyLevels{t}));
-            findTax = taxonomy(find(strcmp(abundance{j, 1}, taxonomy(:, 1))), taxonCol);
+            if taxonCol >= inputCol
+            findTax = taxonomy(find(strcmp(abundance{j, 1}, inputTaxa)), taxonCol);
             if isempty(strfind(findTax{1}, 'unclassified'))
                 % find the taxon for the current strain in the sample abundance
                 % variable
-                findinSampleAbun = find(strcmp(findTax, SampleAbundance.(TaxonomyLevels{t})(1, :)));
+                findinSampleAbun = find(strcmp(findTax{1}, SampleAbundance.(TaxonomyLevels{t})(1, :)));
                 % sum up the relative abundance
                 SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
+            end
             end
         end
     end
@@ -143,6 +170,29 @@ for i = 2:size(fluxes, 1)
             PValues.(TaxonomyLevels{t}){j, i} = PVAL;
         end
     end
+end
+
+% remove entries that are only weak correlations
+for t = 1:size(TaxonomyLevels, 1)
+    cnt=1;
+    delArray=[];
+    for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.2)
+            delArray(cnt,1)=j;
+            cnt=cnt+1;
+        end
+    end
+    FluxCorrelations.(TaxonomyLevels{t})(:,delArray)=[];
+    
+    cnt=1;
+    delArray=[];
+    for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),1)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.2)
+            delArray(cnt,1)=j;
+            cnt=cnt+1;
+        end
+    end
+    FluxCorrelations.(TaxonomyLevels{t})(delArray,:)=[];
 end
 
 % Plot the calculated correlations.
