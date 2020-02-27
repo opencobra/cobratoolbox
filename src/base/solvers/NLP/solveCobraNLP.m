@@ -295,8 +295,11 @@ switch solver
         Prob.SOL.optPar(30) = 1e9; %this is the minor iteration limit.  Essentially unlimited
         Prob.CheckNaN = cobraParams.checkNaN;
 
-        Prob.SOL.PrintFile = strcat(cobraParams.logFile, '_iterations.txt');
-        Prob.SOL.SummFile = strcat(cobraParams.logFile, '_summary.txt');
+        %dont print out a log file unless cobraParams.logFile is not empty
+        if ~isempty(cobraParams.logFile)
+            Prob.SOL.PrintFile = strcat(cobraParams.logFile, '_iterations.txt');
+            Prob.SOL.SummFile = strcat(cobraParams.logFile, '_summary.txt');
+        end
 
         if cobraParams.printLevel >= 1
             Prob.optParam.IterPrint = 1;

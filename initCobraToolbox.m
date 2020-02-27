@@ -396,7 +396,7 @@ end
 for i = 1:length(supportedSolversNames)
     if 0 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'cplexlp')
+        if strcmp(supportedSolversNames{i},'tomlab_snopt')
             pause(0.1)
         end
     end
