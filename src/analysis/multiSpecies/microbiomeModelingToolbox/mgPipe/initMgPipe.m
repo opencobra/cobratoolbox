@@ -1,4 +1,4 @@
-function initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, printLevel)
+function [init] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, printLevel)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -25,7 +25,11 @@ function initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, i
 %    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
 %    printLevel:             verbose level (default: 1)
 %
+% OUTPUTS:
+%    init:                   status of initialization
+%
 % .. Author: Federico Baldini 2018
+%               - Almut Heinken 02/2020: removed unnecessary outputs
 
 global CBTDIR
 

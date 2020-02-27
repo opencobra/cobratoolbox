@@ -25,13 +25,14 @@ function [shadowPrices]=analyseObjectiveShadowPrices(modelFolder,objectiveList,v
 %                     objective functions of interest in vertical order
 %
 % OPTIONAL INPUTS:
-%   osenseStr         String indicating whether objective function(s)
-%                     should be maximized or minimized. Allowed inputs:
-%                     'min','max', default:'max'.
 %   SPDef             String indicating whether positive, negative, or
 %                     all nonzero shadow prices should be collected.
 %                     Allowed inputs: 'Positive','Negative','Nonzero',
 %                     default: 'Nonzero'.
+%   numWorkers        Number indicating number of workers in parallel pool
+%                     (default: 0).
+%   solutionFolder    Folder where the flux balance analysis solutions
+%                     should be stored (default =  current folder)
 %
 % OUTPUT:
 %   shadowPrices      Table with shadow prices for metabolites that are
@@ -48,7 +49,6 @@ parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
 parser.addParameter('modelIDs',{}, @iscell);
-parser.addParameter('osenseStr','max', @ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('solutionFolder',pwd, @ischar);
@@ -57,8 +57,8 @@ parser.parse(modelFolder,objectiveList, varargin{:})
 modelFolder = parser.Results.modelFolder;
 objectiveList = parser.Results.objectiveList;
 modelIDs = parser.Results.modelIDs;
-numWorkers = parser.Results.numWorkers;
 SPDef = parser.Results.SPDef;
+numWorkers = parser.Results.numWorkers;
 solutionFolder = parser.Results.solutionFolder;
 if isempty(modelIDs)
     for i=1:size(modelList,1)
