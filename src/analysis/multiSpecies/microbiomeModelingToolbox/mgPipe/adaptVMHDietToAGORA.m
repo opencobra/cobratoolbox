@@ -102,6 +102,10 @@ for i = 1:  size(adaptedDietConstraints,1)
     if strcmp(adaptedDietConstraints{i,1},'EX_fol(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
         adaptedDietConstraints{i,2} = '-1';
     end
+    % L-arabinose uptake needs to be at least 1
+    if strcmp(adaptedDietConstraints{i,1},'EX_arab_L(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
+        adaptedDietConstraints{i,2} = '-1';
+    end
 end
 
 % If the path to AGORA models was entered: test growth of each model on the
