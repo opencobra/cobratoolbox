@@ -1,0 +1,1101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mwizard2</title>
+  <meta name="keywords" content="mwizard2">
+  <meta name="description" content="MWIZARD - M2HTML Graphical User Interface">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">m2html</a> &gt; mwizard2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for m2html&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mwizard2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>MWIZARD - M2HTML Graphical User Interface</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function mwizard(file) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MWIZARD - M2HTML Graphical User Interface
+  MWIZARD launches a Matlab GUI front-end to edit parameters
+  that are then used by M2HTML to generate HTML documentation.
+  MWIZARD(FILE) allows to specify a mat-file FILE from which
+  default parameters are extracted and can be updated.  
+
+  For more information, please read the M2HTML tutorial and FAQ at:
+    &lt;http://www.artefact.tk/software/matlab/m2html/&gt;
+
+  See also <a href="m2html.html" class="code" title="function m2html(varargin)">M2HTML</a></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="m2html.html" class="code" title="function m2html(varargin)">m2html</a>	M2HTML - Documentation Generator for Matlab M-files and Toolboxes in HTML</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function h = initWindow</a></li><li><a href="#_sub2" class="code">function buildWindow(h)</a></li><li><a href="#_sub3" class="code">function doClose(fig,evd,h)</a></li><li><a href="#_sub4" class="code">function doNewFile(fig,evd,h)</a></li><li><a href="#_sub5" class="code">function doOpenFile(fig,evd,h)</a></li><li><a href="#_sub6" class="code">function status = doSaveFile(fig,evd,h)</a></li><li><a href="#_sub7" class="code">function status = doSaveAsFile(fig,evd,h)</a></li><li><a href="#_sub8" class="code">function doRunFile(fig,evd,h)</a></li><li><a href="#_sub9" class="code">function status = doCheckSave(h)</a></li><li><a href="#_sub10" class="code">function doHelp(fig,evd,h)</a></li><li><a href="#_sub11" class="code">function varargout = initOptions(h)</a></li><li><a href="#_sub12" class="code">function refreshOptions(h)</a></li><li><a href="#_sub13" class="code">function doInitHTMLDir(fig,evd,h)</a></li><li><a href="#_sub14" class="code">function doInitTpl(fig,evd,h)</a></li><li><a href="#_sub15" class="code">function doInitMfiles(fig,evd,h)</a></li><li><a href="#_sub16" class="code">function doInitGraphs(fig,evd,h)</a></li><li><a href="#_sub17" class="code">function doBrowseButton(fig,evd,h)</a></li><li><a href="#_sub18" class="code">function doSelectMfiles(fig,evd,h)</a></li><li><a href="#_sub19" class="code">function doSetRecursive(fig,evd,h)</a></li><li><a href="#_sub20" class="code">function doSetOutputDir(fig,evd,h)</a></li><li><a href="#_sub21" class="code">function doSetIndex(fig,evd,h)</a></li><li><a href="#_sub22" class="code">function doSetExtension(fig,evd,h)</a></li><li><a href="#_sub23" class="code">function doSetTemplate(fig,evd,h)</a></li><li><a href="#_sub24" class="code">function doSetSource(fig,evd,h)</a></li><li><a href="#_sub25" class="code">function doSetHighlight(fig,evd,h)</a></li><li><a href="#_sub26" class="code">function doSetGraph(fig,evd,h)</a></li><li><a href="#_sub27" class="code">function doSetSearch(fig,evd,h)</a></li><li><a href="#_sub28" class="code">function doSetGlobal(fig,evd,h)</a></li><li><a href="#_sub29" class="code">function doSetDownload(fig,evd,h)</a></li><li><a href="#_sub30" class="code">function doSetTodo(fig,evd,h)</a></li><li><a href="#_sub31" class="code">function doSetVerbose(fig,evd,h)</a></li><li><a href="#_sub32" class="code">function doSetSaveAsMat(fig,evd,h)</a></li><li><a href="#_sub33" class="code">function doSetLoadMat(fig,evd,h)</a></li><li><a href="#_sub34" class="code">function doSetTabs(fig,evd,h)</a></li><li><a href="#_sub35" class="code">function doSetNbColumns(fig,evd,h)</a></li><li><a href="#_sub36" class="code">function text2 = shortenText(text, l)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function mwizard(file)</a>
+0002 <span class="comment">%MWIZARD - M2HTML Graphical User Interface</span>
+0003 <span class="comment">%  MWIZARD launches a Matlab GUI front-end to edit parameters</span>
+0004 <span class="comment">%  that are then used by M2HTML to generate HTML documentation.</span>
+0005 <span class="comment">%  MWIZARD(FILE) allows to specify a mat-file FILE from which</span>
+0006 <span class="comment">%  default parameters are extracted and can be updated.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%  For more information, please read the M2HTML tutorial and FAQ at:</span>
+0009 <span class="comment">%    &lt;http://www.artefact.tk/software/matlab/m2html/&gt;</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%  See also M2HTML</span>
+0012 
+0013 <span class="comment">%  Copyright (C) 2004 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0014 <span class="comment">%  $Revision: 0.5 $Date: 2004/05/24 20:12:17 $</span>
+0015 
+0016 <span class="comment">%  This program is free software; you can redistribute it and/or</span>
+0017 <span class="comment">%  modify it under the terms of the GNU General Public License</span>
+0018 <span class="comment">%  as published by the Free Software Foundation; either version 2</span>
+0019 <span class="comment">%  of the License, or any later version.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%  This program is distributed in the hope that it will be useful,</span>
+0022 <span class="comment">%  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+0023 <span class="comment">%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+0024 <span class="comment">%  GNU General Public License for more details.</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%  You should have received a copy of the GNU General Public License</span>
+0027 <span class="comment">%  along with this program; if not, write to the Free Software</span>
+0028 <span class="comment">%  Foundation Inc, 59 Temple Pl. - Suite 330, Boston, MA 02111-1307, USA.</span>
+0029 
+0030 <span class="comment">%  Suggestions for improvement and fixes are always welcome, although no</span>
+0031 <span class="comment">%  guarantee is made whether and when they will be implemented.</span>
+0032 <span class="comment">%  Send requests to Guillaume@artefact.tk</span>
+0033 
+0034 error(nargchk(0,1,nargin));
+0035 
+0036 disp(<span class="string">'This is a beta version of mwizard.'</span>);
+0037 disp(<span class="string">'Please use the online version m2html instead.'</span>);
+0038 
+0039 h = <a href="#_sub1" class="code" title="subfunction h = initWindow">initWindow</a>;
+0040 
+0041 <a href="#_sub11" class="code" title="subfunction varargout = initOptions(h)">initOptions</a>(h);
+0042 
+0043 <a href="#_sub2" class="code" title="subfunction buildWindow(h)">buildWindow</a>(h);
+0044 
+0045 setappdata(h, <span class="string">'handles'</span>, guihandles(h));
+0046 <span class="comment">% M. Krauski</span>
+0047 <span class="comment">% setappdata(h, 'pwd',     pwd);</span>
+0048 
+0049 <span class="keyword">if</span> nargin == 0
+0050     setappdata(h, <span class="string">'file'</span>, <span class="string">''</span>);
+0051     setappdata(h, <span class="string">'needsave'</span>, 1);
+0052 <span class="keyword">else</span>
+0053     setappdata(h, <span class="string">'file'</span>, file);
+0054     setappdata(h, <span class="string">'needsave'</span>, 0);
+0055     opt = load(file, <span class="string">'options'</span>);
+0056     setappdata(h, <span class="string">'options'</span>, opt.options);
+0057     <a href="#_sub12" class="code" title="subfunction refreshOptions(h)">refreshOptions</a>(h);
+0058 <span class="keyword">end</span>
+0059 
+0060 set(h, <span class="string">'HandleVisibility'</span>, <span class="string">'callback'</span>);
+0061 
+0062 <span class="comment">%===============================================================================</span>
+0063 
+0064 <a name="_sub1" href="#_subfunctions" class="code">function h = initWindow</a>
+0065 
+0066 h = figure(<span class="string">'Resize'</span>,      <span class="string">'on'</span>,<span class="keyword">...</span>
+0067            <span class="string">'MenuBar'</span>,     <span class="string">'none'</span>,<span class="keyword">...</span>
+0068            <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>,<span class="keyword">...</span>
+0069            <span class="string">'Name'</span>,        <span class="string">':: M2HTML Wizard ::'</span>,<span class="keyword">...</span>
+0070            <span class="string">'Position'</span>,    [200 200 500 650],<span class="keyword">...</span>
+0071            <span class="string">'Tag'</span>,         mfilename);
+0072            
+0073 set(h, <span class="string">'CloseRequestFcn'</span>, {@<a href="#_sub3" class="code" title="subfunction doClose(fig,evd,h)">doClose</a>,h});
+0074 
+0075 <span class="comment">%===============================================================================</span>
+0076 
+0077 <a name="_sub2" href="#_subfunctions" class="code">function buildWindow(h)</a>
+0078 
+0079 wincolor = struct(<span class="string">'bg'</span>,    [0.9 0.9 0.9], <span class="keyword">...</span>
+0080                   <span class="string">'fg'</span>,    [0.8 0.8 0.8], <span class="keyword">...</span>
+0081                   <span class="string">'title'</span>, [0.8 0.8 0.9]);
+0082 
+0083 set(h, <span class="string">'Color'</span>, wincolor.bg);
+0084               
+0085 <span class="comment">%-------------------------------------------------------------------------------</span>
+0086 <span class="comment">%- Menu</span>
+0087 <span class="comment">%-------------------------------------------------------------------------------</span>
+0088 
+0089 icons = load(fullfile(fileparts(which(mfilename)),<span class="string">'private'</span>, <span class="keyword">...</span>
+0090             <span class="string">'m2htmltoolbarimages.mat'</span>));
+0091 
+0092 uipushtool(<span class="string">'CData'</span>,icons.newIcon,<span class="keyword">...</span>
+0093     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0094     <span class="string">'Separator'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0095     <span class="string">'ToolTipString'</span>,<span class="string">'New File'</span>,<span class="keyword">...</span>
+0096     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub4" class="code" title="subfunction doNewFile(fig,evd,h)">doNewFile</a>,h},<span class="keyword">...</span>
+0097     <span class="string">'Tag'</span>,<span class="string">'NewTool'</span>);
+0098 
+0099 uipushtool(<span class="string">'CData'</span>,icons.openIcon,<span class="keyword">...</span>
+0100     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0101     <span class="string">'Separator'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0102     <span class="string">'ToolTipString'</span>,<span class="string">'Open File'</span>,<span class="keyword">...</span>
+0103     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub5" class="code" title="subfunction doOpenFile(fig,evd,h)">doOpenFile</a>,h},<span class="keyword">...</span>
+0104     <span class="string">'Tag'</span>,<span class="string">'OpenTool'</span>);
+0105 
+0106 uipushtool(<span class="string">'CData'</span>,icons.saveIcon,<span class="keyword">...</span>
+0107     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0108     <span class="string">'Separator'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0109     <span class="string">'ToolTipString'</span>,<span class="string">'Save File'</span>,<span class="keyword">...</span>
+0110     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub6" class="code" title="subfunction status = doSaveFile(fig,evd,h)">doSaveFile</a>,h},<span class="keyword">...</span>
+0111     <span class="string">'Tag'</span>,<span class="string">'SaveTool'</span>);
+0112 
+0113 uipushtool(<span class="string">'CData'</span>,icons.saveAsIcon,<span class="keyword">...</span>
+0114     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0115     <span class="string">'Separator'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0116     <span class="string">'ToolTipString'</span>,<span class="string">'Save File As'</span>,<span class="keyword">...</span>
+0117     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub7" class="code" title="subfunction status = doSaveAsFile(fig,evd,h)">doSaveAsFile</a>,h},<span class="keyword">...</span>
+0118     <span class="string">'Tag'</span>,<span class="string">'SaveAsTool'</span>);
+0119     
+0120 uipushtool(<span class="string">'CData'</span>,icons.wheelIcon,<span class="keyword">...</span>
+0121     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0122     <span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0123     <span class="string">'ToolTipString'</span>,<span class="string">'Save and Run M2HTML'</span>,<span class="keyword">...</span>
+0124     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub8" class="code" title="subfunction doRunFile(fig,evd,h)">doRunFile</a>,h},<span class="keyword">...</span>
+0125     <span class="string">'Tag'</span>,<span class="string">'RunTool'</span>);
+0126 
+0127 uipushtool(<span class="string">'CData'</span>,icons.webIcon,<span class="keyword">...</span>
+0128     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0129     <span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0130     <span class="string">'ToolTipString'</span>,<span class="string">'Online Tutorial'</span>,<span class="keyword">...</span>
+0131     <span class="string">'ClickedCallback'</span>,<span class="keyword">...</span>
+0132         <span class="string">'web(''http://www.artefact.tk/software/matlab/m2html/'')'</span>,<span class="keyword">...</span>
+0133     <span class="string">'Tag'</span>,<span class="string">'WebTool'</span>);
+0134 
+0135 uipushtool(<span class="string">'CData'</span>,icons.helpIcon,<span class="keyword">...</span>
+0136     <span class="string">'enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0137     <span class="string">'Separator'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0138     <span class="string">'ToolTipString'</span>,<span class="string">'Help'</span>,<span class="keyword">...</span>
+0139     <span class="string">'ClickedCallback'</span>,{@<a href="#_sub10" class="code" title="subfunction doHelp(fig,evd,h)">doHelp</a>,h},<span class="keyword">...</span>
+0140     <span class="string">'Tag'</span>,<span class="string">'HelpTool'</span>);
+0141 
+0142 <span class="comment">%-------------------------------------------------------------------------------</span>
+0143 <span class="comment">%- Title</span>
+0144 <span class="comment">%-------------------------------------------------------------------------------</span>
+0145 
+0146 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0147     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0148     <span class="string">'Position'</span>,[0.02,0.92,0.96,0.06],<span class="keyword">...</span>
+0149     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0150 
+0151 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0152     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0153     <span class="string">'String'</span>,<span class="string">'M2HTML Wizard'</span>,<span class="keyword">...</span>
+0154     <span class="string">'FontSize'</span>,18,<span class="keyword">...</span>
+0155     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0156     <span class="string">'Position'</span>,[0.03,0.93,0.94,0.038],<span class="keyword">...</span>
+0157     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0158 
+0159 <span class="comment">%-------------------------------------------------------------------------------</span>
+0160 <span class="comment">%- Input</span>
+0161 <span class="comment">%-------------------------------------------------------------------------------</span>
+0162 
+0163 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0164     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0165     <span class="string">'Position'</span>,[0.02,0.74,0.96,0.16],<span class="keyword">...</span>
+0166     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0167     
+0168 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0169     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0170     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0171     <span class="string">'Position'</span>,[0.02,0.87,0.96,0.03],<span class="keyword">...</span>
+0172     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0173     
+0174 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0175     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0176     <span class="string">'String'</span>,<span class="string">'M-Files Input'</span>,<span class="keyword">...</span>
+0177     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0178     <span class="string">'Position'</span>,[0.03,0.875,0.94,0.02],<span class="keyword">...</span>
+0179     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0180 
+0181 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0182     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0183     <span class="string">'String'</span>,<span class="string">'Root directory:'</span>,<span class="keyword">...</span>
+0184     <span class="string">'FontAngle'</span>,<span class="string">'oblique'</span>,<span class="keyword">...</span>
+0185     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0186     <span class="string">'Position'</span>,[0.04,0.825,0.6,0.03],<span class="keyword">...</span>
+0187     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0188 
+0189 <span class="comment">% M. Krauski 7/20/04</span>
+0190 <span class="comment">% changed and resized control to work with browse push button</span>
+0191 
+0192 <span class="comment">% uicontrol('Style','edit',...</span>
+0193 <span class="comment">%     'Units','Normalized',...</span>
+0194 <span class="comment">%     'Position',[0.21,0.83,0.74,0.03],...</span>
+0195 <span class="comment">%     'String',pwd,...</span>
+0196 <span class="comment">%     'Enable','inactive',...</span>
+0197 <span class="comment">%     'HorizontalAlignment','left',...</span>
+0198 <span class="comment">%     'Callback','uigetfile;',...%uigetdir</span>
+0199 <span class="comment">%     'BackgroundColor',wincolor.bg,...</span>
+0200 <span class="comment">%     'Tag','rootdir');</span>
+0201 
+0202 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0203     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0204     <span class="string">'Position'</span>,[0.21,0.83,0.59,0.03],<span class="keyword">...</span>
+0205     <span class="string">'String'</span>,pwd,<span class="keyword">...</span><span class="comment"> %this will be over written in refreshOptions</span>
+0206     <span class="string">'Enable'</span>,<span class="string">'inactive'</span>,<span class="keyword">...</span>
+0207     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0208     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0209     <span class="string">'Tag'</span>,<span class="string">'rootdir'</span>);
+0210 
+0211 <span class="comment">% M. Krauski 7/20/04</span>
+0212 <span class="comment">% added control</span>
+0213 uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0214     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0215     <span class="string">'Position'</span>,[0.81,0.83,0.14,0.03],<span class="keyword">...</span>
+0216     <span class="string">'String'</span>,<span class="string">'Browse...'</span>,<span class="keyword">...</span>
+0217     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0218     <span class="string">'Callback'</span>,{@<a href="#_sub17" class="code" title="subfunction doBrowseButton(fig,evd,h)">doBrowseButton</a>,h},<span class="keyword">...</span>
+0219     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0220     <span class="string">'Tag'</span>,<span class="string">'browsebutton'</span>);
+0221 
+0222 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0223     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0224     <span class="string">'String'</span>,<span class="string">'Relative pathes:'</span>,<span class="keyword">...</span>
+0225     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0226     <span class="string">'Position'</span>,[0.04,0.785,0.6,0.03],<span class="keyword">...</span>
+0227     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0228 
+0229 <span class="comment">% M. Krauski 7/20/04</span>
+0230 <span class="comment">% changed and resized control to work with select push button</span>
+0231 
+0232 <span class="comment">% uicontrol('Style','edit',...</span>
+0233 <span class="comment">%     'Units','Normalized',...</span>
+0234 <span class="comment">%     'Position',[0.21,0.79,0.74,0.03],...</span>
+0235 <span class="comment">%     'String','',...</span>
+0236 <span class="comment">%     'HorizontalAlignment','left',...</span>
+0237 <span class="comment">%     'Callback',{@doSetMfiles,h},...</span>
+0238 <span class="comment">%     'CreateFcn',{@doInitMfiles,h},...</span>
+0239 <span class="comment">%     'BackgroundColor',wincolor.bg,...</span>
+0240 <span class="comment">%     'Tag','mfiles');</span>
+0241 
+0242 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0243     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0244     <span class="string">'Position'</span>,[0.21,0.79,0.59,0.03],<span class="keyword">...</span>
+0245     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0246     <span class="string">'Enable'</span>,<span class="string">'inactive'</span>,<span class="keyword">...</span>
+0247     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0248     <span class="string">'CreateFcn'</span>,{@<a href="#_sub15" class="code" title="subfunction doInitMfiles(fig,evd,h)">doInitMfiles</a>,h},<span class="keyword">...</span>
+0249     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0250     <span class="string">'Tag'</span>,<span class="string">'mfiles'</span>);
+0251 
+0252 uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0253     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0254     <span class="string">'Position'</span>,[0.81,0.79,0.14,0.03],<span class="keyword">...</span>
+0255     <span class="string">'String'</span>,<span class="string">'Select...'</span>,<span class="keyword">...</span>
+0256     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0257     <span class="string">'Callback'</span>,{@<a href="#_sub18" class="code" title="subfunction doSelectMfiles(fig,evd,h)">doSelectMfiles</a>,h},<span class="keyword">...</span>
+0258     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0259     <span class="string">'Tag'</span>,<span class="string">'selectbutton'</span>);
+0260 
+0261 uicontrol(<span class="string">'Style'</span>,<span class="string">'CheckBox'</span>,<span class="keyword">...</span>
+0262     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0263     <span class="string">'Position'</span>,[0.04,0.749,0.42,0.032],<span class="keyword">...</span>
+0264     <span class="string">'String'</span>,<span class="string">' Recursive'</span>,<span class="keyword">...</span>
+0265     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0266     <span class="string">'Callback'</span>,{@<a href="#_sub19" class="code" title="subfunction doSetRecursive(fig,evd,h)">doSetRecursive</a>,h},<span class="keyword">...</span>
+0267     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0268     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0269     <span class="string">'Tag'</span>,<span class="string">'recursive'</span>);
+0270 
+0271 <span class="comment">%-------------------------------------------------------------------------------</span>
+0272 <span class="comment">%- Output</span>
+0273 <span class="comment">%-------------------------------------------------------------------------------</span>
+0274 
+0275 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0276     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0277     <span class="string">'Position'</span>,[0.02, 0.56,0.96,0.16],<span class="keyword">...</span>
+0278     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0279 
+0280 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0281     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0282     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0283     <span class="string">'Position'</span>,[0.02,0.69,0.96,0.03],<span class="keyword">...</span>
+0284     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0285     
+0286 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0287     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0288     <span class="string">'String'</span>,<span class="string">'HTML Output'</span>,<span class="keyword">...</span>
+0289     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0290     <span class="string">'Position'</span>,[0.03,0.695,0.94,0.02],<span class="keyword">...</span>
+0291     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0292 
+0293 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0294     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0295     <span class="string">'String'</span>,<span class="string">'Output Directory:'</span>,<span class="keyword">...</span>
+0296     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0297     <span class="string">'Position'</span>,[0.04,0.645,0.6,0.03],<span class="keyword">...</span>
+0298     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0299 
+0300 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0301     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0302     <span class="string">'Position'</span>,[0.21,0.65,0.74,0.03],<span class="keyword">...</span>
+0303     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0304     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0305     <span class="string">'Callback'</span>,{@<a href="#_sub20" class="code" title="subfunction doSetOutputDir(fig,evd,h)">doSetOutputDir</a>,h},<span class="keyword">...</span>
+0306     <span class="string">'CreateFcn'</span>,{@<a href="#_sub13" class="code" title="subfunction doInitHTMLDir(fig,evd,h)">doInitHTMLDir</a>,h},<span class="keyword">...</span>
+0307     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0308     <span class="string">'Tag'</span>,<span class="string">'htmldir'</span>);
+0309 
+0310 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0311     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0312     <span class="string">'String'</span>,<span class="string">'HTML Index:'</span>,<span class="keyword">...</span>
+0313     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0314     <span class="string">'Position'</span>,[0.04,0.605,0.6,0.03],<span class="keyword">...</span>
+0315     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0316 
+0317 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0318     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0319     <span class="string">'Position'</span>,[0.21,0.61,0.25,0.03],<span class="keyword">...</span>
+0320     <span class="string">'String'</span>,<span class="string">'index'</span>,<span class="keyword">...</span>
+0321     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0322     <span class="string">'Callback'</span>,{@<a href="#_sub21" class="code" title="subfunction doSetIndex(fig,evd,h)">doSetIndex</a>,h},<span class="keyword">...</span>
+0323     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0324     <span class="string">'Tag'</span>,<span class="string">'index'</span>);
+0325 
+0326 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0327     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0328     <span class="string">'String'</span>,<span class="string">'Extension:'</span>,<span class="keyword">...</span>
+0329     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0330     <span class="string">'Position'</span>,[0.53,0.605,0.3,0.03],<span class="keyword">...</span>
+0331     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0332 
+0333 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0334     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0335     <span class="string">'Position'</span>,[0.70,0.61,0.25,0.03],<span class="keyword">...</span>
+0336     <span class="string">'String'</span>,<span class="string">'html'</span>,<span class="keyword">...</span>
+0337     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0338     <span class="string">'Callback'</span>,{@<a href="#_sub22" class="code" title="subfunction doSetExtension(fig,evd,h)">doSetExtension</a>,h},<span class="keyword">...</span>
+0339     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0340     <span class="string">'Tag'</span>,<span class="string">'extension'</span>);
+0341 
+0342 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0343     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0344     <span class="string">'String'</span>,<span class="string">'Template:'</span>,<span class="keyword">...</span>
+0345     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0346     <span class="string">'Position'</span>,[0.04,0.565,0.3,0.03],<span class="keyword">...</span>
+0347     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0348 
+0349 uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0350     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0351     <span class="string">'Position'</span>,[0.21,0.57,0.25,0.03],<span class="keyword">...</span>
+0352     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0353     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0354     <span class="string">'Callback'</span>,{@<a href="#_sub23" class="code" title="subfunction doSetTemplate(fig,evd,h)">doSetTemplate</a>,h},<span class="keyword">...</span>
+0355     <span class="string">'CreateFcn'</span>,{@<a href="#_sub14" class="code" title="subfunction doInitTpl(fig,evd,h)">doInitTpl</a>,h},<span class="keyword">...</span>
+0356     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0357     <span class="string">'Tag'</span>,<span class="string">'template'</span>);
+0358 
+0359 <span class="comment">%-------------------------------------------------------------------------------</span>
+0360 <span class="comment">%- Other options</span>
+0361 <span class="comment">%-------------------------------------------------------------------------------</span>
+0362 
+0363 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0364     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0365     <span class="string">'Position'</span>,[0.02,0.24,0.96,0.30],<span class="keyword">...</span>
+0366     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0367 
+0368 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0369     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0370     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0371     <span class="string">'Position'</span>,[0.02,0.51,0.96,0.03],<span class="keyword">...</span>
+0372     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0373     
+0374 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0375     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0376     <span class="string">'String'</span>,<span class="string">'Other Options'</span>,<span class="keyword">...</span>
+0377     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0378     <span class="string">'Position'</span>,[0.03,0.515,0.94,0.02],<span class="keyword">...</span>
+0379     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0380 
+0381 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0382     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0383     <span class="string">'Position'</span>,[0.04,0.464,0.42,0.032],<span class="keyword">...</span>
+0384     <span class="string">'String'</span>,<span class="string">' Include Source Code'</span>,<span class="keyword">...</span>
+0385     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0386     <span class="string">'Callback'</span>,{@<a href="#_sub24" class="code" title="subfunction doSetSource(fig,evd,h)">doSetSource</a>,h},<span class="keyword">...</span>
+0387     <span class="string">'Value'</span>,1,<span class="keyword">...</span>
+0388     <span class="string">'TooltipString'</span>,<span class="string">'Include Source Code of each M-file'</span>,<span class="keyword">...</span>
+0389     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0390     <span class="string">'Tag'</span>,<span class="string">'source'</span>);
+0391 
+0392 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0393     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0394     <span class="string">'Position'</span>,[0.53,0.464,0.42,0.032],<span class="keyword">...</span>
+0395     <span class="string">'String'</span>,<span class="string">' Syntax Highlighting'</span>,<span class="keyword">...</span>
+0396     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0397     <span class="string">'Callback'</span>,{@<a href="#_sub25" class="code" title="subfunction doSetHighlight(fig,evd,h)">doSetHighlight</a>,h},<span class="keyword">...</span>
+0398     <span class="string">'Value'</span>,1,<span class="keyword">...</span>
+0399     <span class="string">'TooltipString'</span>,<span class="string">'Source Code Syntax Highlighting'</span>,<span class="keyword">...</span>
+0400     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0401     <span class="string">'Tag'</span>,<span class="string">'highlight'</span>);
+0402 
+0403 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0404     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0405     <span class="string">'Position'</span>,[0.04,0.42,0.42,0.032],<span class="keyword">...</span>
+0406     <span class="string">'String'</span>,<span class="string">' Create Dependency Graphs'</span>,<span class="keyword">...</span>
+0407     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0408     <span class="string">'Callback'</span>,{@<a href="#_sub26" class="code" title="subfunction doSetGraph(fig,evd,h)">doSetGraph</a>,h},<span class="keyword">...</span>
+0409     <span class="string">'CreateFcn'</span>,{@<a href="#_sub16" class="code" title="subfunction doInitGraphs(fig,evd,h)">doInitGraphs</a>,h},<span class="keyword">...</span>
+0410     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0411     <span class="string">'TooltipString'</span>,<span class="string">'Compute a Dependency Graph using GraphViz'</span>,<span class="keyword">...</span>
+0412     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0413     <span class="string">'Tag'</span>,<span class="string">'graph'</span>);
+0414 
+0415 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0416     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0417     <span class="string">'Position'</span>,[0.53,0.42,0.42,0.032],<span class="keyword">...</span>
+0418     <span class="string">'String'</span>,<span class="string">' PHP Search Engine'</span>,<span class="keyword">...</span>
+0419     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0420     <span class="string">'Callback'</span>,{@<a href="#_sub27" class="code" title="subfunction doSetSearch(fig,evd,h)">doSetSearch</a>,h},<span class="keyword">...</span>
+0421     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0422     <span class="string">'TooltipString'</span>,<span class="string">'Create an Index for a PHP Search Engine'</span>,<span class="keyword">...</span>
+0423     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0424     <span class="string">'Tag'</span>,<span class="string">'search'</span>);
+0425 
+0426 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0427     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0428     <span class="string">'Position'</span>,[0.04,0.378,0.42,0.032],<span class="keyword">...</span>
+0429     <span class="string">'String'</span>,<span class="string">' Global Hyperlinks'</span>,<span class="keyword">...</span>
+0430     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0431     <span class="string">'Callback'</span>,{@<a href="#_sub28" class="code" title="subfunction doSetGlobal(fig,evd,h)">doSetGlobal</a>,1},<span class="keyword">...</span>
+0432     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0433     <span class="string">'TooltipString'</span>,<span class="string">'Hypertext links among separate Matlab Directories'</span>,<span class="keyword">...</span>
+0434     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0435     <span class="string">'Tag'</span>,<span class="string">'globalhypertext'</span>);
+0436 
+0437 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0438     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0439     <span class="string">'Position'</span>,[0.53,0.378,0.42,0.032],<span class="keyword">...</span>
+0440     <span class="string">'String'</span>,<span class="string">' Downloadable M-files'</span>,<span class="keyword">...</span>
+0441     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0442     <span class="string">'Callback'</span>,{@<a href="#_sub29" class="code" title="subfunction doSetDownload(fig,evd,h)">doSetDownload</a>,h},<span class="keyword">...</span>
+0443     <span class="string">'TooltipString'</span>,<span class="string">'Add a link to download each M-file separately'</span>,<span class="keyword">...</span>
+0444     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0445     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0446     <span class="string">'Tag'</span>,<span class="string">'download'</span>);
+0447 
+0448 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0449     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0450     <span class="string">'Position'</span>,[0.04,0.336,0.42,0.032],<span class="keyword">...</span>
+0451     <span class="string">'String'</span>,<span class="string">' To Do List'</span>,<span class="keyword">...</span>
+0452     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0453     <span class="string">'Callback'</span>,{@<a href="#_sub30" class="code" title="subfunction doSetTodo(fig,evd,h)">doSetTodo</a>,h},<span class="keyword">...</span>
+0454     <span class="string">'TooltipString'</span>,[<span class="string">'Create a TODO list in each directory summarizing'</span><span class="keyword">...</span>
+0455     <span class="string">' all the ''% TODO %'' lines found in Matlab code'</span>],<span class="keyword">...</span>
+0456     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0457     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0458     <span class="string">'Tag'</span>,<span class="string">'todo'</span>);
+0459 
+0460 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0461     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0462     <span class="string">'Position'</span>,[0.53,0.336,0.42,0.032],<span class="keyword">...</span>
+0463     <span class="string">'String'</span>,<span class="string">' Verbose Mode'</span>,<span class="keyword">...</span>
+0464     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0465     <span class="string">'Callback'</span>,{@<a href="#_sub31" class="code" title="subfunction doSetVerbose(fig,evd,h)">doSetVerbose</a>,h},<span class="keyword">...</span>
+0466     <span class="string">'TooltipString'</span>,<span class="string">'Verbose mode'</span>,<span class="keyword">...</span>
+0467     <span class="string">'Value'</span>,1,<span class="keyword">...</span>
+0468     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0469     <span class="string">'Tag'</span>,<span class="string">'verbose'</span>);
+0470 
+0471 uicontrol(<span class="string">'Style'</span>,<span class="string">'checkbox'</span>,<span class="keyword">...</span>
+0472     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0473     <span class="string">'Position'</span>,[0.04,0.294,0.42,0.032],<span class="keyword">...</span>
+0474     <span class="string">'String'</span>,<span class="string">' Save M-files Parsing'</span>,<span class="keyword">...</span>
+0475     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0476     <span class="string">'Callback'</span>,{@<a href="#_sub32" class="code" title="subfunction doSetSaveAsMat(fig,evd,h)">doSetSaveAsMat</a>,h},<span class="keyword">...</span>
+0477     <span class="string">'TooltipString'</span>,[<span class="string">'Save current state after M-files parsing in '</span><span class="keyword">...</span>
+0478     <span class="string">'''m2html.mat'' in the Output directory'</span>],<span class="keyword">...</span>
+0479     <span class="string">'Value'</span>,0,<span class="keyword">...</span>
+0480     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0481     <span class="string">'Tag'</span>,<span class="string">'save'</span>);
+0482 
+0483 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0484     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0485     <span class="string">'String'</span>,<span class="string">'Load File:'</span>,<span class="keyword">...</span>
+0486     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0487     <span class="string">'Position'</span>,[0.53,0.289,0.3,0.03],<span class="keyword">...</span>
+0488     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0489 
+0490 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0491     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0492     <span class="string">'Position'</span>,[0.70,0.294,0.25,0.03],<span class="keyword">...</span>
+0493     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0494     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0495     <span class="string">'Callback'</span>,{@<a href="#_sub33" class="code" title="subfunction doSetLoadMat(fig,evd,h)">doSetLoadMat</a>,h},<span class="keyword">...</span>
+0496     <span class="string">'TooltipString'</span>,[<span class="string">'Load a previously saved MAT file '</span><span class="keyword">...</span>
+0497     <span class="string">'to generate HTML files once again'</span>],<span class="keyword">...</span>
+0498     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0499     <span class="string">'Tag'</span>,<span class="string">'load'</span>);
+0500 
+0501 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0502     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0503     <span class="string">'String'</span>,<span class="string">'Tabs Length:'</span>,<span class="keyword">...</span>
+0504     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0505     <span class="string">'Position'</span>,[0.04,0.247,0.3,0.03],<span class="keyword">...</span>
+0506     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0507 
+0508 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0509     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0510     <span class="string">'Position'</span>,[0.21,0.252,0.25,0.03],<span class="keyword">...</span>
+0511     <span class="string">'String'</span>,<span class="string">'4'</span>,<span class="keyword">...</span>
+0512     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0513     <span class="string">'Callback'</span>,{@<a href="#_sub34" class="code" title="subfunction doSetTabs(fig,evd,h)">doSetTabs</a>,h},<span class="keyword">...</span>
+0514     <span class="string">'TooltipString'</span>,[<span class="string">'Replace horizontal tabs in source code '</span><span class="keyword">...</span>
+0515     <span class="string">'by N white space characters'</span>],<span class="keyword">...</span>
+0516     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0517     <span class="string">'Tag'</span>,<span class="string">'tabs'</span>);
+0518 
+0519 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0520     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0521     <span class="string">'String'</span>,<span class="string">'Nb Columns:'</span>,<span class="keyword">...</span>
+0522     <span class="string">'FontAngle'</span>,<span class="string">'oblique'</span>,<span class="keyword">...</span>
+0523     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0524     <span class="string">'Position'</span>,[0.53,0.247,0.3,0.03],<span class="keyword">...</span>
+0525     <span class="string">'BackgroundColor'</span>,wincolor.fg);
+0526 
+0527 uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0528     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0529     <span class="string">'Position'</span>,[0.70,0.252,0.25,0.03],<span class="keyword">...</span>
+0530     <span class="string">'String'</span>,<span class="string">'4'</span>,<span class="keyword">...</span>
+0531     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0532     <span class="string">'Callback'</span>,{@<a href="#_sub35" class="code" title="subfunction doSetNbColumns(fig,evd,h)">doSetNbColumns</a>,h},<span class="keyword">...</span>
+0533     <span class="string">'TooltipString'</span>,<span class="string">'Number of columns for M-files output - not available'</span>,<span class="keyword">...</span>
+0534     <span class="string">'Enable'</span>,<span class="string">'inactive'</span>,<span class="keyword">...</span>
+0535     <span class="string">'BackgroundColor'</span>,wincolor.bg,<span class="keyword">...</span>
+0536     <span class="string">'Tag'</span>,<span class="string">'column'</span>);
+0537 
+0538 
+0539 <span class="comment">%-------------------------------------------------------------------------------</span>
+0540 <span class="comment">%- Space available</span>
+0541 <span class="comment">%-------------------------------------------------------------------------------</span>
+0542 
+0543 <span class="comment">% uicontrol('Style','Frame',...</span>
+0544 <span class="comment">%     'Units','Normalized',...</span>
+0545 <span class="comment">%     'Position',[0.02,0.07,0.96,0.14],...</span>
+0546 <span class="comment">%     'BackgroundColor',wincolor.fg);</span>
+0547 
+0548 <span class="comment">% simulate a frame using an axes</span>
+0549 <span class="comment">% http://www.mathworks.com/support/solutions/data/1-15P9E.html</span>
+0550 axes(<span class="string">'Color'</span>,wincolor.fg,<span class="keyword">...</span>
+0551     <span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[],<span class="keyword">...</span>
+0552     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0553     <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0554     <span class="string">'Position'</span>,[0.02,0.07,0.9585,0.14]);
+0555 
+0556 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0557     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0558     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0559     <span class="string">'Position'</span>,[0.02,0.19,0.96,0.03],<span class="keyword">...</span>
+0560     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0561 
+0562 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0563     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0564     <span class="string">'String'</span>,<span class="string">'M2HTML status'</span>,<span class="keyword">...</span>
+0565     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0566     <span class="string">'Position'</span>,[0.03,0.195,0.94,0.02],<span class="keyword">...</span>
+0567     <span class="string">'BackgroundColor'</span>,wincolor.title);
+0568 
+0569 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0570     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0571     <span class="string">'String'</span>,<span class="string">'Click on the wheel in the toolbar to launch M2HTML...'</span>,<span class="keyword">...</span>
+0572     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment"> % center</span>
+0573     <span class="string">'Position'</span>,[0.12,0.135,0.76,0.02],<span class="keyword">...</span>
+0574     <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0575     <span class="string">'BackgroundColor'</span>,wincolor.fg,<span class="keyword">...</span>
+0576     <span class="string">'Tag'</span>,<span class="string">'textmisc'</span>);
+0577 
+0578 axes(<span class="string">'XLim'</span>,[0 100],<span class="keyword">...</span>
+0579     <span class="string">'YLim'</span>,[0 1],<span class="keyword">...</span>
+0580     <span class="string">'Box'</span>,<span class="string">'on'</span>, <span class="keyword">...</span>
+0581     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0582     <span class="string">'Position'</span>,[0.07,0.09,0.86,0.03],<span class="keyword">...</span>
+0583     <span class="string">'XTickMode'</span>,<span class="string">'manual'</span>,<span class="keyword">...</span>
+0584     <span class="string">'YTickMode'</span>,<span class="string">'manual'</span>,<span class="keyword">...</span>
+0585     <span class="string">'layer'</span>,<span class="string">'top'</span>,<span class="keyword">...</span>
+0586     <span class="string">'XTick'</span>,[],<span class="keyword">...</span>
+0587     <span class="string">'YTick'</span>,[],<span class="keyword">...</span>
+0588     <span class="string">'XTickLabelMode'</span>,<span class="string">'manual'</span>,<span class="keyword">...</span>
+0589     <span class="string">'XTickLabel'</span>,[],<span class="keyword">...</span>
+0590     <span class="string">'YTickLabelMode'</span>,<span class="string">'manual'</span>,<span class="keyword">...</span>
+0591     <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0592     <span class="string">'YTickLabel'</span>,[],<span class="keyword">...</span>
+0593     <span class="string">'Color'</span>,wincolor.bg);
+0594 
+0595 x = 0; <span class="comment">% between 0 and 100</span>
+0596 xpatch = [0 x x 0];
+0597 ypatch = [0 0 1 1];
+0598   
+0599 p = patch(xpatch,ypatch,<span class="string">'r'</span>,<span class="keyword">...</span>
+0600     <span class="string">'EdgeColor'</span>,<span class="string">'r'</span>,<span class="keyword">...</span>
+0601     <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0602     <span class="string">'EraseMode'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0603     <span class="string">'Tag'</span>,<span class="string">'waitbarmisc'</span>);
+0604   
+0605 l = line([100 0 0 100 100], [0 0 1 1 0], <span class="keyword">...</span>
+0606     <span class="string">'EraseMode'</span>,<span class="string">'none'</span>, <span class="keyword">...</span>
+0607     <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0608     <span class="string">'Color'</span>,get(gca,<span class="string">'XColor'</span>));
+0609   
+0610 <span class="comment">% for i=10:5:100</span>
+0611 <span class="comment">%     set(p,'Xdata',[0 i i 0]); pause(0.02);</span>
+0612 <span class="comment">% end</span>
+0613 <span class="comment">% set(p,'EraseMode','normal');</span>
+0614 <span class="comment">% set(p,'Xdata',[0 0 0 0]);</span>
+0615 <span class="comment">% set(p,'EraseMode','none');</span>
+0616 
+0617 <span class="comment">%-------------------------------------------------------------------------------</span>
+0618 <span class="comment">%- Footnote</span>
+0619 <span class="comment">%-------------------------------------------------------------------------------</span>
+0620 
+0621 uicontrol(<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="keyword">...</span>
+0622     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0623     <span class="string">'Position'</span>,[0.02,0.02,0.96,0.03],<span class="keyword">...</span>
+0624     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.9]);
+0625 
+0626 uicontrol(<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="keyword">...</span>
+0627     <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0628     <span class="string">'String'</span>,[<span class="string">'M2HTML © 2004 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;'</span>],<span class="keyword">...</span>
+0629     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0630     <span class="string">'Position'</span>,[0.03,0.025,0.94,0.02],<span class="keyword">...</span>
+0631     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.9]);
+0632 
+0633 <span class="comment">%===============================================================================</span>
+0634 
+0635 <a name="_sub3" href="#_subfunctions" class="code">function doClose(fig,evd,h)</a>
+0636     status = <a href="#_sub9" class="code" title="subfunction status = doCheckSave(h)">doCheckSave</a>(h);
+0637     <span class="keyword">if</span> status
+0638         delete(h);
+0639     <span class="keyword">end</span>
+0640     
+0641 <a name="_sub4" href="#_subfunctions" class="code">function doNewFile(fig,evd,h)</a>
+0642     status = <a href="#_sub9" class="code" title="subfunction status = doCheckSave(h)">doCheckSave</a>(h);
+0643     <span class="keyword">if</span> status
+0644         <a href="#_sub11" class="code" title="subfunction varargout = initOptions(h)">initOptions</a>(h);
+0645         setappdata(h, <span class="string">'needsave'</span>, 1);
+0646         <span class="comment">% refresh options in GUI...</span>
+0647         <a href="#_sub12" class="code" title="subfunction refreshOptions(h)">refreshOptions</a>(h);
+0648     <span class="keyword">end</span>
+0649 
+0650 <a name="_sub5" href="#_subfunctions" class="code">function doOpenFile(fig,evd,h)</a>
+0651     status = <a href="#_sub9" class="code" title="subfunction status = doCheckSave(h)">doCheckSave</a>(h);
+0652     <span class="keyword">if</span> status
+0653         [filename, pathname] = uigetfile(<span class="string">'*.mat'</span>,<span class="string">'Open File'</span>);
+0654         <span class="keyword">if</span> ~(isequal(filename,0)|isequal(pathname,0))
+0655             opt = load(fullfile(pathname,filename),<span class="string">'options'</span>);
+0656             setappdata(h,<span class="string">'options'</span>,opt.options);
+0657             setappdata(h,<span class="string">'file'</span>,fullfile(pathname,filename));
+0658         <span class="keyword">end</span>
+0659     <span class="keyword">end</span>
+0660     <span class="comment">% refresh options in GUI...</span>
+0661     <a href="#_sub12" class="code" title="subfunction refreshOptions(h)">refreshOptions</a>(h);
+0662 
+0663 <a name="_sub6" href="#_subfunctions" class="code">function status = doSaveFile(fig,evd,h)</a>
+0664     file = getappdata(h,<span class="string">'file'</span>);
+0665     status = 1;
+0666     <span class="keyword">if</span> isempty(file)
+0667         status = <a href="#_sub7" class="code" title="subfunction status = doSaveAsFile(fig,evd,h)">doSaveAsFile</a>(fig,evd,h);
+0668     <span class="keyword">else</span>
+0669         options = getappdata(h,<span class="string">'options'</span>);
+0670         save(file, <span class="string">'options'</span>);
+0671     <span class="keyword">end</span>
+0672     setappdata(h,<span class="string">'needsave'</span>,0);
+0673 
+0674 <a name="_sub7" href="#_subfunctions" class="code">function status = doSaveAsFile(fig,evd,h)</a>
+0675     opt = getappdata(h,<span class="string">'options'</span>);
+0676     [filename, pathname] = uiputfile(strcat(opt.rootdir,filesep,<span class="string">'matlab.mat'</span>),<span class="keyword">...</span>
+0677         <span class="string">'Save File as'</span>);
+0678     <span class="keyword">if</span> ~(isequal(filename,0)|isequal(pathname,0))
+0679         setappdata(h,<span class="string">'file'</span>,fullfile(pathname,filename));
+0680         status = <a href="#_sub6" class="code" title="subfunction status = doSaveFile(fig,evd,h)">doSaveFile</a>(fig,evd,h);
+0681     <span class="keyword">else</span>
+0682         status = 0;
+0683     <span class="keyword">end</span>
+0684 
+0685 <a name="_sub8" href="#_subfunctions" class="code">function doRunFile(fig,evd,h)</a>
+0686     status = <a href="#_sub6" class="code" title="subfunction status = doSaveFile(fig,evd,h)">doSaveFile</a>(fig,evd,h);
+0687     <span class="keyword">if</span> status
+0688         opt = getappdata(h,<span class="string">'options'</span>);
+0689         file = getappdata(h,<span class="string">'file'</span>);
+0690         r = {<span class="string">'off'</span> <span class="string">'on'</span>};
+0691         <span class="comment">% opt could be directly given to m2html (no need for file saving)</span>
+0692         <span class="comment">% just need to convert on/off using opt.param = r{opt.param+1}</span>
+0693         <a href="m2html.html" class="code" title="function m2html(varargin)">m2html</a>(<span class="string">'load'</span>,file,<span class="string">'recursive'</span>,r{opt.recursive+1});
+0694         <span class="comment">% 'recursive' is specified to force m2html to parse M-files</span>
+0695     <span class="keyword">end</span>
+0696     
+0697 <a name="_sub9" href="#_subfunctions" class="code">function status = doCheckSave(h)</a>
+0698     file = getappdata(h,<span class="string">'file'</span>);
+0699     <span class="keyword">if</span> isempty(file), file = <span class="string">'Untitled'</span>; <span class="keyword">end</span>
+0700     needsave = getappdata(h,<span class="string">'needsave'</span>);
+0701     status = 1;
+0702     <span class="keyword">if</span> needsave
+0703         button = questdlg(sprintf(<span class="string">'Save changes to %s?'</span>,file),<span class="keyword">...</span>
+0704             <span class="string">'Mwizard'</span>,<span class="string">'Yes'</span>,<span class="string">'No'</span>,<span class="string">'Cancel'</span>,<span class="string">'Yes'</span>);
+0705         <span class="keyword">if</span> strcmp(button,<span class="string">'Yes'</span>)
+0706             status = <a href="#_sub6" class="code" title="subfunction status = doSaveFile(fig,evd,h)">doSaveFile</a>([],[],h);
+0707         <span class="keyword">elseif</span> strcmp(button,<span class="string">'Cancel'</span>)
+0708             status = 0;
+0709         <span class="keyword">end</span>
+0710     <span class="keyword">end</span>
+0711 
+0712 <a name="_sub10" href="#_subfunctions" class="code">function doHelp(fig,evd,h)</a>
+0713     helpdlg(sprintf([<span class="string">'M2HTML by Guillaume Flandin\n'</span><span class="keyword">...</span>
+0714         <span class="string">'Copyright © 2003-2004\nGuillaume@artefact.tk\n'</span><span class="keyword">...</span>
+0715         <span class="string">'&lt;http://www.artefact.tk/&gt;'</span>]),<span class="string">'M2HTML Wizard'</span>);
+0716 
+0717 <span class="comment">%===============================================================================</span>
+0718 
+0719 <span class="comment">%-------------------------------------------------------------------------------</span>
+0720 <span class="comment">%- Default parameters</span>
+0721 <span class="comment">%-------------------------------------------------------------------------------</span>
+0722 
+0723 <a name="_sub11" href="#_subfunctions" class="code">function varargout = initOptions(h)</a>
+0724     options = struct(<span class="string">'verbose'</span>, 1,<span class="keyword">...</span>
+0725         <span class="string">'mFiles'</span>, {{<span class="string">''</span>}},<span class="keyword">...</span>
+0726         <span class="string">'htmlDir'</span>, <span class="string">'doc'</span>,<span class="keyword">...</span>
+0727         <span class="string">'recursive'</span>, 0,<span class="keyword">...</span>
+0728         <span class="string">'source'</span>, 1,<span class="keyword">...</span>
+0729         <span class="string">'download'</span>,0,<span class="keyword">...</span>
+0730         <span class="string">'syntaxHighlighting'</span>, 1,<span class="keyword">...</span>
+0731         <span class="string">'tabs'</span>, 4,<span class="keyword">...</span>
+0732         <span class="string">'globalHypertextLinks'</span>, 0,<span class="keyword">...</span>
+0733         <span class="string">'graph'</span>, 0,<span class="keyword">...</span>
+0734         <span class="string">'todo'</span>, 0,<span class="keyword">...</span>
+0735         <span class="string">'load'</span>, 0,<span class="keyword">...</span>
+0736         <span class="string">'save'</span>, 0,<span class="keyword">...</span>
+0737         <span class="string">'search'</span>, 0,<span class="keyword">...</span>
+0738         <span class="string">'helptocxml'</span>, 0,<span class="keyword">...</span>
+0739         <span class="string">'indexFile'</span>, <span class="string">'index'</span>,<span class="keyword">...</span>
+0740         <span class="string">'extension'</span>, <span class="string">'.html'</span>,<span class="keyword">...</span>
+0741         <span class="string">'template'</span>, <span class="string">'blue'</span>,<span class="keyword">...</span>
+0742         <span class="string">'rootdir'</span>, pwd,<span class="keyword">...</span>
+0743         <span class="string">'ignoredDir'</span>, {{<span class="string">'.svn'</span> <span class="string">'cvs'</span>}}, <span class="keyword">...</span>
+0744         <span class="string">'language'</span>,<span class="string">'english'</span>);
+0745     
+0746     <span class="keyword">if</span> nargin == 1,
+0747         setappdata(h,<span class="string">'options'</span>,options);
+0748     <span class="keyword">else</span>
+0749         varargout{1} = options;    
+0750     <span class="keyword">end</span>
+0751 
+0752 <a name="_sub12" href="#_subfunctions" class="code">function refreshOptions(h)</a>
+0753     opt = getappdata(h,<span class="string">'options'</span>);
+0754     handles = getappdata(h,<span class="string">'handles'</span>);
+0755     
+0756     <a href="#_sub14" class="code" title="subfunction doInitTpl(fig,evd,h)">doInitTpl</a>(handles.template,    0, h);
+0757     <a href="#_sub15" class="code" title="subfunction doInitMfiles(fig,evd,h)">doInitMfiles</a>(handles.mfiles,   0, h);
+0758     <a href="#_sub13" class="code" title="subfunction doInitHTMLDir(fig,evd,h)">doInitHTMLDir</a>(handles.htmldir, 0, h)
+0759     
+0760     set(handles.recursive,       <span class="string">'Value'</span>,  opt.recursive);
+0761     set(handles.graph,           <span class="string">'Value'</span>,  opt.graph); <span class="comment">%doInitGraphs(handles.graph,0,h);</span>
+0762     set(handles.save,            <span class="string">'Value'</span>,  opt.save);
+0763     set(handles.verbose,         <span class="string">'Value'</span>,  opt.verbose);
+0764     set(handles.todo,            <span class="string">'Value'</span>,  opt.todo);
+0765     set(handles.download,        <span class="string">'Value'</span>,  opt.download);
+0766     set(handles.search,          <span class="string">'Value'</span>,  opt.search);
+0767     set(handles.highlight,       <span class="string">'Value'</span>,  opt.syntaxHighlighting);
+0768     set(handles.source,          <span class="string">'Value'</span>,  opt.source);
+0769     set(handles.globalhypertext, <span class="string">'Value'</span>,  opt.globalHypertextLinks);
+0770     
+0771     set(handles.index,           <span class="string">'String'</span>, opt.indexFile);
+0772     set(handles.extension,       <span class="string">'String'</span>, opt.extension(2:end)); <span class="comment">%remove the '.'</span>
+0773     set(handles.tabs,            <span class="string">'String'</span>, num2str(opt.tabs));
+0774 <span class="comment">%     if ~strcmp(opt.rootdir, pwd)</span>
+0775 <span class="comment">%         warning('[M2HTML] You should ''cd %s'' before...',opt.rootdir);</span>
+0776 <span class="comment">%     end</span>
+0777     set(handles.rootdir,         <span class="string">'String'</span>, opt.rootdir); <span class="comment">% need to 'cd' if different...</span>
+0778     set(handles.column,          <span class="string">'String'</span>, num2str(4)); <span class="comment">%- not saved... default here</span>
+0779     <span class="keyword">if</span> ischar(opt.load)
+0780         set(handles.load,        <span class="string">'String'</span>, opt.load);
+0781     <span class="keyword">else</span>
+0782         set(handles.load,        <span class="string">'String'</span>, <span class="string">''</span>);
+0783     <span class="keyword">end</span>
+0784     
+0785     set(handles.textmisc,        <span class="string">'String'</span>, <span class="keyword">...</span>
+0786         <span class="string">'Click on the wheel in the toolbar to launch M2HTML...'</span>); <span class="comment">%- not saved... default here</span>
+0787     set(handles.waitbarmisc,     <span class="string">'EraseMode'</span>,<span class="string">'normal'</span>);
+0788     set(handles.waitbarmisc,     <span class="string">'Xdata'</span>,[0 0 0 0]);
+0789     set(handles.waitbarmisc,     <span class="string">'EraseMode'</span>,<span class="string">'none'</span>);
+0790 
+0791 
+0792 <span class="comment">%-------------------------------------------------------------------------------</span>
+0793 <span class="comment">%- CreateFcn Callbacks</span>
+0794 <span class="comment">%-------------------------------------------------------------------------------</span>
+0795 
+0796 <a name="_sub13" href="#_subfunctions" class="code">function doInitHTMLDir(fig,evd,h)</a>
+0797     opt = getappdata(h,<span class="string">'options'</span>);
+0798     [path,name] = fileparts(opt.htmlDir);
+0799     <span class="keyword">if</span> isempty(path)
+0800         opt.htmlDir = fullfile(opt.rootdir, opt.htmlDir);
+0801     <span class="keyword">end</span>
+0802     set(fig,<span class="string">'String'</span>,opt.htmlDir);
+0803     setappdata(h,<span class="string">'options'</span>,opt);
+0804 
+0805 <a name="_sub14" href="#_subfunctions" class="code">function doInitTpl(fig,evd,h)</a>
+0806     <span class="comment">%- problems when templates are still in full format</span>
+0807     opt = getappdata(h,<span class="string">'options'</span>);
+0808     d = dir(fullfile(fileparts(which(mfilename)),<span class="string">'templates'</span>));
+0809     d = {d([d.isdir]).name};
+0810     d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+0811     <span class="keyword">if</span> ~isempty(d)
+0812         tpl = sprintf(<span class="string">'%s|'</span>,d{:});
+0813         set(fig,<span class="string">'String'</span>,tpl(1:end-1));
+0814         i = strmatch(opt.template,d,<span class="string">'exact'</span>);
+0815         <span class="keyword">if</span> ~isempty(i)
+0816             set(fig,<span class="string">'Value'</span>,i(1));
+0817         <span class="keyword">else</span>
+0818             <span class="comment">%- where is the default template ?</span>
+0819             warning(<span class="string">'[M2HTML] Default template ''%s'' not found.'</span>,opt.template);
+0820             set(fig,<span class="string">'Value'</span>,1);
+0821             opt.template = d{1};
+0822             setappdata(h,<span class="string">'options'</span>,opt);
+0823             warning(<span class="string">'[M2HTML] Using template ''%s'' instead.'</span>,opt.template);
+0824         <span class="keyword">end</span>
+0825     <span class="keyword">else</span>
+0826         error(<span class="string">'[M2HTML] No template found.'</span>);
+0827     <span class="keyword">end</span>
+0828 
+0829  <a name="_sub15" href="#_subfunctions" class="code">function doInitMfiles(fig,evd,h)</a>
+0830     opt = getappdata(h,<span class="string">'options'</span>);
+0831     <span class="keyword">if</span> ~isempty(opt.mFiles{1})
+0832         s = sprintf(<span class="string">'''%s'', '</span>,opt.mFiles{:}); s = s(1:end-2);
+0833         set(fig,<span class="string">'String'</span>,[<span class="string">'{'</span> s <span class="string">'}'</span>]);
+0834         <span class="keyword">return</span>;
+0835     <span class="keyword">end</span>
+0836     d = dir(opt.rootdir); d = {d([d.isdir]).name};
+0837     d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+0838     <span class="keyword">if</span> length(d) == 0
+0839         warning(<span class="string">'[M2HTML] No subsequent directory found. Check your cwd.'</span>);
+0840         set(fig,<span class="string">'String'</span>,<span class="string">''</span>); <span class="comment">%- maybe open a uigetdir ?</span>
+0841         opt.mFiles = {<span class="string">''</span>};
+0842     <span class="keyword">elseif</span> length(d) == 1
+0843         set(fig,<span class="string">'String'</span>,d{1});
+0844         opt.mFiles = d;
+0845     <span class="keyword">else</span>
+0846         s = sprintf(<span class="string">'''%s'', '</span>,d{:}); s = s(1:end-2);
+0847         set(fig,<span class="string">'String'</span>,[<span class="string">'{'</span> s <span class="string">'}'</span>]);
+0848         opt.mFiles = d;
+0849     <span class="keyword">end</span>
+0850     setappdata(h,<span class="string">'options'</span>,opt);
+0851     
+0852 <a name="_sub16" href="#_subfunctions" class="code">function doInitGraphs(fig,evd,h)</a>
+0853     opt = getappdata(h,<span class="string">'options'</span>);
+0854     [s, w] = system(<span class="string">'dot -V'</span>);
+0855     <span class="keyword">if</span> s
+0856         disp(<span class="string">'GraphViz not installed: Generation of dependency graphs desactivated.'</span>);
+0857         disp(<span class="string">'See http://www.graphviz.org/ to get ''dot'' tool.'</span>);
+0858         set(fig,<span class="string">'FontAngle'</span>,<span class="string">'Oblique'</span>,<span class="string">'Enable'</span>,<span class="string">'inactive'</span>);
+0859         set(fig,<span class="string">'Value'</span>,0);
+0860         opt.graph = 0;
+0861         setappdata(h,<span class="string">'options'</span>,opt);
+0862     <span class="keyword">else</span>
+0863         set(fig,<span class="string">'Value'</span>,opt.graph);
+0864     <span class="keyword">end</span>
+0865 
+0866 
+0867 <span class="comment">%===============================================================================</span>
+0868 
+0869 <span class="comment">%-------------------------------------------------------------------------------</span>
+0870 <span class="comment">%- M-Files Input Callbacks</span>
+0871 <span class="comment">%-------------------------------------------------------------------------------</span>
+0872 
+0873 <a name="_sub17" href="#_subfunctions" class="code">function doBrowseButton(fig,evd,h)</a>
+0874     opt = getappdata(h,<span class="string">'options'</span>);
+0875     handles = getappdata(h,<span class="string">'handles'</span>);
+0876     d = uigetdir(pwd,<span class="string">'Select the Root directory'</span>);
+0877     <span class="keyword">if</span> ~d, <span class="keyword">return</span>; <span class="keyword">end</span>;
+0878     opt.rootdir = d;
+0879     set(handles.rootdir,<span class="string">'String'</span>,d);
+0880     
+0881     <span class="comment">% set mfiles</span>
+0882     d = dir(opt.rootdir); d = {d([d.isdir]).name};
+0883     d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+0884     <span class="keyword">if</span> length(d) == 0
+0885         warning(<span class="string">'[M2HTML] No subsequent directory found. Check your cwd.'</span>);
+0886         set(handles.mfiles,<span class="string">'String'</span>,<span class="string">''</span>);
+0887         opt.mFiles = {<span class="string">''</span>};
+0888     <span class="keyword">elseif</span> length(d) == 1
+0889         set(handles.mfiles,<span class="string">'String'</span>,d{1});
+0890         opt.mFiles = d;
+0891     <span class="keyword">else</span>
+0892         s = sprintf(<span class="string">'''%s'', '</span>,d{:}); s = s(1:end-2);
+0893         set(handles.mfiles,<span class="string">'String'</span>,[<span class="string">'{'</span> s <span class="string">'}'</span>]);
+0894         opt.mFiles = d;
+0895     <span class="keyword">end</span>
+0896     
+0897     <span class="comment">% set htmldir</span>
+0898     [path,name] = fileparts(opt.htmlDir);
+0899     opt.htmlDir = fullfile(opt.rootdir, name);
+0900     set(handles.htmldir,<span class="string">'String'</span>,opt.htmlDir);
+0901     
+0902     setappdata(h,<span class="string">'options'</span>,opt);
+0903         
+0904 <a name="_sub18" href="#_subfunctions" class="code">function doSelectMfiles(fig,evd,h)</a>
+0905     opt = getappdata(h,<span class="string">'options'</span>);
+0906     handles = getappdata(h,<span class="string">'handles'</span>);
+0907     
+0908     d = dir(opt.rootdir); d = {d([d.isdir]).name};
+0909     d = {d{~ismember(d,{<span class="string">'.'</span> <span class="string">'..'</span>})}};
+0910     
+0911     [i,v] = listdlg(<span class="string">'ListString'</span>,d,<span class="keyword">...</span>
+0912         <span class="string">'PromptString'</span>,<span class="string">'Select folder(s):'</span>,<span class="keyword">...</span>
+0913         <span class="string">'Name'</span>,<span class="string">':: M2HTML :: M-files'</span>,<span class="keyword">...</span>
+0914         <span class="string">'SelectionMode'</span>,<span class="string">'multiple'</span>);
+0915     <span class="keyword">if</span> v == 1
+0916         d = {d{i}};
+0917         s = sprintf(<span class="string">'''%s'', '</span>,d{:}); s = s(1:end-2);
+0918         set(handles.mfiles,<span class="string">'String'</span>,[<span class="string">'{'</span> s <span class="string">'}'</span>]);
+0919     <span class="keyword">end</span>
+0920     opt.mFiles = d;
+0921 
+0922     setappdata(h,<span class="string">'options'</span>,opt);
+0923 
+0924 <a name="_sub19" href="#_subfunctions" class="code">function doSetRecursive(fig,evd,h)</a>
+0925     opt = getappdata(h,<span class="string">'options'</span>);
+0926     opt.recursive = get(fig,<span class="string">'Value'</span>);
+0927     setappdata(h,<span class="string">'options'</span>,opt);
+0928 
+0929 <span class="comment">%-------------------------------------------------------------------------------</span>
+0930 <span class="comment">%- HTML Output Callbacks</span>
+0931 <span class="comment">%-------------------------------------------------------------------------------</span>
+0932 
+0933 <a name="_sub20" href="#_subfunctions" class="code">function doSetOutputDir(fig,evd,h)</a>
+0934     opt = getappdata(h,<span class="string">'options'</span>);
+0935     opt.htmlDir = get(fig,<span class="string">'String'</span>);
+0936     setappdata(h,<span class="string">'options'</span>,opt);
+0937 
+0938 <a name="_sub21" href="#_subfunctions" class="code">function doSetIndex(fig,evd,h)</a>
+0939     opt = getappdata(h,<span class="string">'options'</span>);
+0940     opt.indexFile = get(fig,<span class="string">'String'</span>);
+0941     setappdata(h,<span class="string">'options'</span>,opt);
+0942     
+0943 <a name="_sub22" href="#_subfunctions" class="code">function doSetExtension(fig,evd,h)</a>
+0944     opt = getappdata(h,<span class="string">'options'</span>);
+0945     e = get(fig,<span class="string">'String'</span>);
+0946     <span class="keyword">if</span> ~isempty(e) &amp; e(1) ~= <span class="string">'.'</span>
+0947         e = [<span class="string">'.'</span> e];
+0948     <span class="keyword">end</span>
+0949     opt.extension = e;
+0950     setappdata(h,<span class="string">'options'</span>,opt);
+0951     
+0952 <a name="_sub23" href="#_subfunctions" class="code">function doSetTemplate(fig,evd,h)</a>
+0953     opt = getappdata(h,<span class="string">'options'</span>);
+0954     s = get(fig,<span class="string">'String'</span>);
+0955     v = get(fig,<span class="string">'Value'</span>);
+0956     opt.template = deblank(s(v,:));
+0957     setappdata(h,<span class="string">'options'</span>,opt);
+0958 
+0959 <span class="comment">%-------------------------------------------------------------------------------</span>
+0960 <span class="comment">%- Options Callbacks</span>
+0961 <span class="comment">%-------------------------------------------------------------------------------</span>
+0962 
+0963 <a name="_sub24" href="#_subfunctions" class="code">function doSetSource(fig,evd,h)</a>
+0964     opt = getappdata(h,<span class="string">'options'</span>);
+0965     opt.source = get(fig,<span class="string">'Value'</span>);
+0966     setappdata(h,<span class="string">'options'</span>,opt);
+0967 
+0968 <a name="_sub25" href="#_subfunctions" class="code">function doSetHighlight(fig,evd,h)</a>
+0969     opt = getappdata(h,<span class="string">'options'</span>);
+0970     opt.syntaxHighlighting = get(fig,<span class="string">'Value'</span>);
+0971     setappdata(h,<span class="string">'options'</span>,opt);
+0972 
+0973 <a name="_sub26" href="#_subfunctions" class="code">function doSetGraph(fig,evd,h)</a>
+0974     opt = getappdata(h,<span class="string">'options'</span>);
+0975     opt.graph = get(fig,<span class="string">'Value'</span>);
+0976     setappdata(h,<span class="string">'options'</span>,opt);
+0977 
+0978 <a name="_sub27" href="#_subfunctions" class="code">function doSetSearch(fig,evd,h)</a>
+0979     opt = getappdata(h,<span class="string">'options'</span>);
+0980     opt.search = get(fig,<span class="string">'Value'</span>);
+0981     setappdata(h,<span class="string">'options'</span>,opt);
+0982 
+0983 <a name="_sub28" href="#_subfunctions" class="code">function doSetGlobal(fig,evd,h)</a>
+0984     opt = getappdata(h,<span class="string">'options'</span>);
+0985     opt.globalHypertextLinks = get(fig,<span class="string">'Value'</span>);
+0986     setappdata(h,<span class="string">'options'</span>,opt);
+0987 
+0988 <a name="_sub29" href="#_subfunctions" class="code">function doSetDownload(fig,evd,h)</a>
+0989     opt = getappdata(h,<span class="string">'options'</span>);
+0990     opt.download = get(fig,<span class="string">'Value'</span>);
+0991     setappdata(h,<span class="string">'options'</span>,opt);
+0992 
+0993 <a name="_sub30" href="#_subfunctions" class="code">function doSetTodo(fig,evd,h)</a>
+0994     opt = getappdata(h,<span class="string">'options'</span>);
+0995     opt.todo = get(fig,<span class="string">'Value'</span>);
+0996     setappdata(h,<span class="string">'options'</span>,opt);
+0997 
+0998 <a name="_sub31" href="#_subfunctions" class="code">function doSetVerbose(fig,evd,h)</a>
+0999     opt = getappdata(h,<span class="string">'options'</span>);
+1000     opt.verbose = get(fig,<span class="string">'Value'</span>);
+1001     setappdata(h,<span class="string">'options'</span>,opt);
+1002 
+1003 <a name="_sub32" href="#_subfunctions" class="code">function doSetSaveAsMat(fig,evd,h)</a>
+1004     opt = getappdata(h,<span class="string">'options'</span>);
+1005     opt.save = get(fig,<span class="string">'Value'</span>);
+1006     setappdata(h,<span class="string">'options'</span>,opt);
+1007 
+1008 <a name="_sub33" href="#_subfunctions" class="code">function doSetLoadMat(fig,evd,h)</a>
+1009     opt = getappdata(h,<span class="string">'options'</span>);
+1010     [fname, pname, findex] = uigetfile(<span class="string">'m2html.mat'</span>,<span class="keyword">...</span>
+1011         <span class="string">'Load a m2html MAT-file'</span>);
+1012     <span class="keyword">if</span> findex
+1013         opt.load = fullfile(pname,fname);
+1014         set(fig,<span class="string">'String'</span>,fullfile(pname,fname));
+1015     <span class="keyword">end</span>
+1016     setappdata(h,<span class="string">'options'</span>,opt);
+1017 
+1018 <a name="_sub34" href="#_subfunctions" class="code">function doSetTabs(fig,evd,h)</a>
+1019     opt = getappdata(h,<span class="string">'options'</span>);
+1020     t = str2num(get(fig,<span class="string">'String'</span>));
+1021     <span class="keyword">if</span> t &gt;= 0 &amp; length(t) == 1 
+1022         opt.tabs = t; 
+1023     <span class="keyword">else</span>
+1024         set(fig,<span class="string">'String'</span>,num2str(opt.tabs));
+1025     <span class="keyword">end</span>
+1026     setappdata(h,<span class="string">'options'</span>,opt);
+1027 
+1028 <a name="_sub35" href="#_subfunctions" class="code">function doSetNbColumns(fig,evd,h)</a>
+1029     opt = getappdata(h,<span class="string">'options'</span>);
+1030     disp <span class="string">'Not available'</span>;
+1031     setappdata(h,<span class="string">'options'</span>,opt);
+1032     
+1033 <span class="comment">%===============================================================================</span>
+1034 
+1035 <a name="_sub36" href="#_subfunctions" class="code">function text2 = shortenText(text, l)</a>
+1036 
+1037     <span class="keyword">if</span> nargin == 1, l = 64; <span class="keyword">end</span>
+1038     m = length(text);
+1039     text2 = text;
+1040     <span class="keyword">if</span> m &gt; l
+1041         s = floor((l - 3) / 2);
+1042         text2 = [text(1:s) <span class="string">'...'</span> text(end-(l-s-3)+1:end)];
+1043     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 29-Oct-2019 21:04:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -22,8 +22,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.c`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
 |`model.osenseStr`| `` | String | The objective sense either `'max'` for maximisation or `'min'` for minimisation | 
 |`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
-|`model.grRules`| `n x 1` | Column Cell Array of Strings | A string representation of the GPR rules defined in a readable format. | 
-|`model.rules`| `n x 1` | Column Cell Array of Strings | "GPR rules in evaluateable format for each reaction ( e.g. ""x(1) &#124; x(2) & x(3)"", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux". Note that model.rules should only be used for internal processing within a function, the primary storage of GPR rules is model.grRules because it is based on the string identifying a gene, rather than the positon in a cell arrray.| 
+|`model.rules`| `n x 1` | Column Cell Array of Strings | "GPR rules in evaluateable format for each reaction ( e.g. ""x(1) &#124; x(2) & x(3)"", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux" | 
 |`model.geneNames`| `g x 1` | Column Cell Array of Strings | Full names of each corresponding genes. | 
 |`model.compNames`| `c x 1` | Column Cell Array of Strings | Descriptions of the Compartments (compNames(m) is associated with comps(m)) | 
 |`model.comps`| `c x 1` | Column Cell Array of Strings | Symbols for compartments, can include Tissue information | 
@@ -42,6 +41,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.metMetaNetXID`| `m x 1` | Column Cell Array of Strings | MetaNetX identifier of the metabolite | 
 |`model.metSBOTerms`| `m x 1` | Column Cell Array of Strings | The SBO Identifier associated with the metabolite | 
 |`model.geneEntrezID`| `g x 1` | Column Cell Array of Strings | Entrez IDs of genes | 
+|`model.grRules`| `n x 1` | Column Cell Array of Strings | A string representation of the GPR rules defined in a readable format. | 
 |`model.rxnGeneMat`| `n x g` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
 |`model.rxnConfidenceScores`| `n x 1` | Column Vector of double | Confidence scores for reaction presence (0-5, with 5 being the highest confidence) | 
 |`model.rxnNames`| `n x 1` | Column Cell Array of Strings | Full name of each corresponding reaction. | 

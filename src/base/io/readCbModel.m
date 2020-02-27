@@ -1,5 +1,16 @@
 function model = readCbModel(fileName, varargin)
 % Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.
+% While some fields are necessary for a COBRA model, others are not.
+%
+% The `readCbModel.m` function is dependent on another function
+% `io/utilities/readSBML.m` to use libSBML library
+% (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
+% COBRA-Matlab structure. 
+% The `readCbModel.m` function is backward compatible with older SBML versions. 
+% A list of fields of a COBRA structure is described in
+% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+% and defined computationally in:
+% src/base/io/definitions/COBRA_structure_fields.csv. 
 %
 % USAGE:
 %
@@ -81,15 +92,7 @@ function model = readCbModel(fileName, varargin)
 %       - Richard Que 02/08/10 - Added inptus for compartment names and symbols
 %       - Longfei Mao 26/04/2016 Added support for the FBCv2 format
 %       - Thomas Pfau May 2017 Changed to parameter value pair, added excel IO and matlab flatfile IO.%
-% NOTE:
-%    The `readCbModel.m` function is dependent on another function
-%    `io/utilities/readSBML.m` to use libSBML library
-%    (http://sbml.org/Software/libSBML), to parse a SBML-FBCv2 file into a
-%    COBRA-Matlab structure. The `readCbModel.m` function is backward
-%    compatible with older SBML versions. A list of fields of a COBRA
-%    structure is described in an Excel spreadsheet
-%    `io/COBRA_structure_fields.xlsx`. While some fields are necessary for a
-%    COBRA model, others are not.
+
 
 optionalArgumentList = {'defaultBound', 'fileType', 'modelDescription', 'compSymbolList', 'compNameList', 'modelName'};
 processedFileTypes = {'SBML', 'SimPheny', 'SimPhenyPlus', 'SimPhenyText', 'Excel', 'Matlab','BiGG','BiGGSBML'};

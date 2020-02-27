@@ -130,7 +130,7 @@ if (verbFlag)
 end
 % Solve wt problem
 if minNormFlag
-    solutionWT = optimizeCbModel(modelWT,osenseStr,true);
+    solutionWT = optimizeCbModel(modelWT,osenseStr,1e-6);%Use the Euclidean norm as this will give a unique WT solution
 else
     solutionWT = optimizeCbModel(modelWT,osenseStr);
 end

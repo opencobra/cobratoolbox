@@ -1,6 +1,11 @@
 function [fields] = getDefinedFieldProperties(varargin)
 % Returns the fields defined in the COBRA Toolbox along with checks for their properties
 %
+% A list of fields of a COBRA structure is described in
+% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+% and defined computationally in:
+% src/base/io/definitions/COBRA_structure_fields.csv. 
+%
 % USAGE:
 %
 %    [fields] = getDefinedFieldProperties(varargin)
@@ -101,6 +106,7 @@ end
 
 if desc
     if isempty(CBT_DESC_FIELD_PROPS)
+        %read in the definiton of field structures
         fileName = which('COBRA_structure_fields.csv');
         [raw] = descFileRead(fileName);
 

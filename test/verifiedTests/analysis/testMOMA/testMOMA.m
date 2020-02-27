@@ -30,7 +30,11 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', {'qpng','pdco', 'mosek'});
+%useIfAvailable = {'tomlab_cplex','ibm_cplex','pdco'}; %TODO get PDCO
+%working for MOMA
+useIfAvailable = {'tomlab_cplex','ibm_cplex'};
+% test solver packages
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'useSolversIfAvailable', useIfAvailable, 'excludeSolvers', {'qpng', 'mosek','gurobi','pdco'});
 % Note: On Linux, version > 8.0.+ has issues
 
 % define solver tolerances
@@ -49,12 +53,16 @@ for k = 1:length(solverPkgs.QP)
     solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
     solverLPOK = changeCobraSolver(lpSolver, 'LP', 0);
 
+
     % test deleteModelGenes
     [modelOut, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, 'b3956'); % gene for reaction PPC
 
     % run MOMA
     sol = MOMA(model, modelOut);
 
+    if strcmp(lpSolver,'pdco')
+        disp(0.8463 - sol.f)
+    end
     assert(abs(0.8463 - sol.f) < QPtol)
 
     % run MOMA with minNormFlag
