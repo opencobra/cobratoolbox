@@ -1,4 +1,4 @@
-function formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
+function formulas = printRxnFormulaOri(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag)
 %printRxnFormula Print the reaction formulas for a list of reactions
 %
 %

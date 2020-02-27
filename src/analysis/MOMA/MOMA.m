@@ -1,10 +1,10 @@
-function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)
+function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNorm)
 % Performs a quadratic version of the MOMA (minimization of
 % metabolic adjustment) approach
 %
 % USAGE:
 %
-%    [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNormFlag)
+%    [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNorm)
 %
 % INPUTS:
 %    modelWT:          Wild type model
@@ -13,7 +13,14 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 % OPTIONAL INPUTS:
 %    osenseStr:        Maximize ('max') / minimize ('min') (Default = 'max')
 %    verbFlag:         Verbose output (Default = false)
-%    minNormFlag:      Work with minimum 1-norm flux distribution for the FBA
+%    minNorm:          Determines the approach to solving the first optimisation problem
+%                      See minNorm option of optimizeCbModel
+%                      {(1),(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
+%                      i.e. 1e-6  is the default, which minimises the Euclidean Norm of the
+%                           subject to atainment of the optimal FBA
+%                           objective as an additional constraint.
+
+%    minNorm:      Work with minimum 1-norm flux distribution for the FBA
 %                      problem (Default = false)
 %
 % OUTPUTS:
@@ -21,12 +28,8 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 %    solutionWT:       Wild-type solution structure
 %    totalFluxDiff:    Value of the linear MOMA objective, i.e.
 %                      :math:`\sum (v_{wt}-v_{del})^2`
-%    solStatus:        Solution status - solves two different types of MOMA problems:
+%    solStatus:        Solution status 
 %
-%                        1.  MOMA that avoids problems with alternative optima (this is the
-%                            default)
-%                        2.  MOMA that uses a minimum 1-norm wild type FBA solution (this approach
-%                            is used if minNormFlag = true)
 % First solve:
 %
 % .. math::
@@ -55,10 +58,10 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 %          ~&~ lb_{wt} \leq v_{wt0} \leq ub_{wt} \\
 %          ~&~ S_{wt}v_{wt0} = 0 \\
 %
-% Then solve
+% Then solve a regularised problem, the default of which is shown here
 %
 % .. math::
-%      min ~&~ |v_{wt}| \\
+%      min ~&~ ||v_{wt}|| \\
 %          ~&~ S_{wt}v_{wt} = b_{wt} \\
 %          ~&~ c_{wt}^T v_{wt} = f_{wt} \\
 %          ~&~ lb_{wt} \leq v_{wt} \leq ub_{wt} \\
@@ -93,7 +96,7 @@ if (nargin < 4)
     verbFlag = false;
 end
 if (nargin < 5)
-    minNormFlag = false;
+    minNorm = 1e-6;
 end
 
 % LP solution tolerance
@@ -129,11 +132,7 @@ if (verbFlag)
     fprintf('Solving wild type FBA: %d constraints %d variables ',nMets1,nRxns1);
 end
 % Solve wt problem
-if minNormFlag
-    solutionWT = optimizeCbModel(modelWT,osenseStr,1e-6);%Use the Euclidean norm as this will give a unique WT solution
-else
-    solutionWT = optimizeCbModel(modelWT,osenseStr);
-end
+solutionWT = optimizeCbModel(modelWT, osenseStr, minNorm);
 
 if (verbFlag)
     fprintf('%f seconds\n',solutionWT.time);
@@ -154,7 +153,7 @@ end
 
 if (solutionWT.stat > 0)
 
-    if minNormFlag
+    if minNorm
         QPproblem = buildLPproblemFromModel(modelDel);
         QPproblem.c(1:nRxns1) = -2*solutionWT.x;
         QPproblem.F = sparse(size(QPproblem.A,2));
@@ -225,13 +224,13 @@ if (solutionWT.stat > 0)
 
     % Get the solution(s)
     if QPsolution.stat == 1
-        if minNormFlag
+        if minNorm
             solutionDel.x = QPsolution.full;
         else
             solutionDel.x = QPsolution.full((nRxns1+1):(nRxns1+nRxns2));
             solutionWT.x = QPsolution.full(1:nRxns1);
         end
-        solutionDel.f = sum(modelDel.c.*solutionDel.x);
+        solutionDel.f = modelDel.c'*solutionDel.x;
         totalFluxDiff = sum((solutionWT.x-solutionDel.x).^2);
     end
     solutionDel.stat = QPsolution.stat;

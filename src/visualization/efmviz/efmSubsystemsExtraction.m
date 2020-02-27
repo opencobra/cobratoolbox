@@ -20,6 +20,12 @@ function [subsysSummary, uniqSubsys, countSubPerEFM] = efmSubsystemsExtraction(m
 % .. Author: Last modified: Chaitra Sarathy, 1 Oct 2019
 
 uniqSubsys = unique(string(model.subSystems(reshape(nonzeros(EFMRxns), [], 1))));
+%TODO
+%STR = string(C) converts cell array C to a string array. but cellfun
+%expects a cell array, this needs to be fixed
+if ~iscell(uniqSubsys)
+    error('uniqSubsys is not a cell')
+end
 uniqSubsys(find(cellfun('isempty', uniqSubsys)))=[];
 subsysSummary = sortrows(tabulate(string(model.subSystems(reshape(nonzeros(EFMRxns), [], 1)))),2, 'descend');
 countSubPerEFM = zeros(length(uniqSubsys), size(EFMRxns, 1));
