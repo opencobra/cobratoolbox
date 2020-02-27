@@ -14,8 +14,8 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testConvertOldStyleModel'));
 cd(fileDir);
-
-if exist('Harvey_1_01c.mat','file')
+fileName = 'Harvey_1_01c.mat';
+if exist(fileName,'file')
     fprintf('   Testing convertOldStyleModel \n');
     
     if ~exist('modelOld','var')
@@ -36,21 +36,27 @@ if exist('Harvey_1_01c.mat','file')
     % set the tolerance
     tol = 1e-8;
 
-    tic;
-    solverOK = changeCobraSolver('gurobi','LP');
-    solution_new_gurobi = optimizeCbModel(model);
-    toc
+
     
-    % check the optimal solution
-    if 0
-        [solution_old_ILOGcomplex]=solveCobraLPCPLEX(modelOld,1,0,0,[],0,'ILOGcomplex')
+    % check the optimal solution of old vs new models
+    if 1
+        %old model
+        [solution_old_ILOGcomplex]=solveCobraLPCPLEX(modelOld,1,0,0,[],0,'ILOGcomplex');
+        %new model
+        solverOK = changeCobraSolver('cplexlp','LP');
+        solution_new_cplexlp = optimizeCbModel(model);
+        
         % testing if f values are within range
-        abs(solution_new_ibm_cplex.f - solution_new_cplexlp.f)
+        abs(solution_old_ILOGcomplex.obj - solution_new_cplexlp.f)
         %assertion
         assert(abs(solution_old_ILOGcomplex.obj - solution_new_cplexlp.f) < tol);
     end
+    
+    % check the ability of gurobi vs cplex to solve
+    if 0
+        solverOK = changeCobraSolver('gurobi','LP');
+        solution_new_gurobi = optimizeCbModel(model);
         
-    if 1
         solverOK = changeCobraSolver('cplexlp','LP');
         solution_new_cplexlp = optimizeCbModel(model);
         % testing if f values are within range
@@ -62,7 +68,7 @@ if exist('Harvey_1_01c.mat','file')
     % output a success message
     fprintf('Done.\n');
 else
-    fprintf('\n testConvertOldStyleModel bypassed as test mat file not available.')
+    fprintf(['\n testConvertOldStyleModel bypassed as ' fileName ' not available.'])
 end
 
 % change the directory

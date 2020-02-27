@@ -27,7 +27,7 @@ if (~iscell(metaboliteNameList))
 end
 
 if nargin < 3 %No PrintLevel
-    printLevel = 1;
+    printLevel = 0;
 end
 
 missingMets = setdiff(metaboliteNameList,model.mets);

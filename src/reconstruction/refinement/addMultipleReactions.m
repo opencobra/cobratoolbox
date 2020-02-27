@@ -214,6 +214,6 @@ if any(ismember(varargin(1:2:end),'rules'))
 
 end
 if printLevel > 0
-    fprintf('Adding the following reactions to the model:\n');
+    fprintf('addMultipleReactions: Adding the following reactions to the model:\n');
     printRxnFormula(newmodel,rxnIDs);
 end

@@ -34,7 +34,7 @@ model = getDistributedModel('ecoli_core_model.mat');
 %working for MOMA
 useIfAvailable = {'tomlab_cplex','ibm_cplex'};
 % test solver packages
-solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'useSolversIfAvailable', useIfAvailable, 'excludeSolvers', {'qpng', 'mosek','gurobi'});
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'useSolversIfAvailable', useIfAvailable, 'excludeSolvers', {'qpng', 'mosek','gurobi','pdco'});
 % Note: On Linux, version > 8.0.+ has issues
 
 % define solver tolerances
