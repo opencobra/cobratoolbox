@@ -153,7 +153,7 @@ switch solver
         end
         
         
-        if (origStat == 1) || (origStat == 6)
+        if (origStat == 1)
             stat = 1; % Optimal
         elseif (origStat == 3 || origStat == 4)
             stat = 0; % Infeasible
@@ -933,6 +933,7 @@ if stat==1 && ~strcmp(solver,'mps')
         %optimality conditions
         s(csense == 'E')=0;
     else
+        sOld = s; %keep for debugging
         %optimality condition check should still check for satisfaction of the
         %optimality conditions
         s(csense == 'E')=0;
@@ -948,6 +949,12 @@ solution.full = x;
 solution.slack = s;
 solution.dual = y;
 solution.rcost = w;
+if any(contains(solver,'cplex'))
+    [ExitText,~] = cplexStatus(solution.origStat);
+    solution.origStatText = ExitText;
+else
+    solution.origStatText = [];
+end
 
 if solution.stat==1
 
@@ -1022,7 +1029,12 @@ if solution.stat==1
         %         end
     end
 else
-    solution.obj = NaN;
+    if ~isempty(solution.full)
+        %set the value of the objective
+        solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
+    else
+        solution.obj = NaN;
+    end
 end
 
 %Helper function for pdco
