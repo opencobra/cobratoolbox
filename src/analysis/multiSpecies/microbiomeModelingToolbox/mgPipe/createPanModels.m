@@ -66,14 +66,16 @@ for i = 1:size(toCreate, 1)
     models = find(ismember(infoFile(:, findTaxCol), toCreate{i, 1}));
     if size(models, 1) == 1
         modelPath = [agoraPath filesep infoFile{models, 1} '.mat'];
-              model = readCbModel(modelPath);
+%               model = readCbModel(modelPath);
+              load(modelPath);
         % rename biomass reaction to agree with other pan-models
         bio = find(strncmp(model.rxns, 'bio', 3));
         model.rxns{bio, 1} = 'biomassPan';
     elseif size(models, 1) > 1
         for j = 1:size(models, 1)
             modelPath = [agoraPath filesep infoFile{models(j), 1} '.mat'];
-              model = readCbModel(modelPath);
+           %               model = readCbModel(modelPath);
+              load(modelPath);
             bio = find(strncmp(model.rxns, 'bio', 3));
             if j == 1
                 panModel.rxns = model.rxns;
@@ -228,7 +230,8 @@ panModels(~contains(panModels(:, 1), '.mat'), :) = [];
 % Test ATP production and remove futile cycles if applicable.
 for i = 1:length(panModels)
     modelPath = [panPath filesep panModels{i}];
-              model = readCbModel(modelPath);
+ %               model = readCbModel(modelPath);
+              load(modelPath);
     model = useDiet(model, dietConstraints);
     model = changeObjective(model, 'DM_atp_c_');
     FBA = optimizeCbModel(model, 'max');
@@ -256,10 +259,8 @@ for i = 1:length(panModels)
                 end
             end
         end
-        % set back to unlimited medium
-        model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), -1000, 'l');
         % Rebuild model
-        model = rebuildModel(model);
+        model = rebuildModel(model,database);
         save(modelPath, 'model');
     end
 end

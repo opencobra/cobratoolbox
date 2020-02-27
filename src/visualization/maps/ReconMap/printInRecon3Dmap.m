@@ -44,8 +44,8 @@ hex = {'#00008F','#00009F', '#0000AF', '#0000BF', '#0000CF', '#0000DF', ...
     '#FF1000', '#FF0000', '#EF0000', '#DF0000', '#CF0000', '#BF0000', ...
     '#AF0000', '#9F0000', '#8F0000', '#800000'};
 
-hexColor{1, 1} = "RXN";
-hexColor{1, 2} = "color";
+hexColor{1, 1} = 'RXN';
+hexColor{1, 2} = 'color';
 colorRange = max(colorValues) / 64;
 for i = 1:length(colorValues)
     hexColor{i + 1, 1} = rxnList{i};

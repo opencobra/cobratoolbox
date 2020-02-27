@@ -16,8 +16,11 @@ fid = fopen(filename);
 
 % pause(eps)
 while 1
-    if strcmp(fgetl(fid), 'begin')
+    tline = fgetl(fid);
+    if strcmp(tline, 'begin')
         break;
+    elseif ~ischar(tline)
+        error('Could not read lrs output file.'); 
     end
 end
 

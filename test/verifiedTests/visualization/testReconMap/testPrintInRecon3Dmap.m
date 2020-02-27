@@ -22,14 +22,22 @@ testMap = regexp( fileread('testMap.txt'), '\n', 'split')';
 
 % Generate new data
 printInRecon3Dmap(model.rxns);
-newMap = regexp( fileread('C__fakepath_data4ReconMap3_1.txt'), '\n', 'split')';
-delete('C__fakepath_data4ReconMap3_1.txt')
+fileName = 'C__fakepath_data4ReconMap3_1.txt';
+newMap = regexp( fileread(fileName), '\n', 'split')';
+if exist(fileName, 'file') == 2
+    delete(fileName);
+end
 
 % Test the data
-assert(isequal(testMap, newMap), 'Reference map does not match.')
-
+L = length(testMap{2})-1;
+for i=1:length(testMap)
+    if length(testMap{i}) > L
+    	assert(isequal(testMap{i}(1:L), newMap{i}(1:L)))
+    end
+end
 % change the directory
 cd(currentDir)
 
 
 
+ 
