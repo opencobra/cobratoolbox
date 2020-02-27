@@ -61,9 +61,9 @@ for k = 1:length(solverPkgs.QP)
     sol = MOMA(model, modelOut);
 
     if strcmp(lpSolver,'pdco')
-        disp(0.8463 - sol.f)
+        disp(0.8392 - sol.f)
     end
-    assert(abs(0.8463 - sol.f) < QPtol)
+    assert(abs(0.8392- sol.f) < QPtol)
 
     % run MOMA with minNormFlag
     sol = MOMA(model, modelOut, 'max', 0, true);

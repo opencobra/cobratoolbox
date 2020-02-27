@@ -207,7 +207,10 @@ if any(ismember(varargin(1:2:end),'rules'))
                 pos = regexp(newmodel.rules{rulesToUpdate(i)},'x\((?<pos>[0-9]+)\)','names');
                 genePos = cellfun(@str2num, {pos.pos});
                 assoc(genePos) = true;
-                newmodel.rxnGeneMat(rulesToUpdate(i),:) = assoc;
+                if ~issparse(newmodel.rxnGeneMat)
+                    newmodel.rxnGeneMat=sparse(newmodel.rxnGeneMat);
+                end
+                newmodel.rxnGeneMat(rulesToUpdate(i),:) = sparse(assoc);
             end
         end
     end
