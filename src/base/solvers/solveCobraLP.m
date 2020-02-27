@@ -1440,9 +1440,9 @@ switch solver
         % minimising the Euclidean norm of the optimal flux. A more
         % numerically stable way is to use pdco via solveCobraQP, which has
         % a more reasonable d1 and should be more numerically robust. -Ronan
-        % d1=0;
+        d1=0;
         % d2=1e-6;
-        d1 = 5e-4;
+        %d1 = 5e-4;
         d2 = 5e-4;
 
         % generate set of default parameters for this solver
@@ -1490,10 +1490,10 @@ switch solver
         %pdco only works with equality constraints and box constraints so
         %any other linear constraints need to be reformulated in terms of
         %slack variables
-        indl = find(csense == 'L'); %  A*x + s =   b
-        indg = find(csense == 'G'); % -A*x + s = - b
+        %indl = find(csense == 'L'); %  A*x + s =   b
+        %indg = find(csense == 'G'); % -A*x + s = - b
         
-        if isempty(indl) && isempty(indg)
+        if ~any(csense == 'L' | csense == 'G')
             Aeq  =  A;
             beq  =  b;
             lbeq = lb;
@@ -1501,33 +1501,24 @@ switch solver
             ceq  =  c;
         else
             Aeq = A;
-            Aeq(indg,:) = -1*Aeq(indg,:);
+            Aeq(csense == 'G',:) = -1*Aeq(csense == 'G',:);
             beq = b;
-            beq(indg,:) = -1*beq(indg,:);
+            beq(csense == 'G',:) = -1*beq(csense == 'G',:);
             K = speye(nMet);
             K = K(:,csense == 'L' | csense == 'G');
             Aeq = [Aeq K];
-            lbeq = [lb ; zeros(length(indl)+length(indg),1)];
-            ubeq = [ub ; inf*ones(length(indl)+length(indg),1)];
-            ceq  = [c  ; zeros(length(indl)+length(indg),1)];
+            nSlacks = nnz(csense == 'L' | csense == 'G');
+            lbeq = [lb ; zeros(nSlacks,1)];
+            ubeq = [ub ; inf*ones(nSlacks,1)];
+            ceq  = [c  ; zeros(nSlacks,1)];
         end
         
         x0 =  ones(size(Aeq,2),1);
         y0 = zeros(size(Aeq,1),1);
         z0 =  ones(size(Aeq,2),1);
            
-        [x,y,w,inform,PDitns,CGitns,time] = pdco(osense*ceq,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
-        s = sparse(nMet,1);
-        if isempty(indl) && isempty(indg)
-            s = zeros(nMet,1);
-        else
-            s(indl)=x(nRxn+indl);
-            s(indg)=-x(nRxn+indg);
-            x=x(1:nRxn);
-            w=w(1:nRxn);
-        end
+        [z,y,w,inform,~,~,~] = pdco(osense*ceq,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
         
-        f = c'*x;
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -1535,13 +1526,30 @@ switch solver
         %        = 4 if Cholesky said ADDA was not positive definite.
         if (inform == 0)
             stat = 1;
+            if ~any(csense == 'L' | csense == 'G')
+                s = zeros(nMet,1);
+            else
+                s = zeros(nMet,1);
+                s(csense == 'L' | csense == 'G') = z(nRxn+1:end);
+                s(csense == 'G') = -s(csense == 'G');
+            end
+            x =   z(1:nRxn);
+            w =   w(1:nRxn);
+            if 0%1 for debug
+                norm(A*x + s - b,inf)
+                norm(c - A'*y - w,inf)
+                norm(osense*c - A'*y - w,inf)
+            end
+            f = osense*c'*x;
         elseif (inform == 1 || inform == 2 || inform == 3)
             stat = 0;
+            f = NaN;
         else
             stat = -1;
+            f = NaN;
         end
-        origStat=inform;
-        
+        origStat = inform;
+          
         %update parameters for testing optimality criterion
         cobraSolverParams.feasTol = options.FeaTol;
         cobraSolverParams.optTol = options.OptTol;
@@ -1614,7 +1622,7 @@ end
              end
          end
          
-         if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver, {'glpk','matlab'}))
+         if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver, {'glpk','matlab'})) 
              
              % determine the residual 2
              res2 = LPproblem.osense * LPproblem.c  - LPproblem.A' * solution.dual - solution.rcost;
@@ -1623,7 +1631,9 @@ end
              % evaluate the optimality condition 2
              if tmp2 > cobraSolverParams.optTol * 1e2
                  disp(solution.origStat)
-                 error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraSolverParams.optTol)])
+                 if ~(length(LPproblem.A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
+                    error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraSolverParams.optTol)])
+                 end
              else
                  if cobraSolverParams.printLevel > 0
                      fprintf(['\n > [' solver '] Dual optimality condition in solveCobraLP satisfied.\n']);

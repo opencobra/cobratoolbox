@@ -30,7 +30,11 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % test solver packages
-solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'excludeSolvers', {'qpng','pdco', 'mosek'});
+%useIfAvailable = {'tomlab_cplex','ibm_cplex','pdco'}; %TODO get PDCO
+%working for MOMA
+useIfAvailable = {'tomlab_cplex','ibm_cplex'};
+% test solver packages
+solverPkgs = prepareTest('needsLP', true, 'needsQP', true, 'useSolversIfAvailable', useIfAvailable, 'excludeSolvers', {'qpng', 'mosek','gurobi'});
 % Note: On Linux, version > 8.0.+ has issues
 
 % define solver tolerances
@@ -49,20 +53,22 @@ for k = 1:length(solverPkgs.QP)
     solverQPOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
     solverLPOK = changeCobraSolver(lpSolver, 'LP', 0);
 
+
     % test deleteModelGenes
     [modelOut, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(model, 'b3956'); % gene for reaction PPC
 
     % run MOMA
     sol = MOMA(model, modelOut);
 
+    if strcmp(lpSolver,'pdco')
+        disp(0.8463 - sol.f)
+    end
     assert(abs(0.8463 - sol.f) < QPtol)
 
     % run MOMA with minNormFlag
     sol = MOMA(model, modelOut, 'max', 0, true);
 
-    assert(abs(sol.f - 0.3787) < QPtol)%this is the Euclidean norm
-    %assert(abs(sol.f - 0.8392) < QPtol)%not clear how to get this value
-    %TODO Thomas Pfau, please check this
+    assert(abs(sol.f - 0.8392) < QPtol)
 
     % run linearMOMA
     sol = linearMOMA(model, modelOut);

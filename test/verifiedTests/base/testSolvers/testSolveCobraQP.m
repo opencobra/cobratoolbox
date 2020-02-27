@@ -25,8 +25,9 @@ tol = 1e-4;
 
 if 1
     % test solver packages
-    useIfAvailable = {'tomlab_cplex','ibm_cplex','mosek','pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'gurobi','qpng','dqqMinos'});
+    useIfAvailable = {'tomlab_cplex','ibm_cplex','pdco'};
+    %useIfAvailable = {'pdco'};
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'gurobi','qpng','dqqMinos','mosek'});
 else
     % test solver packages
     %useIfAvailable = {'pdco'};

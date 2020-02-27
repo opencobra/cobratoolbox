@@ -469,7 +469,7 @@ switch solver
 
         xsize = 1;
         zsize = 1;
-        options.Method=21;
+        options.Method=2;
         options.MaxIter=1000;
         options.Print=cobraSolverParams.printLevel;
         %Update the options struct if it is provided
@@ -479,10 +479,10 @@ switch solver
         %pdco only works with equality constraints and box constraints so
         %any other linear constraints need to be reformulated in terms of
         %slack variables
-        indl = find(csense == 'L'); %  A*x + s =   b
-        indg = find(csense == 'G'); % -A*x + s = - b
+        %indl = find(csense == 'L'); %  A*x + s =   b
+        %indg = find(csense == 'G'); % -A*x + s = - b
         
-        if isempty(indl) && isempty(indg)
+        if ~any(csense == 'L' | csense == 'G')
             Aeq  =  A;
             beq  =  b;
             lbeq = lb;
@@ -491,18 +491,18 @@ switch solver
             Feq = F;
         else
             Aeq = A;
-            Aeq(indg,:) = -1*Aeq(indg,:);
+            Aeq(csense == 'G',:) = -1*Aeq(csense == 'G',:);
             beq = b;
-            beq(indg,:) = -1*beq(indg,:);
+            beq(csense == 'G',:) = -1*beq(csense == 'G',:);
             K = speye(nMet);
             K = K(:,csense == 'L' | csense == 'G');
             Aeq = [Aeq K];
-            nSlacks = length(indl) + length(indg);
+            nSlacks = nnz(csense == 'L' | csense == 'G');
             lbeq = [lb ; zeros(nSlacks,1)];
             ubeq = [ub ; inf*ones(nSlacks,1)];
             ceq  = [c  ; zeros(nSlacks,1)];
-            Feq  = [F , sparse(nMet, nSlacks);
-                   sparse(nSlacks,nRxn + nSlacks)];
+            Feq  = [F , sparse(nRxn, nSlacks);
+                   sparse(nSlacks,nRxn), spdiags(ones(nSlacks,1)*0,0,nSlacks,nSlacks)];
         end
         
         x0 =  ones(size(Aeq,2),1);
@@ -512,25 +512,19 @@ switch solver
         %get handle to helper function for objective
         pdObjHandle = @(x) QPObj(x);
         
-        %regularisation
-        d1=ones(size(Aeq,2),1)*1e-5;
-        %dont minimise the norm of reactions in linear objective
-        d1(c~=0)=0;
-        d2=1e-5;
+        % setting d1 to zero is dangerous numerically, but is necessary to avoid
+        % minimising the Euclidean norm of the optimal flux. A more
+        % numerically stable way is to use pdco via solveCobraQP, which has
+        % a more reasonable d1 and should be more numerically robust. -Ronan
+        % d1=0;
+        % d2=1e-6;
+        d1 = 0;
+        d2 = 5e-4;
            
-        [x,y,w,inform,~,~,time] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
-        [f,~,~] = QPObj(x);
-        
-        s = sparse(nMet,1);
-        if isempty(indl) && isempty(indg)
-            s = zeros(nMet,1);
-        else
-            s(indl)=x(nRxn+indl);
-            s(indg)=-x(nRxn+indg);
-            x=x(1:nRxn);
-            w=w(1:nRxn);
-        end
-
+        [z,y,w,inform,~,~,~] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
+        [f,~,~] = QPObj(z);
+ 
+       
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -538,6 +532,18 @@ switch solver
         %        = 4 if Cholesky said ADDA was not positive definite.
         if (inform == 0)
             stat = 1;
+            if ~any(csense == 'L' | csense == 'G')
+                s = zeros(nMet,1);
+            else
+                s = zeros(nMet,1);
+                s(csense == 'L' | csense == 'G') = z(nRxn+1:end);
+                s(csense == 'G') = -s(csense == 'G');
+            end
+            x=z(1:nRxn);
+            w=w(1:nRxn);
+            if 0
+                norm(A*x + s - b,inf)
+            end
         elseif (inform == 1 || inform == 2 || inform == 3)
             stat = 0;
         else
@@ -708,15 +714,15 @@ switch solver
         %                       * .csense - Constraint senses, a string containing the constraint sense for
         %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
         
-                if 1
-        %take care of zero segments of F
-        jlt=size(QPproblem.F,1);
-        boolF=false(jlt,1);
-        for j=1:jlt
-            if any(QPproblem.F(j,:)) || any(QPproblem.F(:,j))
-                boolF(j)=1;
+        if 1
+            %take care of zero segments of F
+            jlt=size(QPproblem.F,1);
+            boolF=false(jlt,1);
+            for j=1:jlt
+                if any(QPproblem.F(j,:)) || any(QPproblem.F(:,j))
+                    boolF(j)=1;
+                end
             end
-        end
         end
         if ~all(boolF)
             error('dqqMinos not validated for F matrices with zero rows/cols')
@@ -963,8 +969,11 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'gurobi','mosek'}))%todo, debug gurobi QP
+        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'gurobi','mosek'}))%todo, debug gurobi QP
             % determine the residual 2
+            if strcmp(solver,'pdco')
+                pause(1e-9)
+            end
             res2 = QPproblem.osense * QPproblem.c  + QPproblem.F*solution.full - QPproblem.A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
@@ -979,13 +988,17 @@ if solution.stat==1
             end
         end
         
-        %set the value of the objective
-        solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
-        if norm(solution.obj - osense*f) > 1e-4
-            warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
-            fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
-                'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
-                'while the value constructed from osense*c''*x + x''*F*x :', osense*QPproblem.c'*solution.full + solution.full'*QPproblem.F*solution.full)
+        if ~isempty(solution.full)
+            %set the value of the objective
+            solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
+            if norm(solution.obj - osense*f) > 1e-4
+                warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
+                fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
+                    'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
+                    'while the value constructed from osense*c''*x + x''*F*x :', osense*QPproblem.c'*solution.full + solution.full'*QPproblem.F*solution.full)
+            end
+        else
+            solution.obj = NaN;
         end
         
         %         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;

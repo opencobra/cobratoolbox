@@ -12,7 +12,7 @@
 global CBTDIR
 
 %Test the requirements
-if 1
+if 0
     useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
                              'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos','cplexlp'}; % 'lp_solve': legacy
 else
@@ -144,7 +144,7 @@ model.osense = -1;
 assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 
 % only test the solvers for which the optimality conditions have been implemented
-solverPkgs = {'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
+solverPkgs = {'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex','pdco'};
 
 % change the COBRA solver (LP)
 for k = 1:length(solverPkgs)

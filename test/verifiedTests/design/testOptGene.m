@@ -54,7 +54,7 @@ for k = 1:length(solvers.LP)
     model2.ub(ismember(model2.rxns, generxnList(optReacs))) = 0;
     sol = optimizeCbModel(model2);
     % Lets only assert, that we have some improvement.
-    assert(sol.full(39) - basicsolution.full(39) > 0);
+    assert(sol.v(39) - basicsolution.v(39) > 0);
 
 end
 % close the open windows
