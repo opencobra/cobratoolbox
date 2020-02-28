@@ -12,13 +12,8 @@
 global CBTDIR
 
 %Test the requirements
-if 0
-    useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
-                             'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos','cplexlp'}; % 'lp_solve': legacy
-else
-    useSolversIfAvailable = {'pdco'};
-end
-       
+useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
+            'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
 solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
 
 % save the current path
@@ -90,6 +85,10 @@ for k = 1:length(solverPkgs)
 end
 
 
+% define solver packages
+solverPkgs={'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
+            'pdco', 'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos'}; % 'lp_solve': legacy
+
 % load the ecoli_core_model
 model = getDistributedModel('ecoli_core_model.mat');
 
@@ -97,11 +96,11 @@ model = getDistributedModel('ecoli_core_model.mat');
 tol = 1e-6;
 
 % set pdco relative parameters
-params.feasTol = 1e-8;
-params.pdco_method = 21;
+params.feasTol = 1e-12;
+params.pdco_method = 2;
 params.pdco_maxiter = 400;
-params.pdco_xsize = 1;
-params.pdco_zsize = 1;
+params.pdco_xsize = 1e-1;
+params.pdco_zsize = 1e-1;
 
 % run LP with various solvers
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
@@ -119,11 +118,11 @@ model.osense = -1;
 model.csense = ['L'; 'L'];
 
 % set pdco relative parameters
-params.feasTol = 1e-8;
+params.feasTol = 1e-12;
 params.pdco_method = 1;
 params.pdco_maxiter = 400;
-params.pdco_xsize = 1;
-params.pdco_zsize = 1;
+params.pdco_xsize = 1e-12;
+params.pdco_zsize = 1e-12;
 
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
 assert(abs(min(all_obj) - max(all_obj)) < tol)
@@ -144,7 +143,7 @@ model.osense = -1;
 assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 
 % only test the solvers for which the optimality conditions have been implemented
-solverPkgs = {'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex','pdco'};
+solverPkgs = {'pdco', 'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex'};
 
 % change the COBRA solver (LP)
 for k = 1:length(solverPkgs)

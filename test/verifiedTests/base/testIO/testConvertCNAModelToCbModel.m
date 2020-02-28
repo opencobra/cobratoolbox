@@ -22,19 +22,9 @@ if statusCNA
 
     % convert a COBRA model to a CNA model
     cnaModel_new = convertCbModelToCNAModel(model);
-    
+
     % assert if the cnaModel_new is equal to the reference CNA model
-    if 0
-        assert(isequaln(cnaModel_new, cnaModel));
-    else
-        % function [cnap, errval]= CNAgenerateMFNetwork(cnap,nodisp) in CellNetAnalyzer: API function CNAgenerateMFNetwork
-        % has been updated to include new default fields, that do not
-        % match, so remove them. Probably cnaModel_new needs to be updated.
-        if isfield(cnaModel_new,'color1')
-            cnaModel_new= rmfield(cnaModel_new,{'color1','color2','color3','color4','textColor','macroSynthColor','specBoxColor','unsaved_changes'});
-        end
-        assert(isequaln(cnaModel_new, cnaModel));
-    end
+    assert(isequaln(cnaModel_new, cnaModel));
 
     % convert the reference CNA model to the COBRA model
     model_new = convertCNAModelToCbModel(cnaModel);

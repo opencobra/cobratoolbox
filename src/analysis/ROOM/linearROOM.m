@@ -115,7 +115,7 @@ ROOMmodel.osenseStr = 'min';
 solutionROOM = optimizeCbModel(ROOMmodel);
 
 if solutionROOM.stat == 1
-    fluxROOM = solutionROOM.v(1:nRxns);
+    fluxROOM = solutionROOM.full(1:nRxns);
     totalFluxDiff = norm(fluxROOM-fluxWT);
 else
     fluxROOM = nan(nRxns,1);

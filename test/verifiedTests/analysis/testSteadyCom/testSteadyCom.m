@@ -171,7 +171,6 @@ for jTest = 1:2
         % TEST SteadyCom
         % test different algoirthms
         data = load('refData_SteadyCom', 'result');
-        clear result
         for jAlg = 1:3
             options = struct();
             if jAlg == 1
@@ -256,25 +255,14 @@ for jTest = 1:2
 
         % test options given by name-value arguments
         diary('SteadyCom_saveModel.txt');
-        if 0
-            requireOneSolverOf = {'tomlab_cplex'};
-            prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
-            [~, resultNVarg] = SteadyCom(modelJoint, [], 'printLevel', 0, 'minNorm', 1, 'saveInput', 'testSteadyComSaveModel');
-        else
-            [~, resultNVarg] = SteadyCom(modelJoint, [], 'printLevel', 0, 'saveInput', 'testSteadyComSaveModel');
-        end
+        [~, resultNVarg] = SteadyCom(modelJoint, [], 'printLevel', 0, 'minNorm', 1, 'saveInput', 'testSteadyComSaveModel');
         diary off;
         % check max. growth rate and sum of absolute fluxes
         assert(abs(resultNVarg.GRmax - 0.142857) < tol);
         assert(abs(sum(abs(resultNVarg.flux)) - 53.6493) / 53.6493 < tolPercent)
         % check that nothing is printed
         text1 = importdata('SteadyCom_saveModel.txt');
-        if isempty(text1)
-            assert(isempty(text1));
-        else
-            %warning(text1{1})
-        end
-        
+        assert(isempty(text1));
         delete('SteadyCom_saveModel.txt');
         % check saved files
         if jTest == 1

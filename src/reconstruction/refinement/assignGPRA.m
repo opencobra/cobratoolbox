@@ -22,4 +22,3 @@ model.genes = genes;
 
 model.rxnGeneMat = sparse(length(model.rxns),length(genes));
 model.rxnGeneMat(modelRxnInd,:) = rxnGeneMat(gpraRxnInd,:);
-model.rxnGeneMat=sparse(model.rxnGeneMat);

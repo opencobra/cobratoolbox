@@ -91,20 +91,20 @@ BOF = modelRed.rxns(modelRed.c==1); %get biomass objective function
 
 
 modelKO = changeRxnBounds(modelRed,rxns,0,'b');
-FBAsol1 = optimizeCbModel(modelKO,'max',0,true); %find max growth rate of strain
+FBAsol1 = optimizeCbModel(modelKO,'max',true); %find max growth rate of strain
 if FBAsol1.stat>0
     modelKOfixed = changeRxnBounds(modelKO,BOF,FBAsol1.f-1e-6,'l'); %fix the growth rate
     modelKOfixed = changeObjective(modelKOfixed,target); %set target as the objective
-    FBAsol2 = optimizeCbModel(modelKOfixed,'min',0,true); %find minimum target rate at this growth rate
+    FBAsol2 = optimizeCbModel(modelKOfixed,'min',true); %find minimum target rate at this growth rate
     growth = FBAsol1.f;
     maxRate = FBAsol2.f;
     numDels = length(rxns);
 
     if hasSlope %only calculate these if the obj function includes slope
         modelTarget = changeObjective(modelKO,target); %set target as the objective
-        FBAsol4 = optimizeCbModel(modelTarget,'min',0,true); %find min production rate
+        FBAsol4 = optimizeCbModel(modelTarget,'min',true); %find min production rate
         modelTargetFixed = changeRxnBounds(modelKO,target,FBAsol4.f,'b'); %fix production to minimum
-        FBAsol5 = optimizeCbModel(modelTargetFixed,'max',0,true); %find max growth at min production
+        FBAsol5 = optimizeCbModel(modelTargetFixed,'max',true); %find max growth at min production
         minProdRate = FBAsol4.f;
         maxGrowthMinRate = FBAsol5.f;
 
@@ -149,21 +149,21 @@ for i = 1:length(rxns)+1
         if length(newRxns) <= maxKOs %limit the total number of knockouts
 
             modelKO = changeRxnBounds(modelRed,newRxns,0,'b');
-            FBAsol1 = optimizeCbModel(modelKO,'max',0,true); %find max growth rate of strain
+            FBAsol1 = optimizeCbModel(modelKO,'max',true); %find max growth rate of strain
             if FBAsol1.stat>0
                 modelKOfixed = changeRxnBounds(modelKO,BOF,FBAsol1.f-1e-6,'l'); %fix the growth rate
                 modelKOfixed = changeObjective(modelKOfixed,target); %set target as the objective
-                FBAsol2 = optimizeCbModel(modelKOfixed,'min',0,true); %find minimum target rate at this growth rate
-                FBAsol3 = optimizeCbModel(modelKOfixed,'max',0,true); %find maximum target rate at this growth rate
+                FBAsol2 = optimizeCbModel(modelKOfixed,'min',true); %find minimum target rate at this growth rate
+                FBAsol3 = optimizeCbModel(modelKOfixed,'max',true); %find maximum target rate at this growth rate
                 growth = FBAsol1.f;
                 maxRate = FBAsol2.f;
                 numDels = length(newRxns);
 
                 if hasSlope %only calculate these if the obj function includes slope
                     modelTarget = changeObjective(modelKO,target); %set target as the objective
-                    FBAsol4 = optimizeCbModel(modelTarget,'min',0,true); %find min production rate
+                    FBAsol4 = optimizeCbModel(modelTarget,'min',true); %find min production rate
                     modelTargetFixed = changeRxnBounds(modelKO,target,FBAsol4.f,'b'); %fix production to minimum
-                    FBAsol5 = optimizeCbModel(modelTargetFixed,'max',0,true); %find max growth at min production
+                    FBAsol5 = optimizeCbModel(modelTargetFixed,'max',true); %find max growth at min production
                     minProdRate = FBAsol4.f;
                     maxGrowthMinRate = FBAsol5.f;
 

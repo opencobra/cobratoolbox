@@ -137,13 +137,6 @@ end
     'feasCrit', 'maxIter', 'verbFlag', 'algorithm', 'minNorm', 'LPonly', 'saveModel'}, ...  % algorithm related
     options, modelCom);
 
-if ~isempty(minNorm)
-    [solverName, ~] = getCobraSolver('LP');
-    if minNorm ~= 0 && ~strcmp(solverName,'cplex_direct')
-        error(['solveCobraLP, using the ' solverName ' solver, is called by SteadyCom but only responds to minNorm if the solver is cplex_direct'])
-    end
-end
-
 % print level
 verbFlag = max(min(verbFlag, 3), 0);
 pL = [0 10 5 1];
@@ -401,7 +394,7 @@ else
         end
         % record results for the current iteration
         iter = [iter; k, grCur, BMcur, grCur * BMcur, dev, guessMethod];
-        
+
         % condition for switching to fzero or concluding GRmax = 0:
         %   kLU >= 2 to ensure neither of the bounds is the initial guess.
         % Algorithm:
@@ -459,7 +452,7 @@ else
                 [~, LP, BMcur, sol] = LP4fzero(GRmax, LP);
                 break
             end
-            
+
         elseif grUB <= GRtol  % zero growth rate
             GRmax = 0;
             % update the LP for zero growth rate
@@ -813,7 +806,7 @@ if isfield(options, 'MC') && ~isempty(options.MC)
         warning('size of MClhs not equal to size(options.MC,2). Ignore.')
         MCcont = false;
     end
-    
+
     if MCcont
         if verbFlag
             fprintf('User-supplied constraints imposed.\n');
