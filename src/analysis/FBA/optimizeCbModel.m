@@ -497,6 +497,7 @@ if printLevel>0
         case 2
             warning('Unbounded solution.');
         otherwise
+            solution.stat
             error('solution.stat must be in {-1, 0 , 1, 2}')
     end
 end

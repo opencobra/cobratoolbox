@@ -972,7 +972,7 @@ if solution.stat==1
 else
     if ~isempty(solution.full)
         %set the value of the objective
-        solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
+        solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
     else
         solution.obj = NaN;
     end
