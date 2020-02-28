@@ -63,10 +63,11 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .time:        Solve time in seconds
 %                       * .stat:        Solver status in standardized form (see below)
 %
-%                         * 1 - Optimal solution
-%                         * 2 - Unbounded solution
-%                         * 0 - Infeasible
-%                         * -1 - No solution reported (timelimit, numerical problem etc)
+%                       * 0 - Infeasible problem
+%                       * 1 - Optimal solution
+%                       * 2 - Unbounded solution
+%                       * 3 - Almost optimal solution
+%                       * -1 - Some other problem (timelimit, numerical problem etc)
 %
 % .. Author:
 %       - Markus Herrgard        6/8/07
@@ -171,14 +172,19 @@ switch solver
             end
         end
         
-        
-        if (origStat == 1)
+%       1 (S,B) Optimal solution found
+%       2 (S,B) Model has an unbounded ray
+%       3 (S,B) Model has been proved infeasible
+%       4 (S,B) Model has been proved either infeasible or unbounded
+%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        if origStat == 1
             stat = 1; % Optimal
-        elseif (origStat == 3 || origStat == 4)
+        elseif origStat == 3 
             stat = 0; % Infeasible
-        elseif (origStat == 2)
+        elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
-        elseif (origStat == 6) %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
+        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
             stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
         else %(origStat >= 10)
             stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
@@ -215,16 +221,23 @@ switch solver
         origStat = Result.Inform;
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);
-        if (origStat == 1)
+        
+%       1 (S,B) Optimal solution found
+%       2 (S,B) Model has an unbounded ray
+%       3 (S,B) Model has been proved infeasible
+%       4 (S,B) Model has been proved either infeasible or unbounded
+%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        if origStat == 1
             stat = 1; % Optimal
-        elseif (origStat == 3 || origStat == 4)
+        elseif origStat == 3 
             stat = 0; % Infeasible
-        elseif (origStat == 2)
+        elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
-        elseif (origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        else
+        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
             stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
+        else %(origStat >= 10)
+            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
         end
         
         %debugging
@@ -275,13 +288,15 @@ switch solver
         origStat = Result.status;
         % See detailed table of result codes in
         % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
-        if (origStat == 1 || origStat == 101)
+        if origStat == 1
             stat = 1; % Optimal
-        elseif (origStat == 3 || origStat == 4 || origStat == 103)
+        elseif origStat == 3 
             stat = 0; % Infeasible
-        elseif (origStat == 2 || origStat == 118 || origStat == 119)
+        elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
-        else
+        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
+            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
+        else %(origStat >= 10)
             stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
         end
         
@@ -486,7 +501,7 @@ switch solver
 
         xsize = 1;
         zsize = 1;
-        options.Method=2;
+        options.Method=22;
         options.MaxIter=1000;
         options.Print=cobraSolverParams.printLevel;
         %Update the options struct if it is provided
@@ -865,7 +880,7 @@ switch solver
 end
 %%
 
-if stat==1 && ~strcmp(solver,'mps')
+if (stat==1 || stat == 3) && ~strcmp(solver,'mps')
     %TODO: pull out slack variable from every solver interface (see list of solvers below)
     if ~exist('s','var')
         % slack variables required for optimality condition check, if they are

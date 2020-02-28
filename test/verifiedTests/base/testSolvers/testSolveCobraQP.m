@@ -43,6 +43,7 @@ if 0
     solverPkgs.QP={'gurobi'};
 end
 
+clear QPproblem QPproblem2 QPproblem3 QPproblem4 QPproblem5
 
 %QP Solver test: http://tomopt.com/docs/quickguide/quickguide005.php
 
@@ -87,7 +88,7 @@ QPproblem4.csense = ['L'; 'L'];
 QPproblem4.F = zeros(size(QPproblem4.A,2));
 
 % set up QP problem
-QPproblem5.F = -1*[8, 1; 1, 8];  %Test solving maximisation of quadratic part
+QPproblem5.F = -1*[8, 1; 1, 8];  %Test solving maximisation
 QPproblem5.c = [3, -4]';  % Vector c in 1/2 * x' * F * x + c' * x
 QPproblem5.A = [1, 1; 1, -1];  % Constraint matrix
 QPproblem5.b = [5, 0]';
@@ -115,7 +116,7 @@ for k = 1:length(solverPkgs.QP)
         end
         % Check QP results with expected answer.
         assert(any(abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]));
-
+        
         if strcmp(solverPkgs.QP{k}, 'ibm_cplex') && isunix
             % Note: On windows, the timelimit parameter has no effect
             % test IBM-Cplex-specific parameters. No good example for testing this. Just test time limit
@@ -124,12 +125,11 @@ for k = 1:length(solverPkgs.QP)
             assert(isempty(QPsolution.full) & isnan(QPsolution.obj) & QPsolution.origStat == 11)
         end
         
+        QPsolution2 = solveCobraQP(QPproblem2,'printLevel', printLevel);
         if ~strcmp(solverPkgs.QP{k},'gurobi')
-            QPsolution2 = solveCobraQP(QPproblem2);
             assert(abs(QPsolution2.obj - 37.5 / 2) < tol); %Objective value
             assert(all( abs(QPsolution2.full - [2.5;-2.5;5]) < tol)); % Flux distribution
         else
-            QPsolution2 = solveCobraQP(QPproblem2);
             assert(abs(QPsolution2.obj - 25) < tol); %Objective value
             assert(all( abs(QPsolution2.full - [5;0;5]) < tol)); % Flux distribution
         end
@@ -138,14 +138,13 @@ for k = 1:length(solverPkgs.QP)
         QPsolution3 = solveCobraQP(QPproblem3,'printLevel', printLevel);
         assert(all(abs(QPsolution3.full - 1)< tol)); %We optimize for 0.5x^2 not x^2
         
-      
+        
+        QPsolution4 = solveCobraQP(QPproblem4,'printLevel', printLevel);
         if ~strcmp(solverPkgs.QP{k},'gurobi')
-            QPsolution4 = solveCobraQP(QPproblem4,'printLevel', printLevel);
             %QPsolution4.obj
             %QPsolution4.full
             assert(abs(QPsolution4.obj - 600)< tol);
         else
-            QPsolution4 = solveCobraQP(QPproblem4,'printLevel', printLevel);
             %QPsolution4.obj
             %QPsolution4.full
             assert(abs(QPsolution4.obj - 20000)< tol);

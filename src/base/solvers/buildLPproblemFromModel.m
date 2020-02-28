@@ -1,4 +1,4 @@
-function LPproblem = buildLPproblemFromModel(model, verify)
+function optProblem = buildLPproblemFromModel(model, verify)
 % Builds an COBRA Toolbox LP/QP problem structure from a COBRA Toolbox model structure.
 %
 % 
@@ -10,7 +10,7 @@ function LPproblem = buildLPproblemFromModel(model, verify)
 %
 % USAGE:
 %
-%    LPproblem = buildLPproblemFromModel(model)
+%    optProblem = buildLPproblemFromModel(model)
 %
 % INPUT:
 %    model:     A COBRA model structure with at least the following fields
@@ -39,7 +39,7 @@ function LPproblem = buildLPproblemFromModel(model, verify)
 %    verify:     Check the input (default: true);
 %
 % OUTPUT:
-%    LPproblem: A COBRA LPproblem structure with the following fields:
+%    optProblem: A COBRA LPproblem 
 %
 %                * `.A`: LHS matrix
 %                * `.b`: RHS vector
@@ -48,24 +48,51 @@ function LPproblem = buildLPproblemFromModel(model, verify)
 %                * `.ub`: Upper bound vector
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                A QPproblem structure will also have the following field:
 %                * `.F`: Positive semidefinite matrix for quadratic part of objective
 
 if ~exist('verify','var')
     verify = true;
 end
 
+if isfield(model,'C')
+    modelC = 1;
+else
+    modelC = 0;
+end
+
+if isfield(model,'E')
+    modelE = 1;
+else
+    modelE = 0;
+end
+
 %backward compatibility with old formulation of coupling constraints
 
 %Build some fields, if they don't exist
+modelFields = fieldnames(model);
+basicFields = {'b','csense','osenseStr'};
+rowFields = {'C','d','dsense'};
+columnFields = {'E','evarlb','evarub','evarc','D'};
 
-optionalFields = {'C','d','dsense','E','evarlb','evarub','evarc','D'};
-basicFields = { 'b','csense','osenseStr'};
-basicFieldsToBuild = setdiff(basicFields,fieldnames(model));
-fieldsToBuild = setdiff(optionalFields,fieldnames(model));
-if ~isempty(basicFieldsToBuild)
-    model = createEmptyFields(model,basicFieldsToBuild );
+
+basicFieldsToBuild = setdiff(basicFields,modelFields);
+rowFieldsToBuild = setdiff(rowFields,modelFields);
+columnFieldsToBuild = setdiff(columnFields,modelFields);
+
+if length(unique([rowFieldsToBuild,rowFields])) == length(rowFields)
+    rowFieldsToBuild = [];
 end
 
+if length(unique([columnFieldsToBuild,columnFields])) == length(columnFields)
+    columnFieldsToBuild = [];
+end
+
+fieldsToBuild=[basicFieldsToBuild, rowFieldsToBuild, columnFieldsToBuild];
+
+if ~isempty(fieldsToBuild)
+    model = createEmptyFields(model,fieldsToBuild);
+end
 
 if verify    
     res = verifyModel(model,'FBAOnly',true);
@@ -78,34 +105,89 @@ if verify
             error('model.F must be a square and positive definite matrix')
         end
     end
-end
     
-if isfield(model,'dxdt')
-    if length(model.dxdt)~=size(model.S,1)
-        error('Number of rows in model.dxdt and model.S must match')
+    if isfield(model,'dxdt')
+        if length(model.dxdt)~=size(model.S,1)
+            error('Number of rows in model.dxdt and model.S must match')
+        end
     end
-    model.b = model.dxdt; %Overwrite b
-end
-% create empty fields if necessary
-if ~isempty(fieldsToBuild)
-    model = createEmptyFields(model,fieldsToBuild);
 end
 
-LPproblem.A = [model.S,model.E;model.C,model.D];
+if isfield(model,'dxdt')
+    model.b = model.dxdt; %Overwrite b
+end
+
+if ~modelC && ~modelE
+    optProblem.A = model.S;
+    optProblem.b = model.b;
+    optProblem.ub = model.ub;
+    optProblem.lb = model.lb;
+    optProblem.csense = model.csense;
+    optProblem.c = model.c;
+else
+    if modelC && ~modelE
+        optProblem.A = [model.S;model.C];
+        optProblem.b = [model.b;model.d];
+        optProblem.ub = model.ub;
+        optProblem.lb = model.lb;
+        optProblem.csense = [model.csense;model.dsense];
+        optProblem.c = model.c;
+    elseif modelE && ~modelC
+        optProblem.A = [model.S,model.E];
+        optProblem.b = model.b;
+        optProblem.ub = [model.ub;model.evarub];
+        optProblem.lb = [model.lb;model.evarlb];
+        optProblem.c = [model.c;model.evarc];
+    else
+        optProblem.A = [model.S,model.E;model.C,model.D];
+        optProblem.b = [model.b;model.d];
+        optProblem.csense = [model.csense;model.dsense];
+        optProblem.ub = [model.ub;model.evarub];
+        optProblem.lb = [model.lb;model.evarlb];
+        optProblem.c = [model.c;model.evarc];
+    end
+end
 
 %add quadratic part
 if isfield(model,'F')
-    if size(model.F,1)~=size(LPproblem.A,2)
-        LPproblem.F = spdiags(zeros(size(LPproblem.A,2),1),0,size(LPproblem.A,2),size(LPproblem.A,2));
+    if modelE
+        optProblem.F = spdiags(zeros(size(optProblem.A,2),1),0,size(optProblem.A,2),size(optProblem.A,2));
         %assume that the remainder of the variables are not being quadratically
         %minimised
-        LPproblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
+        optProblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
+    else
+        optProblem.F = model.F;
     end
 end
 
-LPproblem.ub = [model.ub;model.evarub];
-LPproblem.lb = [model.lb;model.evarlb];
-LPproblem.c = [model.c;model.evarc];
-LPproblem.b = [model.b;model.d];
-[~,LPproblem.osense] = getObjectiveSense(model);
-LPproblem.csense = [model.csense;model.dsense];
+[~,optProblem.osense] = getObjectiveSense(model);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

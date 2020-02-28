@@ -64,9 +64,10 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .algorithm:    Algorithm used by solver to solve LP problem
 %                     * .stat:         Solver status in standardized form
 %
+%                       * 0 - Infeasible problem
 %                       * 1 - Optimal solution
 %                       * 2 - Unbounded solution
-%                       * 0 - Infeasible
+%                       * 3 - Almost optimal solution
 %                       * -1 - Some other problem (timelimit, numerical problem etc)
 %                     * .origStat:         Original status returned by the specific solver
 %                     * .origStatText:     Original status text returned by the specific solver
@@ -424,7 +425,7 @@ switch solver
         sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
         [status, cmdout] = system(sysCall);
 
-        if ~isempty(strfind(cmdout, 'error'))
+        if contains(cmdout, 'error')
            disp(sysCall);
            disp(cmdout);
            error('Call to runfba failed.');
@@ -434,7 +435,7 @@ switch solver
         sysCall = [MINOS_PATH filesep 'qrunfba qsolveLP ' fname ' lp2'];
         [status, cmdout] = system(sysCall);
 
-        if ~isempty(strfind(cmdout, 'error'))
+        if contains(cmdout, 'error')
            disp(sysCall);
            disp(cmdout);
            error('Call to qrunfba failed.');
@@ -837,64 +838,6 @@ switch solver
             stat = -1; % Solution did not converge
         end
 
-    case 'gurobi_mex'
-        error('The gurobi_mex interface is a legacy interface and will be no longer maintained.');
-
-        % Free academic licenses for the Gurobi solver can be obtained from
-        % http://www.gurobi.com/html/academic.html
-        %
-        % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
-        % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
-
-        % opts=solverParams;
-        % if ~isfield(opts,'Display')
-        %     if cobraSolverParams.printLevel == 0
-        %         % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-        %         % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
-        %         opts.Display = 0;
-        %         opts.DisplayInterval = 0;
-        %     else
-        %         opts.Display = 1;
-        %     end
-        % end
-        % if ~isfield(opts, 'FeasibilityTol')cobraSolverParams
-        %     opts.FeasibilityTol = cobraSolverParams.feasTol;
-        % end
-        % if ~isfield(opts, 'OptimalityTol')
-        %     opts.OptimalityTol = cobraSolverParams.optTol;
-        % end
-        % %If the feasibility tolerance is changed by the solverParams
-        % %struct, this needs to be forwarded to the cobra Params for the
-        % %final consistency test!
-        % cobraSolverParams.feasTol = opts.FeasibilityTol;
-
-        % if (isempty(csense))
-        %     clear csense
-        %     csense(1:length(b),1) = '=';
-        % else
-        %     csense(csense == 'L') = '<';
-        %     csense(csense == 'G') = '>';
-        %     csense(csense == 'E') = '=';
-        %     csense = csense(:);
-        % end
-        % % gurobi_mex doesn't cast logicals to doubles automatically
-        % c = double(c);
-        % [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
-        %                                      csense,lb,ub,[],opts);
-        % w=[];
-        % if origStat==2
-        %     w = c - A'*y;%reduced cost added -Ronan Jan 19th 2011
-        %    stat = 1; % optimal solutuion found
-        % elseif origStat==3
-        %    stat = 0; % infeasible
-        % elseif origStat==5
-        %    stat = 2; % unbounded
-        % elseif origStat==4
-        %    stat = 0; % Gurobi reports infeasible *or* unbounded
-        % else
-        %    stat = -1; % Solution not optimal or solver problem
-        % end
-
     case 'gurobi'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
@@ -1175,29 +1118,38 @@ switch solver
 
         % Assign results
         x = Result.x_k;
+        w = Result.v_k(1:length(lb));
+        y = Result.v_k((length(lb)+1):end);
         f = osense*sum(tomlabProblem.QP.c.*Result.x_k);
         s = b - A * x; % output the slack variables
-        s(csense == 'E')=0;
+        
+        basis = Result.MIP.basis;
+        
+        origStat = Result.Inform;
+%       1 (S,B) Optimal solution found
+%       2 (S,B) Model has an unbounded ray
+%       3 (S,B) Model has been proved infeasible
+%       4 (S,B) Model has been proved either infeasible or unbounded
+%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        
+        if origStat == 1
+            stat = 1; % 1 - Optimal solution
+        elseif origStat == 3 
+            stat = 0;  % 0 - Infeasible problem
+        elseif origStat == 2 || origStat == 4
+            stat = 2; % 2 - Unbounded solution
+        elseif (origStat == 5 || origStat == 6)
+            stat = 3; % 3 - Almost optimal solution
+        else
+            stat = -1; %-1 - Some other problem (timelimit, numerical problem etc)
+        end
         
         % cplexStatus analyzes the CPLEX output Inform code and returns
         % the CPLEX solution status message in ExitText and the TOMLAB exit flag
         % in ExitFlag
-        [origStatText, ~] = cplexStatus(Result.Inform);
+        [origStatText, ~] = cplexStatus(origStat);
         
-        origStat = Result.Inform;
-        w = Result.v_k(1:length(lb));
-        y = Result.v_k((length(lb)+1):end);
-        basis = Result.MIP.basis;
-        
-        if (origStat == 1)
-            stat = 1;
-        elseif (origStat == 3)
-            stat = 0;
-        elseif (origStat == 2 || origStat == 4)
-            stat = 2;
-        else
-            stat = -1;
-        end
     case 'cplex_direct'
         % used with the current script, only some of the control affoarded with
         % this interface is provided. Primarily, this is to change the print
@@ -1292,31 +1244,38 @@ switch solver
         %this is the dual to the simple ineequality constraints : reduced costs
         w =  lambda.lower-lambda.upper;
         
-        
+        algorithm = output.algorithm;
         if 0 %debug
             norm(LPproblem.osense * LPproblem.c  + LPproblem.A' * y - w,inf)
         end
         
         %check the satus of the solution
-        origStat = output.cplexstatus;
-
-        %report the cplex status in readable form
-        [origStatText,~] = cplexStatus(origStat);
-        
         %Note that we are using the original cplex output satus, not the
         %simplified one invented by ibm
-        if (origStat == 1)
-            stat = 1;
-        elseif (origStat == 3)
-            stat = 0;
-        elseif (origStat == 2 || origStat == 4)
-            stat = 2;
+        origStat = output.cplexstatus;
+
+%       1 (S,B) Optimal solution found
+%       2 (S,B) Model has an unbounded ray
+%       3 (S,B) Model has been proved infeasible
+%       4 (S,B) Model has been proved either infeasible or unbounded
+%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        if origStat == 1
+            stat = 1; % 1 - Optimal solution
+        elseif origStat == 3
+            stat = 0;  % 0 - Infeasible problem
+        elseif origStat == 2 || origStat == 4
+            stat = 2; % 2 - Unbounded solution
+        elseif origStat == 5 || origStat == 6
+            stat = 3; % 3 - Almost optimal solution
         else
-            stat = -1;
+            stat = -1; %-1 - Some other problem (timelimit, numerical problem etc)
         end
-        %
-        algorithm = output.algorithm;
-         
+        
+        % cplexStatus analyzes the CPLEX output Inform code and returns
+        % the CPLEX solution status message in ExitText and the TOMLAB exit flag
+        % in ExitFlag
+        [origStatText, ~] = cplexStatus(origStat);
     case 'ibm_cplex'
         % By default use the complex ILOG-CPLEX interface as it seems to be faster
         % iBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
@@ -1333,16 +1292,21 @@ switch solver
             % Close the output file
             fclose(logFile);
         end
-        
+                
         % http://www-eio.upc.edu/lceio/manuals/cplex-11/html/overviewcplex/statuscodes.html
         origStat   = ILOGcplex.Solution.status;
-        stat = origStat;
+        %stat = origStat;
         if origStat==1
+            stat = 1;
             f = osense*ILOGcplex.Solution.objval;
             x = ILOGcplex.Solution.x;
             w = ILOGcplex.Solution.reducedcost;
             y = ILOGcplex.Solution.dual;
             s = b - A * x; % output the slack variables
+        elseif origStat == 2 ||   origStat == 20
+            stat = 2; %unbounded
+        elseif origStat == 3
+            stat = 0;%infeasible
         elseif origStat == 4
             % this is likely unbounded, but could be infeasible
             % lets check, by solving an additional LP with no objective.
@@ -1357,17 +1321,15 @@ switch solver
                 stat = 0;
             end
             % restore the original solution.
-                % restore the original solution.
+            % restore the original solution.
             ILOGcplex.Solution = Solution;
-        elseif origStat == 3
-            stat = 0;%infeasible
         elseif origStat == 5 || origStat == 6
-            stat = 3;
+            stat = 3;% Almost optimal solution
             f = osense*ILOGcplex.Solution.objval;
             x = ILOGcplex.Solution.x;
             w = ILOGcplex.Solution.reducedcost;
             y = ILOGcplex.Solution.dual;
-                s = b - A * x; % output the slack variables
+            s = b - A * x; % output the slack variables
         elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
             % abort due to reached limit. check if there is a solution and return it.
             stat = 3;
@@ -1383,12 +1345,14 @@ switch solver
             if isfield(ILOGcplex.Solution ,'dual')
                 y = ILOGcplex.Solution.dual;
             end
-
-        elseif origStat == 13
+        else
             stat = -1;
-        elseif origStat == 20
-            stat = 2;
         end
+        
+        % cplexStatus analyzes the CPLEX output Inform code and returns
+        % the CPLEX solution status message in ExitText and the TOMLAB exit flag
+        % in ExitFlag
+        [origStatText, ~] = cplexStatus(origStat);
 
         switch ILOGcplex.Param.lpmethod.Cur
             case 0

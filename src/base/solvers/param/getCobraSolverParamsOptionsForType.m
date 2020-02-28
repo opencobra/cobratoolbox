@@ -85,5 +85,6 @@ switch solverType
     otherwise
         error('Solver type %s is not supported by the Toolbox');
 end
+paramNames=paramNames';
 
 

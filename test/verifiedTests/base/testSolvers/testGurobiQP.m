@@ -1,6 +1,9 @@
 fprintf('Checking gurobi solver ...\n')
 
+clear params
 params.OutputFlag = 0;
+
+tol= 1e-6;
 
 c = [3; -4];
 b = [5; 0];
@@ -24,6 +27,7 @@ result = gurobi(qp,params);
 x = result.x;
 lam = result.pi;
 
+fprintf('%s\n','Problem qp')
 % Check optimality conditions
 disp("Check 2*Q*x + c - A'*lam = 0 (stationarity):");
 disp(2*Q*x + c - A'*lam);
@@ -55,8 +59,13 @@ QPproblem2.ub = [inf, inf, inf]';
 QPproblem2.sense = ['='; '='];
 
 result = gurobi(QPproblem2,params);
-result.objval
-result.x
+
+fprintf('%s\n%s%g\n','QPproblem2','Optimal objective is: ', result.objval)
+fprintf('%s\n','optimal primal is: ')
+disp(result.x)
+assert(abs(result.objval - 37.5)<tol)
+assert(all((result.x - [2.5;-2.5;5])<tol))
+fprintf('\n')
 
 QPproblem3.Q = sparse([1, 0, 0; 0, 1, 0; 0, 0, 1]); 
 QPproblem3.modelsense = 'min'; 
@@ -68,8 +77,13 @@ QPproblem3.ub = [inf, inf, inf]';
 QPproblem3.sense = ['='; '='];
 
 result = gurobi(QPproblem3,params);
-result.objval
-result.x
+
+fprintf('%s\n%s%g\n','QPproblem3','Optimal objective is: ', result.objval)
+fprintf('%s\n','optimal primal is: ')
+disp(result.x)
+assert(abs(result.objval + 0.75)<tol)
+assert(all((result.x - [0.5;0.5;0.5])<tol))
+fprintf('\n')
 
 QPproblem4.obj = [200; 400];
 QPproblem4.A = sparse([1 / 40, 1 / 60; 1 / 50, 1 / 50]);
@@ -81,8 +95,13 @@ QPproblem4.sense = ['<'; '<'];
 QPproblem4.Q = sparse(2,2);
 
 result = gurobi(QPproblem4,params);
-result.objval
-result.x
+
+fprintf('%s\n%s%g\n','QPproblem4','Optimal objective is: ', result.objval)
+fprintf('%s\n','optimal primal is: ')
+disp(result.x)
+assert(abs(result.objval + 0)<tol)
+assert(all((result.x - [0;0])<tol))
+fprintf('\n')
 
 fprintf('Done.\n')
 
