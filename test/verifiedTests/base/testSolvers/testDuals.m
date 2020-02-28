@@ -14,11 +14,13 @@ global CBTDIR
 currentDir = pwd;
 
 % define the solver packages to be used to run this test
-if 1
+if 0
     solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk'};
 else
     solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk', 'gurobi'};
-    %TODO something is wrong with the way gurobi returns the optimal objective for a QP
+    %TODO something is wrong with the way gurobi's QP solver returns the optimal
+    %objective for a QP with either a missing linear or missing quadratic
+    %objective
     %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
 end
 
@@ -37,7 +39,11 @@ LPproblem.osense = -1;
 LPproblem.csense = ['L'; 'L'];
 
 QPproblem = LPproblem;
-QPproblem.F = zeros(size(LPproblem.A,2));
+if 0
+    QPproblem.F = zeros(2,2);
+else
+    QPproblem.F = sparse(2,2);
+end
 
 % test if the signs returned from solveCobraLP and solverCobraQP are the same
 % for a dummy problem

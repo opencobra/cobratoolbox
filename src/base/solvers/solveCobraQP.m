@@ -6,9 +6,13 @@ function solution = solveCobraQP(QPproblem, varargin)
 % 'tomlab_cplex', 'mosek' and 'qpng' (limited support for small problems)
 %
 % Solves problems of the type
-% :math:`min  osense * c' * x + 0.5 x' * F * x`
+% :math:`min/max  osense * c' * x + 0.5 x' * F * x`
 % s/t :math:`lb <= x <= ub`
 % :math:`A * x  <=/=/>= b`
+%
+% If minimising, then F must be positive semi-definite i.e. chol(F) does
+% not return an error. If maximising, then chol(-F) must not return an
+% error.
 %
 % USAGE:
 %
@@ -102,6 +106,13 @@ if ~isempty(cobraSolverParams.saveInput)
     save(fileName,'QPproblem')
 end
 
+if strcmp(solver,'ibm_cplex')
+    CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+end
+
+%clear the problem structure so it does not interfere later
+clear QPproblem
+
 t_start = clock;
 switch solver
     %%
@@ -124,8 +135,16 @@ switch solver
         %   minimize   0.5 * x'*F*x + c'x     subject to:
         %      x             x_L <=    x   <= x_U
         %                    b_L <=   Ax   <= b_U
+        
+        % function [x, slack, v, rc, f_k, ninf, sinf, Inform, basis, lpiter, ...
+        %          glnodes, confstat, iconfstat, sa, cpxControl, presolve] = ...
+        %          cplex(c, A, x_L, x_U, b_L, b_U, ...
+        %          cpxControl, callback, PriLev, Prob, IntVars, PI, SC, SI, ...
+        %          sos1, sos2, F, logfile, savefile, savemode, qc, ...
+        %          confgrps, conflictFile, saRequest, basis, xIP, logcon, branchprio, ...
+        %          branchdir, cpxSettings);
         [x, s, y, w, f, ninf, sinf, origStat, basis] = cplex(osense*c, A, lb, ub, b_L, b_U,[], [],...
-            cobraSolverParams.printLevel, [], [], [], [], [], [], [], F);
+            cobraSolverParams.printLevel, [], [], [], [], [], [], [], osense*F);
         
         %x primal variable
         %f objective value
@@ -145,7 +164,7 @@ switch solver
             res1(~isfinite(res1))=0;
             nr1 = norm(res1,inf)
 
-            res2 = osense*c + F*x-A'*y -w;
+            res2 = osense*c + osense*F*x-A'*y -w;
             nr2 = norm(res2,inf)
             if nr1 + nr2 > 1e-6
                 pause(0.1)
@@ -179,7 +198,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
+        tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
 
         %optional parameters
         tomlabProblem.PriLvl=cobraSolverParams.printLevel;
@@ -220,7 +239,7 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            res2 = osense*c + F*x-A'*y -w;
+            res2 = osense*c + osense*F*x-A'*y -w;
             norm(res2,inf)
         end
         
@@ -228,7 +247,7 @@ switch solver
      case 'ibm_cplex'
      % Initialize the CPLEX object
      %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
-        CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+        
         [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,cobraSolverParams,solverParams,'QP');
         
         % optimize the problem
@@ -248,7 +267,7 @@ switch solver
             w = Result.reducedcost;
         end
         if isfield(Result, 'ax')
-            s = QPproblem.b - Result.ax;
+            s = b - Result.ax;
         end
         if isfield(Result,'objval')
             f = Result.objval;
@@ -278,7 +297,7 @@ switch solver
         %fluxes or not.
         %See solveCobraLPCPLEX.m for more refined control of cplex
         %Ronan Fleming 11/12/2008
-
+        error('not setup for QP in general')    
         solution=solveCobraLPCPLEX(QPproblem,printLevel,[],[],[],minNorm,'tomlab_cplex');
         %%
     case 'qpng'
@@ -298,9 +317,7 @@ switch solver
 
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (QPproblem.F, QPproblem.c*QPproblem.osense, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
-
-        %f = 0.5*x'*QPproblem.F*x + c'*x;
+        [x, f, y, info] = qpng (osense*QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
 
         w=[];
 
@@ -385,7 +402,7 @@ switch solver
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
-        [res] = mskqpopt(F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
 
         % stat   Solver status
         %           1   Optimal solution found
@@ -447,9 +464,9 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
 
-            norm(osense*c + F*x-A'*y -w,inf)
+            norm(osense*c + osense*F*x-A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
-            norm(osense*c + F*x -A'*y2 -w,inf)
+            norm(osense*c + osense*F*x -A'*y2 -w,inf)
         end
 
 
@@ -554,69 +571,6 @@ switch solver
         %update parameters for testing optimality criterion
         cobraSolverParams.feasTol = options.FeaTol;
         cobraSolverParams.optTol = options.OptTol;
-        
-    case 'gurobi_mex'
-        % Free academic licenses for the Gurobi solver can be obtained from
-        % http://www.gurobi.com/html/academic.html
-        %
-        % The code below uses Gurobi Mex to interface with Gurobi. It can be downloaded from
-        % http://www.convexoptimization.com/wikimization/index.php/Gurobi_Mex:_A_MATLAB_interface_for_Gurobi
-
-        clear opts            % Use the default parameter settings
-        if cobraSolverParams.printLevel == 0
-            % Version v1.10 of Gurobi Mex has a minor bug. For complete silence
-            % Remove Line 736 of gurobi_mex.c: mexPrintf("\n");
-            opts.Display = 0;
-            opts.DisplayInterval = 0;
-        else
-            opts.Display = 1;
-        end
-
-        if (isempty(csense))
-            clear csense
-            csense(1:length(b),1) = '=';
-        else
-            csense(csense == 'L') = '<';
-            csense(csense == 'G') = '>';
-            csense(csense == 'E') = '=';
-            csense = csense(:);
-        end
-
-        % Gurobi passes individual terms instead of an F matrix. qrow and
-        % qcol specify which variables are multipled to get each term,
-        % while qval specifies the coefficients of each term.
-
-        [qrow,qcol,qval]=find(F);
-        qrow=qrow'-1;   % -1 because gurobi numbers indices from zero, not one.
-        qcol=qcol'-1;
-        qval=0.5*qval';
-
-        opts.QP.qrow = int32(qrow);
-        opts.QP.qcol = int32(qcol);
-        opts.QP.qval = qval;
-        opts.Method = cobraSolverParams.method;    % 0 - primal, 1 - dual
-        opts.FeasibilityTol = cobraSolverParams.feasTol;
-        opts.OptimalityTol = cobraSolverParams.optTol;
-        %opt.Quad=1;
-        opts = updateStructData(opts,solverParams);
-        cobraSolverParams.feasTol = opts.FeasibilityTol;
-
-
-        %gurobi_mex doesn't cast logicals to doubles automatically
-        c = osense*double(c);
-        [x,f,origStat,output,y] = gurobi_mex(c,1,sparse(A),b, ...
-            csense,lb,ub,[],opts);
-        if origStat==2
-            stat = 1; % Optimal solutuion found
-        elseif origStat==3
-            stat = 0; % Infeasible
-        elseif origStat==5
-            stat = 2; % Unbounded
-        elseif origStat==4
-            stat = 0; % Gurobi reports infeasible *or* unbounded
-        else
-            stat = -1; % Solution not optimal or solver problem
-        end
 
     case 'gurobi'
         %% gurobi
@@ -651,44 +605,32 @@ switch solver
 
         %Finished setting up options.
 
-        if (isempty(QPproblem.csense))
-            QPproblem=rmfield(QPproblem,'csense');
-            QPproblem.csense(1:length(b),1) = '=';
+        if isempty(csense)
+            QPproblem.sense(1:length(b),1) = '=';
         else
-            QPproblem.csense(QPproblem.csense == 'L') = '<';
-            QPproblem.csense(QPproblem.csense == 'G') = '>';
-            QPproblem.csense(QPproblem.csense == 'E') = '=';
-            QPproblem.csense = QPproblem.csense(:);
+            QPproblem.sense(csense == 'L') = '<';
+            QPproblem.sense(csense == 'G') = '>';
+            QPproblem.sense(csense == 'E') = '=';
         end
 
         %Until Gurobi 9.0, it was required that the quadratic matrix Q is positive semi-definite, so that the model is convex. 
         %This is no longer the case for Gurobi 9.0, which supports general non-convex quadratic constraints and objective functions, 
         %including bilinear and quadratic equality constraints. 
-        QPproblem.Q = sparse(QPproblem.F);
-        
-        %model.modelsense (optional) The optimization sense. 
-        %Allowed values are 'min' (minimize) or 'max' (maximize). 
-        %When absent, the default optimization sense is minimization.
-        if QPproblem.osense == 1
-            QPproblem.modelsense = 'min';
-        else
-            QPproblem.modelsense = 'max';
+        if norm(F,inf)~=0
+            %For gurobi model.Q must be a sparse double matrix
+            QPproblem.Q = sparse(osense*0.5*F);
         end
         
-        [QPproblem.A,QPproblem.rhs,QPproblem.obj,QPproblem.sense] = deal(sparse(QPproblem.A),QPproblem.b,double(QPproblem.c),QPproblem.csense);
+        %optimization sense 
+        QPproblem.modelsense = 'min';
+
+        [QPproblem.A,QPproblem.rhs,QPproblem.obj] = deal(sparse(A),b,double(osense*c));
         resultgurobi = gurobi(QPproblem,params);
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
             stat = 1; % Optimal solution found
-            %Ronan: I changed the signs of the dual variables to make it
-            %consistent with the way solveCobraLP returns the dual
-            %variables
-            if 0
-                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);
-            else
-                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,QPproblem.osense*resultgurobi.pi,QPproblem.osense*resultgurobi.rc,resultgurobi.slack);
-            end
-        elseif strcmp(resultgurobi.status,'INFEASIBLE')
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);           
+          elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
             stat = 2; % Unbounded
@@ -788,7 +730,7 @@ switch solver
             lbeq = [QPproblem.lb ; zeros(nSlacks,1)];
             ubeq = [QPproblem.ub ; inf*ones(nSlacks,1)];
             ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
-            Feq  = [QPproblem.F , sparse(m, nSlacks);
+            Feq  = [osense*QPproblem.F , sparse(m, nSlacks);
                         sparse(nSlacks,n + nSlacks)];
         end
         
@@ -806,7 +748,7 @@ switch solver
         [mAeq,nAeq]  = size(Aeq);
         LPproblem.A =  [Aeq, sparse(mAeq,mAeq);
                         Feq, Aeq'];
-        LPproblem.b = [beq;-1*QPproblem.osense*ceq];
+        LPproblem.b = [beq;-1*osense*ceq];
         LPproblem.c = sparse(nAeq+mAeq,1);
         
 
@@ -957,12 +899,11 @@ else
 end
 
 if solution.stat==1
-
     %TODO slacks for other solvers
     if any(strcmp(solver,{'gurobi','mosek', 'ibm_cplex', 'tomlab_cplex','pdco','dqqMinos'}))
         if ~isempty(solution.slack) && ~isempty(solution.full)
             % determine the residual 1
-            res1 = QPproblem.A*solution.full + solution.slack - QPproblem.b;
+            res1 = A*solution.full + solution.slack - b;
             res1(~isfinite(res1))=0;
             tmp1 = norm(res1, inf);
             
@@ -976,12 +917,12 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'gurobi','mosek'}))%todo, debug gurobi QP
+        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek'}))%todo, debug gurobi QP
             % determine the residual 2
-            if strcmp(solver,'pdco')
+            if strcmp(solver,'gurobi')
                 pause(1e-9)
             end
-            res2 = QPproblem.osense * QPproblem.c  + QPproblem.F*solution.full - QPproblem.A' * solution.dual - solution.rcost;
+            res2 = osense*c  + osense*F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
             % evaluate the optimality condition 2
@@ -997,12 +938,12 @@ if solution.stat==1
         
         if ~isempty(solution.full)
             %set the value of the objective
-            solution.obj = QPproblem.c'*solution.full + 0.5*solution.full'*QPproblem.F*solution.full;
+            solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
             if norm(solution.obj - osense*f) > 1e-4
                 warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
                 fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
                     'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
-                    'while the value constructed from osense*c''*x + x''*F*x :', osense*QPproblem.c'*solution.full + solution.full'*QPproblem.F*solution.full)
+                    'while the value constructed from osense*c''*x + x''*F*x :', osense*c'*solution.full + solution.full'*F*solution.full)
             end
         else
             solution.obj = NaN;
@@ -1040,9 +981,9 @@ end
 %Helper function for pdco
 %%
     function [obj,grad,hess] = QPObj(x)
-        obj  = osense*ceq'*x + 0.5*x'*Feq*x;
-        grad = osense*ceq + Feq*x;
-        hess = Feq;
+        obj  = osense*ceq'*x + osense*0.5*x'*Feq*x;
+        grad = osense*ceq + osense*Feq*x;
+        hess = osense*Feq;
     end
 
     function DQQCleanup(tmpPath, originalDirectory)

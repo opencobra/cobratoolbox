@@ -51,19 +51,19 @@ cplexProblem.Model.ub = Problem.ub;
 cplexProblem.Model.lb = Problem.lb;
 
 if isfield(Problem,'F')
-    cplexProblem.Model.Q = Problem.F;
+    if norm(Problem.F,inf)==0
+        cplexProblem.Model.Q = Problem.osense*full(Problem.F);
+    else
+        cplexProblem.Model.Q = Problem.osense*Problem.F;
+    end
+    
 end
 
 if 1
     cplexProblem.Model.obj = Problem.osense*Problem.c;
-    cplexProblem.Model.sense = 'minimize';
-else
-    if Problem.osense == 1
-        cplexProblem.Model.sense = 'minimize';
-    else
-        cplexProblem.Model.sense = 'maximize';
-    end
 end
+
+cplexProblem.Model.sense = 'minimize';
 
 if isfield(Problem,'vartype')
     cplexProblem.Model.ctype = columnVector(Problem.vartype)';
