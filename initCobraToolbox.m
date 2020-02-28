@@ -282,7 +282,12 @@ xmlTestFile = [getDistributedModelFolder(xmlTestModel) filesep xmlTestModel];
 % save the userpath
 originalUserPath = path;
 
-% Set global LP solution accuracy tolerance
+%These default tolerances are based on the default values for the Gurobi LP
+%solver. Do not change them without first consulting with other developers.
+%https://www.gurobi.com/documentation/9.0/refman/parameters.html
+% (primal) feasibility tolerance
+changeCobraSolverParams('LP', 'feasTol', 1e-6);
+% (dual) optimality tolerance
 changeCobraSolverParams('LP', 'optTol', 1e-6);
 
 % Check that SBML toolbox is installed and accessible
@@ -317,22 +322,25 @@ OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
 %Define a set of "use first" solvers, other supported solvers will also be added to the struct.
 %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
-SOLVERS = struct('gurobi',struct(),...
-    'ibm_cplex',struct(),...
+SOLVERS = struct('ibm_cplex',struct(),...
     'tomlab_cplex',struct(),...
+    'gurobi',struct(),...
     'glpk',struct(),...
     'mosek',struct(),...
     'matlab',struct());
+
 % active support - supported solvers
-SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
-SOLVERS.dqqMinos.type = {'LP'};
-SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.matlab.type = {'LP', 'NLP'};
 SOLVERS.mosek.type = {'LP', 'QP'};
+SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.pdco.type = {'LP', 'QP'};
 SOLVERS.quadMinos.type = {'LP'};
+SOLVERS.dqqMinos.type = {'LP','QP'};
+SOLVERS.matlab.type = {'LP', 'NLP'};
+% active support of cplex interfaces - supported solvers
+SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
+SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.cplexlp.type = {'LP'};
 SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
 % passive support - solver interfaces
@@ -347,15 +355,18 @@ SOLVERS.lp_solve.type = {'LP'};
 %SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
 % definition of category of solvers with active support
-SOLVERS.cplex_direct.categ = 'active';
+
 SOLVERS.dqqMinos.categ = 'active';
 SOLVERS.glpk.categ = 'active';
 SOLVERS.gurobi.categ = 'active';
-SOLVERS.ibm_cplex.categ = 'active';
 SOLVERS.matlab.categ = 'active';
 SOLVERS.mosek.categ = 'active';
 SOLVERS.pdco.categ = 'active';
 SOLVERS.quadMinos.categ = 'active';
+
+SOLVERS.cplex_direct.categ = 'active';
+SOLVERS.ibm_cplex.categ = 'active';
+SOLVERS.cplexlp.categ = 'active';
 SOLVERS.tomlab_cplex.categ = 'active';
 
 % definition of category of solvers with passive support
@@ -383,11 +394,15 @@ end
 
 % check the installation of the solver
 for i = 1:length(supportedSolversNames)
+    if 0 %set to 1 to debug a new solver
+        disp(supportedSolversNames{i})
+        if strcmp(supportedSolversNames{i},'tomlab_snopt')
+            pause(0.1)
+        end
+    end
     %We will validate all solvers in init. After this, all solvers are
     %checked, whether they actually work and the SOLVERS field is set.
-    [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},...
-        SOLVERS.(supportedSolversNames{i}).type{1},...
-        0, 2);
+    [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 2);
     if strcmp(SOLVERS.(supportedSolversNames{i}),'gurobi')
         disp(SOLVERS.(supportedSolversNames{i}));
     end
@@ -406,7 +421,7 @@ if ENV_VARS.printLevel
     fprintf(' > Setting default solvers ...');
     changeCobraSolver('glpk', 'LP', 0);
     changeCobraSolver('glpk', 'MILP', 0);
-    changeCobraSolver('qpng', 'QP', 0);
+    changeCobraSolver('pdco', 'QP', 0);
     changeCobraSolver('matlab', 'NLP', 0);
     for k = 1:length(OPT_PROB_TYPES)
         varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
@@ -543,6 +558,7 @@ end
 
 % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
 changeCobraSolver('gurobi', 'ALL', 0);
+changeCobraSolver('ibm_cplex', 'QP', 0); %until problem with gurobi QP sorted
 
 % check if a new update exists
 if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200')) && updateToolbox
