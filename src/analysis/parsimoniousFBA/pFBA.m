@@ -1,4 +1,4 @@
-function [GeneClasses, RxnClasses, modelIrrevFM, MinimizedFlux] = pFBA(model, varargin)
+function [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
 % Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes
 % the user's objective function and then minimizes the flux through the
 % model and subsequently classifies each gene by how it contributes to the
@@ -28,7 +28,7 @@ function [GeneClasses, RxnClasses, modelIrrevFM, MinimizedFlux] = pFBA(model, va
 %    RxnsClasses:     Structure with fields for each reaction class
 %    modelIrrevFM:    Irreversible model used for minimizing flux with
 %                     the minimum flux set as a flux upper bound
-%    MinimizedFlux    minimized flux
+%
 %
 % Note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
 % reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
@@ -51,7 +51,6 @@ if nargin < 2
     mapOutName = 'pFBA_map.svg';
     skipclass = 0;
 end
-MinimizedFlux=[];
 if mod(length(varargin),2)==0
     for i=1:2:length(varargin)-1
         switch lower(varargin{i})
@@ -75,7 +74,7 @@ if skipclass % skip the model reduction and gene/rxn classification
     % minimize the network flux
     FBAsoln = optimizeCbModel(model);
     model.lb(model.c==1) = FBAsoln.f;
-    [ MinimizedFlux, modelIrrevFM]= minimizeModelFlux_local(model,GeneOption);
+    [ MinimizedFlux modelIrrevFM]= minimizeModelFlux_local(model,GeneOption);
     modelIrrevFM = changeRxnBounds(modelIrrevFM,'netFlux',MinimizedFlux.f,'b');
     GeneClasses = [];
     RxnClasses = [];
@@ -94,7 +93,7 @@ else
     tempmodel = changeRxnBounds(tempmodel,model.rxns(selExc),1000,'u');
 
     %Note can be performed faster using fastFVA instead of fluxVariability
-    [maxF, minF] = fluxVariability(tempmodel,.001);
+    [maxF minF] = fluxVariability(tempmodel,.001);
     Blocked_Rxns = model.rxns(and(abs(maxF)<tol,abs(minF)<tol));
     model = removeRxns(model,Blocked_Rxns); % remove blocked reactions
 
@@ -153,7 +152,7 @@ else
     pFBAopt_Rxns(ismember(pFBAopt_Rxns,'netFlux'))=[];
     [geneList]=findGenesFromRxns(model,pFBAopt_Rxns);
     geneList2 = {};
-    for i = 1:length(geneList)
+    for i = 1:length(geneList),
         geneList2(end+1:end+length(geneList{i}),1) = columnVector( geneList{i});
     end
     pFBAOptima = unique(geneList2);
@@ -230,46 +229,46 @@ else
         end
         drawFlux(map, model_sav, MapVector, options);
     end
-    
+
 end
 end
-function [ MinimizedFlux, modelIrrev]= minimizeModelFlux_local(model,GeneOption)
+function [ MinimizedFlux modelIrrev]= minimizeModelFlux_local(model,GeneOption)
 % This function finds the minimum flux through the network and returns the
 % minimized flux and an irreversible model convert model to irrev
 
-modelIrrev = convertToIrreversible(model);
-% add pseudo-metabolite to measure flux through network
+    modelIrrev = convertToIrreversible(model);
+    % add pseudo-metabolite to measure flux through network
 
-if nargin==1
-    GeneOption=0;
-end
+    if nargin==1
+        GeneOption=0;
+    end
+    
+    %Add the metabolite
+    modelIrrev = addMetabolite(modelIrrev,'fluxMeasure');
+    %Then set all the Stoichiometric entries.
+    
+    if GeneOption==0 % signal that you want to minimize the sum of all gene and non-gene associated fluxes        
+        modelIrrev.S(end,:) = ones(size(modelIrrev.S(1,:)));
+    elseif GeneOption==1 % signal that you want to minimize the sum of only gene-associated fluxes
+        %find all reactions which are gene associated
+        Ind=find(sum(modelIrrev.rxnGeneMat,2)>0);
+        modelIrrev.S(end,:) = zeros(size(modelIrrev.S(1,:)));
+        modelIrrev.S(end,Ind) = 1;
+    elseif GeneOption==2 % signal that you want to minimize the sum of only NON gene-associated fluxes
+        %find all reactions which are gene associated
+        Ind=find(sum(modelIrrev.rxnGeneMat,2)==0);
+        modelIrrev.S(end,:) = zeros(size(modelIrrev.S(1,:)));
+        modelIrrev.S(end,Ind) = 1;
+    end   
 
-%Add the metabolite
-modelIrrev = addMetabolite(modelIrrev,'fluxMeasure');
-%Then set all the Stoichiometric entries.
+    % add a pseudo reaction that measures the flux through the network
+    modelIrrev = addReaction(modelIrrev,'netFlux',{'fluxMeasure'},[-1],false,0,inf,0,'','');
 
-if GeneOption==0 % signal that you want to minimize the sum of all gene and non-gene associated fluxes
-    modelIrrev.S(end,:) = ones(size(modelIrrev.S(1,:)));
-elseif GeneOption==1 % signal that you want to minimize the sum of only gene-associated fluxes
-    %find all reactions which are gene associated
-    Ind=find(sum(modelIrrev.rxnGeneMat,2)>0);
-    modelIrrev.S(end,:) = zeros(size(modelIrrev.S(1,:)));
-    modelIrrev.S(end,Ind) = 1;
-elseif GeneOption==2 % signal that you want to minimize the sum of only NON gene-associated fluxes
-    %find all reactions which are gene associated
-    Ind=find(sum(modelIrrev.rxnGeneMat,2)==0);
-    modelIrrev.S(end,:) = zeros(size(modelIrrev.S(1,:)));
-    modelIrrev.S(end,Ind) = 1;
-end
+    % set the flux measuring demand as the objective
+    modelIrrev.c = zeros(length(modelIrrev.rxns),1);
+    modelIrrev = changeObjective(modelIrrev, 'netFlux');
 
-% add a pseudo reaction that measures the flux through the network
-modelIrrev = addReaction(modelIrrev,'netFlux',{'fluxMeasure'},[-1],false,0,inf,0,'','');
-
-% set the flux measuring demand as the objective
-modelIrrev.c = zeros(length(modelIrrev.rxns),1);
-modelIrrev = changeObjective(modelIrrev, 'netFlux');
-
-% minimize the flux measuring demand (netFlux)
-MinimizedFlux = optimizeCbModel(modelIrrev,'min');
+    % minimize the flux measuring demand (netFlux)
+    MinimizedFlux = optimizeCbModel(modelIrrev,'min');
 
 end

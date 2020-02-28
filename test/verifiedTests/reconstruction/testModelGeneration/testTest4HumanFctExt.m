@@ -53,17 +53,7 @@ for k = 1:numel(solverPkgs.LP)
                 else
                     fprintf('%i - %i: %1.2f : %1.2f\n', i, j, Table_csourcesOri{i, j}, ref_Table_csourcesOri{i, j});
                     if i ~= 8 && j ~= 3
-                        if isnan(Table_csourcesOri{i, j})
-                            %for backward compatibility now that optimal
-                            %objective for an infeasible problem is Nan
-                            %rather than zero.
-                            Table_csourcesOri{i, j}=0;
-                        end
-                        bool = abs(Table_csourcesOri{i, j} - ref_Table_csourcesOri{i, j}) < tol;
-                        if bool==0
-                            pause(0.1)
-                        end
-                        assert(bool);
+                        assert(abs(Table_csourcesOri{i, j} - ref_Table_csourcesOri{i, j}) < tol);
                     end
                 end
             end
