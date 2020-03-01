@@ -77,13 +77,36 @@ if ~iscell(rxnIDs)
     error('rxnIDs has to be a cell array of strings!')
 end
 
-if checkIDsForTypeExist(model,rxnIDs,'rxns')
-    [tf,dups] = checkIDsForTypeExist(model,rxnIDs,'rxns');
-    if any(ismember(model.rxns,dups))
-        error('Duplicate Reaction ID detected.');    
+%[bool,existing] = checkIDsForTypeExist(model,ids,basefield)
+% Check whether the given IDs exist for the given type of base field. Base
+% fields include rxns, mets, genes, comps, proteins, ctrs, evars. ctrs/mets
+% as well as rxns/evars will be considered as a combined field. 
+% OUTPUT:
+%    bool:                Boolean vector true if any of the IDs exist.
+%    existing:            Unique set of pre-existing IDs for this base field.
+[bool,existing] = checkIDsForTypeExist(model,rxnIDs,'rxns');
+
+if bool
+    if exist('varargin','var')
+        error('The following reaction IDs are already IDs of variables in the model:\n%s', strjoin(existing,'\n'));
     else
-        error('The following reaction IDs are already IDs of variables in the model:\n%s', strjoin(dups,'\n'));    
-    end        
+        %try to recover rather than fail ungracefully, passes
+        %testBatchAddition and testMergeTwoModels!
+
+        % C = setdiff(A,B) for vectors A and B, returns the values in A that
+        % are not in B with no repetitions. C will be sorted.
+        rxnIDs = setdiff(rxnIDs,existing);
+        if isempty(rxnIDs)
+            warning('All of the reaction IDs provided are already IDs of reactions in the model, so nothing to add.:\n%s', strjoin(existing,'\n'));
+            newmodel = model;
+            return
+        else
+            duplicateRxnIDBool = ismember(existing,rxnIDs);
+            %pare down the stoichiometries
+            Stoichiometries = Stoichiometries(:,duplicateRxnIDBool);
+            warning('The following reaction IDs are already IDs of reactions in the model and will not be added:\n%s', strjoin(existing,'\n'));
+        end
+    end
 end
 
 if numel(unique(metList)) < numel(metList)

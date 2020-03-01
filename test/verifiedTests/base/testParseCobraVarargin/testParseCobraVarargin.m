@@ -35,7 +35,8 @@ validator = {@(x) true, @ischar, @(x) isscalar(x) & isnumeric(x)};
 [aIn, aIn2, bIn] = deal(funParams{:});
 assert(isequal(aIn, []) & isequal(aIn2, 'test') & isequal(bIn, 2))
 for str = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'}
-    cobraParamsCorrect = [paramNames.(str{1}); paramValues.(str{1})];
+    cobraParamsCorrect = [paramNames.(str{1})', paramValues.(str{1})'];
+    cobraParamsCorrect =cobraParamsCorrect';
     cobraParamsCorrectStruct = struct(cobraParamsCorrect{:});
     % all fields the same except 'solver'
     assert(isequal(rmfield(cobraParams.(str{1}), 'solver'), cobraParamsCorrectStruct))

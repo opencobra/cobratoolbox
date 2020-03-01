@@ -379,6 +379,8 @@ switch interface
         %original status
         solution.origStat   = ILOGcplex.Solution.status;
         
+        [ExitText,~] = cplexStatus(solution.origStat);
+        solution.origStatText = ExitText;
         %https://www.ibm.com/support/knowledgecenter/SS9UKU_12.6.0/com.ibm.cplex.zos.help/refcallablelibrary/macros/Solution_status_codes.html
         if ILOGcplex.Solution.status == 1
             solution.obj        = osense*ILOGcplex.Solution.objval;
@@ -407,6 +409,7 @@ switch interface
             solution.time       = ILOGcplex.Solution.time;
             
         else
+        
             warning(['IBM CPLEX STATUS = ' solution.origStatText '\n' ...
                 ', see: https://www.ibm.com/support/knowledgecenter/SS9UKU_12.6.0/com.ibm.cplex.zos.help/refcallablelibrary/macros/Solution_status_codes.html'])
             solution.stat       = -1;

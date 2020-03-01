@@ -21,7 +21,7 @@ cd(fileDir);
 % define the solver packages to be used to run this test
 % for some reason, linprog cannot cope with fastcore LP9
 % quadMinos and dqqMinos don't work with parallel processing
-solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
 
 % load a model
 model = getDistributedModel('ecoli_core_model.mat');

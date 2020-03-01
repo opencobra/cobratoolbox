@@ -13,6 +13,9 @@
 % save the current path
 currentDir = pwd;
 
+
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
+
 % initialize the test
 fileDir = fileparts(which('testFVA'));
 cd(fileDir);
@@ -57,8 +60,8 @@ try
         parpool(2);
     end
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
-        'useSolversIfAvailable',{'ibm_cplex','gurobi'},...
-        'excludeSolvers',{'dqqMinos','quadMinos'},...
+        'useSolversIfAvailable',{'ibm_cplex'},...
+        'excludeSolvers',{'dqqMinos','quadMinos','gurobi'},...
         'minimalMatlabSolverVersion',8.0);
     threadsForFVA = [2, 1];
 catch ME
