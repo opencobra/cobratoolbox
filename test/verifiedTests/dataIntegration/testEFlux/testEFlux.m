@@ -13,7 +13,7 @@ cd(fileDir);
 
 % requires access to GEO to download data.
 % Matlabs tolerances and precision seem incompatible for this function.
-solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab','pdco'});
+solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab'});
 
 model = getDistributedModel('ecoli_core_model.mat');
 model = removeGenesFromModel(model,'s0001','keepReactions',true);

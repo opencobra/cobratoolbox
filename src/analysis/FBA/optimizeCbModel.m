@@ -119,14 +119,12 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                          * y - Dual to the matrix inequality constraints (Shadow prices)
 %                          * w - Dual to the box constraints (Reduced costs)
 %                          * s - Slacks of the metabolites
-%
 %                          * stat - Solver status in standardized form:
-%                               * 0 - Infeasible problem
-%                               * 1 - Optimal solution
-%                               * 2 - Unbounded solution
-%                               * 3 - Almost optimal solution
-%                               * -1 - Some other problem (timelimit, numerical problem etc)
 %
+%                            * `-1` - No solution reported (timelimit, numerical problem etc)
+%                            * `1` - Optimal solution
+%                            * `2` - Unbounded solution
+%                            * `0` - Infeasible
 %                          * origStat - Original status returned by the specific solver
 %
 %                    If the input model contains `C` the following fields are added to the solution:
@@ -164,14 +162,13 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 % NOTE:
 %
-%    `solution.stat` is either 1, 2, 3, 0 or -1, and is a translation from `solution.origStat`,
+%    `solution.stat` is either 1, 2, 0 or -1, and is a translation from `solution.origStat`,
 %    which is returned by each solver in a solver specific way. That is, not all solvers return
 %    the same type of `solution.origStat` and because the cobra toolbox can use many solvers,
 %    we need to return to the user of `optimizeCbModel.m` a standard representation, which is what
 %    `solution.stat` is.
 %
-%    If `solution.stat = 1 or = 3`, then a solution is returned, otherwise no solution is returned
-%    and the solution.f = NaN
+%    When running `optimizeCbModel.m`, unless `solution.stat = 1`, then no solution is returned.
 %    This means that it is up to the person calling `optimizeCbModel` to adapt their code to the
 %    case when no solution is returned, by checking the value of `solution.stat` first.
 
@@ -239,27 +236,15 @@ end
 [nMets,nRxns] = size(model.S);
 
 if isfield(model,'C')
-    modelC = 1;
     nCtrs = size(model.C,1);
-else
-    modelC = 0;
 end
 
 if isfield(model,'E')
-    modelE = 1;
     nVars = size(model.E,2);
-else
-    modelE = 0;
 end
 
 % build the optimization problem, after it has been actively requested to be verified
 LPproblem = buildLPproblemFromModel(model,verify);
-if allowLoops
-    clear model
-end
-
-% save the original size of the problem
-[~,nTotalVars] = size(LPproblem.A);
 
 %check in case there is no linear objective
 noLinearObjective = all(LPproblem.c==0);
@@ -297,6 +282,8 @@ end
 %only run if minNorm is not empty, and either there is no linear objective
 %or there is a linear objective and the LP problem solved to optimality
 if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solution.stat==1 && ~isempty(minNorm))
+    [~,nTotalVars] = size(LPproblem.A);
+    
     if strcmp(minNorm, 'one')
         % Minimize the absolute value of fluxes to 'avoid' loopy solutions
         % Solve secondary LP to minimize one-norm of |v|
@@ -317,18 +304,14 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         LPproblem2.lb = [LPproblem.lb;zeros(2*nRxns,1)];
         LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nRxns,1)];
         LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);objective];
-        
-        %csense for 3 & 4 above
         LPproblem2.csense = [LPproblem.csense; repmat('G',2*nRxns,1)];
+        
         % constrain the optimal value according to the original problem
         if LPproblem.osense==-1
-            LPproblem2.csense = [LPproblem2.csense; 'G'];
-            %LPproblem2.csense(nTotalVars+1) = 'G'; %wrong
+            LPproblem2.csense(end+1) = 'G';
         else
-            LPproblem2.csense = [LPproblem2.csense; 'L'];
-            %LPproblem2.csense(nTotalVars+1) = 'L';  %wrong
+            LPproblem2.csense(end+1) = 'L';
         end
-        
         LPproblem2.osense = 1;
         % Re-solve the problem
         if allowLoops
@@ -345,19 +328,15 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %                   lb <= v <= ub
         
         % Define the constraints structure
-        if noLinearObjective
-            % Call the sparse LP solver
-            solutionL0 = sparseLP(LPproblem, zeroNormApprox);
-        else
-            LPproblem2.A = [LPproblem.A ; LPproblem.c'];
-            LPproblem2.b = [LPproblem.b ; objective];
-            LPproblem2.csense = [LPproblem.csense;'E'];
-            LPproblem2.lb = LPproblem.lb;
-            LPproblem2.ub = LPproblem.ub;
-            % Call the sparse LP solver
-            solutionL0 = sparseLP(LPproblem2, zeroNormApprox);
-        end
-
+        LPproblem2.A = [LPproblem.A ; LPproblem.c'];
+        LPproblem2.b = [LPproblem.b ; objective];
+        LPproblem2.csense = [LPproblem.csense;'E'];
+        LPproblem2.lb = LPproblem.lb;
+        LPproblem2.ub = LPproblem.ub;
+        
+        % Call the sparse LP solver
+        solutionL0 = sparseLP(LPproblem2, zeroNormApprox);
+        
         %Store results
         solution.stat   = solutionL0.stat;
         solution.full   = solutionL0.x;
@@ -380,6 +359,14 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %
         %     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
         
+        % quadratic minimization of the norm.
+        % set previous optimum as constraint.
+        LPproblem2 = LPproblem;
+        LPproblem2.A = [LPproblem.A;LPproblem.c'];
+        LPproblem2.b = [LPproblem.b;objective];
+        LPproblem2.csense(end+1) = 'E';
+        
+        LPproblem2.c = zeros(size(LPproblem2.c)); % no need for c anymore.
         %Minimise Euclidean norm using quadratic programming
         if isnumeric(minNorm)
             if length(minNorm)==nTotalVars && size(minNorm,1)~=size(minNorm,2)
@@ -396,74 +383,25 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         else
             error(['minNorm has dimensions ' int2str(size(minNorm,1)) ' x ' int2str(size(minNorm,2)) ' but it can only of the form {(0), ''one'', ''zero'', > 0 , n x 1 vector}.'])
         end
+        LPproblem2.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
+        LPproblem2.osense=1;
         
-        % quadratic minimization of the norm.
-        if noLinearObjective
-            LPproblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
-            if allowLoops
-                %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
-                %part of a loop. By definition, exchange reactions are not part of these loops, more
-                %properly called stoichiometrically balanced cycles.
-                
-                solution = solveCobraQP(LPproblem);
-            else
-                %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
-                %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
-                MIQPproblem = addLoopLawConstraints(LPproblem, model, 1:nTotalVars);
-                solution = solveCobraMIQP(MIQPproblem);
-            end
+        if allowLoops
+            %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
+            %part of a loop. By definition, exchange reactions are not part of these loops, more
+            %properly called stoichiometrically balanced cycles.
+            solution = solveCobraQP(LPproblem2);
         else
-            % set previous optimum as constraint.
-            LPproblem2 = LPproblem;
-            LPproblem2.A = [LPproblem.A;LPproblem.c'];
-            LPproblem2.b = [LPproblem.b;objective];
-            LPproblem2.csense = [LPproblem.csense; 'E'];
-            LPproblem2.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
-            LPproblem2.osense=1;
-            if allowLoops
-                %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
-                %part of a loop. By definition, exchange reactions are not part of these loops, more
-                %properly called stoichiometrically balanced cycles.
-                solution = solveCobraQP(LPproblem2);
-            else
-                %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
-                %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
-                MIQPproblem = addLoopLawConstraints(LPproblem2, model, 1:nTotalVars);
-                solution = solveCobraMIQP(MIQPproblem);
-            end
+            %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
+            %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
+            MIQPproblem = addLoopLawConstraints(LPproblem2, model, 1:nTotalVars);
+            solution = solveCobraMIQP(MIQPproblem);
         end
     end
 end
 
-
-switch solution.stat
-    case 1
-        if printLevel>0
-            fprintf('%s\n','Optimal solution found.')
-        end
-    case -1
-        if printLevel>0
-            warning('%s\n','No solution reported (timelimit, numerical problem etc).')
-        end
-    case 0
-        if printLevel>0
-            warning('Infeasible model.')
-        end
-    case 2
-        if printLevel>0
-            warning('Unbounded solution.');
-        end
-    case 3
-        if printLevel>0
-            warning('Solution exists, but either scaling problems or not proven to be optimal.');
-        end
-    otherwise
-        solution.stat
-        error('solution.stat must be in {-1, 0 , 1, 2, 3}')
-end
-
-% Return a solution or an almost optimal solution
-if solution.stat == 1 || solution.stat == 3
+% Store results
+if solution.stat == 1
     % solution found. Set corresponding values
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
@@ -473,10 +411,10 @@ if solution.stat == 1 || solution.stat == 3
     if strcmp(minNorm, 'zero')
         %zero norm
         zeroNormTol = 0; %TODO set based on sparseLP tolerance
-        solution.f2 = sum(solution.full(1:nTotalVars,1) > zeroNormTol);
+        solution.f2 = sum(solution.full(1:end-1,1) > zeroNormTol);
     elseif strcmp(minNorm, 'one')
         %one norm
-        solution.f2 = sum(abs(solution.full(1:nTotalVars,1)));
+        solution.f2 = sum(abs(solution.full(1:size(LPproblem2.A,2),1)));
     else
         if exist('LPproblem2','var')
             if isfield(LPproblem2,'F')
@@ -491,7 +429,7 @@ if solution.stat == 1 || solution.stat == 3
     end
     %primal optimal variables
     solution.v = solution.full(1:nRxns);
-    if modelE
+    if isfield(model,'E')
         solution.vars_v = solution.full(nRxns+1:nRxns+nVars);
     else
         solution.vars_v = [];
@@ -503,7 +441,7 @@ if solution.stat == 1 || solution.stat == 3
     if isfield(solution,'dual')
         if ~isempty(solution.dual)
             solution.y = solution.dual(1:nMets,1);
-            if modelC
+            if isfield(model,'C')
                 solution.ctrs_y = solution.dual(nMets+1:nMets+nCtrs,1);
             end
         end
@@ -513,7 +451,7 @@ if solution.stat == 1 || solution.stat == 3
     if isfield(solution,'rcost')
         if ~isempty(solution.rcost)
             solution.w=solution.rcost(1:nRxns,1);
-            if modelE
+            if isfield(model,'E')
                 solution.vars_w = solution.rcost(nRxns+1:nRxns+nVars,1);
             end
         end
@@ -523,7 +461,7 @@ if solution.stat == 1 || solution.stat == 3
     if isfield(solution,'slack')
         if ~isempty(solution.slack)
             solution.s=solution.slack(1:nMets,1);
-            if modelC
+            if isfield(model,'C')
                 solution.ctrs_s = solution.slack(nMets+1:nMets+nCtrs,1);
             end
         end
@@ -546,21 +484,38 @@ if solution.stat == 1 || solution.stat == 3
     presentfields = ismember(fieldOrder,currentfields);
     absentfields = ~ismember(currentfields,fieldOrder);
     solution = orderfields(solution,[currentfields(absentfields);fieldOrder(presentfields)]);
-else
+end
+
+if printLevel>0
+    switch solution.stat
+        case 1
+            fprintf('%s\n','Optimal solution found.')
+        case -1
+            warning('%s\n','No solution reported (timelimit, numerical problem etc).')
+        case 0
+            warning('Infeasible model.')
+        case 2
+            warning('Unbounded solution.');
+        otherwise
+            error('solution.stat must be in {-1, 0 , 1, 2}')
+    end
+end
+    
+if solution.stat ~= 1    
     if 0
         %return NaN of correct dimensions if problem does not solve properly
         solution.f = NaN;
-        solution.v = NaN*ones(nRxns,1);
-        solution.y = NaN*ones(nMets,1);
-        solution.w = NaN*ones(nRxns,1);
-        solution.s = NaN*ones(nMets,1);
-        if modelC
-            solution.ctrs_y = NaN*ones(nCtrs,1);
-            solution.ctrs_s = NaN*ones(nCtrs,1);
+        solution.v = NaN*ones(size(model.S,2),1);
+        solution.y = NaN*ones(size(model.S,1),1);
+        solution.w = NaN*ones(size(model.S,2),1);
+        solution.s = NaN*ones(size(model.S,1),1);
+        if isfield(model,'C')
+            solution.ctrs_y = NaN*ones(size(model.C,1),1);
+            solution.ctrs_s = NaN*ones(size(model.C,1),1);
         end
-        if modelE
-            solution.vars_v = NaN*ones(nVars,1);
-            solution.vars_w = NaN*ones(nVars,1);
+        if isfield(model,'E')
+            solution.vars_v = NaN*ones(size(model.E,2),1);
+            solution.vars_w = NaN*ones(size(model.E,2),1);
         end
     else
         %return empty fields if problem does not solve properly (backward
@@ -570,11 +525,11 @@ else
         solution.y = [];
         solution.w = [];
         solution.s = [];
-        if modelC
+        if isfield(model,'C')
             solution.ctrs_y = [];
             solution.ctrs_s = [];
         end
-        if modelE
+        if isfield(model,'E')
             solution.vars_v = [];
             solution.vars_w = [];
         end
