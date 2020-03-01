@@ -24,18 +24,21 @@ currentDir = pwd;
 %     %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
 % end
 
-if 1
+if 0
     useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex'};
     excludeSolvers={'pdco','gurobi'};
-else
+elseif 0
    useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex','pdco'};
-    excludeSolvers={'gurobi'};
+   excludeSolvers={'gurobi'};
+else 
+   useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex','gurobi'};
+   excludeSolvers={'pdco'};
 end
        
 solverPkgs = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
 
-solverPkgs.LP
-solverPkgs.QP
+solverPkgs.LP;
+solverPkgs.QP;
 
 % define a tolerance
 tol = 1e-4;
@@ -52,11 +55,8 @@ LPproblem.osense = -1;
 LPproblem.csense = ['L'; 'L'];
 
 QPproblem = LPproblem;
-if 0
-    QPproblem.F = zeros(2,2);
-else
-    QPproblem.F = sparse(2,2);
-end
+QPproblem.F = sparse(2,2);
+
 
 % test if the signs returned from solveCobraLP and solverCobraQP are the same
 % for a dummy problem
@@ -105,7 +105,7 @@ QPproblem.csense = ['L'; 'E'];
 
 solverCounter = 0;
 
-for k = 1:length(solverPkgs)
+for k = 1:length(solverPkgs.QP)
 
     % change the solver
     solverQP = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);

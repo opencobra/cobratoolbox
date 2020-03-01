@@ -27,7 +27,7 @@ if exist(fileName,'file')
         male.osense = -1;
         modelOld=male;
 
-        clearvars -except modelOld
+        clearvars -except modelOld currentDir
         %run the conversion
         model = convertOldStyleModel(modelOld, 1);
     end

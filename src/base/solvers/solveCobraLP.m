@@ -171,8 +171,23 @@ if ~isfield(LPproblem, 'osense')
     LPproblem.osense = -1;
 end
 
+if ~isfield(LPproblem, 'modelID')
+    LPproblem.modelID = 'aModelID';
+end
+            
 % extract the problem from the structure
-[A, b, c, lb, ub, csense, osense] = deal(LPproblem.A, LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense);
+[A, b, c, lb, ub, csense, osense, modelID] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID);
+
+if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
+    basis = LPproblem.basis;
+else
+    basis = [];
+end
+
+if ~any(strcmp(solver,{'ibm_cplex','cplex_direct','dqqMinos','quadMinos','mps'}))
+    %clear the problem structure so it does not interfere later
+    clear LPproblem
+end
 
 % defaults in case the solver does not return anything
 f = [];
@@ -304,11 +319,7 @@ switch solver
         if isfield(solverParams, 'MPSfilename')
             MPSfilename = solverParams.MPSfilename;
         else
-            if isfield(LPproblem, 'modelID')
-                MPSfilename = LPproblem.modelID;
-            else
-                MPSfilename = 'file';
-            end
+            MPSfilename = modelID;
         end
 
         % write out an .MPS file
@@ -366,11 +377,11 @@ switch solver
         end
         %writeMPS solves A*x <= 0, so reverse sign of slacks where input 
         %problem was of the form A*x >= 0
-        bool = LPproblem.csense == 'G';
+        bool = csense == 'G';
         y(bool) = - y(bool);
         s(bool) = - s(bool);
         % A*x + s <=> 0 translated to A*x + s = b 
-        s = LPproblem.b - s;
+        s = b - s;
         
         % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
         dqqStatMap = {-5, 'UNKNOWNERROR', -1;
@@ -473,10 +484,10 @@ switch solver
         %don't take the row corresponding to the objective
         if sol.objrow == 1
             y = sol.y(2:end);
-            s = LPproblem.b - sol.s(2:end);
+            s = b - sol.s(2:end);
         else
             y = sol.y(1:end-1);
-            s = LPproblem.b - sol.s(1:end-1);
+            s = b - sol.s(1:end-1);
         end
         
         % note that status handling may change (see lp_lib.h)
@@ -627,9 +638,6 @@ switch solver
         end
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
-        % if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
-        %    LPproblem.cbasis = full(LPproblem.basis);
-        % end
 
         % Syntax:      [res] = msklpopt(c,a,blc,buc,blx,bux,param,cmd)
         %
@@ -889,56 +897,59 @@ switch solver
             param.OptimalityTol = cobraSolverParams.optTol;
         end
 
-        if ~isfield(LPproblem,'csense')
-            LPproblem.sense(1:length(b),1) = '=';
-        else
-            LPproblem.sense(1:length(b),1) = '=';
-            LPproblem.sense(LPproblem.csense == 'L') = '<';
-            LPproblem.sense(LPproblem.csense == 'G') = '>';
-        end
+        gurobiLP.sense(1:length(b),1) = '=';
+        gurobiLP.sense(csense == 'L') = '<';
+        gurobiLP.sense(csense == 'G') = '>';
 
         %modelsense (optional)
         %The optimization sense. Allowed values are 'min' (minimize) or 'max' (maximize). When absent, the default optimization sense is minimization.
-        if LPproblem.osense == -1
-            LPproblem.modelsense = 'max';
+        if osense == -1
+            gurobiLP.modelsense = 'max';
         else
-            LPproblem.modelsense = 'min';
+            gurobiLP.modelsense = 'min';
         end
 
-        LPproblem.A = deal(sparse(LPproblem.A));
+        gurobiLP.A = A;
+        gurobiLP.rhs = b;
+        gurobiLP.lb = lb;
+        gurobiLP.ub = ub;
         %gurobi wants a dense double vector as an objective
-        [LPproblem.rhs,LPproblem.obj] = deal(LPproblem.b,double(LPproblem.c)+0);
+        gurobiLP.obj = double(c)+0;%full
+
 
         % basis reuse - Ronan
-        if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
-            LPproblem.cbasis = full(LPproblem.basis.cbasis);
-            LPproblem.vbasis = full(LPproblem.basis.vbasis);
-            LPproblem=rmfield(LPproblem,'basis');
+        if ~isempty(basis)
+            gurobiLP.cbasis = full(basis.cbasis);
+            gurobiLP.vbasis = full(basis.vbasis);
         end
         % set the solver specific parameters
         param = updateStructData(param,solverParams);
 
+%         LPproblem = rmfield(LPproblem,'c');
+%         LPproblem = rmfield(LPproblem,'b');
+%         LPproblem = rmfield(LPproblem,'lb');
+%         LPproblem = rmfield(LPproblem,'ub');
+%         LPproblem = rmfield(LPproblem,'osense');
+%         LPproblem = rmfield(LPproblem,'csense');
+        
         % call the solver
-        resultgurobi = gurobi(LPproblem,param);
+        resultgurobi = gurobi(gurobiLP,param);
 
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
         switch resultgurobi.status
             case 'OPTIMAL'
                 stat = 1; % optimal solution found
-                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,LPproblem.osense*resultgurobi.pi,LPproblem.osense*resultgurobi.rc);
+                
+                if stat ==1 && isempty(resultgurobi.x)
+                    error('solveCobraLP: gurobi reporting OPTIMAL but no solution')
+                end
+                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc);
                 s = b - A * x; % output the slack variables
-                s(csense == 'E')=0;
                 
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
-%                 if isfield(LPproblem,'cbasis')
-%                     LPproblem=rmfield(LPproblem,'cbasis');
-%                 end
-%                 if isfield(LPproblem,'vbasis')
-%                     LPproblem=rmfield(LPproblem,'vbasis');
-%                 end
             case 'INFEASIBLE'
                 stat = 0; % infeasible
             case 'UNBOUNDED'
@@ -946,8 +957,8 @@ switch solver
             case 'INF_OR_UNBD'
                 % we simply remove the objective and solve again.
                 % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
-                LPproblem.obj(:) = 0;
-                resultgurobi = gurobi(LPproblem,param);
+                gurobiLP.obj(:) = 0;
+                resultgurobi = gurobi(gurrobiLP,param);
                 if strcmp(resultgurobi.status,'OPTIMAL')
                     stat = 2;
                 else
@@ -1032,11 +1043,12 @@ switch solver
             bg = b(csense == 'G');
             Al = A(csense == 'L',:);
             bl = b(csense == 'L');
-            A = [Al;-Ag];
-            b = [bl;-bg];
-            [x,f,origStat,output,lambda] = clinprog(c*osense,A,b,Aeq,beq,lb,ub,linprogOptions);
+            Aineq = [Al;-Ag];
+            bineq = [bl;-bg];
+            [x,f,origStat,output,lambda] = clinprog(c*osense,Aineq,bineq,Aeq,beq,lb,ub,linprogOptions);
         end
         y = [];
+        
         if (origStat > 0)
             stat = 1; % optimal solution found
             f = f*osense;
@@ -1048,8 +1060,7 @@ switch solver
             end
             w = lambda.lower - lambda.upper;
             
-            s = LPproblem.b - LPproblem.A*x;
-            s(csense == 'E')=0;
+            s = b - A*x;
         elseif (origStat < -1)
             stat = 0; % infeasible
         elseif origStat == -1
@@ -1063,8 +1074,7 @@ switch solver
                     y(csense == 'G',1) = - y(csense == 'G',1); %change sign
                 end
                 w = osense*(lambda.upper-lambda.lower);
-                s = LPproblem.b - LPproblem.A*x;
-                s(csense == 'E') = 0;
+                s = b - A*x;
             catch ME
                 % if values cant be assigned, we report a fail.
                 stat = 0;
@@ -1072,8 +1082,7 @@ switch solver
         else
             stat = -1;
         end
-        %y = LPproblem.osense*y; %this should not be necessary but it seems so
-
+        
     case 'tomlab_cplex'
         %% Tomlab
         if (~isempty(csense))
@@ -1096,9 +1105,9 @@ switch solver
         tomlabProblem.QP.F = [];
         tomlabProblem.PriLevOpt = cobraSolverParams.printLevel;
 
-        if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis) && ...
+        if ~isempty(basis) && ...
                 ~ismember('basis',fieldnames(solverParams))
-            tomlabProblem.MIP.basis = LPproblem.basis;
+            tomlabProblem.MIP.basis = basis;
         end
 
         % set tolerance
@@ -1215,38 +1224,37 @@ switch solver
         options.output.clonelog = cobraSolverParams.printLevel-1;
 
         if ~isempty(csense)
-            Aineq = [LPproblem.A(csense == 'L',:); - LPproblem.A(csense == 'G',:)];
+            Aineq = [A(csense == 'L',:); - A(csense == 'G',:)];
             bineq = [b(csense == 'L',:); - b(csense == 'G',:)];
             %        min      c*x
             %        st.      Aineq*x <= bineq
             %                 Aeq*x    = beq
             %                 lb <= x <= ub
-            [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,LPproblem.A(csense == 'E',:),b(csense == 'E',1),lb,ub,[],options);
+            [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,A(csense == 'E',:),b(csense == 'E',1),lb,ub,[],options);
             %this is the dual to the equality constraints but it's not the chemical potential
-            y = sparse(size(LPproblem.A,1),1);
+            y = sparse(size(A,1),1);
             y(csense == 'E')= lambda.eqlin;
             y(csense == 'L' | csense == 'G',1) = lambda.ineqlin;
             y(csense == 'G',1) = - y(csense == 'G',1); %change sign
-            y = LPproblem.osense*y; %this should not be necessary but it seems so
+            y = osense*y; %this should not be necessary but it seems so
         else
             Aineq=[];
             bineq=[];
-            [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,LPproblem.A,b,lb,ub,[],options);
+            [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,A,b,lb,ub,[],options);
             %this is the dual to the equality constraints
-            y = LPproblem.osense*lambda.eqlin;
+            y = osense*lambda.eqlin;
         end
         %pbjective
          f = c'*x;
         % output the slack variables
         s = b - A * x;
-        s(csense == 'E')=0;
         
         %this is the dual to the simple ineequality constraints : reduced costs
         w =  lambda.lower-lambda.upper;
         
         algorithm = output.algorithm;
         if 0 %debug
-            norm(LPproblem.osense * LPproblem.c  + LPproblem.A' * y - w,inf)
+            norm(osense * c  + A' * y - w,inf)
         end
         
         %check the satus of the solution
@@ -1398,7 +1406,7 @@ switch solver
         % especially xsize and zsize (see pdco.m) to get the real optimal
         % objective value
 
-        [nMet,nRxn]=size(LPproblem.A);
+        [nMet,nRxn]=size(A);
 
         % setting d1 to zero is dangerous numerically, but is necessary to avoid
         % minimising the Euclidean norm of the optimal flux. A more
@@ -1571,7 +1579,7 @@ end
      if solution.stat == 1
          if ~isempty(solution.slack) && ~isempty(solution.full)
              % determine the residual 1
-             res1 = LPproblem.A*solution.full + solution.slack - LPproblem.b;
+             res1 = A*solution.full + solution.slack - b;
              res1(~isfinite(res1))=0;
              tmp1 = norm(res1, inf);
              
@@ -1589,13 +1597,13 @@ end
          if ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver, {'glpk','matlab'})) 
              
              % determine the residual 2
-             res2 = LPproblem.osense * LPproblem.c  - LPproblem.A' * solution.dual - solution.rcost;
+             res2 = osense * c  - A' * solution.dual - solution.rcost;
              tmp2 = norm(res2, inf); %TODO matlab linprog still does not pass Testing testDifferentLPSolvers using matlab
              
              % evaluate the optimality condition 2
              if tmp2 > cobraSolverParams.optTol * 1e2
                  disp(solution.origStat)
-                 if ~(length(LPproblem.A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
+                 if ~(length(A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
                     error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraSolverParams.optTol)])
                  end
              else

@@ -25,14 +25,14 @@ tol = 1e-4;
 
 if 1
     % test solver packages
-    useIfAvailable = {'tomlab_cplex','ibm_cplex','pdco','gurobi'};
+    useIfAvailable = {'tomlab_cplex','ibm_cplex','gurobi'};
     %useIfAvailable = {'pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek'});
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek','pdco'});
 else
     % test solver packages
     %useIfAvailable = {'pdco'};
     useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek','pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable); % 'excludeSolvers',{'gurobi'}); %not working 
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);
 end
 
 if 0
@@ -126,30 +126,21 @@ for k = 1:length(solverPkgs.QP)
         end
         
         QPsolution2 = solveCobraQP(QPproblem2,'printLevel', printLevel);
-        if ~strcmp(solverPkgs.QP{k},'gurobi')
-            assert(abs(QPsolution2.obj - 37.5 / 2) < tol); %Objective value
-            assert(all( abs(QPsolution2.full - [2.5;-2.5;5]) < tol)); % Flux distribution
-        else
-            assert(abs(QPsolution2.obj - 25) < tol); %Objective value
-            assert(all( abs(QPsolution2.full - [5;0;5]) < tol)); % Flux distribution
-        end
         
+        assert(abs(QPsolution2.obj - 37.5 / 2) < tol); %Objective value
+        assert(all( abs(QPsolution2.full - [2.5;-2.5;5]) < tol)); % Flux distribution
+
         %Test solving maximisation of linear part
         QPsolution3 = solveCobraQP(QPproblem3,'printLevel', printLevel);
         assert(all(abs(QPsolution3.full - 1)< tol)); %We optimize for 0.5x^2 not x^2
         
         
         QPsolution4 = solveCobraQP(QPproblem4,'printLevel', printLevel);
-        if ~strcmp(solverPkgs.QP{k},'gurobi')
-            %QPsolution4.obj
-            %QPsolution4.full
-            assert(abs(QPsolution4.obj - 600)< tol);
-        else
-            %QPsolution4.obj
-            %QPsolution4.full
-            assert(abs(QPsolution4.obj - 20000)< tol);
-        end
         
+        %QPsolution4.obj
+        %QPsolution4.full
+        assert(abs(QPsolution4.obj - 600)< tol);
+
         %Test solving maximisation of whole function
         QPsolution5 = solveCobraQP(QPproblem5,'printLevel', printLevel);
         %QPsolution5.obj

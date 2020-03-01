@@ -29,7 +29,7 @@ lam = result.pi;
 
 fprintf('%s\n','Problem qp')
 % Check optimality conditions
-disp("Check 2*Q*x + c - A'*lam = 0 (stationarity):");
+disp('Check 2*Q*x + c - A''*lam = 0 (stationarity):');
 disp(2*Q*x + c - A'*lam);
 assert(norm(2*Q*x + c - A'*lam,inf)<1e-8)
 
@@ -45,7 +45,7 @@ disp('Check lam <= 0 (dual feasibility):');
 disp(lam);
 assert(all(lam<=0))
 
-disp("Check lam'*(A*x - b) = 0 (complementarity):");
+disp('Check lam''*(A*x - b) = 0 (complementarity):');
 disp(lam'*(A*x - b))
 assert(norm(lam'*(A*x - b),inf)<1e-8)
 

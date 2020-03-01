@@ -48,12 +48,15 @@ solverPkgs = solvers.LP;
 % list of tests
 testSuite = {'dummyModel', 'ecoli'};
 
-for k = 1:length(solverPkgs)
+for p = 1:length(testSuite)
+    for k = 1:length(solverPkgs)
 
+    if strcmp(solverPkgs{k},'gurobi')
+        pause(0.01)
+    end
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
-    for p = 1:length(testSuite)
         fprintf('   Running %s with solveCobraLP using %s ... ', testSuite{p}, solverPkgs{k});
 
         if p == 1
@@ -62,10 +65,12 @@ for k = 1:length(solverPkgs)
                 LPsolution = solveCobraLP(LPproblem, 'printLevel', printLevel);
             end
 
+            assert(abs(LPsolution.obj) - 600 < tol)
+            
             for i = 1:length(LPsolution.full)
                 assert((abs(LPsolution.full(i) - 1) < tol))
             end
-            assert(abs(LPsolution.obj) - 600 < tol)
+            
 
         elseif p == 2
             % solve th ecoli_core_model (csense vector is missing)

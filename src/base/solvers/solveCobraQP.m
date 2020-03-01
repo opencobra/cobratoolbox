@@ -93,7 +93,7 @@ stat = -99;
 solStat = -99;
 
 [A,b,F,c,lb,ub,csense,osense] = ...
-    deal(QPproblem.A,QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
+    deal(sparse(QPproblem.A),QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
     QPproblem.csense,QPproblem.osense);
 
 
@@ -149,7 +149,7 @@ switch solver
         
         %x primal variable
         %f objective value
-        %f = osense*f;
+        f = osense*f;
         %y dual to the b_L <=   Ax   <= b_U constraints 
         %w dual to the x_L <=    x   <= x_U constraints 
         
@@ -283,7 +283,7 @@ switch solver
             s = b - Result.ax;
         end
         if isfield(Result,'objval')
-            f = Result.objval;
+            f = osense*Result.objval;
         end
         origStat = Result.status;
         % See detailed table of result codes in
@@ -555,7 +555,7 @@ switch solver
            
         [z,y,w,inform,~,~,~] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
         [f,~,~] = QPObj(z);
- 
+         f = f*osense;
        
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
@@ -618,39 +618,61 @@ switch solver
         %Update feasTol in case it is changed by the solver Parameters
         cobraSolverParams.feasTol = params.FeasibilityTol;
 
-        %Finished setting up options.
 
-        if isempty(csense)
-            QPproblem.sense(1:length(b),1) = '=';
+        gurobiQP.sense(1:length(b),1) = '=';
+        gurobiQP.sense(csense == 'L') = '<';
+        gurobiQP.sense(csense == 'G') = '>';
+
+        %modelsense (optional)
+        %The optimization sense. Allowed values are 'min' (minimize) or 'max' (maximize). When absent, the default optimization sense is minimization.
+        if osense == -1
+            gurobiQP.modelsense = 'max';
         else
-            QPproblem.sense(csense == 'L') = '<';
-            QPproblem.sense(csense == 'G') = '>';
-            QPproblem.sense(csense == 'E') = '=';
+            gurobiQP.modelsense = 'min';
         end
 
+        gurobiQP.A = A;
+        gurobiQP.rhs = b;
+        gurobiQP.lb = lb;
+        gurobiQP.ub = ub;
+        %gurobi wants a dense double vector as an objective
+        gurobiQP.obj = double(c)+0;%full
+        
+        gurobiQP.sense(1:length(b),1) = '=';
+        gurobiQP.sense(csense == 'L') = '<';
+        gurobiQP.sense(csense == 'G') = '>';
+        
         %Until Gurobi 9.0, it was required that the quadratic matrix Q is positive semi-definite, so that the model is convex. 
         %This is no longer the case for Gurobi 9.0, which supports general non-convex quadratic constraints and objective functions, 
-        %including bilinear and quadratic equality constraints. 
-        if norm(F,inf)~=0
+        %including bilinear and quadratic equality constraints.
+        if any(F,'all')
             %For gurobi model.Q must be a sparse double matrix
-            QPproblem.Q = sparse(osense*0.5*F);
+            gurobiQP.Q = sparse(0.5*F);
         end
         
-        %optimization sense 
-        QPproblem.modelsense = 'min';
-
-        [QPproblem.A,QPproblem.rhs,QPproblem.obj] = deal(sparse(A),b,double(osense*c));
-        resultgurobi = gurobi(QPproblem,params);
+        resultgurobi = gurobi(gurobiQP,params);
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
             stat = 1; % Optimal solution found
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi,resultgurobi.rc,resultgurobi.slack);           
+            if stat ==1 && isempty(resultgurobi.x)
+                error('solveCobraQP: gurobi reporting OPTIMAL but no solution')
+            end
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);           
           elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
             stat = 2; % Unbounded
         elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-            stat = 0; % Gurobi reports infeasible *or* unbounded
+            % we simply remove the objective and solve again.
+            % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
+            QPproblem.obj(:) = 0;
+            QPproblem.F(:,:) = 0;
+            resultgurobi = gurobi(QPproblem,param);
+            if strcmp(resultgurobi.status,'OPTIMAL')
+                stat = 2;
+            else
+                stat = 0;
+            end
         else
             stat = -1; % Solution not optimal or solver problem
         end
@@ -934,9 +956,6 @@ if solution.stat==1
         end
         if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek'}))%todo, debug gurobi QP
             % determine the residual 2
-            if strcmp(solver,'gurobi')
-                pause(1e-9)
-            end
             res2 = osense*c  + osense*F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
@@ -954,11 +973,11 @@ if solution.stat==1
         if ~isempty(solution.full)
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
-            if norm(solution.obj - osense*f) > 1e-4
+            if norm(solution.obj - f) > 1e-4
                 warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
                 fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
                     'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
-                    'while the value constructed from osense*c''*x + x''*F*x :', osense*c'*solution.full + solution.full'*F*solution.full)
+                    'while the value constructed from osense*c''*x + osense*x''*F*x :', osense*c'*solution.full + osense*solution.full'*F*solution.full)
             end
         else
             solution.obj = NaN;
