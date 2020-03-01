@@ -13,6 +13,9 @@
 % save the current path
 currentDir = pwd;
 
+
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
+
 % initialize the test
 fileDir = fileparts(which('testFVA'));
 cd(fileDir);
