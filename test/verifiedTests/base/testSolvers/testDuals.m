@@ -13,32 +13,14 @@ global CBTDIR
 % save the current path
 currentDir = pwd;
 
-% % define the solver packages to be used to run this test
-% if 0
-%     solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk'};
-% else
-%     solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk', 'gurobi'};
-%     %TODO something is wrong with the way gurobi's QP solver returns the optimal
-%     %objective for a QP with either a missing linear or missing quadratic
-%     %objective
-%     %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
-% end
-
-if 0
-    useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex'};
-    excludeSolvers={'pdco','gurobi'};
-elseif 0
-   useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex','pdco'};
-   excludeSolvers={'gurobi'};
-else 
-   useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex','gurobi'};
-   excludeSolvers={'pdco'};
+% define the solver packages to be used to run this test
+if 1
+    solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk'};
+else
+    solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk', 'gurobi'};
+    %TODO something is wrong with the way gurobi returns the optimal objective for a QP
+    %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
 end
-       
-solverPkgs = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
-
-solverPkgs.LP;
-solverPkgs.QP;
 
 % define a tolerance
 tol = 1e-4;
@@ -55,19 +37,18 @@ LPproblem.osense = -1;
 LPproblem.csense = ['L'; 'L'];
 
 QPproblem = LPproblem;
-QPproblem.F = sparse(2,2);
-
+QPproblem.F = zeros(size(LPproblem.A,2));
 
 % test if the signs returned from solveCobraLP and solverCobraQP are the same
 % for a dummy problem
-for k = 1:length(solverPkgs.QP)
+for k = 1:length(solverPkgs)
 
     % change the solver
-    solverLP = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
-    solverQP = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
+    solverLP = changeCobraSolver(solverPkgs{k}, 'LP', 0);
+    solverQP = changeCobraSolver(solverPkgs{k}, 'QP', 0);
 
     if solverLP && solverQP
-        fprintf(' Testing testDuals with %s ... ', solverPkgs.LP{k});
+        fprintf(' Testing testDuals with %s ... ', solverPkgs{k});
 
         % obtain the solution
         solQP = solveCobraQP(QPproblem);
@@ -105,10 +86,10 @@ QPproblem.csense = ['L'; 'E'];
 
 solverCounter = 0;
 
-for k = 1:length(solverPkgs.QP)
+for k = 1:length(solverPkgs)
 
     % change the solver
-    solverQP = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
+    solverQP = changeCobraSolver(solverPkgs{k}, 'QP', 0);
 
     if solverQP
 
@@ -121,7 +102,7 @@ for k = 1:length(solverPkgs.QP)
         % store a reference solution from the previous solver
         if solverCounter == 1
 
-            refSolverName = solverPkgs.QP{k};
+            refSolverName = solverPkgs{k};
             fprintf([' > The reference solver is ' refSolverName '.\n']);
             refSolQP = solQP;
         end
@@ -129,7 +110,7 @@ for k = 1:length(solverPkgs.QP)
         % only solve a problem if there is already at least 1 solver
         if solverCounter > 1
 
-            fprintf([' Testing the solutions for ' solverPkgs.QP{k} ' ...\n']);
+            fprintf([' Testing the solutions for ' solverPkgs{k} ' ...\n']);
             
             % test the value of the objective
             assert(norm(solQP.obj - refSolQP.obj,inf) < tol)
@@ -141,7 +122,7 @@ for k = 1:length(solverPkgs.QP)
             assert(norm(solQP.rcost - refSolQP.rcost) < tol)
 
             % print out a success message
-            fprintf([' > ' solverPkgs.QP{k} ' has been tested against ' refSolverName '. Done.\n']);
+            fprintf([' > ' solverPkgs{k} ' has been tested against ' refSolverName '. Done.\n']);
         end
     end
 

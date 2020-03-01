@@ -18,8 +18,7 @@ cd(fileDir);
 tol = 1e-6;
 
 % define the solver packages to be used to run this test
-solverPkgs = prepareTest('needsLP',true, 'requiredSolvers',{'glpk'},'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
-
+solverPkgs = prepareTest('needsLP',true, 'requiredSolvers',{'glpk'});
 
 % load the model
 model = createToyModelForMinimizeFlux();

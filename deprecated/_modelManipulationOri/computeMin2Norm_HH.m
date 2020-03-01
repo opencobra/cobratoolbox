@@ -62,13 +62,6 @@ elseif strcmp(QPSolver,'tomlab_cplex')
     model2.lb=model2.lb/1000;
     model2.ub=model2.ub/1000;
 end
-
-%       1 (S,B) Optimal solution found
-%       2 (S,B) Model has an unbounded ray
-%       3 (S,B) Model has been proved infeasible
-%       4 (S,B) Model has been proved either infeasible or unbounded
-%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
-%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
 if solution.origStat == 6 || solution.origStat == 1 || solution.origStat == 5
     % we solve the 2nd QP
     if strcmp(QPSolver,'ILOGcomplex')

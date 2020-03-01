@@ -12,16 +12,14 @@
 global CBTDIR
 
 %Test the requirements
-if 1
+if 0
     useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
                              'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos','cplexlp'}; % 'lp_solve': legacy
-    excludeSolvers={'pdco'};
 else
     useSolversIfAvailable = {'pdco'};
-    excludeSolvers={'gurobi'};
 end
        
-solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
+solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
 
 % save the current path
 currentDir = pwd;
@@ -48,15 +46,12 @@ solverPkgs = solvers.LP;
 % list of tests
 testSuite = {'dummyModel', 'ecoli'};
 
-for p = 1:length(testSuite)
-    for k = 1:length(solverPkgs)
+for k = 1:length(solverPkgs)
 
-    if strcmp(solverPkgs{k},'gurobi')
-        pause(0.01)
-    end
     % change the COBRA solver (LP)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
+    for p = 1:length(testSuite)
         fprintf('   Running %s with solveCobraLP using %s ... ', testSuite{p}, solverPkgs{k});
 
         if p == 1
@@ -65,12 +60,10 @@ for p = 1:length(testSuite)
                 LPsolution = solveCobraLP(LPproblem, 'printLevel', printLevel);
             end
 
-            assert(abs(LPsolution.obj) - 600 < tol)
-            
             for i = 1:length(LPsolution.full)
                 assert((abs(LPsolution.full(i) - 1) < tol))
             end
-            
+            assert(abs(LPsolution.obj) - 600 < tol)
 
         elseif p == 2
             % solve th ecoli_core_model (csense vector is missing)
