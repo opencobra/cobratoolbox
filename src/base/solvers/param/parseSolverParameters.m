@@ -38,7 +38,7 @@ solverVars = cell(numel(cobraSolverParameters),1);
 
 % get the default variables for the correct solver.
 [solverVars{:}] = getCobraSolverParams(problemType,cobraSolverParameters,struct('solver',defaultSolver));
-defaultParams = [cobraSolverParameters,solverVars];
+defaultParams = [cobraSolverParameters',solverVars];
 
 nVarargin = numel(varargin);
 % parse the supplied parameters
@@ -63,6 +63,7 @@ if nVarargin > 0
         % no parameter struct. so initialize an empty one.
         optParamStruct = struct();
     end
+    nVarargin = numel(varargin); %added this in case varagin{1} is the parameter structure
     % now, loop through all parameter/value pairs.
     for i = 1:2:nVarargin
         cparam = varargin{i};

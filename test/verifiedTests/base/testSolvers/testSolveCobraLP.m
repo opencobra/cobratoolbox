@@ -12,14 +12,16 @@
 global CBTDIR
 
 %Test the requirements
-if 0
+if 1
     useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
                              'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos','cplexlp'}; % 'lp_solve': legacy
+    excludeSolvers={'pdco'};
 else
     useSolversIfAvailable = {'pdco'};
+    excludeSolvers={'gurobi'};
 end
        
-solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
+solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
 
 % save the current path
 currentDir = pwd;
