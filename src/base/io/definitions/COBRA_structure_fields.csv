@@ -38,7 +38,7 @@ rxnReferences	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	pubmed	isDesc
 rxnKEGGID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	kegg.reaction;kegg	is	bioQualifier	rxns	''	^R\d+$	Column Cell Array of Strings	Formula for each reaction in the KEGG format.	'false(1)'	cell	'false(1)'
 rxnMetaNetXID	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	metanetx.reaction	is	bioQualifier	rxns	''	^MNXR\d+$	Column Cell Array of Strings	MetaNetX identifier of the reaction	'false(1)'	cell	'false(1)'
 rxnSBOTerms	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))	sbo	hasProperty	bioQualifier	rxns	''	^SBO:\d{7}$	Column Cell Array of Strings	The SBO Identifier associated with the reaction	'false(1)'	cell	'false(1)'
-subSystems	rxns	1	iscell(x) || iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
+subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
 description	NaN	NaN	ischar(x) || isstruct(x)					struct()		String or Struct	Name of a file the model is loaded from.	'false(1)'	char	'false(1)'
 modelVersion	NaN	NaN	isstruct(x)					struct()		Struct	Information on the model version	'false(1)'	struct	'false(1)'
 modelName	NaN	NaN	ischar(x)					'Model Exported from COBRA Toolbox'		String	A Descriptive Name of the model	'false(1)'	char	'false(1)'

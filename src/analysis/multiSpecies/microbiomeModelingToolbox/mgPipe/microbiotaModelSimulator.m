@@ -84,20 +84,6 @@ for k = startIter:(patNumb + 1)
             model.lb(j) = 0;
         end
     end
-    
-    % adapt constraints
-    BiomassNumber=find(strcmp(model.rxns,'communityBiomass'));
-    Components = model.mets(find(model.S(:, BiomassNumber)));
-    Components = strrep(Components,'_biomass[c]','');
-    for j=1:length(Components)
-        % remove constraints on demand reactions to prevent infeasibilities
-        findDm= model.rxns(find(strncmp(model.rxns,[Components{j} '_DM_'],length([Components{j} '_DM_']))));
-        model = changeRxnBounds(model, findDm, 0, 'l');
-        % constrain flux through sink reactions
-        findSink= model.rxns(find(strncmp(model.rxns,[Components{j} '_sink_'],length([Components{j} '_sink_']))));
-        model = changeRxnBounds(model, findSink, -1, 'l');
-    end
-    
     model = changeObjective(model, 'EX_microbeBiomass[fe]');
     AllRxn = model.rxns;
     RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));

@@ -23,15 +23,15 @@ if nargin < 2
     printLevel = 0;
 end
 
-if isfield(model,'A') && isfield(model,'S')
-    
+ if isfield(model,'A') && isfield(model,'S')
+             
     if printLevel >=1
         warning('The inserted Model contains an old style coupling matrix (A). The Matrix will be converted into a Coupling Matrix (C) and fields will be adapted.')
     end
     slacks = strncmp('slack_',model.mets,length('slack_'));
     if all(size(model.A) == size(model.S)) && any(slacks)
         % We will assume, that someone adjusted all Fields in the model but
-        % has slack variables in the S Matrix.
+        % has slack variables in the S Matrix.        
         C = model.S(slacks,:);
         ctrs = model.mets(slacks);
         d = model.b(slacks);
@@ -52,13 +52,12 @@ if isfield(model,'A') && isfield(model,'S')
         model.mets = columnVector(model.mets(1:nMets));
         model.b = columnVector(model.b(1:nMets));
         model.csense = columnVector(model.csense(1:nMets));
+        model = rmfield(model,'A');
     end
-    % build the constraint fields according to the extracted information.
-    model.C = C;
-    model.ctrs = ctrs;
-    model.dsense = dsense;
-    model.d = d;
-    %remove the legacy fields
-    model = rmfield(model,'A');
-end
+ % build the constraint fields according to the extracted information.
+ model.C = C;
+ model.ctrs = ctrs;
+ model.dsense = dsense;
+ model.d = d;   
+ end
  

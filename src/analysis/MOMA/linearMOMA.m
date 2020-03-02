@@ -102,7 +102,7 @@ end
 %       delta+ = v1 - v2
 %       delta- = v2 - v1
 
-if solutionWT.stat == 1
+if (solutionWT.stat > 0)
     % Construct the LHS matrix
     % Rows:
     % 1: Swt*v1 = 0 for the wild type
@@ -152,16 +152,16 @@ if solutionWT.stat == 1
         fprintf('%f seconds\n',LPsolution.time);
     end
 
-    if (LPsolution.stat == 1)
-        solutionDel.x = LPsolution.full((nWTVars+1):(nWTVars+nRxns2),1);
+    if (LPsolution.stat > 0)
+        solutionDel.x = LPsolution.full((nWTVars+1):(nWTVars+nRxns2));
         solutionDel.full = LPsolution.full((nWTVars+1):(nWTVars+nRxns2));
-        solutionDel.f = modelDel.c'*solutionDel.x;
+        solutionDel.f = sum(modelDel.c.*solutionDel.x);
         solutionWT.x = LPsolution.full(1:nRxns1);
         solutionWT.full = LPsolution.full(1:nRxns1);
         totalFluxDiff = LPsolution.obj;
     end
 
-    if (LPsolution.stat == 1 && minFluxFlag)
+    if (LPsolution.stat > 0 && minFluxFlag)
         % Add things to the original LPproblem:        
         LPproblem.A = [LPWT.A, sparse(nWTCtrs,nDelVars+2*nCommon+2*nRxns1+2*nRxns2);... % Swt * v = 0;
         sparse(nDelCtrs,nWTVars),LPDel.A,sparse(nDelCtrs,2*nCommon+2*nRxns1+2*nRxns2);... % Sdel * v = 0;
@@ -199,9 +199,9 @@ if solutionWT.stat == 1
         if (verbFlag)
             fprintf('%f seconds\n',LPsolution.time);
         end
-        if (LPsolution.stat == 1)
+        if (LPsolution.stat > 0)
             solutionDel.x = LPsolution.full((nWTVars+1):(nWTVars+nRxns2));
-            solutionDel.f = modelDel.c'*solutionDel.x;
+            solutionDel.f = sum(modelDel.c.*solutionDel.x);
             solutionWT.x = LPsolution.full(1:nRxns1);
         end
     end

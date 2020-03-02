@@ -13,9 +13,7 @@ modelSub.subSystems(20) = {'blubb'};
 res = verifyModel(modelSub,'silentCheck',true);
 
 assert(~isempty(res))
-if isfield(res,'Errors')
-    assert(isequal(res.Errors.propertiesNotMatched.subSystems, sprintf('Field does not match the required properties at the following positions: \n            20')));
-end
+assert(isequal(res.Errors.propertiesNotMatched.subSystems, sprintf('Field does not match the required properties at the following positions: \n            20')));
 
 % test whether rules are checked crrectly
 modelRule = model;

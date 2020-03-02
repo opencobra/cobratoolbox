@@ -5,10 +5,7 @@ function f = NLP_objFunction(x, Prob)
 if ~isfield(Prob, 'uP')
     alpha = 100;
 else
-    if isempty(Prob.uP)
-        alpha = 100;
-    else
-        alpha = Prob.uP(1);
-    end
+    alpha = Prob.uP(1);
 end
+
 f = alpha * (x(2) - x(1) ^ 2) ^ 2 + (1 - x(1)) ^ 2;

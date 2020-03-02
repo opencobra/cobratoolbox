@@ -41,10 +41,10 @@ if solverOK
     assert(sol.origStat == 1 && solOptCbModel.origStat == 1)
 
     % assert the equivalency of the objective value
-    assert(abs(sol.obj - solOptCbModel.f) < tol)
+    assert(abs(sol.obj - solOptCbModel.obj) < tol)
 
     % assert the full solution
-    assert(norm(sol.full - solOptCbModel.v) < tol)
+    assert(norm(sol.full - solOptCbModel.full) < tol)
 
     fprintf(' Done.\n');
 
@@ -58,10 +58,10 @@ if solverOK
         assert(sol.origStat == 1 && solOptCbModel.origStat == 1)
 
         % assert the equivalency of the objective value
-        assert(abs(sol.obj - solOptCbModel.f) < tol)
+        assert(abs(sol.obj - solOptCbModel.obj) < tol)
 
         % assert the full solution
-        assert(norm(sol.full - solOptCbModel.v) < tol)
+        assert(norm(sol.full - solOptCbModel.full) < tol)
         fprintf(' Done.\n');
     end
 
@@ -75,10 +75,10 @@ if solverOK
         assert(sol.origStat == 1 && solOptCbModel.origStat == 1)
 
         % assert the equivalency of the objective value
-        assert(abs(sol.obj - solOptCbModel.f) < tol)
+        assert(abs(sol.obj - solOptCbModel.obj) < tol)
 
         % assert the full solution
-        assert(norm(sol.full - solOptCbModel.v) < tol)
+        assert(norm(sol.full - solOptCbModel.full) < tol)
         fprintf(' Done.\n');
     end
 

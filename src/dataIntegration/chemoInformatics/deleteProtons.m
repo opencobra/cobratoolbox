@@ -19,10 +19,10 @@ function modelNew = deleteProtons(model)
 % .. Author: - German A. Preciat Gonzalez 07/08/2017
 
 modelNew = model;
-S = sparse(modelNew.S);
+S = full(modelNew.S);
 
 if isfield(modelNew, 'rxnGeneMat')
-    rxnGeneMat = sparse(modelNew.rxnGeneMat)';
+    rxnGeneMat = full(modelNew.rxnGeneMat)';
 end
 
 % Identify all the protons in the metabolic network
@@ -40,9 +40,9 @@ end
 
 % Delete in reactions
 hydrogenCols = all(S == 0, 1);
-S(:, hydrogenCols) = 0;
+S(:, hydrogenCols) = [];
 if isfield(modelNew, 'rxnGeneMat')
-    rxnGeneMat(:, hydrogenCols) = 0;
+    rxnGeneMat(:, hydrogenCols) = [];
 end
 reactions=length(modelNew.rxns);
 for i =1:length(fields)

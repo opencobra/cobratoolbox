@@ -14,13 +14,7 @@ global CBTDIR
 currentDir = pwd;
 
 % define the solver packages to be used to run this test
-if 1
-    solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk'};
-else
-    solverPkgs = {'cplexlp', 'ibm_cplex', 'mosek',  'tomlab_cplex', 'glpk', 'gurobi'};
-    %TODO something is wrong with the way gurobi returns the optimal objective for a QP
-    %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
-end
+solverPkgs = {'gurobi', 'mosek', 'ibm_cplex', 'tomlab_cplex', 'glpk'};
 
 % define a tolerance
 tol = 1e-4;
@@ -54,14 +48,14 @@ for k = 1:length(solverPkgs)
         solQP = solveCobraQP(QPproblem);
         solLP = solveCobraLP(LPproblem);
 
-        % test the value of the ojective value
-        assert(norm(solQP.obj - solLP.obj,inf) < tol)
+        % test the sign of the ojective value
+        assert(norm(solQP.obj + solLP.obj) < tol) %QP is always a minimisation, and thus will return the minimal value
 
         % test the sign of the duals
-        assert(norm(solQP.dual - solLP.dual,inf) < tol)
+        assert(norm(solQP.dual - solLP.dual) < tol)
 
         % test the sign of reduced costs
-        assert(norm(solQP.rcost - solLP.rcost,inf) < tol)
+        assert(norm(solQP.rcost - solLP.rcost) < tol)
 
         % print an exit message
         fprintf(' Done.\n');
@@ -93,28 +87,24 @@ for k = 1:length(solverPkgs)
 
     if solverQP
 
+        fprintf([' Testing the signs for ' solverPkgs{k} ' ...\n']);
+
         % increase the solverCounter
         solverCounter = solverCounter + 1;
 
         % obtain a new solution with the next solver
         solQP = solveCobraQP(QPproblem);
 
-        % store a reference solution from the previous solver
+        % store a reference solution fromt the previous solver
         if solverCounter == 1
-
+            refSolQP = solQP;
             refSolverName = solverPkgs{k};
             fprintf([' > The reference solver is ' refSolverName '.\n']);
-            refSolQP = solQP;
         end
 
         % only solve a problem if there is already at least 1 solver
         if solverCounter > 1
 
-            fprintf([' Testing the solutions for ' solverPkgs{k} ' ...\n']);
-            
-            % test the value of the objective
-            assert(norm(solQP.obj - refSolQP.obj,inf) < tol)
-        
             % check the sign of the duals
             assert(norm(solQP.dual - refSolQP.dual) < tol)
 
