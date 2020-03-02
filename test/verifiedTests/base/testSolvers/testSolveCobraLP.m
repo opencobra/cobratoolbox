@@ -13,9 +13,9 @@ global CBTDIR
 
 %Test the requirements
 if 1
-    useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
+    useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'mosek', ...
                              'quadMinos', 'tomlab_cplex', 'mosek_linprog', 'dqqMinos','cplexlp'}; % 'lp_solve': legacy
-    excludeSolvers={'pdco'};
+    excludeSolvers={'pdco','matlab'};
 else
     useSolversIfAvailable = {'pdco'};
     excludeSolvers={'gurobi'};

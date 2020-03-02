@@ -534,36 +534,6 @@ switch solver
 
     case {'lindo_new', 'lindo_old'}
         error('The lindo interfaces are legacy interfaces and will be no longer maintained.');
-        %% LINDO
-        % if (strcmp(solver, 'lindo_new'))
-        %     % use new API (>= 2.0)
-        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, cobraSolverParams.primalOnlyFlag, false);
-        %     % note that status handling may change (see Lindo.h)
-        %     if (origStat == 1 || origStat == 2)
-        %         stat = 1;  % optimal solution found
-        %     elseif(origStat == 4)
-        %         stat = 2;  % unbounded
-        %     elseif(origStat == 3 || origStat == 6)
-        %         stat = 0;  % infeasible
-        %     else
-        %         stat = -1;  % Solution not optimal or solver problem
-        %     end
-        % else
-        %     % use old API
-        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, cobraSolverParams.primalOnlyFlag, true);
-        %     % Note that status handling may change (see Lindo.h)
-        %     if (origStat == 2 || origStat == 3)
-        %         stat = 1;  % optimal solution found
-        %     elseif(origStat == 5)
-        %         stat = 2;  % unbounded
-        %     elseif(origStat == 4 || origStat == 6)
-        %         stat = 0;  % infeasible
-        %     else
-        %         stat = -1;  % solution not optimal or solver problem
-        %     end
-        % end
-        %[f,x,y,s,w,stat] = LMSolveLPNew(A,b,c,csense,lb,ub,osense,0);
-
     case 'lp_solve'
         % lp_solve
         if (isempty(csense))
