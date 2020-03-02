@@ -18,7 +18,6 @@ fileDir = fileparts(which('testFluxSplits'));
 cd(fileDir);
 
 % define a toy model with single internal loop
-clear model
 model.mets = {'A'; 'B'; 'C'};
 model.rxns = {'R1'; 'R2'; 'R3'; 'U'; 'S'};
 model.S = [-1  0 -1 -1  0;
@@ -40,7 +39,7 @@ tol = 1e-6;
 v_ref = [10/3; 10/3; 20/3; -10; 10]; % reference flux distribution
 
 % list of solver packages
-solverPkgs = {'tomlab_cplex'};
+solverPkgs = {'tomlab_cplex', 'gurobi'};
 
 for k = 1:length(solverPkgs)
 
@@ -51,22 +50,22 @@ for k = 1:length(solverPkgs)
 
     if s1 == 1 && s2 == 1
         % Test of production
-        pp.rxn = {'R3'}; % max contributing reaction
-        pp.flux = [20/3, 10, 200/3]; % contributing fluxes
+        p.rxn = {'R3'}; % max contributing reaction
+        p.flux = [20/3, 10, 200/3]; % contributing fluxes
         [BMall, ResultsAllCellLines, ~, maximum_contributing_rxn, maximum_contributing_flux, ~] = predictFluxSplits(model, obj, met2test, samples, ResultsAllCellLines, 1);
 
         assert(norm(BMall - v_ref) < tol);
-        assert(strcmp(maximum_contributing_rxn,pp.rxn));
-        assert(norm(maximum_contributing_flux - pp.flux) < tol);
+        assert(strcmp(maximum_contributing_rxn,p.rxn));
+        assert(norm(maximum_contributing_flux - p.flux) < tol);
 
         % Test of consumption
-        cc.rxn = {'S'}; % max contributing reaction
-        cc.flux = [10, 10, 100]; % contributing fluxes
+        c.rxn = {'S'}; % max contributing reaction
+        c.flux = [10, 10, 100]; % contributing fluxes
         [BMall, ResultsAllCellLines, ~, maximum_contributing_rxn, maximum_contributing_flux, ~] = predictFluxSplits(model, obj, met2test, samples, ResultsAllCellLines, 0);
 
         assert(norm(BMall - v_ref) < tol);
-        assert(strcmp(maximum_contributing_rxn,cc.rxn));
-        assert(norm(maximum_contributing_flux - cc.flux) < tol);
+        assert(strcmp(maximum_contributing_rxn,c.rxn));
+        assert(norm(maximum_contributing_flux - c.flux) < tol);
 
         % set a status message
         fprintf('Done.\n');

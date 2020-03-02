@@ -115,7 +115,6 @@ switch solverType
 end
 
 varargout = cell(1, numel(paramNames));
-paramNames = columnVector(paramNames);
 for i=1:length(paramNames)
     % set values to default
     if isfield(valDef,paramNames{i})

@@ -16,7 +16,7 @@ global CBTDIR
 % linprog does not seem to work properly on this problem...
 % quadMinos and dqqMinos seem to have problems with this rproblem too,
 % leading to suboptimal solutions.
-solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
 
 % save the current path
 currentDir = pwd;

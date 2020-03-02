@@ -38,19 +38,17 @@ solverVars = cell(numel(cobraSolverParameters),1);
 
 % get the default variables for the correct solver.
 [solverVars{:}] = getCobraSolverParams(problemType,cobraSolverParameters,struct('solver',defaultSolver));
-defaultParams = [cobraSolverParameters',solverVars];
+defaultParams = [columnVector(cobraSolverParameters),columnVector(solverVars)];
 
-nVarargin = numel(varargin);
 % parse the supplied parameters
-if nVarargin > 0
+if numel(varargin) > 0
     % we should have a struct at the end
-    if mod(nVarargin,2) == 1
+    if mod(numel(varargin),2) == 1
         optParamStruct = varargin{end};
         if ~isstruct(optParamStruct)
             % but it could also be at the first position, so test that as well.
             optParamStruct = varargin{1};
             varargin(1) = [];
-            nVarargin = numel(varargin); %added this in case varagin{1} is the parameter structure
             if ~isstruct(optParamStruct)
                 error(['Invalid Parameters supplied.\n',...
                        'Parameters have to be supplied either as parameter/Value pairs, or as struct.\n',...
@@ -63,9 +61,8 @@ if nVarargin > 0
         % no parameter struct. so initialize an empty one.
         optParamStruct = struct();
     end
-    nVarargin = numel(varargin); %added this in case varagin{1} is the parameter structure
     % now, loop through all parameter/value pairs.
-    for i = 1:2:nVarargin
+    for i = 1:2:numel(varargin)
         cparam = varargin{i};
         if ~ischar(cparam)
             error('Parameters have to be supplied as ''parameterName''/Value pairs');
