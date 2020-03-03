@@ -12,6 +12,7 @@ global CBTDIR
 % require the specified toolboxes and solvers
 solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi'},'excludeSolvers', {'matlab', 'lp_solve','pdco'});
 
+
 % save the current path
 currentDir = pwd;
 
