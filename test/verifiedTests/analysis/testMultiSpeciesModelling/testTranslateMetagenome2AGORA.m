@@ -14,7 +14,7 @@
 % Moreover, input files with abundance data from other source may fail due
 % to differences in formatting and nomenclature.
 
-if exist('AGORA_infoFile.xlsx','file')
+if ispc && exist('AGORA_infoFile.xlsx','file')
     % Read in the info file with all AGORA strains and taxa
     [~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');
     
@@ -67,5 +67,5 @@ if exist('AGORA_infoFile.xlsx','file')
     % output a success message
     fprintf('Done.\n');
 else
-    fprintf('Could not run testTranslateMetagenome2AGORA because AGORA_infoFile.xlsx not found')
+    fprintf('Could not run testTranslateMetagenome2AGORA because AGORA_infoFile.xlsx not found or this is not a windows pc')
 end

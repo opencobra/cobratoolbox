@@ -48,5 +48,17 @@ end
 % test the diet call without entering any dietary constraints
 assert(verifyCobraFunctionError('useDiet', 'inputs',{pairedModel,[]}))
 
+%cleanup
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_fermentans_DSM_20731.mat')    
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_intestini_RyC_MR95.mat')      
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_sp_D21.mat')                  
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acinetobacter_calcoaceticus_PHEA_2.mat')      
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acidaminococcus_intestini_RyC_MR95.mat')  
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acidaminococcus_sp_D21.mat')              
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acinetobacter_calcoaceticus_PHEA_2.mat')  
+delete('pairedModel_Acidaminococcus_intestini_RyC_MR95_Acidaminococcus_sp_D21.mat')                
+delete('pairedModel_Acidaminococcus_intestini_RyC_MR95_Acinetobacter_calcoaceticus_PHEA_2.mat')    
+delete('pairedModel_Acidaminococcus_sp_D21_Acinetobacter_calcoaceticus_PHEA_2.mat')   
+
 % change to the current directory
 cd(currentDir)

@@ -54,15 +54,17 @@ if isfield(Problem,'F')
     cplexProblem.Model.Q = Problem.F;
 end
 
-if 1
-    cplexProblem.Model.obj = Problem.osense*Problem.c;
-    cplexProblem.Model.sense = 'minimize';
-else
+if isfield(Problem,'c')
+    cplexProblem.Model.obj = Problem.c;
+end
+if isfield(Problem,'osense')
     if Problem.osense == 1
         cplexProblem.Model.sense = 'minimize';
     else
         cplexProblem.Model.sense = 'maximize';
     end
+else
+    cplexProblem.Model.sense = 'minimize';
 end
 
 if isfield(Problem,'vartype')
