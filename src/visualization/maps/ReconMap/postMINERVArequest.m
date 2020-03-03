@@ -10,8 +10,8 @@ function [ response ] = postMINERVArequest(login, password, map, googleLicenseCo
 %    login:                     MINERVA username
 %    password:                  MINERVA password
 %    map:                       MINERVA map
-% .  googleLicenseContent:      True if user agreed to Google Maps terms of
-% use: https://cloud.google.com/maps-platform/terms/
+%    googleLicenseContent:      True if user agreed to Google Maps terms of
+%                               use: https://cloud.google.com/maps-platform/terms/
 %    identifier:                Layout name
 %    content:                   Content of the layout
 %

@@ -3,6 +3,7 @@ function results = checkPresentFields(fieldProperties,model, results)
 % update the results struct.
 % The desired properties of each field are described here:
 % https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+% And computationally defined here: 'COBRA_structure_fields.csv'
 %
 % USAGE:
 %
@@ -26,6 +27,9 @@ presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
 %Check all Field Sizes
 for i = 1:numel(presentFields)
     testedField = fieldProperties{presentFields(i),1};
+    if 0 %set to 0 to debug
+        testedField
+    end
     [x_size,y_size] = size(model.(testedField));
     xFieldMatch = fieldProperties{presentFields(i),2};
     yFieldMatch = fieldProperties{presentFields(i),3};

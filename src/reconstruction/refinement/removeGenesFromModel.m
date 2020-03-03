@@ -17,8 +17,11 @@ function [model, affectedRxns, originalGPRs, deletedReactions] = removeGenesFrom
 % OPTIONAL INPUTS:
 %    varargin:            Additional Parameter/value pairs or a parameter
 %                         struct with the following parameter names:
-%                          * keepReactions - Whether to keep reactions if its GPR is changed to an empty GPR, i.e. all complexes catalyzing it are removed. (default: true)
-%                          * keepClauses - Do not remove clauses containing the gene, but instead just remove the gene from the clause (default: false).
+%                           * keepReactions - Whether to keep reactions if its GPR is
+%                             hanged to an empty GPR, i.e. all complexes catalyzing
+%                             it are removed. (default: true)
+%                           * keepClauses - Do not remove clauses containing the gene,
+%                             but instead just remove the gene from the clause (default: false).
 %
 % OUTPUTS:
 %    model:               COBRA model with the selected genes deleted
@@ -63,7 +66,7 @@ else
     deletedReactions = {};
 end
 
-    
+
 % get the affected reactions
 if isfield(model,'rxnGeneMat')
     % if the rxnGeneMat is present, we simply derive it from there
@@ -77,7 +80,7 @@ end
 affectedRxns = model.rxns(relreacs);
 
 if nargout > 2
-    if ~isfield(model,'grRules') 
+    if ~isfield(model,'grRules')
         model = creategrRulesField(model);
     end
     originalGPRs = model.grRules(relreacs);
@@ -108,5 +111,4 @@ if ~keepReactions
 end
 
 model = removeFieldEntriesForType(model,pos(pres),'genes',numel(model.genes));
-        
-    
+

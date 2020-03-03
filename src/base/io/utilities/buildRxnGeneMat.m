@@ -27,7 +27,7 @@ if ~isfield(model,'rules')
     end    
 end
 
-model.rxnGeneMat = false(numel(model.rxns), numel(model.genes));
+model.rxnGeneMat = sparse(numel(model.rxns), numel(model.genes));
 if isfield(model,'rules')
     for i = 1:numel(model.rxns)
         if ~isempty(model.rules{i})

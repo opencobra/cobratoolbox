@@ -1,6 +1,11 @@
 function results = verifyModel(model, varargin)
 % Checks the model for consistency with the COBRA Toolbox
 %
+% A list of fields of a COBRA structure is described in
+% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+% and defined computationally in:
+% src/base/io/definitions/COBRA_structure_fields.csv
+%
 % USAGE:
 %
 %    results = verifyModel(model, varargin)
@@ -49,6 +54,7 @@ function results = verifyModel(model, varargin)
 %       - Thomas Pfau, May 2017
 
 
+% Returns the fields defined in the COBRA Toolbox along with checks for their properties
 optionalFields = getDefinedFieldProperties();
 
 basicFields = optionalFields(cellfun(@(x) x, optionalFields(:,6)),1);
@@ -105,6 +111,8 @@ if ~isempty(missingFields)
     results.Errors.missingFields = missingFields;
 end
 
+% Check the model fields for consistency with the given fieldProperties and
+% update the results struct.
 results = checkPresentFields(requiredFields,model,results);
 results = checkPresentFields(optionalFields,model,results);
 if checkFields(results,'fieldProperties',model)
@@ -238,6 +246,31 @@ if ~isempty(results) && ~silentCheck
 end
 
 
+%TODO replace this workaround with a flexibile verification - Ronan Feb 2020
+%In the file 'COBRA_structure_fields.csv' I replaced:
+% subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction'false(1)'	cell	'false(1)'
+%with 
+%subSystems	rxns	1	iscell(x) || iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
+%but that did not allow two versions of model.subSystems
+%It needs to allow one subSystem per reaction as a char, rather than
+%mandating nesting cell arrays, which are not backward compatible, etc ,etc
+%Therefore, errors relating to incorrect properties of subSystems are
+%removed, for now.
+if isfield(results,'Errors')
+    if isfield(results.Errors,'propertiesNotMatched')
+        if isfield(results.Errors.propertiesNotMatched,'subSystems')
+            results.Errors.propertiesNotMatched=rmfield(results.Errors.propertiesNotMatched,'subSystems');
+            if isempty(fieldnames(results.Errors.propertiesNotMatched))
+                results.Errors = rmfield(results.Errors,'propertiesNotMatched');
+            end
+            if isempty(fieldnames(results.Errors))
+                results = rmfield(results,'Errors');
+            end
+        end
+    end
+end
+
+    
 if simpleCheck
     if isempty(fieldnames(results))
         results = true;
@@ -245,6 +278,7 @@ if simpleCheck
         results = false;
     end
 end
+
 end
 
 
