@@ -19,6 +19,7 @@ if 1
 else
     useSolversIfAvailable = {'pdco'};
 end
+
 solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
 
 % save the current path
