@@ -1,7 +1,7 @@
 function initCobraToolbox(updateToolbox)
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
-%     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
+%     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox verson 3.1 
 %     | |     | | | | |  _  { |  _  /  |  ___  |   |
 %     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
 %     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
@@ -22,7 +22,7 @@ function initCobraToolbox(updateToolbox)
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-%     Maintained by Ronan M.T. Fleming, Sylvain Arreckx, Laurent Heirendt
+%     Maintained by Ronan M.T. Fleming, Laurent Heirendt
 
 % define GLOBAL variables
 global CBTDIR;
