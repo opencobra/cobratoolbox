@@ -1,3 +1,8 @@
+
+
+solvers = prepareTest('requiredSolvers',{'gurobi'});
+
+
 fprintf('Checking gurobi solver ...\n')
 
 clear params
