@@ -1,4 +1,4 @@
-
+%tests if Gurobi correctly solves a set of QP problems
 
 solvers = prepareTest('requiredSolvers',{'gurobi'});
 
