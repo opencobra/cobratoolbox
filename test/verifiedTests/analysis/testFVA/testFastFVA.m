@@ -34,11 +34,9 @@ model = getDistributedModel('ecoli_core_model.mat');
 % Define the number of workers to be used
 nworkers = 2;
 
-
 if changeCobraSolver(solverName, 'LP', 0)
 
-    %check for suitable compiled version
-    if 0 %|| ~contains(ILOG_CPLEX_PATH, '1210') || ~contains(ILOG_CPLEX_PATH, '1271') || ~contains(ILOG_CPLEX_PATH, '128')
+    if isempty(strfind(ILOG_CPLEX_PATH, '1271')) || isempty(strfind(ILOG_CPLEX_PATH, '128'))
         generateMexFastFVA;
     end
 

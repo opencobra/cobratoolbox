@@ -181,7 +181,7 @@ fprintf('\n');
 
 function modelNew = mergeFields(modelNew,model1,model2,type)
 % USAGE:
-%    [modelNew] = mergeFields(modelNew,model1,model2,type)
+%    [modelNew] = mergeTwoModels(modelNew,model1,model2,type)
 %
 % INPUTS:
 %    modelNew:        The new Structure with all fields created till now

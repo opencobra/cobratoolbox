@@ -28,9 +28,8 @@ R4objective = double(ismember(loopToyModel.rxns,'R4')); %This should not be able
 NormalObjective = double(loopToyModel.c ~= 0);
 
 for k = 1:length(solverPkgs)
-    solverOk = changeCobraSolver(solverPkgs{k}, 'all', 0);
+    solverOk = changeCobraSolver(solverPkgs{k},'MILP',0);
     if solverOk
-        fprintf([' > Running testAddLoopLawConstraints with ' solverPkgs{k} '...']);
         for method = methods
             for reduce_vars = options
                 %Test original objective
@@ -45,18 +44,15 @@ for k = 1:length(solverPkgs)
                 assert(abs(sol.obj) < tol); %There can't be any flux on this.
             end
         end
-        fprintf('Done.\n');
     end
 end
+
 
 % define the solver packages to be used to run this test
 fprintf('Done.\n');
 
 %Remove the output, to keep the toolbox updateable.
-fileName = [fileDir filesep 'MILPProblem.mat'];
-if exist(fileName, 'file') == 2
-    delete(fileName);
-end
+delete([fileDir filesep 'MILPProblem.mat']);
 
 % change the directory
 cd(currentDir)
