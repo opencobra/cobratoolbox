@@ -645,7 +645,7 @@ switch solver
         %Until Gurobi 9.0, it was required that the quadratic matrix Q is positive semi-definite, so that the model is convex. 
         %This is no longer the case for Gurobi 9.0, which supports general non-convex quadratic constraints and objective functions, 
         %including bilinear and quadratic equality constraints.
-        if any(F,'all')
+        if any(any(F)) %if any(F, 'all') not backward compatible 
             %For gurobi model.Q must be a sparse double matrix
             gurobiQP.Q = sparse(0.5*F);
         end
