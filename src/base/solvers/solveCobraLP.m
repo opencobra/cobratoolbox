@@ -944,9 +944,23 @@ switch solver
                 if stat ==1 && isempty(resultgurobi.x)
                     error('solveCobraLP: gurobi reporting OPTIMAL but no solution')
                 end
-                [x,f,y,w] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc);
-                s = b - A * x; % output the slack variables
+                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
                 
+                if 0
+                    res1 = A*x + s - b;
+                    tmp1 = norm(res1,inf)
+                    res2 = osense*c  - A' * y - w;
+                    tmp2 = norm(res2,inf)
+                    disp('Check c - A''*lam = 0 (stationarity):');
+                    res22 = gurobiLP.obj - gurobiLP.A'*resultgurobi.pi - resultgurobi.rc;
+                    disp(res22)
+                    if ~all(res22<1e-8)
+                        pause(0.1);
+                    end
+                    
+                    pause(0.1)
+                end
+            
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
