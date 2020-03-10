@@ -657,7 +657,33 @@ switch solver
             if stat ==1 && isempty(resultgurobi.x)
                 error('solveCobraQP: gurobi reporting OPTIMAL but no solution')
             end
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);           
+            
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack); 
+            if 1
+                res1 = A*x + s - b;
+                tmp1 = norm(res1,inf)
+                if any(any(F))
+                    %res21 = c  + F*x - A' * y - w;
+                    %tmp2 = norm(res21, inf)
+                    disp('Check 2*Q*x + c - A''*lam = 0 (stationarity):');
+                    res22 =  (2*gurobiQP.Q*resultgurobi.x + gurobiQP.obj) - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
+                    disp(norm(res22,inf))
+                    if ~all(res22<1e-8)
+                        pause(0.1);
+                    end
+                else
+                    res21 = c  + F*x - A' * y - w;
+                    tmp21 = norm(res21,inf)
+                    disp('Check c - A''*lam = 0 (stationarity):');
+                    res22 = gurobiQP.obj - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
+                    disp(norm(res22,inf))
+                    if ~all(res22<1e-8)
+                        pause(0.1);
+                    end
+                end
+                pause(0.1)
+            end
+
           elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
@@ -902,7 +928,7 @@ switch solver
 end
 %%
 
-if (stat==1 || stat == 3) && ~strcmp(solver,'mps')
+if (stat==1 || stat == 3) && ~any(strcmp(solver,{'mps','gurobi'}))
     %TODO: pull out slack variable from every solver interface (see list of solvers below)
     if ~exist('s','var')
         % slack variables required for optimality condition check, if they are
