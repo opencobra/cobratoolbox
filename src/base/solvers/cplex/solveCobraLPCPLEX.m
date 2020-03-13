@@ -405,8 +405,11 @@ switch interface
             solution.origStat   = ILOGcplex.Solution.status;
             solution.solver     = ILOGcplex.Solution.method;
             solution.time       = ILOGcplex.Solution.time;
-            
         else
+            % cplexStatus analyzes the CPLEX output Inform code and returns
+            % the CPLEX solution status message in ExitText and the TOMLAB exit flag
+            % in ExitFlag
+            [solution.origStatText, ~] = cplexStatus(solution.origStat);
             warning(['IBM CPLEX STATUS = ' solution.origStatText '\n' ...
                 ', see: https://www.ibm.com/support/knowledgecenter/SS9UKU_12.6.0/com.ibm.cplex.zos.help/refcallablelibrary/macros/Solution_status_codes.html'])
             solution.stat       = -1;

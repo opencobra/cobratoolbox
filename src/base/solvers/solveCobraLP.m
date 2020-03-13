@@ -946,12 +946,12 @@ switch solver
                 end
                 [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
                 
-                if 0
+                if cobraSolverParams.printLevel>2
                     res1 = A*x + s - b;
-                    tmp1 = norm(res1,inf)
+                    disp(norm(res1,inf))
                     res2 = osense*c  - A' * y - w;
-                    tmp2 = norm(res2,inf)
-                    disp('Check c - A''*lam = 0 (stationarity):');
+                    disp(norm(res2,inf))
+                    disp('Check osense*c - A''*lam - w = 0 (stationarity):');
                     res22 = gurobiLP.obj - gurobiLP.A'*resultgurobi.pi - resultgurobi.rc;
                     disp(res22)
                     if ~all(res22<1e-8)
@@ -1320,10 +1320,10 @@ switch solver
         %stat = origStat;
         if origStat==1
             stat = 1;
-            f = osense*ILOGcplex.Solution.objval;
+            f = ILOGcplex.Solution.objval;
             x = ILOGcplex.Solution.x;
-            w = ILOGcplex.Solution.reducedcost;
-            y = ILOGcplex.Solution.dual;
+            w = osense*ILOGcplex.Solution.reducedcost;
+            y = osense*ILOGcplex.Solution.dual;
             s = b - A * x; % output the slack variables
         elseif origStat == 2 ||   origStat == 20
             stat = 2; %unbounded
@@ -1347,10 +1347,10 @@ switch solver
             ILOGcplex.Solution = Solution;
         elseif origStat == 5 || origStat == 6
             stat = 3;% Almost optimal solution
-            f = osense*ILOGcplex.Solution.objval;
+            f = ILOGcplex.Solution.objval;
             x = ILOGcplex.Solution.x;
-            w = ILOGcplex.Solution.reducedcost;
-            y = ILOGcplex.Solution.dual;
+            w = osense*ILOGcplex.Solution.reducedcost;
+            y = osense*ILOGcplex.Solution.dual;
             s = b - A * x; % output the slack variables
         elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
             % abort due to reached limit. check if there is a solution and return it.
@@ -1362,10 +1362,10 @@ switch solver
                 stat = -1;
             end
             if isfield(ILOGcplex.Solution ,'reducedcost')
-                w = ILOGcplex.Solution.reducedcost;
+                w = osense*ILOGcplex.Solution.reducedcost;
             end
             if isfield(ILOGcplex.Solution ,'dual')
-                y = ILOGcplex.Solution.dual;
+                y = osense*ILOGcplex.Solution.dual;
             end
         else
             stat = -1;

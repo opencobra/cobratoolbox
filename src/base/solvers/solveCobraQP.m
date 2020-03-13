@@ -92,6 +92,25 @@ xCont = [];
 stat = -99;
 solStat = -99;
 
+if 0
+F2 = QPproblem.F;
+F2(1:size(QPproblem.F,1):end)=0;
+if all(all(F2)) == 0
+    %nonzeros on diagonal only
+    try
+        %try cholesky decomposition
+        B = chol(QPproblem.F);
+    catch
+        QPproblem.F = QPproblem.F + diag((diag(QPproblem.F)==0)*1e-16);
+    end
+    try
+        B = chol(QPproblem.F);
+    catch
+        error('QPproblem.F only has non-zeros along the main diagnoal and is still not positive semidefinite after adding 1e-16')
+    end
+end
+end
+
 [A,b,F,c,lb,ub,csense,osense] = ...
     deal(sparse(QPproblem.A),QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
     QPproblem.csense,QPproblem.osense);
@@ -107,7 +126,7 @@ if ~isempty(cobraSolverParams.saveInput)
     save(fileName,'QPproblem')
 end
 
-if strcmp(solver,'ibm_cplex')
+if strcmp(solver,'ibm_cplex') || 1%debug
     CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
 end
 
@@ -149,7 +168,7 @@ switch solver
         
         %x primal variable
         %f objective value
-        f = osense*f;
+        %f = osense*f;
         %y dual to the b_L <=   Ax   <= b_U constraints 
         %w dual to the x_L <=    x   <= x_U constraints 
         
@@ -274,16 +293,16 @@ switch solver
             x = Result.x;
         end
         if isfield(Result, 'dual')
-            y = Result.dual;
+            y = osense*Result.dual;
         end
         if isfield(Result, 'reducedcost')
-            w = Result.reducedcost;
+            w = osense*Result.reducedcost;
         end
         if isfield(Result, 'ax')
             s = b - Result.ax;
         end
         if isfield(Result,'objval')
-            f = osense*Result.objval;
+            f = Result.objval;
         end
         origStat = Result.status;
         % See detailed table of result codes in
@@ -650,7 +669,16 @@ switch solver
             gurobiQP.Q = sparse(0.5*F);
         end
         
-        resultgurobi = gurobi(gurobiQP,params);
+        try
+            resultgurobi = gurobi(gurobiQP,params);
+        catch ME
+            if contains(ME.message,'Gurobi error 10020: Objective Q not PSD (negative diagonal entry)')
+                warning('%s\n','Gurobi cannot solve a QP problem if it is given a diagonal Q with some of those diagonals equal to zero')
+            end
+            rethrow(ME)
+            %Error using gurobi
+            %Gurobi error 10020: Objective Q not PSD (negative diagonal entry)
+        end
         origStat = resultgurobi.status;
         if strcmp(resultgurobi.status,'OPTIMAL')
             stat = 1; % Optimal solution found
@@ -659,29 +687,31 @@ switch solver
             end
             
             [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack); 
-            if 1
+            
+            if cobraSolverParams.printLevel>2 %|| 1
                 res1 = A*x + s - b;
-                tmp1 = norm(res1,inf)
+                disp(norm(res1,inf))
                 if any(any(F))
                     %res21 = c  + F*x - A' * y - w;
                     %tmp2 = norm(res21, inf)
                     disp('Check 2*Q*x + c - A''*lam = 0 (stationarity):');
                     res22 =  (2*gurobiQP.Q*resultgurobi.x + gurobiQP.obj) - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
                     disp(norm(res22,inf))
-                    if ~all(res22<1e-8)
+                    if norm(res22,inf)>1e-8
                         pause(0.1);
                     end
                 else
-                    res21 = c  + F*x - A' * y - w;
-                    tmp21 = norm(res21,inf)
-                    disp('Check c - A''*lam = 0 (stationarity):');
+                    res1 = A*x + s - b;
+                    disp(norm(res1,inf))
+                    res2 = osense*c  - A' * y - w;
+                    disp(norm(res2,inf))
+                    disp('Check osense*c - A''*lam - w = 0 (stationarity):');
                     res22 = gurobiQP.obj - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
                     disp(norm(res22,inf))
-                    if ~all(res22<1e-8)
+                    if norm(res22,inf)>1e-8
                         pause(0.1);
                     end
                 end
-                pause(0.1)
             end
 
           elseif strcmp(resultgurobi.status,'INFEASIBLE')
@@ -1002,8 +1032,8 @@ if solution.stat==1
             if norm(solution.obj - f) > 1e-4
                 warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
                 fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
-                    'while the value constructed from osense*c''*x + 0.5*x''*F*x:', solution.obj,...
-                    'while the value constructed from osense*c''*x + osense*x''*F*x :', osense*c'*solution.full + osense*solution.full'*F*solution.full)
+                    'while the value constructed from c''*x + 0.5*x''*F*x:', solution.obj,...
+                    'while the value constructed from osense*(c''*x + x''*F*x) :', osense*(c'*solution.full + solution.full'*F*solution.full))
             end
         else
             solution.obj = NaN;
@@ -1037,30 +1067,29 @@ else
         solution.obj = NaN;
     end
 end
+end
 
 %Helper function for pdco
-%%
-    function [obj,grad,hess] = QPObj(x)
-        obj  = osense*ceq'*x + osense*0.5*x'*Feq*x;
-        grad = osense*ceq + osense*Feq*x;
-        hess = osense*Feq;
-    end
+function [obj,grad,hess] = QPObj(x)
+obj  = osense*ceq'*x + osense*0.5*x'*Feq*x;
+grad = osense*ceq + osense*Feq*x;
+hess = osense*Feq;
+end
 
-    function DQQCleanup(tmpPath, originalDirectory)
-        % perform cleanup after DQQ.
-        try
-            % cleanup
-            rmdir([tmpPath filesep 'results'], 's');
-            fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
-            for k = 1:length(fortFiles)
-                delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
-            end
-        catch
-        end
-        try        % remove the temporary .mps model file
-            rmdir([tmpPath filesep 'MPS'], 's')
-        catch
-        end
-        cd(originalDirectory);
+function DQQCleanup(tmpPath, originalDirectory)
+% perform cleanup after DQQ.
+try
+    % cleanup
+    rmdir([tmpPath filesep 'results'], 's');
+    fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
+    for k = 1:length(fortFiles)
+        delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
     end
+catch
+end
+try        % remove the temporary .mps model file
+    rmdir([tmpPath filesep 'MPS'], 's')
+catch
+end
+cd(originalDirectory);
 end
