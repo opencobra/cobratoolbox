@@ -1,10 +1,10 @@
-function [cobraLocalParams, solverParams] = parseSolverParameters(problemType, varargin)
+function [problemTypeParams, solverParams] = parseSolverParameters(problemType, varargin)
 % Gets default cobra solver parameters for a problem of type problemType, unless 
 % overridden by cobra solver parameters provided by varagin either as parameter
 % struct, or as parameter/value pairs.
 %
 % USAGE:
-%    [cobraLocalParams, solverParams] = parseSolverParameters(problemType,varargin)
+%    [problemTypeParams, solverParams] = parseSolverParameters(problemType,varargin)
 %
 % INPUT:
 %    problemType:       The type of the problem to get parameters for
@@ -21,8 +21,9 @@ function [cobraLocalParams, solverParams] = parseSolverParameters(problemType, v
 %                       solver specific manner.
 %
 % OUTPUTS:
-%    cobraLocalParams:       The COBRA Toolbox specific parameters for this
+%    problemTypeParams: The COBRA Toolbox specific parameters for this
 %                       problem type given the provided parameters
+%
 %    solverParams:      Additional parameters provided which are not part
 %                       of the COBRA parameters and are assumed to be part
 %                       of direct solver input structs.
@@ -88,17 +89,17 @@ else
 end
 
 % set up the cobra parameters
-cobraLocalParams = struct();
+problemTypeParams = struct();
 
 for i = 1:numel(defaultParams(:,1))
     % if the field is part of the optional parameters (i.e. explicitly provided) use it.
     if isfield(optParamStruct,defaultParams{i,1})
-        cobraLocalParams.(defaultParams{i,1}) = optParamStruct.(defaultParams{i,1});
+        problemTypeParams.(defaultParams{i,1}) = optParamStruct.(defaultParams{i,1});
         % and remove the field from the struct for the solver specific parameters.
         optParamStruct = rmfield(optParamStruct,defaultParams{i,1});
     else
         % otherwise use the default parameter
-        cobraLocalParams.(defaultParams{i,1}) = defaultParams{i,2};
+        problemTypeParams.(defaultParams{i,1}) = defaultParams{i,2};
     end
 end
 

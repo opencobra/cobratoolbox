@@ -24,7 +24,7 @@ currentDir = pwd;
 %     %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-
 % end
 
-if 0
+if 1
     useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex'};
     excludeSolvers={'pdco','gurobi'};
 elseif 0

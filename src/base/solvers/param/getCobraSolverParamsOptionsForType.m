@@ -1,26 +1,28 @@
-function paramNames = getCobraSolverParamsOptionsForType(solverType)
-% This function returns the available optional parameters for the specified
-% solver type.
+function paramNames = getCobraSolverParamsOptionsForType(problemType)
+% This function returns the parameters that are supported for each specified
+% problem type.
 %
 % USAGE:
-%    paramnames = getCobraSolverParamsOptionsForType(solverType)
+%    paramNames = getCobraSolverParamsOptionsForType(problemType)
 %
 % INPUT:
-%    solverType:        One of the solver types available in the cobra
+%    problemType :      One of the problem types available in the COBRA
 %                       Toolbox ('LP','QP','MILP','MIQP','NLP')
+%
 % OUPTUT:
-%    paramNames:        The possible parameters that can be set for the
-%                       given solver Type (depends on the solver Type
+%    paramNames:        Cell array of names of parameters that can be set
+%                       for each problem type, independent of the specific
+%                       solver being used.
 
-if iscell(solverType)
+if iscell(problemType )
     paramNames = {};
-    for j = 1:numel(solverType)
-        paramNames = [paramNames, getCobraSolverParamsOptionsForType(solverType{j})];
+    for j = 1:numel(problemType )
+        paramNames = [paramNames, getCobraSolverParamsOptionsForType(problemType {j})];
     end
     paramNames = unique(paramNames);
     return
 end
-switch solverType
+switch problemType 
     case 'LP'
         paramNames = {'verify',...          % verify that it is a suitable  LP problem
                       'minNorm', ...        % type of normalization used.
