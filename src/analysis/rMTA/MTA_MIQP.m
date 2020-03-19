@@ -129,7 +129,7 @@ else
             'threads',numWorkers);
 
         if solution.stat ~= 0
-            v_res = solution.full(v);
+            v_res = solutioned(v);
         else
             v_res = zeros(length(v),1);
         end

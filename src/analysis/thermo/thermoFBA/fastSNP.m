@@ -88,7 +88,7 @@ while true
     
     if checkSolFeas(LP, sol) <= feasTol
         % feasible solution found. Save it
-        x = sol.full(1:n);
+        x = sol.fulledit(1:n);
         x(abs(x) < tol0) = 0;
         Ntemp(:, 2) = x / min(abs(x(x ~= 0)));
     end
