@@ -32,7 +32,7 @@ for i=1:length(modelsToTry)
     
     fp = FormulaParser();
     % fix for Recon2
-    if strcmp(modelsToTry{i}, 'Recon2.v04.mat')
+    if strcmp(modelsToTry{i}, 'Recon2.v05.mat')
         model.rules(2240) = {'(x(2)) | (x(4)) | (x(3))'}; % '(26.1) or (314.1) or (314.2)'
         model.rules(2543) = {'(x(2)) | (x(4)) | (x(1)) | (x(3))'}; % '(26.1) or (314.1) or (8639.1) or (314.2)'
         model.rules(2750) = {'(x(2)) | (x(4)) | (x(1)) | (x(3))'}; % '(26.1) or (314.1) or (8639.1) or (314.2)'

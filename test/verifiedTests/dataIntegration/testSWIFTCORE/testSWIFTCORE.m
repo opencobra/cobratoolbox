@@ -44,7 +44,9 @@ fprintf(' -- Running swiftcore w/ reduction and using the %s solver...\n', solve
 [~, coreInd, ~] = swiftcore(model, core, ones(n, 1), 1e-10, true, solvers.LP{1});
 assert(all(coreInd(core)));
 A = swiftcc(model.S(:, coreInd), model.rev(coreInd));
-assert(all(A.' == 1:length(A)));
+tmp=nnz(A.' == 1:length(A))/length(A)
+bool=all(A.' == 1:length(A));
+assert(bool);
 
 % output a success message
 fprintf('\nDone.\n');
