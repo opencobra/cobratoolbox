@@ -15,7 +15,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateRules'));
 cd(fileDir);
 
-modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'Recon2.v04.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
+modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'Recon2.v05.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
 
 for i=1:length(modelsToTry)
     model = getDistributedModel(modelsToTry{i});

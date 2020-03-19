@@ -20,6 +20,12 @@ if isempty(strfind(result, '/lrs'))  % Which returns the path with /!
     error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system');
 end
 
+[status, result] = system('locate /usr/local/opt/gmp/lib/libgmp.10.dylib');
+if status==0 
+    % This test will be skipped since there are Requirements (LRS) missing.
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system. Missing /usr/local/opt/gmp/lib/libgmp.10.dylib');
+end
+
 % save the current path
 currentDir = pwd;
 

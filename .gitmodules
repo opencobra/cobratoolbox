@@ -20,7 +20,7 @@
 	ignore = dirty
 [submodule "test/models"]
 	path = test/models
-	url = https://github.com/LCSB-BioCore/COBRA.models
+	url = https://github.com/opencobra/COBRA.models
 	ignore = dirty
 [submodule "external/analysis/Volume-and-Sampling"]
 	path = external/analysis/Volume-and-Sampling

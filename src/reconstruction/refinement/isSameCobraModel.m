@@ -63,6 +63,9 @@ for i = 1:nFields
     value1 = getfield(model1, fieldName);
     value2 = getfield(model2, fieldName);
 
+    if strcmp(fieldName,'rxnConfidenceScores')
+        pause(0.1);
+    end
     % replace all whitespaces
     if iscellstr(value1)
         value1 = regexprep(value1, '[^\w'']', '');

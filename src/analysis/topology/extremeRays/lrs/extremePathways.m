@@ -100,7 +100,7 @@ lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh);
 
 % pause(eps)
 [status, result] = system('which lrs');
-if ~isempty(strfind(result, '/lrs')) %% no filesep here, as which always (even the git bash version on windows returns pathes with /)
+if contains(result, '/lrs') %% no filesep here, as which always (even the git bash version on windows returns paths with /)
     % call lrs and wait until extreme pathways have been calculated
     systemCallText = ['lrs ' pwd filesep filename '_' suffix '.ine > ' pwd filesep filename '_' suffix '.ext'];
     [status, result] = system(systemCallText);
