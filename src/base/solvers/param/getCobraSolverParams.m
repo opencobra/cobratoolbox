@@ -1,9 +1,10 @@
 function varargout = getCobraSolverParams(solverType, paramNames, parameters)
 % This function gets the specified parameters in `paramNames` from
 % parameters, the global cobra paramters variable or default values set within
-% this script. It will use values with the following priority
+% this script. 
 %
-% parameters > global parameters > default
+% It will use values with the following priority
+% parameters > solver type parameters > default parameters
 %
 % The specified parameters will be delt to the specified output arguements.
 % See examples below.
@@ -25,7 +26,7 @@ function varargout = getCobraSolverParams(solverType, paramNames, parameters)
 %
 % OUTPUTS:
 %    varargout:     Variables which each value corresponding to paramNames
-%                   is outputted to.
+%                   is output to.
 %
 % EXAMPLE:
 %    parameters.saveInput = 'LPproblem.mat';

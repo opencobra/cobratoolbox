@@ -30,8 +30,8 @@ if 1
     solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek','pdco'});
 else
     % test solver packages
-    %useIfAvailable = {'pdco'};
-    useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek','pdco'};
+    useIfAvailable = {'pdco'};
+    %useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek','pdco'};
     solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);
 end
 

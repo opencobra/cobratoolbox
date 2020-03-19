@@ -222,7 +222,7 @@ if isempty(SOLVERS) || isempty(OPT_PROB_TYPES)
 end
 
 %Clean up, after changing the solver, this happens only if CBTDIR is
-%actually set i.e. initCobraToolbox is called before). This is only
+%actually set i.e. initCobraToolbox is called before. This is only
 %necessary, if the solver is being validated.
 if validationLevel == 1
     origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false);

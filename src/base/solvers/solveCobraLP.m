@@ -50,9 +50,9 @@ function solution = solveCobraLP(LPproblem, varargin)
 %
 %    primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)
 %
-%    solverParams:  solver-specific parameter structure. Formats supported
-%                   are ILOG cplex and Tomlab parameter syntax. see example
-%                   for details.
+%    solverParams:  solver-specific parameter structure with field names
+%                   that match exactly those in that solvers matlab interface.
+%
 %
 % OUTPUT:
 %    solution:      Structure containing the following fields describing a LP solution:
@@ -84,12 +84,11 @@ function solution = solveCobraLP(LPproblem, varargin)
 %
 %    %Optional parameters can be entered in three different ways {A,B,C}
 %
-%    %A) as a generic solver parameter followed by parameter value:
-%    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1);
-%    [solution] = solveCobraLP(LPCoupled, 'printLevel', 1, 'feasTol', 1e-8);
+%    %A) as a problem specific parameter followed by parameter value:
+%    [solution] = solveCobraLP(LP, 'printLevel', 1);
+%    [solution] = solveCobraLP(LP, 'printLevel', 1, 'feasTol', 1e-8);
 %
-%    %B) parameters structure with field names specific to a particular solvers
-%    % internal parameter fields
+%    %B) as a parameters structure with field names specific to a specific solver
 %    [solution] = solveCobraLP(LPCoupled, parameters);
 %
 %    %C) as parameter followed by parameter value, with a parameter structure
@@ -119,22 +118,22 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBTDIR % process arguments etc
 global MINOS_PATH
 
-% gets the solver parameters
-[cobraSolverParams, solverParams] = parseSolverParameters('LP',varargin{:});
+% gets the problem type and solver specific parameters
+[problemTypeParams, solverParams] = parseSolverParameters('LP',varargin{:});
 
 % set the solver
-solver = cobraSolverParams.solver;
+solver = problemTypeParams.solver;
 
 % check solver compatibility with minNorm option
-if ~isempty(cobraSolverParams.minNorm)
+if ~isempty(problemTypeParams.minNorm)
     if ~any(strcmp(solver, {'cplex_direct'}))
         error(['Solver is ' solver ' but minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.'])
     end
 end
 
 % save Input if selected
-if ~isempty(cobraSolverParams.saveInput)
-    fileName = cobraSolverParams.saveInput;
+if ~isempty(problemTypeParams.saveInput)
+    fileName = problemTypeParams.saveInput;
     if ~find(regexp(fileName, '.mat'))
         fileName = [fileName '.mat'];
     end
@@ -143,7 +142,7 @@ if ~isempty(cobraSolverParams.saveInput)
 end
 
 % support for lifting of ill-scaled models
-if cobraSolverParams.lifting == 1
+if problemTypeParams.lifting == 1
     largeNb = 1e4;  % suitable for double precision solvers
     [LPproblem] = reformulate(LPproblem, largeNb, printLevel);
 end
@@ -184,7 +183,11 @@ else
     basis = [];
 end
 
-if ~any(strcmp(solver,{'ibm_cplex','cplex_direct','dqqMinos','quadMinos','mps'}))
+if strcmp(solver,'ibm_cplex') %debug
+    CplexLPproblem = buildCplexProblemFromCOBRAStruct(LPproblem);
+end
+
+if ~any(strcmp(solver,{'cplex_direct','dqqMinos','quadMinos','mps'}))
     %clear the problem structure so it does not interfere later
     clear LPproblem
 end
@@ -307,7 +310,7 @@ switch solver
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
-        if ~cobraSolverParams.debug % if debugging leave the files in case of an error.
+        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
         end
         % create the
@@ -367,14 +370,18 @@ switch solver
         w = sol.rc;
 
         
-        %don't take the row corresponding to the objective
-        if sol.objrow == 1
-            y = sol.y(2:end);
-            s = sol.s(2:end);
-        else
-            y = sol.y(1:end-1);
-            s = sol.s(1:end-1);
-        end
+%         %don't take the row corresponding to the objective
+%         if sol.objrow == 1
+%             y = sol.y(2:end);
+%             s = sol.s(2:end);
+%         else
+%             y = sol.y(1:end-1);
+%             s = sol.s(1:end-1);
+%         end
+        %to allow for any row.
+        sol.y(sol.objrow) = [];
+        sol.s(sol.objrow) = [];
+        
         %writeMPS solves A*x <= 0, so reverse sign of slacks where input 
         %problem was of the form A*x >= 0
         bool = csense == 'G';
@@ -423,9 +430,9 @@ switch solver
         mkdir(dataDirectory);
 
         % write out flat file to current folder
-        [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, cobraSolverParams.printLevel);
+        [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, problemTypeParams.printLevel);
 
-        if ~cobraSolverParams.debug % if debugging leave the files in case of an error.
+        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
         end
 
@@ -506,9 +513,9 @@ switch solver
 
     case 'glpk'
         %% GLPK
-        param.msglev = cobraSolverParams.printLevel;  % level of verbosity
-        param.tolbnd = cobraSolverParams.feasTol;  % tolerance
-        param.toldj = cobraSolverParams.optTol;  % tolerance
+        param.msglev = problemTypeParams.printLevel;  % level of verbosity
+        param.tolbnd = problemTypeParams.feasTol;  % tolerance
+        param.toldj = problemTypeParams.optTol;  % tolerance
         if (isempty(csense))
             clear csense
             csense(1:length(b), 1) = 'S';
@@ -523,7 +530,7 @@ switch solver
         %struct, this needs to be forwarded to the cobra Params for the
         %final consistency test!
         if isfield(solverParams,'tolbnd')
-            cobraSolverParams.feasTol = solverParams.tolbnd;
+            problemTypeParams.feasTol = solverParams.tolbnd;
         end
         % glpk needs b to be full, not sparse -Ronan
         b = full(b);
@@ -537,7 +544,7 @@ switch solver
         %% LINDO
         % if (strcmp(solver, 'lindo_new'))
         %     % use new API (>= 2.0)
-        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, cobraSolverParams.primalOnlyFlag, false);
+        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, problemTypeParams.primalOnlyFlag, false);
         %     % note that status handling may change (see Lindo.h)
         %     if (origStat == 1 || origStat == 2)
         %         stat = 1;  % optimal solution found
@@ -550,7 +557,7 @@ switch solver
         %     end
         % else
         %     % use old API
-        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, cobraSolverParams.primalOnlyFlag, true);
+        %     [f, x, y, w, s, origStat] = solveCobraLPLindo(A, b, c, csense, lb, ub, osense, problemTypeParams.primalOnlyFlag, true);
         %     % Note that status handling may change (see Lindo.h)
         %     if (origStat == 2 || origStat == 3)
         %         stat = 1;  % optimal solution found
@@ -603,7 +610,7 @@ switch solver
         param = solverParams;
         % only set the print level if not already set via solverParams structure
         if ~isfield(param, 'MSK_IPAR_LOG')
-            switch cobraSolverParams.printLevel
+            switch problemTypeParams.printLevel
                 case 0
                     echolev = 0;
                 case 1
@@ -625,16 +632,16 @@ switch solver
 
         %https://docs.mosek.com/8.1/toolbox/solving-linear.html
         if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-            param.MSK_DPAR_INTPNT_TOL_PFEAS=cobraSolverParams.feasTol;
+            param.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
         end
         if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-            param.MSK_DPAR_INTPNT_TOL_DFEAS=cobraSolverParams.feasTol;
+            param.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
         end
         %If the feasibility tolerance is changed by the solverParams
         %struct, this needs to be forwarded to the cobra Params for the
         %final consistency test!
         if isfield(param,'MSK_DPAR_INTPNT_TOL_PFEAS')
-            cobraSolverParams.feasTol = param.MSK_DPAR_INTPNT_TOL_PFEAS;
+            problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_TOL_PFEAS;
         end
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
@@ -802,7 +809,7 @@ switch solver
         options=solverParams;
         % only set print level if not set already
         if ~isfield(options,'Display')
-            switch cobraSolverParams.printLevel
+            switch problemTypeParams.printLevel
                 case 0
                     options.Display='off';
                 case 1
@@ -869,7 +876,7 @@ switch solver
 
         param=solverParams;
         if ~isfield(param,'OutputFlag')
-            switch cobraSolverParams.printLevel
+            switch problemTypeParams.printLevel
                 case 0
                     param.OutputFlag = 0;
                     param.DisplayInterval = 1;
@@ -885,16 +892,16 @@ switch solver
 
         if isfield(param,'FeasibilityTol')
             % update tolerance according to actual setting
-            cobraSolverParams.feasTol = param.FeasibilityTol;
+            problemTypeParams.feasTol = param.FeasibilityTol;
         else
-            param.FeasibilityTol = cobraSolverParams.feasTol;
+            param.FeasibilityTol = problemTypeParams.feasTol;
         end
             
         if isfield(param,'OptimalityTol')
             % update tolerance according to actual setting
-            cobraSolverParams.optTol = param.OptimalityTol;
+            problemTypeParams.optTol = param.OptimalityTol;
         else      
-            param.OptimalityTol = cobraSolverParams.optTol;
+            param.OptimalityTol = problemTypeParams.optTol;
         end
 
         gurobiLP.sense(1:length(b),1) = '=';
@@ -946,12 +953,12 @@ switch solver
                 end
                 [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
                 
-                if 0
+                if problemTypeParams.printLevel>2
                     res1 = A*x + s - b;
-                    tmp1 = norm(res1,inf)
+                    disp(norm(res1,inf))
                     res2 = osense*c  - A' * y - w;
-                    tmp2 = norm(res2,inf)
-                    disp('Check c - A''*lam = 0 (stationarity):');
+                    disp(norm(res2,inf))
+                    disp('Check osense*c - A''*lam - w = 0 (stationarity):');
                     res22 = gurobiLP.obj - gurobiLP.A'*resultgurobi.pi - resultgurobi.rc;
                     disp(res22)
                     if ~all(res22<1e-8)
@@ -1008,7 +1015,7 @@ switch solver
 
     case 'matlab'
         % matlab is not a reliable LP solver
-        switch cobraSolverParams.printLevel
+        switch problemTypeParams.printLevel
            case 0
                matlabPrintLevel = 'off';
            case 1
@@ -1038,15 +1045,15 @@ switch solver
             clinprog = @(f,A,b,Aeq,beq,lb,ub,options) linprog(f,A,b,Aeq,beq,lb,ub,options);
         end
 
-        if cobraSolverParams.optTol < 1e-8
-            cobraSolverParams.optTol = cobraSolverParams.optTol * 100; %make sure, that we are within the range of allowed values.
+        if problemTypeParams.optTol < 1e-8
+            problemTypeParams.optTol = problemTypeParams.optTol * 100; %make sure, that we are within the range of allowed values.
         end
 
-        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,cobraSolverParams.optTol*0.01,constTolParam,cobraSolverParams.feasTol);
+        linprogOptions = optimoptions('linprog','Display',matlabPrintLevel,optToleranceParam,problemTypeParams.optTol*0.01,constTolParam,problemTypeParams.feasTol);
         % replace all options if they are provided by the solverParameters struct
         linprogOptions = updateStructData(linprogOptions,solverParams);
         %UPdate Tolerance according to actual tolerance used.
-        cobraSolverParams.feasTol = linprogOptions.(constTolParam);
+        problemTypeParams.feasTol = linprogOptions.(constTolParam);
 
         if (isempty(csense))
             [x,f,origStat,output,lambda] = clinprog(c*osense,[],[],A,b,lb,ub,linprogOptions);
@@ -1117,7 +1124,7 @@ switch solver
         % set parameters
         tomlabProblem.optParam = optParamDef('cplex',tomlabProblem.probType);
         tomlabProblem.QP.F = [];
-        tomlabProblem.PriLevOpt = cobraSolverParams.printLevel;
+        tomlabProblem.PriLevOpt = problemTypeParams.printLevel;
 
         if ~isempty(basis) && ...
                 ~ismember('basis',fieldnames(solverParams))
@@ -1125,16 +1132,16 @@ switch solver
         end
 
         % set tolerance
-        tomlabProblem.MIP.cpxControl.EPRHS = cobraSolverParams.feasTol;
-        tomlabProblem.MIP.cpxControl.EPOPT = cobraSolverParams.optTol;
+        tomlabProblem.MIP.cpxControl.EPRHS = problemTypeParams.feasTol;
+        tomlabProblem.MIP.cpxControl.EPOPT = problemTypeParams.optTol;
 
         %Update the parameter struct according to provided parameters
         %This may overwrite feasTol and optTol if provided
         tomlabProblem.MIP.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
 
         %UPdate Tolerance according to actual tolerance used.
-        cobraSolverParams.feasTol = tomlabProblem.MIP.cpxControl.EPRHS;
-        cobraSolverParams.optTol = tomlabProblem.MIP.cpxControl.EPOPT;
+        problemTypeParams.feasTol = tomlabProblem.MIP.cpxControl.EPRHS;
+        problemTypeParams.optTol = tomlabProblem.MIP.cpxControl.EPOPT;
 
         % solve
         Result = cplexTL(tomlabProblem);
@@ -1183,7 +1190,7 @@ switch solver
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
             LPproblem.LPBasis = LPproblem.basis;
         end
-        [solution,LPprob] = solveCobraLPCPLEX(LPproblem,cobraSolverParams.printLevel,1,[],[],minNorm);
+        [solution,LPprob] = solveCobraLPCPLEX(LPproblem,problemTypeParams.printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
         solution.algorithm = algorithm; % dummy
@@ -1219,7 +1226,7 @@ switch solver
 %         lambda 	    Structure containing the Lagrange multipliers at the solution x (separated by constraint type). This is only available for problems that do not contain quadratic constraints. See cplexqp() for details.
 
         try
-            ILOGcplex = Cplex('fba');
+            CplexLPproblem = Cplex('fba');
         catch ME
             error('CPLEX not installed or licence server not up')
         end
@@ -1230,12 +1237,12 @@ switch solver
         options = cplexoptimset('cplex');
 
         % set the printLevel to the cobra Parameters (dont use .Cur)
-        options.output.writelevel = cobraSolverParams.printLevel;
-        options.barrier.display = cobraSolverParams.printLevel;
-        options.simplex.display = cobraSolverParams.printLevel;
-        options.sifting.display = cobraSolverParams.printLevel;
-        options.paramdisplay = cobraSolverParams.printLevel~=0;
-        options.output.clonelog = cobraSolverParams.printLevel-1;
+        options.output.writelevel = problemTypeParams.printLevel;
+        options.barrier.display = problemTypeParams.printLevel;
+        options.simplex.display = problemTypeParams.printLevel;
+        options.sifting.display = problemTypeParams.printLevel;
+        options.paramdisplay = problemTypeParams.printLevel~=0;
+        options.output.clonelog = problemTypeParams.printLevel-1;
 
         if ~isempty(csense)
             Aineq = [A(csense == 'L',:); - A(csense == 'G',:)];
@@ -1303,12 +1310,12 @@ switch solver
         % iBM(R) ILOG(R) CPLEX(R) Interactive Optimizer 12.5.1.0
 
         % Initialize the CPLEX object
-        ILOGcplex = buildCplexProblemFromCOBRAStruct(LPproblem);
-        [ILOGcplex, logFile, logToFile] = setCplexParametersForProblem(ILOGcplex,cobraSolverParams,solverParams,'LP');
+        %ILOGcplex = buildCplexProblemFromCOBRAStruct(LPproblem);
+        [CplexLPproblem, logFile, logToFile] = setCplexParametersForProblem(CplexLPproblem,problemTypeParams,solverParams,'LP');
         %logToFile=0;
         
         % optimize the problem
-        ILOGcplex.solve();
+        CplexLPproblem.solve();
     
         if logToFile
             % Close the output file
@@ -1316,14 +1323,14 @@ switch solver
         end
                 
         % http://www-eio.upc.edu/lceio/manuals/cplex-11/html/overviewcplex/statuscodes.html
-        origStat   = ILOGcplex.Solution.status;
+        origStat   = CplexLPproblem.Solution.status;
         %stat = origStat;
         if origStat==1
             stat = 1;
-            f = osense*ILOGcplex.Solution.objval;
-            x = ILOGcplex.Solution.x;
-            w = ILOGcplex.Solution.reducedcost;
-            y = ILOGcplex.Solution.dual;
+            f = CplexLPproblem.Solution.objval;
+            x = CplexLPproblem.Solution.x;
+            w = osense*CplexLPproblem.Solution.reducedcost;
+            y = osense*CplexLPproblem.Solution.dual;
             s = b - A * x; % output the slack variables
         elseif origStat == 2 ||   origStat == 20
             stat = 2; %unbounded
@@ -1333,10 +1340,10 @@ switch solver
             % this is likely unbounded, but could be infeasible
             % lets check, by solving an additional LP with no objective.
             % if that LP has a solution, it's unbounded. If it doesn't, it's infeasible.
-            Solution = ILOGcplex.Solution;
-            ILOGcplex.Model.obj(:) = 0;
-            ILOGcplex.solve();
-            origStatNew   = ILOGcplex.Solution.status;
+            Solution = CplexLPproblem.Solution;
+            CplexLPproblem.Model.obj(:) = 0;
+            CplexLPproblem.solve();
+            origStatNew   = CplexLPproblem.Solution.status;
             if origStatNew == 1
                 stat = 2;
             else
@@ -1344,28 +1351,28 @@ switch solver
             end
             % restore the original solution.
             % restore the original solution.
-            ILOGcplex.Solution = Solution;
+            CplexLPproblem.Solution = Solution;
         elseif origStat == 5 || origStat == 6
             stat = 3;% Almost optimal solution
-            f = osense*ILOGcplex.Solution.objval;
-            x = ILOGcplex.Solution.x;
-            w = ILOGcplex.Solution.reducedcost;
-            y = ILOGcplex.Solution.dual;
+            f = CplexLPproblem.Solution.objval;
+            x = CplexLPproblem.Solution.x;
+            w = osense*CplexLPproblem.Solution.reducedcost;
+            y = osense*CplexLPproblem.Solution.dual;
             s = b - A * x; % output the slack variables
         elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
             % abort due to reached limit. check if there is a solution and return it.
             stat = 3;
-            if isfield(ILOGcplex.Solution ,'x')
-                x = ILOGcplex.Solution.x;
+            if isfield(CplexLPproblem.Solution ,'x')
+                x = CplexLPproblem.Solution.x;
             else
                % no solution returned
                 stat = -1;
             end
-            if isfield(ILOGcplex.Solution ,'reducedcost')
-                w = ILOGcplex.Solution.reducedcost;
+            if isfield(CplexLPproblem.Solution ,'reducedcost')
+                w = osense*CplexLPproblem.Solution.reducedcost;
             end
-            if isfield(ILOGcplex.Solution ,'dual')
-                y = ILOGcplex.Solution.dual;
+            if isfield(CplexLPproblem.Solution ,'dual')
+                y = osense*CplexLPproblem.Solution.dual;
             end
         else
             stat = -1;
@@ -1376,7 +1383,7 @@ switch solver
         % in ExitFlag
         [origStatText, ~] = cplexStatus(origStat);
 
-        switch ILOGcplex.Param.lpmethod.Cur
+        switch CplexLPproblem.Param.lpmethod.Cur
             case 0
                 algorithm='Automatic';
             case 1
@@ -1422,57 +1429,6 @@ switch solver
 
         [nMet,nRxn]=size(A);
 
-        % setting d1 to zero is dangerous numerically, but is necessary to avoid
-        % minimising the Euclidean norm of the optimal flux. A more
-        % numerically stable way is to use pdco via solveCobraQP, which has
-        % a more reasonable d1 and should be more numerically robust. -Ronan
-        d1=0;
-        % d2=1e-6;
-        %d1 = 5e-4;
-        d2 = 5e-4;
-
-        % generate set of default parameters for this solver
-        options = pdcoSet;
-        
-        % set the printLevel
-        options.Print=cobraSolverParams.printLevel;
-        
-        % overwrite with default cobra toolbox parameters
-        options.FeaTol = cobraSolverParams.feasTol;
-        options.OptTol    = cobraSolverParams.optTol;
-        
-        solverParams = updateStructData(options,solverParams);
-        
-        if isfield(solverParams,'pdco_xsize')
-            xsize = solverParams.pdco_xsize;
-            solverParams = rmfield(solverParams,'pdco_xsize');
-        else
-            xsize = 100;
-        end
-        if isfield(solverParams,'pdco_zsize')
-            zsize = solverParams.pdco_zsize;
-            solverParams = rmfield(solverParams,'pdco_zsize');
-        else
-            zsize = 100;
-        end
-
-        if isfield(solverParams,'pdco_method')
-            options.Method = solverParams.pdco_method;
-            solverParams = rmfield(solverParams,'pdco_method');
-        else
-            options.Method = 2;
-        end
-
-        if isfield(solverParams,'pdco_maxiter')
-            options.MaxIter = solverParams.pdco_maxiter;
-            solverParams = rmfield(solverParams,'pdco_maxiter');
-        else
-            options.MaxIter = 200;
-        end
-
-        % overwrite with problem-specific solver paramaters, if provided
-        options = updateStructData(options,solverParams);        
-        
         %pdco only works with equality constraints and box constraints so
         %any other linear constraints need to be reformulated in terms of
         %slack variables
@@ -1499,9 +1455,62 @@ switch solver
             ceq  = [c  ; zeros(nSlacks,1)];
         end
         
-        x0 =  ones(size(Aeq,2),1);
-        y0 = zeros(size(Aeq,1),1);
-        z0 =  ones(size(Aeq,2),1);
+        %parameters to provide to pdco are the following:
+        % d1,d2,options,x0,y0,z0,xsize,zsize
+        
+        % generate set of default parameters for this solver
+        options = pdcoSet;
+        options.Method = 2;
+        
+        % set the printLevel
+        options.Print=problemTypeParams.printLevel;
+        
+        % overwrite with problem type parameters
+        options.FeaTol = problemTypeParams.feasTol;
+        options.OptTol = problemTypeParams.optTol;
+        
+        % overwrite with solver specific parameters if provided
+        options = updateStructData(options,solverParams);
+        
+        % setting d1 to zero is dangerous numerically, but is necessary to avoid
+        % minimising the Euclidean norm of the optimal flux. A more
+        % numerically stable way is to use pdco via solveCobraQP, which has
+        % a more reasonable d1 and should be more numerically robust. -Ronan
+        if isfield(solverParams,'d1')
+            d1 = solverParams.d1;
+        else
+            d1 = 1e-4;
+        end
+        if isfield(solverParams,'d2')
+            d2 = solverParams.d2;
+        else
+            d2 = 5e-4;
+        end
+        if isfield(solverParams,'x0')
+            x0 = solverParams.x0;
+        else
+            x0 = ones(size(Aeq,2),1);
+        end
+        if isfield(solverParams,'y0')
+            y0 = solverParams.y0;
+        else
+            y0 = ones(size(Aeq,1),1);
+        end
+        if isfield(solverParams,'z0')
+            z0 = solverParams.z0;
+        else
+            z0 = ones(size(Aeq,2),1);
+        end
+        if isfield(solverParams,'xsize')
+            xsize = solverParams.xsize;
+        else
+            xsize = 1;
+        end
+        if isfield(solverParams,'zsize')
+            zsize = solverParams.zsize;
+        else
+            zsize = 1;
+        end
            
         [z,y,w,inform,~,~,~] = pdco(osense*ceq,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
         
@@ -1526,7 +1535,7 @@ switch solver
                 norm(c - A'*y - w,inf)
                 norm(osense*c - A'*y - w,inf)
             end
-            f = osense*c'*x;
+            f = c'*x;
         elseif (inform == 1 || inform == 2 || inform == 3)
             stat = 0;
             f = NaN;
@@ -1537,8 +1546,8 @@ switch solver
         origStat = inform;
           
         %update parameters for testing optimality criterion
-        cobraSolverParams.feasTol = options.FeaTol;
-        cobraSolverParams.optTol = options.OptTol;
+        problemTypeParams.feasTol = options.FeaTol;
+        problemTypeParams.optTol = options.OptTol;
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraLP is not supported anymore.\n -> Instead use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
@@ -1598,11 +1607,11 @@ end
              tmp1 = norm(res1, inf);
              
              % evaluate the optimality condition 1
-             if tmp1 > cobraSolverParams.feasTol * 1e2
+             if tmp1 > problemTypeParams.feasTol * 1e2
                  disp(solution.origStat)
-                 error(['[' solver '] Primal optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(cobraSolverParams.feasTol)])
+                 error(['[' solver '] Primal optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
              else
-                 if cobraSolverParams.printLevel > 0
+                 if problemTypeParams.printLevel > 0
                      fprintf(['\n > [' solver '] Primal optimality condition in solveCobraLP satisfied.']);
                  end
              end
@@ -1615,13 +1624,13 @@ end
              tmp2 = norm(res2, inf); %TODO matlab linprog still does not pass Testing testDifferentLPSolvers using matlab
              
              % evaluate the optimality condition 2
-             if tmp2 > cobraSolverParams.optTol * 1e2
+             if tmp2 > problemTypeParams.optTol * 1e2
                  disp(solution.origStat)
                  if ~(length(A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
-                    error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(cobraSolverParams.optTol)])
+                    error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
                  end
              else
-                 if cobraSolverParams.printLevel > 0
+                 if problemTypeParams.printLevel > 0
                      fprintf(['\n > [' solver '] Dual optimality condition in solveCobraLP satisfied.\n']);
                  end
              end
