@@ -38,10 +38,6 @@
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
 	ignore = dirty
-[submodule "external/base/utilities/rdir"]
-	path = external/base/utilities/rdir
-	url = https://github.com/LCSB-BioCore/rdir.git
-	ignore = dirty
 [submodule "external/analysis/mptoolbox"]
 	path = external/analysis/mptoolbox
 	url = https://github.com/LCSB-BioCore/mptoolbox.git
