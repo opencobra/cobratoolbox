@@ -663,7 +663,7 @@ switch solver
 
         if problemTypeParams.method == -1  
              %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-?flash_digest=3cee39a758f70e26f090b839b1f4c572fbccd778
-            params.Method = 1;    
+            params.Method = 1;
         else
             %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
             params.Method = problemTypeParams.method;
