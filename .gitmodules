@@ -38,10 +38,6 @@
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
 	ignore = dirty
-[submodule "external/analysis/mptoolbox"]
-	path = external/analysis/mptoolbox
-	url = https://github.com/LCSB-BioCore/mptoolbox.git
-	ignore = dirty
 [submodule "external/analysis/octave-networks-toolbox"]
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
