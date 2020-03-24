@@ -1,8 +1,9 @@
 function solution = optimizeCardinality(problem, param)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by a capped-`l1` function.
-% :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0 
-%                        + lambda_1*||x||_1    + delta_1*||y||_1` 
+%
+% :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 + lambda_1*||x||_1
+% .                      -  delta_0*||d.*y||_0 +  delta_1*||y||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -14,9 +15,9 @@ function solution = optimizeCardinality(problem, param)
 % INPUT:
 %    problem:     Structure containing the following fields describing the problem:
 %
-%                   * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x.
-%                   * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y.
-%                   * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z.
+%                   * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x (min zero norm).
+%                   * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y (max zero norm).
+%                   * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z .
 %                   * .A - `s x size(A,2)` LHS matrix
 %                   * .b - `s x 1` RHS vector
 %                   * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
@@ -28,8 +29,8 @@ function solution = optimizeCardinality(problem, param)
 % OPTIONAL INPUTS:
 %    problem:     Structure containing the following fields describing the problem:
 %                   * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
-%                   * .k - `p x 1` IR `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
-%                   * .d - `q x 1` OR `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
+%                   * .k - `p x 1` OR a `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
+%                   * .d - `q x 1` OR a `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
 %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
 %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
 %                   * .delta0 - trade-off parameter on maximise `||y||_0`
@@ -97,6 +98,13 @@ if ~isfield(param,'warmStartMethod')
     param.warmStartMethod = 'random';
 end
 
+if isfield(problem,'lambda')
+    error('optimizeCardinality expecting problem.lambda0 and problem.lambda1')
+end
+if isfield(problem,'delta')
+    error('optimizeCardinality expecting problem.delta0 and problem.delta1')
+end
+
 %set global parameters on zero norm if they do not exist
 if ~isfield(problem,'lambda') && ~isfield(problem,'lambda0')
     problem.lambda = 10;  %weight on minimisation of the zero norm of x
@@ -126,7 +134,7 @@ if ~isfield(problem,'delta1')
 end
 
 if ~isfield(problem,'p')
-    warning('Error: the size of vector x is not defined');
+    error('Error: the size of vector x is not defined');
     solution.stat = -1;
     return;
 else
@@ -135,26 +143,26 @@ else
     ltr=length(problem.r);
     if ltp==1
         if problem.p < 0
-            warning('Error: p should be a non-negative number');
+            error('Error: p should be a non-negative number');
             solution.stat = -1;
             return;
         end
     else
         if ltp~=ltq && ltq~=ltr
-            warning('Error: if p,q,r are Boolean vectors, they should be the same dimension');
+            error('Error: if p,q,r are Boolean vectors, they should be the same dimension');
             solution.stat = -1;
         end
     end
 end
 
 if ~isfield(problem,'q')
-    warning('Error: the size/location of vector y is not defined');
+    error('Error: the size/location of vector y is not defined');
     solution.stat = -1;
     return;
 else
     if length(problem.q)==1
         if problem.q < 0
-            warning('Error: q should be a non-negative number');
+            error('Error: q should be a non-negative number');
             solution.stat = -1;
             return;
         end
@@ -162,13 +170,13 @@ else
 end
 
 if ~isfield(problem,'r')
-    warning('Error: the size of vector z is not defined');
+    error('Error: the size of vector z is not defined');
     solution.stat = -1;
     return;
 else
     if length(problem.r)==1
         if problem.r < 0
-            warning('Error: r should be a non-negative number');
+            error('Error: r should be a non-negative number');
             solution.stat = -1;
             return;
         end
@@ -176,13 +184,13 @@ else
 end
 
 if ~isfield(problem,'A')
-    warning('Error: LHS matrix is not defined');
+    error('Error: LHS matrix is not defined');
     solution.stat = -1;
     return;
 else
     if length(problem.p)==1
         if size(problem.A,2) ~= (problem.p + problem.q + problem.r)
-            warning('Error: the number of columns of A is not correct');
+            error('Error: the number of columns of A is not correct');
             solution.stat = -1;
             return;
         end
@@ -196,19 +204,19 @@ else
 end
 
 if ~isfield(problem,'lb')
-    warning('Error: lower bound vector is not defined');
+    error('Error: lower bound vector is not defined');
     solution.stat = -1;
     return;
 else
     if length(problem.p)==1
         if length(problem.lb) ~= (problem.p + problem.q + problem.r)
-            warning('Error: the size of vector lb is not correct');
+            error('Error: the size of vector lb is not correct');
             solution.stat = -1;
             return;
         end
     else
         if length(problem.lb) ~= length(problem.p)
-            warning('Error: the size of vector lb is not correct');
+            error('Error: the size of vector lb is not correct');
             solution.stat = -1;
             return;
         end
@@ -216,19 +224,19 @@ else
 end
 
 if ~isfield(problem,'ub')
-    warning('Error: upper bound vector is not defined');
+    error('Error: upper bound vector is not defined');
     solution.stat = -1;
     return;
 else
     if length(problem.p)==1
         if length(problem.ub) ~= (problem.p + problem.q + problem.r)
-            warning('Error: the size of vector ub is not correct');
+            error('Error: the size of vector ub is not correct');
             solution.stat = -1;
             return;
         end
     else
         if length(problem.ub) ~= length(problem.p)
-            warning('Error: the size of vector ub is not correct');
+            error('Error: the size of vector ub is not correct');
             solution.stat = -1;
             return;
         end
@@ -252,21 +260,28 @@ if ~isfield(problem,'k')
 else
     if length(problem.p)==1
         if length(problem.k) ~= problem.p
-            warning('Error: the size of weight vector k is not correct');
+            error('Error: the size of weight vector k is not correct');
             solution.stat = -1;
             return;
+        else
+            if any(problem.k <=0)
+                error('Error: the weight vector k should be strictly positive');
+                solution.stat = -1;
+                return;
+            end
         end
     else
         if length(problem.k) ~= length(problem.p)
-            warning('Error: the size of weight vector k is not correct');
+            error('Error: the size of weight vector k is not correct');
             solution.stat = -1;
             return;
+        else
+            if any(problem.k(problem.p) <=0) %only select subset
+                error('Error: the weight vector k(problem.p) should be strictly positive');
+                solution.stat = -1;
+                return;
+            end
         end
-    end
-    if any(problem.k <=0) %& 0
-        warning('Error: the weight vector k should be strictly positive');
-        solution.stat = -1;
-        return;
     end
 end
 
@@ -290,18 +305,25 @@ else
             warning('Error: the size of weight vector d is not correct');
             solution.stat = -1;
             return;
+        else
+            if any(problem.d <=0) %& 0
+                warning('Error: the weight vector d should be strictly positive');
+                solution.stat = -1;
+                return;
+            end
         end
     else
         if length(problem.d) ~= length(problem.p)
             warning('Error: the size of weight vector k is not correct');
             solution.stat = -1;
             return;
+        else
+            if any(problem.d(problem.q) <=0)
+                warning('Error: the weight vector d(problem.q) should be strictly positive');
+                solution.stat = -1;
+                return;
+            end
         end
-    end
-    if any(problem.d <=0) %& 0
-        warning('Error: the weight vector d should be strictly positive');
-        solution.stat = -1;
-        return;
     end
 end
 

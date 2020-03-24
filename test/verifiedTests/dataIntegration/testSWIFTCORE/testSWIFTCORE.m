@@ -38,12 +38,13 @@ solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
 fprintf(' -- Running swiftcore w/o reduction and using the %s solver...\n', solvers.LP{1});
 [~, coreInd, ~] = swiftcore(model, core, ones(n, 1), 1e-10, false, solvers.LP{1});
 assert(all(coreInd(core)));
-A = swiftcc(model.S(:, coreInd), model.rev(coreInd));
+A = swiftcc(model.S(:, coreInd), model.rev(coreInd), solvers.LP{1});
+%A = swiftcc(model.S(:, coreInd), model.rev(coreInd));
 assert(all(A.' == 1:length(A)));
 fprintf(' -- Running swiftcore w/ reduction and using the %s solver...\n', solvers.LP{1});
 [~, coreInd, ~] = swiftcore(model, core, ones(n, 1), 1e-10, true, solvers.LP{1});
 assert(all(coreInd(core)));
-A = swiftcc(model.S(:, coreInd), model.rev(coreInd));
+A = swiftcc(model.S(:, coreInd), model.rev(coreInd),solvers.LP{1});
 tmp=nnz(A.' == 1:length(A))/length(A)
 bool=all(A.' == 1:length(A));
 assert(bool);
@@ -61,7 +62,7 @@ consistent = swiftcc(model.S, model.rev, solvers.LP{1});
 assert(all(A == consistent));
 
 [solverName, solverOK] = getCobraSolver('LP');
-fprintf('\n -- Running swiftcc using the default linprog, which is %s,....\n', solverName);
+fprintf('\n -- Running swiftcc using the default LP solver, which is %s,....\n', solverName);
 consistent = swiftcc(model.S, model.rev);
 assert(all(A == consistent));
 
