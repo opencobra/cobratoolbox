@@ -98,38 +98,36 @@ if ~isfield(param,'warmStartMethod')
     param.warmStartMethod = 'random';
 end
 
-if isfield(problem,'lambda')
-    error('optimizeCardinality expecting problem.lambda0 and problem.lambda1')
+if isfield(problem,'lambda') && (isfield(problem,'lambda0') || isfield(problem,'lambda1'))
+    error('optimizeCardinality expecting problem.lambda or problem.lambda0 and problem.lambda1')
 end
-if isfield(problem,'delta')
-    error('optimizeCardinality expecting problem.delta0 and problem.delta1')
+if isfield(problem,'delta') && (isfield(problem,'delta0') || isfield(problem,'delta1'))
+    error('optimizeCardinality expecting problem.delta or problem.delta0 and problem.delta1')
 end
 
 %set global parameters on zero norm if they do not exist
 if ~isfield(problem,'lambda') && ~isfield(problem,'lambda0')
-    problem.lambda = 10;  %weight on minimisation of the zero norm of x
+    problem.lambda = 1;  %weight on minimisation of the zero norm of x
 end
 if ~isfield(problem,'delta') && ~isfield(problem,'delta0')
-    %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining 
+    %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining
     problem.delta = 0;  %weight on minimisation of the one norm of x
 end
 
-%set local paramters on zero norm for capped L1
-if ~isfield(problem,'lambda0')
-    problem.lambda0 = problem.lambda;  %weight on maximisation of the zero norm of y  
+if isfield(problem,'lambda')
+    problem.lambda0 = problem.lambda;
+    problem.lambda1 = problem.lambda0/10;
 end
-if ~isfield(problem,'delta0')
-    problem.delta0 = problem.delta;       
+if isfield(problem,'delta')
+    problem.delta0 = problem.delta;
+    problem.delta1 = problem.delta0/10;
 end
 
-%set local paramters on one norm for capped L1
-if ~isfield(problem,'lambda1')
-    problem.lambda1 = problem.lambda0/10;  %weight on minimisation of the one norm of y   
+%set local parameters on zero norm for capped L1
+if isfield(problem,'lambda0') && ~isfield(problem,'lambda1')
+    problem.lambda1 = problem.lambda0/10;   
 end
-if ~isfield(problem,'delta1')
-    %always include some regularisation on the flux rates to keep it well
-    %behaved
-    %problem.delta1 = 0*1e-6 + problem.delta0/10;  
+if isfield(problem,'delta0') && ~isfield(problem,'delta1')
     problem.delta1 = problem.delta0/10;   
 end
 
@@ -390,7 +388,26 @@ end
 [lambda0,lambda1,delta0,delta1] = deal(problem.lambda0,problem.lambda1,problem.delta0,problem.delta1);
 s = length(problem.b);
 
+if 0
+    %make sure theta is not too small
+    if length(q)>0
+        thetaMin = 1./d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+        %thetaMin = 1./(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
+        thetaMin = min(thetaMin);
+        if theta<thetaMin
+            warning(['theta = ' num2str(theta) '. Raised to ' num2str(thetaMin)])
+            theta=thetaMin+1e-6;
+        end
+    end
+end
+
 %variables are (x,y,z,w,t)
+
+
+bool = lb>ub;
+if any(bool)
+    error('lower must be less than upper bounds')
+end
 
 % Bounds for unweighted problem
 % lb <= [x;y;z] <= ub
@@ -403,21 +420,19 @@ s = length(problem.b);
 % lb <= [x;y;z] <= ub
 % 0  <= w <= max(|k.*lb_x|,|k.*ub_x|)
 % 1  <= t <= theta*max(|d.*lb_y|,|d.*ub_y|)
+
+%lower bounds
 lb2 = [lb;zeros(p,1);ones(q,1)];
 
-%make sure theta is not too small
-if length(q)>0
-    thetaMin = 1./d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
-    %thetaMin = 1./(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)));
-    thetaMin = min(thetaMin);
-    if theta<thetaMin
-        warning(['theta = ' num2str(theta) '. Raised to ' num2str(thetaMin)])
-        theta=thetaMin+1e-6;
-    end
-end
+%upper bounds
+ub2 = [ub;   max(abs(k.*lb(1:p)),abs(k.*ub(1:p)));  theta*max(abs(d.*lb(p+1:p+q)),abs(d.*ub(p+1:p+q)))];%Ronan 2020 k and d inside abs()
+%ub2 = [ub;     k.*max(abs(lb(1:p)),abs(ub(1:p)));     theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
+%ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));  theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
 
-ub2 = [ub;   k.*max(abs(lb(1:p)),abs(ub(1:p)));   theta*d.*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%Minh
-%ub2 = [ub;(k+1).*max(abs(lb(1:p)),abs(ub(1:p)));theta*(d+1).*max(abs(lb(p+1:p+q)),abs(ub(p+1:p+q)))];%each weight greater than unity
+bool2 = lb2>ub2;
+if any(bool2)
+    error('lower must be less than upper bounds')
+end
 
 switch param.warmStartMethod
     case 'inverseTheta'
@@ -537,13 +552,16 @@ switch param.warmStartMethod
 %         t = full(2*p+q+r+1:2*p+2*q+r);
 end
 %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
-x(abs(x) < 1/theta) = 0;
+
+%                           subgradient of lambda0*(max{1,theta*d.abs(x)} -1)
+x(abs(x) <= 1/theta) = 0;
 x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x);
+
+%                           subgradient of theta*delta0*d.abs(y)
 y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y);
 
-        
-% Create the linear sub-programme that one needs to solve at each iteration, only its
-% objective function changes, the constraints set remains.
+% Create the linear sub-program that one needs to solve at each iteration, only its
+% objective function changes, the constraint set remains.
 % Define objective - variable (x,y,z,w,t)
 obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);-delta0*ones(q,1)];
 
@@ -553,11 +571,11 @@ obj = [c(1:p)-x_bar;c(p+1:p+q)-y_bar;c(p+q+1:p+q+r);lambda0*theta*ones(p,1);-del
 % w >= -k.*x            -> -k.*x - w <= 0
 % t >= theta*d.*y       -> theta*d.*y - t <= 0
 % t >= -theta*d.*y      -> -theta*d.*y - t <= 0
-A2 = [A                                                        sparse(s,p)      sparse(s,q);
-       sparse(1:p, 1:p, k)   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
-      -sparse(1:p, 1:p, k)   sparse(p,q)             sparse(p,r)     -speye(p)      sparse(p,q);
-       sparse(q,p)       theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q);
-      sparse(q,p)       -theta*spdiags(d,0,q,q)  sparse(q,r)    sparse(q,p)      -speye(q)];
+A2 = [ A                                                              sparse(s,p)      sparse(s,q);
+       sparse(1:p, 1:p, k)              sparse(p,q)  sparse(p,r)        -speye(p)      sparse(p,q);
+      -sparse(1:p, 1:p, k)              sparse(p,q)  sparse(p,r)        -speye(p)      sparse(p,q);
+               sparse(q,p)   theta*spdiags(d,0,q,q)  sparse(q,r)      sparse(q,p)        -speye(q);
+               sparse(q,p)  -theta*spdiags(d,0,q,q)  sparse(q,r)      sparse(q,p)        -speye(q)];
 b2 = [b; zeros(2*p+2*q,1)];
 csense2 = [csense;repmat('L',2*p+2*q, 1)];
 
