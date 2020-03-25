@@ -12,9 +12,8 @@
 
 %Test presence of required toolboxes.
 requiredToolboxes = {'bioinformatics_toolbox'};
-requiredSolvers = {'gurobi'};
-prepareTest('requiredSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
-
+requireOneSolverOf = {'gurobi','ibm_cplex'};
+prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
 
 
 % define global paths
@@ -31,7 +30,15 @@ cd(fileDir);
 load('refData_moieties.mat')
 
 % Load the dopamine synthesis network
-model = readCbModel('subDas.mat');
+if 0
+    model = readCbModel('subDas.mat');
+else
+    modelDir = getDistributedModelFolder('subDas.mat');
+    model = load([modelDir filesep 'subDas.mat']);
+    if isfield(model,'model')
+        model=model.model;
+    end
+end
 model.rxns{2} = 'alternativeR2';
 
 % Predicted atom mappings from DREAM (http://selene.princeton.edu/dream/)

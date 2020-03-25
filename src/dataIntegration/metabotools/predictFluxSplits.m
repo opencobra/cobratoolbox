@@ -112,26 +112,26 @@ for k =1:length(samples)
 
     solBMa =optimizeCbModel(submodel,'max',1e-6);
 
-    solBMa.obj = solBMa.f; % purpose of renaming fields?
-    %BMs(k,2) = solBMa.obj;
-    solBMa.full = solBMa.x;
-    %solBMa.x = solBMa.full;
+    solBMa.obj = solBMa.f; % renaming field is done to distinguish between solveCobraLP and optimizeCbModel
+%     %BMs(k,2) = solBMa.obj;
+%     solBMa.full = solBMa.x;
+%     %solBMa.x = solBMa.full;
 
     %setting the fluxes below eucNorm to zero
-    for i=1:length(solBMa.x)
-        if abs(solBMa.x(i))< eucNorm % threshold applied to solBMa.x but flux splits computed with solBMa.full
-            solBMa.x(i)=0;
+    for i=1:length(solBMa.v)
+        if abs(solBMa.v(i))< eucNorm % threshold applied to solBMa.v but flux splits computed with solBMa.full
+            solBMa.v(i)=0;
         end
     end
 
-    BMall(ID,k) = solBMa.x(XI(ID));
+    BMall(ID,k) = solBMa.v(XI(ID));
 
     %% Compute flux splits
     % Remove excluded reactions (transportRxns)
     tmpModel.mets = submodel.mets;
     isIncluded = ~ismember(submodel.rxns,transportRxns);
     tmpModel.S = submodel.S(:,isIncluded);
-    tmpV = solBMa.full(isIncluded);
+    tmpV = solBMa.v(isIncluded);
     [P,C,vP,vC] = computeFluxSplits(tmpModel,met2test,tmpV);
 
     % decide if production (1) or consumption ~1.
@@ -187,7 +187,7 @@ for k =1:length(samples)
             maximum_contributing_flux(k,8) = nan;
         end
 
-        vglc= solBMa.full(find(ismember(submodel.rxns,carbon_source)),1);
+        vglc= solBMa.v(find(ismember(submodel.rxns,carbon_source)),1);
         ATPyield(k,1) = (maximum_contributing_flux(k,2)/abs(vglc));
 
         ResultsAllCellLines.(samples{k}).(name).maximum_contributing_flux = maximum_contributing_flux(k,:);

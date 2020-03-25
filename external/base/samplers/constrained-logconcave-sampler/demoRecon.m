@@ -2,7 +2,7 @@
 initSampler
 
 %% Form the problem P
-load('Recon2.v04.mat')
+load('Recon2.v05.mat')
 P = Problem;
 P.Aeq = modelR204.S;
 P.beq = modelR204.b;

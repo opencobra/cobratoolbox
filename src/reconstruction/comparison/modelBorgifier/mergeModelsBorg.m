@@ -18,7 +18,8 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    Stats:        Structure that comes from reactionCompare. Weighting
 %                  information can be used and additional information addended.
 % OPTIONAL INPUTS:
-%    score:        The original scoring matrix, which may be used to correct
+%    score:        The originalPress the any key to continue.
+ scoring matrix, which may be used to correct
 %                  problematic reaction upon recomparison.
 %    mode:         {('p'),'a'} 'Revisit only [p]roblematic reactions or [a]ll
 %                  reactions that problematic metabolites are involved in.
