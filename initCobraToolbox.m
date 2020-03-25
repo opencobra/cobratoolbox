@@ -173,7 +173,7 @@ if ENV_VARS.printLevel
 end
 
 % temporary disable ssl verification
-[status_setSSLVerify, result_setSSLVerify] = system('git config http.sslVerify false');
+[status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
 
 if status_setSSLVerify ~= 0
     fprintf(strrep(result_setSSLVerify, '\', '\\'));
@@ -570,7 +570,7 @@ else
 end
 
 % restore global configuration by unsetting http.sslVerify
-[status_setSSLVerify, result_setSSLVerify] = system('git config --unset http.sslVerify');
+[status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
 
 if status_setSSLVerify ~= 0
     fprintf(strrep(result_setSSLVerify, '\', '\\'));
