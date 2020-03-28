@@ -23,6 +23,8 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     structures
 %   objectiveList     Cell array containing the names of one or more
 %                     objective functions of interest in vertical order
+%                     Optional: second column with exchange reaction IDs
+%                     for objective-specific precursors
 %
 % OPTIONAL INPUTS:
 %   modelIDs          Cell array containing IDs of the models displayed in
@@ -120,19 +122,13 @@ for i=1:size(modelList,1)
     end
     % save one model by one-file would be enourmous otherwise
     save([solutionFolder filesep modelIDs{i,1} '_solution'],'FBAsolution');
-end
-
-% Extract all shadow prices and save them in a table
-
-for i=1:size(modelList,1)
-    i
-    load([solutionFolder filesep modelIDs{i,1} '_solution']);
-    load(strcat(modelFolder,modelList{i,1}));
+    
+    % Extract all shadow prices and save them in a table
     objectives{i+1,1} = strrep(modelList{i,1},'.mat','');
     shadowPrices{1,i+2} = strrep(modelList{i,1},'.mat','');
     for j=1:size(objectiveList,1)
         % get the computed solutions
-        solution = FBAsolution{j,1}; 
+        solution = FBAsolution{j,1};
         objectives{i+1,j+1} = solution.obj;
         % verify that a feasible solution was obtained
         if solution.stat==1
@@ -159,7 +155,16 @@ for i=1:size(modelList,1)
             end
         end
     end
+    % Regularly save results
+    if floor(i/10) == i/10
+        save('objectives','objectives');
+    end
+    if floor(i/50) == i/50
+        save('shadowPrices','shadowPrices');
+    end
 end
+save('objectives','objectives');
+save('shadowPrices','shadowPrices');
 
 end
 

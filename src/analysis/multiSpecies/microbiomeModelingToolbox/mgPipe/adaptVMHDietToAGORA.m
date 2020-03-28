@@ -82,10 +82,10 @@ end
 
 % map choline flux if not already present
 if ~any(contains(VMHDietConstraints(:, 1),'EX_chol(e)'))
-% based on a daily intake of 396 mg in Av Am Diet per day (Sahoo 2013 paper)
-CLength = size(adaptedDietConstraints, 1);
-adaptedDietConstraints{CLength + 1, 1} = 'EX_chol(e)';
-adaptedDietConstraints{CLength + 1, 2} = '-41.251';
+    % based on a daily intake of 396 mg in Av Am Diet per day (Sahoo 2013 paper)
+    CLength = size(adaptedDietConstraints, 1);
+    adaptedDietConstraints{CLength + 1, 1} = 'EX_chol(e)';
+    adaptedDietConstraints{CLength + 1, 2} = '-41.251';
 end
 
 % Increase the uptake rate of micronutrients with too low defined uptake
