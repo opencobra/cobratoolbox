@@ -139,11 +139,15 @@ delete([pwd filesep 'testBiomassPrecursorCheck.txt'])
 
 % test identifying internally conserved moieties using atom transition network
 % load the dopamine synthesis model
-modelDir = fileparts(which('subDas.mat'));
-model = load('subDas.mat');
-model = model.model;
+modelDir = getDistributedModelFolder('subDas.mat');
+model = load([modelDir filesep 'subDas.mat']);
+if isfield(model,'model')
+    model=model.model;
+end
+
+dataDir = fileparts(which('testBiomassPrecursorCheck'));
 % build the atom transition network using the data
-ATN = buildAtomTransitionNetwork(model, [modelDir filesep 'atomMapped']);
+ATN = buildAtomTransitionNetwork(model, [dataDir filesep 'data' filesep 'atomMapped']);
 
 % add a hypothetical biomass reaction to the model
 model = addReaction(model, 'BIOMASS', 'reactionFormula', '0.1 dopa[c] + 0.1 h2o[c] + 0.2 thbpt[c] -> 0.2 dhbpt[c]', 'objectiveCoef', 1);

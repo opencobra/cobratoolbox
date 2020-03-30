@@ -50,7 +50,7 @@ if updateGenes
         modelWRxnGeneMat = buildRxnGeneMat(subModel);
         rxnGeneMat = modelWRxnGeneMat.rxnGeneMat;
     else
-        rxnGeneMat = subModel.rxnGeneMat;
+        rxnGeneMat = sparse(subModel.rxnGeneMat);
     end
     genesToRemove = ~any(rxnGeneMat);
     subModel = removeFieldEntriesForType(subModel,genesToRemove,'genes',numel(model.genes));

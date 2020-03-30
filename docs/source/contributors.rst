@@ -18,7 +18,7 @@ Contributors
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://www.thielelab.eu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/496e65732e546869656c6554484945494e33313830.jpg" alt="Ines Thiele" width="90px"></a>
+            <a href="https://www.thielelab.eu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://www.aiche.org/sites/default/files/styles/ache_portrait_no-up-scale_nocrop/public/images/bio/ines_thiele_-_bio.jpg" alt="Ines Thiele" width="90px"></a>
             <p><a href="https://www.thielelab.eu/">Ines Thiele</a></p>
         </div>
 
@@ -26,17 +26,17 @@ Contributors
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://wwwen.uni.lu/var/ULcache/ldapphotos/54686f6d61732e53617574657253415554544833313830.jpg" alt="Thomas Sauter" width="90px"></a>
+            <a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://driven.uni.lu/wp-content/uploads/sites/68/2018/07/T-Sauter-1-2810x2810.jpg" alt="Thomas Sauter" width="90px"></a>
             <p><a href="http://wwwen.uni.lu/research/fstc/life_sciences_research_unit/research_areas/systems_biology">Thomas Sauter</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://lewislab.ucsd.edu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="http://lewislab.ucsd.edu/wp-content/uploads/2014/07/Nate2011.jpg" alt="Nate Lewis" width="90px"></a>
+            <a href="http://lewislab.ucsd.edu/"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px; width: 90px;height: 90px;" src="https://www.aiche.org/sites/default/files/styles/ache_portrait_no-up-scale_nocrop/public/images/bio/nathan_lewis.jpg" alt="Nate Lewis" width="90px"></a>
             <p><a href="http://lewislab.ucsd.edu/">Nate Lewis</a></p>
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="http://systemsbiology.ucsd.edu/Researchers/Palsson"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://systemsbiology.ucsd.edu/sites/default/files/Palsson14.gif" alt="Bernhard Palsson" width="90px"></a>
+            <a href="http://systemsbiology.ucsd.edu/Researchers/Palsson"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="http://systemsbiology.ucsd.edu/sites/sbrg.ucsd.edu/files/docs/Palsson14.gif" alt="Bernhard Palsson" width="90px"></a>
             <p><a href="http://systemsbiology.ucsd.edu/Researchers/Palsson">Bernhard Palsson</a></p>
         </div>
 
@@ -51,7 +51,7 @@ Contributors
         </div>
 
         <div class="col-lg-4 col-sm-6 text-center">
-            <a href="https://www.tecnun.es/departamentos/personal/ficha/-/journal_content/56_INSTANCE_izKAh02mizKD/10229/10075782"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://www.tecnun.es/documents/10229/103097/10075782/7e14d1ed-d230-4b55-adab-8cf5351151e1?t=1464617878000" alt="" width="90px"></a>
+            <a href="https://www.tecnun.es/departamentos/personal/ficha/-/journal_content/56_INSTANCE_izKAh02mizKD/10229/10075782"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;object-fit: cover;width: 90px;height: 90px;" src="https://www.bsc.es/sites/default/files/public/u2416/fplanes.jpg" alt="" width="90px"></a>
             <p><a href="https://www.tecnun.es/departamentos/personal/ficha/-/journal_content/56_INSTANCE_izKAh02mizKD/10229/10075782">Francisco J. Planes</a></p>
         </div>
 

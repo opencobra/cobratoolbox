@@ -288,7 +288,7 @@ switch solver
         % https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en
         cplexlp = buildCplexProblemFromCOBRAStruct(MILPproblem);
         [cplexlp, logFile, logToFile] = setCplexParametersForProblem(cplexlp,cobraParams,solverParams,'MILP');
-        
+
         % Solve problem
         Result = cplexlp.solve();
 
@@ -303,7 +303,7 @@ switch solver
             solStat = 1; % Opt integer within tolerance
             % Return solution if problem is feasible, bounded and optimal
             x = Result.x;
-            f = osense*Result.objval;
+            f = Result.objval;
         elseif (stat == 103 || stat == 3)
             solStat = 0; % Integer infeas
         elseif (stat == 118 || stat == 119 || stat == 2)
@@ -436,7 +436,7 @@ switch solver
         tomlabProblem.MIP.cpxControl.EPAGAP = cobraParams.absMipGapTol;
 
         %Now, replace anything that is in the solver Specific field.
-        tomlabProblem = updateStruct(tomlabProblem.MIP.cpxControl,solverParams);
+        tomlabProblem.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
 
         % Set initial solution
         tomlabProblem.MIP.xIP = x0;
@@ -458,7 +458,6 @@ switch solver
         cobraContSolInd = MILPproblem.contSolInd;
         tomlabProblem.MIP.callbacks = [];
         tomlabProblem.PriLevOpt = 0;
-
 
         % Solve problem
         Result = tomRun('cplex', tomlabProblem);

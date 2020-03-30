@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of splitcode</title>
+  <meta name="keywords" content="splitcode">
+  <meta name="description" content="SPLITCODE Split a line of Matlab code in string, comment and other">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">m2html</a> &gt; <a href="index.html">private</a> &gt; splitcode.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for m2html/private&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>splitcode
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SPLITCODE Split a line of Matlab code in string, comment and other</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function splitc = splitcode(code) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SPLITCODE Split a line of Matlab code in string, comment and other
+  SPLITC = SPLITCODE(CODE) splits line of Matlab code CODE into a cell
+  array SPLITC where each element is either a character array ('...'),
+  a comment (%...), a continuation (...) or something else.
+  Note that CODE = [SPLITC{:}]
+
+  See also M2HTML, HIGHLIGHT</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="mfileparse.html" class="code" title="function s = mfileparse(mfile, mdirs, names, options)">mfileparse</a>	MFILEPARSE Parsing of an M-file to obtain synopsis, help and references</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function splitc = splitcode(code)</a>
+0002 <span class="comment">%SPLITCODE Split a line of Matlab code in string, comment and other</span>
+0003 <span class="comment">%  SPLITC = SPLITCODE(CODE) splits line of Matlab code CODE into a cell</span>
+0004 <span class="comment">%  array SPLITC where each element is either a character array ('...'),</span>
+0005 <span class="comment">%  a comment (%...), a continuation (...) or something else.</span>
+0006 <span class="comment">%  Note that CODE = [SPLITC{:}]</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%  See also M2HTML, HIGHLIGHT</span>
+0009 
+0010 <span class="comment">%  Copyright (C) 2003 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0011 <span class="comment">%  $Revision: 1.0 $Date: 2003/29/04 17:33:43 $</span>
+0012 
+0013 <span class="comment">%- Label quotes in {'transpose', 'beginstring', 'midstring', 'endstring'}</span>
+0014 iquote = findstr(code,<span class="string">''''</span>);
+0015 quotetransp = [double(<span class="string">'_''.)}]'</span>) <span class="keyword">...</span>
+0016                double(<span class="string">'A'</span>):double(<span class="string">'Z'</span>) <span class="keyword">...</span>
+0017                double(<span class="string">'0'</span>):double(<span class="string">'9'</span>) <span class="keyword">...</span>
+0018                double(<span class="string">'a'</span>):double(<span class="string">'z'</span>)];
+0019 flagstring = 0;
+0020 flagdoublequote = 0;
+0021 jquote = [];
+0022 <span class="keyword">for</span> i=1:length(iquote)
+0023     <span class="keyword">if</span> ~flagstring
+0024         <span class="keyword">if</span> iquote(i) &gt; 1 &amp; any(quotetransp == double(code(iquote(i)-1)))
+0025             <span class="comment">% =&gt; 'transpose';</span>
+0026         <span class="keyword">else</span>
+0027             <span class="comment">% =&gt; 'beginstring';</span>
+0028             jquote(size(jquote,1)+1,:) = [iquote(i) length(code)];
+0029             flagstring = 1;
+0030         <span class="keyword">end</span>
+0031     <span class="keyword">else</span> <span class="comment">% if flagstring</span>
+0032         <span class="keyword">if</span> flagdoublequote | <span class="keyword">...</span>
+0033            (iquote(i) &lt; length(code) &amp; strcmp(code(iquote(i)+1),<span class="string">''''</span>))
+0034             <span class="comment">% =&gt; 'midstring';</span>
+0035             flagdoublequote = ~flagdoublequote;
+0036         <span class="keyword">else</span>
+0037             <span class="comment">% =&gt; 'endstring';</span>
+0038             jquote(size(jquote,1),2) = iquote(i);
+0039             flagstring = 0;
+0040         <span class="keyword">end</span>
+0041     <span class="keyword">end</span>
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%- Find if a portion of code is a comment</span>
+0045 ipercent = findstr(code,<span class="string">'%'</span>);
+0046 jpercent = [];
+0047 <span class="keyword">for</span> i=1:length(ipercent)
+0048     <span class="keyword">if</span> isempty(jquote) | <span class="keyword">...</span>
+0049        ~any((ipercent(i) &gt; jquote(:,1)) &amp; (ipercent(i) &lt; jquote(:,2)))
+0050         jpercent = [ipercent(i) length(code)];
+0051         <span class="keyword">break</span>;
+0052     <span class="keyword">end</span>
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">%- Find continuation punctuation '...'</span>
+0056 icont = findstr(code,<span class="string">'...'</span>);
+0057 <span class="keyword">for</span> i=1:length(icont)
+0058     <span class="keyword">if</span> (isempty(jquote) | <span class="keyword">...</span>
+0059         ~any((icont(i) &gt; jquote(:,1)) &amp; (icont(i) &lt; jquote(:,2)))) &amp; <span class="keyword">...</span>
+0060         (isempty(jpercent) | <span class="keyword">...</span>
+0061         icont(i) &lt; jpercent(1))
+0062         jpercent = [icont(i) length(code)];
+0063         <span class="keyword">break</span>;
+0064     <span class="keyword">end</span>
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="comment">%- Remove strings inside comments</span>
+0068 <span class="keyword">if</span> ~isempty(jpercent) &amp; ~isempty(jquote)
+0069     jquote(find(jquote(:,1) &gt; jpercent(1)),:) = [];
+0070 <span class="keyword">end</span>
+0071 
+0072 <span class="comment">%- Split code in a cell array of strings</span>
+0073 icode = [jquote ; jpercent];
+0074 splitc = {};
+0075 <span class="keyword">if</span> isempty(icode)
+0076     splitc{1} = code;
+0077 <span class="keyword">elseif</span> icode(1,1) &gt; 1
+0078     splitc{1} = code(1:icode(1,1)-1);
+0079 <span class="keyword">end</span>
+0080 <span class="keyword">for</span> i=1:size(icode,1)
+0081     splitc{end+1} = code(icode(i,1):icode(i,2));
+0082     <span class="keyword">if</span> i &lt; size(icode,1) &amp; icode(i+1,1) &gt; icode(i,2) + 1
+0083         splitc{end+1} = code((icode(i,2)+1):(icode(i+1,1)-1));
+0084     <span class="keyword">elseif</span> i == size(icode,1) &amp; icode(i,2) &lt; length(code)
+0085         splitc{end+1} = code(icode(i,2)+1:end);
+0086     <span class="keyword">end</span>
+0087 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 29-Oct-2019 21:04:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

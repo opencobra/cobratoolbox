@@ -20,7 +20,7 @@ Funding
 
        <tr class="noBorder">
        <td class="noBorderImg" width="50%">
-           <div style="align-center;"><a href="https://www.universiteitleiden.nl/en/science/drug-research/systems-pharmacology/analytical-biosciences-and-metabolomics"><img src="https://commons.wikimedia.org/wiki/File:UniversiteitLeidenLogo.svg" alt="sysmedpd" width="80%"></a></div>
+           <div style="align-center;"><a href="https://www.universiteitleiden.nl/en/science/drug-research/systems-pharmacology/analytical-biosciences-and-metabolomics"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/UniversiteitLeidenLogo.svg" alt="sysmedpd" width="80%"></a></div>
        </td>
        <td class="noBorder" width="50%">
        Analytical BioSciences and Metabolomics, Division of Systems Biomedicine and Pharmacology, Leiden University.

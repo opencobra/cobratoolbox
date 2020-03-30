@@ -3,7 +3,7 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %
 % USAGE:
 %
-%    [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol, reduction [, solver])
+%    [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol, reduction, solver)
 %
 % INPUTS:
 %    model:        the metabolic network with fields:
@@ -54,7 +54,7 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
     %% setting up the LP solver
     global CBT_LP_SOLVER    
     if ~isempty(varargin)           
-        warning('Changing the COBRA Solver according to the provided argument')
+        fprintf('%s\n',['Changing the COBRA LP Solver to ' varargin{1}])
         changeCobraSolver(varargin{1},'LP');          
     end
     solver = CBT_LP_SOLVER;

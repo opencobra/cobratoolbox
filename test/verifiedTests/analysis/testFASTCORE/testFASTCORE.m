@@ -21,7 +21,7 @@ cd(fileDir);
 % define the solver packages to be used to run this test
 % for some reason, linprog cannot cope with fastcore LP9
 % quadMinos and dqqMinos don't work with parallel processing
-solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','dqqMinos','quadMinos'});
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','dqqMinos','quadMinos','pdco'});
 
 % load a model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -45,8 +45,8 @@ for k = 1:length(solverPkgs.LP)
     solverOK = changeCobraSolver(solverPkgs.LP{k}, 'LP', 0);
     fprintf('   Testing FASTCORE using %s ... \n', solverPkgs.LP{k});
     fcModel = fastcore(model,find(ismember(model.rxns,glycolysis)),epsilon,printLevel);
-    assert(all(ismember(glycolysis,fcModel.rxns)));    
-    [mins,maxs] = fluxVariability(fcModel,0);
+    assert(all(ismember(glycolysis,fcModel.rxns)));
+    [mins,maxs] = fluxVariability(fcModel,0, 'printLevel', 1);
     assert(all(max([abs(mins),abs(maxs)],[],2)>epsilon));
 end
 

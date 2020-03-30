@@ -18,7 +18,8 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    Stats:        Structure that comes from reactionCompare. Weighting
 %                  information can be used and additional information addended.
 % OPTIONAL INPUTS:
-%    score:        The original scoring matrix, which may be used to correct
+%    score:        The originalPress the any key to continue.
+ scoring matrix, which may be used to correct
 %                  problematic reaction upon recomparison.
 %    mode:         {('p'),'a'} 'Revisit only [p]roblematic reactions or [a]ll
 %                  reactions that problematic metabolites are involved in.
@@ -82,7 +83,7 @@ end
 % Allow pausing for some of the UI.
 % pause on
 
-% set flags for the two checks. 
+% set flags for the two checks.
 reviewMets = 1 ;
 checkSimilarity = 1 ;
 
@@ -116,7 +117,7 @@ while reviewMets
         else
             reviewMets = 0 ; % just go on without dealing with problem.
             checkSimilarity = 0 ; % matricies will be messed up, so do not do checking below
-            fprintf('Skipped resolving, will not check fidelity of matricies.\n') ; 
+            fprintf('Skipped resolving, will not check fidelity of matricies.\n') ;
         end
     end
 end
@@ -146,7 +147,7 @@ while checkSimilarity
     % Combine models and create spawn of Cmodel.
     % Combine the models. Problematic mets must have been resolved
     FluxCompare = compareMatricies(CMODELoriginal, Cspawn) ;
-    
+
     % If there are differences pause and let the user know what is up.
     if sum(sum(FluxCompare.diffS)) || (sum(rxnList == -1) > 0)
         % Plots the differences between the S matricies.
@@ -162,7 +163,7 @@ while checkSimilarity
         title('Difference.')
 
         % Pause and tell the users what is happening.
-        fprintf('Difference between the matricies. Reactions from C\n')
+        fprintf('Difference between the matrices. Reactions from C\n')
         fprintf('that do not have the same stoich before and after\n')
         fprintf('merging need to be reviewed again.\n')
         fprintf('Press the any key to continue.\n')
@@ -183,11 +184,10 @@ while checkSimilarity
         rxnList(FluxCompare.CrxnsSorti(diffrxns)) = -1 ;
 
         [rxnList, metList, Stats] = reactionCompare(CMODEL, TMODEL, SCORE, rxnList, metList, Stats) ;
-        
+
         % remerge and extract C model for second round of checking.
         [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
         Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
-
     else
         % Set the flag to not check for differences again.
         fprintf('Matricies are now equal before and after merging.\n')

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mfileparse</title>
+  <meta name="keywords" content="mfileparse">
+  <meta name="description" content="MFILEPARSE Parsing of an M-file to obtain synopsis, help and references">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">m2html</a> &gt; <a href="index.html">private</a> &gt; mfileparse.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for m2html/private&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mfileparse
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>MFILEPARSE Parsing of an M-file to obtain synopsis, help and references</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function s = mfileparse(mfile, mdirs, names, options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MFILEPARSE Parsing of an M-file to obtain synopsis, help and references
+  S = MFILEPARSE(MFILE, MDIRS, NAMES, OPTIONS) parses the M-file MFILE looking
+  for synopsis (function), H1 line, subroutines and todo tags (if any).
+  It also fills in a boolean array indicating whether MFILE calls M-files 
+  defined by MDIRS (M-files directories) AND NAMES (M-file names).
+  The input OPTIONS comes from M2HTML: fields used are 'verbose', 'global'
+  and 'todo'.
+  Output S is a structure whose fields are:
+     o synopsis: char array (empty if MFILE is a script)
+     o h1line: short one-line description into the first help line
+     o subroutine: cell array of char containing subroutines synopsis
+     o hrefs: boolean array with hrefs(i) = 1 if MFILE calls mdirs{i}/names{i}
+     o todo: structure containing information about potential todo tags
+
+  See also M2HTML</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="mexexts.html" class="code" title="function [ext, platform] = mexexts">mexexts</a>	MEXEXTS List of Mex files extensions</li><li><a href="openfile.html" class="code" title="function fid = openfile(filename,permission)">openfile</a>	OPENFILE Open a file in read/write mode, catching errors</li><li><a href="splitcode.html" class="code" title="function splitc = splitcode(code)">splitcode</a>	SPLITCODE Split a line of Matlab code in string, comment and other</li><li><a href="strtok.html" class="code" title="function [token, remainder, quotient] = strtok(string, delimiters)">strtok</a>	Modified version of STRTOK to also return the quotient</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function s = mfileparse(mfile, mdirs, names, options)</a>
+0002 <span class="comment">%MFILEPARSE Parsing of an M-file to obtain synopsis, help and references</span>
+0003 <span class="comment">%  S = MFILEPARSE(MFILE, MDIRS, NAMES, OPTIONS) parses the M-file MFILE looking</span>
+0004 <span class="comment">%  for synopsis (function), H1 line, subroutines and todo tags (if any).</span>
+0005 <span class="comment">%  It also fills in a boolean array indicating whether MFILE calls M-files</span>
+0006 <span class="comment">%  defined by MDIRS (M-files directories) AND NAMES (M-file names).</span>
+0007 <span class="comment">%  The input OPTIONS comes from M2HTML: fields used are 'verbose', 'global'</span>
+0008 <span class="comment">%  and 'todo'.</span>
+0009 <span class="comment">%  Output S is a structure whose fields are:</span>
+0010 <span class="comment">%     o synopsis: char array (empty if MFILE is a script)</span>
+0011 <span class="comment">%     o h1line: short one-line description into the first help line</span>
+0012 <span class="comment">%     o subroutine: cell array of char containing subroutines synopsis</span>
+0013 <span class="comment">%     o hrefs: boolean array with hrefs(i) = 1 if MFILE calls mdirs{i}/names{i}</span>
+0014 <span class="comment">%     o todo: structure containing information about potential todo tags</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%  See also M2HTML</span>
+0017 
+0018 <span class="comment">%  Copyright (C) 2003 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0019 <span class="comment">%  $Revision: 1.0 $Date: 2003/29/04 17:33:43 $</span>
+0020 
+0021 error(nargchk(3,4,nargin));
+0022 <span class="keyword">if</span> nargin == 3,
+0023     options = struct(<span class="string">'verbose'</span>,1, <span class="string">'globalHypertextLinks'</span>,0, <span class="string">'todo'</span>,0);
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="comment">%- Delimiters used in strtok: some of them may be useless (% &quot; .), removed '.'</span>
+0027 strtok_delim = sprintf(<span class="string">' \t\n\r(){}[]&lt;&gt;+-*~!|\\@&amp;/,:;=&quot;''%%'</span>);
+0028 
+0029 <span class="comment">%- Open for reading the M-file</span>
+0030 fid = <a href="openfile.html" class="code" title="function fid = openfile(filename,permission)">openfile</a>(mfile,<span class="string">'r'</span>);
+0031 it = 0; <span class="comment">% line number</span>
+0032 
+0033 <span class="comment">%- Initialize Output</span>
+0034 s = struct(<span class="string">'synopsis'</span>,   <span class="string">''</span>, <span class="keyword">...</span>
+0035            <span class="string">'h1line'</span>,     <span class="string">''</span>, <span class="keyword">...</span>
+0036            <span class="string">'subroutine'</span>, {{}}, <span class="keyword">...</span>
+0037            <span class="string">'hrefs'</span>,      sparse(1,length(names)), <span class="keyword">...</span>
+0038            <span class="string">'todo'</span>,       struct(<span class="string">'line'</span>,[],<span class="string">'comment'</span>,{{}}), <span class="keyword">...</span>
+0039            <span class="string">'ismex'</span>,      zeros(size(<a href="mexexts.html" class="code" title="function [ext, platform] = mexexts">mexexts</a>)));
+0040 
+0041 <span class="comment">%- Initialize flag for synopsis cont ('...')</span>
+0042 flagsynopcont = 0;
+0043 <span class="comment">%- Look for synopsis and H1 line</span>
+0044 <span class="comment">%  Help is the first set of contiguous comment lines in an m-file</span>
+0045 <span class="comment">%  The H1 line is a short one-line description into the first help line</span>
+0046 <span class="keyword">while</span> 1
+0047     tline = fgetl(fid);
+0048     <span class="keyword">if</span> ~ischar(tline), <span class="keyword">break</span>, <span class="keyword">end</span>
+0049     it = it + 1;
+0050     tline = deblank(fliplr(deblank(fliplr(tline))));
+0051     <span class="comment">%- Synopsis line</span>
+0052     <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'function'</span>,tline))
+0053         s.synopsis = tline;
+0054         <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'...'</span>,fliplr(tline)))
+0055             flagsynopcont = 1;
+0056             s.synopsis = deblank(s.synopsis(1:end-3));
+0057         <span class="keyword">end</span>
+0058     <span class="comment">%- H1 Line</span>
+0059     <span class="keyword">elseif</span> ~isempty(strmatch(<span class="string">'%'</span>,tline))
+0060         <span class="comment">% allow for the help lines to be before the synopsis</span>
+0061         <span class="keyword">if</span> isempty(s.h1line)
+0062             s.h1line = fliplr(deblank(tline(end:-1:2)));
+0063         <span class="keyword">end</span>
+0064         <span class="keyword">if</span> ~isempty(s.synopsis), <span class="keyword">break</span>, <span class="keyword">end</span>
+0065     <span class="comment">%- Go through empty lines</span>
+0066     <span class="keyword">elseif</span> isempty(tline)
+0067         
+0068     <span class="comment">%- Code found. Stop.</span>
+0069     <span class="keyword">else</span>
+0070         <span class="keyword">if</span> flagsynopcont
+0071             <span class="keyword">if</span> isempty(strmatch(<span class="string">'...'</span>,fliplr(tline)))
+0072                 s.synopsis = [s.synopsis tline];
+0073                 flagsynopcont = 0;
+0074             <span class="keyword">else</span>
+0075                 s.synopsis = [s.synopsis deblank(tline(1:end-3))];
+0076             <span class="keyword">end</span>
+0077         <span class="keyword">else</span>
+0078             <span class="keyword">break</span>;
+0079         <span class="keyword">end</span>
+0080     <span class="keyword">end</span>
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">%- Global Hypertext Links option</span>
+0084 <span class="comment">%  If false, hypertext links are done only among functions in the same</span>
+0085 <span class="comment">%  directory.</span>
+0086 <span class="keyword">if</span> options.globalHypertextLinks
+0087     hrefnames = names;
+0088 <span class="keyword">else</span>
+0089     indhref = find(strcmp(fileparts(mfile),mdirs));
+0090     hrefnames = {names{indhref}};
+0091 <span class="keyword">end</span>
+0092 
+0093 <span class="comment">%- Compute cross-references and extract subroutines</span>
+0094 <span class="comment">%  hrefs(i) is 1 if mfile calls mfiles{i} and 0 otherwise</span>
+0095 <span class="keyword">while</span> ischar(tline)
+0096     <span class="comment">% Remove blanks at both ends</span>
+0097     tline = deblank(fliplr(deblank(fliplr(tline))));
+0098     
+0099     <span class="comment">% Split code into meaningful chunks</span>
+0100     splitc = <a href="splitcode.html" class="code" title="function splitc = splitcode(code)">splitcode</a>(tline);
+0101     <span class="keyword">for</span> j=1:length(splitc)
+0102         <span class="keyword">if</span> isempty(splitc{j}) | <span class="keyword">...</span>
+0103             splitc{j}(1) == <span class="string">''''</span> | <span class="keyword">...</span>
+0104             ~isempty(strmatch(<span class="string">'...'</span>,splitc{j}))
+0105             <span class="comment">% Forget about empty lines, char strings or conts</span>
+0106         <span class="keyword">elseif</span> splitc{j}(1) == <span class="string">'%'</span>
+0107             <span class="comment">% Cross-references are not taken into account in comments</span>
+0108             <span class="comment">% Just look for potential TODO or FIXME line</span>
+0109             <span class="keyword">if</span> options.todo
+0110                 <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'% TODO'</span>,splitc{j})) | <span class="keyword">...</span>
+0111                    ~isempty(strmatch(<span class="string">'% FIXME'</span>,splitc{j}))
+0112                     s.todo.line   = [s.todo.line it];
+0113                     s.todo.comment{end+1} = splitc{j}(9:end);
+0114                 <span class="keyword">end</span>
+0115             <span class="keyword">end</span>
+0116         <span class="keyword">else</span>
+0117             <span class="comment">% detect if this line is a declaration of a subroutine</span>
+0118             <span class="keyword">if</span> ~isempty(strmatch(<span class="string">'function'</span>,splitc{j}))
+0119                 s.subroutine{end+1} = splitc{j};
+0120             <span class="keyword">else</span>
+0121                 <span class="comment">% get list of variables and functions</span>
+0122                 symbol = {};
+0123                 <span class="keyword">while</span> 1
+0124                     [t,splitc{j}] = <a href="strtok.html" class="code" title="function [token, remainder, quotient] = strtok(string, delimiters)">strtok</a>(splitc{j},strtok_delim);
+0125                     <span class="keyword">if</span> isempty(t), <span class="keyword">break</span>, <span class="keyword">end</span>;
+0126                     symbol{end+1} = t;
+0127                 <span class="keyword">end</span>
+0128                 <span class="keyword">if</span> options.globalHypertextLinks
+0129                     s.hrefs = s.hrefs + ismember(hrefnames,symbol);
+0130                 <span class="keyword">else</span>
+0131                     <span class="keyword">if</span> ~isempty(indhref)
+0132                         s.hrefs(indhref) = s.hrefs(1,indhref) + <span class="keyword">...</span>
+0133                                            ismember(hrefnames,symbol);
+0134                     <span class="keyword">end</span>
+0135                 <span class="keyword">end</span>
+0136             <span class="keyword">end</span>
+0137         <span class="keyword">end</span>
+0138     <span class="keyword">end</span>
+0139     tline = fgetl(fid);
+0140     it = it + 1;
+0141 <span class="keyword">end</span>    
+0142 
+0143 fclose(fid);
+0144 
+0145 <span class="comment">%- Look for Mex files</span>
+0146 [pathstr,name] = fileparts(mfile);
+0147 samename = dir(fullfile(pathstr,[name    <span class="string">'.*'</span>]));
+0148 samename = {samename.name};
+0149 ext = {};
+0150 <span class="keyword">for</span> i=1:length(samename)
+0151     [dummy, dummy, ext{i}] = fileparts(samename{i});
+0152 <span class="keyword">end</span>
+0153 s.ismex = ismember(<a href="mexexts.html" class="code" title="function [ext, platform] = mexexts">mexexts</a>,ext);</pre></div>
+<hr><address>Generated on Tue 29-Oct-2019 21:04:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

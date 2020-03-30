@@ -14,7 +14,7 @@ currentDir = pwd;
 
 % set the LP cobra solver - used in optimizeCbModelNLP that calls optimizeCbModel
 % matlab for some reason doesn'T manage to handle the minimisation
-solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab'});
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'matlab','pdco'});
 
 % initialize the test
 fileDir = fileparts(which('testOptimizeTwoCbModels'));
