@@ -24,7 +24,7 @@ if 0
         model = readCbModel(filename);
     end
     model.csense(1:size(model.S,1),1)='E';
-else
+eteslse
     modelFolder = getDistributedModelFolder('ecoli_core_model.mat');
     % define the filename of the model
     modelFile = [modelFolder filesep 'ecoli_core_model.mat'];
