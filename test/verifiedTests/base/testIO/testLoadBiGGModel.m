@@ -56,10 +56,27 @@ for i = 1:size(modelArr,1)
     end
         
     model3 = readCbModel(modelArr{i,2},'fileType',modelArr{i,4});
+    
     %Check that the direct load is the same
-    assert(isSameCobraModel(model1,model2));
+    if 1
+        printLevel=1;
+        [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printLevel);
+        assert(isSame)
+    else
+        assert(isSameCobraModel(model1,model2));
+    end
+    
+    
     %Check that the model loaded through readCbModel is the same.
-    assert(isSameCobraModel(model1,model3));
+    
+    if 1
+        printLevel=1;
+        [isSame, nDiff, commonFields] = isSameCobraModel(model1, model3, printLevel);
+        assert(isSame)
+    else
+        assert(isSameCobraModel(model1,model3));
+    end
+
     
     if ~isnan(modelArr{i,5})
         for k = 1:length(solverPkgs.LP)

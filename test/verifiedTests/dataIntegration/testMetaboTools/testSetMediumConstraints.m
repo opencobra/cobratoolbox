@@ -17,7 +17,7 @@ cd(fileDir);
 load('refData_setMediumConstraints.mat');
 
 % define input
-model = getDistributedModel('Recon2.v04.mat'); 
+model = getDistributedModel('Recon2.v05.mat'); 
 set_inf = 1000;
 current_inf = 500; 
 medium_composition = {'EX_ala_L(e)';'EX_arg_L(e)'} % related to the RPMI composition

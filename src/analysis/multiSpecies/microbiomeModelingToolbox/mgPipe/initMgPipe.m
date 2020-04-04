@@ -1,4 +1,4 @@
-function [init] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, printLevel)
+function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, printLevel)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -27,6 +27,22 @@ function [init] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFi
 %
 % OUTPUTS:
 %    init:                   status of initialization
+%    modPath:                char with path of directory where models are stored
+%    toolboxPath:            char with path of directory where the toolbox is saved
+%    resPath:                char with path of directory where results are saved
+%    dietFilePath:           char with path of directory where the diet is saved
+%    abunFilePath:           char with path and name of file from which to retrieve abundance information
+%    indInfoFilePath:        char indicating, if stratification criteria are available, full path and name to related documentation(default: no)
+%    objre:                  char with reaction name of objective function of organisms
+%    figForm:                format to use for saving figures
+%    numWorkers:             boolean indicating the number of cores to use for parallelization
+%    autoFix:                double indicating if to try to automatically fix inconsistencies
+%    compMod:                boolean indicating if outputs in open format should be produced for each section (1=T)
+%    patStat:                boolean indicating if documentation on health status is available
+%    rDiet:                  boolean indicating if to enable also rich diet simulations
+%    extSolve:               boolean indicating if to save the constrained models to solve them externally
+%    fvaType:                boolean indicating which function to use for flux variability
+%    autorun:                boolean used to enable /disable autorun behavior (please set to 1)
 %
 % .. Author: Federico Baldini 2018
 %               - Almut Heinken 02/2020: removed unnecessary outputs

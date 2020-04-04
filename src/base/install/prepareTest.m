@@ -67,7 +67,6 @@ function [solversToUse] = prepareTest(varargin)
 
 global CBT_MISSING_REQUIREMENTS_ERROR_ID
 global OPT_PROB_TYPES
-persistent availableSolvers
 
 % some Matlab Toolboxes currently in use in the COBRA Toolbox.
 % This might have to be extended in the future.
@@ -79,10 +78,8 @@ toolboxInfo = struct('statistics_toolbox', {{'Statistics and Machine Learning To
                      'image_toolbox', {{'Image Processing Toolbox'}}, ...
                      'gads_toolbox', {{'Global Optimization Toolbox'}});
 
-if isempty(availableSolvers)
-    availableSolvers = getAvailableSolversByType();
-end
-
+%generate this on the fly rather than using a persistient variable - Ronan
+availableSolvers = getAvailableSolversByType();
 
 parser = inputParser();
 parser.addParamValue('toolboxes', {}, @iscell);
@@ -363,10 +360,12 @@ problemTypes = OPT_PROB_TYPES;
 % testing whether the actual work succeeded.
 if strcmpi(runtype, 'extensive') && ~useMinimalNumberOfSolvers
     solversToUse = solversForTest;
-    % exclude pdco if not explicitly requested and available, as it has issues at the moment.
-    if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
-        solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
-        solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
+    if 0
+        % exclude pdco if not explicitly requested and available, as it has issues at the moment.
+        if ~any(ismember('pdco',preferredSolvers)) && any(ismember('pdco',solversToUse.LP))
+            solversToUse.LP(ismember(solversToUse.LP,'pdco')) = [];
+            solversToUse.QP(ismember(solversToUse.LP,'pdco')) = [];
+        end
     end
     if ~isempty(possibleSolvers)
         %Restrict to the possibleSolvers

@@ -27,9 +27,6 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     for objective-specific precursors
 %
 % OPTIONAL INPUTS:
-%   modelIDs          Cell array containing IDs of the models displayed in
-%                     the output table in same order as corresponding models
-%                     (default IDs assigned if not entered)
 %   osenseStr         String indicating whether objective function(s)
 %                     should be maximized or minimized. Allowed inputs:
 %                     'min','max', default:'max'.
@@ -41,6 +38,7 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     (default: 0).
 %   solutionFolder    Folder where the flux balance analysis solutions
 %                     should be stored (default =  current folder)
+
 %
 % OUTPUT:
 %   objectives        Computed objectives values
@@ -57,19 +55,21 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
-parser.addParameter('modelIDs',{}, @iscell);
 parser.addParameter('osenseStr','max', @ischar);
-parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
-parser.addParameter('solutionFolder',pwd, @ischar);
+parser.addParameter('SPDef','Nonzero', @ischar);
 parser.parse(modelFolder,objectiveList, varargin{:})
 
 modelFolder = parser.Results.modelFolder;
 objectiveList = parser.Results.objectiveList;
-modelIDs = parser.Results.modelIDs;
+osenseStr = parser.Results.osenseStr;
 numWorkers = parser.Results.numWorkers;
 SPDef = parser.Results.SPDef;
-solutionFolder = parser.Results.solutionFolder;
+
+dInfo = dir(modelFolder);
+modelList={dInfo.name};
+modelList=modelList';
+modelList=modelList(3:end);
 
 % set a solver if not done already
 global CBT_LP_SOLVER
@@ -86,58 +86,47 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
+
 shadowPrices{1,1}='Metabolite';
 shadowPrices{1,2}='Objective';
 
-dInfo = dir(modelFolder);
-modelList={dInfo.name};
-modelList=modelList';
-modelList=modelList(3:end);
-
-if isempty(modelIDs)
-    for i=1:size(modelList,1)
-        modelIDs{i,1}=strcat('model_',num2str(i));
-    end
-end
-
 % Compute the solutions for all entered models and objective functions
 solutions={};
-for j=1:length(objectiveList)
-    objectives{1,j+1} = objectiveList{j,1};
-end
-
 for i=1:size(modelList,1)
-    i
-    objectives{i+1,1}=modelIDs{i,1};
-    shadowPrices{1,i+2}=modelIDs{i,1};
-    load(strcat(modelFolder,modelList{i,1}));
-    [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
-    % store computed objective values
-    for j=1:length(objectiveList)
-        if ~isempty(FBAsolution{j,1})
-            objectives{i+1,j+1} = FBAsolution{j,1}.obj;
-        else
-            objectives{i+1,j+1} = 0;
+    shadowPrices{1,i+2}=strrep(modelList{i,1},'.mat','');
+    getModel=load([modelFolder filesep modelList{i,1}]);
+    getField=fieldnames(getModel);
+    model=getModel.(getField{1});
+    if strcmp(osenseStr,'max')
+        model.osenseStr='max';
+    elseif strcmp(osenseStr,'min')
+        model.osenseStr='min';
+    end
+    if numWorkers > 0
+        parfor j=1:length(objectiveList)
+            changeCobraSolver(solver, 'LP');
+            solTemp = computeSolForObj(model, objectiveList{j});
+            FBAsolution{j,1}=solTemp;
+        end
+    else
+        for j=1:length(objectiveList)
+            sol = computeSolForObj(model, objectiveList{j});
+            FBAsolution{j,1}=sol;
         end
     end
-    % save one model by one-file would be enourmous otherwise
-    save([solutionFolder filesep modelIDs{i,1} '_solution'],'FBAsolution');
-    
-    % Extract all shadow prices and save them in a table
-    objectives{i+1,1} = strrep(modelList{i,1},'.mat','');
-    shadowPrices{1,i+2} = strrep(modelList{i,1},'.mat','');
+    solutions(:,i)=FBAsolution;
+
+% Extract all shadow prices and save them in a table
     for j=1:size(objectiveList,1)
         % get the computed solutions
-        solution = FBAsolution{j,1};
-        objectives{i+1,j+1} = solution.obj;
-        % verify that a feasible solution was obtained
-        if solution.stat==1
-            [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
-            for k=1:size(extractedShadowPrices,1)
-                % check if the metabolite relevant for this objective
-                % function is already in the table
-                % only certain SPs
-                if contains(extractedShadowPrices{k,1},'biomass') || contains(extractedShadowPrices{k,1},'[d]') || contains(extractedShadowPrices{k,1},'[fe]')
+        if ~isempty(solutions{j,i})
+            FBAsolution=solutions{j,i};
+            % verify that a feasible solution was obtained
+            if FBAsolution.stat==1
+                [extractedShadowPrices]=extractShadowPrices(model,FBAsolution,SPDef);
+                for k=1:size(extractedShadowPrices,1)
+                    % check if the metabolite relevant for this objective
+                    % function is already in the table
                     findMet=find(strcmp(shadowPrices(:,1),extractedShadowPrices{k,1}));
                     findObj=find(strcmp(shadowPrices(:,2),objectiveList{j,1}));
                     if ~isempty(intersect(findMet,findObj))

@@ -6,7 +6,7 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %
 % INPUTS:
 %    model:          COBRA model structure
-%    fluxData:       Data matrix/vector (for example, solution.x)
+%    fluxData:       Data matrix/vector (for example, solution.v)
 %
 % OPTIONAL INPUTS:
 %    nonZeroFlag:    Only print nonzero rows (Default = false)

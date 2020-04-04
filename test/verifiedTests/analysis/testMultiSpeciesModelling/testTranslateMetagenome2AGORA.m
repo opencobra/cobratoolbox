@@ -1,4 +1,4 @@
-% The COBRAToolbox: testTranslateMetagenome2AGORAn.m
+% The COBRAToolbox: testTranslateMetagenome2AGORA.m
 %
 % Purpose:
 %     - tests the basic functionality of translateMetagenome2AGORA
@@ -14,7 +14,7 @@
 % Moreover, input files with abundance data from other source may fail due
 % to differences in formatting and nomenclature.
 
-if ispc
+if ispc && exist('AGORA_infoFile.xlsx','file')
     % Read in the info file with all AGORA strains and taxa
     [~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');
     
@@ -33,12 +33,16 @@ if ispc
         };
     
     for t=1:size(taxLevels,1)
+        fprintf([' > Running translateMetagenome2AGORA with ' taxLevels{t,1} '...\n']);
         % Define the taxon level of the input file
         orgList=unique(infoFile(2:end,find(strcmp(taxLevels{t,1},infoFile(1,:)))));
         orgList(strncmp('unclassified', orgList, 12)) = [];
         [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA('SRP065497_taxonomy_abundances_v3.0.tsv',taxLevels{t,1});
+        
         % Verify that the output file is not empty
         assert(size(translatedAbundances,1)>1)
+        
+        fprintf(' > Output file is not empty.\n');
         
         if size(translatedAbundances,1)>1
             translatedOrgs=translatedAbundances(2:end,1);
@@ -53,14 +57,15 @@ if ispc
         end
         
         % Verify that the relative abundances for each sample sum up to 1
-        
         for i=2:size(normalizedAbundances,2)
             assert(sum(str2double(normalizedAbundances(2:end,i)))-1 < 0.0001)
         end
+        
+        fprintf([' > Testing tax level ' taxLevels{t,1} ' done.\n']);
     end
     
     % output a success message
     fprintf('Done.\n');
 else
-    fprintf('Skipping as testTranslateMetagenome2AGORA only runs in Windows os.\n')
+    fprintf('Could not run testTranslateMetagenome2AGORA because AGORA_infoFile.xlsx not found or this is not a windows pc')
 end

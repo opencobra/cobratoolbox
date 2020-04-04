@@ -11,10 +11,10 @@
 global CBTDIR
 
 % define the features required to run the test
-requiredSolvers = {'gurobi'};
+requireOneSolverOf = {'gurobi','ibm_cplex'};
 
 % require the specified toolboxes and solvers, along with a UNIX OS
-solversPkgs = prepareTest('requiredSolvers', requiredSolvers, 'excludeSolvers', {'matlab', 'lp_solve'});
+solversPkgs = prepareTest('requireOneSolverOf', requireOneSolverOf, 'excludeSolvers', {'matlab', 'lp_solve','pdco'});
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));

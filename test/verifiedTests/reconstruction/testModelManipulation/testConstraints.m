@@ -7,7 +7,7 @@
 % Authors:
 %     - Thomas Pfau 2018
 
-solverPkgs = prepareTest('needsLP',true);
+solverPkgs = prepareTest('needsLP',true,'excludeSolvers',{'gurobi','matlab','pdco'});
 
 model = getDistributedModel('ecoli_core_model.mat');
 
