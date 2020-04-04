@@ -1,4 +1,5 @@
-clear
+%clear
+fprintf('%s\n','testing maxCardConservationVector.m')
 
 [solversToUse] = prepareTest('requireOneSolverOf',{'tomlab_cplex','ibm_cplex','gurobi'});
 
@@ -10,6 +11,7 @@ else
 end
 
 modelToLoad='Recon3D';
+if exist('Recon3D_301.mat','file')==2
 
 switch modelToLoad
     case 'Recon3D'
@@ -72,3 +74,6 @@ for i=1:length(methods)
     %                                   * -1=  Invalid input
 end
 fprintf('%s\n','Done.')
+else
+   fprintf('%s\n','Skipped testing of maxCardConservationVector.m as could not find Recon3D_301.mat')
+end

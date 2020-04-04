@@ -394,9 +394,9 @@ end
 
 % check the installation of the solver
 for i = 1:length(supportedSolversNames)
-    if 0 %set to 1 to debug a new solver
+    if 1 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'tomlab_snopt')
+        if strcmp(supportedSolversNames{i},'cplex_direct')
             pause(0.1)
         end
     end
