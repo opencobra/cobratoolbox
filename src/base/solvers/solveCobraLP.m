@@ -1348,6 +1348,7 @@ switch solver
             x = CplexLPproblem.Solution.x;
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;
+            %res1 = A*solution.full + solution.slack - b;
             s = b - A * x; % output the slack variables
         elseif origStat == 2 ||   origStat == 20
             stat = 2; %unbounded

@@ -13,7 +13,7 @@ function [Z, rankS] = getNullSpace(S, printLevel)
 %    printLevel:    {0, (1)}, 0 means quiet
 %
 % OUTPUT:
-%    Z:             (right) null space of `S` (when :math:`m \leq n`, otherwise [])
+%    Z:             (right) null space of `S` , S*Z = 0 (when :math:`m \leq n`, otherwise [])
 %    rankS:         scalar giving rank of `S`
 %
 % .. Author: - 20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface by Ronan Fleming
