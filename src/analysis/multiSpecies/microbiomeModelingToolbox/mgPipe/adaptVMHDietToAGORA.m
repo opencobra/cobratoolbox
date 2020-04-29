@@ -52,6 +52,12 @@ end
 % growth
 essentialMetabolites = {'EX_12dgr180(e)'; 'EX_26dap_M(e)'; 'EX_2dmmq8(e)'; 'EX_2obut(e)'; 'EX_3mop(e)'; 'EX_4abz(e)'; 'EX_4hbz(e)'; 'EX_ac(e)'; 'EX_acgam(e)'; 'EX_acmana(e)'; 'EX_acnam(e)'; 'EX_ade(e)'; 'EX_adn(e)'; 'EX_adocbl(e)'; 'EX_adpcbl(e)'; 'EX_ala_D(e)'; 'EX_ala_L(e)'; 'EX_amet(e)'; 'EX_amp(e)'; 'EX_arab_D(e)'; 'EX_arab_L(e)'; 'EX_arg_L(e)'; 'EX_asn_L(e)'; 'EX_btn(e)'; 'EX_ca2(e)'; 'EX_cbl1(e)'; 'EX_cgly(e)'; 'EX_chor(e)'; 'EX_chsterol(e)'; 'EX_cit(e)'; 'EX_cl(e)'; 'EX_cobalt2(e)'; 'EX_csn(e)'; 'EX_cu2(e)'; 'EX_cys_L(e)'; 'EX_cytd(e)'; 'EX_dad_2(e)'; 'EX_dcyt(e)'; 'EX_ddca(e)'; 'EX_dgsn(e)'; 'EX_fald(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_fol(e)'; 'EX_for(e)'; 'EX_gal(e)'; 'EX_glc_D(e)'; 'EX_gln_L(e)'; 'EX_glu_L(e)'; 'EX_gly(e)'; 'EX_glyc(e)'; 'EX_glyc3p(e)'; 'EX_gsn(e)'; 'EX_gthox(e)'; 'EX_gthrd(e)'; 'EX_gua(e)'; 'EX_h(e)'; 'EX_h2o(e)'; 'EX_h2s(e)'; 'EX_his_L(e)'; 'EX_hxan(e)'; 'EX_ile_L(e)'; 'EX_k(e)'; 'EX_lanost(e)'; 'EX_leu_L(e)'; 'EX_lys_L(e)'; 'EX_malt(e)'; 'EX_met_L(e)'; 'EX_mg2(e)'; 'EX_mn2(e)'; 'EX_mqn7(e)'; 'EX_mqn8(e)'; 'EX_nac(e)'; 'EX_ncam(e)'; 'EX_nmn(e)'; 'EX_no2(e)'; 'EX_ocdca(e)'; 'EX_ocdcea(e)'; 'EX_orn(e)'; 'EX_phe_L(e)'; 'EX_pheme(e)'; 'EX_pi(e)'; 'EX_pnto_R(e)'; 'EX_pro_L(e)'; 'EX_ptrc(e)'; 'EX_pydx(e)'; 'EX_pydxn(e)'; 'EX_q8(e)'; 'EX_rib_D(e)'; 'EX_ribflv(e)'; 'EX_ser_L(e)'; 'EX_sheme(e)'; 'EX_so4(e)'; 'EX_spmd(e)'; 'EX_thm(e)'; 'EX_thr_L(e)'; 'EX_thymd(e)'; 'EX_trp_L(e)'; 'EX_ttdca(e)'; 'EX_tyr_L(e)'; 'EX_ura(e)'; 'EX_val_L(e)'; 'EX_xan(e)'; 'EX_xyl_D(e)'; 'EX_zn2(e)'};
 
+% fix any exchange nomenclature issues
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), '[e]', '(e)');
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_adpcbl(e)', 'EX_adocbl(e)');
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_glc(e)', 'EX_glc_D(e)');
+adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_sbt-d(e)', 'EX_sbt_D(e)');
+
 % Add essential metabolites not yet included in the entered diet
 MissingUptakes = setdiff(essentialMetabolites, VMHDietConstraints(:, 1));
 % add the missing exchange reactions to the adapted diet
@@ -63,18 +69,24 @@ end
 
 % Allow uptake of certain dietary compounds that are currently not mapped in the
 % Diet Designer
-CLength = size(adaptedDietConstraints, 1);
 UnmappedCompounds = {'EX_asn_L(e)';'EX_gln_L(e)';'EX_crn(e)';'EX_elaid(e)';'EX_hdcea(e)';'EX_dlnlcg(e)';'EX_adrn(e)';'EX_hco3(e)';'EX_sprm(e)'; 'EX_carn(e)';'EX_7thf(e)';'EX_Lcystin(e)';'EX_hista(e)';'EX_orn(e)';'EX_ptrc(e)';'EX_creat(e)';'EX_cytd(e)';'EX_so4(e)'};
 UnmappedCompounds = setdiff(UnmappedCompounds, VMHDietConstraints(:, 1));
+% delete entries already present in the adapted constraints
+[C,IA]=intersect(adaptedDietConstraints,UnmappedCompounds);
+adaptedDietConstraints(IA,:)=[];
+CLength = size(adaptedDietConstraints, 1);
 for i = 1:length(UnmappedCompounds)
     adaptedDietConstraints{CLength + i, 1} = UnmappedCompounds{i};
     adaptedDietConstraints{CLength + i, 2} = num2str(-50);
 end
 
+% map choline flux if not already present
+if ~any(contains(VMHDietConstraints(:, 1),'EX_chol(e)'))
 % based on a daily intake of 396 mg in Av Am Diet per day (Sahoo 2013 paper)
 CLength = size(adaptedDietConstraints, 1);
 adaptedDietConstraints{CLength + 1, 1} = 'EX_chol(e)';
 adaptedDietConstraints{CLength + 1, 2} = '-41.251';
+end
 
 % Increase the uptake rate of micronutrients with too low defined uptake
 % rates to sustain microbiota model growth (below 1e-6 mol/day/person).
@@ -90,6 +102,10 @@ for i = 1:  size(adaptedDietConstraints,1)
     if strcmp(adaptedDietConstraints{i,1},'EX_fol(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
         adaptedDietConstraints{i,2} = '-1';
     end
+    % L-arabinose uptake needs to be at least 1
+    if strcmp(adaptedDietConstraints{i,1},'EX_arab_L(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
+        adaptedDietConstraints{i,2} = '-1';
+    end
 end
 
 % If the path to AGORA models was entered: test growth of each model on the
@@ -102,9 +118,6 @@ if nargin > 2
     if isempty(solver)
         initCobraToolbox(false); %Don't update the toolbox automatically
     end
-    % inconsistency in reaction IDs..can currently only be fixed manually.
-    TestAdaptedDietConstraints = adaptedDietConstraints;
-    TestAdaptedDietConstraints(:, 1) = strrep(TestAdaptedDietConstraints(:, 1), 'EX_adocbl(e)', 'EX_adpcbl(e)');
     % list the AGORA models
     modelList = cellstr(ls([AGORAPath, '*.mat']));
     for i = 1:length(modelList)
@@ -130,10 +143,7 @@ end
 % microbiota models) by converting exchange reaction IDs. For the
 % microbiota setup, upper bounds are also constrained to enforce a certain
 % uptake of metabolites.
-if strcmp(setupUsed, 'AGORA')
-    % inconsistency in reaction IDs..can currently only be fixed manually.
-    adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_adocbl(e)', 'EX_adpcbl(e)');
-elseif strcmp(setupUsed, 'Pairwise')
+if strcmp(setupUsed, 'Pairwise')
     adaptedDietConstraints(:, 1) = regexprep(adaptedDietConstraints(:, 1), '\(e\)', '\[u\]');
 elseif strcmp(setupUsed, 'Microbiota')
     % add constraints on upper bounds based on uptake constraints in the

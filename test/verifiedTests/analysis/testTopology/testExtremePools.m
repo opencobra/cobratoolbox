@@ -11,6 +11,21 @@
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
 
 
+[status, result] = system('which lrs');
+
+global CBT_MISSING_REQUIREMENTS_ERROR_ID;
+
+if isempty(strfind(result, '/lrs'))  % Which returns the path with /!
+    % This test will be skipped since there are Requirements (LRS) missing.
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system');
+end
+
+[status, result] = system('locate /usr/local/opt/gmp/lib/libgmp.10.dylib');
+if status==0 
+    % This test will be skipped since there are Requirements (LRS) missing.
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system. Missing /usr/local/opt/gmp/lib/libgmp.10.dylib');
+end
+
 % save the current path
 currentDir = pwd;
 
@@ -27,9 +42,10 @@ Pools = [0     0     0     1     0     0     1;...
          1     1     2     2     2     0     0];      
 
 fprintf('%s\n','Testing Extreme pools')
-%calculates the matrix of extreme pools
-[status, result] = system('which lrs');
-assert( ~isempty(strfind(result, '/lrs')),'lrs was not properly installed on your system'); %Which returns the path with / !
+
+% %calculates the matrix of extreme pools
+% [status, result] = system('which lrs');
+% assert( ~isempty(strfind(result, '/lrs')),'lrs was not properly installed on your system'); %Which returns the path with / !
 
 [CalculatedPools]=extremePools(model);    
 assert(isequal(full(CalculatedPools),Pools));

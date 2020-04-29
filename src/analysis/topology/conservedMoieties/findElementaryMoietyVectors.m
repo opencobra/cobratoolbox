@@ -78,15 +78,17 @@ end
 % the reduced stoichiometric matrix containing all rxns and mets involving conserved moieties
 S = full(model.S(metCM, any(model.S(metCM, :), 1)));
 
+if isempty(which('CalculateFluxModes.m'))
+    if printLevel
+        warning('EFMtool not in Matlab path. Use Matlab rational basis.');
+    end
+    method = 'null';
+end
+
 % find extreme rays using EFMtool
-if strcmpi(method, 'efmtool')
-    pathEFM = which('CalculateFluxModes.m');
-    if isempty(pathEFM)
-        if printLevel
-            warning('EFMtool not in Matlab path. Use Matlab rational basis.');
-        end
-        method = 'null';
-    else
+switch method
+    case 'efmtool'
+        pathEFM = which('CalculateFluxModes.m');
         dirEFM = strsplit(pathEFM,filesep);
         dirEFM = strjoin(dirEFM(1:end-1),filesep);
         dirCur = pwd;
@@ -101,14 +103,11 @@ if strcmpi(method, 'efmtool')
         N = CalculateFluxModes(S',zeros(size(S, 1), 1), opts);
         N = N.efms;
         cd(dirCur);
-    end
-end
-
-% find rational null space basis. May not include all extreme rays as using EFMtool
-if strcmpi(method, 'null')
-    N = null(S', 'r');  % should usually be fast for most networks since the number of metabolites having conserved moieties should be low
-    N(abs(N) < 1e-10) = 0;
-    N = N(:, all(N >= 0, 1));
+    otherwise
+        % find rational null space basis. May not include all extreme rays as using EFMtool
+        N = null(S', 'r');  % should usually be fast for most networks since the number of metabolites having conserved moieties should be low
+        N(abs(N) < 1e-10) = 0;
+        N = N(:, all(N >= 0, 1));
 end
 
 % Elementary moiety vectors

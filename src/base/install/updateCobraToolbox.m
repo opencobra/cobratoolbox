@@ -155,8 +155,11 @@ function updateCobraToolbox(fetchAndCheckOnly)
             devtoolsLink = ['<a href=\"', devtoolsLink, '\">', devtoolsLink, '</a>'];
         end
 
-        fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, '].\n']);
-        fprintf(['     Please use the MATLAB.devTools (', devtoolsLink, ') to update your fork.\n']);
+        %fprintf([' --> You cannot update your fork using updateCobraToolbox(). [', lastCommit, ' @ ', currentBranch, '].\n']);
+        fprintf('> You cannot update your fork using updateCobraToolbox() because this is a development branch.\n')
+        fprintf('%s\n',['> The current branch is: ' currentBranch])
+        fprintf('%s\n',['> The last commit to the current branch is: ' lastCommit])
+        fprintf(['> You can use MATLAB.devTools (', devtoolsLink, ') to update your fork.\n']);
     end
 end
 

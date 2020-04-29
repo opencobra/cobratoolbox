@@ -57,7 +57,7 @@ elseif (~isfield(model, 'rules') && ~isfield(model, 'grRules'))
 end
 model.rules{rxnID,1} = '';
 if addRxnGeneMat ==1 
-    model.rxnGeneMat(rxnID,1:nGenes) = zeros(1,nGenes);
+    model.rxnGeneMat(rxnID,1:nGenes) = sparse(false(1,nGenes));
 end  
 
 [rule,~,newGenes] = parseGPR(grRule,model.genes);

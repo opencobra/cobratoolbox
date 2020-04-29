@@ -1,0 +1,4 @@
+ID	name	input	output	consensus	frequency	weight	GPR	subsystem	leadingGene	FC
+R_rxn3	rxn3	blue	yellow	yellow	0.5	2	((g1 and g2) or (g3 and g4))		g3	0.1
+R_rxn1	rxn1	red	red	red	1	1	g1 or g2	ss1	g1	1
+R_rxn2	rxn2	grey	blue	yellow	1	-1		ss2	NA	NA

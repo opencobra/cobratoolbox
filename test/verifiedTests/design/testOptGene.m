@@ -35,8 +35,8 @@ targetRxn = model.rxns{39};  % Succinate
 fructose_substrateRxn = model.rxns{26};  % Fructose, even though this has no incluence whatsoever.
 generxnList = model.rxns(setdiff([1:95], [11, 13, 26, 39]));  % Everything besides the ATP Maintenance, The biomass reaction and the substrate and target reactions.
 
-for k = 1:length(solvers.LP)
-
+klt=min([length(solvers.LP),length(solvers.MILP)]);
+for k = 1:klt
     changeCobraSolver(solvers.LP{k}, 'LP', 0);
     changeCobraSolver(solvers.MILP{k}, 'MILP', 0);
     fprintf(' -- Running testOptGene using the solver interfaces: LP: %s ; MILP: %s... ', solvers.LP{k}, solvers.MILP{k});
@@ -54,7 +54,7 @@ for k = 1:length(solvers.LP)
     model2.ub(ismember(model2.rxns, generxnList(optReacs))) = 0;
     sol = optimizeCbModel(model2);
     % Lets only assert, that we have some improvement.
-    assert(sol.full(39) - basicsolution.full(39) > 0);
+    assert(sol.v(39) - basicsolution.v(39) > 0);
 
 end
 % close the open windows

@@ -1,19 +1,25 @@
 clear
-if 1
-    %graphStoich/data/modelCollection/121114_Recon2betaModel.mat
-    load 121114_Recon2betaModel.mat
-    model=modelRecon2beta121114;
-else
-    load /home/rfleming/work/modeling/projects/graphStoich/data/modelCollectionBig/KEGGMatrix.mat
-    model=KEGG;
+
+[solversToUse] = prepareTest(requireOneSolverOf,{'gurobi','ibm_cplex');
+
+printLevel=1;
+solverOK = changeCobraSolver('ibm_cplex','LP');
+modelToLoad='Recon3D';
+
+switch modelToLoad
+    case 'Recon3D'
+        load('Recon3D_301.mat')
+    case 'Recon2betaModel'
+        %graphStoich/data/modelCollection/121114_Recon2betaModel.mat
+        load 121114_Recon2betaModel.mat
+        model=modelRecon2beta121114;
+    case 'KEGGMatrix'
+        load ~/work/modeling/projects/graphStoich/data/modelCollectionBig/KEGGMatrix.mat
+        model=KEGG;
 end
 
 %finds the exchange reactions
 model=findSExRxnInd(model);
-
-%solverOK = changeCobraSolver('mosek_linprog','LP');
-solverOK = changeCobraSolver('gurobi5','LP');
-printLevel=1;
 
 [nMet,nIntRxn]=size(model.S(:,model.SIntRxnBool));
 m=sparse(nMet,15);
@@ -112,7 +118,7 @@ end
 if 1
     clear method
     method.interface='solveCobraLP';
-    method.solver='cplex';
+    method.solver='ibm_cplex';
     [inform(i),m(:,i),models{i}]=checkStoichiometricConsistency(model,printLevel+1,method);
     i=i+1;
 end

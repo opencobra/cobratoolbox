@@ -1,4 +1,4 @@
-function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList, metList, Stats, varargin)
+function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList, metList, Stats, score, mode, varargin)
 % Checks Tmodel for duplicate reactions and other mistakes,
 % that may have occured during reaction and metabolite matching. It
 % resolves these problems and merges the models, and confirms that Cmodel
@@ -17,11 +17,14 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    metList:      Array which desginates matched and new metabolites.
 %    Stats:        Structure that comes from reactionCompare. Weighting
 %                  information can be used and additional information addended.
-%    score:        The original scoring matrix, which may be used to correct
-%                  problematic reaction upon recomparison.
-%
 % OPTIONAL INPUTS:
+%    score:        The originalPress the any key to continue.
+ scoring matrix, which may be used to correct
+%                  problematic reaction upon recomparison.
+%    mode:         {('p'),'a'} 'Revisit only [p]roblematic reactions or [a]ll
+%                  reactions that problematic metabolites are involved in.
 %    'Verbose':    Print statements on progress.
+%
 %
 % OUTPUTS:
 %    TmodelC:      Combined `C` and `Tmodel`.
@@ -50,7 +53,20 @@ function [TmodelC, Cspawn, Stats] = mergeModelsBorg(CmodelIn, TmodelIn, rxnList,
 %    64673 Zwingenberg, Germany
 %    www.brain-biotech.de
 
-global SCORE CMODEL TMODEL % Declare variables.
+if exist('score','var')
+    global SCORE CMODEL TMODEL % Declare variables.
+    SCORE = score ;
+else
+    global SCORE CMODEL TMODEL % Declare variables.
+end
+
+
+if ~exist('mode','var')
+    modeProvided=0;
+    mode='p';
+else
+    modeProvided=1;
+end
 CMODEL = CmodelIn ;
 TMODEL = TmodelIn ;
 % SCORE = score ;
@@ -67,7 +83,7 @@ end
 % Allow pausing for some of the UI.
 % pause on
 
-% set flags for the two checks. 
+% set flags for the two checks.
 reviewMets = 1 ;
 checkSimilarity = 1 ;
 
@@ -101,7 +117,7 @@ while reviewMets
         else
             reviewMets = 0 ; % just go on without dealing with problem.
             checkSimilarity = 0 ; % matricies will be messed up, so do not do checking below
-            fprintf('Skipped resolving, will not check fidelity of matricies.\n') ; 
+            fprintf('Skipped resolving, will not check fidelity of matricies.\n') ;
         end
     end
 end
@@ -131,7 +147,7 @@ while checkSimilarity
     % Combine models and create spawn of Cmodel.
     % Combine the models. Problematic mets must have been resolved
     FluxCompare = compareMatricies(CMODELoriginal, Cspawn) ;
-    
+
     % If there are differences pause and let the user know what is up.
     if sum(sum(FluxCompare.diffS)) || (sum(rxnList == -1) > 0)
         % Plots the differences between the S matricies.
@@ -147,7 +163,7 @@ while checkSimilarity
         title('Difference.')
 
         % Pause and tell the users what is happening.
-        fprintf('Difference between the matricies. Reactions from C\n')
+        fprintf('Difference between the matrices. Reactions from C\n')
         fprintf('that do not have the same stoich before and after\n')
         fprintf('merging need to be reviewed again.\n')
         fprintf('Press the any key to continue.\n')
@@ -156,9 +172,11 @@ while checkSimilarity
         % mark them as undeclared, call GUI, and loop.
         diffmets = logical(sum(abs(FluxCompare.diffS), 2)) ;
         metList(FluxCompare.CmetsSorti(diffmets)) = 0 ;
-        fprintf('Revisit only [p]roblematic reactions or [a]ll reactions that problematic metabolites are involved in?\n')
-        nowans = input('default = p ', 's') ;
-        if strcmp(nowans, 'a')
+        if ~modeProvided
+            fprintf('Revisit only [p]roblematic reactions or [a]ll reactions that problematic metabolites are involved in?\n')
+            mode = input('default = p ', 's') ;
+        end
+        if strcmp(mode, 'a')
             diffrxns = logical(sum(abs(FluxCompare.diffS), 1) + sum(FluxCompare.CmodelS(diffmets, :)) + sum(FluxCompare.CspawnS(diffmets, :))) ;
         else
             diffrxns = logical(sum(abs(FluxCompare.diffS), 1)) ;
@@ -166,11 +184,10 @@ while checkSimilarity
         rxnList(FluxCompare.CrxnsSorti(diffrxns)) = -1 ;
 
         [rxnList, metList, Stats] = reactionCompare(CMODEL, TMODEL, SCORE, rxnList, metList, Stats) ;
-        
+
         % remerge and extract C model for second round of checking.
         [TmodelC, CMODEL] = addToTmodel(CMODEL, TMODEL, rxnList, metList, 'NoClean') ;
         Cspawn = readCbTmodel(CMODEL.description, TmodelC, 'y') ;
-
     else
         % Set the flag to not check for differences again.
         fprintf('Matricies are now equal before and after merging.\n')

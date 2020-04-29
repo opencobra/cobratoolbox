@@ -1,4 +1,4 @@
-function model = convertOldStyleModel(model, printLevel)
+function model = convertOldStyleModel(model, printLevel, convertOldCoupling)
 % Converts several old fields to their replacement.
 %
 % USAGE:
@@ -10,8 +10,9 @@ function model = convertOldStyleModel(model, printLevel)
 %    model:         a COBRA Model (potentially with old field names)
 %
 % OPTIONAL INPUT:
-%    printLevel:    indicates whether warnings and messages are given (default, 1).
-%
+%    printLevel:            boolean to indicate whether warnings and messages are given (default, 1).
+%    convertOldCoupling     boolean to indicate whether to convert model.A
+%                           into model.S and model.C, etc.
 % OUTPUT:
 %    model:         a COBRA model with old field names replaced by new ones and
 %                   duplicated fields merged.
@@ -78,6 +79,11 @@ if ~exist('printLevel','var')
     printLevel = 1;
 end
 
+if ~exist('convertOldCoupling','var')
+    convertOldCoupling = 1;
+end
+
+
 if(printLevel > 0)
     warning('on');
 else
@@ -104,8 +110,10 @@ mergefunction = {maxmerge, nanmerge,cellmerge,...
 % get the defined field properties.    
 definedFields = getDefinedFieldProperties();
     
-%convert from old coupling constraints if necessary
-model = convertOldCouplingFormat(model, printLevel);
+if convertOldCoupling
+    %convert from old coupling constraints if necessary
+    model = convertOldCouplingFormat(model, printLevel);
+end
 
 % convert old fields to current fields. 
 for i = 1:numel(oldFields)
@@ -192,6 +200,12 @@ if ~isfield(model,'csense')
     model.csense = repmat('E',numel(model.mets),1);
 else
     model.csense = columnVector(model.csense);
+    %assume any missing csense are equality constraints
+    invalidCsenseBool = ~ismember(model.csense,['E','L','G']); 
+    if any(invalidCsenseBool)
+        warning(['Assuming ' num2str(nnz(invalidCsenseBool)) ' missing csense are equality constraints.'])
+        model.csense(invalidCsenseBool)='E';
+    end
 end
 
 if ~isfield(model, 'genes')
@@ -257,18 +271,28 @@ for i = 1: numel(modelfields)
     end
 end
 
-if isfield(model,'subSystems')        
-    done = false;
-    charPos = cellfun(@(x) ischar(x), model.subSystems);
-    if all(charPos)
-        model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);            
-        done = true;
-    elseif any(charPos)
-        model.subSystems(charPos) = cellfun(@(x) {x}, model.subSystems(charPos),'UniformOutput',0);                        
-    end    
-    if ~done
-        numericPos = cellfun(@(x) isnumeric(x), model.subSystems);                
-        model.subSystems(numericPos) = {{''}};
+nRxns=length(model.subSystems);
+bool=false(nRxns,1);
+if isfield(model,'subSystems')
+    for n=1:nRxns
+        bool(n)=ischar(model.subSystems{n});
+    end
+    if all(bool) || nRxns<50000 
+        done = false;
+        charPos = cellfun(@(x) ischar(x), model.subSystems);
+        if all(charPos)
+            model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);
+            done = true;
+        elseif any(charPos)
+            model.subSystems(charPos) = cellfun(@(x) {x}, model.subSystems(charPos),'UniformOutput',0);
+        end
+        if ~done
+            numericPos = cellfun(@(x) isnumeric(x), model.subSystems);
+            model.subSystems(numericPos) = {{''}};
+        end
+    else
+        %Whole body model Harvey
+        fprintf('%s\n','All model.subSystems are character arrays, and this is a large model, so this format is retained.');
     end
 end
 %reset warnings

@@ -80,24 +80,21 @@ if ~isfield(model,'biomassRxnAbbr')
         end
     end
 else
-    %bool=strcmp(model.biomassRxnAbbr,model.rxns);
-    biomassBool=false(nRxn,1);
-    foundBiomass=strfind(model.rxns,model.biomassRxnAbbr);%finds a subset of the abbreviation
-    for n=1:nRxn
-        if ~isempty(foundBiomass{n})
-            if printLevel>0
-                fprintf('%s%s\n','Found biomass reaction: ', model.rxns{n});
+    biomassBool=contains(model.rxns,model.biomassRxnAbbr);%finds a subset of the abbreviation
+    if any(biomassBool)
+        if nnz(biomassBool)>1
+            ind = find(biomassBool);
+            for p=1:length(ind)
+                if printLevel>0
+                    fprintf('%s%s\n','Found multiple possible biomass reactions: ', model.rxns{ind(p)});
+                end
             end
-            biomassBool(n)=1;
-        end
-    end
-    if nnz(biomassBool)==0
-        if printLevel>0
-            fprintf('%s\n','Assuming no biomass reaction.');
+        else
+            fprintf('%s%s\n','Found biomass reaction: ', model.rxns{biomassBool});
         end
     else
-        if nnz(biomassBool)>1
-            %warning('More than one biomass reaction?');
+        if printLevel>0
+            fprintf('%s\n','Assuming no biomass reaction.');
         end
     end
 end

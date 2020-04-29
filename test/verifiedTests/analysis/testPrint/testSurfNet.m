@@ -140,7 +140,8 @@ fprintf('\nSuccess. Finish testing normal functionalities of surfNet.\n')
 % check warnings
 diary('surfNet.txt');
 
-% fields not printablable
+% fields not printable
+%surfNet(model, object, metNameFlag, flux, nonzeroFluxFlag, showMets, printFields, charPerLine, similarity)
 surfNet(model2, '13dpg[c]', [], [], [], [], {'S'});
 surfNet(model2, '13dpg[c]', [], [], [], [], {{}, {'rxnGeneMat'}});
 % non-existing met/rxn or incorrect input type
@@ -159,16 +160,18 @@ while ~isequal(l, -1)
 end
 textSurfNet = regexprep(textSurfNet, '\s*', ' ');
 fclose(f);
-% remove the generated file
-delete('surfNet.txt');
 
 fprintf('Compare the printed warnings with the expected results ...\n')
-assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.')))
-assert(~isempty(strfind(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.')))
-assert(~isempty(strfind(textSurfNet, '''NOTEXIST'' is not a metabolite, reaction or gene of the model. Searching for related objects:')))
-assert(~isempty(strfind(textSurfNet, 'Warning: No related mets, rxns or genes are found from the search. Please try other query terms.'))) 
-assert(~isempty(strfind(textSurfNet, 'Warning: The query term must be either a string or an array of string.'))) 
+assert(contains(textSurfNet, 'Warning: surfNet does not support showing S. Ignore.'))
+assert(contains(textSurfNet, 'Warning: surfNet does not support showing rxnGeneMat. Ignore.'))
+assert(contains(textSurfNet, 'Warning: No related mets, rxns or genes are found from the search. Please try other query terms.'))
+assert(contains(textSurfNet, 'Warning: The query term must be either a string or an array of string.'))
+assert(contains(textSurfNet, '''NOTEXIST'' is not a metabolite, reaction or gene of the model. Searching for related objects:'))
+
 fprintf('\nSuccess. Finish testing warning output of surfNet.\n')
+
+% remove the generated file
+delete('surfNet.txt');
 
 % print a random reaction when the 2nd input 'metrxn' is not given and
 % no objective reactions exist.
