@@ -51,9 +51,18 @@ if ~exist('content','var')
         
         % if not ReconMap 2.01 use new reaction notation
         if ~strcmp(minerva.map, 'ReconMap-2.01')
-            mapReactionId = strcat('R_', mapReactionId);
+          mapReactionId = strcat('R_', mapReactionId);
         end
         
+        if solution.v(i) ~= 0
+            line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
+            content = strcat(content, line);
+        end
+    
+        if contains(mapReactionId,'%') || contains(mapReactionId,' ')
+            error('ReactionID cannot contain delimiting characters, such as: %')
+        end
+
         if solution.v(i) ~= 0
             line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
             content = strcat(content, line);
@@ -69,6 +78,11 @@ map = minerva.map;
 %     disp(content);
 % content = sprintf(content);
 serverResponse = postMINERVArequest(login, password, map, googleLicenseContent, identifier, content);
+if isempty(serverResponse)
+    warning('Minerva server did not respond')
+end
+
+%end of function
 end
 
 %% Normalize a flux into a range of 1 to 10

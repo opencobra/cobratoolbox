@@ -8,7 +8,7 @@
 %
 
 global CBTDIR
-fileName = 'Recon2.v04.mat';
+fileName = 'Recon2.v05.mat';
 model = readCbModel([CBTDIR filesep 'test' filesep 'models' filesep 'mat' filesep fileName]);
 
 % save the current path

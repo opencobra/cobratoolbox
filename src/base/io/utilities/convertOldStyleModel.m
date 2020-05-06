@@ -271,11 +271,13 @@ for i = 1: numel(modelfields)
     end
 end
 
+nRxns=length(model.subSystems);
+bool=false(nRxns,1);
 if isfield(model,'subSystems')
-    for n=1:length(model.subSystems)
+    for n=1:nRxns
         bool(n)=ischar(model.subSystems{n});
     end
-    if all(bool) || length(bool)<50000 
+    if all(bool) || nRxns<50000 
         done = false;
         charPos = cellfun(@(x) ischar(x), model.subSystems);
         if all(charPos)

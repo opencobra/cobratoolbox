@@ -1225,11 +1225,11 @@ switch solver
 %           cplexstatusstring: Status string of the solution
 %         lambda 	    Structure containing the Lagrange multipliers at the solution x (separated by constraint type). This is only available for problems that do not contain quadratic constraints. See cplexqp() for details.
 
-        try
-            CplexLPproblem = Cplex('fba');
-        catch ME
-            error('CPLEX not installed or licence server not up')
-        end
+%         try
+%             CplexLPproblem = Cplex('fba');
+%         catch ME
+%             error('CPLEX not installed or licence server not up')
+%         end
         
         %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/cplexoptimset-m.html
         % options = cplexoptimset ('cplex') creates a structure options, which
@@ -1245,37 +1245,22 @@ switch solver
         options.output.clonelog = problemTypeParams.printLevel-1;
 
         if ~isempty(csense)
-            Aineq = [A(csense == 'L',:); - A(csense == 'G',:)];
-            bineq = [b(csense == 'L',:); - b(csense == 'G',:)];
+            boolE=csense == 'E';
+            boolL=csense == 'L';
+            boolG=csense == 'G';
+            %Aineq = [A(boolL,:); - A(boolG,:)];
+            %bineq = [b(boolL,:); - b(boolG,:)];
             %        min      c*x
             %        st.      Aineq*x <= bineq
             %                 Aeq*x    = beq
             %                 lb <= x <= ub
-            [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,A(csense == 'E',:),b(csense == 'E',1),lb,ub,[],options);
-            %this is the dual to the equality constraints but it's not the chemical potential
-            y = sparse(size(A,1),1);
-            y(csense == 'E')= lambda.eqlin;
-            y(csense == 'L' | csense == 'G',1) = lambda.ineqlin;
-            y(csense == 'G',1) = - y(csense == 'G',1); %change sign
-            y = osense*y; %this should not be necessary but it seems so
+            %[x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,A(csense == 'E',:),b(csense == 'E',1),lb,ub,[],options);
+            [x,~,~,output,lambda] = cplexlp(osense*c,[A(boolL,:); - A(boolG,:)],[b(boolL,:); - b(boolG,:)],A(boolE,:),b(boolE,1),lb,ub,[],options);
         else
             Aineq=[];
             bineq=[];
             [x,~,~,output,lambda] = cplexlp(osense*c,Aineq,bineq,A,b,lb,ub,[],options);
-            %this is the dual to the equality constraints
-            y = osense*lambda.eqlin;
-        end
-        %pbjective
-         f = c'*x;
-        % output the slack variables
-        s = b - A * x;
-        
-        %this is the dual to the simple ineequality constraints : reduced costs
-        w =  lambda.lower-lambda.upper;
-        
-        algorithm = output.algorithm;
-        if 0 %debug
-            norm(osense * c  + A' * y - w,inf)
+
         end
         
         %check the satus of the solution
@@ -1301,6 +1286,38 @@ switch solver
             stat = -1; %-1 - Some other problem (timelimit, numerical problem etc)
         end
         
+        if stat==1 || stat==3
+            if all(boolE)
+                %this is the dual to the equality constraints
+                y = -lambda.eqlin;
+            else
+                %this is the dual to the equality constraints
+                y = sparse(size(A,1),1);
+                y(boolE) = -lambda.eqlin;
+                y(boolL | boolG,1) = -lambda.ineqlin;
+                y(boolG,1) = - y(boolG,1); %change sign
+            end
+            %objective
+            f = c'*x;
+            % output the slack variables
+            s = b - A * x;
+            
+            %this is the dual to the simple ineequality constraints : reduced costs
+            w =  lambda.lower - lambda.upper;
+            
+            algorithm = output.algorithm;
+            if 0 %debug
+                disp(algorithm)
+                norm(osense * c  - A' * y - w,inf)
+            end
+        else
+            x=[];
+            y=[];
+            s=[];
+            w=[];
+            f=[];
+        end
+
         % cplexStatus analyzes the CPLEX output Inform code and returns
         % the CPLEX solution status message in ExitText and the TOMLAB exit flag
         % in ExitFlag
@@ -1331,6 +1348,7 @@ switch solver
             x = CplexLPproblem.Solution.x;
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;
+            %res1 = A*solution.full + solution.slack - b;
             s = b - A * x; % output the slack variables
         elseif origStat == 2 ||   origStat == 20
             stat = 2; %unbounded

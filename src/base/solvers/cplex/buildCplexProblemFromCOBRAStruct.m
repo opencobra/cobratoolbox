@@ -28,12 +28,15 @@ catch ME
 end
 if (~isempty(Problem.csense))
     % build the rhs/lhs of the problem.
-    b_L(Problem.csense == 'E') = Problem.b(Problem.csense == 'E');
-    b_U(Problem.csense == 'E') = Problem.b(Problem.csense == 'E');
-    b_L(Problem.csense == 'G') = Problem.b(Problem.csense == 'G');
-    b_U(Problem.csense == 'G') = inf;
-    b_L(Problem.csense == 'L') = -inf;
-    b_U(Problem.csense == 'L') = Problem.b(Problem.csense == 'L');
+    boolE = Problem.csense == 'E';
+    b_L(boolE) = Problem.b(boolE);
+    b_U(boolE) = Problem.b(boolE);
+    boolG = Problem.csense == 'G';
+    b_L(boolG) = Problem.b(boolG);
+    b_U(boolG) = inf;
+    boolL = Problem.csense == 'L';
+    b_L(boolL) = -inf;
+    b_U(boolL) = Problem.b(boolL);
 elseif isfield(Problem.csense, 'b_L') && isfield(Problem, 'b_U')
     % or extract them 
     b_L = Problem.b_L;

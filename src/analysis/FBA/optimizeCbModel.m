@@ -6,7 +6,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 % .. math::
 %
 %    max/min  ~& c^T v \\
-%    s.t.     ~& S v = dxdt ~~~~~~~~~~~:y \\
+%    s.t.     ~& S v = b ~~~~~~~~~~~:y \\
 %             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
 %
@@ -17,14 +17,14 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%                         * S  - `m x 1` Stoichiometric matrix
+%                         * S  - `m x n` Stoichiometric matrix
 %                         * c  - `n x 1` Linear objective coefficients
 %                         * lb - `n x 1` Lower bounds
 %                         * ub - `n x 1` Upper bounds
 %
 % OPTIONAL INPUTS:
 %    model:
-%                         * dxdt - `m x 1` change in concentration with time
+%                         * b - `m x 1` change in concentration with time
 %                         * csense - `m x 1` character array with entries in {L,E,G}
 %                           (The code is backward compatible with an m + k x 1 csense vector,
 %                           where k is the number of coupling constraints)
@@ -45,7 +45,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                       .. math::
 %
 %                          min  ~& |v| \\
-%                          s.t. ~& S v = dxdt \\
+%                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -55,7 +55,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                       .. math::
 %
 %                          min  ~& ||v||_0 \\
-%                          s.t. ~& S v = dxdt \\
+%                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -78,7 +78,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                       .. math::
 %
 %                          min  ~& 1/2 v'*v \\
-%                          s.t. ~& S v = dxdt \\
+%                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
@@ -88,7 +88,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                       .. math::
 %
 %                          min  ~& 0.5 v^T F v \\
-%                          s.t. ~& S v = dxdt \\
+%                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %

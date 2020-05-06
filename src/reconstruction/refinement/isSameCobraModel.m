@@ -21,6 +21,8 @@ function [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printL
 %     - Markus Herrgard 9/14/07
 %     - CI integration: Laurent Heirendt
 
+%TODO this function needs updating to use structeq.m
+
 if ~exist('printLevel','var')
     printLevel = 0;
 end
@@ -63,6 +65,11 @@ for i = 1:nFields
     value1 = getfield(model1, fieldName);
     value2 = getfield(model2, fieldName);
 
+    if 0 %debugging code
+            if strcmp(fieldName,'rxnConfidenceScores')
+                pause(0.1);
+            end
+    end
     % replace all whitespaces
     if iscellstr(value1)
         value1 = regexprep(value1, '[^\w'']', '');
@@ -72,8 +79,17 @@ for i = 1:nFields
     if isnumeric(value1)
         nDiff(i) = sum(sum(~((value1 == value2) | (isnan(value1) & isnan(value2))) ));
     elseif iscellstr(value1)
+        if 0 %debugging code
+        for i=1:length(value1)
+            if class(value1{i})~=class(value2{i})
+                pause(0.1)
+            end
+            if length(value1{i})~=length(value2{i})
+                pause(0.1)
+            end
+        end
+        end
         nDiff(i) = sum(~strcmp(value1, value2));
-
     elseif ischar(value1)
         nDiff(i) = ~strcmp(value1, value2);
     end

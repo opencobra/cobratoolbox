@@ -41,3 +41,4 @@ for i = 1:numel(rxns)
     model = addReaction(model,rxns{i},'metaboliteList',mets,'stoichCoeffList',S(:,i));
 end
 
+warning on
