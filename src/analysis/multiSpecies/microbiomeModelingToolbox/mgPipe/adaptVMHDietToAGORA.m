@@ -82,10 +82,10 @@ end
 
 % map choline flux if not already present
 if ~any(contains(VMHDietConstraints(:, 1),'EX_chol(e)'))
-% based on a daily intake of 396 mg in Av Am Diet per day (Sahoo 2013 paper)
-CLength = size(adaptedDietConstraints, 1);
-adaptedDietConstraints{CLength + 1, 1} = 'EX_chol(e)';
-adaptedDietConstraints{CLength + 1, 2} = '-41.251';
+    % based on a daily intake of 396 mg in Av Am Diet per day (Sahoo 2013 paper)
+    CLength = size(adaptedDietConstraints, 1);
+    adaptedDietConstraints{CLength + 1, 1} = 'EX_chol(e)';
+    adaptedDietConstraints{CLength + 1, 2} = '-41.251';
 end
 
 % Increase the uptake rate of micronutrients with too low defined uptake
@@ -98,12 +98,8 @@ for i = 1:  size(adaptedDietConstraints,1)
     if ~isempty(find(ismember(micronutrients,adaptedDietConstraints{i,1}))) && abs(str2double(adaptedDietConstraints{i,2}))<=0.1
         adaptedDietConstraints{i,2} = num2str(str2double(adaptedDietConstraints{i,2})*100);
     end
-    % folate uptake needs to be at least 1
-    if strcmp(adaptedDietConstraints{i,1},'EX_fol(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
-        adaptedDietConstraints{i,2} = '-1';
-    end
-    % L-arabinose uptake needs to be at least 1
-    if strcmp(adaptedDietConstraints{i,1},'EX_arab_L(e)') && abs(str2double(adaptedDietConstraints{i,2}))<1
+    % folate, L-arabinose, D-xylose uptake need to be at least 1
+    if any(strcmp(adaptedDietConstraints{i,1},{'EX_fol(e)','EX_arab_L(e)','EX_xyl_D(e)'})) && abs(str2double(adaptedDietConstraints{i,2}))<1
         adaptedDietConstraints{i,2} = '-1';
     end
 end
