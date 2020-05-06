@@ -333,6 +333,7 @@ if isfield(model,'genes')
             tmp_fbc_geneProduct.fbc_name = model.proteins{i};
         end
         
+        tmp_fbc_geneProduct.sboTerm = 243;
         tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
         if i==1
             sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;
