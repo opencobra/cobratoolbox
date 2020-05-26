@@ -229,7 +229,7 @@ switch fileType
             modeloptions = {S.(varname), varname};
         end
         if size(modeloptions, 1) == 0
-            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it']);
+            error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it.\nTry using convertOldStyleModel() before verifyModel() to bring the model structure up to date.']);
         end
         model = modeloptions{1, 1};
         if modeloptions{1, 3}
