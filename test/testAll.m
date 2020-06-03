@@ -275,3 +275,7 @@ end
 
 % switch back to the original directory
 cd(origDir)
+
+% needed for R2018b in non-interactive mode to avoid SEGV
+exit
+exit
