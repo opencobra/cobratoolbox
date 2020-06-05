@@ -23,6 +23,8 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     structures
 %   objectiveList     Cell array containing the names of one or more
 %                     objective functions of interest in vertical order
+%                     Optional: second column with exchange reaction IDs
+%                     for objective-specific precursors
 %
 % OPTIONAL INPUTS:
 %   modelIDs          Cell array containing IDs of the models displayed in
@@ -55,7 +57,6 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
-parser.addParameter('modelIDs',{}, @iscell);
 parser.addParameter('osenseStr','max', @ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
@@ -131,6 +132,8 @@ for i=1:size(modelList,1)
     % Extract all shadow prices and save them in a table
     objectives{i+2,1} = strrep(modelList{i,1},'.mat','');
     shadowPrices{1,i+3} = strrep(modelList{i,1},'.mat','');
+    solutions(:,i)=FBAsolution;
+
     for j=1:size(objectiveList,1)
         % get the computed solutions
         solution = FBAsolution{j,1};

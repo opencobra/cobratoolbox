@@ -64,7 +64,7 @@ for i = 1:numel(gMCSs)
     if true
         if length(gmcs) == 1
             sol = optimizeCbModel(model);
-            BiomassMinimal(i) = sol.obj;
+            BiomassMinimal(i) = sol.f;
         else
             check_Minimal = zeros(size(gmcs));
             % Loop to check if a subset of the gMCS is also gMCS
@@ -149,7 +149,7 @@ end
 
 % check if the elimination of all genes is effective
 sol = optimizeCbModel(model);
-biomassCS = sol.obj ;
+biomassCS = sol.f ;
 
 end
 

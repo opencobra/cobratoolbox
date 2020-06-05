@@ -45,6 +45,7 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indIn
 %    autorun:                boolean used to enable /disable autorun behavior (please set to 1)
 %
 % .. Author: Federico Baldini 2018
+%               - Almut Heinken 02/2020: removed unnecessary outputs
 
 global CBTDIR
 

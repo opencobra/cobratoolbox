@@ -3,7 +3,7 @@ function OK = writeLPProblem(LPProblem, varargin)
 %
 % USAGE:
 %
-%    OK = convertCobraLP2mps(LPProblem, varargin)
+%    OK = writeLPProblem(LPProblem, varargin)
 %
 % INPUT:
 %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
@@ -31,10 +31,10 @@ function OK = writeLPProblem(LPProblem, varargin)
 %
 % EXAMPLE:
 %    Write a model to a specified fileName:
-%    OK = convertCobraLP2mps(LPProblem, 'fileName', 'AFileName.ext')
+%    OK = writeLPProblem(LPProblem, 'fileName', 'AFileName.ext')
 %
 %    Write a model problem using the specified solverParams
-%    OK = convertCobraLP2mps(LPProblem, 'solverParams', Params)
+%    OK = writeLPProblem(LPProblem, 'solverParams', Params)
 %
 % .. Authors:
 %       - Ronan M.T. Fleming: 7 Sept 09

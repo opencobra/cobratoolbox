@@ -14,7 +14,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testUpdateGenes'));
 cd(fileDir);
 
-model = getDistributedModel('Recon2.v04.mat');
+model = getDistributedModel('Recon2.v05.mat');
 
 % Check that updateGenes orders the gene list
 model2 = updateGenes(model);

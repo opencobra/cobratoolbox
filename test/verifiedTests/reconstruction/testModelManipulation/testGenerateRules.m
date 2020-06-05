@@ -15,8 +15,11 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateRules'));
 cd(fileDir);
 
-modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'Recon2.v04.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
-
+if 1
+    modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
+else
+    modelsToTry = {'Recon2.v05.mat'};% TODO fix why this is not working
+end
 for i=1:length(modelsToTry)
     model = getDistributedModel(modelsToTry{i});
     fprintf('Beginning model %s\n', modelsToTry{i});
@@ -32,7 +35,7 @@ for i=1:length(modelsToTry)
     
     fp = FormulaParser();
     % fix for Recon2
-    if strcmp(modelsToTry{i}, 'Recon2.v04.mat')
+    if strcmp(modelsToTry{i}, 'Recon2.v05.mat')
         model.rules(2240) = {'(x(2)) | (x(4)) | (x(3))'}; % '(26.1) or (314.1) or (314.2)'
         model.rules(2543) = {'(x(2)) | (x(4)) | (x(1)) | (x(3))'}; % '(26.1) or (314.1) or (8639.1) or (314.2)'
         model.rules(2750) = {'(x(2)) | (x(4)) | (x(1)) | (x(3))'}; % '(26.1) or (314.1) or (8639.1) or (314.2)'

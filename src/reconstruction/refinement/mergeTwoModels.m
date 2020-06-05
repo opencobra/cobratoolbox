@@ -53,7 +53,6 @@ end
 if mergeGenes
     showprogress(0, 'Combining Genes in Progress ...');
     
-    
     if isfield(model1, 'genes') || isfield(model2, 'genes')
         %if one is missing create it
         if ~isfield(model1, 'genes')
@@ -106,7 +105,6 @@ end
 showprogress(0.25, 'Combining reaction lists ...');
 modelNew = mergeFields(modelNew,model1,model2,'rxns');
 
-
 % Combining Metabolite List
 fprintf('Combining metabolite lists: ');
 
@@ -148,7 +146,7 @@ showprogress(0.9, 'Finishing touches...');
 
 %finish up by A: removing duplicate reactions
 %We will lose information here, but we will just remove the duplicates.
-[modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
+%[modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
 
 %Check, that there are no duplicated IDs in the primary key fields.
 ureacs = unique(modelNew.rxns);
@@ -181,7 +179,7 @@ fprintf('\n');
 
 function modelNew = mergeFields(modelNew,model1,model2,type)
 % USAGE:
-%    [modelNew] = mergeTwoModels(modelNew,model1,model2,type)
+%    [modelNew] = mergeFields(modelNew,model1,model2,type)
 %
 % INPUTS:
 %    modelNew:        The new Structure with all fields created till now

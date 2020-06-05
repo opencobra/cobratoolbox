@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of template</title>
+  <meta name="keywords" content="template">
+  <meta name="description" content="TEMPLATE HTML Template Toolbox Constructor">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">m2html</a> &gt; <a href="index.html">@template</a> &gt; template.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for m2html/@template&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>template
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>TEMPLATE HTML Template Toolbox Constructor</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function tpl = template(root,unknowns) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">TEMPLATE HTML Template Toolbox Constructor
+  TPL = TEMPLATE returns a template object using default values for the
+  root path of the template files ('.') and for the way of handling unknown
+  replacement fields (default is 'remove').
+  TPL = TEMPLATE(ROOT) allows to specify the root path of the template files
+  that will then be provided relative to this path.
+  TPL = TEMPLATE(ROOT,UNKNOWNS) also allows to specify the strategy to apply
+  to unkown fields. UNKNOWNS may be:
+    * 'keep' to do nothing
+    * 'remove' to remove all undefined fields
+    * 'comment' to replace undefined fields by a warning HTML comment.
+
+  The template class allows you to keep your HTML code in some external 
+  files which are completely free of Matlab code, but contain replacement 
+  fields. The class provides you with functions which can fill in the 
+  replacement fields with arbitrary strings. These strings can become very 
+  large, e.g. entire tables.
+  See the PHPLib: &lt;http://www.sanisoft.com/phplib/manual/template.php&gt;
+  See also <a href="get.html" class="code" title="function varargout = get(tpl,action,varargin)">GET</a>, <a href="set.html" class="code" title="function tpl = set(tpl,action,varargin)">SET</a>, <a href="parse.html" class="code" title="function [tpl, str] = parse(tpl,target,handle,append)">PARSE</a></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="set.html" class="code" title="function tpl = set(tpl,action,varargin)">set</a>	TEMPLATE/SET Edit data stored in a Template object</li><li><a href="template.html" class="code" title="function tpl = template(root,unknowns)">template</a>	TEMPLATE HTML Template Toolbox Constructor</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="template.html" class="code" title="function tpl = template(root,unknowns)">template</a>	TEMPLATE HTML Template Toolbox Constructor</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function tpl = template(root,unknowns)</a>
+0002 <span class="comment">%TEMPLATE HTML Template Toolbox Constructor</span>
+0003 <span class="comment">%  TPL = TEMPLATE returns a template object using default values for the</span>
+0004 <span class="comment">%  root path of the template files ('.') and for the way of handling unknown</span>
+0005 <span class="comment">%  replacement fields (default is 'remove').</span>
+0006 <span class="comment">%  TPL = TEMPLATE(ROOT) allows to specify the root path of the template files</span>
+0007 <span class="comment">%  that will then be provided relative to this path.</span>
+0008 <span class="comment">%  TPL = TEMPLATE(ROOT,UNKNOWNS) also allows to specify the strategy to apply</span>
+0009 <span class="comment">%  to unkown fields. UNKNOWNS may be:</span>
+0010 <span class="comment">%    * 'keep' to do nothing</span>
+0011 <span class="comment">%    * 'remove' to remove all undefined fields</span>
+0012 <span class="comment">%    * 'comment' to replace undefined fields by a warning HTML comment.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%  The template class allows you to keep your HTML code in some external</span>
+0015 <span class="comment">%  files which are completely free of Matlab code, but contain replacement</span>
+0016 <span class="comment">%  fields. The class provides you with functions which can fill in the</span>
+0017 <span class="comment">%  replacement fields with arbitrary strings. These strings can become very</span>
+0018 <span class="comment">%  large, e.g. entire tables.</span>
+0019 <span class="comment">%  See the PHPLib: &lt;http://www.sanisoft.com/phplib/manual/template.php&gt;</span>
+0020 <span class="comment">%  See also GET, SET, PARSE</span>
+0021 
+0022 <span class="comment">%  Copyright (C) 2003 Guillaume Flandin &lt;Guillaume@artefact.tk&gt;</span>
+0023 <span class="comment">%  $Revision: 1.0 $Date: 2003/05/05 22:19:51 $</span>
+0024 
+0025 error(nargchk(0,2,nargin));
+0026 
+0027 <span class="keyword">switch</span> nargin
+0028     <span class="keyword">case</span> 0
+0029         tpl = struct(<span class="string">'root'</span>,<span class="string">'.'</span>,<span class="keyword">...</span>
+0030                      <span class="string">'file'</span>,{{}},<span class="keyword">...</span>
+0031                      <span class="string">'handles'</span>,{{}},<span class="keyword">...</span>
+0032                      <span class="string">'varkeys'</span>,{{}},<span class="keyword">...</span>
+0033                      <span class="string">'varvals'</span>,{{}},<span class="keyword">...</span>
+0034                      <span class="string">'unknowns'</span>,<span class="string">'remove'</span>);
+0035         tpl = class(tpl,<span class="string">'template'</span>);
+0036     <span class="keyword">case</span> 1
+0037         <span class="keyword">if</span> isa(root,<span class="string">'template'</span>)
+0038             tpl = root;
+0039         <span class="keyword">else</span>
+0040             tpl = <a href="template.html" class="code" title="function tpl = template(root,unknowns)">template</a>;
+0041             tpl = <a href="set.html" class="code" title="function tpl = set(tpl,action,varargin)">set</a>(tpl,<span class="string">'root'</span>,root);
+0042         <span class="keyword">end</span>
+0043     <span class="keyword">case</span> 2
+0044         tpl = <a href="template.html" class="code" title="function tpl = template(root,unknowns)">template</a>;
+0045         tpl = <a href="set.html" class="code" title="function tpl = set(tpl,action,varargin)">set</a>(tpl,<span class="string">'root'</span>,root);
+0046         tpl = <a href="set.html" class="code" title="function tpl = set(tpl,action,varargin)">set</a>(tpl,<span class="string">'unknowns'</span>,unknowns);
+0047 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 29-Oct-2019 21:04:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

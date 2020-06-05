@@ -109,7 +109,7 @@ modelBatch4 = addMultipleReactions(modelBatch,{'ExA','ATob','BToC'},{'A','b','c'
                                    'rules',{'x(3) | x(2)', 'x(4) & x(1)',''}, 'genes', {'G4';'b0727';'G1';'b0008'});
 diary off
 diary('comparison.txt')
-fprintf('Adding the following reactions to the model:\n');
+fprintf('addMultipleReactions: Adding the following reactions to the model:\n');
 printRxnFormula(modelBatch4,{'ExA','ATob','BToC'});
 diary off
 assert(all(fileread('reacAdd1.txt')==fileread('comparison.txt')));
