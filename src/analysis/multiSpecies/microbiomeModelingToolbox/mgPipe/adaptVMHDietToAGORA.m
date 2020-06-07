@@ -59,7 +59,7 @@ adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_glc(e)',
 adaptedDietConstraints(:, 1) = strrep(adaptedDietConstraints(:, 1), 'EX_sbt-d(e)', 'EX_sbt_D(e)');
 
 % Add essential metabolites not yet included in the entered diet
-MissingUptakes = setdiff(essentialMetabolites, VMHDietConstraints(:, 1));
+MissingUptakes = setdiff(essentialMetabolites, adaptedDietConstraints(:, 1));
 % add the missing exchange reactions to the adapted diet
 CLength = size(adaptedDietConstraints, 1);
 for i = 1:length(MissingUptakes)
