@@ -483,7 +483,7 @@ end
 
 % set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
-    if 1 %set to 1 to debug a new solver
+    if 0 %set to 1 to debug a new solver
         if strcmp(solverName,'cplexlp')
             pause(0.1);
         end
