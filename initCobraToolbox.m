@@ -336,7 +336,7 @@ SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.pdco.type = {'LP', 'QP'};
 SOLVERS.quadMinos.type = {'LP'};
 SOLVERS.dqqMinos.type = {'LP','QP'};
-SOLVERS.matlab.type = {'LP', 'NLP'};
+SOLVERS.matlab.type = {'NLP'};
 % active support of cplex interfaces - supported solvers
 SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
 SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};

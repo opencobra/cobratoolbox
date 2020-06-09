@@ -146,7 +146,7 @@ switch solver
         % get fminCon Options, and set the options supplied by the user.
         switch cobraParams.printLevel
             case 0
-                fminconPrintLevel = 'off';
+                fminconPrintLevel = 'on';
             case 1
                 fminconPrintLevel = 'final';
             case 2
@@ -154,7 +154,7 @@ switch solver
             otherwise
                 fminconPrintLevel = 'off';
         end
-        options = optimoptions('fmincon','maxIter',cobraParams.iterationLimit,'maxFunEvals',cobraParams.iterationLimit, 'Display',fminconPrintLevel);
+        options = optimoptions('fmincon','maxIter',cobraParams.iterationLimit,'MaxFunctionEvaluations',cobraParams.iterationLimit, 'Display',fminconPrintLevel, 'Algorithm','sqp');
 
         options = updateStructData(options,solverParams);
 
