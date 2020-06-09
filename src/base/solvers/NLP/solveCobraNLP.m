@@ -146,7 +146,7 @@ switch solver
         % get fminCon Options, and set the options supplied by the user.
         switch cobraParams.printLevel
             case 0
-                fminconPrintLevel = 'on';
+                fminconPrintLevel = 'off';
             case 1
                 fminconPrintLevel = 'final';
             case 2
