@@ -85,7 +85,7 @@
 
           
             
-            <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -222,17 +222,17 @@
 <li><a class="reference external" href="#gurobi">GUROBI</a></li>
 <li><a class="reference external" href="#mosek">MOSEK</a></li>
 </ul>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Please make sure that you install a compatible solver. Check the
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Please make sure that you install a compatible solver. Check the
 compatibility
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
 <p>Platform-specific instructions are marked with</p>
 <ul class="simple">
-<li><strong>Windows</strong> - <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"></li>
-<li><strong>macOS</strong> - <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></li>
-<li><strong>linux</strong> - <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></li>
+<li><strong>Windows</strong> - <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"></li>
+<li><strong>macOS</strong> - <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></li>
+<li><strong>linux</strong> - <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></li>
 </ul>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Most steps require superuser or administrator rights (<code class="docutils literal"><span class="pre">sudo</span></code>).</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil"> Make sure that you replace <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> with the respective
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Most steps require superuser or administrator rights (<code class="docutils literal"><span class="pre">sudo</span></code>).</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil"> Make sure that you replace <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> with the respective
 <code class="docutils literal"><span class="pre">version</span></code> of the installed solver when setting the environment
 variables.</p>
 <div class="section" id="tomlab">
@@ -243,31 +243,31 @@ variables.</p>
 download <code class="docutils literal"><span class="pre">TOMLAB/SNOPT</span></code>. You must purchase the <code class="docutils literal"><span class="pre">tomlab.lic</span></code>
 license separately.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> In a terminal window, navigate to the download directory of
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> In a terminal window, navigate to the download directory of
 <code class="docutils literal"><span class="pre">Tomlab</span></code> and do the following:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;filename&gt;.bin
 <span class="gp">$</span> sudo ./&lt;filename&gt;.bin
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run the <code class="docutils literal"><span class="pre">tomlab-win64-setup_&lt;ver&gt;.exe</span></code> as an administrator.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Double-click on <code class="docutils literal"><span class="pre">tomlab-osx64-setup.app</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run the <code class="docutils literal"><span class="pre">tomlab-win64-setup_&lt;ver&gt;.exe</span></code> as an administrator.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Double-click on <code class="docutils literal"><span class="pre">tomlab-osx64-setup.app</span></code>.</p>
 </li>
 <li><p class="first">Follow the installation instructions and install <code class="docutils literal"><span class="pre">tomlab</span></code> in:</p>
 <ul class="simple">
-<li><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">: <code class="docutils literal"><span class="pre">/opt</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code>.</li>
-<li><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">: <code class="docutils literal"><span class="pre">C:\</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>.</li>
-<li><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">: <code class="docutils literal"><span class="pre">/Applications</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">: <code class="docutils literal"><span class="pre">/opt</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">: <code class="docutils literal"><span class="pre">C:\</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">: <code class="docutils literal"><span class="pre">/Applications</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</li>
 </ul>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code> and
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code> and
 change its permissions (you must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights):</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">644</span> tomlab.lic
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>. <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the
 folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
@@ -280,7 +280,7 @@ folder <code class="docutils literal"><span class="pre">/Applications/tomlab</sp
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the
 environment variables on Windows, please follow the instructions
 <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
 </li>
@@ -296,32 +296,32 @@ CPLEX is free for students (and academics) and further information
 how to register and download is
 <a class="reference external" href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en">here</a>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Add <code class="docutils literal"><span class="pre">execute</span></code> permission to binary</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Add <code class="docutils literal"><span class="pre">execute</span></code> permission to binary</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;cplexbinary&gt;.bin
 </pre></div>
 </div>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Run the installer binary as superuser, follow the installation
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Run the installer binary as superuser, follow the installation
 procedure, and accept the default installation path.</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./&lt;cplexbinary&gt;.bin
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run
 <code class="docutils literal"><span class="pre">cplex_studio&lt;ver&gt;.win-x86-64.exe</span></code> as an administrator. Follow the
 installation instructions and install <code class="docutils literal"><span class="pre">CPLEX</span></code> in
 <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\IBM\ILOG\CPLEX_Studio&lt;ver&gt;</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
 <p>Append the following lines, hit the
 <code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
-<p>On <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">:</p>
+<p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/opt/ibm/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
 </pre></div>
 </div>
-<p>On <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">:</p>
+<p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/Applications/IBM/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
 </pre></div>
 </div>
@@ -329,10 +329,10 @@ installation instructions and install <code class="docutils literal"><span class
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
 also follow the instructions
 <a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
 In this startup file add the following command:
 <code class="docutils literal"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
 where <code class="docutils literal"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
@@ -351,18 +351,18 @@ retrieve <code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-
 <li><p class="first">Download the <code class="docutils literal"><span class="pre">Gurobi</span></code> optimizer from
 <a class="reference external" href="http://www.gurobi.com/downloads/gurobi-optimizer">here</a></p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to the directory where <code class="docutils literal"><span class="pre">Gurobi</span></code> was downloaded and enter</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to the directory where <code class="docutils literal"><span class="pre">Gurobi</span></code> was downloaded and enter</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> tar -xvzf &lt;archive&gt;.tar.gz
 <span class="gp">$</span> sudo mv gurobi&lt;ver&gt; /opt/.
 <span class="gp">$</span> <span class="nb">cd</span> /opt/gurobi&lt;ver&gt;/linux64/bin/
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">Gurobi-&lt;ver&gt;-win64.msi</span></code> and follow the installation
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">Gurobi-&lt;ver&gt;-win64.msi</span></code> and follow the installation
 instructions. Accept the default path <code class="docutils literal"><span class="pre">C:\gurobi&lt;ver&gt;\</span></code>.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Run <code class="docutils literal"><span class="pre">gurobi&lt;ver&gt;_mac64.pkg</span></code> and follow the installation instructions.
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Run <code class="docutils literal"><span class="pre">gurobi&lt;ver&gt;_mac64.pkg</span></code> and follow the installation instructions.
 Accept the default path <code class="docutils literal"><span class="pre">/Applications/gurobi&lt;ver&gt;/</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Edit the <code class="docutils literal"><span class="pre">bash</span></code> settings to include paths</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Edit the <code class="docutils literal"><span class="pre">bash</span></code> settings to include paths</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
@@ -378,10 +378,10 @@ Accept the default path <code class="docutils literal"><span class="pre">/Applic
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the environment variables on Windows, please follow the
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the environment variables on Windows, please follow the
 instructions <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Activate your license by running:</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Activate your license by running:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> grbgetkey YOUR-LICENSE-KEY-FROM-SITE
 </pre></div>
 </div>
@@ -391,19 +391,19 @@ instructions <a class="reference external" href="https://www.computerhope.com/is
 </pre></div>
 </div>
 <p>Hit <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
 <code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.
 This should prompt to enter the license key
 <code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code>. Enter this key and hiter <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">Gurobi</span></code> is successfully installed by launching the
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">Gurobi</span></code> is successfully installed by launching the
 <code class="docutils literal"><span class="pre">Gurobi</span></code> prompt:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> gurobi.sh
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
 <code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code>and double-click on <code class="docutils literal"><span class="pre">Gurobi&lt;ver&gt;</span></code> to
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code>and double-click on <code class="docutils literal"><span class="pre">Gurobi&lt;ver&gt;</span></code> to
 start the Gurobi shell.</p>
 <p>This command should give you the prompt for <code class="docutils literal"><span class="pre">Gurobi</span></code>. Exit by
 entering <code class="docutils literal"><span class="pre">exit()</span></code> or hitting <code class="docutils literal"><span class="pre">CTRL-D</span></code> on your keyboard.</p>
@@ -421,24 +421,24 @@ entering <code class="docutils literal"><span class="pre">exit()</span></code> o
 license is <a class="reference external" href="https://www.mosek.com/products/academic-licenses/">here</a>. You will
 receive an email with your <code class="docutils literal"><span class="pre">mosek.lic</span></code> file.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Save (or move) the downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/opt/.</span></code> (you
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Save (or move) the downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/opt/.</span></code> (you
 must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).
-<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Save (or move) the
+<img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Save (or move) the
 downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/Applications/.</span></code> (you must have
 superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to <code class="docutils literal"><span class="pre">/opt</span></code> and extract the archive</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to <code class="docutils literal"><span class="pre">/opt</span></code> and extract the archive</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd /opt</span>
 <span class="gp">$</span> tar xvjf &lt;filename&gt;.tar.bz2
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal"><span class="pre">Typical</span></code> installation. This
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal"><span class="pre">Typical</span></code> installation. This
 will install <code class="docutils literal"><span class="pre">mosek</span></code> in <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Mosek</span></code>.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
-<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> It is important to run the script <code class="docutils literal"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
+<img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> It is important to run the script <code class="docutils literal"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
 which makes important updates to the installation.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Configure the <code class="docutils literal"><span class="pre">PATH</span></code> and <code class="docutils literal"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Configure the <code class="docutils literal"><span class="pre">PATH</span></code> and <code class="docutils literal"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
 variables in <code class="docutils literal"><span class="pre">~/.bashrc</span></code> by editing your <code class="docutils literal"><span class="pre">bashrc</span></code> file</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
@@ -446,12 +446,12 @@ variables in <code class="docutils literal"><span class="pre">~/.bashrc</span></
 <p>Append the following lines, hit the
 <code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting
 <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
-<p>On <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></p>
+<p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export PATH=/opt/mosek/&lt;ver&gt;/:$PATH</span>
 <span class="go">export MOSEKLM_LICENSE_FILE=/opt/mosek/</span>
 </pre></div>
 </div>
-<p>On <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></p>
+<p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export MOSEK_PATH=/Applications/mosek/&lt;ver&gt;</span>
 <span class="go">export PATH=$MOSEK_PATH:$PATH</span>
 <span class="go">export MOSEKLM_LICENSE_FILE=/Applications/mosek/</span>
@@ -461,16 +461,16 @@ variables in <code class="docutils literal"><span class="pre">~/.bashrc</span></
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to
 set the environment variables on Windows, please follow the
 instructions
 <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/opt/mosek/</span></code>. <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/opt/mosek/</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the
 license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">C:\Users\&lt;yourUsername&gt;\mosek\</span></code>.
-<img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/Applications/mosek/</span></code>.</p>
+<img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/Applications/mosek/</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">MOSEK</span></code> is correctly installed by using the following
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">MOSEK</span></code> is correctly installed by using the following
 command in your terminal</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /opt/mosek/&lt;ver&gt;/tools/platform/linux64x86/bin/./msktestlic
 </pre></div>
@@ -507,8 +507,8 @@ command in your terminal</p>
 <span class="o">************************************</span>
 </pre></div>
 </div>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> By browsing to <cite>Start &gt; All Programs &gt; Mosek Optimization Tools</cite>, you can run <cite>Test license system</cite>. This should open a window and display the output as shown above.</p>
-<p><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> In a terminal, run:</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> By browsing to <cite>Start &gt; All Programs &gt; Mosek Optimization Tools</cite>, you can run <cite>Test license system</cite>. This should open a window and display the output as shown above.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> In a terminal, run:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /Applications/mosek//tools/platform/osx64x86/bin/./msktestlic
 </pre></div>
 </div>
