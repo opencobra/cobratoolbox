@@ -243,6 +243,7 @@ if isfield(model,'C')
     nCtrs = size(model.C,1);
 else
     modelC = 0;
+    nCtrs = 0;
 end
 
 if isfield(model,'E')
@@ -250,6 +251,7 @@ if isfield(model,'E')
     nVars = size(model.E,2);
 else
     modelE = 0;
+    nVars = 0;
 end
 
 % build the optimization problem, after it has been actively requested to be verified
@@ -309,7 +311,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %
         % delta+,delta- >= 0
         
-        LPproblem2.A = [LPproblem.A sparse(nMets,2*nRxns);
+        LPproblem2.A = [LPproblem.A sparse(nMets+nCtrs,2*nRxns);
             speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
             -speye(nRxns,nTotalVars) sparse(nRxns,nRxns) speye(nRxns,nRxns);
             LPproblem.c' sparse(1,2*nRxns)];
