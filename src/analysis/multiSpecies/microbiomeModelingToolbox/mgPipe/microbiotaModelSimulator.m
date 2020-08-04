@@ -1,4 +1,4 @@
-function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType)
+function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType,lowerBMBound)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -22,6 +22,7 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %                        constraints are saved)
 %    patNumb:            number (double) of individuals in the study
 %    fvaType:            number (double) which FVA function to use(fastFVA =1)
+%    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)  
 %
 % OUTPUTS:
 %    ID:                 cell array with list of all unique Exchanges to diet/
@@ -73,6 +74,9 @@ else
 end
 % End of Auto load for crashed simulations
 
+if ~exist('lowerBMBound','var')
+    lowerBMBound=0.4;
+end
 
 % Starting personalized simulations
 for k = startIter:(patNumb + 1)
@@ -104,8 +108,7 @@ for k = startIter:(patNumb + 1)
     EXrxn = model.rxns(RxnInd);
     EXrxn = regexprep(EXrxn, 'EX_', 'Diet_EX_');
     model.rxns(RxnInd) = EXrxn;
-    %model = changeRxnBounds(model, 'communityBiomass', 0.1, 'l');
-    model = changeRxnBounds(model, 'communityBiomass', 0.4, 'l');
+    model = changeRxnBounds(model, 'communityBiomass', lowerBMBound, 'l');
     model = changeRxnBounds(model, 'communityBiomass', 1, 'u');
     model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
     model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');

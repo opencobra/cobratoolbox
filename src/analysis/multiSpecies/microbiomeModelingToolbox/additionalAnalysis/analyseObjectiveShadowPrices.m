@@ -58,6 +58,7 @@ parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
 parser.addParameter('osenseStr','max', @ischar);
+parser.addParameter('modelIDs',@ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('solutionFolder',pwd, @ischar);
@@ -65,8 +66,8 @@ parser.parse(modelFolder,objectiveList, varargin{:})
 
 modelFolder = parser.Results.modelFolder;
 objectiveList = parser.Results.objectiveList;
-modelIDs = parser.Results.modelIDs;
 numWorkers = parser.Results.numWorkers;
+modelIDs = parser.Results.modelIDs;
 SPDef = parser.Results.SPDef;
 solutionFolder = parser.Results.solutionFolder;
 

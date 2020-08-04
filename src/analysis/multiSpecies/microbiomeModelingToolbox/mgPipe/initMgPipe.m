@@ -1,4 +1,4 @@
-function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun] = initMgPipe(modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, printLevel)
+function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, autorun, printLevel, lowerBMBound)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -20,34 +20,21 @@ function [init, modPath, toolboxPath, resPath, dietFilePath, abunFilePath, indIn
 %    autoFix:                double indicating if to try to automatically fix inconsistencies
 %    compMod:                boolean indicating if outputs in open format should be produced for each section (default: `false`)
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: `false`)
+%    pDiet
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
 %    fvaType:                boolean indicating which function to use for flux variability (default: `true`)
 %    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
 %    printLevel:             verbose level (default: 1)
+%    lowerBMBound
 %
 % OUTPUTS:
 %    init:                   status of initialization
-%    modPath:                char with path of directory where models are stored
-%    toolboxPath:            char with path of directory where the toolbox is saved
-%    resPath:                char with path of directory where results are saved
-%    dietFilePath:           char with path of directory where the diet is saved
-%    abunFilePath:           char with path and name of file from which to retrieve abundance information
-%    indInfoFilePath:        char indicating, if stratification criteria are available, full path and name to related documentation(default: no)
-%    objre:                  char with reaction name of objective function of organisms
-%    figForm:                format to use for saving figures
-%    numWorkers:             boolean indicating the number of cores to use for parallelization
-%    autoFix:                double indicating if to try to automatically fix inconsistencies
-%    compMod:                boolean indicating if outputs in open format should be produced for each section (1=T)
-%    patStat:                boolean indicating if documentation on health status is available
-%    rDiet:                  boolean indicating if to enable also rich diet simulations
-%    extSolve:               boolean indicating if to save the constrained models to solve them externally
-%    fvaType:                boolean indicating which function to use for flux variability
-%    autorun:                boolean used to enable /disable autorun behavior (please set to 1)
 %
 % .. Author: Federico Baldini 2018
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 
 global CBTDIR
+toolboxPath = CBTDIR;
 
 init = false;
 
@@ -62,12 +49,7 @@ end
 if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
     error('abunFilePath is not set. Please set the absolute path to the abundance file.');
 end
-
-
-% check for optional inputs
-if ~exist('toolboxPath', 'var') || ~exist(toolboxPath, 'dir')
-    toolboxPath = CBTDIR;
-end
+   
 if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
     resPath = [CBTDIR filesep '.tmp'];
     warning(['The path to the results has been set to ' resPath]);
@@ -114,6 +96,9 @@ if ~exist('patStat', 'var')
     patStat = false;
 end
 if ~exist('rDiet', 'var')
+    rDiet = false;
+end
+if ~exist('pDiet', 'var')
     rDiet = false;
 end
 if ~exist('extSolve', 'var')
@@ -163,7 +148,7 @@ end
 init = true;
 
 if init && autorun
-    mgPipe
+    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound);
 elseif init && ~autorun
     if printLevel > 0
         warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
