@@ -40,6 +40,18 @@ end
 
 [mapP]=detectOutput(resPath,'mapInfo.mat')
 if isempty(mapP)
+    % check if AGORA models are in path
+    if ~exist('modPath', 'var') || ~exist(modPath, 'dir')
+        error('modPath is not defined. Please set the path of the model directory.');
+    else
+        if ~exist(modPath, 'dir')
+            error(['modPath (' modPath ') does not exist.']);
+        end
+    end
+    % adding a filesep at the end of the path
+    if ~strcmpi(modPath(end), filesep)
+        modPath = [modPath filesep];
+    end
 % Loading models
 models=loadUncModels(modPath,strains,objre);
 % Computing genetic information

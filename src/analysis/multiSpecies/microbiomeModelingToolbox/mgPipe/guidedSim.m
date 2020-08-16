@@ -27,7 +27,7 @@ if fvaType == 1
 %       cpxControl.PARALLELMODE = 1;
 %       cpxControl.THREADS = 1;
 %       cpxControl.AUXROOTTHREADS = 2;
-      [minFlux,maxFlux] = fastFVA(model,99.99,'max','cplex',rl,'A');
+      [minFlux,maxFlux] = fastFVA(model,99.99,'max',rl,'A');
       % cpxControl.threads=1;
       % cpxControl.parallel=1;
       % cpxControl.auxrootthreads=2;

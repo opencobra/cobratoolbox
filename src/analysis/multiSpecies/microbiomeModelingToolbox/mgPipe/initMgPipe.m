@@ -39,13 +39,6 @@ toolboxPath = CBTDIR;
 init = false;
 
 % check for mandatory variables
-if ~exist('modPath', 'var') || ~exist(modPath, 'dir')
-    error('modPath is not defined. Please set the path of the model directory.');
-else
-    if ~exist(modPath, 'dir')
-        error(['modPath (' modPath ') does not exist.']);
-    end
-end
 if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
     error('abunFilePath is not set. Please set the absolute path to the abundance file.');
 end
@@ -71,9 +64,6 @@ end
 % adding a filesep at the end of the path
 if ~strcmpi(resPath(end), filesep)
     resPath = [resPath filesep];
-end
-if ~strcmpi(modPath(end), filesep)
-    modPath = [modPath filesep];
 end
 
 if ~exist('objre', 'var')

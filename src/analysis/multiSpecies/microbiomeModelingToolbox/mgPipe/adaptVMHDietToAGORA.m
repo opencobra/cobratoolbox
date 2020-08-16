@@ -153,6 +153,8 @@ elseif strcmp(setupUsed, 'Microbiota')
     end
     adaptedDietConstraints(:, 1) = regexprep(adaptedDietConstraints(:, 1), 'EX_', 'Diet_EX_');
     adaptedDietConstraints(:, 1) = regexprep(adaptedDietConstraints(:, 1), '\(e\)', '\[d\]');
+elseif strcmp(setupUsed, 'AGORA')
+    % No changes necessary
 else
     fprintf('Setup entered not recognized! \n')
 end
