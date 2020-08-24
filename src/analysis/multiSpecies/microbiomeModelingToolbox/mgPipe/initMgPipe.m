@@ -1,4 +1,4 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, autorun, printLevel, lowerBMBound, repeatSim)
+function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, varargin)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -9,41 +9,80 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, re
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
 %
 % OPTIONAL INPUTS:
-%    toolboxPath:            char with path of directory where the toolbox is saved
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
-%    abunFilePath:           char with path and name of file from which to retrieve abundance information
 %    indInfoFilePath:        char indicating, if stratification criteria are available, full path and name to related documentation(default: no)
 %    objre:                  char with reaction name of objective function of organisms
 %    figForm:                format to use for saving figures
-%    numWorkers:             boolean indicating the number of cores to use for parallelization
+%    numWorkers:             integer indicating the number of cores to use for parallelization
 %    autoFix:                double indicating if to try to automatically fix inconsistencies
 %    compMod:                boolean indicating if outputs in open format should be produced for each section (default: `false`)
-%    rDiet:                  boolean indicating if to enable also rich diet simulations (default: `false`)
-%    pDiet
+%    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
+%    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
-%    fvaType:                boolean indicating which function to use for flux variability (default: `true`)
+%    fvaType:                boolean indicating which function to use for flux variability (default: 'true')
 %    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
-%    printLevel:             verbose level (default: 1)
-%    lowerBMBound
-%    repeatSim
+%    printLevel:             verbose level (default: true)
+%    lowerBMBound:           lower bound on community biomass (default=0.4)
+%    repeatSim:              define if simulations should be repeated and previous results
+%                            overwritten (default=0)
 %
 % OUTPUTS:
 %    init:                   status of initialization
+%    netSecretionFluxes:     Net secretion fluxes by microbiome community models
+%    netUptakeFluxes:        Net uptake fluxes by microbiome community models
+%    Y:                      Classical multidimensional scaling
 %
 % .. Author: Federico Baldini 2018
 %               - Almut Heinken 02/2020: removed unnecessary outputs
+%               - Almut Heinken 08/2020: added extra inputs and changed to
+%                                        varargin input
 
 global CBTDIR
-toolboxPath = CBTDIR;
 
-init = false;
+% Define default input parameters if not specified
+parser = inputParser();
+parser.addRequired('modPath', @ischar);
+parser.addRequired('abunFilePath', @ischar);
+parser.addParameter('resPath', '', @ischar);
+parser.addParameter('dietFilePath', '', @ischar);
+parser.addParameter('indInfoFilePath', 'nostrat', @ischar);
+parser.addParameter('objre', '', @ischar);
+parser.addParameter('figForm', '-depsc', @ischar);
+parser.addParameter('numWorkers', 2, @isint);
+parser.addParameter('autoFix', true, @islogical);
+parser.addParameter('compMod', false, @islogical);
+parser.addParameter('rDiet', false, @islogical);
+parser.addParameter('pDiet', false, @islogical);
+parser.addParameter('extSolve', false, @islogical);
+parser.addParameter('fvaType', false, @islogical);
+parser.addParameter('autorun', false, @islogical);
+parser.addParameter('printLevel', true, @islogical);
+parser.addParameter('lowerBMBound', 0.4, @isdouble);
+parser.addParameter('repeatSim', false, @islogical);
 
-% check for mandatory variables
-if ~exist('abunFilePath', 'var') || ~exist(abunFilePath, 'file')
-    error('abunFilePath is not set. Please set the absolute path to the abundance file.');
-end
-   
+parser.parse(modPath, abunFilePath, varargin);
+
+modPath = parser.Results.modPath;
+abunFilePath = parser.Results.abunFilePath;
+resPath = parser.Results.resPath;
+dietFilePath = parser.Results.dietFilePath;
+indInfoFilePath = parser.Results.indInfoFilePath;
+objre = parser.Results.objre;
+figForm = parser.Results.figForm;
+numWorkers = parser.Results.numWorkers;
+autoFix = parser.Results.autoFix;
+compMod = parser.Results.compMod;
+rDiet = parser.Results.rDiet;
+pDiet = parser.Results.pDiet;
+extSolve = parser.Results.extSolve;
+fvaType = parser.Results.fvaType;
+autorun = parser.Results.autorun;
+printLevel = parser.Results.printLevel;
+lowerBMBound = parser.Results.lowerBMBound;
+repeatSim = parser.Results.repeatSim;
+
+% set optional variables
 if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
     resPath = [CBTDIR filesep '.tmp'];
     warning(['The path to the results has been set to ' resPath]);
@@ -53,13 +92,11 @@ if ~exist('dietFilePath', 'var')|| ~exist(strcat(dietFilePath,'.txt'), 'file')
     dietFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'resources' filesep 'AverageEuropeanDiet'];
     warning(['The path to the results has been set to ' dietFilePath]);
 end
-if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
-    patStat = 0;
+
+if strcmp('indInfoFilePath', 'nostrat')
+    patStat = false;
 else
-    patStat = 1;
-end
-if ~exist('indInfoFilePath', 'var')
-   indInfoFilePath='nostrat';
+    patStat = true;
 end
 
 % adding a filesep at the end of the path
@@ -70,39 +107,6 @@ end
 if ~exist('objre', 'var')
    objre = {'EX_biomass(e)'};
    warning(['The default objective (objre) has been set to ' objre{1}]);
-end
-if ~exist('figForm', 'var')
-    figForm = '-depsc';
-end
-if ~exist('numWorkers', 'var')
-    numWorkers = 2;
-end
-if ~exist('autoFix', 'var')
-    autoFix = true;
-end
-if ~exist('compMod', 'var')
-    compMod = false;
-end
-if ~exist('patStat', 'var')
-    patStat = false;
-end
-if ~exist('rDiet', 'var')
-    rDiet = false;
-end
-if ~exist('pDiet', 'var')
-    rDiet = false;
-end
-if ~exist('extSolve', 'var')
-    extSolve = false;
-end
-if ~exist('fvaType', 'var')
-    fvaType = false;
-end
-if ~exist('autorun', 'var')
-    autorun = false;
-end
-if ~exist('printLevel', 'var')
-    printLevel = 1;
 end
 
 % Check for installation of parallel Toolbox
@@ -122,15 +126,15 @@ else
 end
 
 % Here we go on with the warning section and the autorun
-if compMod && printLevel > 0
+if compMod && printLevel
     warning('Compatibility mode activated. Output will also be saved in .csv format. Computations might take longer.')
 end
-if patStat < 1 && printLevel > 0
+if patStat == false && printLevel
     warning('Individuals health status not declared. Analysis will ignore that.')
 end
 
 % output messages
-if printLevel > 0
+if printLevel
     fprintf(' > Models will be read from: %s\n', modPath);
     fprintf(' > Results will be stored in: %s\n', resPath);
     fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
@@ -141,7 +145,7 @@ init = true;
 if init && autorun
     [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound, repeatSim);
 elseif init && ~autorun
-    if printLevel > 0
+    if printLevel
         warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
     end
     if usejava('desktop')
