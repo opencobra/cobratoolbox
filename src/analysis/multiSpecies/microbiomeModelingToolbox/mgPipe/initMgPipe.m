@@ -1,4 +1,4 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, autorun, printLevel, lowerBMBound)
+function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, autorun, printLevel, lowerBMBound, repeatSim)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -26,6 +26,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, re
 %    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
 %    printLevel:             verbose level (default: 1)
 %    lowerBMBound
+%    repeatSim
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -138,7 +139,7 @@ end
 init = true;
 
 if init && autorun
-    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound);
+    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound, repeatSim);
 elseif init && ~autorun
     if printLevel > 0
         warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
