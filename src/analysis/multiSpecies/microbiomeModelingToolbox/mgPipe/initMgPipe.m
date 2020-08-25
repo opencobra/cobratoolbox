@@ -20,7 +20,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
-%    fvaType:                boolean indicating which function to use for flux variability (default: 'true')
+%    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
 %    autorun:                boolean used to enable /disable autorun behavior (default: `true`)
 %    printLevel:             verbose level (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
@@ -55,7 +55,7 @@ parser.addParameter('compMod', false, @islogical);
 parser.addParameter('rDiet', false, @islogical);
 parser.addParameter('pDiet', false, @islogical);
 parser.addParameter('extSolve', false, @islogical);
-parser.addParameter('fvaType', false, @islogical);
+parser.addParameter('fvaType', true, @islogical);
 parser.addParameter('autorun', true, @islogical);
 parser.addParameter('printLevel', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
