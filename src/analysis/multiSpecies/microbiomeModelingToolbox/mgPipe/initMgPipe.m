@@ -21,7 +21,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
 %    fvaType:                boolean indicating which function to use for flux variability (default: 'true')
-%    autorun:                boolean used to enable /disable autorun behavior (please set to `true`) (default: `false`)
+%    autorun:                boolean used to enable /disable autorun behavior (default: `true`)
 %    printLevel:             verbose level (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
 %    repeatSim:              define if simulations should be repeated and previous results
@@ -49,19 +49,19 @@ parser.addParameter('dietFilePath', '', @ischar);
 parser.addParameter('indInfoFilePath', 'nostrat', @ischar);
 parser.addParameter('objre', '', @ischar);
 parser.addParameter('figForm', '-depsc', @ischar);
-parser.addParameter('numWorkers', 2, @isint);
+parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('autoFix', true, @islogical);
 parser.addParameter('compMod', false, @islogical);
 parser.addParameter('rDiet', false, @islogical);
 parser.addParameter('pDiet', false, @islogical);
 parser.addParameter('extSolve', false, @islogical);
 parser.addParameter('fvaType', false, @islogical);
-parser.addParameter('autorun', false, @islogical);
+parser.addParameter('autorun', true, @islogical);
 parser.addParameter('printLevel', true, @islogical);
-parser.addParameter('lowerBMBound', 0.4, @isdouble);
+parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 
-parser.parse(modPath, abunFilePath, varargin);
+parser.parse(modPath, abunFilePath, varargin{:});
 
 modPath = parser.Results.modPath;
 abunFilePath = parser.Results.abunFilePath;
@@ -104,9 +104,11 @@ if ~strcmpi(resPath(end), filesep)
     resPath = [resPath filesep];
 end
 
-if ~exist('objre', 'var')
+if isempty(objre)
    objre = {'EX_biomass(e)'};
    warning(['The default objective (objre) has been set to ' objre{1}]);
+else
+    objre=cellstr(objre);
 end
 
 % Check for installation of parallel Toolbox
@@ -145,6 +147,9 @@ init = true;
 if init && autorun
     [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound, repeatSim);
 elseif init && ~autorun
+    netSecretionFluxes = {};
+    netUptakeFluxes = {};
+    Y = {};
     if printLevel
         warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
     end
