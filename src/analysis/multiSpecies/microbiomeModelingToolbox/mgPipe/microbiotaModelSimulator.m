@@ -1,4 +1,4 @@
-function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType,lowerBMBound,repeatSim)
+function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -22,7 +22,11 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %                        constraints are saved)
 %    patNumb:            number (double) of individuals in the study
 %    fvaType:            number (double) which FVA function to use(fastFVA =1)
+%    includeHumanMets:   boolean indicating if human-derived metabolites
+%                        present in the gut should be provided to the models (default: true)
 %    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
+%    repeatSim:          boolean defining if simulations should be repeated and previous results
+%                        overwritten (default=false)
 %
 % OUTPUTS:
 %    ID:                 cell array with list of all unique Exchanges to diet/
@@ -85,6 +89,12 @@ else
     
     if ~exist('lowerBMBound','var')
         lowerBMBound=0.4;
+    end
+    
+    % determine human-derived metabolites present in the gut: primary bile
+    % acids, amines, mucins, host glycans
+    if includeHumanMets
+        HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
     end
     
     % Starting personalized simulations
@@ -173,6 +183,14 @@ else
             model_sd=model;
             [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
             [model_sd] = useDiet(model_sd, adaptedDiet,0);
+            
+            if includeHumanMets
+                % add the human metabolites
+                for l=1:length(HumanMets)
+                    model_sd=changeRxnBounds(model_sd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                end
+            end
+            
             if exist('unfre') ==1 %option to directly add other essential nutrients
                 warning('Feasibility forced with addition of essential nutrients')
                 model_sd=changeRxnBounds(model_sd, unfre,-0.1,'l');
@@ -231,6 +249,14 @@ else
                     DietID = regexprep(DietID,'\(e\)','\[d\]');
                     
                     model_pd = setDietConstraints(model_pd,DietID);
+                    
+                    if includeHumanMets
+                        % add the human metabolites
+                        for l=1:length(HumanMets)
+                            model_pd=changeRxnBounds(model_pd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                        end
+                    end
+                    
                     solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd))
                     %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
                     presol{k,3}=solution_pdiet.obj;

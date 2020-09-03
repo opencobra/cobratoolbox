@@ -23,9 +23,11 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
 %    autorun:                boolean used to enable /disable autorun behavior (default: `true`)
 %    printLevel:             verbose level (default: true)
+%    includeHumanMets:       boolean indicating if human-derived metabolites
+%                            present in the gut should be provided to the models (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
-%    repeatSim:              define if simulations should be repeated and previous results
-%                            overwritten (default=0)
+%    repeatSim:              boolean defining if simulations should be repeated and previous results
+%                            overwritten (default=false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -58,6 +60,7 @@ parser.addParameter('extSolve', false, @islogical);
 parser.addParameter('fvaType', true, @islogical);
 parser.addParameter('autorun', true, @islogical);
 parser.addParameter('printLevel', true, @islogical);
+parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 
@@ -79,6 +82,7 @@ extSolve = parser.Results.extSolve;
 fvaType = parser.Results.fvaType;
 autorun = parser.Results.autorun;
 printLevel = parser.Results.printLevel;
+includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
 
@@ -145,7 +149,7 @@ end
 init = true;
 
 if init && autorun
-    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, lowerBMBound, repeatSim);
+    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 elseif init && ~autorun
     netSecretionFluxes = {};
     netUptakeFluxes = {};
