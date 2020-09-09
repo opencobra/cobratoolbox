@@ -1,4 +1,4 @@
-function [fSp, uSp, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, nsCt, figForm)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, nsCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -25,8 +25,8 @@ function [fSp, uSp, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, pa
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
-%    fSp:                cell array with computed NMPCs
-%    uSp:                cell array with computed uptake potential
+%    netSecretionFluxes: cell array with computed NMPCs
+%    netUptakeFluxes:    cell array with computed uptake potential
 %    Y:                  classical multidimensional scaling
 %
 % .. Author: Federico Baldini, 2017-2018
@@ -67,7 +67,7 @@ else
     fl = 3;
 end
 
-names = {'rich', 'standard', 'personalized'};
+names = {'rich', 'inputDiet', 'personalized'};
 
 for j = init:fl
     noPcoa = 0;
@@ -103,13 +103,13 @@ for j = init:fl
     convRes=num2cell(fSp);
     fSp=[ID';convRes'];
     ext=['NMPCs';sampName];
-    fSp=[ext';fSp'];
-    writetable(cell2table(fSp),strcat(resPath, names{1, j}, '.csv'));
+    netSecretionFluxes=[ext';fSp'];
+    writetable(cell2table(netSecretionFluxes),[resPath names{1, j} '_net_secretion_fluxes.csv'],'WriteVariableNames',false);
     convRes=num2cell(uSp);
     uSp=[ID';convRes'];
     ext=['Net uptake';sampName];
-    uSp=[ext';uSp'];
-    writetable(cell2table(uSp),strcat(resPath, names{1, j}, '.csv'));
+    netUptakeFluxes=[ext';uSp'];
+    writetable(cell2table(netUptakeFluxes),[resPath names{1, j} '_net_uptake_fluxes.csv'],'WriteVariableNames',false);
     if noPcoa == 1
         Y=[];
         disp('Jump plotting')
