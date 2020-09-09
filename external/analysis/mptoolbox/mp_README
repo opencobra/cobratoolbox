@@ -1,0 +1,235 @@
+README file for the mp (Multiple Precision) toolbox for Matlab.
+
+CONTENTS:
+-1. SUPPORT
+ 0. DISCLAIMER
+ 1. OBJECTIVE
+ 2. MOTIVATION
+ 3. BUG REPORTS and WISH LIST
+ 4. INSTALLATION
+ 5. MP TOOLBOX CAPABILITIES
+ 6. HOW TO US MP TOOLBOX
+ 7. EXAMPLES
+
+
+-1.SUPPORT the mp toolbox. 
+   Even though the mp toolbox is free (under the BSD license) for the using, 
+   I would like to ask that those who find it useful, wish to support the project,
+   and are able to make a contribution, to please do so commesurate with use
+   (especially corporations). *** Important - Please donate using your
+   PayPal account and not a credit card so as to avoid fees at
+   PayPal. Thank you! PayPal email ID: barrowes@users.sourceforge.net
+
+0. DISCLAIMER: Matlab is a trademark of the Mathworks company and is
+   owned by them. The author makes no guarantee express or implied of
+   any kind as to the applicability, usefulness, efficacy,
+   bug-freeness, or the accuracy of the ensuing results from using
+   the mp (multiple precision) toolbox for Matlab.
+
+   The author bears no responsibility for any unwanted effect
+   resulting from the use of this program. The author is not
+   affiliated with the Mathworks.  The source code is given in full in
+   the hopes that it will prove useful.
+   
+1. OBJECTIVE: This toolbox defines a new mp class allowing multiple
+   precision objects in Matlab. Essentially, this toolbox is a library
+   of mex functions interfacing Matlab with the GMP (GNU Multiple
+   Precision Arithmetic Library):
+   http://www.swox.com/gmp/
+   and the MPFR (multiple-precision floating-point computations with
+   exact rounding):
+   http://www.mpfr.org/
+   Those routines are covered by the LGPL (Lesser Gnu Public License). 
+
+2. MOTIVATION: Matlab is becoming ubiquitous in the engineering and
+   scientific communities for its ease of use coupled with its powerful
+   libraries. However, many algorithms require higher precision than
+   Matlab currently allows in order to produce correct results.
+
+   The mp (multiple precision) toolbox for Matlab was written to fill
+   this gap in Matlab's numerical capabilities. It allows numerical
+   computation with arbitrary precision quantities vis GMP, MPFR and
+   Matlab's class capability with overloaded functions.
+
+3. BUG REPORTS and WISH LIST: 
+   For all bug reports, a wish list for the mp toolbox, and suggestions,
+   email barrowes@users.sourceforge.net
+
+4. INSTALLATION:
+
+4.a   Linux: 
+
+   First, you need to install and properly configure GMP and MPFR:
+   http://www.swox.com/gmp/
+   Make sure the libraries libmpfr and libgmp are somewhere on your ld path 
+   (c.f. ld.so.conf).
+
+   Put the mp toolbox *.tar.gz file into your ~/matlab directory (or
+   equivalent on windows) and unzip/untar it there.
+
+   This will creat the @mp directory containing the overloaded functions
+   necessary for Matlab to handle mp objects.
+
+   You must mex the library interface functions found in the @mp/private/
+   directory. To do this, get mex (C language) working properly on your
+   system (make sure timestwo.mex* etc. is working, see
+   http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_external/ch04crea.html
+   or http://www.mathworks.com/support/tech-notes/1600/1605.html
+   for more information).
+
+   Then, in the @mp/private/ directory, start Matlab and run
+   mp_compile_all.m  This will attempt to mex each of the *.c routines
+   in that directory. If all goes well, the installation is
+   complete. The testbed and development system for this toolbox is a
+   RedHat linux system, but the toolbox should work for any system with
+   GMP, MPFR, and mex all working properly. Mac instructions are in 4.b, and 
+   windows instructions are in 4.c.
+
+   In addition to the @mp directory, there are a few extra files placed
+   into the ~/matlab directory. They are:
+   mp_compile_all.m => see above
+   mp_makeall.m     => see below
+   mp_README        => this file
+   mp_TESTING.m     => a test script, see EXAMPLES, below
+   mp_TESTING2.m    => another test script, see EXAMPLES, below
+   mp_pi.m          => returns pi as an mp object of arbitrary precision
+   mp_euler.m       => returns Euler's constant (0.577...) as an mp object 
+                       of arbitrary precision
+   mp_log2.m        => returns log(2) as an mp object of arbitrary precision
+
+4.b   Mac:
+
+   see instructions in @mp/install_mac
+
+4.c   Windows:
+
+   Thanks to Dr. Ing. Carlos Lopez for the following.
+   - You will need MinGW, gmp.dll, mpfr.dll, and libgmp-3.dll (identical to gmp.dll).
+     Put these dll's into the private directory or link to them appropriately.
+   - Set the value of MinGWbin in mp_compile_all_windows.m in the private
+     directory under @mp to point to your MinGW.
+   - run mp_compile_all_windows.m
+   - test the routines with mp_TESTING.m.
+   - a set of binaries is included in the file mpWindowsBinaries2006a.zip
+        Additional installation instructions can be found at:
+        http://www.sondette.com/math/mp_toolbox.html
+
+5. MP TOOLBOX CAPABILITIES:
+   The mp toolbox defines a new class, the mp class, which holds
+   arbitrary precision quantities. Many common numerical functions are
+   overloaded for this class and therefore work without modification to
+   source code. Look at the @mp directory under the matlab directory for
+   a list of mp supported functions. If the function is not specifically
+   written for mp objects, it still may work if the function in question
+   relies only on functions in the @mp directory. Precompiled and
+   builtin function from TMW like eig, etc. will not work with mp
+   objects unless specifically written using overloaded functions from,
+   of course, the @mp directory.
+
+   A simple script, mp_makeall.m looks through the current variables,
+   and converts all doubles to mp objects.
+
+   The mp toolbox is only implemented for base 10 quantities, and the
+   rounding mode is fixed to be GMP_RNDN (unless you change it in all
+   the /private/*.c files and recompile).
+
+   The overloaded functions sum, min, and max only work for 1 or 2
+   dimensional mp objects right now.
+
+   mp random numbers can be generated using rand() if rand at least 1 of
+   the input arguments is an mp object. However, the seed given to
+   gmp_randseed_ui is only in the range 0<seed<1000000, but this can be
+   adjusted in @mp/rand.m
+
+   A zeta function using m arithmetic is provided, whereas native Matlab
+   has no such function except for sym objects.
+
+6. HOW TO US MP TOOLBOX:
+
+   mp objects are created using the class constructor mp(). The
+   constructor is called by either a double or a string as input. An
+   optional precision argument specifies the number of bits of precision
+   for the mantissa part of the number. As for the exponent, the GMP
+   manual says, "The exponent of each float is a fixed precision, one
+   machine word on most systems. In the current implementation the
+   exponent is a count of limbs, so for example on a 32-bit system this
+   means a range of roughly 2^(-68719476768) to 2^(68719476736)."
+
+   For example, if
+>> x=magic(4)
+x =
+    16     2     3    13
+     5    11    10     8
+     9     7     6    12
+     4    14    15     1
+
+   Then an mp array corresponding to x with 100 bits of precision would be:
+>> xmp=mp(x,100)
+xmp=
+ans = 
+  Column 1
+    '.1600000000000000000000000000000e2'
+    '.5000000000000000000000000000000e1'
+    '.9000000000000000000000000000000e1'
+    '.4000000000000000000000000000000e1'
+  Column 2
+    '.2000000000000000000000000000000e1'
+    '.1100000000000000000000000000000e2'
+    '.7000000000000000000000000000000e1'
+    '.1400000000000000000000000000000e2'
+  Column 3
+    '.3000000000000000000000000000000e1'
+    '.1000000000000000000000000000000e2'
+    '.6000000000000000000000000000000e1'
+    '.1500000000000000000000000000000e2'
+  Column 4
+    '.1300000000000000000000000000000e2'
+    '.8000000000000000000000000000000e1'
+    '.1200000000000000000000000000000e2'
+    '.1000000000000000000000000000000e1'
+
+    The mp toolbox was written to handle complex numbers seamlessly:
+>> y=sqrt(2)-i
+y =
+            1.4142135623731 -                     1i
+>> ymp=mp(y)
+ymp=
+ymp{1} =
+.1414213562373095000000000000000000000000000000e1-.1000000000000000000000000000000000000000000000e1i
+>> 
+
+    This example needs some comments. The first comment is that the
+    default precision, if not specified in the constructor, is defined
+    in the the script mp_defaults.m in the @mp/private directory. The
+    second comment is that even though ymp has 150 bits of precision (a
+    double has 53), it does not hold a more exact value for
+    sqrt(2). This represents a possible pitfall for mp toolbox users. A
+    better way is to define 2 to be an mp object exactly (the default
+    behavior for the mp constructor is to truncate the double after 16
+    (decimal) digits of accuracy) and then take the sqrt, i.e.
+>> ymp=mp(2,1000)
+ymp=
+ymp{1} =
+.20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e1
+>> sqrt(ymp)
+ans{1} =
+.14142135623730950488016887242096980785696718753769480731766797379907324784621070388503875343276415727350138462309122970249248360558507372126441214970999358314132226659275055927557999505011527820605714701095599716059702745345968620147285174186408891986095523292304843087143214508397626036279952514079896e1
+>>
+    which can have arbitrary accuracy.
+
+    Some numbers won't be represented exactly when converted to an mp
+    object. For example 1/3. Instead of mp(1/3), use mp(1)/3:
+>> mp(1/3)
+ans = 
+    '.3333333333333333000000000000000000000000000000e0'
+>> mp(1)/3
+ans = 
+    '.3333333333333333333333333333333333333333333335e0'
+>> 
+
+7. EXAMPLES: The files mp_TESTING.m and mp_TESTING2.m in the ~/matlab 
+   directory provide canonical examples of many overloaded functions and
+   capabilities of the mp toolbox. Run the script to make sure the
+   toolbox is working properly. Output from the script on my test
+   machine is included as a commented section at the end of the script.
+
