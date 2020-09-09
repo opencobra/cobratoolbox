@@ -34,7 +34,7 @@ function solution = optimizeCardinality(problem, param)
 %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
 %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
 %                   * .delta0 - trade-off parameter on maximise `||y||_0`
-%                   * .delta1 - trade-off parameter on maximise `||y||_1
+%                   * .delta1 - trade-off parameter on minimise `||y||_1
 %
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
@@ -800,9 +800,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                 obj_y0 =  delta0*d'*(abs(y)>param.eta);
                 obj_x1 = lambda1*norm(x,1);
                 obj_y1 =  delta1*norm(y,1);
-                
-                
-                
+         
                 if nbIteration==1
                     fprintf('%4s%10s%10s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%20s\n','itn','theta','||dx||','del_obj','obj','linear','||x||0','a(x)','||x||1','||y||0','a(y)','||y||1','c(x,y)','sec');
                 end

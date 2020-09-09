@@ -66,7 +66,6 @@ if ~isfield(model,'biomassRxnAbbr')
     if nnz(bool)==1
         model.biomassRxnAbbr=model.rxns{model.c~=0};
         if printLevel>0
-
             fprintf('%s%s\n','Assuming biomass reaction is: ', model.biomassRxnAbbr);
         end
         biomassBool(bool)=1;
