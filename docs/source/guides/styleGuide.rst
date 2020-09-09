@@ -146,97 +146,97 @@ Git commit messages
 
 .. |macos| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
 
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
 
 
 .. |matlab| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
 
 
 .. |tada| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
 
 
 .. |thumbsup| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
 
 .. |bulb| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/bulb.png" height="20px" width="20px" alt="bulb">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/bulb.png" height="20px" width="20px" alt="bulb">
 
 
 .. |pencil| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil">
 
 
 .. |computer| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/computer.png" height="20px" width="20px" alt="computer">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/computer.png" height="20px" width="20px" alt="computer">
 
 
 .. |bug| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/bug.png" height="20px" width="20px" alt="bug">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/bug.png" height="20px" width="20px" alt="bug">
 
 
 .. |apple| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="apple">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="apple">
 
 
 .. |art| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/art.png" height="20px" width="20px" alt="art">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/art.png" height="20px" width="20px" alt="art">
 
 
 .. |fire| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/fire.png" height="20px" width="20px" alt="fire">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/fire.png" height="20px" width="20px" alt="fire">
 
 
 .. |green_heart| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/green_heart.png" height="20px" width="20px" alt="green_heart">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/green_heart.png" height="20px" width="20px" alt="green_heart">
 
 
 .. |memo| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/memo.png" height="20px" width="20px" alt="memo">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/memo.png" height="20px" width="20px" alt="memo">
 
 
 .. |penguin| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/penguin.png" height="20px" width="20px" alt="penguin">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/penguin.png" height="20px" width="20px" alt="penguin">
 
 
 .. |racehorse| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/racehorse.png" height="20px" width="20px" alt="racehorse">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/racehorse.png" height="20px" width="20px" alt="racehorse">
 
 
 .. |white_check_mark| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
+   <img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark">
 
 
 .. |tutorials| raw:: html
