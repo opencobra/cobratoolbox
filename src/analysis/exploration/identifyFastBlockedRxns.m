@@ -37,7 +37,7 @@ while L<Llast
     % model.LPBasis = LPProblem.LPBasis;
     Rxns2Check = model.rxns;
     %Find reactions that carry flux (above solver tolerance)
-    Rxns2Check(find(abs(solutionGF_O2.full)>1e-6))=[];
+    Rxns2Check(find(abs(solutionGF_O2.v)>1e-6))=[];
     Rxns2CheckF = intersect(Rxns2CheckF,Rxns2Check);
     L = length(Rxns2CheckF);
     if printLevel > 0
@@ -63,7 +63,7 @@ if L > 0
         % model.LPBasis = LPProblem.LPBasis;
         Rxns2Check = model.rxns;
         %Find reactions that carry flux (above solver tolerance)
-        Rxns2Check(find(abs(solutionGF_O2.full)>1e-6))=[];
+        Rxns2Check(find(abs(solutionGF_O2.v)>1e-6))=[];
         Rxns2CheckF = intersect(Rxns2CheckF,Rxns2Check);
         L = length(Rxns2CheckF);
         if printLevel > 0

@@ -127,7 +127,7 @@ end
 cplexVersion = getCobraSolverVersion('ibm_cplex', printLevel);
 
 % check if the provided fastFVA binaries are compatible with the current system configuration
-checkFastFVAbin(cplexVersion);
+[newestCplexBin, throwBinGenerationError]= checkFastFVAbin(cplexVersion);
 
 % set a random log filename to avoid overwriting ongoing runs
 rng('shuffle');
@@ -221,7 +221,13 @@ end
 if strcmp('glpk', solverName)
     error('ERROR : GLPK is not (yet) supported as the binaries are not yet available.')
 elseif strcmp('ibm_cplex', solverName)
-    FVAc = str2func(['cplexFVA' cplexVersion]);
+    if throwBinGenerationError
+        %attempt to use the newest cplex binaries available, even though
+        %they may not work, it is better than nothing
+        FVAc = str2func(['cplexFVA' newestCplexBin]);
+    else
+        FVAc = str2func(['cplexFVA' cplexVersion]);
+    end
 else
     error(['Solver ', solverName, ' not supported.']);
 end
@@ -691,7 +697,7 @@ addpath(originalUserPath);
 cd(currentDir);
 
 
-function checkFastFVAbin(cplexVersion)
+function [newestCplexBin, throwBinGenerationError] = checkFastFVAbin(cplexVersion)
 % determine the version of the CPLEX binaries by
 % browsing to the folder with the binaries and the .tmp folder (if it exists)
 % and retrieve all versions
@@ -706,7 +712,12 @@ function checkFastFVAbin(cplexVersion)
 global CBTDIR
 
 % retrieve the contents of the binary directory (architecture dependent)
-d1 = dir([CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'fastFVA']);
+aDir = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'fastFVA'];
+if 1 %debug
+    cd(aDir);
+end
+  
+d1 = dir(aDir);
 
 % include CPLEX binaries that already have been generated using generateMexFastFVA
 tmpDir = [CBTDIR filesep '.tmp'];
@@ -724,16 +735,18 @@ for p = 1:length(d)
     tmpD = d{p};
     k = 1;
     for i = 1:numel(tmpD)
-        if ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..') && isempty(strfind(tmpD(i).name, '.txt')) && ~isempty(strfind(tmpD(i).name, 'cplexFVA'))
+        if contains(tmpD(i).name, 'cplexFVA') && ~strcmpi(tmpD(i).name, '.') && ~strcmpi(tmpD(i).name, '..') && isempty(strfind(tmpD(i).name, '.txt'))
             tmpName = tmpD(i).name;
             tmpNameSplit = strsplit(tmpName, '.');
             tmpName = tmpNameSplit{1};
-            binVersion{k} = tmpName(9:end);  % index 9 is equivalent to the number of characters of cplexFVA
+            %look for the binary versio
+            binVersion{k} = tmpName(length('cplexFVA')+1:end);
             k = k + 1;
         end
     end
 end
 
+%compare the binary version of cplexFVA with the version of cplex
 for k = 1:length(binVersion)
     throwBinGenerationError = false;
     if ~strcmpi(cplexVersion, binVersion)
@@ -743,7 +756,27 @@ for k = 1:length(binVersion)
 end
 
 if throwBinGenerationError
+    maxLenBinVersion=0;
+    for k = 1:length(binVersion)
+        if maxLenBinVersion<length(binVersion{k})
+            maxLenBinVersion=length(binVersion{k});
+        end
+    end
+    for k = 1:length(binVersion)
+        tmp(1:maxLenBinVersion)='0';
+        tmp(1:length(binVersion{k}))=binVersion{k};
+        equalLenbinVersion(k)=str2num(tmp);
+    end
+    [equalLenbinVersionMax, equalLenbinVersionMaxInd]=max(equalLenbinVersion);
+    newestCplexBin=binVersion{equalLenbinVersionMaxInd};
+    
+    if 0
     error(['Official binaries are only available for CPLEX version ', binVersion{kp}, '. ', ...
             'You have installed version ', cplexVersion, '. Please run: ', ...
             '>> generateMexFastFVA() in order to generate a new binary file.']);
+    else
+     warning(['The most recent cplexFVA binaries are only tested for CPLEX version ', newestCplexBin, '. ', ...
+            'However, you have installed version ', cplexVersion, '. If you experience an error using fastFVA, you need to run: ', ...
+            '>> generateMexFastFVA() in order to generate a new cplexFVA binary file that matches cplex version' cplexVersion]);
+    end
 end
