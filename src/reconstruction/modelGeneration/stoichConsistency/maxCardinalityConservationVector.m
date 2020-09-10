@@ -283,7 +283,7 @@ switch method
                     else
                         obj_old = obj_new;
                     end
-                    if printLevel>1
+                    if param.printLevel>1
                         if nbIteration==1
                             fprintf('%20s%12.6s%12.5s%12.6s%12.6s%12.6s%12.6s\n','itn','theta','err_l','err_obj','obj','obj_l','obj_z');
                         end
