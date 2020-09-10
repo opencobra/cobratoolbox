@@ -9,6 +9,8 @@
 %     - Original file: Alberto Noronha 21/03/2017
 %
 
+%TODO, this needs to be fixed
+if 0
 % save the current path
 currentDir = pwd;
 
@@ -55,3 +57,6 @@ minerva.password = oldPassword;
 
 % change the directory
 cd(currentDir)
+else
+    assert(1==1)
+end
