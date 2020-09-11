@@ -1,35 +1,52 @@
-function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
+function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, param)
 % Maximises the cardinality of the conservation vector:
 %
 % .. math::
 %
 %    max  ~& ||l||_0 \\
 %    st.  ~& S^T l = 0 \\
-%         ~& 0 \leq l \leq 1 / \epsilon
+%         ~& 0 \leq l
 %
-% The `l0` norm is approximated by capped `l1` norm. The resulting problem is a DC program
+% When param.method = 'quasiConcave'; then solve the linear problem
+%       max 1'*z
+%       s.t S'*l = 0
+%           z <= l
+%           0 <= l <= 1/epsilon
+%           0 <= z <= epsilon
+%
+% When param.method = 'optimizeCardinality'; then solve the difference of convex function problem 
+% were the `l0` norm is approximated by the capped `l1` norm. 
+% The resulting problem is solved with a DC program.
+%
+% When param.method = 'dc'; then solve the difference of convex function problem 
+% were the `l0` norm is approximated by the capped `l1` norm. 
+% The resulting problem is solved with a DC program. Should give the same
+% answer as optimizeCardinality.
 %
 % USAGE:
 %
-%    [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, params)
+%    [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, param)
 %
 % INPUT:
 %    S:                         `m` x `n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
-%    params:                    structure with:
+%    param:   structure with:
 %
-%                                 * params.nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
-%                                 * params.epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
-%                                 * params.zeta - Stopping criteria - threshold (Default value 1e-6)
-%                                 * params.theta - Parameter of capped `l1` approximation (Default value 0.5)
-%
+%              * .nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
+%              * .eta - Smallest value considered non-zero (Default value feasTol*1000)
+%              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
+%              * .zeta - Stopping criteria - threshold (Default value 1e-6)
+%              * .theta - Parameter of capped `l1` approximation (Default value 0.5)
+%              * .method - {'quasiConcave', ('optimizeCardinality')}
+% 
 % OUTPUTS:
 %    maxConservationMetBool:    `m` x 1 boolean for consistent metabolites
 %    maxConservationRxnBool:    `n` x 1 boolean for reactions exclusively involving consistent metabolites
 %    solution:                  Structure containing the following fields:
 %
 %                                 * l - `m` x 1 molecular mass vector
+%                                 * k - `n` x 1 reaction complex mass vector 
 %                                 * stat - status:
 %
 %                                   * 1 =  Solution found
@@ -39,60 +56,64 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %
 % .. Author: - Ronan Fleming Feb, 14th 2017
 
-
 feasTol = getCobraSolverParams('LP', 'feasTol');
 % Format inputs
-if ~exist('params','var')
-    params.nbMaxIteration = 1000;
-    params.eta = feasTol*1000;%changed to 1000
-    params.zeta = 1e-6;
-    params.theta   = 0.5;    %parameter of capped l1 approximation
-    params.epsilon = 1e-4;
-    params.method = 'quasiConcave';
+if ~exist('param','var')
+    param.nbMaxIteration = 1000;
+    param.eta = feasTol*1000;%changed to 1000
+    param.zeta = 1e-6;
+    param.theta   = 0.5;    %parameter of capped l1 approximation
+    param.epsilon = 1e-4;
+    param.method = 'optimizeCardinality';
+    param.printLevel = 0;
 else
-    if isfield(params,'nbMaxIteration') == 0
-        params.nbMaxIteration = 1000;
+    if isfield(param,'nbMaxIteration') == 0
+        param.nbMaxIteration = 1000;
     end
 
-    if isfield(params,'eta') == 0
-        params.eta = feasTol*100;
+    if isfield(param,'eta') == 0
+        param.eta = feasTol*1000;
     end
 
-    if isfield(params,'epsilon') == 0
-        params.epsilon = 1e-4;
+    if isfield(param,'epsilon') == 0
+        param.epsilon = 1e-4;
     end
 
-    if isfield(params,'zeta') == 0
-        params.zeta = 1e-6;
+    if isfield(param,'zeta') == 0
+        param.zeta = 1e-6;
     end
 
-    if isfield(params,'theta') == 0
-        params.theta   = 0.5;    %parameter of capped l1 approximation
+    if isfield(param,'theta') == 0
+        param.theta   = 0.5;    %parameter of capped l1 approximation
     end
-    if isfield(params,'method') == 0
-        params.method   = 'quasiConcave';
+    if isfield(param,'method') == 0
+        param.method   = 'optimizeCardinality';
+    end
+    if ~isfield(param,'printLevel')
+        param.printLevel = 0;
     end
 end
+
 
 % Get data from the model
 [mlt,nlt] = size(S);
 
 
-[nbMaxIteration,zeta,theta,epsilon,method] = deal(params.nbMaxIteration,params.zeta,params.theta,params.epsilon,params.method);
+[nbMaxIteration,zeta,theta,epsilon,method] = deal(param.nbMaxIteration,param.zeta,param.theta,param.epsilon,param.method);
 
 %method='quasiConcave';
+%method='optimizeCardinality';
 %method='dc';
-%method='cardOptGeneral';
 switch method
     case 'quasiConcave'
         % Solve the linear problem
         %   max sum(z_i)
-        %       s.t S'*m = 0
-        %           z <= m
-        %           0 <= m <= 1/epsilon
+        %       s.t S'*l = 0
+        %           z <= l
+        %           0 <= l <= 1/epsilon
         %           0 <= z <= epsilon
         LPproblem.A=[S'      , sparse(nlt,mlt);
-                     theta*speye(mlt),-speye(mlt)];
+                        speye(mlt),-speye(mlt)];
 
         LPproblem.b=zeros(nlt+mlt,1);
         %LPproblem.lb=[           zeros(mlt,1)-eps;-ones(mlt,1)*epsilon];%small relaxation of lower bound can be necessary for numerical feasibility
@@ -115,7 +136,7 @@ switch method
             disp(sol.origStat)
             error('solve for maximal conservation vector failed, try to make epsilon larger, e.g. 1e-4.')
         end
-    case 'cardOptGeneral'
+    case 'optimizeCardinality'
         % min       c'(x,y,z) + lambda*||x||_0 - delta*||y||_0
         % s.t.      A*(x,y,z) <= b
         %           l <= (x,y,z) <=u
@@ -129,9 +150,25 @@ switch method
         cardProblem.lb=zeros(mlt,1);
         cardProblem.ub=(1/epsilon)*ones(mlt,1);
         cardProblem.csense(1:nlt,1)='E';
-        params.lambda=0;
-        params.delta=1;
-        solution = optimizeCardinality(cardProblem,params);
+        
+        cardProblem.lambda=0;
+        %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
+        %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
+        if 0
+            cardProblem.delta=1;
+        else
+            % delta0 - trade-off parameter on maximise `||y||_0`
+            cardProblem.delta0=1;
+            % delta1 - trade-off parameter on minimise `||y||_1`
+            cardProblem.delta1=0;
+            %cardProblem.delta1=1e-6;
+        end
+
+        if 1
+            solution = optimizeCardinality(cardProblem,param);
+        else
+            solution = optimizeCardinalityT(cardProblem,param);
+        end
         %  problem                  Structure containing the following fields describing the problem
         %       p                   size of vector x
         %       q                   size of vector y
@@ -147,7 +184,7 @@ switch method
         %       ub                  (p+q+r) x 1 Upper bound vector
         %
         % OPTIONAL INPUTS
-        % params                    parameters structure
+        % param                    parameters structure
         %       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
         %       epsilon             stopping criteria - (Defaut value = 10e-6)
         %       theta               parameter of the approximation (Defaut value = 2)
@@ -178,6 +215,114 @@ switch method
         l   = zeros(m,1);
         z   = zeros(m,1);
 
+        %Create the linear sub-program that one needs to solve at each iteration
+        %Both the objective, and the constraints change at each iteration.
+
+        
+        %Objective changes each iteration as theta changes
+        % Define subproblem objective - variable (l,z)
+        %c = [-theta*ones(m,1);ones(m,1)];
+        osense = 1;%minimise
+        
+        % LHS of constraints change at each iteration as theta changes
+        % S'*l = 0
+        % z >= theta*l
+        % A  = [             S',   sparse(n,m);
+        %        theta*speye(m),     -speye(m)];
+        
+        b  = zeros(n+m,1);
+        csense  = [repmat('E',n, 1);repmat('L',m, 1)];
+
+        % Bound;
+        % 0 <= l <= 1/epsilon
+        % 1 <= z <=   inf
+        lb  = [zeros(m,1);ones(m,1)];
+        if 1
+            ub  = [(1/epsilon)*ones(m,1);inf*ones(m,1)];
+        else
+            ub  = [inf*ones(m,1);inf*ones(m,1)];
+        end
+
+        %Basis
+        basis = [];
+
+        %Define the linear sub-problem
+        subLPproblem = struct('osense',osense,'csense',csense,'b',b,'lb',lb,'ub',ub,'basis',basis);
+
+        obj_old = maximiseConservationVector_obj(l,theta);
+        %DCA
+        while nbIteration < nbMaxIteration && stop ~= true
+
+            l_old = l;
+            z_old = z;
+
+            %Solve the sub-linear program to obtain new l
+            [l,z,LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta);
+            switch LPsolution.stat
+                case 0
+                    warning('Problem infeasible !!!!!');
+                    solution.l = [];
+                    solution.stat = 0;
+                    stop = true;
+                case 2
+                    warning('Problem unbounded !!!!!');
+                    solution.l = [];
+                    solution.stat = 2;
+                    stop = true;
+                case 1
+                    %Reuse basis
+                    if isfield(LPsolution,'basis')
+                        subLPproblem.basis=LPsolution.basis;
+                    end
+                    %Check stopping criterion
+                    error_l = norm(l - l_old);
+                    obj_new = maximiseConservationVector_obj(l,theta);
+                    error_obj = abs(obj_new - obj_old);
+                    if (error_l < zeta) || (error_obj < zeta)
+                        stop = true;
+                    else
+                        obj_old = obj_new;
+                    end
+                    if printLevel>1
+                        if nbIteration==1
+                            fprintf('%20s%12.6s%12.5s%12.6s%12.6s%12.6s%12.6s\n','itn','theta','err_l','err_obj','obj','obj_l','obj_z');
+                        end
+                        obj_l = -theta*ones(m,1)'*l;
+                        obj_z = ones(m,1)'*z;
+                        fprintf('%20u%12.6g%12.5g%12.6g%12.6g%12.2g%12.6g\n',nbIteration,theta,min(error_l),min(error_obj),obj_new,obj_l,obj_z);
+                    end
+                     %update the approximation parameter theta
+                    if theta < 1000
+                        theta = theta * 1.5;
+                    end
+            end
+
+            nbIteration = nbIteration + 1;
+        end
+
+        %find rows that are not all zero when a subset of reactions omitted
+        zeroRowBool = ~any(S,2);
+        if any(zeroRowBool)
+            %any zero row of S is automatically inconsistent
+            l(zeroRowBool)=0;
+        end
+
+        if solution.stat == 1
+            solution.l = l;
+        end
+    case 'dc_old'
+        %Parameters
+        nbIteration = 1;
+        stop = false;
+        solution.l = [];
+        solution.stat = 1;
+
+        m=mlt;
+        n=nlt;
+        % Variable
+        l   = zeros(m,1);
+        z   = zeros(m,1);
+
         %Create the linear sub-programme that one needs to solve at each iteration, only its
         %objective function changes, the constraints set remains.
 
@@ -188,7 +333,7 @@ switch method
         % S'*l = 0
         % z >= theta*l
         A2 = [S'             sparse(n,m);
-            theta*speye(m)    -speye(m)];
+            -theta*speye(m)    speye(m)];%signs were wrong 
         b2 = [zeros(n+m,1)];
         csense2 = [repmat('E',n, 1);repmat('L',m, 1)];
 
@@ -207,12 +352,13 @@ switch method
         obj_old = maximiseConservationVector_obj(l,theta);
 
         %DCA
-        while nbIteration < nbMaxIteration && stop ~= true,
+        while nbIteration < nbMaxIteration && stop ~= true
 
             l_old = l;
+            z_old = z;
 
             %Solve the sub-linear program to obtain new l
-            [l,LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta);
+            [l,z, LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,theta);
             switch LPsolution.stat
                 case 0
                     warning('Problem infeasible !!!!!');
@@ -270,12 +416,22 @@ end
 
 if solution.stat==1
     %conserved if molecular mass is above epsilon
-    maxConservationMetBool=solution.l>=params.eta;
+    maxConservationMetBool=solution.l>=param.eta;
     %columns matching stoichiometrically consistent rows
     maxConservationRxnBool = getCorrespondingCols(S,maxConservationMetBool,true(nlt,1),'exclusive');
-    if printLevel>1
-        fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' stoichiometrically consistent by max cardinality of conservation vector. (',maxCardConsParams.method, ' method)')
+    if param.printLevel>3
+        fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' stoichiometrically consistent by max cardinality of conservation vector. (', param.method ,' method)')
     end
+    
+    %relative mass of each reaction complex
+    F=-min(S,0);
+    solution.k = F'*solution.l;
+    %for exchange reactions, there may be only one positive stoichiometric
+    %coefficient
+    ExRxnBoolOneCoefficient = sum(S~=0)==1;
+    R = max(S,0);
+    solution.k(ExRxnBoolOneCoefficient) = solution.k(ExRxnBoolOneCoefficient) + R(:,ExRxnBoolOneCoefficient)'*solution.l;
+    %solution.k=solution.k';
 else
     maxConservationMetBool=[];
     maxConservationRxnBool=[];
@@ -287,20 +443,26 @@ end
 
 
 %Solve the linear sub-program to obtain new l
-function [l,LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta)
+function [l,z,LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta)
 
 [m,n] = size(S);
 
 % Change the objective - variable (l,z)
-subLPproblem.obj = [-theta*ones(m,1);ones(m,1)];
+%subLPproblem.obj = [-theta*ones(m,1);ones(m,1)];
+subLPproblem.c = [-theta*ones(m,1);ones(m,1)];
 
+subLPproblem.A = [             S',   sparse(n,m);
+                   theta*speye(m),     -speye(m)];
+           
 %Solve the linear problem
 LPsolution = solveCobraLP(subLPproblem);
 
 if LPsolution.stat == 1
     l = LPsolution.full(1:m);
+    z = LPsolution.full(m+1:2*m);
 else
     l = [];
+    z = [];
 end
 end
 

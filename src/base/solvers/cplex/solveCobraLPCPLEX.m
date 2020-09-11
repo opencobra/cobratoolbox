@@ -141,7 +141,7 @@ if ~exist('conflictResolve','var')
     conflictResolve=0;
 end
 if ~exist('interface','var')
-    interface='tomlab_cplex';
+    interface='ILOGcomplex';
 end
 if strcmp(interface,'tomlab_cplex') || strcmp(interface,'ILOGcomplex')
     if ~exist('contFunctName','var')
