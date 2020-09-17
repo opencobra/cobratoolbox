@@ -27,9 +27,6 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     for objective-specific precursors
 %
 % OPTIONAL INPUTS:
-%   modelIDs          Cell array containing IDs of the models displayed in
-%                     the output table in same order as corresponding models
-%                     (default IDs assigned if not entered)
 %   osenseStr         String indicating whether objective function(s)
 %                     should be maximized or minimized. Allowed inputs:
 %                     'min','max', default:'max'.
@@ -58,7 +55,6 @@ parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
 parser.addParameter('osenseStr','max', @ischar);
-parser.addParameter('modelIDs',@ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('solutionFolder',pwd, @ischar);
@@ -67,9 +63,10 @@ parser.parse(modelFolder,objectiveList, varargin{:})
 modelFolder = parser.Results.modelFolder;
 objectiveList = parser.Results.objectiveList;
 numWorkers = parser.Results.numWorkers;
-modelIDs = parser.Results.modelIDs;
 SPDef = parser.Results.SPDef;
 solutionFolder = parser.Results.solutionFolder;
+
+mkdir(solutionFolder)
 
 % set a solver if not done already
 global CBT_LP_SOLVER
@@ -86,9 +83,10 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
+
 shadowPrices{1,1}='Metabolite';
 shadowPrices{1,2}='Objective';
-if size(objectives,2)>1
+if size(objectiveList,2)>1
 shadowPrices{1,3}='Source';
 end
 
@@ -96,12 +94,6 @@ dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
 modelList=modelList(3:end);
-
-if isempty(modelIDs)
-    for i=1:size(modelList,1)
-        modelIDs{i,1}=strcat('model_',num2str(i));
-    end
-end
 
 % Compute the solutions for all entered models and objective functions
 solutions={};
@@ -114,8 +106,8 @@ end
 
 for i=1:size(modelList,1)
     i
-    objectives{i+2,1}=modelIDs{i,1};
-    shadowPrices{1,i+3}=modelIDs{i,1};
+    objectives{i+2,1}=strrep(modelList{i,1},'.mat','');
+    shadowPrices{1,i+3}=strrep(modelList{i,1},'.mat','');
     load(strcat(modelFolder,modelList{i,1}));
     
     [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
@@ -128,7 +120,7 @@ for i=1:size(modelList,1)
         end
     end
     % save one model by one-file would be enourmous otherwise
-    save([solutionFolder filesep modelIDs{i,1} '_solution'],'FBAsolution');
+    save([solutionFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
     
     % Extract all shadow prices and save them in a table
     objectives{i+2,1} = strrep(modelList{i,1},'.mat','');
@@ -186,9 +178,11 @@ end
 
 function [model, FBAsolution] = computeSolForObj(model, objectiveList,solver)
 % Compute the solutions for all objectives
+environment = getEnvironment();
 
 parfor j = 1:size(objectiveList, 1)
-    changeCobraSolver(solver, 'LP');
+    restoreEnvironment(environment);
+    changeCobraSolver(solver, 'LP', 0, -1);
     % prevent creation of log files
     changeCobraSolverParams('LP', 'logFile', 0);
     modelTemp=model;
