@@ -39,9 +39,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 %               - Almut Heinken 08/2020: added extra inputs and changed to
 %                                        varargin input
-
-global CBTDIR
-
+%
 % Define default input parameters if not specified
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
@@ -85,6 +83,13 @@ printLevel = parser.Results.printLevel;
 includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
+
+global CBT_LP_SOLVER
+if isempty(CBT_LP_SOLVER)
+    initCobraToolbox
+end
+
+global CBTDIR
 
 % set optional variables
 if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
