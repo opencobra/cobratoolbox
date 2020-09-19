@@ -11,10 +11,14 @@
 %
 
 %Test presence of required toolboxes.
-requiredToolboxes = {'bioinformatics_toolbox'};
-requireOneSolverOf = {'gurobi','ibm_cplex'};
-prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
 
+requireOneSolverOf = {'gurobi','ibm_cplex'};
+if 0
+    requiredToolboxes = {'bioinformatics_toolbox'};
+    prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
+else
+    prepareTest('requireOneSolverOf',requireOneSolverOf);
+end
 
 % define global paths
 global CBTDIR

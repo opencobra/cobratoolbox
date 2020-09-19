@@ -1,0 +1,151 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>zHW: Complete Combustion of Octane</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2010-12-30"><meta name="DC.source" content="zHW_01.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>zHW: Complete Combustion of Octane</h1><!--introduction--><p>Find the balanced reaction for the complete combuston of octane to carbon dioxide and water.</p><p><b>Octane</b></p><pre>          H   H   H   H   H   H   H   H
+          |   |   |   |   |   |   |   |
+      H - C - C - C - C - C - C - C - C - H
+          |   |   |   |   |   |   |   |
+          H   H   H   H   H   H   H   H</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Chemical Formulas</a></li><li><a href="#2">Stoichiometric Coefficients</a></li><li><a href="#3">Display Balanced Reactions</a></li></ul></div><h2>Chemical Formulas<a name="1"></a></h2><p>Four species participate in the combustion reaction: octane, oxygen, carbon dioxide, and water.  The first step is to construct a cell array with the formula for these species.  Displaying the molecular weights is a convenient way to verify that the formulas are correctly entered.</p><pre class="codeinput">species = {<span class="string">'CH3(CH2)6CH3'</span>,<span class="string">'O2'</span>,<span class="string">'CO2'</span>,<span class="string">'H2O'</span>};
+molweight(species);
+</pre><pre class="codeoutput">
+Species                    Mol. Wt.
+-------                    --------
+CH3(CH2)6CH3                 114.23
+O2                            32.00
+CO2                           44.01
+H2O                           18.02
+</pre><h2>Stoichiometric Coefficients<a name="2"></a></h2><p>Stoichiometric coefficients for the balanced reaction (or balanced reactions, if more than one independent reaction is possible) is computed with <tt>stoich</tt>. Reactants have a negative stoichiometric coefficient, products have positive coefficients.</p><pre class="codeinput">V = stoich(species);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'Stoichiometric Matrix V = '</span>);
+disp(V);
+</pre><pre class="codeoutput"> 
+Stoichiometric Matrix V = 
+   -1.0000
+  -12.5000
+    8.0000
+    9.0000
+
+</pre><h2>Display Balanced Reactions<a name="3"></a></h2><p>The balanced reaction displayed as follows. Notice that stoichiometric coefficients are converted to integers for the displayed reaction. The balanced reaction is displayed in several different notations.</p><pre class="codeinput">disp_reaction(V,species);
+disp_reaction(V,hillformula(species));
+disp_reaction(V,{<span class="string">'Octane'</span>,<span class="string">'Oxygen'</span>,<span class="string">'Carbon Dioxide'</span>,<span class="string">'Water'</span>});
+</pre><pre class="codeoutput">
+2 CH3(CH2)6CH3 + 25 O2 &lt;=&gt; 16 CO2 + 18 H2O
+
+
+2 C8H18 + 25 O2 &lt;=&gt; 16 CO2 + 18 H2O
+
+
+2 Octane + 25 Oxygen &lt;=&gt; 16 Carbon Dioxide + 18 Water
+
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% zHW: Complete Combustion of Octane
+%
+% Find the balanced reaction for the complete combuston of octane to carbon
+% dioxide and water. 
+%
+% *Octane*
+%
+%            H   H   H   H   H   H   H   H
+%            |   |   |   |   |   |   |   |
+%        H - C - C - C - C - C - C - C - C - H
+%            |   |   |   |   |   |   |   |
+%            H   H   H   H   H   H   H   H
+%
+
+%% Chemical Formulas
+% 
+% Four species participate in the combustion reaction: octane, oxygen,
+% carbon dioxide, and water.  The first step is to construct a cell array
+% with the formula for these species.  Displaying the molecular weights is
+% a convenient way to verify that the formulas are correctly entered.
+
+species = {'CH3(CH2)6CH3','O2','CO2','H2O'};
+molweight(species);
+
+%% Stoichiometric Coefficients
+%
+% Stoichiometric coefficients for the balanced reaction (or balanced
+% reactions, if more than one independent reaction is possible) is computed
+% with |stoich|. Reactants have a negative stoichiometric coefficient,
+% products have positive coefficients.
+
+V = stoich(species);
+disp(' ');
+disp('Stoichiometric Matrix V = ');
+disp(V);
+
+%% Display Balanced Reactions
+%
+% The balanced reaction displayed as follows. Notice that stoichiometric
+% coefficients are converted to integers for the displayed reaction. The
+% balanced reaction is displayed in several different notations. 
+
+disp_reaction(V,species);
+disp_reaction(V,hillformula(species));
+disp_reaction(V,{'Octane','Oxygen','Carbon Dioxide','Water'});
+
+##### SOURCE END #####
+--></body></html>

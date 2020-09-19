@@ -1,0 +1,152 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>zHW: Multiple Independent Reactions</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2010-12-30"><meta name="DC.source" content="zHW_03.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>zHW: Multiple Independent Reactions</h1><!--introduction--><p>Formaldehyde is produced on an industrial scale by the incomplete oxidation of methanol in air. Principle by-products include formic acid, carbon dioxide, and carbon monoxide. Find a set of independent reactions for this reaction system.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Chemical Species</a></li><li><a href="#2">Independent Reactions</a></li><li><a href="#3">Displaying the Independent Reactions</a></li></ul></div><h2>Chemical Species<a name="1"></a></h2><p>The first step is to provide a list of all chemical species partcipating in the reaction system. Use molweight to verify correct entry of this list of species.</p><pre class="codeinput">species = { <span class="keyword">...</span>
+    <span class="string">'CH3OH'</span>, <span class="keyword">...</span><span class="comment">     % Methanol</span>
+    <span class="string">'O2'</span>, <span class="keyword">...</span><span class="comment">        % Oxygen</span>
+    <span class="string">'CH2O'</span>, <span class="keyword">...</span><span class="comment">      % Formaldehyde</span>
+    <span class="string">'CHOOH'</span>, <span class="keyword">...</span><span class="comment">     % Formic Acid</span>
+    <span class="string">'CO'</span>, <span class="keyword">...</span><span class="comment">        % Carbon Monoxide</span>
+    <span class="string">'CO2'</span>, <span class="keyword">...</span><span class="comment">       % Carbon Dioxide</span>
+    <span class="string">'H2O'</span>};          <span class="comment">% Water</span>
+
+molweight(species);
+</pre><pre class="codeoutput">
+Species                    Mol. Wt.
+-------                    --------
+CH3OH                         32.04
+O2                            32.00
+CH2O                          30.03
+CHOOH                         46.03
+CO                            28.01
+CO2                           44.01
+H2O                           18.02
+</pre><h2>Independent Reactions<a name="2"></a></h2><p>The rank of the stoichiometric matrix indicates the number of independent reactions that are possible.</p><pre class="codeinput">V = stoich(species);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'V = '</span>);
+disp(V);
+fprintf(<span class="string">'\nNumber of Independent Reactions = %g\n'</span>,rank(V));
+</pre><pre class="codeoutput"> 
+V = 
+    -1     0     0     0
+     0    -1     0     0
+     0     0    -1     0
+     0     0     0    -1
+     3    -2     2     1
+    -2     2    -1     0
+     2     0     1     1
+
+
+Number of Independent Reactions = 4
+</pre><h2>Displaying the Independent Reactions<a name="3"></a></h2><pre class="codeinput">disp_reaction(V,species);
+</pre><pre class="codeoutput">
+CH3OH + 2 CO2 &lt;=&gt; 3 CO + 2 H2O
+O2 + 2 CO &lt;=&gt; 2 CO2
+CH2O + CO2 &lt;=&gt; 2 CO + H2O
+CHOOH &lt;=&gt; CO + H2O
+
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% zHW: Multiple Independent Reactions
+%
+% Formaldehyde is produced on an industrial scale by the incomplete
+% oxidation of methanol in air. Principle by-products include formic acid,
+% carbon dioxide, and carbon monoxide. Find a set of independent reactions
+% for this reaction system.
+
+
+%% Chemical Species
+%
+% The first step is to provide a list of all chemical species partcipating
+% in the reaction system. Use molweight to verify correct entry of this
+% list of species.
+
+species = { ...
+    'CH3OH', ...     % Methanol
+    'O2', ...        % Oxygen
+    'CH2O', ...      % Formaldehyde
+    'CHOOH', ...     % Formic Acid
+    'CO', ...        % Carbon Monoxide
+    'CO2', ...       % Carbon Dioxide
+    'H2O'};          % Water
+
+molweight(species);
+
+%% Independent Reactions
+%
+% The rank of the stoichiometric matrix indicates the number of independent
+% reactions that are possible.
+
+V = stoich(species);
+disp(' ');
+disp('V = ');
+disp(V);
+fprintf('\nNumber of Independent Reactions = %g\n',rank(V));
+
+%% Displaying the Independent Reactions
+
+disp_reaction(V,species);
+##### SOURCE END #####
+--></body></html>
