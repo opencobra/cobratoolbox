@@ -20,10 +20,13 @@ currentDir = pwd;
 testPass = fileparts(which('testSWIFTCORE.m'));
 cd(testPass);
 
+% set the cobra solver
+solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
+
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
 model.rev = double(model.lb < 0);
-A = swiftcc(model.S, model.rev);
+A = swiftcc(model.S, model.rev,solvers.LP{1});
 model.S = model.S(:, A);
 model.rev = model.rev(A);
 model.ub = model.ub(A);
@@ -32,8 +35,7 @@ model.rxns = model.rxns(A);
 n = length(model.rev);
 core = randsample(n, round(n/2));
 
-% set the cobra solver
-solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
+
 
 fprintf(' -- Running swiftcore w/o reduction and using the %s solver...\n', solvers.LP{1});
 [~, coreInd, ~] = swiftcore(model, core, ones(n, 1), 1e-10, false, solvers.LP{1});
@@ -63,7 +65,7 @@ assert(all(A == consistent));
 
 [solverName, solverOK] = getCobraSolver('LP');
 fprintf('\n -- Running swiftcc using the default LP solver, which is %s,....\n', solverName);
-consistent = swiftcc(model.S, model.rev);
+consistent = swiftcc(model.S, model.rev,solvers.LP{1});
 assert(all(A == consistent));
 
 % output a success message

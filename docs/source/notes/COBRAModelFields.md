@@ -22,7 +22,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.c`| `n x 1` | Column Vector of Doubles | The objective coefficient of the reactions. | 
 |`model.osenseStr`| `` | String | The objective sense either `'max'` for maximisation or `'min'` for minimisation | 
 |`model.genes`| `g x 1` | Column Cell Array of Strings | Identifiers of the genes in the model | 
-|`model.rules`| `n x 1` | Column Cell Array of Strings | "GPR rules in evaluateable format for each reaction ( e.g. ""x(1) &#124; x(2) & x(3)"", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux" | 
+|`model.rules`| `n x 1` | Column Cell Array of Strings | GPR rules in evaluateable format for each reaction ( e.g. "x(1) &#124; x(2) & x(3)", would indicate the first gene or both the second and third gene are necessary for the respective reaction to carry flux | 
 |`model.geneNames`| `g x 1` | Column Cell Array of Strings | Full names of each corresponding genes. | 
 |`model.compNames`| `c x 1` | Column Cell Array of Strings | Descriptions of the Compartments (compNames(m) is associated with comps(m)) | 
 |`model.comps`| `c x 1` | Column Cell Array of Strings | Symbols for compartments, can include Tissue information | 
@@ -33,14 +33,30 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.metSmiles`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in SMILES Format | 
 |`model.metNames`| `m x 1` | Column Cell Array of Strings | Full name of each corresponding metabolite. | 
 |`model.metNotes`| `m x 1` | Column Cell Array of Strings | Additional Notes for the respective metabolite. | 
-|`model.metHMDBID`| `m x 1` | Column Cell Array of Strings | HMDB ID of the metabolite. | 
+|`model.metHMDBID`| `m x 1` | Column Cell Array of Strings | HMDB identifier of the metabolite. | 
 |`model.metInChIString`| `m x 1` | Column Cell Array of Strings | Formula for each metabolite in the InCHI strings format. | 
-|`model.metKEGGID`| `m x 1` | Column Cell Array of Strings | KEGG ID of the metabolite. | 
-|`model.metChEBIID`| `m x 1` | Column Cell Array of Strings | ChEBI ID of the metabolite. | 
-|`model.metPubChemID`| `m x 1` | Column Cell Array of Strings | PubChem ID of each metabolite | 
+|`model.metKEGGID`| `m x 1` | Column Cell Array of Strings | KEGG identifier of the metabolite. | 
+|`model.metChEBIID`| `m x 1` | Column Cell Array of Strings | ChEBI identifier of the metabolite. | 
+|`model.metPubChemID`| `m x 1` | Column Cell Array of Strings | PubChem identifier of each metabolite | 
 |`model.metMetaNetXID`| `m x 1` | Column Cell Array of Strings | MetaNetX identifier of the metabolite | 
+|`model.metSEEDID`| `m x 1` | Column Cell Array of Strings | SEED identifier of the metabolite | 
+|`model.metBiGGID`| `m x 1` | Column Cell Array of Strings | BiGG identifier of the metabolite | 
+|`model.metBioCycID`| `m x 1` | Column Cell Array of Strings | BioCyc identifier of the metabolite | 
+|`model.metEnviPathID`| `m x 1` | Column Cell Array of Strings | enviPath identifier of the metabolite. | 
+|`model.metLIPIDMAPSID`| `m x 1` | Column Cell Array of Strings | LIPID MAPS identifier of the lipid. | 
+|`model.metReactomeID`| `m x 1` | Column Cell Array of Strings | Reactome identifier of the metabolite | 
+|`model.metSABIORKID`| `m x 1` | Column Cell Array of Strings | SABIO-RK identifier of the metabolite. | 
+|`model.metSLMID`| `m x 1` | Column Cell Array of Strings | SwissLipids identifier of the lipid. | 
 |`model.metSBOTerms`| `m x 1` | Column Cell Array of Strings | The SBO Identifier associated with the metabolite | 
-|`model.geneEntrezID`| `g x 1` | Column Cell Array of Strings | Entrez IDs of genes | 
+|`model.geneEntrezID`| `g x 1` | Column Cell Array of Strings | Entrez identifier of the gene | 
+|`model.geneRefSeqID`| `g x 1` | Column Cell Array of Strings | RefSeq identifier of the gene | 
+|`model.geneUniprotID`| `g x 1` | Column Cell Array of Strings | Uniprot identifier of the gene | 
+|`model.geneEcoGeneID`| `g x 1` | Column Cell Array of Strings | EcoGene identifier of the gene | 
+|`model.geneKEGGID`| `g x 1` | Column Cell Array of Strings | KEGG identifier of the gene | 
+|`model.geneHPRDID`| `g x 1` | Column Cell Array of Strings | Human Protein Reference Database identifier of the gene | 
+|`model.geneASAPID`| `g x 1` | Column Cell Array of Strings | A systematic annotation package for community analysis of genomes identifier of the gene | 
+|`model.geneCCDSID`| `g x 1` | Column Cell Array of Strings | Concensus CDS identifier of the gene | 
+|`model.geneNCBIProteinID`| `g x 1` | Column Cell Array of Strings | NCBI Protein identifier of the gene | 
 |`model.grRules`| `n x 1` | Column Cell Array of Strings | A string representation of the GPR rules defined in a readable format. | 
 |`model.rxnGeneMat`| `n x g` | Sparse or Full Matrix of Double or Boolean | Matrix with rows corresponding to reactions and columns corresponding to genes. | 
 |`model.rxnConfidenceScores`| `n x 1` | Column Vector of double | Confidence scores for reaction presence (0-5, with 5 being the highest confidence) | 
@@ -49,7 +65,15 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnECNumbers`| `n x 1` | Column Cell Array of Strings | E.C. number for each reaction. | 
 |`model.rxnReferences`| `n x 1` | Column Cell Array of Strings | Description of references for each corresponding reaction. | 
 |`model.rxnKEGGID`| `n x 1` | Column Cell Array of Strings | Formula for each reaction in the KEGG format. | 
+|`model.rxnKEGGPathways`| `n x 1` | Column Cell Array of Strings | KEGG identifier for a manually drawn pathway map the reaction belongs to. | 
 |`model.rxnMetaNetXID`| `n x 1` | Column Cell Array of Strings | MetaNetX identifier of the reaction | 
+|`model.rxnBRENDAID`| `n x 1` | Column Cell Array of Strings | BRENDA identifier of the reaction | 
+|`model.rxnBioCycID`| `n x 1` | Column Cell Array of Strings | BioCyc identifier of the reaction | 
+|`model.rxnReactomeID`| `n x 1` | Column Cell Array of Strings | Reactome identifier of the reaction | 
+|`model.rxnSABIORKID`| `n x 1` | Column Cell Array of Strings | SABIO-RK identifier of the reaction. | 
+|`model.rxnSEEDID`| `n x 1` | Column Cell Array of Strings | SEED identifier of the reaction | 
+|`model.rxnRheaID`| `n x 1` | Column Cell Array of Strings | Rhea identifier of the reaction | 
+|`model.rxnBiGGID`| `n x 1` | Column Cell Array of Strings | BiGG identifier of the reaction | 
 |`model.rxnSBOTerms`| `n x 1` | Column Cell Array of Strings | The SBO Identifier associated with the reaction | 
 |`model.subSystems`| `n x 1` | Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
 |`model.description`| `` | String or Struct | Name of a file the model is loaded from. | 

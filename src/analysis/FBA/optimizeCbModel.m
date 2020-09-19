@@ -32,6 +32,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x n` Right hand side of C*v <= d
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
+%                         * g - `n x 1` weights on zero or one norm
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
 %                       'max') linear part of the objective. Nonlinear
@@ -44,7 +45,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                       .. math::
 %
-%                          min  ~& |v| \\
+%                          min  ~& d.*|v| \\
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
@@ -54,7 +55,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                       .. math::
 %
-%                          min  ~& ||v||_0 \\
+%                          min  ~& d.*||v||_0 \\
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
@@ -259,6 +260,17 @@ LPproblem = buildLPproblemFromModel(model,verify);
 if strcmp(minNorm, 'oneInternal')
     SConsistentRxnBool=model.SConsistentRxnBool;
 end
+
+%weights on norm
+if isfield(model,'g')  
+    if length(model.g)~=nRxns
+        error('model.g must be nRxns x 1')
+    end
+    normWeights=columnVector(model.g);
+else
+    normWeights=[];
+end
+
 if allowLoops
     clear model
 end
@@ -306,19 +318,25 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         % Minimize the absolute value of fluxes to 'avoid' loopy solutions
         % Solve secondary LP to minimize one-norm of |v|
         % Set up the optimization problem
-        % min sum(delta+ + delta-)
-        % 1: S*v1 = 0
-        % 3: delta+ >= -v1
-        % 4: delta- >= v1
-        % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
+        % min sum(vf + vr)
+        % 1: S*vf -S*vr = b
+        % 3: vf >= -v
+        % 4: vr >= v
+        % 5: c'v >= f or c'v <= f (optimal value of objective)
         %
-        % delta+,delta- >= 0
+        % vf,vr >= 0
         
         LPproblem2.A = [LPproblem.A sparse(nMets+nCtrs,2*nRxns);
-            speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
+             speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
             -speye(nRxns,nTotalVars) sparse(nRxns,nRxns) speye(nRxns,nRxns);
             LPproblem.c' sparse(1,2*nRxns)];
-        LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
+
+        if ~isempty(normWeights)
+            %weighted one norm
+            LPproblem2.c  = [zeros(nTotalVars,1);[normWeights;normWeights].*ones(2*nRxns,1)];
+        else
+            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
+        end
         LPproblem2.lb = [LPproblem.lb;zeros(2*nRxns,1)];
         LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nRxns,1)];
         LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);objective];
@@ -361,7 +379,15 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
                         LPproblem.c',                                sparse(1,2*nIntRxns)];
                             
         %only minimise the absolute value of internal reactions
-        LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
+        if ~isempty(normWeights)
+            %only the weights on the internal reactions have an effect, the
+            %rest are discarded
+            normWeightsInt=normWeights(SConsistentRxnBool);
+            %weighted one norm of internal reactions
+            LPproblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
+        else
+            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
+        end
         LPproblem2.lb = [LPproblem.lb;zeros(2*nIntRxns,1)];
         LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nIntRxns,1)];
         LPproblem2.b  = [LPproblem.b;zeros(nIntRxns,1);objective];
