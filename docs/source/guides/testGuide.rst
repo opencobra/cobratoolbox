@@ -249,7 +249,7 @@ The following sections shall be included in a test file:
 Please only load *small* models, i.e. less than ``100`` reactions. If
 you want to use a non-standard test model that is already available
 online, please make a pull request with the URL entry to the
-`COBRA.models repository <https://github.com/cobrabot/COBRA.models>`__.
+`COBRA.models repository <https://github.com/opencobra/COBRA.models>`__.
 
 :warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
 

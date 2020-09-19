@@ -1,9 +1,5 @@
 .. raw:: html
 
-   <p align="center">
-     <img class="readme_logo" src="https://king.nuigalway.ie/cobratoolbox/img/logo.png" height="160px"/>
-   </p>
-
 
 The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
 ---------------------------------------------------------------------------
