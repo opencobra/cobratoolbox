@@ -65,6 +65,10 @@ function r = parse_formula(varargin)
 %   6. The bare electron e- is used in balancing chemical half reactions.
 %
 %   7. Error messages are generated for invalid fomulas
+%      Change for use with the cobra toolbox
+%      A is accepted as the symbol for an element that could
+%      represent an R group in an atom mapping scenario for an incompletely
+%      defined metabolite.
 %
 %   8. str can be a cell array of chemical formula. The results is a
 %      structure array. The elements of the output structure array are in
@@ -162,7 +166,9 @@ function r = parse_formula_(str,kdepth)
     persistent grex;  % Regexp pattern to match groups
     
     if isempty(srex) || isempty(grex)
-        srex = ['(A[lrsgutcm]|B[eraik]?|C[laroudsemf]?|D[y]?|E[urs]|', ...
+        %this was the original line
+        %srex = ['(A[lrsgutcm]|B[eraik]?|C[laroudsemf]?|D[y]?|E[urs]|',...
+        srex = ['(A[lrsgutcm]?|B[eraik]?|C[laroudsemf]?|D[y]?|E[urs]|', ...
                 'F[erm]?|G[aed]|H[eofgas]?|I[nr]?|Kr?|L[iaur]|', ...
                 'M[gnodt]?|N[eaibdpos]?|Os?|P[drmtboau]?|R[buhenaf]|', ...
                 'S[icernbmg]?|T[icebmalh]?|U|V|W|X[e]?|Yb?|Z[nr])', ...

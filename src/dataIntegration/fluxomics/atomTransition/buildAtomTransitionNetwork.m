@@ -29,7 +29,7 @@ function ATN = buildAtomTransitionNetwork(model, rxnfileDir)
 %                     * .mets - A `p` x 1 cell array of metabolite identifiers to link
 %                       atoms to their metabolites. The order of atoms is the
 %                       same in `A` as in the molfile for each metabolite.
-%                     * .atns = `q` x 1 unique identity of each atom in a
+%                     * .atns = `p` x 1 unique identity of each atom in a
 %                        metabolite (may omit hydrogens if they are not
 %                        mapped)
 %                     * .rxns - A `q` x 1 cell array of reaction identifiers to link atom

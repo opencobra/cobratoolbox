@@ -59,10 +59,17 @@ fclose(fid2);
 ATN = buildAtomTransitionNetwork(model, rxnfileDir);
 assert(all(all(ATN.A == ATN0.A)), 'Atom transition network does not match reference.')
 
+if 0
+    %TODO, currently this is incompatible with classifyMoieties
+    %test addition of fake reaction to model, that is not atom mapped
+    model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C');
+end
+
 % Identify conserved moieties
-[L, Lambda, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties] = identifyConservedMoieties(model, ATN);
+[L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans,mbool,rbool,V,E,C] = identifyConservedMoieties(model, ATN);
+
 assert(all(all(L == L0)), 'Moiety matrix does not match reference.')
-assert(all(all(Lambda == Lambda0)), 'Moiety graph does not match reference.')
+assert(all(all(M == Lambda0)), 'Moiety graph does not match reference.')
 
 % Classify moieties
 types = classifyMoieties(L, model.S);
