@@ -8,4 +8,4 @@
 
 formula = 'O5C5H3A2';
 hillformulaExample = hillformula(formula);
-hillformulaExample
+assert(strcmp(hillformulaExample,'C5H3A2O5'))

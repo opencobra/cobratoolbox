@@ -60,11 +60,15 @@ extSolve = false;
 % the type of FVA function to use to solve
 fvaType = true;
 
-% To tourn off the autorun to be able to manually execute each part of the pipeline.
+% To turn off the autorun to be able to manually execute each part of the pipeline.
 autorun = false;
 
 % stratification criteria
 indInfoFilePath = 'nostrat';
+
+%%%%%%%%%%%%%%%%%%%%%%temporarily bypass this test 
+assert(1==1)
+return
 
 % input checker
 init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun);

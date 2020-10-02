@@ -17,7 +17,7 @@ if 0
     requiredToolboxes = {'bioinformatics_toolbox'};
     prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
 else
-    prepareTest('requireOneSolverOf',requireOneSolverOf);
+    prepareTest('requireOneSolverOf',requireOneSolverOf,'requiredToolboxes', {'statistics_toolbox'});
 end
 
 % define global paths
@@ -66,7 +66,7 @@ if 0
 end
 
 % Identify conserved moieties
-[L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans,mbool,rbool,V,E,C] = identifyConservedMoieties(model, ATN);
+[L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans,mbool,rbool,V,E,C] = identifyConservedMoieties(model, ATN,'isomorphism',1);
 
 assert(all(all(L == L0)), 'Moiety matrix does not match reference.')
 assert(all(all(M == Lambda0)), 'Moiety graph does not match reference.')

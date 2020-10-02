@@ -35,7 +35,9 @@ end
 if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p_layer))
     CoefLists = cellfun(@(x) calcFormula(x), tokens,'UniformOutput',0);
     if ~isempty(p_layer)
-        CoefLists = [CoefLists;{{'H';protonationProtons}}];
+        %CoefLists = [CoefLists;{{'H';protonationProtons}}];%was crashing
+        %with formula C62H90N13O14P.Co.H2O
+        CoefLists{end+1} = {'H';protonationProtons};
     end
     %and now, combine them.
     Elements = {};
