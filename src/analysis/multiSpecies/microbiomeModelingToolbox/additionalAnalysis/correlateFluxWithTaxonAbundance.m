@@ -1,4 +1,4 @@
-function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, corrMethod)
+function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, infoFilePath, corrMethod)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the correlations between fluxes for one or more reactions of
 % interest in a number of microbiome samples and the relative microbe
@@ -8,7 +8,7 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %
 % USAGE
 %
-%     [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, taxonomy, corrMethod)
+%     [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, taxonomy, corrMethod)
 %
 % INPUTS:
 %    abundancePath:     Path to the .csv file with the abundance data.
@@ -19,6 +19,8 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %                       IDs in microbiome community models as columns
 %
 % OPTIONAL INPUTS:
+%    infoFilePath:      Path to the spreadsheet with the taxonomy information
+%                       on organisms (default: AGORA_infoFile.xlsx)
 %     corrMethod:       Method to compute the linear correlation
 %                       coefficient. Allowed inputs: 'Pearson' (default),
 %                       'Kendall', 'Spearman'.
@@ -28,6 +30,7 @@ function [FluxCorrelations, PValues] = correlateFluxWithTaxonAbundance(abundance
 %                       reaction and abundances on taxon levels
 %     PValues:          p-values corresponding to each calculated
 %                       correlation
+%     TaxonomyInfo:     Taxonomical information on each taxon level 
 %
 % .. Author: Almut Heinken, 03/2018
 %                           10/2018:  changed input to location of the csv file with the
@@ -46,8 +49,13 @@ fluxes = readtable(fluxPath, 'ReadVariableNames', false);
 fluxes = table2cell(fluxes);
 
 % Get the taxonomy information
-taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-taxonomy = table2cell(taxonomy);
+if exist('infoFilePath','var')
+    taxonomy = readtable(infoFilePath, 'ReadVariableNames', false);
+    taxonomy = table2cell(taxonomy);
+else
+    taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
+    taxonomy = table2cell(taxonomy);
+end
 
 if ~exist('corrMethod', 'var')  % Define correlation coefficient method if not entered
     corrMethod = 'Pearson';
@@ -193,6 +201,24 @@ for t = 1:size(TaxonomyLevels, 1)
         end
     end
     FluxCorrelations.(TaxonomyLevels{t})(delArray,:)=[];
+end
+
+% export taxonomical information
+taxonCol = 'Phylum';
+% remove unnecessary columns
+taxonomy(:,taxonCol+1:end)=[];
+
+for t = 2:size(TaxonomyLevels, 1)
+    taxa=FluxCorrelations.(TaxonomyLevels{t})(2:end,1);
+    TaxonomyReduced=taxonomy;
+    taxonCol = find(strcmp(taxonomy(1, :), TaxonomyLevels{t}));
+    TaxonomyReduced(:,1:taxonCol-1)=[];
+    % remove duplicate entries
+    [C,IA] = unique(TaxonomyReduced(:,1),'stable');
+    % remove unclassified taxa
+    findUncl=find(contains(C,'unclassified'));
+    IA(findUncl,:)=[];
+    TaxonomyInfo.(TaxonomyLevels{t})=TaxonomyReduced(IA,:);
 end
 
 % Plot the calculated correlations.

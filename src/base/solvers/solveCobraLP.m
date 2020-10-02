@@ -979,7 +979,7 @@ switch solver
                 % we simply remove the objective and solve again.
                 % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
                 gurobiLP.obj(:) = 0;
-                resultgurobi = gurobi(gurrobiLP,param);
+                resultgurobi = gurobi(gurobiLP,param);
                 if strcmp(resultgurobi.status,'OPTIMAL')
                     stat = 2;
                 else

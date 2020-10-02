@@ -249,7 +249,7 @@ The following sections shall be included in a test file:
 Please only load *small* models, i.e. less than ``100`` reactions. If
 you want to use a non-standard test model that is already available
 online, please make a pull request with the URL entry to the
-`COBRA.models repository <https://github.com/cobrabot/COBRA.models>`__.
+`COBRA.models repository <https://github.com/opencobra/COBRA.models>`__.
 
 :warning: In order to guarantee compatibility across platforms, please use the full path to the model. For instance:
 
@@ -342,7 +342,7 @@ What should I do in case my PR failed?
 You can check why your PR failed by clicking on the mark and following
 the respective links. Alternatively, you can see the output of the CI
 for your PR
-`here <https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-pr-auto/>`__.
+`here <https://king.nuigalway.ie/jenkins/job/COBRAToolbox-pr-auto/>`__.
 You can then click on the build number. Under ``Console Output``, you
 can see the output of ``test/testAll.m`` with your integrated PR.
 

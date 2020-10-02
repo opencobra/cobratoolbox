@@ -1,0 +1,155 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>zHW: Combusion of Ammonia in Air</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2010-12-30"><meta name="DC.source" content="zHW_05.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>zHW: Combusion of Ammonia in Air</h1><!--introduction--><p>Ammonia, NH3, is burned in air, produces nitrogen and water by the <b>unbalanced</b> reaction</p><p><img src="zHW_05_eq69357.png" alt="$$ NH3 + O2  \longrightarrow N2 + H2O $$"></p><p>Given that you started with 51.0 g of NH3, how many g of water will be produced?</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Prepare list of Species</a></li><li><a href="#2">Balance Reaction</a></li><li><a href="#3">Convert Starting Mass of Ammonia to Moles</a></li><li><a href="#4">Calculate Moles of Water Produced</a></li><li><a href="#5">Convert Moles of Water to Mass</a></li></ul></div><h2>Prepare list of Species<a name="1"></a></h2><p>As usual for these problems, begin by specifying the list of species involved in the reaction.  We record the position of ammonia and water in this list using their chemical formulas as Matlab variables.</p><pre class="codeinput">species = {<span class="string">'NH3'</span>,<span class="string">'O2'</span>,<span class="string">'N2'</span>,<span class="string">'H2O'</span>};
+
+<span class="comment">% Record for later use the position of NH3 and H2O in this list</span>
+
+NH3 = 1;
+H2O = 4;
+
+molweight(species);
+</pre><pre class="codeoutput">
+Species                    Mol. Wt.
+-------                    --------
+NH3                           17.03
+O2                            32.00
+N2                            28.01
+H2O                           18.02
+</pre><h2>Balance Reaction<a name="2"></a></h2><p>The balanced reaction is computed using stoich and displayed using disp_reaction. disp_reaction returns integer stoichiometric coefficients, which we use for subsequent calculations.</p><pre class="codeinput">V = stoich(species);
+V = disp_reaction(V,species);
+</pre><h2>Convert Starting Mass of Ammonia to Moles<a name="3"></a></h2><p>The the mass of ammonia to moles.</p><pre class="codeinput">nNH3 = 51.0/molweight(<span class="string">'NH3'</span>);
+fprintf(<span class="string">'\nStarting amount of Ammonia = %g [moles]\n'</span>,nNH3);
+</pre><pre class="codeoutput">
+Starting amount of Ammonia = 2.99462 [moles]
+</pre><h2>Calculate Moles of Water Produced<a name="4"></a></h2><p>The key concept behind this problem is that consuming V(H20) moles of water are produced for every -V(NH3) moles of ammonia reacted.</p><pre class="codeinput">nH2O = - (V(H2O)/V(NH3))*nNH3;
+fprintf(<span class="string">'\nWater Produced = %g [moles]\n'</span>,nH2O);
+</pre><pre class="codeoutput">
+Water Produced = 4.49193 [moles]
+</pre><h2>Convert Moles of Water to Mass<a name="5"></a></h2><pre class="codeinput">fprintf(<span class="string">'\nMass of Water Produced = %g [g]\n\n'</span>, nH2O*molweight(<span class="string">'H2O'</span>));
+</pre><pre class="codeoutput">
+Mass of Water Produced = 80.9233 [g]
+
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% zHW: Combusion of Ammonia in Air
+%
+% Ammonia, NH3, is burned in air, produces nitrogen and water by the
+% *unbalanced* reaction 
+%
+% $$ NH3 + O2  \longrightarrow N2 + H2O $$
+% 
+% Given that you started with 51.0 g of NH3, how many g of water will be produced?
+
+%% Prepare list of Species
+%
+% As usual for these problems, begin by specifying the list of species
+% involved in the reaction.  We record the position of ammonia and water in
+% this list using their chemical formulas as Matlab variables.
+
+species = {'NH3','O2','N2','H2O'};
+
+% Record for later use the position of NH3 and H2O in this list
+
+NH3 = 1;
+H2O = 4;
+
+molweight(species);
+
+%% Balance Reaction
+% 
+% The balanced reaction is computed using stoich and displayed using
+% disp_reaction. disp_reaction returns integer stoichiometric coefficients,
+% which we use for subsequent calculations.
+
+V = stoich(species);
+V = disp_reaction(V,species);
+
+%% Convert Starting Mass of Ammonia to Moles
+%
+% The the mass of ammonia to moles.
+
+nNH3 = 51.0/molweight('NH3');
+fprintf('\nStarting amount of Ammonia = %g [moles]\n',nNH3);
+
+%% Calculate Moles of Water Produced
+%
+% The key concept behind this problem is that consuming V(H20) moles of
+% water are produced for every -V(NH3) moles of ammonia reacted.
+
+nH2O = - (V(H2O)/V(NH3))*nNH3;
+fprintf('\nWater Produced = %g [moles]\n',nH2O);
+
+
+%% Convert Moles of Water to Mass
+
+fprintf('\nMass of Water Produced = %g [g]\n\n', nH2O*molweight('H2O'));
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

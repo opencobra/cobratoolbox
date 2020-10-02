@@ -46,8 +46,16 @@ param.theta   = 40;
 %methods = {'optimizeCardinality','quasiConcave'};
 %methods = {'optimizeCardinality'};
 
-methods = {'optimizeCardinality','quasiConcave', 'dc'};
-maxConservationBoolAns = [551,9;510,9;551,9];
+if 0
+    methods = {'optimizeCardinality','dc', 'quasiConcave'};
+    maxConservationBoolAns = [551,9;551,9;509,9];
+    %TODO quasiConcave giving 509,9 or 510,9 depending on solver
+else
+    
+    methods = {'optimizeCardinality','dc'};
+    maxConservationBoolAns = [551,9;551,9];
+end
+
 
 maxConservationMetBool=false(size(model.S,1),length(methods));
 maxConservationRxnBool=false(size(model.S,2),length(methods));

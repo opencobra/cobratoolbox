@@ -1,0 +1,19 @@
+01/08/04 - Initial conception
+12/20/04 - Added some functionalitylike colon, subsref, etc.
+12/21/04 - fixed some bugs including bugs in min and max
+01/04/05 - some speed enhancements
+01/10/05 - more speed enhancements, handles mp strings differently
+02/07/05 - added complex, sprintf, fixed some other bugs
+07/05/05 - fixed bug in compile script relating to atan2
+08/08/05 - fixed a couple of bugs, including for subsasgn.m
+10/20/05 - fixed zeros displaying
+10/20/05 - wrote logical
+01/23/06 - fixed isinf
+02/06/06 - fixed ones display bug
+02/06/06 - added mp_dontmakeall functionality to mp_makeall.m
+02/06/06 - added cumprod.m for mp objects
+02/10/06 - added inv, fixed eye not returning mp object
+11/21/06 - added native atan2 support
+01/09/07 - Added Windows instructions from Carlos Lopez
+01/11/07 - Added other functions from Carlos Lopez (qr, svd, etc)
+01/10/08 - Some bug fixes

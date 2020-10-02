@@ -1,4 +1,4 @@
-function ReactionAbundance = calculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
+function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, infoFilePath, rxnsList, numWorkers)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
@@ -15,6 +15,9 @@ function ReactionAbundance = calculateReactionAbundance(abundancePath, modelPath
 %                            Example: 'cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv'
 %    modelPath:              Folder containing the strain-specific AGORA models
 % OPTIONAL INPUTS:
+%    infoFilePath:           Path to the spreadsheet with the taxonomy
+%                            information on organisms (default:
+%                            AGORA_infoFile.xlsx)
 %    rxnsList:               List of reactions for which the abundance
 %                            should be calculated (if left empty: all
 %                            reactions in all models)
@@ -26,6 +29,7 @@ function ReactionAbundance = calculateReactionAbundance(abundancePath, modelPath
 % OUTPUT:
 %    ReactionAbundance       Structure with abundance for each microbiome
 %                            and reaction in total and on taxon levels
+%     TaxonomyInfo:     Taxonomical information on each taxon level 
 %
 % .. Author: - Almut Heinken, 03/2018
 %                             10/2018:  changed input to location of the csv file with the
@@ -38,6 +42,8 @@ abundance = table2cell(abundance);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
+
+% 
 
 % load the models
 for i = 2:size(abundance, 1)
@@ -56,8 +62,13 @@ if ~exist('rxnsList', 'var') || isempty(rxnsList)  % define reaction list if not
 end
 
 % Get the taxonomy information
-taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-taxonomy = table2cell(taxonomy);
+if exist('infoFilePath','var')
+    taxonomy = readtable(infoFilePath, 'ReadVariableNames', false);
+    taxonomy = table2cell(taxonomy);
+else
+    taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
+    taxonomy = table2cell(taxonomy);
+end
 
 % load the models found in the individuals and extract which reactions are
 % in which model
@@ -375,6 +386,24 @@ for i = 1:length(fNames)
     if ~isempty(delArray)
         ReactionAbundance.(fNames{i})(:, delArray) = [];
     end
+end
+
+% export taxonomical information
+taxonCol = 'Phylum';
+% remove unnecessary columns
+taxonomy(:,taxonCol+1:end)=[];
+
+for t = 2:size(TaxonomyLevels, 1)
+    taxa=ReactionAbundance.(TaxonomyLevels{t})(2:end,1);
+    TaxonomyReduced=taxonomy;
+    taxonCol = find(strcmp(taxonomy(1, :), TaxonomyLevels{t}));
+    TaxonomyReduced(:,1:taxonCol-1)=[];
+    % remove duplicate entries
+    [C,IA] = unique(TaxonomyReduced(:,1),'stable');
+    % remove unclassified taxa
+    findUncl=find(contains(C,'unclassified'));
+    IA(findUncl,:)=[];
+    TaxonomyInfo.(TaxonomyLevels{t})=TaxonomyReduced(IA,:);
 end
 
 % Plot the calculated reaction abundances.

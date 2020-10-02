@@ -29,6 +29,13 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %     solverInstalled:      `true` if the solver is installed (not
 %                           necessarily working)
 %
+% USAGE:
+%    The following is an example of how to change gurobi to be the LP solver
+%    [solverOK, solverInstalled] = changeCobraSolver('gurobi','LP')
+%
+%    If there are problems changing to a solver, use the following call to debug 
+%    [solverOK, solverInstalled] = changeCobraSolver('gurobi','LP',1,1)
+%
 % Currently allowed LP solvers:
 %
 %   - fully supported solvers
@@ -163,7 +170,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %    It is a good idea to put this function call into your `startup.m` file
 %    (usually matlabinstall/toolboxes/local/startup.m)
 %
-% .. Author: -  Original file: Markus Herrgard, 1/19/07
+
 
 global SOLVERS;
 global CBTDIR;

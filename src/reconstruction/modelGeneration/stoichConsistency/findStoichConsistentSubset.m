@@ -557,7 +557,7 @@ switch finalCheckMethod
         try
             %compute maximum cardinality conservation vector using a DC approach
             %with all inconsistent reactions removed
-            solution=maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool),maxCardConsParams);
+            [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool),maxCardinalityConsParams);
             maxConservationMetBoolFinal=false(nMet,1);
             if solution.stat==1
                 %conserved if molecular mass is above epsilon

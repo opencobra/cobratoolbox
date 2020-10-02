@@ -32,6 +32,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x n` Right hand side of C*v <= d
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
+%                         * g - `n x 1` weights on zero or one norm
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
 %                       'max') linear part of the objective. Nonlinear
@@ -44,7 +45,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                       .. math::
 %
-%                          min  ~& |v| \\
+%                          min  ~& d.*|v| \\
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
@@ -54,7 +55,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 %                       .. math::
 %
-%                          min  ~& ||v||_0 \\
+%                          min  ~& d.*||v||_0 \\
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
@@ -243,6 +244,7 @@ if isfield(model,'C')
     nCtrs = size(model.C,1);
 else
     modelC = 0;
+    nCtrs = 0;
 end
 
 if isfield(model,'E')
@@ -250,10 +252,25 @@ if isfield(model,'E')
     nVars = size(model.E,2);
 else
     modelE = 0;
+    nVars = 0;
 end
 
 % build the optimization problem, after it has been actively requested to be verified
 LPproblem = buildLPproblemFromModel(model,verify);
+if strcmp(minNorm, 'oneInternal')
+    SConsistentRxnBool=model.SConsistentRxnBool;
+end
+
+%weights on norm
+if isfield(model,'g')  
+    if length(model.g)~=nRxns
+        error('model.g must be nRxns x 1')
+    end
+    normWeights=columnVector(model.g);
+else
+    normWeights=[];
+end
+
 if allowLoops
     clear model
 end
@@ -301,19 +318,25 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         % Minimize the absolute value of fluxes to 'avoid' loopy solutions
         % Solve secondary LP to minimize one-norm of |v|
         % Set up the optimization problem
-        % min sum(delta+ + delta-)
-        % 1: S*v1 = 0
-        % 3: delta+ >= -v1
-        % 4: delta- >= v1
-        % 5: c'v1 >= f or c'v1 <= f (optimal value of objective)
+        % min sum(vf + vr)
+        % 1: S*vf -S*vr = b
+        % 3: vf >= -v
+        % 4: vr >= v
+        % 5: c'v >= f or c'v <= f (optimal value of objective)
         %
-        % delta+,delta- >= 0
+        % vf,vr >= 0
         
-        LPproblem2.A = [LPproblem.A sparse(nMets,2*nRxns);
-            speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
+        LPproblem2.A = [LPproblem.A sparse(nMets+nCtrs,2*nRxns);
+             speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
             -speye(nRxns,nTotalVars) sparse(nRxns,nRxns) speye(nRxns,nRxns);
             LPproblem.c' sparse(1,2*nRxns)];
-        LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
+
+        if ~isempty(normWeights)
+            %weighted one norm
+            LPproblem2.c  = [zeros(nTotalVars,1);[normWeights;normWeights].*ones(2*nRxns,1)];
+        else
+            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
+        end
         LPproblem2.lb = [LPproblem.lb;zeros(2*nRxns,1)];
         LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nRxns,1)];
         LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);objective];
@@ -337,6 +360,52 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
             MILPproblem2 = addLoopLawConstraints(LPproblem2, model, 1:nRxns);
             solution = solveCobraMILP(MILPproblem2);
         end
+    elseif strcmp(minNorm, 'oneInternal')
+        % Minimize the absolute value of internal fluxes to 'avoid' loopy solutions
+        % Solve secondary LP to minimize one-norm of |v|
+        % Set up the optimization problem
+        % min sum(delta+ + delta-)
+        % 1: S*v1 = b
+        % 3: v1 - p + q = 0
+        % 4: c'v1 >= f or c'v1 <= f (optimal value of objective)
+        % 5: p,q >= 0
+        
+        nIntRxns=nnz(SConsistentRxnBool);
+        A2 = sparse(nIntRxns,nTotalVars);
+        A2(:,SConsistentRxnBool)=speye(nIntRxns,nIntRxns);
+        LPproblem2.A = [...
+                         LPproblem.A,                            sparse(nMets,2*nIntRxns);
+                                  A2, -speye(nIntRxns,nIntRxns), speye(nIntRxns,nIntRxns);
+                        LPproblem.c',                                sparse(1,2*nIntRxns)];
+                            
+        %only minimise the absolute value of internal reactions
+        if ~isempty(normWeights)
+            %only the weights on the internal reactions have an effect, the
+            %rest are discarded
+            normWeightsInt=normWeights(SConsistentRxnBool);
+            %weighted one norm of internal reactions
+            LPproblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
+        else
+            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
+        end
+        LPproblem2.lb = [LPproblem.lb;zeros(2*nIntRxns,1)];
+        LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nIntRxns,1)];
+        LPproblem2.b  = [LPproblem.b;zeros(nIntRxns,1);objective];
+        
+        %csense for 3 above
+        LPproblem2.csense = [LPproblem.csense; repmat('E',nIntRxns,1)];
+        % constrain the optimal value according to the original problem
+        if LPproblem.osense==-1
+            LPproblem2.csense = [LPproblem2.csense; 'G'];
+        else
+            LPproblem2.csense = [LPproblem2.csense; 'L'];
+        end
+        %minimise absolute value of internal reaction fluxes
+        LPproblem2.osense = 1;
+        
+        % Re-solve the problem
+        solution = solveCobraLP(LPproblem2);
+        
     elseif strcmp(minNorm, 'zero')
         % Minimize the cardinality (zero-norm) of v
         %       min ||v||_0

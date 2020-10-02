@@ -22,8 +22,20 @@ cd(testDir);
 solverPkgs = {'ibm_cplex', 'glpk', 'gurobi'};
 
 % Load Toy Example
-model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
-
+fileName = [CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat'];
+if 0
+    %TODO gMCStoyExample.mat needs to be made compatible with 
+%     testGeneMCS.m:
+%     Error using readCbModel (line 232)
+%     There were no valid models in the mat file.
+%     Please load the model manually via ' load /home/rfleming/work/sbgCloud/code/fork-cobratoolbox/tutorials/analysis/gMCS/gMCStoyExample.mat' and check it with verifyModel() to validate it.
+%     Try using convertOldStyleModel() before verifyModel() to bring the model structure up to date.
+%     Error in testGeneMCS (line 25)
+%     model = readCbModel([CBTDIR filesep 'tutorials' filesep 'analysis' filesep 'gMCS' filesep 'gMCStoyExample.mat']);
+    model = readCbModel(fileName);
+else
+    load(fileName)
+end
 % expected solution
 true_gmcs = cell(3,1);
 true_gmcs{1} = {'g5'}';

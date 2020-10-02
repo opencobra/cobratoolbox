@@ -1,0 +1,158 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>zHW: Hill Notation</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2010-12-30"><meta name="DC.source" content="zHW_02.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>zHW: Hill Notation</h1><!--introduction--><p>An analysis of a compound shows it to be 63.94 mass% Carbon, 7.15 mass% Hydrogen, and the rest (28.91%) is Oxygen. What is the Hill Notation for this compound?</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Problem Data</a></li><li><a href="#2">Convert to Molar Units</a></li><li><a href="#3">Approximate Atomic Representation</a></li><li><a href="#4">Error Analysis</a></li><li><a href="#5">Hill Formula</a></li></ul></div><h2>Problem Data<a name="1"></a></h2><p>The problem data is given as mass fractions of the atomic species.</p><pre class="codeinput">wC = 0.6394;
+wH = 0.0715;
+wO = 1 - wC - wH;
+</pre><h2>Convert to Molar Units<a name="2"></a></h2><pre class="codeinput">nC = wC/molweight(<span class="string">'C'</span>);
+nH = wH/molweight(<span class="string">'H'</span>);
+nO = wO/molweight(<span class="string">'O'</span>);
+</pre><h2>Approximate Atomic Representation<a name="3"></a></h2><p>This is the trickiest part of the problem. Here we construct approximate ratios of carbon, hydrogen, and oxygen in the compound and put this into an atomic represenation using a Matlab structure.</p><pre class="codeinput">d = min([nC nH nO]);
+
+r = struct([]);
+r(1).C = round(nC/d);
+r(1).H = round(nH/d);
+r(1).O = round(nO/d);
+</pre><h2>Error Analysis<a name="4"></a></h2><p>Let's see if our simple approximation solved the problem. If not, we would need to do some more work to develop a better approximation.</p><pre class="codeinput">vC = r.C*molweight(<span class="string">'C'</span>);
+vH = r.H*molweight(<span class="string">'H'</span>);
+vO = r.O*molweight(<span class="string">'O'</span>);
+
+vT = vC+vH+vO;
+
+fprintf(<span class="string">'Approximation Errors\n'</span>);
+fprintf(<span class="string">'    Carbon: %5.2f %%\n'</span>,100*(vC/vT-wC)/wC);
+fprintf(<span class="string">'  Hydrogen: %5.2f %%\n'</span>,100*(vH/vT-wH)/wH);
+fprintf(<span class="string">'    Oxygen: %5.2f %%\n'</span>,100*(vO/vT-wO)/wO);
+</pre><pre class="codeoutput">Approximation Errors
+    Carbon:  0.52 %
+  Hydrogen:  0.58 %
+    Oxygen: -1.29 %
+</pre><h2>Hill Formula<a name="5"></a></h2><p>The error analysis shows the approximate atomic representation is an acceptable solution to the problem. So the last step is to construct the Hill Formula.</p><pre class="codeinput">s = hillformula(r);
+fprintf(<span class="string">'\nFormula in Hill Notation = %s\n'</span>,s{:});
+</pre><pre class="codeoutput">
+Formula in Hill Notation = C3H4O
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+%% zHW: Hill Notation
+%
+% An analysis of a compound shows it to be 63.94 mass% Carbon, 7.15 mass%
+% Hydrogen, and the rest (28.91%) is Oxygen. What is the Hill Notation for
+% this compound?
+
+%% Problem Data
+%
+% The problem data is given as mass fractions of the atomic species.
+
+wC = 0.6394;
+wH = 0.0715;
+wO = 1 - wC - wH;
+
+%% Convert to Molar Units
+
+nC = wC/molweight('C');
+nH = wH/molweight('H');
+nO = wO/molweight('O');
+
+%% Approximate Atomic Representation
+%
+% This is the trickiest part of the problem. Here we construct
+% approximate ratios of carbon, hydrogen, and oxygen in the compound and
+% put this into an atomic represenation using a Matlab structure.
+
+d = min([nC nH nO]);
+
+r = struct([]);
+r(1).C = round(nC/d);
+r(1).H = round(nH/d);
+r(1).O = round(nO/d);
+
+%% Error Analysis
+% 
+% Let's see if our simple approximation solved the problem. If not, we
+% would need to do some more work to develop a better approximation.
+
+vC = r.C*molweight('C');
+vH = r.H*molweight('H');
+vO = r.O*molweight('O');
+
+vT = vC+vH+vO;
+
+fprintf('Approximation Errors\n');
+fprintf('    Carbon: %5.2f %%\n',100*(vC/vT-wC)/wC);
+fprintf('  Hydrogen: %5.2f %%\n',100*(vH/vT-wH)/wH);
+fprintf('    Oxygen: %5.2f %%\n',100*(vO/vT-wO)/wO);
+
+%% Hill Formula
+%
+% The error analysis shows the approximate atomic representation is an
+% acceptable solution to the problem. So the last step is to construct the
+% Hill Formula.
+
+s = hillformula(r);
+fprintf('\nFormula in Hill Notation = %s\n',s{:});
+
+
+##### SOURCE END #####
+--></body></html>

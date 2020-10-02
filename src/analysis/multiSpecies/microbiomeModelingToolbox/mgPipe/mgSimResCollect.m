@@ -1,4 +1,4 @@
-function [fSp, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, nsCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -25,7 +25,8 @@ function [fSp, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
-%    fSp:                cell array with computed NMPCs
+%    netSecretionFluxes: cell array with computed NMPCs
+%    netUptakeFluxes:    cell array with computed uptake potential
 %    Y:                  classical multidimensional scaling
 %
 % .. Author: Federico Baldini, 2017-2018
@@ -66,76 +67,90 @@ else
     fl = 3;
 end
 
-names = {'rich', 'standard', 'personalized'};
-for j = init:fl
-noPcoa = 0;
-for k = 2:patNumb + 1
-if isempty(fvaCt{fl, (k - 1)}) == 1
-    disp('Jumping not feasible model')
-    warning('NAN rows in fluxes matrix, no PCoA will be plotted')
-    sp = NaN(length(ID), 1);
-    fSp(:, k - 1) = sp;
-    noPcoa = 1;
-else
-    sp = NaN(length(ID), 1);  % consider to remove preallocation
-    for i = 1:length(ID)
-        x = fvaCt{j, (k - 1)}{i, 3};
-        e = isempty(x);
-        if e == 0;
-            sp(i, 1) = abs(fvaCt{j, (k - 1)}{i, 3} + fvaCt{j, (k - 1)}{i, 2});
-        end
-    end
-    fSp(:, k - 1) = sp;
-end
-end
+names = {'rich', 'inputDiet', 'personalized'};
 
-fSpOld=fSp;
-convRes=num2cell(fSp);
-fSp=[ID';convRes'];
-ext=['NMPCs';sampName];
-fSp=[ext';fSp'];
-writetable(cell2table(fSp),strcat(resPath, names{1, j}, '.csv'));
-if noPcoa == 1
-    Y=[];
-    disp('Jump plotting')
-else
-    JD = pdist(fSpOld','euclidean');
-    [Y, eigvals] = cmdscale(JD);
-    P = [eigvals eigvals / max(abs(eigvals))];
-    expr = [eigvals/sum(eigvals)];
-    if patStat == 0
-        plot(Y(:, 1), Y(:, 2), 'bx')
-        xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-        ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-        if length(sampName)<30
-            text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
+for j = init:fl
+    noPcoa = 0;
+    fSp=[];
+    uSp=[];
+    for k = 2:patNumb + 1
+        if isempty(fvaCt{fl, (k - 1)}) == 1
+            disp('Jumping not feasible model')
+            warning('NAN rows in fluxes matrix, no PCoA will be plotted')
+            sp = NaN(length(ID), 1);
+            up = NaN(length(ID), 1);
+            fSp(:, k - 1) = sp;
+            uSp(:, k - 1) = up;
+            noPcoa = 1;
         else
-            warning('Plot annotation with individuals names disabled because of their big number'); 
-        end
-        print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
-        title('PCoA of NMPCs');
-    else
-        patTab = readtable(indInfoFilePath);
-        patients = table2array(patTab(2, :));
-        %patients = patients(1:length(patOrg));
-        patients = patients(1:length(patients));
-        N = length(patients(1, :));
-        colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
-                for k = 1: length(patients(1, :))
-                    if str2double(patients(1, k)) == 1
-                        colorMap(k, :) = [1, 0, 0];  % Red
-                    end
-                    if str2double(patients(1, k)) == 0
-                       colorMap(k, :) = [0, 1, 0];  % Green
-                    end
+            sp = NaN(length(ID), 1);  % consider to remove preallocation
+            for i = 1:length(ID)
+                x = fvaCt{j, (k - 1)}{i, 3};
+                e = isempty(x);
+                if e == 0
+                    sp(i, 1) = abs(fvaCt{j, (k - 1)}{i, 3} + fvaCt{j, (k - 1)}{i, 2});
                 end
-       scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
-       text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
-       text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
-       xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-       ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-       title('PCoA of NMPCs');
+                if e == 0
+                    up(i, 1) = abs(nsCt{j, (k - 1)}{i, 3} + nsCt{j, (k - 1)}{i, 2});
+                end
+            end
+            fSp(:, k - 1) = sp;
+            uSp(:, k - 1) = up;
+        end
     end
-end
+    
+    fSpOld=fSp;
+    convRes=num2cell(fSp);
+    fSp=[ID';convRes'];
+    ext=['NMPCs';sampName];
+    netSecretionFluxes=[ext';fSp'];
+    writetable(cell2table(netSecretionFluxes),[resPath names{1, j} '_net_secretion_fluxes.csv'],'WriteVariableNames',false);
+    convRes=num2cell(uSp);
+    uSp=[ID';convRes'];
+    ext=['Net uptake';sampName];
+    netUptakeFluxes=[ext';uSp'];
+    writetable(cell2table(netUptakeFluxes),[resPath names{1, j} '_net_uptake_fluxes.csv'],'WriteVariableNames',false);
+    if noPcoa == 1
+        Y=[];
+        disp('Jump plotting')
+    else
+        JD = pdist(fSpOld','euclidean');
+        [Y, eigvals] = cmdscale(JD);
+        P = [eigvals eigvals / max(abs(eigvals))];
+        expr = [eigvals/sum(eigvals)];
+        if patStat == 0
+            plot(Y(:, 1), Y(:, 2), 'bx')
+            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+            if length(sampName)<30
+                text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
+            else
+                warning('Plot annotation with individuals names disabled because of their big number');
+            end
+            print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+            title('PCoA of NMPCs');
+        else
+            patTab = readtable(indInfoFilePath);
+            patients = table2array(patTab(2, :));
+            %patients = patients(1:length(patOrg));
+            patients = patients(1:length(patients));
+            N = length(patients(1, :));
+            colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
+            for k = 1: length(patients(1, :))
+                if str2double(patients(1, k)) == 1
+                    colorMap(k, :) = [1, 0, 0];  % Red
+                end
+                if str2double(patients(1, k)) == 0
+                    colorMap(k, :) = [0, 1, 0];  % Green
+                end
+            end
+            scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
+            text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
+            text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
+            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+            title('PCoA of NMPCs');
+        end
+    end
 end
 end

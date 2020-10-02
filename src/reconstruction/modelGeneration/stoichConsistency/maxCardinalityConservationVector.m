@@ -38,7 +38,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
 %              * .zeta - Stopping criteria - threshold (Default value 1e-6)
 %              * .theta - Parameter of capped `l1` approximation (Default value 0.5)
-%              * .method - {('quasiConcave'), 'optimizeCardinality'}
+%              * .method - {'quasiConcave', ('optimizeCardinality')}
 % 
 % OUTPUTS:
 %    maxConservationMetBool:    `m` x 1 boolean for consistent metabolites
@@ -46,6 +46,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %    solution:                  Structure containing the following fields:
 %
 %                                 * l - `m` x 1 molecular mass vector
+%                                 * k - `n` x 1 reaction complex mass vector 
 %                                 * stat - status:
 %
 %                                   * 1 =  Solution found
@@ -55,7 +56,6 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %
 % .. Author: - Ronan Fleming Feb, 14th 2017
 
-
 feasTol = getCobraSolverParams('LP', 'feasTol');
 % Format inputs
 if ~exist('param','var')
@@ -64,7 +64,8 @@ if ~exist('param','var')
     param.zeta = 1e-6;
     param.theta   = 0.5;    %parameter of capped l1 approximation
     param.epsilon = 1e-4;
-    param.method = 'quasiConcave';
+    param.method = 'optimizeCardinality';
+    param.printLevel = 0;
 else
     if isfield(param,'nbMaxIteration') == 0
         param.nbMaxIteration = 1000;
@@ -86,14 +87,13 @@ else
         param.theta   = 0.5;    %parameter of capped l1 approximation
     end
     if isfield(param,'method') == 0
-        param.method   = 'quasiConcave';
+        param.method   = 'optimizeCardinality';
     end
-    if isfield(param,'printLevel')
-        printLevel = param.printLevel;
-    else
-        printLevel = 0;
+    if ~isfield(param,'printLevel')
+        param.printLevel = 0;
     end
 end
+
 
 % Get data from the model
 [mlt,nlt] = size(S);
@@ -102,8 +102,8 @@ end
 [nbMaxIteration,zeta,theta,epsilon,method] = deal(param.nbMaxIteration,param.zeta,param.theta,param.epsilon,param.method);
 
 %method='quasiConcave';
+%method='optimizeCardinality';
 %method='dc';
-%method='cardOptGeneral';
 switch method
     case 'quasiConcave'
         % Solve the linear problem
@@ -159,12 +159,16 @@ switch method
         else
             % delta0 - trade-off parameter on maximise `||y||_0`
             cardProblem.delta0=1;
-            % delta1 - trade-off parameter on maximise `||y||_1`
+            % delta1 - trade-off parameter on minimise `||y||_1`
             cardProblem.delta1=0;
             %cardProblem.delta1=1e-6;
         end
 
-        solution = optimizeCardinality(cardProblem,param);
+        if 1
+            solution = optimizeCardinality(cardProblem,param);
+        else
+            solution = optimizeCardinalityT(cardProblem,param);
+        end
         %  problem                  Structure containing the following fields describing the problem
         %       p                   size of vector x
         %       q                   size of vector y
@@ -279,7 +283,7 @@ switch method
                     else
                         obj_old = obj_new;
                     end
-                    if printLevel>1
+                    if param.printLevel>1
                         if nbIteration==1
                             fprintf('%20s%12.6s%12.5s%12.6s%12.6s%12.6s%12.6s\n','itn','theta','err_l','err_obj','obj','obj_l','obj_z');
                         end
@@ -415,9 +419,19 @@ if solution.stat==1
     maxConservationMetBool=solution.l>=param.eta;
     %columns matching stoichiometrically consistent rows
     maxConservationRxnBool = getCorrespondingCols(S,maxConservationMetBool,true(nlt,1),'exclusive');
-    if printLevel>3
+    if param.printLevel>3
         fprintf('%6u\t%6u\t%s%s%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' stoichiometrically consistent by max cardinality of conservation vector. (', param.method ,' method)')
     end
+    
+    %relative mass of each reaction complex
+    F=-min(S,0);
+    solution.k = F'*solution.l;
+    %for exchange reactions, there may be only one positive stoichiometric
+    %coefficient
+    ExRxnBoolOneCoefficient = sum(S~=0)==1;
+    R = max(S,0);
+    solution.k(ExRxnBoolOneCoefficient) = solution.k(ExRxnBoolOneCoefficient) + R(:,ExRxnBoolOneCoefficient)'*solution.l;
+    %solution.k=solution.k';
 else
     maxConservationMetBool=[];
     maxConservationRxnBool=[];

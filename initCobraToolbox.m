@@ -206,7 +206,8 @@ elseif status_curl == 0
     end
     
     % reset each submodule
-    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+    %https://github.com/bazelbuild/continuous-integration/issues/727
+    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');
     
     if status_gitReset ~= 0
         fprintf(strrep(result_gitReset, '\', '\\'));
