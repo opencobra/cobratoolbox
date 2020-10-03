@@ -146,7 +146,7 @@ showprogress(0.9, 'Finishing touches...');
 
 %finish up by A: removing duplicate reactions
 %We will lose information here, but we will just remove the duplicates.
-%[modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
+[modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
 
 %Check, that there are no duplicated IDs in the primary key fields.
 ureacs = unique(modelNew.rxns);
