@@ -256,7 +256,7 @@ try
 
         % ensure that we ALWAYS call exit
         if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
-            exit(exit_code);
+            %exit(exit_code);
         end
     end
 catch ME
