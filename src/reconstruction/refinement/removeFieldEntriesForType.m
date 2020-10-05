@@ -16,7 +16,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 % OPTIONAL INPUTS:
 %    varargin:           Additional Options as 'ParameterName', Value pairs. Options are:
 %                         - 'excludeFields', fields which should not be
-%                           adjusted but kkept how they are.
+%                           adjusted but kept how they are.
 %
 % OUTPUT:
 %    modelNew:           the model in which all fields associated with the

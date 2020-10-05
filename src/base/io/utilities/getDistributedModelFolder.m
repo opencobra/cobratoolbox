@@ -1,6 +1,7 @@
 function  modelDir = getDistributedModelFolder(modelName) 
 % Identifies the folder a distributed model is located in.
-% This function only works with models which are part of the models 
+% This function only works with models distributed for testing
+% here: cobratoolbox/test/models
 %
 % USAGE:
 %

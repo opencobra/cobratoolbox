@@ -17,6 +17,12 @@ global CBTDIR
 global TOMLAB_PATH
 global ILOG_CPLEX_PATH
 
+%test solver packages
+solverPkgs = {'tomlab_cplex', 'ILOGsimple', 'ILOGcomplex'};
+
+%Test the requirements      
+solvers = prepareTest('needsLP',true,'requireOneSolverOf',solverPkgs);
+
 % save the current path
 currentDir = pwd;
 
@@ -31,8 +37,7 @@ tol = 1e-2;%set tolerance
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)',...
                    'FRUpts2', 'FUMt2_2', 'GLNabc', 'MALt2_2'}; % blocked rxn in Ecoli
 
-%test solver packages
-solverPkgs = {'tomlab_cplex', 'ILOGsimple', 'ILOGcomplex'};
+
 
 for k = 1:length(solverPkgs)
     % add the solver paths (temporary addition for CI)

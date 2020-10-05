@@ -67,8 +67,8 @@ if any(params.nonRelaxBool)
     cardProblem.ub([params.nonRelaxBool;false(mlt,1)])=0;
 end
 cardProblem.csense(1:mlt,1)='E';
-params.lambda=1;
-params.delta=0;
+cardProblem.lambda=1;
+cardProblem.delta=0;
 solutionRelax = optimizeCardinality(cardProblem,params);
 %  problem                  Structure containing the following fields describing the problem
 %       p                   size of vector x

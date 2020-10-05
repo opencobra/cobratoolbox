@@ -206,7 +206,8 @@ elseif status_curl == 0
     end
     
     % reset each submodule
-    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+    %https://github.com/bazelbuild/continuous-integration/issues/727
+    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');
     
     if status_gitReset ~= 0
         fprintf(strrep(result_gitReset, '\', '\\'));
@@ -394,9 +395,9 @@ end
 
 % check the installation of the solver
 for i = 1:length(supportedSolversNames)
-    if 0 %set to 1 to debug a new solver
+    if 1 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'tomlab_snopt')
+        if strcmp(supportedSolversNames{i},'cplex_direct')
             pause(0.1)
         end
     end

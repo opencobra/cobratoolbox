@@ -2006,51 +2006,51 @@
       </reaction>
     </listOfReactions>
     <fbc:listOfGeneProducts>
-      <fbc:geneProduct metaid="G_b2215" fbc:id="G_b2215" fbc:name="COBRAProtein1" fbc:label="b2215"/>
-      <fbc:geneProduct metaid="G_b0241" fbc:id="G_b0241" fbc:name="COBRAProtein2" fbc:label="b0241"/>
-      <fbc:geneProduct metaid="G_b0929" fbc:id="G_b0929" fbc:name="COBRAProtein3" fbc:label="b0929"/>
-      <fbc:geneProduct metaid="G_b1377" fbc:id="G_b1377" fbc:name="COBRAProtein4" fbc:label="b1377"/>
-      <fbc:geneProduct metaid="G_b4036" fbc:id="G_b4036" fbc:name="COBRAProtein9" fbc:label="b4036"/>
-      <fbc:geneProduct metaid="G_b3115" fbc:id="G_b3115" fbc:name="COBRAProtein73" fbc:label="b3115"/>
-      <fbc:geneProduct metaid="G_b2296" fbc:id="G_b2296" fbc:name="COBRAProtein74" fbc:label="b2296"/>
-      <fbc:geneProduct metaid="G_b1849" fbc:id="G_b1849" fbc:name="COBRAProtein75" fbc:label="b1849"/>
-      <fbc:geneProduct metaid="G_b3001" fbc:id="G_b3001" fbc:name="COBRAProtein189" fbc:label="b3001"/>
-      <fbc:geneProduct metaid="G_b1781" fbc:id="G_b1781" fbc:name="COBRAProtein190" fbc:label="b1781"/>
-      <fbc:geneProduct metaid="G_b0207" fbc:id="G_b0207" fbc:name="COBRAProtein191" fbc:label="b0207"/>
-      <fbc:geneProduct metaid="G_b3012" fbc:id="G_b3012" fbc:name="COBRAProtein192" fbc:label="b3012"/>
-      <fbc:geneProduct metaid="G_b3945" fbc:id="G_b3945" fbc:name="COBRAProtein193" fbc:label="b3945"/>
-      <fbc:geneProduct metaid="G_b2779" fbc:id="G_b2779" fbc:name="COBRAProtein468" fbc:label="b2779"/>
-      <fbc:geneProduct metaid="G_b0825" fbc:id="G_b0825" fbc:name="COBRAProtein473" fbc:label="b0825"/>
-      <fbc:geneProduct metaid="G_b3946" fbc:id="G_b3946" fbc:name="COBRAProtein474" fbc:label="b3946"/>
-      <fbc:geneProduct metaid="G_b2097" fbc:id="G_b2097" fbc:name="COBRAProtein484" fbc:label="b2097"/>
-      <fbc:geneProduct metaid="G_b2925" fbc:id="G_b2925" fbc:name="COBRAProtein485" fbc:label="b2925"/>
-      <fbc:geneProduct metaid="G_b1773" fbc:id="G_b1773" fbc:name="COBRAProtein486" fbc:label="b1773"/>
-      <fbc:geneProduct metaid="G_b2492" fbc:id="G_b2492" fbc:name="COBRAProtein540" fbc:label="b2492"/>
-      <fbc:geneProduct metaid="G_b0904" fbc:id="G_b0904" fbc:name="COBRAProtein541" fbc:label="b0904"/>
-      <fbc:geneProduct metaid="G_b2149" fbc:id="G_b2149" fbc:name="COBRAProtein596" fbc:label="b2149"/>
-      <fbc:geneProduct metaid="G_b2150" fbc:id="G_b2150" fbc:name="COBRAProtein597" fbc:label="b2150"/>
-      <fbc:geneProduct metaid="G_b2148" fbc:id="G_b2148" fbc:name="COBRAProtein598" fbc:label="b2148"/>
-      <fbc:geneProduct metaid="G_b2943" fbc:id="G_b2943" fbc:name="COBRAProtein599" fbc:label="b2943"/>
-      <fbc:geneProduct metaid="G_b1779" fbc:id="G_b1779" fbc:name="COBRAProtein600" fbc:label="b1779"/>
-      <fbc:geneProduct metaid="G_b0394" fbc:id="G_b0394" fbc:name="COBRAProtein715" fbc:label="b0394"/>
-      <fbc:geneProduct metaid="G_b0963" fbc:id="G_b0963" fbc:name="COBRAProtein850" fbc:label="b0963"/>
-      <fbc:geneProduct metaid="G_b0903" fbc:id="G_b0903" fbc:name="COBRAProtein960" fbc:label="b0903"/>
-      <fbc:geneProduct metaid="G_b3114" fbc:id="G_b3114" fbc:name="COBRAProtein961" fbc:label="b3114"/>
-      <fbc:geneProduct metaid="G_b2579" fbc:id="G_b2579" fbc:name="COBRAProtein962" fbc:label="b2579"/>
-      <fbc:geneProduct metaid="G_b0902" fbc:id="G_b0902" fbc:name="COBRAProtein963" fbc:label="b0902"/>
-      <fbc:geneProduct metaid="G_b1723" fbc:id="G_b1723" fbc:name="COBRAProtein994" fbc:label="b1723"/>
-      <fbc:geneProduct metaid="G_b3916" fbc:id="G_b3916" fbc:name="COBRAProtein995" fbc:label="b3916"/>
-      <fbc:geneProduct metaid="G_b3952" fbc:id="G_b3952" fbc:name="COBRAProtein996" fbc:label="b3952"/>
-      <fbc:geneProduct metaid="G_b3951" fbc:id="G_b3951" fbc:name="COBRAProtein997" fbc:label="b3951"/>
-      <fbc:geneProduct metaid="G_b2926" fbc:id="G_b2926" fbc:name="COBRAProtein1001" fbc:label="b2926"/>
-      <fbc:geneProduct metaid="G_b3612" fbc:id="G_b3612" fbc:name="COBRAProtein1004" fbc:label="b3612"/>
-      <fbc:geneProduct metaid="G_b4395" fbc:id="G_b4395" fbc:name="COBRAProtein1005" fbc:label="b4395"/>
-      <fbc:geneProduct metaid="G_b0755" fbc:id="G_b0755" fbc:name="COBRAProtein1006" fbc:label="b0755"/>
-      <fbc:geneProduct metaid="G_b2297" fbc:id="G_b2297" fbc:name="COBRAProtein1055" fbc:label="b2297"/>
-      <fbc:geneProduct metaid="G_b2458" fbc:id="G_b2458" fbc:name="COBRAProtein1056" fbc:label="b2458"/>
-      <fbc:geneProduct metaid="G_b1676" fbc:id="G_b1676" fbc:name="COBRAProtein1075" fbc:label="b1676"/>
-      <fbc:geneProduct metaid="G_b1854" fbc:id="G_b1854" fbc:name="COBRAProtein1076" fbc:label="b1854"/>
-      <fbc:geneProduct metaid="G_b3565" fbc:id="G_b3565" fbc:name="COBRAProtein1251" fbc:label="b3565"/>
+      <fbc:geneProduct metaid="G_b2215" sboTerm="SBO:0000243" fbc:id="G_b2215" fbc:name="COBRAProtein1" fbc:label="b2215"/>
+      <fbc:geneProduct metaid="G_b0241" sboTerm="SBO:0000243" fbc:id="G_b0241" fbc:name="COBRAProtein2" fbc:label="b0241"/>
+      <fbc:geneProduct metaid="G_b0929" sboTerm="SBO:0000243" fbc:id="G_b0929" fbc:name="COBRAProtein3" fbc:label="b0929"/>
+      <fbc:geneProduct metaid="G_b1377" sboTerm="SBO:0000243" fbc:id="G_b1377" fbc:name="COBRAProtein4" fbc:label="b1377"/>
+      <fbc:geneProduct metaid="G_b4036" sboTerm="SBO:0000243" fbc:id="G_b4036" fbc:name="COBRAProtein9" fbc:label="b4036"/>
+      <fbc:geneProduct metaid="G_b3115" sboTerm="SBO:0000243" fbc:id="G_b3115" fbc:name="COBRAProtein73" fbc:label="b3115"/>
+      <fbc:geneProduct metaid="G_b2296" sboTerm="SBO:0000243" fbc:id="G_b2296" fbc:name="COBRAProtein74" fbc:label="b2296"/>
+      <fbc:geneProduct metaid="G_b1849" sboTerm="SBO:0000243" fbc:id="G_b1849" fbc:name="COBRAProtein75" fbc:label="b1849"/>
+      <fbc:geneProduct metaid="G_b3001" sboTerm="SBO:0000243" fbc:id="G_b3001" fbc:name="COBRAProtein189" fbc:label="b3001"/>
+      <fbc:geneProduct metaid="G_b1781" sboTerm="SBO:0000243" fbc:id="G_b1781" fbc:name="COBRAProtein190" fbc:label="b1781"/>
+      <fbc:geneProduct metaid="G_b0207" sboTerm="SBO:0000243" fbc:id="G_b0207" fbc:name="COBRAProtein191" fbc:label="b0207"/>
+      <fbc:geneProduct metaid="G_b3012" sboTerm="SBO:0000243" fbc:id="G_b3012" fbc:name="COBRAProtein192" fbc:label="b3012"/>
+      <fbc:geneProduct metaid="G_b3945" sboTerm="SBO:0000243" fbc:id="G_b3945" fbc:name="COBRAProtein193" fbc:label="b3945"/>
+      <fbc:geneProduct metaid="G_b2779" sboTerm="SBO:0000243" fbc:id="G_b2779" fbc:name="COBRAProtein468" fbc:label="b2779"/>
+      <fbc:geneProduct metaid="G_b0825" sboTerm="SBO:0000243" fbc:id="G_b0825" fbc:name="COBRAProtein473" fbc:label="b0825"/>
+      <fbc:geneProduct metaid="G_b3946" sboTerm="SBO:0000243" fbc:id="G_b3946" fbc:name="COBRAProtein474" fbc:label="b3946"/>
+      <fbc:geneProduct metaid="G_b2097" sboTerm="SBO:0000243" fbc:id="G_b2097" fbc:name="COBRAProtein484" fbc:label="b2097"/>
+      <fbc:geneProduct metaid="G_b2925" sboTerm="SBO:0000243" fbc:id="G_b2925" fbc:name="COBRAProtein485" fbc:label="b2925"/>
+      <fbc:geneProduct metaid="G_b1773" sboTerm="SBO:0000243" fbc:id="G_b1773" fbc:name="COBRAProtein486" fbc:label="b1773"/>
+      <fbc:geneProduct metaid="G_b2492" sboTerm="SBO:0000243" fbc:id="G_b2492" fbc:name="COBRAProtein540" fbc:label="b2492"/>
+      <fbc:geneProduct metaid="G_b0904" sboTerm="SBO:0000243" fbc:id="G_b0904" fbc:name="COBRAProtein541" fbc:label="b0904"/>
+      <fbc:geneProduct metaid="G_b2149" sboTerm="SBO:0000243" fbc:id="G_b2149" fbc:name="COBRAProtein596" fbc:label="b2149"/>
+      <fbc:geneProduct metaid="G_b2150" sboTerm="SBO:0000243" fbc:id="G_b2150" fbc:name="COBRAProtein597" fbc:label="b2150"/>
+      <fbc:geneProduct metaid="G_b2148" sboTerm="SBO:0000243" fbc:id="G_b2148" fbc:name="COBRAProtein598" fbc:label="b2148"/>
+      <fbc:geneProduct metaid="G_b2943" sboTerm="SBO:0000243" fbc:id="G_b2943" fbc:name="COBRAProtein599" fbc:label="b2943"/>
+      <fbc:geneProduct metaid="G_b1779" sboTerm="SBO:0000243" fbc:id="G_b1779" fbc:name="COBRAProtein600" fbc:label="b1779"/>
+      <fbc:geneProduct metaid="G_b0394" sboTerm="SBO:0000243" fbc:id="G_b0394" fbc:name="COBRAProtein715" fbc:label="b0394"/>
+      <fbc:geneProduct metaid="G_b0963" sboTerm="SBO:0000243" fbc:id="G_b0963" fbc:name="COBRAProtein850" fbc:label="b0963"/>
+      <fbc:geneProduct metaid="G_b0903" sboTerm="SBO:0000243" fbc:id="G_b0903" fbc:name="COBRAProtein960" fbc:label="b0903"/>
+      <fbc:geneProduct metaid="G_b3114" sboTerm="SBO:0000243" fbc:id="G_b3114" fbc:name="COBRAProtein961" fbc:label="b3114"/>
+      <fbc:geneProduct metaid="G_b2579" sboTerm="SBO:0000243" fbc:id="G_b2579" fbc:name="COBRAProtein962" fbc:label="b2579"/>
+      <fbc:geneProduct metaid="G_b0902" sboTerm="SBO:0000243" fbc:id="G_b0902" fbc:name="COBRAProtein963" fbc:label="b0902"/>
+      <fbc:geneProduct metaid="G_b1723" sboTerm="SBO:0000243" fbc:id="G_b1723" fbc:name="COBRAProtein994" fbc:label="b1723"/>
+      <fbc:geneProduct metaid="G_b3916" sboTerm="SBO:0000243" fbc:id="G_b3916" fbc:name="COBRAProtein995" fbc:label="b3916"/>
+      <fbc:geneProduct metaid="G_b3952" sboTerm="SBO:0000243" fbc:id="G_b3952" fbc:name="COBRAProtein996" fbc:label="b3952"/>
+      <fbc:geneProduct metaid="G_b3951" sboTerm="SBO:0000243" fbc:id="G_b3951" fbc:name="COBRAProtein997" fbc:label="b3951"/>
+      <fbc:geneProduct metaid="G_b2926" sboTerm="SBO:0000243" fbc:id="G_b2926" fbc:name="COBRAProtein1001" fbc:label="b2926"/>
+      <fbc:geneProduct metaid="G_b3612" sboTerm="SBO:0000243" fbc:id="G_b3612" fbc:name="COBRAProtein1004" fbc:label="b3612"/>
+      <fbc:geneProduct metaid="G_b4395" sboTerm="SBO:0000243" fbc:id="G_b4395" fbc:name="COBRAProtein1005" fbc:label="b4395"/>
+      <fbc:geneProduct metaid="G_b0755" sboTerm="SBO:0000243" fbc:id="G_b0755" fbc:name="COBRAProtein1006" fbc:label="b0755"/>
+      <fbc:geneProduct metaid="G_b2297" sboTerm="SBO:0000243" fbc:id="G_b2297" fbc:name="COBRAProtein1055" fbc:label="b2297"/>
+      <fbc:geneProduct metaid="G_b2458" sboTerm="SBO:0000243" fbc:id="G_b2458" fbc:name="COBRAProtein1056" fbc:label="b2458"/>
+      <fbc:geneProduct metaid="G_b1676" sboTerm="SBO:0000243" fbc:id="G_b1676" fbc:name="COBRAProtein1075" fbc:label="b1676"/>
+      <fbc:geneProduct metaid="G_b1854" sboTerm="SBO:0000243" fbc:id="G_b1854" fbc:name="COBRAProtein1076" fbc:label="b1854"/>
+      <fbc:geneProduct metaid="G_b3565" sboTerm="SBO:0000243" fbc:id="G_b3565" fbc:name="COBRAProtein1251" fbc:label="b3565"/>
     </fbc:listOfGeneProducts>
     <groups:listOfGroups>
       <groups:group sboTerm="SBO:0000633" groups:id="group1" groups:name="Alternate Carbon Metabolism" groups:kind="partonomy">

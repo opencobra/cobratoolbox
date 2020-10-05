@@ -1,4 +1,4 @@
-function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
+function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
 % Tests for a list of reactions if these reactions are
 % mass-balanced by adding all elements on left hand side and comparing them
 % with the sums of elements on the right hand side of the reaction.
@@ -7,7 +7,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 %
 % USAGE:
 %
-%    [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, Elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
+%    [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
 %
 % INPUT:
 %    model:                  COBRA model structure:
@@ -29,11 +29,11 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, El
 % OUTPUTS:
 %    massImbalance:          `nRxn` x `nElement` matrix with mass imbalance
 %                            for each element checked. 0 if balanced.
-%    imBalancedMass:         `nRxn` x 1 cell with charge imbalance
+%    imBalancedMass:         `nRxn` x 1 cell with mass imbalance
 %                            e.g. -3 H means three hydrogens disappear in the reaction.
 %    imBalancedCharge:       `nRxn` x 1 vector with charge imbalance, empty if no imbalanced reactions
 %    imBalancedRxnBool:      boolean vector indicating imbalanced reactions (including exchange reactions!)
-%    Elements:               `nElement` x 1 cell array of element abbreviations checked
+%    elements:               `nElement` x 1 cell array of element abbreviations checked
 %    missingFormulaeBool:    `nMet` x 1 boolean vector indicating metabolites without formulae
 %    balancedMetBool:        boolean vector indicating metabolites exclusively involved in balanced reactions
 %
@@ -56,26 +56,26 @@ end
 if ~exist('fileName','var')
     fileName='';
 end
-% List of Elements
-Elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
+% List of elements
+elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
 
-E=sparse(nMet, length(Elements));
-massImbalance=zeros(nRxn, length(Elements));
+E=sparse(nMet, length(elements));
+massImbalance=zeros(nRxn, length(elements));
 missingFormulaeBool=cellfun(@isempty, model.metFormulas);
-for j = 1 : length(Elements)
+for j = 1 : length(elements)
     if j==1
-        [dE, E_el, missingFormulaeBool]=checkBalance(model, Elements{j}, printLevel,[],missingFormulaeBool);
+        [dE, E_el, missingFormulaeBool]=checkBalance(model, elements{j}, printLevel,[],missingFormulaeBool);
         massImbalance(:, j)=dE;
         E(:, j)=E_el;
         if printLevel>0
-            fprintf('%s\n', ['Checked element ' Elements{j}]);
+            fprintf('%s\n', ['Checked element ' elements{j}]);
         end
     else
         %no need to print out for each element which metabolites have no
         %formula
-        [massImbalance(:, j), E(:, j)]=checkBalance(model, Elements{j}, 0);
+        [massImbalance(:, j), E(:, j)]=checkBalance(model, elements{j}, 0);
         if printLevel>0
-            fprintf('%s\n', ['Checking element ' Elements{j}]);
+            fprintf('%s\n', ['Checking element ' elements{j}]);
         end
     end
 end
@@ -96,12 +96,12 @@ imBalancedMass=cell(nRxn, 1);
 for i = 1 : nRxn
     imBalancedMass{i, 1}='';
     if imBalancedRxnBool(i)
-        for j = 1 : length(Elements)
+        for j = 1 : length(elements)
             if massImbalance(i, j) ~= 0
                 if ~strcmp(imBalancedMass{i, 1}, '')
-                    imBalancedMass{i, 1} = [imBalancedMass{i, 1} ', ' int2str(massImbalance(i, j)) ' ' Elements{j}];
+                    imBalancedMass{i, 1} = [imBalancedMass{i, 1} ', ' int2str(massImbalance(i, j)) ' ' elements{j}];
                 else
-                    imBalancedMass{i, 1} = [int2str(massImbalance(i, j)) ' ' Elements{j}];
+                    imBalancedMass{i, 1} = [int2str(massImbalance(i, j)) ' ' elements{j}];
                 end
             end
         end
@@ -110,7 +110,7 @@ for i = 1 : nRxn
         end
     end
     if mod(i, 1000)==0
-        fprintf('%n\t%s\n', i, ['reactions checked for ' Elements{j} ' balance']);
+        fprintf('%n\t%s\n', i, ['reactions checked for ' elements{j} ' balance']);
     end
 end
 if printLevel==-1
@@ -168,7 +168,7 @@ end
 
 % Check for charge balance (initialize with NaN, if the fields are not set
 % this will make it clear.
-imBalancedCharge=NaN * ones(nRxn, 1);
+imBalancedCharge = NaN * ones(nRxn, 1);
 firstMissing=0;
 if isfield(model, 'metCharges')
     for m=1:nMet
@@ -185,22 +185,22 @@ if isfield(model, 'metCharges')
                     fid=fopen([fileName 'metabolites_without_charge.txt'],'w');
                 end
                 firstMissing=1;
-                fprintf(fid, '%s\t%s\n', int2str(m), model.mets{m})
+                fprintf(fid, '%s\t%s\n', int2str(m), model.mets{m});
             end
         end
     end
 
-    imBalancedCharge=model.S' * double(model.metCharges); % Matlab does not support this operation on two int values - one needs to be converted to double. The smaller matrix is selected.
+    imBalancedCharge = model.S' * double(model.metCharges); % Matlab does not support this operation on two int values - one needs to be converted to double. The smaller matrix is selected.
 end
 
 if printLevel==-1 && isfield(model,'SIntRxnBool')
     firstMissing=0;
     if any(imBalancedCharge)
         for q=1:nRxn
-            if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') %&& dC(q) ~= 0
+            if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') && imBalancedCharge(q) ~= 0
                 if ~firstMissing
-                    fid=fopen([fileName 'charge_imbalanced_reactions.txt'],'w');
-                    fprintf('%s\n',['There are charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    fid=fopen([fileName 'mass_balanced_charge_imbalanced_reactions.txt'],'w');
+                    fprintf('%s\n',['There are mass balanced, but charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(q), 0);
@@ -222,7 +222,7 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
     if any(imBalancedCharge)
         fprintf('%s\n', 'Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn
-            if model.SIntRxnBool(q) && strcmp(imBalancedMass{p, 1}, '') %&& dC(q) ~= 0
+            if model.SIntRxnBool(q) && strcmp(imBalancedMass{p, 1}, '') && imBalancedCharge(q) ~= 0
                 equation=printRxnFormula(model, model.rxns(q), 0);
                 fprintf('%s\t%s\t%s\n', int2str(q), model.rxns{q}, equation{1});
                 for m=1:size(model.S, 1)

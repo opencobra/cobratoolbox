@@ -31,27 +31,28 @@ assert(verifyCobraFunctionError('addMIRIAMAnnotations','inputs',{model,model.rxn
 assert(verifyCobraFunctionError('addMIRIAMAnnotations','inputs',{model,model.rxns(1),'brenda','blubb'}))
 
 % now, we will add a valid brenda ID
-assert(~isfield(model,'rxnisbrendaID'));
+% Ronan: changed rxnisbrendaID to rxnBRENDAID 
+assert(~isfield(model,'rxnBRENDAID'));
 validBrendaID = '1.2.3.4';
 modelWithID = addMIRIAMAnnotations(model,model.rxns(1),'brenda',validBrendaID);
-assert(isfield(modelWithID,'rxnisbrendaID'));
-assert(all(strcmp(modelWithID.rxnisbrendaID(2:end),'')));
-assert(strcmp(modelWithID.rxnisbrendaID{1},validBrendaID));
+assert(isfield(modelWithID,'rxnBRENDAID'));
+assert(all(strcmp(modelWithID.rxnBRENDAID(2:end),'')));
+assert(strcmp(modelWithID.rxnBRENDAID{1},validBrendaID));
 additionalIDs = {validBrendaID, '2.3.4.5', '5.6.7.8'};
 
 % add multiple additional IDs (we need the ID 3 times.
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
-assert(isempty(setxor(strsplit(modelWithID.rxnisbrendaID{1},'; '),additionalIDs)));
-assert(length(strsplit(modelWithID.rxnisbrendaID{1},'; ')) == 3);
+assert(isempty(setxor(strsplit(modelWithID.rxnBRENDAID{1},'; '),additionalIDs)));
+assert(length(strsplit(modelWithID.rxnBRENDAID{1},'; ')) == 3);
 
 % lets add the ids again and see, that it did nmot change.
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);
-assert(isempty(setxor(strsplit(modelWithID.rxnisbrendaID{1},'; '),additionalIDs)));
-assert(length(strsplit(modelWithID.rxnisbrendaID{1},'; ')) == 3);
+assert(isempty(setxor(strsplit(modelWithID.rxnBRENDAID{1},'; '),additionalIDs)));
+assert(length(strsplit(modelWithID.rxnBRENDAID{1},'; ')) == 3);
 
 % now, replace the annotation by the validBrendaID
 modelWithID = addMIRIAMAnnotations(modelWithID,model.rxns(1),'brenda',validBrendaID,'replaceAnnotation',true);
-assert(strcmp(modelWithID.rxnisbrendaID{1},validBrendaID));
+assert(strcmp(modelWithID.rxnBRENDAID{1},validBrendaID));
 
 % repeat the addition of all
 modelWithID = addMIRIAMAnnotations(modelWithID,repmat(model.rxns(1),3,1),'brenda',additionalIDs);

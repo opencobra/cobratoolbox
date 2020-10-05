@@ -53,7 +53,6 @@ end
 if mergeGenes
     showprogress(0, 'Combining Genes in Progress ...');
     
-    
     if isfield(model1, 'genes') || isfield(model2, 'genes')
         %if one is missing create it
         if ~isfield(model1, 'genes')
@@ -105,7 +104,6 @@ end
 % Combining Reaction List
 showprogress(0.25, 'Combining reaction lists ...');
 modelNew = mergeFields(modelNew,model1,model2,'rxns');
-
 
 % Combining Metabolite List
 fprintf('Combining metabolite lists: ');

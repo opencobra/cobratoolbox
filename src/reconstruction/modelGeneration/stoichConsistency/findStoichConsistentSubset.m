@@ -72,8 +72,8 @@ minCardRelaxParams.epsilon=epsilon;
 minCardRelaxParams.eta=feasTol*100;
 
 maxCardinalityConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
-maxCardinalityConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
-%maxCardinalityConsParams.method = 'dc';%seems to work, but not always the best
+%maxCardinalityConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
+maxCardinalityConsParams.method = 'dc';%seems to work, but not always the best
 maxCardinalityConsParams.theta = 0.5;
 maxCardinalityConsParams.eta=feasTol*100;
 
@@ -557,7 +557,7 @@ switch finalCheckMethod
         try
             %compute maximum cardinality conservation vector using a DC approach
             %with all inconsistent reactions removed
-            solution=maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool),maxCardConsParams);
+            [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool),maxCardinalityConsParams);
             maxConservationMetBoolFinal=false(nMet,1);
             if solution.stat==1
                 %conserved if molecular mass is above epsilon
