@@ -26,6 +26,9 @@ if isempty(strfind(getenv('HOME'), 'vmhadmin')) and isempty(strfind(getenv('HOME
         launchTestSuite = false;
     end
 else
+    % Running in CI environment
+    fprintf('Running test in Jenkins/CI environment\n');
+
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
     restoredefaultpath;
@@ -260,6 +263,9 @@ try
         end
     end
 catch ME
+
+    fprintf('exception %s while running test: %s\n', ME.identifier, ME.message);
+
     % Also clean up temporary files in case of an error.
     removeTempFiles(testDirPath, testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
