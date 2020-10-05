@@ -72,7 +72,7 @@ if launchTestSuite
     testDirContent = getFilesInDir('type', 'all');  % Get all currently present files in the folder.
     testDirPath = pwd;
     cd(currentDir);
-
+%{
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         WAITBAR_TYPE = 0;
 
@@ -84,7 +84,7 @@ if launchTestSuite
     else
         WAITBAR_TYPE = 1;
     end
-
+%}
     if verLessThan('matlab', '8.2')
         error('The testsuite of The COBRA Toolbox can only be run with MATLAB R2014b+.')
     end
