@@ -166,6 +166,9 @@ if launchTestSuite
     end
 end
 
+
+fprintf ('force-setting launchTestSuite = true\n');
+launchTestSuite = true;
 fprintf ('launchTestSuite=%s\n', string(launchTestSuite));
 
 try
