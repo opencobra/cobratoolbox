@@ -6,6 +6,7 @@ pipeline {
         stage('testAll_matlab_R2020a') {
           steps {
             sh '''export CNA_PATH=/home/jenkins
+
 /usr/local/MATLAB/R2020a/bin/matlab -nodesktop -nosplash < ./test/testAll.m'''
           }
         }
