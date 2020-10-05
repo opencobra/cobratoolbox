@@ -387,6 +387,11 @@ if ~isempty(listUniqueValues)
         
         fbc_parameter.id=listUniqueNames{i,1};
         fbc_parameter.value=listUniqueValues(i);
+        if fbc_parameter.value == -1000 || fbc_parameter.value == +1000 || fbc_parameter.value == 0 || isinf(fbc_parameter.value)
+            fbc_parameter.sboTerm=626;
+        else
+            fbc_parameter.sboTerm=625;
+        end
         if i==1
             sbmlModel.parameter=fbc_parameter;
         else
