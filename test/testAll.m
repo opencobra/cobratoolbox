@@ -166,6 +166,8 @@ if launchTestSuite
     end
 end
 
+fprintf ('launchTestSuite=%s\n', string(launchTestSuite));
+
 try
     if launchTestSuite
         % save the userpath
