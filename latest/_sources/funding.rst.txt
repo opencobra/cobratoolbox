@@ -19,10 +19,10 @@ Funding
   <table width="100%" class="noBorder">
        <tr class="noBorder">
        <td class="noBorderImg" width="30%">
-           <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/sysmedpd.png" alt="sysmedpd" width="80%"></a></div>
+           <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://king.nuigalway.ie/cobratoolbox/img/sysmedpd.svg" alt="sysmedpd" width="80"></a></div>
        </td>
        <td class="noBorderImg" width="30%">
-            <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://prince.lcsb.uni.lu/cobratoolbox/img/eu.svg" alt="eu" width="80%"></a></div>
+            <div style="align-center;"><a href="http://www.sysmedpd.eu"><img src="https://king.nuigalway.ie/cobratoolbox/img/eu.svg" alt="eu" width="80"></a></div>
        </td>
        <td class="noBorder" width="40%">
        European Union’s Horizon 2020 research and innovation programme under grant agreement No 668738.
