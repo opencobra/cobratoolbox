@@ -38,6 +38,19 @@ testModelXML = rmfield(testModelXML,'rxnReferences');
 % assess any potential differences
 assert(~any(numDiff))
 
+% obtain SBML structure
+testSBMLstruct = writeSBML(testModelSBML,'testModelSBML.sbml');
+
+% asses if lower/upper bounds have proper SBO terms assigned
+for i = 1:length(testSBMLstruct.parameter)
+    value = testSBMLstruct.parameter(i).value;
+    if abs(value) == 1000 || isinf(value) || value == 0
+        assert(testSBMLstruct.parameter(i).sboTerm == 626)
+    else
+        assert(testSBMLstruct.parameter(i).sboTerm == 625)
+    end
+end
+
 % remove the written file to clean up
 delete 'testModelSBML.sbml.xml';
 
