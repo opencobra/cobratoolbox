@@ -165,3 +165,22 @@ ATN.mets = tMets;
 ATN.atns = tMetNrs; %also include the unique identity of that atom in the set of atoms
 ATN.rxns = tRxns;
 ATN.elements = elements;
+
+[nAtomInstances, nAtransInstances] = size(ATN.A);
+
+%generate a unique id for each atom by concatenation of the metabolite,
+%atom and element
+ATN.atoms=cell(nAtomInstances,1);
+for i=1:nAtomInstances
+    ATN.atoms{i}=[ATN.mets{i}  '#' num2str(ATN.atns(i)) '#' ATN.elements{i}];
+end
+
+[ah,~] = find(A == -1); % head node indices
+[at,~] = find(A == 1); % tail node indices
+
+%generate a unique id for each atom transition incidence by concatenation
+%of the reaction, head and tail atoms
+ATN.atrans=cell(nAtransInstances,1);
+for i=1:nAtransInstances
+    ATN.atrans{i,1}=[ATN.rxns{i}  '#' ATN.atoms{ah(i)} '#' ATN.atoms{at(i)}];
+end
