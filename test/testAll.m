@@ -14,7 +14,7 @@ fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
 
 % request explicitly from the user to launch test suite locally
-if isempty(strfind(getenv('HOME'), 'jenkins'))
+if isempty(strfind(getenv('HOME'), 'vmhadmin')) and isempty(strfind(getenv('HOME'), 'jenkins'))
     reply = '';
     while isempty(reply)
         reply = input([' -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: '], 's');
@@ -275,3 +275,6 @@ end
 
 % switch back to the original directory
 cd(origDir)
+
+% explicit 'exit' required for R2018b in non-interactive mode to avoid SEGV near end of test
+exit
