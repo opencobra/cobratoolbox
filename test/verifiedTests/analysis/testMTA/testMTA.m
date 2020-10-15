@@ -9,7 +9,7 @@
 
 global CBTDIR
 
-solversToUse = prepareTest('needsMIQP',true, 'needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'}, 'excludeSolvers', {'qpng'});
+solversToUse = prepareTest('needsMIQP',true, 'needsQP', true, 'useSolversIfAvailable', {'tomlab_cplex', 'ibm_cplex', 'gurobi'}, 'excludeSolvers', {'qpng'},'requiredToolboxes', {'statistics_toolbox'});
 % Note: the solver QPNG cannot be used with this test
 
 % save the current path
