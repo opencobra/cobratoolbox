@@ -1,4 +1,4 @@
-function joinModelsPairwiseFromList(modelList, inputModels, varargin)
+function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % This function joins a list of microbial genome-scale reconstructions in
 % all combinations. Models are not paired with themselves and pairs are
 % only created once (model1+model2 = model2+model1). The reactions in each
@@ -21,8 +21,7 @@ function joinModelsPairwiseFromList(modelList, inputModels, varargin)
 % INPUTS:
 %     modelList:          Cell array with names of reconstruction structures to be
 %                         joined
-%     inputModels:        Array with COBRA model structures to be joined (needs to
-%                         have same length as modelList)
+%     modelFolder:        Path to folder with COBRA model structures to be joined
 %
 % OPTIONAL INPUTS:
 %     c:                  Coupling factor by which reactions in each joined model are
@@ -40,17 +39,17 @@ function joinModelsPairwiseFromList(modelList, inputModels, varargin)
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);
-parser.addRequired('inputModels', @iscell);
+parser.addRequired('modelFolder', @ischar);
 parser.addParameter('c', 400, @(x) isnumeric(x))
 parser.addParameter('u', 0, @(x) isnumeric(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('pairwiseModelFolder', pwd, @(x) ischar(x))
 parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
 
-parser.parse(modelList, inputModels, varargin{:})
+parser.parse(modelList, modelFolder, varargin{:})
 
 modelList = parser.Results.modelList;
-inputModels = parser.Results.inputModels;
+modelFolder = parser.Results.modelFolder;
 c = parser.Results.c;
 u = parser.Results.u;
 numWorkers = parser.Results.numWorkers;
@@ -76,6 +75,16 @@ for i = 1:size(modelList, 1)
             parpool(numWorkers)
         end
         pairedModelsTemp = {};
+        
+        % Load the reconstructions to be joined
+        inputModels={};
+        model=readCbModel([modelFolder filesep modelList{i,1} '.mat']);
+        inputModels{i}=model;
+        for k = i + 1:size(modelList, 1)
+            model=readCbModel([modelFolder filesep modelList{k,1} '.mat']);
+            inputModels{k}=model;
+        end
+        
         parfor k = i + 1:size(modelList, 1)
             model1 = inputModels{i};
             model2 = inputModels{k};
