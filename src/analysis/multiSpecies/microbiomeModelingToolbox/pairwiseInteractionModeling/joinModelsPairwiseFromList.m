@@ -1,4 +1,4 @@
-function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList, inputModels, varargin)
+function joinModelsPairwiseFromList(modelList, inputModels, varargin)
 % This function joins a list of microbial genome-scale reconstructions in
 % all combinations. Models are not paired with themselves and pairs are
 % only created once (model1+model2 = model2+model1). The reactions in each
@@ -34,14 +34,9 @@ function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList,
 %     numWorkers:         Number of workers in parallel pool if desired
 %     pairwiseModelFolder Folder where pairwise models will be saved
 %
-% OUTPUTS:
-%     pairedModels:       Structue containing created pairwise models in all
-%                         combinations
-%     pairedModelInfo:    Table with information on created pairwise models
-%
 % .. Author:
 %      - Almut Heinken, 02/2018
-%      - Almut Heinken, 02/2020: Inputs changed for more efficient computation
+%      - Almut Heinken, 02/2020: Inputs and outputs changed for more efficient computation
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);
@@ -117,10 +112,8 @@ for i = 1:size(modelList, 1)
             end
             
             if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])
-                pairedModels{cnt, 1} = pairedModelsTemp{k};
-                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],pairedModelsTemp{k});
-            else
-                pairedModels{cnt, 1} = {};
+                pairedModel=pairedModelsTemp{k};
+                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],'pairedModel');
             end
             cnt = cnt + 1;
         end

@@ -82,9 +82,13 @@ saveSolutionsFlag = parser.Results.saveSolutionsFlag;
 numWorkers = parser.Results.numWorkers;
 sigD = parser.Results.sigD;
 
+%% initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
+if isempty(CBT_LP_SOLVER)
+    initCobraToolbox
+end
 solver = CBT_LP_SOLVER;
-% initialize parallel pool
+
 if numWorkers > 0
     % with parallelization
     poolobj = gcp('nocreate');
@@ -92,6 +96,7 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
+environment = getEnvironment();
 
 if saveSolutionsFlag == true
     pairwiseSolutions{1, 1} = 'pairedModelID';
@@ -116,8 +121,8 @@ growthRates={};
 solutionsTmp={};
 
 parfor i = 1:size(pairedModelInfo, 1)
-    changeCobraSolver(solver, 'LP');
-    % prevent creation of log files
+    restoreEnvironment(environment);
+    changeCobraSolver(solver, 'LP', 0, -1);
     changeCobraSolverParams('LP', 'logFile', 0);
     
     % load the model
@@ -178,8 +183,13 @@ parfor i = 1:size(pairedModelInfo, 1)
     solutionsTmp{i}{1,2} = solutionSingle1;
     solutionsTmp{i}{1,3} = solutionSingle2;
 end
+
+% backup results for large number of simulations
+if size(pairedModelInfo, 1) > 1000
 save('growthRates','growthRates','-v7.3');
 save('solutionsTmp','solutionsTmp','-v7.3');
+end
+
 for i = 1:size(pairedModelInfo, 1)
     solPaired = solutionsTmp{i}{1,1};
     solSingle1 = solutionsTmp{i}{1,2};
