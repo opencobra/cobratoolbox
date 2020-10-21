@@ -1,4 +1,4 @@
-function ATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
+function dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 % Builds a matlab digraph object representing an atom transition multigraph
 % corresponding to a metabolic network from reaction stoichiometry and atom
 % mappings.
@@ -11,7 +11,7 @@ function ATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 % the same pair of atoms are involved in atom transitions of opposite
 % orientation, corresponding to reactions in different directions.
 %
-% Note that A = incidence(ATM) returns a  `p` x `q` atom transition 
+% Note that A = incidence(dATM) returns a  `p` x `q` atom transition 
 % directed multigraph incidence matrix where `p` is the number of atoms and 
 % `q` is the number of atom transitions
 
@@ -34,7 +34,7 @@ function ATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 %                   correspond to reaction identifiers in input `rxns`.
 %
 % OUTPUT:
-%    ATM:           Matlab digraph structure with the following tables:
+%    dATM:           Matlab digraph structure with the following tables:
 %
 %                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
 %                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
@@ -48,7 +48,7 @@ function ATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 %                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
 %                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
 %                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .EdgeTable.AransIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
 %                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
 %                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
@@ -238,21 +238,26 @@ end
 %                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
 %                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .EdgeTable.TransIstIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.OrigTransIstIndex - unique numeric id for
+%                      each atom transition instance, with original ordering
+%                      of data
 %                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
 %                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
 
-EdgeTable = table([ah,at],ATN.atrans,ATN.aTransInstanceIndex,ATN.rxns,ah,at,...
-    'VariableNames',{'EndNodes','Trans','TransIstIndex','Rxn','HeadAtomIndex','TailAtomIndex'});
+EdgeTable = table([ah,at],ATN.atrans,ATN.aTransInstanceIndex,ATN.aTransInstanceIndex,ATN.rxns,ah,at,ATN.atoms(ah),ATN.atoms(at),...
+    'VariableNames',{'EndNodes','Trans','TransInstIndex','OrigTransInstIndex','Rxn','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom'});
 
 NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.mets,ATN.atns,ATN.elements,...
     'VariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
 
-%atom transition directed multigraph as a matlab graph object
-ATM = digraph(EdgeTable,NodeTable);
+%atom transition as a matlab directed multigraph object
+dATM = digraph(EdgeTable,NodeTable);
+nTransInst = size(dATM.Edges,1);
+dATM.Edges.TransInstIndex= (1:nTransInst)';
 
 if options.sanityChecks
-    A = incidence(ATM);
+    A = incidence(dATM);
     
     bool=~any(A,1);
     if any(bool)
@@ -316,8 +321,8 @@ if options.sanityChecks
             error('I transition matrix must have two entries per column, -1 and 1.')
         end
         
-        res = A - I
-        [indi,indj]=find(res)
+        res = A - I;
+        [indi,indj]=find(res);
         
         if max(max(res))~=0
             error('Inconsistent atom transition graph')

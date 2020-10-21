@@ -1,11 +1,11 @@
-function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClasses, mtrans2rxns, atrans2mtrans,mbool,rbool,V,E,I2C] = identifyConservedMoieties(model, ATM, options)
+function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, moietyTransition2rxns, atransInstance2mtrans,mbool,rbool,V,E,I2C] = identifyConservedMoieties(model, dATM, options)
 % Identifies conserved moieties in a metabolic network (model) by graph
-% theoretical analysis of the corresponding atom transition network (ATM).
+% theoretical analysis of the corresponding atom transition network (dATM).
 %
 %
 % USAGE:
 %
-%    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClasses, mtrans2rxns, atrans2mtrans] = identifyConservedMoieties(model, ATM)
+%    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, moietyTransition2rxns, atrans2mtrans] = identifyConservedMoieties(model, dATM)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -15,7 +15,7 @@ function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2i
 %                               metabolite identifiers in rxnfiles.
 %                             * .rxns - An `n x 1` array of reaction identifiers. Should match
 %                               `rxnfile` names in `rxnFileDir`.
-%    ATM:                   Structure with following fields:
+%    dATM:                   Structure with following fields:
 %
 %                             * .A - A `p x q` sparse incidence matrix for the atom transition
 %                               network, where `p` is the number of atoms and `q` is
@@ -47,13 +47,13 @@ function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2i
 %                               isomorphism class vectors (columns of `L`)
 %    atrans2moiety:        `p x 1` vector mapping atoms (rows of `A`) to
 %                           moiety instances (rows of `M`)
-%    mtrans2rxns:           'q x 1' vector mapping moiety transitions
+%    moietyTransition2rxns:           'q x 1' vector mapping moiety transitions
 %                           (columns of M) to reactions (columns of S)
 %    atrans2mtrans:         'q x 1' vector mapping atom transitions
 %                           (columns of A) to moiety transitions (columns
 %                           of M)
-%    mbool:                 `m x 1` Boolean, true for metabolites in ATM reactions
-%    rbool:                 `n x 1` Boolean, true for reactions included in ATM
+%    mbool:                 `m x 1` Boolean, true for metabolites in dATM reactions
+%    rbool:                 `n x 1` Boolean, true for reactions included in dATM
 %    V:                     The `m x p` matrix that maps each metabolite to an
 %                           instance of a moiety in the moiety graph.
 %    E:                     The `q x n` matrix that maps each moiety
@@ -81,25 +81,23 @@ if any(bool)
     error('No metabolite can have an id with a # character in it.')
 end
 
-rbool = ismember(model.rxns,ATM.Edges.Rxn); % True for reactions included in ATM
-mbool = ismember(model.mets,ATM.Nodes.Met); % True for reactions included in ATM
+rbool = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
+mbool = ismember(model.mets,dATM.Nodes.Met); % True for reactions included in dATM
 
 N = sparse(model.S(mbool,rbool)); % Stoichometric matrix of atom mapped reactions
 
 [nMets,nRxns]=size(model.S);
 [nMappedMets,nMappedRxns] = size(N);
-nAtoms = size(ATM.Nodes,1);
-nTransInstances = size(ATM.Edges,1);
-
+nAtoms = size(dATM.Nodes,1);
+nTransInstances = size(dATM.Edges,1);
 
 %matrix mapping atoms to mapped metabolites
-[~,atoms2mets] = ismember(ATM.Nodes.Met,model.mets(mbool));
+[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(mbool));
 M2A = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping atom transition instances to mapped reactions
-[~,atransInstance2rxns] = ismember(ATM.Edges.Rxn,model.rxns(rbool));
-T02R = sparse((1:nTransInstances)',atransInstance2rxns,1,nTransInstances,nMappedRxns);
-
+[~,atransInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rbool));
+Ti2R = sparse((1:nTransInstances)',atransInstance2rxns,1,nTransInstances,nMappedRxns);
 
 % An atom transition that occurs in a reaction is an atom transition instance,
 % and since identical atom transition instances can happen in a more than one
@@ -111,46 +109,217 @@ T02R = sparse((1:nTransInstances)',atransInstance2rxns,1,nTransInstances,nMapped
 % the node and edge labels corresponding to the first instance of that
 % atom transition
 
-%check for duplicate edges, including those of opposite directions
-if ismultigraph(ATM)
-    % [H,eind,ecount] = simplify(G)
-    % returns a graph without multiple edges or self-loops and
-    % returns edge indices eind and edge counts ecount:
-    % H.Edges(eind(i),:) is the edge in H that represents edge i in G.
-    % ecount(j) is the number of edges in G that correspond to edge j in H.
+%%%%%%%%%%%%%%%%%%%%%% Undirected atom transition multigraph %%%%%%%%%%%%%%
+
+%convert to an undirected multigraph, but note that conversion from a 
+%directed to undirected multigraph flips the orientation
+%of some edges and changes the order of the edges
+ATM = graph(dATM.Edges,dATM.Nodes);
+
+% ATM.Edges.TransInstIndex provides an index to recover the original
+% order of edges in dATM
+
+if 0
+    %save the orientation of the atom transition in ATM with respect to dATM
+    orientationTransInstancesATM = zeros(nTransInstances,1);
     
-    [ATG,eind,ecount] = simplify(ATM);
-    nTrans = size(ATG.Edges,1);
+    forwardBool = all(ATM.Edges.EndNodes == dATM.Edges.EndNodes(ATM.Edges.TransInstIndex,:),2);
+    orientationTransInstancesATM(forwardBool)=1;
     
-    %remove the reaction prefix from the Transition name
-    for i=1:nTrans
-        [tok,rem]=strtok(ATG.Edges.Trans{i},'#');
-        ATG.Edges.Trans{i}=rem(2:end);
+    reverseBool = all(ATM.Edges.EndNodes == [dATM.Edges.EndNodes(ATM.Edges.TransInstIndex,2), dATM.Edges.EndNodes(ATM.Edges.TransInstIndex,1)],2);
+    orientationTransInstancesATM(reverseBool)=-1;
+    
+    if sanityChecks
+        if any(orientationTransInstancesATM==0)
+            error('inconsistent aATM and ATM indexing')
+        end
+    end
+    
+    %update the Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match any reorientation
+    for i=1:nTransInstances
+        if orientationTransInstancesATM(i)==1
+            %remove the reaction prefix from the Transition name
+            [~,rem]=strtok(ATM.Edges.Trans{i},'#');
+            ATM.Edges.Trans{i}=rem(2:end);
+        else
+            ATM.Edges.HeadAtomIndex(i) = ATM.Edges.EndNodes(i,2);
+            ATM.Edges.TailAtomIndex(i) = ATM.Edges.EndNodes(i,1);
+            HeadAtom = ATM.Edges.TailAtom{i};
+            TailAtom = ATM.Edges.HeadAtom{i};
+            ATM.Edges.HeadAtom{i} = HeadAtom;
+            ATM.Edges.TailAtom{i} = TailAtom;
+            ATM.Edges.Trans{i} = [HeadAtom '#' TailAtom];
+        end
+    end
+    
+    if sanityChecks
+        %boolean of edges whose orientation is the same
+        forwardBool1 = all([ATM.Edges.HeadAtomIndex, ATM.Edges.TailAtomIndex] == ...
+            [dATM.Edges.HeadAtomIndex(ATM.Edges.TransInstIndex),dATM.Edges.TailAtomIndex(ATM.Edges.TransInstIndex)],2);
+        
+        if ~all(forwardBool1)
+            %boolean of edges whose orientation has been flipped by ATM = graph(dATM.Edges,dATM.Nodes);
+            reverseBool1 = all([ATM.Edges.HeadAtomIndex, ATM.Edges.TailAtomIndex] == ...
+                [dATM.Edges.TailAtomIndex(ATM.Edges.TransInstIndex),dATM.Edges.HeadAtomIndex(ATM.Edges.TransInstIndex)],2);
+            error('inconsistent dATM and ATM indexing')
+        end
+    end
+end
+%%%%%%%%%%%%%%%%%%% Atom transition graph %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% [H,eind,ecount] = simplify(G)
+% returns a graph without multiple edges or self-loops and
+% returns edge indices eind and edge counts ecount:
+% H.Edges(eind(i),:) is the edge in H that represents edge i in G.
+% ecount(j) is the number of edges in G that correspond to edge j in H.
+[ATG,eind,ecount] = simplify(ATM);
+nAtoms = size(ATG.Nodes,1);
+nTrans = size(ATG.Edges,1);
+
+%update transInstanceIndex2transIndex to account for edge reordering
+transInstanceIndex2transIndex(ATM.Edges.TransInstIndex) = eind; 
+transInstanceIndex2transIndex=transInstanceIndex2transIndex';
+
+%find the edges of ATG that correspond exactly to the edge in dATM
+% LIA = ismember(A,B,'rows') for matrices A and B with the same number
+% of columns, returns a vector containing true where the rows of A are
+% also rows of B and false otherwise.
+isTrans = ismember(dATM.Edges.TransInstIndex,ATG.Edges.TransInstIndex);
+
+%save the orientation of the atom transition in ATM with respect to dATM
+orientationTransInstancesATG = zeros(nTransInstances,1);
+
+forwardBool = all(dATM.Edges.EndNodes == ATG.Edges.EndNodes(transInstanceIndex2transIndex),2);
+orientationTransInstancesATG(forwardBool)=1;
+
+reverseBool = all(dATM.Edges.EndNodes == ...
+    [ATG.Edges.EndNodes(transInstanceIndex2transIndex,2), ATG.Edges.EndNodes(transInstanceIndex2transIndex,1)],2);
+
+orientationTransInstancesATG(reverseBool)=-1;
+
+if sanityChecks
+    if any(orientationTransInstancesATG==0)
+        error('inconsistent aATM and ATG indexing')
     end
 end
 
-transInstanceIndex2transIndex = eind;
-transIndex = (1:nTrans)';
-if 0
-    transInstanceIndex2transIndex = ATG.Edges.TransIndex(eind);
-    transIndex = ATG.Edges.TransIndex;
+%update the Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match any reorientation
+for i=1:nTransInstances
+    if orientationTransInstancesATG(i)==1
+        %remove the reaction prefix from the Transition name
+        [~,rem]=strtok(ATM.Edges.Trans{i},'#');
+        ATM.Edges.Trans{i}=rem(2:end);
+    else
+        ATM.Edges.HeadAtomIndex(i) = ATM.Edges.EndNodes(i,2);
+        ATM.Edges.TailAtomIndex(i) = ATM.Edges.EndNodes(i,1);
+        HeadAtom = ATM.Edges.TailAtom{i};
+        TailAtom = ATM.Edges.HeadAtom{i};
+        ATM.Edges.HeadAtom{i} = HeadAtom;
+        ATM.Edges.TailAtom{i} = TailAtom;
+        ATM.Edges.Trans{i} = [HeadAtom '#' TailAtom];
+    end
 end
-T2T = sparse(transInstanceIndex2transIndex,(1:nTransInstances)',1,nTrans,nTransInstances);
+
+if sanityChecks
+    %boolean of edges whose orientation is the same
+    forwardBool1 = all([ATM.Edges.HeadAtomIndex, ATM.Edges.TailAtomIndex] == ...
+        [dATM.Edges.HeadAtomIndex(ATM.Edges.TransInstIndex),dATM.Edges.TailAtomIndex(ATM.Edges.TransInstIndex)],2);
+    
+    if ~all(forwardBool1)
+        %boolean of edges whose orientation has been flipped by ATM = graph(dATM.Edges,dATM.Nodes);
+        reverseBool1 = all([ATM.Edges.HeadAtomIndex, ATM.Edges.TailAtomIndex] == ...
+            [dATM.Edges.TailAtomIndex(ATM.Edges.TransInstIndex),dATM.Edges.HeadAtomIndex(ATM.Edges.TransInstIndex)],2);
+        error('inconsistent dATM and ATM indexing')
+    end
+end
+
+%boolean of edges whose orientation is the same
+forwardBool2 = dATM.Edges.HeadAtomIndex==ATG.Edges.HeadAtomIndex(transInstanceIndex2transIndex);
+%boolean of edges whose orientation has been flipped by [ATG,eind,ecount] = simplify(ATM);
+reverseBool2 = dATM.Edges.TailAtomIndex==ATG.Edges.HeadAtomIndex(transInstanceIndex2transIndex);
+if sanityChecks
+    bool2 = forwardBool2 | reverseBool2;
+    if ~all(bool2)
+        error('inconsistent aATM and ATG indexing')
+    end
+end
+%save the relative reorientation of ATG ->-> dATM
+orientationTransInstances = ones(nTransInstances,1);
+orientationTransInstances(reverseBool2)= -1;
+
+
+%map each atom transition to one or more atom transition instances
+transIndex = (1:nTrans)';
+
+%assume the orientation of each atom transition is the same as
+%the corresponding atom transition instance
+T2Ti = sparse(transInstanceIndex2transIndex,(1:nTransInstances)',1,nTrans,nTransInstances);
+
 
 if sanityChecks
     for i=1:nTransInstances
-        fprintf('%s\n',int2str(i))
-        fprintf('%s\n',ATG.Edges.Trans{transInstanceIndex2transIndex(i)})
-        fprintf('%s\n\n',ATM.Edges.Trans{i})
+        %name of atom transition instance, without reaction id
+        aTransInstanceHeadAtom = dATM.Edges.HeadAtom{i};
+        aTransInstanceTailAtom = dATM.Edges.TailAtom{i};
+        aTransHeadAtom = ATG.Edges.TailAtom{transInstanceIndex2transIndex(i)};
+        aTransTailAtom = ATG.Edges.HeadAtom{transInstanceIndex2transIndex(i)};
+        if ~strcmp(aTransInstanceHeadAtom,aTransHeadAtom)
+            if orientationTransInstances(i)==-1
+                error('mismatch of atom transition instance and atom transition')
+            end
+            if ~strcmp(aTransInstanceHeadAtom,aTransTailAtom)
+                error('mismatch of atom transition instance and atom transition')
+                if orientationTransInstances(i)==1
+                    error('mismatch of atom transition instance and atom transition')
+                end
+            end
+        end
     end
 end
 
-[isTrans,transIndex2transInstanceIndex] = ismember(ATG.Edges.TransIndex,ATM.Edges.TransIndex);
-T2T = sparse((1:nTrans)',transIndex2transInstanceIndex,1,nTrans,nTransInstances);
-
+%update the transition indices in the atom transition graph
+if 1
+    ATG.Edges.TransIndex=transIndex;
+    %ATG.Edges = movevars(ATG.Edges,'TransIndex','After','Trans');
+else
+    ATG.Edges = addvars(ATG.Edges,transIndex,'NewVariableNames','TransIndex','After','Trans');
+end
 
 %map atoms to metabolites
-[isMet, atoms2mets] = ismember(ATM.mets,model.mets);
+[isMet, atoms2mets] = ismember(dATM.Nodes.Met,model.mets(mbool));
+M2A =  sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
+
+if 0
+    %now take into account any reorientation
+    T2Ti = sparse(transInstanceIndex2transIndex,(1:nTransInstances)',orientationTransInstances,nTrans,nTransInstances);
+end
+
+%map atom transitions to reactions.
+% an atom transition can map to multiple reactions
+% a reaction can map to multiple atom transitions
+T2R = T2Ti*Ti2R;
+
+if sanityChecks
+    T2R2 = sparse(nTrans,nMappedRxns);
+    %matrix mapping each atom transition to mapped reactions
+    mappedRxn=model.rxns(rbool);
+    for i = 1:nTrans
+        for j = 1:nMappedRxns
+            T2R2(i,j)=any(strcmp(mappedRxn{j},dATM.Edges.Rxn(T2Ti(i,:)~=0)));
+        end
+    end
+    
+    res = (T2R~=0) - (T2R2~=0);
+    if max(max(abs(res)))~=0
+        figure;spy([T2R,T2R2])
+        figure;spy(T2R - T2R2)
+        figure;spy(T2R~=0 - T2R2~=0)
+        error('Inconsistent mapping from atom transition to reaction')
+    end
+end
+
+%add a placeholder for the moiety indices to the atom transition graph
+atoms2moiety=zeros(nAtoms,1);
+ATG.Nodes = addvars(ATG.Nodes,atoms2moiety,'NewVariableNames','MoietyIndex');
 
 % Find connected components of underlying undirected graph.
 % Each component corresponds to an "atom conservation relation".
@@ -171,11 +340,7 @@ end
 
 compElements = cell(nComps, 1); % Element for each atom conservation relation
 for i = 1:nComps
-    aName=subgraphs{i,1}.Nodes.nodeID{1};
-    [tok,rem]=strtok(aName,'#');
-    [tok,rem]=strtok(rem,'#');
-    [tok,rem]=strtok(rem,'#');
-    compElements{i}=tok;
+    compElements{i}=subgraphs{i,1}.Nodes.Element{1};
 end
 
 %estimate for the number of conserved moieties
@@ -193,12 +358,12 @@ nVertFirstSubgraph=zeros(rowRankDeficiencyN,1);
 atrans2component = zeros(nTrans,1);
 
 % Map atoms to isomorphism class
-% atrans2isomorphismClasses: `p x 1` vector mapping atoms (rows of `A`) to
+% atrans2isomorphismClass: `p x 1` vector mapping atoms (rows of `A`) to
 % connected components (rows of `L`)
 atoms2isomorphismClass = zeros(nAtoms,1);
 
 % Map atom transitions to isomorphism class
-atrans2isomorphismClasses = zeros(nTrans,1);
+atrans2isomorphismClass = zeros(nTrans,1);
 
 xi = zeros(rowRankDeficiencyN,1); %index of first subgraph in each isomorphism class
 xj = zeros(nComps,1); %indices of subgraphs identical to first in each isomorphism class
@@ -218,7 +383,7 @@ if ~verLessThan('matlab', '9.1')
                     if excludedSubgraphs(j)==0
                         %test for graph isomorphism including of the
                         %metabolite labels of the nodes
-                        if isisomorphic(subgraphs{i,1},subgraphs{j,1},'NodeVariables','Mets')
+                        if isisomorphic(subgraphs{i,1},subgraphs{j,1},'NodeVariables','Met')
                             I2C(isomorphismClassNumber,j)=1;
                             excludedSubgraphs(j)=1;
                             xj(j)=isomorphismClassNumber;
@@ -230,14 +395,14 @@ if ~verLessThan('matlab', '9.1')
                             end
                             
                             % Map atom transitions to connected components
-                            atrans2component(subgraphs{j,1}.Edges.AtransIndex)=j;
+                            atrans2component(subgraphs{j,1}.Edges.TransIndex)=j;
                             
                             %save the indices of the atoms corresponding to
                             %this moiety
                             atoms2isomorphismClass(subgraphs{j,1}.Nodes.AtomIndex)=isomorphismClassNumber;
                             
                             %save the indices of the atom transitions corresponding to this moiety
-                            atrans2isomorphismClasses(subgraphs{j,1}.Edges.AtransIndex)=isomorphismClassNumber;
+                            atrans2isomorphismClass(subgraphs{j,1}.Edges.TransIndex)=isomorphismClassNumber;
                         end
                     end
                 else
@@ -257,16 +422,16 @@ if ~verLessThan('matlab', '9.1')
                     end
                     
                     % Map atom transitions to connected components
-                    atrans2component(subgraphs{i,1}.Edges.AtransIndex)=i;
+                    atrans2component(subgraphs{i,1}.Edges.TransIndex)=i;
                     
                     %save the indices of the atoms corresponding to
                     %this moiety
                     atoms2isomorphismClass(subgraphs{i,1}.Nodes.AtomIndex)=isomorphismClassNumber;
                     
                     %save the indices of the atom transitions corresponding to this moiety
-                    atrans2isomorphismClasses(subgraphs{i,1}.Edges.AtransIndex)=isomorphismClassNumber;
+                    atrans2isomorphismClass(subgraphs{i,1}.Edges.TransIndex)=isomorphismClassNumber;
                     
-                    %savenumber of vertices in first subgraph of each isomorphism class
+                    %save number of vertices in first subgraph of each isomorphism class
                     nVertFirstSubgraph(isomorphismClassNumber)=size(subgraphs{i,1}.Nodes,1);
                 end
             end
@@ -288,10 +453,15 @@ nIsomorphismClasses = size(I2C,1);
 %map ATG to connected component and isomorphism class
 ATG.Nodes = addvars(ATG.Nodes,atoms2component,'NewVariableNames','Component');
 ATG.Nodes = addvars(ATG.Nodes,atoms2isomorphismClass,'NewVariableNames','IsomorphismClass');
-Edges = ATG.Edges;
-Edges = addvars(Edges,ATG.Nodes.Component(Edges.HeadAtomIndex),'NewVariableNames','Component');
-Edges = addvars(Edges,ATG.Nodes.IsomorphismClass(Edges.HeadAtomIndex),'NewVariableNames','IsomorphismClass');
-ATG = graph(Edges,ATG.Nodes);
+if 0
+    Edges = ATG.Edges;
+    Edges = addvars(Edges,ATG.Nodes.Component(Edges.HeadAtomIndex),'NewVariableNames','Component');
+    Edges = addvars(Edges,ATG.Nodes.IsomorphismClass(Edges.HeadAtomIndex),'NewVariableNames','IsomorphismClass');
+    ATG = graph(Edges,ATG.Nodes);
+else
+    ATG.Edges.Component = ATG.Nodes.Component(ATG.Edges.HeadAtomIndex);
+    ATG.Edges.IsomorphismClass = ATG.Nodes.IsomorphismClass(ATG.Edges.HeadAtomIndex);
+end
 
 %matrix to map connected component to atoms
 C2A = sparse(atoms2component,(1:nAtoms)',1,nComps,nAtoms);
@@ -306,8 +476,8 @@ if sanityChecks
     end
 end
 
-%matix to map atom transitions to isomorphism classes
-T2I = sparse((1:nTrans)',atrans2isomorphismClasses,1,nTrans,nIsomorphismClasses);
+%matrix to map atom transitions to isomorphism classes
+T2I = sparse((1:nTrans)',atrans2isomorphismClass,1,nTrans,nIsomorphismClasses);
 
 %matrix to map atom transitions to connected components
 T2C = sparse((1:nTrans)',atrans2component,1,nTrans,nComps);
@@ -335,15 +505,23 @@ for i = 1:nIsomorphismClasses
     end
 end
 
-%create the moiety instance transition graph explicitly as a
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%create the moiety transition graph explicitly as a
 %subgraph of the atom transition graph
 [isFirst, moiety2isomorphismClass] = ismember(atoms2component,xi);
 ATG.Nodes = addvars(ATG.Nodes,isFirst,'NewVariableNames','IsFirst');
 nMoieties=nnz(isFirst);
+A = incidence(ATG);
+isFirstTransition = any(A(isFirst, :), 1)';
+if 0
+    ATG.Edges = addvars(ATG.Edges,isFirstTransition,'NewVariableNames','IsFirst');
+else
+    ATG.Edges.IsFirst = isFirstTransition;
+end
 
-%Map moiety instance to isomorphism class
+%Map each moiety to an isomorphism class
 moiety2isomorphismClass = moiety2isomorphismClass(isFirst);
-%Matrix to map moieties to isomorphism classes
+%Matrix to map each moiety to an isomorphism class
 M2I = sparse((1:nMoieties)',moiety2isomorphismClass,1,nMoieties,nIsomorphismClasses);
 
 if sanityChecks
@@ -356,44 +534,49 @@ end
 %draft moiety instance transition graph, before editing node and
 %edge information
 MTG = subgraph(ATG,isFirst);
+MTG.Nodes.MoietyIndex = [1:nMoieties]';
+
+if sanityChecks
+    %double check that there is no reordering of edges
+    diffTransIndex = diff(MTG.Edges.TransIndex);
+    if any(diffTransIndex<1)
+        error('reordering of edges of moiety transition graph')
+    end
+end
 
 %add moiety specific information
-MTG.Nodes = addvars(MTG.Nodes,moietyFormulae(moiety2isomorphismClass),'NewVariableNames','Formula','After','IsomorphismClass');
-MTG.Nodes = removevars(MTG.Nodes,{'Mets','Atns','Elements'});
-if 1
-    MTG.Nodes = addvars(MTG.Nodes,MTG.Nodes.nodeID,'NewVariableNames','FirstAtom');
-    MTG.Nodes = removevars(MTG.Nodes,'nodeID');
-    MTG.Nodes = addvars(MTG.Nodes,(1:nMoieties)','NewVariableNames','NodeID','Before','AtomIndex');
+MTG.Nodes = removevars(MTG.Nodes,{'AtomNumber','Element'});
+MTG.Nodes = addvars(MTG.Nodes,moietyFormulae(moiety2isomorphismClass),'NewVariableNames','Formula','After','MoietyIndex');
+
+if 0
+    %graph.Edges cannot be directly edited in a graph object, so extract,
+    %edit and regenerate the graph
+    %         Error using graph/subsasgn (line 23)
+    %         Direct editing of edges not supported. Use addedge or rmedge instead.
+    %
+    %         Error in identifyConservedMoieties (line 490)
+    %         MTG.Edges = addvars(MTG.Edges,MTG.Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
+    Edges = addvars(MTG.Edges,Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
+    Edges = removevars(Edges,'Name');
+    Edges = addvars(Edges,Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula','After','Rxns');
+    MTG = graph(Edges,MTG.Nodes);
 else
-    %R2020a
-    MTG.Nodes = renamevars(MTG.Nodes,'Name','FirstAtom');
+    MTG.Edges.Formula=MTG.Nodes.Formula(MTG.Edges.EndNodes(:,1));
 end
-MTG.Nodes = addvars(MTG.Nodes,[1:nMoieties]','NewVariableNames','MoietyIndex','After','NodeID');
 
-%graph.Edges cannot be directly edited in a graph object, so extract,
-%edit and regenerate the graph
-%         Error using graph/subsasgn (line 23)
-%         Direct editing of edges not supported. Use addedge or rmedge instead.
-%
-%         Error in identifyConservedMoieties (line 490)
-%         MTG.Edges = addvars(MTG.Edges,MTG.Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
-Nodes = MTG.Nodes;
-Edges = MTG.Edges;
-
-Edges = addvars(Edges,Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
-Edges = removevars(Edges,'Name');
-Edges = addvars(Edges,Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula','After','Rxns');
-Edges = addvars(Edges,strcat(strcat(Edges.Rxns,'#'),Edges.Formula),'NewVariableNames','Name','After','EndNodes');
-MTG = graph(Edges,Nodes);
 %size of the moiety instance transition graph
 nMoietyTransitions=size(MTG.Edges,1);
 
 if sanityChecks
     % Extract moiety graph directly from atom transition
     % graph incidence matrix
-    [isFirst, ~] = ismember(atoms2component,xi);
-    isFirstTransition = any(A(isFirst, :), 1);
-    M = A(isFirst, isFirstTransition);
+    [isFirstAlso, ~] = ismember(atoms2component,xi);
+    if ~all(isFirst == isFirstAlso)
+        error('moiety incidence matrix does not match first component')
+    end
+    A = incidence(ATG);
+    isFirstTransitionAlso = any(A(isFirstAlso, :), 1);
+    M = A(isFirstAlso, isFirstTransitionAlso);
     
     [mh,~] = find(M == -1); % head node indices
     [mt,~] = find(M == 1); % tail node indices
@@ -401,7 +584,7 @@ if sanityChecks
     if ~isisomorphic(MTG,MTG2)
         error('Moiety transition graphs not isomorphic')
     end
-    if 0
+    if 1
         I = incidence(MTG);
         res=M-I;
         if max(max(abs(res)))~=0
@@ -413,10 +596,6 @@ if sanityChecks
     end
 end
 
-%add a placeholder for the moiety indices to the atom transition graph
-atoms2moiety=zeros(nAtoms,1);
-ATG.Nodes = addvars(ATG.Nodes,atoms2moiety,'NewVariableNames','MoietyIndex');
-
 %add the moiety indices for the first atoms in each moiety
 moietyInd=1;
 for i=1:nAtoms
@@ -426,7 +605,7 @@ for i=1:nAtoms
     end
 end
 
-%recreate a subgraph from each component
+%create a subgraph from each component
 subgraphs=cell(nComps,1);
 for i = 1:nComps
     subgraphs{i,1}=subgraph(ATG,atoms2component==i);
@@ -448,7 +627,8 @@ end
 for i = 1:nComps
     if ~any(i==xi)
         for j=1:size(subgraphs{i}.Nodes,1)
-            ATG.Nodes.MoietyIndex(strcmp(ATG.Nodes.nodeID,subgraphs{i}.Nodes.nodeID(j))) = subgraphs{i}.Nodes.MoietyIndex(j);
+            bool = ismember(ATG.Nodes.AtomIndex,subgraphs{i}.Nodes.AtomIndex(j));
+            ATG.Nodes.MoietyIndex(bool) = subgraphs{i}.Nodes.MoietyIndex(j);
         end
     end
 end
@@ -456,13 +636,13 @@ end
 %extract the map from atoms to moiety
 atoms2moiety = ATG.Nodes.MoietyIndex;
 
-%create the map from moiety to atoms
+%matrix to map from moiety to atoms
 M2A = sparse(atoms2moiety,(1:nAtoms)',1,nMoieties,nAtoms);
 
 if sanityChecks
     for j=1:nMoieties
         fprintf('%s\n',moietyFormulae{moiety2isomorphismClass(j)})
-        tabulate(ATG.Nodes.Elements(M2A(j,:)~=0))
+        tabulate(ATG.Nodes.Element(M2A(j,:)~=0))
         moietyMetIndices=atoms2mets(M2A(j,:)~=0);
         
         if length(unique(moietyMetIndices))>1
@@ -471,44 +651,147 @@ if sanityChecks
     end
 end
 
-%map metabolite to moiety
-M2M = zeros(nMets,nMoieties);
-for j=1:nMoieties
-    atomInd = find(ATG.Nodes.MoietyIndex == j);
-    for k = 1:length(atomInd)
-        M2M(strcmp(model.mets,ATG.Nodes.Mets{atomInd(k)}),j) = M2M(strcmp(model.mets,ATG.Nodes.Mets{atomInd(k)}),j) + 1;
+% Map between moiety graph and metabolic network
+%map metabolite to moieties
+moieties2mets = atoms2mets(isFirst);
+
+%matrix to map one or more moiety to each metabolite
+M2M = sparse(moieties2mets,(1:nMoieties)', 1,nMets,nMoieties);
+
+if sanityChecks
+    [~,moieties2mets2] = ismember(MTG.Nodes.Met,model.mets(mbool));
+    if ~all(moieties2mets == moieties2mets2)
+        error('Mismatch of mapping moieties to metabolites')
+    end
+    
+    M2M2 = zeros(nMets,nMoieties);
+    for j=1:nMoieties
+        M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) = M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) + 1;
+    end 
+    res = M2M - M2M2;
+    if norm(res)~=0
+        error('Mismatch of mapping moieties to metabolite')
+    end
+
+    M2M3 = zeros(nMets,nMoieties);
+    for j=1:nMoieties
+        atomInd = find(ATG.Nodes.MoietyIndex == j);
+        for k = 1:length(atomInd)
+            M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) = M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) + 1;
+        end
+    end
+    %Normalise each column
+    M2M3 = M2M3./sum(M2M3,1);
+    
+    res=M2M-M2M3;
+    if norm(res)~=0
+        error('Matrix mapping metabolites to moieties is incorrect')
     end
 end
-%Normalise each column
-M2M = M2M./sum(M2M,1);
 
+%map moiety transitions to reactions
+%T2R = T2Ti*Ti2R;
+M2R = T2R(isFirstTransition,:);
 
-%map atom transitions to isomorphism classes
-H = sparse((1:nTrans)',atrans2isomorphismClasses,1,nTrans,nIsomorphismClasses);
+if 0
+    %in general it is not possible to specify the mapping from moiety
+    %transitions to reactions with a vector, because more than one moiety
+    %transition can map to more than one reaction
+    [~,moietyTransition2rxns]=ismember(MTG.Edges.Rxn,model.rxns(rbool));
+    M2R2 = sparse((1:nMoietyTransitions)',moietyTransition2rxns,1,nMoietyTransitions,nMappedRxns);
+    %therefore it is not expected that, in general, res will be empty
+    res = M2R - M2R2;
+    spy(res)
+end
 
+%Moiety graph decomposition
+res = M2M*M2M'*N - M2M*M*M2R;
+if max(max(abs(res)))~=0
+    figure;spy(res) %checks the magnitudes of the coefficients is correct
+    figure;spy(((M2M*M2M'*N)~=0) - ((M2M*M*M2R)~=0)) %checks the sparsity pattern is correct
+    error('Moiety graph decomposition is incorrect')
+end
 
+% Map atom transitions to moiety transitions
+atransInstance2mtrans = zeros(nTransInstances,1);
 
-%for i=1:nMoieties
+[mh,~] = find(M == -1); % head nodes in moiety graph
+[mt,~] = find(M == 1); % tail nodes in moiety graph
 
+%incidence matrix of the directed multigraph representing atom transition
+%instances
+A = incidence(dATM);
+[ah,~] = find(A == -1); % head nodes
+[at,~] = find(A == 1); % tail nodes
+
+% An atom transition instance maps to a moiety transition if its head node maps to
+% the head moiety, its tail node to the tail moiety, and its from the same
+% reaction
+for i = 1:length(mh)
+    if i==1
+        pause(0.1)
+    end
+    inHead = ismember(ah, find(atrans2isomorphismClass == mh(i)));
+    inTail = ismember(at, find(atrans2isomorphismClass == mt(i)));
+    inRxn = atransInstance2rxns == moietyTransition2rxns(i);
+    atransInstance2mtrans((inHead & inTail) & inRxn) = i;
+end
+
+%Moiety graph decomposition
+[m, n] = size(N);
+[p, q] = size(M);
 
 %     S = sparse(i,j,s,m,n,nzmax) uses vectors i, j, and s to generate an
 %     m-by-n sparse matrix such that S(i(k),j(k)) = s(k), with space
 %     allocated for nzmax nonzeros.
+%%%%  Vectors i, j, and s are all the same length.
+%     Any elements of s that are zero are ignored, along with the
+%     corresponding values of i and j.  Any elements of s that have duplicate
+%     values of i and j are added together.  The argument s and one of the
+%     arguments i or j may be scalars, in which case the scalars are expanded
+%     so that the first three arguments all have the same length.
 
-%map moieties instances to isomorphism classes
-K = sparse(moiety2isomorphismClass,(1:nMoieties)', 1, nIsomorphismClasses,nMoieties);
+V = sparse(moieties2mets, (1 : p)', ones(p, 1), m, p); % Matrix mapping mapped metabolites to moiety instances
+E = sparse((1 : q)', moietyTransition2rxns, ones(q, 1), q, n); % Matrix mapping moiety transitions to mapped reactions
+
+% Remove reverse directions of bidirectional moiety transitions
+F = speye(q, q);
+isForward = true(q, 1);
+for j = 1:n
+    isSubstrate = ismember(moieties2mets, find(N(:,j) < 0));
+    isReverse = (moietyTransition2rxns == j) & any(M(isSubstrate,:) > 0, 1)';
+    isForward(isReverse) = false;
+end
+F = F(:, isForward);
+M = M * F;
+E = F' * E;
+moietyTransition2rxns = moietyTransition2rxns(isForward);
+
+%test the decomposition
+res = V*V'*N - V*M*E;
+if max(max(abs(res)))>0
+    error('Moiety graph decomposition not exact')
+end
+
+
+%%%%%%%%%%% isomorphism classes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%map isomorphism class to moieties
+I2M = sparse(MTG.Nodes.IsomorphismClass,(1:nMoieties)', 1,nIsomorphismClasses,nMoieties);
+
+%map moiety transitions to isomorphism class
+M2I = sparse((1:nMoietyTransitions)',MTG.Edges.IsomorphismClass, 1,nMoietyTransitions,nIsomorphismClasses);
+
+
 
 
 %construct moiety matrix
-Lmat = sparse(nIsomorphismClasses,nMappedMets);
+L = sparse(nIsomorphismClasses,nMappedMets);
 for i = 1:nIsomorphismClasses
     for j=1:nComps
         if I2C(i,j)==1
-            DeidentifiedNames=subgraphs{j}.Nodes.Name;
+            subgraphMets=subgraphs{j}.Nodes.Atom;
             
-            for k = 1:size(DeidentifiedNames,1)
-                DeidentifiedNames{k}=strtok(DeidentifiedNames{k},'#');
-            end
             %Necessary in case there is more than one moiety in any metabolite,
             %and if there is, increment the moiety matrix
             
@@ -525,20 +808,20 @@ for i = 1:nIsomorphismClasses
             
             try
                 %add a moiety incidence for each time the moiety appears in a metabolite
-                for k=1:size(DeidentifiedNames,1)
+                for k=1:size(subgraphMets,1)
                     %not all metabolites are involved in atom mapped
                     %reactions
-                    metBool = strcmp(DeidentifiedNames{k},model.mets(mbool));
-                    Lmat(i,metBool) = Lmat(i,metBool) + 1;
+                    metBool = strcmp(subgraphMets{k},model.mets(mbool));
+                    L(i,metBool) = L(i,metBool) + 1;
                 end
             catch ME
                 disp(ME.message)
                 k
-                DeidentifiedNames{k}
+                subgraphMets{k}
             end
             
             if sanityChecks
-                moietyConservationTest = ones(1,size(N,1))*diag(Lmat(i,:))*N;
+                moietyConservationTest = ones(1,size(N,1))*diag(L(i,:))*N;
                 if any(moietyConservationTest~=0)
                     error('Moiety conservation violated.')
                 end
@@ -551,7 +834,7 @@ end
 
 
 if sanityChecks
-    leftNullBool=(Lmat*N)==0;
+    leftNullBool=(L*N)==0;
     if any(~leftNullBool)
         warning('Not all moiety vectors are in the left null space of S. Check that atom transitions in A match the stoichiometry in S.');
     end
@@ -566,9 +849,9 @@ if sanityChecks
     
     for i=1:nIsomorphismClasses
         for j=1:nMappedMets
-            if Lmat(i,j)~=0
+            if L(i,j)~=0
                 formulae = {moietyFormulae{i};mappedMetFormulae{j}};
-                [Ematrix, elements] = getElementalComposition(formulae);
+                [Ematrix, ~] = getElementalComposition(formulae);
                 if any(Ematrix(1,:)> Ematrix(2,:))
                     warning(['Moiety ' int2str(i) ' formula is: '   moietyFormulae{i} ' but  metabolite ' mappedMets{j} ' formula is: ' mappedMetFormulae{j}])
                 end
@@ -578,7 +861,19 @@ if sanityChecks
     
 end
 
-L = Lmat'; % Moiety vectors to columns
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %         %fraction of moiety in each metabolite
 %         V = sparse(nMappedMets,nMoieties);
@@ -630,73 +925,3 @@ L = Lmat'; % Moiety vectors to columns
 %                 end
 %             end
 %         end
-
-
-
-% Map between moiety graph and metabolic network
-moieties2mets = atoms2mets(isFirst);
-mtrans2rxns = atransInstance2rxns(isFirstTransition);
-
-% This code can be used to test that both old and new approaches of
-% creating the matlab graph object return a graph that is isomorphic
-% (not with respect to labelling).
-% if ~exist('adj','var')
-%     adj = adjacency(ATG);
-% end
-% G = graph(adj);
-% P = isomorphism(ATG,G); %P should not be empty;
-
-% Map atom transitions to moiety transitions
-atrans2mtrans = zeros(nTransInstances,1);
-
-[mh,~] = find(M == -1); % head nodes in moiety graph
-[mt,~] = find(M == 1); % tail nodes in moiety graph
-
-% An atom transition maps to a moiety transition if its head node maps to
-% the head moiety, its tail node to the tail moiety, and its from the same
-% reaction
-for i = 1:length(mh)
-    if i==1
-        pause(0.1)
-    end
-    inHead = ismember(ah, find(atrans2isomorphismClasses == mh(i)));
-    inTail = ismember(at, find(atrans2isomorphismClasses == mt(i)));
-    inRxn = atransInstance2rxns == mtrans2rxns(i);
-    atrans2mtrans((inHead & inTail) & inRxn) = i;
-end
-
-%Moiety graph decomposition
-[m, n] = size(N);
-[p, q] = size(M);
-
-%     S = sparse(i,j,s,m,n,nzmax) uses vectors i, j, and s to generate an
-%     m-by-n sparse matrix such that S(i(k),j(k)) = s(k), with space
-%     allocated for nzmax nonzeros.
-%%%%  Vectors i, j, and s are all the same length.
-%     Any elements of s that are zero are ignored, along with the
-%     corresponding values of i and j.  Any elements of s that have duplicate
-%     values of i and j are added together.  The argument s and one of the
-%     arguments i or j may be scalars, in which case the scalars are expanded
-%     so that the first three arguments all have the same length.
-
-V = sparse(moieties2mets, (1 : p)', ones(p, 1), m, p); % Matrix mapping mapped metabolites to moiety instances
-E = sparse((1 : q)', mtrans2rxns, ones(q, 1), q, n); % Matrix mapping moiety transitions to mapped reactions
-
-% Remove reverse directions of bidirectional moiety transitions
-F = speye(q, q);
-isForward = true(q, 1);
-for j = 1:n
-    isSubstrate = ismember(moieties2mets, find(N(:,j) < 0));
-    isReverse = (mtrans2rxns == j) & any(M(isSubstrate,:) > 0, 1)';
-    isForward(isReverse) = false;
-end
-F = F(:, isForward);
-M = M * F;
-E = F' * E;
-mtrans2rxns = mtrans2rxns(isForward);
-
-%test the decomposition
-res = V*V'*N - V*M*E;
-if norm(max(max(abs(res))))>0
-    error('Moiety graph decomposition not exact')
-end
