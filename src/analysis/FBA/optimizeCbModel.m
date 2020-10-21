@@ -432,6 +432,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         solution.full   = solutionL0.x;
         solution.dual   = [];
         solution.rcost  = [];
+        solution.slack  = [];
         
     elseif length(minNorm)> 1 || minNorm > 0
         %THIS SECTION BELOW ASSUMES WRONGLY THAT c HAVE ONLY ONE NONZERO SO I

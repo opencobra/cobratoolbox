@@ -97,7 +97,7 @@ else
     
     %check that the incidence matrices are the same, taking into account
     %the reordering of edges by the digraph function
-    assert(all(all(A == ATN0.A(:,ATM.Edges.TransIstIndex))), 'Atom transition network does not match reference.')
+    assert(all(all(A == ATN0.A(:,ATM.Edges.OrigTransInstIndex))), 'Atom transition network does not match reference.')
     
     if 0
         %TODO, currently this is incompatible with classifyMoieties
