@@ -26,6 +26,9 @@ if isempty(strfind(getenv('HOME'), 'vmhadmin')) and isempty(strfind(getenv('HOME
         launchTestSuite = false;
     end
 else
+    % Running in CI environment
+    fprintf('Running test in Jenkins/CI environment\n');
+
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
     restoredefaultpath;
@@ -72,7 +75,7 @@ if launchTestSuite
     testDirContent = getFilesInDir('type', 'all');  % Get all currently present files in the folder.
     testDirPath = pwd;
     cd(currentDir);
-
+%{
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         WAITBAR_TYPE = 0;
 
@@ -84,7 +87,7 @@ if launchTestSuite
     else
         WAITBAR_TYPE = 1;
     end
-
+%}
     if verLessThan('matlab', '8.2')
         error('The testsuite of The COBRA Toolbox can only be run with MATLAB R2014b+.')
     end
@@ -162,6 +165,11 @@ if launchTestSuite
         end
     end
 end
+
+
+fprintf ('force-setting launchTestSuite = true\n');
+launchTestSuite = true;
+fprintf ('launchTestSuite=%s\n', string(launchTestSuite));
 
 try
     if launchTestSuite
@@ -256,10 +264,13 @@ try
 
         % ensure that we ALWAYS call exit
         if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
-            exit(exit_code);
+            %exit(exit_code);
         end
     end
 catch ME
+
+    fprintf('exception %s while running test: %s\n', ME.identifier, ME.message);
+
     % Also clean up temporary files in case of an error.
     removeTempFiles(testDirPath, testDirContent);
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
