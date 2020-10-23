@@ -73,7 +73,6 @@ db = parser.Results.DataBaseFields;
 if db && desc
     error('Cannot simultaneously return database and Description fields')
 end
-
 if db
     if isempty(CBT_DB_FIELD_PROPS)
         fileName = which('COBRA_structure_fields.csv');
