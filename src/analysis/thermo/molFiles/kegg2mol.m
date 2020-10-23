@@ -147,8 +147,14 @@ for i = 1:length(umets)
             majorTautOption = 'false';
         end
 
-        status = system(['cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
-
+        if ismac
+            %expecting the default installation location
+           status = system(['/Applications/MarvinSuite/bin/cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
+        else
+            %user must make sure cxcalc is on their $PATH
+           status = system(['cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
+        end
+        
         if status ~= 0
             nomol = [nomol; {met}];
         end

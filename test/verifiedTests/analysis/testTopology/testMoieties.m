@@ -17,7 +17,7 @@ if 0
     requiredToolboxes = {'bioinformatics_toolbox'};
     prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
 else
-    prepareTest('requireOneSolverOf',requireOneSolverOf);
+    prepareTest('requireOneSolverOf',requireOneSolverOf,'requiredToolboxes', {'statistics_toolbox'});
 end
 
 % define global paths
@@ -55,39 +55,91 @@ fid2 = fopen([rxnfileDir filesep 'alternativeR2.rxn'], 'w');
 fprintf(fid2, '%s\n', R2rxn{:});
 fclose(fid2);
 
-% Generate atom transition network
-ATN = buildAtomTransitionNetwork(model, rxnfileDir);
-assert(all(all(ATN.A == ATN0.A)), 'Atom transition network does not match reference.')
+if 0
+    %compare old and new code for building atom transition multigraph
+    ATN = buildAtomTransitionNetwork(model, rxnfileDir);
 
-% Identify conserved moieties
-[L, Lambda, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties] = identifyConservedMoieties(model, ATN);
-assert(all(all(L == L0)), 'Moiety matrix does not match reference.')
-assert(all(all(Lambda == Lambda0)), 'Moiety graph does not match reference.')
+    options.directed=1;
+    options.sanityChecks=1;
+    
+    dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options);
+    Edges=dATM.Edges;
+    Edges = sortrows(Edges,'TransIndex','ascend');
+    bool = strcmp(ATN.atrans,Edges.Trans);
+    if ~all(bool)
+        warning('Old and new code for building atom transition multigraph do not match')
+    end
+end
 
-% Classify moieties
-types = classifyMoieties(L, model.S);
-assert(all(strcmp(types, types0)), 'Moiety classifications do not match reference.')
+if 0
+    %old code
+    % Generate atom transition network
+    ATN = buildAtomTransitionNetwork(model, rxnfileDir);
+    assert(all(all(ATN.A == ATN0.A)), 'Atom transition network does not match reference.')
+    if 0
+        %TODO, currently this is incompatible with classifyMoieties
+        %test addition of fake reaction to model, that is not atom mapped
+        model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C');
+    end
+    
+    % Identify conserved moieties
+    [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoietiesOld(model, ATN);
+    L=L';
+else
+    %2020 code
 
-% Decompose moiety vectors
-rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
-mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
-N = model.S(mbool, rbool);
+   
+    options.directed=1;
+    options.sanityChecks=1;
+    
+    dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options);
+    A = incidence(dATM);
+    
+    %check that the incidence matrices are the same, taking into account
+    %the reordering of edges by the digraph function
+    assert(all(all(A == ATN0.A(:,dATM.Edges.OrigTransInstIndex))), 'Atom transition network does not match reference.')
+    
+    if 0
+        %TODO, currently this is incompatible with classifyMoieties
+        %test addition of fake reaction to model, that is not atom mapped
+        model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C');
+    end
+    
+    options.sanityChecks = 0;
+    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, arm] = identifyConservedMoieties(model, dATM, options);
+end
 
-solverOK = changeCobraSolver('gurobi', 'MILP', 0);
-if solverOK
-    fprintf(' -- Running testMoieties using the solver interface: gurobi ... ');
+assert(all(all(L == L0')), 'Moiety matrix does not match reference.')
 
-    D = decomposeMoietyVectors(L, N);
-    assert(all(all(D == D0)), 'Decomposed moiety matrix does not match reference.')
-
-    % Build elemental matrix for the dopamine network
-    [E, elements] = constructElementalMatrix(model.metFormulas, model.metCharges);
-
-    % Estimate chemical formulas of decomposed moieties
-    [decomposedMoietyFormulas, M] = estimateMoietyFormulas(D, E, elements);
-    assert(all(strcmp(decomposedMoietyFormulas, decomposedMoietyFormulas0)), 'Estimated formulas of decomposed moieties do not match reference.')
-
-    fprintf('Done\n');
+if 0 %old code
+    assert(all(all(M == Lambda0)), 'Moiety graph does not match reference.')
+    
+    
+    % Classify moieties
+    types = classifyMoieties(L', model.S);
+    assert(all(strcmp(types, types0)), 'Moiety classifications do not match reference.')
+    
+    % Decompose moiety vectors
+    rbool = ismember(model.rxns, ATN.rxns);  % True for reactions included in ATN
+    mbool = any(model.S(:, rbool), 2);  % True for metabolites in ATN reactions
+    N = model.S(mbool, rbool);
+    
+    solverOK = changeCobraSolver('gurobi', 'MILP', 0);
+    if solverOK
+        fprintf(' -- Running testMoieties using the solver interface: gurobi ... ');
+        
+        D = decomposeMoietyVectors(L', N);
+        assert(all(all(D == D0)), 'Decomposed moiety matrix does not match reference.')
+        
+        % Build elemental matrix for the dopamine network
+        [E, elements] = constructElementalMatrix(model.metFormulas, model.metCharges);
+        
+        % Estimate chemical formulas of decomposed moieties
+        [decomposedMoietyFormulas, M] = estimateMoietyFormulas(D, E, elements);
+        assert(all(strcmp(decomposedMoietyFormulas, decomposedMoietyFormulas0)), 'Estimated formulas of decomposed moieties do not match reference.')
+        
+        fprintf('Done\n');
+    end
 end
 
 cd(currentDir)

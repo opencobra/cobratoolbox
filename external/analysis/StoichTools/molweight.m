@@ -45,6 +45,8 @@ function mw = molweight(varargin)
     if isempty(ppds)
         element = @(str, atomicnumber, amu) amu;
         
+        ppds.A  = element('R group',      0,   NaN);%Added by Ronan Fleming
+        
         ppds.M  = element('any metal',      0,   NaN);
         ppds.X  = element('any halogen',    0,   NaN);
 

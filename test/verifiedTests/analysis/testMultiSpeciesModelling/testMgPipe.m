@@ -20,98 +20,66 @@ currentDir = pwd;
 
 % initialize the test
 cd(fileparts(which(mfilename)));
-
-% path to microbe models
 modPath = [CBTDIR filesep 'test' filesep 'models' filesep 'mat'];
 
-% path where to save results
-resPath= [CBTDIR filesep '.tmp'] ;
+% path to the file with abundance information.
+abunFilePath='normCoverageReduced.csv';
 
-% path to and name of the file with dietary information.
-dietFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'resources' filesep 'AverageEuropeanDiet'];
+% path to the file with dietary information
+dietFilePath='AverageEuropeanDiet';
 
-% path to and name of the file with abundance information.
-abunFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
+% path to the file with information on individuals (default=none)
+indInfoFilePath='';
 
-% name of objective function of organisms
+% number of cores dedicated for parallelization 
+numWorkers = 2;
+
+% name of objective function of organisms 
 objre={'EX_biomass(e)'};
 
 %the output is vectorized picture, change to '-dpng' for .png
 figForm = '-depsc';
 
-% number of cores dedicated for parallelization
-numWorkers = 2;
-
 % autofix for names mismatch
-autoFix = true;
-
-% if outputs in open formats should be produced for each section (1=T)
-compMod = false;
-
+autoFix = 1;
+ 
 % if documentations on patient health status is provided (0 not 1 yes)
-patStat = false;
+patStat = 0; 
 
-% to enable also rich diet simulations
-rDiet = false;
+% to enable also rich diet simulations (default=false)
+rDiet = 0; 
+
+% to enable personalized diet simulayions (default=false)
+pDiet = 0;
 
 % if if to use an external solver and save models with diet
-extSolve = false;
+extSolve = 0; 
 
 % the type of FVA function to use to solve
-fvaType = true;
+fvaType = 1; 
 
-% To tourn off the autorun to be able to manually execute each part of the pipeline.
-autorun = false;
+% set the lower bound on biomass in community models (default=0)
+lowerBMBound=0;
 
-% stratification criteria
-indInfoFilePath = 'nostrat';
+% set if diet should be adapted with human-derived metabolites
+% (default=true)
+adaptDiet=1;
 
-% input checker
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun);
-
-% logical tests for outputs
-assert(init && ~autorun);
-
-% check if error is thrown when running in serial
-assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, 1, autoFix, compMod, rDiet, extSolve, fvaType, autorun}));
-
-% test if the function throws an error when no arguments are provided
-assert(verifyCobraFunctionError('initMgPipe'))
-
-% test with only the path to the models (throws an error that the abundance file is missing)
-assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath}));
-
-% test if the path to the models exists (the model directory is set, but it does not exist)
-assert(verifyCobraFunctionError('initMgPipe','inputs',{'/tmp/abcdef'}))
+% set if existing results should be overwritten (default=false)
+repeatSim=1;
 
 % turn all warnings off
 warning('off', 'all')
+
+% define default path to results
+resPath = [CBTDIR filesep '.tmp'];
 
 % adding a filesep at the end of the path
 if ~strcmpi(resPath(end), filesep)
     resPath = [resPath filesep];
 end
 
-% test if the resPath is set to default value
-abunFilePath = [CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'examples' filesep 'normCoverage.csv'];
-init = initMgPipe(modPath, CBTDIR, '', '', abunFilePath);
-assert(~isempty(lastwarn()));
-
-% test with compMod = true
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, true, rDiet, extSolve, fvaType, autorun);
-assert(~isempty(lastwarn()));
-
-% test with muted printLevel
-fprintf(' > Testing printLevel = 0 ... ');
-init = initMgPipe(modPath, CBTDIR, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, numWorkers, autoFix, compMod, rDiet, extSolve, fvaType, autorun, 0);
-assert(init && ~autorun);
-fprintf('Done.\n');
-
-% turn warning back on
-warning('on', 'all');
-
 % test getIndividualSizeName
-abunFilePath = which('normCoverageReduced.csv');
 [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath);
 
 assert(indNumb == 4)
@@ -122,8 +90,18 @@ assert(length(organisms) == 30)
 mapP = detectOutput(resPath, 'mapInfo.mat');
 assert(isempty(mapP));
 
+%% run the complete pipeline
+% path to the file with abundance information.
+abunFilePath='testData_normCoverageReduced.csv';
+
+% test complete pipeline run
+[init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, 'dietFilePath', dietFilePath, 'numWorkers', numWorkers);
+
+%% test each function separately
+
+load([resPath filesep 'mapInfo.mat']);
+
 % load the models
-abunFilePath = which('testData_normCoverageReduced.csv');
 [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath);
 models = loadUncModels(modPath, organisms, objre);
 
@@ -133,12 +111,36 @@ assert(verifyCobraFunctionError('loadUncModels', 'inputs', {}));
 assert(verifyCobraFunctionError('loadUncModels', 'inputs', {modPath, ''}));
 
 warning('off', 'all');
-    loadUncModels(modPath, organisms);
-    assert(~isempty(lastwarn()))
+loadUncModels(modPath, organisms);
+assert(~isempty(lastwarn()))
 warning('on', 'all');
 
-% change the directory
-cd(currentDir)
+% logical tests for outputs
+assert(init && ~isempty(lastwarn()));
+
+% test if the function throws an error when no arguments are provided
+assert(verifyCobraFunctionError('initMgPipe'))
+
+% test with only the path to the models (throws an error that the abundance file is missing)
+assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath}));
+
+% test if the path to the models exists (the model directory is set, but it does not exist)
+assert(verifyCobraFunctionError('initMgPipe','inputs',{'/tmp/abcdef'}))
+
+% test with compMod = true
+compMod = true;
+init = initMgPipe(modPath, abunFilePath, 'dietFilePath', dietFilePath, 'numWorkers', numWorkers, 'compMod', compMod);
+assert(init && ~isempty(lastwarn()));
+
+% test with muted printLevel
+fprintf(' > Testing printLevel = false ... ');
+printLevel=false;
+init = initMgPipe(modPath, abunFilePath, 'dietFilePath', dietFilePath, 'numWorkers', numWorkers, 'printLevel', printLevel);
+assert(init);
+fprintf('Done.\n');
+
+% turn warning back on
+warning('on', 'all');
 
 % test getMappingInfo
 [reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,abunFilePath,indNumb);
@@ -203,30 +205,31 @@ assert(microbiota_model.S(5,1) == -0.2000)
 assert(microbiota_model.S(6,1) == 1)
 
 % test simulation
-[ID, fvaCt, ~, presol]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,fvaType);
-
+includeHumanMets = 1;
+[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 assert(size(presol,1) == 5)
 assert(sum(cell2mat(presol(:,1))) == 4)
 
 % test mgSimResCollect
-[Fsp,Y]= mgSimResCollect(resPath,ID,sampName,rDiet,0,indNumb,indInfoFilePath,fvaCt,figForm);
-assert(length(Fsp(1,:))==indNumb+1)
-assert(isempty(Y))
-assert(length(Fsp(:,1))==length(ID)+1)
-assert(exist('standard.csv','file') == 2)
+[netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, nsCt, figForm);
+assert(length(netSecretionFluxes(1,:))==indNumb+1)
+assert(length(netSecretionFluxes(:,1))==length(ID)+1)
+assert(exist('inputDiet_net_secretion_fluxes.csv','file') == 2)
 assert(exist('ID.csv','file') == 2)
 
 % cleanup
-delete standard.csv ID.csv
+delete inputDiet_net_secretion_fluxes.csv ID.csv
 delete simRes.mat
 
-% test extractFullRes
-[ID, fvaCt, nsCt] = microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+% test rich diet simulations and extractFullRes
+rDiet=1;
+repeatSim=1;
+[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 finRes=extractFullRes(resPath,ID,'rDiet',sampName,fvaCt,nsCt);
 assert(exist('rDiet_allFlux.csv','file') == 2)
 assert(length((finRes(:,1))) == length(ID)+1)
 assert(length((finRes(1,:))) == length(sampName)*4+1)
-finRes = extractFullRes(resPath,ID,'sDiet',sampName,fvaCt,nsCt);
+finRes = extractFullRes(resPath,ID,'pDiet',sampName,fvaCt,nsCt);
 assert(finRes==0)
 
 % cleanup
@@ -234,8 +237,9 @@ delete simRes.mat
 delete rDiet_allFlux.csv
 
 
-% testing with fluxVar function and not fastFVA
-[~,~,~,presol,~]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,rDiet,0,extSolve,indNumb,0);
+% testing with fluxVariability instead of fastFVA
+fvaType=0;
+[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 assert(size(presol,1)==5)
 assert(sum(cell2mat(presol(:,1)))==4)
 
@@ -243,7 +247,7 @@ assert(sum(cell2mat(presol(:,1)))==4)
 delete simRes.mat
 
 % testing with rich diet
-[~,fvaCt]=microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,extSolve,indNumb,fvaType);
+[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 for i = 1:4
     assert(~isempty(fvaCt{1,i}))
 end
@@ -252,7 +256,7 @@ end
 delete simRes.mat
 
 % testing extsolve
-microbiotaModelSimulator(resPath,setup,sampName,dietFilePath,1,0,1,indNumb,fvaType);
+[ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, 1, 0, 1, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim);
 cd(resPath)
 if exist('Rich','dir') == 7
     cd Rich

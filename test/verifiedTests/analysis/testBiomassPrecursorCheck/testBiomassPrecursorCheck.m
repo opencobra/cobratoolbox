@@ -9,6 +9,8 @@
 % save the current path
 currentDir = pwd;
 
+solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+
 % initialize the test
 fileDir = fileparts(which('testBiomassPrecursorCheck'));
 cd(fileDir);

@@ -15,7 +15,7 @@ global SOLVERS
 currentDir = pwd;
 
 requireOneSolverOf = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'};
-prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
+prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf,'requiredToolboxes', {'statistics_toolbox'});
 
 
 % initialize the test
