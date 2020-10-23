@@ -41,4 +41,10 @@ ub = ones(3,1) * 1000;
 dummy = addMultipleMetabolites(dummy,mets);
 dummy = addMultipleReactions(dummy,rxns,mets,S,'lb',lb,'ub',ub);
 % join models
-model = mergeTwoModels(dummy, model, 2, 0);
+%model = mergeTwoModels(dummy, model, 2, 0);
+% modification made by IT, May 2020
+% alternative and faster way to add the 3 reactions
+a = printRxnFormula(dummy);
+for i = 1 : length(a)
+    model = addReaction(model, dummy.rxns{i},a{i});
+end

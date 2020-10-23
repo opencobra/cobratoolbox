@@ -123,15 +123,31 @@ else
     sbmlModel.id = 'COBRAModel';
 end
 
-
 %Set some model properties
 if isfield(model,'description')
     sbmlModel.metaid = model.description;
 end
 
+if isfield(model,'modelAnnotation')
+    tmp_anno = '<notes> <body xmlns="http://www.w3.org/1999/xhtml"> <div>';
+    for i = 1 : length(model.modelAnnotation)
+        tmp_anno = strcat( tmp_anno,' <p>' ,model.modelAnnotation{i}, '</p>');
+    end
+    tmp_anno = strcat(tmp_anno,'</div>  </body> </notes>');
+    sbmlModel.annotation = tmp_anno;
+end
+
+
+%if isfield(model,'notes'
+%   tmp_note = emptyChar;
+%     if ~isempty(met_notes)
+%         for noteid = 1:size(met_notes,1)
+%             tmp_note = [ tmp_note ' <p>' regexprep(met_notes{noteid,1},'^met','') ':' met_notes{noteid,2} '</p>'];
+%         end
+%     end
 
 %% Species
-
+ defaultMetSboTerm = 247;
 % Construct a list of compartment names
 % List to hold the compartment ids.
 tmp_metCompartment = {};
@@ -205,10 +221,12 @@ for i=1:size(model.mets, 1)
     if isfield(model,'metSBOTerms')
         if ~isempty(model.metSBOTerms{i})
             tmp_species.sboTerm = str2num(regexprep(model.metSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
+        else
+            tmp_species.sboTerm = defaultMetSboTerm;
         end    
     end
     %% here notes can be formulated to include more annotations.
-    tmp_species.id=tmp_met;
+    tmp_species.id=tmp_met; 
     tmp_species.metaid = tmp_species.id;
     tmp_species.name=tmp_metName;
     
@@ -224,7 +242,7 @@ for i=1:size(model.mets, 1)
     tmp_species.fbc_charge=tmp_metCharge;
     tmp_species.fbc_chemicalFormula=tmp_metFormulas;
     tmp_species.isSetfbc_charge=tmp_isSetfbc_charge;
-    %% Add annotations for metaoblites to the reconstruction
+    %% Add annotations for metabolites to the reconstruction
     
     tmp_note = emptyChar;
     if ~isempty(met_notes)
@@ -444,6 +462,7 @@ if ~isempty(modelSubSystems)
 end
 
 %% Reactions
+defaultRxnSboTerm = 176; %metabolic reaction
 for i=1:size(model.rxns, 1)
     tmp_rxnID =  model.rxns{i};
     tmp_Rxn.metaid = tmp_rxnID;
@@ -494,7 +513,7 @@ for i=1:size(model.rxns, 1)
         if ~isempty(model.rxnSBOTerms{i})
             tmp_Sboterm = str2num(regexprep(model.rxnSBOTerms{i},'^SBO:0*([1-9][0-9]*)$','$1'));
         else
-            tmp_Sboterm = defaultSboTerm;
+            tmp_Sboterm = defaultRxnSboTerm;
         end
     else
         %Not existent.
