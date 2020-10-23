@@ -55,8 +55,8 @@ function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2i
 %    atrans2mtrans:         'q x 1' vector mapping atom transitions
 %                           (columns of A) to moiety transitions (columns
 %                           of M)
-%    metAtomMapped:                 `m x 1` Boolean, true for metabolites in dATM reactions
-%    rxnAtomMapped:                 `n x 1` Boolean, true for reactions included in dATM
+%    metAtomMappedBool:                 `m x 1` Boolean, true for metabolites in dATM reactions
+%    rxnAtomMappedBool:                 `n x 1` Boolean, true for reactions included in dATM
 %    V:                     The `m x p` matrix that maps each metabolite to an
 %                           instance of a moiety in the moiety graph.
 %    E:                     The `q x n` matrix that maps each moiety
@@ -84,25 +84,53 @@ if any(bool)
     error('No metabolite can have an id with a # character in it.')
 end
 
-rxnAtomMapped = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
-metAtomMapped = ismember(model.mets,dATM.Nodes.Met); % True for reactions included in dATM
 
-N = sparse(model.S(metAtomMapped,rxnAtomMapped)); % Stoichometric matrix of atom mapped reactions
+%% Directed atom transition multigraph
+rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
+metAtomMappedBool = ismember(model.mets,dATM.Nodes.Met); % True for reactions included in dATM
+
+N = sparse(model.S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
 
 [nMappedMets,nMappedRxns] = size(N);
 
-%% Directed atom transition multigraph
 nAtoms = size(dATM.Nodes,1);
 nTransInstances = size(dATM.Edges,1);
 
+if sanityChecks
+    %double check that there is no reordering of edges
+    diffIndex = diff(dATM.Nodes.AtomIndex);
+    if any(diffIndex~=1)
+        error('reordering of edges of moiety transition graph')
+    end
+end
+
+if sanityChecks
+    %double check that there is no reordering of edges
+    diffIndex = diff(dATM.Edges.TransInstIndex);
+    if any(diffIndex~=1)
+        error('reordering of edges of moiety transition graph')
+    end
+end
+
 %matrix to map each metabolite to one or more atoms
-[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMapped));
+[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMappedBool));
 M2A = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
-[~,atransInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMapped));
-Ti2R = sparse((1:nTransInstances)',atransInstance2rxns,1,nTransInstances,nMappedRxns);
+[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMappedBool));
+Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
+%incidence matrix of directed atom transition multigraph
+Ti = incidence(dATM);
+
+%atomic decomposition
+res=M2A*M2A'*N - M2A*Ti*Ti2R;
+if max(max(abs(res)))~=0
+    error('Inconsistent directed atom transition multigraph')
+end
+
+
+        
 % An atom transition that occurs in a reaction is an atom transition instance,
 % and since identical atom transition instances can happen in a more than one
 % reaction, we only need a representative atom transition.
@@ -278,7 +306,7 @@ end
 %% mapping of ATG to metabolic network
 if sanityChecks
     %map atoms to metabolites
-    [~, atoms2mets2] = ismember(ATG.Nodes.Met,model.mets(metAtomMapped));
+    [~, atoms2mets2] = ismember(ATG.Nodes.Met,model.mets(metAtomMappedBool));
     M2A2 =  sparse(atoms2mets2,(1:nAtoms)',1,nMappedMets,nAtoms);
     
     res = M2A-M2A2;
@@ -318,25 +346,22 @@ if sanityChecks
     end
 end
 
-%matrix that maps atom transitions to reactions.
+% matrix that maps atom transitions to reactions.
 % an atom transition can map to multiple reactions
 % a reaction can map to multiple atom transitions
+% matrix mapping each atom transition to mapped reactions
 A2R = A2Ti*Ti2R;
 
 if sanityChecks
     A2R2 = sparse(nTrans,nMappedRxns);
-    %matrix mapping each atom transition to mapped reactions
-    mappedRxn=model.rxns(rxnAtomMapped);
-%     for j = 1:nMappedRxns
-%         bool=strcmp(mappedRxn{j},dATM.Edges.Rxn
-%         
-    for i = 1:nTrans
-        for j = 1:nMappedRxns
-            %TODO This sparse indexing expression is likely to be slow
-            A2R2(i,j)=any(strcmp(mappedRxn{j},dATM.Edges.Rxn(A2Ti(i,:)~=0)));
-        end
+    for i=1:nTransInstances
+        rxnIndex = transInstance2rxns(i);
+        transIndex = transInstanceIndex2transIndex(i);
+        orientation = dATMreorientationATG(i);
+        A2R2(transIndex,rxnIndex) = orientation;
     end
     
+   
     res = (A2R~=0) - (A2R2~=0);
     if max(max(abs(res)))~=0
         figure;spy([A2R,A2R2])
@@ -344,8 +369,24 @@ if sanityChecks
         figure;spy(A2R~=0 - A2R2~=0)
         error('Inconsistent mapping from atom transition to reaction')
     end
+    
+     if 0    
+        tic
+        A2R3 = sparse(nTrans,nMappedRxns);
+        for j=1:nMappedRxns
+            A2R3(transInstanceIndex2transIndex(transInstance2rxns==j),j)=dATMreorientationATG(transInstance2rxns==j);
+        end
+        toc
+        
+        res = (A2R~=0) - (A2R3~=0);
+        if max(max(abs(res)))~=0
+            figure;spy([A2R,A2R3])
+            figure;spy(A2R - A2R3)
+            figure;spy(A2R~=0 - A2R3~=0)
+            error('Inconsistent mapping from atom transition to reaction')
+        end
+    end
 end
-
 
 %% connected components
 
@@ -740,7 +781,7 @@ moieties2mets = atoms2mets(isFirst);
 M2M = sparse(moieties2mets,(1:nMoieties)', 1,nMappedMets,nMoieties);
 
 if sanityChecks
-    [~,moieties2mets2] = ismember(MTG.Nodes.Met,model.mets(metAtomMapped));
+    [~,moieties2mets2] = ismember(MTG.Nodes.Met,model.mets(metAtomMappedBool));
     if ~all(moieties2mets == moieties2mets2)
         error('Mismatch of mapping moieties to metabolites')
     end
@@ -779,7 +820,7 @@ if 0
     %in general it is not possible to specify the mapping from moiety
     %transitions to reactions with a vector, because more than one moiety
     %transition can map to more than one reaction
-    [~,moietyTransition2rxns]=ismember(MTG.Edges.Rxn,model.rxns(rxnAtomMapped));
+    [~,moietyTransition2rxns]=ismember(MTG.Edges.Rxn,model.rxns(rxnAtomMappedBool));
     M2R2 = sparse((1:nMoietyTransitions)',moietyTransition2rxns,1,nMoietyTransitions,nMappedRxns);
     %therefore it is not expected that, in general, res will be empty
     res = M2R - M2R2;
@@ -877,7 +918,7 @@ if sanityChecks
                     for k=1:size(subgraphMets,1)
                         %not all metabolites are involved in atom mapped
                         %reactions
-                        metBool = strcmp(subgraphMets{k},model.mets(metAtomMapped));
+                        metBool = strcmp(subgraphMets{k},model.mets(metAtomMappedBool));
                         L2(i,metBool) = L2(i,metBool) + 1;
                     end
                 catch ME
@@ -899,8 +940,8 @@ if sanityChecks
     %allBiologicalElements={'C','O','P','N','S','H','Mg','Na','K','Cl','Ca','Zn','Fe','Cu','Mo','I'};
     %compare number of atoms of each element in moiety with
     %metabolites
-    mappedMets = model.mets(metAtomMapped);
-    mappedMetFormulae = model.metFormulas(metAtomMapped);
+    mappedMets = model.mets(metAtomMappedBool);
+    mappedMetFormulae = model.metFormulas(metAtomMappedBool);
     
     for i=1:nIsomorphismClasses
         for j=1:nMappedMets
@@ -973,8 +1014,8 @@ if 0 %TODO not sure what to make of this
 end
 
 %collect outputs
-model.metAtomMapped = metAtomMapped;
-model.rxnAtomMapped = rxnAtomMapped;
+model.metAtomMappedBool = metAtomMappedBool;
+model.rxnAtomMappedBool = rxnAtomMappedBool;
 arm.model = model;
 
 arm.dATM = dATM; %directed atom transition multigraph (dATM)

@@ -1,4 +1,4 @@
-function dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
+function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2A, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 % Builds a matlab digraph object representing an atom transition multigraph
 % corresponding to a metabolic network from reaction stoichiometry and atom
 % mappings.
@@ -11,10 +11,11 @@ function dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 % the same pair of atoms are involved in atom transitions of opposite
 % orientation, corresponding to reactions in different directions.
 %
-% Note that A = incidence(dATM) returns a  `p` x `q` atom transition 
-% directed multigraph incidence matrix where `p` is the number of atoms and 
-% `q` is the number of atom transitions
-
+% Note that A = incidence(dATM) returns a  `a` x `t` atom transition 
+% directed multigraph incidence matrix where `a` is the number of atoms and 
+% `t` is the number of directed atom transitions. Each atom transition
+% inherits the orientation of its corresponding reaction.
+%
 % USAGE:
 %
 %    ATN = buildAtomTransitionNetwork(model, rxnfileDir, options)
@@ -32,9 +33,11 @@ function dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 %    rxnfileDir:    Path to directory containing `rxnfiles` with atom mappings
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
-%
+%    options: 
+%                   *.directed - transition split into two oppositely
+%                                directed edges for reversible reactions
 % OUTPUT:
-%    dATM:           Matlab digraph structure with the following tables:
+%    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
 %
 %                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
 %                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
@@ -53,6 +56,10 @@ function dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 %                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
 %
+% metAtomMappedBool `m x 1` boolean vector indicating atom mapped metabolites
+% rxnAtomMappedBool `n x 1` boolean vector indicating atom mapped reactions
+% M2A               `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
+% Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
 
 
 % .. Authors: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015
@@ -67,7 +74,9 @@ if ~isfield(options,'directed')
 end
 
 if ~isfield(options,'sanityChecks')
-    options.sanityChecks=0;
+    sanityChecks=0;
+else
+    sanityChecks=options.sanityChecks;
 end
 
 S = model.S; % Format inputs
@@ -117,6 +126,15 @@ elements = {};
 for i = 1:length(rxns)
     
     rxn = rxns{i};
+    
+    if strcmp(rxn,'10FTHF7GLUtl')
+        pause(0.1)
+    end
+    
+    if strcmp(rxn,'GGH_10FTHF7GLUl')
+        pause(0.1)
+    end
+    
     if options.directed
         rev = (lb(i) < 0 & ub(i) > 0); % True if rxn is reversible
     else
@@ -251,12 +269,54 @@ EdgeTable = table([ah,at],ATN.atrans,ATN.aTransInstanceIndex,ATN.aTransInstanceI
 NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.mets,ATN.atns,ATN.elements,...
     'VariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
 
-%atom transition as a matlab directed multigraph object
+%% Directed atom transition multigraph as a matlab directed multigraph object
 dATM = digraph(EdgeTable,NodeTable);
-nTransInst = size(dATM.Edges,1);
-dATM.Edges.TransInstIndex= (1:nTransInst)';
+nAtoms = size(dATM.Nodes,1);
+nTransInstances = size(dATM.Edges,1);
 
-if options.sanityChecks
+dATM.Edges.TransInstIndex= (1:nTransInstances)';
+
+rxnAtomMappedBool = ismember(rxns,dATM.Edges.Rxn); % True for reactions included in dATM
+metAtomMappedBool = ismember(mets,dATM.Nodes.Met); % True for reactions included in dATM
+
+N = sparse(S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
+
+[nMappedMets,nMappedRxns] = size(N);
+
+if sanityChecks
+    %double check that there is no reordering of edges
+    diffIndex = diff(dATM.Nodes.AtomIndex);
+    if any(diffIndex~=1)
+        error('reordering of edges of moiety transition graph')
+    end
+end
+
+if sanityChecks
+    %double check that there is no reordering of edges
+    diffIndex = diff(dATM.Edges.TransInstIndex);
+    if any(diffIndex~=1)
+        error('reordering of edges of moiety transition graph')
+    end
+end
+
+%matrix to map each metabolite to one or more atoms
+[~,atoms2mets] = ismember(dATM.Nodes.Met,mets(metAtomMappedBool));
+M2A = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
+
+%matrix mapping one or more directed atom transition instances to each mapped reaction
+[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,rxns(rxnAtomMappedBool));
+Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
+
+%incidence matrix of directed atom transition multigraph
+Ti = incidence(dATM);
+
+%atomic decomposition
+res=M2A*M2A'*N - M2A*Ti*Ti2R;
+if max(max(abs(res)))~=0
+    error('Inconsistent directed atom transition multigraph')
+end
+
+if sanityChecks
     A = incidence(dATM);
     
     bool=~any(A,1);
@@ -282,7 +342,7 @@ if options.sanityChecks
         [ah,~] = find(A == -1); % head nodes
         [at,~] = find(A == 1); % tail nodes
         
-        headTail = [ah,at];%take into account that atom transition network is not directed
+        headTail = [ah,at];
         EdgeTable = table(headTail,ATN.atrans,'VariableNames',{'EndNodes','Trans'});
         NodeTable = table(ATN.atoms,ATN.mets,ATN.atns,ATN.elements,ATN.atomIndex,'VariableNames',{'Atoms','Mets','AtomNumber','Element','AtomIndex'});
         %atom transition graph as a matlab graph object
@@ -355,4 +415,5 @@ if options.sanityChecks
         clear G D La;
     end
 end
+
 
