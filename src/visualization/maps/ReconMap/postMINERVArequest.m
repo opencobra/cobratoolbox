@@ -27,27 +27,30 @@ function [ response ] = postMINERVArequest(login, password, map, googleLicenseCo
 %    content = {'identifier', identifier, 'login', login, 'password', password, 'model', map, 'expression_value', content};
 %    xmlresponse = urlread(minerva_servlet, 'POST', content);
 
-    headerlength = ' ';
-   loginURL = strcat({'curl'}, {headerlength} , {'-X POST -c - --data "login='}, login, {'&password='}, password, {'" https://www.vmh.life/minerva/api/doLogin/'});
-   [x , command_out] = system(char(loginURL));
-   if isempty(regexp(command_out, 'Invalid credentials'))
-       [startIndex,endIndex] = regexp(command_out,'MINERVA_AUTH_TOKEN\s+(.*)$');
-       split = strsplit(command_out(startIndex:endIndex), '\t');
-       minerva_auth_token = split{2};
-       minerva_server = strcat('https://www.vmh.life/minerva/api/projects/', map, '/overlays/');
-       filename = strcat(identifier, '.txt');
-       curl_str = strcat({'curl'}, {headerlength}, '-X POST --data "content=', content, '&description=', identifier ,'&filename=', filename, '&name=', identifier, {'&googleLicenseConsent='}, googleLicenseContent, {'" --cookie "MINERVA_AUTH_TOKEN='}, minerva_auth_token, {'" '}, minerva_server);
-       [x , response] = system(char(curl_str));
-       %if ~isempty(regexp(response, '"status":"OK"'))
-       if contains(response,'creator')
-           response = 'Overlay generated successfully.';         
-       else
-           dt=whos('curl_str'); 
-           MB=dt.bytes*9.53674e-7;
-           response = ['Overlay NOT generated successfully. curl post size in MB:' num2str(MB)];
-       end
-       disp(response)
-   else
-       response = 'Invalid credentials. Please make sure your login and password are correct.';
-   end
+headerlength = ' ';
+loginURL = strcat({'curl'}, {headerlength} , {'-X POST -c - --data "login='}, login, {'&password='}, password, {'" https://www.vmh.life/minerva/api/doLogin/'});
+[x , command_out] = system(char(loginURL));
+if isempty(regexp(command_out, 'Invalid credentials'))
+    [startIndex,endIndex] = regexp(command_out,'MINERVA_AUTH_TOKEN\s+(.*)$');
+    split = strsplit(command_out(startIndex:endIndex), '\t');
+    minerva_auth_token = split{2};
+    minerva_server = strcat('https://www.vmh.life/minerva/api/projects/', map, '/overlays/');
+    filename = strcat(identifier, '.txt');
+    curl_str = strcat({'curl'}, {headerlength}, '-X POST --data "content=', content, '&description=', identifier ,'&filename=', filename, '&name=', identifier, {'&googleLicenseConsent='}, googleLicenseContent, {'" --cookie "MINERVA_AUTH_TOKEN='}, minerva_auth_token, {'" '}, minerva_server);
+    [x , response] = system(char(curl_str));
+    %if ~isempty(regexp(response, '"status":"OK"'))
+    if contains(response,'creator')
+        response = 'Overlay generated successfully.';
+    else
+        dt=whos('curl_str');
+        MB=dt.bytes*9.53674e-7;
+        responseOri = response;
+        response = ['Overlay NOT generated successfully. curl post size in MB:' num2str(MB)];
+        disp(responseOri)
+    end
+    disp(response)
+    
+else
+    response = 'Invalid credentials. Please make sure your login and password are correct.';
 end
+
