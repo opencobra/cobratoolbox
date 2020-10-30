@@ -1,7 +1,7 @@
 function restricedRowBool = getCorrespondingRows(S, rowBool, colBool, mode)
 % Returns a boolean vector that is true for a subset of the true rows in
-% `rowBool` according to whether the rows 'exclusively' or 'inclusively'
-% correspond to true entries in `colBool`
+% `rowBool` according to whether the rows 'exclusive', 'inclusive', or
+% 'partial' -ly correspond to true entries in `colBool`
 %
 % USAGE:
 %
@@ -82,4 +82,6 @@ switch mode
         restricedRowBool2(rowBool) = any(S(rowBool, colBool),2);
         %difference
         restricedRowBool= restricedRowBool2  & ~restricedRowBool;
+   otherwise
+        error(['Did not recognise mode: ' mode])
 end

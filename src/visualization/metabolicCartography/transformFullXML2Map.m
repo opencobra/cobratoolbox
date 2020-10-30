@@ -2,7 +2,7 @@ function [xmlStruct, map] = transformFullXML2Map(fileName)
 % Create a MATLAB structure from a given XML file.
 % The XML file is first parsed through the "xml2struct" function and
 % then transformed into a structure. The content of this structure can be
-% found in the [description document](https://opencobra.github.io/cobratoolbox/docs/fullMATLABStructure.html)
+% found in the [description document](https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/fullMATLABStructure.md)
 %
 % USAGE:
 %

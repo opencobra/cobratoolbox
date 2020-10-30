@@ -1,4 +1,4 @@
-function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2A, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, options)
+function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, options)
 % Builds a matlab digraph object representing an atom transition multigraph
 % corresponding to a metabolic network from reaction stoichiometry and atom
 % mappings.
@@ -15,6 +15,13 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2A, Ti2R] = buildAtomTran
 % directed multigraph incidence matrix where `a` is the number of atoms and 
 % `t` is the number of directed atom transitions. Each atom transition
 % inherits the orientation of its corresponding reaction.
+%
+% A stoichimetric matrix may be decomposed into a set of atom transitions
+% That is: 
+%  N = inv(M2Ai*M2Ai')*M2Ai*Ti*Ti2R;
+%
+% Note that M2Ai*M2Ai' is a diagonal matrix, where each diagonal entry is
+% the number of atoms in each metabolite.
 %
 % USAGE:
 %
@@ -39,26 +46,26 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2A, Ti2R] = buildAtomTran
 % OUTPUT:
 %    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
 %
-%                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
-%                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .NodeTable.AtomIndex - unique numeric id for each atom in
+%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
+%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in
 %                                 atom transition multigraph
-%                   * .NodeTable.Met - metabolite containing each atom
-%                   * .NodeTable.AtomNumber - unique numeric id for each atom in an 
+%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an 
 %                                             atom mapping
-%                   * .NodeTable.Element - atomic element of each atom
+%                   * .Nodes.Element - atomic element of each atom
 %                       
 %                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
 %                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
 %                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
 %                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
-%                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
-%                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
+%                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
+%                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
 % metAtomMappedBool `m x 1` boolean vector indicating atom mapped metabolites
 % rxnAtomMappedBool `n x 1` boolean vector indicating atom mapped reactions
-% M2A               `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
+% M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
 % Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
 
 
@@ -243,25 +250,23 @@ end
 % The EdgeTable input must be a table with a row for each corresponding pair of elements in s and t.
 
 %
-%                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
-%                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .NodeTable.AtomIndex - unique numeric id for each atom in
+%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
+%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in
 %                                 atom transition multigraph
-%                   * .NodeTable.Met - metabolite containing each atom
-%                   * .NodeTable.AtomNumber - unique numeric id for each atom in an 
+%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an 
 %                                             atom mapping
-%                   * .NodeTable.Element - atomic element of each atom
+%                   * .Nodes.Element - atomic element of each atom
 %                       
-%                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
-%                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
-%                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .EdgeTable.TransIstIndex - unique numeric id for each atom transition instance
-%                   * .EdgeTable.OrigTransIstIndex - unique numeric id for
-%                      each atom transition instance, with original ordering
-%                      of data
-%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
-%                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
-%                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
+%                   * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
+%                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges     
+%                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
+%                   * .Edges.TransIstIndex - unique numeric id for each directed atom transition instance
+%                   * .Edges.OrigTransIstIndex - unique numeric id for each atom transition instance, with original ordering of data
+%                   * .Edges.Rxn - reaction corresponding to each atom transition
+%                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
+%                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 
 EdgeTable = table([ah,at],ATN.atrans,ATN.aTransInstanceIndex,ATN.aTransInstanceIndex,ATN.rxns,ah,at,ATN.atoms(ah),ATN.atoms(at),...
     'VariableNames',{'EndNodes','Trans','TransInstIndex','OrigTransInstIndex','Rxn','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom'});
@@ -301,7 +306,7 @@ end
 
 %matrix to map each metabolite to one or more atoms
 [~,atoms2mets] = ismember(dATM.Nodes.Met,mets(metAtomMappedBool));
-M2A = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
+M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
 [~,transInstance2rxns] = ismember(dATM.Edges.Rxn,rxns(rxnAtomMappedBool));
@@ -311,7 +316,7 @@ Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedR
 Ti = incidence(dATM);
 
 %atomic decomposition
-res=M2A*M2A'*N - M2A*Ti*Ti2R;
+res=M2Ai*M2Ai'*N - M2Ai*Ti*Ti2R;
 if max(max(abs(res)))~=0
     error('Inconsistent directed atom transition multigraph')
 end
