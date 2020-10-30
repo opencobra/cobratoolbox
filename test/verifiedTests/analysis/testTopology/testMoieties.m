@@ -89,10 +89,10 @@ else
     %2020 code
 
    
-    options.directed=1;
+    options.directed=0;
     options.sanityChecks=1;
     
-    dATM = buildAtomTransitionMultigraph(model, rxnfileDir, options);
+    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2A, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, options);
     A = incidence(dATM);
     
     %check that the incidence matrices are the same, taking into account
@@ -105,8 +105,15 @@ else
         model = addReaction(model,'newRxn1','reactionFormula','A -> B + 2 C');
     end
     
+    if 0
+        options.sanityChecks = 1;
+        [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, arm] = identifyConservedMoietiesLegacyInterface(model, dATM, options);
+    end
+    
     options.sanityChecks = 0;
-    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, arm] = identifyConservedMoieties(model, dATM, options);
+    [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options);
+    L=arm.L;
+    
 end
 
 assert(all(all(L == L0')), 'Moiety matrix does not match reference.')

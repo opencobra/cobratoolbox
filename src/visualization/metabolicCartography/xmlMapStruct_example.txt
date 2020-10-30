@@ -1,0 +1,157 @@
+xmlGly
+-------------------------
+ Struct 
+    sbml: [1×1 struct]
+=========================
+sbml
+-------------------------
+ Struct 
+         model: [1×1 struct]
+    Attributes: [1×1 struct]
+=========================
+model
+-------------------------
+ Struct 
+               annotation: [1×1 struct]
+    listOfUnitDefinitions: [1×1 struct]
+       listOfCompartments: [1×1 struct]
+            listOfSpecies: [1×1 struct]
+          listOfReactions: [1×1 struct]
+               Attributes: [1×1 struct]
+=========================
+annotation
+-------------------------
+ Struct 
+    celldesigner_colon_extension: [1×1 struct]
+=========================
+celldesigner_colon_extension
+-------------------------
+ Struct 
+                   celldesigner_colon_modelVersion: [1×1 struct]
+                   celldesigner_colon_modelDisplay: [1×1 struct]
+       celldesigner_colon_listOfCompartmentAliases: [1×1 struct]
+    celldesigner_colon_listOfComplexSpeciesAliases: [1×1 struct]
+           celldesigner_colon_listOfSpeciesAliases: [1×1 struct]
+                   celldesigner_colon_listOfGroups: [1×1 struct]
+                 celldesigner_colon_listOfProteins: [1×1 struct]
+                    celldesigner_colon_listOfGenes: [1×1 struct]
+                     celldesigner_colon_listOfRNAs: [1×1 struct]
+            celldesigner_colon_listOfAntisenseRNAs: [1×1 struct]
+                   celldesigner_colon_listOfLayers: [1×1 struct]
+            celldesigner_colon_listOfBlockDiagrams: [1×1 struct]
+=========================
+celldesigner_colon_modelVersion
+-------------------------
+ Struct 
+    Text: '4.0'
+=========================
+celldesigner_colon_modelDisplay
+-------------------------
+ Struct 
+          Text: [1×0 char]
+    Attributes: [1×1 struct]
+=========================
+Attributes
+-------------------------
+ Struct 
+    sizeX: '800'
+    sizeY: '3000'
+=========================
+celldesigner_colon_listOfCompartmentAliases
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfComplexSpeciesAliases
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfSpeciesAliases
+-------------------------
+ Struct 
+    celldesigner_colon_speciesAlias: {1×115 cell}
+=========================
+celldesigner_colon_listOfGroups
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfProteins
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfGenes
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfRNAs
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfAntisenseRNAs
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfLayers
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+celldesigner_colon_listOfBlockDiagrams
+-------------------------
+ Struct 
+    Text: [1×0 char]
+=========================
+listOfUnitDefinitions
+-------------------------
+ Struct 
+    unitDefinition: {1×5 cell}
+=========================
+listOfCompartments
+-------------------------
+ Struct 
+    compartment: [1×1 struct]
+=========================
+compartment
+-------------------------
+ Struct 
+          Text: [1×0 char]
+    Attributes: [1×1 struct]
+=========================
+Attributes
+-------------------------
+ Struct 
+        id: 'default'
+    metaid: 'default'
+      size: '1'
+     units: 'volume'
+=========================
+listOfSpecies
+-------------------------
+ Struct 
+    species: {1×67 cell}
+=========================
+listOfReactions
+-------------------------
+ Struct 
+    reaction: {1×40 cell}
+=========================
+Attributes
+-------------------------
+ Struct 
+        id: 'Glycolysis_and_TCA'
+    metaid: 'Glycolysis_and_TCA'
+=========================
+Attributes
+-------------------------
+ Struct 
+                       level: '2'
+                     version: '4'
+                       xmlns: 'http://www.sbml.org/sbml/level2/version4'
+    xmlns_colon_celldesigner: 'http://www.sbml.org/2001/ns/celldesigner'
+=========================

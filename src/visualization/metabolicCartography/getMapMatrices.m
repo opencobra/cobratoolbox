@@ -29,56 +29,55 @@ function [map] = getMapMatrices(map)
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 24/07/2017
 
-    % Create a correspondence of species ID and their index for easier access
-    % during the matrix filling
-    for ind = 1:length(map.specID)
-        specIndexId.(map.specID{ind}) = ind;
-    end
-
-    % Create a correspondence of species alias and their index for easier access
-    % during the matrix filling
-    for ind = 1:length(map.molAlias)
-        specIndexAlias.(map.molAlias{ind}) = ind;
-    end
-
-    % Initialise the stoechiometric matrices with zeros
-    sMatrixID = zeros(length(map.specID), length(map.rxnID));
-    sMatrixAlias = zeros(length(map.molAlias), length(map.rxnID));
-
-    % Loop over reactions to fill the matrix
-    for rxn = 1:length(map.rxnID)
-        % Loop over base reactants
-        for x = 1:length(map.rxnBaseReactantID{rxn})
-            sMatrixID(specIndexId.(map.rxnBaseReactantID{rxn}{x}), rxn) = -1;
-            sMatrixAlias(specIndexAlias.(map.rxnBaseReactantAlias{rxn}{x}), rxn) = -1;
-        end
-        % Loop over reactants
-        for x = 1:length(map.rxnReactantID{rxn})
-            sMatrixID(specIndexId.(map.rxnReactantID{rxn}{x}), rxn) = -1;
-            sMatrixAlias(specIndexAlias.(map.rxnReactantAlias{rxn}{x}), rxn) = -1;
-        end
-        % Loop over base products
-        for x = 1:length(map.rxnBaseProductID{rxn})
-            sMatrixID(specIndexId.(map.rxnBaseProductID{rxn}{x}), rxn) = 1;
-            sMatrixAlias(specIndexAlias.(map.rxnBaseProductAlias{rxn}{x}), rxn) = 1;
-        end
-        % Loop over products
-        for x = 1:length(map.rxnProductID{rxn})
-            sMatrixID(specIndexId.(map.rxnProductID{rxn}{x}), rxn) = 1;
-            sMatrixAlias(specIndexAlias.(map.rxnProductAlias{rxn}{x}), rxn) = 1;
-        end
-    end
-
-    % Initialise the species ID/Alias matrix with zeros
-    idAliasMatrix = zeros(length(map.specID), length(map.molAlias));
-
-    % Loop over species IDs corresponding to a certain alias
-    for id = 1:length(map.molID)
-        idAliasMatrix(specIndexId.(map.molID{id}), id) = 1;
-    end
-
-    map.sID = sMatrixID;
-    map.sAlias = sMatrixAlias;
-    map.idAlias = idAliasMatrix;
-
+% Create a correspondence of species ID and their index for easier access
+% during the matrix filling
+for ind = 1:length(map.specID)
+    specIndexId.(map.specID{ind}) = ind;
 end
+
+% Create a correspondence of species alias and their index for easier access
+% during the matrix filling
+for ind = 1:length(map.molAlias)
+    specIndexAlias.(map.molAlias{ind}) = ind;
+end
+
+% Initialise the stoechiometric matrices with zeros
+sMatrixID = sparse(length(map.specID), length(map.rxnID));
+sMatrixAlias = sparse(length(map.molAlias), length(map.rxnID));
+
+% Loop over reactions to fill the matrix
+for rxn = 1:length(map.rxnID)
+    % Loop over base reactants
+    for x = 1:length(map.rxnBaseReactantID{rxn})
+        sMatrixID(specIndexId.(map.rxnBaseReactantID{rxn}{x}), rxn) = -1;
+        sMatrixAlias(specIndexAlias.(map.rxnBaseReactantAlias{rxn}{x}), rxn) = -1;
+    end
+    % Loop over reactants
+    for x = 1:length(map.rxnReactantID{rxn})
+        sMatrixID(specIndexId.(map.rxnReactantID{rxn}{x}), rxn) = -1;
+        sMatrixAlias(specIndexAlias.(map.rxnReactantAlias{rxn}{x}), rxn) = -1;
+    end
+    % Loop over base products
+    for x = 1:length(map.rxnBaseProductID{rxn})
+        sMatrixID(specIndexId.(map.rxnBaseProductID{rxn}{x}), rxn) = 1;
+        sMatrixAlias(specIndexAlias.(map.rxnBaseProductAlias{rxn}{x}), rxn) = 1;
+    end
+    % Loop over products
+    for x = 1:length(map.rxnProductID{rxn})
+        sMatrixID(specIndexId.(map.rxnProductID{rxn}{x}), rxn) = 1;
+        sMatrixAlias(specIndexAlias.(map.rxnProductAlias{rxn}{x}), rxn) = 1;
+    end
+end
+
+% Initialise the species ID/Alias matrix with zeros
+idAliasMatrix = sparse(length(map.specID), length(map.molAlias));
+
+% Loop over species IDs corresponding to a certain alias
+for id = 1:length(map.molID)
+    idAliasMatrix(specIndexId.(map.molID{id}), id) = 1;
+end
+
+map.sID = sMatrixID;
+map.sAlias = sMatrixAlias;
+map.idAlias = idAliasMatrix;
+

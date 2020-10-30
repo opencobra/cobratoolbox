@@ -7,7 +7,7 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %
 %    model:              the model to update
 %    type:               the Type of field to update one of 
-%                        ('rxns','mets','comps','genes','ctrs','evars')
+%                        ('rxns','mets','comps','genes','ctrs','evars','rxnName','specName')
 %
 % OPTIONAL INPUTS:
 %    varargin:        Additional Options as 'ParameterName', Value pairs. Options are:
@@ -33,7 +33,9 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 
 
 
-PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs'};
+%rxnName, specName, refer to a map field
+%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
+PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs','rxnName','specName','molAlias'};
 
 parser = inputParser();
 parser.addRequired('model',@(x) isfield(x,type));
@@ -105,13 +107,26 @@ else
     knownfields = definedFields;
     firstdim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),1) == fieldSize),knownfields(:,2), knownfields(:,1));
     seconddim = cellfun(@(x,y) isequal(x,type) && isfield(model,y) && (size(model.(y),2) == fieldSize),knownfields(:,3), knownfields(:,1));
+    if any(strcmp(modelFields,'rxnNotes'))
+        rxnNotes=1;
+    else
+        rxnNotes=0;
+    end
     %Remove the known fields.
     unknownModelFields = setdiff(modelFields,knownfields(:,1));
     %And get all matching fields
     knownMatchingFields = knownfields((firstdim|seconddim),1);
     %Only look at known fields which are defined, or undefined fields
     modelFields = union(unknownModelFields,knownMatchingFields);
+    if rxnNotes
+        %hack to add rxnNotes back in as it is a map.rxnNotes rather than a
+        %model.rxnNotes, if it has not been removed then it will not be
+        %added twice because of the unique call.
+        modelFields=unique(union(modelFields,{'rxnNotes'}));
+    end
+    
     for i = 1:numel(modelFields)
+
         matchingsizes = size(model.(modelFields{i})) == fieldSize;        
         if any(matchingsizes) && ~(sum(matchingsizes) > 1) %A size > 1 should only happen if we have conflicting field sizes...
             possibleFields{end+1,1} = modelFields{i};            
