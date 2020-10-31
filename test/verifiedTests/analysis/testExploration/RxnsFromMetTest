@@ -1,0 +1,41 @@
+
+
+testFindRxnsFromMets failed!
+Reason:
+Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('printRxnFormula', '/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/exploration/printRxnFormula.m', 88)" style="font-weight:bold">printRxnFormula</a> (<a href="matlab: opentoline('/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/exploration/printRxnFormula.m',88,0)">line 88</a>)
+The value of 'printLevel' is invalid. It must satisfy the function: @(x)isnumeric(x).
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('findRxnsFromMets', '/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/exploration/findRxnsFromMets.m', 108)" style="font-weight:bold">findRxnsFromMets</a> (<a href="matlab: opentoline('/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/exploration/findRxnsFromMets.m',108,0)">line 108</a>)
+        rxnFormulaList = printRxnFormula(model,rxnList,verbFlag);
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('testFindRxnsFromMets', '/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m', 77)" style="font-weight:bold">testFindRxnsFromMets</a> (<a href="matlab: opentoline('/Users/rfleming/work/sbgCloud/code/fork-cobratoolbox/test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m',77,0)">line 77</a>)
+[reacs,forms] = findRxnsFromMets(model,dualTestMet,'containsAll',true);
+
+
+****************************************************
+****************************************************
+
+Running testFindSubSystemsFromGenes
+
+>> Testing SubSystem extraction From Genes
+>> Testing Ordering
+>> Testing Struct Output
+>> Done
+
+
+testFindSubSystemsFromGenes passed!
+
+
+****************************************************
+****************************************************
+
+Running testGetModelSizes
+
+
+
+testGetModelSizes passed!
+
+
+****************************************************
+****************************************************
+
+Running testSearchModel
+

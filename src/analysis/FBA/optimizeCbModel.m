@@ -1,4 +1,4 @@
-function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox, parameters)
+function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
 % Solves flux balance analysis problems, and variants thereof
 %
 % Solves LP problems of the form
@@ -12,7 +12,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %
 % USAGE:
 %
-%    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
+%    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
 %
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
@@ -32,7 +32,9 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x n` Right hand side of C*v <= d
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
-%                         * g - `n x 1` weights on zero or one norm
+%                         * g0 - `n x 1` weights on zero norm
+%                         * g1 - `n x 1` weights on one norm
+%                         * g2 - `n x 1` weights on two norm
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
 %                       'max') linear part of the objective. Nonlinear
@@ -83,7 +85,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
 %
-%                       `n` x 1   Forms the diagonal of positive definiate
+%                       `n` x 1   Forms the diagonal of positive definite
 %                       matrix `F` in the quadratic program
 %
 %                       .. math::
@@ -99,7 +101,9 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                       Runs much slower when set to false.
 %                       See `addLoopLawConstraints.m` to for more info.
 %
-%    zeroNormApprox:    appoximation type of zero-norm (only available when minNorm='zero') (default = 'cappedL1')
+%   param:              parameters structure passed directly to solver
+%                       The following are some optional fields (amongst many others)
+%   *.zeroNormApprox:    appoximation type of zero-norm (only available when minNorm='zero') (default = 'cappedL1')
 %
 %                          * 'cappedL1' : Capped-L1 norm
 %                          * 'exp'      : Exponential function
@@ -109,8 +113,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %                          * 'lp+'      : L_p norm with 0<p<1
 %                          * 'all'      : try all approximations and return the best result
 %
-%    verify:     verify that the input fields are consistent (default: false);
-%
+%   *.verify:     verify that the input fields are consistent (default: false);
 %
 % OUTPUT:
 %    solution:       solution object:
@@ -155,13 +158,14 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %       - Nathan Lewis          12/2/10  Modified code to allow for inequality
 %                                        constraints.
 %       - Ronan Fleming         12/03/10 Minor changes to the internal handling of
-%                                        global parameters.
+%                                        global param.
 %       - Ronan Fleming         14/09/11 Fixed bug in minNorm with negative
 %                                        coefficient in objective
 %       - Minh Le               11/02/16 Option to minimise the cardinality of
 %                                        fluxes vector
 %       - Stefania Magnusdottir 06/02/17 Replace LPproblem2 upper bound 10000 with Inf
 %       - Ronan Fleming         13/06/17 Support for coupling C*v<=d
+%       - Ronan Fleming         31/10/20 Support for optimizeCardinality.m
 %
 % NOTE:
 %
@@ -176,7 +180,11 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroN
 %    This means that it is up to the person calling `optimizeCbModel` to adapt their code to the
 %    case when no solution is returned, by checking the value of `solution.stat` first.
 
-if exist('osenseStr', 'var') % Process arguments and set up problem
+% Process arguments and set up problem
+
+% Figure out objective sense
+
+if exist('osenseStr', 'var') 
     if isempty(osenseStr)
         model.osenseStr = 'max';
     else
@@ -189,7 +197,10 @@ else
         model.osenseStr = 'max';
     end
 end
-% Figure out objective sense
+
+if ~exist('param','var')
+    param = struct;
+end
 
 if exist('minNorm', 'var')
     %backward compatible with minNorm true/false
@@ -207,7 +218,8 @@ if exist('minNorm', 'var')
     end
     % if minNorm = 'zero' then check the parameter 'zeroNormApprox'
     if isequal(minNorm,'zero')
-        if exist('zeroNormApprox', 'var')
+        if isfield(param,'zeroNormApprox')
+            zeroNormApprox = param.zeroNormApprox;
             availableApprox = {'cappedL1','exp','log','SCAD','lp-','lp+','all'};
             if ~ismember(zeroNormApprox,availableApprox)
                 warning('Approximation is not valid. Default value will be used');
@@ -229,12 +241,8 @@ else
     allowLoops = true;
 end
 
-if ~exist('parameters','var')
-    parameters = '';
-end
-
 %use global solver parameter, unless these these are specified in the input
-[printLevel, primalOnlyFlag, verify] = getCobraSolverParams('LP',{'printLevel','primalOnly', 'verify'},parameters);
+[printLevel, primalOnlyFlag, verify] = getCobraSolverParams('LP',{'printLevel','primalOnly', 'verify'},param);
 
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
@@ -256,30 +264,54 @@ else
 end
 
 % build the optimization problem, after it has been actively requested to be verified
-LPproblem = buildLPproblemFromModel(model,verify);
+optProblem = buildLPproblemFromModel(model,verify);
 if strcmp(minNorm, 'oneInternal')
     SConsistentRxnBool=model.SConsistentRxnBool;
 end
 
-%weights on norm
-if isfield(model,'g')  
-    if length(model.g)~=nRxns
-        error('model.g must be nRxns x 1')
-    end
-    normWeights=columnVector(model.g);
-else
-    normWeights=[];
+if isfield(model,'g') 
+    error('model.g no longer supported. zero and one norm weights must be separately specified in model.g0 and model.g1 respectively')
 end
 
-if allowLoops
+%weights on zero norm
+if isfield(model,'g0')  
+    if length(model.g0)~=nRxns
+        error('model.g0 must be nRxns x 1')
+    end
+    zeroNormWeights=columnVector(model.g0);
+else
+    zeroNormWeights=[];
+end
+    
+%weights on one norm
+if isfield(model,'g1')  
+    if length(model.g1)~=nRxns
+        error('model.g1 must be nRxns x 1')
+    end
+    oneNormWeights=columnVector(model.g1);
+else
+    oneNormWeights=[];
+end
+
+%weights on two norm
+if isfield(model,'g2')  
+    if length(model.g2)~=nRxns
+        error('model.g2 must be nRxns x 1')
+    end
+    twoNormWeights=columnVector(model.g2);
+else
+    twoNormWeights=[];
+end
+
+if allowLoops && ~strcmp(minNorm,'optimizeCardinality')
     clear model
 end
 
 % save the original size of the problem
-[~,nTotalVars] = size(LPproblem.A);
+[~,nTotalVars] = size(optProblem.A);
 
 %check in case there is no linear objective
-noLinearObjective = all(LPproblem.c==0);
+noLinearObjective = all(optProblem.c==0);
 
 %%
 t1 = clock;
@@ -290,16 +322,16 @@ if noLinearObjective && ~isempty(minNorm)
 else
     if 0
         %debug
-        solution=solveCobraLPCPLEX(LPproblem,1,0,0,[],0,'ILOGcomplex');
+        solution=solveCobraLPCPLEX(optProblem,1,0,0,[],0,'ILOGcomplex');
         solution.f=solution.obj;
         return
     end
     
     % Solve initial LP
     if allowLoops
-        solution = solveCobraLP(LPproblem);
+        solution = solveCobraLP(optProblem);
     else
-        MILPproblem = addLoopLawConstraints(LPproblem, model, 1:nRxns);
+        MILPproblem = addLoopLawConstraints(optProblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem);
     end
     
@@ -314,7 +346,134 @@ end
 %only run if minNorm is not empty, and either there is no linear objective
 %or there is a linear objective and the LP problem solved to optimality
 if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solution.stat==1 && ~isempty(minNorm))
-    if strcmp(minNorm, 'one')
+    if strcmp(minNorm, 'optimizeCardinality')
+        % DC programming for solving the cardinality optimization problem
+        % The `l0` norm is approximated by a capped-`l1` function.
+        %
+        % :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*||x||_1
+        % .                      -  delta_0*d.||*y||_0 +  delta_1*||y||_1`
+        % s.t. :math:`A*(x, y, z) <= b`
+        % :math:`l <= (x,y,z) <= u`
+        % :math:`x in R^p, y in R^q, z in R^r`
+        %
+        % USAGE:
+        %
+        %    solution = optimizeCardinality(problem, param)
+        
+        %      * .lambda0 - trade-off parameter on minimise `||x||_0`
+        if isfield(model,'lambda0')
+            optProblem.lambda0=model.lambda0;
+        end
+        %      * .lambda1 - trade-off parameter on minimise `||x||_1`
+        if isfield(model,'lambda1')
+            optProblem.lambda1=model.lambda1;
+        end
+        %      * .delta0 - trade-off parameter on maximise `||y||_0`
+        if isfield(model,'delta0')
+            optProblem.delta0=model.delta0;
+        end
+        %      * .delta1 - trade-off parameter on minimise `||y||_1
+        if isfield(model,'delta1')
+            optProblem.delta1=model.delta1;
+        end
+        
+        if isfield(optProblem,'F')
+            error('optimizeCardinality does not (yet) support minimisation of 2-norm')
+        end
+        
+        if any(oneNormWeights<0)
+            error('optimizeCardinality does not (yet) support maximisation of 1-norm')
+        end
+        
+        %     * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x (min zero norm).
+        optProblem.p = zeroNormWeights > 0;
+        %     * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y (max zero norm).
+        optProblem.q = zeroNormWeights < 0;
+        %     * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z .
+        optProblem.r = zeroNormWeights == 0;
+        
+        %    problem:     Structure containing the following fields describing the problem:
+        %      * .k - `p x 1` OR a `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
+        k = zeroNormWeights;
+        k(k<0)=0;
+        optProblem.k = k;
+        %      * .d - `q x 1` OR a `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
+        d = -zeroNormWeights;
+        d(d<0)=0;
+        optProblem.d = d;
+        %      * .o `size(A,2) x 1` strictly positive weight vector on minimise `||[x;y;z]||_1`
+        optProblem.o = oneNormWeights;
+        
+        %    param:      Parameters structure:
+        %                   * .printLevel - greater than zero to recieve more output
+        % The following use default values, unless they are provided in the
+        % param structure
+        %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
+        %                   * .epsilon - stopping criteria - (Default value = 1e-6)
+        %                   * .theta - starting parameter of the approximation (Default value = 0.5)
+        %                              For a sufficiently large parameter , the Capped-L1 approximate problem
+        %                              and the original cardinality optimisation problem are have the same set of optimal solutions
+        %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
+        %                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
+        
+        if noLinearObjective
+            % The following are assumed to be inherited correctly from
+            % optProblem built above
+            %     * .A - `s x size(A,2)` LHS matrix
+            %     * .b - `s x 1` RHS vector
+            %     * .lb - `size(A,2) x 1` Lower bound vector
+            %     * .ub - `size(A,2) x 1` Upper bound vector
+            %     * .c -  `size(A,2) x 1` linear objective function vector
+            %     * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
+            %     * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
+            %                  each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+            
+            solCard = optimizeCardinality(optProblem, param);
+        else
+            optProblem2 = optProblem;
+            optProblem2.A = [optProblem.A ; optProblem.c'];
+            optProblem2.b = [optProblem.b ; objective];
+            optProblem2.csense = [optProblem.csense;'E'];
+            optProblem2.lb = optProblem.lb;
+            optProblem2.ub = optProblem.ub;
+            solCard = optimizeCardinality(optProblem2, param);
+        end
+        
+        solution.stat   = solCard.stat;
+        solution.full   = solCard.xyz;
+        solution.dual   = [];
+        solution.rcost  = [];
+        solution.slack  = [];
+
+    elseif strcmp(minNorm, 'zero')
+        % Minimize the cardinality (zero-norm) of v
+        %       min ||v||_0
+        %           s.t.    S*v = b
+        %                   c'v = f
+        %                   lb <= v <= ub
+        
+        % Define the constraints structure
+        if noLinearObjective
+            % Call the sparse LP solver
+            solutionL0 = sparseLP(optProblem, zeroNormApprox);
+        else
+            optProblem2.A = [optProblem.A ; optProblem.c'];
+            optProblem2.b = [optProblem.b ; objective];
+            optProblem2.csense = [optProblem.csense;'E'];
+            optProblem2.lb = optProblem.lb;
+            optProblem2.ub = optProblem.ub;
+            % Call the sparse LP solver
+            solutionL0 = sparseLP(optProblem2, zeroNormApprox);
+        end
+
+        %Store results
+        solution.stat   = solutionL0.stat;
+        solution.full   = solutionL0.x;
+        solution.dual   = [];
+        solution.rcost  = [];
+        solution.slack  = [];
+        
+elseif strcmp(minNorm, 'one')
         % Minimize the absolute value of fluxes to 'avoid' loopy solutions
         % Solve secondary LP to minimize one-norm of |v|
         % Set up the optimization problem
@@ -326,38 +485,38 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %
         % vf,vr >= 0
         
-        LPproblem2.A = [LPproblem.A sparse(nMets+nCtrs,2*nRxns);
+        optProblem2.A = [optProblem.A sparse(nMets+nCtrs,2*nRxns);
              speye(nRxns,nTotalVars) speye(nRxns,nRxns) sparse(nRxns,nRxns);
             -speye(nRxns,nTotalVars) sparse(nRxns,nRxns) speye(nRxns,nRxns);
-            LPproblem.c' sparse(1,2*nRxns)];
+            optProblem.c' sparse(1,2*nRxns)];
 
-        if ~isempty(normWeights)
+        if ~isempty(oneNormWeights)
             %weighted one norm
-            LPproblem2.c  = [zeros(nTotalVars,1);[normWeights;normWeights].*ones(2*nRxns,1)];
+            optProblem2.c  = [zeros(nTotalVars,1);[oneNormWeights;oneNormWeights].*ones(2*nRxns,1)];
         else
-            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
+            optProblem2.c  = [zeros(nTotalVars,1);ones(2*nRxns,1)];
         end
-        LPproblem2.lb = [LPproblem.lb;zeros(2*nRxns,1)];
-        LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nRxns,1)];
-        LPproblem2.b  = [LPproblem.b;zeros(2*nRxns,1);objective];
+        optProblem2.lb = [optProblem.lb;zeros(2*nRxns,1)];
+        optProblem2.ub = [optProblem.ub;Inf*ones(2*nRxns,1)];
+        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objective];
         
         %csense for 3 & 4 above
-        LPproblem2.csense = [LPproblem.csense; repmat('G',2*nRxns,1)];
+        optProblem2.csense = [optProblem.csense; repmat('G',2*nRxns,1)];
         % constrain the optimal value according to the original problem
-        if LPproblem.osense==-1
-            LPproblem2.csense = [LPproblem2.csense; 'G'];
+        if optProblem.osense==-1
+            optProblem2.csense = [optProblem2.csense; 'G'];
             %LPproblem2.csense(nTotalVars+1) = 'G'; %wrong
         else
-            LPproblem2.csense = [LPproblem2.csense; 'L'];
+            optProblem2.csense = [optProblem2.csense; 'L'];
             %LPproblem2.csense(nTotalVars+1) = 'L';  %wrong
         end
         
-        LPproblem2.osense = 1;
+        optProblem2.osense = 1;
         % Re-solve the problem
         if allowLoops
-            solution = solveCobraLP(LPproblem2);
+            solution = solveCobraLP(optProblem2);
         else
-            MILPproblem2 = addLoopLawConstraints(LPproblem2, model, 1:nRxns);
+            MILPproblem2 = addLoopLawConstraints(optProblem2, model, 1:nRxns);
             solution = solveCobraMILP(MILPproblem2);
         end
     elseif strcmp(minNorm, 'oneInternal')
@@ -373,10 +532,10 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         nIntRxns=nnz(SConsistentRxnBool);
         A2 = sparse(nIntRxns,nTotalVars);
         A2(:,SConsistentRxnBool)=speye(nIntRxns,nIntRxns);
-        LPproblem2.A = [...
-                         LPproblem.A,                            sparse(nMets,2*nIntRxns);
+        optProblem2.A = [...
+                         optProblem.A,                            sparse(nMets,2*nIntRxns);
                                   A2, -speye(nIntRxns,nIntRxns), speye(nIntRxns,nIntRxns);
-                        LPproblem.c',                                sparse(1,2*nIntRxns)];
+                        optProblem.c',                                sparse(1,2*nIntRxns)];
                             
         %only minimise the absolute value of internal reactions
         if ~isempty(normWeights)
@@ -384,71 +543,44 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
             %rest are discarded
             normWeightsInt=normWeights(SConsistentRxnBool);
             %weighted one norm of internal reactions
-            LPproblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
+            optProblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
         else
-            LPproblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
+            optProblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
         end
-        LPproblem2.lb = [LPproblem.lb;zeros(2*nIntRxns,1)];
-        LPproblem2.ub = [LPproblem.ub;Inf*ones(2*nIntRxns,1)];
-        LPproblem2.b  = [LPproblem.b;zeros(nIntRxns,1);objective];
+        optProblem2.lb = [optProblem.lb;zeros(2*nIntRxns,1)];
+        optProblem2.ub = [optProblem.ub;Inf*ones(2*nIntRxns,1)];
+        optProblem2.b  = [optProblem.b;zeros(nIntRxns,1);objective];
         
         %csense for 3 above
-        LPproblem2.csense = [LPproblem.csense; repmat('E',nIntRxns,1)];
+        optProblem2.csense = [optProblem.csense; repmat('E',nIntRxns,1)];
         % constrain the optimal value according to the original problem
-        if LPproblem.osense==-1
-            LPproblem2.csense = [LPproblem2.csense; 'G'];
+        if optProblem.osense==-1
+            optProblem2.csense = [optProblem2.csense; 'G'];
         else
-            LPproblem2.csense = [LPproblem2.csense; 'L'];
+            optProblem2.csense = [optProblem2.csense; 'L'];
         end
         %minimise absolute value of internal reaction fluxes
-        LPproblem2.osense = 1;
+        optProblem2.osense = 1;
         
         % Re-solve the problem
-        solution = solveCobraLP(LPproblem2);
+        solution = solveCobraLP(optProblem2);
         
-    elseif strcmp(minNorm, 'zero')
-        % Minimize the cardinality (zero-norm) of v
-        %       min ||v||_0
-        %           s.t.    S*v = b
-        %                   c'v = f
-        %                   lb <= v <= ub
-        
-        % Define the constraints structure
-        if noLinearObjective
-            % Call the sparse LP solver
-            solutionL0 = sparseLP(LPproblem, zeroNormApprox);
-        else
-            LPproblem2.A = [LPproblem.A ; LPproblem.c'];
-            LPproblem2.b = [LPproblem.b ; objective];
-            LPproblem2.csense = [LPproblem.csense;'E'];
-            LPproblem2.lb = LPproblem.lb;
-            LPproblem2.ub = LPproblem.ub;
-            % Call the sparse LP solver
-            solutionL0 = sparseLP(LPproblem2, zeroNormApprox);
-        end
 
-        %Store results
-        solution.stat   = solutionL0.stat;
-        solution.full   = solutionL0.x;
-        solution.dual   = [];
-        solution.rcost  = [];
-        solution.slack  = [];
-        
     elseif length(minNorm)> 1 || minNorm > 0
         %THIS SECTION BELOW ASSUMES WRONGLY THAT c HAVE ONLY ONE NONZERO SO I
         %REPLACED IT WITH A MORE GENERAL FORMULATION, WHICH IS ALSO ROBUST TO
         %THE CASE WHEN THE OPTIMAL OBJECIVE WAS ZERO - RONAN June 13th 2017
-        %     if nnz(LPproblem.c)>1
+        %     if nnz(optProblem.c)>1
         %         error('Code assumes only one non-negative coefficient in linear
         %         part of objective');
         %     end
         %     % quadratic minimization of the norm.
         %     % set previous optimum as constraint.
-        %     LPproblem.A = [LPproblem.A;
-        %         (LPproblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
-        %     LPproblem.csense(end+1) = 'E';
+        %     optProblem.A = [optProblem.A;
+        %         (optProblem.c'~=0 + 0)];%new constraint must be a row with a single unit entry
+        %     optProblem.csense(end+1) = 'E';
         %
-        %     LPproblem.b = [LPproblem.b;solution.full(LPproblem.c~=0)];
+        %     optProblem.b = [optProblem.b;solution.full(optProblem.c~=0)];
         
         %Minimise Euclidean norm using quadratic programming
         if isnumeric(minNorm)
@@ -469,36 +601,36 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         
         % quadratic minimization of the norm.
         if noLinearObjective
-            LPproblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
+            optProblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
             if allowLoops
                 %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
                 %part of a loop. By definition, exchange reactions are not part of these loops, more
                 %properly called stoichiometrically balanced cycles.
                 
-                solution = solveCobraQP(LPproblem);
+                solution = solveCobraQP(optProblem);
             else
                 %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
                 %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
-                MIQPproblem = addLoopLawConstraints(LPproblem, model, 1:nTotalVars);
+                MIQPproblem = addLoopLawConstraints(optProblem, model, 1:nTotalVars);
                 solution = solveCobraMIQP(MIQPproblem);
             end
         else
             % set previous optimum as constraint.
-            LPproblem2 = LPproblem;
-            LPproblem2.A = [LPproblem.A;LPproblem.c'];
-            LPproblem2.b = [LPproblem.b;objective];
-            LPproblem2.csense = [LPproblem.csense; 'E'];
-            LPproblem2.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
-            LPproblem2.osense=1;
+            optProblem2 = optProblem;
+            optProblem2.A = [optProblem.A;optProblem.c'];
+            optProblem2.b = [optProblem.b;objective];
+            optProblem2.csense = [optProblem.csense; 'E'];
+            optProblem2.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
+            optProblem2.osense=1;
             if allowLoops
                 %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
                 %part of a loop. By definition, exchange reactions are not part of these loops, more
                 %properly called stoichiometrically balanced cycles.
-                solution = solveCobraQP(LPproblem2);
+                solution = solveCobraQP(optProblem2);
             else
                 %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
                 %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
-                MIQPproblem = addLoopLawConstraints(LPproblem2, model, 1:nTotalVars);
+                MIQPproblem = addLoopLawConstraints(optProblem2, model, 1:nTotalVars);
                 solution = solveCobraMIQP(MIQPproblem);
             end
         end
@@ -549,9 +681,9 @@ if solution.stat == 1 || solution.stat == 3
         solution.f2 = sum(abs(solution.full(1:nTotalVars,1)));
     else
         if exist('LPproblem2','var')
-            if isfield(LPproblem2,'F')
+            if isfield(optProblem2,'F')
                 %two norm
-                solution.f2 = 0.5*solution.full'*LPproblem2.F*solution.full;
+                solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
             end
         end
     end

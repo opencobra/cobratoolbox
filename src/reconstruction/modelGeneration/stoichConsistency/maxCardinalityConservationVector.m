@@ -164,11 +164,7 @@ switch method
             %cardProblem.delta1=1e-6;
         end
 
-        if 1
-            solution = optimizeCardinality(cardProblem,param);
-        else
-            solution = optimizeCardinalityT(cardProblem,param);
-        end
+        solution = optimizeCardinality(cardProblem,param);
         %  problem                  Structure containing the following fields describing the problem
         %       p                   size of vector x
         %       q                   size of vector y

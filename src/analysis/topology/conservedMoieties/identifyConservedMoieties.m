@@ -458,6 +458,12 @@ if sanityChecks
     end
 end
 
+%atomic decomposition
+res=M2A*M2A'*N - M2A*A*A2R;
+if max(max(abs(res)))~=0
+    error('Inconsistent directed atom transition graph')
+end
+
 %% connected components
 
 %add a placeholder for the moiety indices to the atom transition graph
