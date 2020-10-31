@@ -1,9 +1,9 @@
-function solution = optimizeCardinality(problem, param)
+function solution = optimizeCardinalityOld(problem, param)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by a capped-`l1` function.
 %
-% :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*||x||_1
-% .                      -  delta_0*d.||*y||_0 +  delta_1*||y||_1` 
+% :math:`min c'(x, y, z) + lambda_0*||k.*x||_0 + lambda_1*||x||_1
+% .                      -  delta_0*||d.*y||_0 +  delta_1*||y||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -15,23 +15,22 @@ function solution = optimizeCardinality(problem, param)
 % INPUT:
 %    problem:     Structure containing the following fields describing the problem:
 %
-%     * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x (min zero norm).
-%     * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y (max zero norm).
-%     * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z .
-%     * .A - `s x size(A,2)` LHS matrix
-%     * .b - `s x 1` RHS vector
-%     * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
-%                  each row in `A` ('E', equality, 'G' greater than, 'L' less than).
-%     * .lb - `size(A,2) x 1` Lower bound vector
-%     * .ub - `size(A,2) x 1` Upper bound vector
-%     * .c -  `size(A,2) x 1` linear objective function vector
+%                   * .p - size of vector `x` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to x (min zero norm).
+%                   * .q - size of vector `y` OR a `size(A,2) x 1` boolean indicating columns of A corresponding to y (max zero norm).
+%                   * .r - size of vector `z` OR a `size(A,2) x 1`boolean indicating columns of A corresponding to z .
+%                   * .A - `s x size(A,2)` LHS matrix
+%                   * .b - `s x 1` RHS vector
+%                   * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
+%                     each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%                   * .lb - `size(A,2) x 1` Lower bound vector
+%                   * .ub - `size(A,2) x 1` Upper bound vector
+%                   * .c -  `size(A,2) x 1` linear objective function vector
 %
 % OPTIONAL INPUTS:
 %    problem:     Structure containing the following fields describing the problem:
 %                   * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
 %                   * .k - `p x 1` OR a `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
 %                   * .d - `q x 1` OR a `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
-%                   * .o `size(A,2) x 1` strictly positive weight vector on minimise `||[x;y;z]||_1`
 %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
 %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
 %                   * .delta0 - trade-off parameter on maximise `||y||_0`
@@ -68,7 +67,7 @@ function solution = optimizeCardinality(problem, param)
 %                     y=solution.xyz(problem.q);
 %                     z=solution.xyz(problem.r);
 
-% .. Author: - Hoai Minh Le &  Ronan Fleming (31 Oct 2020)
+% .. Author: - Hoai Minh Le &  Ronan Fleming
 
 stop = false;
 warn = false;
@@ -105,9 +104,6 @@ end
 if ~isfield(param,'thetaMultiplier')
     param.thetaMultiplier   = 1.5;
 end
-if ~isfield(param,'thetaMax')
-    param.thetaMax   = 250;%needs to be resonable size esp for large models
-end
 feasTol = getCobraSolverParams('LP', 'feasTol');
 if isfield(param,'eta') == 0
     param.eta = feasTol;
@@ -128,7 +124,6 @@ if ~isfield(param,'condenseT')
     param.condenseT = 1;
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
 if isfield(problem,'lambda') && (isfield(problem,'lambda0') || isfield(problem,'lambda1'))
     error('optimizeCardinality expecting problem.lambda or problem.lambda0 and problem.lambda1')
 end
@@ -142,7 +137,7 @@ if ~isfield(problem,'lambda') && ~isfield(problem,'lambda0')
 end
 if ~isfield(problem,'delta') && ~isfield(problem,'delta0')
     %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining
-    problem.delta = 1;  %weight on minimisation of the one norm of x
+    problem.delta = 0;  %weight on minimisation of the one norm of x
 end
 
 if isfield(problem,'lambda')
@@ -356,21 +351,12 @@ else
     end
 end
 
-if ~isfield(problem,'o')
-    problem.o = ones(size(problem.A,2),1);
-    %by default do not minimize the one norm of reactions where cardinality
-    %is not being optimised
-    if length(problem.p)~=1
-        problem.o(problem.r) = 0;
-    else
-        problem.o(find(problem.r)) = 0;
-    end
-end
-
-[p,q,r,k,d,o] = deal(problem.p,problem.q,problem.r,problem.k,problem.d,problem.o);
+[p,q,r,k,d] = deal(problem.p,problem.q,problem.r,problem.k,problem.d);
 [A,b,c,lb,ub,csense] = deal(problem.A,problem.b,problem.c,problem.lb,problem.ub,problem.csense);
 
 %%
+
+totalComplementarityProblem = 0;
 if length(problem.p)~=1
     bool = problem.p | problem.q | problem.r;
     if ~all(bool)
@@ -385,49 +371,33 @@ if length(problem.p)~=1
     q=nnz(problem.q);
     r=nnz(problem.r);
     
-    %rearrange the order of the complementary indices
-    if isfield(problem,'complementaritykBool')
-        if isfield(problem,'complementaritydBool')
-            %detect if this is totally a complementarity problem
-            bool = sum(problem.complementaritykBool~=0,2)~=0 | problem.complementaritydBool~=0;
-            if nnz(c(~bool))==0 && nnz(d(~bool))==0 && nnz(k(~bool))==0
-                if param.printLevel>0
-                    fprintf('%s\n','Linear complementarity constraint feasiblity problem.')
-                end
-                totalComplementarityProblem = 1;
-            else
-                totalComplementarityProblem = 0;
+    
+    if isfield(problem,'complementarityindk')
+        %detect if this is totally a complementarity problem
+        bool = sum(problem.complementarityindk~=0,2)~=0 | problem.complementarityindd~=0;
+        if nnz(c(~bool))==0 && nnz(d(~bool))==0 && nnz(k(~bool))==0
+            if param.printLevel>0
+                fprintf('%s\n','Linear complementarity constraint feasiblity problem.')
+            end
+            totalComplementarityProblem = 1;
+        end
+        
+        %adjust the indices corresponding to the complementarity varables
+        %to take into account the rearrangement of the order of the
+        %variables above
+        complementarityindk = problem.complementarityindk(indp,:);
+        if isfield(problem,'complementarityindd')
+            complementarityindd = problem.complementarityindd(indq,:);
+            if ~(nnz(complementarityindk(:,1))==nnz(complementarityindk(:,2))...
+                    && nnz(complementarityindk(:,2))==nnz(complementarityindd))
+                error('size(complementarityindk,1) does not equal length(complementarityindd)')
             end
         else
-            error('Either both complementaritykBool and complementaritydBool are present, or neither')
+            error('Either both complementarityindk and complementarityindd are present, or neither')
         end
-        if 1
-            %rearrange the order of the complementarity boolean vectors
-            complementaritykBool(:,1) = [problem.complementaritykBool(indp,1);problem.complementaritykBool(indq,1);problem.complementaritykBool(indr,1)];
-            complementaritykBool(:,2) = [problem.complementaritykBool(indp,2);problem.complementaritykBool(indq,2);problem.complementaritykBool(indr,2)];
-            complementaritydBool      = [problem.complementaritydBool(indp,1);problem.complementaritydBool(indq,1);problem.complementaritydBool(indr,1)];
-        else
-            %old approach
-            %adjust the indices corresponding to the complementarity varables
-            %to take into account the rearrangement of the order of the
-            %variables above
-            complementaritykBool = problem.complementaritykBool(indp,:);
-            if isfield(problem,'complementaritydBool')
-                complementaritydBool = problem.complementaritydBool(indq,:);
-                if ~(nnz(complementaritykBool(:,1))==nnz(complementaritykBool(:,2))...
-                        && nnz(complementaritykBool(:,2))==nnz(complementaritydBool))
-                    error('size(complementaritykBool,1) does not equal length(complementaritydBool)')
-                end
-            else
-                error('Either both complementaritykBool and complementaritydBool are present, or neither')
-            end
-            complementaritykBool(complementaritykBool(:,1)~=0,1)=find(complementaritykBool(:,1));
-            complementaritykBool(complementaritykBool(:,2)~=0,2)=find(complementaritykBool(:,2));
-            complementaritydBool(complementaritydBool~=0)=p+find(complementaritydBool);
-            
-        end
-    else
-        totalComplementarityProblem = 0;
+        complementarityindk(complementarityindk(:,1)~=0,1)=find(complementarityindk(:,1));
+        complementarityindk(complementarityindk(:,2)~=0,2)=find(complementarityindk(:,2));
+        complementarityindd(complementarityindd~=0)=p+find(complementarityindd);
     end
     
     %rearrange the order of the variables
@@ -435,11 +405,10 @@ if length(problem.p)~=1
     lb  = [lb(indp);lb(indq);lb(indr)];
     ub  = [ub(indp);ub(indq);ub(indr)];
     c   = [c(indp);c(indq);c(indr)];
-    o   = [o(indp);o(indq);o(indr)];
     k   =  k(indp);
     d   =  d(indq);
-else
-    totalComplementarityProblem = 0;
+    
+
 end
 %%
 
@@ -474,8 +443,8 @@ else
     end
 end
 
-if ~isfield(param,'checkFeasibility')
-    param.checkFeasibility=0;
+if ~isfield(param,'testFeasibility')
+    param.testFeasibility=0;
 end
 
 [nbMaxIteration,epsilon,theta] = deal(param.nbMaxIteration,param.epsilon,param.theta);
@@ -654,9 +623,9 @@ end
 
 % subgradient of -lambda1*abs(x) + lambda0*diag(k)*(max{1,theta*abs(x)} -1)
 x(abs(x) <= 1/theta) = 0;
-x_bar = -lambda1*o(1:p).*sign(x) +  theta*lambda0*k.*sign(x);
+x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x);
 % subgradient of -delta1*abs(y) + theta*delta0*diag(d)*abs(y)
-y_bar = -delta1*o(p+1:p+q).*sign(y)  +  theta*delta0*d.*sign(y);
+y_bar = -delta1*sign(y)  +  theta*delta0*d.*sign(y);
 
 % Create the linear sub-program that one needs to solve at each iteration, only its
 % objective function changes, the constraint set remains.
@@ -716,13 +685,12 @@ csense2 = [csense;repmat('L',2*p+2*q,1)];
 %Define the linear sub-problem
 subLPproblem = struct('c',c2,'osense',1,'A',A2,'csense',csense2,'b',b2,'lb',lb2,'ub',ub2);
 
-if param.checkFeasibility
+if param.testFeasibility
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
     if LPsolution.stat==1
         fprintf('%s\n','Initial cardinality optimisation sub-problem is feasible.')
     else
-        fprintf('%s\n','Initial cardinality optimisation sub-problem is infeasible.')
         if param.printLevel>2
             disp(theta)
             %relaxing the problem usually makes it feasible
@@ -730,25 +698,19 @@ if param.checkFeasibility
             subLPproblemRelaxed.lb(:)=-1000;
             subLPproblemRelaxed.ub(:)=1000;
             LPsolutionRelaxed = solveCobraLP(subLPproblemRelaxed);
-            if LPsolutionRelaxed.stat==1
-                fprintf('%s\n','Initial cardinality optimisation sub-problem is feasible with relaxed bounds.')
-            else
-                fprintf('%s\n','Initial cardinality optimisation sub-problem is in feasible, even with relaxed bounds.')
-            end
             disp(LPsolutionRelaxed);
             error('Infeasible before the iterations begin')
         end
     end
 end
 
-obj_old = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,o,theta,lambda0,lambda1,delta0,delta1);
+obj_old = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda1,delta0,delta1);
 
 
-
+thetamax = 10000;
 
 %% DCA loop
 nbIteration = 0;
-warningMessage = [];
 while nbIteration < nbMaxIteration && stop ~= true
     tic;
     x_old = x;
@@ -762,7 +724,7 @@ while nbIteration < nbMaxIteration && stop ~= true
         end
     end
     [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem...
-        (subLPproblem,x,y,s,p,pPosBool,q,r,c,k,d,o,lb,ub,theta,lambda0,lambda1,delta0,delta1,param.printLevel-1,param.condenseT);
+        (subLPproblem,x,y,s,p,pPosBool,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,param.printLevel-1,param.condenseT);
     
 %     %I(s) stands for the set of active constraints at s
 %     dx = x_old - x;
@@ -778,28 +740,27 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.z = [];
             solution.stat = -1;
             solution.origStat = LPsolution.origStat;
-            warningMessage = ['No solution reported (timelimit, numerical problem etc). Solver original status is: ' num2str(LPsolution.origStat)];
-            stop = 1;
+            error(['No solution reported (timelimit, numerical problem etc). Solver original status is: ' LPsolution.origStat]);
         case 0
             solution.x = [];
             solution.y = [];
             solution.z = [];
             solution.stat = 0;
             solution.origStat = LPsolution.origStat;
-            warningMessage = ['Problem infeasible ! Solver original status is: ' num2str(LPsolution.origStat) ];
-            stop = 1;
+            warning('Problem infeasible !');
+            return;
         case 2
             solution.x = [];
             solution.y = [];
             solution.z = [];
             solution.stat = 2;
             solution.origStat = LPsolution.origStat;
-            warningMessage =['Problem unbounded ! Solver original status is: ' num2str(LPsolution.origStat) ];
-            stop = 1;
+            warning('Problem unbounded !');
+            return;
         case 1
             %Check stopping criterion
             delta_x = norm([x;y;z] - [x_old;y_old;z_old]);
-            obj_new = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,o,theta,lambda0,lambda1,delta0,delta1);
+            obj_new = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda1,delta0,delta1);
             if 0
                 delta_obj = (obj_new - obj_old)/obj_old;
             else
@@ -807,30 +768,21 @@ while nbIteration < nbMaxIteration && stop ~= true
             end
             nbIteration = nbIteration + 1;
             
-            if isfield(problem,'complementaritykBool') && isfield(problem,'complementaritydBool')
+            if isfield(problem,'complementarityindk') && isfield(problem,'complementarityindd')
+                cindk = complementarityindk;
+                cindd = complementarityindd;
+                
                 if 1
                     %this should be less than the feasibility
                     %tolerance
-                    if norm(...
-                              LPsolution.full(complementaritykBool(:,1))...
-                            + LPsolution.full(complementaritykBool(:,2))...
-                            - LPsolution.full(complementaritydBool),inf) > 1e-6
+                    if norm(LPsolution.full(cindk(cindk(:,1)~=0,1))+ LPsolution.full(cindk(cindk(:,2)~=0,2)) - LPsolution.full(cindd),inf)>1e-6
                         error('something wrong, should be almost zero')
                     end
                 end
-                nComp=nnz(complementaritydBool);
-                obj_comp_cap...
-                    = lambda0*k(find(complementaritykBool(:,1)))'*(min(ones(nComp,1),theta*abs(LPsolution.full(complementaritykBool(:,1)))))...
-                    + lambda0*k(find(complementaritykBool(:,2)))'*(min(ones(nComp,1),theta*abs(LPsolution.full(complementaritykBool(:,2)))))...
-                    -  delta0*d(find(complementaritydBool)-length(k))'*(min(ones(nComp,1),theta*abs(LPsolution.full(complementaritydBool))));
-                
                 obj_comp...
-                    = lambda0*k(find(complementaritykBool(:,1)))'*(abs(LPsolution.full(complementaritykBool(:,1)))>param.eta)...
-                    + lambda0*k(find(complementaritykBool(:,2)))'*(abs(LPsolution.full(complementaritykBool(:,2)))>param.eta)...
-                    -  delta0*d(find(complementaritydBool)-length(k))'*(abs(LPsolution.full(complementaritydBool))>2*param.eta);
-                if obj_comp<=0 && 0
-                    disp(obj_comp)
-                end
+                    = ones(1,size(cindd,1))*(  lambda0*k(cindk(:,1)~=0).*(abs(LPsolution.full(cindk(cindk(:,1)~=0,1)))>param.eta)...
+                    + lambda0*k(cindk(:,2)~=0).*(abs(LPsolution.full(cindk(cindk(:,2)~=0,2)))>param.eta)...
+                    -  delta0*d.*(abs(LPsolution.full(cindd))>param.eta));
             else
                 obj_comp = NaN;
             end
@@ -842,45 +794,43 @@ while nbIteration < nbMaxIteration && stop ~= true
                 %                          + lambda1*norm(x,1) + delta1*norm(y,1);
                 
                 obj_linear = c'*[x;y;z];
-                obj_x0_cap = lambda0*k'*min(ones(p,1),theta*abs(x));
-                obj_y0_cap =  delta0*d'*min(ones(q,1),theta*abs(y));
+                obj_x0_cap = lambda0*ones(p,1)'*spdiags(k,0,p,p)*min(ones(p,1),theta*abs(x));
+                obj_y0_cap =  delta0*ones(q,1)'*spdiags(d,0,q,q)*min(ones(q,1),theta*abs(y));
                 obj_x0 = lambda0*k'*(abs(x)>param.eta);
                 obj_y0 =  delta0*d'*(abs(y)>param.eta);
-                obj_x1 = lambda1*o(1:p)'*abs(x);
-                obj_y1 =  delta1*o(p+1:p+q)'*abs(y);
-                
-                
-                
+                obj_x1 = lambda1*norm(x,1);
+                obj_y1 =  delta1*norm(y,1);
+         
                 if nbIteration==1
                     fprintf('%4s%10s%10s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%20s\n','itn','theta','||dx||','del_obj','obj','linear','||x||0','a(x)','||x||1','||y||0','a(y)','||y||1','c(x,y)','sec');
                 end
-                fprintf('%4u%8.2f%12.5g%12.2g%12.2g%12.2g%12g%12.2g%12.2g%12g%12.2g%12.2g%12.2g%20u\n',...
-                    nbIteration,theta,delta_x,delta_obj,obj_new,obj_linear,obj_x0,obj_x0_cap,obj_x1,obj_y0,obj_y0_cap,obj_y1,obj_comp,timeTaken);
+                fprintf('%4u%8.2g%12.5g%12.2g%12.2g%12.2g%12.2g%12.2g%12.2g%12.2g%12.2g%12.2g%12.2g%20u\n',nbIteration,theta,delta_x,delta_obj,obj_new,obj_linear,obj_x0,obj_x0_cap,obj_x1,obj_y0,obj_y0_cap,obj_y1,obj_comp,timeTaken);
             end
             
             if totalComplementarityProblem
                 %can stop if complementarity constraints are satisfied
                 %stop = delta_x < epsilon || abs(delta_obj) < epsilon || obj_comp == 0;
-                stop = obj_comp <= 0;
+                stop = obj_comp == 0;
                 %only update theta if no progress in objective
-                if abs(delta_obj) < epsilon || 1
+                if abs(delta_obj) < epsilon
                     % Automatically update the approximation parameter theta
-                    if theta < param.thetaMax
-                        %In our experiments, theta was set to 0.5 and param.thetaMax was equal to 100.
+                    if theta < thetamax
+                        %In our experiments, theta was set to 0.5 and thetamax was equal to 100.
                         theta = theta * param.thetaMultiplier;
                     else
+                        warn = 1;
                         warningMessage = ['optimizeCardinality: Maximum value of theta reached, at ' num2str(theta) '.'];
                         stop = 1;
                     end
                 end
             else
-                %stop = (delta_x < epsilon || abs(delta_obj) < epsilon) && theta > param.thetaMax;
                 stop = delta_x < epsilon || abs(delta_obj) < epsilon;
                 % Automatically update the approximation parameter theta
-                if theta < param.thetaMax
-                    %In our experiments, theta was set to 0.5 and param.thetaMax was equal to 100.
+                if theta < thetamax
+                    %In our experiments, theta was set to 0.5 and thetamax was equal to 100.
                     theta = theta * param.thetaMultiplier;
                 else
+                    warn = 1;
                     warningMessage = ['optimizeCardinality: Maximum value of theta reached, at ' num2str(theta) '.'];
                     stop = 1;
                 end
@@ -895,24 +845,19 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.z = z_old;
             solution.stat = -1;
             solution.origStat = LPsolution.origStat;
-            if isfield(LPsolution,'origStatText')
-                solution.origStatText = LPsolution.origStatText;
-            end
+            warn = 1;
             stop = 1;
             warningMessage =['optimizeCardinality: No solution reported at iteration ' num2str(nbIteration) ', (timelimit, numerical problem etc)'];
     end
-end
-if param.printLevel>0
-    fprintf('%4s%10s%10s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%20s\n','itn','theta','||dx||','del_obj','obj','linear','||x||0','a(x)','||x||1','||y||0','a(y)','||y||1','c(x,y)','sec');
-end
-if ~isempty(warningMessage)
-    warning(warningMessage)
-    if param.printLevel>0
-        LPsolution
+    if stop
+    end
+    if warn
+        warning(warningMessage)
     end
 end
 if solution.stat == 1
     if param.printLevel>0
+                fprintf('%4s%10s%10s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%20s\n','itn','theta','||dx||','del_obj','obj','linear','||x||0','a(x)','||x||1','||y||0','a(y)','||y||1','c(x,y)','sec');
         if nbIteration < nbMaxIteration
             fprintf('%s\n','     Optimise cardinality reached the stopping criterion. Finished.')
         else
@@ -925,9 +870,6 @@ if solution.stat == 1
     solution.z = z;
     solution.stat = LPsolution.stat;
     solution.origStat = LPsolution.origStat;
-    if isfield(LPsolution,'origStatText')
-        solution.origStatText = LPsolution.origStatText;
-    end
     if length(problem.p)~=1
         solution.xyz = NaN*ones(ltp,1);
         solution.xyz(problem.p)=x;
@@ -936,26 +878,23 @@ if solution.stat == 1
     end
 end
 
-if isfield(LPsolution,'origStatText')
-    solution.origStatText = LPsolution.origStatText;
-end
-if isfield(LPsolution,'solver')
-    solution.solver = LPsolution.solver;
-end
-            
 end
 
 %Solve the linear sub-program to obtain new (x,y,z)
-function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x,y,s,p,pPosBool,q,r,c,k,d,o,lb,ub,theta,lambda0,lambda1,delta0,delta1,printLevel,condenseT)
+function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLPproblem,x,y,s,p,pPosBool,q,r,c,k,d,lb,ub,theta,lambda0,lambda1,delta0,delta1,printLevel,condenseT)
 % variables (x,y,z,w,t)
 
 %Compute subgradient of second DC component (x_bar,y_bar, where z_bar = 0)
 x(abs(x) < 1/theta) = 0;
+try
+x_bar = -lambda1*sign(x) +  theta*lambda0*k.*sign(x); %Negative on the lambda1 reversed below
+catch
+    pause(0.1)
+end
+y_bar =  -delta1*sign(y) +   theta*delta0*d.*sign(y); %Negative on the delta1 reversed below
 
-x_bar = -lambda1*o(1:p).*sign(x)     +  theta*lambda0*k.*sign(x); %Negative on the lambda1 reversed below
-y_bar =  -delta1*o(p+1:p+q).*sign(y) +   theta*delta0*d.*sign(y); %Negative on the delta1 reversed below
 
-%no need for auxiliary variable for x where it is constrained to be non-negative
+%no need for auxiliary variable for x where it constrained to be non-negative
 cw1 = lambda0*theta*k.*ones(p,1);
 cw1(pPosBool)=0;
 cw2 = lambda0*theta*k.*ones(p,1);
@@ -974,12 +913,9 @@ ct1(qThetaBool)=0;
 ct2 = delta0*d.*ones(q,1);
 ct2(~qThetaBool)=0;
 
-%31st Oct 2020 included weighed one norm minimisation of z variable 
-cz = o(p+q+1:p+q+r);
-
 subLPproblem.c =     [c(1:p)           - x_bar + cw2;... % x
                       c(p+1:p+q)       - y_bar + ct2;... % y
-                      c(p+q+1:p+q+r)           +  cz;... % z
+                      c(p+q+1:p+q+r)                ;... % z
                                                  cw1;... % w = max(x,-x)
                                                  ct1];   % t = max(1,theta*abs(y))
                             
@@ -1000,7 +936,35 @@ subLPproblem.c =     [c(1:p)           - x_bar + cw2;... % x
     subLPproblem.A(s+2*p+q+1:s+2*p+2*q , p+1:p+q) = -theta*speyet;
     subLPproblem.A(s+2*p  +1:s+2*p+q   , 2*p+q+r+1:2*p+2*q+r) = -speyet;
     subLPproblem.A(s+2*p+q+1:s+2*p+2*q , 2*p+q+r+1:2*p+2*q+r) = -speyet;
-   
+    
+    %debugging problematic example
+    if 0
+        A=subLPproblem.A;
+        [mlt,nlt]=size(A);
+        % determine the vector with all singular values (including zeros)
+        svVectAll = svds(A, min(mlt, nlt));
+        The singular values and their cut-off can be illustrated as follows:
+        % plot the singular values
+        figure;
+        
+        % plot the singular values up to rankS
+        semilogy(linspace(1, length(svVect), length(svVect)), svVect, '*');
+        
+        % plot all singular values
+        hold on;
+        semilogy(linspace(1, length(svVectAll), length(svVectAll)), svVectAll, 'ro');
+        
+        % set the font size of the current figure axes, show a legend and minor grid axes
+        set(gca, 'fontsize', 14);
+        legend('svds (up to rankS)', 'svds (all)')
+        grid minor;
+        
+        % set the label
+        xlabel('Number of the singular value');
+        ylabel('Magnitude of the singular value');
+        
+        hold off;
+    end
     
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
@@ -1029,15 +993,12 @@ subLPproblem.c =     [c(1:p)           - x_bar + cw2;... % x
 end
 
 %returns the objective function for the outer problem
-function obj = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,o,theta,lambda0,lambda1,delta0,delta1)
+function obj = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,theta,lambda0,lambda1,delta0,delta1)
     p = length(x);
     q = length(y);
-    r = length(z);
     %obj = c'*[x;y;z] + lambda0*ones(p,1)'*min(ones(p,1),theta*abs(k.*x)) - delta0*ones(q,1)'*min(ones(q,1),theta*abs(d.*y)) + lambda1*norm(x,1) + delta1*norm(y,1);%Minh
      obj = c'*[x;y;z]...
-         + lambda0*k'*min(ones(p,1),theta*abs(x))... %Capped-l1 approximate step function (bottom row Table 2.)
-         -  delta0*d'*min(ones(q,1),theta*abs(y))...
-         + lambda1*o(1:p)'*abs(x)...
-         + delta1*o(p+1:p+q)'*abs(y)...
-         + o(p+q+1:p+q+r)'*abs(z);
+         + lambda0*ones(p,1)'*spdiags(k,0,p,p)*min(ones(p,1),theta*abs(x))... %Capped-l1 approximate step function (bottom row Table 2.)
+         -  delta0*ones(q,1)'*spdiags(d,0,q,q)*min(ones(q,1),theta*abs(y))...
+         + lambda1*norm(x,1) + delta1*norm(y,1);
 end
