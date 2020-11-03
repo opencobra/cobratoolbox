@@ -1,43 +1,38 @@
-function [MMN] = representativeMolecule(MMN)
+function [minimalMassMetabolite, minimalMassFraction, numMinimalMassMetabolites] = representativeMolecule(L,moietyFormulae,mets)
 % For each moiety, identify a set of representative molecules, based on
 % various criteria
+%
+% INPUT
+% L                     Matrix to map isomorphism classes to metabolites.
+% moietyFormulae        Chemical formula of the moiety (Hill notation)
+% mets                  Metabolite abbreviation
+%
+% OUTPUT
+% minimalMassMetabolite       Abbreviation of metabolite with minimal mass relative to the moiety
+% minimalMassFraction         Fraction of moiety/metabolite mass 
+% numMinimalMassMetabolites   Number of metabolites with minimal mass
 
-%make sure to sort by the index first
-MMN.moi = sortrows(MMN.moi,'Name','ascend');
-MMN.mol = sortrows(MMN.mol,'Name','ascend');
 
-[nMoiety,~]=size(MMN.L);
+[moietyMasses, ~, ~, ~, ~] = getMolecularMass(moietyFormulae);
+approxMetMasses = L'*moietyMasses;
 
-minimalMassMetabolite = cell(nMoiety,1);
-minimalMassMolFormula = cell(nMoiety,1);
-minimalMassFraction = zeros(nMoiety,1);
-numMinimalMassMetabolites = zeros(nMoiety,1);
-for i=1:nMoiety
-    if strcmp('C62H88CoN13O14P',MMN.moi.Formula{i})
-        pause(0.1);
-    end
-    bool=(MMN.L(i,:)~=0)';
-    minimumMass=min(MMN.mol.Mass(bool));
+[nMoieties,~]=size(L);
+
+minimalMassMetabolite = cell(nMoieties,1);
+minimalMassFraction = zeros(nMoieties,1);
+numMinimalMassMetabolites = zeros(nMoieties,1);
+for i=1:nMoieties
+    bool=(L(i,:)~=0)';
+    minimumMass=min(approxMetMasses(bool));
     if ~isnan(minimumMass)
-        bool2 = bool &  MMN.mol.Mass==minimumMass;
+        bool2 = bool &  approxMetMasses==minimumMass;
         ind = find(bool2);
         %take the first one as a representative minimal Mass
-        minimalMassMetabolite{i} = MMN.mol.Mets{ind(1)};
-        minimalMassMolFormula{i} = MMN.mol.Formula{ind(1)};
+        minimalMassMetabolite{i} = mets{ind(1)};
         numMinimalMassMetabolites(i) = length(ind);
-        minimalMassFraction(i)=MMN.moi.Mass(i)/minimumMass;
+        minimalMassFraction(i)=moietyMasses(i)/minimumMass;
     else
-        warning(['Mass is NaN for metabolites related to moiety ' MMN.moi.Formula{i}])
+        warning(['Mass is NaN for metabolites related to moiety ' moietyFormulae{i}])
     end
 end
-
-
-variablesToRemove={'MinimalMassMol','MinimalMassMolFormula','MinimalMassFraction','NumMinimalMassMol'};
-for i=1:length(variablesToRemove)
-    if any(strcmp(MMN.moi.Properties.VariableNames,variablesToRemove{i}))
-        MMN.moi = removevars(MMN.moi,variablesToRemove{i});
-    end
-end
-
-MMN.moi = addvars(MMN.moi,minimalMassMetabolite,minimalMassMolFormula,minimalMassFraction,numMinimalMassMetabolites, 'NewVariableNames',{'MinimalMassMol','MinimalMassMolFormula','MinimalMassFraction','NumMinimalMassMol'});
 

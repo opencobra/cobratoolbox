@@ -14,25 +14,25 @@ fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
 
 % request explicitly from the user to launch test suite locally
-if isempty(strfind(getenv('HOME'), 'vmhadmin')) and isempty(strfind(getenv('HOME'), 'jenkins'))
+if contains(getenv('HOME'), 'vmhadmin') && contains(getenv('HOME'), 'jenkins')
+    % Running in CI environment
+    fprintf('Running test in Jenkins/CI environment\n');
+    
+    % on the CI, always reset the path to make absolutely sure, that we test
+    % the current version
+    restoredefaultpath;
+    launchTestSuite = true;
+else
     reply = '';
     while isempty(reply)
         reply = input([' -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: '], 's');
     end
-
+    
     if strcmpi(reply, 'y') || strcmpi(reply, 'yes')
         launchTestSuite = true;
     else
         launchTestSuite = false;
     end
-else
-    % Running in CI environment
-    fprintf('Running test in Jenkins/CI environment\n');
-
-    % on the CI, always reset the path to make absolutely sure, that we test
-    % the current version
-    restoredefaultpath;
-    launchTestSuite = true;
 end
 
 % save the current folder

@@ -8,7 +8,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 %    model:              the model to update
 %    indicesToRemove:    indices which should be removed (either a logical array or double indices)
 %    type:               the Type of field to update. one of
-%                        ('rxns','mets','comps','genes')
+%                        ('rxns','mets','comps','genes','ctrs','evars','rxnName','specName','molAlias')
 %    fieldSize:          The size of the original field before
 %                        modification. This is necessary to identify fields
 %                        from which entries have to be removed.
@@ -31,7 +31,9 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 % .. Authors:
 %      - Thomas Pfau June 2017, adapted to merge all fields.
 
-PossibleTypes = {'rxns','mets','comps','genes','ctrs','evars'};
+%rxnName, specName, molAlias, refer to a map field
+%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
+PossibleTypes = {'rxns','mets','comps','genes','ctrs','evars','rxnName','specName','molAlias'};
 
 
 parser = inputParser();

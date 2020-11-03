@@ -17,7 +17,7 @@ function formulas = printRxnFormula(model, varargin)
 %                        pairs. the following parameternames are available:
 %
 %                       * rxnAbbrList:       Cell array of rxnIDs to be printed (Default = print all reactions)
-%                       * printFlag:         Print formulas or just return them (Default = true)
+%                       * printFlag:        Print formulas or just return them (Default = true)
 %                       * lineChangeFlag:    Append a line change at the end of each line
 %                                            (Default = true)
 %                       * metNameFlag:       Print full met names instead of abbreviations

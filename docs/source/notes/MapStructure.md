@@ -25,7 +25,7 @@ Using this function, the MATLAB structure contains the following fields:
 | **Field name** | **Dimension** | **Data Type** | **Field description** |
 |:---:|:---:|:---:|:---:|
 | **Molecules information** |
-| `map.molAlias` | `a x 1` | cell of char | Alias of each molecules (no duplicates) |
+| `map.molAlias` | `a x 1` | cell of char | Alias of each molecule (no duplicates) |
 | `map.molID` | `a x 1` | cell of char | ID of each molecules (duplicates) |
 | `map.molCompartAlias` | `a x 1` | cell of char | Corresponding compartment alias of each molecules (EMPTY if no info) |
 | `map.molXPos` | `a x 1` | cell of char or double | X position of each molecules (stored as string but can be changed to double) |
@@ -34,7 +34,7 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.molHeight` | `a x 1` | cell of char or double | Height of each molecules (stored as string but can be changed to double) |
 | `map.molColor` | `a x 1` | cell of char | Color of each molecules (in "HTML" code with lowercases and "ff" instead of "#' at the beginning) |
 | **Species information** |
-| `map.specID` | `s x 1` | cell of char | ID of each species (no duplicates) |
+| `map.specID` | `s x 1` | cell of char | ID of each molecular species (no duplicates) |
 | `map.specMetaID` | `s x 1` | cell of char | MetaID of each species often related to ID (no ducplicates) |
 | `map.specName` | `s x 1` | cell of char | Name of each species |
 | `map.specType` | `s x 1` | cell of char | Type of each species (SIMPLE_MOLECULE/ION/PROTEIN...) |
@@ -71,9 +71,9 @@ Using this function, the MATLAB structure contains the following fields:
 | `map.compartAlias` | `c x 1` | cell of char | Alias of each compartments (EMPTY if no info) |
 | `map.compartName` | `c x 1` | cell of char | Name of each compartments (EMPTY if no info) |
 | **Matrices** |
-| `map.sID` | `s x r` | logical | Logical matrix with rows = speciesID and columns = reactionsID |
-| `map.sAlias` | `m x r` | logical | Logical matrix with rows = speciesAlias and columns = reactionsID |
-| `map.idAlias` | `s x m` | logical | Logical matrix widh rows = speciesID and columns = speciesAlias |
+| `map.sID` | `s x r` | logical | Stoichiometric matrix with rows = specID  and columns = rxnID. In the same order as in the map structure. Contains `-1` if the species is a substrate, `+1` if the species is a product |
+| `map.sAlias` | `a x r` | logical | Stoichiometric matrix with rows = molAlias and columns = rxnID. In the same order as in the map structure. Contains `-1` if the molecule (species alias) is a substrate, `+1` if the molecule (species alias) is a product |
+| `map.idAlias` | `s x a` | logical | Logical matrix with rows = speciesID and columns = molID. Contains `+1` if the map.speciesID match with the map.molID and `0` otherwise. |
 
 *** Note:
 

@@ -1,142 +1,56 @@
-function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
-% [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
-%
+function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atoms2moiety, arm] = identifyConservedMoietiesLegacyInterface(model, dATM, options)
+%        [L, M, moietyFormulas, moieties2mets,        moieties2vectors, atoms2moieties]
+
 % Identifies conserved moieties in a metabolic network (model) by graph
-% theoretical analysis of the corresponding directed atom transition network (dATM).
-% Decomposes a stoichiometric matrix into a set of moiety transitions, that
-% is
-%       N = inv(M2M*M2M')*M2M*M*M2R;
-%
-% where M2M*M2M' is a diagonal matrix and each diagonal entry is the number
-% of moieties in a metabolite.
+% theoretical analysis of the corresponding atom transition network (dATM).
 %
 %
 % USAGE:
 %
-%    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, moietyTransition2rxns, atrans2mtrans] = identifyConservedMoieties(model, dATM)
+%    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atoms2moiety, arm] = identifyConservedMoietiesLegacyInterface(model, dATM, options)
 %
 % INPUTS:
-%    model:        Structure with following fields:
+%    model:                 Structure with following fields:
 %
-%                    * .S - The `m x n` stoichiometric matrix for the metabolic network
-%                    * .mets - An `m x 1` array of metabolite identifiers. Should match metabolite identifiers in rxnfiles.
-%                    * .rxns - An `n x 1` array of reaction identifiers. Should match `rxnfile` names in `rxnFileDir`.
+%                             * .S - The `m x n` stoichiometric matrix for the metabolic network
+%                             * .mets - An `m x 1` array of metabolite identifiers. Should match
+%                               metabolite identifiers in rxnfiles.
+%                             * .rxns - An `n x 1` array of reaction identifiers. Should match
+%                               `rxnfile` names in `rxnFileDir`.
 %
 %    dATM:          Directed atom transition multigraph, obtained from buildAtomTransitionMultigraph.m
 %                   A MATLAB digraph structure with the following tables and variables:
 %
-%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
-%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%                   * .Nodes.Met - metabolite containing each atom
-%                   * .Nodes.AtomNumber - unique numeric id for each atom in a metabolite
-%                   * .Nodes.Element - atomic element of each atom
+%                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
+%                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
+%                   * .NodeTable.AtomIndex - unique numeric id for each atom in atom transition multigraph
+%                   * .NodeTable.Met - metabolite containing each atom
+%                   * .NodeTable.AtomNumber - unique numeric id for each atom in an atom mapping
+%                   * .NodeTable.Element - atomic element of each atom
 %                       
-%                   * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
-%                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges     
-%                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .Edges.TransIndex - unique numeric id for each atom transition instance
-%                   * .Edges.Rxn - reaction abbreviation corresponding to each atom transition instance
-%                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
-%                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
+%                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
+%                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
+%                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
+%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
+%                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
+%                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
 %
-% OPTIONAL INPUTS:
-% options:       Structure with following fields:
-%                * .sanityChecks {(0),1} true if additional sanity checks
-%                on computations, but substantially more computation time
+% OUTPUTS
+%    L:                     An `r x m` matrix of r moiety vectors in the left null
+%                           space of `S`.
+%    M:                     The `u x v` incidence matrix of the moiety supergraph
+%                           where each connected component is a moiety graph.
+%    moietyFormulas:        `r x 1` cell array with chemical formulas of moieties
+%    moieties2mets:         `u x 1` vector mapping moieties (rows of `M`) to
+%                           metabolites (rows of S)
+%    moieties2vectors:      `u x 1` vector mapping moieties (rows of `M`) to
+%                           moiety vectors (columns of `L`)
+%    atoms2moieties:        `p x 1` vector mapping atoms (rows of `A`) to moieties
+%                           (rows of `M`)
 %
-% OUTPUTS:
-% arm            atomically resolved model as a matlab structure with following fields:
-%
-% arm.MRH:                    Directed metabolic reaction hypergraph (i.e. standard COBRA model)
-% arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
-% arm.MRH.rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
-% 
-% arm.dATM:                   Directed atom transition multigraph (dATM) obtained from buildAtomTransitionMultigraph.m
-% 
-% arm.M2Ai:              `m` x `a` matrix mapping each mapped metabolite to one or more atoms in the directed atom transition multigraph
-% arm.Ti2R:              `t` x `n` matrix mapping one or more directed atom transition instances to each mapped reaction
-% arm.Ti2I               `t` x `i` matrix to map one or more directed atom transition instances to each isomorphism class
-% 
-% arm.ATG:  Atom transition graph, as a MATLAB graph structure with the following tables and variables:
-%
-%          * .Nodes — Table of node information, with `a` rows, one for each atom.
-%          * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%          * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%          * .Nodes.Met - metabolite containing each atom
-%          * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
-%          * .Nodes.Element - atomic element of each atom
-%          * .Nodes.MoietyIndex - numeric id of the corresponding moiety (arm.MTG.Nodes.MoietyIndex) 
-%          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2A)
-%          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2C)
-%          * .Nodes.IsFirst - boolean, true if atom is within first component of an isomorphism class 
-%
-%          * .Edges — Table of edge information, with `u` rows, one for each atom transition instance.
-%          * .Edges.EndNodes - numeric id of head and tail atoms that defines the graph edges  
-%          * .Edges.Trans - unique alphanumeric id for each atom transition by concatenation of head and tail atoms
-%          * .Edges.HeadAtomIndex - head Nodes.AtomIndex
-%          * .Edges.TailAtomIndex - tail Nodes.AtomIndex
-%          * .Edges.HeadAtom - head Nodes.Atom
-%          * .Edges.TailAtom - tail Nodes.Atom
-%          * .Edges.TransIndex - unique numeric id for each atom transition
-%          * .Edges.Component - numeric id of the corresponding connected component (columns of T2C)
-%          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of T2I)
-%          * .Edges.IsFirst - boolean, true if atom transition is within first component of an isomorphism class 
-%
-% arm.M2A:  `m x a` matrix mapping each metabolite to one or more atoms in the (undirected) atom transition graph
-% arm.A2R:  `u x n` matrix that maps atom transitions to reactions. An atom transition can map to multiple reactions and a reaction can map to multiple atom transitions
-% arm.A2Ti: `u x t` matrix to map each atom transition (in ATG) to one or more directed atom transition instance (in dATM) with reorientation if necessary. 
-% 
-% arm.I2C  `i x c` matrix to map each isomorphism class (I) to one or more components (C) of the atom transition graph (ATG)
-% arm.C2A  `c x a` matrix to map each connected component (C) of the atom transition graph to one or more atoms (A)
-% arm.A2C  `u x c` matrix to map one or more atom transitions (T) to connected components (C) of the atom transition graph (ATG)
-% 
-% arm.I2A  `i x a` matrix to map each isomorphism class to one or more atoms of the atom transition graph (ATG)
-% arm.A2I  `u x i` matrix to map one or more atom transitions to each isomorphism class
-% 
-% arm.MTG = MTG; % (undirected) moitey transition graph
-
-% arm.MTG:  (undirected) moitey transition graph, as a MATLAB graph structure with the following tables and variables:
-%
-%          * .Nodes — Table of node information, with `p` rows, one for each moiety instance.
-%          * .Nodes.MoietyIndex - unique numeric id of the moiety 
-%          * .Nodes.Formula - chemical formula of the moiety (Hill notation)
-%          * .Nodes.Met - representative metabolite containing the moiety
-%          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2M)
-%          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2M)
-
-%          * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
-%          * .Edges.EndNodes - numeric id of head and tail moieties that defines the graph edges  
-%          * .Edges.Formula - chemical formula of the moiety in this moiety transition (Hill notation)
-%          * .Edges.Rxn - the reaction from which this moiety transition was derived
-%          * .Edges.Component - numeric id of the corresponding connected component (columns of M2C)
-%          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of M2I)
-%          * .Edges.IsFirst - boolean, true if moiety transition is within first component of an isomorphism class 
-%
-% arm.I2M Matrix to map each isomorphism class to one or more moieties
-% arm.M2I Matrix to map one or more moiety transitions to each isomorphism class
-%
-% arm.M2M Matrix to map each metabolite to one or more moieties
-% arm.M2R Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
-%
-% arm.L Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
-%
-% Note: if options.sanityChecks = 1; the following are also returned
-%
-% arm.ATG.Edges.TransIstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
-% arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
-% arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
-%
-% arm.MTG.Nodes.IsFirst - boolean, true if moiety corresponds to the first component of an isomorphism class (should be all true)
-% arm.MTG.Nodes.Atom - alphanumeric id of the corresponding atom in the first component of an isomorphism class 
-% arm.MTG.Nodes.AtomIndex - numeric id of the corresponding atom in the first component of an isomorphism class
-% arm.MTG.Edges.orientationATM2dATM - orientation of moiety transition with respect to the reaction from which this moiety transition was derived
-%
-
-% .. Authors: - Ronan M.T. Fleming, Oct 2020, compute conserved moieties
-%               as described in Ghaderi et al. Decompose stoichiometic
-%               matrix into its underlying moiety transition matrix
-%               (unpublished).
+% .. Authors: - Ronan M.T. Fleming, Sept 2020, compute conserved moieties
+%               as described in:
 %
 % Ghaderi, S., Haraldsdóttir, H.S., Ahookhosh, M., Arreckx, S., and Fleming, R.M.T. (2020).
 % Structural conserved moiety splitting of a stoichiometric matrix. Journal of Theoretical Biology 499, 110276.
@@ -185,21 +99,22 @@ end
 
 %matrix to map each metabolite to one or more atoms
 [~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMappedBool));
-M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
+M2A = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
 [~,transInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMappedBool));
 Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
-
 %incidence matrix of directed atom transition multigraph
 Ti = incidence(dATM);
 
 %atomic decomposition
-res=M2Ai*M2Ai'*N - M2Ai*Ti*Ti2R;
+res=M2A*M2A'*N - M2A*Ti*Ti2R;
 if max(max(abs(res)))~=0
     error('Inconsistent directed atom transition multigraph')
 end
+
+
         
 % An atom transition that occurs in a reaction is an atom transition instance,
 % and since identical atom transition instances can happen in a more than one
@@ -374,12 +289,12 @@ else
 end
 
 %% mapping of ATG to metabolic network
-%map atoms to metabolites
-[~, atoms2mets] = ismember(ATG.Nodes.Met,model.mets(metAtomMappedBool));
-M2A =  sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
-    
 if sanityChecks
-    res = M2Ai-M2A;
+    %map atoms to metabolites
+    [~, atoms2mets2] = ismember(ATG.Nodes.Met,model.mets(metAtomMappedBool));
+    M2A2 =  sparse(atoms2mets2,(1:nAtoms)',1,nMappedMets,nAtoms);
+    
+    res = M2A-M2A2;
     if max(max(abs(res)))~=0
         error('Inconsistent mapping of atoms to metabolites')
     end
@@ -456,12 +371,6 @@ if sanityChecks
             error('Inconsistent mapping from atom transition to reaction')
         end
     end
-end
-
-%atomic decomposition
-res=M2A*M2A'*N - M2A*A*A2R;
-if max(max(abs(res)))~=0
-    error('Inconsistent directed atom transition graph')
 end
 
 %% connected components
@@ -604,7 +513,6 @@ ATG.Nodes = addvars(ATG.Nodes,atoms2component,'NewVariableNames','Component');
 ATG.Nodes = addvars(ATG.Nodes,atoms2isomorphismClass,'NewVariableNames','IsomorphismClass');
 if 0
     Edges = ATG.Edges;
-    Edges = removevars(Edges,'orientationATG2dATM');
     Edges = addvars(Edges,ATG.Nodes.Component(Edges.HeadAtomIndex),'NewVariableNames','Component');
     Edges = addvars(Edges,ATG.Nodes.IsomorphismClass(Edges.HeadAtomIndex),'NewVariableNames','IsomorphismClass');
     ATG = graph(Edges,ATG.Nodes);
@@ -717,11 +625,9 @@ if sanityChecks
 end
     
 ATG.Nodes = addvars(ATG.Nodes,isFirst,'NewVariableNames','IsFirst');
-%size of the moiety instance transition graph
 nMoieties=nnz(isFirst);
-isFirstTransition = any(A(isFirst, :), 1)';
-nMoietyTransitions = nnz(isFirstTransition);
 
+isFirstTransition = any(A(isFirst, :), 1)';
 if 0
     ATG.Edges = addvars(ATG.Edges,isFirstTransition,'NewVariableNames','IsFirst');
 else
@@ -734,7 +640,6 @@ MTG = subgraph(ATG,isFirst);
 M = incidence(MTG);
 
 MTG.Nodes.MoietyIndex = (1:nMoieties)';
-MTG.Edges.MoietyTransIndex = (1:nMoietyTransitions)';
 
 if sanityChecks
     %double check that there is no reordering of edges
@@ -745,45 +650,27 @@ if sanityChecks
 end
 
 %add moiety specific information
-MTG.Nodes = removevars(MTG.Nodes,{'AtomNumber','Element','IsFirst','Atom','AtomIndex'});
+MTG.Nodes = removevars(MTG.Nodes,{'AtomNumber','Element'});
 MTG.Nodes = addvars(MTG.Nodes,moietyFormulae(moiety2isomorphismClass),'NewVariableNames','Formula','After','MoietyIndex');
 
-%          * .Edges.HeadAtom - head Nodes.Atom
-%          * .Edges.TailAtom - tail Nodes.Atom
-%          * .Edges.HeadAtomIndex - head Nodes.AtomIndex
-%          * .Edges.TailAtomIndex - tail Nodes.AtomIndex
-%          * .Edges.Trans - unique alphanumeric id for each atom transition by concatenation of head and tail atoms
-%          * .Edges.TransIndex - unique numeric id for each atom transition
-%          * .Edges.TransIstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
-
-if ~sanityChecks
-    if 1
-        %graph.Edges cannot be directly edited in a graph object, so extract,
-        %edit and regenerate the graph
-        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsFirst','Rxn'});
-        %add variables
-        Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
-        %reorder the variables 
-        Nodes = MTG.Nodes(:,{'MoietyIndex','Formula','Met','Component','IsomorphismClass'}); 
-        Edges = Edges(:,{'EndNodes','Formula','Component','IsomorphismClass'}); 
-        MTG = graph(Edges,Nodes);
-    else
-        MTG.Edges.Formula=MTG.Nodes.Formula(MTG.Edges.EndNodes(:,1));
-    end
+if 0
+    %graph.Edges cannot be directly edited in a graph object, so extract,
+    %edit and regenerate the graph
+    %         Error using graph/subsasgn (line 23)
+    %         Direct editing of edges not supported. Use addedge or rmedge instead.
+    %
+    %         Error in identifyConservedMoieties (line 490)
+    %         MTG.Edges = addvars(MTG.Edges,MTG.Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
+    Edges = addvars(MTG.Edges,Edges.Name,'NewVariableNames','FirstAtomTransition','After','Rxns');
+    Edges = removevars(Edges,'Name');
+    Edges = addvars(Edges,Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula','After','Rxns');
+    MTG = graph(Edges,MTG.Nodes);
+else
+    MTG.Edges.Formula=MTG.Nodes.Formula(MTG.Edges.EndNodes(:,1));
 end
 
-if sanityChecks
-    diffMoietyIndex = diff(MTG.Nodes.MoietyIndex);
-    if ~all(diffMoietyIndex==1)
-        error('Reordering of MTG nodes')
-    end
-    
-    diffMoietyIndex = diff(MTG.Edges.MoietyTransIndex);
-    if ~all(diffMoietyIndex==1)
-        error('Reordering of MTG edges')
-    end
-end
-
+%size of the moiety instance transition graph
+nMoietyTransitions=size(MTG.Edges,1);
 
 if sanityChecks
     % Extract moiety graph directly from atom transition
@@ -976,12 +863,7 @@ end
 % M2M Matrix to map each metabolite to one or more moieties
 L = I2M*M2M';
 
-leftNullBool=(L*N)==0;
-if any(~leftNullBool,'all')
-    error('Moiety basis vectors not in the in the left null space of N.');
-end
 
-if sanityChecks
     L2 = sparse(nIsomorphismClasses,nMappedMets);
     for i = 1:nIsomorphismClasses
         for j=1:nComps
@@ -1021,14 +903,25 @@ if sanityChecks
     end
     
     
+leftNullBool=(L*N)==0;
+if any(~leftNullBool,'all')
+    error('Moiety basis vectors not in the in the left null space of N.');
+end
     
+if 1
+    leftNullBool=(L*N)==0;
+    if any(~leftNullBool,'all')
+        error('Moiety basis vectors not in the in the left null space of N.');
+    end
+     
     for i=1:nIsomorphismClasses
         moietyConservationTest = ones(1,size(N,1))*diag(L(i,:))*N;
         if any(moietyConservationTest~=0)
             error('Moiety conservation violated.')
         end
+       
     end
-    
+   
     res = L - L2;
     if max(max(abs(res)))~=0
         error('Inconsistent moiety basis')
@@ -1112,46 +1005,32 @@ if 0 %TODO not sure what to make of this
     end
 end
 
-%clean up 
-if ~sanityChecks
-    % graph.Edges cannot be directly edited in a graph object, so extract, edit and regenerate the graph
-    % arm.ATG.Edges.TransInstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
-    % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
-    % arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
-    
-    ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'}),ATG.Nodes);
-end
-
 %collect outputs
 model.metAtomMappedBool = metAtomMappedBool;
 model.rxnAtomMappedBool = rxnAtomMappedBool;
-arm.MRH = model; %directed metabolic reaction hypergraph (i.e. standard COBRA model)
+arm.model = model;
 
 arm.dATM = dATM; %directed atom transition multigraph (dATM)
 
-arm.M2Ai = M2Ai; %matrix mapping each metabolite to one or more atoms in the directed atom transition multigraph
 arm.Ti2R = Ti2R; %matrix mapping one or more directed atom transition instances to each mapped reaction
-arm.Ti2I = Ti2I; % matrix to map one or more directed atom transition instances to each isomorphism class
 
 arm.ATG  = ATG; %(undirected) atom transition graph
-arm.M2A  = M2A; %matrix mapping each metabolite to one or more atoms in the (undirected) atom transition graph
+arm.M2A  = M2A; %matrix mapping each metabolite to one or more atoms
 arm.A2R  = A2R; %matrix that maps atom transitions to reactions. An atom transition can map to multiple reactions and a reaction can map to multiple atom transitions
 arm.A2Ti = A2Ti;%matrix to map each atom transition (in ATG) to one or more directed atom transition instance (in dATM) with reorientation if necessary. 
 
-arm.I2A = I2A;  %matrix to map each isomorphism class (I) to one or more atoms (A) of the atom transition graph (ATG)
-arm.A2I = A2I;  %matrix to map one or more atom transitions (A) of the atom transition graph (ATG) to each isomorphism class (I)
-
 arm.I2C = I2C; %matrix to map each isomorphism class (I) to one or more components (C) of the atom transition graph (ATG)
 
-arm.C2A = C2A;   % matrix to map each connected component (C) to one or more atoms (A) of the atom transition graph (ATG)
-arm.A2C = A2C;   % matrix to map one or more atom transitions (T) to connected components (C)  of the atom transition graph (ATG)
+arm.C2A = C2A;   % matrix to map each connected component (C) of the atom transition graph to one or more atoms (A)
+arm.A2C = A2C;   % matrix to map one or more atom transitions (T) to connected components (C) of the atom transition graph (ATG)
+arm.I2A = I2A;   % matrix to map each isomorphism class to one or more atoms
+arm.A2I = A2I;   % matrix to map one or more atom transitions to each isomorphism class
+arm.Ti2I = Ti2I; % matrix to map one or more directed atom transition instances to each isomorphism class
 
 arm.MTG = MTG; % (undirected) moitey transition graph
-
 arm.I2M = I2M; % Matrix to map each isomorphism class to one or more moieties
 arm.M2I = M2I; % Matrix to map one or more moiety transitions to each isomorphism class
-
 arm.M2M = M2M; % Matrix to map each metabolite to one or more moieties
 arm.M2R = M2R; % Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
-
 arm.L =  L;    % Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
+arm.L2 = L2;
