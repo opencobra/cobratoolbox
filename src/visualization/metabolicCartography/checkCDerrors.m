@@ -58,7 +58,7 @@ index2 = find(~cellfun(@isempty, irreversible));
 irreversibleRxnsMap = map.rxnName(index2, :);
 
 % Reversibility of reactions in Recon3
-formula = [map.rxnName, printRxnFormula(model, 'rxnAbbrList',map.rxnName,'printLevel',printLevel)];
+formula = [map.rxnName, printRxnFormula(model, 'rxnAbbrList',map.rxnName,'printFlag',printLevel~=0)];
 
 % Found Irreversible reactions
 irre = strfind(formula(:, 2), '->');

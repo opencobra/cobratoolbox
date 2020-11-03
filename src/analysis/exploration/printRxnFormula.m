@@ -17,7 +17,7 @@ function formulas = printRxnFormula(model, varargin)
 %                        pairs. the following parameternames are available:
 %
 %                       * rxnAbbrList:       Cell array of rxnIDs to be printed (Default = print all reactions)
-%                       * printLevel:        Print formulas or just return them (Default = true)
+%                       * printFlag:        Print formulas or just return them (Default = true)
 %                       * lineChangeFlag:    Append a line change at the end of each line
 %                                            (Default = true)
 %                       * metNameFlag:       Print full met names instead of abbreviations
@@ -58,7 +58,7 @@ function formulas = printRxnFormula(model, varargin)
 %       - Thomas Pfau May 2017 - Changed to Parameter value pair input
 
 
-optionalParameters = {'rxnAbbrList','printLevel', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag', 'proteinFlag','printBounds'};
+optionalParameters = {'rxnAbbrList','printFlag', 'lineChangeFlag', 'metNameFlag', 'fid', 'directionFlag', 'gprFlag', 'proteinFlag','printBounds'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     %We have an old style thing....
     %Now, we need to check, whether this is a formula, or a complex setup
@@ -76,7 +76,7 @@ end
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addParamValue('rxnAbbrList',model.rxns,@(x) iscell(x) || ischar(x))
-parser.addParamValue('printLevel',true,@(x) isnumeric(x))
+parser.addParamValue('printFlag',true,@(x) isnumeric(x) || islogical(x))
 parser.addParamValue('lineChangeFlag',true,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('metNameFlag',false,@(x) isnumeric(x) || islogical(x));
 parser.addParamValue('fid',1, @isnumeric);
@@ -89,7 +89,7 @@ parser.parse(model,varargin{:})
 
 model = parser.Results.model;
 rxnAbbrList = parser.Results.rxnAbbrList;
-printLevel = parser.Results.printLevel;
+printFlag = parser.Results.printFlag;
 lineChangeFlag = parser.Results.lineChangeFlag;
 metNameFlag = parser.Results.metNameFlag;
 fid = parser.Results.fid;
@@ -179,7 +179,7 @@ for i = 1:length(rxnAbbrList)
             end
         end
         formulas{i} = formulaStr;
-        if (printLevel)
+        if (printFlag)
             formulaStr = regexprep(formulaStr, ' <=> ', '\t<=>\t');
             formulaStr = regexprep(formulaStr, ' -> ', '\t->\t');
             fprintf(fid, '%s\t%s', rxnAbbr, formulaStr);
@@ -206,13 +206,13 @@ for i = 1:length(rxnAbbrList)
             end
         end
     else
-        if (printLevel)
+        if (printFlag)
             fprintf(fid, 'not in model');
         end
         formulaStr = 'NA';
         formulas{i} = formulaStr;
     end
-    if (lineChangeFlag && printLevel)
+    if (lineChangeFlag && printFlag)
         fprintf(fid, '\n');
     end
 end

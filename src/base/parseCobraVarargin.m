@@ -5,7 +5,7 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 % (iii) parameter structure inputss
 %
 % USAGE:
-%    [funParams, cobraParams, solverVaragin] = parseCobraVarargin(optArgin, defaultValues, validator, problemTypes, varArgIn)
+%    [funParams, cobraParams, solverVaragin] = parseCobraVarargin(optArgin, defaultValues, validator, problemTypes, keyForSolverParams, emptyForDefault)
 %
 % INPUTS:
 %    varArgIn:          cell array of additional inputs for the function (= varargin in that function)
@@ -18,7 +18,7 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 %    problemTypes:       cell array of cobra supported optimization problems needed to solve in the function
 %                        (default {'LP', 'MILP', 'QP', 'MIQP'})
 %    keyForSolverParams: the keyword for solver-specific parameter structure in `optArgin` if solver-specific parameter structure
-%                        is an explicit optional input argument in optArgi (which is NOT encouraged when writing cobra functions
+%                        is an explicit optional input argument in optArgin (which is NOT encouraged when writing cobra functions
 %                        because the solver-specific parameter structure as a convention among cobra functions can be inputted 
 %                        without keyword and is handled this way in this parsing process). 
 %                        If this is the case, provide the keyword and it will be handled (default ''). Note that in this case

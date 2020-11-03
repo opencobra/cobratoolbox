@@ -202,7 +202,7 @@ switch format
         fclose(fid);
         %% Excel file
     case {'xls', 'xlsx'}
-        if isempty(strfind(fileName, format))
+        if ~contains(fileName, format)
             model2xls(model, strcat(fileName, '.', format), input.compSymbols, input.compNames);
         else
             model2xls(model, fileName, input.compSymbols, input.compNames);

@@ -68,7 +68,10 @@ catch ME
         'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'; 'mosek'},...
         'excludeSolvers',{'dqqMinos','quadMinos', 'matlab','pdco'},...
         'minimalMatlabSolverVersion',8.0);
- end
+end
+
+%test vanilla FVA
+[minFluxT, maxFluxT] = fluxVariability(model);
 
 printText = {'single-thread', 'parallel'};
 
