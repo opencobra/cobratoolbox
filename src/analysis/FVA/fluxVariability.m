@@ -114,9 +114,22 @@ problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 
 [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams', true);
 
-% solverParams not outputted as a function parameter since it is individually handled and embedded in solverVarargin
-[optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
-    advind, threads, heuristics, useMtFVA] = deal(funParams{:});
+if length(funParams)==10
+    % solverParams not output as a function parameter since it is individually handled and embedded in solverVarargin
+    [optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
+        advind, threads, heuristics, useMtFVA] = deal(funParams{:});
+elseif length(funParams)==11
+    % default empty solverParams output as a function parameter
+    [optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
+        solverParams, advind, threads, heuristics, useMtFVA] = deal(funParams{:});
+    fields = fieldnames(solverParams);
+    if ~isempty(fields)
+        disp(fields)
+        warning('expecting default empty solverParams, but it is not empty')
+    end
+else
+    error('Failure to parse inputs')
+end
 
 allowLoopsError = false;
 loopMethod = '';

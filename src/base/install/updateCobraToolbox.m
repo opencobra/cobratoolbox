@@ -143,6 +143,12 @@ function updateCobraToolbox(fetchAndCheckOnly)
                     fprintf(' > You can update The COBRA Toolbox by running updateCobraToolbox() (from within MATLAB).\n');
                 end
             else
+                try
+                    fprintf([' > remote.origin.url = ' result_gitOriginURL '.\n'])
+                    fprintf([' > currentBranch = ' currentBranch '.\n'])
+                catch ME
+                    disp(ME.message)
+                end
                 fprintf([' > The COBRA Toolbox is up-to-date.\n']);
             end
         else

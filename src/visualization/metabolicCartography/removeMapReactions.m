@@ -82,13 +82,24 @@ end
 [s2,m2]=size(map.idAlias);
 
 
-% map.sID	s x r	logical	Logical matrix with rows = speciesID and columns = reactionsID
+%                * sID -  Stoichiometric matrix with `rows = MetabolitesID` and
+%                  `columns = ReactionsID` in the same order as in the map
+%                  structure. Contains `-1` if the metabolite is a
+%                  reactant/substract, `+1` if the metabolite is a product
+%                  and `0` if it does not participate in the reaction.
 mapSpeciesToRemove = getCorrespondingRows(map.sID, true(s,1), mapRxnsToRemove, 'exclusive');
 
-% map.sAlias	m x r	logical	Logical matrix with rows = speciesAlias and columns = reactionsID
+%                * sAlias - Stoichiometric matrix with `rows = MetabolitesAlias` and
+%                  `columns = ReactionsID` in the same order as in the map
+%                  structure. Contains `-1` if the metabolite is a
+%                  reactant/substract, `+1` if the metabolite is a product
+%                  and `0` if it does not participate in the reaction.
 mapMolsToRemove1 = getCorrespondingRows(map.sAlias, true(m,1), mapRxnsToRemove, 'exclusive');
 
-% map.idAlias	s x m	logical	Logical matrix widh rows = speciesID and columns = speciesAlias
+%                * idAlias - Logical matrix with `rows = MetabolitesID` and
+%                  `columns = MetabolitesAlias`. Contains `+1` if the
+%                  `MetaboliteID` match with the `MetaboliteAlias` and `0`
+%                  if it doesn't.
 mapMolsToRemove2 = getCorrespondingCols(map.idAlias, mapSpeciesToRemove, true(m,1), 'inclusive');
 
 %remove the species alias if it was exclusively involved in a reaction that
@@ -111,20 +122,9 @@ if any(mapMolsToRemove)
     mapOut = removeFieldEntriesForType(mapOut, mapMolsToRemove, type, fieldSize);
 end
 
-%                * sID -  Stoichiometric matrix with `rows = MetabolitesID` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * sAlias - Stoichiometric matrix with `rows = MetabolitesAlias` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * idAlias - Logical matrix with `rows = MetabolitesID` and
-%                  `columns = MetabolitesAlias`. Contains `+1` if the
-%                  `MetaboliteID` match with the `MetaboliteAlias` and `0`
-%                  if it doesn't.
+
+
+
 
 mapOut = rmfield(mapOut,'sID');
 mapOut = rmfield(mapOut,'sAlias');
@@ -145,17 +145,6 @@ xmlStructOut.sbml.model.listOfSpecies.species = xmlStructOut.sbml.model.listOfSp
            %.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfSpeciesAliases.celldesigner_colon_speciesAlias
 xmlStructOut.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfSpeciesAliases.celldesigner_colon_speciesAlias =...
     xmlStructOut.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_listOfSpeciesAliases.celldesigner_colon_speciesAlias(~mapMolsToRemove);
-
-
-
-
-
-
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
 
 end
 

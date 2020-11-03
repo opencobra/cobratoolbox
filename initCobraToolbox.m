@@ -104,12 +104,16 @@ currentDir = pwd;
 CBTDIR = fileparts(which('initCobraToolbox'));
 cd(CBTDIR);
 
-% add the external install folder
-addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
-
-%And the rdir directory
-addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
-
+if 0
+    % add the external install folder
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
+    
+    %And the rdir directory
+    addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
+else
+    %add the entire external folder
+    addpath(genpath([CBTDIR filesep 'external']))
+end
 % add the install folder
 addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
 
@@ -207,7 +211,8 @@ elseif status_curl == 0
     
     % reset each submodule
     %https://github.com/bazelbuild/continuous-integration/issues/727
-    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');
+    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
     
     if status_gitReset ~= 0
         fprintf(strrep(result_gitReset, '\', '\\'));

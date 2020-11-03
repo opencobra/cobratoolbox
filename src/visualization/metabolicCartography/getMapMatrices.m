@@ -45,27 +45,44 @@ end
 sMatrixID = sparse(length(map.specID), length(map.rxnID));
 sMatrixAlias = sparse(length(map.molAlias), length(map.rxnID));
 
+allowInconsistency = 0;
 % Loop over reactions to fill the matrix
 for rxn = 1:length(map.rxnID)
     % Loop over base reactants
     for x = 1:length(map.rxnBaseReactantID{rxn})
-        sMatrixID(specIndexId.(map.rxnBaseReactantID{rxn}{x}), rxn) = -1;
-        sMatrixAlias(specIndexAlias.(map.rxnBaseReactantAlias{rxn}{x}), rxn) = -1;
+        if isfield(specIndexId, map.rxnBaseReactantID{rxn}{x}) || allowInconsistency
+            sMatrixID(specIndexId.(map.rxnBaseReactantID{rxn}{x}), rxn) = -1;
+        end
+        if isfield(specIndexAlias,map.rxnBaseReactantAlias{rxn}{x})
+            sMatrixAlias(specIndexAlias.(map.rxnBaseReactantAlias{rxn}{x}), rxn) = -1;
+        end
     end
     % Loop over reactants
     for x = 1:length(map.rxnReactantID{rxn})
-        sMatrixID(specIndexId.(map.rxnReactantID{rxn}{x}), rxn) = -1;
-        sMatrixAlias(specIndexAlias.(map.rxnReactantAlias{rxn}{x}), rxn) = -1;
+        if isfield(specIndexId,map.rxnReactantID{rxn}{x})  || allowInconsistency
+            sMatrixID(specIndexId.(map.rxnReactantID{rxn}{x}), rxn) = -1;
+        end
+        if isfield(specIndexAlias,map.rxnReactantAlias{rxn}{x})
+            sMatrixAlias(specIndexAlias.(map.rxnReactantAlias{rxn}{x}), rxn) = -1;
+        end
     end
     % Loop over base products
     for x = 1:length(map.rxnBaseProductID{rxn})
-        sMatrixID(specIndexId.(map.rxnBaseProductID{rxn}{x}), rxn) = 1;
-        sMatrixAlias(specIndexAlias.(map.rxnBaseProductAlias{rxn}{x}), rxn) = 1;
+        if isfield(specIndexId,map.rxnBaseProductID{rxn}{x})  || allowInconsistency
+            sMatrixID(specIndexId.(map.rxnBaseProductID{rxn}{x}), rxn) = 1;
+        end
+        if isfield(specIndexAlias,map.rxnBaseProductAlias{rxn}{x})
+            sMatrixAlias(specIndexAlias.(map.rxnBaseProductAlias{rxn}{x}), rxn) = 1;
+        end
     end
     % Loop over products
     for x = 1:length(map.rxnProductID{rxn})
-        sMatrixID(specIndexId.(map.rxnProductID{rxn}{x}), rxn) = 1;
-        sMatrixAlias(specIndexAlias.(map.rxnProductAlias{rxn}{x}), rxn) = 1;
+        if isfield(specIndexId,map.rxnProductID{rxn}{x})  || allowInconsistency
+            sMatrixID(specIndexId.(map.rxnProductID{rxn}{x}), rxn) = 1;
+        end
+        if isfield(specIndexAlias,map.rxnProductAlias{rxn}{x})
+            sMatrixAlias(specIndexAlias.(map.rxnProductAlias{rxn}{x}), rxn) = 1;
+        end
     end
 end
 
