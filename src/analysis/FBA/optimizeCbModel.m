@@ -265,8 +265,10 @@ end
 
 % build the optimization problem, after it has been actively requested to be verified
 optProblem = buildLPproblemFromModel(model,verify);
-if strcmp(minNorm, 'oneInternal')
-    SConsistentRxnBool=model.SConsistentRxnBool;
+if ischar(minNorm)
+    if strcmp(minNorm, 'oneInternal')
+        SConsistentRxnBool=model.SConsistentRxnBool;
+    end
 end
 
 if isfield(model,'g') 
@@ -279,6 +281,9 @@ if isfield(model,'g0')
         error('model.g0 must be nRxns x 1')
     end
     zeroNormWeights=columnVector(model.g0);
+    if size(zeroNormWeights,2)~=1
+        error('model.g0 must be nRxns x 1')
+    end
 else
     zeroNormWeights=[];
 end
@@ -289,16 +294,33 @@ if isfield(model,'g1')
         error('model.g1 must be nRxns x 1')
     end
     oneNormWeights=columnVector(model.g1);
+    if size(oneNormWeights,2)~=1
+        error('model.g1 must be nRxns x 1')
+    end
 else
     oneNormWeights=[];
 end
 
+if ~isempty(zeroNormWeights)
+    if all(zeroNormWeights==0) && ischar(minNorm)
+        if strcmp('minNorm','optimizeCardinality') && ~isempty(oneNormWeights)
+            %no need to use optimize cardinality if effectively only
+            %minimisiation of one norm is being requested
+            minNorm = 'one';
+        end
+    end
+end
+
 %weights on two norm
 if isfield(model,'g2')  
+    error('minimisation of two norm in combination with one and zero norm is not yet supported')
     if length(model.g2)~=nRxns
         error('model.g2 must be nRxns x 1')
     end
     twoNormWeights=columnVector(model.g2);
+    if size(twoNormWeights,2)~=1
+        error('model.g2 must be nRxns x 1')
+    end
 else
     twoNormWeights=[];
 end
@@ -474,10 +496,11 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         solution.slack  = [];
         
 elseif strcmp(minNorm, 'one')
-        % Minimize the absolute value of fluxes to 'avoid' loopy solutions
-        % Solve secondary LP to minimize one-norm of |v|
+        % Optimize the absolute value of fluxes
+        % Solve secondary LP to optimize weighted 1-norm of v
+        % Weight provided by model.g1
         % Set up the optimization problem
-        % min sum(vf + vr)
+        % min model.g1'*(vf + vr)
         % 1: S*vf -S*vr = b
         % 3: vf >= -v
         % 4: vr >= v
@@ -520,10 +543,14 @@ elseif strcmp(minNorm, 'one')
             solution = solveCobraMILP(MILPproblem2);
         end
     elseif strcmp(minNorm, 'oneInternal')
-        % Minimize the absolute value of internal fluxes to 'avoid' loopy solutions
-        % Solve secondary LP to minimize one-norm of |v|
+        % Minimize the absolute value of internal fluxes to eliminate
+        % thermodynamically infeasible solutions
+        %  CycleFreeFlux: efficient removal of thermodynamically infeasible loops from flux distributions
+        % Desouki et al Bioinformatics, Volume 31, Issue 13, 1 July 2015, Pages 2159–2165, https://doi.org/10.1093/bioinformatics/btv096
+        %
+        % Solve secondary LP to minimise weighted 1-norm of v
         % Set up the optimization problem
-        % min sum(delta+ + delta-)
+        % min model.g1'*(p + q)
         % 1: S*v1 = b
         % 3: v1 - p + q = 0
         % 4: c'v1 >= f or c'v1 <= f (optimal value of objective)
@@ -542,6 +569,9 @@ elseif strcmp(minNorm, 'one')
             %only the weights on the internal reactions have an effect, the
             %rest are discarded
             normWeightsInt=normWeights(SConsistentRxnBool);
+            if any(normWeightsInt<0)
+                warning('minNorm = ''oneInternal'' may not eliminate thermodynamically infeasible fluxes if model.g1(SConsistentRxnBool) entries are negative')
+            end
             %weighted one norm of internal reactions
             optProblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
         else
