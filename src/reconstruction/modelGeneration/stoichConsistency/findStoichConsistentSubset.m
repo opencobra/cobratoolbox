@@ -62,7 +62,7 @@ end
 
 %final double check of stoichiometric consistent subset
 finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsilon
-%finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
+finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
 
 removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
@@ -296,7 +296,12 @@ while iterateCardinalityOpt>0
         end
 
         if doubleCheckConsistency && any(minConservationNonRelaxMetBool)
-            %leakParams.method='quasiConcave';
+            %leakParams.method='dc';%TODO 
+%             Warning: Problem unbounded ! Solver original status is: INF_OR_UNBD 
+% > In optimizeCardinality (line 909)
+%   In findMassLeaksAndSiphons (line 271)
+%   In findStoichConsistentSubset (line 301) 
+            leakParams.method='quasiConcave'; 
             %check to see if the stoichiometrically consistent part is leaking
             [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,modelBoundsFlag,leakParams,printLevel-2);
             if any(leakMetBool | siphonMetBool)

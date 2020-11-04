@@ -16,8 +16,10 @@ function outmodel = writeCbModel(model, varargin)
 %                         xls is restricted to the fields defined in the xls io documentation.
 %                         expa will print all reactions with Exchangers being detected by findExcRxns
 %                       * fileName: File name for output file (optional, default opens dialog box)
+%
 %                       * compSymbols: List of compartment symbols (Cell array)
 %                       * compNames:   List of compartment names corresponding to `compSymbolList` (Cell array)
+%                         If compSymbols and compNames are not provided, they are obtained by default from getDefaultCompartmentSymbols()              
 %
 % OPTIONAL OUTPUTS:
 %    outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.

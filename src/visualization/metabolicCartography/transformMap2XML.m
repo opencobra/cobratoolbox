@@ -52,6 +52,43 @@ for spec = 1:length(map.specID)
 end
 clearvars spec
 
+for r = 1:length(map.rxnID)
+    lt=length(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference);
+    if lt==1
+        if strcmp(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference.annotation.celldesigner_colon_extension.celldesigner_colon_alias.Text,map.molAlias)
+            error('removing only substrate in reaction')
+        end
+    else
+        bool=true(lt,1);
+        for s=1:lt
+            if ~any(strcmp(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference{s}.annotation.celldesigner_colon_extension.celldesigner_colon_alias.Text,map.molAlias))
+                bool(s)=0;
+            end
+        end
+        xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference =xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference(bool);
+    end
+%     if ~iscell(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference)
+%         xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfReactants.speciesReference
+%     end
+    
+    lt=length(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfProducts.speciesReference);
+    if lt==1
+        if strcmp(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfProducts.speciesReference.annotation.celldesigner_colon_extension.celldesigner_colon_alias.Text,map.molAlias)
+            error('removing only product in reaction')
+        end
+    else
+        bool=true(lt,1);
+        for s=1:lt
+            if ~any(strcmp(xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfProducts.speciesReference{s}.annotation.celldesigner_colon_extension.celldesigner_colon_alias.Text,map.molAlias))
+                bool(s)=0;
+            end
+        end
+        xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfProducts.speciesReference =xmlStruct.sbml.model.listOfReactions.reaction{r}.listOfProducts.speciesReference(bool);
+    end
+    
+    
+end
+
 % Loop over reactions to put the info back to the struct for XML
 % conversion
 for react = 1:length(map.rxnID)
@@ -72,7 +109,7 @@ for react = 1:length(map.rxnID)
         xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_name.Text = 'No_Name';
     end
     xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_reactionType.Text = map.rxnType{react};
-    if ~isempty(map.rxnReversibility{react})
+    if strcmp(map.rxnReversibility{react},'false')
         xmlStruct.sbml.model.listOfReactions.reaction{react}.Attributes.reversible = map.rxnReversibility{react};
     end
     % Test if there is only 1 base reactant
@@ -102,17 +139,31 @@ for react = 1:length(map.rxnID)
     if ~isempty(map.rxnReactantAlias{react})
         % Test if there is only 1 reactant
         if length(map.rxnReactantAlias{react}) == 1
+            %needed if there is a reduction in number of reactant aliases
+            if iscell(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink)
+                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink=xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink{1};
+            end
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(1).Attributes.alias = map.rxnReactantAlias{react}{1};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(1).Attributes.reactant = map.rxnReactantID{react}{1};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(1).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(1).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
         else
             for x = 1:length(map.rxnReactantAlias{react})
-                map.rxnReactantAlias{react}
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).Attributes.alias = map.rxnReactantAlias{react}{x};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).Attributes.reactant = map.rxnReactantID{react}{x};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                if length(map.rxnReactantAlias{react})== length(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink)-1
+                    error('inconsistent reactant aliases')
+                end
+                if iscell(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink)
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink{x}.Attributes.alias = map.rxnReactantAlias{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink{x}.Attributes.reactant = map.rxnReactantID{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink{x}.celldesigner_colon_line.Attributes.color = map.rxnColor{react};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink{x}.celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                else
+                    error('should not be cell')
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).Attributes.alias = map.rxnReactantAlias{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).Attributes.reactant = map.rxnReactantID{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfReactantLinks.celldesigner_colon_reactantLink(x).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                end
             end
             clearvars x
         end
@@ -122,16 +173,31 @@ for react = 1:length(map.rxnID)
     if ~isempty(map.rxnProductAlias{react})
         % Test if there is only 1 product
         if length(map.rxnProductAlias{react}) == 1
+            %needed if there is a reduced number of product aliases
+            if iscell(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink)
+                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink=xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink{1};
+            end
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(1).Attributes.alias = map.rxnProductAlias{react}{1};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(1).Attributes.product = map.rxnProductID{react}{1};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(1).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
             xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(1).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
         else
             for x = 1:length(map.rxnProductAlias{react})
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).Attributes.alias = map.rxnProductAlias{react}{x};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).Attributes.product = map.rxnProductID{react}{x};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
-                xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                if length(map.rxnProductAlias{react})== length(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink)-1
+                    error('inconsistent product aliases')
+                end
+                if iscell(xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink)
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink{x}.Attributes.alias = map.rxnProductAlias{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink{x}.Attributes.product = map.rxnProductID{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink{x}.celldesigner_colon_line.Attributes.color = map.rxnColor{react};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink{x}.celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                else
+                    error('should not be cell')
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).Attributes.alias = map.rxnProductAlias{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).Attributes.product = map.rxnProductID{react}{x};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).celldesigner_colon_line.Attributes.color = map.rxnColor{react};
+                    xmlStruct.sbml.model.listOfReactions.reaction{react}.annotation.celldesigner_colon_extension.celldesigner_colon_listOfProductLinks.celldesigner_colon_productLink(x).celldesigner_colon_line.Attributes.width = map.rxnWidth{react};
+                end
             end
             clearvars x
         end
