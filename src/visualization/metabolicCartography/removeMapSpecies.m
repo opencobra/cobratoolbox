@@ -94,76 +94,76 @@ if any(mapMolsToRemove)
     mapOut = removeFieldEntriesForType(mapOut, mapMolsToRemove, type, fieldSize);
 end
 
-specIDToRemove = map.specID(mapSpecToRemove);
-molIDToRemove = map.molAlias(mapMolsToRemove);
-% Loop over reactions to fill the matrix
-for rxn = 1:length(map.rxnID)
-    substrateInd = find(map.sID(:,rxn)<0);
-    productInd   = find(map.sID(:,rxn)>0);
-    
-    substrateAliasInd = find(map.sAlias(:,rxn)<0);
-    productAliasInd   = find(map.sAlias(:,rxn)>0);
-    
-    if any(map.rxnBaseReactantID{rxn},specIDToRemove)
-        %base reactant deleted so replace with first substrate
-        map.rxnBaseReactantID{rxn}{1} = map.specID{substrateInd(1)};
-        for i=2:length(substrateInd)
-            map.rxnReactantID{rxn}{i-1}= map.specID{substrateInd(i)};
-        end
-    else
-        %secondary reactant deleted, so base reactant invariant
-        for i=1:length(substrateInd)
-            if ~strcmp(map.rxnBaseReactantID{rxn}{1},map.specID{substrateInd(i)})
-                map.rxnReactantID{rxn}{i}= map.specID{substrateInd(i)};
-            end
-        end
-    end
-    
-    if any(map.rxnBaseReactantAlias{rxn},molIDToRemove)
-        %base reactant deleted so replace with first substrate
-        map.rxnBaseReactantAlias{rxn}{1} = map.specID{substrateAliasInd(1)};
-        for i=2:length(substrateAliasInd)
-            map.rxnReactantAlias{rxn}{i-1}= map.specID{substrateAliasInd(i)};
-        end
-    else
-        %secondary reactant deleted, so base reactant invariant
-        for i=1:length(substrateAliasInd)
-            if ~strcmp(map.rxnBaseReactantAlias{rxn}{1},map.specID{substrateAliasInd(i)})
-                map.rxnReactantAlias{rxn}{i}= map.specID{substrateAliasInd(i)};
-            end
-        end
-    end
-        
-    if any(map.rxnBaseProductID{rxn},specIDToRemove)
-        %base reactant deleted so replace with first substrate
-        map.rxnBaseProductID{rxn}{1} = map.specID{productInd(1)};
-        for i=2:length(productInd)
-            map.rxnProductID{rxn}{i-1}= map.specID{productInd(i)};
-        end
-    else
-        %secondary reactant deleted, so base reactant invariant
-        for i=1:length(productInd)
-            if ~strcmp(map.rxnBaseProductID{rxn}{1},map.specID{productInd(i)})
-                map.rxnProductID{rxn}{i}= map.specID{productInd(i)};
-            end
-        end
-    end
-    
-    if any(map.rxnBaseProductAlias{rxn},molIDToRemove)
-        %base reactant deleted so replace with first substrate
-        map.rxnBaseProductAlias{rxn}{1} = map.specID{productAliasInd(1)};
-        for i=2:length(productAliasInd)
-            map.rxnReactantAlias{rxn}{i-1}= map.specID{productAliasInd(i)};
-        end
-    else
-        %secondary reactant deleted, so base reactant invariant
-        for i=1:length(productAliasInd)
-            if ~strcmp(map.rxnBaseProductAlias{rxn}{1},map.specID{productAliasInd(i)})
-                map.rxnProductAlias{rxn}{i}= map.specID{productAliasInd(i)};
-            end
-        end
-    end
-end
+% specIDToRemove = map.specID(mapSpecToRemove);
+% molIDToRemove = map.molAlias(mapMolsToRemove);
+% % Loop over reactions to fill the matrix
+% for rxn = 1:length(map.rxnID)
+%     substrateInd = find(map.sID(:,rxn)<0);
+%     productInd   = find(map.sID(:,rxn)>0);
+%     
+%     substrateAliasInd = find(map.sAlias(:,rxn)<0);
+%     productAliasInd   = find(map.sAlias(:,rxn)>0);
+%     
+%     if any(strcmp(map.rxnBaseReactantID{rxn},specIDToRemove))
+%         %base reactant deleted so replace with first substrate
+%         map.rxnBaseReactantID{rxn}{1} = map.specID{substrateInd(1)};
+%         for i=2:length(substrateInd)
+%             map.rxnReactantID{rxn}{i-1}= map.specID{substrateInd(i)};
+%         end
+%     else
+%         %secondary reactant deleted, so base reactant invariant
+%         for i=1:length(substrateInd)
+%             if ~strcmp(map.rxnBaseReactantID{rxn}{1},map.specID{substrateInd(i)})
+%                 map.rxnReactantID{rxn}{i}= map.specID{substrateInd(i)};
+%             end
+%         end
+%     end
+%     
+%     if any(strcmp(map.rxnBaseReactantAlias{rxn},molIDToRemove))
+%         %base reactant deleted so replace with first substrate
+%         map.rxnBaseReactantAlias{rxn}{1} = map.specID{substrateAliasInd(1)};
+%         for i=2:length(substrateAliasInd)
+%             map.rxnReactantAlias{rxn}{i-1}= map.specID{substrateAliasInd(i)};
+%         end
+%     else
+%         %secondary reactant deleted, so base reactant invariant
+%         for i=1:length(substrateAliasInd)
+%             if ~strcmp(map.rxnBaseReactantAlias{rxn}{1},map.specID{substrateAliasInd(i)})
+%                 map.rxnReactantAlias{rxn}{i}= map.specID{substrateAliasInd(i)};
+%             end
+%         end
+%     end
+%         
+%     if any(strcmp(map.rxnBaseProductID{rxn},specIDToRemove))
+%         %base reactant deleted so replace with first substrate
+%         map.rxnBaseProductID{rxn}{1} = map.specID{productInd(1)};
+%         for i=2:length(productInd)
+%             map.rxnProductID{rxn}{i-1}= map.specID{productInd(i)};
+%         end
+%     else
+%         %secondary reactant deleted, so base reactant invariant
+%         for i=1:length(productInd)
+%             if ~strcmp(map.rxnBaseProductID{rxn}{1},map.specID{productInd(i)})
+%                 map.rxnProductID{rxn}{i}= map.specID{productInd(i)};
+%             end
+%         end
+%     end
+%     
+%     if any(strcmp(map.rxnBaseProductAlias{rxn},molIDToRemove))
+%         %base reactant deleted so replace with first substrate
+%         map.rxnBaseProductAlias{rxn}{1} = map.specID{productAliasInd(1)};
+%         for i=2:length(productAliasInd)
+%             map.rxnReactantAlias{rxn}{i-1}= map.specID{productAliasInd(i)};
+%         end
+%     else
+%         %secondary reactant deleted, so base reactant invariant
+%         for i=1:length(productAliasInd)
+%             if ~strcmp(map.rxnBaseProductAlias{rxn}{1},map.specID{productAliasInd(i)})
+%                 map.rxnProductAlias{rxn}{i}= map.specID{productAliasInd(i)};
+%             end
+%         end
+%     end
+% end
 
 if 0
     mapOut = rmfield(mapOut,'sID');

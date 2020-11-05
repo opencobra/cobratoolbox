@@ -96,7 +96,7 @@ for react = 1:length(xmlStruct.sbml.model.listOfReactions.reaction)
     if any(strcmp('reversible', fieldnames(xmlStruct.sbml.model.listOfReactions.reaction{react}.Attributes)))
         map.rxnReversibility{react, 1} = xmlStruct.sbml.model.listOfReactions.reaction{react}.Attributes.reversible;
     else
-        map.rxnReversibility{react, 1} = [];
+        map.rxnReversibility{react, 1} = 'true';
     end
     map.rxnBaseReactantAlias{react, 1} = {};
     map.rxnBaseReactantID{react, 1} = {};
