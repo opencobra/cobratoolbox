@@ -7,6 +7,11 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %    st.  ~& S^T l = 0 \\
 %         ~& 0 \leq l
 %
+% When param.method = 'optimizeCardinality'; then approximately solve the problem
+%    max  ~& ||l||_0 \\
+%    st.  ~& S^T l = 0 \\
+%         ~& 0 \leq l \leq 1/epsilon
+%
 % When param.method = 'quasiConcave'; then solve the linear problem
 %       max 1'*z
 %       s.t S'*l = 0
@@ -148,43 +153,25 @@ switch method
         cardProblem.A=S';
         cardProblem.b=zeros(nlt,1);
         cardProblem.lb=zeros(mlt,1);
-        cardProblem.ub=(1/epsilon)*ones(mlt,1);
+        if 0
+            cardProblem.ub=(1/epsilon)*ones(mlt,1);
+        else
+            cardProblem.ub=inf*ones(mlt,1);
+        end
         cardProblem.csense(1:nlt,1)='E';
         
-        cardProblem.lambda=0;
-        %                   * .lambda0 - trade-off parameter on minimise `||x||_0`
-        %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
-        if 0
-            cardProblem.delta=1;
-        else
-            % delta0 - trade-off parameter on maximise `||y||_0`
-            cardProblem.delta0=1;
-            % delta1 - trade-off parameter on minimise `||y||_1`
-            cardProblem.delta1=0;
-            %cardProblem.delta1=1e-6;
-        end
+        
+        % lambda0 - trade-off parameter on minimise `||x||_0`
+        % lambda1 - trade-off parameter on minimise `||x||_1`
+        cardProblem.lambda0=0;   
+        cardProblem.lambda1=0; 
+
+        % delta0 - trade-off parameter on maximise `||y||_0`
+        % delta1 - trade-off parameter on minimise `||y||_1`
+        cardProblem.delta0=1;
+        cardProblem.delta1=0; %sensitive to this value, 0 works for recon3model
 
         solution = optimizeCardinality(cardProblem,param);
-        %  problem                  Structure containing the following fields describing the problem
-        %       p                   size of vector x
-        %       q                   size of vector y
-        %       r                   size of vector z
-        %       c                   (p+q+r) x 1 linear objective function vector
-        %       lambda              trade-off parameter of ||x||_0
-        %       delta               trade-off parameter of ||y||_0
-        %       A                   s x (p+q+r) LHS matrix
-        %       b                   s x 1 RHS vector
-        %       csense              s x 1 Constraint senses, a string containting the constraint sense for
-        %                           each row in A ('E', equality, 'G' greater than, 'L' less than).
-        %       lb                  (p+q+r) x 1 Lower bound vector
-        %       ub                  (p+q+r) x 1 Upper bound vector
-        %
-        % OPTIONAL INPUTS
-        % param                    parameters structure
-        %       nbMaxIteration      stopping criteria - number maximal of iteration (Defaut value = 1000)
-        %       epsilon             stopping criteria - (Defaut value = 10e-6)
-        %       theta               parameter of the approximation (Defaut value = 2)
-        %
         % OUTPUT
         % solution                  Structure containing the following fields
         %       x                   p x 1 solution vector
@@ -329,7 +316,7 @@ switch method
         % S'*l = 0
         % z >= theta*l
         A2 = [S'             sparse(n,m);
-            -theta*speye(m)    speye(m)];%signs were wrong 
+            -theta*speye(m)   speye(m)];%signs were wrong %not sure
         b2 = [zeros(n+m,1)];
         csense2 = [repmat('E',n, 1);repmat('L',m, 1)];
 
@@ -354,7 +341,7 @@ switch method
             z_old = z;
 
             %Solve the sub-linear program to obtain new l
-            [l,z, LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,theta);
+            [l,z, LPsolution] = maximiseConservationVector_solveSubProblem(subLPproblem,S,theta);
             switch LPsolution.stat
                 case 0
                     warning('Problem infeasible !!!!!');

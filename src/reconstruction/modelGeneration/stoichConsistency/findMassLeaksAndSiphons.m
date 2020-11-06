@@ -1,4 +1,4 @@
-function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
+function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, param, printLevel)
 % Finds the metabolites in a network that either leak mass or act as a
 % siphon for mass, with (default) or without the bounds on a model.
 % The approach is to solve the problem:
@@ -19,7 +19,7 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %
 % USAGE:
 %
-%    [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)
+%    [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, param, printLevel)
 %
 % INPUT:
 %    model:              structure with fields (only `.S` is mandatory)
@@ -37,12 +37,12 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %
 %                          * 0 = set all reaction bounds to -inf, inf
 %                          * 1 = use reaction bounds provided by model.lb and .ub
-%    params:             structure with fields:
+%    param:             structure with fields:
 %
-%                          * params.epsilon - (1e-4)
-%                          * params.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
-%                          * params.theta - (0.5) parameter of capped l1 approximation
-%                          * params.method - {('quasiConcave'), 'dc'} method of approximation
+%                          * param.epsilon - (1e-4)
+%                          * param.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
+%                          * param.theta - (0.5) parameter of capped l1 approximation
+%                          * param.method - {('quasiConcave'), 'dc'} method of approximation
 %    printLevel:         {(0), 1, 2 = debug}
 %
 % OUTPUTS:
@@ -87,33 +87,33 @@ if ~exist('modelBoundsFlag','var')
     modelBoundsFlag=0;
 end
 feasTol = getCobraSolverParams('LP', 'feasTol');
-if ~exist('params','var') || isempty(params)
-    params.theta   = 0.5;    %parameter of capped l1 approximation
+if ~exist('param','var') || isempty(param)
+    param.theta   = 0.5;    %parameter of capped l1 approximation
     feasTol = getCobraSolverParams('LP', 'feasTol');
-    params.epsilon=1e-4;
-    params.eta=feasTol*100;
-    %params.method = 'quasiConcave';
-    params.method='dc';
+    param.epsilon=1e-4;
+    param.eta=feasTol*100;
+    %param.method = 'quasiConcave';
+    param.method='dc';
 else
-    if isfield(params,'epsilon') == 0
-        params.epsilon=1e-4;
+    if isfield(param,'epsilon') == 0
+        param.epsilon=1e-4;
     end
-    if isfield(params,'eta') == 0
-        params.eta=feasTol*100;
+    if isfield(param,'eta') == 0
+        param.eta=feasTol*100;
     end
-    if isfield(params,'theta') == 0
-        params.theta   = 0.5;    %parameter of capped l1 approximation
+    if isfield(param,'theta') == 0
+        param.theta   = 0.5;    %parameter of capped l1 approximation
     end
-    if isfield(params,'method') == 0
-        %params.method   = 'quasiConcave';
-        params.method='dc';
+    if isfield(param,'method') == 0
+        %param.method   = 'quasiConcave';
+        param.method='dc';
     end
 end
 if ~exist('printLevel','var')
     printLevel=0;
 end
 
-[theta,epsilon,method]=deal(params.theta,params.epsilon,params.method);
+[theta,epsilon,method]=deal(param.theta,param.epsilon,param.method);
 
 %take the subset of stoichiometry if need be
 S=model.S(metBool,rxnBool);
@@ -130,11 +130,14 @@ if modelBoundsFlag
         fprintf('%6u\t%6u\t%s%s%s\n',mlt,nlt,' subset tested for leakage (', method,' method, with model flux bounds)...');
     end
 else
-    %no bounds on fluxes
-    lb=-inf*ones(nlt,1);
-    ub= inf*ones(nlt,1);
-    % lb=-(1/epsilon)*ones(nlt,1);
-    % ub= (1/epsilon)*ones(nlt,1);
+    if 0
+        %no bounds on fluxes
+        lb=-inf*ones(nlt,1);
+        ub= inf*ones(nlt,1);
+    else
+        lb=-(1/epsilon)*ones(nlt,1);
+        ub= (1/epsilon)*ones(nlt,1);
+    end
     if printLevel>0
         fprintf('%6u\t%6u\t%s%s%s\n',mlt,nlt,' subset tested for leakage (', method,' method, with infinite flux bounds)...');
     end
@@ -215,7 +218,7 @@ switch method
         %           l <= (x,y,z) <=u
         %           x in R^p, y in R^q, z in R^r
         %
-        % solution = optimizeCardinality(problem,params)
+        % solution = optimizeCardinality(problem,param)
         %
         %  problem                  Structure containing the following fields describing the problem
         %       p                   size of vector x
@@ -246,7 +249,17 @@ switch method
         cardPrb.ub      = [(1/epsilon)*ones(mlt,1);ub];
 
         %Call the cardinality optimisation solver for semipositive
-         solutionCardp = optimizeCardinality(cardPrb);
+        %TODO update to optimizeCardinality
+        if isfield(param,'interface')
+            if strcmp(param.interface,'optimizeCardinalityOld')
+                solutionCardp = optimizeCardinalityOld(cardPrb);
+            else
+                solutionCardp = optimizeCardinality(cardPrb);
+            end
+        else
+            solutionCardp = optimizeCardinality(cardPrb);
+        end
+            
         if solutionCardp.stat == 1
             statp   = 1;
             Vp=sparse(nRxn,1);
@@ -286,11 +299,13 @@ switch method
             siphonY=sparse(nMet,1);
             statn=[];
         end
+    otherwise
+        error('param.method not recognised')
 end
 
 %only metBool rxnBool were tested for leaks
-leakMetBool=leakY>=params.eta;
-%leakRxnBool = abs(Vp)>=params.eta;
+leakMetBool=leakY>=param.eta;
+%leakRxnBool = abs(Vp)>=param.eta;
 leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'exclusive');
 %leakRxnBool = getCorrespondingCols(model.S,leakMetBool,rxnBool,'inclusive');
 if printLevel>0
@@ -299,7 +314,7 @@ end
 
 if printLevel>0 && any(leakMetBool)
     %relaxation of stoichiometric consistency for reactions above the
-    %threshold of leakParams.eta
+    %threshold of leakparam.eta
     leakY(leakY<0)=0;
     log10Yp=log10(leakY);
     log10YpFinite=isfinite(log10Yp);
@@ -307,7 +322,7 @@ if printLevel>0 && any(leakMetBool)
         %histogram
         figure;
         hist(log10Yp(metBool & log10YpFinite),200)
-        title(['Semipositive leaks above ' num2str(params.eta)])
+        title(['Semipositive leaks above ' num2str(param.eta)])
         xlabel('log_{10}(leak)')
         ylabel('#mets')
     end
@@ -332,8 +347,8 @@ if printLevel>0 && any(leakMetBool)
     end
 end
 
-siphonMetBool=siphonY>=params.eta;
-%siphonRxnBool = abs(Vn)>=params.eta;
+siphonMetBool=siphonY>=param.eta;
+%siphonRxnBool = abs(Vn)>=param.eta;
 siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'exclusive');
 %siphonRxnBool = getCorrespondingCols(model.S,siphonMetBool,rxnBool,'inclusive');
 if printLevel>0
@@ -342,7 +357,7 @@ end
 
 if printLevel>0 && any(siphonMetBool)
     %relaxation of stoichiometric consistency for reactions above the
-    %threshold of leakParams.eta
+    %threshold of leakparam.eta
     siphonY(siphonY<0)=0;
     log10Yn=log10(siphonY);
     log10YnFinite=isfinite(log10Yn);
@@ -350,7 +365,7 @@ if printLevel>0 && any(siphonMetBool)
         %histogram
         figure;
         hist(log10Yn(metBool & log10YnFinite),200)
-        title(['Seminegative siphons above ' num2str(params.eta)])
+        title(['Seminegative siphons above ' num2str(param.eta)])
         xlabel('log_{10}(siphon)')
         ylabel('#mets')
     end

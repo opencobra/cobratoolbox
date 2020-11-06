@@ -87,7 +87,7 @@ switch outputFormat
     case 'SBGN-ML'
         EXTOUT = '_SBGN-ML.sbgn';
     case 'SBML'
-        EXTOUT = '_SBML.xml';
+        EXTOUT = '_SBML-L.xml';
     case 'CellDesigner_SBML'
         EXTOUT = '_CD.xml';
     case 'GPML'

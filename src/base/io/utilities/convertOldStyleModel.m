@@ -272,27 +272,25 @@ for i = 1: numel(modelfields)
 end
 
 nRxns=length(model.subSystems);
-bool=false(nRxns,1);
 if isfield(model,'subSystems')
-    for n=1:nRxns
-        bool(n)=ischar(model.subSystems{n});
+    numericPos = cellfun(@(x) isnumeric(x), model.subSystems);
+    if all(numericPos)
+        model.subSystems = cellfun(@(x) num2str(x), model.subSystems,'UniformOutput',0);
     end
-    if all(bool) || nRxns<50000 
-        done = false;
-        charPos = cellfun(@(x) ischar(x), model.subSystems);
-        if all(charPos)
-            model.subSystems = cellfun(@(x) {x}, model.subSystems,'UniformOutput',0);
-            done = true;
-        elseif any(charPos)
-            model.subSystems(charPos) = cellfun(@(x) {x}, model.subSystems(charPos),'UniformOutput',0);
-        end
-        if ~done
-            numericPos = cellfun(@(x) isnumeric(x), model.subSystems);
-            model.subSystems(numericPos) = {{''}};
-        end
+    charBool = cellfun(@(x) ischar(x), model.subSystems);
+    oneBool = cellfun(@(x) length(x)==1, model.subSystems);
+    cellBool = cellfun(@(x) iscell(x), model.subSystems);
+    %if all entries are char, leave them as char
+    if all(charBool)
+        fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
     else
-        %Whole body model Harvey
-        fprintf('%s\n','All model.subSystems are character arrays, and this is a large model, so this format is retained.');
+        if all(cellBool & oneBool)
+            fprintf('%s\n','Each model.subSystems{x} is a changed to a character array.');
+            model.subSystems = cellfun(@(x) x{1}, model.subSystems,'UniformOutput',0);
+        else
+            fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+            model.subSystems(charBool) = cellfun(@(x) {x}, model.subSystems(charBool),'UniformOutput',0);
+        end
     end
 end
 %reset warnings
