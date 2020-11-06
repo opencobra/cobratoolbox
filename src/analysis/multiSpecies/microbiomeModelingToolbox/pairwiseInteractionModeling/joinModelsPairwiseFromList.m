@@ -1,4 +1,4 @@
-function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList, inputModels, varargin)
+function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % This function joins a list of microbial genome-scale reconstructions in
 % all combinations. Models are not paired with themselves and pairs are
 % only created once (model1+model2 = model2+model1). The reactions in each
@@ -21,8 +21,7 @@ function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList,
 % INPUTS:
 %     modelList:          Cell array with names of reconstruction structures to be
 %                         joined
-%     inputModels:        Array with COBRA model structures to be joined (needs to
-%                         have same length as modelList)
+%     modelFolder:        Path to folder with COBRA model structures to be joined
 %
 % OPTIONAL INPUTS:
 %     c:                  Coupling factor by which reactions in each joined model are
@@ -34,28 +33,23 @@ function [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList,
 %     numWorkers:         Number of workers in parallel pool if desired
 %     pairwiseModelFolder Folder where pairwise models will be saved
 %
-% OUTPUTS:
-%     pairedModels:       Structue containing created pairwise models in all
-%                         combinations
-%     pairedModelInfo:    Table with information on created pairwise models
-%
 % .. Author:
 %      - Almut Heinken, 02/2018
-%      - Almut Heinken, 02/2020: Inputs changed for more efficient computation
+%      - Almut Heinken, 02/2020: Inputs and outputs changed for more efficient computation
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);
-parser.addRequired('inputModels', @iscell);
+parser.addRequired('modelFolder', @ischar);
 parser.addParameter('c', 400, @(x) isnumeric(x))
 parser.addParameter('u', 0, @(x) isnumeric(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('pairwiseModelFolder', pwd, @(x) ischar(x))
 parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
 
-parser.parse(modelList, inputModels, varargin{:})
+parser.parse(modelList, modelFolder, varargin{:})
 
 modelList = parser.Results.modelList;
-inputModels = parser.Results.inputModels;
+modelFolder = parser.Results.modelFolder;
 c = parser.Results.c;
 u = parser.Results.u;
 numWorkers = parser.Results.numWorkers;
@@ -81,6 +75,16 @@ for i = 1:size(modelList, 1)
             parpool(numWorkers)
         end
         pairedModelsTemp = {};
+        
+        % Load the reconstructions to be joined
+        inputModels={};
+        model=readCbModel([modelFolder filesep modelList{i,1} '.mat']);
+        inputModels{i}=model;
+        for k = i + 1:size(modelList, 1)
+            model=readCbModel([modelFolder filesep modelList{k,1} '.mat']);
+            inputModels{k}=model;
+        end
+        
         parfor k = i + 1:size(modelList, 1)
             model1 = inputModels{i};
             model2 = inputModels{k};
@@ -117,10 +121,8 @@ for i = 1:size(modelList, 1)
             end
             
             if ~contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])
-                pairedModels{cnt, 1} = pairedModelsTemp{k};
-                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],pairedModelsTemp{k});
-            else
-                pairedModels{cnt, 1} = {};
+                pairedModel=pairedModelsTemp{k};
+                save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],'pairedModel');
             end
             cnt = cnt + 1;
         end

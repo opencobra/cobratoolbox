@@ -250,12 +250,7 @@ end
 %In the file 'COBRA_structure_fields.csv' I replaced:
 % subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction'false(1)'	cell	'false(1)'
 %with 
-%subSystems	rxns	1	iscell(x) || iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
-%but that did not allow two versions of model.subSystems
-%It needs to allow one subSystem per reaction as a char, rather than
-%mandating nesting cell arrays, which are not backward compatible, etc ,etc
-%Therefore, errors relating to incorrect properties of subSystems are
-%removed, for now.
+% subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					model.rxns{i}		Column Cell Array of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
 if isfield(results,'Errors')
     if isfield(results.Errors,'propertiesNotMatched')
         if isfield(results.Errors.propertiesNotMatched,'subSystems')

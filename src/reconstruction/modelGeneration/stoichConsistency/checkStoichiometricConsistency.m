@@ -1,4 +1,4 @@
-function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, method)
+function [isConsistent, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 % Verification of stoichiometric consistency by checking for at least one
 % strictly positive basis in the left nullspace of `S`.
 % If `S` is not stoichiometrically consistent detect conserved and unconserved
@@ -19,7 +19,7 @@ function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, 
 %
 % USAGE:
 %
-%    [inform, m, model] = checkStoichiometricConsistency(model, printLevel, method)
+%    [isConsistent, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 %
 % INPUT:
 %    model:         structure with fields:
@@ -46,7 +46,7 @@ function [inform, m, model] = checkStoichiometricConsistency(model, printLevel, 
 %                     * method.param - solver specific parameter structure
 %
 % OUTPUTS:
-%    inform:        Solver status in standardized form:
+%    isConsistent:        Solver status in standardized form:
 %
 %                     * 1 - Optimal solution (Stoichiometrically consistent)
 %                     * 2 - Unbounded solution (Should never happen)
@@ -125,11 +125,11 @@ solution = solveCobraLP(LPproblem,'printLevel',printLevel);
 %            0   Infeasible
 %           -1   No solution reported (timelimit, numerical problem etc)
 
-inform=solution.stat;
+isConsistent=solution.stat;
 epsilon = 1e-4;
 % If the network is not stoichiometrically consistent then one maximizes
 % the number of  positive component of the molecular masses vector
-if inform~=1
+if isConsistent~=1
     switch method.interface
         case 'none'
             warning(['Stoichiometrically INconsistent ' intR 'stoichiometry.']);
@@ -208,7 +208,7 @@ if inform~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                inform=1;
+                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
@@ -237,7 +237,7 @@ if inform~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                inform=1;
+                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
@@ -288,7 +288,7 @@ if inform~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                inform=1;
+                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
@@ -326,7 +326,12 @@ else
     %The only consistent rows are those corresponding to non-exchange reactions
     model.SConsistentMetBool=model.SIntMetBool;
     if printLevel>0
-        fprintf('%s\n',['Stoichiometrically consistent ' intR ' with respect to heuristically determined non-exchange reactions.']);
+        fprintf('%s\n','--- Summary of stoichiometric consistency ----')
+        fprintf('%6s\t%6s\n','#mets','#rxns')
+        fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
+        fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically external.')
+        fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically internal:')
+        fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool),nnz(model.SIntRxnBool),' ... of which are stoichiometrically consistent.')
     end
 end
 

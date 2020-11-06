@@ -2,8 +2,9 @@ function solution = optimizeCardinality(problem, param)
 % DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by a capped-`l1` function.
 %
-% :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*||x||_1
-% .                      -  delta_0*d.||*y||_0 +  delta_1*||y||_1` 
+% :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*o.*||x||_1
+% .                      -  delta_0*d.||*y||_0 +  delta_1*o.*||y||_1` 
+% .                                            +          o.*||z||_1` 
 % s.t. :math:`A*(x, y, z) <= b`
 % :math:`l <= (x,y,z) <= u`
 % :math:`x in R^p, y in R^q, z in R^r`
@@ -360,10 +361,10 @@ if ~isfield(problem,'o')
     problem.o = ones(size(problem.A,2),1);
     %by default do not minimize the one norm of reactions where cardinality
     %is not being optimised
-    if length(problem.p)~=1
-        problem.o(problem.r) = 0;
+    if length(problem.p)==1
+        problem.o(problem.p+problem.q+1:problem.p+problem.q+problem.r,1) = 0;
     else
-        problem.o(find(problem.r)) = 0;
+        problem.o(problem.r~=0,1) = 0;
     end
 end
 

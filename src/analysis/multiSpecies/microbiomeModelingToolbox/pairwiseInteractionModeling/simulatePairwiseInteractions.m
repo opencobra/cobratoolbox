@@ -1,4 +1,4 @@
-function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairwiseModelFolder, pairedModelInfo, varargin)
+function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairwiseModelFolder, varargin)
 % This function predicts the outcome of pairwise simulations in every
 % combination from a given list of pairwise models. The pairwise models
 % need to be created first with the function joinModelsPairwiseFromList.
@@ -35,11 +35,10 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 %   (same outcome for both)
 %
 % USAGE:
-%     [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairedModels, pairedModelInfo, varargin)
+%     [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairwiseModelFolder, varargin)
 %
 % INPUTS:
-%     pairwiseModelFolder:     Folder where pairwise models are located
-%     pairedModelInfo:         Information on species joined in the pairwise models
+%     pairwiseModelFolder:     Folder where pairwise models and pairwise model info file are located
 %
 % OPTIONAL INPUTS:
 %     inputDiet:               Cell array of strings with three columns containing
@@ -67,24 +66,26 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 
 parser = inputParser();  % Parse input parameters
 parser.addRequired('pairwiseModelFolder', @ischar);
-parser.addRequired('pairedModelInfo', @iscell);
 parser.addParameter('inputDiet', {}, @iscell)
 parser.addParameter('saveSolutionsFlag', false, @(x) isnumeric(x) || islogical(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('sigD', 0.1, @(x) isnumeric(x))
 
-parser.parse(pairwiseModelFolder, pairedModelInfo, varargin{:});
+parser.parse(pairwiseModelFolder, varargin{:});
 
 pairwiseModelFolder = parser.Results.pairwiseModelFolder;
-pairedModelInfo = parser.Results.pairedModelInfo;
 inputDiet = parser.Results.inputDiet;
 saveSolutionsFlag = parser.Results.saveSolutionsFlag;
 numWorkers = parser.Results.numWorkers;
 sigD = parser.Results.sigD;
 
+%% initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
+if isempty(CBT_LP_SOLVER)
+    initCobraToolbox
+end
 solver = CBT_LP_SOLVER;
-% initialize parallel pool
+
 if numWorkers > 0
     % with parallelization
     poolobj = gcp('nocreate');
@@ -92,6 +93,7 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
+environment = getEnvironment();
 
 if saveSolutionsFlag == true
     pairwiseSolutions{1, 1} = 'pairedModelID';
@@ -115,9 +117,15 @@ pairwiseInteractions{1, 10} = 'Total_Outcome';
 growthRates={};
 solutionsTmp={};
 
+if isfile([pairwiseModelFolder filesep 'pairedModelInfo.mat'])
+load([pairwiseModelFolder filesep 'pairedModelInfo.mat'])
+else
+    error('Pairwise models have not been created. Please run joinModelsPairwiseFromList first.')
+end
+
 parfor i = 1:size(pairedModelInfo, 1)
-    changeCobraSolver(solver, 'LP');
-    % prevent creation of log files
+    restoreEnvironment(environment);
+    changeCobraSolver(solver, 'LP', 0, -1);
     changeCobraSolverParams('LP', 'logFile', 0);
     
     % load the model
@@ -178,8 +186,13 @@ parfor i = 1:size(pairedModelInfo, 1)
     solutionsTmp{i}{1,2} = solutionSingle1;
     solutionsTmp{i}{1,3} = solutionSingle2;
 end
+
+% backup results for large number of simulations
+if size(pairedModelInfo, 1) > 1000
 save('growthRates','growthRates','-v7.3');
 save('solutionsTmp','solutionsTmp','-v7.3');
+end
+
 for i = 1:size(pairedModelInfo, 1)
     solPaired = solutionsTmp{i}{1,1};
     solSingle1 = solutionsTmp{i}{1,2};

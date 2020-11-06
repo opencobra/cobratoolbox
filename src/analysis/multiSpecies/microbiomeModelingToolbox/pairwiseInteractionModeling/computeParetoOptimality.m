@@ -155,9 +155,11 @@ figure;
 fluxes1 = cell2mat(ParetoFrontier(2:end, 2));
 fluxes2 = cell2mat(ParetoFrontier(2:end, 3));
 scatter(fluxes1, fluxes2);
-h = xlabel(rxn1);
+label1=strsplit(rxn1{1},['_' 'bio']);
+h = xlabel(label1{1});
 set(h, 'interpreter', 'none');
-h = ylabel(rxn2);
+label2=strsplit(rxn2{1},['_' 'bio']);
+h = ylabel(label2{1});
 set(h, 'interpreter', 'none');
 title('Pareto optimality analysis')
 
