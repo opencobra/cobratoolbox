@@ -281,6 +281,10 @@ else
     end
 end
 
+%refresh field properties in memory in case they have been updated
+clear getDefinedFieldProperties
+fields = getDefinedFieldProperties();
+
 % define xml test file
 xmlTestModel = 'ecoli_core_model.xml';
 xmlTestFile = [getDistributedModelFolder(xmlTestModel) filesep xmlTestModel];

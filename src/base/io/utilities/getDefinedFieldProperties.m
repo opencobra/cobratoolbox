@@ -170,6 +170,14 @@ if isempty(CBT_PROG_FIELD_PROPS)
                 default = str2num(default);
             end
         end
+        if 0 %debug
+            if i==49%rxnNames
+                pause(0.1)
+            end
+            if i==64 %subSystems
+                pause(0.1)
+            end
+        end
         basic = eval(eval(relarray{i,6}));        
         FieldType = relarray{i,7};  
         FBA = eval(eval(relarray{i,8}));        

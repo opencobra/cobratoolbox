@@ -97,6 +97,10 @@ else
         end
     end
 end
+
+%grab any possible biomass reactions
+biomassBool = biomassBool | contains(model.rxns,'biomass');
+
 model.biomassBool=biomassBool;
 
 SExRxnBoolOneCoefficient=false(nRxn,1);

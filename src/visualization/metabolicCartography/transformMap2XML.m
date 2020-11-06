@@ -20,6 +20,14 @@ function transformMap2XML(xmlStruct, map, fileName)
 
 tic
 
+if strcmp('~',fileName(1))
+    savedPath=pwd;
+    cd('~')
+    homePath=pwd;
+    fileName = strrep(fileName,'~',homePath);
+    cd(savedPath)
+end
+
 % Loop over molecules to put the info back to the struct for XML
 % conversion
 for mol = 1:length(map.molAlias)

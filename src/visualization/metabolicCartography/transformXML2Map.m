@@ -38,7 +38,17 @@ function [xmlStruct, map] = transformXML2Map(fileName)
 tic
 
 % Works nicely but has a huge tree structured
+
+if strcmp('~',fileName(1))
+    savedPath=pwd;
+    cd('~')
+    homePath=pwd;
+    fileName = strrep(fileName,'~',homePath);
+    cd(savedPath)
+end
+
 xmlStruct = xml2struct(fileName);
+
 
 % Loop over molecules to get the needed information and store it in a
 % structure. Molecules refer to each individual node.

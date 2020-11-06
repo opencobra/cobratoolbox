@@ -76,6 +76,12 @@ if strcmp(param.method,'null_fastcc')
         modelOrig=model;
         nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');
         model.S=model.S(~nullFluxInConsistentMetBool,~nullFluxInConsistentRxnBool);
+        model.mets=model.mets(~nullFluxInConsistentMetBool);
+        model.b=model.b(~nullFluxInConsistentMetBool);
+        if isfield(model,'csense')
+            model.csense=model.csense(~nullFluxInConsistentMetBool);
+        end
+        model.c=model.c(~nullFluxInConsistentRxnBool);
         model.lb=model.lb(~nullFluxInConsistentRxnBool);
         model.ub=model.ub(~nullFluxInConsistentRxnBool);
         model.rxns=model.rxns(~nullFluxInConsistentRxnBool);

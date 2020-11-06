@@ -74,7 +74,7 @@ fprintf(fid,'%s\t%s\n','description', param.description);
 fprintf(fid,'%s\t%i\t%s\t%i\t%s\t%i\t%s\n','color', param.color.minValue,param.color.minColor,param.color.zeroValue,param.color.zeroColor,param.color.maxValue ,param.color.maxColor);
 
 %experiment names
-fprintf(fid,'%s\t','el');
+fprintf(fid,'%s\t','node');
 if ~exist('metSampleNames','var')
     for n=1:nSamples
         if n~=nSamples
@@ -103,17 +103,19 @@ end
 convertedMets = convertSBMLID(model.mets);
 
 %experimental data
+useM=1;
 for i=1:nMets
-    if 0
-        fprintf(fid,'%s\t',['M_' convertedMets{i}]);
+    if useM
+        fprintf(fid,'%s',['M_' convertedMets{i}]);
     else
-        fprintf(fid,'%s\t',model.metNames{i});
+        fprintf(fid,'%s',model.metNames{i});
     end
+    
     for j=1:nSamples
-        if i~=nSamples
+        if j~=nSamples
             fprintf(fid,'%i\t', full(metData(i,j)));
         else
-            fprintf(fid,'%i\t', full(metData(i,j)));
+            fprintf(fid,'%i', full(metData(i,j)));
         end
     end
     fprintf(fid,'\n') ;

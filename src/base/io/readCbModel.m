@@ -232,9 +232,9 @@ switch fileType
             error(['There were no valid models in the mat file.\n Please load the model manually via '' load ' fileName ''' and check it with verifyModel() to validate it.\nTry using convertOldStyleModel() before verifyModel() to bring the model structure up to date.']);
         end
         model = modeloptions{1, 1};
-        if modeloptions{1, 3}
-            model = convertOldStyleModel(model);
-        end
+%         if modeloptions{1, 3}
+%             model = convertOldStyleModel(model);
+%         end
     case 'BiGG'
         %This calls readCbModel again so the description is added.
         model = loadBiGGModel(fileName, 'mat',false);        
@@ -245,6 +245,23 @@ switch fileType
         modelDescription = model.description;
     otherwise
         error('Unknown file type');
+end
+
+if 0
+    %Rename some of the known biomass reactions to make them more obviously exchange
+    %reactions
+    if any(strcmp(model.rxns,'biomass_reaction'))
+        model.rxns{strcmp(model.rxns,'biomass_reaction')}= 'EX_biomass_reaction';
+    end
+    if any(strcmp(model.rxns,'biomass_maintenance'))
+        model.rxns{strcmp(model.rxns,'biomass_maintenance')}= 'EX_biomass_maintenance';
+    end
+    if any(strcmp(model.rxns,'biomass_maintenance_noTrTr'))
+        model.rxns{strcmp(model.rxns,'biomass_maintenance_noTrTr')}= 'EX_biomass_maintenance_noTrTr';
+    end
+    if any(strcmp(model.rxns,'DM_atp_c_'))
+        model.rxns{strcmp(model.rxns,'DM_atp_c_')}='ATPM';
+    end
 end
 
 % Check uniqueness of metabolite and reaction names
@@ -573,7 +590,8 @@ for i = 1:nRxns
         grRules{i} = regexprep(grRules{i}, '\s{2,}', ' ');
         grRules{i} = regexprep(grRules{i}, '( ', '(');
         grRules{i} = regexprep(grRules{i}, ' )', ')');
-        subSystems{i} = {rxnInfo(rxnID).subSystem};
+        %change back to being a cell array of characters
+        subSystems{i} = rxnInfo(rxnID).subSystem;
         for j = 1:length(geneInd)
             % rules{i} = strrep(rules{i},['x(' num2str(j) ')'],['x(' num2str(geneInd(j)) ')']);
             rules{i} = strrep(rules{i}, ['x(' num2str(j) ')'], ['x(' num2str(geneInd(j)) '_TMP_)']);

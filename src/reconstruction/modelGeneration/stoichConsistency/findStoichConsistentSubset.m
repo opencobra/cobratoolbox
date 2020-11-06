@@ -12,8 +12,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %                                     * .S - `m` x `n` stoichiometric matrix
 %
 % OPTIONAL INPUT:
-%    massBalanceCheck:              {(0), 1} where:
-%
+%    massBalanceCheck:              {0, (1)} mass and charge balance can be checked by looking at formulas
 %                                     * 0 = heuristic detection of exchange reactions (using
 %                                     `findSExRxnInd`) will be use to warm start algorithmic part
 %                                     * 1 = reactions that seem mass imbalanced will be used to
@@ -50,30 +49,36 @@ if ~exist('printLevel','var')
 end
 
 if ~exist('massBalanceCheck','var')
-    massBalanceCheck=0;
+    massBalanceCheck=1;
 end
 
 %set parameters according to feastol
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~exist('epsilon','var')
-    epsilon=1e-4;
+    epsilon=1e-6;
 end
 
 %final double check of stoichiometric consistent subset
 finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsilon
-finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
+%finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
 
 removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
 %removalStrategy='highCardinalityReactions';
 
-minCardRelaxParams.epsilon=epsilon;
+%minCardinalityConservationRelaxationVector params
+%minCardRelaxParams.epsilon=epsilon;
 minCardRelaxParams.eta=feasTol*100;
-
+minCardRelaxParams.epsilon=1e-4;
+feasTol = getCobraSolverParams('LP', 'feasTol');
+minCardRelaxParams.eta=feasTol*100;
+minCardRelaxParams.checkConsistency=0;
+    
 maxCardinalityConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
 %maxCardinalityConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
 maxCardinalityConsParams.method = 'dc';%seems to work, but not always the best
+maxCardinalityConsParams.method = 'optimizeCardinality';
 maxCardinalityConsParams.theta = 0.5;
 maxCardinalityConsParams.eta=feasTol*100;
 
@@ -83,6 +88,19 @@ leakParams.method='dc';
 %leakParams.eta=feasTol*100;
 leakParams.eta=feasTol*100;
 leakParams.theta = 0.5;
+% if 0
+%     leakParams.method='dc';
+%     leakParams.interface='optimizeCardinalityOld';
+%     
+%     %TODO - fix to use new interface
+%     %leakParams.interface='optimizeCardinality';
+%     %           Warning: Problem unbounded ! Solver original status is: INF_OR_UNBD
+%     %           > In optimizeCardinality (line 909)
+%     %           In findMassLeaksAndSiphons (line 271)
+%     %           In findStoichConsistentSubset (line 301)
+% else
+%     leakParams.method='quasiConcave';
+% end
 
 %do leak test after each step to make sure that we are working correctly
 doubleCheckConsistency=1;  %leak/siphon test, turn on when debugging a model
@@ -106,7 +124,7 @@ end
 %%
 %heuristically identify exchange reactions and metabolites exclusively
 %involved in exchange reactions
-if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
+if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool') || 1%do it anyway
     %finds the reactions in the model which export/import from the model
     %boundary i.e. mass unbalanced reactions
     %e.g. Exchange reactions
@@ -120,10 +138,10 @@ else
 end
 
 if printLevel>1
-    fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically exchange.')
+    fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically external.')
 end
 if printLevel>1
-    fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically non-exchange.')
+    fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically internal.')
 end
 
 if isfield(model,'SInConsistentRxnBool')
@@ -209,21 +227,21 @@ if massBalanceCheck
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool),nnz(minConservationNonRelaxRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
         fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool),nnz(~model.balancedRxnBool),' seemingly elementally imbalanced.')
         fprintf('%s\n','-------')
-        fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool & model.SIntMetBool),nnz(model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally balanced.')
+        fprintf('%6u\t%6u\t%s\n',nnz(model.balancedMetBool & model.SIntMetBool),nnz(model.balancedRxnBool & model.SIntRxnBool),' heuristically internal and seemingly elementally balanced.')
         fprintf('%6u\t%6u\t%s\n',nnz(minConservationNonRelaxMetBool  & model.SIntMetBool),nnz(minConservationNonRelaxRxnBool & model.SIntRxnBool),' seemingly elementally balanced and stoichiometrically consistent.')
-        fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool & model.SIntMetBool),nnz(~model.balancedRxnBool & model.SIntRxnBool),' heuristically non-exchange and seemingly elementally imbalanced.')
+        fprintf('%6u\t%6u\t%s\n',nnz(~model.balancedMetBool & model.SIntMetBool),nnz(~model.balancedRxnBool & model.SIntRxnBool),' heuristically internal and seemingly elementally imbalanced.')
     end
 end
 
-% assumes that all mass imbalanced reactions are exchange reactions
+% % assumes that all mass imbalanced reactions are external reactions
 % model.SIntMetBool = model.SIntMetBool & model.balancedMetBool;
 % model.SIntRxnBool = model.SIntRxnBool & model.balancedRxnBool;
 
 %%
 %iteratively try to identify largest consistent subset of metabolites and reactions
 
-%heuristically identified exchange reactions and metabolites
-model.SInConsistentMetBool = ~model.SIntMetBool;% metabolites involved in exchange reactions
+%heuristically identified external reactions and metabolites
+model.SInConsistentMetBool = ~model.SIntMetBool;% metabolites involved in external reactions
 model.SInConsistentRxnBool = ~model.SIntRxnBool;
 
 % dont provide any starting information
@@ -277,12 +295,15 @@ while iterateCardinalityOpt>0
     end
     %compute minimum relaxation
     if nnz(model.S(boolMet,boolRxn))~=0
+        if 0 %debugging to check if feasible with no relaxations
+            minCardRelaxParams.nonRelaxBool=boolRxn;
+        end
         %% minimum cardinality of conservation relaxation vector
         [relaxRxnBool,solutionRelax] = minCardinalityConservationRelaxationVector(model.S(boolMet,boolRxn),minCardRelaxParams,printLevel-1);
         minConservationNonRelaxRxnBool=false(nRxn,1);
         minConservationNonRelaxRxnBool(boolRxn)=~relaxRxnBool;
 
-        %corresponding rows matching non-relaxed reactions
+        %corresponding metabolites matching non-relaxed reactions
         minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
         %minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
 
@@ -296,12 +317,6 @@ while iterateCardinalityOpt>0
         end
 
         if doubleCheckConsistency && any(minConservationNonRelaxMetBool)
-            %leakParams.method='dc';%TODO 
-%             Warning: Problem unbounded ! Solver original status is: INF_OR_UNBD 
-% > In optimizeCardinality (line 909)
-%   In findMassLeaksAndSiphons (line 271)
-%   In findStoichConsistentSubset (line 301) 
-            leakParams.method='quasiConcave'; 
             %check to see if the stoichiometrically consistent part is leaking
             [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,statpRelax,statnRelax]= findMassLeaksAndSiphons(model,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,modelBoundsFlag,leakParams,printLevel-2);
             if any(leakMetBool | siphonMetBool)
@@ -344,8 +359,10 @@ while iterateCardinalityOpt>0
         sortedlog10absSolutionRelaxAbbr=model.rxns(sortedlog10absSolutionRelaxInd);
         for k=1:10
             formulas = printRxnFormula(model,model.rxns(sortedlog10absSolutionRelaxInd(k)));
-            if imBalancedRxnBool(sortedlog10absSolutionRelaxInd(k))
-                fprintf('%s\n',imBalancedMass{sortedlog10absSolutionRelaxInd(k)});
+            if exist('imBalancedRxnBool','var')
+                if imBalancedRxnBool(sortedlog10absSolutionRelaxInd(k))
+                    fprintf('%s\n',imBalancedMass{sortedlog10absSolutionRelaxInd(k)});
+                end
             end
         end
     end
@@ -410,13 +427,13 @@ while iterateCardinalityOpt>0
                     metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
 
                     if printLevel>1
-                        fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically non-exchange reactions, each involving ',maxMetsPerRxn, ' metabolites.')
+                        fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically internal reactions, each involving ',maxMetsPerRxn, ' metabolites.')
                         if printLevel >1
                              formulas = printRxnFormula(model,model.rxns(rxnRemoveBool));
                         end
                     end
                 else
-                    %stop the loop when the number of metabolites in exchange
+                    %stop the loop when the number of metabolites in external
                     %reactions is too small
                     break
                 end
@@ -584,14 +601,14 @@ end
 if printLevel>0
     fprintf('%s\n','--- Summary of stoichiometric consistency ----')
     fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
-    fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically exchange.')
-    fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically non-exchange:')
+    fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically external.')
+    fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' heuristically internal:')
     fprintf('%6u\t%6u\t%s\n',nnz(model.SConsistentMetBool & model.SIntMetBool),nnz(model.SConsistentRxnBool & model.SIntRxnBool),' ... of which are stoichiometrically consistent.')
     fprintf('%6u\t%6u\t%s\n',nnz(model.SInConsistentMetBool & model.SIntMetBool),nnz(model.SInConsistentRxnBool & model.SIntRxnBool),' ... of which are stoichiometrically inconsistent.')
     fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool & model.SIntMetBool),nnz(model.unknownSConsistencyRxnBool & model.SIntRxnBool),' ... of which are of unknown consistency.')
     if massBalanceCheck
         fprintf('%s\n','---')
-        fprintf('%6u\t%6u\t%s\n',nnz((model.SInConsistentMetBool | model.unknownSConsistencyMetBool) & model.SIntMetBool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool),' heuristically non-exchange and stoichiometrically inconsistent or unknown consistency.')
+        fprintf('%6u\t%6u\t%s\n',nnz((model.SInConsistentMetBool | model.unknownSConsistencyMetBool) & model.SIntMetBool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool),' heuristically internal and stoichiometrically inconsistent or unknown consistency.')
         bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool,'inclusive');
         fprintf('%6u\t%6u\t%s\n',nnz(bool),nnz((model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool),' ... of which are elementally imbalanced (inclusively involved metabolite).')
         bool = getCorrespondingRows(model.S,true(nMet,1), (model.SInConsistentRxnBool | model.unknownSConsistencyRxnBool) & model.SIntRxnBool & ~model.balancedRxnBool,'exclusive');
