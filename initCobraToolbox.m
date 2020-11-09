@@ -187,6 +187,7 @@ end
 % check curl
 [status_curl, result_curl] = checkCurlAndRemote(false);
 
+submoduleWarning=0;
 % check if the URL exists
 if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
     fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
@@ -196,12 +197,27 @@ elseif status_curl == 0
     end
     
     % Clean the test/models folder
-    [status, result] = system('git submodule status test/models');
+    [status, result] = system('git submodule status models');
     if status == 0 && strcmp(result(1), '-')
         [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
     end
     
+    %Check for changes to submodules
+    [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git status');
+    if status_gitSubmodule==0
+        if contains(result_gitSubmodule,'modified') || contains(result_gitSubmodule,'Untracked files')
+            submoduleWarning = 1;
+            [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git stash push -u');
+            if status_gitSubmodule==0
+                fprintf('\n%s\n','***Local changes to submodules have been stashed. See https://git-scm.com/docs/git-stash.')
+                disp(result_gitSubmodule)
+            end
+        end
+    end
+    
     % Update/initialize submodules
+    %By default your submodules repository is in a state called 'detached HEAD'. 
+    %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
     [status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);
     
     if status_gitSubmodule ~= 0
@@ -211,13 +227,13 @@ elseif status_curl == 0
     
     % reset each submodule
     %https://github.com/bazelbuild/continuous-integration/issues/727
-    [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
     %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
     
-    if status_gitReset ~= 0
-        fprintf(strrep(result_gitReset, '\', '\\'));
-        warning('The submodules could not be reset.');
-    end
+%     if status_gitReset ~= 0
+%         fprintf(strrep(result_gitReset, '\', '\\'));
+%         warning('The submodules could not be reset.');
+%     end
     
     if ENV_VARS.printLevel
         fprintf(' Done.\n');
@@ -404,7 +420,7 @@ end
 
 % check the installation of the solver
 for i = 1:length(supportedSolversNames)
-    if 1 %set to 1 to debug a new solver
+    if 0 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
         if strcmp(supportedSolversNames{i},'cplex_direct')
             pause(0.1)
@@ -571,7 +587,7 @@ changeCobraSolver('gurobi', 'ALL', 0);
 %changeCobraSolver('ibm_cplex', 'QP', 0); %until problem with gurobi QP sorted
 
 % check if a new update exists
-if ENV_VARS.printLevel && status_curl == 0 && ~isempty(strfind(result_curl, ' 200')) && updateToolbox
+if ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
     updateCobraToolbox(true); % only check
 else
     if ~updateToolbox && ENV_VARS.printLevel
@@ -595,6 +611,10 @@ cd(currentDir);
 
 % cleanup at the end of the successful run
 removeTempFiles(CBTDIR, dirContent);
+
+if submoduleWarning
+    warning('Local changes have been made to submodules\n%s\n%s\n%s','Local changes have been stashed. See ***Local changes ... above for details.','Such changes should ideally be made to separate forks.', 'See, e.g., https://github.com/opencobra/COBRA.tutorials#contribute-a-new-tutorial-or-modify-an-existing-tutorial')
+end
 
 % clear all temporary variables
 % Note: global variables are kept in memory - DO NOT clear all the variables!
