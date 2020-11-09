@@ -10,7 +10,7 @@ function model = readCbModel(fileName, varargin)
 % A list of fields of a COBRA structure is described in
 % https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
 % and defined computationally in:
-% src/base/io/definitions/COBRA_structure_fields.csv. 
+% src/base/io/definitions/COBRA_structure_fields.tab 
 %
 % USAGE:
 %

@@ -4,7 +4,7 @@ function results = verifyModel(model, varargin)
 % A list of fields of a COBRA structure is described in
 % https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
 % and defined computationally in:
-% src/base/io/definitions/COBRA_structure_fields.csv
+% src/base/io/definitions/COBRA_structure_fields.tab
 %
 % USAGE:
 %
@@ -247,7 +247,7 @@ end
 
 
 %TODO replace this workaround with a flexibile verification - Ronan Feb 2020
-%In the file 'COBRA_structure_fields.csv' I replaced:
+%In the file 'COBRA_structure_fields.tab' I replaced:
 % subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction'false(1)'	cell	'false(1)'
 %with 
 % subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					model.rxns{i}		Column Cell Array of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
