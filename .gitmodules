@@ -45,3 +45,4 @@
 [submodule "looplessFluxSampler"]
 	path = external/base/samplers/looplessFluxSampler
 	url = https://github.com/rmtfleming/looplessFluxSampler
+	ignore = dirty
