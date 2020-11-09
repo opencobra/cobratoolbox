@@ -38,7 +38,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
 
     [status_gitHEAD, result_gitHEAD] = system('git symbolic-ref --short -q HEAD');
 
-    if status_gitRetrieveURL == 0 && ~isempty(strfind(result_gitOriginURL, 'opencobra/cobratoolbox')) && status_gitHEAD == 0 && length(result_gitHEAD) > 0
+    if status_gitRetrieveURL == 0 && contains(result_gitOriginURL, 'opencobra/cobratoolbox') && status_gitHEAD == 0 && length(result_gitHEAD) > 0
 
         % fetch all content from remote
         [status_gitFetch, result_gitFetch] = system('git fetch origin');
@@ -82,7 +82,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
         end
 
         if commitsAheadBehindMaster(1) > 0 || commitsAheadBehindDevelop(1) > 0
-            fprintf(' > The COBRA Toolbox cannot be updated (already up-to-date).\n');
+            fprintf(' > The COBRA Toolbox is already up-to-date.\n');
         end
 
         if status_gitCountMaster == 0 && status_gitCountDevelop == 0
@@ -120,7 +120,8 @@ function updateCobraToolbox(fetchAndCheckOnly)
                                 end
                             end
 
-                            % reset each submodule
+                            % reset each submodule - local changes will be
+                            % lost
                             [status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
                             if status_gitReset == 0
                                 fprintf(' > The submodules have been updated (reset).\n');
@@ -166,6 +167,18 @@ function updateCobraToolbox(fetchAndCheckOnly)
         fprintf('%s\n',['> The current branch is: ' currentBranch])
         fprintf('%s\n',['> The last commit to the current branch is: ' lastCommit])
         fprintf(['> You can use MATLAB.devTools (', devtoolsLink, ') to update your fork.\n']);
+        
+        toolboxDir = fileparts(which('initCobraToolbox'));
+        codeBaseDir = fileparts(toolboxDir);
+        forkNames={'fork-COBRA.tutorials','fork-COBRA.models','fork-COBRA.papers'};
+        dirNames={'tutorials',['test' filesep 'models'],'papers'};
+        for j=1:length(forkNames)
+            if exist([codeBaseDir filesep forkNames{j}],'dir')
+                fprintf(['> Adding path to ', [codeBaseDir filesep forkNames{j}], ' and removing path to ', [toolboxDir filesep dirNames{j}, '\n']]);
+                rmpath([toolboxDir filesep dirNames{j}])
+                addpath([codeBaseDir filesep forkNames{j}])
+            end
+        end
     end
 end
 
