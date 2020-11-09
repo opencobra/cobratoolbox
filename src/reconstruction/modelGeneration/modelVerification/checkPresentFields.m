@@ -3,7 +3,7 @@ function results = checkPresentFields(fieldProperties,model, results)
 % update the results struct.
 % The desired properties of each field are described here:
 % https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
-% And computationally defined here: 'COBRA_structure_fields.csv'
+% And computationally defined here: 'COBRA_structure_fields.tab'
 %
 % USAGE:
 %
