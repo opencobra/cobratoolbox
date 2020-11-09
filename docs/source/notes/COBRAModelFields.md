@@ -75,7 +75,7 @@ The following fields are defined in the COBRA toolbox. IF the field is present i
 |`model.rxnRheaID`| `n x 1` | Column Cell Array of Strings | Rhea identifier of the reaction | 
 |`model.rxnBiGGID`| `n x 1` | Column Cell Array of Strings | BiGG identifier of the reaction | 
 |`model.rxnSBOTerms`| `n x 1` | Column Cell Array of Strings | The SBO Identifier associated with the reaction | 
-|`model.subSystems`| `n x 1` | Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
+|`model.subSystems`| `n x 1` | Column Cell Array of Strings or Column Cell Array of Cell Arrays of Strings | subSystem assignment for each reaction | 
 |`model.description`| `` | String or Struct | Name of a file the model is loaded from. | 
 |`model.modelVersion`| `` | Struct | Information on the model version | 
 |`model.modelName`| `` | String | A Descriptive Name of the model | 
