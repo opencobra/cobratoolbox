@@ -4,7 +4,7 @@ function [fields] = getDefinedFieldProperties(varargin)
 % A list of fields of a COBRA structure is described in
 % https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
 % and defined computationally in:
-% src/base/io/definitions/COBRA_structure_fields.csv. 
+% src/base/io/definitions/COBRA_structure_fields.tab 
 %
 % USAGE:
 %
@@ -75,7 +75,7 @@ if db && desc
 end
 if db
     if isempty(CBT_DB_FIELD_PROPS)
-        fileName = which('COBRA_structure_fields.csv');
+        fileName = which('COBRA_structure_fields.tab');
         [raw] = descFileRead(fileName);
 
         fields = fieldnames(raw);
@@ -106,7 +106,7 @@ end
 if desc
     if isempty(CBT_DESC_FIELD_PROPS)
         %read in the definiton of field structures
-        fileName = which('COBRA_structure_fields.csv');
+        fileName = which('COBRA_structure_fields.tab');
         [raw] = descFileRead(fileName);
 
         fields = fieldnames(raw);
@@ -137,7 +137,7 @@ if desc
 end
 
 if isempty(CBT_PROG_FIELD_PROPS)
-     fileName = which('COBRA_structure_fields.csv');
+     fileName = which('COBRA_structure_fields.tab');
      [raw] = descFileRead(fileName);
      
      fields = fieldnames(raw);
