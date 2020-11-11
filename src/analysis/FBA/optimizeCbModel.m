@@ -416,6 +416,9 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         
         %    problem:     Structure containing the following fields describing the problem:
         %      * .k - `p x 1` OR a `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
+        if isempty(zeroNormWeights)
+            error('optimizeCardinality expects weights on zero norm, but model.g0 is empty.')
+        end
         k = zeroNormWeights;
         k(k<0)=0;
         optProblem.k = k;
@@ -565,15 +568,15 @@ elseif strcmp(minNorm, 'one')
                         optProblem.c',                                sparse(1,2*nIntRxns)];
                             
         %only minimise the absolute value of internal reactions
-        if ~isempty(normWeights)
+        if ~isempty(oneNormWeights)
             %only the weights on the internal reactions have an effect, the
             %rest are discarded
-            normWeightsInt=normWeights(SConsistentRxnBool);
-            if any(normWeightsInt<0)
+            oneNormWeightsInt=oneNormWeights(SConsistentRxnBool);
+            if any(oneNormWeightsInt<0)
                 warning('minNorm = ''oneInternal'' may not eliminate thermodynamically infeasible fluxes if model.g1(SConsistentRxnBool) entries are negative')
             end
             %weighted one norm of internal reactions
-            optProblem2.c  = [zeros(nTotalVars,1);[normWeightsInt;normWeightsInt].*ones(2*nIntRxns,1)];
+            optProblem2.c  = [zeros(nTotalVars,1);[oneNormWeightsInt;oneNormWeightsInt].*ones(2*nIntRxns,1)];
         else
             optProblem2.c  = [zeros(nTotalVars,1);ones(2*nIntRxns,1)];
         end

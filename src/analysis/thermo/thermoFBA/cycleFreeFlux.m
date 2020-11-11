@@ -76,6 +76,13 @@ if ~isfield(param,'debug')
     param.debug = 0;
 end
 
+if isfield(param,'printLevel')
+    printLevel=param.printLevel;
+else
+    printLevel = 0;
+end
+
+
 k = size(V0, 2);
 
 if param.debug
@@ -110,7 +117,9 @@ if param.debug
                 model.rxns(bool_ub)
                 error(['Input flux vector majorly violated upper bounds, in ' int2str(i) 'th flux vector'])
             else
-                warning('Input flux vector minorly violated upper bounds, setting some input fluxes to ub.')
+                if printLevel>0
+                    warning('Input flux vector minorly violated upper bounds, setting some input fluxes to ub.')
+                end
                 V0(bool_ub,i) = model.ub(bool_ub);
             end
         end
@@ -122,7 +131,9 @@ if param.debug
                 model.rxns(bool_lb)
                 error(['Input flux vector  solution majorly violated lower bounds, in ' int2str(i) 'th flux vector'])
             else
-                warning('Input flux vector solution minorly violated lower bounds, setting some input fluxes to lb.')
+                if printLevel>0
+                    warning('Input flux vector solution minorly violated lower bounds, setting some input fluxes to lb.')
+                end
                 V0(bool_lb,i) = model.lb(bool_lb);
             end
         end
@@ -163,7 +174,7 @@ if parallelize
         c0 = C(:, i);
        
         
-        v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds); % see subfunction below
+        v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds,printLevel-1); % see subfunction below
         
         V1(:, i) = v1;
     end
@@ -173,7 +184,7 @@ else
         v0 = V0(:, i);
         c0 = C(:, i);
         
-        v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds); % see subfunction below
+        v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds,printLevel-1); % see subfunction below
         
         V1(:, i) = v1;
         
@@ -182,7 +193,7 @@ end
 
 end
 
-function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds)
+function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, relaxBounds,printLevel)
 
 [m,n] = size(model_S);
 p = sum(SConsistentRxnBool);
@@ -250,7 +261,9 @@ end
 if any(lb(1:n)>ub(1:n))
     if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<1e-9
         lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
-        warning('Lower bounds slightly greater than upper bounds, set to the same.')
+        if printLevel>0
+            fprintf('%s\n','Lower bounds slightly greater than upper bounds, set to the same.')
+        end
     else
         error('Lower bounds cannot be greater than upper bounds')
     end

@@ -58,7 +58,7 @@ else
     method=param.method;
 end
 if ~exist('printLevel','var')
-    printLevel=1;
+    printLevel=0;
 end
 
 [nMet,nRxn]=size(model.S);
