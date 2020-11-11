@@ -13,7 +13,7 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * .rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
 %
 % OPTIONAL INPUTS:
-%    param:                      contains:
+%    param:                      can contain:
 %                                  * param.LPsolver - the LP solver to be used  
 %                                  * param.epsilon - (1e-4) minimum nonzero mass
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
@@ -63,6 +63,14 @@ end
 
 [nMet,nRxn]=size(model.S);
 
+%only some methods support additional constraints
+if isfield(model,'C') || isfield(model,'E')
+    if any(ismember({'fastcc'},param.method))
+        error('model contains additional constraints, switch to: param.method = ''fastcc''')
+    end
+end
+
+    
 %speeds up fast cc if one can remove the reactions that have no support in
 %the right nullspace of S
 if strcmp(param.method,'null_fastcc')
