@@ -49,7 +49,11 @@ if ~exist('printLevel','var')
 end
 
 if ~exist('massBalanceCheck','var')
-    massBalanceCheck=1;
+    if isfield(model,'metFormulas')
+        massBalanceCheck=1;
+    else
+        massBalanceCheck=0;
+    end
 end
 
 %set parameters according to feastol
@@ -124,13 +128,18 @@ end
 %%
 %heuristically identify exchange reactions and metabolites exclusively
 %involved in exchange reactions
-if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool') || 1%do it anyway
-    %finds the reactions in the model which export/import from the model
-    %boundary i.e. mass unbalanced reactions
-    %e.g. Exchange reactions
-    %     Demand reactions
-    %     Sink reactions
-    model = findSExRxnInd(model,[],printLevel-1);
+if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
+    if isfield(model,'mets')
+        %attempts to finds the reactions in the model which export/import from the model
+        %boundary i.e. mass unbalanced reactions
+        %e.g. Exchange reactions
+        %     Demand reactions
+        %     Sink reactions
+        model = findSExRxnInd(model,[],printLevel-1);
+    else
+        model.SIntMetBool=true(size(model.S,1),1);
+        model.SIntRxnBool=true(size(model.S,2),1);
+    end
 else
     if length(model.SIntMetBool)~=size(model.S,1) || length(model.SIntRxnBool)~=size(model.S,2)
         model = findSExRxnInd(model,[],printLevel-1);

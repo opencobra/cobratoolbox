@@ -23,7 +23,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %    allowLoops:       Whether loops are allowed in solution or which method to block loops.
 %
 %                        * 1 (or true) : loops allowed (default)
-%                        * 0 (or false): loops not allowed. Use LLC-NS to find loopless solutions
+%                        * 0 (or false): loops not allowed. Use  to find loopless solutions
 %                        * 'original'  : original loopless FVA
 %                        * 'fastSNP'   : loopless FVA with with Fast-SNP preprocessing of nullspace
 %                        * 'LLC-NS'    : localized loopless FVA using information from nullsapce
