@@ -302,7 +302,7 @@ else
 end
 
 if ~isempty(zeroNormWeights)
-    if all(zeroNormWeights==0) && ischar(minNorm)
+    if all(zeroNormWeights==1) && ischar(minNorm)
         if strcmp('minNorm','optimizeCardinality') && ~isempty(oneNormWeights)
             %no need to use optimize cardinality if effectively only
             %minimisiation of one norm is being requested

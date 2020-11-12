@@ -14,7 +14,7 @@ fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
 
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'vmhadmin') && contains(getenv('HOME'), 'jenkins')
+if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
     % Running in CI environment
     fprintf('Running test in Jenkins/CI environment\n');
     
@@ -49,9 +49,6 @@ else
     CBTDIR = fileparts(which('initCobraToolbox.m'));
     cd(CBTDIR);
 end
-
-% include the root folder and all subfolders.
-addpath(genpath([pwd filesep 'test']));
 
 % change to the root folder of The COBRA TOolbox
 cd(CBTDIR);
