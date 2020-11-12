@@ -152,11 +152,11 @@ if ~isfield(LPproblem, 'A') && isfield(LPproblem, 'S')
     LPproblem.A = LPproblem.S;
 end
 
-% assume constraint S*v = b if csense not provided
+% assume constraint A*v = b if csense not provided
 if ~isfield(LPproblem, 'csense')
     % if csense is not declared in the model, assume that all
     % constraints are equalities.
-    LPproblem.csense(1:length(LPproblem.mets), 1) = 'E';
+    LPproblem.csense(1:size(LPproblem.A,1), 1) = 'E';
 end
 
 % assume constraint S*v = 0 if b not provided
@@ -1345,6 +1345,9 @@ switch solver
         if origStat==1
             stat = 1;
             f = CplexLPproblem.Solution.objval;
+            if ~isfield(CplexLPproblem.Solution,'x')
+                disp(CplexLPproblem)
+            end
             x = CplexLPproblem.Solution.x;
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;

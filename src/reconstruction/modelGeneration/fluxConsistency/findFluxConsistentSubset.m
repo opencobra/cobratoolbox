@@ -65,7 +65,7 @@ end
 
 %only some methods support additional constraints
 if isfield(model,'C') || isfield(model,'E')
-    if any(ismember({'fastcc'},param.method))
+    if ~any(ismember({'fastcc'},param.method))
         error('model contains additional constraints, switch to: param.method = ''fastcc''')
     end
 end
