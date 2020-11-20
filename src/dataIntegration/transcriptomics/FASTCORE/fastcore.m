@@ -21,7 +21,7 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printLevel)
 %
 % OPTIONAL INPUTS:
 %   epsilon:             smallest flux value that is considered nonzero
-%                        (default 1e-4)
+%                        (default getCobraSolverParams('LP', 'feasTol')*100)
 %   printLevel:          0 = silent, 1 = summary, 2 = debug (default - 0)
 %
 % OUTPUT:
@@ -43,7 +43,7 @@ if nargin < 4 || ~exist('printLevel','var')
     printLevel = 0;
 end
 if nargin < 3 || isempty(epsilon)
-    epsilon=1e-4;
+    epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 end
 
 coreSetRxn = core;

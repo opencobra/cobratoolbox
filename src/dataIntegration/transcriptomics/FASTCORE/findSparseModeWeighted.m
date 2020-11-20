@@ -16,7 +16,7 @@ function Supp = findSparseModeWeighted( J, P, singleton, model, LPproblem, weigh
 %    model:       Model structure
 %    LPproblem:   The LP problem for the model structure
 %    weights:     The weights associated with the reactions.
-%    epsilon:     Parameter (default: 1e-4; see Vlassis et al for more details)
+%    epsilon:     Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %
 % OUTPUT:
 %    Supp:        Support or [] if no reaction from J can get flux above epsilon

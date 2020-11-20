@@ -123,7 +123,7 @@ model.SIntRxnBool_findSExRxnInd=model.SIntRxnBool;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Find leakage or siphons in heuristically internal part using the bounds given with the model
-leakParams.epsilon=1e-4;
+leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
 leakParams.method='dc';
 modelBoundsFlag=1;
@@ -307,7 +307,7 @@ modelRev.S = model.S(metBool2,rxnBool2);
 
 % infinite bounds may be necessary when stoichiometric matrix is badly
 % scaled, in that case the minimum flux required (epsilon) is set to 1, the
-% default lower and upper bounds are {-1000, 1000}, with epsilon 1e-4,
+% default lower and upper bounds are {-1000, 1000}, with epsilon getCobraSolverParams('LP', 'feasTol')*100,
 % as that is two orders of magnitude higher than the typical feasibility
 % tolerance for volation of mass balance constraints.
 fluxConsistencyBounds='aThousand';
@@ -329,10 +329,9 @@ modelRev.mets=model.mets(metBool2);
 modelRev.rxns=model.rxns(rxnBool2);
 
 if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-    param.epsilon=1e-4;
+    param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     param.modeFlag=0;
-    param.method='null_fastcc';
-    %param.method='fastcc';
+    param.method='fastcc';
     [fluxConsistentMetBoolTmp,fluxConsistentRxnBoolTmp,fluxInConsistentMetBoolTmp,fluxInConsistentRxnBoolTmp,modelRev] = findFluxConsistentSubset(modelRev,param,printLevel-1);
     %build the vector the same size as the original S
     model.fluxConsistentRxnBool=false(nRxn,1);

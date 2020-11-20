@@ -34,7 +34,7 @@ modelForPruning.ub(modelForPruning.ub > 0) = 1000;
 modelForPruning.lb(modelForPruning.lb > 0) = 0; % in case  secretion is enforced
 %set back biomass constraint
 modelForPruning.lb(find(ismember(modelForPruning.rxns,biomassRxn)))=minGrowth;
-epsilon =1e-4;
+epsilon =getCobraSolverParams('LP', 'feasTol')*100;
 [modelForPruningPruned, BlockedRxns] = identifyBlockedRxns(modelForPruning,epsilon);
 cnt =1;
 for t=1:length(modelForPruningPruned.rxns)

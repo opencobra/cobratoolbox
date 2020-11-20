@@ -44,7 +44,7 @@ function [AddedRxns] = submitGapFill(swift, modelFile, dbFile, dictionaryFile, p
 %                          the precalculated default results files, unless
 %                          `prepareFGFResults` is specified outside the examples
 %                          directory (default: false)
-%    epsilon:              Float, a fastCore parameter (default: 1e-4)
+%    epsilon:              Float, a fastCore parameter (default: getCobraSolverParams('LP', 'feasTol')*100)
 %    blackList:            List of excluded universal DB reactions
 %                          (default: none)
 %    listCompartments:     List of compartments in the model to be gapFilled N.B.
@@ -92,7 +92,7 @@ if ~exist('forceRerun','var') || isempty(forceRerun)
     forceRerun=false;
 end
 if ~exist('epsilon','var') || isempty(epsilon)
-    epsilon=1e-4;
+    epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 end
 if ~exist('blackList','var') || isempty(blackList)
     blackList=[];

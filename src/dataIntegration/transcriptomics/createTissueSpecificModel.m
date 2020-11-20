@@ -99,7 +99,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       options.core                 indices of reactions in cobra model that are part of the
 %                                    core set of reactions
 %       options.epsilon*             smallest flux value that is considered
-%                                    nonzero (default 1e-4)
+%                                    nonzero (default getCobraSolverParams('LP', 'feasTol')*100)
 %       options.printLevel*          0 = silent, 1 = summary, 2 = debug (default 0)
 %
 %   for swiftcore
@@ -183,7 +183,7 @@ else
             if ~isfield(options,'core')
                 error('The required option field "core" is not defined for fastCore method')                
             end
-            if ~isfield(options,'epsilon'),options.epsilon=1e-4;end
+            if ~isfield(options,'epsilon'),options.epsilon=getCobraSolverParams('LP', 'feasTol')*100;end
             if ~isfield(options,'printLevel'),options.printLevel=0;end
         case 'swiftcore'
             if ~isfield(options,'core')

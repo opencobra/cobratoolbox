@@ -1,4 +1,4 @@
-function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model] = findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
+function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model, stoichConsistModel] = findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
 % Finds the subset of `S` that is stoichiometrically consistent using
 % an iterative cardinality optimisation approach
 %
@@ -65,7 +65,7 @@ end
 
 %final double check of stoichiometric consistent subset
 finalCheckMethod='findMassLeaksAndSiphons'; %works with smaller leakParams.epsilon
-%finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=1e-4;
+%finalCheckMethod='maxCardinalityConservationVector'; %Needs leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 
 removalStrategy='imBalanced';
 %removalStrategy='isolatedInconsistent';
@@ -74,7 +74,7 @@ removalStrategy='imBalanced';
 %minCardinalityConservationRelaxationVector params
 %minCardRelaxParams.epsilon=epsilon;
 minCardRelaxParams.eta=feasTol*100;
-minCardRelaxParams.epsilon=1e-4;
+minCardRelaxParams.epsilon=feasTol*100;
 feasTol = getCobraSolverParams('LP', 'feasTol');
 minCardRelaxParams.eta=feasTol*100;
 minCardRelaxParams.checkConsistency=0;
@@ -767,3 +767,20 @@ SInConsistentMetBool=model.SInConsistentMetBool;
 SInConsistentRxnBool=model.SInConsistentRxnBool;
 unknownSConsistencyMetBool=model.unknownSConsistencyMetBool;
 unknownSConsistencyRxnBool=model.unknownSConsistencyRxnBool;
+
+%Extract stoich consistent submodel
+if any(~model.SConsistentMetBool)
+    rxnRemoveMethod='inclusive';%maintains stoichiometric consistency
+    [stoichConsistModel, rxnRemoveList] = removeMetabolites(model, model.mets(~model.SConsistentMetBool),rxnRemoveMethod);
+    SConsistentRxnBool2=~ismember(model.rxns,rxnRemoveList);
+    if ~all(model.SConsistentRxnBool==SConsistentRxnBool2)
+        error('inconsistent reaction removal')
+    end
+    try
+    stoichConsistModel = removeUnusedGenes(stoichConsistModel);
+        catch ME
+        disp(ME.message)
+    end
+else
+    stoichConsistModel = model;
+end

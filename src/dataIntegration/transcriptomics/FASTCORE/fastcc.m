@@ -41,7 +41,7 @@ function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %       - Ronan Fleming      2017 Added non-convex cardinality optimisation
 
 if ~exist('epsilon','var')
-    epsilon = 1e-4;
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
 end
 if ~exist('printLevel','var')
     printLevel = 2;
@@ -507,7 +507,7 @@ end
 %code to test nullspace acceleration
 % tic
 % if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-%     param.epsilon=1e-4;
+%     param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 %     param.modeFlag=1;
 %     param.method='null_fastcc';
 %     printLevel = 2;
@@ -518,7 +518,7 @@ end
 %
 % tic
 % if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-%     param.epsilon=1e-4;
+%     param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 %     param.modeFlag=1;
 %     param.method='fastcc';
 %     %param.method='nonconvex';

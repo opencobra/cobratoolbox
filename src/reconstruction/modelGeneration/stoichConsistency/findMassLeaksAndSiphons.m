@@ -39,7 +39,7 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %                          * 1 = use reaction bounds provided by model.lb and .ub
 %    param:             structure with fields:
 %
-%                          * param.epsilon - (1e-4)
+%                          * param.epsilon - (getCobraSolverParams('LP', 'feasTol')*100)
 %                          * param.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
 %                          * param.theta - (0.5) parameter of capped l1 approximation
 %                          * param.method - {('quasiConcave'), 'dc'} method of approximation
@@ -90,13 +90,13 @@ feasTol = getCobraSolverParams('LP', 'feasTol');
 if ~exist('param','var') || isempty(param)
     param.theta   = 0.5;    %parameter of capped l1 approximation
     feasTol = getCobraSolverParams('LP', 'feasTol');
-    param.epsilon=1e-4;
+    param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     param.eta=feasTol*100;
     %param.method = 'quasiConcave';
     param.method='dc';
 else
     if isfield(param,'epsilon') == 0
-        param.epsilon=1e-4;
+        param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     end
     if isfield(param,'eta') == 0
         param.eta=feasTol*100;

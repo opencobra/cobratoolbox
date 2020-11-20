@@ -286,7 +286,7 @@ modelRev.S = model.S(metBool2,rxnBool2);
 
 %infinite bounds may be necessary when stoichiometric matrix is badly
 %scaled, in that case the minimum flux required (epsilon) is set to 1, the
-%default lower and upper bounds are {-1000, 1000}, with epsilon 1e-4,
+%default lower and upper bounds are {-1000, 1000}, with epsilon getCobraSolverParams('LP', 'feasTol')*100,
 %as that is two orders of magnitude higher than the typical feasibility
 %tolerance for volation of mass balance constraints.
 fluxConsistencyBounds='aThousand';
@@ -295,7 +295,7 @@ switch fluxConsistencyBounds
         %use all reactions reversible
         modelRev.lb=-1000*ones(size(modelRev.S,2),1);
         modelRev.ub= 1000*ones(size(modelRev.S,2),1);
-        epsilon = 1e-4;
+        epsilon = getCobraSolverParams('LP', 'feasTol')*100;
     case 'infinity'
         %use all reactions reversible
         modelRev.lb=-inf*ones(size(modelRev.S,2),1);
@@ -305,7 +305,7 @@ switch fluxConsistencyBounds
         %use reconstruction reactions
         modelRev.lb=model.lb(rxnBool2);
         modelRev.ub=model.ub(rxnBool2);
-        epsilon = 1e-4;
+        epsilon = getCobraSolverParams('LP', 'feasTol')*100;
 end
 modelRev.mets=model.mets(metBool2);
 modelRev.rxns=model.rxns(rxnBool2);

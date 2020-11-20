@@ -1340,9 +1340,10 @@ switch solver
         end
                 
         % http://www-eio.upc.edu/lceio/manuals/cplex-11/html/overviewcplex/statuscodes.html
+        % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.5.1/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
         origStat   = CplexLPproblem.Solution.status;
         %stat = origStat;
-        if origStat==1
+        if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
             stat = 1;
             f = CplexLPproblem.Solution.objval;
             if ~isfield(CplexLPproblem.Solution,'x')

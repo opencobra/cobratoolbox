@@ -914,7 +914,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                 if nbIteration==1
                     fprintf('\n%s\n','optimizeCardinality objective data:')
                     %fprintf('%12s\t%12s\t%12s\n','global','local','local')
-                    fprintf('\n%s\n','max cardinality variables:')
+                    fprintf('\n%u%s\n', p,' min cardinality variables:')
                     if isempty(k)
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(p))',NaN,' min(c(p))', NaN,' max(c(p))')
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda0,' lambda0',NaN,' min(k)', NaN,' max(k)')
@@ -927,7 +927,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                     else
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda1,' lambda1',min(o(1:p)),' min(o(p))',max(o(1:p)),' max(o(p))')
                     end
-                    fprintf('\n%s\n','min cardinality variables:')
+                    fprintf('\n%u%s\n', q, ' max cardinality variables:')
                     if isempty(d)
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(q))',NaN,' min(c(q))', NaN,' max(c(q))')
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta0,' delta0',NaN,' min(d)',NaN,' max(d)')
@@ -940,7 +940,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                     else
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta1,' delta1',min(o(p+1:p+q)),' min(o(q))',max(o(p+1:p+q)),' max(o(q))')
                     end
-                    fprintf('\n%s\n','cardinality free variables:')
+                    fprintf('\n%u%s\n', r, ' cardinality free variables:')
                     if r==0
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(r))',NaN,' min(c(r))', NaN,' max(c(r))')
                         fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n\n',alpha1,' alpha1',NaN,' min(o(r))',NaN,' max(o(r))')

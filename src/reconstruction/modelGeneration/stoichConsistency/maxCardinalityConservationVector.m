@@ -40,7 +40,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %
 %              * .nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
 %              * .eta - Smallest value considered non-zero (Default value feasTol*1000)
-%              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value 1e-4)
+%              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value getCobraSolverParams('LP', 'feasTol')*100)
 %              * .zeta - Stopping criteria - threshold (Default value 1e-6)
 %              * .theta - Parameter of capped `l1` approximation (Default value 0.5)
 %              * .method - {'quasiConcave', ('optimizeCardinality')}
@@ -68,7 +68,7 @@ if ~exist('param','var')
     param.eta = feasTol*1000;%changed to 1000
     param.zeta = 1e-6;
     param.theta   = 0.5;    %parameter of capped l1 approximation
-    param.epsilon = 1e-4;
+    param.epsilon = getCobraSolverParams('LP', 'feasTol')*100;
     param.method = 'optimizeCardinality';
     param.printLevel = 0;
 else
@@ -81,7 +81,7 @@ else
     end
 
     if isfield(param,'epsilon') == 0
-        param.epsilon = 1e-4;
+        param.epsilon = getCobraSolverParams('LP', 'feasTol')*100;
     end
 
     if isfield(param,'zeta') == 0
@@ -139,7 +139,7 @@ switch method
             solution.stat=sol.stat;
         else
             disp(sol.origStat)
-            error('solve for maximal conservation vector failed, try to make epsilon larger, e.g. 1e-4.')
+            error('solve for maximal conservation vector failed, try to make epsilon larger.')
         end
     case 'optimizeCardinality'
         % min       c'(x,y,z) + lambda*||x||_0 - delta*||y||_0
