@@ -434,7 +434,7 @@ cnt = cnt + 1;
 
 TableChecks{cnt,1} = 'Check for flux consistency';
 if 0
-    param.epsilon=1e-4;
+    param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     param.modeFlag=0;
     %param.method='null_fastcc';
     %param.method='fastcc';

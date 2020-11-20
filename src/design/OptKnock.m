@@ -210,7 +210,7 @@ if (options.solveOptKnock)
     end
     if (~isempty(optKnockSol.int))
         % Figure out the KO reactions
-        optKnockRxnInd = selectedRxnIndIrrev(optKnockSol.int < 1e-4);
+        optKnockRxnInd = selectedRxnIndIrrev(optKnockSol.int < getCobraSolverParams('LP', 'feasTol')*100);
         optKnockSol.rxnList = model.rxns(unique(irrev2rev(optKnockRxnInd)));
     end
 else

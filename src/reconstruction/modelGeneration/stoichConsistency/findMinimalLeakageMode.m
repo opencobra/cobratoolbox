@@ -29,7 +29,7 @@ function [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool,
 %
 %                          * 0 = set all reaction bounds to -inf, inf
 %                          * 1 = use reaction bounds provided by model.lb and .ub
-%    epsilon:            1e-4, smallest nonzero reaction flux in leakage mode
+%    epsilon:            getCobraSolverParams('LP', 'feasTol')*100, smallest nonzero reaction flux in leakage mode
 %    printLevel:         {(0), 1}
 %
 % OUTPUTS

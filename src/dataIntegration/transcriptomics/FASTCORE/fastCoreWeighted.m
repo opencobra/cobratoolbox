@@ -10,7 +10,7 @@ function A = fastCoreWeighted( C, model, weights, epsilon )
 %    C:        List of reaction numbers corresponding to the core set
 % model    Model structure, 
 % weights  Weight vector for each reaction in the model 
-%    epsilon:  Parameter (default: 1e-4; see Vlassis et al for more details)
+%    epsilon:  Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %
 % OUTPUT:
 %    A:        A most compact model consistent with the applied constraints and
@@ -21,7 +21,7 @@ function A = fastCoreWeighted( C, model, weights, epsilon )
 %                                      instead of a model field
 
 if ~exist('epsilon','var')
-    epsilon = 1e-4;
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
 end
 
 tic

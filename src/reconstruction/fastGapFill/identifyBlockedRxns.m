@@ -9,7 +9,7 @@ function [consistModel, BlockedRxns] = identifyBlockedRxns(model, epsilon)
 %
 % INPUTS:
 %    model:           Model structure
-%    epsilon:         Parameter (default: 1e-4; see Vlassis et al for more details)
+%    epsilon:         Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %
 % OUTPUT:
 %    consistModel:    Flux consistent model that does not contain any blocked
@@ -19,7 +19,7 @@ function [consistModel, BlockedRxns] = identifyBlockedRxns(model, epsilon)
 % .. Author: - Ines Thiele, Dec 2013, http://thielelab.eu
 
 if ~exist('epsilon','var')
-    epsilon = 1e-4;
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
 end
 
 A = fastcc(model, epsilon);

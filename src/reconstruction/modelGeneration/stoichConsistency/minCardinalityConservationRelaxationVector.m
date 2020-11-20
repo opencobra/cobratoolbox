@@ -18,7 +18,7 @@ function [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVec
 % OPTIONAL INPUTS:
 %    param:           structure with:
 %
-%                        * param.epsilon - (1e-4) 1/epsilon is the largest flux expected
+%                        * param.epsilon - (getCobraSolverParams('LP', 'feasTol')*100) 1/epsilon is the largest flux expected
 %                        * param.eta - (`feasTol` * 100), cutoff for mass leak/siphon
 %                        * param.nonRelaxBool - (false(n, 1)), `n` x 1 boolean vector for reactions not to relax
 %    printLevel:       verbose level
@@ -34,14 +34,14 @@ function [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVec
 [mlt,nlt]=size(S');
 
 if ~exist('param','var') || isempty(param)
-    param.epsilon=1e-4;
+    param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     feasTol = getCobraSolverParams('LP', 'feasTol');
     param.eta=feasTol*100;
     param.nonRelaxBool=false(mlt,1);
     param.checkConsistency=0;
 else
     if ~isfield(param,'epsilon')
-        param.epsilon=1e-4;
+        param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
     end
     if ~isfield(param,'eta')
         feasTol = getCobraSolverParams('LP', 'feasTol');
@@ -107,7 +107,7 @@ if done==0
     end
     cardProblem.csense(1:mlt,1)='E';
     cardProblem.lambda0=1;
-    cardProblem.lambda1=1e-4;% sensitive to this value, 1e-4 works for Recon3Model.
+    cardProblem.lambda1=getCobraSolverParams('LP', 'feasTol')*100;% sensitive to this value, 1e-4 works for Recon3Model.
     cardProblem.delta=0;
     solutionRelax = optimizeCardinality(cardProblem,param);
     %  problem                  Structure containing the following fields describing the problem

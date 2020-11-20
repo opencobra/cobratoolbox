@@ -12,7 +12,7 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsil
 %    singleton:   Takes only first instance from `J`, else takes whole `J`
 %    model:       Model structure (for reference)
 %    LPproblem:   LPproblem structure
-%    epsilon:     Parameter (default: 1e-4; see `Vlassis et al` for more details)
+%    epsilon:     Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see `Vlassis et al` for more details)
 %
 % OPTIONAL INPUT:
 %    basis:       Basis

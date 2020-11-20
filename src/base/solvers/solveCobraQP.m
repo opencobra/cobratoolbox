@@ -1071,7 +1071,7 @@ if solution.stat==1
         if ~isempty(solution.full)
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
-            if norm(solution.obj - f) > 1e-4
+            if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100
                 warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
                 fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
                     'while the value constructed from c''*x + 0.5*x''*F*x:', solution.obj,...

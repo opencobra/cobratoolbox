@@ -15,7 +15,7 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 % OPTIONAL INPUTS:
 %    param:                      can contain:
 %                                  * param.LPsolver - the LP solver to be used  
-%                                  * param.epsilon - (1e-4) minimum nonzero mass
+%                                  * param.epsilon -  minimum nonzero flux, default feasTol*100
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
 %                                  * param.method - {'swiftcc', 'fastcc', 'dc'}
 %    printLevel:                 verbose level
@@ -43,7 +43,8 @@ if ~exist('param','var')
 end
 
 if ~isfield(param,'epsilon')
-    epsilon=1e-4;
+    feasTol = getCobraSolverParams('LP', 'feasTol');
+    epsilon=feasTol*100;
 else
     epsilon=param.epsilon;
 end
@@ -65,12 +66,14 @@ end
 
 %only some methods support additional constraints
 if isfield(model,'C') || isfield(model,'E')
-    if ~any(ismember({'fastcc'},param.method))
+    if ~any(ismember({'fastcc','null_fastcc'},param.method))
         error('model contains additional constraints, switch to: param.method = ''fastcc''')
     end
 end
 
-    
+sol = optimizeCbModel(model);
+
+if (sol.stat == 1)
 %speeds up fast cc if one can remove the reactions that have no support in
 %the right nullspace of S
 if strcmp(param.method,'null_fastcc')
@@ -98,8 +101,8 @@ end
 
 fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
 
-sol = optimizeCbModel(model);
-if (sol.stat == 1)
+
+
     switch method
         case 'swiftcc'
             if ~isfield(param,'LPsolver')
@@ -197,6 +200,9 @@ if (sol.stat == 1)
                 v = [];
             end
     end
+else
+    sol
+    error('model is infeasible/unbounded')
 end
 
 %pad out to the original model if it had been reduced
@@ -209,8 +215,15 @@ else
 end
 
 
-%metabolites exclusively involved in flux inconsistent reactions are deemed flux inconsistent also
-fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),fluxConsistentRxnBool,'exclusive');
+%metabolites inclusively involved in flux consistent reactions are deemed flux consistent also
+fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),fluxConsistentRxnBool,'inclusive');
+
+if any(~fluxConsistentRxnBool)
+    if printLevel>0
+        fprintf('%u%s\n',nnz(~fluxConsistentMetBool),' flux inconsistent metabolites')
+        fprintf('%u%s\n',nnz(~fluxConsistentRxnBool),' flux inconsistent reactions')
+    end
+end
 
 fluxInConsistentMetBool=~fluxConsistentMetBool;
 fluxInConsistentRxnBool=~fluxConsistentRxnBool;

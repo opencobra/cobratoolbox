@@ -18,10 +18,12 @@ mappingScore = getMappingScores(model, training_data); % get the scores for the 
 fprintf('Creating group incidence matrix\n');
 
 % first just run the script to get the list of group names
-fullpath = which('getGroupVectorFromInchi.m');
-fullpath = regexprep(fullpath,'getGroupVectorFromInchi.m','');
+fullpath = which('componentContribution.m');
+fullpath = regexprep(fullpath,'componentContribution.m','');
 [status,groupsTemp] = system(['python2 ' fullpath 'inchi2gv.py -l']);%seems to only work with python 2, poor coding to not check the status here!
 if status~=0
+    fprintf('%s\n','If you get a python error like: undefined symbol: PyFPE_jbuf, then see the following:')
+    fprintf('%s\n','https://stackoverflow.com/questions/36190757/numpy-undefined-symbol-pyfpe-jbuf/47703373')
     error('createGroupIncidenceMatrix: call to inchi2gv.py failed')
 end
 groups = regexp(groupsTemp,'\n','split');

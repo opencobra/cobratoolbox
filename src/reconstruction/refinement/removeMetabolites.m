@@ -1,17 +1,20 @@
-function model = removeMetabolites(model, metaboliteList, removeRxnFlag)
+function [model, rxnRemoveList] = removeMetabolites(model, metRemoveList, removeRxnFlag, rxnRemoveMethod)
 % Removes metabolites from a model
 %
 % USAGE:
 %
-%    model = removeMetabolites(model, metaboliteList, removeRxnFlag)
+%    [model, rxnRemoveList] = removeMetabolites(model, metRemoveList, removeRxnFlag)
 %
 % INPUTS:
 %    model:             COBRA model structure
-%    metaboliteList:    List of metabolites to be removed
+%    metRemoveList:    List of metabolites to be removed
 %
 % OPTIONAL INPUT:
 %    removeRxnFlag:     Remove reactions with no metabolites (Default = true)
-%
+%    rxnRemoveMethod:   {('inclusive'),'exclusive','legacy'}, to remove reactions in a
+%                       stoichiometrically consistent manner, or possibly
+%                       not consistently if either of the last options are
+%                       chosen.
 % OUTPUT:
 %    model:             COBRA model with removed metabolites
 %
@@ -20,8 +23,12 @@ function model = removeMetabolites(model, metaboliteList, removeRxnFlag)
 %       - Uri David Akavia 1/18/14
 %       - Fatima Liliana Monteiro 17/11/16 add an if condition to remove metabolites just from fields with same length
 %       - Thomas Pfau, added automatic Field Update.
+
 if (nargin < 3)
     removeRxnFlag = true;
+end
+if (nargin < 4)
+    rxnRemoveMethod = 'inclusive';
 end
 
 [nMets, nRxns] = size(model.S);
@@ -31,10 +38,10 @@ else
     nGenes = 0;
 end
 
-selMets = ~ismember(model.mets,metaboliteList);
+removeMetBool = ismember(model.mets,metRemoveList);
 
 % Construct new model
-modelOut = removeFieldEntriesForType(model, ~selMets, 'mets', numel(model.mets));
+modelOut = removeFieldEntriesForType(model, removeMetBool, 'mets', numel(model.mets));
 
 
 if removeRxnFlag
@@ -42,7 +49,25 @@ if removeRxnFlag
     if(isempty(modelOut.S))
         return
     end
-    rxnRemoveList = modelOut.rxns(~any(modelOut.S ~= 0));
+    if strcmp(rxnRemoveMethod,'legacy')
+        %removes any reaction corresponding to an empty column
+        %danger of stoichiometric inconsistency of other reactions
+        removeRxnBool = ~any(modelOut.S ~= 0);
+        rxnRemoveList = modelOut.rxns(removeRxnBool);
+    elseif strcmp(rxnRemoveMethod,'exclusive')
+        %removes any reaction exclusively involving the removed
+        %metabolites, i.e. empty column
+        %danger of stoichiometric inconsistency of other reactions
+        removeRxnBool = getCorrespondingCols(model.S,removeMetBool,true(nRxns,1),'exclusive');
+        rxnRemoveList = model.rxns(removeRxnBool);
+    elseif strcmp(rxnRemoveMethod,'inclusive')
+        %removes any reaction involving at least one of the removed metabolites 
+        removeRxnBool = getCorrespondingCols(model.S,removeMetBool,true(nRxns,1),'inclusive');
+        rxnRemoveList = model.rxns(removeRxnBool);
+    else
+        error('rxnRemoveMethod not recognised')
+    end
+    
     if (~isempty(rxnRemoveList))
         modelOut = removeRxns(modelOut,rxnRemoveList,false,false);
     end
