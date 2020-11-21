@@ -1,4 +1,4 @@
-function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printLevel)
+function [tissueModel,coreRxnBool] = fastcore(model, coreRxnInd, epsilon, printLevel)
 % Use the FASTCORE algorithm ('Vlassis et al, 2014') to extract a context
 % specific model. FASTCORE algorithm defines one set of core
 % reactions that is guaranteed to be active in the extracted model and find
@@ -6,7 +6,7 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printLevel)
 %
 % USAGE:
 %
-%    tissueModel = fastcore(model, core)
+%    tissueModel = fastcore(model, coreRxnInd)
 %
 % INPUTS:
 %    model:             (the following fields are required - others can be supplied)
@@ -15,7 +15,7 @@ function [tissueModel,coreRxnBool] = fastcore(model, core, epsilon, printLevel)
 %                         * ub - `n x 1` Upper bounds
 %                         * rxns   - `n x 1` cell array of reaction abbreviations
 %
-%   core:                indices of reactions in cobra model that are part of the
+%   coreRxnInd:                indices of reactions in cobra model that are part of the
 %                        core set of reactions (called 'C' in 'Vlassis et al,
 %                        2014')
 %
@@ -46,7 +46,6 @@ if nargin < 3 || isempty(epsilon)
     epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 end
 
-coreSetRxn = core;
 model_orig = model;
 
 [nMets,nRxns] = size(model.S);
@@ -69,7 +68,7 @@ flipped = false;
 singleton = false;
 
 % Find irreversible core reactions
-J = intersect(coreSetRxn, irrevRxns);
+J = intersect(coreRxnInd, irrevRxns);
 
 if printLevel > 0
     fprintf('|J|=%d  ', length(J));
@@ -78,7 +77,7 @@ end
 %Find all the reactions that are not in the core
 nbRxns = 1:nRxns;
 % Non Core reactions (penalized)
-P = setdiff(nbRxns, coreSetRxn);
+P = setdiff(nbRxns, coreRxnInd);
 
 % Find the minimum of reactions from P that need to be included to
 % support the irreversible core set of reactions
@@ -94,7 +93,7 @@ if printLevel > 0
 end
 
 % J is the set of irreversible reactions
-J = setdiff(coreSetRxn, A);
+J = setdiff(coreRxnInd, A);
 if printLevel > 0
     fprintf('|J|=%d  ', length(J));
 end
