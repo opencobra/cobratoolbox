@@ -13,6 +13,8 @@
 %     - Richard Que (12/16/09) Added testing of convertToIrrevsible/Reversible
 %     - CI integration: Laurent Heirendt January 2017
 
+%TODO test needs to be updated to account for model.subSystems options
+
 % save the current path
 currentDir = pwd;
 
@@ -188,6 +190,8 @@ model.rxns = {};
 model.mets = {};
 model.lb = [];
 model.ub = [];
+model.C = [];
+model.d = [];
 
 rxns_length = 0;
 mets_length = 0;

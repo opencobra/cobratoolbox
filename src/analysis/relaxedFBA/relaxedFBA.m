@@ -90,6 +90,8 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                     the algorithm is useful when trying different values
 %                     of theta0 to start with the appropriate parameter
 %                     giving the lowest cardinality solution.
+%                     * .maxRelaxR (Default = 1e4), maximum relaxation
+%                     of any bound or equality constraint permitted
 %
 % OUTPUT:
 %    solution:       Structure containing the following fields:
@@ -123,7 +125,7 @@ if ~isfield(param,'maxLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
-    param.maxRelaxR = 1000; %TODO - check this for multiscale models
+    param.maxRelaxR = 1e4; %TODO - check this for multiscale models
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models
@@ -201,7 +203,8 @@ if isfield(param,'nbMaxIteration') == 0
 end
 
 if isfield(param,'epsilon') == 0
-    param.epsilon = 1e-6;
+    feasTol = getCobraSolverParams('LP', 'feasTol');
+    param.epsilon=feasTol*100;
 end
 
 if isfield(param,'theta0') == 0

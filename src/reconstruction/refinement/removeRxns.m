@@ -132,13 +132,37 @@ if isfield(modelOut,'C')
             modelOut = removeCOBRAConstraints(modelOut,removeConstraints);
             bool=0;
         case 'exclusive'
-            %only constraints exclusively involved in removed reactions are removed
+            %only remove constraints exclusively involved in removed reactions
             selectConstraints = getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'exclusive');
             bool=1;
         case 'inclusive'
             %any constraint involved in a removed reaction is to be removed
             selectConstraints = getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'inclusive');
             bool=1;
+        case 'infeasible'
+            bool=0;
+            %If a removed reaction involves any constraint then remove that
+            %constraint, unless the constraint is still feasible.
+            involvedConstraintInd = find(~getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'inclusive'));
+            
+            selectConstraints = true(size(model.C,1),1);
+            for i=1:length(involvedConstraintInd)
+                LPproblem.A = model.C(involvedConstraintInd(i),:);
+                LPproblem.A(:,selectRxns)=0;
+                LPproblem.b = model.d(involvedConstraintInd(i));
+                LPproblem.lb = model.lb;
+                LPproblem.ub = model.ub;
+                LPproblem.csense = model.dsense(involvedConstraintInd(i));
+                LPproblem.osense = 1;
+                LPproblem.c = zeros(size(model.C,2),1);
+                solution = solveCobraLP(LPproblem);
+                if solution.stat~=1
+                    %infeasible constraint to be removed
+                    selectConstraints(involvedConstraintInd(i))=0;
+                    bool=1;
+                end
+            end
+            
     end
     if bool==1 && any(~selectConstraints)
         %remove using boolean indexing

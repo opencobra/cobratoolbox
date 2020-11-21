@@ -67,7 +67,7 @@ if ~isfield(param,'maxLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
-    param.maxRelaxR = 1000; %TODO - check this for multiscale models
+    param.maxRelaxR = 1e4; %TODO - check this for multiscale models
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models

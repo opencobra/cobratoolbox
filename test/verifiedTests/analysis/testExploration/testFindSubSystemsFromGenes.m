@@ -20,8 +20,8 @@ cd(fileDir);
 model = getDistributedModel('ecoli_core_model.mat');
 
 % Define some genes in the model and the associated subSystems.
-genesOfInterest = {'b1779',{'Glycolysis/Gluconeogenesis'};... %Only associated with the GAPD reaction
-                   'b4077',{'Transport, Extracellular'}}; % only associated with the Glucose transport reaction
+genesOfInterest = {'b1779','Glycolysis/Gluconeogenesis';... %Only associated with the GAPD reaction
+                   'b4077','Transport, Extracellular'}; % only associated with the Glucose transport reaction
 fprintf('>> Testing SubSystem extraction From Genes\n')               
 %Get the SubSystem List for each gene.
 SubSysOfFirstReaction = findSubSysGen(model);
