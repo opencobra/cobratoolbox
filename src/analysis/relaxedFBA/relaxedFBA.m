@@ -428,11 +428,11 @@ else
                     printConstraints(model,-inf,inf, solution.p>param.epsilon);
                 end
                 if param.printLevel>0 && any(solution.q>param.epsilon)
-                    fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
+                    fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
                     printConstraints(model,-inf,inf, solution.q>param.epsilon);
                 end
                 if param.printLevel>0 && any(abs(solution.r)>param.epsilon)
-                    fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
+                    fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
                     disp(model.mets(abs(solution.r)>param.epsilon));
                 end
                 fprintf('%s\n','... done.')
