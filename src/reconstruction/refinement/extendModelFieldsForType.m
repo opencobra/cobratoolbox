@@ -102,6 +102,9 @@ for field = 1:numel(fields)
             fieldType = 'table';
             defaultValue = getDefaultTableRow(model.(cfield));
         end
+        if isstruct(model.(cfield))
+            fieldType = 'struct';
+        end
     else
         fieldType = cfieldDef{7};
         defaultValue = cfieldDef{5};
@@ -152,7 +155,9 @@ for field = 1:numel(fields)
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,logical(defaultValue), targetSize-originalSize);                        
         case {'numeric','char','table','sparse'}
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
-
+        case 'struct'
+            warning(['Cannot extend field, so removing it: ' cfield])
+            model = rmfield(model,cfield);
     end
 end
 end

@@ -170,6 +170,7 @@ else
 end
 
 if isfield(param,'toBeUnblockedReactions') == 0
+    %this constraint is handled directly within relaxFBA_cappedL1
     param.toBeUnblockedReactions = zeros(nRxns,1);
 end
 
@@ -363,10 +364,12 @@ end
 param.excludedReactionLB = param.excludedReactions;
 param.excludedReactionLB(~param.excludedReactionLB & excludedReactionLBTmp)=1;
 param.excludedReactionLB(~param.excludedReactionLB & excludedReactionsTmp)=1;
+param.excludedReactionLB(param.toBeUnblockedReactions~=0)=1;
 
 param.excludedReactionUB = param.excludedReactions;
 param.excludedReactionUB(~param.excludedReactionUB & excludedReactionUBTmp)=1;
 param.excludedReactionUB(~param.excludedReactionUB & excludedReactionsTmp)=1;
+param.excludedReactionUB(param.toBeUnblockedReactions~=0)=1;
 param=rmfield(param,'excludedReactions');
 
 %Combine excludedMetabolites with steadyStateRelax
@@ -380,7 +383,7 @@ param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
 %test if the problem is feasible or not
 FBAsolution = optimizeCbModel(model);
-if FBAsolution.stat == 1
+if FBAsolution.stat == 1 && ~any(param.toBeUnblockedReactions)
     disp('Model is already feasible, no relaxation is necessary. Exiting.')
     solution.stat=1;
     solution.r=zeros(nMets,1);
