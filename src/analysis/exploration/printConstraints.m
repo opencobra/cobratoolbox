@@ -1,4 +1,4 @@
-function printConstraints(model, minInf, maxInf)
+function printConstraints(model, minInf, maxInf, rxnBool)
 % Print all network constraints that are not `-Inf (minInf)` or `+Inf (maxInf)`
 %
 % USAGE:
@@ -13,20 +13,26 @@ function printConstraints(model, minInf, maxInf)
 % .. Authors:
 %       - Ines Thiele 02/09
 
-minConstraints = intersect(find(model.lb > minInf), find(model.lb));
-fprintf('MinConstraints:\n');
-for i = 1:length(minConstraints)
-    fprintf('%s', model.rxns{minConstraints(i)});
-    fprintf('\t');
-    fprintf('%g', model.lb(minConstraints(i)));
-    fprintf('\n');
+if ~exist('rxnBool','var')
+    rxnBool=true(size(model.S,2),1);
 end
 
-maxConstraints = intersect(find(model.ub < maxInf), find(model.ub));
-fprintf('maxConstraints:\n');
-for i = 1:length(maxConstraints)
-    fprintf('%s', model.rxns{maxConstraints(i)});
-    fprintf('\t');
-    fprintf('%g', model.ub(maxConstraints(i)));
-    fprintf('\n');
+minConstraints = model.lb > minInf & model.lb~=0 & rxnBool;
+
+if ~any(minConstraints)
+    fprintf('No non-default maximum constraints.\n');
+else
+    fprintf('Table of minimum constraints:\n');
+    T = table(model.rxns(minConstraints),model.rxnNames(minConstraints),model.lb(minConstraints),model.ub(minConstraints),'VariableNames',{'Reaction','Name','lb','ub'});
+   disp(T);
 end
+
+maxConstraints = model.ub < maxInf & model.ub~=0 & rxnBool;
+if ~any(maxConstraints)
+    fprintf('No non-default maximum constraints.\n');
+else
+    fprintf('Table of maximum constraints:\n');
+    T = table(model.rxns(maxConstraints),model.rxnNames(maxConstraints),model.lb(maxConstraints),model.ub(maxConstraints),'VariableNames',{'Reaction','Name','lb','ub'});
+    disp(T);
+end
+fprintf('\n');

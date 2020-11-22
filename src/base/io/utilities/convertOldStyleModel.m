@@ -285,7 +285,7 @@ if isfield(model,'subSystems')
         fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
     else
         if all(cellBool & oneBool)
-            fprintf('%s\n','Each model.subSystems{x} is a changed to a character array.');
+            fprintf('%s\n','Each model.subSystems{x} has been changed to a character array.');
             model.subSystems = cellfun(@(x) x{1}, model.subSystems,'UniformOutput',0);
         else
             fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');

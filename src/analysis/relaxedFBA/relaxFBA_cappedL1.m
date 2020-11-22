@@ -202,13 +202,13 @@ while nbIteration < nbMaxIteration && stop ~= true
         r(abs(r) < one_over_theta) = 0;
         r_bar = r_bar + sign(r)*lambda0*theta;
         
-        p_bar  = -sign(p)*alpha1;
+        p_bar  = -sign(p).*alpha1;
         p(p < one_over_theta) = 0;
-        p_bar = p_bar + sign(p)*alpha0*theta;
+        p_bar = p_bar + sign(p).*alpha0*theta;
         
-        q_bar  = -sign(q)*alpha1;
+        q_bar  = -sign(q).*alpha1;
         q(q < one_over_theta) = 0;
-        q_bar = q_bar + sign(q)*alpha0*theta;
+        q_bar = q_bar + sign(q).*alpha0*theta;
     else
         %Ronan - mimics sparseLP_cappedL1
         v_bar  = sign(v)*gamma1;
@@ -305,7 +305,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
 
     % Define LP
     % Variables [v r p q t w]
-    obj = [c-v_bar; -r_bar; alpha0*theta*ones(n,1)-p_bar; alpha0*theta*ones(n,1)-q_bar; gamma0*ones(n,1); lambda0*ones(m,1)];%why no theta for gamma0 and lambda0?
+    obj = [c-v_bar; -r_bar; (theta*ones(n,1).*alpha0 -p_bar); (theta*ones(n,1).*alpha0 -q_bar); (ones(n,1).*gamma0); (ones(m,1).*lambda0)];
 
     % Constraints
     %       Sv + r <=> b
