@@ -230,9 +230,7 @@ while nbIteration < nbMaxIteration && stop ~= true
     
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
-    %disp([v,p,q])
-    %disp('-')
-    %disp(r)
+
     switch LPsolution.stat
         case 0
             solution.v = [];
@@ -267,22 +265,22 @@ while nbIteration < nbMaxIteration && stop ~= true
 
             if param.printLevel>0
                 if nbIteration==1
-                    fprintf('%5s%12.3s%18s%18s%18s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
+                    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
                 end
                     fprintf('%5u%12.3g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,error_x,error_obj,obj_new,nnz(v),nnz(r),nnz(p),nnz(q));
             end
-%             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-%             disp(strcat('Obj:',num2str(obj_new)));
-%             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
-%             disp('=================================');
         end
 end
-
+if param.printLevel>0
+    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
+end
 if solution.stat == 1
     solution.v = v;
     solution.r = r;
     solution.p = p;
     solution.q = q;
+    
+    
 end
 
 end

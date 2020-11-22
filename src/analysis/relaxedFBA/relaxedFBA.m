@@ -200,7 +200,7 @@ end
 excludedMetabolitesTmp=param.excludedMetabolites;
 
 if isfield(param,'nbMaxIteration') == 0
-    param.nbMaxIteration = 100;
+    param.nbMaxIteration = 20;
 end
 
 if isfield(param,'epsilon') == 0
@@ -338,7 +338,7 @@ end
 if ~isfield(param,'gamma1')
     %always include some regularisation on the flux rates to keep it well
     %behaved
-    param.gamma1 = 0*1e-6 + param.gamma0/10;   
+    param.gamma1 = 1e-6 + param.gamma0/10;   
 end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
@@ -417,9 +417,30 @@ else
         relaxedModel.b=relaxedModel.b-solution.r;
         
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
-        if LPsol.stat~=1
+        if LPsol.stat==1
+            if param.printLevel>0
+                fprintf('%s\n','Relaxed model is feasible. Statistics')
+                fprintf('%u%s\n', nnz(solution.p>param.epsilon), ' lower bound relaxation(s)');
+                fprintf('%u%s\n', nnz(solution.q>param.epsilon), ' upper bound relaxation(s)');
+                fprintf('%u%s\n', nnz(abs(solution.r)>param.epsilon), ' steady state relaxation(s)');
+                if param.printLevel>0 && any(solution.p>param.epsilon)
+                    fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
+                    printConstraints(model,-inf,inf, solution.p>param.epsilon);
+                end
+                if param.printLevel>0 && any(solution.q>param.epsilon)
+                    fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
+                    printConstraints(model,-inf,inf, solution.q>param.epsilon);
+                end
+                if param.printLevel>0 && any(abs(solution.r)>param.epsilon)
+                    fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
+                    disp(model.mets(abs(solution.r)>param.epsilon));
+                end
+                fprintf('%s\n','... done.')
+            end
+            
+        else
             disp(LPsol)
-            error('Relaxed model does not admit a steady state. relaxedFBA failed')
+            error('Relaxed model may not admit a steady state. relaxedFBA failed')
         end
     else
         relaxedModel=[];
