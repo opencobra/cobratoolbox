@@ -156,7 +156,9 @@ for field = 1:numel(fields)
         case {'numeric','char','table','sparse'}
             model.(cfield) = extendIndicesInDimenion(model.(cfield),cdim,defaultValue, targetSize-originalSize);
         case 'struct'
-            warning(['Cannot extend field, so removing it: ' cfield])
+            if ~strcmp(cfield,'pseudoisomers')
+                warning(['Cannot extend field, so removing it: ' cfield])
+            end
             model = rmfield(model,cfield);
     end
 end
