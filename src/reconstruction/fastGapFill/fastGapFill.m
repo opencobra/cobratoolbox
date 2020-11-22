@@ -8,7 +8,7 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weights
 %
 % INPUTS:
 %    consistMatricesSUX:    To be obtained from `prepareFastGapFill`
-%    epsilon:               Parameter for `fastCore` (optional input, default: 1e-4).
+%    epsilon:               Parameter for `fastCore` (optional input, default: getCobraSolverParams('LP', 'feasTol')*100).
 %                           Please refer to Vlassis et al. to get more details on this parameter.
 %    weights:              	Weight structure that permits to add weights to
 %                           non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
@@ -27,7 +27,7 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weights
 % .. Author: - Ines Thiele, June 2013, http://thielelab.eu.
 
 if ~exist('epsilon','var') || isempty(epsilon)
-    epsilon = 1e-4;
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
 end
 
 if ~exist('weights','var') || isempty(weights)

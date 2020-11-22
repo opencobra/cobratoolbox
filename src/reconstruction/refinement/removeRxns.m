@@ -1,4 +1,4 @@
-function modelOut = removeRxns(model, rxnRemoveList, varargin)
+function [modelOut, metRemoveList] = removeRxns(model, rxnRemoveList, varargin)
 % Removes reactions from a model
 %
 % USAGE:
@@ -7,7 +7,7 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %
 % INPUTS:
 %    model:             COBRA model structure
-%    rxnRemoveList:     Cell array of reaction names to be removed
+%    rxnRemoveList:     Cell array of reaction abbreviations to be removed
 %
 % OPTIONAL INPUTS:
 %    varargin:          Parameters in ParameterName, Value pair representation. 
@@ -19,6 +19,7 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions
+%    metRemoveList:     Cell array of metabolite abbreviations that were removed
 %
 % Optional inputs are used as parameter value pairs
 %
@@ -33,7 +34,7 @@ function modelOut = removeRxns(model, rxnRemoveList, varargin)
 %       - Markus Herrgard 7/22/05
 %       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
 %       - Thomas Pfau - changed to Parameter Value pairs
-optionalParameters = {'irrevFlag','metFlag'};
+optionalParameters = {'irrevFlag','metFlag','metRemoveMethod','ctrsRemoveMethod'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     if ischar(varargin{1})
         error('Invalid parameter provided. %s is not an accepted parameter',varargin{1});
@@ -51,8 +52,10 @@ end
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addRequired('rxnRemoveList',@(x) iscell(x) || ischar(x))
-parser.addParamValue('irrevFlag',false,@(x) isnumeric(x) || islogical(x))
-parser.addParamValue('metFlag',true,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('irrevFlag',false,@(x) isnumeric(x) || islogical(x))
+parser.addParameter('metFlag',true,@(x) isnumeric(x) || islogical(x));
+parser.addParameter('metRemoveMethod', 'exclusive', @(x) ischar(x))
+parser.addParameter('ctrsRemoveMethod', 'exclusive', @(x) ischar(x))
 
 parser.parse(model,rxnRemoveList,varargin{:})
 
@@ -60,6 +63,8 @@ model = parser.Results.model;
 rxnRemoveList = parser.Results.rxnRemoveList;
 irrevFlag = parser.Results.irrevFlag;
 metFlag = parser.Results.metFlag;
+metRemoveMethod = parser.Results.metRemoveMethod;
+ctrsRemoveMethod = parser.Results.ctrsRemoveMethod;
 
 [nMets, nRxns] = size(model.S);
 if isfield(model, 'genes')
@@ -97,16 +102,83 @@ if irrevFlag
 end
 
 % Remove metabolites that are not used anymore
-if metFlag    
-    selMets = modelOut.mets(any(sum(abs(modelOut.S), 2) == 0, 2));
-    if ~isempty(selMets)
-        modelOut = removeMetabolites(modelOut, selMets, false);
+if metFlag
+    switch metRemoveMethod
+        case 'exclusive'
+            %metabolites exclusively involved in removed reactions
+            removeMets = getCorrespondingRows(model.S,true(size(model.S,1),1),~selectRxns,'exclusive');
+        case 'inclusive'
+            %any metabolite involved in one or more removed reactions
+            removeMets = getCorrespondingRows(model.S,true(size(model.S,1),1),~selectRxns,'inclusive');
     end
+
+    metRemoveList = model.mets(removeMets);
+    
+    if ~isempty(metRemoveList)
+        modelOut = removeMetabolites(modelOut, metRemoveList, false);
+    end
+else
+    metRemoveList =[];
 end
 
 %Also if there is a C field, remove all empty Constraints (i.e. constraints
 %with nnz = 0)
-if isfield(modelOut,'ctrs')
-    emptyConstraints = getEmptyConstraints(modelOut);
-    modelOut = removeCOBRAConstraints(modelOut,emptyConstraints);    
+if isfield(modelOut,'C')
+    switch ctrsRemoveMethod
+        case 'legacy'
+            %this was the default behaviour, to remove empty
+            %it seems equivalent to 'exclusive', but kept for completeness
+            removeConstraints = getEmptyConstraints(modelOut);
+            modelOut = removeCOBRAConstraints(modelOut,removeConstraints);
+            bool=0;
+        case 'exclusive'
+            %only remove constraints exclusively involved in removed reactions
+            selectConstraints = getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'exclusive');
+            bool=1;
+        case 'inclusive'
+            %any constraint involved in a removed reaction is to be removed
+            selectConstraints = getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'inclusive');
+            bool=1;
+        case 'infeasible'
+            bool=0;
+            %If a removed reaction involves any constraint then remove that
+            %constraint, unless the constraint is still feasible.
+            involvedConstraintInd = find(~getCorrespondingRows(model.C,true(size(model.C,1),1),selectRxns,'inclusive'));
+            
+            selectConstraints = true(size(model.C,1),1);
+            for i=1:length(involvedConstraintInd)
+                LPproblem.A = model.C(involvedConstraintInd(i),:);
+                LPproblem.A(:,selectRxns)=0;
+                LPproblem.b = model.d(involvedConstraintInd(i));
+                LPproblem.lb = model.lb;
+                LPproblem.ub = model.ub;
+                LPproblem.csense = model.dsense(involvedConstraintInd(i));
+                LPproblem.osense = 1;
+                LPproblem.c = zeros(size(model.C,2),1);
+                solution = solveCobraLP(LPproblem);
+                if solution.stat~=1
+                    %infeasible constraint to be removed
+                    selectConstraints(involvedConstraintInd(i))=0;
+                    bool=1;
+                end
+            end
+            
+    end
+    if bool==1 && any(~selectConstraints)
+        %remove using boolean indexing
+        modelOut.C = model.C(selectConstraints,selectRxns);
+        modelOut.d = model.d(selectConstraints,1);
+        modelOut.dsense = model.dsense(selectConstraints,1);
+        if isfield(model,'ctrs')
+            modelOut.ctrs = model.ctrs(selectConstraints,1);
+        end
+        if isfield(model,'ctrNames')
+            modelOut.ctrNames = model.ctrNames(selectConstraints,1);
+        end
+        if size(modelOut.C,2)~=size(modelOut.S,2)
+            error('size(modelOut.C,2)~=size(modelOut.S,2)')
+        end
+        fprintf('%s\n',[num2str(nnz(~selectConstraints)) ' model.C constraints removed'])
+    end
 end
+

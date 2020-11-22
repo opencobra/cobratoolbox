@@ -58,7 +58,16 @@ if ~islogical(colBool)
     error('colBool must be a logical vector')
 end
 
-[~,nlt]=size(S);
+[mlt,nlt]=size(S);
+
+if length(rowBool)~=mlt
+    error('length of rowBool must equal size(S,1)')
+end
+
+if length(colBool)~=nlt
+    error('length of rowBool must equal size(S,2)')
+end
+
 restrictedColBool=false(nlt,1);
 switch mode
     case 'exclusive'

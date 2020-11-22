@@ -33,7 +33,7 @@ function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, t
 
 MAXFLUX = 1000;
 MAXDUAL = 1000;
-EPS = 1e-4;
+EPS = getCobraSolverParams('LP', 'feasTol')*100;
 gdlsSolutionStructs = [];
 
 if nargin < 2

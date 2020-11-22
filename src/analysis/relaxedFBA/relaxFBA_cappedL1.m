@@ -67,7 +67,7 @@ if ~isfield(param,'maxLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
-    param.maxRelaxR = 1000; %TODO - check this for multiscale models
+    param.maxRelaxR = 1e4; %TODO - check this for multiscale models
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models
@@ -379,8 +379,8 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
 
         A7 = [D  sparse(n,m) sparse(n,n) sparse(n,n) sparse(n,n)   sparse(n,m) ];
         rhs7 = zeros(n,1);
-        rhs7(toBeUnblockedReactions == 1) = 1e-4;
-        rhs7(toBeUnblockedReactions == -1) = -1e-4;
+        rhs7(toBeUnblockedReactions == 1) = getCobraSolverParams('LP', 'feasTol')*100;
+        rhs7(toBeUnblockedReactions == -1) = -getCobraSolverParams('LP', 'feasTol')*100;
         sense7 = repmat('G', n, 1);
         sense7(toBeUnblockedReactions == -1) = 'L';
 

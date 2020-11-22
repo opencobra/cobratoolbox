@@ -152,11 +152,11 @@ if ~isfield(LPproblem, 'A') && isfield(LPproblem, 'S')
     LPproblem.A = LPproblem.S;
 end
 
-% assume constraint S*v = b if csense not provided
+% assume constraint A*v = b if csense not provided
 if ~isfield(LPproblem, 'csense')
     % if csense is not declared in the model, assume that all
     % constraints are equalities.
-    LPproblem.csense(1:length(LPproblem.mets), 1) = 'E';
+    LPproblem.csense(1:size(LPproblem.A,1), 1) = 'E';
 end
 
 % assume constraint S*v = 0 if b not provided
@@ -1340,11 +1340,15 @@ switch solver
         end
                 
         % http://www-eio.upc.edu/lceio/manuals/cplex-11/html/overviewcplex/statuscodes.html
+        % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.5.1/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
         origStat   = CplexLPproblem.Solution.status;
         %stat = origStat;
-        if origStat==1
+        if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
             stat = 1;
             f = CplexLPproblem.Solution.objval;
+            if ~isfield(CplexLPproblem.Solution,'x')
+                disp(CplexLPproblem)
+            end
             x = CplexLPproblem.Solution.x;
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;

@@ -70,6 +70,12 @@ else
     relAssocs = cell2mat(cellfun(@(y) cellfun(@(x) ~isempty(x), regexp(model.grRules,['^|[ \(]' regexptranslate y '$|[ \)]']))',model.genes(genePres),'Uniform',0))';    
 end
 allSubs = model.subSystems(any(relAssocs==1,2));
+%expecting subsystems to be a nested cell array, argg!
+if ~iscell(allSubs{1})
+    for i=1:length(allSubs)
+        allSubs{i}={allSubs(i)};
+    end
+end
 geneSubSystems = unique([allSubs{:}]);
 if parser.Results.onlyOneSub
     cellList = [model.genes(genePres),arrayfun(@(x) model.subSystems{find(relAssocs(:,x),1)},(1:size(relAssocs,2))','Uniform',false)];        

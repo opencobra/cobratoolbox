@@ -100,6 +100,7 @@ end
 
 %grab any possible biomass reactions
 biomassBool = biomassBool | contains(model.rxns,'biomass');
+biomassBool = biomassBool | contains(model.rxns,'Biomass');
 
 model.biomassBool=biomassBool;
 

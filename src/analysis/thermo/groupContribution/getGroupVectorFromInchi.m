@@ -16,6 +16,9 @@ function group_def = getGroupVectorFromInchi(inchi, silent, debug)
 if nargin < 2
     silent = true;
 end
+if nargin < 3
+    debug = false;
+end
 
 if isempty(inchi)
     group_def = [];

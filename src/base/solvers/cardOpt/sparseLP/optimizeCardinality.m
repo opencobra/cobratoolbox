@@ -166,9 +166,12 @@ end
 if isfield(problem,'delta0') && ~isfield(problem,'delta1')
     problem.delta1 = problem.delta0/10;   
 end
-%wparamter one-norm of variables not cardinality optimised
+
+%global paramter on one-norm of variables not cardinality optimised
 if ~isfield(problem,'alpha1')
-    problem.alpha1=1;
+    %by default do not minimize the one norm of reactions where cardinality
+    %is not being optimised
+    problem.alpha1=0;
 end
 
 if ~isfield(problem,'p')
@@ -290,7 +293,7 @@ if ~isfield(problem,'k')
         end
     else
         if problem.lambda0==0
-            problem.k = ones(length(problem.p),1);
+            problem.k = zeros(length(problem.p),1);
         else
             problem.k = ones(length(problem.p),1);
         end
@@ -332,7 +335,7 @@ if ~isfield(problem,'d')
         end
     else
         if problem.delta0==0
-            problem.d = ones(length(problem.q),1);
+            problem.d = zeros(length(problem.q),1);
         else
             problem.d = ones(length(problem.q),1);
         end
@@ -352,7 +355,7 @@ else
         end
     else
         if length(problem.d) ~= length(problem.p)
-            warning('Error: the size of weight vector k is not correct');
+            warning('Error: the size of weight vector d is not correct');
             solution.stat = -1;
             return;
         else
@@ -368,22 +371,56 @@ end
 if isfield(problem,'o')
     if isempty(problem.o)
         problem.o = ones(size(problem.A,2),1);
-        %by default do not minimize the one norm of reactions where cardinality
-        %is not being optimised
-        if length(problem.p)==1
-            problem.o(problem.p+problem.q+1:problem.p+problem.q+problem.r,1) = 0;
-        else
-            problem.o(problem.r~=0,1) = 0;
-        end
     else
-        problem.o = ones(size(problem.A,2),1);
-        %by default do not minimize the one norm of reactions where cardinality
-        %is not being optimised
-        if length(problem.p)==1
-            problem.o(problem.p+problem.q+1:problem.p+problem.q+problem.r,1) = 0;
+        if length(problem.r)==1
+            if length(problem.o) ~= (problem.p + problem.q + problem.r)
+                warning('Error: the size of weight vector d is not correct');
+                solution.stat = -1;
+                return;
+            else
+                if any(problem.o <=0) %& 0
+                    warning('Error: the weight vector o should be strictly positive');
+                    solution.stat = -1;
+                    return;
+                end
+            end
         else
-            problem.o(problem.r~=0,1) = 0;
+            if length(problem.o) ~= length(problem.p)
+                warning('Error: the size of weight vector o is not correct');
+                solution.stat = -1;
+                return;
+            else
+                if any(problem.o <=0)
+                    warning('Error: the weight vector o should be strictly positive');
+                    solution.stat = -1;
+                    return;
+                end
+            end
         end
+    end
+else
+    problem.o = ones(size(problem.A,2),1);
+end
+
+if problem.lambda1==0
+    if length(problem.p)==1
+        problem.o(1:problem.p,1) = 0;
+    else
+        problem.o(problem.p~=0,1) = 0;
+    end
+end
+if problem.delta1==0
+    if length(problem.q)==1
+        problem.o(problem.p+1:problem.p+problem.q,1) = 0;
+    else
+        problem.o(problem.q~=0,1) = 0;
+    end
+end
+if problem.alpha1==0
+    if length(problem.r)==1
+        problem.o(problem.p+problem.q+1:problem.p+problem.q+problem.r,1) = 0;
+    else
+        problem.o(problem.r~=0,1) = 0;
     end
 end
 
@@ -875,6 +912,42 @@ while nbIteration < nbMaxIteration && stop ~= true
                 
                 
                 if nbIteration==1
+                    fprintf('\n%s\n','optimizeCardinality objective data:')
+                    %fprintf('%12s\t%12s\t%12s\n','global','local','local')
+                    fprintf('\n%u%s\n', p,' min cardinality variables:')
+                    if isempty(k)
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(p))',NaN,' min(c(p))', NaN,' max(c(p))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda0,' lambda0',NaN,' min(k)', NaN,' max(k)')
+                    else
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',mean(c(1:p)),' mean(c(p))',min(c(1:p)),' min(c(p))', max(c(1:p)),' max(c(p))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda0,' lambda0',min(k),' min(k)', max(k),' max(k)')
+                    end
+                    if p==0
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda1,' lambda1',NaN,' min(o(p))',NaN,' max(o(p))')
+                    else
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',lambda1,' lambda1',min(o(1:p)),' min(o(p))',max(o(1:p)),' max(o(p))')
+                    end
+                    fprintf('\n%u%s\n', q, ' max cardinality variables:')
+                    if isempty(d)
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(q))',NaN,' min(c(q))', NaN,' max(c(q))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta0,' delta0',NaN,' min(d)',NaN,' max(d)')
+                    else
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',mean(c(p+1:p+q)),' mean(c(q))',min(c(p+1:p+q)),' min(c(q))', max(c(p+1:p+q)),' max(c(q))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta0,' delta0',min(d),' min(d)',max(d),' max(d)')
+                    end
+                    if q==0
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta1,' delta1',NaN,' min(o(q))',NaN,' max(o(q))')
+                    else
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',delta1,' delta1',min(o(p+1:p+q)),' min(o(q))',max(o(p+1:p+q)),' max(o(q))')
+                    end
+                    fprintf('\n%u%s\n', r, ' cardinality free variables:')
+                    if r==0
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',NaN,' mean(c(r))',NaN,' min(c(r))', NaN,' max(c(r))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n\n',alpha1,' alpha1',NaN,' min(o(r))',NaN,' max(o(r))')
+                    else
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n',mean(c(p+q+1:p+q+r)),' mean(c(r))',min(c(p+q+1:p+q+r)),' min(c(r))', max(c(p+q+1:p+q+r)),' max(c(r))')
+                        fprintf('%12.2g%s\t%12.2g%s\t%12.2g%s\n\n',alpha1,' alpha1',min(o(p+q+1:p+q+r)),' min(o(r))',max(o(p+q+1:p+q+r)),' max(o(r))')
+                    end
                     fprintf('%4s%10s%10s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s%20s\n','itn','theta','||dx||','del_obj','obj','linear','||x||0','a(x)','||x||1','||y||0','a(y)','||y||1','c(x,y)','||z||1','sec');
                 end
                 fprintf('%4u%8.2f%12.5g%12.2g%12.2g%12.2g%12g%12.2g%12.2g%12g%12.2g%12.2g%12.2g%12.2g%20u\n',...

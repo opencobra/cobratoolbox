@@ -85,7 +85,7 @@ for i = 1:numel(gMCSs)
 end
 
 
-th = 1e-4; % same as default target b for gMCS
+th = getCobraSolverParams('LP', 'feasTol')*100; % same as default target b for gMCS
 
 IsCutSet = BiomassCutSet < th;
 IsMinimal = BiomassMinimal > th;

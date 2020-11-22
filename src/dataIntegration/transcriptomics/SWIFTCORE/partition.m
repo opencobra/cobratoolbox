@@ -76,7 +76,7 @@ function component = partition(model, solver, algorithm)
     if range(component) == 0
         component = zeros(n, 1);
         if strcmp(algorithm, 'fast')
-            component(fastcc(model, 1e-4)) = 1;
+            component(fastcc(model, getCobraSolverParams('LP', 'feasTol')*100)) = 1;
         elseif strcmp(algorithm, 'swift')
             component(swiftcc(S, rev, solver)) = 1;
         end

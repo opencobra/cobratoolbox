@@ -1,4 +1,4 @@
-function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
+function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 % The FASTCC algorithm for testing the consistency of a stoichiometric model.
 % Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
 %
@@ -13,6 +13,15 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %                     * lb - `n` x 1 flux lower bound
 %                     * ub - `n` x 1 flux uppper bound
 %                     * rxns - `n` x 1 cell array of reaction abbreviations
+%
+% OPTIONAL INPUTS:
+%    model:
+%                     * b - `m x 1` change in concentration with time
+%                     * csense - `m x 1` character array with entries in {L,E,G}
+%                     * C - `k x n` Left hand side of C*v <= d
+%                     * d - `k x n` Right hand side of C*v <= d
+%                     * dsense - `k x 1` character array with entries in {L,E,G}
+%
 %    epsilon:       smallest flux that is considered nonzero
 %    printLevel:    0 = silent, 1 = summary, 2 = debug
 %
@@ -22,6 +31,8 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %
 % OUTPUTS:
 %    A:             `n` x 1 boolean vector indicating the flux consistent reactions
+%    orientation:   `n` x 1 vector indicating the orientation of flux
+%                           consistency, where -1 means flux consistent in reverse direction only 
 %    V:             `n` x `k` matrix such that `S(:,A) * V(:,A) = 0 and |V(:,A)|' * 1 > 0`
 %
 % .. Authors:
@@ -29,6 +40,9 @@ function [A,modelFlipped,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %       - Ronan Fleming      2014 Commenting of inputs/outputs/code
 %       - Ronan Fleming      2017 Added non-convex cardinality optimisation
 
+if ~exist('epsilon','var')
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+end
 if ~exist('printLevel','var')
     printLevel = 2;
 end
@@ -42,9 +56,15 @@ end
 tic
 
 if strcmp(method,'nonconvex') && (isfield(model,'C') || isfield(model,'E'))
-    issueConfirmationWarning('The non convex Version of fastcc does not additional constraints in the C and E fields of the model');
+    issueConfirmationWarning('The nonconvex implementation of fastcc does not yet work with additional constraints in the C and E fields of the model');
 end
-    
+
+% assume constraint S*v = b if csense not provided
+if ~isfield(model, 'csense')
+    % if csense is not declared in the model, assume that all
+    % constraints are equalities.
+    model.csense(1:size(model.S,1), 1) = 'E';
+end
 
 %number of reactions
 N = (1:size(model.S,2));
@@ -227,7 +247,6 @@ while ~isempty( J )
     end
 end
 
-modelFlipped=model;
 
 if modeFlag
     flippedReverseOrientation=ones(size(model.S,2),1);
@@ -488,7 +507,7 @@ end
 %code to test nullspace acceleration
 % tic
 % if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-%     param.epsilon=1e-4;
+%     param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 %     param.modeFlag=1;
 %     param.method='null_fastcc';
 %     printLevel = 2;
@@ -499,7 +518,7 @@ end
 %
 % tic
 % if 1 || ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-%     param.epsilon=1e-4;
+%     param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 %     param.modeFlag=1;
 %     param.method='fastcc';
 %     %param.method='nonconvex';

@@ -69,7 +69,7 @@ end
 %Check for mass leaks or siphons in the stoichiometrically consistent part
 %There should be no leaks or siphons in the stiochiometrically consistent part
 modelBoundsFlag=0;
-leakParams.epsilon=1e-4;
+leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
 leakParams.method='dc';
 [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]...
@@ -87,7 +87,7 @@ end
 %maxCardinalityConsParams.method = 'dc';
 %maxCardinalityConsParams.method = 'quasiConcave';
 maxCardinalityConsParams.method = 'optimizeCardinality';
-maxCardinalityConsParams.epsilon=1e-4;%1/epsilon is the largest mass considered, needed for numerical stability
+maxCardinalityConsParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;%1/epsilon is the largest mass considered, needed for numerical stability
 maxCardinalityConsParams.theta = 0.5;
 maxCardinalityConsParams.eta=getCobraSolverParams('LP', 'feasTol');
 
@@ -103,7 +103,7 @@ end
 modelOpen=model;
 modelOpen.lb(~model.SIntRxnBool)=-1000;
 modelOpen.ub(~model.SIntRxnBool)= 1000;
-param.epsilon=1e-4;
+param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
 param.modeFlag=0;
 param.method='null_fastcc';
 [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel-2);
