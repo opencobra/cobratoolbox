@@ -121,7 +121,7 @@ end
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
 end
-if ~isfield(param,'maxLB')
+if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
@@ -429,7 +429,7 @@ else
                 end
                 if param.printLevel>0 && any(solution.q>param.epsilon)
                     fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
-                    printConstraints(model,param.maxLB,param.maxUB, solution.q>param.epsilon,relaxedModel);
+                    printConstraints(model,param.minLB,param.maxUB, solution.q>param.epsilon,relaxedModel);
                 end
                 if param.printLevel>0 && any(abs(solution.r)>param.epsilon)
                     fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
