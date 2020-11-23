@@ -42,7 +42,13 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %   .unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
 %   .SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
 %   .SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-% .. Author: - Ronan Fleming 2017
+%   .metRemoveBool                      m x 1 boolean vector of metabolites removed to form stoichConsistModel
+%   .rxnRemoveBool                      n x 1 boolean vector of reactions removed to form stoichConsistModel
+%
+% stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.    
+%
+
+% .. Author: - Ronan Fleming 2017-2020
 
 if ~exist('printLevel','var')
     printLevel=1;
@@ -313,9 +319,15 @@ while iterateCardinalityOpt>0
         minConservationNonRelaxRxnBool(boolRxn)=~relaxRxnBool;
 
         %corresponding metabolites matching non-relaxed reactions
-        minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
-        %minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
-
+        if 1
+            %assumes all boolMet metabolites involved in non-relaxed reactions are
+            %stoich consistent
+            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'inclusive');
+        else
+            %assumes only boolMet metabolites exclusively involved in non-relaxed
+            %reactions are stoich consistent
+            minConservationNonRelaxMetBool = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
+        end
         %reactions matching consistent metabolites
         %minConservationNonRelaxRxnBool = getCorrespondingCols(model.S,minConservationNonRelaxMetBool,minConservationNonRelaxRxnBool,'inclusive');
 
@@ -432,7 +444,7 @@ while iterateCardinalityOpt>0
                     rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
 
                     %metabolites exclusively involved in inconsistent reactions are
-                    %deemed inconsistent also
+                    %deemed inconsistent
                     metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
 
                     if printLevel>1
@@ -768,13 +780,36 @@ SInConsistentRxnBool=model.SInConsistentRxnBool;
 unknownSConsistencyMetBool=model.unknownSConsistencyMetBool;
 unknownSConsistencyRxnBool=model.unknownSConsistencyRxnBool;
 
+% 
+% minConservationNonRelaxMetBool1 = getCorrespondingRows(model.S,boolMet,model.SInConsistentRxnBool & model.SIntRxnBool,'inclusive');
+% minConservationNonRelaxMetBool2 = getCorrespondingRows(model.S,boolMet,minConservationNonRelaxRxnBool,'exclusive');
+% 
+% metRemoveBool1 = getCorrespondingRows(model.S,true(nMet,1),model.SInConsistentRxnBool & model.SIntRxnBool,'exclusive');
+% metRemoveBool2 = getCorrespondingRows(model.S,true(nMet,1),model.SInConsistentRxnBool & model.SIntRxnBool,'inclusive');
+% 
+
+
 %Extract stoich consistent submodel
 if any(~model.SConsistentMetBool)
-    rxnRemoveMethod='inclusive';%maintains stoichiometric consistency
-    [stoichConsistModel, rxnRemoveList] = removeMetabolites(model, model.mets(~model.SConsistentMetBool),rxnRemoveMethod);
-    SConsistentRxnBool2=~ismember(model.rxns,rxnRemoveList);
-    if ~all(model.SConsistentRxnBool==SConsistentRxnBool2)
-        error('inconsistent reaction removal')
+    %heuristically internal reactions that are stoichiometrically inconsistent should be
+    %removed
+    rxnRemoveBool1 = model.SInConsistentRxnBool & model.SIntRxnBool;
+    %metabolites exclusively involved in inconsistent reactions are deemed inconsistent
+    metRemoveBool1 = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool1,'exclusive');
+    
+    %any metabolite exclusively involved in exchange reactions is deemed inconsistent
+    metRemoveBool2 = ~model.SIntMetBool;
+    %all exchange reactions corresponding to metabolites exclusively involved in exchange reactions 
+    rxnRemoveBool2 = getCorrespondingCols(model.S,metRemoveBool2,true(nRxn,1),'exclusive');
+    
+    model.rxnRemoveBool = rxnRemoveBool1 | rxnRemoveBool2;
+    model.metRemoveBool = metRemoveBool1 | metRemoveBool2;
+    
+    %maintains stoichiometric consistency
+    [stoichConsistModel, metRemoveList] = removeRxns(model, model.rxns(model.rxnRemoveBool),'metRemoveMethod','exclusive');
+    metRemoveBoolTest=ismember(model.mets,metRemoveList);
+    if ~all(model.metRemoveBool==metRemoveBoolTest)
+        error('inconsistent metabolite removal')
     end
     try
     stoichConsistModel = removeUnusedGenes(stoichConsistModel);

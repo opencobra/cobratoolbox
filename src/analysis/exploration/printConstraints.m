@@ -17,42 +17,44 @@ if ~exist('rxnBool','var')
     rxnBool=true(size(model.S,2),1);
 end
 
-if ~exist('modelAfter','var')
-    minConstraints = model.lb > minInf & model.lb~=0 & rxnBool;
-    if ~any(minConstraints)
-        fprintf('%s\n','No non-default maximum constraints.');
-    else
-        fprintf('%s\n', 'Table of minimum constraints:');
-        T = table(model.rxns(minConstraints),model.rxnNames(minConstraints),model.lb(minConstraints),model.ub(minConstraints),'VariableNames',{'Reaction','Name','lb','ub'});
-        disp(T);
-    end
-    
-    maxConstraints = model.ub < maxInf & model.ub~=0 & rxnBool;
-    if ~any(maxConstraints)
-        fprintf('%s\n','No non-default maximum constraints.');
-    else
-        fprintf('%s\n','Table of maximum constraints:');
-        T = table(model.rxns(maxConstraints),model.rxnNames(maxConstraints),model.lb(maxConstraints),model.ub(maxConstraints),'VariableNames',{'Reaction','Name','lb','ub'});
-        disp(T);
-    end
-    fprintf('\n');
+reversibleRxnBool = model.lb > minInf & model.lb~=0 & model.ub < maxInf & model.ub~=0 & rxnBool;
+fwdRxnBool = model.lb > minInf & model.lb~=0 & ~reversibleRxnBool & rxnBool;
+revRxnBool = model.ub < maxInf & model.ub~=0 & ~reversibleRxnBool & rxnBool;
+
+if ~any(fwdRxnBool)
+    fprintf('%s\n','No forward reactions with non-default constraints.');
 else
-    minConstraints = model.lb > minInf & model.lb~=0 & rxnBool;
-    if ~any(minConstraints)
-        fprintf('%s\n','No non-default maximum constraints.');
+    fprintf('%s\n', 'Table of forward reactions with non-default constraints:');
+    if exist('modelAfter','var')
+        T = table(model.rxns(fwdRxnBool),model.rxnNames(fwdRxnBool),model.lb(fwdRxnBool),modelAfter.lb(fwdRxnBool),model.ub(fwdRxnBool),modelAfter.ub(fwdRxnBool),'VariableNames',{'Reaction','Name','lb_before','lb_after','ub_before','ub_after'});
     else
-        fprintf('%s\n','Table of minimum constraints:');
-        T = table(model.rxns(minConstraints),model.rxnNames(minConstraints),model.lb(minConstraints),modelAfter.lb(minConstraints),model.ub(minConstraints),modelAfter.ub(minConstraints),'VariableNames',{'Reaction','Name','lb_before','lb_after','ub_before','ub_after'});
-        disp(T);
+        T = table(model.rxns(fwdRxnBool),model.rxnNames(fwdRxnBool),model.lb(fwdRxnBool),model.ub(fwdRxnBool),'VariableNames',{'Reaction','Name','lb','ub'});
     end
-    
-    maxConstraints = model.ub < maxInf & model.ub~=0 & rxnBool;
-    if ~any(maxConstraints)
-        fprintf('%s\n','No non-default maximum constraints.');
-    else
-        fprintf('%s\n','Table of maximum constraints:');
-        T = table(model.rxns(maxConstraints),model.rxnNames(maxConstraints),model.lb(maxConstraints),modelAfter.lb(maxConstraints),model.ub(maxConstraints),modelAfter.ub(maxConstraints),'VariableNames',{'Reaction','Name','lb_before','lb_after','ub_before','ub_after'});
-        disp(T);
-    end
-    fprintf('\n');
+    disp(T);
 end
+
+if ~any(revRxnBool)
+    fprintf('%s\n','No  reverse reactions with non-default constraints.');
+else
+    fprintf('%s\n','Table of reverse reactions with non-default constraints:');
+    if exist('modelAfter','var')
+        T = table(model.rxns(revRxnBool),model.rxnNames(revRxnBool),model.lb(revRxnBool),modelAfter.lb(revRxnBool),model.ub(revRxnBool),modelAfter.ub(revRxnBool),'VariableNames',{'Reaction','Name','lb_before','lb_after','ub_before','ub_after'});
+    else
+        T = table(model.rxns(revRxnBool),model.rxnNames(revRxnBool),model.lb(revRxnBool),model.ub(revRxnBool),'VariableNames',{'Reaction','Name','lb','ub'});
+    end
+    disp(T);
+end
+
+if ~any(reversibleRxnBool)
+    fprintf('%s\n','No  reversible reactions with non-default constraints.');
+else
+    fprintf('%s\n','Table of reversible reactions with non-default constraints:');
+    if exist('modelAfter','var')
+        T = table(model.rxns(reversibleRxnBool),model.rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),modelAfter.lb(reversibleRxnBool),model.ub(reversibleRxnBool),modelAfter.ub(reversibleRxnBool),'VariableNames',{'Reaction','Name','lb_before','lb_after','ub_before','ub_after'});
+    else
+        T = table(model.rxns(reversibleRxnBool),model.rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),model.ub(reversibleRxnBool),'VariableNames',{'Reaction','Name','lb','ub'});
+    end
+    disp(T);
+end
+
+fprintf('\n');

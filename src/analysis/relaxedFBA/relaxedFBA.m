@@ -425,11 +425,11 @@ else
                 fprintf('%u%s\n', nnz(abs(solution.r)>param.epsilon), ' steady state relaxation(s)');
                 if param.printLevel>0 && any(solution.p>param.epsilon)
                     fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
-                    printConstraints(model,-inf,inf, solution.p>param.epsilon,relaxedModel);
+                    printConstraints(model,param.minLB,param.maxUB, solution.p>param.epsilon,relaxedModel);
                 end
                 if param.printLevel>0 && any(solution.q>param.epsilon)
                     fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
-                    printConstraints(model,-inf,inf, solution.q>param.epsilon,relaxedModel);
+                    printConstraints(model,param.maxLB,param.maxUB, solution.q>param.epsilon,relaxedModel);
                 end
                 if param.printLevel>0 && any(abs(solution.r)>param.epsilon)
                     fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
