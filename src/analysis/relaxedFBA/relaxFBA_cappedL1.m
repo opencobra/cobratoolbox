@@ -188,44 +188,33 @@ while nbIteration < nbMaxIteration && stop ~= true
     
     if 1
         %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
-        if 0
-            %Minh - maximise
-            v_bar  = sign(v)*(gamma1 + gamma0*theta);
-        else
-            %Ronan - minimise
-            v_bar  = -sign(v)*gamma1;
-            v(abs(v) < one_over_theta) = 0;
-            v_bar = v_bar + sign(v)*gamma0*theta;
-        end
+        v_bar  = -sign(v)*gamma1;
+        v(abs(v) <= one_over_theta) = 0;
+        v_bar = v_bar + sign(v)*gamma0*theta;
         
         r_bar  = -sign(r)*lambda1;
-        r(abs(r) < one_over_theta) = 0;
+        r(abs(r) <= one_over_theta) = 0;
         r_bar = r_bar + sign(r)*lambda0*theta;
         
         p_bar  = -sign(p).*alpha1;
-        p(p < one_over_theta) = 0;
+        p(p <= one_over_theta) = 0;
         p_bar = p_bar + sign(p).*alpha0*theta;
         
         q_bar  = -sign(q).*alpha1;
-        q(q < one_over_theta) = 0;
+        q(q <= one_over_theta) = 0;
         q_bar = q_bar + sign(q).*alpha0*theta;
     else
-        %Ronan - mimics sparseLP_cappedL1
-        v_bar  = sign(v)*gamma1;
         v(abs(v) < one_over_theta) = 0;
-        v_bar = v_bar + sign(v)*gamma0*theta;
+        v_bar = -gamma1*sign(v) + sign(v)*gamma0*theta;
 
-        r_bar  = sign(r)*lambda1;
         r(abs(r) < one_over_theta) = 0;
-        r_bar = r_bar + sign(r)*lambda0*theta;
+        r_bar = -lamda1*sign(r) + sign(r)*lambda0*theta;
         
-        p_bar  = sign(p)*alpha1;
         p(p < one_over_theta) = 0;
-        p_bar = p_bar + sign(p)*alpha0*theta;
+        p_bar = alpha1*sign(p) + sign(p)*alpha0*theta;
         
-        q_bar  = sign(q)*alpha1;
         q(q < one_over_theta) = 0;
-        q_bar = q_bar + sign(q)*alpha0*theta;
+        q_bar = alpha1*sign(q) + sign(q)*alpha0*theta;
     end
     
     %Solve the sub-linear program to obtain new x

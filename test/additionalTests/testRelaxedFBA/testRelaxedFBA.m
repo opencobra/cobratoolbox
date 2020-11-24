@@ -45,4 +45,7 @@ param.theta0   = 0.5;
 
 sol = relaxedFBA(model,param);
 
+model = findSExRxnInd(model);
+
+return
 plotRelaxedFBA(sol, model)

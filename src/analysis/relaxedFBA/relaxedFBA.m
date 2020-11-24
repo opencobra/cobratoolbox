@@ -419,21 +419,21 @@ else
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
         if LPsol.stat==1
             if param.printLevel>0
-                fprintf('%s\n','Relaxed model is feasible. Statistics')
-                fprintf('%u%s\n', nnz(solution.p>param.epsilon), ' lower bound relaxation(s)');
-                fprintf('%u%s\n', nnz(solution.q>param.epsilon), ' upper bound relaxation(s)');
-                fprintf('%u%s\n', nnz(abs(solution.r)>param.epsilon), ' steady state relaxation(s)');
-                if param.printLevel>0 && any(solution.p>param.epsilon)
+                fprintf('%s\n%s\n','Relaxed model is feasible.','Statistics:')
+                fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');
+                fprintf('%u%s\n', nnz(solution.q>=feasTol), ' upper bound relaxation(s)');
+                fprintf('%u%s\n', nnz(abs(solution.r)>=feasTol), ' steady state relaxation(s)');
+                if param.printLevel>0 && any(solution.p>=feasTol)
                     fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
-                    printConstraints(model,param.minLB,param.maxUB, solution.p>param.epsilon,relaxedModel);
+                    printConstraints(model,-inf,inf, solution.p>=feasTol,relaxedModel,0);
                 end
-                if param.printLevel>0 && any(solution.q>param.epsilon)
+                if param.printLevel>0 && any(solution.q>=feasTol)
                     fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
-                    printConstraints(model,param.maxLB,param.maxUB, solution.q>param.epsilon,relaxedModel);
+                    printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
                 end
-                if param.printLevel>0 && any(abs(solution.r)>param.epsilon)
+                if param.printLevel>0 && any(abs(solution.r)>=feasTol)
                     fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
-                    disp(model.mets(abs(solution.r)>param.epsilon));
+                    disp(model.mets(abs(solution.r)>=feasTol));
                 end
                 fprintf('%s\n','... done.')
             end

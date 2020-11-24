@@ -156,5 +156,10 @@ coreRxnBool=false(size(model.S,2),1);
 coreRxnBool(A)=1;
 
 toRemove = setdiff(model.rxns,model.rxns(A));
-tissueModel = removeRxns(model_orig, toRemove);
+if 0
+    tissueModel = removeRxns(model_orig, toRemove);
+else
+    %removes any infeasible coupling constraints also
+    model = removeRxns(model_orig, toRemove,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
+end
 tissueModel = removeUnusedGenes(tissueModel);
