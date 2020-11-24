@@ -225,13 +225,12 @@ switch options.solver
     case 'swiftcore'
         tissueModel = swiftcore(model, options.core, options.weights, options.tol, options.reduction, options.LPsolver);
     case 'thermoCore'
-        
-
 end
 
 
 if funcModel ==1
-    paramConsistency.epsilon=1e-10;
+    feasTol=getCobraSolverParams('LP', 'feasTol');
+    paramConsistency.epsilon=feasTol*100;
     paramConsistency.modeFlag=0;
     paramConsistency.method='fastcc';
     givenParams = fieldnames(optionalParams);

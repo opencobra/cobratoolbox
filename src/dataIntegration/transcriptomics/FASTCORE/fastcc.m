@@ -30,7 +30,7 @@ function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %    method:        'original' - default or 'nonconvex'
 %
 % OUTPUTS:
-%    A:             `n` x 1 boolean vector indicating the flux consistent reactions
+%    A:             indices of flux consistent reactions in model
 %    orientation:   `n` x 1 vector indicating the orientation of flux
 %                           consistency, where -1 means flux consistent in reverse direction only 
 %    V:             `n` x `k` matrix such that `S(:,A) * V(:,A) = 0 and |V(:,A)|' * 1 > 0`
@@ -40,11 +40,16 @@ function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %       - Ronan Fleming      2014 Commenting of inputs/outputs/code
 %       - Ronan Fleming      2017 Added non-convex cardinality optimisation
 
-if ~exist('epsilon','var')
-    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+feasTol=getCobraSolverParams('LP', 'feasTol');
+if exist('epsilon','var')
+    if epsilon<feasTol
+        error(['fastcc will not work with epsilon = ' num2str(epsilon) ' < feastol = ' num2str(feasTol)])
+    end
+else
+    epsilon = feasTol*100;
 end
 if ~exist('printLevel','var')
-    printLevel = 2;
+    printLevel = 1;
 end
 if ~exist('modeFlag','var')
     modeFlag=0;
@@ -69,15 +74,24 @@ end
 %number of reactions
 N = (1:size(model.S,2));
 
+veryOrigModel=model;
+
 % build the Lp problem.
 LPproblem = buildLPproblemFromModel(model);
 
-veryOrigModel=model;
+%save the original LP problem
+origLPproblem=LPproblem;
+
+%save original orientation
+orientationFirst=ones(size(model.S,2),1);
 
 %reactions irreversible in the reverse direction
-Ir = find(model.ub<=0);
+Ir= model.lb < 0 & model.ub<=0;
+
 %flip direction of reactions irreversible in the reverse direction
 LPproblem.A(:,Ir) = -LPproblem.A(:,Ir);
+orientationFirst(Ir) = -1*orientationFirst(Ir);
+
 tmp = LPproblem.ub(Ir);
 LPproblem.ub(Ir) = -LPproblem.lb(Ir);
 LPproblem.lb(Ir) = -tmp;
@@ -93,7 +107,7 @@ A = [];
 
 % J is the set of irreversible reactions
 J = intersect( N, I );
-if printLevel>1
+if printLevel>0
     fprintf('%6u\t%s\n',numel(N),'Total reactions')
     fprintf('%6u\t%s\n',numel(N)-numel(I), 'Reversible reactions.');
     fprintf('%6u\t%s\n',numel(I), 'Irreversible reactions.');
@@ -117,7 +131,7 @@ end
 
 if length(A)>0 && modeFlag
     %save the first v
-    V=[V,v];
+    V=[V,v.*orientationFirst];
 end
 
 %incI is the set of irreversible reactions that are flux inconsistent
@@ -141,7 +155,8 @@ end
 flipped = false;
 singleton = false;
 JiRev=[];
-orientation=ones(size(model.S,2),1);
+
+orientationLoop=ones(size(model.S,2),1);
 while ~isempty( J )
     switch method
         case 'original'
@@ -158,7 +173,7 @@ while ~isempty( J )
                 [v,LPsolution] = fastcc_nonconvex_check_consistency_one_reaction(Ji, model);
             else
                 Ji = J;
-                solution_NC = fastcc_nonconvex_maximise_card_J(J,model,epsilon,printLevel);
+                solution_NC = fastcc_nonconvex_maximise_card_J(J,model,epsilon,printLevel-1);
                 v = solution_NC.v;
             end
     end
@@ -168,28 +183,31 @@ while ~isempty( J )
     nA1=length(A);
     A = union( A, Supp);
     nA2=length(A);
-
+    
     %save v if new flux consistent reaction found
     if nA2>nA1
         if modeFlag
             if ~isempty(JiRev)
                 %make sure the sign of the flux is consistent with the sign of
                 %the original S matrix if any reactions have been flipped
-                len=length(orientation);
-                vf=spdiags(orientation,0,len,len)*v;
+                vf= (v.*orientationFirst).*orientationLoop;
                 V=[V,vf];
-
-                %sanity check
-                if norm(origModel.S*vf)>epsilon/100
-                    fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-                    fprintf('%s\t%g\n','should be zero :',norm(model.S*v)) % should be zero
-                    fprintf('%s\t%g\n','should be zero :',norm(origModel.S*vf)) % should be zero
-                    fprintf('%s\t%g\n','may not be zero:',norm(model.S*vf)) % may not be zero
-                    fprintf('%s\t%g\n','may not be zero:',norm(origModel.S*v)) % may not be zero
-                    error('Flipped flux consistency step failed.')
+                
+                if norm(origLPproblem.A(origLPproblem.csense=='E',:)*vf-origLPproblem.b(origLPproblem.csense=='E'),inf)>feasTol*1.1
+                    fprintf('%g%s\n',feasTol, ' = feasTol')
+                    fprintf('%s\t%g\n','should be zero :',norm(LPproblem.A(LPproblem.csense=='E',:)*v-LPproblem.b(LPproblem.csense=='E'))) % should be zero
+                    fprintf('%s\t%g\n','should be zero :',norm(origLPproblem.A(LPproblem.csense=='E',:)*vf-origLPproblem.b(LPproblem.csense=='E'))) % should be zero
+                    %fprintf('%s\t%g\n','may not be zero:',norm(LPproblem.A(LPproblem.csense=='E',:)*v)) % may not be zero
+                    %fprintf('%s\t%g\n','may not be zero:',norm(origLPproblem.A(LPproblem.csense=='E',:)*vf)) % may not be zero
+                    %error('Flipped flux consistency step failed.')
                 end
             else
-                V=[V,v];
+                if norm(LPproblem.A(LPproblem.csense=='E',:)*v-LPproblem.b(LPproblem.csense=='E'),inf)>feasTol*1.1
+                    fprintf('%s\t%g\n','should be zero :',norm(LPproblem.A(LPproblem.csense=='E',:)*v-LPproblem.b(LPproblem.csense=='E'))) % should be zero
+                    fprintf('%s\t%g\n','should be zero :',norm(origLPproblem.A(origLPproblem.csense=='E',:)*((v.*orientationFirst).*orientationLoop)-origLPproblem.b(origLPproblem.csense=='E')))
+                end
+                vf= (v.*orientationFirst).*orientationLoop;
+                V=[V,vf];
             end
         end
         if printLevel>1
@@ -238,7 +256,7 @@ while ~isempty( J )
             flipped = true;
             %need to keep track of the orientation of model.S compared with
             %origModel.S
-            orientation(JiRev)=orientation(JiRev)*-1;
+            orientationLoop(JiRev)=orientationLoop(JiRev)*-1;
             if printLevel>3
                 fprintf('%6u\t%s\n',length(JiRev), ' reversible reaction flipped.');
                 %fprintf('%s\n',['Flipped ' num2str(length(JiRev)) ' reaction.']);
@@ -249,27 +267,27 @@ end
 
 
 if modeFlag
-    flippedReverseOrientation=ones(size(model.S,2),1);
-    flippedReverseOrientation(Ir)=-1;
-    %flip the direction of the returned fluxes
-    V=spdiags(flippedReverseOrientation,0,size(model.S,2),size(model.S,2))*V;
-
+    LPproblem = origLPproblem;
     %sanity check
-    if norm(veryOrigModel.S*V,inf)>epsilon/100
+    %norm(origLPproblem.A(origLPproblem.csense=='E',:)*vf-origLPproblem.b(LPproblem.csense=='E'))>feasTol*1.1
+    if norm(LPproblem.A(LPproblem.csense=='E',:)*V - LPproblem.b(LPproblem.csense=='E'))>feasTol*1.1*size(V,2)
         if printLevel>0
-            fprintf('%g%s\n',epsilon/100, '= epsilon/100')
-            fprintf('%g%s\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
+            fprintf('%g%s\n',feasTol, '= feasTol')
+            fprintf('%g%s\n',norm(LPproblem.A(LPproblem.csense=='E',:)*V-LPproblem.b(LPproblem.csense=='E'),inf),' = ||A*x - b||.')
         end
         warning('Flux consistency numerically challenged')
     else
         if printLevel>0
             fprintf('%s\n','Flux consistency check finished...')
-            fprintf('%10u%s\n',sum(any(abs(V)>=0.99*epsilon,2)),' = Number of flux consistent columns.')
-            fprintf('%10f%s\n\n',norm(veryOrigModel.S*V,inf),' = ||S*V||.')
+            fprintf('%10u%s\n',sum(any(abs(V)>=0.99*epsilon,2)),' = flux consistent reactions.')
+            fprintf('%s\n','...done.')
+        end
+        if printLevel>1
+            fprintf('%10f%s\n\n',norm(LPproblem.A(LPproblem.csense=='E',:)*V-LPproblem.b(LPproblem.csense=='E'),inf),' = ||S*V-b||.')
         end
     end
 end
-origModel=veryOrigModel;
+
 if numel(A) == numel(N)
     if printLevel>0
         fprintf('%s\n','fastcc.m: The input model is entirely flux consistent.\n');
@@ -278,6 +296,8 @@ end
 if printLevel>2
     toc
 end
+
+orientation = orientationFirst;
 end
 
 %% Helper functions for the nonconvex method
@@ -396,6 +416,7 @@ end
 if solution.stat == 1
     solution.v = v;
 end
+
 
 end
 

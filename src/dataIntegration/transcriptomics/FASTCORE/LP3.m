@@ -1,24 +1,33 @@
-function [V, basis] = LP3(J, model, LPproblem, basis)
-% CPLEX implementation of LP-3 for input set J (see FASTCORE paper)
+function [v, basis] = LP3(J, model, LPproblem, basis)
+% Implementation of LP-3 for input set J (see FASTCORE paper)
 %
 % USAGE:
 %
-%    [V, basis] = LP3(J, model, basis)
+%    [v, basis] = LP3(J, model, basis)
 %
-% .. Authors:
+
+% .. Authors
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 %       - Ronan Fleming      02/12/14 solveCobraLP compatible
+%       - 2020 Ronan Fleming, Cv<=d compatible
 
 [m,n] = size(model.S);
 [m2,n2] = size(LPproblem.A);
 %
 
+%reactions irreversible in the reverse direction
+Ir = model.ub<=0;
+%flip direction of reactions irreversible in the reverse direction
+LPproblem.A(:,Ir) = -LPproblem.A(:,Ir);
+tmp = LPproblem.ub(Ir);
+LPproblem.ub(Ir) = -LPproblem.lb(Ir);
+LPproblem.lb(Ir) = -tmp;
 
 % objective
 f = zeros(n2,1);
 f(J) = -1;
 
-% equalities
+% S*v = b and C *v<= d if present
 Aeq = LPproblem.A;
 beq = LPproblem.b;
 
@@ -27,19 +36,6 @@ lb = LPproblem.lb;
 ub = LPproblem.ub;
 
 basis=[];
-
-% options = cplexoptimset('cplex');
-% options = cplexoptimset(options,'diagnostics','off');
-% options.output.clonelog=0;
-% options.workdir='~/tmp';
-% x = cplexlp(f',[],[],Aeq,beq,lb,ub,options);
-% if exist('clone1.log','file')
-%     delete('clone1.log')
-% end
-% if exist('clone2.log','file')
-%     delete('clone2.log')
-% end
-
 
 LP3problem.A=Aeq;
 LP3problem.b=beq;
@@ -63,6 +59,9 @@ if isfield(solution,'basis')
 else
     basis=[];
 end
-x=solution.full(1:n);
+v=solution.full(1:n);
 
-V = x;
+%flip back the direction of reactions irreversible in the reverse direction
+v(Ir)=-v(Ir);
+
+

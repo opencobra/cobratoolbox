@@ -1,4 +1,4 @@
-function V = LP9cvx(K, P, model, epsilon)
+function V = LP10cvx(K, P, model, epsilon)
 % CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
 %
 % USAGE:

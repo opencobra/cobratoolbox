@@ -23,26 +23,34 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsil
 %
 % .. Authors: - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 
-    Supp = [];
-    if isempty(J)
-      return;
-    end
+Supp = [];
+if isempty(J)
+    return;
+end
 
-    if ~exist('basis','var')
-        basis=[];
-    end
+if ~exist('basis','var')
+    basis=[];
+end
 
-    if singleton
-      [V, basis] = LP7(J(1), model, LPproblem, epsilon, basis);
-    else
-      [V, basis] = LP7(J, model, LPproblem, epsilon, basis);
-    end
+if ~exist('epsilon','var')
+    epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+end
 
-    K = intersect(J, find(V >= 0.99*epsilon));
+%find a flux vector of maximum cardinality
+if singleton
+    [v, basis] = LP7(J(1), model, LPproblem, epsilon, basis);
+else
+    [v, basis] = LP7(J, model, LPproblem, epsilon, basis);
+end
 
-    if isempty(K)
-      return;
-    end
+%K is the subset of active reactions that are in the irreversible core reaction set (J)
+K = intersect(J, find(v >= 0.99*epsilon));
 
-    V = LP9( K, P, model, LPproblem, epsilon );
-    Supp = find(abs(V) >= 0.99*epsilon);
+if isempty(K)
+    return;
+end
+
+%find a flux vector that maintains the activity of any active irreversible core reaction
+%(K) yet minimises the activity of any non-core reaction(P).
+v = LP10( K, P, v, LPproblem, epsilon );
+Supp = find(abs(v) >= 0.99*epsilon);
