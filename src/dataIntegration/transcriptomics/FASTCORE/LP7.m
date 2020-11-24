@@ -1,10 +1,10 @@
-function [V, basis] = LP7( J, model, LPproblem, epsilon, basis)
-% CPLEX implementation of LP-7 for input set J (see FASTCORE paper).
+function [v, basis] = LP7( J, model, LPproblem, epsilon, basis)
+% Implementation of LP-7 for input set J (see FASTCORE paper).
 % Maximises the number of feasible fluxes in J whose value is at least epsilon
 %
 % USAGE:
 %
-%    [V, basis] = LP7( J, model, epsilon, basis)
+%    [v, basis] = LP7( J, model, epsilon, basis)
 %
 % INPUTS:
 %    J:         indicies of irreversible reactions
@@ -13,23 +13,25 @@ function [V, basis] = LP7( J, model, LPproblem, epsilon, basis)
 %    epsilon:   tolerance
 %
 % OUTPUTS:
-%    V:         optimal steady state flux vector
+%    v:         optimal steady state flux vector
 %    basis:     basis
 %
+
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 %       - Ronan Fleming 17/10/14 Commenting of inputs/outputs/code
 %       - Ronan Fleming 02/12/14 solveCobraLP compatible
 %       - Thomas Pfau Sep 2018 Handling additional Constraints/variables.
+%       - 2020 Ronan Fleming, Cv<=d compatible
 
 nj = numel(J);
-[m,n] = size(model.S);
+%[m,n] = size(model.S);
 [m2,n2] = size(LPproblem.A);
 
 % objective
 f = -[zeros(n2,1); ones(nj,1)];
 
-% equalities
+% S*v = b and C *v<= d if present
 Aeq = [LPproblem.A, sparse(m2,nj)];
 beq = LPproblem.b;
 
@@ -39,8 +41,9 @@ Ij(sub2ind(size(Ij),(1:nj)',J(:))) = -1;
 Aineq = sparse([Ij, speye(nj)]);
 bineq = zeros(nj,1);
 
-% bounds
-lb = [LPproblem.lb; -inf*ones(nj,1)];
+% bounds on v and z
+%lb = [LPproblem.lb; -inf*ones(nj,1)];% 24 Nov 2020, this seems wrong
+lb = [LPproblem.lb; zeros(nj,1)];
 ub = [LPproblem.ub; ones(nj,1)*epsilon];
 
 basis=[];
@@ -80,8 +83,8 @@ end
 x=solution.full;
 
 if ~isempty(x)
-    V = x(1:n);
+    v = x(1:n2);
 else
-    V=nan(n,1);
+    v=nan(n2,1);
 end
 

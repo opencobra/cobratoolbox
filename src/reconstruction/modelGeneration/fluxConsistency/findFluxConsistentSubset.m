@@ -37,9 +37,10 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %       - Mojtaba Tefagh, March 2019 - integration of swiftcc
 
 if ~exist('param','var')
-    param.epsilon=1e-4;
-    param.modeFlag=0;
-    param.method='fastcc';
+    feasTol = getCobraSolverParams('LP', 'feasTol');
+    epsilon=feasTol*100;
+    modeFlag=0;
+    method='fastcc';
 end
 
 if ~isfield(param,'epsilon')
@@ -66,7 +67,7 @@ end
 
 %only some methods support additional constraints
 if isfield(model,'C') || isfield(model,'E')
-    if ~any(ismember({'fastcc','null_fastcc'},param.method))
+    if ~any(ismember({'fastcc'},param.method))
         error('model contains additional constraints, switch to: param.method = ''fastcc''')
     end
 end
@@ -122,10 +123,10 @@ fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
             %
             % epsilon
             % printLevel    0 = silent, 1 = summary, 2 = debug
-            [indFluxConsist,~,V0]=fastcc(model,epsilon,printLevel,modeFlag,'original');
+            [indFluxConsist,~,V0]=fastcc(model,epsilon,printLevel-1,modeFlag,'original');
             fluxConsistentRxnBoolTemp(indFluxConsist)=1;
         case 'nonconvex'
-            [indFluxConsist,V0] = fastcc(model,epsilon,printLevel,modeFlag,'nonconvex');
+            [indFluxConsist,V0] = fastcc(model,epsilon,printLevel-1,modeFlag,'nonconvex');
             fluxConsistentRxnBoolTemp(indFluxConsist)=1;
         case 'dc'
             % DC programming for solving the cardinality optimization problem
@@ -220,7 +221,9 @@ fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),flu
 
 if any(~fluxConsistentRxnBool)
     if printLevel>0
+        fprintf('%u%s\n',nnz(fluxConsistentMetBool),' flux consistent metabolites')
         fprintf('%u%s\n',nnz(~fluxConsistentMetBool),' flux inconsistent metabolites')
+        fprintf('%u%s\n',nnz(fluxConsistentRxnBool),' flux consistent reactions')
         fprintf('%u%s\n',nnz(~fluxConsistentRxnBool),' flux inconsistent reactions')
     end
 end
