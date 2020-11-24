@@ -121,7 +121,7 @@ end
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
 end
-if ~isfield(param,'maxLB')
+if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
