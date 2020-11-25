@@ -33,10 +33,14 @@ for i = 1 : length(rxnAbbrs)
         model.subSystems(A) = subSystems(i);
         model.grRules(A) = gprs(i);
         model.rxnNames(A) = rxnNames(i);
-        token = strtok(rxnAbbrs{i},'_');
+        [token,rem] = strtok(rxnAbbrs{i},'_');
         % find organ biomass
         if strcmp(token,'sIEC')
-            rxnC = strmatch('sIEC_biomass_reactionIEC01b',model.rxns,'exact');
+            rxnC= strmatch('sIEC_biomass_maintenance',model.rxns,'exact');%(find(~cellfun(@isempty,strfind((model.rxns),'sIEC_biomass_maintenance'))));
+            if isempty(rxnC)
+                rxnC = strmatch('sIEC_biomass_reactionIEC01b',model.rxns,'exact');
+            end
+       
         else
             rxnC = strmatch(strcat(token,'_biomass_maintenance'),model.rxns,'exact');
             if isempty(rxnC)

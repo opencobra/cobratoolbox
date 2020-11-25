@@ -150,8 +150,7 @@ if isempty(param.minNorm) %Linear optimisation
         end
     end
     
-    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, zeroNormApprox, param);
-    
+    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
 elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
     
     %check in case there is no linear objective

@@ -129,6 +129,7 @@ tMetNrs = [];
 tRxns = {};
 elements = {};
 
+bad = 0;
 % Build atom transition network
 for i = 1:length(rxns)
     
@@ -148,9 +149,24 @@ for i = 1:length(rxns)
         rev = 0;
     end
     
-    % Read atom mapping from rxnfile
-    [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnfileDir);
-    
+    try
+        % Read atom mapping from rxnfile
+        [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnfileDir);
+    catch ME
+        disp(rxn)
+        if bad ==0
+            mkdir([pwd filesep 'not_parsed'])
+        end
+        disp(ME.message)
+        %mv FPGS7m.rxn bad/FPGS7m.rxn
+        [SUCCESS,~,~] = movefile([pwd filesep ME.message],[pwd filesep 'not_parsed' filesep ME.message]);
+        if SUCCESS
+            fprintf('%s\n','Reaction file %s could not be parsed for atom mappings, so moved to pwd/not_parsed.',ME.message)
+        else
+            fprintf(['Reaction file ' ME.message ' could not be parsed for atom mappings and not moved to pwd/not_parsed either.'])
+            rethrow(ME)
+        end
+    end
     % Check that stoichiometry in rxnfile matches the one in S
     rxnMets = unique(atomMets);
     ss = S(:,strcmp(rxns,rxn));
