@@ -26,9 +26,9 @@ if exist('modelAfter','var')
 end
 
 closedRxnBool = model.lb == model.ub & model.lb==0 & rxnBool;
-reversibleRxnBool = model.lb > minInf & model.lb~=0 & model.ub < maxInf & model.ub~=0 & rxnBool;
-fwdRxnBool = model.lb > minInf & model.lb~=0 & ~reversibleRxnBool & rxnBool;
-revRxnBool = model.ub < maxInf & model.ub~=0 & ~reversibleRxnBool & rxnBool;
+reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnBool;
+fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & rxnBool;
+revRxnBool = model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & rxnBool;
 
 rxnNames=model.rxnNames;
 for j=1:size(model.S,2)

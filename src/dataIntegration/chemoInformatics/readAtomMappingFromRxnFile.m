@@ -132,6 +132,12 @@ for i = 1:length(umets)
 end
 
 isSubstrate = logical(isSubstrate);
-assert(all(sort(rxnNrs(isSubstrate)) == (1:sum(isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
-assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
-assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+if 0
+    assert(all(sort(rxnNrs(isSubstrate)) == (1:sum(isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+    assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+    assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))), 'Reaction file %s.rxn could not be parsed for atom mappings.\n',rxnfileName)
+else
+    assert(all(sort(rxnNrs(isSubstrate)) == (1:sum(isSubstrate))'), '%s.rxn',rxnfileName)
+    assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'), '%s.rxn',rxnfileName)
+    assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))), '%s.rxn',rxnfileName)
+end
