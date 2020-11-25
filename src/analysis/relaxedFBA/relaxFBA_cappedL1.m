@@ -188,51 +188,38 @@ while nbIteration < nbMaxIteration && stop ~= true
     
     if 1
         %Compute x_bar=(v_bar,r_bar,p_bar,q_bar) which belongs to subgradient of second DC component
-        if 0
-            %Minh - maximise
-            v_bar  = sign(v)*(gamma1 + gamma0*theta);
-        else
-            %Ronan - minimise
-            v_bar  = -sign(v)*gamma1;
-            v(abs(v) < one_over_theta) = 0;
-            v_bar = v_bar + sign(v)*gamma0*theta;
-        end
+        v_bar  = -sign(v)*gamma1;
+        v(abs(v) <= one_over_theta) = 0;
+        v_bar = v_bar + sign(v)*gamma0*theta;
         
         r_bar  = -sign(r)*lambda1;
-        r(abs(r) < one_over_theta) = 0;
+        r(abs(r) <= one_over_theta) = 0;
         r_bar = r_bar + sign(r)*lambda0*theta;
         
-        p_bar  = -sign(p)*alpha1;
-        p(p < one_over_theta) = 0;
-        p_bar = p_bar + sign(p)*alpha0*theta;
+        p_bar  = -sign(p).*alpha1;
+        p(p <= one_over_theta) = 0;
+        p_bar = p_bar + sign(p).*alpha0*theta;
         
-        q_bar  = -sign(q)*alpha1;
-        q(q < one_over_theta) = 0;
-        q_bar = q_bar + sign(q)*alpha0*theta;
+        q_bar  = -sign(q).*alpha1;
+        q(q <= one_over_theta) = 0;
+        q_bar = q_bar + sign(q).*alpha0*theta;
     else
-        %Ronan - mimics sparseLP_cappedL1
-        v_bar  = sign(v)*gamma1;
         v(abs(v) < one_over_theta) = 0;
-        v_bar = v_bar + sign(v)*gamma0*theta;
+        v_bar = -gamma1*sign(v) + sign(v)*gamma0*theta;
 
-        r_bar  = sign(r)*lambda1;
         r(abs(r) < one_over_theta) = 0;
-        r_bar = r_bar + sign(r)*lambda0*theta;
+        r_bar = -lamda1*sign(r) + sign(r)*lambda0*theta;
         
-        p_bar  = sign(p)*alpha1;
         p(p < one_over_theta) = 0;
-        p_bar = p_bar + sign(p)*alpha0*theta;
+        p_bar = alpha1*sign(p) + sign(p)*alpha0*theta;
         
-        q_bar  = sign(q)*alpha1;
         q(q < one_over_theta) = 0;
-        q_bar = q_bar + sign(q)*alpha0*theta;
+        q_bar = alpha1*sign(q) + sign(q)*alpha0*theta;
     end
     
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
-    %disp([v,p,q])
-    %disp('-')
-    %disp(r)
+
     switch LPsolution.stat
         case 0
             solution.v = [];
@@ -267,22 +254,22 @@ while nbIteration < nbMaxIteration && stop ~= true
 
             if param.printLevel>0
                 if nbIteration==1
-                    fprintf('%5s%12.3s%18s%18s%18s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
+                    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
                 end
                     fprintf('%5u%12.3g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,error_x,error_obj,obj_new,nnz(v),nnz(r),nnz(p),nnz(q));
             end
-%             disp(strcat('DCA - Iteration: ',num2str(nbIteration)));
-%             disp(strcat('Obj:',num2str(obj_new)));
-%             disp(strcat('Stopping criteria error: ',num2str(min(error_x,error_obj))));
-%             disp('=================================');
         end
 end
-
+if param.printLevel>0
+    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
+end
 if solution.stat == 1
     solution.v = v;
     solution.r = r;
     solution.p = p;
     solution.q = q;
+    
+    
 end
 
 end
@@ -305,7 +292,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
 
     % Define LP
     % Variables [v r p q t w]
-    obj = [c-v_bar; -r_bar; alpha0*theta*ones(n,1)-p_bar; alpha0*theta*ones(n,1)-q_bar; gamma0*ones(n,1); lambda0*ones(m,1)];%why no theta for gamma0 and lambda0?
+    obj = [c-v_bar; -r_bar; (theta*ones(n,1).*alpha0 -p_bar); (theta*ones(n,1).*alpha0 -q_bar); (ones(n,1).*gamma0); (ones(m,1).*lambda0)];
 
     % Constraints
     %       Sv + r <=> b

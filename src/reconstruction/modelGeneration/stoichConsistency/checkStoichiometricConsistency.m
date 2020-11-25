@@ -1,4 +1,3 @@
-
 function [isConsistent, m, model] = checkStoichiometricConsistency(model, printLevel, method)
 % Verification of stoichiometric consistency by checking for at least one
 % strictly positive basis in the left nullspace of `S`.

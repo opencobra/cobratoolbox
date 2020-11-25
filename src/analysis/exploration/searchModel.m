@@ -65,10 +65,16 @@ for field = 1:numel(baseFields)
     % searchable information (subSystems is one example). 
     for modelField = 1:numel(modelFields)        
         cModelField = modelFields{modelField};
-        if strcmp(cModelField,'subSystems')
-            % subSystems is special, as it contains cell arrays.
-            fieldToUse = cellfun(@(x) strjoin(x,';'),model.subSystems,'Uniform',0);
-            isAnnotation = true;
+        if strcmp(cModelField,'subSystems') 
+            
+            if iscell(model.subSystems{1})
+                % subSystems is special, as it contains cell arrays.
+                fieldToUse = cellfun(@(x) strjoin(x,';'),model.subSystems,'Uniform',0);
+                isAnnotation = true;
+            else
+                fieldToUse = model.subSystems;
+                isAnnotation = false;
+            end
             
         elseif any(strcmp(cModelField,knownFields))
             % iIf its a known field, than it is a cell array of strings and

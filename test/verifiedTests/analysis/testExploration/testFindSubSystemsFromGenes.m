@@ -32,7 +32,7 @@ assert(length(SubSysOfFirstReaction) == numel(model.genes));
 assert(all(isequal(SubSysOfFirstReaction(gPres,2),genesOfInterest(gPos(gPres),2))));
 
 %Now, we will change the subSystems for GAPD.
-newSubs = {'Glycolysis','Gluconeogenesis'};
+newSubs = 'Glycolysis';
 model = setRxnSubSystems(model,'GAPD',newSubs);
 
 %This should return the new subSystems for 
@@ -48,7 +48,7 @@ geneWithMultipleReactions = 'b3528';
 originalSub = 'Transport, Extracellular';
 b3528pos = find(ismember(model.genes,geneWithMultipleReactions));
 geneSubs = findSubSystemsFromGenes(model,geneWithMultipleReactions);
-assert(isempty(setxor(geneSubs,{originalSub}))); %Only the one gets returned. 
+assert(isempty(setxor(geneSubs,originalSub))); %Only the one gets returned. 
 %Also check this for findSubSysGen
 SubSysOfFirstReaction = findSubSysGen(model);
 assert(isempty(setxor(SubSysOfFirstReaction{b3528pos,2},originalSub))); %this is the expected one.
@@ -73,7 +73,7 @@ assert(isequal(indList(:,1),['someOtherGene';genesOfInterest(:,1)]))
 %Nothing associated with someOtherGene
 assert(isequal(indList(1,2),{[]})) 
 %outputs should be consistent
-assert(isempty(setxor(subSystems,union(genesOfInterest{:,2})))); %someOtherGene is empty.
+assert(isempty(setxor(subSystems,{genesOfInterest{:,2}}))); %someOtherGene is empty.
 %Assert that all other outputs are correct.
 assert(all(cellfun(@(x,y) isempty(setxor(x,y)),indList(2:3,2),genesOfInterest(:,2)))); %All sets match
 

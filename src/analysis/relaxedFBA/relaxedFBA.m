@@ -121,7 +121,7 @@ end
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
 end
-if ~isfield(param,'maxLB')
+if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
@@ -170,6 +170,7 @@ else
 end
 
 if isfield(param,'toBeUnblockedReactions') == 0
+    %this constraint is handled directly within relaxFBA_cappedL1
     param.toBeUnblockedReactions = zeros(nRxns,1);
 end
 
@@ -199,7 +200,7 @@ end
 excludedMetabolitesTmp=param.excludedMetabolites;
 
 if isfield(param,'nbMaxIteration') == 0
-    param.nbMaxIteration = 100;
+    param.nbMaxIteration = 20;
 end
 
 if isfield(param,'epsilon') == 0
@@ -337,7 +338,7 @@ end
 if ~isfield(param,'gamma1')
     %always include some regularisation on the flux rates to keep it well
     %behaved
-    param.gamma1 = 0*1e-6 + param.gamma0/10;   
+    param.gamma1 = 1e-6 + param.gamma0/10;   
 end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
@@ -363,10 +364,12 @@ end
 param.excludedReactionLB = param.excludedReactions;
 param.excludedReactionLB(~param.excludedReactionLB & excludedReactionLBTmp)=1;
 param.excludedReactionLB(~param.excludedReactionLB & excludedReactionsTmp)=1;
+param.excludedReactionLB(param.toBeUnblockedReactions~=0)=1;
 
 param.excludedReactionUB = param.excludedReactions;
 param.excludedReactionUB(~param.excludedReactionUB & excludedReactionUBTmp)=1;
 param.excludedReactionUB(~param.excludedReactionUB & excludedReactionsTmp)=1;
+param.excludedReactionUB(param.toBeUnblockedReactions~=0)=1;
 param=rmfield(param,'excludedReactions');
 
 %Combine excludedMetabolites with steadyStateRelax
@@ -380,7 +383,7 @@ param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
 %test if the problem is feasible or not
 FBAsolution = optimizeCbModel(model);
-if FBAsolution.stat == 1
+if FBAsolution.stat == 1 && ~any(param.toBeUnblockedReactions)
     disp('Model is already feasible, no relaxation is necessary. Exiting.')
     solution.stat=1;
     solution.r=zeros(nMets,1);
@@ -414,9 +417,30 @@ else
         relaxedModel.b=relaxedModel.b-solution.r;
         
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
-        if LPsol.stat~=1
+        if LPsol.stat==1
+            if param.printLevel>0
+                fprintf('%s\n%s\n','Relaxed model is feasible.','Statistics:')
+                fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');
+                fprintf('%u%s\n', nnz(solution.q>=feasTol), ' upper bound relaxation(s)');
+                fprintf('%u%s\n', nnz(abs(solution.r)>=feasTol), ' steady state relaxation(s)');
+                if param.printLevel>0 && any(solution.p>=feasTol)
+                    fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
+                    printConstraints(model,-inf,inf, solution.p>=feasTol,relaxedModel,0);
+                end
+                if param.printLevel>0 && any(solution.q>=feasTol)
+                    fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
+                    printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
+                end
+                if param.printLevel>0 && any(abs(solution.r)>=feasTol)
+                    fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
+                    disp(model.mets(abs(solution.r)>=feasTol));
+                end
+                fprintf('%s\n','... done.')
+            end
+            
+        else
             disp(LPsol)
-            error('Relaxed model does not admit a steady state. relaxedFBA failed')
+            error('Relaxed model may not admit a steady state. relaxedFBA failed')
         end
     else
         relaxedModel=[];

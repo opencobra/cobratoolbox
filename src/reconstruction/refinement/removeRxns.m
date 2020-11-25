@@ -1,4 +1,4 @@
-function [modelOut, metRemoveList] = removeRxns(model, rxnRemoveList, varargin)
+function [modelOut, metRemoveList, ctrsRemoveList] = removeRxns(model, rxnRemoveList, varargin)
 % Removes reactions from a model
 %
 % USAGE:
@@ -20,7 +20,11 @@ function [modelOut, metRemoveList] = removeRxns(model, rxnRemoveList, varargin)
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions
 %    metRemoveList:     Cell array of metabolite abbreviations that were removed
-%
+%    ctrsRemoveList:    Cell array of model.ctrs that were removed
+%                       Alternatively, if model.ctrs did not exist, then a
+%                       boolean vector displaying the rows of C*v <=d that were
+%                       removed.
+%       
 % Optional inputs are used as parameter value pairs
 %
 % EXAMPLES:
@@ -118,7 +122,7 @@ if metFlag
         modelOut = removeMetabolites(modelOut, metRemoveList, false);
     end
 else
-    metRemoveList =[];
+    metRemoveList = {''};
 end
 
 %Also if there is a C field, remove all empty Constraints (i.e. constraints
@@ -165,12 +169,16 @@ if isfield(modelOut,'C')
             
     end
     if bool==1 && any(~selectConstraints)
+        
         %remove using boolean indexing
         modelOut.C = model.C(selectConstraints,selectRxns);
         modelOut.d = model.d(selectConstraints,1);
         modelOut.dsense = model.dsense(selectConstraints,1);
         if isfield(model,'ctrs')
             modelOut.ctrs = model.ctrs(selectConstraints,1);
+            ctrsRemoveList=model.ctrs(~selectConstraints,1);
+        else
+            ctrsRemoveList=~selectConstraints;
         end
         if isfield(model,'ctrNames')
             modelOut.ctrNames = model.ctrNames(selectConstraints,1);
@@ -179,6 +187,14 @@ if isfield(modelOut,'C')
             error('size(modelOut.C,2)~=size(modelOut.S,2)')
         end
         fprintf('%s\n',[num2str(nnz(~selectConstraints)) ' model.C constraints removed'])
+    else
+        if isfield(model,'ctrs')
+            ctrsRemoveList={''};
+        else
+            ctrsRemoveList = ~selectConstraints;
+        end
     end
+else
+    ctrsRemoveList = {''};
 end
 
