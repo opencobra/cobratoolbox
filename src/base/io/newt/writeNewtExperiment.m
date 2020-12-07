@@ -103,12 +103,12 @@ end
 convertedMets = convertSBMLID(model.mets);
 
 %experimental data
-useM=1;
+useM=0;
 for i=1:nMets
     if useM
         fprintf(fid,'%s',['M_' convertedMets{i}]);
     else
-        fprintf(fid,'%s',model.metNames{i});
+        fprintf(fid,'%s\t',model.metNames{i});
     end
     
     for j=1:nSamples

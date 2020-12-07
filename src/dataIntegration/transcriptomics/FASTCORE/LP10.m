@@ -19,7 +19,7 @@ end
     
 scalingFactorFixed=1;
 if scalingFactorFixed
-    scalingfactor = 1e5;
+    scalingfactor = 1e4;
     
     np = numel(P);
     nk = numel(K);
