@@ -25,10 +25,14 @@ if exist('modelAfter','var')
     end
 end
 
+if ischar(rxnBool) || iscell(rxnBool)
+    rxnBool = ismember(model.rxns,rxnBool);
+end
+
 closedRxnBool = model.lb == model.ub & model.lb==0 & rxnBool;
 reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnBool;
-fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & rxnBool;
-revRxnBool = model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & rxnBool;
+fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & rxnBool & model.ub~=maxInf;
+revRxnBool = model.lb~=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & rxnBool;
 
 rxnNames=model.rxnNames;
 for j=1:size(model.S,2)
@@ -57,7 +61,7 @@ if ~any(fwdRxnBool)
     end
 else
     if printLevel>0
-        fprintf('%s\n', ['...forward reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) '] constraints:']);
+        fprintf('%s\n', ['...forward reactions with non-[0, ' num2str(maxInf) '] constraints:']);
     end
     if exist('modelAfter','var')
         T = table(model.rxns(fwdRxnBool),rxnNames(fwdRxnBool),model.lb(fwdRxnBool),modelAfter.lb(fwdRxnBool),model.ub(fwdRxnBool),modelAfter.ub(fwdRxnBool),printRxnFormula(model, 'rxnAbbrList',model.rxns(fwdRxnBool),'printFlag',0),'VariableNames',{'Forward_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
@@ -73,7 +77,7 @@ if ~any(revRxnBool)
     end
 else
     if printLevel>0
-        fprintf('%s\n',['...reverse reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) ']  constraints:']);
+        fprintf('%s\n',['...reverse reactions with non-[' num2str(minInf)  ', 0]  constraints:']);
     end
     if exist('modelAfter','var')
         T = table(model.rxns(revRxnBool),rxnNames(revRxnBool),model.lb(revRxnBool),modelAfter.lb(revRxnBool),model.ub(revRxnBool),modelAfter.ub(revRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(revRxnBool),'printFlag',0),'VariableNames',{'Reverse_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
