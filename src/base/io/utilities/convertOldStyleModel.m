@@ -271,7 +271,6 @@ for i = 1: numel(modelfields)
     end
 end
 
-nRxns=length(model.subSystems);
 if isfield(model,'subSystems')
     numericPos = cellfun(@(x) isnumeric(x), model.subSystems);
     if all(numericPos)

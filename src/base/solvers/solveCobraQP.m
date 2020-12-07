@@ -763,7 +763,7 @@ switch solver
             % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
             gurobiQP.obj(:) = 0;
             gurobiQP.F(:,:) = 0;
-            resultgurobi = gurobi(gurobiQP,param);
+            resultgurobi = gurobi(gurobiQP,params);
             if strcmp(resultgurobi.status,'OPTIMAL')
                 stat = 2;
             else
