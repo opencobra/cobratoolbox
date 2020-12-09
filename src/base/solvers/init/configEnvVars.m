@@ -236,6 +236,10 @@ function [] = configEnvVars(printLevel)
                         if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
                         end
+                        if k == 2
+                            rmArch = ['\' filesep '(win64$)|(mac64$)|(linux64$)'];
+                            eval([globEnvVar, ' = regexprep(' globEnvVar ', rmArch,'''');'])
+                        end
                         eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
                     end
                 end
