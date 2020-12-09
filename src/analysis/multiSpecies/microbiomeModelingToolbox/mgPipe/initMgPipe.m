@@ -28,6 +28,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
 %    repeatSim:              boolean defining if simulations should be repeated and previous results
 %                            overwritten (default=false)
+%    adaptMedium             boolean indicating if the medium should be
+%                            adapted through the adaptVMHDietToAGORA
+%                            function or used as is (default=true)                  
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -61,6 +64,7 @@ parser.addParameter('printLevel', true, @islogical);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
+parser.addParameter('adaptMedium', true, @islogical);
 
 parser.parse(modPath, abunFilePath, varargin{:});
 
@@ -83,6 +87,7 @@ printLevel = parser.Results.printLevel;
 includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
+adaptMedium = parser.Results.adaptMedium;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -154,7 +159,7 @@ end
 init = true;
 
 if init && autorun
-    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim);
+    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 elseif init && ~autorun
     netSecretionFluxes = {};
     netUptakeFluxes = {};

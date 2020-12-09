@@ -24,8 +24,10 @@ function [createdModels] = createPersonalizedModel(abunFilePath, resPath, model,
 
 [ab] = readtable(abunFilePath);
 fcol=table2cell(ab(:,1));
-if  ~isa(fcol{2,1},'char')
-     fcol=cellstr(num2str(cell2mat(fcol))); 
+if size(fcol,1)>1
+    if  ~isa(fcol{2,1},'char')
+        fcol=cellstr(num2str(cell2mat(fcol)));
+    end
 end
 spaceColInd=strmatch(' ',fcol);
 if length(spaceColInd)>0
@@ -103,7 +105,7 @@ parfor k = 2:(patNumb + 1)
         IndRxns=strmatch(presBac(i,1),mgmodel.rxns);%finding indixes of specific reactions
         % find the name of biomass reacion in the microbe model
         bioRxn=mgmodel.rxns(find(strncmp(mgmodel.rxns,strcat(presBac(i,1),'_biomass'),length(char(strcat(presBac(i,1),'_biomass'))))));
-        mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0.01); %couple the specific reactions
+        mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0); %couple the specific reactions
     end
     % finam.name=sampname((k-1),1);
     % allmod(k,1)={finam};

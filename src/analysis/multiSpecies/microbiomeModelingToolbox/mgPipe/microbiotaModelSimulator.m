@@ -1,4 +1,4 @@
-function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim)
+function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -7,7 +7,7 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %
 % USAGE:
 %
-%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType,lowerBMBound,repeatSim)
+%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType,lowerBMBound,repeatSim,adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -27,6 +27,8 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
 %    repeatSim:          boolean defining if simulations should be repeated and previous results
 %                        overwritten (default=false)
+%    adaptMedium         boolean indicating if the medium should be adapted through the 
+%                        adaptVMHDietToAGORA function or used as is (default=true)
 %
 % OUTPUTS:
 %    ID:                 cell array with list of all unique Exchanges to diet/
@@ -178,11 +180,19 @@ else
             end
             
             
-            % Using standard diet
+            % Using input diet
             
             model_sd=model;
-            [adaptedDiet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
-            [model_sd] = useDiet(model_sd, adaptedDiet,0);
+            if adaptMedium
+                [diet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
+            else
+                diet = readtable(dietFilePath, 'Delimiter', '\t');  % load the text file with the diet
+                diet = table2cell(diet);
+                for j = 1:length(diet)
+                    diet{j, 2} = num2str(-(diet{j, 2}));
+                end
+            end
+            [model_sd] = useDiet(model_sd, diet,0);
             
             if includeHumanMets
                 % add the human metabolites
