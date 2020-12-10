@@ -13,6 +13,8 @@ function createPanModels(agoraPath, panPath, taxonLevel)
 % contain futile cycles and produce unrealistically high ATP flux.
 % The pan-models can be used an input for mgPipe if taxon abundance data is
 % available at a higher level than strain, e.g., species, genus.
+% Please use the most recent version of AGORA, 1.03 (found at
+% https://github.com/VirtualMetabolicHuman/AGORA).
 %
 % USAGE:
 %
@@ -66,16 +68,16 @@ for i = 1:size(toCreate, 1)
     models = find(ismember(infoFile(:, findTaxCol), toCreate{i, 1}));
     if size(models, 1) == 1
         modelPath = [agoraPath filesep infoFile{models, 1} '.mat'];
-%               model = readCbModel(modelPath);
-              load(modelPath);
+        model = readCbModel(modelPath);
+
         % rename biomass reaction to agree with other pan-models
         bio = find(strncmp(model.rxns, 'bio', 3));
         model.rxns{bio, 1} = 'biomassPan';
     elseif size(models, 1) > 1
         for j = 1:size(models, 1)
             modelPath = [agoraPath filesep infoFile{models(j), 1} '.mat'];
-           %               model = readCbModel(modelPath);
-              load(modelPath);
+            model = readCbModel(modelPath);
+
             bio = find(strncmp(model.rxns, 'bio', 3));
             if j == 1
                 panModel.rxns = model.rxns;
@@ -188,7 +190,9 @@ for i = 1:size(toCreate, 1)
     model.metInChIString = cellstr(model.metInChIString);
     model.metHMDBID = cellstr(model.metHMDBID);
     % fill in descriptions
-     model = rmfield(model, 'description');
+    if isfield(model,'description')
+        model = rmfield(model, 'description');
+    end
     model.description.organism = toCreate{i, 1};
     model.description.name = toCreate{i, 1};
     model.description.author = 'Stefania Magnusdottir, Almut Heinken, Laura Kutt, Dmitry A. Ravcheev, Eugen Bauer, Alberto Noronha, Kacy Greenhalgh, Christian Jaeger, Joanna Baginska, Paul Wilmes, Ronan M.T. Fleming, and Ines Thiele';
