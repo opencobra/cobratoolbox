@@ -236,6 +236,10 @@ function [] = configEnvVars(printLevel)
                         if k == 1 || k == 2
                             subDir = generateSolverSubDirectory(solverPaths{k, 3});
                         end
+                        if k == 2
+                            rmArch = ['\' filesep '(win64$)|(mac64$)|(linux64$)'];
+                            eval([globEnvVar, ' = regexprep(' globEnvVar ', rmArch,'''');'])
+                        end
                         eval([globEnvVar, ' = [', globEnvVar, ', ''', subDir, '''];']);
                     end
                 end
@@ -245,21 +249,21 @@ function [] = configEnvVars(printLevel)
                     eval([globEnvVar, ' = ''', possibleDir, ''';']);
                     method = '---*';
                 end
-
-                if j == 1 % only print out for global variable name
-                    % if the solver variable is still empty, then give instructions on how to proceed
-                    if isempty(eval(globEnvVar))
-                        if printLevel > 0
-                            solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
-                            fprintf(['   - [', method, '] ', globEnvVar, ': --> set this path manually after installing the solver ( see ', solversLink, ' )\n']);
-                        end
-                    else
-                        if printLevel > 0
-                            fprintf(['   - [', method, '] ', globEnvVar, ': ', strrep(eval(globEnvVar), '\', '\\'), '\n']);
-                        end
-                        ENV_VARS.STATUS = 1;
-                    end
+                
+                if length(solverPaths{k, 1})>1 && ~isempty(eval(globEnvVar));
+                    break % if multiple paths were specified, but solver variable is already found, do not search remaining paths
                 end
+            end
+            if isempty(eval(globEnvVar)) % if the solver variable is still empty, then give instructions on how to proceed
+                if printLevel > 0
+                    solversLink = hyperlink('https://opencobra.github.io/cobratoolbox/docs/solvers.html', 'instructions');
+                    fprintf(['   - [', method, '] ', globEnvVar, ': --> set this path manually after installing the solver ( see ', solversLink, ' )\n']);
+                end
+            else
+                if printLevel > 0
+                    fprintf(['   - [', method, '] ', globEnvVar, ': ', strrep(eval(globEnvVar), '\', '\\'), '\n']);
+                end
+                ENV_VARS.STATUS = 1;
             end
         end
     end
@@ -312,3 +316,4 @@ function subDir = generateSolverSubDirectory(solverName)
         end
     end
 end
+    
