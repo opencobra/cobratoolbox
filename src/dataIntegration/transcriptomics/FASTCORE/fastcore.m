@@ -161,6 +161,39 @@ coreRxnBool=false(size(model.S,2),1);
 coreRxnBool(A)=1;
 
 rxnRemoveList = setdiff(model.rxns,model.rxns(A));
+
+%save('debug_prior_to_fastcore_cleanup')
+
+% Remove dummy reactions
+R2 = contains(model_orig.rxns,'dummy');
+% remove dummy metabolites
+M2 = contains(model_orig.mets,'dummy');
+if any(R2) || any(M2)
+    model_orig.mets = model_orig.mets(~M2);
+    model_orig.S = model_orig.S(~M2,~R2);
+    model_orig.b = model_orig.b(~M2);
+    model_orig.rxns = model_orig.rxns(~R2);
+    model_orig.rxnNames = model_orig.rxnNames(~R2);
+    model_orig.lb = model_orig.lb(~R2);
+    model_orig.ub = model_orig.ub(~R2);
+    model_orig.c = model_orig.c(~R2);
+    
+    if isfield(model_orig, 'csense')
+        model_orig.csense = model_orig.csense(~M2);
+    end
+    if isfield(model_orig, 'ctrs')
+        model_orig.C = model_orig.C(:,~R2);
+    end
+    if isfield(model_orig, 'rxnGeneMat')
+        model_orig.rxnGeneMat = model_orig.rxnGeneMat(~R2,:);
+    end
+    if isfield(model_orig, 'rules')
+        model_orig.rules = model_orig.rules(~R2);
+    end
+    
+    rxnRemoveList = rxnRemoveList(~contains(rxnRemoveList,'dummy'));
+end
+        
 if 0
     tissueModel = removeRxns(model_orig, rxnRemoveList);
 else
