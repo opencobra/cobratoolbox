@@ -29,6 +29,11 @@ if (nargin < 3)
 end
 if (nargin < 4)
     rxnRemoveMethod = 'inclusive';
+else
+    if any(contains(metRemoveList,'dummy'))
+        removeRxnFlag = false;
+        warning('Detected the removal of dummy metabolites, not removing reactions')
+    end
 end
 
 [nMets, nRxns] = size(model.S);
@@ -71,6 +76,8 @@ if removeRxnFlag
     if (~isempty(rxnRemoveList))
         modelOut = removeRxns(modelOut,rxnRemoveList,false,false);
     end
+else
+    rxnRemoveList=[];
 end
 %return the modified model
 model = modelOut;

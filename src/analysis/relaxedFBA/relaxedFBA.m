@@ -132,7 +132,7 @@ if ~isfield(param,'printLevel')
 else
     printLevel=param.printLevel;
 end
-if isfield(model,'SIntRxnBool')
+if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
     SIntRxnBool = model.SIntRxnBool;
 else
     model_Ex = findSExRxnInd(model);
