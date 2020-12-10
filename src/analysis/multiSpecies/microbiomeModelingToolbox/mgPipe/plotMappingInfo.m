@@ -102,6 +102,8 @@ print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 % PCoA -> different reactions per individual
 D = pdist(reacTab','jaccard');
 [Y, eigvals] = cmdscale(D);
+% catch if too few individuals to cluster
+if ~isempty(Y)
     if (length(Y(1,:))>1)
         figure(3)
         P = [eigvals eigvals / max(abs(eigvals))];
@@ -117,7 +119,7 @@ D = pdist(reacTab','jaccard');
     else
         disp('noPcoA will be plotted')     
     end
-    
+end  
 
 % build numbers of patients
 % lab = 1:length(Y(:,1));

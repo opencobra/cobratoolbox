@@ -19,8 +19,10 @@ function [indNumb, sampName, organisms] = getIndividualSizeName(abunFilePath)
 [sampName] = readtable(abunFilePath, 'ReadVariableNames', false);
 % Creating array to compare with first column 
 fcol=table2cell(sampName(2:height(sampName),1));
-if  ~isa(fcol{2,1},'char')
-     fcol=cellstr(num2str(cell2mat(fcol))); 
+if size(fcol,1)>1
+    if  ~isa(fcol{2,1},'char')
+        fcol=cellstr(num2str(cell2mat(fcol)));
+    end
 end
 spaceColInd=strmatch(' ',fcol);
 if length(spaceColInd)>0

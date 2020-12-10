@@ -91,7 +91,7 @@ end
 % Increase the uptake rate of micronutrients with too low defined uptake
 % rates to sustain microbiota model growth (below 1e-6 mol/day/person).
 % Lower bounds will be relaxed by factor 100 if allowed uptake is below 0.1 mmol*gDW-1*hr-1.
-micronutrients ={'EX_adocbl(e)';'EX_vitd2(e)';'EX_vitd3(e)';'EX_psyl(e)';'EX_gum(e)';'EX_bglc(e)';'EX_phyQ(e)';'EX_fol(e)';'EX_5mthf(e)';'EX_q10(e)';'EX_retinol_9_cis(e)';'EX_pydxn(e)';'EX_pydam(e)';'EX_pydx(e)';'EX_pheme(e)';'EX_ribflv(e)';'EX_thm(e)';'EX_avite1(e)';'EX_pnto_R(e)''EX_na1(e)';'EX_cl(e)';'EX_k(e)';'EX_pi(e)';'EX_zn2(e)';'EX_cu2(e)'};
+micronutrients ={'EX_adocbl(e)';'EX_vitd2(e)';'EX_vitd3(e)';'EX_psyl(e)';'EX_gum(e)';'EX_bglc(e)';'EX_phyQ(e)';'EX_fol(e)';'EX_5mthf(e)';'EX_q10(e)';'EX_retinol_9_cis(e)';'EX_pydxn(e)';'EX_pydam(e)';'EX_pydx(e)';'EX_pheme(e)';'EX_ribflv(e)';'EX_thm(e)';'EX_avite1(e)';'EX_pnto_R(e)''EX_na1(e)';'EX_cl(e)';'EX_k(e)';'EX_pi(e)';'EX_zn2(e)';'EX_cu2(e)';'EX_btn(e)'};
 
 for i = 1:  size(adaptedDietConstraints,1)
     % exception for micronutrients to avoid numberical issues
@@ -146,7 +146,7 @@ elseif strcmp(setupUsed, 'Microbiota')
     % diet
     for i = 1:size(adaptedDietConstraints, 1)
         adaptedDietConstraints{i, 3} = '0';
-        origDietConstr=find(strcmp(adaptedDietConstraints{i, 1},VMHDietConstraints(:,1)));
+        origDietConstr=find(strcmp(VMHDietConstraints(:,1),adaptedDietConstraints{i, 1}));
         if ~isempty(origDietConstr)
             adaptedDietConstraints{i, 3} = num2str(-0.8 * VMHDietConstraints{origDietConstr, 2});
         end

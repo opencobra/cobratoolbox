@@ -119,16 +119,19 @@ for j = init:fl
         P = [eigvals eigvals / max(abs(eigvals))];
         expr = [eigvals/sum(eigvals)];
         if patStat == 0
-            plot(Y(:, 1), Y(:, 2), 'bx')
-            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-            if length(sampName)<30
-                text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
-            else
-                warning('Plot annotation with individuals names disabled because of their big number');
+            % catch if there are too few individuals to plot
+            if ~isempty(Y)
+                plot(Y(:, 1), Y(:, 2), 'bx')
+                xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+                ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+                if length(sampName)<30
+                    text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
+                else
+                    warning('Plot annotation with individuals names disabled because of their big number');
+                end
+                print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                title('PCoA of NMPCs');
             end
-            print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
-            title('PCoA of NMPCs');
         else
             patTab = readtable(indInfoFilePath);
             patients = table2array(patTab(2, :));
@@ -144,12 +147,15 @@ for j = init:fl
                     colorMap(k, :) = [0, 1, 0];  % Green
                 end
             end
-            scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
-            text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
-            text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
-            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-            title('PCoA of NMPCs');
+            % catch if there are too few individuals to plot
+            if ~isempty(Y)
+                scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
+                text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
+                text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
+                xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+                ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+                title('PCoA of NMPCs');
+            end
         end
     end
 end

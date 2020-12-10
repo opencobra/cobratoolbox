@@ -5,6 +5,7 @@
 %
 % Authors:
 %     - original version: Federico Baldini & Laurent Heirendt, April 2018
+%       - Almut Heinken, December 2020: adapted to recent changes in mgPipe
 %
 
 global CBTDIR
@@ -96,6 +97,8 @@ abunFilePath='testData_normCoverageReduced.csv';
 
 % test complete pipeline run
 [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, 'dietFilePath', dietFilePath, 'numWorkers', numWorkers);
+
+assert(init)
 
 %% test each function separately
 
@@ -218,7 +221,7 @@ assert(exist('inputDiet_net_secretion_fluxes.csv','file') == 2)
 assert(exist('ID.csv','file') == 2)
 
 % cleanup
-delete inputDiet_net_secretion_fluxes.csv ID.csv
+delete inputDiet_net_secretion_fluxes.csv inputDiet_net_uptake_fluxes.csv ID.csv
 delete simRes.mat
 
 % test rich diet simulations and extractFullRes
@@ -272,3 +275,18 @@ end
 clear ID fvaCt nsCt presol inFesMat
 cd(resPath)
 delete *.mat
+
+%% verify that mgPipe also works with a single microbiome model with one strain
+
+abunFilePath='testData_normCoverage_one_model.csv';
+
+[init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath,'resPath',resPath,'numWorkers',numWorkers);
+
+assert(init)
+
+% cleanup
+clear ID fvaCt nsCt presol inFesMat
+cd(resPath)
+delete *.mat
+delete inputDiet_net_secretion_fluxes.csv inputDiet_net_uptake_fluxes.csv reactions.csv ID.csv
+delete Metabolic_Diversity.eps Heatmap.eps
