@@ -25,10 +25,10 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    epsilon:                       (`feasTol*100`) min nonzero mass, 1/epsilon = max mass
 %
 % OUTPUT:
-% SConsistentMetBool            m x 1 boolean vector indicating consistent mets
-% SConsistentRxnBool            n x 1 boolean vector indicating consistent rxns
-% SInConsistentMetBool          m x 1 boolean vector indicating inconsistent mets
-% SInConsistentRxnBool          n x 1 boolean vector indicating inconsistent rxns
+% SConsistentMetBool            m x 1 boolean vector indicating stoichiometrically consistent mets
+% SConsistentRxnBool            n x 1 boolean vector indicating stoichiometrically consistent rxns
+% SInConsistentMetBool          m x 1 boolean vector indicating stoichiometrically inconsistent mets
+% SInConsistentRxnBool          n x 1 boolean vector indicating stoichiometrically inconsistent rxns
 % unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
 % unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
 % model

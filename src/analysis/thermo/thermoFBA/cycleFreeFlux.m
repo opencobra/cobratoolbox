@@ -217,21 +217,43 @@ end
 
 function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param)
 
-%by default, do not remove fixed variables, let the solver deal with them
-removeFixedBool = 0;
+if ~isfield(param,'removeFixedBool')
+    %by default, do not remove fixed variables, let the solver deal with them
+    param.removeFixedBool = 0;
+end
+
+if any(model_lb>model_ub)
+    error('Model lower bounds cannot be greater than upper bounds')
+end
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-epsilon = feasTol*10;
 if any(model_ub-model_lb<feasTol & model_ub~=model_lb)
     warning('cycleFreeFlux: Unperturbed lower and upper bounds closer than feasibility tolerance. May cause numerical issues.')
 end
-    
-%adaption to deal with infeasibility due to numerical imprecision
-%https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
-if 0
 
-    model_lb = model_lb -epsilon/2;
-    model_ub = model_ub + epsilon/2;
+%numerical instability may arise due to small flux magnitudes, so deal with
+%that, in one way or another
+if 1
+    %zeroing out very small fluxes seems to work reliably for recon3
+    bool = abs(v0)<feasTol;
+    if any(bool)
+        if param.debug
+            fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(bool)) ' reactions is less than feasibility tolerance. Set to zero.'])
+        end
+        v0(bool)=0;
+    end
+else
+    %relax bounds on non fixed variables
+    if 1
+        bool = model_ub-model_lb>feasTol & model_ub~=model_lb;
+        model_lb(bool)=model_lb(bool)-epsilon/2;
+        model_ub(bool)=model_ub(bool)+epsilon/2;
+    else
+        %adaption to deal with infeasibility due to numerical imprecision
+        %https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
+        model_lb = model_lb -epsilon/2;
+        model_ub = model_ub + epsilon/2;
+    end
 end
 
 [m,n] = size(model_S);
@@ -249,41 +271,68 @@ c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
 
 % constraints
 %       v            x
-A = [...
-    model_S   sparse(m, p); % Sv = b (steady state)
-    c0'       sparse(1, p); % c0'v = c0'v0
-    D        -speye(p)    ; %   v - x <= 0
-   -D        -speye(p)   ]; % - v - x <= 0
-
-
-b = [model_b;  c0' * v0; zeros(2*p, 1)];
-
-csense = repmat('E', size(A, 1), 1);
-csense(m+2:end) = 'L';
-
-%this approach is more numerically robust than forcing the new objective to equal the
-%previous objective
-if osense == 1
-    csense(m+1) = 'L';
+if any(c0)
+    A = [...
+        model_S   sparse(m, p); % Sv = b (steady state)
+        c0'       sparse(1, p); % c0'v = c0'v0
+        D        -speye(p)    ; %   v - x <= 0
+        -D        -speye(p)   ]; % - v - x <= 0
+    
+    
+    b = [model_b;  c0' * v0; zeros(2*p, 1)];
+    
+    csense = repmat('E', size(A, 1), 1);
+    csense(m+2:end) = 'L';
+    
+    %this approach is more numerically robust than forcing the new objective to equal the
+    %previous objective
+    if osense == 1
+        csense(m+1) = 'L';
+    else
+        csense(m+1) = 'G';
+    end
+    
 else
-    csense(m+1) = 'G';
+    A = [...
+        model_S   sparse(m, p); % Sv = b (steady state)
+        D        -speye(p)    ; %   v - x <= 0
+        -D        -speye(p)   ]; % - v - x <= 0
+    
+    b = [model_b; zeros(2*p, 1)];
+    
+    csense = repmat('E', size(A, 1), 1);
+    csense(m+1:end) = 'L';
 end
 
 % bounds
 lb = [v0; zeros(p, 1)]; % fixed exchange fluxes
+ub = [v0; abs(v0(SConsistentRxnBool))];
+
 if param.relaxBounds
     lb(isF) = 0; % internal reaction directionality same as in input flux
 else
     lb(isF) = max(0,model_lb(isF)); % Keep lower bound if it is > 0 (forced positive flux)
 end
 
-
-ub = [v0; abs(v0(SConsistentRxnBool))+epsilon];
+if param.debug
+    bool =ub-lb<feasTol & ub~=lb;
+    if any(bool)
+        figure;
+        hist(ub(bool)-lb(bool))
+        fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+    end
+end
 
 if param.relaxBounds
     ub(isR) = 0;
 else
     ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
+end
+
+if param.debug
+    if any(ub-lb<feasTol & ub~=lb)
+        fprintf('%s\n','cycleFreeFlux: Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+    end
 end
 
 if any(lb(1:n)>ub(1:n))
@@ -302,11 +351,6 @@ if any(lb(n+1:n+p)>ub(n+1:n+p))
 end
 
 
-%relax bounds on non fixed variables
-bool = ub-lb<feasTol & ub~=lb;
-lb(bool)=lb(bool)-feasTol*10;
-ub(bool)=ub(bool)+feasTol*10;
-
 if param.debug
     if any(ub-lb<feasTol & ub~=lb)
         fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
@@ -320,7 +364,7 @@ end
 lp = struct('osense', 1, 'c', c, 'A', A, ...
     'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
 
-if removeFixedBool
+if param.removeFixedBool
     % net zero flux
     isZero = SConsistentRxnBool & v0 == 0; 
     %remove the fixed variables from the problem
@@ -358,18 +402,34 @@ if solution.stat == 1
 
     v1 = solution.full(1:n);
 else
-    %debugging=1;
     if param.debug
-       norm(model_S*v0-model_b,'inf')
-       
-       belowLowerBound = v0-model_lb;
-       belowLowerBound(belowLowerBound>0)=0;
-       min(belowLowerBound)
-       
-       aboveUpperBound = model_ub-v0;
-       aboveUpperBound(aboveUpperBound>0)=0;
-       min(aboveUpperBound)
-       
+        disp(solution)
+        %save('debug_cycleFreeFlux_infeasibility.mat')
+        
+        %%
+        %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
+        infeasModel=lp;
+        infeasModel.S = lp.A;
+        infeasModel = rmfield(infeasModel,'A');
+        infeasModel.SIntRxnBool=true(size(lp.A,2),1);
+        
+        param.printLevel = 1;
+        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+        
+        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+        P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
+        Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
+        %%
+        norm(model_S*v0-model_b,'inf')
+        
+        belowLowerBound = v0-model_lb;
+        belowLowerBound(belowLowerBound>0)=0;
+        min(belowLowerBound)
+        
+        aboveUpperBound = model_ub-v0;
+        aboveUpperBound(aboveUpperBound>0)=0;
+        min(aboveUpperBound)
+        
         solution
         
         lpRelaxed = lp;

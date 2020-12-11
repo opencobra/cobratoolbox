@@ -242,26 +242,27 @@ while nbIteration < nbMaxIteration && stop ~= true
             error_x = norm(x - x_old);
             obj_new = relaxFBA_cappedL1_obj(model,v,r,p,q,param);
             error_obj = abs(obj_new - obj_old);
+
+            if param.printLevel>0
+                if nbIteration==1
+                    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
+                end
+                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(v),nnz(r),nnz(p),nnz(q));
+            end
+            
             if (error_x < epsilon) || (error_obj < epsilon)
                 stop = true;
             else
                 obj_old = obj_new;
             end
             if theta < 1000
-                  theta = theta * 1.5;
+                theta = theta * 1.5;
             end
             nbIteration = nbIteration + 1;
-
-            if param.printLevel>0
-                if nbIteration==1
-                    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
-                end
-                    fprintf('%5u%12.3g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,error_x,error_obj,obj_new,nnz(v),nnz(r),nnz(p),nnz(q));
-            end
-        end
+    end
 end
 if param.printLevel>0
-    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','err(x)','err(obj)','obj','card(v)','card(r)','card(p)','card(q)');
+    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
 end
 if solution.stat == 1
     solution.v = v;

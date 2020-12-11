@@ -711,8 +711,15 @@ end
 %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
 
 % subgradient of -lambda1*abs(x) + lambda0*diag(k)*(max{1,theta*abs(x)} -1)
-x(abs(x) <= 1/theta) = 0;
-x_bar = -lambda1*o(1:p).*sign(x) +  theta*lambda0*k.*sign(x);
+if 0
+    x(abs(x) <= 1/theta) = 0;
+    x_bar = -lambda1*o(1:p).*sign(x) +  theta*lambda0*k.*sign(x);
+else
+    x_bar = -lambda1*o(1:p).*sign(x);
+    x(abs(x) <= 1/theta) = 0;
+    x_bar = x_bar +  theta*lambda0*k.*sign(x);
+end
+
 % subgradient of -delta1*abs(y) + theta*delta0*diag(d)*abs(y)
 y_bar = -delta1*o(p+1:p+q).*sign(y)  +  theta*delta0*d.*sign(y);
 
@@ -1046,9 +1053,15 @@ function [x,y,z,LPsolution] = optimizeCardinality_cappedL1_solveSubProblem(subLP
 % variables (x,y,z,w,t)
 
 %Compute subgradient of second DC component (x_bar,y_bar, where z_bar = 0)
-x(abs(x) < 1/theta) = 0;
+if 0
+    x(abs(x) < 1/theta) = 0;
+    x_bar = -lambda1*o(1:p).*sign(x)     +  theta*lambda0*k.*sign(x); %Negative on the lambda1 reversed below
+else
+    x_bar = -lambda1*o(1:p).*sign(x);
+    x(abs(x) <= 1/theta) = 0;
+    x_bar = x_bar +  theta*lambda0*k.*sign(x);
+end
 
-x_bar = -lambda1*o(1:p).*sign(x)     +  theta*lambda0*k.*sign(x); %Negative on the lambda1 reversed below
 y_bar =  -delta1*o(p+1:p+q).*sign(y) +   theta*delta0*d.*sign(y); %Negative on the delta1 reversed below
 
 %no need for auxiliary variable for x where it is constrained to be non-negative
