@@ -21,7 +21,6 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
 %    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
 %    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
-%    autorun:                boolean used to enable /disable autorun behavior (default: `true`)
 %    printLevel:             verbose level (default: true)
 %    includeHumanMets:       boolean indicating if human-derived metabolites
 %                            present in the gut should be provided to the models (default: true)
@@ -59,7 +58,6 @@ parser.addParameter('rDiet', false, @islogical);
 parser.addParameter('pDiet', false, @islogical);
 parser.addParameter('extSolve', false, @islogical);
 parser.addParameter('fvaType', true, @islogical);
-parser.addParameter('autorun', true, @islogical);
 parser.addParameter('printLevel', true, @islogical);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
@@ -82,7 +80,6 @@ rDiet = parser.Results.rDiet;
 pDiet = parser.Results.pDiet;
 extSolve = parser.Results.extSolve;
 fvaType = parser.Results.fvaType;
-autorun = parser.Results.autorun;
 printLevel = parser.Results.printLevel;
 includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
@@ -158,17 +155,6 @@ end
 
 init = true;
 
-if init && autorun
-    [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
-elseif init && ~autorun
-    netSecretionFluxes = {};
-    netUptakeFluxes = {};
-    Y = {};
-    if printLevel
-        warning('autorun function was disabled. You are now running in manual / debug mode. If this is not what you wanted, change back to ?autorun?=1. Please note that the usage of manual mode is strongly discouraged and should be used only for debugging purposes.')
-    end
-    if usejava('desktop')
-        edit('mgPipe.m');
-    end
-end
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+
 end
