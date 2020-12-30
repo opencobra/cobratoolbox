@@ -133,24 +133,24 @@ for j = init:fl
                 title('PCoA of NMPCs');
             end
         else
-            metadata = readtable(indInfoFilePath);
-            metadata=table2cell(metadata);
+            infoFile = readtable(indInfoFilePath);
+            infoFile=table2cell(infoFile);
             
             % remove entries not in data
-            [C,IA]=intersect(metadata,sampName);
+            [C,IA]=intersect(infoFile,sampName);
             if length(C)<length(sampName)
-                error('Some sample IDs are not in the file with sample information!')
+                error('Some sample IDs are not found in the file with sample information!')
             end
-            metadata=metadata(IA,:);
-            groups=unique(metadata(1:end,2));
+            infoFile=infoFile(IA,:);
+            groups=unique(infoFile(1:end,2));
             % define a random color for each group
             cols = zeros(length(groups), 3);
             for k=1:length(groups)
                 cols(k,:)=[rand rand rand];
             end
-            colorMap = zeros(size(metadata,1), 3);
-            for k = size(metadata,1)
-                gInd=find(strcmp(groups,metadata{k,2}));
+            colorMap = zeros(size(infoFile,1), 3);
+            for k = size(infoFile,1)
+                gInd=find(strcmp(groups,infoFile{k,2}));
                 colorMap(k, :) = cols(gInd,:);
             end
             % catch if there are too few individuals to plot
