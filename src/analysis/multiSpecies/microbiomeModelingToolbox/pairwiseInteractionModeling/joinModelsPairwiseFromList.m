@@ -16,7 +16,7 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % parameter mergeGenes to true.
 %
 % USAGE:
-%     [pairedModels, pairedModelInfo] = joinModelsPairwiseFromList(modelList, inputModels, varargin)
+%     joinModelsPairwiseFromList(modelList,  modelFolder, varargin)
 %
 % INPUTS:
 %     modelList:          Cell array with names of reconstruction structures to be
