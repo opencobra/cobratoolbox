@@ -41,7 +41,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 %               - Almut Heinken 08/2020: added extra inputs and changed to
 %                                        varargin input
-%
+
 % Define default input parameters if not specified
 parser = inputParser();
 parser.addRequired('modPath', @ischar);

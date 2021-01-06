@@ -125,7 +125,7 @@ function [Statistics,significantFeatures] = performStatisticalAnalysis(sampleDat
     %% save only the significant entries as a spreadsheet
     nsMets={};
     cnt=1;
-    for i=2:length(Statistics)
+    for i=2:size(Statistics,1)
         if Statistics{i,4}==0
             nsMets{cnt,1}=Statistics{i,1};
             cnt=cnt+1;
