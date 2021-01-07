@@ -7,7 +7,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID,
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, sampName, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -133,25 +133,32 @@ for j = init:fl
                 title('PCoA of NMPCs');
             end
         else
-            patTab = readtable(indInfoFilePath);
-            patients = table2array(patTab(2, :));
-            %patients = patients(1:length(patOrg));
-            patients = patients(1:length(patients));
-            N = length(patients(1, :));
-            colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
-            for k = 1: length(patients(1, :))
-                if str2double(patients(1, k)) == 1
-                    colorMap(k, :) = [1, 0, 0];  % Red
-                end
-                if str2double(patients(1, k)) == 0
-                    colorMap(k, :) = [0, 1, 0];  % Green
-                end
+            infoFile = readtable(indInfoFilePath);
+            infoFile=table2cell(infoFile);
+            
+            % remove entries not in data
+            [C,IA]=intersect(infoFile,sampName);
+            if length(C)<length(sampName)
+                error('Some sample IDs are not found in the file with sample information!')
+            end
+            infoFile=infoFile(IA,:);
+            groups=unique(infoFile(1:end,2));
+            % define a random color for each group
+            cols = zeros(length(groups), 3);
+            for k=1:length(groups)
+                cols(k,:)=[rand rand rand];
+            end
+            colorMap = zeros(size(infoFile,1), 3);
+            for k = size(infoFile,1)
+                gInd=find(strcmp(groups,infoFile{k,2}));
+                colorMap(k, :) = cols(gInd,:);
             end
             % catch if there are too few individuals to plot
             if ~isempty(Y)
-                scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
-                text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
-                text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
+                scatter(Y(:, 1), Y(:, 2), 24 * ones(size(Y,1), 1), colorMap, 'filled');
+                for k=1:length(groups)
+                text(max(Y(:, 1)),max(Y(:, 3-k)),groups{k},'HorizontalAlignment','left','Color', cols(k,:));%to insert numbers
+                end
                 xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
                 title('PCoA of NMPCs');
