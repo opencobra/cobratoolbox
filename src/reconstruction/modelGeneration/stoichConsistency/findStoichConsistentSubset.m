@@ -53,6 +53,9 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 if ~exist('printLevel','var')
     printLevel=1;
 end
+if printLevel>0
+    fprintf('%s\n','--- findStoichConsistentSubset START ----')
+end
 
 if ~exist('massBalanceCheck','var')
     if isfield(model,'metFormulas')
@@ -654,7 +657,7 @@ if printLevel>0
     end
     %fprintf('%6u\t%6u\t%s\n',nnz(model.SInConsistentMetBool),nnz(model.SInConsistentRxnBool),' total stoichiometrically inconsistent.')
     %fprintf('%6u\t%6u\t%s\n',nnz(model.unknownSConsistencyMetBool),nnz(model.unknownSConsistencyRxnBool),' unknown consistency.')
-    fprintf('%s\n','--- END ----')
+    fprintf('%s\n','--- findStoichConsistentSubset END ----')
 end
 
 
@@ -788,9 +791,8 @@ unknownSConsistencyRxnBool=model.unknownSConsistencyRxnBool;
 % metRemoveBool2 = getCorrespondingRows(model.S,true(nMet,1),model.SInConsistentRxnBool & model.SIntRxnBool,'inclusive');
 % 
 
-
 %Extract stoich consistent submodel
-if any(~model.SConsistentMetBool)
+if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
     %heuristically internal reactions that are stoichiometrically inconsistent should be
     %removed
     rxnRemoveBool1 = model.SInConsistentRxnBool & model.SIntRxnBool;
@@ -806,14 +808,24 @@ if any(~model.SConsistentMetBool)
     model.metRemoveBool = metRemoveBool1 | metRemoveBool2;
     
     %maintains stoichiometric consistency
-    [stoichConsistModel, metRemoveList] = removeRxns(model, model.rxns(model.rxnRemoveBool),'metRemoveMethod','exclusive');
+    [stoichConsistModel, metRemoveList] = removeRxns(model, model.rxns(model.rxnRemoveBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','inclusive');
+    
+    
+
     metRemoveBoolTest=ismember(model.mets,metRemoveList);
     if ~all(model.metRemoveBool==metRemoveBoolTest)
-        error('inconsistent metabolite removal')
+        if all(model.metRemoveBool== (metRemoveBoolTest || model.SInConsistentMetBool))
+            metRemoveList2 = setdiff(model.mets(model.SInConsistentMetBool), metRemoveList);
+            %zero rows are inconsistent and should be removed
+            removeRxnFlag = 0;
+            [stoichConsistModel, ~] = removeMetabolites(stoichConsistModel,metRemoveList2, removeRxnFlag);
+        else
+            error('inconsistent metabolite removal')
+        end
     end
     try
-    stoichConsistModel = removeUnusedGenes(stoichConsistModel);
-        catch ME
+        stoichConsistModel = removeUnusedGenes(stoichConsistModel);
+    catch ME
         disp(ME.message)
     end
 else

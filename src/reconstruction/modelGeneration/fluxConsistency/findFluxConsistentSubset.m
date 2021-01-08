@@ -1,4 +1,4 @@
-function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
+function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel] = findFluxConsistentSubset(model, param, printLevel)
 % Finds the subset of `S` that is flux consistent using various algorithms,
 % but `fastcc` from `fastcore` by default
 %
@@ -61,6 +61,9 @@ else
 end
 if ~exist('printLevel','var')
     printLevel=0;
+end
+if printLevel>0
+    fprintf('%s\n','--- findFluxConsistentSubset START ----')
 end
 
 [nMet,nRxn]=size(model.S);
@@ -234,4 +237,20 @@ model.fluxConsistentMetBool=fluxConsistentMetBool;
 model.fluxConsistentRxnBool=fluxConsistentRxnBool;
 model.fluxInConsistentMetBool=fluxInConsistentMetBool;
 model.fluxInConsistentRxnBool=fluxInConsistentRxnBool;
+
+%Extract flux consistent submodel
+if any(~model.fluxConsistentRxnBool)   
+    %removes reactions and maintains stoichiometric consistency
+    [fluxConsistModel, ~] = removeRxns(model, model.rxns(~fluxConsistentRxnBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','inclusive');
+    try
+        fluxConsistModel = removeUnusedGenes(fluxConsistModel);
+    catch ME
+        disp(ME.message)
+    end
+else
+    fluxConsistModel = model;
+end
+
+if printLevel>0
+    fprintf('%s\n','--- findFluxConsistentSubset END ----')
 end
