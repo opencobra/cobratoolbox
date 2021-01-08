@@ -1,8 +1,27 @@
-function [unannotatedRxns] = getUnannotatedReactionsFromPubSeedSpreadsheets(spreadsheetFolder)
+function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
 % Prepares input file for the comparative genomics part
 % Gets all the reactions that were not found in the respective organism
 % through comparative genomics to remove them from the draft
 % reconstructions
+%
+% USAGE:
+%   unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
+%
+% INPUTS
+% infoFilePath          File with information on reconstructions to refine
+% inputDataFolder       Folder to save propagated data to (default: folder 
+%                       in current path called "InputData")                
+% spreadsheetFolder     Folder with comparative genomics data retrieved 
+%                       from PubSEED in spreadsheet format if available. 
+%                       For an example of the required format, see 
+%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%
+% .. Authors:
+%       - Almut Heinken, 06/2020
+
+% get PubSEED IDs of new organisms to reconstruct
+infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+infoFile = table2cell(infoFile);
 
 % load reactions
 reactions=readtable('InReactions.txt', 'ReadVariableNames', false,'FileType','text','delimiter','tab');
@@ -14,10 +33,6 @@ fileList={dInfo.name};
 fileList=fileList';
 fileList(find(strcmp(fileList(:,1),'.')),:)=[];
 fileList(find(strcmp(fileList(:,1),'..')),:)=[];
-
-% get AGORA2 IDs
-infoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
-infoFile=table2cell(infoFile);
 
 unannotatedRxns={};
 cnt=1;
@@ -49,16 +64,14 @@ for i=1:length(fileList)
     end
 end
 
-% remove duplicate reactions for organisms, gap-filled reactions present in
-% comparative genomics spreadsheets
-% remove reactions not present in KBase translation table to avoid deleting
-% comparative genomic reactions from AGORA1
-genomeAnnotation = readtable('gapfilledGenomeAnnotation.txt', 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
+genomeAnnotation = readtable([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
 genomeAnnotation = table2cell(genomeAnnotation);
 
 translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
 translateRxns=table2cell(translateRxns);
 
+% remove duplicate reactions for organisms, gap-filled reactions present in
+% comparative genomics spreadsheets
 delArray=[];
 cnt=1;
 orgs=unique(unannotatedRxns(:,1));
@@ -84,6 +97,8 @@ for i=1:length(orgs)
         delArray(cnt,1)=getRxnInds(keptRxnInd(j));
         cnt=cnt+1;
     end
+    
+    % remove reactions not present in KBase translation table
     [~,notTranslated]=setdiff(getRxns,translateRxns(:,2));
     for j=1:length(notTranslated)
         delArray(cnt,1)=getRxnInds(notTranslated(j));

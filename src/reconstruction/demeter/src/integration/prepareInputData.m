@@ -1,4 +1,4 @@
-function prepareInputData(infoFilePath,inputDataFolder,getComparativeGenomics)
+function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,varargin)
 % This function propagates available experimental data that was collected for
 % AGORA2 (https://www.biorxiv.org/content/10.1101/2020.11.09.375451v1) to newly
 % reconstructed strains and reads information from comparative genomic data
@@ -6,25 +6,49 @@ function prepareInputData(infoFilePath,inputDataFolder,getComparativeGenomics)
 % propagated data manually afterwards.
 %
 % USAGE:
+%   prepareInputData(infoFilePath,inputDataFolder,spreadsheetFolder)
 %
-% prepareInputData(infoFilePath,inputDataFolder,getComparativeGenomics)
-%
-% INPUTS
-% infoFilePath             File with information on reconstructions to refine
-% inputDataFolder          Folder with experimental data and database files
-%                          to load
-% getComparativeGenomics   Boolean indicating whether PubSEED spreadsheets
-%                          with information on the reconstructed strains are
-%                          available and should be used
+% REQUIRED INPUT
+% infoFilePath          File with information on reconstructions to refine
+% OPTIONAL INPUTS
+% inputDataFolder       Folder to save propagated data to (default: folder 
+%                       in current path called "InputData")                
+% spreadsheetFolder     Folder with comparative genomics data retrieved 
+%                       from PubSEED in spreadsheet format if available. 
+%                       For an example of the required format, see 
+%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+% OUTPUTS
+% adaptedInfoFilePath   Path to file with taxonomic information adapted
+%                       with gram staining information
+% inputDataFolder       Folder to save propagated data to (default: folder 
+%                       in current path called "InputData")                
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
 
+parser = inputParser();
+parser.addRequired('infoFilePath', @ischar);
+parser.addParameter('inputDataFolder', [pwd filesep 'InputData'], @ischar);
+parser.addParameter('spreadsheetFolder', '', @ischar);
+
+parser.parse(infoFilePath, varargin{:});
+
+infoFilePath = parser.Results.infoFilePath;
+inputDataFolder = parser.Results.inputDataFolder;
+spreadsheetFolder = parser.Results.spreadsheetFolder;
+
+% create the folder where propagetd experimental data will be saved
+mkdir(inputDataFolder)
+
 %% Propagate experimental data from one strain to other strains
+
+global CBTDIR
+% find the folder with information that was collected for DEMETER
+demeterInputFolder = [CBTDIR filesep 'papers' filesep '2021_demeter' filesep 'input'];
 
 % Get taxonomy information on AGORA2 that will serve to inform new
 % organisms
-agoraInfoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
+agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx'], 'ReadVariableNames', false);
 agoraInfoFile = table2cell(agoraInfoFile);
 
 % get taxonomic information of new organisms to reconstruct
@@ -40,17 +64,12 @@ for i=1:length(taxa)
     end
 end
 
-% add taxonomy information of new organisms to reconstruct
-agora2InputFolder = fileparts(which('ReactionTranslationTable.txt'));
-
 %% Check for duplicate and removed strains in the input files
 
 % get list of files to check
 inputDataToCheck={
-    'BiosynthesisPrecursorTable'
     'BvitaminBiosynthesisTable'
     'CarbonSourcesTable'
-    'drugTable'
     'FermentationTable'
     'GrowthRequirementsTable'
     'secretionProductTable'
@@ -59,10 +78,10 @@ inputDataToCheck={
     };
 
 for i=1:length(inputDataToCheck)
-    data=readtable([agora2InputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+    data=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
     data=table2cell(data);
     checkedData = checkInputData(data,agoraInfoFile);
-    writetable(cell2table(checkedData),[agora2InputFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    writetable(cell2table(checkedData),[demeterInputFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
 %% propagate experimental data from the input files to new strains
@@ -76,9 +95,14 @@ inputDataToCheck={
     };
 
 for i=1:length(inputDataToCheck)
-    inputData=readtable([agora2InputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+    inputData=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
     inputData=table2cell(inputData);
     propagatedData = propagateExperimentalData(inputData, infoFile, agoraInfoFile);
+    
+    % remove organisms not in the current reconstruction resource
+    [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1));
+    propagatedData(IA,:) = [];
+
     writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
@@ -94,7 +118,7 @@ taxa={'Species','Genus','Family','Order','Class','Phylum'};
 
 agoraGramCol=find(strcmp(agoraInfoFile(1,:),'Gram Staining'));
 
-for i=2:length(infoFile)
+for i=2:size(infoFile,1)
     for j=1:length(taxa)
         taxon=infoFile{i,find(strcmp(infoFile(1,:),taxa{j}))};
         taxCol=find(strcmp(agoraInfoFile(1,:),taxa{j}));
@@ -106,19 +130,17 @@ for i=2:length(infoFile)
     end
 end
 infoFile(:,1)=strrep(infoFile(:,1),'-','_');
-infoFile=cell2table(infoFile);
-if contains(infoFilePath,'xlsx')
-    writetable(infoFile,infoFilePath,'FileType','spreadsheet','WriteVariableNames',false);
-else
-    writetable(infoFile,infoFilePath,'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-end
+
+% save adapted file with taxonomic information as a text file
+writetable(cell2table(infoFile),[inputDataFolder filesep 'adaptedInfoFile'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+adaptedInfoFilePath = [inputDataFolder filesep 'adaptedInfoFile.txt'];
 
 %% Map growth on defined media to in silico constraints
 % Takes the growth on defined media reported by Tramontano et al. 2018 (PMID:29556107) and
 % maps them into input data usable by DEMETER
-inputMedia=readtable('inputMedia.txt', 'Delimiter', 'tab', 'ReadVariableNames', false);
+inputMedia=readtable([demeterInputFolder filesep 'inputMedia.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
 inputMedia = table2cell(inputMedia);
-strainGrowth=readtable('strainGrowth.txt', 'Delimiter', 'tab', 'ReadVariableNames', false);
+strainGrowth=readtable([demeterInputFolder filesep 'strainGrowth.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
 strainGrowth = table2cell(strainGrowth);
 mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia);
 
@@ -131,22 +153,37 @@ data(size(data,1)+1:size(data,1)+length(notintable),1)=notintable;
 for i=2:size(mappedMedia,1)
     data(find(strcmp(data(:,1),mappedMedia{i,1})),2:size(mappedMedia,2))=mappedMedia(i,2:end);
 end
+
+% remove organisms not in the current reconstruction resource
+[C,IA] = setdiff(data(:,1),infoFile(:,1));
+data(IA,:) = [];
+    
 writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 %% Create genome annotations file with reactions from PubSeed spreadsheets if available
-if getComparativeGenomics
-    spreadsheetFolder=fileparts(which('B_Rib.tsv'));
-    % reactions that are annotated
-    writeReactionsFromPubSeedSpreadsheets(spreadsheetFolder);
-    %% Gap-fill reactions formulated by comparative genomics
-    GAFolder=fileparts(which('GenomeAnnotation.txt'));
-    genomeAnnotation=readtable([GAFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-    genomeAnnotation = table2cell(genomeAnnotation);
-    [gapfilledGenomeAnnotation] = gapfillRefinedGenomeReactions(genomeAnnotation);
-    gapfilledGenomeAnnotation=cell2table(gapfilledGenomeAnnotation);
+% reactions that are annotated
+writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
+genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+genomeAnnotation = table2cell(genomeAnnotation);
+
+% remove organisms not in the current reconstruction resource
+[C,IA] = setdiff(genomeAnnotation(:,1),infoFile(:,1));
+genomeAnnotation(IA,:) = [];
+
+% Proceed if comparative genomics is available
+if size(genomeAnnotation,1)>0
+    
+    % Gap-fill reactions formulated by comparative genomics
+    gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation);
+    
+    % remove organisms not in the current reconstruction resource
+    [C,IA] = setdiff(gapfilledGenomeAnnotation(:,1),infoFile(:,1));
+    gapfilledGenomeAnnotation(IA,:) = [];
+    
     writetable(cell2table(gapfilledGenomeAnnotation),[inputDataFolder filesep 'gapfilledGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-    %% reactions that are not annotated
-    unannotatedRxns=getUnannotatedReactionsFromPubSeedSpreadsheets(spreadsheetFolder);
+    
+    % Remove reactions that are not annotated
+    unannotatedRxns=getUnannotatedReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
     writetable(cell2table(unannotatedRxns),[inputDataFolder filesep 'unannotatedGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
@@ -183,12 +220,16 @@ for i=1:length(species)
         for j=1:length(C)
             sumData(j,1)=abs(nansum(nonzeros(str2double(inputData(IA(j),2:end)))));
         end
-        
-        % if there is any data, propagate the experimental data from
-        % the strain with the most data to any new strains from the same
-        % species
-        for j=1:length(newStrains)
-            inputData(newStrains(j),2:end)=inputData(IA(row(1)),2:end);
+        if any(sumData)>0
+            % if there is any data, propagate the experimental data from
+            % the strain with the most data to the strains with no data
+            % find the row with the most experimental data
+            [row, col] = find(ismember(sumData, max(sumData(:))));
+            for j=1:length(C)
+                if sumData(j,1)<1
+                    inputData(IA(j),2:end)=inputData(IA(row(1)),2:end);
+                end
+            end
         end
     end
 end

@@ -1,12 +1,12 @@
 function [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
 
+addAnnRxns={};
+annRxns={};
+updateGPRCnt=0;
+    
 if isfile([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'])
     genomeAnnotation = readtable([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
     genomeAnnotation = table2cell(genomeAnnotation);
-    
-    addAnnRxns={};
-    annRxns={};
-    updateGPRCnt=0;
     
     findRxns=find(strcmp(microbeID,genomeAnnotation(:,1)));
     if ~isempty(findRxns)

@@ -1,21 +1,40 @@
-function writeReactionsFromPubSeedSpreadsheets(spreadsheetFolder)
+function writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
 % Prepares input file for the comparative genomics part
-% Write reaction spreadsheets from InReactions and PubSeed spreadsheets
+% Write reaction spreadsheets from InReactions and PubSEED spreadsheets.
+%
+% USAGE:
+%   writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
+%
+% INPUTS
+% infoFilePath          File with information on reconstructions to refine
+% inputDataFolder       Folder to save propagated data to (default: folder 
+%                       in current path called "InputData")                
+% spreadsheetFolder     Folder with comparative genomics data retrieved 
+%                       from PubSEED in spreadsheet format if available. 
+%                       For an example of the required format, see 
+%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%
+% .. Authors:
+%       - Almut Heinken, 06/2020
+
+% get PubSEED IDs of new organisms to reconstruct
+infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+infoFile = table2cell(infoFile);
+
+% find folder with annotation versions in the information file
+versionCol = find(strcmp(infoFile(1,:),'Annotation version ID'));
 
 % load reactions
 reactions=readtable('InReactions.txt', 'ReadVariableNames', false,'FileType','text','delimiter','tab');
 reactions = table2cell(reactions);
 exchanges=reactions(find(strcmp(reactions(:,1),'Exchange')),2);
-currentDir=pwd;
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-cd(fileDir);
+
 reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 database.reactions=reactionDatabase;
 for i=1:length(exchanges)
     exchanges{i,2}=database.reactions{ismember(database.reactions(:, 1), exchanges{i,1}), 3};
 end
-cd(currentDir)
 
 % get all spreadsheets
 dInfo = dir(spreadsheetFolder);
@@ -23,10 +42,6 @@ fileList={dInfo.name};
 fileList=fileList';
 fileList(find(strcmp(fileList(:,1),'.')),:)=[];
 fileList(find(strcmp(fileList(:,1),'..')),:)=[];
-
-% get AGORA2 IDs
-infoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
-infoFile=table2cell(infoFile);
 
 genomeAnnotation={};
 cnt=1;
@@ -48,7 +63,7 @@ for i=1:length(fileList)
                         genomeAnnotation{cnt,1}=spreadsheet{j,1};
                         genomeAnnotation{cnt,2}=getRxns{r};
                         % include GPRs
-                        peg=infoFile(find(strcmp(infoFile(:,1),spreadsheet{j,1})),15);
+                        peg=infoFile(find(strcmp(infoFile(:,1),spreadsheet{j,1})),versionCol);
                         genes=strsplit(spreadsheet{j,k},',');
                         if strcmp(genes,'][')
                             genomeAnnotation{cnt,3}='gap_filled';
@@ -86,6 +101,7 @@ for i=1:length(fileList)
 end
 
 % remove duplicate reactions for organisms
+if size(genomeAnnotation,1)>0
 delArray=[];
 cnt=1;
 orgs=unique(genomeAnnotation(:,1));
@@ -106,8 +122,8 @@ for i=1:length(orgs)
     end
 end
 genomeAnnotation(delArray,:)=[];
-genomeAnnotation=cell2table(genomeAnnotation);
+end
 
-writetable(genomeAnnotation,'genomeAnnotation','FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(genomeAnnotation),[inputDataFolder filesep 'genomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end

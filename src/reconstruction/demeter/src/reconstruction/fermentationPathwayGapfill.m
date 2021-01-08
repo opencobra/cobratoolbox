@@ -23,7 +23,6 @@ function [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, mic
 % addedRxns         List of reactions that were added during refinement
 % removedRxns       List of reactions that were removed during refinement
 % 
-%
 % Almut Heinken and Stefania Magnusdottir, 2016-2020
 
 addedRxns = {};
