@@ -35,8 +35,9 @@ end
 
 % define files to analyze
 analyzedFiles={
-    'Reaction presence' ['ReactionPresence' filesep 'ReactionPresence_' reconVersion]
-    'Subsystem presence' ['ReactionPresence' filesep 'SubsystemPresence_' reconVersion]
+    'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
+    'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
+    'Subsystem presence' ['ReactionMetabolitePresence' filesep 'SubsystemPresence_' reconVersion]
     'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
     'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
     };
@@ -46,17 +47,11 @@ for k=1:size(analyzedFiles,1)
     DataToAnalyze = table2cell(DataToAnalyze);
     DataToAnalyze=DataToAnalyze';
     
-    if size(DataToAnalyze,2)>50
-        perpl=30;
-    else
-        perpl=10;
-    end
-    
     [C,I]=setdiff(DataToAnalyze(1,:),infoFile(:,1),'stable');
     DataToAnalyze(:,I(2:end))=[];
     
     % can only be performed if there are enough strains with taxonomical information
-    if size(DataToAnalyze,2)>10
+    if size(DataToAnalyze,2) >= 10
         
         rp=str2double(DataToAnalyze(2:end,2:end));
         orgs=DataToAnalyze(1,2:end)';
@@ -120,8 +115,17 @@ for k=1:size(analyzedFiles,1)
                 taxa(toDel,:)=[];
             end
             
-            if size(data,1)>10
+            if size(data,1)>5
                 
+                % adjust perplicity to number of variables
+                if size(data,1) > 50
+                    perpl=30;
+                elseif size(data,1) >= 10
+                    perpl=10;
+                else
+                    perpl=5;
+                end
+    
                 Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
                 Summary.(taxonlevels{i})(:,1)=red_orgs;
                 Summary.(taxonlevels{i})(:,2)=taxa;
@@ -178,7 +182,7 @@ for k=1:size(analyzedFiles,1)
                     red_orgs(strcmp(taxa,'N/A'),:)=[];
                     taxa(find(strcmp(taxa,'N/A')),:)=[];
                     
-                    if size(data,1)>10
+                    if size(data,1) >= 10
                     
                     %     % remove features with too few members
                     %     [uniqueXX, ~, J]=unique(feats) ;

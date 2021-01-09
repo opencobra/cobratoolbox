@@ -24,9 +24,7 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(~contains(modelList(:,1),'.mat'),:)=[];
 
-currentDir=pwd;
 mkdir([propertiesFolder filesep 'ComputedFluxes'])
-cd([propertiesFolder filesep 'ComputedFluxes'])
 
 uptakeFluxes = {};
 secretionFluxes = {};
@@ -49,18 +47,26 @@ else
         modelsRenamed=strrep(modelList(:,1),'.mat','');
         [C,IA]=intersect(modelsRenamed,uptakeFluxes(2:end,1));
         modelList(IA,:)=[];
-    elseif isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-        reactions = table2cell(reactions);
-        allExch=reactions(find(strncmp(reactions(:,1),'EX_',3)),1);
     else
-        % load all reconstructions and get the exchange reactions
-        allExch={};
-        for i=1:length(modelList)
-            i
-            model=readCbModel([modelFolder filesep modelList{i}]);
-            exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));
-            allExch=unique(vertcat(allExch,exRxns));
+        % find the correct file with the reaction list
+        if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
+            reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'];
+        else
+            reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '.txt'];
+        end
+        if isfile(reactionDB)
+            reactions = readtable(reactionDB, 'ReadVariableNames', false);
+            reactions = table2cell(reactions);
+            allExch=reactions(find(strncmp(reactions(:,1),'EX_',3)),1);
+        else
+            % load all reconstructions and get the exchange reactions
+            allExch={};
+            for i=1:length(modelList)
+                i
+                model=readCbModel([modelFolder filesep modelList{i}]);
+                exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));
+                allExch=unique(vertcat(allExch,exRxns));
+            end
         end
     end
 end
@@ -171,7 +177,7 @@ if ~isempty(modelList)
     
     % save both combined in one file
     UptakeSecretion=secretionFluxes;
-    UptakeSecretion(:,size(UptakeSecretion,2)+1:size(UptakeSecretion,2)+length(allExch)-1)=uptakeFluxes(:,2:end);
+    UptakeSecretion(:,size(UptakeSecretion,2)+1:size(UptakeSecretion,2)+length(allExch))=uptakeFluxes(:,2:end);
     writetable(cell2table(UptakeSecretion),[propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
@@ -195,7 +201,5 @@ for i=1:length(files)
     end
     writetable(cell2table(data),[propertiesFolder filesep 'ComputedFluxes' filesep files{i} '_qualitative'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
-
-cd(currentDir)
 
 end

@@ -193,6 +193,10 @@ function [propagatedData] = propagateExperimentalData(inputData, infoFile, agora
 % This function propagates experimental data collected for a species to
 % other strains of the same species.
 
+% remove strains that are already in the AGORA2 data
+[C,IA] = intersect(infoFile(:,1),agoraInfoFile(:,1),'stable');
+infoFile(IA(2:end),:)=[];
+
 % get all species
 speciesCol=find(strcmp(agoraInfoFile(1,:),'Species'));
 species=unique(agoraInfoFile(2:end,speciesCol));
@@ -225,10 +229,10 @@ for i=1:length(species)
             % the strain with the most data to the strains with no data
             % find the row with the most experimental data
             [row, col] = find(ismember(sumData, max(sumData(:))));
-            for j=1:length(C)
-                if sumData(j,1)<1
-                    inputData(IA(j),2:end)=inputData(IA(row(1)),2:end);
-                end
+            % propagate the data to new strains
+            [~,nsInd,~] = intersect(inputData(:,1),infoFile(newStrains,1));
+            for j=1:length(newStrains)
+                inputData(nsInd(j),2:end)=inputData(IA(row(1)),2:end);
             end
         end
     end

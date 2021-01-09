@@ -31,7 +31,7 @@ reconVersion = parser.Results.reconVersion;
 customFeatures = parser.Results.customFeatures;
 analyzeDrafts = parser.Results.analyzeDrafts;
 
-mkdir([pwd filesep 'modelProperties'])
+mkdir(propertiesFolder)
 
 dInfo = dir(refinedFolder);
 modelList={dInfo.name};
@@ -40,31 +40,43 @@ modelList(~contains(modelList(:,1),'.mat'),:)=[];
 
 if length(modelList)>1
     
-    if isempty(propertiesFolder)
-        % create a folder in the current path
-        mkdir('refinedModelProperties')
-        propertiesFolder = [pwd filesep 'refinedModelProperties'];
-    end
-    
     % get basic statistics on draft and refined reconstructions and metabolite
     % and reaction content of all refined reconstructions
     printReconstructionFeatures(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
     
     if analyzeDrafts
+        % save results for refined and draft in two different folders
+        mkdir([propertiesFolder filesep 'Draft'])
+        
         % analyze and cluster draft reconstructions for comparison
-        getReactionMetabolitePresence(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'])
-        computeUptakeSecretion(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'],{},numWorkers)
-        computeInternalMetaboliteProduction(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'],{},numWorkers)
-        producetSNEPlots(propertiesFolder,infoFilePath,[reconVersion '_draft'],customFeatures)
+        getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion)
+        getSubsystemPresence([propertiesFolder filesep 'Draft'],reconVersion)
+        computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion,{},numWorkers)
+        computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion,{},numWorkers)
+        producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,reconVersion,customFeatures)
+        rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],reconVersion)
+        plotMetaboliteProducersConsumers([propertiesFolder filesep 'Draft'],infoFilePath,reconVersion)
+        
+        mkdir([propertiesFolder filesep 'Refined'])
+        
+        % analyze and cluster refined reconstructions
+        getReactionMetabolitePresence(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion)
+        getSubsystemPresence([propertiesFolder filesep 'Refined'],reconVersion)
+        computeUptakeSecretion(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
+        computeInternalMetaboliteProduction(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
+        producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion,customFeatures)
+        rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],reconVersion)
+        plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion)
     end
     
     % analyze and cluster refined reconstructions
-    getReactionMetabolitePresence(refinedFolder,propertiesFolder,[reconVersion '_refined'])
-    computeUptakeSecretion(refinedFolder,propertiesFolder,[reconVersion '_refined'],{},numWorkers)
-    computeInternalMetaboliteProduction(refinedFolder,propertiesFolder,[reconVersion '_refined'],{},numWorkers)
-    producetSNEPlots(propertiesFolder,infoFilePath,[reconVersion '_refined'],customFeatures)
-    rankFeaturesByIncidence(propertiesFolder,[reconVersion '_refined'])
-    plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,[reconVersion '_refined'])
+    getReactionMetabolitePresence(refinedFolder,propertiesFolder,reconVersion)
+    getSubsystemPresence(propertiesFolder,reconVersion)
+    computeUptakeSecretion(refinedFolder,propertiesFolder,reconVersion,{},numWorkers)
+    computeInternalMetaboliteProduction(refinedFolder,propertiesFolder,reconVersion,{},numWorkers)
+    producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatures)
+    rankFeaturesByIncidence(propertiesFolder,reconVersion)
+    plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion)
     
     % get stochiometric and flux consistency for both draft and refined
     % reconstructions

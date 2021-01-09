@@ -15,7 +15,7 @@ function getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion
 %   - AUTHOR
 %   Almut Heinken, 06/2020
 
-mkdir([propertiesFolder filesep 'ReactionPresence'])
+mkdir([propertiesFolder filesep 'ReactionMetabolitePresence'])
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
@@ -33,11 +33,19 @@ if isfile(['ReactionPresence_' reconVersion '.txt'])
     allMets=MetabolitePresence(1,2:end)';
 else
     % restart from existing data if possible
-    if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
+    % find the correct file with the reaction and metabolite list
+    if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
+        reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'];
+        metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '_refined.txt'];
+    else
+        reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '.txt'];
+        metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '.txt'];
+    end
+    if isfile(reactionDB)
+        reactions = readtable(reactionDB, 'ReadVariableNames', false);
         reactions = table2cell(reactions);
         allRxns=reactions(:,1);
-        metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', false);
+        metabolites = readtable(metDB, 'ReadVariableNames', false);
         metabolites = table2cell(metabolites);
         allMets=metabolites(:,1);
     else
@@ -107,7 +115,7 @@ if ~isempty(modelList)
                 end
             end
             for k=1:length(allMets)
-                if ~isempty(find(ismember(metsTmp{j},allMets{k})))
+                if any(find(ismember(metsTmp{j},{[allMets{k} '[c]'],[allMets{k} '[p]'],[allMets{k} '[e]']})))
                     MetabolitePresence{plusonerow,k+1}=1;
                 else
                     MetabolitePresence{plusonerow,k+1}=0;
@@ -120,7 +128,7 @@ if ~isempty(modelList)
     end
 end
 
-writetable(cell2table(ReactionPresence),[propertiesFolder filesep 'ReactionPresence' filesep 'ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-writetable(cell2table(MetabolitePresence),['MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(ReactionPresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(MetabolitePresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end

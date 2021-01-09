@@ -206,6 +206,7 @@ for j=1:size(toCompare,1)
     reconMetabolites=database.metabolites;
     [C,IA] = setdiff(reconMetabolites(:,1),uniqueMets);
     reconMetabolites(IA,:)=[];
+    
     writetable(cell2table(reconMetabolites),[propertiesFolder filesep 'Metabolites_' reconVersion '_' lower(toCompare{j,1})],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     
     reconReactions=database.reactions;
@@ -213,42 +214,6 @@ for j=1:size(toCompare,1)
     reconReactions(IA,:)=[];
     writetable(cell2table(reconReactions),[propertiesFolder filesep 'Reactions_' reconVersion  '_' lower(toCompare{j,1})],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
-
-% plot the results of the comparison
-featuresDraft = readtable(['ReconstructionFeatures_Draft_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-featuresDraft=table2cell(featuresDraft);
-
-featuresCurated = readtable(['ReconstructionFeatures_Refined_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-featuresCurated=table2cell(featuresCurated);
-
-[C,IA,IB]=intersect(featuresDraft(:,1),featuresCurated(:,1),'stable');
-for i=1:length(C)
-    featuresDraftNew(i,:)=featuresDraft(IA(i),:);
-    featuresCuratedNew(i,:)=featuresCurated(IB(i),:);
-end
-for i=2:size(featuresDraftNew,2)
-    % get models analyzed for both draft and curated
-    data=zeros(size(featuresDraftNew,1)-1,2);
-    data(:,1)=str2double(featuresDraftNew(2:end,i));
-    data(:,2)=str2double(featuresCuratedNew(2:end,i));
-    % if at least one category is nonzeros
-    if sum(data(:,1))>0.00001 || sum(data(:,2))>0.00001
-        figure;
-        % workaround for all zeros in one category
-        if sum(data(:,1))<0.00001
-            data(1,1)=0.00001;
-        end
-        hold on
-        violinplot(data, {'Draft','Refined'});
-        set(gca, 'FontSize', 16)
-        box on
-        h=title(strrep(featuresDraftNew{1,i},'_',' '));
-        set(h,'interpreter','none')
-        set(gca,'TickLabelInterpreter','none')
-        print([featuresDraftNew{1,i}],'-dpng','-r300')
-    end
-end
-close all
 
 % print summary table
 

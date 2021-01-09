@@ -42,8 +42,7 @@ WesternDiet=table2cell(WesternDiet);
 WesternDiet=cellstr(string(WesternDiet));
 
 % Load reaction and metabolite database
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 metaboliteDatabase=table2cell(metaboliteDatabase);
 database.metabolites=metaboliteDatabase;
 for i=1:size(database.metabolites,1)
@@ -51,7 +50,7 @@ for i=1:size(database.metabolites,1)
     database.metabolites{i,7}=num2str(database.metabolites{i,7});
     database.metabolites{i,8}=num2str(database.metabolites{i,8});
 end
-reactionDatabase = readtable([fileDir filesep 'ReactionDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 database.reactions=reactionDatabase;
 

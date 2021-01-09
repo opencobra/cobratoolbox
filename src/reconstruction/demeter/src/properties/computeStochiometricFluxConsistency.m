@@ -37,6 +37,14 @@ if numWorkers > 0
 end
 environment = getEnvironment();
 
+% define input parameters for findFluxConsistentSubset
+param=struct;
+feasTol = getCobraSolverParams('LP', 'feasTol');
+param.('feasTol')= feasTol;
+param.('epsilon')=feasTol*100;
+param.('modeFlag')=0;
+param.('method')='fastcc';
+
 for t=1:size(versions,1)
     % Get all models from the input folder
     dInfo = dir(versions{t,2});
@@ -97,7 +105,7 @@ for t=1:size(versions,1)
                 end
                 model=readCbModel(modelToLoad{j});
                 
-                [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool] = findFluxConsistentSubset(model);
+                [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool] = findFluxConsistentSubset(model,param);
                 % exclude exchange and demand reactions
                 exRxns=vertcat(find(strncmp(model.rxns,'EX_',3)),find(strcmp(model.rxns,'rxn00062')));
                 fluxConsistentRxnBool(exRxns,:)=[];

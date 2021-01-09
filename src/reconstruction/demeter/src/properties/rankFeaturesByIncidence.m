@@ -14,18 +14,23 @@ function rankFeaturesByIncidence(propertiesFolder,reconVersion)
 %   Almut Heinken, 07/2020
 
 tol=0.0000001;
-features={['ReactionPresence' filesep 'ReactionPresence'],['ComputedFluxes' filesep 'uptakeFluxes'],['ComputedFluxes' filesep 'secretionFluxes'],['ComputedFluxes' filesep 'InternalProduction']};
+analyzedFiles={
+    'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
+    'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
+    'Subsystem presence' ['ReactionMetabolitePresence' filesep 'SubsystemPresence_' reconVersion]
+    'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
+    'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
+    };
 
 mkdir([propertiesFolder filesep 'Ranked_features'])
 
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-reactionDatabase = readtable([fileDir filesep 'ReactionDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 metaboliteDatabase=table2cell(metaboliteDatabase);
 
-for i=1:length(features)
-    data = readtable([propertiesFolder filesep features{i} '_' reconVersion], 'ReadVariableNames', false);
+for i=1:length(analyzedFiles)
+    data = readtable([propertiesFolder filesep analyzedFiles{i,2}], 'ReadVariableNames', false);
     data = table2cell(data);
     dataCounted={};
     for j=2:size(data,2)
@@ -41,9 +46,11 @@ for i=1:length(features)
             dataPrintout{j+1,1}=dataCounted{I(j),1};
             if ~strncmp(dataCounted{I(j),1},'bio',3)
                 findRxnInd=find(strcmp(reactionDatabase(:,1),dataCounted{I(j),1}));
-                dataPrintout{j+1,2}=reactionDatabase{findRxnInd,2};
-                dataPrintout{j+1,3}=reactionDatabase{findRxnInd,3};
-                dataPrintout{j+1,4}=reactionDatabase{findRxnInd,11};
+                if ~isempty(findRxnInd)
+                    dataPrintout{j+1,2}=reactionDatabase{findRxnInd,2};
+                    dataPrintout{j+1,3}=reactionDatabase{findRxnInd,3};
+                    dataPrintout{j+1,4}=reactionDatabase{findRxnInd,11};
+                end
             end
             dataPrintout{j+1,5}=num2str(B(j));
             dataPrintout{j+1,6}=num2str(B(j)/max(B));
@@ -57,7 +64,9 @@ for i=1:length(features)
             dataPrintout{j+1,1}=dataCounted{I(j),1};
             if ~strncmp(dataCounted{I(j),1},'bio',3)
                 findMetInd=find(strcmp(metaboliteDatabase(:,1),dataCounted{I(j),1}));
-                dataPrintout{j+1,2}=metaboliteDatabase{findMetInd,2};
+                if ~isempty(findMetInd)
+                    dataPrintout{j+1,2}=metaboliteDatabase{findMetInd,2};
+                end
             end
             dataPrintout{j+1,3}=num2str(B(j));
             dataPrintout{j+1,4}=num2str(B(j)/max(B));
@@ -71,8 +80,7 @@ for i=1:length(features)
     plot(data,'Color','k')
     set(gca, 'FontSize', 12)
     box on
-    plotitle=strsplit(features{i},filesep);
-    h=title(plotitle{1,2});
+    h=title(analyzedFiles{i,1});
     set(h,'interpreter','none')
     if i<4
         xlabel('Reactions')
@@ -80,10 +88,10 @@ for i=1:length(features)
         xlabel('Metabolites')
     end
     ylabel('Percentage')
-    print([propertiesFolder filesep 'Ranked_features' filesep plotitle{1,2} '_ranked_' reconVersion],'-dpng','-r300')
+    print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
     
     dataPrintout=cell2table(dataPrintout);
-    writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep plotitle{1,2} '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
+    writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
 end
 
 end

@@ -16,15 +16,16 @@ function getSubsystemPresence(propertiesFolder,reconVersion)
 %   - AUTHOR
 %   Almut Heinken, 11/2020
 
-currentDir=pwd;
-cd([propertiesFolder filesep 'ReactionPresence'])
-
 % Load all reactions in reconstruction resource
-reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
+if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
+    reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'], 'ReadVariableNames', false);
+else
+    reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
+end
 Reactions = table2cell(reactions);
 
 % Load the reaction presence data for each reconstruction
-reactionPresence = readtable([propertiesFolder filesep 'ReactionPresence' filesep 'ReactionPresence_' reconVersion '.txt'], 'ReadVariableNames', false);
+reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion '.txt'], 'ReadVariableNames', false);
 ReactionPresence = table2cell(reactionPresence);
 
 allSubs = unique(Reactions(:,11));
@@ -35,7 +36,6 @@ subsystemPresence(2:size(ReactionPresence,1),1) = ReactionPresence(2:end,1);
 % go through all subsystems and count the fraction of reactions in each
 % reconstruction
 for i=2:size(subsystemPresence,2)
-    i
     % get all reactions
     findRxns=Reactions(find(strcmp(Reactions(:,11),subsystemPresence{1,i})),1);
     % find all reactions in reaction presence file
@@ -45,8 +45,6 @@ for i=2:size(subsystemPresence,2)
     end
 end
 
-writetable(cell2table(subsystemPresence),['SubsystemPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-
-cd(currentDir)
+writetable(cell2table(subsystemPresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'SubsystemPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end
