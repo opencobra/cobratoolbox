@@ -53,10 +53,6 @@ fields = {
     'Carbon_sources_FalseNegatives'
     'Fermentation_products_TruePositives'
     'Fermentation_products_FalseNegatives'
-    'NutrientRequirements_TruePositives'
-    'NutrientRequirements_TrueNegatives'
-    'NutrientRequirements_FalsePositives'
-    'NutrientRequirements_FalseNegatives'
     'growsOnDefinedMedium'
     'growthOnKnownCarbonSources'
     'Biomass_precursor_biosynthesis_TruePositives'
@@ -65,6 +61,8 @@ fields = {
     'Metabolite_uptake_FalseNegatives'
     'Secretion_products_TruePositives'
     'Secretion_products_FalseNegatives'
+    'Bile_acid_biosynthesis_TruePositives'
+    'Bile_acid_biosynthesis_FalseNegatives'
     'Drug_metabolism_TruePositives'
     'Drug_metabolism_FalseNegatives'
     'PutrefactionPathways_TruePositives'
@@ -74,6 +72,8 @@ fields = {
 %% load the results from existing test suite run and restart from there
 Results=struct;
 
+alreadyAnalyzedStrains={};
+
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
         savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
@@ -81,7 +81,6 @@ for i=1:length(fields)
         alreadyAnalyzedStrains = Results.(fields{i})(:,1);
     else
         Results.(fields{i})={};
-        alreadyAnalyzedStrains={};
     end
 end
 
@@ -387,7 +386,57 @@ for i = 1:steps:length(modelList)
             [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
             tmpStruct.Secretion_products_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
             tmpStruct.Secretion_products_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
-                               
+             
+            %% Bile acid biotransformation
+            % Performs an FVA and reports those bile acid metabolites (exchange reactions)
+            % that can be secreted by the model and should be secreted according to
+            % data (true positives) and those bile acid metabolites that cannot be secreted by
+            % the model but should be secreted according to in vitro data (false
+            % negatives).
+            %
+            % INPUT
+            % model             COBRA model structure
+            % microbeID         Microbe ID in carbon source data file
+            % biomassReaction   Biomass objective functions (low flux through BOF
+            %                   required in analysis)
+            %
+            % OUTPUT
+            % TruePositives     Cell array of strings listing all bile acid products
+            %                   (exchange reactions) that can be secreted by the model
+            %                   and in in vitro data.
+            % FalseNegatives    Cell array of strings listing all bile acid products
+            %                   (exchange reactions) that cannot be secreted by the model
+            %                   but should be secreted according to in vitro data.
+            if exist('BileAcidTable.txt','File')==2
+            [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction);
+            tmpStruct.Bile_acid_biosynthesis_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
+            tmpStruct.Bile_acid_biosynthesis_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
+            end
+            %% Drug biotransformation
+            % Performs an FVA and reports those drug metabolites (exchange reactions)
+            % that can be secreted by the model and should be taken up and/or secreted according to
+            % data (true positives) and those drug metabolites that cannot be secreted by
+            % the model but should be secreted according to in vitro data (false
+            % negatives).
+            %
+            % INPUT
+            % model             COBRA model structure
+            % microbeID         Microbe ID in carbon source data file
+            % biomassReaction   Biomass objective functions (low flux through BOF
+            %                   required in analysis)
+            %
+            % OUTPUT
+            % TruePositives     Cell array of strings listing all drug metabolites
+            %                   (exchange reactions) that can be taken up and/or
+            %                   secreted by the model and in in vitro data.
+            % FalseNegatives    Cell array of strings listing all drug metabolites
+            %                   (exchange reactions) that cannot be taken up and/or secreted by the model
+            %                   but should be secreted according to in vitro data.
+            if exist('drugTable.txt','File')==2
+            [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, biomassReaction);
+            tmpStruct.Drug_metabolism_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
+            tmpStruct.Drug_metabolism_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
+            end
             %% Putrefaction pathways
             % Performs an FVA and reports those putrefaction pathway end reactions (exchange reactions)
             % that can carry flux in the model and should carry flux according to

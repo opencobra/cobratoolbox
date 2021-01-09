@@ -50,7 +50,8 @@ else
             allMets=unique(vertcat(allMets,model.mets));
         end
     end
-    MetabolitePresence(1,2:end)=allMets';
+    MetabolitePresence(1,2:length(allMets)+1)=allMets';
+    ReactionPresence(1,2:length(allRxns)+1)=allRxns';
 end
 
 % remove models that were already retrieved
@@ -97,6 +98,7 @@ if ~isempty(modelList)
         for j=i:i+endPnt
             plusonerow=size(ReactionPresence,1)+1;
             ReactionPresence{plusonerow,1}=strrep(modelList{j},'.mat','');
+            MetabolitePresence{plusonerow,1}=strrep(modelList{j},'.mat','');
             for k=1:length(allRxns)
                 if ~isempty(find(ismember(rxnsTmp{j},allRxns{k})))
                     ReactionPresence{plusonerow,k+1}=1;
@@ -104,12 +106,21 @@ if ~isempty(modelList)
                     ReactionPresence{plusonerow,k+1}=0;
                 end
             end
+            for k=1:length(allMets)
+                if ~isempty(find(ismember(metsTmp{j},allMets{k})))
+                    MetabolitePresence{plusonerow,k+1}=1;
+                else
+                    MetabolitePresence{plusonerow,k+1}=0;
+                end
+            end
         end
         % export the results as a table
         writetable(cell2table(ReactionPresence),['ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(MetabolitePresence),['MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     end
 end
 
 writetable(cell2table(ReactionPresence),[propertiesFolder filesep 'ReactionPresence' filesep 'ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(MetabolitePresence),['MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end

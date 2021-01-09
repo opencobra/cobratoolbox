@@ -21,10 +21,6 @@ fields = {
     'Carbon_sources_FalseNegatives'
     'Fermentation_products_TruePositives'
     'Fermentation_products_FalseNegatives'
-    'NutrientRequirements_TruePositives'
-    'NutrientRequirements_TrueNegatives'
-    'NutrientRequirements_FalsePositives'
-    'NutrientRequirements_FalseNegatives'
     'growsOnDefinedMedium'
     'growthOnKnownCarbonSources'
     'Biomass_precursor_biosynthesis_TruePositives'
@@ -46,8 +42,13 @@ fields = {
 Results=struct;
 
 for i=1:length(fields)
+    if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
     savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
     Results.(fields{i}) = table2cell(savedResults);
+    numberRecons=size(Results.(fields{i}),1);
+    else
+        Results.(fields{i}) = {};
+    end
 end
 
 for j=1:length(fields)
@@ -65,7 +66,7 @@ for j=1:length(fields)
                 if strcmp(fields{j},'growsOnDefinedMedium')
                     plotdata=data(:,2);
                     plotdata(find(strcmp(plotdata(:,1),'NA')),:)=[];
-                    plotdata=cell2mat(plotdata);
+                    plotdata=str2double(plotdata);
                 else
                     if isnumeric(data{1,2}) && ~isempty(data{1,2})
                         % if the data is fluxes-plot the values
@@ -121,6 +122,8 @@ Table{1,4}=strcat('Accuracy ',reconVersion);
 cnt=2;
 plotdata=[];
 for i=1:length(features)
+    TPs=zeros(numberRecons,1);
+    FNs=zeros(numberRecons,1);
     Table{cnt,1}=features{i};
     if size(Results.(strcat(features{i},'_TruePositives')),2)==1
         for j=1:size(Results.(strcat(features{i},'_TruePositives')),1)
@@ -262,7 +265,7 @@ for i=1:length(features)
         end
     else
        cntData=length(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2));
-       cntAgreeing=sum(cell2mat(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2)));
+       cntAgreeing=sum(str2double(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2)));
     end
     Percentages{i+1,2} = cntData;
     Percentages{i+1,3} = cntAgreeing/cntData;

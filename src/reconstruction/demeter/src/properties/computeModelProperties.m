@@ -13,7 +13,7 @@ function computeModelProperties(translatedDraftsFolder, refinedFolder, varargin)
 parser = inputParser();
 parser.addRequired('translatedDraftsFolder', @ischar);
 parser.addRequired('refinedFolder', @ischar);
-parser.addParameter('propertiesFolder', '', @ischar);
+parser.addParameter('propertiesFolder', [pwd filesep 'modelProperties'], @ischar);
 parser.addParameter('infoFilePath', 'AGORA2_infoFile.xlsx', @ischar);
 parser.addParameter('numWorkers', 0, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
@@ -30,6 +30,8 @@ numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 customFeatures = parser.Results.customFeatures;
 analyzeDrafts = parser.Results.analyzeDrafts;
+
+mkdir([pwd filesep 'modelProperties'])
 
 dInfo = dir(refinedFolder);
 modelList={dInfo.name};
@@ -50,15 +52,15 @@ if length(modelList)>1
     
     if analyzeDrafts
         % analyze and cluster draft reconstructions for comparison
-        getReactionPresenceOnTaxonLevels(translatedDraftsFolder,propertiesFolder,infoFilePath,[reconVersion '_draft'],customFeatures)
-        computeUptakeSecretion(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'],numWorkers)
+        getReactionMetabolitePresence(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'])
+        computeUptakeSecretion(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'],{},numWorkers)
         computeInternalMetaboliteProduction(translatedDraftsFolder,propertiesFolder,[reconVersion '_draft'],{},numWorkers)
         producetSNEPlots(propertiesFolder,infoFilePath,[reconVersion '_draft'],customFeatures)
     end
     
     % analyze and cluster refined reconstructions
-    getReactionPresenceOnTaxonLevels(refinedFolder,propertiesFolder,infoFilePath,[reconVersion '_refined'],customFeatures)
-    computeUptakeSecretion(refinedFolder,propertiesFolder,[reconVersion '_refined'],numWorkers)
+    getReactionMetabolitePresence(refinedFolder,propertiesFolder,[reconVersion '_refined'])
+    computeUptakeSecretion(refinedFolder,propertiesFolder,[reconVersion '_refined'],{},numWorkers)
     computeInternalMetaboliteProduction(refinedFolder,propertiesFolder,[reconVersion '_refined'],{},numWorkers)
     producetSNEPlots(propertiesFolder,infoFilePath,[reconVersion '_refined'],customFeatures)
     rankFeaturesByIncidence(propertiesFolder,[reconVersion '_refined'])

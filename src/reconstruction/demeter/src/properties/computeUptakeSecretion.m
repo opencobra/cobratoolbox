@@ -1,4 +1,4 @@
-function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers,noUptake,sources)
+function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)
 % This function extracts all metabolites that could be consumed or secreted
 % by at least one refined reconstruction in the tested reconstruction
 % resource.
@@ -95,15 +95,7 @@ elseif length(modelList)>200
 else
     steps=25;
 end
-
-if ~isempty(noUptake)
-    for i=1:length(noUptake)
-    noConsume{i}=['EX_'  noUptake{i} '(e)'];
-    end
-else
-    noConsume = {};
-end
-            
+ 
 % in case of reruns, skip if all models are already analyzed
 if ~isempty(modelList)
     for i=1:steps:length(modelList)
@@ -136,16 +128,7 @@ if ~isempty(modelList)
             % open all exchanges
             model = changeRxnBounds(model, exRxns, -1000, 'l');
             model = changeRxnBounds(model, exRxns, 1000, 'u');
-            
-            % make exception for metabolites that should not be taken up
-            % (optional)
-            if ~isempty(noConsume)
-                model = changeRxnBounds(model,noConsume,0,'l');
-            end
-            % add sink reactions where necessary
-            if ~isempty(sources)
-                model=addSinkReactions(model,sources);
-            end
+
             % only use the ones that should be analyzed
             exRxns=intersect(exRxns,allExch);
             
@@ -177,7 +160,7 @@ if ~isempty(modelList)
             exRxns=intersect(exRxns,allExch);
             
             for k=1:length(exRxns)
-                findInd=find(strcmp(allExch(1,:),exRxns{k}));
+                findInd=find(strcmp(allExch,exRxns{k}));
                 uptakeFluxes{plusonerow,findInd}=minFluxes{j}(k);
                 secretionFluxes{plusonerow,findInd}=maxFluxes{j}(k);
             end

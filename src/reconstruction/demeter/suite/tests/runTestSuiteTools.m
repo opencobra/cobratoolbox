@@ -33,7 +33,7 @@ function runTestSuiteTools(translatedDraftsFolder, refinedFolder, varargin)
 parser = inputParser();
 parser.addRequired('translatedDraftsFolder', @ischar);
 parser.addRequired('refinedFolder', @ischar);
-parser.addParameter('testResultsFolder', '', @ischar);
+parser.addParameter('testResultsFolder', [pwd filesep 'TestResults']', @ischar);
 parser.addParameter('infoFilePath', 'AGORA2_infoFile.xlsx', @ischar);
 parser.addParameter('inputDataFolder', '', @ischar);
 parser.addParameter('numWorkers', 0, @isnumeric);
@@ -53,10 +53,7 @@ reconVersion = parser.Results.reconVersion;
 createReports = parser.Results.createReports;
 reportsFolder = parser.Results.reportsFolder;
 
-if isempty(inputDataFolder)
-    % use the default folder in the repository
-    inputDataFolder = fileparts(which('ReactionTranslationTable.txt'));
-end
+mkdir(testResultsFolder)
 
 currentDir=pwd;
 cd(inputDataFolder)
@@ -68,21 +65,16 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(~contains(modelList(:,1),'.mat'),:)=[];
 if size(modelList,1)>5
-    
-    if isempty(testResultsFolder)
-        mkdir('tests')
-        testResultsFolder=[pwd filesep 'tests' filesep];
-    end
-    
+
     % Draft reconstructions
     mkdir([testResultsFolder filesep reconVersion '_draft'])
-    testAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],[reconVersion '_draft'],numWorkers);
-    plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],[reconVersion '_draft']);
+    testAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],reconVersion,numWorkers);
+    plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
     
     % Refined reconstructions
     mkdir([testResultsFolder filesep reconVersion '_refined'])
-    testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],[reconVersion '_refined'],numWorkers);
-    plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],[reconVersion '_refined']);
+    testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],reconVersion,numWorkers);
+    plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
     % prepare a report and highlight debugging efforts still needed
     % printRefinementReport(testResultsFolder,reconVersion)
     
