@@ -145,6 +145,7 @@ summary.('resolveBlocked') = resolveBlocked;
 
 %% If model is still unable to grow
 [model] = targetedGapFilling(model,biomassReaction,database);
+[model,untGF] = untargetedGapFilling(model,biomassReaction,database,numWorkers);
 
 %% test if gapfilled reactions are really needed
 [model] = verifyGapfilledReactions(model);
@@ -168,6 +169,7 @@ for n = 1:length(model.rxns)
     end
 end
 summary.('gapfilledRxns') = gapfilledRxns;
+summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),untGF);
 
 %% change back to unlimited medium
 % list exchange reactions
@@ -393,10 +395,21 @@ if growsOnDefinedMedium==0
     [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
     summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
     summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
-% relax enforced uptake of vitamins-causes infeasibility problems
-relaxConstraints=model.rxns(find(model.lb>0));
-model=changeRxnBounds(model,relaxConstraints,0,'l');
-summary.('definedMediumGrowth')=growsOnDefinedMedium;
+    % relax enforced uptake of vitamins-causes infeasibility problems
+    relaxConstraints=model.rxns(find(model.lb>0));
+    model=changeRxnBounds(model,relaxConstraints,0,'l');
+    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    if growsOnDefinedMedium
+        summary.('definedMediumGrowth')=growsOnDefinedMedium;
+    else
+        % try untargeted gap-filling
+        [model,untGF] = untargetedGapFilling(model,biomassReaction,database,numWorkers);
+        [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+        if growsOnDefinedMedium
+        summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),untGF);
+        end
+        summary.('definedMediumGrowth')=growsOnDefinedMedium;
+    end
 end
 %% remove futile cycles if any remain
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
