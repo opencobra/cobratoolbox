@@ -1,23 +1,14 @@
-function [model,untGF] = untargetedGapFilling(model,biomassReaction,database,numWorkers)
+function [model,untGF] = untargetedGapFilling(model,biomassReaction,database)
 % Only perform this script if model cannot grow, otherwise no additional gap-filling
 % needed.
 % Will be performed only if targeted gap-filling failed. Will add
 % reaction(s) derived from the complete database that can restore growth.
 
-%% initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 solver = CBT_LP_SOLVER;
-
-if numWorkers > 0
-    % with parallelization
-    poolobj = gcp('nocreate');
-    if isempty(poolobj)
-        parpool(numWorkers)
-    end
-end
 environment = getEnvironment();
 
 untGF = {};
@@ -40,7 +31,6 @@ if FBA.f < tol
     growthTmp=[];
     
     parfor i=1:size(database.reactions,1)
-        i
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         
@@ -50,7 +40,7 @@ if FBA.f < tol
     end
     
     % get first successfull gapfilling reaction if any
-    gfInd = growthTmp > tol;
+    gfInd = find(growthTmp > tol);
     
     if ~isempty(gfInd)
         model = addReaction(model, database.reactions{gfInd(1),1}, database.reactions{gfInd(1),3});

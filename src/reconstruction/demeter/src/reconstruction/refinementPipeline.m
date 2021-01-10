@@ -145,7 +145,7 @@ summary.('resolveBlocked') = resolveBlocked;
 
 %% If model is still unable to grow
 [model] = targetedGapFilling(model,biomassReaction,database);
-[model,untGF] = untargetedGapFilling(model,biomassReaction,database,numWorkers);
+[model,untGF] = untargetedGapFilling(model,biomassReaction,database);
 
 %% test if gapfilled reactions are really needed
 [model] = verifyGapfilledReactions(model);
