@@ -82,17 +82,21 @@ for i=2:size(sampleData,1)
     if ~any(valsinstrat<0.0000001) && ~any(uniquevals<2)
         hold on
         violinplot(plotdata,sampleStratification);
-        set(gca, 'FontSize', 12)
+        if length(strats) > 3
+            set(gca, 'FontSize', 12)
+        else
+            set(gca, 'FontSize', 14)
+        end
         box on
         ylim([0 max(max(str2double(sampleData(i,2:end))))])
         if ~isempty(unit)
             h=ylabel(unit);
             set(h,'interpreter','none')
         end
-        h=title(varname);
+        h=title(varname,'FontSize',16);
         set(h,'interpreter','none')
         if ~isempty(plottedFeature)
-            h=suptitle(plottedFeature);
+            h=suptitle(plottedFeature,'FontSize',16);
             set(h,'interpreter','none')
         end
         set(gca,'TickLabelInterpreter','none')
