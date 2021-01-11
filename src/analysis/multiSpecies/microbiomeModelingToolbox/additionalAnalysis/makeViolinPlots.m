@@ -105,10 +105,20 @@ for i=2:size(sampleData,1)
         filename=strrep(filename,'/','_');
         filename=strrep(filename,'___','_');
         filename=strrep(filename,'__','_');
-        plottedFeature=strrep(plottedFeature,' ','_');
-        print([plottedFeature  '_' stratification '_' filename],'-dpng','-r300')
-        print('-bestfit',[plottedFeature  '_' stratification '_' filename],'-dpdf','-r300')
-        append_pdfs([plottedFeature '_' stratification '.pdf'],[plottedFeature  '_' stratification '_' filename '.pdf']);
+        if ~isempty(plottedFeature)
+        featName=[strrep(plottedFeature,' ','_') '_'];
+        else
+            featName='';
+        end
+        if ~isempty(stratification)
+            print([featName stratification '_' filename],'-dpng','-r300')
+            print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
+            append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
+        else
+            print([featName filename],'-dpng','-r300')
+            print('-bestfit',[featName filename],'-dpdf','-r300')
+            append_pdfs([featName 'All_plots.pdf'],[plottedFeature '_' filename '.pdf']);
+        end
         close all
     end
 end

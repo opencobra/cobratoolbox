@@ -92,6 +92,15 @@ for i=1:length(fileList)
         error('Some sample IDs are not found in the file with sample information!')
     end
     
+    % prepare units for violin plots
+    if contains(fileList{i},'fluxes')
+        unit='mmol/person/day';
+    elseif contains(fileList{i},'reactions')
+        unit='Abundance';
+    else
+        unit='';
+    end
+    
     % perform statistical analysis
     if ~isempty(sampleGroupHeaders)
         for j=1:length(sampleGroupHeaders)
@@ -108,7 +117,7 @@ for i=1:length(fileList)
             % create violin plots
             currentDir=pwd;
             cd(violinPath)
-            makeViolinPlots(sampleData, sampleInformation, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename)
+            makeViolinPlots(sampleData, sampleInformation, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename, 'unit', unit)
             cd(currentDir)
         end
     else
@@ -125,7 +134,7 @@ for i=1:length(fileList)
         % create violin plots
         currentDir=pwd;
         cd(violinPath)
-        makeViolinPlots(sampleData, sampleInformation, 'plottedFeature', filename)
+        makeViolinPlots(sampleData, sampleInformation, 'plottedFeature', filename, 'unit', unit)
         cd(currentDir)
     end
     
