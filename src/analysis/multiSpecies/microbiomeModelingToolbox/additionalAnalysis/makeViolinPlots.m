@@ -121,7 +121,7 @@ for i=2:size(sampleData,1)
         else
             print([featName filename],'-dpng','-r300')
             print('-bestfit',[featName filename],'-dpdf','-r300')
-            append_pdfs([featName 'All_plots.pdf'],[plottedFeature '_' filename '.pdf']);
+            append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
         end
         close all
     end

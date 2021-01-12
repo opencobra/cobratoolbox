@@ -3,12 +3,12 @@ function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundance
 % plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
 % Reaction presence or absence in each strain is derived from the reaction content
-% of the respective AGORA model. Two outputs are given: the total abundance,
+% of the respective AGORA model. Two results are given: the total abundance,
 % and the abundance on different taxonomical levels.
 %
 % USAGE
 %
-%    ReactionAbundance =calculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
+%    [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, infoFilePath, rxnsList, numWorkers)
 %
 % INPUTS:
 %    abundancePath:          Path to the .csv file with the abundance data.
@@ -29,7 +29,7 @@ function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundance
 % OUTPUT:
 %    ReactionAbundance       Structure with abundance for each microbiome
 %                            and reaction in total and on taxon levels
-%     TaxonomyInfo:     Taxonomical information on each taxon level 
+%     TaxonomyInfo:          Taxonomical information on each taxon level 
 %
 % .. Author: - Almut Heinken, 03/2018
 %                             10/2018:  changed input to location of the csv file with the
