@@ -1,50 +1,50 @@
-function computeModelProperties(translatedDraftsFolder, refinedFolder, varargin)
+function computeModelProperties(modelFolder, infoFilePath, varargin)
 % This function analyzes and plots properties of the refined and the draft
 % reconstructions if there is more than one. Note that this may be time-consuming.
 %
 % USAGE:
 %
-%    computeModelProperties(translatedDraftsFolder, refinedFolder, varargin)
+%    computeModelProperties(modelFolder, infoFilePath, varargin)
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
 
 % Define default input parameters if not specified
 parser = inputParser();
-parser.addRequired('translatedDraftsFolder', @ischar);
-parser.addRequired('refinedFolder', @ischar);
+parser.addRequired('modelFolder', @ischar);
+parser.addRequired('infoFilePath', @ischar);
 parser.addParameter('propertiesFolder', [pwd filesep 'modelProperties'], @ischar);
-parser.addParameter('infoFilePath', 'AGORA2_infoFile.xlsx', @ischar);
 parser.addParameter('numWorkers', 0, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('customFeatures', '', @iscellstr);
 parser.addParameter('analyzeDrafts', false, @islogical);
+parser.addParameter('translatedDraftsFolder', @ischar);
 
-parser.parse(translatedDraftsFolder, refinedFolder, varargin{:});
+parser.parse(modelFolder, infoFilePath, varargin{:});
 
-translatedDraftsFolder = parser.Results.translatedDraftsFolder;
-refinedFolder = parser.Results.refinedFolder;
-propertiesFolder = parser.Results.propertiesFolder;
+modelFolder = parser.Results.modelFolder;
 infoFilePath = parser.Results.infoFilePath;
+propertiesFolder = parser.Results.propertiesFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 customFeatures = parser.Results.customFeatures;
 analyzeDrafts = parser.Results.analyzeDrafts;
+translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 
 mkdir(propertiesFolder)
 
-dInfo = dir(refinedFolder);
+dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
 modelList(~contains(modelList(:,1),'.mat'),:)=[];
 
 if length(modelList)>1
     
-    % get basic statistics on draft and refined reconstructions and metabolite
-    % and reaction content of all refined reconstructions
-    printReconstructionFeatures(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
-    
     if analyzeDrafts
+        % get basic statistics on draft and refined reconstructions and metabolite
+        % and reaction content of all refined reconstructions
+        printReconstructionFeatures(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion,numWorkers)
+        
         % save results for refined and draft in two different folders
         mkdir([propertiesFolder filesep 'Draft'])
         
@@ -60,27 +60,27 @@ if length(modelList)>1
         mkdir([propertiesFolder filesep 'Refined'])
         
         % analyze and cluster refined reconstructions
-        getReactionMetabolitePresence(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion)
+        getReactionMetabolitePresence(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion)
         getSubsystemPresence([propertiesFolder filesep 'Refined'],reconVersion)
-        computeUptakeSecretion(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
-        computeInternalMetaboliteProduction(refinedFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
+        computeUptakeSecretion(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
+        computeInternalMetaboliteProduction(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
         producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion,customFeatures)
         rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],reconVersion)
         plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion)
     end
     
     % analyze and cluster refined reconstructions
-    getReactionMetabolitePresence(refinedFolder,propertiesFolder,reconVersion)
+    getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)
     getSubsystemPresence(propertiesFolder,reconVersion)
-    computeUptakeSecretion(refinedFolder,propertiesFolder,reconVersion,{},numWorkers)
-    computeInternalMetaboliteProduction(refinedFolder,propertiesFolder,reconVersion,{},numWorkers)
+    computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,{},numWorkers)
+    computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconVersion,{},numWorkers)
     producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatures)
     rankFeaturesByIncidence(propertiesFolder,reconVersion)
     plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion)
     
     % get stochiometric and flux consistency for both draft and refined
     % reconstructions
-    computeStochiometricFluxConsistency(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion, numWorkers)
+    computeStochiometricFluxConsistency(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
     
     % delete files that are no longer needed
     dInfo = dir(fullfile(propertiesFolder, '**/*.*'));  %get list of files and folders in any subfolder
@@ -117,7 +117,6 @@ if length(modelList)>1
     for i=1:length(files)
         delete([folders{i} filesep files{i}]);
     end
-    
 end
 
 end
