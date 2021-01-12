@@ -34,7 +34,7 @@ parser.addRequired('infoFilePath', @ischar);
 parser.addRequired('resPath', @ischar);
 parser.addParameter('statPath', [pwd filesep 'Statistics'], @ischar);
 parser.addParameter('violinPath', [pwd filesep 'ViolinPlots'], @ischar);
-parser.addParameter('sampleGroupHeaders', '', @ischar);
+parser.addParameter('sampleGroupHeaders', '', @iscellstr);
 
 parser.parse(infoFilePath, resPath, varargin{:});
 
@@ -56,8 +56,7 @@ infoFile = table2cell(infoFile);
 dInfo = dir(resPath);
 fileList={dInfo.name};
 fileList=fileList';
-delInd=find(~(contains(fileList(:,1),{'csv','.txt'})));
-fileList(delInd,:)=[];
+fileList(~contains(fileList(:,1),{'.csv','.txt'}))=[];
 
 % analyze data in spreadsheets
 for i=1:length(fileList)
@@ -92,15 +91,6 @@ for i=1:length(fileList)
         error('Some sample IDs are not found in the file with sample information!')
     end
     
-    % prepare units for violin plots
-    if contains(fileList{i},'fluxes')
-        unit='mmol/person/day';
-    elseif contains(fileList{i},'reactions')
-        unit='Abundance';
-    else
-        unit='';
-    end
-    
     % perform statistical analysis
     if ~isempty(sampleGroupHeaders)
         for j=1:length(sampleGroupHeaders)
@@ -117,7 +107,11 @@ for i=1:length(fileList)
             % create violin plots
             currentDir=pwd;
             cd(violinPath)
-            makeViolinPlots(sampleData, sampleInformation, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename, 'unit', unit)
+            
+            % create violin plots for net uptake and secretion files
+            if any(strcmp(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
+                makeViolinPlots(sampleData, infoFile, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename, 'unit', 'mmol/person/day')
+            end
             cd(currentDir)
         end
     else
@@ -134,7 +128,11 @@ for i=1:length(fileList)
         % create violin plots
         currentDir=pwd;
         cd(violinPath)
-        makeViolinPlots(sampleData, sampleInformation, 'plottedFeature', filename, 'unit', unit)
+        
+        % create violin plots for net uptake and secretion files
+        if any(strcmp(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
+            makeViolinPlots(sampleData, infoFile, 'plottedFeature', filename, 'unit', 'mmol/person/day')
+        end
         cd(currentDir)
     end
     

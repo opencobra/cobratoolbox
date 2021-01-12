@@ -96,7 +96,7 @@ for i=2:size(sampleData,1)
         h=title(varname,'FontSize',16);
         set(h,'interpreter','none')
         if ~isempty(plottedFeature)
-            h=suptitle(plottedFeature,'FontSize',16);
+            h=suptitle(plottedFeature);
             set(h,'interpreter','none')
         end
         set(gca,'TickLabelInterpreter','none')
