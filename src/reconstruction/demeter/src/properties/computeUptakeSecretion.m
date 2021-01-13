@@ -156,11 +156,12 @@ if ~isempty(modelList)
             modelID=strrep(modelList{j},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             modelID=strrep(modelID,'.xml','');
+            uptakeFluxes{plusonerow,1}=modelID;
             secretionFluxes{plusonerow,1}=modelID;
             uptakeFluxes(plusonerow,2:end)={'0'};
             secretionFluxes(plusonerow,2:end)={'0'};
             exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));
-                        
+            
             % only use the ones that should be analyzed
             exRxns=intersect(exRxns,allExch);
             

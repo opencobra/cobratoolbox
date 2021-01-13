@@ -63,7 +63,7 @@ for j=1:size(toCompare,1)
     dInfo = dir(toCompare{j,2});
     models={dInfo.name};
     models=models';
-    models(~(contains(models(:,1),{'.mat','.sbml'})),:)=[];
+    models(~(contains(models(:,1),{'.mat','.sbml','.xml'})),:)=[];
         
     % load the results from existing run and restart from there
     if isfile(['stats_' toCompare{j,1} '.mat'])
@@ -150,7 +150,7 @@ for j=1:size(toCompare,1)
         for i=l:l+endPnt
             % grab all statistics
             onerowmore=size(stats,1)+1;
-            modelID=strrep(modelList{j},'.mat','');
+            modelID=strrep(models{j},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             stats{onerowmore,1}=modelID;
             for k=2:12
