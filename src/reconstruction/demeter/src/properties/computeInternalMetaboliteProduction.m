@@ -22,7 +22,7 @@ function computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconV
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
-modelList(~contains(modelList(:,1),'.mat'),:)=[];
+modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 currentDir=pwd;
 mkdir([propertiesFolder filesep 'ComputedFluxes'])
@@ -82,9 +82,11 @@ environment = getEnvironment();
 
 % remove models that were already retrieved
 if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'])
-modelsRenamed=strrep(modelList(:,1),'.mat','');
-[C,IA]=intersect(modelsRenamed,InternalProduction(2:end,1));
-modelList(IA,:)=[];
+    modelsRenamed=strrep(modelList(:,1),'.mat','');
+    modelsRenamed=strrep(modelsRenamed,'.sbml','');
+    modelsRenamed=strrep(modelsRenamed,'.xml','');
+    [C,IA]=intersect(modelsRenamed,InternalProduction(2:end,1));
+    modelList(IA,:)=[];
 end
 
 % define the intervals in which the computations will be performed
@@ -159,7 +161,10 @@ if ~isempty(modelList)
         for j=i:i+endPnt
             model=readCbModel(modelsToLoad{j});
             plusonerow=size(InternalProduction,1)+1;
-            InternalProduction{plusonerow,1}=strrep(modelList{j},'.mat','');
+            modelID=strrep(modelList{j},'.mat','');
+            modelID=strrep(modelID,'.sbml','');
+            modelID=strrep(modelID,'.xml','');
+            InternalProduction{plusonerow,1}=modelID;
             InternalProduction(plusonerow,2:end)={'0'};
             
             % get all internal metabolites

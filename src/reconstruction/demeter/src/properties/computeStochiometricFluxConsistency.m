@@ -50,17 +50,17 @@ for t=1:size(versions,1)
     dInfo = dir(versions{t,2});
     models={dInfo.name};
     models=models';
-    models(~contains(models(:,1),'.mat'),:)=[];
+    models(~(contains(models(:,1),{'.mat','.sbml','.xml'})),:)=[];
     
     dataSConsist = [];
     dataFConsist = [];
     modelsAlreadyAnalyzed = {};
         
     % load existing file if present to not lose progress
-    if isfile([propertiesFolder filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat'])
-        load([propertiesFolder filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat']);
-        load([propertiesFolder filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat']);
-        load([propertiesFolder filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat']);
+    if isfile([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat'])
+        load([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat']);
+        load([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat']);
+        load([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat']);
     end
     
     % remove models that were already analyzed
@@ -125,17 +125,17 @@ for t=1:size(versions,1)
             dataFConsist(size(dataFConsist,1)+1,1)=dataFConsistTmp(j,1);
             modelsAlreadyAnalyzed{size(modelsAlreadyAnalyzed,1)+1,1}=models{j};
         end
-        save([propertiesFolder filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat'],'modelsAlreadyAnalyzed');
-        save([propertiesFolder filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat'],'dataSConsist');
-        save([propertiesFolder filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat'],'dataFConsist');
+        save([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat'],'modelsAlreadyAnalyzed');
+        save([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat'],'dataSConsist');
+        save([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat'],'dataFConsist');
     end
 end
 
 % create figure
 
 for t=1:size(versions,1)
-    load([propertiesFolder filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat']);
-    load([propertiesFolder filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat']);
+    load([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'StochiometricConsistency_' versions{t,1} reconVersion '.mat']);
+    load([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'FluxConsistency_' versions{t,1} reconVersion '.mat']);
     dataSConsistPlotted(:,t)=dataSConsist(:,1);
     dataFConsistPlotted(:,t)=dataFConsist(:,1);
 end
@@ -153,7 +153,7 @@ violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
 set(gca, 'FontSize', 16)
 box on
 title('Flux consistency');
-print([propertiesFolder filesep 'Consistency_' reconVersion],'-dpng','-r300')
+print([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'Consistency_' reconVersion],'-dpng','-r300')
 
 close all
 

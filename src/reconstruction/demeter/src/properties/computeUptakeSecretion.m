@@ -22,7 +22,7 @@ function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metLis
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
-modelList(~contains(modelList(:,1),'.mat'),:)=[];
+modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 mkdir([propertiesFolder filesep 'ComputedFluxes'])
 
@@ -45,6 +45,8 @@ else
         
         % remove models that were already retrieved
         modelsRenamed=strrep(modelList(:,1),'.mat','');
+        modelsRenamed=strrep(modelsRenamed,'.sbml','');
+        modelsRenamed=strrep(modelsRenamed,'.xml','');
         [C,IA]=intersect(modelsRenamed,uptakeFluxes(2:end,1));
         modelList(IA,:)=[];
     else
@@ -151,8 +153,10 @@ if ~isempty(modelList)
         for j=i:i+endPnt
             model=readCbModel(modelsToLoad{j});
             plusonerow=size(uptakeFluxes,1)+1;
-            uptakeFluxes{plusonerow,1}=strrep(modelList{j},'.mat','');
-            secretionFluxes{plusonerow,1}=strrep(modelList{j},'.mat','');
+            modelID=strrep(modelList{j},'.mat','');
+            modelID=strrep(modelID,'.sbml','');
+            modelID=strrep(modelID,'.xml','');
+            secretionFluxes{plusonerow,1}=modelID;
             uptakeFluxes(plusonerow,2:end)={'0'};
             secretionFluxes(plusonerow,2:end)={'0'};
             exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));

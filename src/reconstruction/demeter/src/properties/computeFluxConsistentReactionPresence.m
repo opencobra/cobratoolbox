@@ -16,15 +16,14 @@ function computeFluxConsistentReactionPresence(modelFolder,propertiesFolder,reco
 %   - AUTHOR
 %   Almut Heinken, 12/2020
 
-mkdir([propertiesFolder filesep 'ReactionPresence'])
+mkdir([propertiesFolder filesep 'ReactionMetabolitePresence'])
 currentDir=pwd;
-cd([propertiesFolder filesep 'ReactionPresence'])
+cd([propertiesFolder filesep 'ReactionMetabolitePresence'])
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
-modelList(~contains(modelList(:,1),'.mat'),:)=[];
-modelList(:,1)=strrep(modelList(:,1),'.mat','');
+modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 % check if output file already exists
 if isfile(['ReactionPresence_' reconVersion '.txt'])
@@ -49,6 +48,8 @@ end
 
 % remove models that were already retrieved
 modelsRenamed=strrep(modelList(:,1),'.mat','');
+modelsRenamed=strrep(modelsRenamed,'.sbml','');
+modelsRenamed=strrep(modelsRenamed,'.xml','');
 [C,IA]=intersect(modelsRenamed,ReactionPresence(2:end,1));
 modelList(IA,:)=[];
 
@@ -90,6 +91,7 @@ if ~isempty(modelList)
         
         for j=i:i+endPnt
             plusonerow=size(ReactionPresence,1)+1;
+            
             ReactionPresence{plusonerow,1}=strrep(modelList{j},'.mat','');
             for k=1:length(allRxns)
                 if ~isempty(find(ismember(rxnsTmp{j},allRxns{k})))

@@ -39,7 +39,6 @@ end
 analyzedFiles={
     'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
     'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
-    'Subsystem presence' ['ReactionMetabolitePresence' filesep 'SubsystemPresence_' reconVersion]
     'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
     'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
     };
@@ -124,23 +123,23 @@ for k=1:size(analyzedFiles,1)
             toDel=sum(data,1)<tol;
             data(:,toDel)=[];
             
-            if size(data,1)>5
+            if size(data,1)>10
                 
                 % adjust perplicity to number of variables
                 if size(data,1) > 50
                     perpl=30;
-                elseif size(data,1) >= 10
+                elseif size(data,1) >= 20
                     perpl=10;
                 else
                     perpl=5;
                 end
                 
                 Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
-                Summary.(taxonlevels{i}){1}(:,1)=red_orgs;
-                Summary.(taxonlevels{i}){1}(:,2)=taxa;
-                Summary.(taxonlevels{i}){2}(:,3:4)=cellstr(string(Y));
+                Summary.(taxonlevels{i})(:,1)=red_orgs;
+                Summary.(taxonlevels{i})(:,2)=taxa;
+                Summary.(taxonlevels{i})(:,3:size(Y,2)+2)=cellstr(string(Y));
                 
-                if size(data,1) == size(Y,1)
+                if size(data,1) == size(Y,1) && size(Y,2) > 1
                     f=figure;
                     cols=hsv(length(unique(taxa)));
                     % define markers to better distinguish groups
@@ -153,6 +152,7 @@ for k=1:size(analyzedFiles,1)
                     hold on
                     set(h,'MarkerSize',6)
                     title(analyzedFiles{k,1})
+                    suptitle(reconVersion)
                     h=legend('Location','northeastoutside');
                     if length(uniqueXX)-length(toofew) < 12
                         set(h,'FontSize',11)

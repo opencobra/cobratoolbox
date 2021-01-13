@@ -63,14 +63,15 @@ for j=1:size(toCompare,1)
     dInfo = dir(toCompare{j,2});
     models={dInfo.name};
     models=models';
-    models(~contains(models(:,1),'.mat'),:)=[];
+    models(~(contains(models(:,1),{'.mat','.sbml'})),:)=[];
         
     % load the results from existing run and restart from there
     if isfile(['stats_' toCompare{j,1} '.mat'])
         load(['stats_' toCompare{j,1} '.mat']);
-
+        
         % remove models that were already analyzed
-        modelsRenamed=strrep(models(:,1),'.mat','');
+        modelsRenamed=strrep(modelList(:,1),'.mat','');
+        modelsRenamed=strrep(modelsRenamed,'.sbml','');
         [C,IA]=intersect(modelsRenamed(:,1),stats(2:end,1));
         models(IA,:)=[];
     end
@@ -149,7 +150,9 @@ for j=1:size(toCompare,1)
         for i=l:l+endPnt
             % grab all statistics
             onerowmore=size(stats,1)+1;
-            stats{onerowmore,1}=strrep(models{i,1},'.mat','');
+            modelID=strrep(modelList{j},'.mat','');
+            modelID=strrep(modelID,'.sbml','');
+            stats{onerowmore,1}=modelID;
             for k=2:12
                 stats{onerowmore,k}=statsTmp{i+1}(k);
             end

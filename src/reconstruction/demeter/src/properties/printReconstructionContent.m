@@ -43,7 +43,7 @@ environment = getEnvironment();
 dInfo = dir(modelFolder);
 models={dInfo.name};
 models=models';
-models(~contains(models(:,1),'.mat'),:)=[];
+models(~(contains(models(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 modelsToLoad={};
 
@@ -85,11 +85,15 @@ end
 reconMetabolites=database.metabolites;
 [C,IA] = setdiff(reconMetabolites(:,1),uniqueMets);
 reconMetabolites(IA,:)=[];
+if size(reconMetabolites,1)>0
 writetable(cell2table(reconMetabolites),[propertiesFolder filesep 'Metabolites_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+end
 
 reconReactions=database.reactions;
 [C,IA] = setdiff(reconReactions(:,1),uniqueRxns);
 reconReactions(IA,:)=[];
+if size(reconMetabolites,1)>0
 writetable(cell2table(reconReactions),[propertiesFolder filesep 'Reactions_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+end
 
 end
