@@ -17,7 +17,7 @@ parser.addParameter('propertiesFolder', [pwd filesep 'modelProperties'], @ischar
 parser.addParameter('numWorkers', 0, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('customFeatures', '', @iscellstr);
-parser.addParameter('draftFolder', '', @ischar);
+parser.addParameter('translatedDraftsFolder', '', @ischar);
 
 parser.parse(modelFolder, infoFilePath, varargin{:});
 
@@ -27,7 +27,7 @@ propertiesFolder = parser.Results.propertiesFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 customFeatures = parser.Results.customFeatures;
-draftFolder = parser.Results.draftFolder;
+translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 
 mkdir(propertiesFolder)
 
@@ -38,15 +38,15 @@ modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if length(modelList)>1
     
-    if ~isempty(draftFolder)
+    if ~isempty(translatedDraftsFolder)
         % save results for refined and draft in two different folders
         mkdir([propertiesFolder filesep 'Draft'])
    
         % analyze and cluster draft reconstructions for comparison
-        printReconstructionContent(draftFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
-        getReactionMetabolitePresence(draftFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
-        computeUptakeSecretion(draftFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
-        computeInternalMetaboliteProduction(draftFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
+        printReconstructionContent(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
+        getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
+        computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
+        computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
         producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
         rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
         plotMetaboliteProducersConsumers([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'])
@@ -65,11 +65,11 @@ if length(modelList)>1
         
         % get basic statistics on draft and refined reconstructions and metabolite
         % and reaction content of all refined reconstructions
-        compareDraftRefinedVersions(draftFolder,modelFolder,propertiesFolder,reconVersion,numWorkers)
+        compareDraftRefinedVersions(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion,numWorkers)
         
         % get stochiometric and flux consistency for both draft and refined
         % reconstructions
-        computeStochiometricFluxConsistency(draftFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
+        computeStochiometricFluxConsistency(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
     end
     
     % analyze and cluster reconstructions
