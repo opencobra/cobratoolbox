@@ -17,7 +17,6 @@ tol=0.0000001;
 analyzedFiles={
     'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
     'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
-    'Subsystem presence' ['ReactionMetabolitePresence' filesep 'SubsystemPresence_' reconVersion]
     'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
     'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
     };

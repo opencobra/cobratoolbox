@@ -111,7 +111,7 @@ if ~isempty(modelList)
                 end
             end
             for k=1:length(allMets)
-                if any(find(ismember(metsTmp{j},{[allMets{k} '[c]'],[allMets{k} '[p]'],[allMets{k} '[e]']})))
+                if any(find(ismember(metsTmp{j},{[allMets{k} '[c]'],[allMets{k} '[p]'],[allMets{k} '[e]'],[allMets{k} '[c0]'],[allMets{k} '[e0]']})))
                     MetabolitePresence{plusonerow,k+1}=1;
                 else
                     MetabolitePresence{plusonerow,k+1}=0;
