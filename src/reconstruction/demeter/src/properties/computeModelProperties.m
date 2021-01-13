@@ -47,8 +47,9 @@ if length(modelList)>1
         
         % save results for refined and draft in two different folders
         mkdir([propertiesFolder filesep 'Draft'])
-        
+   
         % analyze and cluster draft reconstructions for comparison
+        printReconstructionContent(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion,numWorkers)
         getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion)
         getSubsystemPresence([propertiesFolder filesep 'Draft'],reconVersion)
         computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],reconVersion,{},numWorkers)
@@ -60,6 +61,7 @@ if length(modelList)>1
         mkdir([propertiesFolder filesep 'Refined'])
         
         % analyze and cluster refined reconstructions
+        printReconstructionContent(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion,numWorkers)
         getReactionMetabolitePresence(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion)
         getSubsystemPresence([propertiesFolder filesep 'Refined'],reconVersion)
         computeUptakeSecretion(modelFolder,[propertiesFolder filesep 'Refined'],reconVersion,{},numWorkers)
@@ -67,9 +69,14 @@ if length(modelList)>1
         producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion,customFeatures)
         rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],reconVersion)
         plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,reconVersion)
+        
+        % get stochiometric and flux consistency for both draft and refined
+        % reconstructions
+        computeStochiometricFluxConsistency(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
     end
     
-    % analyze and cluster refined reconstructions
+    % analyze and cluster reconstructions
+    printReconstructionContent(modelFolder,propertiesFolder,reconVersion,numWorkers)
     getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)
     getSubsystemPresence(propertiesFolder,reconVersion)
     computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,{},numWorkers)
@@ -77,11 +84,7 @@ if length(modelList)>1
     producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatures)
     rankFeaturesByIncidence(propertiesFolder,reconVersion)
     plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion)
-    
-    % get stochiometric and flux consistency for both draft and refined
-    % reconstructions
-    computeStochiometricFluxConsistency(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
-    
+      
     % delete files that are no longer needed
     dInfo = dir(fullfile(propertiesFolder, '**/*.*'));  %get list of files and folders in any subfolder
     dInfo = dInfo(~[dInfo.isdir]);

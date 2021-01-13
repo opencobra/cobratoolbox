@@ -45,12 +45,8 @@ files={
 infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
 infoFile = table2cell(infoFile);
 
-currentDir=pwd;
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-cd(fileDir);
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 metaboliteDatabase=table2cell(metaboliteDatabase);
-cd(currentDir)
 
 if ~exist('metCategory','var')
     metCategory='Metabolites';

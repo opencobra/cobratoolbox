@@ -17,11 +17,7 @@ function getSubsystemPresence(propertiesFolder,reconVersion)
 %   Almut Heinken, 11/2020
 
 % Load all reactions in reconstruction resource
-if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
-    reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'], 'ReadVariableNames', false);
-else
-    reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-end
+reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
 Reactions = table2cell(reactions);
 
 % Load the reaction presence data for each reconstruction

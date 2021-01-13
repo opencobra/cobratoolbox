@@ -1,12 +1,9 @@
-function printReconstructionFeatures(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
-
+function compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
 % This function prints a comparison of the draft and refined
-% reconstructions for the refined reconstruction resource, as well as
-% creates text files containing all reactions and metabolites in the 
-% refined reconstruction resource.
+% reconstructions for the refined reconstruction resource.
 %
 % USAGE
-%   printReconstructionFeatures(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
+%   compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
 %
 % INPUTS
 % draftFolder           Folder with translated draft reconstructions
@@ -29,17 +26,6 @@ cd(propertiesFolder)
 mkdir([propertiesFolder filesep 'Draft_Refined_Comparison'])
 cd([propertiesFolder filesep 'Draft_Refined_Comparison'])
 currentDir=pwd;
-
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-end
-reactionDatabase = readtable([fileDir filesep 'ReactionDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -79,15 +65,6 @@ for j=1:size(toCompare,1)
     models=models';
     models(~contains(models(:,1),'.mat'),:)=[];
         
-        % load existing file with resource content if present to not lose progress
-        if isfile([propertiesFolder filesep 'uniqueRxns_' toCompare{j,1} '_' reconVersion '.mat'])
-            load([propertiesFolder filesep 'uniqueMets_' toCompare{j,1} '_' reconVersion '.mat']);
-            load([propertiesFolder filesep 'uniqueRxns_' toCompare{j,1} '_' reconVersion '.mat']);
-        else
-            uniqueRxns={};
-            uniqueMets={};
-        end
-    
     % load the results from existing run and restart from there
     if isfile(['stats_' toCompare{j,1} '.mat'])
         load(['stats_' toCompare{j,1} '.mat']);
@@ -120,10 +97,6 @@ for j=1:size(toCompare,1)
         end
         statsTmp={};
         
-        % print resource content for refined reconstructions
-            rxnsTmp={};
-            metsTmp={};
-
         parfor i=l:l+endPnt
             statsTmp{i+1}=[];
             restoreEnvironment(environment);
@@ -133,13 +106,6 @@ for j=1:size(toCompare,1)
                 changeCobraSolverParams('LP', 'logFile', 0);
             end
             model = readCbModel(modelsToLoad{i});
-            
-            % collect unique metabolites and reactions resource content for refined reconstructions
-            rxnsTmp{i}=model.rxns;
-            mets=strrep(model.mets,'[c]','');
-            mets=strrep(mets,'[e]','');
-            mets=strrep(mets,'[p]','');
-            metsTmp{i}=mets;
             
             % start collecting features of each reconstruction
             biomassID=find(strncmp(model.rxns,'bio',3));
@@ -187,32 +153,13 @@ for j=1:size(toCompare,1)
             for k=2:12
                 stats{onerowmore,k}=statsTmp{i+1}(k);
             end
-            
-            % grab all unique reactions and metabolites
-            uniqueRxns=unique(vertcat(uniqueRxns,rxnsTmp{i}));
-            uniqueMets=unique(vertcat(uniqueMets,metsTmp{i}));
         end
         
         % save results
         save(['stats_' toCompare{j,1} '.mat'],'stats');
-        
-        save([propertiesFolder filesep 'uniqueRxns_' toCompare{j,1} '_' reconVersion '.mat'],'uniqueRxns');
-        save([propertiesFolder filesep 'uniqueMets_' toCompare{j,1} '_' reconVersion '.mat'],'uniqueMets');
     end
     % print out a table with the features
     writetable(cell2table(stats),['ReconstructionFeatures_' toCompare{j,1} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-    
-    % print out the unique reactions and metabolites of the resource
-    reconMetabolites=database.metabolites;
-    [C,IA] = setdiff(reconMetabolites(:,1),uniqueMets);
-    reconMetabolites(IA,:)=[];
-    
-    writetable(cell2table(reconMetabolites),[propertiesFolder filesep 'Metabolites_' reconVersion '_' lower(toCompare{j,1})],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-    
-    reconReactions=database.reactions;
-    [C,IA] = setdiff(reconReactions(:,1),uniqueRxns);
-    reconReactions(IA,:)=[];
-    writetable(cell2table(reconReactions),[propertiesFolder filesep 'Reactions_' reconVersion  '_' lower(toCompare{j,1})],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
 % print summary table

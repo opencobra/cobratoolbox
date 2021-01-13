@@ -48,14 +48,9 @@ else
         [C,IA]=intersect(modelsRenamed,uptakeFluxes(2:end,1));
         modelList(IA,:)=[];
     else
-        % find the correct file with the reaction list
-        if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
-            reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'];
-        else
-            reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '.txt'];
-        end
-        if isfile(reactionDB)
-            reactions = readtable(reactionDB, 'ReadVariableNames', false);
+        % restart from existing data if possible
+        if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
+            reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
             reactions = table2cell(reactions);
             allExch=reactions(find(strncmp(reactions(:,1),'EX_',3)),1);
         else

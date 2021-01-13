@@ -33,19 +33,11 @@ if isfile(['ReactionPresence_' reconVersion '.txt'])
     allMets=MetabolitePresence(1,2:end)';
 else
     % restart from existing data if possible
-    % find the correct file with the reaction and metabolite list
-    if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
-        reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '_refined.txt'];
-        metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '_refined.txt'];
-    else
-        reactionDB = [propertiesFolder filesep 'Reactions_' reconVersion '.txt'];
-        metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '.txt'];
-    end
-    if isfile(reactionDB)
-        reactions = readtable(reactionDB, 'ReadVariableNames', false);
+    if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
+        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
         reactions = table2cell(reactions);
         allRxns=reactions(:,1);
-        metabolites = readtable(metDB, 'ReadVariableNames', false);
+        metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', false);
         metabolites = table2cell(metabolites);
         allMets=metabolites(:,1);
     else

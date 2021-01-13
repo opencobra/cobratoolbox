@@ -43,13 +43,8 @@ if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction
 else
     if isempty(metList)
         % find the correct file with the metabolite list
-        if ~any(contains(propertiesFolder,{[filesep 'Draft'],[filesep 'Refined']}))
-            metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '_refined.txt'];
-        else
-            metDB = [propertiesFolder filesep 'Metabolites_' reconVersion '.txt'];
-        end
-        if isfile(metDB)
-            metabolites = readtable(metDB, 'ReadVariableNames', false);
+        if isfile([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'])
+            metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', false);
             metabolites = table2cell(metabolites);
             allMets=metabolites(:,1);
         else

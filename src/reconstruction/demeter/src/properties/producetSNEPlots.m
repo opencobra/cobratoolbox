@@ -24,6 +24,8 @@ cd(propertiesFolder)
 mkdir('tSNE_Plots')
 cd('tSNE_Plots')
 
+tol=0.0000001;
+
 % get taxonomical information
 if ~isempty(infoFilePath)
     infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
@@ -100,6 +102,9 @@ for k=1:size(analyzedFiles,1)
             red_orgs(strcmp(taxa,'N/A'),:)=[];
             taxa(find(strcmp(taxa,'N/A')),:)=[];
             
+            % remove NaNs
+            data(:,find(isnan(data(1,:))))=[];
+            
             if i==6
                 % remove unclassified species
                 toDel=[];
@@ -115,6 +120,10 @@ for k=1:size(analyzedFiles,1)
                 taxa(toDel,:)=[];
             end
             
+            % remove entries that are all zeros
+            toDel=sum(data,1)<tol;
+            data(:,toDel)=[];
+            
             if size(data,1)>5
                 
                 % adjust perplicity to number of variables
@@ -125,36 +134,39 @@ for k=1:size(analyzedFiles,1)
                 else
                     perpl=5;
                 end
-    
-                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
-                Summary.(taxonlevels{i})(:,1)=red_orgs;
-                Summary.(taxonlevels{i})(:,2)=taxa;
-                Summary.(taxonlevels{i})(:,3:4)=cellstr(string(Y));
                 
-                f=figure;
-                cols=hsv(length(unique(taxa)));
-                % define markers to better distinguish groups
-                cmarkers='';
-                for j=1:7:length(unique(taxa))
-                    cmarkers=[cmarkers '+o*xsdp'];
-                end
-                cmarkers=cmarkers(1:length(unique(taxa)));
-                h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
-                hold on
-                set(h,'MarkerSize',6)
-                title(analyzedFiles{k,1})
-                h=legend('Location','northeastoutside');
-                if length(uniqueXX)-length(toofew) < 12
-                    set(h,'FontSize',11)
-                elseif length(uniqueXX)-length(toofew) < 20
-                    set(h,'FontSize',9)
+                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
+                Summary.(taxonlevels{i}){1}(:,1)=red_orgs;
+                Summary.(taxonlevels{i}){1}(:,2)=taxa;
+                Summary.(taxonlevels{i}){2}(:,3:4)=cellstr(string(Y));
+                
+                if size(data,1) == size(Y,1)
+                    f=figure;
+                    cols=hsv(length(unique(taxa)));
+                    % define markers to better distinguish groups
+                    cmarkers='';
+                    for j=1:7:length(unique(taxa))
+                        cmarkers=[cmarkers '+o*xsdp'];
+                    end
+                    cmarkers=cmarkers(1:length(unique(taxa)));
+                    h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
+                    hold on
+                    set(h,'MarkerSize',6)
+                    title(analyzedFiles{k,1})
+                    h=legend('Location','northeastoutside');
+                    if length(uniqueXX)-length(toofew) < 12
+                        set(h,'FontSize',11)
+                    elseif length(uniqueXX)-length(toofew) < 20
+                        set(h,'FontSize',9)
+                    else
+                        set(h,'FontSize',6)
+                    end
+                    
+                    f.Renderer='painters';
+                    print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                 else
-                    set(h,'FontSize',6)
+                    warning('Not enough strains with available organism information. Cannot cluster based on taxonomy.')
                 end
-                f.Renderer='painters';
-                print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
-            else
-                warning('Not enough strains with available organism information. Cannot cluster based on taxonomy.')
             end
         end
         save(['Summary_' reconVersion],'Summary');

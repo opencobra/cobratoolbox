@@ -16,9 +16,9 @@ function summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersi
 %   - AUTHOR
 %   Almut Heinken, 06/2020
 
-mkdir([propertiesFolder filesep 'ReactionPresence'])
+mkdir([propertiesFolder filesep 'ReactionMetabolitePresence'])
 currentDir=pwd;
-cd([propertiesFolder filesep 'ReactionPresence'])
+cd([propertiesFolder filesep 'ReactionMetabolitePresence'])
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
@@ -27,18 +27,9 @@ modelList(~contains(modelList(:,1),'.mat'),:)=[];
 modelList(:,1)=strrep(modelList(:,1),'.mat','');
 
 % Load reaction database
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-reactionDatabase = readtable([fileDir filesep 'ReactionDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 reactionDatabase(:,2:10)=[];
-
-if ~isempty(infoFilePath)
-    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-else
-    infoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-end
 
 [C,I]=setdiff(infoFile(:,1),modelList(:,1),'stable');
 infoFile(I(2:end),:)=[];
