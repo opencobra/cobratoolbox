@@ -1,10 +1,9 @@
-function [blockedPrecursors,enablingMetsEach,enablingMetsAll]=findBlockedPrecursorsInRxn(model,reactionToTest,osenseStr)
+function [blockedPrecursors,enablingMets]=findBlockedPrecursorsInRxn(model,reactionToTest,osenseStr)
 % This function identifies metabolites in a reaction of interest (e.g.,
 % biomass objective function) that cannot be produced or consumed and are
 % preventing flux through the reaction. Metabolites that could restore flux
 % through the reaction if they ould be either consumed or produced are
 % provided if they can be identified.
-%
 %
 % USAGE
 %   [blockedPrecursors,enablingMets]=findBlockePrecursorsInRxn(model,reactionToTest,osenseStr)
@@ -22,14 +21,9 @@ function [blockedPrecursors,enablingMetsEach,enablingMetsAll]=findBlockedPrecurs
 % blockedPrecursors   Metabolite in the reaction to test (e.g., the biomass
 %                     objective function) that cannot be produced or
 %                     consumed and are preventing flux
-% enablingMetsEach    Metabolites that each would restore flux through the 
-%                     reaction to test if they could be either produced or 
+% enablingMets        Metabolites that each would restore flux through the
+%                     reaction to test if they could be either produced or
 %                     consumed, and associated reactions in the model
-% enablingMetsAll     Metabolites that taken together would restore flux 
-%                     through the reaction to test if they could be either 
-%                     produced or consumed, and associated reactions in the 
-%                     model
-%
 %
 %   - AUTHOR
 %   Almut Heinken, 07/2020
@@ -46,7 +40,7 @@ if ~exist('osenseStr','var')
 end
 
 blockedPrecursors={};
-enablingMetsEach={};
+enablingMets={};
 enablingMetsAll={};
 
 model=changeObjective(model,reactionToTest);
@@ -74,74 +68,25 @@ else
     findInd=find(addedSinkReactions(:,1)>tol);
     if ~isempty(findInd)
         for i=1:length(findInd)
-            enablingMetsEach{i,1}=model.mets{findInd(i)};
-            if addedSinkReactions(findInd,2)>0
-                enablingMetsEach{i,2}='Consumed';
-            elseif addedSinkReactions(findInd,2)<0
-                enablingMetsEach{i,2}='Taken up';
+            enablingMets{i,1}=model.mets{findInd(i)};
+            if addedSinkReactions(findInd(i),2)>0
+                enablingMets{i,2}='Consumed';
+            elseif addedSinkReactions(findInd(i),2)<0
+                enablingMets{i,2}='Taken up';
             end
         end
         
         % print out the reaction formulas for metabolites enabling growth
-        for i=1:size(enablingMetsEach,1)
-            rxns=findRxnsFromMets(model,enablingMetsEach{i,1});
+        for i=1:size(enablingMets,1)
+            rxns=findRxnsFromMets(model,enablingMets{i,1});
             cnt=3;
             for j=1:length(rxns)
                 form=printRxnFormula(model,rxns{j});
-                enablingMetsEach{i,cnt}=rxns{j};
-                enablingMetsEach{i,cnt+1}=form;
+                enablingMets{i,cnt}=rxns{j};
+                enablingMets{i,cnt+1}=form;
                 cnt=cnt+2;
             end
         end
-        
-    else
-        % try adding sink reactions for multiple metabolites
-        enablingMetsAll={};
-        cnt=1;
-        % run loop multiple times
-        for t=1:10
-            model_old=model;
-            addedSinkReactions=[];
-            for i=1:length(model.mets)
-                model=addSinkReactions(model,{model.mets{i}});
-                model=changeRxnBounds(model,['sink_' model.mets{i}],-1,'l');
-                FBA = optimizeCbModel(model,osenseStr);
-                findTestRxn=find(strcmp(model.rxns,['sink_' model.mets{i}]));
-                addedSinkReactions(i,1) = FBA.f;
-                addedSinkReactions(i,2) = FBA.x(findTestRxn);
-                if FBA.f > tol
-                    break
-                end
-            end
-            enablingMetsAll{cnt,1}=model.mets{size(addedSinkReactions,1),1};
-            if addedSinkReactions(size(addedSinkReactions,1),2)>0
-                enablingMetsAll{cnt,2}='Consumed';
-            elseif addedSinkReactions(size(addedSinkReactions,1),2)<0
-                enablingMetsAll{cnt,2}='Taken up';
-            end
-            model=model_old;
-            model=addSinkReactions(model,{enablingMetsAll{cnt,1}});
-            cnt=cnt+1;
-            FBA = optimizeCbModel(model,osenseStr);
-            if FBA.f > tol
-                break
-            end
-        end
-        if ~isempty(enablingMetsAll)
-            for i=1:length(enablingMetsAll)
-                rxns=findRxnsFromMets(model,enablingMetsAll{i,1});
-                cnt=3;
-                for j=1:length(rxns)
-                    form=printRxnFormula(model,rxns{j});
-                    enablingMetsAll{i,cnt}=rxns{j};
-                    enablingMetsAll{i,cnt+1}=form;
-                    cnt=cnt+2;
-                end
-            end
-        else
-            warning('No metabolites that can restore flux through reaction %s could be found!\n',reactionToTest)
-        end
     end
-end
-
+    
 end

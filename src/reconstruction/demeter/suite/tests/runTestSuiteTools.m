@@ -42,7 +42,6 @@ parser.addParameter('createReports', false, @islogical);
 parser.addParameter('reportsFolder', '', @ischar);
 parser.addParameter('translatedDraftsFolder', '', @ischar);
 
-
 parser.parse(refinedFolder, varargin{:});
 
 refinedFolder = parser.Results.refinedFolder;
@@ -60,42 +59,32 @@ mkdir(testResultsFolder)
 currentDir=pwd;
 cd(inputDataFolder)
 
-% only runs the test suite if there are more than five
-% reconstructions-otherwise create reports
+if ~isempty(translatedDraftsFolder)
+    % Draft reconstructions
+    mkdir([testResultsFolder filesep reconVersion '_draft'])
+    testAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],reconVersion,numWorkers);   plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
+end
+
+% Refined reconstructions
+mkdir([testResultsFolder filesep reconVersion '_refined'])
+testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],reconVersion,numWorkers);
+plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
+% prepare a report and highlight debugging efforts still needed
+% printRefinementReport(testResultsFolder,reconVersion)
+
+% Give an individual report of each reconstruction if desired.
+% Note: this is time-consuming.
+% Requires LaTeX and pdflatex installation (e.g., MiKTex package)
+
+% automatically create reports if there are less than ten organisms
 dInfo = dir(refinedFolder);
 modelList={dInfo.name};
 modelList=modelList';
 modelList(~contains(modelList(:,1),'.mat'),:)=[];
 
-if size(modelList,1)>5
-    if ~isempty(translatedDraftsFolder)
-        % Draft reconstructions
-        mkdir([testResultsFolder filesep reconVersion '_draft'])
-        testAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],reconVersion,numWorkers);
-        plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
-        
-        % Refined reconstructions
-        mkdir([testResultsFolder filesep reconVersion '_refined'])
-        testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],reconVersion,numWorkers);
-        plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
-        % prepare a report and highlight debugging efforts still needed
-        % printRefinementReport(testResultsFolder,reconVersion)
-        
-    else
-        % Refined reconstructions
-        mkdir([testResultsFolder filesep reconVersion])
-        testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion],reconVersion,numWorkers);
-        plotTestSuiteResults([testResultsFolder filesep reconVersion],reconVersion);
-        % prepare a report and highlight debugging efforts still needed
-        % printRefinementReport(testResultsFolder,reconVersion)
-    end
-else
+if size(modelList) < 10
     createReports=true;
 end
-
-% Give an individual report of each reconstruction if desired.
-% Note: this is time-consuming.
-% Requires LaTeX and pdflatex installation (e.g., MiKTex package)
 
 if createReports
     

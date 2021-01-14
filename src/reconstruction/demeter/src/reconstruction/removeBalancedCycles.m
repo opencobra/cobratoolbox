@@ -100,6 +100,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'MTHFRfdx AND FDNADOX_H',[],'FDNADOX_H',[]
     'FDNADOX_H AND FDX_NAD_NADP_OX',[],'FDX_NAD_NADP_OX','FDX_NAD_NADP_OXi'
     'PROPAT4te AND PROt2r',[],'PROt2r','PROt2'
+    'PROPAT4te AND PROt2r',[],'PROt2r','PROt2 AND EX_fum(e) AND FUMt2'
     'G3PD8 AND GLYC3Pt',[],'GLYC3Pt','GLYC3Pti'
     'OAACL AND PPCr AND NDPK9',[],'OAACL','OAACLi'
     'OAACL AND PPCr AND NDPK3',[],'OAACL','OAACLi'

@@ -43,6 +43,8 @@ numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 
+mkdir(testResultsFolder)
+
 tol=0.0000001;
 
 notGrowing = {};

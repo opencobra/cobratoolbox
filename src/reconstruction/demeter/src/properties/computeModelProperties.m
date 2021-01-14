@@ -41,7 +41,7 @@ if length(modelList)>1
     if ~isempty(translatedDraftsFolder)
         % save results for refined and draft in two different folders
         mkdir([propertiesFolder filesep 'Draft'])
-   
+        
         % analyze and cluster draft reconstructions for comparison
         printReconstructionContent(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
         getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
@@ -50,18 +50,6 @@ if length(modelList)>1
         producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
         rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
         plotMetaboliteProducersConsumers([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'])
-        
-        mkdir([propertiesFolder filesep 'Refined'])
-        
-        % analyze and cluster refined reconstructions
-        printReconstructionContent(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],numWorkers)
-        getReactionMetabolitePresence(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
-        getSubsystemPresence([propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
-        computeUptakeSecretion(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],{},numWorkers)
-        computeInternalMetaboliteProduction(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],{},numWorkers)
-        producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'],customFeatures)
-        rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
-        plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'])
         
         % get basic statistics on draft and refined reconstructions and metabolite
         % and reaction content of all refined reconstructions
@@ -72,16 +60,18 @@ if length(modelList)>1
         computeStochiometricFluxConsistency(translatedDraftsFolder,modelFolder,propertiesFolder,reconVersion, numWorkers)
     end
     
-    % analyze and cluster reconstructions
-    printReconstructionContent(modelFolder,propertiesFolder,reconVersion,numWorkers)
-    getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)
-    getSubsystemPresence(propertiesFolder,reconVersion)
-    computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,{},numWorkers)
-    computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconVersion,{},numWorkers)
-    producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatures)
-    rankFeaturesByIncidence(propertiesFolder,reconVersion)
-    plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion)
-      
+    mkdir([propertiesFolder filesep 'Refined'])
+    
+    % analyze and cluster refined reconstructions
+    printReconstructionContent(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],numWorkers)
+    getReactionMetabolitePresence(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
+    getSubsystemPresence([propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
+    computeUptakeSecretion(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],{},numWorkers)
+    computeInternalMetaboliteProduction(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],{},numWorkers)
+    producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'],customFeatures)
+    rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
+    plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'])
+    
     % delete files that are no longer needed
     dInfo = dir(fullfile(propertiesFolder, '**/*.*'));  %get list of files and folders in any subfolder
     dInfo = dInfo(~[dInfo.isdir]);

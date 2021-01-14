@@ -81,18 +81,19 @@ for i=1:length(models)
     uniqueMets=unique(vertcat(uniqueMets,metsTmp{i}));
 end
 
-% print out the unique reactions and metabolites of the resource
+% print out the unique reactions and metabolites of the resource-only if it
+% used VMH nomenclature
 reconMetabolites=database.metabolites;
 [C,IA] = setdiff(reconMetabolites(:,1),uniqueMets);
 reconMetabolites(IA,:)=[];
-if size(reconMetabolites,1)>0
+if size(reconMetabolites,1)>200
 writetable(cell2table(reconMetabolites),[propertiesFolder filesep 'Metabolites_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
 reconReactions=database.reactions;
 [C,IA] = setdiff(reconReactions(:,1),uniqueRxns);
 reconReactions(IA,:)=[];
-if size(reconMetabolites,1)>0
+if size(reconMetabolites,1)>200
 writetable(cell2table(reconReactions),[propertiesFolder filesep 'Reactions_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
