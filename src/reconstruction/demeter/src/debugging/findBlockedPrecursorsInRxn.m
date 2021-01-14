@@ -41,7 +41,6 @@ end
 
 blockedPrecursors={};
 enablingMets={};
-enablingMetsAll={};
 
 model=changeObjective(model,reactionToTest);
 FBA = optimizeCbModel(model,osenseStr);
@@ -88,5 +87,6 @@ else
             end
         end
     end
-    
+end
+
 end

@@ -93,14 +93,11 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'ACOAD1 AND ACOAD1f AND SUCD4',[],'ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR',[],'D_GLY3PR','D_GLY3PRi'
     'H2O2D',[],'H2O2D','NPR'
-    'H2O2D',[],'H2O2D','NPR AND EX_fum(e) AND FUMt'
-    'H2O2D',[],'H2O2D','NPR AND EX_q8(e) AND Q8abc'
     'ACCOACL AND BTNCL',[],'BTNCL','BTNCLi'
     'r0220 AND r0318',[],'r0318','r0318i'
     'MTHFRfdx AND FDNADOX_H',[],'FDNADOX_H',[]
     'FDNADOX_H AND FDX_NAD_NADP_OX',[],'FDX_NAD_NADP_OX','FDX_NAD_NADP_OXi'
     'PROPAT4te AND PROt2r',[],'PROt2r','PROt2'
-    'PROPAT4te AND PROt2r',[],'PROt2r','PROt2 AND EX_fum(e) AND FUMt2'
     'G3PD8 AND GLYC3Pt',[],'GLYC3Pt','GLYC3Pti'
     'OAACL AND PPCr AND NDPK9',[],'OAACL','OAACLi'
     'OAACL AND PPCr AND NDPK3',[],'OAACL','OAACLi'
@@ -445,6 +442,24 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'METt2r AND METt3r',[],'METt2r','METt2'
     };
 
+% growth-restoring gapfills: needed if the futile cycle was the model's
+% only way to produce ATP and growth rate without it is zero. Enables ATP
+% production through a more realistic pathway.
+growthGapfills={
+    'EX_succ(e) AND SUCCt'
+    'EX_fum(e) AND FUMt2'
+    'EX_succ(e) AND SUCCt2r'
+    'EX_fum(e) AND FUMt2 AND EX_succ(e) AND SUCCt2r'
+    'EX_for(e) AND FORt2r'
+    'EX_ac(e) AND ACt2r'
+    'EX_asp_L(e) AND ASPt2r'
+    'EX_q8(e) AND Q8abc'
+    'EX_2dmmq8(e) AND 2DMMQ8abc'
+    'DM_q8h2[c]'
+    'DM_NA1'
+    'AND EX_lac_L(e) AND L_LACt2r'
+    };
+
 for i = 2:size(reactionsToReplace, 1)
     % take other models in a multi-species model into account if applies
     if nargin>3 && ~isempty(unionRxns)
@@ -526,6 +541,60 @@ for i = 2:size(reactionsToReplace, 1)
                     addedRxns{addCnt, j+1} = rxns{j};
                 end
                 addCnt = addCnt + 1;
+            end
+        else
+            % try growth-restoring gapfills
+            modelPrevious=modelTest;
+            for k=1:size(growthGapfills,1)
+                ggrxns=strsplit(growthGapfills{k, 1},' AND ');
+                % to not add reactions that were just flagged for removal
+                ggrxns=setdiff(ggrxns,toRemove);
+                for j=1:length(ggrxns)
+                    % create a new formula
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), ggrxns{j})), 3};
+                    if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                        newName=[ggrxns{j} 'ipp'];
+                        % make sure we get the correct reaction
+                        newForm=strrep(RxForm,'[e]','[p]');
+                        rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                        if ~isempty(rxnInd)
+                            dbForm=database.reactions{rxnInd, 3};
+                            if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                RxForm=dbForm;
+                            end
+                        end
+                        modelTest = addReaction(modelTest, newName, RxForm);
+                    else
+                        modelTest = addReaction(modelTest, ggrxns{j}, RxForm);
+                    end
+                end
+                FBA = optimizeCbModel(modelTest, 'max');
+                if FBA.f > tol
+                    model = modelTest;
+                    % add replaced reactions
+                    if ~isempty(reactionsToReplace{i, 3})
+                        for j=1:length(toRemove)
+                            deletedRxns{delCnt, 1} = toRemove{j};
+                            delCnt = delCnt + 1;
+                        end
+                    end
+                    if ~isempty(reactionsToReplace{i, 4})
+                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
+                            addedRxns{addCnt, 1} = toRemove{1};
+                        end
+                        for j=1:length(rxns)
+                            addedRxns{addCnt, j+1} = rxns{j};
+                        end
+                        addCnt = addCnt + 1;
+                    end
+                    % add growth-restoring gapfilled reactions
+                    for j=1:length(ggrxns)
+                        addedRxns{addCnt, j+1} = ggrxns{j};
+                    end
+                    addCnt = addCnt + 1;
+                    break
+                end
+                modelTest=modelPrevious;
             end
         end
     end
