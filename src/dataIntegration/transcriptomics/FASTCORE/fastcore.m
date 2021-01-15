@@ -162,70 +162,15 @@ coreRxnBool(A)=1;
 
 rxnRemoveList = setdiff(model.rxns,model.rxns(A));
 
-%save('debug_prior_to_fastcore_cleanup')
-
-% Remove dummy reactions
-R2 = contains(model_orig.rxns,'dummy');
-% remove dummy metabolites
-M2 = contains(model_orig.mets,'dummy');
-if any(R2) || any(M2)
-    model_orig.mets = model_orig.mets(~M2);
-    model_orig.S = model_orig.S(~M2,~R2);
-    model_orig.b = model_orig.b(~M2);
-    model_orig.rxns = model_orig.rxns(~R2);
-    model_orig.rxnNames = model_orig.rxnNames(~R2);
-    model_orig.lb = model_orig.lb(~R2);
-    model_orig.ub = model_orig.ub(~R2);
-    model_orig.c = model_orig.c(~R2);
-    
-    if isfield(model_orig, 'csense')
-        model_orig.csense = model_orig.csense(~M2);
-    end
-    if isfield(model_orig, 'ctrs')
-        model_orig.C = model_orig.C(:,~R2);
-    end
-    if isfield(model_orig, 'rxnGeneMat')
-        model_orig.rxnGeneMat = model_orig.rxnGeneMat(~R2,:);
-    end
-    if isfield(model_orig, 'rules')
-        model_orig.rules = model_orig.rules(~R2);
-    end
-    if isfield(model,'subSystems')
-        model_orig.subSystems = model_orig.subSystems(~R2);
-    end
-    if isfield(model_orig,'SIntMetBool')
-        model_orig.SIntMetBool = model_orig.SIntMetBool(~M2);
-    end
-    if isfield(model_orig,'SIntRxnBool')
-        model_orig.SIntRxnBool = model_orig.SIntRxnBool(~R2);
-    end
-    if isfield(model_orig,'SConsistentMetBool')
-        model_orig.SConsistentMetBool = model_orig.SConsistentMetBool(~M2);
-    end
-    if isfield(model_orig,'SConsistentRxnBool')
-        model_orig.SConsistentRxnBool = model_orig.SConsistentRxnBool(~R2);
-    end
-    if isfield(model_orig,'fluxConsistentMetBool')
-        model_orig.fluxConsistentMetBool = model_orig.fluxConsistentMetBool(~M2);
-    end
-    if isfield(model_orig,'fluxConsistentRxnBool')
-        model_orig.fluxConsistentRxnBool = model_orig.fluxConsistentRxnBool(~R2);
-    end
-    if isfield(model_orig,'thermoFluxConsistentMetBool')
-        model_orig.thermoFluxConsistentMetBool = model_orig.thermoFluxConsistentMetBool(~M2);
-    end
-    if isfield(model_orig,'thermoFluxConsistentRxnBool')
-        model_orig.thermoFluxConsistentRxnBool = model_orig.thermoFluxConsistentRxnBool(~R2);
-    end
-    rxnRemoveList = rxnRemoveList(~contains(rxnRemoveList,'dummy'));
+dummyMetBool = contains(model.mets,'dummy_Met_');
+dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
+if any(dummyMetBool) || any(dummyRxnBool)
+    model = destroyDummyModel(model,dummyMetBool,dummyRxnBool);
+    rxnRemoveList = rxnRemoveList(~dummyRxnBool);
 end
         
-if 0
-    tissueModel = removeRxns(model_orig, rxnRemoveList);
-else
-    %removes any infeasible coupling constraints also
-    [tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model_orig, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
-end
+%removes any infeasible coupling constraints also
+[tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model_orig, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
 
 coreMetBool=~ismember(model_orig.mets,metRemoveList);
 if isfield(model,'ctrs')
