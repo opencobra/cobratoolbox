@@ -1,4 +1,4 @@
-function [debuggingReport, unsuccessfulModels]=runDebuggingTools(refinedFolder,testResultsFolder,reconVersion)
+function [debuggingReport, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,reconVersion)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -44,7 +44,7 @@ end
 % perform debugging tools for each model for which addiitonal curation is
 % needed
 for i=1:length(failedModels)
-    
+    model=readCbModel([refinedFolder filesep failedModels{i,1} '.mat']);
 end
 
 cd(currentDir);
