@@ -190,7 +190,33 @@ if any(R2) || any(M2)
     if isfield(model_orig, 'rules')
         model_orig.rules = model_orig.rules(~R2);
     end
-    
+    if isfield(model,'subSystems')
+        model_orig.subSystems = model_orig.subSystems(~R2);
+    end
+    if isfield(model_orig,'SIntMetBool')
+        model_orig.SIntMetBool = model_orig.SIntMetBool(~M2);
+    end
+    if isfield(model_orig,'SIntRxnBool')
+        model_orig.SIntRxnBool = model_orig.SIntRxnBool(~R2);
+    end
+    if isfield(model_orig,'SConsistentMetBool')
+        model_orig.SConsistentMetBool = model_orig.SConsistentMetBool(~M2);
+    end
+    if isfield(model_orig,'SConsistentRxnBool')
+        model_orig.SConsistentRxnBool = model_orig.SConsistentRxnBool(~R2);
+    end
+    if isfield(model_orig,'fluxConsistentMetBool')
+        model_orig.fluxConsistentMetBool = model_orig.fluxConsistentMetBool(~M2);
+    end
+    if isfield(model_orig,'fluxConsistentRxnBool')
+        model_orig.fluxConsistentRxnBool = model_orig.fluxConsistentRxnBool(~R2);
+    end
+    if isfield(model_orig,'thermoFluxConsistentMetBool')
+        model_orig.thermoFluxConsistentMetBool = model_orig.thermoFluxConsistentMetBool(~M2);
+    end
+    if isfield(model_orig,'thermoFluxConsistentRxnBool')
+        model_orig.thermoFluxConsistentRxnBool = model_orig.thermoFluxConsistentRxnBool(~R2);
+    end
     rxnRemoveList = rxnRemoveList(~contains(rxnRemoveList,'dummy'));
 end
         

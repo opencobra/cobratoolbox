@@ -201,7 +201,8 @@ else
         case 'thermoKernel'
             if ~isfield(options,'rxnWeights')
                 if isfield(options,'core')
-                    options.rxnWeights = -options.core; %note the negative sign
+                    options.rxnWeights = ones(length(model.lb),1)*0.01;
+                    options.rxnWeights(options.core) = -1; %note the negative sign
                 else
                     options.rxnWeights=[];
                     warning('The required option field "rxnWeights" is not defined for thermoKernel method')

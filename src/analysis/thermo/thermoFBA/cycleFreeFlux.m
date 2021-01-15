@@ -22,8 +22,8 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 %
 % OPTIONAL INPUTS:
 %    SConsistentRxnBool:    `n x 1` logical array. True for internal reactions.
-%    relaxBounds:      Relax bounds that don't include zero. Default is false.
-%    parallelize:      Turn parfor use on or off. Default is true if k > 12.
+%    param.relaxBounds:      Relax bounds that don't include zero. Default is false.
+%    param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
 %
 % OUTPUT:
 %    V1:    `n x k` matrix of cycle free flux vectors
@@ -58,8 +58,6 @@ if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defa
         clear tmp
     end
 end
-
-
 
 if ~exist('param','var')
     param = struct();

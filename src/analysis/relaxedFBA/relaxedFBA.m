@@ -145,7 +145,7 @@ end
 if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
     SIntRxnBool = model.SIntRxnBool;
 else
-    model_Ex = findSExRxnInd(model,size(model.S,2));
+    model_Ex = findSExRxnInd(model,size(model.S,1));
     SIntRxnBool = model_Ex.SIntRxnBool;
 end
 

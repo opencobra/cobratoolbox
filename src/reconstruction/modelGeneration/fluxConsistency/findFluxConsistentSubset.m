@@ -10,15 +10,20 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %    model:                      structure with field:
 %
 %                                  * .S - `m` x `n` stoichiometric matrix
-%                                  * .rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
 %
 % OPTIONAL INPUTS:
 %    param:                      can contain:
-%                                  * param.LPsolver - the LP solver to be used  
-%                                  * param.epsilon -  minimum nonzero flux, default feasTol*100
+%                                  * param.LPsolver - the LP solver to be used
+%                                  * param.epsilon -  minimum nonzero flux, default feasTol*10
+%                                                     Note that fastcc is very sensitive to the value of parm.epsilon                    
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
 %                                  * param.method - {'swiftcc', 'fastcc', 'dc'}
+%                                  * param.reduce - {(0),1} 1 = return fluxConsistModel
+%
 %    printLevel:                 verbose level
+%
+%    model.rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
+%
 %
 % OUTPUTS:
 %    fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
@@ -32,20 +37,16 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * .fluxInConsistentMetBool
 %                                  * .fluxInConsistentRxnBool
 %
-% .. Authors: 
+% .. Authors:
 %       - Ronan Fleming, 2017
 %       - Mojtaba Tefagh, March 2019 - integration of swiftcc
 
-if ~exist('param','var')
-    feasTol = getCobraSolverParams('LP', 'feasTol');
-    epsilon=feasTol*100;
-    modeFlag=0;
-    method='fastcc';
+if ~exist('param','var') || isempty(param)
+    param = struct();
 end
-
 if ~isfield(param,'epsilon')
     feasTol = getCobraSolverParams('LP', 'feasTol');
-    epsilon=feasTol*100;
+    epsilon=feasTol*10;%warning, if method fastcc, it is very sensitive to the value of epsilon
 else
     epsilon=param.epsilon;
 end
@@ -55,9 +56,7 @@ else
     modeFlag=param.modeFlag;
 end
 if ~isfield(param,'method')
-    method='fastcc';
-else
-    method=param.method;
+    param.method='fastcc';
 end
 if ~exist('printLevel','var')
     printLevel=0;
@@ -78,36 +77,34 @@ end
 sol = optimizeCbModel(model);
 
 if (sol.stat == 1)
-%speeds up fast cc if one can remove the reactions that have no support in
-%the right nullspace of S
-if strcmp(param.method,'null_fastcc')
-    %Find the reactions that are flux inconsistent (upto orientation, without bounds)
-    %compute the nullspace of the stoichiometric matrix and identify the
-    %reactions without support in the nullspace basis
-    [Z,rankS]=getNullSpace(model.S,0);
-    nullFluxInConsistentRxnBool=~any(Z,2);
-
-    if any(nullFluxInConsistentRxnBool)
-        modelOrig=model;
-        nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');
-        model.S=model.S(~nullFluxInConsistentMetBool,~nullFluxInConsistentRxnBool);
-        model.mets=model.mets(~nullFluxInConsistentMetBool);
-        model.b=model.b(~nullFluxInConsistentMetBool);
-        if isfield(model,'csense')
-            model.csense=model.csense(~nullFluxInConsistentMetBool);
+    %speeds up fast cc if one can remove the reactions that have no support in
+    %the right nullspace of S
+    if strcmp(param.method,'null_fastcc')
+        %Find the reactions that are flux inconsistent (upto orientation, without bounds)
+        %compute the nullspace of the stoichiometric matrix and identify the
+        %reactions without support in the nullspace basis
+        [Z,rankS]=getNullSpace(model.S,0);
+        nullFluxInConsistentRxnBool=~any(Z,2);
+        
+        if any(nullFluxInConsistentRxnBool)
+            modelOrig=model;
+            nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');
+            model.S=model.S(~nullFluxInConsistentMetBool,~nullFluxInConsistentRxnBool);
+            model.mets=model.mets(~nullFluxInConsistentMetBool);
+            model.b=model.b(~nullFluxInConsistentMetBool);
+            if isfield(model,'csense')
+                model.csense=model.csense(~nullFluxInConsistentMetBool);
+            end
+            model.c=model.c(~nullFluxInConsistentRxnBool);
+            model.lb=model.lb(~nullFluxInConsistentRxnBool);
+            model.ub=model.ub(~nullFluxInConsistentRxnBool);
+            model.rxns=model.rxns(~nullFluxInConsistentRxnBool);
         end
-        model.c=model.c(~nullFluxInConsistentRxnBool);
-        model.lb=model.lb(~nullFluxInConsistentRxnBool);
-        model.ub=model.ub(~nullFluxInConsistentRxnBool);
-        model.rxns=model.rxns(~nullFluxInConsistentRxnBool);
     end
-end
-
-fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
-
-
-
-    switch method
+    
+    fluxConsistentRxnBoolTemp=false(size(model.S,2),1);
+    
+    switch param.method
         case 'swiftcc'
             if ~isfield(param,'LPsolver')
                 solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
@@ -218,7 +215,6 @@ else
     fluxConsistentRxnBool=fluxConsistentRxnBoolTemp;
 end
 
-
 %metabolites inclusively involved in flux consistent reactions are deemed flux consistent also
 fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),fluxConsistentRxnBool,'inclusive');
 
@@ -228,6 +224,11 @@ if any(~fluxConsistentRxnBool)
         fprintf('%u%s\n',nnz(~fluxConsistentMetBool),' flux inconsistent metabolites')
         fprintf('%u%s\n',nnz(fluxConsistentRxnBool),' flux consistent reactions')
         fprintf('%u%s\n',nnz(~fluxConsistentRxnBool),' flux inconsistent reactions')
+    end
+else
+    if printLevel>0
+        fprintf('%u%s\n',nnz(fluxConsistentMetBool),' all metabolites flux consistent.')
+        fprintf('%u%s\n',nnz(fluxConsistentRxnBool),' all reactions flux consistent.')
     end
 end
 

@@ -30,8 +30,14 @@ end
 tol = max([tol, cobraParams.LP.feasTol * 10]);
 
 LP = struct();
-rxnFwdOnly = find(model.lb >= 0);
-rxnRevOnly = find(model.ub <= 0);
+if 0
+    rxnFwdOnly = find(model.lb >= 0);
+    rxnRevOnly = find(model.ub <= 0);
+else
+    %avoid reactions bound at zero
+    rxnFwdOnly = find(model.lb >= 0 & model.ub>0);
+    rxnRevOnly = find(model.ub <= 0 & model.lb<0);
+end
 [nF, nR] = deal(numel(rxnFwdOnly), numel(rxnRevOnly));
 [m, n] = size(model.S);
 LP.A = [model.S,                        sparse(m, nF + nR); ...  % Sv = 0
