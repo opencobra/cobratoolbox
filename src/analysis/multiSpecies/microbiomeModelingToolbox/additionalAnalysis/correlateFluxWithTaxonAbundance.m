@@ -95,9 +95,11 @@ end
 % strain in at least one sample
 
 % Find the right column for the input data (strains, species,..)
+if sum(strncmp(abundance(:,1),'pan',3))==size(abundance,1)-1
 abundance(:,1)=regexprep(abundance(:,1),'pan','','once');
+end
 inputTaxa={};
-for i=2:size(taxonomy,2)
+for i=1:size(taxonomy,2)
     taxa=strrep(taxonomy(:,i),' ','_');
     taxa=strrep(taxa,'.','_');
     taxa=strrep(taxa,'/','_');
@@ -106,6 +108,7 @@ for i=2:size(taxonomy,2)
     if length(intersect(abundance(2:end,1),taxa))==size(abundance,1)-1
         inputTaxa=taxa;
         inputCol=i;
+        break
     end
 end
 if isempty(inputTaxa)

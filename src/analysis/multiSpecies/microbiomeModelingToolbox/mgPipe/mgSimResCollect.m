@@ -166,4 +166,9 @@ for j = init:fl
         end
     end
 end
+
+% delete files that are no longer needed
+delete([resPath filesep 'ID.csv'])
+delete([resPath filesep 'intRes.mat'])
+
 end

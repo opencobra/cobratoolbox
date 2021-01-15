@@ -11,7 +11,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
-%    indInfoFilePath:        char indicating, if stratification criteria are available, full path and name to related documentation(default: no)
+%    infoFilePath:           char with path to stratification criteria if available
 %    objre:                  char with reaction name of objective function of organisms
 %    figForm:                format to use for saving figures
 %    numWorkers:             integer indicating the number of cores to use for parallelization
@@ -41,14 +41,14 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 %               - Almut Heinken 08/2020: added extra inputs and changed to
 %                                        varargin input
-%
+
 % Define default input parameters if not specified
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
 parser.addParameter('resPath', '', @ischar);
 parser.addParameter('dietFilePath', '', @ischar);
-parser.addParameter('indInfoFilePath', 'nostrat', @ischar);
+parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('objre', '', @ischar);
 parser.addParameter('figForm', '-depsc', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
@@ -70,7 +70,7 @@ modPath = parser.Results.modPath;
 abunFilePath = parser.Results.abunFilePath;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
-indInfoFilePath = parser.Results.indInfoFilePath;
+infoFilePath = parser.Results.infoFilePath;
 objre = parser.Results.objre;
 figForm = parser.Results.figForm;
 numWorkers = parser.Results.numWorkers;
@@ -104,7 +104,7 @@ if ~exist('dietFilePath', 'var')|| ~exist(strcat(dietFilePath,'.txt'), 'file')
     warning(['The path to the results has been set to ' dietFilePath]);
 end
 
-if strcmp('indInfoFilePath', 'nostrat')
+if strcmp(infoFilePath, '')
     patStat = false;
 else
     patStat = true;
@@ -155,6 +155,6 @@ end
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, indInfoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, infoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end
