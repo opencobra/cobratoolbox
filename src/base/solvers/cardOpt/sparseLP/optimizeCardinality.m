@@ -85,7 +85,7 @@ if ~exist('param','var') || isempty(param)
     param.theta   = 0.5;
     param.thetaMultiplier   = 1.5;
     param.warmStartMethod = 'random';
-    param.regularizeOuter = 1;
+    param.regularizeOuter = 0;
 else
     fnames = fieldnames(param);
     incorrectParamFields={'lambda','delta'};
@@ -379,20 +379,20 @@ if isfield(problem,'o')
                 return;
             else
                 if any(problem.o <=0) %& 0
-                    warning('Error: the weight vector o should be strictly positive');
+                    warning('Error: the weight vector o should be strictly positive.');
                     solution.stat = -1;
                     return;
                 end
             end
         else
             if length(problem.o) ~= length(problem.p)
-                warning('Error: the size of weight vector o is not correct');
+                warning('Error: the size of weight vector o is not correct.');
                 solution.stat = -1;
                 return;
             else
-                if any(problem.o <=0)
-                    warning('Error: the weight vector o should be strictly positive');
+                if any(problem.o <0)
                     solution.stat = -1;
+                    warning('Error: the weight vector o should be non-negative.');
                     return;
                 end
             end

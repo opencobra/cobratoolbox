@@ -45,6 +45,10 @@ if (iscell(rxnNameList))
         value = value(rxnID ~= 0);
     end
     rxnID = rxnID(rxnID ~= 0);
+else
+    if rxnID==0
+        warning('Reaction %s not in model',rxnNameList)
+    end
 end
 
 if (isempty(rxnID))

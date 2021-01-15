@@ -22,8 +22,8 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 %
 % OPTIONAL INPUTS:
 %    SConsistentRxnBool:    `n x 1` logical array. True for internal reactions.
-%    relaxBounds:      Relax bounds that don't include zero. Default is false.
-%    parallelize:      Turn parfor use on or off. Default is true if k > 12.
+%    param.relaxBounds:      Relax bounds that don't include zero. Default is false.
+%    param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
 %
 % OUTPUT:
 %    V1:    `n x k` matrix of cycle free flux vectors
@@ -58,8 +58,6 @@ if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defa
         clear tmp
     end
 end
-
-
 
 if ~exist('param','var')
     param = struct();
@@ -235,25 +233,32 @@ end
 %that, in one way or another
 if 1
     %zeroing out very small fluxes seems to work reliably for recon3
-    bool = abs(v0)<feasTol;
-    if any(bool)
+    isSmall = abs(v0)<feasTol;
+    if any(isSmall)
         if param.debug
-            fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(bool)) ' reactions is less than feasibility tolerance. Set to zero.'])
+            fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(isSmall)) ' reactions is less than ' num2str(feasTol) ', so they are bound between [-' num2str(feasTol) ', ' num2str(feasTol) '].'])
         end
-        v0(bool)=0;
+        v0(isSmall)=0;
     end
 else
     %relax bounds on non fixed variables
     if 1
-        bool = model_ub-model_lb>feasTol & model_ub~=model_lb;
-        model_lb(bool)=model_lb(bool)-epsilon/2;
-        model_ub(bool)=model_ub(bool)+epsilon/2;
+        isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+        model_lb(isSmall)=model_lb(isSmall)-epsilon/2;
+        model_ub(isSmall)=model_ub(isSmall)+epsilon/2;
     else
         %adaption to deal with infeasibility due to numerical imprecision
         %https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
         model_lb = model_lb -epsilon/2;
         model_ub = model_ub + epsilon/2;
     end
+end
+
+if 0
+    %adaption to deal with infeasibility due to numerical imprecision
+    isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+    model_lb(isSmall)=model_lb(isSmall)-feasTol/2;
+    model_ub(isSmall)=model_ub(isSmall)+feasTol/2;
 end
 
 [m,n] = size(model_S);
@@ -306,7 +311,7 @@ end
 
 % bounds
 lb = [v0; zeros(p, 1)]; % fixed exchange fluxes
-ub = [v0; abs(v0(SConsistentRxnBool))];
+ub = [v0; abs(v0(SConsistentRxnBool))+feasTol*10]; %allow x to be slightly greater
 
 if param.relaxBounds
     lb(isF) = 0; % internal reaction directionality same as in input flux
@@ -319,7 +324,8 @@ if param.debug
     if any(bool)
         figure;
         hist(ub(bool)-lb(bool))
-        fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+        title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        fprintf('%s\n',['cycleFreeFlux: Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
     end
 end
 
@@ -335,19 +341,23 @@ if param.debug
     end
 end
 
+%allow reactions with small flux to have small flux with a change in sign
+lb(isSmall) = -feasTol;
+ub(isSmall) =  feasTol;
+
 if any(lb(1:n)>ub(1:n))
-    if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<1e-9
+    if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<feasTol
         lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
         if param.printLevel>0
-            fprintf('%s\n','Lower bounds slightly greater than upper bounds, set to the same.')
+            fprintf('%s\n','cycleFreeFlux: Lower bounds slightly greater than upper bounds, set to the same.')
         end
     else
-        error('Lower bounds cannot be greater than upper bounds')
+        error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
     end
 end
 
 if any(lb(n+1:n+p)>ub(n+1:n+p))
-    error('Lower bounds cannot be greater than upper bounds')
+    error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
 end
 
 
@@ -358,7 +368,7 @@ if param.debug
 end
 
 if any(lb>ub)
-    error('Lower bounds cannot be greater than upper bounds')
+    error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
 end
 
 lp = struct('osense', 1, 'c', c, 'A', A, ...
@@ -375,11 +385,9 @@ if param.removeFixedBool
         %assume the external reactions are also fixed
         fixedBool = lp.lb == lp.ub | zeroBool | [~SConsistentRxnBool;false(p,1)];
     end
-else
-    fixedBool=0;
 end
 
-if any(fixedBool)
+if param.removeFixedBool==1
       lp.b = lp.b - lp.A(:,fixedBool)*lp.lb(fixedBool);
       lp.A = lp.A(:,~fixedBool);
       lp.lb = lp.lb(~fixedBool);
@@ -392,7 +400,7 @@ solution = solveCobraLP(lp);
 
 if solution.stat == 1
     
-    if any(fixedBool)
+    if param.removeFixedBool==1
         %rebuild optimal flux vector
         full = zeros(n+p,1);
         full(fixedBool)=lb(fixedBool);
@@ -403,6 +411,20 @@ if solution.stat == 1
     v1 = solution.full(1:n);
 else
     if param.debug
+        fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
+    end
+    bool = lp.lb~=lp.ub & lp.lb~=0;
+    lpRelaxed = lp;
+    lpRelaxed.ub(bool) = lp.ub(bool) + feasTol*10;
+    lpRelaxed.lb(bool) = lp.lb(bool) - feasTol*10;
+    solution = solveCobraLP(lpRelaxed);
+    if solution.stat==1
+        v1 = solution.full(1:n);
+        if param.debug
+            fprintf('%s\n','...solution found.')
+        end
+    else
+        fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
         disp(solution)
         %save('debug_cycleFreeFlux_infeasibility.mat')
         
@@ -444,9 +466,9 @@ else
         lpRelaxed.lb(:) = -inf;
         lpRelaxed.ub(:) =  inf;
         solutionRelaxed3 = solveCobraLP(lpRelaxed)
+        
+        error('cycleFreeFlux: No solution found, try using a different solver.');
     end
-    fprintf('%s\n%sn','cycleFreeFlux: No solution found.','Try using a different solver');
-    error('cycleFreeFlux: No solution found, try using a different solver');
 end
 
 end
