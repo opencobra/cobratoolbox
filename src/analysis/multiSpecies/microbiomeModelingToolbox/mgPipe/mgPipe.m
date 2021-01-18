@@ -158,9 +158,9 @@ end
 % are also added. Models that are already existent will not be recreated, and
 % new microbiota models will be saved in the results folder.
 
-% if there is 300 reconstruction total or less, use fast setup creator to
+% if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
-if size(models,1) <= 300
+if size(models,1) <= 500
     if modbuild == 1
         setup=fastSetupCreator(models, strains, host,objre);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
