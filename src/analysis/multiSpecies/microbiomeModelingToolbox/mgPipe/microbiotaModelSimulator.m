@@ -1,4 +1,4 @@
-function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, numWorkers)
+function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -7,13 +7,16 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %
 % USAGE:
 %
-%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, rDiet, pDiet, extSolve, patNumb, fvaType,lowerBMBound,repeatSim,adaptMedium, numWorkers)
+%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
 %    setup:              "global setup" model in COBRA model structure format
 %    sampName:           cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
+%    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
+%    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
+%    numWorkers:         integer indicating the number of cores to use for parallelization
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
@@ -29,7 +32,6 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %                        overwritten (default=false)
 %    adaptMedium:        boolean indicating if the medium should be adapted through the
 %                        adaptVMHDietToAGORA function or used as is (default=true)
-%    numWorkers:         integer indicating the number of cores to use for parallelization
 %
 % OUTPUTS:
 %    ID:                 cell array with list of all unique Exchanges to diet/
@@ -103,7 +105,7 @@ else
     % Starting personalized simulations
     for k = startIter:(patNumb + 1)
         idInfo = cell2mat(sampName((k - 1), 1));
-        if isfile(strcat('host_microbiota_model_samp_', idInfo,'.mat'))
+        if ~isempty(hostPath)
             microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', idInfo,'.mat'));
         else
             microbiota_model=readCbModel(strcat('microbiota_model_samp_', idInfo,'.mat'));
@@ -141,14 +143,25 @@ else
         model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
         
         % set constraints on host exchanges if present
-        hostEXrxns=find(strncmp(model.rxns,'Host_EX_',8));
-        if ~isempty(hostEXrxns)
+        if ~isempty(hostBiomassRxn)
+            hostEXrxns=find(strncmp(model.rxns,'Host_EX_',8));
             model=changeRxnBounds(model,model.rxns(hostEXrxns),0,'l');
-            % make exchanges for metabolites that should be taken up from
+            % constrain blood exchanges but make exceptions for metabolites that should be taken up from
             % blood
-            takeupExch={'h2o','hco3','o2','gchola','tdchola','tchola','dgchol','34dhphe','5htrp','Lkynr','f1a','gncore1','gncore2','dsT_antigen','sTn_antigen','core8','core7','core5','core4','ha','cspg_a','cspg_b','cspg_c','cspg_d','cspg_e','hspg'};
+            takeupExch={'h2o','hco3','o2'};
             takeupExch=strcat('Host_EX_', takeupExch, '[e]b');
             model=changeRxnBounds(model,takeupExch,-100,'l');
+            % close internal exchanges except for human metabolites known
+            % to be found in the intestine
+            hostIEXrxns=find(strncmp(model.rxns,'Host_IEX_',9));
+            model=changeRxnBounds(model,model.rxns(hostIEXrxns),0,'l');
+            takeupExch={'gchola','tdchola','tchola','dgchol','34dhphe','5htrp','Lkynr','f1a','gncore1','gncore2','dsT_antigen','sTn_antigen','core8','core7','core5','core4','ha','cspg_a','cspg_b','cspg_c','cspg_d','cspg_e','hspg'};
+            takeupExch=strcat('Host_IEX_', takeupExch, '[u]tr');
+            model=changeRxnBounds(model,takeupExch,-1000,'l');
+            % set a minimum and a limit for flux through host biomass
+            % reaction
+            model=changeRxnBounds(model,['Host_' hostBiomassRxn],0.01,'l');
+            model=changeRxnBounds(model,['Host_' hostBiomassRxn],3,'u');
         end
         
         % set parallel pool if no longer active
