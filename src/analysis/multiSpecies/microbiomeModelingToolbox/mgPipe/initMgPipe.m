@@ -48,8 +48,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
-parser.addParameter('resPath', '', @ischar);
-parser.addParameter('dietFilePath', '', @ischar);
+parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
+parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
@@ -100,14 +100,10 @@ end
 global CBTDIR
 
 % set optional variables
-if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
-    resPath = [CBTDIR filesep '.tmp'];
-    warning(['The path to the results has been set to ' resPath]);
-    mkdir(resPath);
-end
-if ~exist('dietFilePath', 'var')|| ~exist(strcat(dietFilePath,'.txt'), 'file')
-    dietFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'resources' filesep 'AverageEuropeanDiet'];
-    warning(['The path to the results has been set to ' dietFilePath]);
+mkdir(resPath);
+    
+if ~isfile(dietFilePath)
+    error('Path to file with dietary information is incorrect!');
 end
 
 if strcmp(infoFilePath, '')

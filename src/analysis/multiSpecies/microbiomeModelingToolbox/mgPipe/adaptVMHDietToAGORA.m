@@ -40,7 +40,7 @@ function [adaptedDiet, growthOK] = adaptVMHDietToAGORA(VMHDiet, setupUsed, AGORA
 % .. Authors:
 %       - Almut Heinken & Ines Thiele, 03/2018
 
-VMHDietConstraints = readtable(strcat(VMHDiet, '.txt'), 'Delimiter', '\t');  % load the text file with the diet
+VMHDietConstraints = readtable(strcat(VMHDiet), 'Delimiter', '\t');  % load the text file with the diet
 VMHDietConstraints = table2cell(VMHDietConstraints);
 % Start modification of the entered diet
 adaptedDietConstraints = VMHDietConstraints;
