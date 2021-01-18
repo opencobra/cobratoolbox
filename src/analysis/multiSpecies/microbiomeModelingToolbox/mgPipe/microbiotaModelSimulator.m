@@ -161,7 +161,7 @@ else
             % set a minimum and a limit for flux through host biomass
             % reaction
             model=changeRxnBounds(model,['Host_' hostBiomassRxn],0.01,'l');
-            model=changeRxnBounds(model,['Host_' hostBiomassRxn],3,'u');
+            model=changeRxnBounds(model,['Host_' hostBiomassRxn],5,'u');
         end
         
         % set parallel pool if no longer active
