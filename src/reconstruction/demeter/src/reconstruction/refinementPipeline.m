@@ -62,13 +62,13 @@ database.metabolites(:,8)=strrep(database.metabolites(:,8),'NaN','');
 if length(intersect(model.rxns,{'bio1','bio2'}))==2
     model=removeRxns(model,'bio2');
 end
-%% find the biomass reaction
+
 biomassReaction=model.rxns{strncmp(model.rxns,'bio',3)};
 if isempty(biomassReaction)
     error('Biomass objective function could not be found in the model!')
 end
-%%
-% Translate to VMH if it is an untranslated KBase model
+
+%% Translate to VMH if it is an untranslated KBase model
 [model,notInTableRxns,notInTableMets] = translateKBaseModel2VMHModel(model,biomassReaction,database);
 if ~isempty(notInTableRxns)
     summary.('untranslatedRxns') = notInTableRxns;
@@ -100,83 +100,28 @@ end
 % the results of other steps. It is therefore important to run each refinement
 % step more than once in order to make sure that all functionalities are captured.
 % This is especially important for steps testing for reconstruction quality._
+
 %% Rebuild biomass objective function for organisms that do not have cell wall
 [model,removedBioComp,addedReactionsBiomass]=rebuildBiomassReaction(model,microbeID,biomassReaction,database,infoFile);
 summary.('removedBioComp') = removedBioComp;
 summary.('addedReactionsBiomass') = addedReactionsBiomass;
+
 %% Refine genome annotations
 [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder);
 summary.('addAnnRxns') = addAnnRxns;
 summary.('updateGPRCnt') = updateGPRCnt;
-%% Fermentation pathways
-% Based on the fermentation pathway data for the microbe (table prepared above),
-% add and remove reactions as defined in the following script.
-%%
-% Perform fermentation pathway gap fill:
-[model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder);
-summary.('addedRxns_fermentation') = addedRxns;
-summary.('removedRxns_fermentation') = removedRxns;
-%% Carbon sources
-% Based on the carbon source data for the microbe (table prepared above), add
-% and remove reactions as defined in the following script.
-% Perform carbon source pathway gap fill:
-[model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID, database, inputDataFolder);
-summary.('addedRxns_carbonSources') = addedRxns;
-summary.('removedRxns_carbonSources') = removedRxns;
-%% Putrefaction pathways
-[model,putrefactionRxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database);
-summary.('putrefactionRxnsAdded') = putrefactionRxnsAdded;
-%% Known secretion products
-[model,secretionRxnsAdded] = addSecretionProductRxns(model,microbeID,database,inputDataFolder);
-summary.('secretionRxnsAdded') = secretionRxnsAdded;
-%% Known consumed metabolites
-[model,uptakeRxnsAdded] = addUptakeRxns(model,microbeID,database, inputDataFolder);
-summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
-%% Reconnect blocked reactions
-model = changeObjective(model, biomassReaction);
+
+%% perform refinement based on experimental data
+[model,summary] = performDataDrivenRefinement(model, microbeID, database, inputDataFolder, summary);
+
+%% Reconnect blocked reactions and perform gapfilling to enable growth
+% connect speciifc pathways
 [resolveBlocked,model]=connectRxnGapfilling(model,database);
 summary.('resolveBlocked') = resolveBlocked;
-%% Missing metabolite formulas-print in summary
-% How to fix-add in input table translateMets
 
-%% Quality control measures
-% Reaction directionality
-[model] = conditionSpecificGapFilling(model, database);
-
-%% If model is still unable to grow
-[model] = targetedGapFilling(model,biomassReaction,database);
-[model,untGF] = untargetedGapFilling(model,biomassReaction,database);
-
-%% test if gapfilled reactions are really needed
-[model] = verifyGapfilledReactions(model);
-
-% Save the gapfilled reactions
-gapfilledRxns = {};
-fgf = 1;
-for n = 1:length(model.rxns)
-    if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-        gapfilledRxns{fgf, 1} = strrep(model.rxns{n}, '_GF', '');
-        fgf = fgf + 1;
-    end
-end
-
-% remove the "gapfilled" IDs
-for n = 1:length(model.rxns)
-    if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-        removeGF = strsplit(model.rxns{n, 1}, '_GF');
-        model.rxns{n, 1} = removeGF{1, 1};
-        model.grRules{n, 1} = 'agoraGapfill';
-    end
-end
+% run gapfilling tools to enable biomass production
+[model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
 summary.('gapfilledRxns') = gapfilledRxns;
-summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),untGF);
-
-%% change back to unlimited medium
-% list exchange reactions
-exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
-% open all exchanges
-model = changeRxnBounds(model, exchanges, -1000, 'l');
-model = changeRxnBounds(model, exchanges, 1000, 'u');
 
 %% Anaerobic growth-may need to run twice
 
@@ -188,50 +133,23 @@ if ~anaerGrowthOK
 end
 summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
 summary.('anaerobicGrowthOK') = anaerGrowthOK;
-%
-%% relax enforced uptake of some vitamins-causes infeasibility problems
-relaxConstraints=model.rxns(find(model.lb>0));
-model=changeRxnBounds(model,relaxConstraints,0,'l');
-%% change back to unlimited medium
-% list exchange reactions
-exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
-% open all exchanges
-model = changeRxnBounds(model, exchanges, -1000, 'l');
-model = changeRxnBounds(model, exchanges, 1000, 'u');
+
 %% gapfilling for growth on Western diet
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AnaerobicGrowth(1,2) < tol
     % apply Western diet
     model = useDiet(model,WesternDiet);
-    %% gap-filling
-    [model] = conditionSpecificGapFilling(model, database);
-    %% If model is still unable to grow
-    [model] = targetedGapFilling(model,biomassReaction,database);
-    %% test if gapfilled reactions are really needed
-    [model] = verifyGapfilledReactions(model);
-    %% save the additional gap-filled reactions
-    for n = 1:length(model.rxns)
-        if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-            gapfilledRxns{fgf, 1} = strrep(model.rxns{n}, '_GF', '');
-            fgf = fgf + 1;
-        end
-    end
-    
-    % remove the "gapfilled" IDs
-    for n = 1:length(model.rxns)
-        if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-            removeGF = strsplit(model.rxns{n, 1}, '_GF');
-            model.rxns{n, 1} = removeGF{1, 1};
-            model.grRules{n, 1} = '';
-            model.grRules{n, 1} = 'agoraGapfill';
-        end
-    end
-    summary.('gapfilledRxns') = gapfilledRxns;
+    % run gapfilling tools to enable biomass production if no growth on
+    % Western diet
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+    summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
 end
+
 %% Stoichiometrically balanced cycles
 [model, deletedRxns, addedRxns] = removeBalancedCycles(model, biomassReaction, database);
 summary.('balancedCycle_addedRxns') = unique(addedRxns);
 summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
+
 %% Remove unneeded reactions
 % Delete gap-filled reactions by KBase/ ModelSEED that are no longer needed
 [model,deletedSEEDRxns]=deleteSeedGapfilledReactions(model,biomassReaction);
@@ -243,7 +161,8 @@ exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
 % open all exchanges
 model = changeRxnBounds(model, exchanges, -1000, 'l');
 model = changeRxnBounds(model, exchanges, 1000, 'u');
-%%
+
+%% Delete unused reactions that are leftovers from KBase pipeline
 % Delete transporters without exchanges
 [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model);
 summary.('transportersWithoutExchanges') = transportersWithoutExchanges;
@@ -251,60 +170,27 @@ summary.('transportersWithoutExchanges') = transportersWithoutExchanges;
 % Delete unused exchange reactions
 [model, unusedExchanges] = findUnusedExchangeReactions(model);
 summary.('unusedExchanges') = unusedExchanges;
+
 %% Some models cannot grow afterwards
 % If model is still unable to grow
 FBA=optimizeCbModel(model,'max');
 if FBA.f<tol
-    [model] = targetedGapFilling(model,biomassReaction,database);
-    %% test if gapfilled reactions are really needed
-    [model] = verifyGapfilledReactions(model);
-    for n = 1:length(model.rxns)
-        if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-            gapfilledRxns{fgf, 1} = strrep(model.rxns{n}, '_GF', '');
-            fgf = fgf + 1;
-        end
-    end
-    
-    % remove the "gapfilled" IDs
-    for n = 1:length(model.rxns)
-        if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-            removeGF = strsplit(model.rxns{n, 1}, '_GF');
-            model.rxns{n, 1} = removeGF{1, 1};
-            model.grRules{n, 1} = '';
-            model.grRules{n, 1} = 'agoraGapfill';
-        end
-    end
+    % run gapfilling tools to enable biomass production
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
     summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
 end
+
 % in rare cases: gapfilling for anaerobic growth or growth on Western diet still needed
 for i=1:2
     [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
     if AnaerobicGrowth(1,2) < tol
         % apply Western diet
         model = useDiet(model,WesternDiet);
-        %% If model is still unable to grow
-        [model] = targetedGapFilling(model,biomassReaction,database);
-        %% test if gapfilled reactions are really needed
-        [model] = verifyGapfilledReactions(model);
-        %% save the additional gap-filled reactions
-        for n = 1:length(model.rxns)
-            if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-                gapfilledRxns{fgf, 1} = strrep(model.rxns{n}, '_GF', '');
-                fgf = fgf + 1;
-            end
-        end
-        
-        % remove the "gapfilled" IDs
-        for n = 1:length(model.rxns)
-            if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-                removeGF = strsplit(model.rxns{n, 1}, '_GF');
-                model.rxns{n, 1} = removeGF{1, 1};
-                model.grRules{n, 1} = '';
-                model.grRules{n, 1} = 'agoraGapfill';
-            end
-        end
+        % run gapfilling tools to enable biomass production
+        [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
         summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
     end
+    
     if AnaerobicGrowth(1,1) < tol
         [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
         summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
@@ -331,6 +217,7 @@ for i = 1:6
     model=changeRxnBounds(model,relaxConstraints,0,'l');
 end
 summary.('definedMediumGrowth')=growsOnDefinedMedium;
+
 %% remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
@@ -359,36 +246,19 @@ else
     summary.('deletedDuplicateRxns') = toRM;
     model=removeRxns(model,toRM);
 end
+
 %% remove reactions that were present in draft reconstructions but should not be present according to comparative genomics
 [model,rmUnannRxns]=removeUnannotatedReactions(model,microbeID,biomassReaction,growsOnDefinedMedium,inputDataFolder);
 summary.('removedUnannotatedReactions') = rmUnannRxns;
+
 %% double-check if gap-filled reactions are really needed anymore
 % If growth on a defined medium was achieved, use the constrained model
 [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,growsOnDefinedMedium, inputDataFolder);
+
 %% Need to repeat experimental data gap-fill because some reactions may be removed now that were there before
-%% Fermentation pathways
-% Based on the fermentation pathway data for the microbe (table prepared above),
-% add and remove reactions as defined in the following script.
-% Perform fermentation pathway gap fill:
-[model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder);
-% summary.('addedRxns_fermentation') = union(summary.('addedRxns_fermentation'),addedRxns);
-% summary.('removedRxns_fermentation') = union(summary.('removedRxns_fermentation'),removedRxns);
-%% Carbon sources
-% Based on the carbon source data for the microbe (table prepared above), add
-% and remove reactions as defined in the following script.
-% Perform carbon source pathway gap fill:
-[model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID, database, inputDataFolder);
-% summary.('addedRxns_carbonSources') = union(summary.('addedRxns_carbonSources'),addedRxns);
-% summary.('removedRxns_carbonSources') = union(summary.('removedRxns_carbonSources'),removedRxns);
-%% Putrefaction pathways
-[model,putrefactionRxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database);
-summary.('putrefactionRxnsAdded') = putrefactionRxnsAdded;
-%% Known secretion products
-[model,secretionRxnsAdded] = addSecretionProductRxns(model,microbeID,database,inputDataFolder);
-summary.('secretionRxnsAdded') = secretionRxnsAdded;
-%% Known consumed metabolites
-[model,uptakeRxnsAdded] = addUptakeRxns(model,microbeID,database, inputDataFolder);
-summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
+% perform refinement based on experimental data
+[model,summary] = performDataDrivenRefinement(model, microbeID, database, inputDataFolder,summary);
+
 %% enable growth on defined medium if still needed
 [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
 if growsOnDefinedMedium==0
@@ -402,15 +272,13 @@ if growsOnDefinedMedium==0
     if growsOnDefinedMedium
         summary.('definedMediumGrowth')=growsOnDefinedMedium;
     else
-        % try untargeted gap-filling
-        [model,untGF] = untargetedGapFilling(model,biomassReaction,database,numWorkers);
-        [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
-        if growsOnDefinedMedium
-        summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),untGF);
-        end
-        summary.('definedMediumGrowth')=growsOnDefinedMedium;
+        % run gapfilling tools to enable biomass production on the defined
+        % medium
+        [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,'max',database);
+        summary.('definedMediumGrowth') = union(summary.('definedMediumGrowth'),gapfilledRxns);
     end
 end
+
 %% remove futile cycles if any remain
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAnaerobic>100
@@ -425,6 +293,7 @@ if atpFluxAnaerobic>100
     summary.('balancedCycle_addedRxns') = union(summary.('balancedCycle_addedRxns'),unique(addedRxns));
     summary.('balancedCycle_deletedRxns') = union(summary.('balancedCycle_deletedRxns'),unique(deletedRxns));
 end
+
 %% remove duplicate reactions-needs repetition for some microbes
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
@@ -453,73 +322,30 @@ else
         end
     end
 end
+
 %% Delete sink for petidoglycan if not needed
 modelTest = removeRxns(model, 'sink_PGPm1[c]');
 FBA = optimizeCbModel(modelTest, 'max');
 if FBA.f>tol
     model= modelTest;
 end
-%% remove the 'gap_filled' and 'exchange_reaction' label in genes
-model.grRules=strrep(model.grRules,'gap_filled','');
-model.grRules=strrep(model.grRules,'exchange_reaction','');
-%% remove other temporary labels
-for i=1:length(model.grRules)
-    if strcmp(model.grRules{i},'CarbonSourceGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'CarbonSourceGapfill','');
-        model.comments{i}='Reaction added based on experimental data on carbon sources.';
-    end
-    if strcmp(model.grRules{i},'FermentationGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'FermentationGapfill','');
-        model.comments{i}='Reaction added based on experimental data on fermentation products.';
-    end
-    if strcmp(model.grRules{i},'uptakeMetaboliteGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'uptakeMetaboliteGapfill','');
-        model.comments{i}='Reaction added based on experimental data on consumed metabolites.';
-    end
-    if strcmp(model.grRules{i},'secretionProductGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'secretionProductGapfill','');
-        model.comments{i}='Reaction added based on experimental data on secretion products.';
-    end
-    if strcmp(model.grRules{i},'PutrefactionGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'PutrefactionGapfill','');
-        model.comments{i}='Reaction added based on experimental data on putrefaction pathways.';
-    end
-    if strcmp(model.grRules{i},'AnaerobicGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'AnaerobicGapfill','');
-        model.comments{i}='Reaction added to enable anaerobic growth.';
-    end
-    if strcmp(model.grRules{i},'GrowthRequirementsGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'GrowthRequirementsGapfill','');
-        model.comments{i}='Reaction added based on experimental data on growth requirements.';
-    end
-    if strcmp(model.grRules{i},'agoraGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'agoraGapfill','');
-        model.comments{i}='Added by AGORA gap-filling pipeline to enable growth with VMH-consistent constraints.';
-    end
-    if strcmp(model.grRules{i},'essentialGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'essentialGapfill','');
-        model.comments{i}='Added by AGORA gap-filling pipeline, reactions that should always be present.';
-    end
-    if strcmp(model.grRules{i},'Unknown')
-        model.grRules{i}=strrep(model.grRules{i},'Unknown','');
-        model.comments{i}='Added by Model SEED/KBase gap-filling pipeline.';
-    end
-end
-%% Eggerthella fix-remove lithocholate-deoxycholate production (not actually present)
-if strncmp(microbeID,'Eggerthella',11)
-    model=removeRxns(model,{'ADCA_T';'ALCA_T';'BAIA1';'BAIA2';'BAIA3';'BAICDH1';'BAICDH2';'BAICDH3';'BAICDH4';'BAICDH5';'BAICDH6';'BAIEI1';'BAIEI2';'BAIEI3';'BAIF1';'BAIF2';'BAIF3';'BAIV1';'BAIV2';'BAIW1';'BAIW2';'BAIX1';'BAIX2';'BAIY1';'BAIY2';'BAIZ1';'BAIZ2';'DCAT';'EX_adchac(e)';'EX_alchac(e)';'EX_dchac(e)';'EX_HC02191(e)';'LCAT';'EX_HC02194(e)'});
-    % also remove duplicate gene IDs present-later
-end
+
+%% addd refinement descriptions to model.comments field
+model = addRefinementComments(model);
+
 %% rebuild model
 [model] = rebuildModel(model,database);
+
 %% constrain sink reactions
 model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
+
 %% add periplasmatic space
 if ~isempty(infoFilePath)
     if ~any(strcmp(infoFile(:,1),microbeID))
         model = createPeriplasmaticSpace(model,microbeID,infoFile);
     end
 end
+
 %% end the pipeline
 refinedModel = model;
 
