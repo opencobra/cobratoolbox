@@ -1,4 +1,4 @@
-function [model, deletedRxns, addedRxns] = removeBalancedCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
 % Goes through the curated microbe reconstructions.
 % Makes reactions previously identified to result in unlimited ATP
 % production irreversible.

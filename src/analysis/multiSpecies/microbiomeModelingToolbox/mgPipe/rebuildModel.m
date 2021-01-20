@@ -5,7 +5,7 @@ function [rebuiltModel] = rebuildModel(model,database)
 % rBioNet.
 %
 % USAGE
-% [rebuiltModel] = rebuildModel(model)
+% [rebuiltModel] = rebuildModel(model,database)
 %
 % INPUT
 %    model         COBRA model structure
@@ -115,7 +115,7 @@ model.metPubChemID=cellstr(model.metPubChemID);
 model.metChEBIID=cellstr(model.metChEBIID);
 model.metKEGGID=cellstr(model.metKEGGID);
 % fill in descriptions
-model.description.author = 'Molecular Systems Physiology group, www.vmh.life';
+model.description.author = 'Created by DEMETER, Molecular Systems Physiology group';
 model.description.date=date;
 
 % set biomass reaction as objective function

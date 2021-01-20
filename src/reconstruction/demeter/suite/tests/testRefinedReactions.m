@@ -19,19 +19,24 @@ function [RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedRe
 %
 % Almut Heinken, Nov 2019
 
-genomeAnnotation = readtable('gapfilledGenomeAnnotation.txt', 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
-genomeAnnotation = table2cell(genomeAnnotation);
+BlockedRefinedReactions = {};
+RefinedReactionsCarryingFlux = {};
 
-% get the reactions that were added for the reconstruction
-findRxns=find(strcmp(microbeID,genomeAnnotation(:,1)));
-if ~isempty(findRxns)
-    annRxns(:,1)=genomeAnnotation(findRxns(:,1),2);
+if isfile('gapfilledGenomeAnnotation.txt')
     
-    % find the overlap with blocked reactions in the model
-    BlockedRefinedReactions = intersect(annRxns(:,1),BlockedRxns.allRxns);
-    RefinedReactionsCarryingFlux = setdiff(annRxns(:,1),BlockedRxns.allRxns);
-else
-    BlockedRefinedReactions = {};
-    RefinedReactionsCarryingFlux = {};
+    genomeAnnotation = readtable('gapfilledGenomeAnnotation.txt', 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
+    genomeAnnotation = table2cell(genomeAnnotation);
+    
+    % get the reactions that were added for the reconstruction
+    findRxns=find(strcmp(microbeID,genomeAnnotation(:,1)));
+    if ~isempty(findRxns)
+        annRxns(:,1)=genomeAnnotation(findRxns(:,1),2);
+        
+        % find the overlap with blocked reactions in the model
+        BlockedRefinedReactions = intersect(annRxns(:,1),BlockedRxns.allRxns);
+        RefinedReactionsCarryingFlux = setdiff(annRxns(:,1),BlockedRxns.allRxns);
+    end
+    
 end
+
 end

@@ -1,4 +1,4 @@
-function [reactionsToGapfill,reactionsToDelete,revisedModel]=debugModel(model,testResultsFolder,reconVersion,microbeID,biomassReaction,numWorkers)
+function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,microbeID,biomassReaction,numWorkers)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -7,8 +7,7 @@ function [reactionsToGapfill,reactionsToDelete,revisedModel]=debugModel(model,te
 
 reactionsToGapfill = {};
 cntGF=1;
-reactionsToDelete = {};
-cntDel=1;
+reactionsToReplace = {};
 
 tol=0.0000001;
 
@@ -29,15 +28,6 @@ end
 reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 database.reactions=reactionDatabase;
-
-% find reactions that are causing futile cycles
-futileCycleReactions=identifyFutileCycles(model);
-if ~isempty(futileCycleReactions)
-    reactionsToDelete{cntDel,1}=microbeID;
-        reactionsToDelete{cntDel,2}='To delete';
-    reactionsToGapfill(cntDel,3:length(untDel)+2)=futileCycleReactions;
-    cntDel=cntDel+1;
-end
 
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AnaerobicGrowth(1,1) < tol
@@ -80,8 +70,23 @@ if growsOnDefinedMedium == 0
     end
 end
 
+[atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
+if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
+    % find reactions that are causing futile cycles
+    futileCycleReactions=identifyFutileCycles(model);
+    % find irreversible versions of the same reactions
+    
+    if ~isempty(futileCycleReactions)
+        reactionsToReplace{1,1}=microbeID;
+        reactionsToReplace{1,2}='To replace';
+        reactionsToReplace(1,3:length(untDel)+2)=futileCycleReactions;
+        % let us try if running removeFutileCycles again will work
+        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+    end
+end
+
 % load all test result files for experimental data
-dInfo = dir(pwd);
+dInfo = dir([testResultsFolder filesep reconVersion '_refined']);
 fileList={dInfo.name};
 fileList=fileList';
 fileList(~(contains(fileList(:,1),{'.txt'})),:)=[];
@@ -104,7 +109,7 @@ if size(fileList,1)>0
         FNs = FNs(~cellfun(@isempty, FNs));
         if ~isempty(FNs)
             for j=1:length(FNs)
-                metExch=['EX_' metaboliteDatabase{find(strcmp(metaboliteDatabase(:,2),FNs{j})),1} '(e)'];
+                metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
                 % find reactions that could be gap-filled to enable flux
                 [model,gapfilledRxns] = runGapfillingTools(model,metExch,osenseStr,database);
                 if ~isempty(gapfilledRxns)
@@ -119,6 +124,7 @@ if size(fileList,1)>0
     end
 end
 
-revisedModel = model;
+% rebuild and export the model
+revisedModel = rebuildModel(model,database);
 
 end

@@ -3,7 +3,6 @@ function [model,summary] = performDataDrivenRefinement(model, microbeID, databas
 %% Fermentation pathways
 % Based on the fermentation pathway data for the microbe (table prepared above),
 % add and remove reactions as defined in the following script.
-%%
 % Perform fermentation pathway gap fill:
 [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder);
 summary.('addedRxns_fermentation') = addedRxns;
@@ -24,5 +23,43 @@ summary.('secretionRxnsAdded') = secretionRxnsAdded;
 %% Known consumed metabolites
 [model,uptakeRxnsAdded] = addUptakeRxns(model,microbeID,database, inputDataFolder);
 summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
+
+%% test pathways to make sure they work
+FNs = {};
+% Carbon sources
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction);
+FNs=union(FalseNegatives);
+
+% Fermentation products
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+FNs=union(FalseNegatives);
+
+% Putrefaction pathways
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+FNs=union(FalseNegatives);
+
+% Metabolite uptake
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);
+FNs=union(FalseNegatives);
+
+gapfilledRxns
+
+% Secretion products
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
+FNs=union(FalseNegatives);
+
+%% gapfill if there are any false negatives
+dataDrivenGapfill={};
+if ~isempty(FNs)
+    for j=1:length(FNs)
+        metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        % find reactions that could be gap-filled to enable flux
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,osenseStr,database);
+        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+    end
+    if ~isempty(dataDrivenGapfill)
+        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+    end
+end
 
 end

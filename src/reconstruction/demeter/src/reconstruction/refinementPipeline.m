@@ -146,7 +146,7 @@ if AnaerobicGrowth(1,2) < tol
 end
 
 %% Stoichiometrically balanced cycles
-[model, deletedRxns, addedRxns] = removeBalancedCycles(model, biomassReaction, database);
+[model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
 summary.('balancedCycle_addedRxns') = unique(addedRxns);
 summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
 
@@ -286,9 +286,9 @@ if atpFluxAnaerobic>100
     % cases -> need to use the constrained model as input
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
     if growsOnDefinedMedium==1
-        [model, deletedRxns, addedRxns] = removeBalancedCycles(model, biomassReaction, database,{},constrainedModel);
+        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
     else
-        [model, deletedRxns, addedRxns] = removeBalancedCycles(model, biomassReaction, database);
+        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
     end
     summary.('balancedCycle_addedRxns') = union(summary.('balancedCycle_addedRxns'),unique(addedRxns));
     summary.('balancedCycle_deletedRxns') = union(summary.('balancedCycle_deletedRxns'),unique(deletedRxns));

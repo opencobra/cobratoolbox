@@ -29,7 +29,7 @@ function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggi
 % failedModels            IDs of models that still do not pass one or more
 %                         tests
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 09/2020
 
 % Define default input parameters if not specified
@@ -112,7 +112,7 @@ cd(inputDataFolder)
 % needed
 if length(failedModels)>0
     reactionsToGapfillTmp = {};
-    reactionsToDeleteTmp = {};
+    reactionsToReplaceTmp = {};
     revisedModelTmp = {};
     parfor i=1:length(failedModels)
         restoreEnvironment(environment);
@@ -120,14 +120,14 @@ if length(failedModels)>0
         
         model=readCbModel([refinedFolder filesep failedModels{i,1} '.mat']);
         biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-        [reactionsToGapfill,reactionsToDelete,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{i,1},biomassReaction,numWorkers);
+        [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{i,1},biomassReaction,numWorkers);
         reactionsToGapfillTmp{i} = reactionsToGapfill;
-        reactionsToDeleteTmp{i} = reactionsToDelete;
+        reactionsToReplaceTmp{i} = reactionsToReplace;
         revisedModelTmp{i} = revisedModel;
     end
     for i=1:length(failedModels)
         % print the results of the debug gapfilling
-        debuggingReport(cnt,1:size(reactionsToDeleteTmp{i},2))=reactionsToDeleteTmp{i};
+        debuggingReport(cnt,1:size(reactionsToReplaceTmp{i},2))=reactionsToReplaceTmp{i};
         cnt=cnt+1;
         for j=1:size(reactionsToGapfillTmp{i},1)
             debuggingReport(cnt,1:size(reactionsToGapfillTmp{i},2))=reactionsToGapfillTmp{i}(j,:);
@@ -144,23 +144,39 @@ if length(failedModels)>0
     
     notGrowing = plotBiomassTestResults(refinedFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     tooHighATP = plotATPTestResults(refinedFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
+    
     testAllReconstructionFunctions(refinedFolder,testResultsFolder,reconVersion,numWorkers);
     
     % get all models that still fail at least one test
     stillFailedModels = {};
     
-    if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'notGrowing.mat'])
-        load([testResultsFolder filesep reconVersion '_refined' filesep 'notGrowing.mat']);
+    if isfile([testResultsFolder filesep 'notGrowing.mat'])
+        load([testResultsFolder filesep 'notGrowing.mat']);
         stillFailedModels = union(stillFailedModels,notGrowing);
     end
-    if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'tooHighATP.mat'])
-        load([testResultsFolder filesep reconVersion '_refined' filesep 'tooHighATP.mat']);
+    if isfile([testResultsFolder filesep 'tooHighATP.mat'])
+        load([testResultsFolder filesep 'tooHighATP.mat']);
         stillFailedModels = union(stillFailedModels,tooHighATP);
     end
-    if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
+    if isfile([testResultsFolder filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
         FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
         FNlist = table2cell(FNlist);
         stillFailedModels=union(stillFailedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
+    end
+    
+    % load all test result files for experimental data
+    dInfo = dir(testResultsFolder);
+    fileList={dInfo.name};
+    fileList=fileList';
+    fileList(~(contains(fileList(:,1),{'.txt'})),:)=[];
+    fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
+    
+    for i=1:size(fileList,1)
+        FNlist = readtable([testResultsFolder filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
+        FNlist = table2cell(FNlist);
+        % remove all rows with no cases
+        FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
+        stillFailedModels=union(stillFailedModels,FNlist(:,1));
     end
     
     fixedModels = setdiff(failedModels,stillFailedModels);
