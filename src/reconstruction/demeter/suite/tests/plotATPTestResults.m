@@ -201,4 +201,6 @@ end
 
 tooHighATP=unique(tooHighATP);
 tooHighATP=strrep(tooHighATP,'.mat','');
+save([testResultsFolder filesep 'tooHighATP.mat'],'tooHighATP');
+
 end

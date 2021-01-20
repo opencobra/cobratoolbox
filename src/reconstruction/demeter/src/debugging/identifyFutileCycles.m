@@ -24,8 +24,8 @@ for i=1:length(model.rxns)
         modelTest.ub(i,1)=0;
         FBA=optimizeCbModel(modelTest,'max');
         FutileCyclesTest{i,2}=Rxns{i,1};
-        FutileCyclesTest{i,3}=model_old.lb(i,1);
-        FutileCyclesTest{i,4}=model_old.ub(i,1);
+        FutileCyclesTest{i,3}=model.lb(i,1);
+        FutileCyclesTest{i,4}=model.ub(i,1);
         FutileCyclesTest{i,5}=FBA.f;
         FutileCyclesTest{i,6}=FBAorg.x(i,1);
     end

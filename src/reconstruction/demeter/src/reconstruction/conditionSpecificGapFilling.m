@@ -367,7 +367,7 @@ for i=2:size(conditionSpecificGapfills,1)
         rxns=strsplit(conditionSpecificGapfills{i,4},' AND ');
         for j=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{j})))
-                model = addReaction(model, [rxns{j},'_GF'], database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3});
+                model = addReaction(model, [rxns{j} '_csGF'], database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3});
             end
         end
     end

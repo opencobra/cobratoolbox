@@ -304,5 +304,6 @@ end
 
 notGrowing=unique(notGrowing);
 notGrowing=strrep(notGrowing,'.mat','');
+save([testResultsFolder filesep 'notGrowing.mat'],'notGrowing');
 
 end

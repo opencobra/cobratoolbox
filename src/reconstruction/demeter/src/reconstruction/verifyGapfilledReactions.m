@@ -1,7 +1,10 @@
-function [model] = verifyGapfilledReactions(model)
+function model = verifyGapfilledReactions(model,osenseStr)
 % check if the reactions filled in by AnaerobicGrowthGapfilling and
 % semiAutomatedGapfilling are really neccesary for growth (also anaerobic!)
 % remove if unneccesary
+
+tol = 0.0001;
+
 model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 % find the sets of gapfilled reactions and delete them -> still growth?
 
@@ -315,29 +318,39 @@ conditionSpecificGapfills={'rxnPresent','rxnAbsent','changeConstraints','gapfill
 
 for i=2:size(conditionSpecificGapfills,1)
     GF_rxns=strsplit(conditionSpecificGapfills{i,4},' AND ');
-    GF_rxns=strcat(GF_rxns,'_GF');
+    GF_rxns=strcat(GF_rxns,'_csGF');
     if any(contains(model.rxns, GF_rxns))
         modelTest = removeRxns(model,GF_rxns);
-        FBA = optimizeCbModel(modelTest, 'max');
-    if FBA.f > 0.0001
+        FBA = optimizeCbModel(modelTest, osenseStr);
+    if abs(FBA.f) > tol
         model = modelTest;
     end
     end
 end
 
 % now test the reactions added through targeted gapfilling
-GF_rxns=model.rxns(contains(model.rxns,'_TGF'));
+GF_rxns=model.rxns(contains(model.rxns,'_tGF'));
 for i=1:length(GF_rxns)
     modelTest = removeRxns(model,GF_rxns);
-    FBA = optimizeCbModel(modelTest, 'max');
-    if FBA.f > 0.0001
+    FBA = optimizeCbModel(modelTest, osenseStr);
+    if abs(FBA.f) > tol
+        model = modelTest;
+    end
+end
+
+% now test the reactions added through untargeted gapfilling
+GF_rxns=model.rxns(contains(model.rxns,'_untGF'));
+for i=1:length(GF_rxns)
+    modelTest = removeRxns(model,GF_rxns);
+    FBA = optimizeCbModel(modelTest, osenseStr);
+    if abs(FBA.f) > tol
         model = modelTest;
     end
 end
 
 % rename the gapfill IDs
-model.rxns=strrep(model.rxns,'_TGF','_GF');
+model.rxns=strrep(model.rxns,'_csGF','_GF');
+model.rxns=strrep(model.rxns,'_tGF','_GF');
+model.rxns=strrep(model.rxns,'_untGF','_GF');
 
-
-model = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
 end

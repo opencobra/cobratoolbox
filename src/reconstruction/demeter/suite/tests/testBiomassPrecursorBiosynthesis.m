@@ -84,9 +84,9 @@ else
                 
                 % simulate biosynthesis
                 sol = optimizeCbModel(modelT, 'max');
-                sols(j)=sol.obj;
+                sols(j)=sol.f;
             end
-            if any(sols) > 1e-6
+            if any(sols > 1e-6)
                 TruePositives = union(TruePositives, precursors{bpData(i)});
             else
                 FalseNegatives = union(FalseNegatives, precursors{bpData(i)});

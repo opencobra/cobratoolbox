@@ -49,6 +49,7 @@ fields = {
     'RefinedReactionsCarryingFlux'
     'BlockedRefinedReactions'
     'Incorrect_Gene_Rules'
+    'Incorrect_Compartments'
     'Carbon_sources_TruePositives'
     'Carbon_sources_FalseNegatives'
     'Fermentation_products_TruePositives'
@@ -145,6 +146,7 @@ for i = 1:steps:length(modelList)
             %% relax enforced uptake of some vitamins-causes infeasibility problems
             relaxConstraints=model.rxns(find(model.lb>0));
             model=changeRxnBounds(model,relaxConstraints,0,'l');
+            
             %% Mass and charge balance
             % Tests whether the reactions in the reconstruction are mass and charge balanced.
             % The function will report any reactions that have imbalanced mass or charge,
@@ -201,6 +203,7 @@ for i = 1:steps:length(modelList)
             
             % The model should not leak any metabolites. Leaking metabolites require
             % manual refinement.
+            
             %% ATP from oxygen
             % Tests if models can produce ATP and carbon just from water,
             % phosphate, and oxygen without an energy source. This is
@@ -216,6 +219,7 @@ for i = 1:steps:length(modelList)
             modelTest=changeObjective(modelTest,'DM_atp_c_');
             FBA=optimizeCbModel(modelTest);
             tmpStruct.ATP_from_O2{j, 2} = FBA.f;
+            
             %% Blocked reactions
             % Computes all reactions in the reconstruction that can never carry flux.
             % set "unlimited" constraints
@@ -229,13 +233,21 @@ for i = 1:steps:length(modelList)
             else
                 tmpStruct.Blocked_reactions{j, 2} = length(BlockedRxns.allRxns);
             end
+            
             %% Test whether reactions added through refinement of gene annotations carry flux
             [RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedReactions(microbeID, BlockedRxns);
             tmpStruct.RefinedReactionsCarryingFlux(j, 2:length(RefinedReactionsCarryingFlux)+1) = RefinedReactionsCarryingFlux;
             tmpStruct.BlockedRefinedReactions(j, 2:length(BlockedRefinedReactions)+1) = BlockedRefinedReactions;
+            
             %% Entries in gene rules that have incorrect nomenclature
             incorrectGeneRules = testGeneRules(model);
             tmpStruct.Incorrect_Gene_Rules(j, 2:length(incorrectGeneRules)+1) = incorrectGeneRules;
+            
+            %% Reactions and metabolites with non-microbial compartments
+            [incorrectRxns,incorrectMets] = validateCompartments(model);
+            tmpStruct.Incorrect_Compartments(j, 2:length(incorrectRxns)+1) = incorrectRxns;
+            tmpStruct.Incorrect_Compartments(j, 2:length(incorrectMets)+1) = incorrectMets;
+            
             %% Carbon sources
             % Tests which carbon sources that are reported in _in vitro_ data can be taken
             % up by the model. The test requires a low flux through the biomass objective
