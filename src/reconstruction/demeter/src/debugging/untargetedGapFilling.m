@@ -18,22 +18,20 @@ FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
     % find reaction(s) from the complete reaction database that can enable
     % growth
-    while abs(FBA.f) < tol
-        growth=[];
-        modelOld=model;
-        
-        for i=1:size(database.reactions,1)
-            model = addReaction(model, [database.reactions{i,1} '_untGF'], database.reactions{i,3});
-            FBA = optimizeCbModel(model,osenseStr);
-            growth(i) = FBA.f;
-            if abs(FBA.f) > tol
-                modelOld=addReaction(modelOld, [database.reactions{i,1} '_untGF'], database.reactions{i,3});
-                model=modelOld;
-                break
-            end
-        end
+    growth=[];
+    modelOld=model;
+    
+    for i=1:size(database.reactions,1)
+        model = addReaction(model, [database.reactions{i,1} '_untGF'], database.reactions{i,3});
         FBA = optimizeCbModel(model,osenseStr);
+        growth(i) = FBA.f;
+        if abs(FBA.f) > tol
+            modelOld=addReaction(modelOld, [database.reactions{i,1} '_untGF'], database.reactions{i,3});
+            model=modelOld;
+            break
+        end
     end
+    
     % get first successfull gapfilling reactions if any
     gfInd = find(abs(growthTmp) > tol);
     
