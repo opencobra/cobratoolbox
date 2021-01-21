@@ -59,9 +59,11 @@ end
 
 tol=0.0000001;
 
+mkdir(resPath)
+
 if ~isempty(metList)
     for i=1:length(metList)
-        metList{i}=['IEX_' metList{i}];
+        metList{i}=['IEX_' metList{i} '[u]tr'];
     end
 end
 
