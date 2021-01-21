@@ -33,7 +33,7 @@ if abs(FBA.f) < tol
     end
     
     % get first successfull gapfilling reactions if any
-    gfInd = find(abs(growthTmp) > tol);
+    gfInd = find(abs(growth) > tol);
     
     if ~isempty(gfInd)
         for i=1:length(gfInd)
