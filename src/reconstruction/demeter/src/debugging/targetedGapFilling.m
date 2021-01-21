@@ -1,4 +1,4 @@
-function [model,tGF] = targetedGapFilling(model,osenseStr,database)
+function model = targetedGapFilling(model,osenseStr,database)
 
 
 tol = 0.00001;
@@ -17,6 +17,10 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'pi[c]', '', {'EX_pi(e)','PIabc','PIt6b'}
     'ac[c]', '', {'EX_ac(e)','ACtr'}
     'so4[c]', '', {'EX_so4(e)','SO4t2'}
+    'h2[c]', '', {'EX_h2(e)','H2td'}
+    'co2[c]', '', {'EX_co2(e)','CO2t'}
+    'hco3[c]', '', {'EX_hco3(e)','HCO3abc','H2CO3D'}
+    'h2[c]', '', {'EX_h2(e)','H2td'}
     'h2s[c]', '', {'EX_h2s(e)','H2St'}
     'arg_L[c]', '', {'EX_arg_L(e)','ARGt2r'}
     'cys_L[c]', '', {'EX_cys_L(e)','CYSt2r'}

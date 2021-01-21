@@ -33,7 +33,7 @@ database.reactions=reactionDatabase;
 if AnaerobicGrowth(1,1) < tol
     % find reactions that are preventing the model from growing
     % anaerobically
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
         reactionsToGapfill{cntGF,1}=microbeID;
         reactionsToGapfill{cntGF,2}='Gapfilled';
@@ -47,7 +47,7 @@ end
 if AerobicGrowth(1,2) < tol
     % identify blocked reactions on Western diet
     model=useDiet(model,WesternDiet);
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
         reactionsToGapfill{cntGF,1}=microbeID;
         reactionsToGapfill{cntGF,2}='Gapfilled';
@@ -67,21 +67,6 @@ if growsOnDefinedMedium == 0
         reactionsToGapfill{cntGF,2}=biomassReaction;
         reactionsToGapfill(cntGF,3:length(untGF)+2)=untGF;
         cntGF=cntGF+1;
-    end
-end
-
-[atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
-if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
-    % find reactions that are causing futile cycles
-    futileCycleReactions=identifyFutileCycles(model);
-    % find irreversible versions of the same reactions
-    
-    if ~isempty(futileCycleReactions)
-        reactionsToReplace{1,1}=microbeID;
-        reactionsToReplace{1,2}='To replace';
-        reactionsToReplace(1,3:length(untDel)+2)=futileCycleReactions;
-        % let us try if running removeFutileCycles again will work
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
     end
 end
 
@@ -111,7 +96,7 @@ if size(fileList,1)>0
             for j=1:length(FNs)
                 metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
                 % find reactions that could be gap-filled to enable flux
-                [model,gapfilledRxns] = runGapfillingTools(model,metExch,osenseStr,database);
+                [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
                 if ~isempty(gapfilledRxns)
                     reactionsToGapfill{cntGF,1}=microbeID;
                     reactionsToGapfill{cntGF,2}='Gapfilled';
@@ -121,6 +106,22 @@ if size(fileList,1)>0
                 end
             end
         end
+    end
+end
+
+% remove futile cycles if any exist
+[atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
+if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
+    % find reactions that are causing futile cycles
+    futileCycleReactions=identifyFutileCycles(model);
+    % find irreversible versions of the same reactions
+    
+    if ~isempty(futileCycleReactions)
+        reactionsToReplace{1,1}=microbeID;
+        reactionsToReplace{1,2}='To replace';
+        reactionsToReplace(1,3:length(untDel)+2)=futileCycleReactions;
+        % let us try if running removeFutileCycles again will work
+        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
     end
 end
 

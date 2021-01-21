@@ -77,7 +77,7 @@ alreadyAnalyzedStrains={};
 
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
-        savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
+        savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
         Results.(fields{i}) = table2cell(savedResults);
         alreadyAnalyzedStrains = Results.(fields{i})(:,1);
     else

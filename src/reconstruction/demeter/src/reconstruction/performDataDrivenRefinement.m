@@ -1,4 +1,4 @@
-function [model,summary] = performDataDrivenRefinement(model, microbeID, database, inputDataFolder,summary)
+function [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
 
 %% Fermentation pathways
 % Based on the fermentation pathway data for the microbe (table prepared above),
@@ -54,7 +54,7 @@ if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
-        [model,gapfilledRxns] = runGapfillingTools(model,metExch,osenseStr,database);
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
     end
     if ~isempty(dataDrivenGapfill)
