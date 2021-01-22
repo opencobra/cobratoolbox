@@ -97,12 +97,20 @@ if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
 global CBTDIR
 
 % set optional variables
 mkdir(resPath);
     
-if ~isfile(dietFilePath)
+if exist(dietFilePath)==0
     error('Path to file with dietary information is incorrect!');
 end
 
