@@ -457,7 +457,7 @@ growthGapfills={
     'EX_2dmmq8(e) AND 2DMMQ8abc'
     'DM_q8h2[c]'
     'DM_NA1'
-    'AND EX_lac_L(e) AND L_LACt2r'
+    'EX_lac_L(e) AND L_LACt2r'
     };
 
 for i = 2:size(reactionsToReplace, 1)

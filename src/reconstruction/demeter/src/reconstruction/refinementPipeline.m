@@ -112,7 +112,7 @@ summary.('addAnnRxns') = addAnnRxns;
 summary.('updateGPRCnt') = updateGPRCnt;
 
 %% perform refinement based on experimental data
-[model,summary] = performDataDrivenRefinement(model, microbeID, database, inputDataFolder, summary);
+[model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary);
 
 %% Reconnect blocked reactions and perform gapfilling to enable growth
 % connect speciifc pathways
@@ -120,7 +120,7 @@ summary.('updateGPRCnt') = updateGPRCnt;
 summary.('resolveBlocked') = resolveBlocked;
 
 % run gapfilling tools to enable biomass production
-[model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+[model,gapfilledRxns] = runGapfillingTools(model,biomassReaction, biomassReaction,'max',database);
 summary.('gapfilledRxns') = gapfilledRxns;
 
 %% Anaerobic growth-may need to run twice
@@ -141,7 +141,7 @@ if AnaerobicGrowth(1,2) < tol
     model = useDiet(model,WesternDiet);
     % run gapfilling tools to enable biomass production if no growth on
     % Western diet
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction, biomassReaction,'max',database);
     summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
 end
 
@@ -187,7 +187,7 @@ for i=1:2
         % apply Western diet
         model = useDiet(model,WesternDiet);
         % run gapfilling tools to enable biomass production
-        [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
+        [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
         summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
     end
     
@@ -257,7 +257,7 @@ summary.('removedUnannotatedReactions') = rmUnannRxns;
 
 %% Need to repeat experimental data gap-fill because some reactions may be removed now that were there before
 % perform refinement based on experimental data
-[model,summary] = performDataDrivenRefinement(model, microbeID, database, inputDataFolder,summary);
+[model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary);
 
 %% enable growth on defined medium if still needed
 [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
@@ -274,7 +274,7 @@ if growsOnDefinedMedium==0
     else
         % run gapfilling tools to enable biomass production on the defined
         % medium
-        [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,'max',database);
+        [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);
         summary.('definedMediumGrowth') = union(summary.('definedMediumGrowth'),gapfilledRxns);
     end
 end
