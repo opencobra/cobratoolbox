@@ -39,6 +39,7 @@ end
 % get the associated formulas from KBase/Model SEED reaction database
 KBaseRxns = readtable('KBase_reactions.xlsx', 'ReadVariableNames', false);
 KBaseRxns=table2cell(KBaseRxns);
+nameCol=find(strcmp(KBaseRxns(1,:),'NAME'));
 formCol=find(strcmp(KBaseRxns(1,:),'EQUATION'));
 delArray=[];
 cnt=1;
@@ -48,7 +49,7 @@ for i=1:size(toTranslate,1)
         toTranslate{i,2}=toTranslate{i,1};
         toTranslate{i,3}=[buildForm '[e0]  <=> '];
     elseif ~isempty(find(strcmp(KBaseRxns(:,1),toTranslate{i,1})))
-        toTranslate{i,2}=toTranslate{i,1};
+        toTranslate{i,2}=KBaseRxns{find(strcmp(KBaseRxns(:,1),toTranslate{i,1})),nameCol};
         toTranslate{i,3}=KBaseRxns{find(strcmp(KBaseRxns(:,1),toTranslate{i,1})),formCol};
     else
         delArray(cnt)=i;

@@ -25,30 +25,47 @@ summary.('secretionRxnsAdded') = secretionRxnsAdded;
 summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 
 %% test pathways to make sure they work
+model=rebuildModel(model,database);
 FNs = {};
 % Carbon sources
 [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction);
-FNs=union(FalseNegatives);
-
-% Fermentation products
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
-FNs=union(FalseNegatives);
-
-% Putrefaction pathways
-[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
-FNs=union(FalseNegatives);
+FNs=union(FNs,FalseNegatives);
 
 % Metabolite uptake
 [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);
-FNs=union(FalseNegatives);
+FNs=union(FNs,FalseNegatives);
 
-gapfilledRxns
+% gapfill if there are any false negatives
+osenseStr='min';
+
+dataDrivenGapfill={};
+if ~isempty(FNs)
+    for j=1:length(FNs)
+        metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        % find reactions that could be gap-filled to enable flux
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
+        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+    end
+    if ~isempty(dataDrivenGapfill)
+        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+    end
+end
+
+% Fermentation products
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+FNs=union(FNs,FalseNegatives);
+
+% Putrefaction pathways
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+FNs=union(FNs,FalseNegatives);
 
 % Secretion products
 [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
-FNs=union(FalseNegatives);
+FNs=union(FNs,FalseNegatives);
 
-%% gapfill if there are any false negatives
+% gapfill if there are any false negatives
+osenseStr='max';
+
 dataDrivenGapfill={};
 if ~isempty(FNs)
     for j=1:length(FNs)

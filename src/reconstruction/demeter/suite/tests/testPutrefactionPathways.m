@@ -25,6 +25,10 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
+% read metabolite database
+metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+metaboliteDatabase=table2cell(metaboliteDatabase);
+
 % read putrefaction product tables
 putrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');
 putrefactionReactions = {'Histidine degradation (histidine -> glutamate)','GLUFORT';'THF production (histidine -> tetrahydrofolate)','FTCD';'Glutamate production (glutamate -> acetate + pyruvate)','CITMALL';'Putrescine_1','EX_ptrc(e)';'Putrescine_2','EX_ptrc(e)';'Putrescine_3','EX_ptrc(e)';'Spermidine/ Spermine production (methionine -> spermidine)','EX_spmd(e)';'Cadaverine production (lysine -> cadaverine)','EX_15dap(e)';'Cresol production (tyrosine -> cresol)','EX_pcresol(e)';'Indole production (tryptophan -> indole)','EX_indole(e)';'Phenol production (tyrosine -> phenol)','EX_phenol(e)';'H2S_1','EX_h2s(e)';'H2S_2','EX_h2s(e)';'H2S_3','EX_h2s(e)';'H2S_4','EX_h2s(e)';'H2S_5','EX_h2s(e)'};
@@ -97,7 +101,11 @@ end
 
 % warn about false negatives
 if ~isempty(FalseNegatives)
+    FalseNegatives = FalseNegatives(~cellfun(@isempty, FalseNegatives));
+    FalseNegatives=strrep(FalseNegatives,'EX_','');
+    FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
+        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
         warning(['Microbe "' microbeID, '" cannot produce flux through putrefaction pathway "', FalseNegatives{i}, '".'])
     end
 end
