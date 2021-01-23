@@ -36,18 +36,21 @@ if ~isempty(C)
     toTranslate(IA)=[];
 end
 
-% get the associated formulas from KBase/Model SEED reaction database
-KBaseRxns = readtable('KBase_reactions.xlsx', 'ReadVariableNames', false);
-KBaseRxns=table2cell(KBaseRxns);
-nameCol=find(strcmp(KBaseRxns(1,:),'NAME'));
-formCol=find(strcmp(KBaseRxns(1,:),'EQUATION'));
+% get the associated formulas from KBase/Model SEED reaction database on
+% ModelSEED GitHub
+system('curl -LJO https://raw.githubusercontent.com/ModelSEED/ModelSEEDDatabase/master/Biochemistry/reactions.tsv');
+
+KBaseRxns = table2cell(readtable('reactions.tsv', 'ReadVariableNames', false,'FileType','text'));
+nameCol=find(strcmp(KBaseRxns(1,:),'name'));
+formCol=find(strcmp(KBaseRxns(1,:),'equation'));
 delArray=[];
 cnt=1;
 for i=1:size(toTranslate,1)
+    % need to make some adjustments so IDs can be matched
     if strncmp(toTranslate{i,1},'EX_',3)
         buildForm=strrep(toTranslate{i,1},'EX_','');
         toTranslate{i,2}=toTranslate{i,1};
-        toTranslate{i,3}=[buildForm '[e0]  <=> '];
+        toTranslate{i,3}=[buildForm '[1]  <=> '];
     elseif ~isempty(find(strcmp(KBaseRxns(:,1),toTranslate{i,1})))
         toTranslate{i,2}=KBaseRxns{find(strcmp(KBaseRxns(:,1),toTranslate{i,1})),nameCol};
         toTranslate{i,3}=KBaseRxns{find(strcmp(KBaseRxns(:,1),toTranslate{i,1})),formCol};
@@ -63,14 +66,12 @@ toTranslate(delArray,:)=[];
 translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
 translateMets=table2cell(translateMets);
 
+toTranslate(:,3)=strrep(toTranslate(:,3),'(','');
+toTranslate(:,3)=strrep(toTranslate(:,3),')','');
+toTranslate(:,3)=strrep(toTranslate(:,3),'[0]','[c]');
+toTranslate(:,3)=strrep(toTranslate(:,3),'[1]','[e]');
 for i=1:size(translateMets,1)
     toTranslate(:,3)=strrep(toTranslate(:,3),translateMets{i,1},[translateMets{i,2},'[c]']);
-    toTranslate(:,3)=strrep(toTranslate(:,3),'(','');
-    toTranslate(:,3)=strrep(toTranslate(:,3),')','');
-    toTranslate(:,3)=strrep(toTranslate(:,3),'[c][e]','[e]');
-    toTranslate(:,3)=strrep(toTranslate(:,3),'[c][e0]','[e]');
-    toTranslate(:,3)=strrep(toTranslate(:,3),'[c][p]','[e]');
-    toTranslate(:,3)=strrep(toTranslate(:,3),'[c][p0]','[e]');
 end
 
 % remove columns that still have untranslated metabolites in them and/or

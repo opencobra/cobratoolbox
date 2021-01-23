@@ -111,33 +111,51 @@ cd(inputDataFolder)
 % perform debugging tools for each model for which additional curation is
 % needed
 if length(failedModels)>0
-    reactionsToGapfillTmp = {};
-    reactionsToReplaceTmp = {};
-    revisedModelTmp = {};
-    parfor i=1:length(failedModels)
-        restoreEnvironment(environment);
-        changeCobraSolver(solver, 'LP', 0, -1);
-        
-        model=readCbModel([refinedFolder filesep failedModels{i,1} '.mat']);
-        biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-        [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{i,1},biomassReaction,numWorkers);
-        reactionsToGapfillTmp{i} = reactionsToGapfill;
-        reactionsToReplaceTmp{i} = reactionsToReplace;
-        revisedModelTmp{i} = revisedModel;
-    end
-    for i=1:length(failedModels)
-        % print the results of the debug gapfilling
-        debuggingReport(cnt,1:size(reactionsToReplaceTmp{i},2))=reactionsToReplaceTmp{i};
-        cnt=cnt+1;
-        for j=1:size(reactionsToGapfillTmp{i},1)
-            debuggingReport(cnt,1:size(reactionsToGapfillTmp{i},2))=reactionsToGapfillTmp{i}(j,:);
-            cnt=cnt+1;
-        end
-        % save the revised model for re-testing
-        model = revisedModelTmp{i};
-        save([debuggingFolder filesep 'RevisedModels' filesep failedModels{i,1} '.mat'],'model');
+    
+    % define the intervals in which the testing and regular saving will be
+    % performed
+    if length(failedModels)>200
+        steps=100;
+    else
+        steps=25;
     end
     
+    for i=1:steps:length(failedModels)
+        if length(failedModels)-i>=steps-1
+            endPnt=steps-1;
+        else
+            endPnt=length(failedModels)-i;
+        end
+        
+        reactionsToGapfillTmp = {};
+        reactionsToReplaceTmp = {};
+        revisedModelTmp = {};
+        parfor j=i:i+endPnt
+            restoreEnvironment(environment);
+            changeCobraSolver(solver, 'LP', 0, -1);
+            
+            model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
+            biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
+            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{j,1},biomassReaction,numWorkers);
+            reactionsToGapfillTmp{j} = reactionsToGapfill;
+            reactionsToReplaceTmp{j} = reactionsToReplace;
+            revisedModelTmp{j} = revisedModel;
+        end
+        for j=i:i+endPnt
+            % print the results of the debug gapfilling
+            debuggingReport(cnt,1:size(reactionsToReplaceTmp{j},2))=reactionsToReplaceTmp{j};
+            cnt=cnt+1;
+            for k=1:size(reactionsToGapfillTmp{j},1)
+                debuggingReport(cnt,1:size(reactionsToGapfillTmp{j},2))=reactionsToGapfillTmp{j}(k,:);
+                cnt=cnt+1;
+            end
+            % save the revised model for re-testing
+            model = revisedModelTmp{i};
+            save([debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1} '.mat'],'model');
+        end
+        % regularly save the results
+        save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
+    end
     % run a retest of revised models
     refinedFolder = [debuggingFolder filesep 'RevisedModels'];
     testResultsFolder = [debuggingFolder filesep 'Retest'];
@@ -181,6 +199,11 @@ if length(failedModels)>0
     
     fixedModels = setdiff(failedModels,stillFailedModels);
     failedModels = stillFailedModels;
+    
+    % save the final results of the debugging tools
+    save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
+    save([debuggingFolder filesep 'fixedModels.mat'],'fixedModels');
+    save([debuggingFolder filesep 'failedModels.mat'],'failedModels');
     
 else
     fprintf('All models passed all tests. Exiting debugging tools.\n')
