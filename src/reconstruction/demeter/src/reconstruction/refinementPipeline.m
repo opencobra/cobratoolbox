@@ -275,7 +275,7 @@ if growsOnDefinedMedium==0
         % run gapfilling tools to enable biomass production on the defined
         % medium
         [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);
-        summary.('definedMediumGrowth') = union(summary.('definedMediumGrowth'),gapfilledRxns);
+        summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
     end
 end
 
