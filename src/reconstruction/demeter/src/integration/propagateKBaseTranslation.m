@@ -70,6 +70,12 @@ toTranslate(:,3)=strrep(toTranslate(:,3),'(','');
 toTranslate(:,3)=strrep(toTranslate(:,3),')','');
 toTranslate(:,3)=strrep(toTranslate(:,3),'[0]','[c]');
 toTranslate(:,3)=strrep(toTranslate(:,3),'[1]','[e]');
+toTranslate(:,3)=strrep(toTranslate(:,3),'[c][c]','[c]');
+toTranslate(:,3)=strrep(toTranslate(:,3),'[c][e]','[e]');
+toTranslate(:,3)=strrep(toTranslate(:,3),'=>','->');
+toTranslate(:,3)=strrep(toTranslate(:,3),'<=','<=>');
+toTranslate(:,3)=strrep(toTranslate(:,3),'<->','<=>');
+
 for i=1:size(translateMets,1)
     toTranslate(:,3)=strrep(toTranslate(:,3),translateMets{i,1},[translateMets{i,2},'[c]']);
 end
@@ -83,5 +89,4 @@ for i=1:length(toRemove)
 end
 
 translatedRxns=toTranslate;
-writetable(cell2table(translatedRxns),'mappedRxns_ToCheck','FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
