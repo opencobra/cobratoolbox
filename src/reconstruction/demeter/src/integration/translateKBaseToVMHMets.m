@@ -1,13 +1,12 @@
-function [translatedMets]=propagateKBaseMetsTranslation(toTranslatePath)
-% This functions replaced already translated metabolites in reactions with
-% KBase/Model SEED nomenclature that are not yet translated. The function
-% creates an output fit for the ReconstructionTool interface in rBioNet
-% that can be used to check if the reactions already exist in the VMH
-% database.
+function [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
+% This functions translates metabolites inKBase/Model SEED nomenclature
+% that are not yet translated to VMH nomenclature based on names/InCHi keys.
+% It is recommended the resulting translated is verified through manual
+% inspection.
 %
 % USAGE:
 %
-%   [translatedMets]=propagateKBaseMetTranslation(toTranslatePath)
+%   [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
 %
 % INPUT:
 %   toTranslatePath         String containing the path to xlsx, csv, or 
@@ -35,7 +34,7 @@ end
 toTranslate={'KBase_ID','KBase_name','KBase_formula','KBase_charge','VMH_ID','VMH_name','VMH_formula','VMH_charge'};
 toTranslate(2:size(toTranslateMets,1)+1,1)=toTranslateMets;
 
-% get the VMH metabolite database
+% load the VMH metabolite database
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 metaboliteDatabase=table2cell(metaboliteDatabase);
 
@@ -47,6 +46,7 @@ KBaseMets = table2cell(readtable('compounds.tsv', 'ReadVariableNames', false,'Fi
 kbaseNameCol=find(strcmp(KBaseMets(1,:),'name'));
 kbaseBiGGCol=find(strcmp(KBaseMets(1,:),'abbreviation'));
 kbaseSmileCol=find(strcmp(KBaseMets(1,:),'smiles'));
+kbaseInchiCol=find(strcmp(KBaseMets(1,:),'inchikey'));
 kbaseAltNameCol=find(strcmp(KBaseMets(1,:),'aliases'));
 
 for i=2:size(toTranslate,1)
@@ -56,12 +56,16 @@ for i=2:size(toTranslate,1)
     metName=KBaseMets{metRow,kbaseNameCol};
     biggID=KBaseMets{metRow,kbaseBiGGCol};
     smileID=KBaseMets{metRow,kbaseSmileCol};
+    inchiID=KBaseMets{metRow,kbaseInchiCol};
     altNames=strsplit(KBaseMets{metRow,kbaseAltNameCol},';');
     
     % try to match with IDs from VMH database
     findVMH=find(strcmp(metaboliteDatabase(:,2),metName));
     if isempty(findVMH) && ~isempty(biggID)
         findVMH=find(strcmp(metaboliteDatabase(:,1),biggID));
+    end
+    if isempty(findVMH) && ~isempty(inchiID)
+        findVMH=find(strcmp(metaboliteDatabase(:,9),inchiID));
     end
     if isempty(findVMH) && ~isempty(smileID)
         findVMH=find(strcmp(metaboliteDatabase(:,10),smileID));

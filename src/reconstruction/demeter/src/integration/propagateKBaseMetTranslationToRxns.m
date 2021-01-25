@@ -1,4 +1,4 @@
-function [translatedRxns]=propagateKBaseRxnTranslation(toTranslatePath)
+function [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
 % This functions replaced already translated metabolites in reactions with
 % KBase/Model SEED nomenclature that are not yet translated. The function
 % creates an output fit for the ReconstructionTool interface in rBioNet
@@ -7,7 +7,7 @@ function [translatedRxns]=propagateKBaseRxnTranslation(toTranslatePath)
 %
 % USAGE:
 %
-%   [translatedRxns]=propagateKBaseRxnTranslation(toTranslatePath)
+%   [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
 %
 % INPUT:
 %   toTranslatePath           String containing the path to xlsx, csv, or 
