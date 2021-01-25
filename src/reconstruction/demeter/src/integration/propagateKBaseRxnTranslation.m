@@ -1,4 +1,4 @@
-function [translatedRxns]=propagateKBaseTranslation(toTranslatePath)
+function [translatedRxns]=propagateKBaseRxnTranslation(toTranslatePath)
 % This functions replaced already translated metabolites in reactions with
 % KBase/Model SEED nomenclature that are not yet translated. The function
 % creates an output fit for the ReconstructionTool interface in rBioNet
@@ -7,7 +7,7 @@ function [translatedRxns]=propagateKBaseTranslation(toTranslatePath)
 %
 % USAGE:
 %
-%   [translatedRxns]=propagateKBaseTranslation(toTranslatePath)
+%   [translatedRxns]=propagateKBaseRxnTranslation(toTranslatePath)
 %
 % INPUT:
 %   toTranslatePath           String containing the path to xlsx, csv, or 
@@ -28,8 +28,7 @@ toTranslate=table2cell(toTranslate);
 toTranslate=toTranslate(:,1);
 
 % remove already translated reactions
-translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
-translateRxns=table2cell(translateRxns);
+translateRxns = table2cell(readtable('ReactionTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']));
 [C,IA]=intersect(toTranslate,translateRxns(:,1));
 if ~isempty(C)
     warning('Already translated reactions were removed.')
@@ -66,6 +65,10 @@ toTranslate(delArray,:)=[];
 translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
 translateMets=table2cell(translateMets);
 
+for i=1:size(translateMets,1)
+    toTranslate(:,3)=strrep(toTranslate(:,3),translateMets{i,1},[translateMets{i,2},'[c]']);
+end
+
 toTranslate(:,3)=strrep(toTranslate(:,3),'(','');
 toTranslate(:,3)=strrep(toTranslate(:,3),')','');
 toTranslate(:,3)=strrep(toTranslate(:,3),'[0]','[c]');
@@ -73,11 +76,14 @@ toTranslate(:,3)=strrep(toTranslate(:,3),'[1]','[e]');
 toTranslate(:,3)=strrep(toTranslate(:,3),'[c][c]','[c]');
 toTranslate(:,3)=strrep(toTranslate(:,3),'[c][e]','[e]');
 toTranslate(:,3)=strrep(toTranslate(:,3),'=>','->');
-toTranslate(:,3)=strrep(toTranslate(:,3),'<=','<=>');
 toTranslate(:,3)=strrep(toTranslate(:,3),'<->','<=>');
 
-for i=1:size(translateMets,1)
-    toTranslate(:,3)=strrep(toTranslate(:,3),translateMets{i,1},[translateMets{i,2},'[c]']);
+% if the reaction is written in reverse
+for i=1:size(toTranslate,1)
+    if contains(toTranslate{i,3},' <= ')
+        form=strsplit(toTranslate{i,3},' <= ');
+        toTranslate{i,3}=[form{1,2} ' -> ' form{1,1}];
+    end
 end
 
 % remove columns that still have untranslated metabolites in them and/or
@@ -89,4 +95,6 @@ for i=1:length(toRemove)
 end
 
 translatedRxns=toTranslate;
+writetable(cell2table(translatedRxns),'translatedRxns.txt','FileType','text','WriteVariableNames',false,'Delimiter','tab');
+
 end

@@ -1,8 +1,10 @@
-function [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxns)
+function [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxnPath)
 
 sameReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 similarReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 
+% load translated reactions to map to VMH reactions
+translatedRxns = table2cell(readtable(translatedRxnPath, 'ReadVariableNames', false,'FileType','text'));
 
 % get VMH reaction database
 reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);

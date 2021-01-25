@@ -1,4 +1,4 @@
-function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,microbeID,biomassReaction,numWorkers)
+function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -10,6 +10,8 @@ cntGF=1;
 reactionsToReplace = {};
 
 tol=0.0000001;
+
+model=changeObjective(model,biomassReaction);
 
 % implement Western diet
 WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', 'tab');
@@ -61,11 +63,12 @@ end
 [growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
 if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
-    [model,untGF] = untargetedGapFilling(model,biomassReaction,'max',database,numWorkers);
-    if ~isempty(untGF)
+    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
+    if ~isempty(gapfilledRxns)
         reactionsToGapfill{cntGF,1}=microbeID;
-        reactionsToGapfill{cntGF,2}=biomassReaction;
-        reactionsToGapfill(cntGF,3:length(untGF)+2)=untGF;
+        reactionsToGapfill{cntGF,2}='Gapfilled';
+        reactionsToGapfill{cntGF,3}=biomassReaction;
+        reactionsToGapfill(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
         cntGF=cntGF+1;
     end
 end
@@ -112,20 +115,15 @@ end
 % remove futile cycles if any exist
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
-    % find reactions that are causing futile cycles
-    futileCycleReactions=identifyFutileCycles(model);
-    % find irreversible versions of the same reactions
-    
-    if ~isempty(futileCycleReactions)
-        reactionsToReplace{1,1}=microbeID;
-        reactionsToReplace{1,2}='To replace';
-        reactionsToReplace(1,3:length(untDel)+2)=futileCycleReactions;
-        % let us try if running removeFutileCycles again will work
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
-    end
+    % let us try if running removeFutileCycles again will work
+    [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+    reactionsToReplace{1,1}=microbeID;
+    reactionsToReplace{1,2}='To replace';
+    reactionsToReplace(1,3:length(deletedRxns)+2)=deletedRxns;
 end
 
 % rebuild and export the model
 revisedModel = rebuildModel(model,database);
+revisedModel=changeObjective(revisedModel,biomassReaction);
 
 end

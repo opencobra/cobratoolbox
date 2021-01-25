@@ -2,13 +2,6 @@ function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biom
 
 tol=0.0000001;
 
-% change back to unlimited medium
-% list exchange reactions
-exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
-% open all exchanges
-model = changeRxnBounds(model, exchanges, -1000, 'l');
-model = changeRxnBounds(model, exchanges, 1000, 'u');
-
 modelOld=model;
 
 model = changeObjective(model, objectiveFunction);
@@ -60,5 +53,12 @@ end
 
 % change back to biomass reaction
 model=changeObjective(model,biomassReaction);
+
+% change back to unlimited medium
+% list exchange reactions
+exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
+% open all exchanges
+model = changeRxnBounds(model, exchanges, -1000, 'l');
+model = changeRxnBounds(model, exchanges, 1000, 'u');
 
 end

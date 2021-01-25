@@ -76,12 +76,12 @@ mkdir(debuggingFolder)
 mkdir([debuggingFolder filesep 'RevisedModels'])
 mkdir([debuggingFolder filesep 'Retest'])
 
-if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'notGrowing.mat'])
-    load([testResultsFolder filesep reconVersion '_refined' filesep 'notGrowing.mat']);
+if isfile([testResultsFolder filesep 'notGrowing.mat'])
+    load([testResultsFolder filesep 'notGrowing.mat']);
     failedModels = union(failedModels,notGrowing);
 end
-if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'tooHighATP.mat'])
-    load([testResultsFolder filesep reconVersion '_refined' filesep 'tooHighATP.mat']);
+if isfile([testResultsFolder filesep 'tooHighATP.mat'])
+    load([testResultsFolder filesep 'tooHighATP.mat']);
     failedModels = union(failedModels,tooHighATP);
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
@@ -136,18 +136,22 @@ if length(failedModels)>0
             
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{j,1},biomassReaction,numWorkers);
+            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{j,1},biomassReaction);
             reactionsToGapfillTmp{j} = reactionsToGapfill;
             reactionsToReplaceTmp{j} = reactionsToReplace;
             revisedModelTmp{j} = revisedModel;
         end
         for j=i:i+endPnt
             % print the results of the debug gapfilling
+            if ~isempty(reactionsToReplaceTmp{j})
             debuggingReport(cnt,1:size(reactionsToReplaceTmp{j},2))=reactionsToReplaceTmp{j};
             cnt=cnt+1;
+            end
+            if ~isempty(reactionsToGapfillTmp{j})
             for k=1:size(reactionsToGapfillTmp{j},1)
                 debuggingReport(cnt,1:size(reactionsToGapfillTmp{j},2))=reactionsToGapfillTmp{j}(k,:);
                 cnt=cnt+1;
+            end
             end
             % save the revised model for re-testing
             model = revisedModelTmp{i};
@@ -160,8 +164,8 @@ if length(failedModels)>0
     refinedFolder = [debuggingFolder filesep 'RevisedModels'];
     testResultsFolder = [debuggingFolder filesep 'Retest'];
     
-    notGrowing = plotBiomassTestResults(refinedFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
-    tooHighATP = plotATPTestResults(refinedFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
+    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
+    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     
     testAllReconstructionFunctions(refinedFolder,testResultsFolder,reconVersion,numWorkers);
     

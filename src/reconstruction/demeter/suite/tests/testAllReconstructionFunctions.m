@@ -318,33 +318,11 @@ for i = 1:steps:length(modelList)
             tmpStruct.growsOnDefinedMedium{j, 2} = growsOnDefinedMedium;
             tmpStruct.growthOnKnownCarbonSources{j, 2} = growthOnKnownCarbonSources;
             
-            %%
             % In the case of any false negatives, the reconstruction needs to be manually
             % refined to make sure that essential metabolites cannot be synthesized _de novo_
             % by the model or that non-essential metabolites are not required in the growth
             % media.
-            %% Biomass precursor biosynthesis
-            % Tests which biomass precursors can be synthesized _de novo_ by the model and compares
-            % with experimental/genomic data.
-            %
-            % *Inputs:*
-            %
-            % * *model*: COBRA model structure
-            % * *microbeID*: Microbe ID in carbon source data file
-            %
-            % *Outputs:*
-            %
-            % * *TruePositives*: Cell array of strings listing all B-vitamins that can be
-            % synthesized _de novo_ in the model and according to data.
-            % * *FalseNegatives*: Cell array of strings listing all B-vitamins that cannot
-            % be synthesized _de novo_ in the model but should be according to data.
-            
-            [TruePositives, FalseNegatives] = testBiomassPrecursorBiosynthesis(model, microbeID);
-            tmpStruct.Biomass_precursor_biosynthesis_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
-            tmpStruct.Biomass_precursor_biosynthesis_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
-            % In the case of any false negatives, the reconstruction needs to be manually
-            % refined to make sure that the vitamins can be synthesized _de novo_ by the model.
-            
+                    
             %% Metabolite consumption
             % Performs an FVA and reports those metabolites (exchange reactions)
             % that can be taken up by the model and should be taken up according to
