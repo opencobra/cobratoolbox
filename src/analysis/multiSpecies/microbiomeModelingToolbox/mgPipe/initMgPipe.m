@@ -12,6 +12,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
 %    infoFilePath:           char with path to stratification criteria if available
+%    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
+%    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    objre:                  char with reaction name of objective function of organisms
 %    figForm:                format to use for saving figures
 %    numWorkers:             integer indicating the number of cores to use for parallelization
@@ -27,7 +29,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
 %    repeatSim:              boolean defining if simulations should be repeated and previous results
 %                            overwritten (default=false)
-%    adaptMedium             boolean indicating if the medium should be
+%    adaptMedium:            boolean indicating if the medium should be
 %                            adapted through the adaptVMHDietToAGORA
 %                            function or used as is (default=true)                  
 %
@@ -46,9 +48,11 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
-parser.addParameter('resPath', '', @ischar);
-parser.addParameter('dietFilePath', '', @ischar);
+parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
+parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
+parser.addParameter('hostPath', '', @ischar);
+parser.addParameter('hostBiomassRxn', '', @ischar);
 parser.addParameter('objre', '', @ischar);
 parser.addParameter('figForm', '-depsc', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
@@ -71,6 +75,8 @@ abunFilePath = parser.Results.abunFilePath;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
 infoFilePath = parser.Results.infoFilePath;
+hostPath = parser.Results.hostPath;
+hostBiomassRxn = parser.Results.hostBiomassRxn;
 objre = parser.Results.objre;
 figForm = parser.Results.figForm;
 numWorkers = parser.Results.numWorkers;
@@ -91,17 +97,21 @@ if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
 global CBTDIR
 
 % set optional variables
-if ~exist('resPath', 'var') || ~exist(resPath, 'dir')
-    resPath = [CBTDIR filesep '.tmp'];
-    warning(['The path to the results has been set to ' resPath]);
-    mkdir(resPath);
-end
-if ~exist('dietFilePath', 'var')|| ~exist(strcat(dietFilePath,'.txt'), 'file')
-    dietFilePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' filesep 'resources' filesep 'AverageEuropeanDiet'];
-    warning(['The path to the results has been set to ' dietFilePath]);
+mkdir(resPath);
+    
+if exist(dietFilePath)==0
+    error('Path to file with dietary information is incorrect!');
 end
 
 if strcmp(infoFilePath, '')
@@ -155,6 +165,6 @@ end
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, resPath, dietFilePath, abunFilePath, infoFilePath, objre, figForm, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end

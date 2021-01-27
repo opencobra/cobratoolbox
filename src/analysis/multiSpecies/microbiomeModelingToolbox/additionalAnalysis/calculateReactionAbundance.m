@@ -124,17 +124,23 @@ for t = 1:size(TaxonomyLevels, 1)
 end
 
 % Find the right column for the input data (strains, species,..)
-abundance(:,1)=regexprep(abundance(:,1),'pan','','once');
-inputTaxa={};
-for i=2:size(taxonomy,2)
-    taxa=strrep(taxonomy(:,i),' ','_');
-    taxa=strrep(taxa,'.','_');
-    taxa=strrep(taxa,'/','_');
-    taxa=strrep(taxa,'-','_');
-    taxa=strrep(taxa,'__','_');
-    if length(intersect(abundance(2:end,1),taxa))==size(abundance,1)-1
-        inputTaxa=taxa;
-        inputCol=i;
+taxa=taxonomy(2:end,1);
+if length(intersect(abundance(2:end,1),taxa))==size(abundance,1)-1
+    inputTaxa=taxa;
+    inputCol=1;
+else
+    abundance(:,1)=regexprep(abundance(:,1),'pan','','once');
+    inputTaxa={};
+    for i=2:size(taxonomy,2)
+        taxa=strrep(taxonomy(:,i),' ','_');
+        taxa=strrep(taxa,'.','_');
+        taxa=strrep(taxa,'/','_');
+        taxa=strrep(taxa,'-','_');
+        taxa=strrep(taxa,'__','_');
+        if length(intersect(abundance(2:end,1),taxa))==size(abundance,1)-1
+            inputTaxa=taxa;
+            inputCol=i;
+        end
     end
 end
 if isempty(inputTaxa)

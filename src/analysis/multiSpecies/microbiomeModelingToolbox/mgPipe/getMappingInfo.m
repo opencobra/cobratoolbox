@@ -1,14 +1,14 @@
-function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(models, abunFilePath, patNumb)
+function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
 % This function automatically extracts information from strain abundances in
 % different individuals and combines this information into different tables.
 %
 % USAGE:
 %
-%    [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(models, abunFilePath, patNumb)
+%    [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
 %
 % INPUTS:
-%   models:            nx1 cell array that contains n microbe models in
-%                      COBRA model structure format
+%   organisms:         nx1 cell array cell array with names of organisms in the study
+%   modPath:           char with path of directory where models are stored
 %   abunFilePath:      char with path and name of file from which to retrieve abundance information
 %   patNumb:           number of individuals in the study
 %
@@ -58,8 +58,14 @@ else
 end
 %%
 reac = {}; % array with unique set of all the reactions present in the models
-for i = 1:length(models) % find the unique set of all the reactions contained in the models
-    smd = models{i,1};
+models = {};
+parfor i = 1:length(organisms) % find the unique set of all the reactions contained in the models
+    model =readCbModel([modPath filesep organisms{i,1} '.mat']);
+    models{i, 1} = model;
+end
+
+for i = 1:length(organisms) % find the unique set of all the reactions contained in the models
+    smd = models{i, 1};
     reac = union(reac,smd.rxns);
 end
 
