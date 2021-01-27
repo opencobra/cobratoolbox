@@ -24,7 +24,7 @@ translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
 translateRxns=table2cell(translateRxns);
 gfRxns=intersect(gfRxns,translateRxns(:,2));
 
-noDelete = {biomassReaction; 'O2t'; 'CO2t'; 'MG2abc'; 'H2Ot'; 'L2A6ODs'; 'G5SADs'; 'AOBUTDs'; 'ACGAMK'; 'DM_atp_c_'; 'FE3abc'; 'SO4t2'; 'TSULabc'; 'PDHbr'; 'PDHc'; 'INDOLEt2r'; 'SUCCt2r'; 'PHEt2r'; 'TRPt2r'};
+noDelete = {biomassReaction; 'O2t'; 'O2t5i'; 'CO2t'; 'MG2abc'; 'H2Ot'; 'L2A6ODs'; 'G5SADs'; 'AOBUTDs'; 'ACGAMK'; 'DM_atp_c_'; 'FE3abc'; 'SO4t2'; 'TSULabc'; 'PDHbr'; 'PDHc'; 'INDOLEt2r'; 'SUCCt2r'; 'PHEt2r'; 'TRPt2r'};
 checkDelete = setdiff(gfRxns, noDelete);
 
 transp = {  % delete exchange reaction with following transporters

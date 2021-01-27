@@ -36,48 +36,48 @@ FNs=union(FNs,FalseNegatives);
 FNs=union(FNs,FalseNegatives);
 
 %% gapfill if there are any false negatives
-% osenseStr='min';
-% 
-% dataDrivenGapfill={};
-% if ~isempty(FNs)
-%     for j=1:length(FNs)
-%         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-%         % find reactions that could be gap-filled to enable flux
-%         [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
-%         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
-%     end
-%     if ~isempty(dataDrivenGapfill)
-%         summary.('DataDrivenGapfill')=dataDrivenGapfill;
-%     end
-% end
-% 
-% % Fermentation products
-% [TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
-% FNs=union(FNs,FalseNegatives);
-% 
-% % Putrefaction pathways
-% [TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
-% FNs=union(FNs,FalseNegatives);
-% 
-% % Secretion products
-% [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
-% FNs=union(FNs,FalseNegatives);
-% 
-% % gapfill if there are any false negatives
-% osenseStr='max';
-% 
-% dataDrivenGapfill={};
-% if ~isempty(FNs)
-%     for j=1:length(FNs)
-%         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-%         % find reactions that could be gap-filled to enable flux
-%         [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
-%         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
-%     end
-%     if ~isempty(dataDrivenGapfill)
-%         summary.('DataDrivenGapfill')=dataDrivenGapfill;
-%     end
-% end
+osenseStr='min';
+
+dataDrivenGapfill={};
+if ~isempty(FNs)
+    for j=1:length(FNs)
+        metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        % find reactions that could be gap-filled to enable flux
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
+        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+    end
+    if ~isempty(dataDrivenGapfill)
+        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+    end
+end
+
+% Fermentation products
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+FNs=union(FNs,FalseNegatives);
+
+% Putrefaction pathways
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+FNs=union(FNs,FalseNegatives);
+
+% Secretion products
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
+FNs=union(FNs,FalseNegatives);
+
+% gapfill if there are any false negatives
+osenseStr='max';
+
+dataDrivenGapfill={};
+if ~isempty(FNs)
+    for j=1:length(FNs)
+        metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        % find reactions that could be gap-filled to enable flux
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
+        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+    end
+    if ~isempty(dataDrivenGapfill)
+        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+    end
+end
 
 %% change back to biomass reaction
 model=changeObjective(model,biomassReaction);

@@ -138,6 +138,9 @@ if ~isempty(mRow)
         % if requirements(i,1)==1 and  requirements(i,2)==0 -> false
         % negative
         
+        %% allow growth with oxygen
+        model = changeRxnBounds(model, 'EX_o2(e)', -1, 'l');
+        
         %% define the GPRs that indicate a reactions that is gap-filled
         gapfillGPRs={'','Unknown','0000000.0.peg.0','gapFilled'};
         %% define reactions in each biosynthesis pathways to gapfill or delete, and the necessary conditions
