@@ -1,8 +1,14 @@
-function [microbeID]=adaptDraftModelID(modelIDIn)
+function microbeID=adaptDraftModelID(modelIDIn)
 % This function adapts the name of the draft reconstruction entered into
 % the pipeline into a suitable curated reconstruction ID.
-
-% USAGE: [microbeID]=adaptKBaseModelID(modelIDIn);
+%
+% USAGE: microbeID = adaptKBaseModelID(modelIDIn)
+%
+% INPUT
+% modelIDIn     name of the KBase draft reconstruction file to refine
+%
+% OUTPUT
+% microbeID     name of the resulting refined reconstruction
 %
 % AUTHOR: Almut Heinken, 06/2020.
 
