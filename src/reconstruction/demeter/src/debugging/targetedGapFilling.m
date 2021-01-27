@@ -71,7 +71,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'f6p[c]', '', {'FBP'}
     'acgam[c]', '', {'G1PACT','UAGDP'}
     'nmn[c]', '', {'EX_nmn(e)','NMNP'}
-    'btn[c]', '', {'EX_btn(e)','BTNabc'}
+    'btn[c]', '', {'EX_btn(e)','BTNabc','BTNCL','ACCOACL'}
     '2obut[c]', '', {'DM_2obut[c]'}
     '', {'G16BPS','G1PP','G1PPT'}, {'G1PACT','UAGDP'}
     'gam[c]', '', {'GF6PTA'}
@@ -98,47 +98,57 @@ end
 
 % If this did not solve the problem, predict which metabolites could otherwise enable growth if either produced or
 % consumed. This makes targeted gap-filling possible.
+
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
-    growthEnablingMets={};
-    geCnt=1;
     
-    for i=1:length(model.mets)
-        modelSink=addSinkReactions(model,model.mets{i});
-        FBA = optimizeCbModel(modelSink,osenseStr);
-        if abs(FBA.f) > tol
-            growthEnablingMets{geCnt,1}=model.mets{i};
-            geCnt=geCnt+1;
-        end
-    end
     
-    if ~isempty(find(ismember(growthEnablingMets,'gam6p[c]'))) && ~isempty(find(ismember(model.rxns,'HEX1')))
-        % if HEX1 is already present, add with gene rule
-        rxns={
-            'HEX10'
-            };
-        for i=1:length(rxns)
-            if isempty(find(ismember(model.rxns, rxns{i})))
-                model = addReaction(model, rxns{i}, database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
-                addReaction(model, [rxns{i} '_tGF'], ...
-                    'reactionName', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 2}, ...
-                    'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, ...
-                    'subSystem', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 11}, ...
-                    'geneRule', model.grRules{find(strcmp(model.rxns,'HEX1'))}, ...
-                    'printLevel', 0);
+    for k=1:5
+        FBA = optimizeCbModel(model,osenseStr);
+        if abs(FBA.f) < tol
+            
+            % try adding one by one
+            model_old=model;
+            for i=1:length(model.mets)
+                model=addSinkReactions(model,model.mets{i});
+                FBA = optimizeCbModel(model,osenseStr);
+                if abs(FBA.f) > tol
+                    growthEnablingMets=model.mets{i};
+                    break
+                end
             end
-        end
-    end
-    
-    for i=1:length(gapfillSolutions)
-        if ~isempty(find(ismember(growthEnablingMets,gapfillSolutions{i,1}))) || ~isempty(intersect(model.rxns,gapfillSolutions{i,2}))
-            rxns=gapfillSolutions{i,3};
-            for j=1:length(rxns)
-                if isempty(find(ismember(model.rxns, rxns{j})))
-                    model = addReaction(model, [rxns{j} '_tGF'], database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3});
+            model=model_old;
+            
+            if ~isempty(find(ismember(growthEnablingMets,'gam6p[c]'))) && ~isempty(find(ismember(model.rxns,'HEX1')))
+                % if HEX1 is already present, add with gene rule
+                rxns={
+                    'HEX10'
+                    };
+                for i=1:length(rxns)
+                    if isempty(find(ismember(model.rxns, rxns{i})))
+                        model = addReaction(model, rxns{i}, database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
+                        addReaction(model, [rxns{i} '_tGF'], ...
+                            'reactionName', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 2}, ...
+                            'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, ...
+                            'subSystem', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 11}, ...
+                            'geneRule', model.grRules{find(strcmp(model.rxns,'HEX1'))}, ...
+                            'printLevel', 0);
+                    end
+                end
+            end
+            
+            for i=1:length(gapfillSolutions)
+                if ~isempty(find(ismember(growthEnablingMets,gapfillSolutions{i,1}))) || ~isempty(intersect(model.rxns,gapfillSolutions{i,2}))
+                    rxns=gapfillSolutions{i,3};
+                    for j=1:length(rxns)
+                        if isempty(find(ismember(model.rxns, rxns{j})))
+                            model = addReaction(model, [rxns{j} '_tGF'], database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3});
+                        end
+                    end
                 end
             end
         end
+        
     end
 end
 

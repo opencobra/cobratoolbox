@@ -23,8 +23,6 @@ fields = {
     'Fermentation_products_FalseNegatives'
     'growsOnDefinedMedium'
     'growthOnKnownCarbonSources'
-    'Biomass_precursor_biosynthesis_TruePositives'
-    'Biomass_precursor_biosynthesis_FalseNegatives'
     'Metabolite_uptake_TruePositives'
     'Metabolite_uptake_FalseNegatives'
     'Secretion_products_TruePositives'
@@ -117,8 +115,6 @@ features=strrep(features,'_TrueNegatives','');
 features=unique(features);
 Table{1,1}='Feature';
 Table{1,2}=strcat('Sensitivity ',reconVersion);
-Table{1,3}=strcat('Specificity ',reconVersion);
-Table{1,4}=strcat('Accuracy ',reconVersion);
 cnt=2;
 plotdata=[];
 for i=1:length(features)
@@ -143,45 +139,17 @@ for i=1:length(features)
             FNs(j,1)=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_FalseNegatives'))(j,2:end))));
         end
     end
-    if isfield(Results,strcat(features{i},'_TrueNegatives')) && isfield(Results,strcat(features{i},'_FalsePositives'))
-        if size(Results.(strcat(features{i},'_TrueNegatives')),2)==1
-            for j=1:size(Results.(strcat(features{i},'_TrueNegatives')),1)
-                TNs(j,1)=0;
-            end
-        else
-            for j=1:size(Results.(strcat(features{i},'_TrueNegatives')),1)
-                TNs(j,1)=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_TrueNegatives'))(j,2:end))));
-            end
-        end
-        if size(Results.(strcat(features{i},'_FalsePositives')),2)==1
-            for j=1:size(Results.(strcat(features{i},'_FalsePositives')),1)
-                FPs(j,1)=0;
-            end
-        else
-            for j=1:size(Results.(strcat(features{i},'_FalsePositives')),1)
-                FPs(j,1)=length(~find(cellfun(@isempty,Results.(strcat(features{i},'_FalsePositives'))(j,2:end))));
-            end
-        end
-    end
+    
     Sensitivity=sum(TPs)/(sum(TPs)+sum(FNs));
     Table{cnt,2}=Sensitivity;
-    if isfield(Results,strcat(features{i},'_TrueNegatives')) && isfield(Results,strcat(features{i},'_FalsePositives'))
-        Specificity=sum(TNs)/(sum(TNs)+sum(FPs));
-        Accuracy=(sum(TPs)+sum(TNs))/(sum(TPs)+sum(TNs)+sum(FPs)+sum(FNs));
-        Table{cnt,3}=Specificity;
-        Table{cnt,4}=Accuracy;
-    else
-        Table{cnt,3}='NA';
-        Table{cnt,4}='NA';
-    end
     % to plot all results
     plotdata(i,1)=sum(FNs);
     plotdata(i,2)=sum(TPs);
     labels{i,1}=strrep(features{i},'_',' ');
     cnt=cnt+1;
 end
-% remove nutrient requirements-better plot separately
-[C,IA]=intersect(labels,{'Biomass precursor biosynthesis','NutrientRequirements','Drug metabolism'});
+% remove drug metabolism-better plot separately
+[C,IA]=intersect(labels,{'Drug metabolism'});
 labels(IA)=[];
 plotdata(IA,:)=[];
 
@@ -236,7 +204,6 @@ Percentages={'Feature','StrainsWithData','PercentAgreeing'};
 features={
     'Carbon_sources'
     'Fermentation_products'
-    'Biomass_precursor_biosynthesis'
     'PutrefactionPathways'
     'Secretion_products'
     'Metabolite_uptake'

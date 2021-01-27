@@ -63,7 +63,7 @@ end
 [growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
 if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
+    [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
         reactionsToGapfill{cntGF,1}=microbeID;
         reactionsToGapfill{cntGF,2}='Gapfilled';

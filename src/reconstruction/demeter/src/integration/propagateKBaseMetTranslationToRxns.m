@@ -23,9 +23,7 @@ function [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
 % .. Author: Almut Heinken, 06/2020
 
 % read in the reactions to translate
-toTranslate=readtable(toTranslatePath);
-toTranslate=table2cell(toTranslate);
-toTranslate=toTranslate(:,1);
+toTranslate=table2cell(readtable(toTranslatePath,'readVariableName',false));
 
 % remove already translated reactions
 translateRxns = table2cell(readtable('ReactionTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']));

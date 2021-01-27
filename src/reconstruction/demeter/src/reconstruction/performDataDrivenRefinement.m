@@ -66,17 +66,17 @@ FNs=union(FNs,FalseNegatives);
 % gapfill if there are any false negatives
 osenseStr='max';
 
-% dataDrivenGapfill={};
-% if ~isempty(FNs)
-%     for j=1:length(FNs)
-%         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-%         % find reactions that could be gap-filled to enable flux
-%         [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
-%         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
-%     end
-%     if ~isempty(dataDrivenGapfill)
-%         summary.('DataDrivenGapfill')=dataDrivenGapfill;
-%     end
-% end
+dataDrivenGapfill={};
+if ~isempty(FNs)
+    for j=1:length(FNs)
+        metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        % find reactions that could be gap-filled to enable flux
+        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
+        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+    end
+    if ~isempty(dataDrivenGapfill)
+        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+    end
+end
 
 end

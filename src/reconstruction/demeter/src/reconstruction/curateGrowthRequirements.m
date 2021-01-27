@@ -93,7 +93,6 @@ if ~isempty(mRow)
         if FBA.f < tol
             model=changeRxnBounds(model,dmRxns,0,'l');
         end
-        modelOld=model;
         
         % remove dipeptides if model can still grow afterwards
         dipeptides={'EX_alaasp(e)','EX_alagln(e)','EX_alaglu(e)','EX_alagly(e)','EX_alahis(e)','EX_alaleu(e)','EX_alathr(e)','EX_glygln(e)','EX_glyglu(e)','EX_glyleu(e)','EX_glymet(e)','EX_glyphe(e)','EX_glypro(e)','EX_glytyr(e)','EX_metala(e)','EX_glyleu(e)','EX_glymet(e)','EX_glyphe(e)','EX_glypro(e)','EX_glytyr(e)','EX_glyasn(e)','EX_glyasp(e)','EX_glygln(e)','EX_glyglu(e)','EX_glycys(e)','EX_cgly(e)'};
@@ -125,7 +124,7 @@ if ~isempty(mRow)
                 modelTest=changeRxnBounds(modelTest,altExch,0,'l');
             end
             FBA = optimizeCbModel(modelTest, 'max');
-            if FBA.f < tol
+            if FBA.f < tol || FBA.stat==0
                 speciesNutrRequ{i, 3} = '1';
             else
                 speciesNutrRequ{i, 3} = '0';
@@ -285,13 +284,13 @@ if ~isempty(mRow)
             {'EX_thm(e)'},{'-1'},{'1'},{''},{''},{'EX_thm(e)'},{'AHMMPS','AMPMS2','DM_4HBA','DM_GCALD','DXPS','GARFTi','GART','GLUPRT','HETZK','HMPK1','PMPK','PRAGS','PRAIS','PRFGS','THZPSN','TMDPK','TMK','TMN','TMPK','TMPPP'},{''},{''}
             {'EX_thm(e)'},{'1'},{'0'},{''},{''},{''},{'EX_thm(e)','THMabc','DM_thmpp(c)'},{'AHMMPS','AMPMS2','DM_4HBA','DM_GCALD','DXPS','GARFTi','GART','GLUPRT','HETZK','HMPK1','PMPK','PRAGS','PRAIS','PRFGS','THZPSN','TMDPK','TMK','TMN','TMPK','TMPPP'},{''}
             {'EX_adocbl(e)'},{'1'},{'0'},{''},{''},{''},{'EX_adocbl(e)','ADOCBLabc','DM_adocbl(c)','EX_cbl1(e)','CBL1abc'},{},{''}
-            {'EX_btn(e)'},{'-1'},{'1'},{''},{''},{'EX_btn(e)'},{'MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''},{''}
+            {'EX_btn(e)'},{'-1'},{'1'},{''},{''},{'EX_btn(e)'},{'BTNCL','ACCOACL','MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''},{''}
             {'EX_btn(e)'},{'1'},{'0'},{''},{''},{''},{'EX_btn(e)','BTNabc','DM_btn'},{'MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''}
             {'EX_btn(e)'},{'0'},{'1'},{''},{''},{''},{'EX_btn(e)','BTNabc'},{''},{''}
             {'EX_pheme(e)'},{'-1'},{'1'},{''},{''},{'EX_pheme(e)'},{'CPPPGO2','DM_dad_5','FCLTc','G1SAT','GLUTRR','GLUTRS','HMBS','PPBNGS','PPPGO3','UPP3S','UPPDC1','EX_succ(e)','SUCCt'},{''},{''}
             {'EX_pheme(e)'},{'1'},{'0'},{''},{''},{''},{'EX_pheme(e)','HEMEti','DM_pheme(c)'},{'CPPPGO2','DM_dad_5','FCLTc','G1SAT','GLUTRR','GLUTRS','HMBS','PPBNGS','PPPGO3','UPP3S','UPPDC1','EX_succ(e)','SUCCt'},{''}
             {'EX_sheme(e)'},{'-1'},{'1'},{''},{''},{'EX_sheme(e)'},{'CPPPGO2','DM_dad_5','FCLTc','G1SAT','GLUTRR','GLUTRS','HMBS','PPBNGS','PPPGO3','UPP3S','UPP3MT','SHCHD2','SHCHF'},{''},{''}
-            {'EX_ura(e)'},{'-1'},{'1'},{''},{''},{'EX_ura(e)'},{'CBPS','ASPCT','DHORTS','DHORDfum','OROTPT','OMPDC','UMPK','URIK1','EX_succ(e)','SUCCt'},{''},{''}
+            {'EX_ura(e)'},{'-1'},{'1'},{''},{''},{'EX_ura(e)'},{'CBPS','ASPCT','DHORTS','DHORDfum','OROTPT','OMPDC','UMPK','URIK1','EX_succ(e)','SUCCt','EX_q8(e)','Q8abc','EX_mqn8(e)','MK8t'},{''},{''}
             {'EX_ura(e)'},{'1'},{'0'},{''},{''},{''},{'EX_ura(e)','URAt2'},{'CBPS','ASPCT','DHORTS','DHORDfum','OROTPT','OMPDC','UMPK','URIK1','EX_succ(e)','SUCCt'},{''}
             {'EX_uri(e)'},{'-1'},{'1'},{''},{''},{'EX_uri(e)'},{'RPI','RPE','PPM','TALA','TKT1','TKT2'},{''},{''}
             {'EX_adn(e)'},{'-1'},{'1'},{''},{''},{'EX_adn(e)'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt','EX_hxan(e)','HXANt2','GMPS2'},{''},{''}
@@ -308,7 +307,6 @@ if ~isempty(mRow)
             {'EX_xan(e)'},{'-1'},{'1'},{''},{''},{'EX_xan(e)'},{'H2CO3D'},{''},{''}
             {'EX_cit(e)'},{'-1'},{'1'},{''},{''},{'EX_cit(e)'},{'CA2abc'},{'CITCAt'},{''}
             {'EX_lanost(e)'},{'-1'},{'1'},{''},{''},{'EX_lanost(e)'},{'DMATT','GRTT','DMPPS','IPDDI','DXPS','DXPRIi','MEPCT','CDPMEK','MECDPS','MECDPDH2'},{'EX_lanost(e)','LANOSTt','SSQEPXS','SQLErev'},{''}
-            {'EX_btn(e)'},{'-1'},{'1'},{''},{''},{'EX_btn(e)'},{'AOXSr2','PMACPME','EACPR2','3HACPR2','3OAACPR2','GACPCD','EACPR1','3HACPR1','3OAACPR1','MALCOACD','MALCOAMT'},{''},{''}
             };
         
       modelPrevious=model;
@@ -422,6 +420,11 @@ if ~isempty(mRow)
                             model=changeRxnBounds(model,altExch,0,'l');
                         end
                     end
+                    
+                    % relax enforced uptake of vitamins-causes infeasibility problems
+                    relaxConstraints=model.rxns(find(model.lb>0));
+                    model=changeRxnBounds(model,relaxConstraints,0,'l');
+                    
                     % species cases
                     if length(metToTest)<4
                         if length(intersect(metToTest,{'EX_pydx(e)','EX_pydxn(e)'}))==2
@@ -635,5 +638,9 @@ if ~isempty(mRow)
         end
     end
 end
+
+% relax enforced uptake of vitamins-causes infeasibility problems
+relaxConstraints=model.rxns(find(model.lb>0));
+model=changeRxnBounds(model,relaxConstraints,0,'l');
 
 end

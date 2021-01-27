@@ -84,8 +84,8 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     load([testResultsFolder filesep 'tooHighATP.mat']);
     failedModels = union(failedModels,tooHighATP);
 end
-if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
-    FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
+if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
+    FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
     FNlist = table2cell(FNlist);
     failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
 end

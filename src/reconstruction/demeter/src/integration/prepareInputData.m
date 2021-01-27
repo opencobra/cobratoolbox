@@ -68,7 +68,6 @@ end
 
 % get list of files to check
 inputDataToCheck={
-    'BvitaminBiosynthesisTable'
     'CarbonSourcesTable'
     'FermentationTable'
     'GrowthRequirementsTable'

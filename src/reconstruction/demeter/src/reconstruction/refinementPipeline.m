@@ -212,9 +212,6 @@ for i = 1:6
     else
         break
     end
-    % relax enforced uptake of vitamins-causes infeasibility problems
-    relaxConstraints=model.rxns(find(model.lb>0));
-    model=changeRxnBounds(model,relaxConstraints,0,'l');
 end
 summary.('definedMediumGrowth')=growsOnDefinedMedium;
 
@@ -265,9 +262,7 @@ if growsOnDefinedMedium==0
     [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
     summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
     summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
-    % relax enforced uptake of vitamins-causes infeasibility problems
-    relaxConstraints=model.rxns(find(model.lb>0));
-    model=changeRxnBounds(model,relaxConstraints,0,'l');
+
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
     if growsOnDefinedMedium
         summary.('definedMediumGrowth')=growsOnDefinedMedium;
