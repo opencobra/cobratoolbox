@@ -51,7 +51,6 @@ else
             % load all reconstructions and get the exchange reactions
             allMets={};
             for i=1:length(modelList)
-                i
                 model=readCbModel([modelFolder filesep modelList{i}]);
                 mets=strrep(model.mets,'[c]','');
                 mets=strrep(mets,'[e]','');
@@ -71,7 +70,7 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-if numWorkers > 0
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)

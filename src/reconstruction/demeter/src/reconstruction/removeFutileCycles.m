@@ -635,4 +635,16 @@ end
 if size(addedRxns,2) >1
     addedRxns=addedRxns(:,2);
 end
+
+% relax constraints-cause infeasibility problems
+relaxConstraints=model.rxns(find(model.lb>0));
+model=changeRxnBounds(model,relaxConstraints,0,'l');
+
+% change back to unlimited medium
+% list exchange reactions
+exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
+% open all exchanges
+model = changeRxnBounds(model, exchanges, -1000, 'l');
+model = changeRxnBounds(model, exchanges, 1000, 'u');
+
 end

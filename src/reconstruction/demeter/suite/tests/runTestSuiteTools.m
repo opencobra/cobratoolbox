@@ -18,7 +18,7 @@ function testResultsFolder = runTestSuiteTools(refinedFolder, varargin)
 %                           load (default: semiautomaticrefinement/input)
 % reconVersion              Name of the refined reconstruction resource
 %                           (default: "Reconstructions")
-% numWorkers                Number of workers in parallel pool (default: 0)
+% numWorkers                Number of workers in parallel pool (default: 2)
 % createReports             Boolean defining if a report for each
 %                           reconstruction should be created (default: false).
 % reportsFolder             Folder where reports should be saved
@@ -37,7 +37,7 @@ parser.addRequired('refinedFolder', @ischar);
 parser.addParameter('testResultsFolder', [pwd filesep 'TestResults']', @ischar);
 parser.addParameter('infoFilePath', 'AGORA2_infoFile.xlsx', @ischar);
 parser.addParameter('inputDataFolder', '', @ischar);
-parser.addParameter('numWorkers', 0, @isnumeric);
+parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('createReports', false, @islogical);
 parser.addParameter('reportsFolder', '', @ischar);

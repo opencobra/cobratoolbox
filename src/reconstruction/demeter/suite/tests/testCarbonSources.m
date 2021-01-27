@@ -58,7 +58,7 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-    model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+%     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges

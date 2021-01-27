@@ -78,7 +78,7 @@ model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 % end
 
 checkDelete=intersect(model.rxns,checkDelete,'stable');
-if ~isempty(ver('distcomp')) && any(strcmp(solver,{'ibm_cplex','tomlab_cplex','cplex_direct'}))
+if ~isempty(ver('distcomp')) && strcmp(solver,'ibm_cplex')
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         checkDelete, 'S');
 else
@@ -112,7 +112,6 @@ for i = 1:size(checkDelete, 1)
 end
 
 % then the reactions that are not blocked but may be safely deleted
-modelTest = model;
 % load Western diet
 WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
 WesternDiet=table2cell(WesternDiet);
@@ -160,5 +159,12 @@ for i = 1:size(checkDelete, 1)
     end
 end
 model = removeRxns(model, deletedSEEDRxns);
+
+% change back to unlimited medium
+% list exchange reactions
+exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
+% open all exchanges
+model = changeRxnBounds(model, exchanges, -1000, 'l');
+model = changeRxnBounds(model, exchanges, 1000, 'u');
 
 end

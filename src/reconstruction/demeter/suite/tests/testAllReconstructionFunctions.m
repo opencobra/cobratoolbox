@@ -24,7 +24,7 @@ if isempty(solver)
 end
 
 % initialize parallel pool
-if numWorkers>0 && ~isempty(ver('distcomp'))
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)

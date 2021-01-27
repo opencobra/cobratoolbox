@@ -23,7 +23,7 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder,sbmlFo
 %                          and refinement
 % reconVersion             Name of the refined reconstruction resource
 %                          (default: "Reconstructions")
-% numWorkers               Number of workers in parallel pool (default: 0)
+% numWorkers               Number of workers in parallel pool (default: 2)
 % createSBML               Boolean defining if a SBML file for each refined
 %                          reconstruction should be created (default=false)
 % sbmlFolder               Folder where SBML files, if desired, will be saved
@@ -50,7 +50,7 @@ parser.addParameter('translatedDraftsFolder', [pwd filesep 'translatedDraftRecon
 parser.addParameter('summaryFolder', [pwd filesep 'refinementSummary'], @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('inputDataFolder', '', @ischar);
-parser.addParameter('numWorkers', 0, @isnumeric);
+parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('createSBML', false, @islogical);
 parser.addParameter('sbmlFolder', [pwd filesep 'refinedReconstructions_SBML'], @ischar);
@@ -144,7 +144,7 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-if numWorkers > 0
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)

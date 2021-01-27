@@ -155,13 +155,6 @@ summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
 [model,deletedSEEDRxns]=deleteSeedGapfilledReactions(model,biomassReaction);
 summary.('deletedSEEDRxns')=deletedSEEDRxns;
 
-%% change back to unlimited medium
-% list exchange reactions
-exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
-% open all exchanges
-model = changeRxnBounds(model, exchanges, -1000, 'l');
-model = changeRxnBounds(model, exchanges, 1000, 'u');
-
 %% Delete unused reactions that are leftovers from KBase pipeline
 % Delete transporters without exchanges
 [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model);
@@ -171,19 +164,11 @@ summary.('transportersWithoutExchanges') = transportersWithoutExchanges;
 [model, unusedExchanges] = findUnusedExchangeReactions(model);
 summary.('unusedExchanges') = unusedExchanges;
 
-%% Some models cannot grow afterwards
-% If model is still unable to grow
-FBA=optimizeCbModel(model,'max');
-if FBA.f<tol
-    % run gapfilling tools to enable biomass production
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,'max',database);
-    summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
-end
-
+%% Perform any gapfilling still needed
 % in rare cases: gapfilling for anaerobic growth or growth on Western diet still needed
 for i=1:2
     [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
-    if AnaerobicGrowth(1,2) < tol
+    if AerobicGrowth(1,2) < tol
         % apply Western diet
         model = useDiet(model,WesternDiet);
         % run gapfilling tools to enable biomass production

@@ -54,6 +54,10 @@ end
 % change back to biomass reaction
 model=changeObjective(model,biomassReaction);
 
+% relax constraints-cause infeasibility problems
+relaxConstraints=model.rxns(find(model.lb>0));
+model=changeRxnBounds(model,relaxConstraints,0,'l');
+
 % change back to unlimited medium
 % list exchange reactions
 exchanges = model.rxns(strncmp('EX_', model.rxns, 3));

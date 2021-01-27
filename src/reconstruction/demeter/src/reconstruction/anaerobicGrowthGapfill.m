@@ -325,7 +325,7 @@ else
     oxGapfillRxns={};
 end
 
-% relax enforced uptake of some vitamins-causes infeasibility problems
+% relax constraints-cause infeasibility problems
 relaxConstraints=model.rxns(find(model.lb>0));
 model=changeRxnBounds(model,relaxConstraints,0,'l');
 

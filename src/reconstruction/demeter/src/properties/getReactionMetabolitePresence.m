@@ -15,6 +15,14 @@ function getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion
 %   - AUTHOR
 %   Almut Heinken, 06/2020
 
+if numWorkers>0 && ~isempty(ver('parallel'))
+    % with parallelization
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
 mkdir([propertiesFolder filesep 'ReactionMetabolitePresence'])
 
 dInfo = dir(modelFolder);
@@ -43,7 +51,6 @@ else
         allRxns={};
         allMets={};
         for i=1:length(modelList)
-            i
             model=readCbModel([modelFolder filesep modelList{i}]);
             allRxns=unique(vertcat(allRxns,model.rxns));
             allMets=unique(vertcat(allMets,model.mets));

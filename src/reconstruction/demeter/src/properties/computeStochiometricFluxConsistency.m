@@ -9,10 +9,10 @@ function computeStochiometricFluxConsistency(translDraftsFolder,refinedFolder,pr
 % INPUTS
 % translDraftsFolder    Folder with translated draft reconstructions that were refined
 % refinedFolder         Folder with refined reconstructions to be analyzed
-% OPTIONAL INPUTS
 % propertiesFolder      Folder where the computed stochiometric and flux
 %                       consistencies will be stored (default: current folder)
 % reconVersion          Name assigned to the reconstruction resource
+% numWorkers            Number of workers in parallel pool
 %
 %   - AUTHOR
 %   Almut Heinken, 07/2020
@@ -28,7 +28,7 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-if numWorkers > 0
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)

@@ -1,4 +1,4 @@
-function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,numWorkers,reconVersion,varargin)
+function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin)
 % This function runs a suite of debugging functions on a set of refined
 % reconstructions produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -14,8 +14,8 @@ function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggi
 % testResultsFolder       Folder where the test results are saved
 % inputDataFolder         Folder with experimental data and database files
 % reconVersion            Name of the refined reconstruction resource
-% numWorkers              Number of workers in parallel pool (default: 0)
 % OPTIONAL INPUTS
+% numWorkers              Number of workers in parallel pool (default: 2)
 % debuggingFolder         Folder where debugged models and results of
 %                         re-test are saved
 %
@@ -37,17 +37,17 @@ parser = inputParser();
 parser.addRequired('refinedFolder', @ischar);
 parser.addRequired('testResultsFolder', @ischar);
 parser.addRequired('inputDataFolder', @ischar);
-parser.addRequired('numWorkers', @isnumeric);
 parser.addRequired('reconVersion', @ischar);
+parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('debuggingFolder', [pwd filesep 'DebuggingResults']', @ischar);
 
-parser.parse(refinedFolder,testResultsFolder,inputDataFolder,numWorkers,reconVersion,varargin{:});
+parser.parse(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin{:});
 
 refinedFolder = parser.Results.refinedFolder;
 testResultsFolder = parser.Results.testResultsFolder;
 inputDataFolder = parser.Results.inputDataFolder;
-numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
+numWorkers = parser.Results.numWorkers;
 debuggingFolder = parser.Results.debuggingFolder;
 
 %% initialize COBRA Toolbox and parallel pool
@@ -57,7 +57,7 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-if numWorkers > 0
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)
