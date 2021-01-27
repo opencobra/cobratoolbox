@@ -85,7 +85,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
 % Needed if more than one compound is missing
 [missingMets, presentMets] = biomassPrecursorCheck(model);
 
-for i=1:length(gapfillSolutions)
+for i=2:size(gapfillSolutions,1)
     if ~isempty(find(ismember(missingMets,gapfillSolutions{i,1}))) || ~isempty(intersect(model.rxns,gapfillSolutions{i,2}))
         rxns=gapfillSolutions{i,3};
         for j=1:length(rxns)
@@ -137,7 +137,7 @@ if abs(FBA.f) < tol
                 end
             end
             
-            for i=1:length(gapfillSolutions)
+            for i=2:size(gapfillSolutions,1)
                 if ~isempty(find(ismember(growthEnablingMets,gapfillSolutions{i,1}))) || ~isempty(intersect(model.rxns,gapfillSolutions{i,2}))
                     rxns=gapfillSolutions{i,3};
                     for j=1:length(rxns)

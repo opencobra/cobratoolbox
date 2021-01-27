@@ -2,9 +2,9 @@ function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biom
 
 tol=0.0000001;
 
-modelOld=model;
 
 model = changeObjective(model, objectiveFunction);
+modelOld=model;
 
 % Perform gapfilling to enable growth
 model = conditionSpecificGapFilling(model, database);
