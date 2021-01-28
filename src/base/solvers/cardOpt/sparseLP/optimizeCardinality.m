@@ -46,7 +46,7 @@ function solution = optimizeCardinality(problem, param)
 %                              For a sufficiently large parameter , the Capped-L1 approximate problem
 %                              and the original cardinality optimisation problem are have the same set of optimal solutions
 %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
-%                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
+%                   * .eta - Smallest value considered non-zero (Default value feasTol)
 
 %
 % OUTPUT:

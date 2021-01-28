@@ -18,11 +18,17 @@ function printConstraints(model, minInf, maxInf, rxnBool, modelAfter, printLevel
 % .. Authors:
 %       - Ines Thiele 02/09, Ronan Fleming 2020
 
+if ~exist('minInf','var')|| isempty(minInf)
+    minInf=-Inf;
+end
+if ~exist('maxInf','var') || isempty(maxInf)
+    maxInf=Inf;
+end
 if ~exist('rxnBool','var')
     rxnBool=true(size(model.S,2),1);
 end
 if ~exist('printLevel','var')
-    printLevel=1;
+    printLevel=0;
 end
 if exist('modelAfter','var')
     if isempty(modelAfter)
@@ -34,10 +40,18 @@ if ischar(rxnBool) || iscell(rxnBool)
     rxnBool = ismember(model.rxns,rxnBool);
 end
 
+if ~any(rxnBool)
+    return
+end
+
 closedRxnBool = model.lb == model.ub & model.lb==0 & rxnBool;
 reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnBool;
-fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & rxnBool & model.ub~=maxInf;
-revRxnBool = model.lb~=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & rxnBool;
+fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool & model.ub~=maxInf;
+revRxnBool = model.lb~=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool;
+
+if any(closedRxnBool & reversibleRxnBool) || any(closedRxnBool & fwdRxnBool) || any(closedRxnBool & revRxnBool) || any(fwdRxnBool & revRxnBool)
+    warning('inconsistent boolean variables')
+end
 
 rxnNames=model.rxnNames;
 for j=1:size(model.S,2)
