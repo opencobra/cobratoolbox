@@ -8,6 +8,7 @@ tol = 0.00001;
 % produced
 
 gapfillSolutions={'Metabolite','Present','ToAdd'
+    'ca2[c]', '', {'EX_ca2(e)','CA2abc'}
     'cobalt2[c]', '', {'EX_cobalt2(e)','Coabc'}
     'utp[c]', '', {'NDPK3','NDPK1','NDPK2','NDPK4','NDPK5','NDPK6','NDPK7','NDPK8','NDPK9','URIDK1','URIDK2'}
     'nad[c]', '', {'NADS1','NADS2','NNATr','EX_nac(e)','NACt2r'}
@@ -161,8 +162,7 @@ if abs(FBA.f) < tol
                         end
                     end
                 end
-            end
-            
+            end 
         end
     else
         if ~isempty(find(ismember(growthEnablingMets,'gam6p[c]'))) && ~isempty(find(ismember(model.rxns,'HEX1')))

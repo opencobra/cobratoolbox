@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder)
 % Performs an FVA and reports those secretions (exchange reactions)
 % that can be secreted by the model and should be secreted according to
 % data (true positives) and those secretions that cannot be secreted by
@@ -12,6 +12,8 @@ function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeI
 % microbeID         Microbe ID in secretion secretion data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% inputDataFolder   Folder with experimental data and database files
+%                   to load
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all secretions
@@ -29,12 +31,10 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read secretion product tables
-secretionTable = readtable('secretionProductTable.txt', 'Delimiter', '\t');
+secretionTable = readtable([inputDataFolder filesep 'secretionProductTable.txt'], 'Delimiter', '\t');
 % remove the reference columns
 for i=1:11
     if ismember(['Ref' num2str(i)],secretionTable.Properties.VariableNames)

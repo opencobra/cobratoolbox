@@ -1,4 +1,4 @@
-function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction)
+function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder)
 % Tests growth on a minimal medium retrieved from the experimental data on
 % growth requirements. The output is the calculated growth rates.
 % If the model can grow on the defined medium, a minimal medium is also
@@ -6,13 +6,15 @@ function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = te
 % constrained with these exchanges are returned.
 %
 % INPUT
-% model                COBRA model structure
-% biomassReaction      String listing the biomass reaction
+% model                         COBRA model structure
+% biomassReaction               String listing the biomass reaction
+% inputDataFolder               Folder with experimental data and database files
+%                               to load
 %
 % OUTPUT
-% growsOnDefinedMedium   Bool if growth on defined medium yes or no
-% essentialExchanges   Exchanges that need to be open to enable growth
-% constrainedModel     Model constrained with essential exchanges (anaerobic)
+% growsOnDefinedMedium          Bool if growth on defined medium yes or no
+% essentialExchanges            Exchanges that need to be open to enable growth
+% constrainedModel              Model constrained with essential exchanges (anaerobic)
 % growthOnKnownCarbonSources
 %
 % Almut Heinken, November 2018
@@ -27,7 +29,7 @@ model.lb(find(model.lb>0))=0;
 
 % read nutrient requirement tables
 growthExchanges = {'Nutrient','ExchangeReaction';'4-aminobenzoic acid','EX_4abz(e)';'Acetate','EX_ac(e)';'Adenine','EX_ade(e)';'Adenosine','EX_adn(e)';'Biotin','EX_btn(e)';'Cholesterol','EX_chsterol(e)';'Citrate','EX_cit(e)';'CO2','EX_co2(e)';'Cobalamin','EX_adocbl(e)';'D-Glucose','EX_glc_D(e)';'Folate','EX_fol(e)';'Formate','EX_for(e)';'Fumarate','EX_fum(e)';'Glycerol','EX_glyc(e)';'Glycine','EX_gly(e)';'Guanine','EX_gua(e)';'H2S','EX_h2s(e)';'Hemin','EX_pheme(e)';'Hypoxanthine','EX_hxan(e)';'Inosine','EX_ins(e)';'L-alanine','EX_ala_L(e)';'L-arginine','EX_arg_L(e)';'L-asparagine','EX_asn_L(e)';'L-aspartate','EX_asp_L(e)';'L-cysteine','EX_cys_L(e)';'L-glutamate','EX_glu_L(e)';'L-glutamine','EX_gln_L(e)';'L-histidine','EX_his_L(e)';'L-isoleucine','EX_ile_L(e)';'L-Lactate','EX_lac_L(e)';'L-leucine','EX_leu_L(e)';'L-lysine','EX_lys_L(e)';'L-methionine','EX_met_L(e)';'L-phenylalanine','EX_phe_L(e)';'L-proline','EX_pro_L(e)';'L-serine','EX_ser_L(e)';'L-threonine','EX_thr_L(e)';'L-tryptophan','EX_trp_L(e)';'L-tyrosine','EX_tyr_L(e)';'L-valine','EX_val_L(e)';'Maltose','EX_malt(e)';'Menaquinone 8','EX_mqn8(e)';'N-Acetyl-D-glucosamine','EX_acgam(e)';'NH4','EX_nh4(e)';'Nicotinamide','EX_ncam(e)';'Nicotinic acid','EX_nac(e)';'Nitrate','EX_no3(e)';'Ornithine','EX_orn(e)';'Orotate','EX_orot(e)';'Pantothenate','EX_pnto_R(e)';'Putrescine','EX_ptrc(e)';'Pyridoxal','EX_pydx(e)';'Pyridoxal 5-phosphate','EX_pydx5p(e)';'Pyridoxamine','EX_pydam(e)';'Pyridoxine','EX_pydxn(e)';'Pyruvate','EX_pyr(e)';'Riboflavin','EX_ribflv(e)';'SO4','EX_so4(e)';'Spermidine','EX_spmd(e)';'Succinate','EX_succ(e)';'Thiamin','EX_thm(e)';'Thymidine','EX_thymd(e)';'Uracil','EX_ura(e)';'Xanthine','EX_xan(e)';'1,2-Diacyl-sn-glycerol (dioctadecanoyl, n-C18:0)','EX_12dgr180(e)';'2-deoxyadenosine','EX_dad_2(e)';'2-Oxobutanoate','EX_2obut(e)';'2-Oxoglutarate','EX_akg(e)';'3-methyl-2-oxopentanoate','EX_3mop(e)';'4-Hydroxybenzoate','EX_4hbz(e)';'5-Aminolevulinic acid','EX_5aop(e)';'Acetaldehyde','EX_acald(e)';'Anthranilic acid','EX_anth(e)';'Chorismate','EX_chor(e)';'Cys-Gly','EX_cgly(e)';'Cytidine','EX_cytd(e)';'Cytosine','EX_csn(e)';'D-Alanine','EX_ala_D(e)';'D-Arabinose','EX_arab_D(e)';'Deoxycytidine','EX_dcyt(e)';'Deoxyguanosine','EX_dgsn(e)';'Deoxyribose','EX_drib(e)';'Deoxyuridine','EX_duri(e)';'D-Galactose','EX_gal(e)';'D-glucuronate','EX_glcur(e)';'D-Mannose','EX_man(e)';'D-Xylose','EX_xyl_D(e)';'Ethanol','EX_etoh(e)';'Glycerol 3-phosphate','EX_glyc3p(e)';'Guanosine','EX_gsn(e)';'Indole','EX_indole(e)';'Lanosterol','EX_lanost(e)';'L-Arabinose','EX_arab_L(e)';'Laurate','EX_ddca(e)';'L-Homoserine','EX_hom_L(e)';'Linoleic acid','EX_lnlc(e)';'L-malate','EX_mal_L(e)';'L-Methionine S-oxide','EX_metsox_S_L(e)';'Menaquinone 7','EX_mqn7(e)';'meso-2,6-Diaminoheptanedioate','EX_26dap_M(e)';'N-acetyl-D-mannosamine','EX_acmana(e)';'N-Acetylneuraminate','EX_acnam(e)';'NMN','EX_nmn(e)';'Octadecanoate (n-C18:0)','EX_ocdca(e)';'Octadecenoate (n-C18:1)','EX_ocdcea(e)';'Oxidized glutathione','EX_gthox(e)';'Phenylacetic acid','EX_pac(e)';'Ribose','EX_rib_D(e)';'S-Adenosyl-L-methionine','EX_amet(e)';'Siroheme','EX_sheme(e)';'Tetradecanoate (n-C14:0)','EX_ttdca(e)';'Ubiquinone-8','EX_q8(e)';'Uridine','EX_uri(e)';'Thiosulfate','EX_tsul(e)';'Reduced glutathione','EX_gthrd(e)'};
-growthRequirements = readtable('GrowthRequirementsTable.txt', 'ReadVariableNames', false, 'Delimiter', '\t');
+growthRequirements = readtable([inputDataFolder filesep 'GrowthRequirementsTable.txt'], 'ReadVariableNames', false, 'Delimiter', '\t');
 growthRequirements = table2cell(growthRequirements);
 % remove the reference columns
 for i=1:11

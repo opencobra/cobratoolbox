@@ -1,4 +1,25 @@
-function [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
+function [refinedModel,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
+% This function is part of the DEMETER pipeline and performs data-driven
+% refinement of a genome-scale reconstruction based on available
+% species-specific experimental data.
+%
+% USAGE
+%      [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
+%
+% INPUTS
+% model             COBRA model structure to refine
+% microbeID         ID of the reconstructed microbe that serves as the 
+%                   reconstruction name and to identify it in input tables
+% inputDataFolder   Folder with input tables with experimental data and
+%                   databases that inform the refinement process
+% summary           Structure with information on performed refinement
+%
+% OUTPUT
+% refinedModel      Refined COBRA model structure
+% summary           Structure with information on performed refinement
+%
+% .. Authors:
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
 %% Fermentation pathways
 % Based on the fermentation pathway data for the microbe (table prepared above),
@@ -28,11 +49,11 @@ summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 model=rebuildModel(model,database);
 FNs = {};
 % Carbon sources
-[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % Metabolite uptake
-[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 %% gapfill if there are any false negatives
@@ -52,15 +73,15 @@ if ~isempty(FNs)
 end
 
 % Fermentation products
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % Putrefaction pathways
-[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % Secretion products
-[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % gapfill if there are any false negatives
@@ -80,6 +101,6 @@ if ~isempty(FNs)
 end
 
 %% change back to biomass reaction
-model=changeObjective(model,biomassReaction);
+refinedModel=changeObjective(model,biomassReaction);
 
 end

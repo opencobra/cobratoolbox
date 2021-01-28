@@ -172,7 +172,6 @@ if ~isempty(mRow)
             {'EX_cys_L(e)'},{'0'},{'1'},{'EX_cgly(e)'},{'EX_cys_L(e)'},{'EX_h2s(e)','EX_cgly(e)','EX_glycys(e)'},{'EX_cys_L(e)','CYSt2r','CYSDS'},{'SERATi','CYSS','CYSTGL','CYSTS'},{''}
             {'EX_cys_L(e)'},{'1'},{'0'},{'SHSL1r'},{''},{'EX_h2s(e)','EX_cgly(e)','EX_glycys(e)'},{'EX_cys_L(e)','CYSt2r'},{''},{''}
             {'EX_cgly(e)'},{'-1'},{'1'},{''},{''},{'EX_cgly(e)','EX_glycys(e)','EX_gthrd(e)'},{'GLUCYS','GTHS','EX_cys_L(e)','CYSt2r','EX_gly(e)','GLYt2r'},{'GGTA'},{''}
-            % needed in rare cases
             {'EX_cgly(e)'},{'0'},{'0'},{''},{''},{'EX_gly(e)','EX_cys_L(e)','EX_cgly(e)','EX_glycys(e)','EX_gthrd(e)'},{'SERATi','CYSS','GHMT2r','MTHFC'},{''},{''}
             {'EX_cgly(e)'},{'-1'},{'1'},{''},{''},{'EX_cys_L(e)','EX_cgly(e)','EX_glycys(e)'},{'SERATi','CYSS','EX_h2s(e)','H2St'},{''},{''}
             {'EX_gthox(e)'},{'-1'},{'1'},{''},{''},{'EX_gthox(e)'},{'sink_gthrd(c)'},{'GTHRD'},{''}
@@ -191,7 +190,6 @@ if ~isempty(mRow)
             {'EX_leu_L(e)'},{'1'},{'0'},{''},{''},{''},{'EX_leu_L(e)','LEUt2r'},{'IPPS','IPPMIb','IPPMIa','IPMDr','OMCDC','LEUTA'},{''}
             %             {'EX_met_L(e)'},{'-1'},{'1'},{''},{''},{'EX_met_L(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_cgly(e)','EX_glycys(e)','EX_tsul(e)'},{'ASPK','ASAD','ASADi','AHSERL3','HSDx','HSST','SHSL2','METS','HSERTA','CYSTL','SUCD1','SULRi','SADT','AMPSO3OX','r0792','EX_h2s(e)','H2St','EX_cys_L(e)','CYSt2r'},{''},{''}
             {'EX_met_L(e)'},{'-1'},{'1'},{''},{''},{'EX_met_L(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_glycys(e)','EX_tsul(e)'},{'ASPK','ASAD','ASADi','AHSERL3','HSDx','HSST','SHSL2','METS','HSERTA','CYSTL','SUCD1','SULRi','SADT','AMPSO3OX','r0792','EX_h2s(e)','H2St','EX_cys_L(e)','CYSt2r'},{''},{''}
-            % some require amet for quinone synthesis
             {'EX_met_L(e)'},{'-1'},{'0'},{''},{''},{'EX_met_L(e)','EX_q8(e)','EX_mqn7(e)','EX_mqn8(e)'},{'ASPK','ASAD','ASADi','AHSERL3','HSDx','HSST','SHSL2','METS','HSERTA'},{''},{''}
             {'EX_met_L(e)'},{'1'},{'0'},{''},{''},{'EX_metsox_S_L(e)'},{'EX_met_L(e)','METt2r'},{'ASPK','ASAD','ASADi','AHSERL3','HSDx','HSDy','HSST','SHSL1r','SHSL2','SHSL4r','METS','HSERTA','METB1','CYSTL','SUCD1','SULRi','SADT','AMPSO3OX','r0792'},{''}
             {'EX_orn(e)'},{'-1'},{'1'},{''},{''},{'EX_orn(e)'},{'ACGS','ACGK','AGPR','ACOTA','ACODAr'},{''},{''}
@@ -296,6 +294,7 @@ if ~isempty(mRow)
             {'EX_ura(e)'},{'-1'},{'1'},{''},{''},{'EX_ura(e)'},{'CBPS','ASPCT','DHORTS','DHORDfum','OROTPT','OMPDC','UMPK','URIK1','EX_succ(e)','SUCCt','EX_q8(e)','Q8abc','EX_mqn8(e)','MK8t'},{''},{''}
             {'EX_ura(e)'},{'1'},{'0'},{''},{''},{''},{'EX_ura(e)','URAt2'},{'CBPS','ASPCT','DHORTS','DHORDfum','OROTPT','OMPDC','UMPK','URIK1','EX_succ(e)','SUCCt'},{''}
             {'EX_uri(e)'},{'-1'},{'1'},{''},{''},{'EX_uri(e)'},{'RPI','RPE','PPM','TALA','TKT1','TKT2'},{''},{''}
+            {'EX_csn(e)'},{'-1'},{'1'},{''},{''},{'EX_csn(e)'},{'EX_ura(e)','URAt2','URIK4','UMPK','NDPK2','CTPS1','CTPS2'},{''},{''}
             {'EX_adn(e)'},{'-1'},{'1'},{''},{''},{'EX_adn(e)'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt','EX_hxan(e)','HXANt2','GMPS2'},{''},{''}
             {'EX_adn(e)'},{'1'},{'0'},{''},{''},{''},{'EX_adn(e)','ADEt2','ADPT'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt'},{''}
             {'EX_ins(e)'},{'-1'},{'1'},{''},{''},{'EX_ins(e)'},{'GLUPRT','PRAGS','GARFTi','PRFGS','PRAIS','AIRC4','PRASCSi','ADSL2r','AICART','IMPC','NTD11','H2CO3D'},{''},{''}

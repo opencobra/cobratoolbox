@@ -13,6 +13,8 @@ function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID,
 % database          rBioNet reaction database containing min. 3 columns:
 %                   Column 1: reaction abbreviation, Column 2: reaction
 %                   name, Column 3: reaction formula.
+% inputDataFolder   Folder with experimental data and database files
+%                   to load
 %
 % OUTPUT
 % model             COBRA model structure refined through experimental data

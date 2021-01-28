@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder)
 % Performs an FVA and reports those carbon sources (exchange reactions)
 % that can be taken up by the model and should be taken up according to
 % data (true positives) and those carbon sources that cannot be taken up by
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, b
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% inputDataFolder   Folder with experimental data and database files
+%                   to load
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all carbon sources
@@ -29,12 +31,10 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read carbon source tables
-carbonSourcesTable = readtable('CarbonSourcesTable.txt', 'Delimiter', '\t');
+carbonSourcesTable = readtable([inputDataFolder filesep 'CarbonSourcesTable.txt'], 'Delimiter', '\t');
 % remove the reference columns
 for i=1:11
     if ismember(['Ref' num2str(i)],carbonSourcesTable.Properties.VariableNames)

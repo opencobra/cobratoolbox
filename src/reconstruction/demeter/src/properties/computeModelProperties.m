@@ -1,10 +1,10 @@
-function propertiesFolder = computeModelProperties(modelFolder, infoFilePath, varargin)
+function propertiesFolder = computeModelProperties(modelFolder, infoFilePath, reconVersion, varargin)
 % This function analyzes and plots properties of the refined and the draft
 % reconstructions if there is more than one. Note that this may be time-consuming.
 %
 % USAGE:
 %
-%    propertiesFolder = computeModelProperties(modelFolder, infoFilePath, varargin)
+%    propertiesFolder = computeModelProperties(modelFolder, infoFilePath, reconVersion, varargin)
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
@@ -13,13 +13,13 @@ function propertiesFolder = computeModelProperties(modelFolder, infoFilePath, va
 parser = inputParser();
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('infoFilePath', @ischar);
+parser.addRequired('reconVersion', @ischar);
 parser.addParameter('propertiesFolder', [pwd filesep 'modelProperties'], @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
-parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('customFeatures', '', @iscellstr);
 parser.addParameter('translatedDraftsFolder', '', @ischar);
 
-parser.parse(modelFolder, infoFilePath, varargin{:});
+parser.parse(modelFolder, infoFilePath, reconVersion, varargin{:});
 
 modelFolder = parser.Results.modelFolder;
 infoFilePath = parser.Results.infoFilePath;

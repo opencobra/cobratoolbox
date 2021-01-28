@@ -18,7 +18,7 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 % refinedModel      COBRA model structure refined through AGORA pipeline
 %
 % .. Authors:
-%       - Almut Heinken and Stefania Magnusdottir, 2016-2020
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
 if ~isempty(infoFilePath)
     infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
@@ -189,7 +189,7 @@ end
 summary.('addedMismatchRxns')={};
 summary.('deletedMismatchRxns')={};
 for i = 1:6
-    [growsOnDefinedMedium,essentialExchanges] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [growsOnDefinedMedium,essentialExchanges] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==0
         [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
         summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
@@ -242,13 +242,13 @@ summary.('removedUnannotatedReactions') = rmUnannRxns;
 [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary);
 
 %% enable growth on defined medium if still needed
-[growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+[growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
 if growsOnDefinedMedium==0
     [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
     summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
     summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
 
-    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium
         summary.('definedMediumGrowth')=growsOnDefinedMedium;
     else
@@ -264,7 +264,7 @@ end
 if atpFluxAnaerobic>100
     % if models can grow on defined medium, this will be abolishd in some
     % cases -> need to use the constrained model as input
-    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==1
         [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
     else
@@ -279,7 +279,7 @@ end
 % there but keep the irreversible version.
 % use defined medium if possible, otherwise Western diet
 if growsOnDefinedMedium==1
-    [~,modelTest] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [~,modelTest] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
 else
 modelTest = useDiet(model,WesternDiet);
 end

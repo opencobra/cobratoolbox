@@ -26,8 +26,7 @@ end
 solver = CBT_LP_SOLVER;
 
 % read metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read putrefaction product tables
 putrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');

@@ -111,6 +111,10 @@ end
 
 if ~isempty(translatedDraftsFolder)
     % draft and refined reconstructions
+    % workaround if growth for drafts on anaerobic is all zeros
+    if sum(data(:,2))< tol
+        data(1,2)=tol;
+    end
     figure;
     hold on
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
@@ -124,6 +128,10 @@ if ~isempty(translatedDraftsFolder)
     data=[];
     for f=1:length(folders)
         data(:,size(data,2)+1:size(data,2)+2)=growth{f}(:,3:4);
+    end
+    % workaround if growth for drafts on anaerobic is all zeros
+    if sum(data(:,2))< tol
+        data(1,2)=tol;
     end
     
     figure;
@@ -250,60 +258,60 @@ else
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'Growth_rates_Western_diet_' reconVersion],'-dpng','-r300')
     end
-end
-
-% report refined models that are unable to grow
-fprintf('Report for refined models:\n')
-noGrowth=growth{1}(:,1) < tol;
-if sum(noGrowth) > 0
-    fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on rich medium.\n'])
-    for i=1:length(noGrowth)
-        if noGrowth(i)
-            notGrowing{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+    
+    % report refined models that are unable to grow
+    fprintf('Report for refined models:\n')
+    noGrowth=growth{1}(:,1) < tol;
+    if sum(noGrowth) > 0
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on rich medium.\n'])
+        for i=1:length(noGrowth)
+            if noGrowth(i)
+                notGrowing{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
+    else
+        fprintf('All models are able to produce biomass on rich medium.\n')
     end
-else
-    fprintf('All models are able to produce biomass on rich medium.\n')
-end
-
-noGrowth=growth{1}(:,2) < tol;
-if sum(noGrowth) > 0
-    fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on rich medium under anaerobic conditions.\n'])
-    for i=1:length(noGrowth)
-        if noGrowth(i)
-            notGrowing{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+    
+    noGrowth=growth{1}(:,2) < tol;
+    if sum(noGrowth) > 0
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on rich medium under anaerobic conditions.\n'])
+        for i=1:length(noGrowth)
+            if noGrowth(i)
+                notGrowing{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
+    else
+        fprintf('All models are able to produce biomass on rich medium under anaerobic conditions.\n')
     end
-else
-    fprintf('All models are able to produce biomass on rich medium under anaerobic conditions.\n')
-end
-
-noGrowth=growth{1}(:,3) < tol;
-if sum(noGrowth) > 0
-    fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet.\n'])
-    for i=1:length(noGrowth)
-        if noGrowth(i)
-            notGrowing{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+    
+    noGrowth=growth{1}(:,3) < tol;
+    if sum(noGrowth) > 0
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet.\n'])
+        for i=1:length(noGrowth)
+            if noGrowth(i)
+                notGrowing{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
+    else
+        fprintf('All models are able to produce biomass on Western diet.\n')
     end
-else
-    fprintf('All models are able to produce biomass on Western diet.\n')
-end
-
-noGrowth=growth{1}(:,4) < tol;
-if sum(noGrowth) > 0
-    fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet under anaerobic conditions.\n'])
-    for i=1:length(noGrowth)
-        if noGrowth(i)
-            notGrowing{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+    
+    noGrowth=growth{1}(:,4) < tol;
+    if sum(noGrowth) > 0
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet under anaerobic conditions.\n'])
+        for i=1:length(noGrowth)
+            if noGrowth(i)
+                notGrowing{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
+    else
+        fprintf('All models are able to produce biomass on Western diet under anaerobic conditions.\n')
     end
-else
-    fprintf('All models are able to produce biomass on Western diet under anaerobic conditions.\n')
 end
 
 notGrowing=unique(notGrowing);

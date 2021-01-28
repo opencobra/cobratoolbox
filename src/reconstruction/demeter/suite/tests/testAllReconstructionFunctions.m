@@ -1,15 +1,17 @@
-function testAllReconstructionFunctions(modelFolder,testResultsFolder,reconVersion, numWorkers)
+function testAllReconstructionFunctions(modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers)
 % This function performs all quality control/quality assurance tests and
 % saves the results for each reconstruction in the input folder.
 %
 % USAGE:
 %
-%   testAllReconstructionFunctions(modelFolder,testResultsFolder,reconVersion, numWorkers)
+%   testAllReconstructionFunctions(modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers)
 %
 % INPUTS
 % modelFolder           Folder with COBRA models (draft or refined
 %                       reconstructions) to analyze
 % testResultsFolder     Folder where the test results should be saved
+% inputDataFolder       Folder with experimental data and database files
+%                       to load
 % reconVersion          Name of the refined reconstruction resource
 % numWorkers            Number of workers in parallel pool
 %
@@ -272,7 +274,7 @@ for i = 1:steps:length(modelList)
             % up by the microbe. Therefore, it is not possible to evaluate true negatives
             % and false positives.
             
-            [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction);
+            [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
             tmpStruct.Carbon_sources_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
             tmpStruct.Carbon_sources_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
             %%
@@ -304,7 +306,7 @@ for i = 1:steps:length(modelList)
             % up by the microbe. Therefore, it is not possible to evaluate true negatives
             % and false positives.
             
-            [TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+            [TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
             tmpStruct.Fermentation_products_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
             tmpStruct.Fermentation_products_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
             %%
@@ -314,7 +316,7 @@ for i = 1:steps:length(modelList)
             % fermentation pathways are active within the reconstruction.
                
             %% test the defined media according to literature
-            [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+            [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
             tmpStruct.growsOnDefinedMedium{j, 2} = growsOnDefinedMedium;
             tmpStruct.growthOnKnownCarbonSources{j, 2} = growthOnKnownCarbonSources;
             
@@ -346,7 +348,7 @@ for i = 1:steps:length(modelList)
             % FalseNegatives    Cell array of strings listing all metabolites
             %                   (exchange reactions) that cannot be taken up by the model
             %                   but should be taken up according to in vitro data.
-            [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);
+            [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
             tmpStruct.Metabolite_uptake_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
             tmpStruct.Metabolite_uptake_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
             
@@ -373,7 +375,7 @@ for i = 1:steps:length(modelList)
             % FalseNegatives    Cell array of strings listing all secretion products
             %                   (exchange reactions) that cannot be secreted by the model
             %                   but should be secreted according to in vitro data.
-            [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
+            [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
             tmpStruct.Secretion_products_TruePositives(j, 2:length(TruePositives)+1) = TruePositives;
             tmpStruct.Secretion_products_FalseNegatives(j, 2:length(FalseNegatives)+1) = FalseNegatives;
              
