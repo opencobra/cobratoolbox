@@ -59,7 +59,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 % The number of organisms, their names, the number of samples and their identifiers
 % are automatically detected from the input file.
 
-[patNumb,sampName,strains]=getIndividualSizeName(abunFilePath);
+[patNumb,sampName,organisms]=getIndividualSizeName(abunFilePath);
 %%
 % If PART1 was already
 % computed: if the associated file is already present in the results folder its
@@ -83,34 +83,29 @@ if isempty(mapP)
             error(['modPath (' modPath ') does not exist.']);
         end
     end
-    % adding a filesep at the end of the path
-    if ~strcmpi(modPath(end), filesep)
-        modPath = [modPath filesep];
-    end
-    % Loading models
-    models=loadUncModels(modPath,strains,objre);
+
     % Computing genetic information
-    [reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(models,abunFilePath,patNumb);
+    [reac,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,organisms,abunFilePath,patNumb);
     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampName]'),strcat(resPath,'reactions.csv'));
     
     % Plotting genetic information
-    [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampName,strains);
+    [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampName,organisms);
     
     if compMod==1
         mkdir(strcat(resPath,'compfile'))
         writetable([array2table(reac),array2table(reacTab,'VariableNames',sampName')],[resPath 'compfile' filesep 'ReacTab.csv'])
         writetable(cell2table(reacSet,'VariableNames',sampName'),[resPath 'compfile' filesep 'reacSet.csv'])
-        writetable([array2table(strains),array2table(reacPat,'VariableNames',sampName')],[resPath 'compfile' filesep 'ReacPat.csv'])
+        writetable([array2table(organisms),array2table(reacPat,'VariableNames',sampName')],[resPath 'compfile' filesep 'ReacPat.csv'])
         csvwrite(strcat(resPath,'compfile/PCoA_tab.csv'),PCoA)
     end
     
     %Create tables and save all the created variables
     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampName')],[resPath 'compfile' filesep 'ReacTab.csv'];
     reacSet=cell2table(reacSet,'VariableNames',sampName');
-    reacPat=[array2table(strains),array2table(reacPat,'VariableNames',sampName')];
+    reacPat=[array2table(organisms),array2table(reacPat,'VariableNames',sampName')];
     
     
-    save([resPath filesep 'mapInfo.mat'],'binOrg', 'compMod',  'mapP', 'micRea', 'models', 'patNumb', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampName', 'strains')
+    save([resPath filesep 'mapInfo.mat'],'binOrg', 'compMod',  'mapP', 'micRea', 'patNumb', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampName', 'organisms')
 end
 %end of trigger for Autoload
 %% PIPELINE: [PART 2.1]
@@ -118,7 +113,7 @@ end
 % msg if inconsistences are detected, otherwise it really tries hard to fix the
 % problem and continues execution when possible.
 
-[autoStat,fixVec,strains]=checkNomenConsist(strains,autoFix);
+[autoStat,fixVec,organisms]=checkNomenConsist(organisms,autoFix);
 
 % Now we detect from the content of the results folder If PART2 was already
 % computed: if the associated file is already present in the results folder its
@@ -160,9 +155,9 @@ end
 
 % if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
-if size(models,1) <= 500
+if size(organisms,1) <= 500
     if modbuild == 1
-        setup=fastSetupCreator(models, strains, host,objre);
+        setup=fastSetupCreator(modPath, organisms, host,objre);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
         setup.recon=0;
         save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
@@ -172,7 +167,7 @@ if size(models,1) <= 500
         load(strcat(resPath,'Setup_allbacs.mat'))
     end
     
-    [createdModels]=createPersonalizedModel(abunFilePath,resPath,setup,sampName,strains,patNumb,host,hostBiomassRxn);
+    [createdModels]=createPersonalizedModel(abunFilePath,resPath,setup,sampName,organisms,patNumb,host,hostBiomassRxn);
     
 else
     % create a separate setup model for each sample
@@ -184,20 +179,18 @@ else
     
     parfor i=1:length(patNumb)
         % get the list of models for each sample
-        modelsSample = models;
-        modelsSample(cell2mat(abundance(:,i+1)) < tol)=[];
-        strainsSample = strains;
-        strainsSample(cell2mat(abundance(:,i+1)) < tol)=[];
-        setupModels{i} = fastSetupCreator(modelsSample, strainsSample, host, objre);
+        organismsSample = organisms;
+        organismsSample(cell2mat(abundance(:,i+1)) < tol)=[];
+        setupModels{i} = fastSetupCreator(modPath, organismsSample, host, objre);
     end
-    % If there are more than 300 organisms to be joined, we will bnot be
+    % If there are more than 500 organisms to be joined, we will bnot be
     % starting from one joined model containing all reconstructions as
     % this may be too computationally intensive. Instead, each
     % personalized model will be created separately.
     for i=1:length(patNumb)
-        strainsSample = strains;
-        strainsSample(cell2mat(abundance(:,i+1)) < tol)=[];
-        createdModel=createPersonalizedModel(abunFilePath,resPath,setupModels{i},sampName{i,1},strainsSample,patNumb(i),host,hostBiomassRxn);
+        organismsSample = organisms;
+        organismsSample(cell2mat(abundance(:,i+1)) < tol)=[];
+        createdModel=createPersonalizedModel(abunFilePath,resPath,setupModels{i},sampName{i,1},organismsSample,patNumb(i),host,hostBiomassRxn);
     end
 end
 

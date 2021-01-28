@@ -730,6 +730,7 @@ switch solver
             
             if problemTypeParams.printLevel>2 %|| 1
                 res1 = A*x + s - b;
+                disp('Check A*x + s - b = 0 (feasiblity):');
                 disp(norm(res1,inf))
                 if any(any(F))
                     %res21 = c  + F*x - A' * y - w;

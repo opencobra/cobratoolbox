@@ -10,6 +10,11 @@ function printConstraints(model, minInf, maxInf, rxnBool, modelAfter, printLevel
 %    minInf:    value that is considered as -Inf (or desired minimum cutoff value)
 %    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
 %
+% OPTIONAL INPUTS:
+%   modelAfter: model after some perturbation to the bounds
+%   printLevel:
+%
+
 % .. Authors:
 %       - Ines Thiele 02/09, Ronan Fleming 2020
 
