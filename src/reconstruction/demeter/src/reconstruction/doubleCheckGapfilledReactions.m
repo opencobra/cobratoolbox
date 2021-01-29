@@ -1,4 +1,4 @@
-function [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK, growthRequirements)
+function [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)
 % remove gapfilled reactions that are no longer needed.
 % In some models, removing reactions that allow growth on defined medium
 % will abolish growth on Western diet --> both need to be tested separately
@@ -32,7 +32,7 @@ end
 remRxnsDM={};
 if isnumeric(definedMediumGrowthOK)==1
     cnt=1;
-    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
     gapfilledRxns=model.rxns(find(strcmp(model.grRules,'agoraGapfill')));
     if ~isempty(gapfilledRxns)
         modelTest=constrainedModel;
@@ -82,9 +82,9 @@ summary.addedReactionsBiomass=setdiff(summary.addedReactionsBiomass,toRemove);
 
 % some models require another gapfill afterwards
 if isnumeric(definedMediumGrowthOK)==1
-    [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+    [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
     if any(str2double(growthOnKnownCarbonSources(:,2)) < tol)
-        [model, addedMismatchRxns, deletedMismatchRxns] = reconcileEssentialityMismatches(model, microbeID, biomassReaction, database, growthRequirements);
+        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
     end
 summary.addedMismatchRxns=union(summary.addedMismatchRxns,addedMismatchRxns);
 end

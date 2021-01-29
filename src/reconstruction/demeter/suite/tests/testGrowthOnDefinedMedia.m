@@ -7,6 +7,7 @@ function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = te
 %
 % INPUT
 % model                         COBRA model structure
+% microbeID                     Microbe ID in data file
 % biomassReaction               String listing the biomass reaction
 % inputDataFolder               Folder with experimental data and database files
 %                               to load

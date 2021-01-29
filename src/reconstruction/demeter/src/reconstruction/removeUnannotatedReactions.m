@@ -16,7 +16,7 @@ if isfile([inputDataFolder filesep 'unannotatedGenomeAnnotation.txt'])
         % if growth on a defined medium was achieved, then make sure this is not
         % abolished.
         if growsOnDefinedMedium==1
-            [~,modelDM] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+            [~,modelDM] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
             modelTest=changeRxnBounds(modelDM,'EX_o2(e)',0,'l');
             FBA=optimizeCbModel(modelTest,'max');
             if FBA.f > tol

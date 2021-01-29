@@ -71,7 +71,7 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('distcomp')) && any(strcmp(solver,'ibm_cplex'))
+            if ~isempty(ver('parallel')) && any(strcmp(solver,'ibm_cplex'))
                 [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, ...
                     rxnsInModel, 'S');
             else

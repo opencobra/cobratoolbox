@@ -1,4 +1,4 @@
-function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,microbeID,biomassReaction)
+function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -60,7 +60,7 @@ if AerobicGrowth(1,2) < tol
 end
 
 % identify blocked biomass precursors on defined medium for the organism
-[growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
+[growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
 if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
     [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);

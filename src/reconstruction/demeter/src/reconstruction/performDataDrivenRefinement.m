@@ -77,7 +77,7 @@ end
 FNs=union(FNs,FalseNegatives);
 
 % Putrefaction pathways
-[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
 FNs=union(FNs,FalseNegatives);
 
 % Secretion products

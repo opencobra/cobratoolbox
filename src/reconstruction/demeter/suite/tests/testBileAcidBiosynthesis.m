@@ -7,7 +7,7 @@ function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, micro
 %
 % INPUT
 % model             COBRA model structure
-% microbeID         Microbe ID in carbon source data file
+% microbeID         Microbe ID in data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
 %
@@ -74,7 +74,7 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('distcomp')) && strcmp(solver,'ibm_cplex')
+            if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
                 [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, ...
                     rxnsInModel, 'S');
             else

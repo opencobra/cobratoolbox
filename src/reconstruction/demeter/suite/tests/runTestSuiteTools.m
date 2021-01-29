@@ -34,7 +34,7 @@ parser = inputParser();
 parser.addRequired('refinedFolder', @ischar);
 parser.addRequired('infoFilePath', @ischar);
 parser.addRequired('inputDataFolder', @ischar);
-parser.addRequiredr('reconVersion', @ischar);
+parser.addRequired('reconVersion', @ischar);
 parser.addParameter('testResultsFolder', [pwd filesep 'TestResults']', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('createReports', false, @islogical);
