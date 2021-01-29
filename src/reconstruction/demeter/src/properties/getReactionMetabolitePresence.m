@@ -1,4 +1,4 @@
-function getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)
+function getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion,numWorkers)
 % This function extracts the presence of reactions and metabolites for a 
 % resource of reconstructions that were refined through the semi-automatic 
 % refinement pipeline (1 = present, 0 = not present).

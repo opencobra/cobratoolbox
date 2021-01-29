@@ -136,7 +136,7 @@ if length(failedModels)>0
             
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,reconVersion,failedModels{j,1},biomassReaction);
+            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
             reactionsToGapfillTmp{j} = reactionsToGapfill;
             reactionsToReplaceTmp{j} = reactionsToReplace;
             revisedModelTmp{j} = revisedModel;
@@ -167,7 +167,7 @@ if length(failedModels)>0
     notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     
-    testAllReconstructionFunctions(refinedFolder,testResultsFolder,reconVersion,numWorkers);
+    testAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
     
     % get all models that still fail at least one test
     stillFailedModels = {};
