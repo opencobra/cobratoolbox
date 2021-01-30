@@ -1,4 +1,4 @@
-function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder)
+function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder)
 % Takes the growth requirements of an organism (if known) as input and
 % refines the reconstruction accordingly. Reactions are gap-filled and/or
 % delete to reconcile mismatches between experimental and in silico
@@ -15,13 +15,12 @@ function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequireme
 % gapfill. If pathway is not present: remove from BOF
 
 % USAGE
-%   [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder)
+%   [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder)
 %
 % INPUTS
 % model                 COBRA model structure
 % microbeID             ID of the reconstructed microbe that serves as the 
 %                       reconstruction name and to identify it in input tables
-% biomassReaction       Biomass reaction abbreviation
 % database              rBioNet reaction database containing min. 3 columns:
 %                       Column 1: reaction abbreviation, Column 2: reaction
 %                       name, Column 3: reaction formula.
@@ -102,10 +101,6 @@ if ~isempty(mRow)
             model=modelTest;
         end
         
-        % get biomass
-        BiomassNumber = find(ismember(model.rxns, biomassReaction));
-        BiomassComp = printBiomass(model, BiomassNumber);
-        
         %% constrain glutathione sink if present
         rxnID = find(ismember(model.rxns, 'sink_gthrd(c)'));
         if ~isempty(rxnID)
@@ -113,7 +108,7 @@ if ~isempty(mRow)
         end
         % remove alternate sources of growth factors that result in false
         % negatives predictions
-        alternateSources={'EX_acgam(e)','EX_acnam(e)','EX_acmana(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_acnam(e)','EX_acgam(e)','EX_acmana(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_acmana(e)','EX_acgam(e)','EX_acnam(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_gam(e)','EX_acgam(e)','EX_acnam(e)','EX_acmana(e)',[],[],[],[],[],[],[],[];'EX_cys_L(e)','EX_h2s(e)','EX_cgly(e)','EX_glycys(e)',[],[],[],[],[],[],[],[];'EX_cgly(e)','EX_cys_L(e)','EX_glycys(e)','EX_gthrd(e)',[],[],[],[],[],[],[],[];'EX_arg_L(e)','EX_orn(e)',[],[],[],[],[],[],[],[],[],[];'EX_h2s(e)','EX_cgly(e)','EX_cys_L(e)','EX_met_L(e)','EX_metsox_S_L(e)',[],[],[],[],[],[],[];'EX_tsul(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_metala(e)','EX_cgly(e)','EX_glycys(e)','EX_cys_L(e)','EX_met_L(e)',[],[],[],[];'EX_ala_L(e)','EX_ala_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_asp_L(e)','EX_succ(e)','EX_fum(e)','EX_mal_L(e)','EX_acac(e)','EX_asn_L(e)',[],[],[],[],[],[];'EX_met_L(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_metala(e)','EX_glycys(e)','EX_tsul(e)','EX_cys_L(e)',[],[],[],[],[];'EX_gly(e)','EX_glyglu(e)',[],[],[],[],[],[],[],[],[],[];'EX_glu_L(e)','EX_gln_L(e)','EX_glyglu(e)','EX_asp_L(e)','EX_asn_L(e)','EX_cit(e)','EX_akg(e)',[],[],[],[],[];'EX_gln_L(e)','EX_glu_L(e)','EX_asp_L(e)','EX_asn_L(e)',[],[],[],[],[],[],[],[];'EX_ile_L(e)','EX_3mop(e)','EX_2obut(e)',[],[],[],[],[],[],[],[],[];'EX_leu_L(e)','EX_3mop(e)','EX_2obut(e)',[],[],[],[],[],[],[],[],[];'EX_tyr_L(e)','EX_glytyr(e)',[],[],[],[],[],[],[],[],[],[];'EX_val_L(e)','EX_3mop(e)',[],[],[],[],[],[],[],[],[],[];'EX_ser_L(e)','TRPS2r','GHMT2r',[],[],[],[],[],[],[],[],[];'EX_4abz(e)','EX_fol(e)',[],[],[],[],[],[],[],[],[],[];'EX_adocbl(e)','EX_cbl1(e)',[],[],[],[],[],[],[],[],[],[];'EX_nac(e)','EX_nmn(e)','EX_ncam(e)',[],[],[],[],[],[],[],[],[];'EX_ncam(e)','EX_nmn(e)','EX_nac(e)',[],[],[],[],[],[],[],[],[];'EX_pydx(e)','EX_pydam(e)','EX_pydx5p(e)','EX_pydxn(e)',[],[],[],[],[],[],[],[];'EX_pydxn(e)','EX_pydam(e)','EX_pydx5p(e)','EX_pydx(e)',[],[],[],[],[],[],[],[];'EX_pydam(e)','EX_pydxn(e)','EX_pydx5p(e)','EX_pydx(e)',[],[],[],[],[],[],[],[];'EX_pydx5p(e)','EX_pydx(e)','EX_pydam(e)','EX_pydxn(e)',[],[],[],[],[],[],[],[];'EX_ptrc(e)','EX_orn(e)',[],[],[],[],[],[],[],[],[],[];'EX_ins(e)','EX_adn(e)','EX_ade(e)','EX_gua(e)','EX_uri(e)','EX_ura(e)','EX_hxan(e)','EX_xan(e)',[],[],[],[];'EX_ura(e)','EX_cytd(e)','EX_dcyt(e)','EX_uri(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_duri(e)','EX_csn(e)',[],[],[];'EX_uri(e)','EX_duri(e)','EX_hxan(e)','EX_xan(e)','EX_cytd(e)','EX_dcyt(e)',[],[],[],[],[],[];'EX_gua(e)','EX_adn(e)','EX_ade(e)','EX_gsn(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_dgsn(e)','EX_dad_2(e)',[],[],[];'EX_ocdca(e)','EX_ocdcea(e)','EX_ttdca(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_adn(e)','EX_succ(e)','EX_gua(e)','EX_ade(e)','EX_gsn(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_dgsn(e)','EX_dad_2(e)',[],[];'EX_ocdcea(e)','EX_ocdca(e)','EX_ttdca(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_ttdca(e)','EX_ocdca(e)','EX_ocdcea(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_12dgr180(e)','EX_ttdca(e)','EX_ocdca(e)','EX_ocdcea(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_q8(e)','EX_4hbz(e)',[],[],[],[],[],[],[],[],[],[];'EX_mqn7(e)','EX_4hbz(e)',[],[],[],[],[],[],[],[],[],[];'EX_mqn8(e)','EX_4hbz(e)',[],[],[],[],[],[],[],[],[],[];'EX_gal(e)','EX_melib(e)',[],[],[],[],[],[],[],[],[],[];'EX_xan(e)','EX_din(e)','EX_dgsn(e)','EX_dad_2(e)','EX_ins(e','EX_uri(e)','EX_cytd(e)','EX_dcyt(e)','EX_ura(e)','EX_adn(e)','EX_gua(e)','EX_gsn(e)';'EX_arab_D(e)','EX_rib_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_rib_D(e)','EX_arab_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_btn(e)','EX_pime(e)',[],[],[],[],[],[],[],[],[],[]};        % We will assume anaerobic conditions by default.
+        alternateSources={'EX_acgam(e)','EX_acnam(e)','EX_acmana(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_acnam(e)','EX_acgam(e)','EX_acmana(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_acmana(e)','EX_acgam(e)','EX_acnam(e)','EX_gam(e)',[],[],[],[],[],[],[],[];'EX_gam(e)','EX_acgam(e)','EX_acnam(e)','EX_acmana(e)',[],[],[],[],[],[],[],[];'EX_cys_L(e)','EX_h2s(e)','EX_cgly(e)','EX_glycys(e)',[],[],[],[],[],[],[],[];'EX_cgly(e)','EX_cys_L(e)','EX_glycys(e)','EX_gthrd(e)',[],[],[],[],[],[],[],[];'EX_arg_L(e)','EX_orn(e)',[],[],[],[],[],[],[],[],[],[];'EX_h2s(e)','EX_cgly(e)','EX_cys_L(e)','EX_met_L(e)','EX_metsox_S_L(e)',[],[],[],[],[],[],[];'EX_tsul(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_metala(e)','EX_cgly(e)','EX_glycys(e)','EX_cys_L(e)','EX_met_L(e)',[],[],[],[];'EX_ala_L(e)','EX_ala_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_asp_L(e)','EX_succ(e)','EX_fum(e)','EX_mal_L(e)','EX_acac(e)','EX_asn_L(e)',[],[],[],[],[],[];'EX_met_L(e)','EX_h2s(e)','EX_metsox_S_L(e)','EX_metala(e)','EX_glycys(e)','EX_tsul(e)','EX_cys_L(e)',[],[],[],[],[];'EX_gly(e)','EX_glyglu(e)',[],[],[],[],[],[],[],[],[],[];'EX_glu_L(e)','EX_gln_L(e)','EX_glyglu(e)','EX_asp_L(e)','EX_asn_L(e)','EX_cit(e)','EX_akg(e)',[],[],[],[],[];'EX_gln_L(e)','EX_glu_L(e)','EX_asp_L(e)','EX_asn_L(e)',[],[],[],[],[],[],[],[];'EX_ile_L(e)','EX_3mop(e)','EX_2obut(e)',[],[],[],[],[],[],[],[],[];'EX_leu_L(e)','EX_3mop(e)','EX_2obut(e)',[],[],[],[],[],[],[],[],[];'EX_tyr_L(e)','EX_glytyr(e)',[],[],[],[],[],[],[],[],[],[];'EX_val_L(e)','EX_3mop(e)',[],[],[],[],[],[],[],[],[],[];'EX_ser_L(e)','TRPS2r','GHMT2r',[],[],[],[],[],[],[],[],[];'EX_4abz(e)','EX_fol(e)',[],[],[],[],[],[],[],[],[],[];'EX_adocbl(e)','EX_cbl1(e)',[],[],[],[],[],[],[],[],[],[];'EX_nac(e)','EX_nmn(e)','EX_ncam(e)',[],[],[],[],[],[],[],[],[];'EX_ncam(e)','EX_nmn(e)','EX_nac(e)',[],[],[],[],[],[],[],[],[];'EX_pydx(e)','EX_pydam(e)','EX_pydx5p(e)','EX_pydxn(e)',[],[],[],[],[],[],[],[];'EX_pydxn(e)','EX_pydam(e)','EX_pydx5p(e)','EX_pydx(e)',[],[],[],[],[],[],[],[];'EX_pydam(e)','EX_pydxn(e)','EX_pydx5p(e)','EX_pydx(e)',[],[],[],[],[],[],[],[];'EX_pydx5p(e)','EX_pydx(e)','EX_pydam(e)','EX_pydxn(e)',[],[],[],[],[],[],[],[];'EX_ptrc(e)','EX_orn(e)',[],[],[],[],[],[],[],[],[],[];'EX_ins(e)','EX_adn(e)','EX_ade(e)','EX_gua(e)','EX_uri(e)','EX_ura(e)','EX_hxan(e)','EX_xan(e)',[],[],[],[];'EX_ura(e)','EX_cytd(e)','EX_dcyt(e)','EX_uri(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_duri(e)','EX_csn(e)',[],[],[];'EX_uri(e)','EX_duri(e)','EX_hxan(e)','EX_xan(e)','EX_cytd(e)','EX_dcyt(e)',[],[],[],[],[],[];'EX_gua(e)','EX_adn(e)','EX_ade(e)','EX_gsn(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_dgsn(e)','EX_dad_2(e)',[],[],[];'EX_ocdca(e)','EX_ocdcea(e)','EX_ttdca(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_adn(e)','EX_succ(e)','EX_gua(e)','EX_ade(e)','EX_gsn(e)','EX_ins(e)','EX_hxan(e)','EX_xan(e)','EX_dgsn(e)','EX_dad_2(e)',[],[];'EX_ocdcea(e)','EX_ocdca(e)','EX_ttdca(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_ttdca(e)','EX_ocdca(e)','EX_ocdcea(e)','EX_12dgr180(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_12dgr180(e)','EX_ttdca(e)','EX_ocdca(e)','EX_ocdcea(e)','EX_hdca(e)',[],[],[],[],[],[],[];'EX_q8(e)','EX_4hbz(e)','EX_mqn7(e)','EX_mqn8(e)',[],[],[],[],[],[],[],[];'EX_mqn7(e)','EX_4hbz(e)','EX_mqn8(e)',[],[],[],[],[],[],[],[],[];'EX_mqn8(e)','EX_4hbz(e)','EX_mqn7(e)',[],[],[],[],[],[],[],[],[];'EX_gal(e)','EX_melib(e)',[],[],[],[],[],[],[],[],[],[];'EX_xan(e)','EX_din(e)','EX_dgsn(e)','EX_dad_2(e)','EX_ins(e','EX_uri(e)','EX_cytd(e)','EX_dcyt(e)','EX_ura(e)','EX_adn(e)','EX_gua(e)','EX_gsn(e)';'EX_arab_D(e)','EX_rib_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_rib_D(e)','EX_arab_D(e)',[],[],[],[],[],[],[],[],[],[];'EX_btn(e)','EX_pime(e)',[],[],[],[],[],[],[],[],[],[]};
         model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
         for i = 1:length(speciesNutrRequ)
             modelTest = changeRxnBounds(model, speciesNutrRequ{i, 1}, 0, 'l');
@@ -140,6 +135,26 @@ if ~isempty(mRow)
         
         %% allow growth with oxygen
         model = changeRxnBounds(model, 'EX_o2(e)', -1, 'l');
+        
+        %% add metabolites with corresponding exchanges and transporters for compounds demonstratedly or probably required in vitro
+        
+        transpExch={'EX_4abz(e)','4ABZt2';'EX_ac(e)','ACtr';'EX_ade(e)','ADEt2';'EX_adn(e)','ADNt2';'EX_btn(e)','BTNabc';'EX_chsterol(e)','CHSTEROLup';'EX_cit(e)','r1088';'EX_co2(e)','CO2t';'EX_adocbl(e)','ADOCBLabc';'EX_glc_D(e)','GLCabc';'EX_fol(e)','FOLabc';'EX_for(e)','FORt';'EX_fum(e)','FUMt2r';'EX_glyc(e)','GLYCt';'EX_gly(e)','GLYt2r';'EX_gua(e)','GUAt2';'EX_h2s(e)','H2St';'EX_pheme(e)','HEMEti';'EX_hxan(e)','HYXNt';'EX_ins(e)','INSt2i';'EX_ala_L(e)','ALAt2r';'EX_arg_L(e)','ARGt2r';'EX_asn_L(e)','ASNt2r';'EX_asp_L(e)','ASPt2r';'EX_cys_L(e)','CYSt2r';'EX_glu_L(e)','GLUt2r';'EX_gln_L(e)','GLNt2r';'EX_his_L(e)','HISt2r';'EX_ile_L(e)','ILEt2r';'EX_lac_L(e)','L_LACt2';'EX_leu_L(e)','LEUt2r';'EX_lys_L(e)','LYSt2r';'EX_met_L(e)','METt2r';'EX_phe_L(e)','PHEt2r';'EX_pro_L(e)','PROt2r';'EX_ser_L(e)','SERt2r';'EX_thr_L(e)','THRt2r';'EX_trp_L(e)','TRPt2r';'EX_tyr_L(e)','TYRt2r';'EX_val_L(e)','VALt2r';'EX_malt(e)','MALTabc';'EX_mqn8(e)','MK8t';'EX_acgam(e)','ACGAMtr2';'EX_nh4(e)','NH4tb';'EX_ncam(e)','NCAMt2r';'EX_nac(e)','NACt2r';'EX_no3(e)','NO3abc';'EX_orn(e)','ORNt2r';'EX_orot(e)','OROte';'EX_pnto_R(e)','PNTOabc';'EX_ptrc(e)','PTRCt2';'EX_pydx(e)','PYDXabc';'EX_pydx5p(e)','r0871';'EX_pydam(e)','PYDAMabc';'EX_pydxn(e)','PYDXNabc';'EX_pyr(e)','PYRt2r';'EX_ribflv(e)','RIBFLVt2r';'EX_so4(e)','SO4t2';'EX_spmd(e)','SPMDtex2';'EX_succ(e)','SUCCt2r';'EX_thm(e)','THMabc';'EX_thymd(e)','THMDt2r';'EX_ura(e)','URAt2';'EX_xan(e)','XANt2'};
+       
+        % find exchanges and transporters for probably or maybe essential
+        % components
+        essentialComp=speciesNutrRequ(str2double(speciesNutrRequ(:,2))==1,1);
+        essentialComp=union(essentialComp,speciesNutrRequ(str2double(speciesNutrRequ(:,2))==0,1));
+        [~,findEssExch]=intersect(transpExch(:,1),essentialComp);
+        for i=1:length(findEssExch)
+            % find the formula
+            formula = database.reactions{find(strcmp(database.reactions(:, 1), transpExch{findEssExch(i),1})), 3};
+            model = addReaction(model, transpExch{findEssExch(i),1}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
+            formula = database.reactions{find(strcmp(database.reactions(:, 1), transpExch{findEssExch(i),2})), 3};
+            model = addReaction(model, transpExch{findEssExch(i),2}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
+            addedMismatchRxns(length(addedMismatchRxns)+1:length(addedMismatchRxns)+2,1)=transpExch(findEssExch(i),:)';
+        end
+        
+        nonessentialComp=speciesNutrRequ(str2double(speciesNutrRequ(:,2))==-1,1);
         
         %% define the GPRs that indicate a reactions that is gap-filled
         gapfillGPRs={'','Unknown','0000000.0.peg.0','gapFilled'};
@@ -272,11 +287,11 @@ if ~isempty(mRow)
             {'EX_fol(e)','EX_4abz(e)'},{'-1'},{'1'},{''},{''},{'EX_fol(e)','EX_4abz(e)'},{'ADCL','ADCS','AKP1','CHORS','DDPA','DHFOR2','DHFR','DHFS','DHNPA','DHPS','DHQS','DHQTi','DM_GCALD','DNMPPA','DNTPPA','FOLD3','FOLR3','FTHFCL','FTHFD','FTHFL','GTPCI','HPPK','METFR','MTHFC','MTHFD','PSCVT','r0792','SHK3Dr','SHKK'},{''},{''}
             {'EX_fol(e)'},{'-1'},{'1'},{''},{''},{'EX_fol(e)'},{'DHPS','DHFS','DHFR','DHNPA','AKP1','GTPCI','EX_gcald(e)','GCALDt','EX_4abz(e)','4ABZt2'},{''},{''}
             {'EX_4abz(e)'},{'-1'},{'1'},{''},{''},{'EX_fol(e)','EX_4abz(e)'},{'ADCL','ADCS','AKP1','CHORS','DDPA','DHFOR2','DHFR','DHFS','DHNPA','DHPS','DHQS','DHQTi','DM_GCALD','DNMPPA','DNTPPA','FOLD3','FOLR3','FTHFCL','FTHFD','FTHFL','GTPCI','HPPK','METFR','MTHFC','MTHFD','PSCVT','r0792','SHK3Dr','SHKK'},{''},{''}
-            {'EX_mqn7(e)'},{'-1'},{'1'},{''},{''},{'EX_mqn7(e)','EX_4hbz(e)'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','CHORS','PSCVT','SHKK','SHK3Dr','DHQTi','DHQS','DDPA','AHC'},{''},{''}
+            {'EX_mqn7(e)'},{'-1'},{'1'},{''},{''},{'EX_mqn7(e)','EX_4hbz(e)'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','CHORS','PSCVT','SHKK','SHK3Dr','DHQTi','DHQS','DDPA','AHC','PPA'},{''},{''}
             {'EX_mqn7(e)'},{'1'},{'0'},{''},{''},{''},{'EX_mqn7(e)','MK7t'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','CHORS','PSCVT','SHKK','SHK3Dr','DHQTi','DHQS','DDPA'},{''}
-            {'EX_mqn8(e)'},{'-1'},{'1'},{''},{''},{'EX_mqn8(e)','EX_4hbz(e)'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','AMMQT8r','DM_2obut[c]','DHNAOT'},{''},{''}
+            {'EX_mqn8(e)'},{'-1'},{'1'},{''},{''},{'EX_mqn8(e)','EX_4hbz(e)'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','AMMQT8r','DM_2obut[c]','DHNAOT','PPA'},{''},{''}
             {'EX_mqn8(e)'},{'1'},{'0'},{''},{''},{''},{'EX_mqn8(e)','MK8t'},{'IPFPHS','HEXTT','HETT','ICHORS','2S6HCC','SUCBZS','SUCBZL','NPHS','DHNAOT4','AMMQT8r','DM_2obut[c]'},{''}
-            {'EX_q8(e)'},{'-1'},{'1'},{''},{''},{'EX_q8(e)','EX_4hbz(e)','EX_o2(e)'},{'DDPA','DHQS','DHQTi','SHK3Dr','SHKK','PSCVT','CHORS','CHRPL','IPFPHS','HEXTT','HETT','HBZOPT','OPHBDC','OHPHM','OMBZLM','OMMBLHX3','OMPHHX3','OPHHX3','2OMPHH','URFGTT','2OMMBOX','DMQMT','DMQMT2','AHC'},{''},{''}
+            {'EX_q8(e)'},{'-1'},{'1'},{''},{''},{'EX_q8(e)','EX_4hbz(e)','EX_o2(e)'},{'DDPA','DHQS','DHQTi','SHK3Dr','SHKK','PSCVT','CHORS','CHRPL','IPFPHS','HEXTT','HETT','HBZOPT','OPHBDC','OHPHM','OMBZLM','OMMBLHX3','OMPHHX3','OPHHX3','2OMPHH','URFGTT','2OMMBOX','DMQMT','DMQMT2','AHC','PPA'},{''},{''}
             {'EX_q8(e)'},{'1'},{'0'},{''},{''},{''},{'EX_q8(e)','Q8abc'},{'DDPA','DHQS','DHQTi','SHK3Dr','SHKK','PSCVT','CHORS','CHRPL','IPFPHS','HEXTT','HETT','HBZOPT','NOPHMO','OPHHX','OPHBDC','OHPHM','OMBZLM','OMMBLHX3','OMPHHX3','OPHHX3','2OMPHH','URFGTT','2OMMBOX','DMQMT','DMQMT2'},{''}
              {'EX_pnto_R(e)'},{'-1'},{'1'},{''},{''},{'EX_pnto_R(e)'},{'ACLS_b','ASP1DC','DHAD1','DPR','KARA1','MOHMT','PANTS','VALTA'},{''},{''}
             {'EX_pnto_R(e)'},{'1'},{'0'},{''},{''},{''},{'EX_pnto_R(e)','PNTOabc'},{'ACLS_b','ASP1DC','DHAD1','DPR','KARA1','MOHMT','PANTS','VALTA'},{''}
@@ -297,6 +312,7 @@ if ~isempty(mRow)
             {'EX_csn(e)'},{'-1'},{'1'},{''},{''},{'EX_csn(e)'},{'EX_ura(e)','URAt2','URIK4','UMPK','NDPK2','CTPS1','CTPS2'},{''},{''}
             {'EX_adn(e)'},{'-1'},{'1'},{''},{''},{'EX_adn(e)'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt','EX_hxan(e)','HXANt2','GMPS2'},{''},{''}
             {'EX_adn(e)'},{'1'},{'0'},{''},{''},{''},{'EX_adn(e)','ADEt2','ADPT'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt'},{''}
+            {'EX_ade(e)'},{'1'},{'0'},{''},{''},{'EX_adn(e)'},{'EX_ade(e)','ADEt2','ADPT'},{'ADSS','ADSL1r','IMPC','AICART','ADSL2r','PRASCSi','AIRC4','PRAIS','PRFGS','H2CO3D','EX_fum(e)','FUMt'},{''}
             {'EX_ins(e)'},{'-1'},{'1'},{''},{''},{'EX_ins(e)'},{'GLUPRT','PRAGS','GARFTi','PRFGS','PRAIS','AIRC4','PRASCSi','ADSL2r','AICART','IMPC','NTD11','H2CO3D'},{''},{''}
             {'EX_ins(e)'},{'1'},{'0'},{''},{''},{'EX_ins(e)'},{'EX_ins(e)','INSt2'},{'GLUPRT','PRAGS','GARFTi','PRFGS','PRAIS','AIRC4','PRASCSi','ADSL2r','AICART','IMPC','NTD11','H2CO3D'},{''}
             {'EX_gua(e)'},{'-1'},{'1'},{''},{''},{'EX_gua(e)'},{'GLUPRT','PRAGS','GARFTi','PRFGS','PRAIS','AIRC4','PRASCSi','ADSL2r','AICART','IMPC','IMPD','GMPS2','H2CO3D','r0456'},{''},{''}
@@ -571,6 +587,7 @@ if ~isempty(mRow)
                 end
             end
         end
+        
         %% make the proposed changes to reconstruction
         model=convertOldStyleModel(modelPrevious);
         modelOld=model;
@@ -636,6 +653,31 @@ if ~isempty(mRow)
                 model.rxnECNumbers{rxnID,1} = '';
                 model.rxnKEGGID{rxnID,1} = '';
                 model.rxnConfidenceScores(rxnID,1) = 0;
+            end
+        end
+        
+        %% try gapfilling of already refined model
+                
+        % enable uptake of potentially essential exchanges
+        model=changeRxnBounds(model,essentialComp,-1,'l');
+        
+        % prevent uptake of nonessential exchanges
+        model=changeRxnBounds(model,nonessentialComp,0,'l');
+        
+        % check if growth is possible, try gapfilling otherwise
+        FBA = optimizeCbModel(model, 'max');
+        if FBA.f < tol
+            model = targetedGapFilling(model,'max',database);
+            FBA = optimizeCbModel(model, 'max');
+            if FBA.f > tol
+                % Save the gapfilled reactions
+                for n = 1:length(model.rxns)
+                    if ~isempty(strfind(model.rxns{n, 1}, '_tGF'))
+                        addedMismatchRxns{length(addedMismatchRxns)+1, 1} = strrep(model.rxns{n}, '_GF', '');
+                        model.rxns{n, 1}=strrep(model.rxns{n}, '_tGF', '');
+                        model.grRules{n, 1} = 'GrowthRequirementsGapfill';
+                    end
+                end
             end
         end
     end
