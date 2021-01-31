@@ -1,10 +1,32 @@
-function [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxnPath)
+function [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxns)
+% Part of the DEMETER pipeline. This functions aids in translating
+% reactions from KBase to VMH nomenclature. Requires running the function 
+% propagateKBaseMetTranslationToRxns beforehand to translate metabolite
+% IDs, which will then allow matching translated reactions to reactions
+% thjat already exist in the VMH (Virtual Metabolic Human) database.
+%
+% USAGE:
+%
+%           [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxns)
+%
+% INPUTS
+% translatedRxns:       Table with untranslated KBase reactions but
+%                       translated metabolite IDs
+%
+% OUTPUT
+% sameReactions:        Table with translated KBase reactions that already
+%                       exist in the VMH database with corresponding IDs
+% similarReactions:     Table with translated KBase reactions for which a 
+%                       reaction with the same formula but irreversible in 
+%                       VMH and reversible in KBase (or vice versa) exists
+%
+% .. Authors:
+%       - Almut Heinken, 01/2021
+
+
 
 sameReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 similarReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
-
-% load translated reactions to map to VMH reactions
-translatedRxns = table2cell(readtable(translatedRxnPath, 'ReadVariableNames', false,'FileType','text'));
 
 % get VMH reaction database
 reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);

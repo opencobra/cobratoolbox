@@ -1,8 +1,9 @@
 function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
-% Prepares input file for the comparative genomics part
+% Part of the DEMETER pipeline. Prepares input file for the refinement
+% based on comparative genomics analyses.
 % Gets all the reactions that were not found in the respective organism
 % through comparative genomics to remove them from the draft
-% reconstructions
+% reconstructions.
 %
 % USAGE:
 %   unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)

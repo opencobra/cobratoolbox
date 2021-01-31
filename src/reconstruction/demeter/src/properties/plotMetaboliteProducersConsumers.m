@@ -6,6 +6,7 @@ function plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVer
 %
 % USAGE
 %   plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion,varargin)
+%
 % INPUTS
 % propertiesFolder      Folder where computed uptake and secretion profiles
 %                       are stored

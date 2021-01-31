@@ -1,4 +1,4 @@
-function getCurationStatus(varargin)
+function curationStatus = getCurationStatus(infoFilePath,inputDataFolder,getComparativeGenomics)
 % This function retrieves for each organism in a reconstruction resource
 % whether the strain was refined based on experimental data and/or
 % comparative genomic data. For experimental data, 2 indicates that the
@@ -14,35 +14,20 @@ function getCurationStatus(varargin)
 %
 % USAGE:
 %
-% getCurationStatus(varargin)
+%           curationStatus = getCurationStatus(infoFilePath,inputDataFolder,getComparativeGenomics)
 %
 % INPUTS
-% infoFilePath              File with information on reconstructions to refine
-%                           (default: AGORA2_infoFile.xlsx)
-% inputDataFolder           Folder with experimental data and database files to
-%                           load (default: semiautomaticrefinement/input)
-% getComparativeGenomics    Boolean indicating whether PubSEED spreadsheets 
+% infoFilePath:             File with information on reconstructions to refine
+% inputDataFolder:          Folder with experimental data and database files to
+% getComparativeGenomics:   Boolean indicating whether PubSEED spreadsheets 
 %                           with information on the reconstructed strains are 
-%                           available (default: false)
+%                           available
+%
+% OUTPUT
+% curationStatus:           Table with curation status of each model
 %
 % .. Authors:
 %       - Almut Heinken, 12/2020
-
-parser = inputParser();
-parser.addParameter('infoFilePath', 'AGORA2_infoFile.xlsx', @ischar);
-parser.addParameter('inputDataFolder', '', @ischar);
-parser.addParameter('getComparativeGenomics', false, @islogical);
-
-parser.parse(varargin{:});
-
-infoFilePath = parser.Results.infoFilePath;
-inputDataFolder = parser.Results.inputDataFolder;
-getComparativeGenomics = parser.Results.getComparativeGenomics;
-
-if isempty(inputDataFolder)
-    % use the default folder in the repository
-    inputDataFolder = fileparts(which('ReactionTranslationTable.txt'));
-end
 
 % get file with information on reconstructed organisms
 infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
@@ -80,6 +65,7 @@ end
 writetable(cell2table(curationStatus),[inputDataFolder filesep 'curationStatus.txt'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 if getComparativeGenomics
+    % under construction-need to fill in
 end
 
 end

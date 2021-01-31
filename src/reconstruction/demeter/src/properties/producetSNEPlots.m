@@ -5,13 +5,17 @@ function producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatu
 % USAGE
 %   producetSNEPlots(propertiesFolder,infoFilePath,reconVersion)
 %
-% OPTIONAL INPUTS
+% INPUTS
 % propertiesFolder      Folder where the reaction presences and uptake and
 %                       secretion potential to be analyzed are stored
 %                       (default: current folder)
 % infoFilePath          Path to spreadsheet with taxonomical information of
 %                       the refined strains
 % reconVersion          Name assigned to the reconstruction resource
+% OPTIONAL INPUT
+% customFeatures        Features other than taxonomy to cluster microbes
+%                       by. Need to be a table header in the file with 
+%                       information on reconstructions.
 %
 %   - AUTHOR
 %   Almut Heinken, 06/2020
@@ -27,13 +31,8 @@ cd('tSNE_Plots')
 tol=0.0000001;
 
 % get taxonomical information
-if ~isempty(infoFilePath)
-    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-else
-    infoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-end
+infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+infoFile = table2cell(infoFile);
 
 % define files to analyze
 analyzedFiles={
@@ -152,7 +151,10 @@ for k=1:size(analyzedFiles,1)
                     hold on
                     set(h,'MarkerSize',6)
                     title(analyzedFiles{k,1})
-                    suptitle(reconVersion)
+                    plottitle=strrep(reconVersion,'_refined','');
+                    plottitle=strrep(plottitle,'_draft','');
+                    suptitle(plottitle)
+                    
                     h=legend('Location','northeastoutside');
                     if length(uniqueXX)-length(toofew) < 12
                         set(h,'FontSize',11)
@@ -172,7 +174,7 @@ for k=1:size(analyzedFiles,1)
         save(['Summary_' reconVersion],'Summary');
         
         % if the data should be clustered by any custom features from the info file
-        if ~isempty(customFeatures)
+        if nargin > 3
             for i=1:length(customFeatures)
                 % plot on different taxon levels
                 feats={};

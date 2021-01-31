@@ -1,6 +1,6 @@
 function gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation)
-% fix comparative genomics-some transport reactions need to be replaced
-% Do gap-filling where needed
+% Part of the DEMETER pipelinbe. Adds reactions needed to connect pathways 
+% introduced based on comparative genomic analyses.comparative genomics.
 %
 % USAGE:
 %   gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation)
@@ -14,7 +14,7 @@ function gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotat
 %                               been gap-filled to enable flux through 
 %                               reactions added based on genome annotations
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 06/2020
 
 replaceRxns={'7BHGLZabc','7BHGLZGLCabc';'1HIBUP_Sabc','1HIBUPGLU_Sabc';'2HIBUP_Sabc','2HIBUPGLU_Sabc';'3HIBUP_Sabc','3HIBUPGLU_Sabc';'CARIBUP_Sabc','CARIBUPGLU_Sabc';'5OH_SP_GLCabc','5OH_SULFP_GLCabc';'1HIBUP_St','1HIBUPGLU_St';'2HIBUP_St','2HIBUPGLU_St';'3HIBUP_St','3HIBUPGLU_St';'5OH_SP_GLCt','5OH_SULFP_GLCt';'7BHGLZt','7BHGLZGLCt';'CARIBUP_St','CARIBUPGLU_St';'1HIBUP_St2','1HIBUPGLU_St2';'2HIBUP_St2','2HIBUPGLU_St2';'3HIBUP_St2','3HIBUPGLU_St2';'7BHGLZGLCte','7BHGLZte';'1HIBUPGLU_Ste','1HIBUP_Ste';'2HIBUPGLU_Ste','2HIBUP_Ste';'3HIBUPGLU_Ste','3HIBUP_Ste';'CARIBUPGLU_Ste','CARIBUP_Ste';'5OH_SPte','5OH_SULFPte';'7BHGLZt2','7BHGLZGLCt2';'CARIBUP_St2','CARIBUPGLU_St2';'5OH_SP_GLCt2','5OH_SULFP_GLCt2';'EX_5oh_sp(e)','EX_5oh_sulfp(e)';'EX_5oh_sp_glc(e)','EX_5oh_sulfp_glc(e)';'5OH_SPte','5OH_SULFPte';'56DFURP','DH5FURAt';'DM_na1(c)','DM_NA1'};

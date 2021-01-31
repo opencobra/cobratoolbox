@@ -1,6 +1,24 @@
 function [checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData(inputData,strainInformation)
-% This function checks for duplicate and removed strains in the input data
-% files and removes them.
+% Part of the DEMETER pipeline. This function checks for duplicate and 
+% removed strains in the input data files and removes them. Also adds
+% strains in the reconstruction resource that were not yet present in the
+% input file.
+%
+% USAGE: 
+%       [checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData(inputData,strainInformation)
+%
+% INPUT
+% inputData:            Table with experimental data to check
+% strainInformation:    Table with list on all strains to reconstruct
+%
+% OUTPUT
+% checkedData:          Corrected table with experimental data to check
+% addedStrains:         Strains that were missing from inputData
+% removedStrains:       Strains that were in inputData but are not present
+%                       in strainInformation
+% duplicateStrains:     Strains that were in inputData more than once
+%
+% AUTHOR: Almut Heinken, 06/2020
 
 % delete strains no longer in input data because name changed or it was
 % removed

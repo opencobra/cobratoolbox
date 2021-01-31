@@ -1,5 +1,5 @@
 function [model] = conditionSpecificGapFilling(model,database)
-% Part of the DEMETER pipeline. Resolves reactions that were repalced by
+% Part of the DEMETER pipeline. Resolves reactions that were replaced by
 % irreversible versions during the conversion from KBase to VMH
 % nomenclature. As a result, models may no longer grow. This function adds
 % reactions that restore grow and allow the production of biomass

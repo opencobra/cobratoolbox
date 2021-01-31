@@ -12,6 +12,10 @@ function summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersi
 % infoFilePath          Path to spreadsheet with taxonomical information of
 %                       the refined strains
 % reconVersion          Name assigned to the reconstruction resource
+% OPTIONAL INPUT
+% customFeatures        Features other than taxonomy to cluster microbes
+%                       by. Need to be a table header in the file with 
+%                       information on reconstructions.
 %
 %   - AUTHOR
 %   Almut Heinken, 06/2020
@@ -30,6 +34,11 @@ modelList(:,1)=strrep(modelList(:,1),'.mat','');
 reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 reactionDatabase(:,2:10)=[];
+
+
+% get taxonomical information
+infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+infoFile = table2cell(infoFile);
 
 [C,I]=setdiff(infoFile(:,1),modelList(:,1),'stable');
 infoFile(I(2:end),:)=[];
@@ -151,7 +160,7 @@ if size(infoFile,1)>2
     end
     
     % if the data should be clustered by any custom features from the info file
-    if ~isempty(customFeatures)
+    if nargin > 3
         for i=1:length(customFeatures)
             % skip if file already exists
             if ~isfile(['ReactionPresence_' customFeatures{i} '_' reconVersion '.txt'])

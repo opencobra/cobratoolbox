@@ -93,6 +93,5 @@ for i=1:length(toRemove)
 end
 
 translatedRxns=toTranslate;
-writetable(cell2table(translatedRxns),'translatedRxns.txt','FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end

@@ -1,6 +1,9 @@
 function [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
 % Part of the DEMETER pipeline. Refines a reconstruction based on
-% comparative genomics data retrieved from PubSEED spreadsheets.
+% comparative genomics data retrieved from PubSEED spreadsheets. Adds
+% reactions linked to genes that were found in the respective organisms
+% based on manual comparative genomic analyses. If the reaction is already
+% present, the gene-protein-reaction association (GPR) is updated.
 %
 % USAGE
 %       [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)

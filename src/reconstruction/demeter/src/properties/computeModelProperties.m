@@ -1,10 +1,25 @@
 function propertiesFolder = computeModelProperties(modelFolder, infoFilePath, reconVersion, varargin)
-% This function analyzes and plots properties of the refined and the draft
-% reconstructions if there is more than one. Note that this may be time-consuming.
+% Part of the DEMETER pipeline. This function analyzes and plots various  
+% properties of the refined and optionally the draft reconstructions. Note 
+% that this may be time-consuming.
 %
 % USAGE:
 %
 %    propertiesFolder = computeModelProperties(modelFolder, infoFilePath, reconVersion, varargin)
+%
+% REQUIRED INPUTS
+% modelFolder              Folder with COBRA models to analyze (draft or
+%                          refined models)
+% infoFilePath             File with information on reconstructions to refine
+% reconVersion             Name of the refined reconstruction resource
+%                          (default: "Reconstructions")
+% OPTIONAL INPUTS
+% numWorkers               Number of workers in parallel pool (default: 2)
+% customFeatures           Features other than taxonomy to cluster microbes
+%                          by. Need to be a table header in the file with 
+%                          information on reconstructions.
+% translatedDraftsFolder   Folder with draft COBRA models with translated
+%                          nomenclature and stored as mat files
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
