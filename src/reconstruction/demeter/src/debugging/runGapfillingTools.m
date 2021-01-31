@@ -1,4 +1,33 @@
 function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biomassReaction,osenseStr,database)
+% This function runs a set of gapfillling functions on a reconstruction to
+% refined as part of the DEMETER pipeline. Reactions are filled in to
+% enable flux through an objective function, e.g., the biomass objective
+% function.
+%
+% USAGE:
+%
+%   [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biomassReaction,osenseStr,database)
+%
+% INPUTS
+% model:               COBRA model structure
+% objectiveFunction    Reaction ID of the objective function for which flux
+%                      will be enabled through gapfilling
+% biomassReaction:     Reaction ID of the biomass objective function that
+%                      will be restored afterwards (if objectiveFunction is 
+%                      not biomassReaction)
+% osenseStr:           Maximize ('max')/minimize ('min') linear part of the 
+%                      objective
+% database:            rBioNet reaction database containing min. 3 columns:
+%                      Column 1: reaction abbreviation, Column 2: reaction
+%                      name, Column 3: reaction formula.
+%
+% OUTPUT
+% model:               COBRA model structure
+% gapfilledRxns:       Reactions that were added to enable flux throough
+%                      the objective function
+%
+% .. Author:
+%       - Almut Heinken, 2016-2020
 
 tol=0.0000001;
 

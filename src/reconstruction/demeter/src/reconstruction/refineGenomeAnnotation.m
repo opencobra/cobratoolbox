@@ -1,4 +1,31 @@
 function [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
+% Part of the DEMETER pipeline. Refines a reconstruction based on
+% comparative genomics data retrieved from PubSEED spreadsheets.
+%
+% USAGE
+%       [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
+%
+%
+% INPUTS
+% model:               COBRA model structure
+% microbeID:           ID of the reconstructed microbe that serves as the
+%                      reconstruction name and to identify it in input tables
+% database:            rBioNet reaction database containing min. 3 columns:
+%                      Column 1: reaction abbreviation, Column 2: reaction
+%                      name, Column 3: reaction formula.
+% inputDataFolder:     Folder with experimental data and database files to 
+%                      load
+%
+% OUTPUTS
+% model:               COBRA model structure
+% addAnnRxns:          Reactions newly added based on comparative genomics
+%                      data
+% updateGPRCnt:        Reactions for which GPRs were updated based on 
+%                      comparative genomics data 
+%
+% .. Authors:
+%       - Almut Heinken, 06/2020
+
 
 addAnnRxns={};
 annRxns={};

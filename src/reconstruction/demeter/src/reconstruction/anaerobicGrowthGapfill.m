@@ -2,6 +2,9 @@ function [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, bio
 % Tests if the input microbe model can grow anaerobically and gap-fills
 % by adding anaerobic co-factor utilizing reactions.
 %
+% USAGE
+%       [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)
+%
 % INPUT
 % model             COBRA model structure
 % biomassReaction   Biomass reaction abbreviation
@@ -12,9 +15,8 @@ function [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, bio
 % OUTPUT
 % model             COBRA model structure
 %
-% Stefania Magnusdottir, Nov 2017
-% Based on function "AnaerobicGrowthGapfilling_AGORA2" by Almut Heinken
-% 01-07/19 edited by AH
+% .. Authors:
+% Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 tol = 1e-6;
 model_old=model;

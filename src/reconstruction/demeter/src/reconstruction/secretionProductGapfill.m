@@ -1,6 +1,29 @@
-function [model,secretionRxnsAdded] = addSecretionProductRxns(model,microbeID,database,inputDataFolder)
-% add exchange and transport reactions for experimentally shown secretion
-% products
+function [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,database,inputDataFolder)
+% This function adds exchange, transport and biosynthesis reactions for 
+% experimentally shown secreted metabolites according to data collected for
+% the DEMETER pipeline.
+%
+% USAGE:
+%
+%   [model,secretionRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
+%
+% INPUTS
+% model:                COBRA model structure
+% microbeID:            ID of the reconstructed microbe that serves as the
+%                       reconstruction name and to identify it in input tables
+% database:             rBioNet reaction database containing min. 3 columns:
+%                       Column 1: reaction abbreviation, Column 2: reaction
+%                       name, Column 3: reaction formula.
+% inputDataFolder:      Folder with input tables with experimental data
+%                       and databases that inform the refinement process
+%
+% OUTPUTS
+% model:                COBRA model structure with added pathways if applies
+% secretionRxnsAdded:   Reactions added based on experimental data
+%
+% .. Author:
+%       - Almut Heinken, 2019-2020
+
 
 % structure of lists of reactions to add per secretion product
 % non-alphanumeric characters are removed from secretion product names in

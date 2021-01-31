@@ -1,6 +1,28 @@
-function [model,uptakeRxnsAdded] = addUptakeRxns(model,microbeID, database, inputDataFolder)
-% add exchange and transport reactions for experimentally shown consumed
-% metabolites
+function [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
+% This function adds exchange, transport and biosynthesis reactions for 
+% experimentally shown consumed metabolites according to data collected for
+% the DEMETER pipeline.
+%
+% USAGE:
+%
+%   [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
+%
+% INPUTS
+% model:             COBRA model structure
+% microbeID:         ID of the reconstructed microbe that serves as the
+%                    reconstruction name and to identify it in input tables
+% database:          rBioNet reaction database containing min. 3 columns:
+%                    Column 1: reaction abbreviation, Column 2: reaction
+%                    name, Column 3: reaction formula.
+% inputDataFolder:   Folder with input tables with experimental data
+%                    and databases that inform the refinement process
+%
+% OUTPUTS
+% model:             COBRA model structure with added pathways if applies
+% uptakeRxnsAdded:   Reactions added based on experimental data
+%
+% .. Author:
+%       - Almut Heinken, 2019-2020
 
 % structure of lists of reactions to add per uptake metabolite
 % non-alphanumeric characters are removed from uptake metabolite names in
@@ -11,7 +33,6 @@ uptakeRxns.Ammonia = {'EX_nh4(e)', 'NH4tb'};
 uptakeRxns.Hydrogen = {'EX_h2(e)', 'H2td'};
 uptakeRxns.Isethionate = {'EX_isetac(e)', 'ISETACabc'};
 uptakeRxns.Menaquinone = {'EX_mqn7(e)', 'MK7te', 'EX_mqn8(e)', 'MK8t','DM_mql7(c)','DM_mql8(c)'};
-% uptakeRxns.Methanol = {'EX_meoh(e)', 'MEOHt2'};
 uptakeRxns.Methanol = {'EX_meoh(e)', 'MEOHt2','PRDX','ALDD1'};
 uptakeRxns.Methylamine = {'EX_mma(e)', 'MMAt2e'};
 uptakeRxns.Niacin = {'EX_nac(e)', 'EX_ncam(e)','NACt2r','NCAMt2r'};
@@ -33,13 +54,10 @@ uptakeRxns.Cholate = {'EX_cholate(e)', 'BIACt1'};
 uptakeRxns.Dimethylamine = {'EX_dma(e)', 'DMAt2r'};
 uptakeRxns.Folate = {'EX_fol(e)', 'FOLabc'};
 uptakeRxns.Formate = {'EX_for(e)','FORt'};
-% uptakeRxns.Glycochenodeoxycholate = {'EX_dgchol(e)', 'EX_C02528(e)', 'EX_gly(e)'};
 uptakeRxns.Glycochenodeoxycholate = {'EX_dgchol(e)', 'GCDCHOLBHSe', 'EX_C02528(e)', 'EX_gly(e)'};
-% uptakeRxns.Pyridoxal = {'EX_pydx(e)', 'PYDXabc', 'EX_pydxn(e)', 'PYDXNabc', 'EX_pydam(e)', 'PYDAMabc'};
 uptakeRxns.Pyridoxal = {'EX_pydx(e)', 'PYDXabc', 'EX_pydxn(e)', 'PYDXNabc', 'EX_pydam(e)', 'PYDAMabc', 'PYDXK'};
 uptakeRxns.Propanol = {'EX_ppoh(e)', 'PPOHt2r'};
 uptakeRxns.Uridine = {'EX_uri(e)', 'URIt2'};
-% uptakeRxns.Urea = {'EX_urea(e)', 'UREAt'};
 uptakeRxns.Urea = {'EX_urea(e)', 'UREAt', 'UREA'};
 uptakeRxns.Riboflavin = {'EX_ribflv(e)', 'RIBFLVt2r'};
 uptakeRxns.Shikimate = {'EX_skm(e)', 'SKMt2'};
@@ -50,27 +68,19 @@ uptakeRxns.Tryptamine = {'EX_trypta(e)', 'TRYPTAte'};
 uptakeRxns.Tyramine = {'EX_tym(e)', 'TYMt2r'};
 uptakeRxns.Trimethylamine = {'EX_tma(e)', 'TMAt2r'};
 uptakeRxns.Taurine = {'EX_taur(e)', 'TAURabc'};
-% uptakeRxns.Taurochenodeoxycholate = {'EX_tdchola(e)', 'EX_C02528(e)', 'EX_taur(e)'};
-% uptakeRxns.Taurocholate = {'EX_tchola(e)', 'EX_cholate(e)', 'EX_taur(e)'};
 uptakeRxns.Taurochenodeoxycholate = {'EX_tdchola(e)', 'TCDCHOLBHSe', 'EX_C02528(e)', 'EX_taur(e)'};
 uptakeRxns.Taurocholate = {'EX_tchola(e)', 'TCHOLBHSe', 'EX_cholate(e)', 'EX_taur(e)'};
 uptakeRxns.Thiamine = {'EX_thm(e)', 'THMabc'};
 uptakeRxns.Thymidine = {'EX_thymd(e)', 'THMDt2r'};
 uptakeRxns.Thiosulfate = {'EX_tsul(e)', 'TSULabc'};
-% uptakeRxns.Glycocholate = {'EX_gchola(e)', 'EX_cholate(e)', 'EX_gly(e)'};
 uptakeRxns.Glycocholate = {'EX_gchola(e)', 'GCHOLBHSe', 'EX_cholate(e)', 'EX_gly(e)'};
 uptakeRxns.x_4Aminobenzoate = {'EX_4abz(e)', '4ABZt2'};
 uptakeRxns.x_4Aminobutyrate = {'EX_4abut(e)', 'ABUTt2r'};
 uptakeRxns.x_23Butanediol = {'EX_btd_RR(e)', 'BTDt1_RR'};
-% uptakeRxns.Glycodeoxycholate = {'EX_M01989(e)', 'EX_dchac(e)', 'EX_gly(e)'};
-% uptakeRxns.Glycolithocholate = {'EX_HC02193(e)', 'EX_HC02191(e)', 'EX_gly(e)'};
-% uptakeRxns.Taurodeoxycholate = {'EX_tdechola(e)', 'EX_dchac(e)', 'EX_taur(e)'};
-% uptakeRxns.Taurolithocholate = {'EX_HC02192(e)', 'EX_HC02191(e)', 'EX_taur(e)'};
 uptakeRxns.Glycodeoxycholate = {'EX_M01989(e)', 'GDCABSHe', 'EX_dchac(e)', 'EX_gly(e)'};
 uptakeRxns.Glycolithocholate = {'EX_HC02193(e)', 'GLCABSHe', 'EX_HC02191(e)', 'EX_gly(e)'};
 uptakeRxns.Taurodeoxycholate = {'EX_tdechola(e)', 'TDCABSHe', 'EX_dchac(e)', 'EX_taur(e)'};
 uptakeRxns.Taurolithocholate = {'EX_HC02192(e)', 'TLCABSHe', 'EX_HC02191(e)', 'EX_taur(e)'};
-% uptakeRxns.x_12Ethanediol = {'EX_12ethd(e)','12ETHDt'};
 uptakeRxns.x_12Ethanediol = {'EX_12ethd(e)','12ETHDt','LCAR2'};
 uptakeRxns.Lalanine = {'EX_ala_L(e)','ALAt2r'};
 uptakeRxns.Larginine = {'EX_arg_L(e)','ARGt2r'};
@@ -137,4 +147,5 @@ if ~isempty(uptCols)
         end
     end
 end
+
 end

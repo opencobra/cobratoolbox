@@ -1,10 +1,32 @@
 function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
-% Goes through the curated microbe reconstructions.
-% Makes reactions previously identified to result in unlimited ATP
-% production irreversible.
-% Also keep track of the GPRs that are removed to replace them in the
-% irreversible reactions.
-% Almut Heinken, 2016-2019
+% Part of the DEMETER pipeline. Resolves reactions that are running in 
+% infeasible directions and causing futile cycles that result in
+% unrealistically high ATP production. All solutions were identified
+% through manual inspection. Any new solutions identified for reaction
+% combinations not yet encountered by DEMETER may be added.
+%
+% USAGE:
+%
+%   [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+%
+% INPUTS
+% model:               COBRA model structure
+% biomassReaction:     Reaction ID of the biomass objective function
+% database:            rBioNet reaction database containing min. 3 columns:
+%                      Column 1: reaction abbreviation, Column 2: reaction
+%                      name, Column 3: reaction formula.
+% unionRxns:           Union of reactions from  multiple reconstructions
+%                      (only for debugging multi-species models)
+% constrainedModels:   COBRA model constrained with defined medium (for 
+%                      certain steps of DEMETER) 
+%
+% OUTPUT
+% model:               COBRA model structure
+% deletedRxns:         Deleted reactions that were causing futile cycles
+% addedRxns:           Added irreversible versions of the deleted reactions
+%
+% .. Author:
+%       - Almut Heinken, 2016-2019
 
 deletedRxns = {};
 addedRxns = {};

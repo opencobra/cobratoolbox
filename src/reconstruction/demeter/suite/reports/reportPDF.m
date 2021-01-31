@@ -216,29 +216,6 @@ else
     fprintf(fid, 'No growth media reported for organism.\n');
 end
 
-% Biomass precursor biosynthesis
-fprintf(fid, '\\section{B-vitamin biosynthesis}\n');
-[TruePositives, FalseNegatives] = testBiomassPrecursorBiosynthesis(model, microbeID);
-if ~isempty(FalseNegatives) || ~isempty(TruePositives)
-    fprintf(fid, '\\begin{tabular}{ll}\n');
-    fprintf(fid, 'Vitamin & \\textit{De novo} synthesis in model\\\\\n');
-    fprintf(fid, '\\hline\\\\\n');
-    if ~isempty(FalseNegatives)
-        for i = 1:length(FalseNegatives)
-            fprintf(fid, '%s & %s\\\\\n', FalseNegatives{i}, 'FALSE');
-        end
-    end
-    if ~isempty(TruePositives)
-        for i = 1:length(TruePositives)
-            fprintf(fid, '%s & %s\\\\\n', TruePositives{i}, 'TRUE');
-        end
-    end
-    fprintf(fid, '\\end{tabular}\n');
-    fprintf(fid, '\n');
-else
-    fprintf(fid, 'No \\textit{de novo} vitamin biosynthesis reported for organism.\n');
-end
-
 % Uptake of known consumed metabolites
 fprintf(fid, '\\section{Known consumed metabolites}\n');
 [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);

@@ -1,12 +1,17 @@
-function printRefinementReport(testResultsFolder,reconVersion)
-% This function runs the semi-automatic refinement pipeline consisting of
-% three steps: 1) refining all draft reconstructions, 2) testing the
-% refined reconstructions against the input data, 3) preparing a report
-% detailing any additional debugging that needs to be performed.
+function curationReport = printRefinementReport(testResultsFolder,reconVersion)
+% This function prints a report of the results of the DEMETER test suite
+% ran on the reconstructs refined in the present project.
 %
 % USAGE:
 %
-%    printRefinementReport(testResultsFolder,version)
+%    curationReport = printRefinementReport(testResultsFolder,reconVersion)
+%
+% INPUTS
+% testResultsFolder         Folder where the test results are saved
+% reconVersion              Name of the refined reconstruction project
+%
+% OUTPUT
+% curationReport            Summary of results of QC/QA tests
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020

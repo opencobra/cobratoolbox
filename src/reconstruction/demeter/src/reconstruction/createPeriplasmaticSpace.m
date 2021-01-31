@@ -1,7 +1,24 @@
 function [model] = createPeriplasmaticSpace(model,microbeID,infoFile)
-% This function creates a periplasmatic space for the refined
-% reconstructions by retrieving all extracellular metabolites and adding
-% a third compartment.
+% Part of the DEMETER pipeline. This function creates a periplasmatic space 
+% for refined reconstructions if it is appropriate for the organism. The 
+% periplasmatic space is created by by retrieving all extracellular 
+% metabolites and adding a third compartment.
+%
+% USAGE
+%       [model] = createPeriplasmaticSpace(model,microbeID,infoFile)
+%
+% INPUT
+% model             COBRA model structure
+% microbeID:        ID of the reconstructed microbe that serves as the
+%                   reconstruction name and to identify it in input tables
+% infoFile:         Table with taxonomic and gram staining information on
+%                   microbes to reconstruct
+%
+% OUTPUT
+% model             COBRA model structure
+%
+% AUTHOR:
+%       - Almut Heinken, 03/2020
 
 % get the information on taxonomy and gram staining to find out if a periplasmatic space
 % should be added

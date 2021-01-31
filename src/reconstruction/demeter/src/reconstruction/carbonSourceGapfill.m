@@ -8,8 +8,8 @@ function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID,
 %
 % INPUT
 % model             COBRA model structure
-% microbeID         Microbe ID corresponding to that in Column 1 in
-%                   carbonSourcesTable
+% microbeID:        ID of the reconstructed microbe that serves as the
+%                   reconstruction name and to identify it in input tables
 % database          rBioNet reaction database containing min. 3 columns:
 %                   Column 1: reaction abbreviation, Column 2: reaction
 %                   name, Column 3: reaction formula.
@@ -21,8 +21,8 @@ function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID,
 %                   for carbon sources
 % addedRxns         List of reactions that were added during refinement
 % removedRxns       List of reactions that were removed during refinement
-% 
 %
+% .. Authors:
 % Almut Heinken and Stefania Magnusdottir, 2016-2020
 
 addedRxns={};

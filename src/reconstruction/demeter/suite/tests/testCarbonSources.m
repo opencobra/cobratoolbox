@@ -87,7 +87,7 @@ else
             else
                 FBA=optimizeCbModel(model,'max');
                 if FBA.stat ~=1
-                    warning('Model infeasible. Testing could nbot be performed.')
+                    warning('Model infeasible. Testing could not be performed.')
                     minFlux=zeros(length(rxnsInModel),1);
                 else
                 [minFlux, ~] = fluxVariability(model, 0, 'max', rxnsInModel);
@@ -134,7 +134,6 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
         FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
-        warning(['Microbe "' microbeID, '" cannot take up carbon source "', FalseNegatives{i}, '".'])
     end
 end
 

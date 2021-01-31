@@ -1,13 +1,38 @@
-function [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
+function [gapfilledReactions,replacedReactions,revisedModel]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
 % and anaerobically, and whether or not unrealistically high ATP is
 % produced on the Western diet.
+%
+% USAGE:
+%
+%   [gapfilledReactions,replacedReactions,revisedModel]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
+%
+% INPUTS
+% model:                   COBRA model structure
+% testResultsFolder:       Folder where the test results are saved
+% inputDataFolder:         Folder with input tables with experimental data
+%                          and databases that inform the refinement process
+% reconVersion:            Name of the refined reconstruction resource
+% microbeID:               ID of the reconstructed microbe that serves as 
+%                          the reconstruction name and to identify it in 
+%                          input tables
+% biomassReaction:         Reaction ID of the biomass objective function
+%
+% OUTPUT
+% gapfilledReactions:      Gapfilled reactions that enable growth and/or
+%                          agreement with experimental data
+% replacedReactions:       Reactions replaced because they were causing 
+%                          futile cycles
+% revisedModel:            Gapfilled COBRA model structure
+%
+% .. Author:
+%       - Almut Heinken, 09/2020
 
-reactionsToGapfill = {};
+gapfilledReactions = {};
 cntGF=1;
-reactionsToReplace = {};
+replacedReactions = {};
 
 tol=0.0000001;
 
@@ -37,10 +62,10 @@ if AnaerobicGrowth(1,1) < tol
     % anaerobically
     [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
-        reactionsToGapfill{cntGF,1}=microbeID;
-        reactionsToGapfill{cntGF,2}='Gapfilled';
-        reactionsToGapfill{cntGF,3}=biomassReaction;
-        reactionsToGapfill(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
+        gapfilledReactions{cntGF,1}=microbeID;
+        gapfilledReactions{cntGF,2}='Gapfilled';
+        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
         cntGF=cntGF+1;
     end
 end
@@ -51,10 +76,10 @@ if AerobicGrowth(1,2) < tol
     model=useDiet(model,WesternDiet);
     [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
-        reactionsToGapfill{cntGF,1}=microbeID;
-        reactionsToGapfill{cntGF,2}='Gapfilled';
-        reactionsToGapfill{cntGF,3}=biomassReaction;
-        reactionsToGapfill(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
+        gapfilledReactions{cntGF,1}=microbeID;
+        gapfilledReactions{cntGF,2}='Gapfilled';
+        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
         cntGF=cntGF+1;
     end
 end
@@ -65,10 +90,10 @@ if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
     [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);
     if ~isempty(gapfilledRxns)
-        reactionsToGapfill{cntGF,1}=microbeID;
-        reactionsToGapfill{cntGF,2}='Gapfilled';
-        reactionsToGapfill{cntGF,3}=biomassReaction;
-        reactionsToGapfill(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
+        gapfilledReactions{cntGF,1}=microbeID;
+        gapfilledReactions{cntGF,2}='Gapfilled';
+        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
         cntGF=cntGF+1;
     end
 end
@@ -101,10 +126,10 @@ if size(fileList,1)>0
                 % find reactions that could be gap-filled to enable flux
                 [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
                 if ~isempty(gapfilledRxns)
-                    reactionsToGapfill{cntGF,1}=microbeID;
-                    reactionsToGapfill{cntGF,2}='Gapfilled';
-                    reactionsToGapfill{cntGF,3}=FNs{j};
-                    reactionsToGapfill(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
+                    gapfilledReactions{cntGF,1}=microbeID;
+                    gapfilledReactions{cntGF,2}='Gapfilled';
+                    gapfilledReactions{cntGF,3}=FNs{j};
+                    gapfilledReactions(cntGF,4:length(gapfilledRxns)+3)=gapfilledRxns;
                     cntGF=cntGF+1;
                 end
             end
@@ -117,9 +142,9 @@ end
 if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
     % let us try if running removeFutileCycles again will work
     [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
-    reactionsToReplace{1,1}=microbeID;
-    reactionsToReplace{1,2}='To replace';
-    reactionsToReplace(1,3:length(deletedRxns)+2)=deletedRxns;
+    replacedReactions{1,1}=microbeID;
+    replacedReactions{1,2}='To replace';
+    replacedReactions(1,3:length(deletedRxns)+2)=deletedRxns;
 end
 
 % rebuild and export the model

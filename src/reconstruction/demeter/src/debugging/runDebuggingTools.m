@@ -14,6 +14,7 @@ function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggi
 % testResultsFolder       Folder where the test results are saved
 % inputDataFolder         Folder with experimental data and database files
 % reconVersion            Name of the refined reconstruction resource
+%
 % OPTIONAL INPUTS
 % numWorkers              Number of workers in parallel pool (default: 2)
 % debuggingFolder         Folder where debugged models and results of
@@ -127,8 +128,8 @@ if length(failedModels)>0
             endPnt=length(failedModels)-i;
         end
         
-        reactionsToGapfillTmp = {};
-        reactionsToReplaceTmp = {};
+        gapfilledReactionsTmp = {};
+        replacedReactionsTmp = {};
         revisedModelTmp = {};
         parfor j=i:i+endPnt
             restoreEnvironment(environment);
@@ -136,20 +137,20 @@ if length(failedModels)>0
             
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-            [reactionsToGapfill,reactionsToReplace,revisedModel]=debugModel(model,testResultsFolder,inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
-            reactionsToGapfillTmp{j} = reactionsToGapfill;
-            reactionsToReplaceTmp{j} = reactionsToReplace;
+            [gapfilledReactions,replacedReactions,revisedModel]=debugModel(model,testResultsFolder,inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
+            gapfilledReactionsTmp{j} = gapfilledReactions;
+            replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;
         end
         for j=i:i+endPnt
             % print the results of the debug gapfilling
-            if ~isempty(reactionsToReplaceTmp{j})
-            debuggingReport(cnt,1:size(reactionsToReplaceTmp{j},2))=reactionsToReplaceTmp{j};
+            if ~isempty(replacedReactionsTmp{j})
+            debuggingReport(cnt,1:size(replacedReactionsTmp{j},2))=replacedReactionsTmp{j};
             cnt=cnt+1;
             end
-            if ~isempty(reactionsToGapfillTmp{j})
-            for k=1:size(reactionsToGapfillTmp{j},1)
-                debuggingReport(cnt,1:size(reactionsToGapfillTmp{j},2))=reactionsToGapfillTmp{j}(k,:);
+            if ~isempty(gapfilledReactionsTmp{j})
+            for k=1:size(gapfilledReactionsTmp{j},1)
+                debuggingReport(cnt,1:size(gapfilledReactionsTmp{j},2))=gapfilledReactionsTmp{j}(k,:);
                 cnt=cnt+1;
             end
             end

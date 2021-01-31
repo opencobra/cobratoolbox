@@ -1,8 +1,26 @@
 function [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database)
-% fills in putrefaction pathways based on PMID:29163445
-% Table generated from Supplementary Table S1 in the above reference
-% First column: Strain
-% Following columns: 1 if pathway present, 0 if not
+% This function adds exchange, transport and biosynthesis reactions for 
+% putrefaction pathways according to data collected from Ref. PMID:29163445
+% as part of the DEMETER pipeline.
+%
+% USAGE:
+%
+%    [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database)
+%
+% INPUTS
+% model:             COBRA model structure
+% microbeID:         ID of the reconstructed microbe that serves as the
+%                    reconstruction name and to identify it in input tables
+% database:          rBioNet reaction database containing min. 3 columns:
+%                    Column 1: reaction abbreviation, Column 2: reaction
+%                    name, Column 3: reaction formula.
+%
+% OUTPUTS
+% model:             COBRA model structure with added pathways if applies
+% rxnsAdded:         Reactions added based on experimental data
+%
+% .. Author:
+%       - Almut Heinken, 2019-2020
 
 PutrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');
 PutrefactionTable = table2cell(PutrefactionTable);

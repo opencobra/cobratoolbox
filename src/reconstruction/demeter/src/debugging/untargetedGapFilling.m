@@ -1,8 +1,26 @@
 function model = untargetedGapFilling(model,osenseStr,database)
-% Only perform this script if model cannot grow, otherwise no additional gap-filling
-% needed.
-% Will be performed only if targeted gap-filling failed. Will add
-% reaction(s) derived from the complete database that can restore growth.
+% This script is part of the DEMETER pipeline and attemps to find a
+% reaction from the complete reaction database that could enable flux 
+% through the objective function. This function will be performed only if 
+% targeted gap-filling failed.
+%
+% USAGE:
+%
+%   model = untargetedGapFilling(model,osenseStr,database)
+%
+% INPUTS
+% model:              COBRA model structure
+% osenseStr:          Maximize ('max')/minimize ('min')linear part of the 
+%                     objective.
+% database:           rBioNet reaction database containing min. 3 columns:
+%                     Column 1: reaction abbreviation, Column 2: reaction
+%                     name, Column 3: reaction formula.
+%
+% OUTPUT
+% model:               Gapfilled COBRA model structure
+%
+% .. Authors:
+%       - Almut Heinken, 2016-2020
 
 % remove human reactions from database
 humanComp = {'[m]','[l]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};

@@ -5,7 +5,7 @@ function [modelIDsMissingInTable,incorrectIDsInTable] = testInputFiles
 % OUTPUT
 % modelIDsMissingInTable       AGORA2 reconstruction IDs missing in the table
 % incorrectIDsInTable          Reconstruction IDs in the table not
-%                              corresponding to any reconsturction
+%                              corresponding to any reconstruction
 % Almut Heinken, 09/2019
 
 [~, infoFile, ~] = xlsread('AGORA2_infoFile.xlsx');
@@ -14,11 +14,10 @@ models=infoFile(2:end,1);
 inputTables = {
     'AromaticAATable'
     'BileAcidTable'
-    'BvitaminBiosynthesisTable'
     'CarbonSourcesTable'
     'FermentationTable'
     'GenomeAnnotation'
-    'NutrientRequirementsTable'
+    'GrowthRequirementsTable'
     'PutrefactionTable'
     'uptakeTable'
     'secretionProductTable'

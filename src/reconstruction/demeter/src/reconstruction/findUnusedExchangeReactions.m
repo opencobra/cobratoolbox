@@ -1,7 +1,20 @@
 function [model, unusedExchanges] = findUnusedExchangeReactions(model)
-
-% finds exchange reactions that are no longer used and should be deleted
-% after deleting unnecessary transport reactions gapfilled by Model Seed
+% Part of the DEMETER pipeline. Finds exchange reactions that are no longer 
+% used and should be deleted after deleting unnecessary transport reactions 
+% gapfilled by Model SEED.
+%
+% USAGE   
+%       [model, unusedExchanges] = findUnusedExchangeReactions(model)
+%
+% INPUT
+% model                COBRA model structure
+%
+% OUTPUT
+% model                COBRA model structure
+% unusedExchanges      Removed unused exchange reactions
+%
+% .. Authors:
+% Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 unusedExchanges = {};
 

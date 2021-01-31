@@ -1,4 +1,18 @@
 function [model, deletedSEEDRxns] = deleteSeedGapfilledReactions(model, biomassReaction)
+% Part of the DEMETER pipeline. Deletes reactions gapfilled by the Model
+% SEED pipeline that are no longer needed after the reconstruction was
+% refined.
+%
+% INPUT
+% model             COBRA model structure
+% biomassReaction   Biomass reaction abbreviation
+%
+% OUTPUT
+% model             COBRA model structure
+% deletedSEEDRxns   deleted gapfilled reactions
+%
+% .. Authors:
+% Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

@@ -1,6 +1,19 @@
 function model = addRefinementComments(model)
 % Adds descriptions to the model.comments field based on refinement
-% performed.
+% performed by the DEMETER pipeline
+%
+% USAGE:
+%
+%   model = addRefinementComments(model)
+%
+% INPUT
+% model:                   COBRA model structure
+%
+% OUTPUT
+% model:                   COBRA model structure with comments
+%
+% .. Author:
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2020
 
 %% remove the 'gap_filled' and 'exchange_reaction' label in genes
 model.grRules=strrep(model.grRules,'gap_filled','');

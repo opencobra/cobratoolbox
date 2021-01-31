@@ -7,8 +7,8 @@ function [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, mic
 %
 % INPUT
 % model             COBRA model structure
-% microbeID         Microbe ID corresponding to that in Column 1 in
-%                   fermDataTable
+% microbeID:        ID of the reconstructed microbe that serves as the
+%                   reconstruction name and to identify it in input tables
 % fermDataTable     Data table with binary data showing which microbe
 %                   should have what fermentation pathway(s).
 %                   Column 1: Cell array of strings with microbeIDs.

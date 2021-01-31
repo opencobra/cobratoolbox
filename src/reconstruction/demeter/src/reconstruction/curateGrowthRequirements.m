@@ -29,8 +29,8 @@ function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequireme
 %
 % OUTPUTS
 % model                 COBRA model structure
-% addedMismatchRxns     
-% deletedMismatchRxns   
+% addedMismatchRxns     Reactions added to conform to growth requirements
+% deletedMismatchRxns   Reactions deleted to conform to growth requirements
 %
 % .. Authors:
 %       - Almut Heinken, 2016-2020

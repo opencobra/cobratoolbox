@@ -1,12 +1,29 @@
 function [model] = conditionSpecificGapFilling(model,database)
-% resolves reactions that are running in infeasible directions
-% which of the reactions that are unlikely to be reversible can be fixed?
-% mark included reactions with GF = gapfilled
-% Almut Heinken, 2016-2019
-% 26.07.19: Simplified script.
+% Part of the DEMETER pipeline. Resolves reactions that were repalced by
+% irreversible versions during the conversion from KBase to VMH
+% nomenclature. As a result, models may no longer grow. This function adds
+% reactions that restore grow and allow the production of biomass
+% precursors in a realisitc manner. All solutions were identified
+% through manual inspection. Any new solutions identified for reaction
+% combinations not yet encountered by DEMETER may be added.
+%
+% USAGE
+%       [model] = conditionSpecificGapFilling(model,database)
+%
+% INPUT
+% model             COBRA model structure
+% database          rBioNet reaction database containing min. 3 columns:
+%                   Column 1: reaction abbreviation, Column 2: reaction
+%                   name, Column 3: reaction formula.
+%
+% OUTPUT
+% model             COBRA model structure
+%
+% .. Author:
+%       Almut Heinken, 2016-2019
 
-% Define the conditions in which reactions should be gap-filled. All
-% solutions were determined manually.
+% Define the conditions in which reactions should be gap-filled
+
 conditionSpecificGapfills={'rxnPresent','rxnAbsent','changeConstraints','gapfillRxns'
 'EX_dpcoa(e) OR EX_coa(e)',[],1,'PTPAT AND DPCOAK AND PPCDC AND PPNCL3 AND PNTK AND EX_pnto_R(e) AND PNTOabc'
 [],'EX_pnto_R(e)',0,'PTPAT AND DPCOAK AND PPCDC AND PPNCL3 AND PNTK AND EX_pnto_R(e) AND PNTOabc'

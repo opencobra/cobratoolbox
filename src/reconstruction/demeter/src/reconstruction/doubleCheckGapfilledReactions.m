@@ -1,7 +1,33 @@
 function [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)
-% remove gapfilled reactions that are no longer needed.
-% In some models, removing reactions that allow growth on defined medium
-% will abolish growth on Western diet --> both need to be tested separately
+% Part of the DEMETER pipeline. Deletes reactions gapfilled by DEMETER that are no longer needed after the reconstruction was
+% are no longer needed after finishing all steps of the pipeline.
+%
+% USAGE
+%       [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)
+%
+% INPUT
+% model:                    COBRA model structure
+% summary:                  Structure with information of refinement 
+%                           performed on the model
+% biomassReaction:          Biomass reaction abbreviation
+% microbeID:                ID of the reconstructed microbe that serves as the
+%                           reconstruction name and to identify it in input tables
+% database                  rBioNet reaction database containing min. 3 columns:
+%                           Column 1: reaction abbreviation, Column 2: reaction
+%                           name, Column 3: reaction formula.
+% definedMediumGrowthOK:    If 1, defined medium is available for the
+%                           organism and the model can grow on it
+% inputDataFolder:          Folder with experimental data and database files
+%                           to load
+%
+% OUTPUT
+% model:                    COBRA model structure
+% summary:                  Structure with information of refinement 
+%                           performed on the model
+%
+% .. Author:
+%           Almut Heinken, 03/2020
+
 tol=0.0000001;
 
 % load Western diet

@@ -1,5 +1,26 @@
 function model = targetedGapFilling(model,osenseStr,database)
-
+% This function gapfills a reconstruction during the DEMETER refinement 
+% suite to conform with experimental data and/or to enable growth.
+% Metabolites are identified that would enable flux and reactions are
+% gapfilled based on that.
+%
+% USAGE:
+%
+%   model = targetedGapFilling(model,osenseStr,database)
+%
+% INPUTS
+% model:              COBRA model structure
+% osenseStr:          Maximize ('max')/minimize ('min')linear part of the 
+%                     objective.
+% database:           rBioNet reaction database containing min. 3 columns:
+%                     Column 1: reaction abbreviation, Column 2: reaction
+%                     name, Column 3: reaction formula.
+%
+% OUTPUT
+% model:               Gapfilled COBRA model structure
+%
+% .. Authors:
+%       - Almut Heinken, 2016-2020
 
 tol = 0.00001;
 

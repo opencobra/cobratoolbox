@@ -1,5 +1,21 @@
 function [resolveBlocked,model]=connectRxnGapfilling(model,database)
-% script to connect blocked reactions in reconstruction if possible
+% Part of the DEMETER pipeline. This function adds reactions to unblock
+% specific pathways.
+%
+% USAGE
+%       [resolveBlocked,model]=connectRxnGapfilling(model,database)
+%
+% INPUT
+% model             COBRA model structure
+% database          rBioNet reaction database containing min. 3 columns:
+%                   Column 1: reaction abbreviation, Column 2: reaction
+%                   name, Column 3: reaction formula.
+%
+% OUTPUT
+% model             COBRA model structure
+%
+% .. Authors:
+% Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -61,13 +77,16 @@ rxns2Unblock={
     'BZAMAH','EX_bzam(e)','BZAMt2r','EX_bz(e)','BZte',[],[],[],[],[]
     'BOCLUH','EX_bocbnleu(e)','BOCBNLEUt2r','EX_bz(e)','BZte',[],[],[],[],[]
     };
+
 rxnsInModel=intersect(model.rxns,rxns2Unblock(:,1),'stable');
-if ~isempty(ver('distcomp')) && any(strcmp(solver,{'ibm_cplex','tomlab_cplex','cplex_direct'}))
+
+if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         rxnsInModel, 'S');
 else
     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
 end
+
 for i=1:length(rxnsInModel)
     if minFlux(i) < tol && maxFlux(i) < tol
         gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
