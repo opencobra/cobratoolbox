@@ -14,9 +14,9 @@ function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = te
 %
 % OUTPUT
 % growsOnDefinedMedium          Bool if growth on defined medium yes or no
-% essentialExchanges            Exchanges that need to be open to enable growth
 % constrainedModel              Model constrained with essential exchanges (anaerobic)
-% growthOnKnownCarbonSources
+% growthOnKnownCarbonSources    Aerobic and anaerobic growth on known
+%                               carbon sources for the organism
 %
 % Almut Heinken, November 2018
 

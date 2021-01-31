@@ -85,7 +85,7 @@ if ~isempty(mRow)
         
         % enforce demand reactions for cobalamin, biotin and heme
         dmRxns={'DM_adocbl(c)', 'DM_btn', 'DM_btn', 'DM_pheme(c)', 'DM_thmpp(c)'};
-        model=changeRxnBounds(model,dmRxns,0.1,'l');
+        model=changeRxnBounds(model,dmRxns,0.00001,'l');
         
         % check if this abolishes growth
         FBA = optimizeCbModel(model, 'max');
@@ -146,12 +146,14 @@ if ~isempty(mRow)
         essentialComp=union(essentialComp,speciesNutrRequ(str2double(speciesNutrRequ(:,2))==0,1));
         [~,findEssExch]=intersect(transpExch(:,1),essentialComp);
         for i=1:length(findEssExch)
+            if isempty(find(strcmp(model.rxns,transpExch{findEssExch(i),1})))
             % find the formula
             formula = database.reactions{find(strcmp(database.reactions(:, 1), transpExch{findEssExch(i),1})), 3};
             model = addReaction(model, transpExch{findEssExch(i),1}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
             formula = database.reactions{find(strcmp(database.reactions(:, 1), transpExch{findEssExch(i),2})), 3};
             model = addReaction(model, transpExch{findEssExch(i),2}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
             addedMismatchRxns(length(addedMismatchRxns)+1:length(addedMismatchRxns)+2,1)=transpExch(findEssExch(i),:)';
+            end
         end
         
         nonessentialComp=speciesNutrRequ(str2double(speciesNutrRequ(:,2))==-1,1);
@@ -300,7 +302,7 @@ if ~isempty(mRow)
             {'EX_thm(e)'},{'-1'},{'1'},{''},{''},{'EX_thm(e)'},{'AHMMPS','AMPMS2','DM_4HBA','DM_GCALD','DXPS','GARFTi','GART','GLUPRT','HETZK','HMPK1','PMPK','PRAGS','PRAIS','PRFGS','THZPSN','TMDPK','TMK','TMN','TMPK','TMPPP'},{''},{''}
             {'EX_thm(e)'},{'1'},{'0'},{''},{''},{''},{'EX_thm(e)','THMabc','DM_thmpp(c)'},{'AHMMPS','AMPMS2','DM_4HBA','DM_GCALD','DXPS','GARFTi','GART','GLUPRT','HETZK','HMPK1','PMPK','PRAGS','PRAIS','PRFGS','THZPSN','TMDPK','TMK','TMN','TMPK','TMPPP'},{''}
             {'EX_adocbl(e)'},{'1'},{'0'},{''},{''},{''},{'EX_adocbl(e)','ADOCBLabc','DM_adocbl(c)','EX_cbl1(e)','CBL1abc'},{},{''}
-            {'EX_btn(e)'},{'-1'},{'1'},{''},{''},{'EX_btn(e)'},{'BTNCL','ACCOACL','MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''},{''}
+            {'EX_btn(e)'},{'-1'},{'1'},{''},{''},{'EX_btn(e)'},{'BTNCLi','ACCOACL','MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''},{''}
             {'EX_btn(e)'},{'1'},{'0'},{''},{''},{''},{'EX_btn(e)','BTNabc','DM_btn'},{'MALCOAMT','MALCOACD','3OAACPR1','3HACPR1','EACPR1','GACPCD','3OAACPR2','3HACPR2','EACPR2','PMACPME','AOXSr2','AMAOTr','DM_AMOB','MEOHt2','EX_meoh(e)','DBTS','BTS4','5DOAN','DM_5DRIB','sink_s'},{''}
             {'EX_btn(e)'},{'0'},{'1'},{''},{''},{''},{'EX_btn(e)','BTNabc'},{''},{''}
             {'EX_pheme(e)'},{'-1'},{'1'},{''},{''},{'EX_pheme(e)'},{'CPPPGO2','DM_dad_5','FCLTc','G1SAT','GLUTRR','GLUTRS','HMBS','PPBNGS','PPPGO3','UPP3S','UPPDC1','EX_succ(e)','SUCCt'},{''},{''}
@@ -666,17 +668,14 @@ if ~isempty(mRow)
         
         % check if growth is possible, try gapfilling otherwise
         FBA = optimizeCbModel(model, 'max');
-        if FBA.f < tol
+        if FBA.f < tol || FBA.stat==0
             model = targetedGapFilling(model,'max',database);
-            FBA = optimizeCbModel(model, 'max');
-            if FBA.f > tol
-                % Save the gapfilled reactions
-                for n = 1:length(model.rxns)
-                    if ~isempty(strfind(model.rxns{n, 1}, '_tGF'))
-                        addedMismatchRxns{length(addedMismatchRxns)+1, 1} = strrep(model.rxns{n}, '_GF', '');
-                        model.rxns{n, 1}=strrep(model.rxns{n}, '_tGF', '');
-                        model.grRules{n, 1} = 'GrowthRequirementsGapfill';
-                    end
+            % Save the gapfilled reactions
+            for n = 1:length(model.rxns)
+                if ~isempty(strfind(model.rxns{n, 1}, '_tGF'))
+                    addedMismatchRxns{length(addedMismatchRxns)+1, 1} = strrep(model.rxns{n}, '_tGF', '');
+                    model.rxns{n, 1}=strrep(model.rxns{n}, '_tGF', '');
+                    model.grRules{n, 1} = 'GrowthRequirementsGapfill';
                 end
             end
         end

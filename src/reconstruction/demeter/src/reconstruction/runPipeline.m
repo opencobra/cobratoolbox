@@ -1,4 +1,4 @@
-function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder,sbmlFolder] = runPipeline(draftFolder, varargin)
+function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = runPipeline(draftFolder, varargin)
 % This function runs the semi-automatic refinement pipeline consisting of
 % three steps: 1) refining all draft reconstructions, 2) testing the
 % refined reconstructions against the input data, 3) preparing a report
@@ -24,8 +24,6 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder,sbmlFo
 % reconVersion             Name of the refined reconstruction resource
 %                          (default: "Reconstructions")
 % numWorkers               Number of workers in parallel pool (default: 2)
-% createSBML               Boolean defining if a SBML file for each refined
-%                          reconstruction should be created (default=false)
 % sbmlFolder               Folder where SBML files, if desired, will be saved
 %
 % OUTPUTS
@@ -37,7 +35,6 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder,sbmlFo
 %                          nomenclature and stored as mat files
 % summaryFolder            Folder with information on performed gapfilling
 %                          and refinement
-% sbmlFolder               Folder where SBML files, if desired, will be saved
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
@@ -52,8 +49,7 @@ parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('inputDataFolder', '', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
-parser.addParameter('createSBML', false, @islogical);
-parser.addParameter('sbmlFolder', [pwd filesep 'refinedReconstructions_SBML'], @ischar);
+parser.addParameter('sbmlFolder', '', @ischar);
 
 parser.parse(draftFolder, varargin{:});
 
@@ -65,7 +61,6 @@ infoFilePath = parser.Results.infoFilePath;
 inputDataFolder = parser.Results.inputDataFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
-createSBML = parser.Results.createSBML;
 sbmlFolder = parser.Results.sbmlFolder;
 
 if isempty(infoFilePath)
@@ -91,7 +86,9 @@ end
 mkdir(refinedFolder)
 mkdir(translatedDraftsFolder)
 mkdir(summaryFolder)
+if ~isempty(sbmlFolder)
 mkdir(sbmlFolder)
+end
 
 %% prepare pipeline run
 % Get all models from the input folder
@@ -250,7 +247,7 @@ end
 
 %% create SBML files (default=not created)
 
-if createSBML
+if ~isempty(sbmlFolder)
     createSBMLFiles(refinedFolder, sbmlFolder)
 end
 

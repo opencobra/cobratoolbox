@@ -191,7 +191,7 @@ summary.('deletedMismatchRxns')={};
 for i = 1:6
     [growsOnDefinedMedium,essentialExchanges] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==0
-        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
+        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder);
         summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
         summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
     else
@@ -244,18 +244,17 @@ summary.('removedUnannotatedReactions') = rmUnannRxns;
 %% enable growth on defined medium if still needed
 [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
 if growsOnDefinedMedium==0
-    [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
+    [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder);
     summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
     summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
-
+    
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium
         summary.('definedMediumGrowth')=growsOnDefinedMedium;
     else
-        % run gapfilling tools to enable biomass production on the defined
-        % medium
-        [model,gapfilledRxns] = runGapfillingTools(constrainedModel,biomassReaction,biomassReaction,'max',database);
-        summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
+        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder);
+        summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);
+        summary.('deletedMismatchRxns') = union(summary.('deletedMismatchRxns'),deletedMismatchRxns);
     end
 end
 

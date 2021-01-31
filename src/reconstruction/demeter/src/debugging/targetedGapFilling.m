@@ -8,6 +8,8 @@ tol = 0.00001;
 % produced
 
 gapfillSolutions={'Metabolite','Present','ToAdd'
+    'adn[c]', '', {'ADPRDP','NADN'}
+    'ins[c]', '', {'ADPRDP','NADN','INSH'}
     'ca2[c]', '', {'EX_ca2(e)','CA2abc'}
     'cobalt2[c]', '', {'EX_cobalt2(e)','Coabc'}
     'utp[c]', '', {'NDPK3','NDPK1','NDPK2','NDPK4','NDPK5','NDPK6','NDPK7','NDPK8','NDPK9','URIDK1','URIDK2'}
@@ -47,7 +49,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'val_L[c]', '', {'EX_val_L(e)','VALt2r'}
     'pphn[c]', '', {'EX_phe_L(e)','PHEt2r','EX_tyr_L(e)','TYRt2r'}
     'pheme[c]', '', {'EX_pheme(e)','HEMEti'}
-    'adocbl[c]', '', {'EX_adocbl(e)','ADOCBLabc'}
+    'adocbl[c]', '', {'EX_adocbl(e)','ADOCBLabc','ADPRDP','NADN'}
     'sheme[c]', '', {'EX_sheme(e)','SHEMEabc'}
     'udpg[c]', '', {'GALUi','PGMT'}
     'spmd[c]', '', {'EX_spmd(e)','SPMDabc'}
@@ -72,7 +74,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'f6p[c]', '', {'FBP'}
     'acgam[c]', '', {'G1PACT','UAGDP'}
     'nmn[c]', '', {'EX_nmn(e)','NMNP'}
-    'btn[c]', '', {'EX_btn(e)','BTNabc','BTNCL','ACCOACL'}
+    'btn[c]', '', {'EX_btn(e)','BTNabc','BTNCLi','ACCOACL','ADPRDP','NADN'}
     '2obut[c]', '', {'DM_2obut[c]'}
     '', {'G16BPS','G1PP','G1PPT'}, {'G1PACT','UAGDP'}
     'gam[c]', '', {'GF6PTA'}
@@ -101,7 +103,7 @@ end
 % consumed. This makes targeted gap-filling possible.
 
 FBA = optimizeCbModel(model,osenseStr);
-if abs(FBA.f) < tol
+if abs(FBA.f) < tol || FBA.stat==0
     
     % try adding one by one
     growthEnablingMets={};
@@ -120,7 +122,7 @@ if abs(FBA.f) < tol
         % additional gap-filling needed
         for k=1:5
             FBA = optimizeCbModel(model,osenseStr);
-            if abs(FBA.f) < tol
+            if abs(FBA.f) < tol || FBA.stat==0
                 
                 % try adding one after another
                 model_old=model;

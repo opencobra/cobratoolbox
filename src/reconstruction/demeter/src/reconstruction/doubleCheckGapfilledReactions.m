@@ -83,8 +83,8 @@ summary.addedReactionsBiomass=setdiff(summary.addedReactionsBiomass,toRemove);
 % some models require another gapfill afterwards
 if isnumeric(definedMediumGrowthOK)==1
     [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
-    if any(str2double(growthOnKnownCarbonSources(:,2)) < tol)
-        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, biomassReaction, database, inputDataFolder);
+    if growsOnDefinedMedium==0
+        [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder);
     end
 summary.addedMismatchRxns=union(summary.addedMismatchRxns,addedMismatchRxns);
 end
