@@ -69,6 +69,8 @@ testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVer
 plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
 
 %% prepare a report of the QA/QC status of the models
+curationReport={};
+
 % curationReport = printRefinementReport(testResultsFolder,reconVersion);
 
 %% Give an individual report of each reconstruction if desired.
