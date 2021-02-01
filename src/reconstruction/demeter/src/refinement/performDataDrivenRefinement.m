@@ -39,10 +39,10 @@ summary.('removedRxns_carbonSources') = removedRxns;
 [model,putrefactionRxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database);
 summary.('putrefactionRxnsAdded') = putrefactionRxnsAdded;
 %% Known secretion products
-[model,secretionRxnsAdded] = addSecretionProductRxns(model,microbeID,database,inputDataFolder);
+[model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,database,inputDataFolder);
 summary.('secretionRxnsAdded') = secretionRxnsAdded;
 %% Known consumed metabolites
-[model,uptakeRxnsAdded] = addUptakeRxns(model,microbeID,database, inputDataFolder);
+[model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID,database, inputDataFolder);
 summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 
 %% test pathways to make sure they work
