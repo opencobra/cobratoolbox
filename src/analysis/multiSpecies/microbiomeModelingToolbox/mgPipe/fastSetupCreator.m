@@ -1,4 +1,4 @@
-function model = fastSetupCreator(modPath, organisms, microbeNames, host, objre)
+function model = fastSetupCreator(modPath, microbeNames, host, objre)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -15,7 +15,6 @@ function model = fastSetupCreator(modPath, organisms, microbeNames, host, objre)
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
 % INPUTS:
-%    organisms:           nx1 cell array cell array with names of organisms in the study
 %    modPath:             char with path of directory where models are stored
 %    microbeNames:        nx1 cell array of n unique strings that represent
 %                         each microbe model. Reactions and metabolites of
@@ -25,7 +24,7 @@ function model = fastSetupCreator(modPath, organisms, microbeNames, host, objre)
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
-%    objre:               char with reaction name of objective function of organisms
+%    objre:               char with reaction name of objective function of microbeNames
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
@@ -39,8 +38,8 @@ if ~isempty(host)  % Get list of all exchanged metabolites
 else
     exch = {};
 end
- for j = 1:size(organisms, 1)
-    model = ([modPath filesep organisms{j,1} '.mat']);
+ for j = 1:size(microbeNames, 1)
+    model = readCbModel([modPath filesep microbeNames{j,1} '.mat']);
     %exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
     exStruct = findSExRxnInd(model);
     new_exch = findMetsFromRxns(model,model.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
@@ -167,10 +166,10 @@ end
 
 
 %% create a new extracellular space [u] for microbes, code runs in parallel
-modelStorage = cell(size(organisms));
+modelStorage = cell(size(microbeNames));
 % MexGJoined=MexGHost;
-parfor j = 1:size(organisms, 1)
-    model = ([modPath filesep organisms{j,1} '.mat']);
+parfor j = 1:size(microbeNames, 1)
+    model = readCbModel([modPath filesep microbeNames{j,1} '.mat']);
     
     % removing possible constraints of the bacs
     selExc = findExcRxns(model);
@@ -218,8 +217,8 @@ end
 
 pos = {};  % array where the position of models that cannot be merged pairwise (because their number in that iter is not
 % even) in the original modelStorage vector is stored
-dim = size(organisms, 1);
-for j = 2:(floor(log2(size(organisms, 1))) + 1)  % +1 because it starts with one column shifted
+dim = size(microbeNames, 1);
+for j = 2:(floor(log2(size(microbeNames, 1))) + 1)  % +1 because it starts with one column shifted
 	if mod(dim, 2) == 1  % check if number is even or not
 		halfdim = dim - 1;  % approximated half dimension (needed to find how many iters to do
         % for the pairwise merging
@@ -249,7 +248,7 @@ end
 
 % Merging the models remained alone and non-pairwise matched
 if isempty(pos)== 1 %all the models were pairwise-merged
-[model] = modelStorage{1,(floor(log2(size(organisms,1)))+1)};
+[model] = modelStorage{1,(floor(log2(size(microbeNames,1)))+1)};
 else
     position = pos(1,:); %finding positions of non merged models
     nexmod = find(~cellfun(@isempty,pos(1,:)));
@@ -262,10 +261,10 @@ else
                [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false);
             end
         end
-      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(organisms,1)))+1)},model,1,false);
+      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},model,1,false);
     end
     if (length(toMerge)) == 1 %1 model was not pairwise merged
-        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(organisms,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false);
+        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false);
     end
 end
 
