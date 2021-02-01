@@ -35,8 +35,11 @@ function [expressionCol,  gene_used, signifCol] = selectGeneFromGPR(model, gene_
 %                   No gene-expression data and orphan reactions will
 %                   be given a value of 0.
 %
+
 % Authors: Anne Richelle, May 2017
 %          Chaitra Sarathy, Oct 2019, add significance value as optional input
+%          Ronan Fleming, NaN replaces -1 when no data
+%                        min/max/sum ignore NaN values
 
 if ~exist('minSum','var')
     minSum = false;
@@ -53,8 +56,8 @@ for i=1:length(model.rxns)
 	gene_used{i}='';
 end
 
-% -1 means unknown/no data
-expressionCol = -1*ones(length(model.rxns),1); 
+% NaN means unknown/no data
+expressionCol = NaN*ones(length(model.rxns),1); 
 signifCol = zeros(length(model.rxns),1); 
 for i = 1:length(model.rxns)
     curExprArr=parsedGPR{i};
@@ -68,14 +71,14 @@ for i = 1:length(model.rxns)
             if ~isempty(geneID) 
                 if minSum
                     % This is an or rule, so we sum up all options.
-                    curExpr = [curExpr, sum(gene_exp(geneID))];
+                    curExpr = [curExpr, sum(gene_exp(geneID),'omitnan')];
                     gene_potential=[gene_potential, gene_names(geneID)'];
                     if geneSigFlag ~= 0 
-                        curSig = [curSig, sum(gene_sig(geneID))]; 
+                        curSig = [curSig, sum(gene_sig(geneID),'omitnan')]; 
                     end
                 else
                     % If there is data for any gene in 'AND' rule, take the minimum value
-                    [minGenevalue, minID]=min(gene_exp(geneID));
+                    [minGenevalue,minID] = min(gene_exp(geneID),[],'omitnan');
                     curExpr= [curExpr, minGenevalue]; %If there is data for any gene in 'AND' rule, take the minimum value
                     gene_potential=[gene_potential, gene_names(geneID(minID))]; 
                     if geneSigFlag ~= 0
@@ -88,14 +91,14 @@ for i = 1:length(model.rxns)
     if ~isempty(curExpr)
         if minSum
             % in case of min sum these are and clauses that are combined, so its the minimum.
-            [expressionCol(i), ID_min] = min(curExpr);
+            [expressionCol(i), ID_min] = min(curExpr,[],'omitnan');
             gene_used{i}=gene_potential(ID_min);
             if ~isempty(curSig)
                 signifCol(i) = curSig(ID_min); 
             end
         else
             % if there is data for any gene in the 'OR' rule, take the maximum value
-            [expressionCol(i), ID_max] = max(curExpr);
+            [expressionCol(i), ID_max] = max(curExpr,[],'omitnan');
             gene_used{i}=gene_potential(ID_max);
             if ~isempty(curSig)
                 signifCol(i) = curSig(ID_max); 
