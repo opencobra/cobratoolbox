@@ -14,7 +14,7 @@ function producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatu
 % reconVersion          Name assigned to the reconstruction resource
 % OPTIONAL INPUT
 % customFeatures        Features other than taxonomy to cluster microbes
-%                       by. Need to be a table header in the file with 
+%                       by. Need to be a table header in the file with
 %                       information on reconstructions.
 %
 %   - AUTHOR
@@ -81,27 +81,25 @@ for k=1:size(analyzedFiles,1)
             data=rp';
             red_orgs=orgs;
             
-            % remove taxa with too few members
-            [uniqueXX, ~, J]=unique(taxa) ;
-            occ = histc(J, 1:numel(uniqueXX));
-            if i>2
-                toofew=uniqueXX(occ<sum(occ)/200);
-            elseif i<=2 && i <5
-                toofew=uniqueXX(occ<sum(occ)/2000);
-            else
-                toofew=uniqueXX(occ<sum(occ)/10000);
-            end
-            data(find(ismember(taxa,toofew)),:)=[];
-            red_orgs(ismember(taxa,toofew),:)=[];
-            taxa(find(ismember(taxa,toofew)),:)=[];
+            % remove entries that are all zeros
+            toDel=sum(data,1)<tol;
+            data(:,toDel)=[];
+            
+            % remove entries that are NaNs
+            findnans=any(isnan(data));
+            data(:,findnans==1)=[];
             
             % remove unclassified organisms
             data(find(strcmp(taxa,'N/A')),:)=[];
             red_orgs(strcmp(taxa,'N/A'),:)=[];
             taxa(find(strcmp(taxa,'N/A')),:)=[];
             
-            % remove NaNs
-            data(:,find(isnan(data(1,:))))=[];
+            
+            % remove unclassified organisms
+            data(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
+            red_orgs(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
+            taxa(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
+            
             
             if i==6
                 % remove unclassified species
@@ -118,9 +116,29 @@ for k=1:size(analyzedFiles,1)
                 taxa(toDel,:)=[];
             end
             
-            % remove entries that are all zeros
-            toDel=sum(data,1)<tol;
-            data(:,toDel)=[];
+            % remove taxa with too few members
+            [uniqueXX, ~, J]=unique(taxa) ;
+            occ = histc(J, 1:numel(uniqueXX));
+            
+            if length(uniqueXX) >15
+                % sort by number of entries and remove the ones with the least
+                % entries
+                [B,I]=sort(occ,'descend');
+                uniqueXX=uniqueXX(I);
+                
+                if sum(B==1) > length(B)-15
+                    % remove all that are just one entry
+                    uniqueXX(B==1)=[];
+                else
+                    % remove all but 15 highest
+                    uniqueXX=uniqueXX(1:15);
+                end
+                
+                [C,IA]=setdiff(taxa,uniqueXX);
+                data(find(ismember(taxa,C)),:)=[];
+                red_orgs(ismember(taxa,C),:)=[];
+                taxa(find(ismember(taxa,C)),:)=[];
+            end
             
             if size(data,1)>10
                 
@@ -156,9 +174,9 @@ for k=1:size(analyzedFiles,1)
                     suptitle(plottitle)
                     
                     h=legend('Location','northeastoutside');
-                    if length(uniqueXX)-length(toofew) < 12
+                    if length(uniqueXX) < 12
                         set(h,'FontSize',11)
-                    elseif length(uniqueXX)-length(toofew) < 20
+                    elseif length(uniqueXX) < 20
                         set(h,'FontSize',9)
                     else
                         set(h,'FontSize',6)
@@ -197,28 +215,28 @@ for k=1:size(analyzedFiles,1)
                     taxa(find(strcmp(taxa,'N/A')),:)=[];
                     
                     if size(data,1) >= 10
-                    
-                    %     % remove features with too few members
-                    %     [uniqueXX, ~, J]=unique(feats) ;
-                    %     occ = histc(J, 1:numel(uniqueXX));
-                    %         toofew=uniqueXX(occ<sum(occ)/2000);
-                    %     data(find(ismember(feats,toofew)),:)=[];
-                    %     red_orgs(ismember(feats,toofew),:)=[];
-                    %     feats(find(ismember(feats,toofew)),:)=[];
-                    
-                    Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
-                    Summary.(strrep(customFeatures{i},' ','_'))(:,1)=red_orgs;
-                    Summary.(strrep(customFeatures{i},' ','_'))(:,2)=feats;
-                    Summary.(strrep(customFeatures{i},' ','_'))(:,3:4)=cellstr(string(Y));
-                    
-                    f=figure;
-                    h=gscatter(Y(:,1),Y(:,2),feats);
-                    set(h,'MarkerSize',10)
-                    title(analyzedFiles{k,1})
-                    h=legend('Location','northeastoutside');
-                    set(h,'FontSize',9)
-                    f.Renderer='painters';
-                    print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
+                        
+                        %     % remove features with too few members
+                        %     [uniqueXX, ~, J]=unique(feats) ;
+                        %     occ = histc(J, 1:numel(uniqueXX));
+                        %         toofew=uniqueXX(occ<sum(occ)/2000);
+                        %     data(find(ismember(feats,toofew)),:)=[];
+                        %     red_orgs(ismember(feats,toofew),:)=[];
+                        %     feats(find(ismember(feats,toofew)),:)=[];
+                        
+                        Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
+                        Summary.(strrep(customFeatures{i},' ','_'))(:,1)=red_orgs;
+                        Summary.(strrep(customFeatures{i},' ','_'))(:,2)=feats;
+                        Summary.(strrep(customFeatures{i},' ','_'))(:,3:4)=cellstr(string(Y));
+                        
+                        f=figure;
+                        h=gscatter(Y(:,1),Y(:,2),feats);
+                        set(h,'MarkerSize',10)
+                        title(analyzedFiles{k,1})
+                        h=legend('Location','northeastoutside');
+                        set(h,'FontSize',9)
+                        f.Renderer='painters';
+                        print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                     else
                         warning('Not enough strains with available organism information. Cannot cluster based on features.')
                     end

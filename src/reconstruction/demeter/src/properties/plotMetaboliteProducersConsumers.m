@@ -27,7 +27,7 @@ parser.addRequired('propertiesFolder',@ischar);
 parser.addRequired('infoFilePath', @ischar);
 parser.addRequired('reconVersion', @ischar);
 parser.addParameter('metsToAnalyze', {}, @iscell);
-parser.addParameter('metCategory', 'Reconstructions', @ischar);
+parser.addParameter('metCategory', 'Metabolites', @ischar);
 
 parser.parse(propertiesFolder,infoFilePath,reconVersion,varargin{:});
 
