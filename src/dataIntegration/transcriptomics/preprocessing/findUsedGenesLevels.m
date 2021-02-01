@@ -34,8 +34,10 @@ function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, p
 %                        'gene_id'
 %
 %   
-% Authors: - S. Opdam & A. Richelle May 2017
-%       - Chaitra Sarathy, Oct 2019, add significance value as optional input
+
+% Authors:  - S. Opdam & A. Richelle May 2017
+%           - Chaitra Sarathy, Oct 2019, add significance value as optional input
+%           - Ronan Fleming, NaN replaces -1 for no data
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -57,7 +59,7 @@ for i = 1:numel(gene_id)
 	dataID=find(ismember(exprData.gene,cur_ID));
     
     if isempty (dataID)
-        gene_expr(i)=-1;        
+        gene_expr(i)=NaN;        
     elseif length(dataID)==1
         gene_expr(i)=exprData.value(dataID);
         if exprSigFlag == 1 
