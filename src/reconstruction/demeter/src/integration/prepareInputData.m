@@ -206,7 +206,7 @@ species=unique(agoraInfoFile(2:end,speciesCol));
 rowLength=size(inputData,1);
 for i=1:length(C)
     inputData{rowLength+i,1}=char(C{i});
-    inputData(rowLength+i,2:end)=cellstr(num2str(zeros));
+    inputData(rowLength+i,2:find(strncmp(inputData(1,:),'Ref',3))-1)=cellstr(num2str(zeros));
 end
 
 newSpeciesCol=find(strcmp(infoFile(1,:),'Species'));
@@ -240,8 +240,9 @@ end
 % for fermentation product data: propagate taxa on the genus level if
 % there are more than 10 strains and information agrees
 if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
-    % remove reference columns
-    inputData(:,find(strncmp(inputData(1,:),'Ref',3)))=[];
+    
+    % find reference columns
+    refCols=find(strncmp(inputData(1,:),'Ref',3));
     
     % get all genera
     genusCol=find(strcmp(agoraInfoFile(1,:),'Genus'));
@@ -275,6 +276,8 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
                 % propagate the data to new organisms
                 for j=1:length(newStrains)  
                     inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),2:end)=num2cell(compData(1,2:end));
+                    % propagate references
+                    inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IA(j),refCols(1):refCols(end));
                 end
             end
         end

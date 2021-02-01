@@ -37,7 +37,7 @@ infoFile = table2cell(infoFile);
 inputDataToCheck={
     'CarbonSourcesTable'  'Carbon sources status'  
     'FermentationTable' 'Fermentation products status'
-    'NutrientRequirementsTable' 'Growth requirements status'
+    'GrowthRequirementsTable' 'Growth requirements status'
     'secretionProductTable' 'Secretion products status'
     'uptakeTable'   'Metabolite uptake status'
     };
@@ -50,7 +50,7 @@ for i = 1:length(inputDataToCheck)
     infoFile{1,newCol} = inputDataToCheck{i,2};
     refCols=find(strncmp(inputData(1,:),'Ref',3));
     for j=2:size(infoFile,1)
-        curationStatus{j,1}=infoFile{i,1};
+        curationStatus{j,1}=infoFile{j,1};
         findRow = find(strcmp(inputData(:,1),infoFile{j,1}));
         if abs(sum(str2double(inputData(findRow,2:min(refCols)-1)))) > 0
             curationStatus{j,i+1} = 2;
