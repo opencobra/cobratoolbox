@@ -64,7 +64,6 @@ if length(modelList)>1
         computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
         producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
         rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
-        plotMetaboliteProducersConsumers([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'])
         
         % get basic statistics on draft and refined reconstructions and metabolite
         % and reaction content of all refined reconstructions
@@ -85,7 +84,6 @@ if length(modelList)>1
     computeInternalMetaboliteProduction(modelFolder,[propertiesFolder filesep 'Refined'],[reconVersion '_refined'],{},numWorkers)
     producetSNEPlots([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'],customFeatures)
     rankFeaturesByIncidence([propertiesFolder filesep 'Refined'],[reconVersion '_refined'])
-    plotMetaboliteProducersConsumers([propertiesFolder filesep 'Refined'],infoFilePath,[reconVersion '_refined'])
     
     % delete files that are no longer needed
     dInfo = dir(fullfile(propertiesFolder, '**/*.*'));  %get list of files and folders in any subfolder
