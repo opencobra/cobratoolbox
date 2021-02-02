@@ -233,7 +233,7 @@ end
 %that, in one way or another
 if 1
     %zeroing out very small fluxes seems to work reliably for recon3
-    isSmall = abs(v0)<feasTol;
+    isSmall = abs(v0)<feasTol & v0~=0;
     if any(isSmall)
         if param.debug
             fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(isSmall)) ' reactions is less than ' num2str(feasTol) ', so they are bound between [-' num2str(feasTol) ', ' num2str(feasTol) '].'])
@@ -426,7 +426,7 @@ else
     else
         fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
         disp(solution)
-        %save('debug_cycleFreeFlux_infeasibility.mat')
+        save('debug_cycleFreeFlux_infeasibility.mat')
         
         %%
         %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);

@@ -52,10 +52,15 @@ parsedGPR = GPRparser(model,minSum);
 
 
 if exprSigFlag == 0
+
     % Find wich genes in expression data are used in the model
+    % Returns vectors of gene identifiers and corresponding gene expression
+    % levels for each gene present in the model ('model.genes').
     [gene_id, gene_expr] = findUsedGenesLevels(model,expressionData);
 
     % Link the gene to the model reactions
+    % Map gene expression to reaction expression using the GPR rules. An AND
+    % will be replaced by MIN and an OR will be replaced by MAX.
     [expressionRxns,  gene_used] = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum);
     
 else
