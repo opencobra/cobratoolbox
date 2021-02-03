@@ -1,4 +1,4 @@
-function model = fastSetupCreator(modPath, microbeNames, host, objre)
+function model = fastSetupCreator(modPath, microbeNames, host, objre, numWorkers)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -25,11 +25,20 @@ function model = fastSetupCreator(modPath, microbeNames, host, objre)
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
 %    objre:               char with reaction name of objective function of microbeNames
+%    numWorkers:          integer indicating the number of cores to use for parallelization
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
 %
 % .. Author: Stefania Magnusdottir and Federico Baldini 2016-2018
+
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
 
 if ~isempty(host)  % Get list of all exchanged metabolites
     %exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));

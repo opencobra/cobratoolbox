@@ -147,7 +147,7 @@ abundance = table2cell(readtable(abunFilePath));
 % carve each personalized model from one large setup model.
 if buildSetupAll
     if modbuild == 1
-        setup=fastSetupCreator(modPath, microbeNames, host, objre);
+        setup=fastSetupCreator(modPath, microbeNames, host, objre, numWorkers);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
         setup.recon=0;
         save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
@@ -174,7 +174,7 @@ else
         abunRed=[abundance(:,1),abunRed];
         microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
         abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-        setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre);
+        setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre, numWorkers);
         createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
     end
 end
