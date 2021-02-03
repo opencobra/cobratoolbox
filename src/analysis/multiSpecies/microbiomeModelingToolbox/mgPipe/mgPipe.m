@@ -162,30 +162,20 @@ if buildSetupAll
 else
     % create a separate setup model for each sample
     % define what counts as zero abundance
-    tol=0.000001;
+    tol=0.0000001;
     
-    setupModels={};
-    
-    parfor i=1:length(sampNames)
-        % get the list of models for each sample and remove the ones not in
-        % this sample
-        microbeNamesSample = microbeNames;
-        abunRed=abundance(:,i+1);
-        abunRed=[abundance(:,1),abunRed];
-        microbeNamesSample(str2double(abunRed(:,2)) < tol)=[];
-        setupModels{i} = fastSetupCreator(modPath, microbeNamesSample, host, objre);
-    end
-    % Here, we will not be starting from one joined model containing all
-    % reconstructions. Instead, each personalized model will be created separately.
     for i=1:length(sampNames)
+        % Here, we will not be starting from one joined model containing all
+        % reconstructions. Instead, each personalized model will be created separately.)
         % get the list of models for each sample and remove the ones not in
         % this sample
         microbeNamesSample = microbeNames;
         abunRed=abundance(:,i+1);
         abunRed=[abundance(:,1),abunRed];
-        microbeNamesSample(str2double(abunRed(:,2)) < tol)=[];
-        abunRed(:,str2double(abunRed(:,2)) < tol)=[];
-        createdModel=createPersonalizedModel(abunRed,resPath,setupModels{i},sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
+        microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
+        abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
+        setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre);
+        createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
     end
 end
 
