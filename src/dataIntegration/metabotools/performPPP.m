@@ -53,8 +53,11 @@ for k=1:length(samples)
                 clear FBAsolution
             end
         end
-
-        name  = ['phasePlane_' strtok(mets{p,1}, '(') '_' strtok(mets{p,2}, '(')];
+        if contains(mets{p,1},'[')
+            name  = ['phasePlane_' strtok(mets{p,1}, '[') '_' strtok(mets{p,2}, '[')];
+        else
+            name  = ['phasePlane_' strtok(mets{p,1}, '(') '_' strtok(mets{p,2}, '(')];
+        end
 
 
         ResultsAllCellLines.(samples{k}).(name).growthRates= growthRates;

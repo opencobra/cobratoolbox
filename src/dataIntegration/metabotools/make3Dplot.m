@@ -58,16 +58,16 @@ set(0,'DefaultAxesColorOrder',[0,0.2,0.8;0,0.6,0.0;0.2,0.8,1;0,0.6,0.8;0.8,0,0.2
 
 
 h= scatter3(x1,y1,z1, 's','filled','userdata',data_sets{1});
-
-hold on
-h = scatter3(x2,y2,z2,'s','filled','userdata',data_sets{2});
-
+if size(data_sets,1)>1
+    hold on
+    h = scatter3(x2,y2,z2,'s','filled','userdata',data_sets{2});
+end
 
 %uncomment legend if legend should be produced, however if picture and legend are generated seperately it looks better.
- legend(get(gca,'children'),get(get(gca,'children'),'userdata')) % correct
- xlabel('Glycolysis (%)' ,'FontSize', fonts)
- ylabel('ATP synthetase (%)','FontSize', fonts)
- zlabel('Succinate-CoA ligase (%)','FontSize', fonts)
+legend(get(gca,'children'),get(get(gca,'children'),'userdata')) % correct
+xlabel('Glycolysis (%)' ,'FontSize', fonts)
+ylabel('ATP synthetase (%)','FontSize', fonts)
+zlabel('Succinate-CoA ligase (%)','FontSize', fonts)
 %
 set(gca,'FontSize',fonts,'Linewidth',2,'ZLim',[0,12])
 
@@ -75,7 +75,7 @@ set(gca,'FontSize',fonts,'Linewidth',2,'ZLim',[0,12])
 
 titleString = 'ATP production strategies across samples';
 h= title(strvcat(titleString ));
-             set(h,'fontsize',fonts);
+set(h,'fontsize',fonts);
 
 
 
@@ -89,11 +89,11 @@ if diff_view==1;
     Zi =270;
     view([Xi Yi Zi])
     saveas(gcf, [path filesep 'FS_3D_ATP_GLY'], 'pdf');
-
+    
     % SUCC-GLY
     Xi = 0;
     Yi = -90;
-
+    
     Zi =0;
     view([Xi Yi Zi])
     saveas(gcf, [path filesep 'FS_3D_Succ_GLY'], 'pdf');
@@ -102,7 +102,7 @@ if diff_view==1;
     Yi = 0;
     Zi =0;
     view([Xi Yi Zi])
-
+    
     saveas(gcf, [path filesep 'FS_3D_SUCC_ATP'], 'pdf');
 end
 

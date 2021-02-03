@@ -64,3 +64,8 @@ for i = 1 : length(rxnAbbrs)
     end
     
 end
+
+if isfield(model,'A')
+    % remove model.A
+    model = rmfield(model,'A');
+end
