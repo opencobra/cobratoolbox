@@ -810,8 +810,6 @@ if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
     %maintains stoichiometric consistency
     [stoichConsistModel, metRemoveList] = removeRxns(model, model.rxns(model.rxnRemoveBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','inclusive');
     
-    
-
     metRemoveBoolTest=ismember(model.mets,metRemoveList);
     if ~all(model.metRemoveBool==metRemoveBoolTest)
         if all(model.metRemoveBool== (metRemoveBoolTest || model.SInConsistentMetBool))
