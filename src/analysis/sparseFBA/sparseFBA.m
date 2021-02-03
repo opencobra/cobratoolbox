@@ -405,14 +405,17 @@ if checkEssentialSet == true
     %Remove one of the predicted active reaction and verify if
     %the optimal objective value can be achieved
     for i=1:nSparse
-        %try to remove a reaction entirely from model
-        essentialTightRxnsBoolTemp = true(nSparse,1);
-        essentialTightRxnsBoolTemp(i)=0;
-        tighterLPproblem = struct('c',tightLPproblem.c(essentialTightRxnsBoolTemp),'osense',osense,'A',tightLPproblem.A(:,essentialTightRxnsBoolTemp),'csense',LPproblem.csense,'b',LPproblem.b,'lb',tightLPproblem.lb(essentialTightRxnsBoolTemp),'ub',tightLPproblem.ub(essentialTightRxnsBoolTemp));
-        %see if a solution exists
-        LPsolution = solveCobraLP(tighterLPproblem,CobraParams);
-        if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=epsilon)
-            essentialTightRxnsBool(i) = false;
+        %dont attempt to remove if flux may be forced through this reaction
+        if tightLPproblem.lb(i)<0 && tightLPproblem.ub(i) > 0
+            %try to remove a reaction entirely from model
+            essentialTightRxnsBoolTemp = true(nSparse,1);
+            essentialTightRxnsBoolTemp(i)=0;
+            tighterLPproblem = struct('c',tightLPproblem.c(essentialTightRxnsBoolTemp),'osense',osense,'A',tightLPproblem.A(:,essentialTightRxnsBoolTemp),'csense',LPproblem.csense,'b',LPproblem.b,'lb',tightLPproblem.lb(essentialTightRxnsBoolTemp),'ub',tightLPproblem.ub(essentialTightRxnsBoolTemp));
+            %see if a solution exists
+            LPsolution = solveCobraLP(tighterLPproblem,CobraParams);
+            if LPsolution.stat == 1 && abs(LPsolution.obj - objFBA)< optTol %&& any(abs(LPsolution.full)>=epsilon)
+                essentialTightRxnsBool(i) = false;
+            end
         end
     end
     %pad out
@@ -423,7 +426,7 @@ end
 
 
 %% Check if the selected set of reactions is minimal
-if checkMinimalSet == true
+if checkMinimalSet == true && any(~essentialTightRxnsBool)
     % vHeuristic = sparse(nRxns,1);
     vHeuristic = vApprox;
     %first assume all active reactions are in the minimal set
@@ -438,7 +441,7 @@ if checkMinimalSet == true
     tighterRxnsBool=true(nSparse,1);
     for i=1:nSparse
         %no need to test a reaction if it is known to be essential
-        if  1 && checkEssentialSet && ~essentialTightRxnsBool(i)
+        if  checkEssentialSet && ~essentialTightRxnsBool(i)
             %try to remove reaction entirely from model
             tighterRxnsBool(i)=0;
             tighterLPproblem = struct('c',tightLPproblem.c(tighterRxnsBool),'osense',osense,'A',tightLPproblem.A(:,tighterRxnsBool),'csense',tightLPproblem.csense,'b',tightLPproblem.b,'lb',tightLPproblem.lb(tighterRxnsBool),'ub',tightLPproblem.ub(tighterRxnsBool));
@@ -462,6 +465,8 @@ if checkMinimalSet == true
     %solution for output
     vSparse=vHeuristic;
 else
+    minimalRxnBool = false(nRxns,1);
+    minimalRxnBool(activeRxnBool)=essentialTightRxnsBool;
     vSparse=vApprox;
 end
 sparseRxnBool=abs(vSparse)>=epsilon;
