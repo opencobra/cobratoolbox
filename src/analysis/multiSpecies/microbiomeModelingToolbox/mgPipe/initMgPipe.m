@@ -15,15 +15,16 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    objre:                  char with reaction name of objective function of organisms
-%    figForm:                format to use for saving figures
+%    buildSetupAll:       	 boolean indicating the strategy that should be used to
+%                            build personalized models: if true, build a global setup model 
+%                            containing all organisms in at least model (default), false: create
+%                            models one by one (recommended for more than ~500 organisms total)
+%    saveConstrModels:       boolean indicating if models with imposed
+%                            constraints are saved externally
 %    numWorkers:             integer indicating the number of cores to use for parallelization
-%    autoFix:                double indicating if to try to automatically fix inconsistencies
-%    compMod:                boolean indicating if outputs in open format should be produced for each section (default: `false`)
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
-%    extSolve:               boolean indicating if to save the constrained models to solve them externally (default: `false`)
 %    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
-%    printLevel:             verbose level (default: true)
 %    includeHumanMets:       boolean indicating if human-derived metabolites
 %                            present in the gut should be provided to the models (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
@@ -43,6 +44,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 %               - Almut Heinken 08/2020: added extra inputs and changed to
 %                                        varargin input
+%               - Almut Heinken 01/2021: added option for creation of each 
+%                                        personalized model separately
+
 
 % Define default input parameters if not specified
 parser = inputParser();
@@ -54,15 +58,12 @@ parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
 parser.addParameter('objre', '', @ischar);
-parser.addParameter('figForm', '-depsc', @ischar);
+parser.addParameter('buildSetupAll', true, @islogical);
+parser.addParameter('saveConstrModels', false, @islogical);
 parser.addParameter('numWorkers', 2, @isnumeric);
-parser.addParameter('autoFix', true, @islogical);
-parser.addParameter('compMod', false, @islogical);
 parser.addParameter('rDiet', false, @islogical);
 parser.addParameter('pDiet', false, @islogical);
-parser.addParameter('extSolve', false, @islogical);
 parser.addParameter('fvaType', true, @islogical);
-parser.addParameter('printLevel', true, @islogical);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
@@ -78,15 +79,12 @@ infoFilePath = parser.Results.infoFilePath;
 hostPath = parser.Results.hostPath;
 hostBiomassRxn = parser.Results.hostBiomassRxn;
 objre = parser.Results.objre;
-figForm = parser.Results.figForm;
+buildSetupAll = parser.Results.buildSetupAll;
+saveConstrModels = parser.Results.saveConstrModels;
 numWorkers = parser.Results.numWorkers;
-autoFix = parser.Results.autoFix;
-compMod = parser.Results.compMod;
 rDiet = parser.Results.rDiet;
 pDiet = parser.Results.pDiet;
-extSolve = parser.Results.extSolve;
 fvaType = parser.Results.fvaType;
-printLevel = parser.Results.printLevel;
 includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
@@ -110,6 +108,9 @@ global CBTDIR
 % set optional variables
 mkdir(resPath);
     
+if ~contains(dietFilePath,'.txt')
+   dietFilePath=[dietFilePath '.txt']; 
+end
 if exist(dietFilePath)==0
     error('Path to file with dietary information is incorrect!');
 end
@@ -132,6 +133,9 @@ else
     objre=cellstr(objre);
 end
 
+% define file type for images
+figForm = '-depsc';
+
 % Check for installation of parallel Toolbox
 try
    version = ver('distcomp');
@@ -148,23 +152,17 @@ else
     error('You disabled parallel mode to enable sequential one. Sequential mode is not available for this application. Please specify a higher number of workers modifying numWorkers option.')
 end
 
-% Here we go on with the warning section and the autorun
-if compMod && printLevel
-    warning('Compatibility mode activated. Output will also be saved in .csv format. Computations might take longer.')
-end
-if patStat == false && printLevel
+if patStat == false
     warning('Individuals health status not declared. Analysis will ignore that.')
 end
 
 % output messages
-if printLevel
-    fprintf(' > Models will be read from: %s\n', modPath);
-    fprintf(' > Results will be stored in: %s\n', resPath);
-    fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
-end
+fprintf(' > Models will be read from: %s\n', modPath);
+fprintf(' > Results will be stored in: %s\n', resPath);
+fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, figForm, numWorkers, autoFix, compMod, rDiet, pDiet, extSolve, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end

@@ -1,4 +1,4 @@
-function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user?s input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
@@ -7,26 +7,25 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %
 % USAGE:
 %
-%   [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, setup, sampName, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, extSolve, patNumb, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%   [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
-%    setup:              "global setup" model in COBRA model structure format
-%    sampName:           cell array with names of individuals in the study
+%    exMets:             cell array with all unique extracellular metabolites
+%                        contained in the models
+%    sampNames:          cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
 %    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
 %    numWorkers:         integer indicating the number of cores to use for parallelization
-%    rDiet:              number (double) indicating if to simulate a rich diet
-%    pDiet:              number (double) indicating if a personalized diet
+%    rDiet:              boolean indicating if to simulate a rich diet
+%    pDiet:              boolean indicating if a personalized diet
 %                        is available and should be simulated
-%    extSolve:           number (double) indicating if simulations will be
-%                        not run in matlab but externally (models with imposed
-%                        constraints are saved)
-%    patNumb:            number (double) of individuals in the study
-%    fvaType:            number (double) which FVA function to use(fastFVA =1)
+%    saveConstrModels:   boolean indicating if models with imposed
+%                        constraints are saved externally
+%    fvaType:            boolean which FVA function to use(fastFVA =1)
 %    includeHumanMets:   boolean indicating if human-derived metabolites
-%                        present in the gut should be provided to the models (default: true)
+%                        present in the gut should be provexchangesed to the models (default: true)
 %    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
 %    repeatSim:          boolean defining if simulations should be repeated and previous results
 %                        overwritten (default=false)
@@ -34,7 +33,7 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %                        adaptVMHDietToAGORA function or used as is (default=true)
 %
 % OUTPUTS:
-%    ID:                 cell array with list of all unique Exchanges to diet/
+%    exchanges:          cell array with list of all unique Exchanges to diet/
 %                        fecal compartment
 %    fvaCt:              cell array containing FVA values for maximal uptake
 %                        and secretion for setup lumen / diet exchanges
@@ -45,11 +44,13 @@ function [ID, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath,
 %    inFesMat            cell array with names of infeasible microbiota models
 %
 % .. Author: Federico Baldini, 2017-2018
+%            Almut Heinken, 03/2021: simplified inputs
 
-allex = setup.rxns(strmatch('EX', setup.rxns));  % Creating list of all unique Exchanges to diet/fecal compartment
-ID = regexprep(allex, '\[d\]', '\[fe\]');
-ID = unique(ID, 'stable');
-ID = setdiff(ID, 'EX_biomass[fe]', 'stable');
+for i=1:length(exMets)
+    exchanges{i,1} = ['EX_' exMets{i}];
+end
+exchanges = regexprep(exchanges, '\[e\]', '\[fe\]');
+exchanges = setdiff(exchanges, 'EX_biomass[fe]', 'stable');
 
 % reload existing simulation results by default
 if ~exist('repeatSim', 'var')
@@ -63,8 +64,8 @@ if ~isempty(mapP) && repeatSim==0
     load(strcat(resPath, 'simRes.mat'))
 else
     % Cell array to store results
-    fvaCt = cell(3, patNumb);
-    nsCt = cell(3, patNumb);
+    fvaCt = cell(3, length(sampNames));
+    nsCt = cell(3, length(sampNames));
     inFesMat = {};
     presol = {};
     
@@ -72,7 +73,7 @@ else
     if repeatSim==0
         mapP = detectOutput(resPath, 'intRes.mat');
         if isempty(mapP)
-            startIter = 2;
+            startIter = 1;
         else
             s = 'simulation checkpoint file found: recovering crashed simulation';
             disp(s)
@@ -87,7 +88,7 @@ else
             startIter = t + 2;
         end
     elseif repeatSim==1
-        startIter = 2;
+        startIter = 1;
     end
     
     % End of Auto load for crashed simulations
@@ -97,18 +98,18 @@ else
     end
     
     % determine human-derived metabolites present in the gut: primary bile
-    % acids, amines, mucins, host glycans
+    % acexchangess, amines, mucins, host glycans
     if includeHumanMets
         HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
     end
     
     % Starting personalized simulations
-    for k = startIter:(patNumb + 1)
-        idInfo = cell2mat(sampName((k - 1), 1));
+    for k = startIter:length(sampNames)
+        exchangesInfo = sampNames{k,1};
         if ~isempty(hostPath)
-            microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', idInfo,'.mat'));
+            microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', exchangesInfo,'.mat'));
         else
-            microbiota_model=readCbModel(strcat('microbiota_model_samp_', idInfo,'.mat'));
+            microbiota_model=readCbModel(strcat('microbiota_model_samp_', exchangesInfo,'.mat'));
         end
         model = microbiota_model;
         for j = 1:length(model.rxns)
@@ -182,39 +183,38 @@ else
         % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
         if solution_allOpen.stat==0
             warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-            inFesMat{k, 1} = model.name
+            inFesMat{k, 1} = model.name;
         else
             presol{k, 1} = solution_allOpen.obj;
-            if extSolve==0
-                AllRxn = model.rxns;
-                FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
-                DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
-                FecalRxn = AllRxn(FecalInd);
-                FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
-                DietRxn = AllRxn(DietInd);
-                if rDiet==1
-                    [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn);
-                    sma=maxFlux;
-                    sma2=minFlux;
-                    [minFlux,maxFlux]=guidedSim(model,fvaType,DietRxn);
-                    smi=minFlux;
-                    smi2=maxFlux;
-                    maxFlux=sma;
-                    minFlux=smi;
-                    fvaCt{1,(k-1)}=ID;
-                    nsCt{1,(k-1)}=ID;
-                    for i =1:length(FecalRxn)
-                        [truefalse, index] = ismember(FecalRxn(i), ID);
-                        fvaCt{1,(k-1)}{index,2}=minFlux(i,1);
-                        fvaCt{1,(k-1)}{index,3}=maxFlux(i,1);
-                        nsCt{1,(k-1)}{index,2}=smi2(i,1);
-                        nsCt{1,(k-1)}{index,3}=sma2(i,1);
-                    end
+            AllRxn = model.rxns;
+            FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
+            DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
+            FecalRxn = AllRxn(FecalInd);
+            FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
+            DietRxn = AllRxn(DietInd);
+            if rDiet==1
+                [minFlux,maxFlux]=guexchangesedSim(model,fvaType,FecalRxn);
+                sma=maxFlux;
+                sma2=minFlux;
+                [minFlux,maxFlux]=guexchangesedSim(model,fvaType,DietRxn);
+                smi=minFlux;
+                smi2=maxFlux;
+                maxFlux=sma;
+                minFlux=smi;
+                fvaCt{1,k}=exchanges;
+                nsCt{1,k}=exchanges;
+                for i =1:length(FecalRxn)
+                    [truefalse, index] = ismember(FecalRxn(i), exchanges);
+                    fvaCt{1,k}{index,2}=minFlux(i,1);
+                    fvaCt{1,k}{index,3}=maxFlux(i,1);
+                    nsCt{1,k}{index,2}=smi2(i,1);
+                    nsCt{1,k}{index,3}=sma2(i,1);
                 end
-            else
+            end
+            if saveConstrModels
                 microbiota_model=model;
-                mkdir(strcat(resPath,'Rich'))
-                save([resPath 'Rich' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
+                mkdir([resPath filesep 'Rich'])
+                save([resPath filesep 'Rich' filesep 'microbiota_model_richD_' exchangesInfo '.mat'],'microbiota_model')
             end
             
             
@@ -251,52 +251,46 @@ else
                 inFesMat{k,2}= model.name;
             else
                 
-                if extSolve==0
-                    [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
-                    sma=maxFlux;
-                    sma2=minFlux;
-                    [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
-                    smi=minFlux;
-                    smi2=maxFlux;
-                    maxFlux=sma;
-                    minFlux=smi;
-                    
-                    fvaCt{2,(k-1)}=ID;
-                    nsCt{2,(k-1)}=ID;
-                    for i =1:length(FecalRxn)
-                        [truefalse, index] = ismember(FecalRxn(i), ID);
-                        fvaCt{2,(k-1)}{index,2}=minFlux(i,1);
-                        fvaCt{2,(k-1)}{index,3}=maxFlux(i,1);
-                        nsCt{2,(k-1)}{index,2}=smi2(i,1);
-                        nsCt{2,(k-1)}{index,3}=sma2(i,1);
-                    end
-                else
+                [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
+                sma=maxFlux;
+                sma2=minFlux;
+                [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
+                smi=minFlux;
+                smi2=maxFlux;
+                maxFlux=sma;
+                minFlux=smi;
+                
+                fvaCt{2,k}=exchanges;
+                nsCt{2,k}=exchanges;
+                for i =1:length(FecalRxn)
+                    [truefalse, index] = ismember(FecalRxn(i), exchanges);
+                    fvaCt{2,k}{index,2}=minFlux(i,1);
+                    fvaCt{2,k}{index,3}=maxFlux(i,1);
+                    nsCt{2,k}{index,2}=smi2(i,1);
+                    nsCt{2,k}{index,3}=sma2(i,1);
+                end
+                if saveConstrModels
                     microbiota_model=model_sd;
-                    mkdir(strcat(resPath,'Standard'))
-                    save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
+                    mkdir([resPath filesep 'Diet'])
+                    save([resPath filesep 'Diet' filesep 'microbiota_model_diet_' exchangesInfo '.mat'],'microbiota_model')
                 end
                 
-                if extSolve==0
-                    save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
-                    
-                end
-                
+                save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
                 
                 % Using personalized diet not documented in MgPipe and bug checked yet!!!!
                 
                 if pDiet==1
                     model_pd=model;
                     [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
-                    usedIDs = Strings(1,2:end)';
                     % diet exchange reactions
                     DietNames = Strings(2:end,1);
                     % Diet exchanges for all individuals
-                    Diets(:,k-1) = cellstr(num2str((Numbers(1:end,k-1))));
-                    DietID = {DietNames{:,1} ; Diets{:,k-1}}';
-                    DietID = regexprep(DietID,'EX_','Diet_EX_');
-                    DietID = regexprep(DietID,'\(e\)','\[d\]');
+                    Diets(:,k) = cellstr(num2str((Numbers(1:end,k))));
+                    Dietexchanges = {DietNames{:,1} ; Diets{:,k}}';
+                    Dietexchanges = regexprep(Dietexchanges,'EX_','Diet_EX_');
+                    Dietexchanges = regexprep(Dietexchanges,'\(e\)','\[d\]');
                     
-                    model_pd = setDietConstraints(model_pd,DietID);
+                    model_pd = setDietConstraints(model_pd,Dietexchanges);
                     
                     if includeHumanMets
                         % add the human metabolites
@@ -305,7 +299,7 @@ else
                         end
                     end
                     
-                    solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd))
+                    solution_pdiet=solveCobraLP(buildLPproblemFromModel(model_pd));
                     %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
                     presol{k,3}=solution_pdiet.obj;
                     if isnan(solution_pdiet.obj)
@@ -313,25 +307,23 @@ else
                         inFesMat{k,3}= model.name;
                     else
                         
-                        if extSolve==0
-                            [minFlux,maxFlux]=guidedSim(model_pd,fvaType,FecalRxn);
-                            sma=maxFlux;
-                            [minFlux,maxFlux]=guidedSim(model_pd,fvaType,DietRxn);
-                            smi=minFlux;
-                            maxFlux=sma;
-                            minFlux=smi;
-                            fvaCt{3,(k-1)}=ID;
-                            for i =1:length(FecalRxn)
-                                [truefalse, index] = ismember(FecalRxn(i), ID);
-                                fvaCt{3,(k-1)}{index,2}=minFlux(i,1);
-                                fvaCt{3,(k-1)}{index,3}=maxFlux(i,1);
-                            end
-                        else
+                        [minFlux,maxFlux]=guexchangesedSim(model_pd,fvaType,FecalRxn);
+                        sma=maxFlux;
+                        [minFlux,maxFlux]=guexchangesedSim(model_pd,fvaType,DietRxn);
+                        smi=minFlux;
+                        maxFlux=sma;
+                        minFlux=smi;
+                        fvaCt{3,k}=exchanges;
+                        for i =1:length(FecalRxn)
+                            [truefalse, index] = ismember(FecalRxn(i), exchanges);
+                            fvaCt{3,k}{index,2}=minFlux(i,1);
+                            fvaCt{3,k}{index,3}=maxFlux(i,1);
+                        end
+                        if saveConstrModels
                             microbiota_model=model_pd;
                             mkdir(strcat(resPath,'Personalized'))
-                            save([resPath 'Standard' filesep 'microbiota_model_richD_' idInfo '.mat'],'microbiota_model')
+                            save([resPath 'Standard' filesep 'microbiota_model_richD_' exchangesInfo '.mat'],'microbiota_model')
                         end
-                        
                         
                     end
                 end
@@ -340,9 +332,7 @@ else
     end
     
     % Saving all output of simulations
-    if extSolve==0
-        save(strcat(resPath,'simRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
-    end
+    save(strcat(resPath,'simRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
 end
 
 end
