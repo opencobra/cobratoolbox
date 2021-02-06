@@ -1,4 +1,5 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, fvaType, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+
 %MgPipe is a MATLAB based pipeline to integrate microbial abundances
 %(coming from metagenomic data) with constraint based modeling, creating
 %individuals' personalized models.
@@ -14,16 +15,21 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 %into a folder.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, constrModelsPath] = mgPipe(modPath, abunFilePath, fvaType, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
+%    fvaType:                char defining whether flux variability analysis to compute the 
+%                            metabolic profiles should be performed, and which FVA function 
+%                            should be used. Allowed inputs are 'fastFVA', 'fluxVariability', 'none'.
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
 %    infoFilePath:           char with path to stratification criteria if available
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
+%    hostBiomassRxnFlux:     double with the desired flux through the host
+%                            biomass reaction (default: zero)
 %    objre:                  char with reaction name of objective function of microbeNames
 %    buildSetupAll:       	 boolean indicating the strategy that should be used to
 %                            build personalized models: if true, build a global setup model 
@@ -35,7 +41,6 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 %    numWorkers:             integer indicating the number of cores to use for parallelization
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
-%    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
 %    includeHumanMets:       boolean indicating if human-derived metabolites
 %                            present in the gut should be provided to the models (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
@@ -186,7 +191,7 @@ end
 % analysis for all the exchange reactions of the diet and fecal compartment is
 % also computed and saved in a file called "simRes".
 
-[exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 % Finally, NMPCs (net maximal production capability) are computed in a metabolite
 % resolved manner and saved in a comma delimited file in the results folder. NMPCs
 % indicate the maximal production of each metabolite and are computing summing

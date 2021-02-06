@@ -142,7 +142,7 @@ host.mets = strcat({'Host_'}, host.mets);
 host.rxns = strcat({'Host_'}, host.rxns);
 
 % use mergeToModels without combining genes
-[host] = mergeTwoModels(dummyHostB, host, 2, false);
+[host] = mergeTwoModels(dummyHostB, host, 2, false, false);
 
 % Change remaining [e] (transporters) to [u] to transport diet metabolites
 exMets2 = ~cellfun(@isempty, strfind(host.mets, '[e]'));  % again, find all mets that appear in [e]
@@ -170,7 +170,7 @@ dummyHostEU = addMultipleReactions(dummyHostEU,names,dummyHostEUmets,S','lb',lbs
 %     dummyHostEU.lb(j) = -1000;
 %     dummyHostEU.ub(j) = 1000;
 % end
-[host] = mergeTwoModels(dummyHostEU, host, 2, false);
+[host] = mergeTwoModels(dummyHostEU, host, 2, false, false);
 end
 
 
@@ -210,7 +210,7 @@ parfor j = 1:size(microbeNames, 1)
     model = removeRxns(model, exmod);
     model.rxns = strcat(strcat(microbeNames{j, 1}, '_'), model.rxns);
     model.mets = strcat(strcat(microbeNames{j, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
-    [model] = mergeTwoModels(dummyMicEU, model, 2, false);
+    [model] = mergeTwoModels(dummyMicEU, model, 2, false, false);
     modelStorage{j, 1} = model;  % store model
 end
 
@@ -249,8 +249,8 @@ for j = 2:(floor(log2(size(microbeNames, 1))) + 1)  % +1 because it starts with 
         FirstMod=FirstSaveStore(parind);
         % SecondMod=SecondSaveStore(parind+1);%changes 010318
         SecondMod=FirstSaveStore(parind+1);%changes 010318
-        % modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)%changes 010318
-        modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)	
+        % modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false,false)%changes 010318
+        modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false,false)	
     end
 	dim = halfdim;
 end
@@ -265,24 +265,29 @@ else
     if (length(toMerge)) > 1 %more than 1 model was not pairwise merged
         for k=2:(length(toMerge)+1)
             if k==2
-               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},modelStorage{toMerge(1,k),(nexmod(k))-1},1,false);                   
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},modelStorage{toMerge(1,k),(nexmod(k))-1},1,false,false);                   
             elseif k > 3       
-               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false);
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false,false);
             end
         end
-      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},model,1,false);
+      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},model,1,false,false);
     end
     if (length(toMerge)) == 1 %1 model was not pairwise merged
-        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false);
+        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false,false);
     end
 end
 
 
 % Merging with host if present 
 if ~isempty(host)
-    [model] = mergeTwoModels(host,model,1,false);
+    [model] = mergeTwoModels(host,model,1,false,false);
 end
-[model] = mergeTwoModels(dummy,model,2,false);
+[model] = mergeTwoModels(dummy,model,2,false,false);
+
+%finish up by A: removing duplicate reactions
+%We will lose information here, but we will just remove the duplicates.
+[model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);
+
 end
 
 
