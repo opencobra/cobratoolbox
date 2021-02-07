@@ -94,17 +94,17 @@ if isempty(mapP)
     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
     
-    % Plotting genetic information
-    [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
-    
-    %Create tables and save all the created variables
+      %Create tables and save all the created variables
     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
     reacSet=cell2table(reacSet,'VariableNames',sampNames');
     reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
-    
-    
-    save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampNames', 'microbeNames')
 end
+
+% Plotting genetic information
+[PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
+
+save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampNames', 'microbeNames')
+
 %end of trigger for Autoload
 %% PIPELINE: [PART 2.1]
 

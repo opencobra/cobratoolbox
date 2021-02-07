@@ -108,18 +108,22 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'[','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),']','');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),' ','_');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'.','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'-','_');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'__','_');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'___','_');
 
 % remove all rows that are not of the desired sequencing depth and edit the
 % taxon descriptions to enable mapping to AGORA
 % specific for MetaPhlAn input files
 sLevels={
-    'Species'   's__'
-    'Genus'     'g__'
-    'Family'    'f__'
-    'Order'     'o__'
-    'Class' 	'c__'
-    'Phylum'    'p__'
+    'Species'   's_'
+    'Genus'     'g_'
+    'Family'    'f_'
+    'Order'     'o_'
+    'Class' 	'c_'
+    'Phylum'    'p_'
     };
 mpsDepth=sLevels{find(strcmp(sLevels(:,1),sequencingDepth)),2};
 delRows=[];
@@ -130,7 +134,7 @@ for i=2:size(metagenome_abundance,1)
     delArray=[];
     delCnt=1;
     for j=1:length(findSDepth)
-        if any(strcmp(findSDepth{j},{'s__','g__','f__','o__','c__'}))
+        if any(strcmp(findSDepth{j},{'s_','g_','f_','o_','c_'}))
             delArray(delCnt)=j;
             delCnt=delCnt+1;
         end
@@ -138,11 +142,11 @@ for i=2:size(metagenome_abundance,1)
     findSDepth(delArray)=[];
     if length(findSDepth)>1
             % only get the sequencing level you are looking for
-            if strncmp(findSDepth{1,end},mpsDepth,3) && length(findSDepth{1,end})>3
+            if strncmp(findSDepth{1,end},mpsDepth,2) && length(findSDepth{1,end})>2
                 % if the genus information is missing on the species level
-                if strncmp(findSDepth{1,end},'s__',3)
+                if strncmp(findSDepth{1,end},'s_',2)
                     sname=strrep(findSDepth{1,end},mpsDepth,'');
-                    gname=strrep(findSDepth{1,end-1},'g__','');
+                    gname=strrep(findSDepth{1,end-1},'g_','');
                     if ~strncmp(gname,sname,length(gname)) && isempty(strfind(sname,'_'))
                         metagenome_abundance{i,1}=strcat(gname,'_',sname);
                     end

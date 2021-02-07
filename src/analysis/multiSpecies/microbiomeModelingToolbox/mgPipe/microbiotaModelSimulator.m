@@ -8,7 +8,7 @@ function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(r
 %
 % USAGE:
 %
-%   [exchanges, fvaCt, nsCt, presol, inFesMat, constrModelsPath] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%   [exchanges, fvaCt, nsCt, presol, inFesMath] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved

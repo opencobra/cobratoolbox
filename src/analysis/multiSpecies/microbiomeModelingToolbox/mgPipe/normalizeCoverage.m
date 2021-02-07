@@ -1,4 +1,4 @@
-function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coveragePath,cutoff)
+function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coverage,cutoff)
 % This functions normalizes the coverage in a given file with organism
 % abundances such that they sum up to 1 for each sample.
 %
@@ -6,18 +6,17 @@ function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coverag
 %   [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coveragePath)
 %
 % INPUT
-% coveragePath              Path to table with not yet normalized
-%                           relative abundances
+% coverage                Table with not yet normalized relative abundances
 %
 % OPTIONAL INPUT
-% cutoff                    Cutoff for normalized abundances that are
-%                           considered below detection limit, respective
-%                           organisms will be removed from the samples
-%                           (default: 0.0001)
+% cutoff                  Cutoff for normalized abundances that are
+%                         considered below detection limit, respective
+%                         organisms will be removed from the samples
+%                         (default: 0.0001)
 %
 % OUTPUTS
-% normalizedCoverage        Table with normalized abundances
-% normalizedCoveragePath    Path to csv file with normalized abundances
+% normalizedCoverage      Table with normalized abundances
+% normalizedCoveragePath  Path to csv file with normalized abundances
 %
 % .. Author:
 %       - Almut Heinken, 01/2021
@@ -29,20 +28,18 @@ if nargin == 1
     cutoff=0.0001;
 end
 
-abundance = table2cell(readtable(coveragePath,'ReadVariableNames',false));
+coverage{1,1}='ID';
+abundanceNew = coverage;
 
-abundance{1,1}='ID';
-abundanceNew = abundance;
-
-for i=2:size(abundance,2)
+for i=2:size(coverage,2)
     % first summarize all
     sumAll=0;
-    for j=2:size(abundance,1)
-        sumAll=sumAll + str2double(abundance{j,i});
+    for j=2:size(coverage,1)
+        sumAll=sumAll + str2double(coverage{j,i});
     end
     % then normalize the abundances
-    for j=2:size(abundance,1)
-        abundanceNew{j,i}=str2double(abundance{j,i})/sumAll;
+    for j=2:size(coverage,1)
+        abundanceNew{j,i}=str2double(coverage{j,i})/sumAll;
     end
 end
 

@@ -24,7 +24,7 @@ function [minFlux, maxFlux] = guidedSim(model, fvaType, rl)
 % ..Author:  Federico Baldini,  2017-2018
 
 if strcmp(fvaType,'fastFVA')
-      warning('fastFVA in use. This function is compatible only with cplex solver. If you don?t have a compatible cplex version please set > fvaType=3. If you have CPLEX but the following code crushes please consider separatelly running > generateMexFastFVA() and then running again the pipeline')
+      fprintf('fastFVA in use. This function is compatible only with ibm_cplex solver. If you do not have a compatible cplex version please set > fvaType to fluxVariability. If you have CPLEX but the following code crushes please consider separatelly running > generateMexFastFVA() and then running again the pipeline.\n')
 %       cpxControl.PARALLELMODE = 1;
 %       cpxControl.THREADS = 1;
 %       cpxControl.AUXROOTTHREADS = 2;
@@ -36,7 +36,7 @@ if strcmp(fvaType,'fastFVA')
 %      [minFlux,maxFlux] = fastFVA(model,99.99,'max',{},rl,'A',cpxControl)
 
  elseif strcmp(fvaType,'fluxVariability')
-     warning('Normal FVA in use with your available solver: consider using fastFVA  > fvaType=1')
+     fprintf('Normal FVA in use with your available solver. For faster computation time, consider using fastFVA  by setting fvaType to fastFVA.\n')
      % changeCobraSolver(solver,'all')
      [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl);
  end
