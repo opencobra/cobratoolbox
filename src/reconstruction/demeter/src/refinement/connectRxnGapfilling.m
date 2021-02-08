@@ -124,10 +124,11 @@ end
 % delete them if that is the case
 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),-1000,'l');
 model=changeObjective(model,previousObj);
-if ~isempty(ver('distcomp')) && any(strcmp(solver,{'ibm_cplex','tomlab_cplex','cplex_direct'}))
+try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         resolveBlocked, 'S');
-else
+catch
+    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
 end
 

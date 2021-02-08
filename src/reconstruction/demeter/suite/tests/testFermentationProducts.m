@@ -38,7 +38,7 @@ fermentationTable = readtable([inputDataFolder filesep 'FermentationTable.txt'],
 % remove the reference columns
 for i=1:11
     if ismember(['Ref' num2str(i)],fermentationTable.Properties.VariableNames)
-fermentationTable.(['Ref' num2str(i)])=[];
+        fermentationTable.(['Ref' num2str(i)])=[];
     end
 end
 fermentationExchanges = {'Acetate kinase (acetate producer or consumer)','EX_ac(e)';'Bifid shunt','EX_ac(e)';'Acetogen pathway','EX_ac(e)';'Formate producer','EX_for(e)';'D-lactate producer or consumer','EX_lac_D(e)';'L-lactate producer or consumer','EX_lac_L(e)';'Ethanol producer or consumer','EX_etoh(e)';'Succinate producer','EX_succ(e)';'Propionate from succinate','EX_ppa(e)';'Propionate from propane-1,2-diol','EX_ppa(e)';'Propionate from lactate (acrylate pathway)','EX_ppa(e)';'Propionate from threonine','EX_ppa(e)';'Wood-Werkman cycle','EX_ppa(e)';'Butyrate via butyryl-CoA: acetate CoA transferase','EX_but(e)';'Butyrate via butyrate kinase','EX_but(e)';'Butyrate from lysine via butyrate-acetoacetate CoA-transferase','EX_but(e)';'Butyrate from glutarate or glutamate','EX_but(e)';'Butyrate from 4-hydroxybutyrate or succinate','EX_but(e)';'Hydrogen from ferredoxin oxidoreductase','EX_h2(e)';'Hydrogen from formate hydrogen lyase','EX_h2(e)';'Methanogenesis','EX_ch4(e)';'Sulfate reducer','EX_h2s(e)';'Isobutyrate producer','EX_isobut(e)';'Isovalerate producer','EX_isoval(e)';'Acetoin producer','EX_actn_R(e)';'2,3-butanediol producer','EX_btd_RR(e)';'Indole producer','EX_indole(e)';'Phenylacetate producer','EX_pac(e)';'Butanol producer','EX_btoh(e)';'Valerate producer','EX_M03134(e)'};
@@ -58,7 +58,7 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-%     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+    %     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges
@@ -81,18 +81,14 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
-                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, ...
-                    rxnsInModel, 'S');
-            else
-                FBA=optimizeCbModel(model,'max');
-                if FBA.stat ~=1
-                    warning('Model infeasible. Testing could not be performed.')
-                    maxFlux=zeros(length(rxnsInModel),1);
-                else
-                    [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-                end
+            try
+                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                    resolveBlocked, 'S');
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                [~, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
             end
+            
             % active flux
             flux = rxnsInModel(maxFlux > 1e-6);
             % which fermentation product should be secreted according to in vitro data

@@ -92,10 +92,11 @@ model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 % end
 
 checkDelete=intersect(model.rxns,checkDelete,'stable');
-if ~isempty(ver('distcomp')) && strcmp(solver,'ibm_cplex')
+try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         checkDelete, 'S');
-else
+catch
+    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', checkDelete);
 end
 

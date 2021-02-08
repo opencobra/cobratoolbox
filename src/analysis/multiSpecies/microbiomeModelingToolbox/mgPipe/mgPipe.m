@@ -173,13 +173,25 @@ else
         % reconstructions. Instead, each personalized model will be created separately.)
         % get the list of models for each sample and remove the ones not in
         % this sample
-        microbeNamesSample = microbeNames;
-        abunRed=abundance(:,i+1);
-        abunRed=[abundance(:,1),abunRed];
-        microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
-        abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-        setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre, numWorkers);
-        createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
+        
+        % retrieving current model ID
+        if ~isempty(host)
+            mId = [resPath filesep 'host_microbiota_model_samp_', sampNames{k,1}, '.mat'];
+        else
+            mId = [resPath filesep 'microbiota_model_samp_', sampNames{k,1}, '.mat'];
+        end
+        
+        % if the model doesn't exist yet
+        mapP = detectOutput(resPath, mId);
+        if isempty(mapP) 
+            microbeNamesSample = microbeNames;
+            abunRed=abundance(:,i+1);
+            abunRed=[abundance(:,1),abunRed];
+            microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
+            abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
+            setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre, numWorkers);
+            createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
+        end
     end
 end
 

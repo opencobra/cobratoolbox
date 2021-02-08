@@ -74,18 +74,14 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
-                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, ...
-                    rxnsInModel, 'S');
-            else
-                FBA=optimizeCbModel(model,'max');
-                if FBA.stat ~=1
-                    warning('Model infeasible. Testing could not be performed.')
-                    maxFlux=zeros(length(rxnsInModel),1);
-                else
-                    [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-                end
+            try
+                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                    resolveBlocked, 'S');
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                [~, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
             end
+            
             % active flux
             flux = rxnsInModel(maxFlux > 1e-6);
             % which bile acid should be secreted according to in vitro data
