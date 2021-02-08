@@ -127,8 +127,10 @@ for i = startPnt:steps:length(modelList)
                 solution=solveCobraLP(buildLPproblemFromModel(model));
                 if solution.stat==0
                     warning('Model infeasible. Could not perform FVA.')
+                    ret=NaN;
                 else
                 [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
+                ret=0;
                 end
             end
             
