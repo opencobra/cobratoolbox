@@ -117,7 +117,14 @@ for i = startPnt:steps:length(modelList)
                 rxnsInModel=model.rxns(find(contains(model.rxns,metList)));
             end
             
-            [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A');
+            % perform flux variability analysis
+            try
+                [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A');
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
+            end
+            
             minFluxTmp{j}=minFlux;
             maxFluxTmp{j}=maxFlux;
             sols(j)=ret;
