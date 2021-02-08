@@ -92,12 +92,16 @@ model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 % end
 
 checkDelete=intersect(model.rxns,checkDelete,'stable');
+
+% perform flux variability analysis
+currentDir=pwd;
 try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        checkDelete, 'S');
+        resolveBlocked, 'S');
 catch
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', checkDelete);
+    cd(currentDir)
+    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
 end
 
 model = changeObjective(model, biomassReaction);

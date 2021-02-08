@@ -137,12 +137,16 @@ if ~isempty(modelList)
             
             % compute the total uptake and secretion potential
             if ~isempty(exRxns)
+                
+                % perform flux variability analysis
+                currentDir=pwd;
                 try
                     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                        checkDelete, 'S');
+                        resolveBlocked, 'S');
                 catch
                     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', checkDelete);
+                    cd(currentDir)
+                    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
                 end
             else
                 minFlux=zeros(length(allExch),1);

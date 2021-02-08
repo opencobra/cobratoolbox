@@ -124,11 +124,15 @@ end
 % delete them if that is the case
 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),-1000,'l');
 model=changeObjective(model,previousObj);
+
+% perform flux variability analysis
+currentDir=pwd;
 try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         resolveBlocked, 'S');
 catch
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+    cd(currentDir)
     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
 end
 

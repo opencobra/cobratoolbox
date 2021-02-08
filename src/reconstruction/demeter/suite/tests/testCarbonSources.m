@@ -81,12 +81,14 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
+            currentDir=pwd;
             try
                 [minFlux, ~, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
                     resolveBlocked, 'S');
             catch
                 warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                [minFlux,~] = fluxVariability(model, 0, 'max', resolveBlocked);
+                cd(currentDir)
+                [minFlux, ~] = fluxVariability(model, 0, 'max', resolveBlocked);
             end
             
             % active flux
