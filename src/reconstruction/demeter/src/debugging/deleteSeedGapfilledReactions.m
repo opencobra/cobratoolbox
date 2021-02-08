@@ -97,11 +97,11 @@ checkDelete=intersect(model.rxns,checkDelete,'stable');
 currentDir=pwd;
 try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        resolveBlocked, 'S');
+        checkDelete, 'S');
 catch
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
     cd(currentDir)
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
+    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', checkDelete);
 end
 
 model = changeObjective(model, biomassReaction);

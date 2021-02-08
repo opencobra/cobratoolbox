@@ -142,11 +142,11 @@ if ~isempty(modelList)
                 currentDir=pwd;
                 try
                     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                        resolveBlocked, 'S');
+                        exRxns, 'S');
                 catch
                     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
                     cd(currentDir)
-                    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
+                    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', exRxns);
                 end
             else
                 minFlux=zeros(length(allExch),1);

@@ -80,12 +80,17 @@ rxns2Unblock={
 
 rxnsInModel=intersect(model.rxns,rxns2Unblock(:,1),'stable');
 
-if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
+% perform flux variability analysis
+currentDir=pwd;
+try
     [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
         rxnsInModel, 'S');
-else
+catch
+    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+    cd(currentDir)
     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
 end
+
 
 for i=1:length(rxnsInModel)
     if minFlux(i) < tol && maxFlux(i) < tol
