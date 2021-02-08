@@ -124,7 +124,12 @@ for i = startPnt:steps:length(modelList)
             catch
                 warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
                 cd(currentDir)
+                solution=solveCobraLP(buildLPproblemFromModel(model));
+                if solution.stat==0
+                    warning('Model infeasible. Could not perform FVA.')
+                else
                 [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
+                end
             end
             
             minFluxTmp{j}=minFlux;
