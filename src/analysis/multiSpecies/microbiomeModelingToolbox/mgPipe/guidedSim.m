@@ -20,6 +20,8 @@ function [minFlux, maxFlux] = guidedSim(model, rl)
 %
 % ..Author:  Federico Baldini,  2017-2018
 
+currentDir=pwd;
+
 % Check for installation of fastFVA
 try
     %       cpxControl.PARALLELMODE = 1;
@@ -34,6 +36,7 @@ try
 
 catch
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+    cd(currentDir)
     [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl);
 end
 
