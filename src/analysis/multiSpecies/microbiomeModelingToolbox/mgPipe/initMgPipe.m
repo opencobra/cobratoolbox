@@ -1,15 +1,14 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y, constrModelsPath] = initMgPipe(modPath, abunFilePath, fvaType, varargin)
+function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
 % in the function it can replace the driver.
-%
+
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
-%    fvaType:                char defining whether flux variability analysis to compute the 
-%                            metabolic profiles should be performed, and which FVA function 
-%                            should be used. Allowed inputs are 'fastFVA', 'fluxVariability', 'none'.
+%    computeProfiles:        boolean defining whether flux variability analysis to 
+%                            compute the metabolic profiles should be performed.
 %
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
@@ -56,7 +55,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, constrModelsPath] = init
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
-parser.addRequired('fvaType', @ischar);
+parser.addRequired('computeProfiles', @islogical);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
 parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
@@ -74,11 +73,11 @@ parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
 
-parser.parse(modPath, abunFilePath, fvaType, varargin{:});
+parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
 modPath = parser.Results.modPath;
 abunFilePath = parser.Results.abunFilePath;
-fvaType = parser.Results.fvaType;
+computeProfiles = parser.Results.computeProfiles;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
 infoFilePath = parser.Results.infoFilePath;
@@ -110,11 +109,6 @@ if numWorkers > 1
 end
 
 global CBTDIR
-
-if ~any(strcmp(fvaType,{'fastFVA', 'fluxVariability', 'none'}))
-    error('Input for variable fvaType not allowed!')
-end
-    
     
 % set optional variables
 mkdir(resPath);
@@ -174,6 +168,6 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, fvaType, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end

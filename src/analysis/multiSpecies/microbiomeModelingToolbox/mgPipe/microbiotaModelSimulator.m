@@ -1,14 +1,14 @@
-function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
-% different diets (according to the user?s input) to the microbiota models
+% different diets (according to the user's input) to the microbiota models
 % and run simulations computing FVAs on exchanges reactions of the microbiota
 % models. The output is saved in multiple .mat objects. Intermediate saving
 % checkpoints are present.
 %
 % USAGE:
 %
-%   [exchanges, fvaCt, nsCt, presol, inFesMath] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%   [exchanges, fvaCt, nsCt, presol, inFesMath] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -26,9 +26,8 @@ function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(r
 %                        is available and should be simulated
 %    saveConstrModels:   boolean indicating if models with imposed
 %                        constraints are saved externally
-%    fvaType:            char defining whether flux variability analysis to compute the
-%                        metabolic profiles should be performed, and which FVA function
-%                        should be used. Allowed inputs are 'fastFVA', 'fluxVariability', 'none'.
+%    computeProfiles:    boolean defining whether flux variability analysis to 
+%                        compute the metabolic profiles should be performed.
 %    includeHumanMets:   boolean indicating if human-derived metabolites
 %                        present in the gut should be provexchangesed to the models (default: true)
 %    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
@@ -197,11 +196,11 @@ else
             FecalRxn = AllRxn(FecalInd);
             FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
             DietRxn = AllRxn(DietInd);
-            if rDiet==1 && ~strcmp(fvaType,'none')
-                [minFlux,maxFlux]=guidedSim(model,fvaType,FecalRxn);
+            if rDiet==1 && computeProfiles
+                [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                 sma=maxFlux;
                 sma2=minFlux;
-                [minFlux,maxFlux]=guidedSim(model,fvaType,DietRxn);
+                [minFlux,maxFlux]=guidedSim(model,DietRxn);
                 smi=minFlux;
                 smi2=maxFlux;
                 maxFlux=sma;
@@ -254,11 +253,11 @@ else
                 warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
                 inFesMat{k,2}= model.name;
             else
-                if ~strcmp(fvaType,'none')
-                    [minFlux,maxFlux]=guidedSim(model_sd,fvaType,FecalRxn);
+                if computeProfiles
+                    [minFlux,maxFlux]=guidedSim(model_sd,FecalRxn);
                     sma=maxFlux;
                     sma2=minFlux;
-                    [minFlux,maxFlux]=guidedSim(model_sd,fvaType,DietRxn);
+                    [minFlux,maxFlux]=guidedSim(model_sd,DietRxn);
                     smi=minFlux;
                     smi2=maxFlux;
                     maxFlux=sma;
@@ -313,10 +312,10 @@ else
                         inFesMat{k,3}= model.name;
                     else
                         
-                        if ~strcmp(fvaType,'none')
-                            [minFlux,maxFlux]=guexchangesedSim(model_pd,fvaType,FecalRxn);
+                        if computeProfiles
+                            [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
                             sma=maxFlux;
-                            [minFlux,maxFlux]=guexchangesedSim(model_pd,fvaType,DietRxn);
+                            [minFlux,maxFlux]=guidedSim(model_pd,DietRxn);
                             smi=minFlux;
                             maxFlux=sma;
                             minFlux=smi;
