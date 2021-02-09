@@ -76,7 +76,7 @@ for i=1:length(fileList)
         end
         sampleData(:,2:3)=[];
     end
-    if strcmp(sampleData{1,1},'Objective') || strcmp(sampleData{1,2},'Objective')
+    if strcmp(sampleData{1,2},'Objective')
         for j=2:size(sampleData,1)
             sampleData{j,1}=[sampleData{j,1} '_' sampleData{j,2}];
         end
@@ -84,6 +84,10 @@ for i=1:length(fileList)
     end
     
     sampleData(1,2:end)=strrep(sampleData(1,2:end),'microbiota_model_samp_','');
+    sampleData(1,2:end)=strrep(sampleData(1,2:end),'microbiota_model_diet_','');
+    sampleData(1,2:end)=strrep(sampleData(1,2:end),'microbiota_model_pDiet_','');
+    sampleData(1,2:end)=strrep(sampleData(1,2:end),'microbiota_model_rich_','');
+    sampleData(1,2:end)=strrep(sampleData(1,2:end),'host_microbiota_model_samp_','');
     
     % remove entries not in data
     [C,IA]=intersect(infoFile,sampleData(1,2:end));

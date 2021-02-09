@@ -1,10 +1,10 @@
-function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
+function [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath)
 % This function automatically extracts information from strain abundances in
 % different individuals and combines this information into different tables.
 %
 % USAGE:
 %
-%    [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
+%    [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
 %
 % INPUTS:
 %   organisms:         nx1 cell array cell array with names of organisms in the study
@@ -14,6 +14,8 @@ function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, rea
 %
 % OUTPUTS:
 %   reac:              cell array with all the unique set of reactions
+%                      contained in the models
+%   exMets:            cell array with all unique extracellular metabolites
 %                      contained in the models
 %   micRea:            binary matrix assessing presence of set of unique
 %                      reactions for each of the microbes
@@ -29,35 +31,10 @@ function [reac, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, rea
 %
 % .. Author: Federico Baldini 2017-2018
 
-%%
-[abundance] = readtable(abunFilePath);
-% Creating array to compare with first column 
-fcol=table2cell(abundance(1:height(abundance),1));
-if size(fcol,1)>1
-    if  ~isa(fcol{2,1},'char')
-        fcol=cellstr(num2str(cell2mat(fcol)));
-    end
-end
-spaceColInd=strmatch(' ',fcol);
-if length(spaceColInd)>0
-   fcol(spaceColInd)=strrep(fcol(spaceColInd),' ','');
-end
-pIndex=cellstr(num2str((1:(height(abundance)))'));
-spaceInd=strmatch(' ',pIndex);
-pIndexN=pIndex;
-if length(spaceInd)>0
-    pIndexN(spaceInd)=strrep(pIndex(spaceInd),' ','');
-end
-% Adding index column if needed
-if isequal(fcol,pIndexN)
-    disp('Index fashion input file detected');
-else
-   disp('Plain csv input format: adding index for internal purposes');
-   addIndex=pIndex;
-   abundance=horzcat((cell2table(addIndex)),abundance);
-end
-%%
+
 reac = {}; % array with unique set of all the reactions present in the models
+exMets = {}; % array with unique set of all the extracellular metabolites present in the models
+
 models = {};
 parfor i = 1:length(organisms) % find the unique set of all the reactions contained in the models
     model =readCbModel([modPath filesep organisms{i,1} '.mat']);
@@ -67,6 +44,8 @@ end
 for i = 1:length(organisms) % find the unique set of all the reactions contained in the models
     smd = models{i, 1};
     reac = union(reac,smd.rxns);
+    findmets = smd.mets(find(contains(smd.mets,'[e]')));
+    exMets = union(exMets,findmets);
 end
 
 % Code to detect reaction presence in each model and create inary matrix
@@ -81,13 +60,14 @@ parfor i = 1:mdlt
 end
 
 % creating binary table for abundances
+[abundance] = readtable(abunFilePath);
+
 [binary] = abundance;
 s = size(binary);
 s = s(1, 2);
-binary = binary(:, 3:s);  % removing model info and others
+binary = binary(:, 2:s);  % removing model info and others
 binary{:,:} = double(binary{:,:}~=0);
 binOrg = binary;
-
 
 % Compute number of reactions per individual (species resolved)
 
@@ -144,7 +124,7 @@ for j = 1: length(table2cell(binOrg(1, :)))
         if (cell2mat(table2cell(binOrg(i, j)))) == 1
             model = models{i, 1};
             reacvec = vertcat(reacvec, model.rxns);
-            abunvec((length(abunvec) + 1): ((length(abunvec)) + length(model.rxns))) = table2array(abundance(i, j + 2));
+            abunvec((length(abunvec) + 1): ((length(abunvec)) + length(model.rxns))) = table2array(abundance(i, j + 1));
         end
     end
 
@@ -156,10 +136,10 @@ end
 
 reacLng = length(reac);
 
-parfor j = 1:patNumb
+parfor j = 2:size(abundance,2)
     for i = 1:reacLng
-        indrxn = find(strcmp(reac(i, 1), completeset(:, j)));
-        numbtab(i, j) = sum(completeabunorm(indrxn,j));
+        indrxn = find(strcmp(reac(i, 1), completeset(:, j-1)));
+        numbtab(i, j-1) = sum(completeabunorm(indrxn,j-1));
     end
 end
 

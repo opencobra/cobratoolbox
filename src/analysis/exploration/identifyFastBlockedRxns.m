@@ -23,7 +23,7 @@ Rxns2CheckF = rxnList;
 L = length(Rxns2CheckF);
 
 if printLevel > 0
-    fprintf([' L = ' L '\n']);
+    fprintf('%s %4.0f \n',' L = ',L);
 end
 
 Llast=L+1;
@@ -41,7 +41,7 @@ while L<Llast
     Rxns2CheckF = intersect(Rxns2CheckF,Rxns2Check);
     L = length(Rxns2CheckF);
     if printLevel > 0
-       fprintf([' L = ' L '\n']);
+        fprintf('%s %4.0f \n',' L = ',L);
     end
 end
 
@@ -49,7 +49,7 @@ end
 L = length(Rxns2CheckF);
 
 if printLevel > 0
-    fprintf([' L = ' L '\n']);
+    fprintf('%s %4.0f \n',' L = ',L);
 end
 
 if L > 0
@@ -67,7 +67,7 @@ if L > 0
         Rxns2CheckF = intersect(Rxns2CheckF,Rxns2Check);
         L = length(Rxns2CheckF);
         if printLevel > 0
-            fprintf([' L = ' L '\n']);
+            fprintf('%s %4.0f \n',' L = ',L);
         end
     end
 end

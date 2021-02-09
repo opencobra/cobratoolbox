@@ -39,7 +39,7 @@ uptakeTable = readtable([inputDataFolder filesep 'uptakeTable.txt'], 'Delimiter'
 % remove the reference columns
 for i=1:11
     if ismember(['Ref' num2str(i)],uptakeTable.Properties.VariableNames)
-uptakeTable.(['Ref' num2str(i)])=[];
+        uptakeTable.(['Ref' num2str(i)])=[];
     end
 end
 uptakeExchanges = {'Ammonia','EX_nh4(e)','','';'Hydrogen','EX_h2(e)','','';'Isethionate','EX_isetac(e)','','';'Menaquinone','EX_mqn7(e)','EX_mqn8(e)','';'Methanol','EX_meoh(e)','','';'Methylamine','EX_mma(e)','','';'Niacin','EX_nac(e)','EX_ncam(e)','';'Nitrogen (N2)','EX_n2(e)','','';'Nitrate','EX_no3(e)','','';'Pantothenate','EX_pnto_R(e)','','';'Phenol','EX_phenol(e)','','';'2-methylbutyrate','EX_2mbut(e)','','';'1,2-propanediol','EX_12ppd_S(e)','','';'Cobalamin','EX_cbl1(e)','EX_adocbl(e)','';'Linoleic acid','EX_lnlc(e)','','';'alpha-Linolenic acid','EX_lnlnca(e)','','';'Benzoate','EX_bz[e]','','';'Betaine','EX_glyb(e)','','';'Bicarbonate','EX_hco3(e)','','';'Biotin','EX_btn(e)','','';'Chenodeoxycholate','EX_C02528(e)','','';'Cholate','EX_cholate(e)','','';'Dimethylamine','EX_dma(e)','','';'Folate','EX_fol(e)','','';'Formate','EX_for(e)','','';'Glycochenodeoxycholate','EX_dgchol(e)','','';'Pyridoxal','EX_pydx(e)','EX_pydxn(e)','EX_pydam(e)';'Propanol','EX_ppoh(e)','','';'Uridine','EX_uri(e)','','';'Urea','EX_urea(e)','','';'Riboflavin','EX_ribflv(e)','','';'Shikimate','EX_skm(e)','','';'Spermidine','EX_spmd(e)','','';'Sulfate','EX_so4(e)','','';'Valerate','EX_M03134(e)','','';'Tryptamine','EX_trypta(e)','','';'Tyramine','EX_tym(e)','','';'Trimethylamine','EX_tma(e)','','';'Taurine','EX_taur(e)','','';'Taurochenodeoxycholate','EX_tdchola(e)','','';'Taurocholate','EX_tchola(e)','','';'Thiamine','EX_thm(e)','','';'Thymidine','EX_thymd(e)','','';'Thiosulfate','EX_tsul(e)','','';'Glycocholate','EX_gchola(e)','','';'4-Aminobenzoate','EX_4abz(e)','','';'4-Aminobutyrate','EX_4abut(e)','','';'2,3-Butanediol ','EX_btd_RR(e)','','';'Glycodeoxycholate','EX_M01989(e)','','';'Glycolithocholate','EX_HC02193(e)','','';'Taurodeoxycholate','EX_tdechola(e)','','';'Taurolithocholate','EX_HC02192(e)','','';'1,2-Ethanediol','EX_12ethd(e)','','';'L-alanine','EX_ala_L(e)','','';'L-arginine','EX_arg_L(e)','','';'L-asparagine','EX_asn_L(e)','','';'L-aspartate','EX_asp_L(e)','','';'L-cysteine','EX_cys_L(e)','','';'L-glutamate','EX_glu_L(e)','','';'L-glutamine','EX_gln_L(e)','','';'Glycine','EX_gly(e)','','';'L-histidine','EX_his_L(e)','','';'L-isoleucine','EX_ile_L(e)','','';'L-leucine','EX_leu_L(e)','','';'L-lysine','EX_lys_L(e)','','';'L-methionine','EX_met_L(e)','','';'L-phenylalanine','EX_phe_L(e)','','';'L-proline','EX_pro_L(e)','','';'L-serine','EX_ser_L(e)','','';'L-threonine','EX_thr_L(e)','','';'L-tryptophan','EX_trp_L(e)','','';'L-tyrosine','EX_tyr_L(e)','','';'L-valine','EX_val_L(e)','',''};
@@ -59,7 +59,7 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-%     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+    %     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges
@@ -75,27 +75,25 @@ else
     rxns = unique(table2cell(rxns));
     rxns = rxns(~cellfun('isempty', rxns));
     if ~isempty(rxns)
-       rxnsInModel=intersect(rxns,model.rxns);
+        rxnsInModel=intersect(rxns,model.rxns);
         if isempty(rxnsInModel)
             % all exchange reactions that should be there are not there -> false
             % negatives
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
-                [minFlux, ~, ~, ~] = fastFVA(model, 0, 'max', solver, ...
+            currentDir=pwd;
+            try
+                [minFlux, ~, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
                     rxnsInModel, 'S');
-            else
-                FBA=optimizeCbModel(model,'max');
-                if FBA.stat ~=1
-                    warning('Model infeasible. Testing could not be performed.')
-                    minFlux=zeros(length(rxnsInModel),1);
-                else
-                    [minFlux, ~] = fluxVariability(model, 0, 'max', rxnsInModel);
-                end
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                cd(currentDir)
+                [minFlux, ~] = fluxVariability(model, 0, 'max', rxnsInModel);
             end
+            
             % active flux
-            flux = rxnsInModel(minFlux < -1e-6);           
+            flux = rxnsInModel(minFlux < -1e-6);
             % which uptakes should be taken up according to in vitro data
             %     vData = uptakeExchanges(table2array(uptakeTable(mInd, 2:end)) == 1, 2);
             vData = find(table2array(uptakeTable(mInd, 2:end)) == 1);

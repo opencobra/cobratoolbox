@@ -48,7 +48,7 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-%     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+    %     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges
@@ -71,19 +71,16 @@ else
             FalseNegatives = rxns;
             TruePositives= {};
         else
-            if ~isempty(ver('parallel')) && any(strcmp(solver,'ibm_cplex'))
-                [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, ...
+            currentDir=pwd;
+            try
+                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
                     rxnsInModel, 'S');
-            else
-                FBA=optimizeCbModel(model,'max');
-                if FBA.stat ~=1
-                    warning('Model infeasible. Testing could not be performed.')
-                    minFlux=zeros(length(rxnsInModel),1);
-                    maxFlux=zeros(length(rxnsInModel),1);
-                else
-                    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-                end
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                cd(currentDir)
+                [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
             end
+            
             % active flux
             uptFlux = rxnsInModel(minFlux < -1e-6);
             secrFlux = rxnsInModel(maxFlux > 1e-6);
