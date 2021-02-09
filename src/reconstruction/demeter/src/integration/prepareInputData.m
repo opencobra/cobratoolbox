@@ -279,7 +279,7 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
                 for j=1:length(newStrains)  
                     inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),2:refCols(1)-1)=num2cell(compData(1,2:end));
                     % propagate references
-                    inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum,refCols(1):refCols(end));
+                    inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum(1),refCols(1):refCols(end));
                 end
             end
         end
