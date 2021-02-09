@@ -219,7 +219,7 @@ if isfield(param,'epsilon') == 0
 end
 
 if isfield(param,'theta0') == 0
-    param.theta0   = 0.5;
+    param.theta0   = 0.1;
 end
 
 %make sure C is present if d is present

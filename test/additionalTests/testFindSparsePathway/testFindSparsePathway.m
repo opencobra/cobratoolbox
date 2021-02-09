@@ -35,4 +35,5 @@ model.rxns(sparseRxnBool2)
 nnz(sparseRxnBool2)
 nnz(solution.v)
 
-assert(nnz(vSparse)==nnz(solution.v))
+%check that both approaches give a sparse solution
+assert(nnz(sparseRxnBool1)==nnz(sparseRxnBool2))
