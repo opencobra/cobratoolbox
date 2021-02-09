@@ -1,4 +1,4 @@
-function modelNew = removeUnusedGenes(model)
+function [modelNew, unusedGenes] = removeUnusedGenes(model)
 % Updates the rules, genes, and rxnGeneMat fields based on the grRules field for
 % reactions in the model.
 %
@@ -39,6 +39,9 @@ if ~isfield(modelNew,'rxnGeneMat')
 end
 
 genesToRemove = sum(modelNew.rxnGeneMat) == 0;
+
+unusedGenes= modelNew.genes(genesToRemove);
+
 modelNew = removeFieldEntriesForType(modelNew,genesToRemove,'genes',numel(modelNew.genes));
 
 

@@ -136,7 +136,7 @@ end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
 %sink reactions going into or out of model
-model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
+model.SinkRxnBool=strncmp('sink_', model.rxns, 5) | strncmp('Sink_', model.rxns, 5)==1;
 
 %input/output
 SExRxnBoolHeuristic = model.ExchRxnBool | model.DMRxnBool | model.SinkRxnBool;
