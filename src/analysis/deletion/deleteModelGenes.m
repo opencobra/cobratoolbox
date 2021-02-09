@@ -19,7 +19,7 @@ function [model, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(mod
 % OUTPUTS:
 %    model:             COBRA model with the selected genes deleted
 %    hasEffect:         True if the gene deletion has an effect on the model
-%    constrRxnNames:    Reactions that are associated to the genes in `geneList`
+%    constrRxnNames:    Reactions that are associated to the genes in `deletedGenes`
 %    deletedGenes:      The list of genes removed from the model.
 %
 % .. Authors:

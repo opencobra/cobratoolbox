@@ -1,5 +1,5 @@
 function solution = optimizeCardinality(problem, param)
-% DC programming for solving the cardinality optimization problem
+%% DC programming for solving the cardinality optimization problem
 % The `l0` norm is approximated by a capped-`l1` function.
 %
 % :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*o.*||x||_1
@@ -43,8 +43,15 @@ function solution = optimizeCardinality(problem, param)
 %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                   * .epsilon - stopping criteria - (Default value = 1e-6)
 %                   * .theta - starting parameter of the approximation (Default value = 0.5) 
-%                              For a sufficiently large parameter , the Capped-L1 approximate problem
-%                              and the original cardinality optimisation problem are have the same set of optimal solutions
+%                              For a sufficiently large parameter, the Capped-L1 approximate problem
+%                              and the original cardinality optimisation
+%                              problem are have the same set of optimal
+%                              solutions. However, starting with a smaller
+%                              theta seems to avoid getting stuck in a
+%                              local minimum. Local minima can be detected
+%                              by checking if running the algorithm
+%                              multiple times gives fifferent solutions. If
+%                              som try reducing theta to e.g. 0.1
 %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
 %                   * .eta - Smallest value considered non-zero (Default value feasTol)
 
@@ -64,7 +71,9 @@ function solution = optimizeCardinality(problem, param)
 %
 % OPTIONAL OUTPUT:
 %    solution:    Structure may also contain the following field:
-%                   * .xyz - 'size(A,2) x 1` solution vector, where model.p,q,r are 'size(A,2) x 1` boolean vectors and 
+%                   * .xyz - 'size(A,2) x 1` solution vector, in same order
+%                   as the columns of problem.A
+%                    where model.p,q,r are 'size(A,2) x 1` boolean vectors and 
 %                     x=solution.xyz(problem.p);
 %                     y=solution.xyz(problem.q);
 %                     z=solution.xyz(problem.r);
@@ -82,7 +91,7 @@ solution.stat = 1;
 if ~exist('param','var') || isempty(param)
     param.nbMaxIteration = 100;
     param.epsilon = getCobraSolverParams('LP', 'feasTol');
-    param.theta   = 0.5;
+    param.theta   = 0.5;%can be volatile, if so try 0.1
     param.thetaMultiplier   = 1.5;
     param.warmStartMethod = 'random';
     param.regularizeOuter = 0;
@@ -390,10 +399,26 @@ if isfield(problem,'o')
                 solution.stat = -1;
                 return;
             else
-                if any(problem.o <0)
-                    solution.stat = -1;
-                    warning('Error: the weight vector o should be non-negative.');
-                    return;
+                if problem.lambda1~=0
+                    if any(problem.o(problem.p)<=0)
+                        solution.stat = -1;
+                        warning('Error: the weight vector o(problem.p) should be strictly positive.');
+                        return;
+                    end
+                end
+                if problem.delta1~=0
+                    if any(problem.o(problem.q) <=0)
+                        solution.stat = -1;
+                        warning('Error: the weight vector o(problem.q) should be strictly positive.');
+                        return;
+                    end
+                end
+                if problem.alpha1~=0
+                    if any(problem.o(problem.r) <=0)
+                        solution.stat = -1;
+                        warning('Error: the weight vector o(problem.r) should be strictly positive.');
+                        return;
+                    end
                 end
             end
         end
