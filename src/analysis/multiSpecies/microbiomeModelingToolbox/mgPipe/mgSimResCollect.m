@@ -1,23 +1,23 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, indInfoFilePath, fvaCt, nsCt, figForm)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, fvaCt, nsCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
-% models of indivexchangesuals for similar metabolic profile is also
+% models of individuals for similar metabolic profile is also
 % computed and outputted.
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, sampNames, sampNames, rDiet, pDiet, indInfoFilePath, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, sampNames, sampNames, rDiet, pDiet, infoFilePath, fvaCt, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
-%    sampNames:          nx1 cell array cell array with names of indivexchangesuals in the study
+%    sampNames:          nx1 cell array cell array with names of individuals in the study
 %    exchanges:          cell array with list of all unique Exchanges to diet/
 %                        fecal compartment
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
-%    indInfoFilePath:    char indicating, if stratification criteria are available, 
+%    infoFilePath:    char indicating, if stratification criteria are available,
 %                        full path and name to related documentation(default: no)
 %                        is available
 %    fvaCt:              cell array containing FVA values for maximal uptake
@@ -30,8 +30,8 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sam
 %
 % .. Author: Federico Baldini, 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
- 
-if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
+
+if ~exist('infoFilePath', 'var')||~exist(infoFilePath, 'file')
     patStat = 0;
 else
     patStat = 1;
@@ -41,7 +41,7 @@ end
 % Extract results from fluxes matrix and analyze: NMPCs will be computed for
 % rich (if enabled) and standard diet. NMPCs are computed under the assumption
 % that the community maximizes its uptakes and secretions. NMPCs are computed
-% and saved in .csv format and a PCoA which aims to group indivexchangesuals for
+% and saved in .csv format and a PCoA which aims to group individuals for
 % similarity in their metabolic profile is also computed.
 
 % In this section NMPCs are automatically computed for all types of diets.
@@ -95,7 +95,7 @@ for j = init:fl
     fSpOld=fSp;
     convRes=num2cell(fSp);
     fSp=[exchanges';convRes'];
-    ext=['NMPCs';sampNames];
+    ext=['Net secretion';sampNames];
     netSecretionFluxes=[ext';fSp'];
     writetable(cell2table(netSecretionFluxes),[resPath names{1, j} '_net_secretion_fluxes.csv'],'WriteVariableNames',false);
     convRes=num2cell(uSp);
@@ -112,7 +112,7 @@ for j = init:fl
         P = [eigvals eigvals / max(abs(eigvals))];
         expr = [eigvals/sum(eigvals)];
         if patStat == 0
-            % catch if there are too few indivexchangesuals to plot
+            % catch if there are too few individuals to plot
             if ~isempty(Y)
                 plot(Y(:, 1), Y(:, 2), 'bx')
                 xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
@@ -120,41 +120,57 @@ for j = init:fl
                 if length(sampNames)<30
                     text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
                 else
-                    warning('Plot annotation with indivexchangesuals names disabled because of their big number');
+                    warning('Plot annotation with individuals names disabled because of their big number');
                 end
-                print(strcat(resPath, 'PCoA_indivexchangesuals_fluxes_', names{1, j}), figForm)
-                title('PCoA of NMPCs');
+                print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                title('PCoA of net secretion profiles');
             end
         else
-            infoFile = readtable(indInfoFilePath);
-            infoFile=table2cell(infoFile);
+            infoFile = table2cell(readtable(infoFilePath));
             
-            % remove entries not in data
-            [C,IA]=intersect(infoFile,sampNames);
-            if length(C)<length(sampNames)
-                error('Some sample exchangess are not found in the file with sample information!')
+            % remove individuals not in simulations
+            [C,IA] = setdiff(infoFile(:,1),sampNames);
+            infoFile(IA,:)=[];
+            
+            % get the number of conditions
+            cond=unique(infoFile(:,2));
+            
+            % assign a random color to each condition
+            
+            for i=1:length(cond)
+                cols(i,:)=[rand rand rand];
             end
-            infoFile=infoFile(IA,:);
-            groups=unique(infoFile(1:end,2));
-            % define a random color for each group
-            cols = zeros(length(groups), 3);
-            for k=1:length(groups)
-                cols(k,:)=[rand rand rand];
+            
+            colorMap = zeros(size(infoFile,1),3);
+            
+            for i = 1: size(infoFile(:,1))
+                % get the color corresponding to the condition
+                findCol=find(strcmp(cond,infoFile{i,2}));
+                colorMap(i, :) = cols(findCol,:);
             end
-            colorMap = zeros(size(infoFile,1), 3);
-            for k = size(infoFile,1)
-                gInd=find(strcmp(groups,infoFile{k,2}));
-                colorMap(k, :) = cols(gInd,:);
-            end
-            % catch if there are too few indivexchangesuals to plot
+            
+            % catch if there are too few individuals to plot
             if ~isempty(Y)
-                scatter(Y(:, 1), Y(:, 2), 24 * ones(size(Y,1), 1), colorMap, 'filled');
-                for k=1:length(groups)
-                text(max(Y(:, 1)),max(Y(:, 3-k)),groups{k},'HorizontalAlignment','left','Color', cols(k,:));%to insert numbers
-                end
+                
+                figure
+                scatter(Y(:, 1), Y(:, 2), 30 * ones(size(Y,1), 1), colorMap, 'filled');
+                
                 xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-                title('PCoA of NMPCs');
+                
+                for i=1:length(cond)
+                    text(max(Y(:, 1)),max(Y(:, 2)-20*i),cond{i},'HorizontalAlignment','left','Color', cols(i,:));
+                    hold on
+                end
+                
+                if length(sampNames)<30
+                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                else
+                    warning('Plot annotation with individuals names disabled because of their big number');
+                end
+                print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                title('PCoA of net secretion profiles');
+                
             end
         end
     end

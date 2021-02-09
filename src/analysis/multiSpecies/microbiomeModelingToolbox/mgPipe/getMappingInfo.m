@@ -69,8 +69,6 @@ binary = binary(:, 2:s);  % removing model info and others
 binary{:,:} = double(binary{:,:}~=0);
 binOrg = binary;
 
-abundance=table2cell(abundance);
-
 % Compute number of reactions per individual (species resolved)
 
 reacPat = zeros(length(table2cell(binOrg(:, 1))), length(table2cell(binOrg(1, :))));

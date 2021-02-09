@@ -1,12 +1,14 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, varargin)
+function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
 % in the function it can replace the driver.
-%
+
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
+%    computeProfiles:        boolean defining whether flux variability analysis to 
+%                            compute the metabolic profiles should be performed.
 %
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
@@ -14,6 +16,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    infoFilePath:           char with path to stratification criteria if available
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
+%    hostBiomassRxnFlux:     double with the desired upper bound on flux through the host
+%                            biomass reaction (default: 1)
 %    objre:                  char with reaction name of objective function of organisms
 %    buildSetupAll:       	 boolean indicating the strategy that should be used to
 %                            build personalized models: if true, build a global setup model 
@@ -24,7 +28,6 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    numWorkers:             integer indicating the number of cores to use for parallelization
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
-%    fvaType:                boolean indicating which function to use for flux variability. true=fastFVa, false=fluxVariability (default: 'true')
 %    includeHumanMets:       boolean indicating if human-derived metabolites
 %                            present in the gut should be provided to the models (default: true)
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
@@ -52,39 +55,41 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
+parser.addRequired('computeProfiles', @islogical);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
 parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
+parser.addParameter('hostBiomassRxnFlux', 1, @isnumeric);
 parser.addParameter('objre', '', @ischar);
 parser.addParameter('buildSetupAll', true, @islogical);
 parser.addParameter('saveConstrModels', false, @islogical);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('rDiet', false, @islogical);
 parser.addParameter('pDiet', false, @islogical);
-parser.addParameter('fvaType', true, @islogical);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
 
-parser.parse(modPath, abunFilePath, varargin{:});
+parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
 modPath = parser.Results.modPath;
 abunFilePath = parser.Results.abunFilePath;
+computeProfiles = parser.Results.computeProfiles;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
 infoFilePath = parser.Results.infoFilePath;
 hostPath = parser.Results.hostPath;
 hostBiomassRxn = parser.Results.hostBiomassRxn;
+hostBiomassRxnFlux = parser.Results.hostBiomassRxnFlux;
 objre = parser.Results.objre;
 buildSetupAll = parser.Results.buildSetupAll;
 saveConstrModels = parser.Results.saveConstrModels;
 numWorkers = parser.Results.numWorkers;
 rDiet = parser.Results.rDiet;
 pDiet = parser.Results.pDiet;
-fvaType = parser.Results.fvaType;
 includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
@@ -104,7 +109,7 @@ if numWorkers > 1
 end
 
 global CBTDIR
-
+    
 % set optional variables
 mkdir(resPath);
     
@@ -138,7 +143,7 @@ figForm = '-depsc';
 
 % Check for installation of parallel Toolbox
 try
-   version = ver('distcomp');
+   version = ver('parallel');
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
 end
@@ -163,6 +168,6 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, fvaType, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end
