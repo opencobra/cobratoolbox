@@ -5,7 +5,7 @@ function [rebuiltModel] = rebuildModel(model,database)
 % rBioNet.
 %
 % USAGE
-% [rebuiltModel] = rebuildModel(model)
+% [rebuiltModel] = rebuildModel(model,database)
 %
 % INPUT
 %    model         COBRA model structure
@@ -18,6 +18,12 @@ function [rebuiltModel] = rebuildModel(model,database)
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 12/2018: adapted to function.
+
+% to account for older versions of AGORA
+toReplace={'EX_4hpro(e)','EX_4hpro_LT(e)';'EX_indprp(e)','EX_ind3ppa(e)';'INDPRPt2r','IND3PPAt2r';'EX_adpcbl(e','EX_adocbl(e';'H202D','H2O2D'};
+for i=1:size(toReplace,1)
+    model.rxns=strrep(model.rxns,toReplace{i,1},toReplace{i,2});
+end
 
 model=convertOldStyleModel(model);
 
@@ -109,7 +115,7 @@ model.metPubChemID=cellstr(model.metPubChemID);
 model.metChEBIID=cellstr(model.metChEBIID);
 model.metKEGGID=cellstr(model.metKEGGID);
 % fill in descriptions
-model.description.author = 'Molecular Systems Physiology group, www.vmh.life';
+model.description.author = 'Created by DEMETER, Molecular Systems Physiology group';
 model.description.date=date;
 
 % set biomass reaction as objective function

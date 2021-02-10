@@ -10,14 +10,25 @@ function printConstraints(model, minInf, maxInf, rxnBool, modelAfter, printLevel
 %    minInf:    value that is considered as -Inf (or desired minimum cutoff value)
 %    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
 %
+% OPTIONAL INPUTS:
+%   modelAfter: model after some perturbation to the bounds
+%   printLevel:
+%
+
 % .. Authors:
 %       - Ines Thiele 02/09, Ronan Fleming 2020
 
+if ~exist('minInf','var')|| isempty(minInf)
+    minInf=-Inf;
+end
+if ~exist('maxInf','var') || isempty(maxInf)
+    maxInf=Inf;
+end
 if ~exist('rxnBool','var')
     rxnBool=true(size(model.S,2),1);
 end
 if ~exist('printLevel','var')
-    printLevel=1;
+    printLevel=0;
 end
 if exist('modelAfter','var')
     if isempty(modelAfter)
@@ -25,10 +36,22 @@ if exist('modelAfter','var')
     end
 end
 
+if ischar(rxnBool) || iscell(rxnBool)
+    rxnBool = ismember(model.rxns,rxnBool);
+end
+
+if ~any(rxnBool)
+    return
+end
+
 closedRxnBool = model.lb == model.ub & model.lb==0 & rxnBool;
 reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnBool;
-fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & rxnBool;
-revRxnBool = model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & rxnBool;
+fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool & model.ub~=maxInf;
+revRxnBool = model.lb~=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool;
+
+if any(closedRxnBool & reversibleRxnBool) || any(closedRxnBool & fwdRxnBool) || any(closedRxnBool & revRxnBool) || any(fwdRxnBool & revRxnBool)
+    warning('inconsistent boolean variables')
+end
 
 rxnNames=model.rxnNames;
 for j=1:size(model.S,2)
@@ -57,7 +80,7 @@ if ~any(fwdRxnBool)
     end
 else
     if printLevel>0
-        fprintf('%s\n', ['...forward reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) '] constraints:']);
+        fprintf('%s\n', ['...forward reactions with non-[0, ' num2str(maxInf) '] constraints:']);
     end
     if exist('modelAfter','var')
         T = table(model.rxns(fwdRxnBool),rxnNames(fwdRxnBool),model.lb(fwdRxnBool),modelAfter.lb(fwdRxnBool),model.ub(fwdRxnBool),modelAfter.ub(fwdRxnBool),printRxnFormula(model, 'rxnAbbrList',model.rxns(fwdRxnBool),'printFlag',0),'VariableNames',{'Forward_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
@@ -73,7 +96,7 @@ if ~any(revRxnBool)
     end
 else
     if printLevel>0
-        fprintf('%s\n',['...reverse reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) ']  constraints:']);
+        fprintf('%s\n',['...reverse reactions with non-[' num2str(minInf)  ', 0]  constraints:']);
     end
     if exist('modelAfter','var')
         T = table(model.rxns(revRxnBool),rxnNames(revRxnBool),model.lb(revRxnBool),modelAfter.lb(revRxnBool),model.ub(revRxnBool),modelAfter.ub(revRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(revRxnBool),'printFlag',0),'VariableNames',{'Reverse_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});

@@ -26,8 +26,11 @@ k=1;
 for i=1:length(samples)
 
     for p=1:size(mets,2)
+              if contains(mets{p,1},'[')
+         name  = ['phasePlane_' strtok(mets{1,p}, '[') '_' strtok(mets{2,p}, '[')];
+        else
         name  = ['phasePlane_' strtok(mets{1,p}, '(') '_' strtok(mets{2,p}, '(')];
-
+              end
         %load condition specific performPPP result
         growthRates = ResultsAllCellLines.(samples{i}).(name).growthRates;
         bounds = ResultsAllCellLines.(samples{k}).(name).bounds;
@@ -47,8 +50,8 @@ for i=1:length(samples)
         name = regexprep(samples{i},'_','-');
         title_name = ['Objective values under variation of ' regexprep(mets{1,p},'_','-') ' and ' regexprep(mets{2,p},'_','-') ' in ' name];
        % define max of z-axis, which is the growth rate and color coded
-        zmax = eval(['ResultsAllCellLines.' samples{i} '.maxBiomass.f'])+ 0.001;
-
+%        zmax = eval(['ResultsAllCellLines.' samples{i} '.maxBiomass.f'])+ 0.001;
+        zmax=eval(['ResultsAllCellLines.' samples{i} '.maxBiomass.f'])+ 0.001;;
         B = growthRates;
         % set values below tol as zero
         B(find(abs(B)<abs(tol)))=0;
@@ -76,10 +79,10 @@ for i=1:length(samples)
 
         %hold off
         hold on
-        plot3([lb,lb],[0,-1000],[zmax,zmax],'Color',[0 0 0],'LineWidth',1.2);
+        plot3([lb,lb],[0,-10],[zmax,zmax],'Color',[0 0 0],'LineWidth',1.2);
 
         hold on
-        plot3([ub,ub],[-1000,0],[zmax,zmax],'Color',[0 0 0],'LineWidth',1.2);
+        plot3([ub,ub],[-10,0],[zmax,zmax],'Color',[0 0 0],'LineWidth',1.2);
 
         hold off
         xlabel(label(1,1),'FontSize',fonts);

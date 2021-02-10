@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, nsCt, figForm)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, fvaCt, nsCt, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -7,18 +7,17 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID,
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, ID, sampName, rDiet, pDiet, patNumb, indInfoFilePath, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, sampNames, sampNames, rDiet, pDiet, infoFilePath, fvaCt, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
-%    ID:                 cell array with list of all unique Exchanges to diet/
+%    sampNames:          nx1 cell array cell array with names of individuals in the study
+%    exchanges:          cell array with list of all unique Exchanges to diet/
 %                        fecal compartment
-%    sampName:           nx1 cell array cell array with names of individuals in the study
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
-%    patNumb:            number (double) of individuals in the study
-%    indInfoFilePath:    char indicating, if stratification criteria are available, 
+%    infoFilePath:    char indicating, if stratification criteria are available,
 %                        full path and name to related documentation(default: no)
 %                        is available
 %    fvaCt:              cell array containing FVA values for maximal uptake
@@ -27,18 +26,12 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, ID,
 % OUTPUTS:
 %    netSecretionFluxes: cell array with computed NMPCs
 %    netUptakeFluxes:    cell array with computed uptake potential
-%    Y:                  classical multidimensional scaling
+%    Y:                  classical multexchangesimensional scaling
 %
 % .. Author: Federico Baldini, 2017-2018
+%            Almut Heinken, 03/2021: simplified inputs
 
- fid = fopen('ID.csv', 'wt');  % Exporting set of simulated reactions
- if fid > 0
-     for k = 1:size(ID, 1)
-         fprintf(fid, '%s,%f\n', ID{k, :});
-     end
-     fclose(fid);
- end 
-if ~exist('indInfoFilePath', 'var')||~exist(indInfoFilePath, 'file')
+if ~exist('infoFilePath', 'var')||~exist(infoFilePath, 'file')
     patStat = 0;
 else
     patStat = 1;
@@ -73,41 +66,41 @@ for j = init:fl
     noPcoa = 0;
     fSp=[];
     uSp=[];
-    for k = 2:patNumb + 1
-        if isempty(fvaCt{fl, (k - 1)}) == 1
+    for k = 1:length(sampNames)
+        if isempty(fvaCt{fl,k}) == 1
             disp('Jumping not feasible model')
             warning('NAN rows in fluxes matrix, no PCoA will be plotted')
-            sp = NaN(length(ID), 1);
-            up = NaN(length(ID), 1);
-            fSp(:, k - 1) = sp;
-            uSp(:, k - 1) = up;
+            sp = NaN(length(exchanges), 1);
+            up = NaN(length(exchanges), 1);
+            fSp(:,k) = sp;
+            uSp(:,k) = up;
             noPcoa = 1;
         else
-            sp = NaN(length(ID), 1);  % consider to remove preallocation
-            for i = 1:length(ID)
-                x = fvaCt{j, (k - 1)}{i, 3};
+            sp = NaN(length(exchanges), 1);  % consexchangeser to remove preallocation
+            for i = 1:length(exchanges)
+                x = fvaCt{j,k}{i, 3};
                 e = isempty(x);
                 if e == 0
-                    sp(i, 1) = abs(fvaCt{j, (k - 1)}{i, 3} + fvaCt{j, (k - 1)}{i, 2});
+                    sp(i,1) = abs(fvaCt{j, k}{i,3} + fvaCt{j,k}{i, 2});
                 end
                 if e == 0
-                    up(i, 1) = abs(nsCt{j, (k - 1)}{i, 3} + nsCt{j, (k - 1)}{i, 2});
+                    up(i,1) = abs(nsCt{j, k}{i,3} + nsCt{j,k}{i, 2});
                 end
             end
-            fSp(:, k - 1) = sp;
-            uSp(:, k - 1) = up;
+            fSp(:,k) = sp;
+            uSp(:,k) = up;
         end
     end
     
     fSpOld=fSp;
     convRes=num2cell(fSp);
-    fSp=[ID';convRes'];
-    ext=['NMPCs';sampName];
+    fSp=[exchanges';convRes'];
+    ext=['Net secretion';sampNames];
     netSecretionFluxes=[ext';fSp'];
     writetable(cell2table(netSecretionFluxes),[resPath names{1, j} '_net_secretion_fluxes.csv'],'WriteVariableNames',false);
     convRes=num2cell(uSp);
-    uSp=[ID';convRes'];
-    ext=['Net uptake';sampName];
+    uSp=[exchanges';convRes'];
+    ext=['Net uptake';sampNames];
     netUptakeFluxes=[ext';uSp'];
     writetable(cell2table(netUptakeFluxes),[resPath names{1, j} '_net_uptake_fluxes.csv'],'WriteVariableNames',false);
     if noPcoa == 1
@@ -119,38 +112,72 @@ for j = init:fl
         P = [eigvals eigvals / max(abs(eigvals))];
         expr = [eigvals/sum(eigvals)];
         if patStat == 0
-            plot(Y(:, 1), Y(:, 2), 'bx')
-            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-            if length(sampName)<30
-                text(Y(:,1),Y(:,2),sampName,'HorizontalAlignment','left');%to insert numbers
-            else
-                warning('Plot annotation with individuals names disabled because of their big number');
+            % catch if there are too few individuals to plot
+            if ~isempty(Y)
+                plot(Y(:, 1), Y(:, 2), 'bx')
+                xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+                ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+                if length(sampNames)<30
+                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                else
+                    warning('Plot annotation with individuals names disabled because of their big number');
+                end
+                print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                title('PCoA of net secretion profiles');
             end
-            print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
-            title('PCoA of NMPCs');
         else
-            patTab = readtable(indInfoFilePath);
-            patients = table2array(patTab(2, :));
-            %patients = patients(1:length(patOrg));
-            patients = patients(1:length(patients));
-            N = length(patients(1, :));
-            colorMap = [zeros(N, 1), zeros(N, 1), ones(N, 1)];
-            for k = 1: length(patients(1, :))
-                if str2double(patients(1, k)) == 1
-                    colorMap(k, :) = [1, 0, 0];  % Red
-                end
-                if str2double(patients(1, k)) == 0
-                    colorMap(k, :) = [0, 1, 0];  % Green
-                end
+            infoFile = table2cell(readtable(infoFilePath));
+            
+            % remove individuals not in simulations
+            [C,IA] = setdiff(infoFile(:,1),sampNames);
+            infoFile(IA,:)=[];
+            
+            % get the number of conditions
+            cond=unique(infoFile(:,2));
+            
+            % assign a random color to each condition
+            
+            for i=1:length(cond)
+                cols(i,:)=[rand rand rand];
             end
-            scatter(Y(:, 1), Y(:, 2), 24 * ones(length(patients), 1), colorMap, 'filled');
-            text(max(Y(:, 1)),max(Y(:, 2)),'Healthy','HorizontalAlignment','left','Color', 'g');%to insert numbers
-            text(max(Y(:, 1)),(max(Y(:, 2)-0.02)),'Diseased','HorizontalAlignment','left','Color', 'r');%to insert numbers
-            xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
-            ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
-            title('PCoA of NMPCs');
+            
+            colorMap = zeros(size(infoFile,1),3);
+            
+            for i = 1: size(infoFile(:,1))
+                % get the color corresponding to the condition
+                findCol=find(strcmp(cond,infoFile{i,2}));
+                colorMap(i, :) = cols(findCol,:);
+            end
+            
+            % catch if there are too few individuals to plot
+            if ~isempty(Y)
+                
+                figure
+                scatter(Y(:, 1), Y(:, 2), 30 * ones(size(Y,1), 1), colorMap, 'filled');
+                
+                xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
+                ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
+                
+                for i=1:length(cond)
+                    text(max(Y(:, 1)),max(Y(:, 2)-20*i),cond{i},'HorizontalAlignment','left','Color', cols(i,:));
+                    hold on
+                end
+                
+                if length(sampNames)<30
+                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                else
+                    warning('Plot annotation with individuals names disabled because of their big number');
+                end
+                print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                title('PCoA of net secretion profiles');
+                
+            end
         end
     end
 end
+
+% delete files that are no longer needed
+delete([resPath filesep 'exchanges.csv'])
+delete([resPath filesep 'intRes.mat'])
+
 end

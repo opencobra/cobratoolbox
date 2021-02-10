@@ -1,4 +1,4 @@
-function model = fastSetupCreator(models, microbeNames, host, objre)
+function model = fastSetupCreator(modPath, microbeNames, host, objre, numWorkers)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -15,8 +15,7 @@ function model = fastSetupCreator(models, microbeNames, host, objre)
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
 % INPUTS:
-%    models:              nx1 cell array that contains n microbe models in
-%                         COBRA model structure format
+%    modPath:             char with path of directory where models are stored
 %    microbeNames:        nx1 cell array of n unique strings that represent
 %                         each microbe model. Reactions and metabolites of
 %                         each microbe will get the corresponding
@@ -25,12 +24,21 @@ function model = fastSetupCreator(models, microbeNames, host, objre)
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
-%    objre:               char with reaction name of objective function of organisms
+%    objre:               char with reaction name of objective function of microbeNames
+%    numWorkers:          integer indicating the number of cores to use for parallelization
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
 %
 % .. Author: Stefania Magnusdottir and Federico Baldini 2016-2018
+
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
 
 if ~isempty(host)  % Get list of all exchanged metabolites
     %exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
@@ -39,8 +47,8 @@ if ~isempty(host)  % Get list of all exchanged metabolites
 else
     exch = {};
 end
- for j = 1:size(models, 1)
-    model = models{j, 1};
+ for j = 1:size(microbeNames, 1)
+    model = readCbModel([modPath filesep microbeNames{j,1} '.mat']);
     %exch = union(exch, model.mets(find(sum(model.S(:, strncmp('EX_', model.rxns, 3)), 2) ~= 0)));
     exStruct = findSExRxnInd(model);
     new_exch = findMetsFromRxns(model,model.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool));
@@ -118,7 +126,7 @@ exMetRxns = exMetRxns';
 exMetRxnsMets = find(sum(abs(host.S(:, exMetRxns)), 2) ~= 0);  % get all metabolites of [e] containing rxns
 dummyHostB = createModel(); %makeDummyModel(size(exMetRxnsMets, 1), size(exMetRxns, 1));
 dummyHostB = addMultipleMetabolites(dummyHostB,strcat({'Host_'}, regexprep(host.mets(exMetRxnsMets), '\[e\]', '\[b\]')));
-dummyHostB = addMultipleReactions(dummyHostB,strcat({'Host_'}, host.rxns(exMetRxns), {'b'}),host.S(exMetRxnsMets, exMetRxns),'c',host.c(exMetRxns),'lb',host.lb(exMetRxns),'ub',host.ub(exMetRxns));
+dummyHostB = addMultipleReactions(dummyHostB,strcat({'Host_'}, host.rxns(exMetRxns), {'b'}),dummyHostB.mets,host.S(exMetRxnsMets, exMetRxns),'c',host.c(exMetRxns),'lb',host.lb(exMetRxns),'ub',host.ub(exMetRxns));
 %dummyHostB.rxns = ;
 %dummyHostB.mets = strcat({'Host_'}, regexprep(host.mets(exMetRxnsMets), '\[e\]', '\[b\]'));  % replace [e] with [b]
 %dummyHostB.S = host.S(exMetRxnsMets, exMetRxns);
@@ -134,7 +142,7 @@ host.mets = strcat({'Host_'}, host.mets);
 host.rxns = strcat({'Host_'}, host.rxns);
 
 % use mergeToModels without combining genes
-[host] = mergeTwoModels(dummyHostB, host, 2, false);
+[host] = mergeTwoModels(dummyHostB, host, 2, false, false);
 
 % Change remaining [e] (transporters) to [u] to transport diet metabolites
 exMets2 = ~cellfun(@isempty, strfind(host.mets, '[e]'));  % again, find all mets that appear in [e]
@@ -152,7 +160,7 @@ S = [-speye(nMets),speye(nMets)];
 lbs = repmat(-1000,nMets,1);
 ubs = repmat(1000,nMets,1);
 names = strrep(strcat('Host_IEX_', strrep(hostmets, 'Host_', ''), 'tr'), '[e]', '[u]');
-dummyHostEU = addMultipleReactions(dummyHostEU,names,dummyHostEUmets,S,'lb',lbs,'ub',ubs);
+dummyHostEU = addMultipleReactions(dummyHostEU,names,dummyHostEUmets,S','lb',lbs,'ub',ubs);
 % for j = 1:size(exMets2, 1)
 %     dummyHostEU.rxns{j, 1} = strrep(strcat('Host_IEX_', strrep(host.mets{exMets2(j), 1}, 'Host_', ''), 'tr'), '[e]', '[u]');
 %     metU = find(ismember(dummyHostEU.mets, strrep(strrep(host.mets{exMets2(j)}, 'Host_', ''), '[e]', '[u]')));
@@ -162,16 +170,30 @@ dummyHostEU = addMultipleReactions(dummyHostEU,names,dummyHostEUmets,S,'lb',lbs,
 %     dummyHostEU.lb(j) = -1000;
 %     dummyHostEU.ub(j) = 1000;
 % end
-[host] = mergeTwoModels(dummyHostEU, host, 2, false);
+[host] = mergeTwoModels(dummyHostEU, host, 2, false, false);
 end
 
 
 %% create a new extracellular space [u] for microbes, code runs in parallel
-modelStorage = cell(size(models));
+modelStorage = cell(size(microbeNames));
 % MexGJoined=MexGHost;
-parfor j = 1:size(models, 1)
-    % for j=1:size(models,1)%to enable sequential mode
-    model = models{j, 1};
+parfor j = 1:size(microbeNames, 1)
+    model = readCbModel([modPath filesep microbeNames{j,1} '.mat']);
+    
+    % removing possible constraints of the bacs
+    selExc = findExcRxns(model);
+    Reactions2 = model.rxns(find(selExc));
+    allex = Reactions2(strmatch('EX', Reactions2));
+    biomass = allex(strmatch(objre, allex));
+    finrex = setdiff(allex, biomass);
+    model = changeRxnBounds(model, finrex, -1000, 'l');
+    model = changeRxnBounds(model, finrex, 1000, 'u');
+    
+    % removing blocked reactions from the bacs
+    %BlockedRxns = identifyFastBlockedRxns(model,model.rxns, printLevel);
+    %model= removeRxns(model, BlockedRxns);
+    %BlockedReaction = findBlockedReaction(model,'L2')
+    
     model = convertOldStyleModel(model);
     exmod = model.rxns(strncmp('EX_', model.rxns, 3));  % find exchange reactions
     eMets = model.mets(~cellfun(@isempty, strfind(model.mets, '[e]')));  % exchanged metabolites
@@ -188,7 +210,7 @@ parfor j = 1:size(models, 1)
     model = removeRxns(model, exmod);
     model.rxns = strcat(strcat(microbeNames{j, 1}, '_'), model.rxns);
     model.mets = strcat(strcat(microbeNames{j, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
-    [model] = mergeTwoModels(dummyMicEU, model, 2, false);
+    [model] = mergeTwoModels(dummyMicEU, model, 2, false, false);
     modelStorage{j, 1} = model;  % store model
 end
 
@@ -202,10 +224,10 @@ end
 % sequentially to the big model.
 
 
-pos = {}  % array where the position of models that cannot be merged pairwise (because their number in that iter is not
+pos = {};  % array where the position of models that cannot be merged pairwise (because their number in that iter is not
 % even) in the original modelStorage vector is stored
-dim = size(models, 1);
-for j = 2:(floor(log2(size(models, 1))) + 1)  % +1 because it starts with one column shifted
+dim = size(microbeNames, 1);
+for j = 2:(floor(log2(size(microbeNames, 1))) + 1)  % +1 because it starts with one column shifted
 	if mod(dim, 2) == 1  % check if number is even or not
 		halfdim = dim - 1;  % approximated half dimension (needed to find how many iters to do
         % for the pairwise merging
@@ -227,15 +249,15 @@ for j = 2:(floor(log2(size(models, 1))) + 1)  % +1 because it starts with one co
         FirstMod=FirstSaveStore(parind);
         % SecondMod=SecondSaveStore(parind+1);%changes 010318
         SecondMod=FirstSaveStore(parind+1);%changes 010318
-        % modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)%changes 010318
-        modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false)	
+        % modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false,false)%changes 010318
+        modelStorage{k,j} = mergeTwoModels(FirstMod{1},SecondMod{1},1,false,false)	
     end
 	dim = halfdim;
 end
 
 % Merging the models remained alone and non-pairwise matched
 if isempty(pos)== 1 %all the models were pairwise-merged
-[model] = modelStorage{1,(floor(log2(size(models,1)))+1)};
+[model] = modelStorage{1,(floor(log2(size(microbeNames,1)))+1)};
 else
     position = pos(1,:); %finding positions of non merged models
     nexmod = find(~cellfun(@isempty,pos(1,:)));
@@ -243,24 +265,29 @@ else
     if (length(toMerge)) > 1 %more than 1 model was not pairwise merged
         for k=2:(length(toMerge)+1)
             if k==2
-               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},modelStorage{toMerge(1,k),(nexmod(k))-1},1,false);                   
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},modelStorage{toMerge(1,k),(nexmod(k))-1},1,false,false);                   
             elseif k > 3       
-               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false);
+               [model] = mergeTwoModels(modelStorage{toMerge(1,k-1),(nexmod(k-1))-1},model,1,false,false);
             end
         end
-      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(models,1)))+1)},model,1,false);
+      [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},model,1,false,false);
     end
     if (length(toMerge)) == 1 %1 model was not pairwise merged
-        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(models,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false);
+        [model] = mergeTwoModels(modelStorage{1,(floor(log2(size(microbeNames,1)))+1)},modelStorage{toMerge(1,1),(nexmod-1)},1,false,false);
     end
 end
 
 
 % Merging with host if present 
 if ~isempty(host)
-    [model] = mergeTwoModels(host,model,1,false);
+    [model] = mergeTwoModels(host,model,1,false,false);
 end
-[model] = mergeTwoModels(dummy,model,2,false);
+[model] = mergeTwoModels(dummy,model,2,false,false);
+
+%finish up by A: removing duplicate reactions
+%We will lose information here, but we will just remove the duplicates.
+[model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);
+
 end
 
 

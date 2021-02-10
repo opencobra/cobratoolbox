@@ -17,9 +17,9 @@ if isempty(P) || isempty(K)
 end
 [m2,n2] = size(LPproblem.A);
     
-scalingFactorFixed=1;
+scalingFactorFixed=0;
 if scalingFactorFixed
-    scalingfactor = 1e5;
+    scalingfactor = 1e4;
     
     np = numel(P);
     nk = numel(K);

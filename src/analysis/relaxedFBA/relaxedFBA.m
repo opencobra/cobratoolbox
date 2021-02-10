@@ -19,66 +19,74 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %    [solution] = relaxedFBA(model, param)
 %
 % INPUTS:
-%    model:          COBRA model structure
-%    model.S
-%    model.SIntRxnBool
+%    model:          COBRA model structure with the fields:
+%                      * .S
+%                      * .b
+%                      * .ub
+%                      * .ub
+%                      * .mets  (required if model.SIntRxnBool absent)
+%                      * .rxns  (required if model.SIntRxnBool absent)
 %
 % OPTIONAL INPUTS:
-%    model:          COBRA model structure
-%    model.SIntRxnBool
+%    model:          COBRA model structure with the fields
+%                      * .csense
+%                      * .C
+%                      * .d
+%                      * .dsense
+%                      * .SIntRxnBool
 %
 %
 %    param:    Structure optionally containing the relaxation parameters:
 %
-%                      * internalRelax:
+%                      * .internalRelax:
 %
 %                        * 0 = do not allow to relax bounds on internal reactions
 %                        * 1 = do not allow to relax bounds on internal reactions with finite bounds
 %                        * {2} = allow to relax bounds on all internal reactions
 %
-%                      * exchangeRelax:
+%                      * .exchangeRelax:
 %
 %                        * 0 = do not allow to relax bounds on exchange reactions
 %                        * 1 = do not allow to relax bounds on exchange reactions of the type [0,0]
 %                        * {2} = allow to relax bounds on all exchange reactions
 %
-%                      * steadyStateRelax:
+%                      * .steadyStateRelax:
 %
 %                        *    0 = do not allow to relax the steady state constraint S*v = b
 %                        *  {1} = allow to relax the steady state constraint S*v = b
 %
-%                      * toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked
+%                      * .toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked
 %
 %                        * toBeUnblockedReactions(i) = 1 : impose v(i) to be positive
 %                        * toBeUnblockedReactions(i) = -1 : impose v(i) to be negative
 %                        * toBeUnblockedReactions(i) = 0 : do not add any constraint (default)
 %
-%                      * excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation
+%                      * .excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation
 %
 %                        * excludedReactions(i) = false : allow to relax bounds on reaction i (default)
 %                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i 
 %
-%                      * excludedReactionLB - nRxns x 1 bool vector indicating
+%                      * .excludedReactionLB - nRxns x 1 bool vector indicating
 %                      the reactions with lower bounds to be excluded from
 %                      relaxation (overridden by excludedReactions)
 %
 %                        * excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)
 %                        * excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i 
 %
-%                      * excludedReactionUB - nRxns x 1 bool vector indicating
+%                      * .excludedReactionUB - nRxns x 1 bool vector indicating
 %                      the reactions with upper bounds to be excluded from relaxation (overridden by excludedReactions)
 %
 %                        * excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)
 %                        * excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i 
 %
-%                      * excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation
+%                      * .excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation
 %
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i (default)
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
-%                      * lamda - weighting on relaxation of relaxation on steady state constraints S*v = b
-%                      * alpha - weighting on relaxation of reaction bounds
-%                      * gamma - weighting on zero norm of fluxes
+%                      * .lamda - weighting on relaxation of relaxation on steady state constraints S*v = b
+%                      * .alpha - weighting on relaxation of reaction bounds
+%                      * .gamma - weighting on zero norm of fluxes
 %
 %                     * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                     * .epsilon - stopping criteria - (Default value = 1e-6)
@@ -86,10 +94,12 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                                 Theoretically, the greater the value of step parameter, the better the approximation of a step function.
 %                                 However, practically, a greater inital value, will tend to optimise toward a local minima of the approximate 
 %                                 cardinality optimisation problem.
+%
 %                     * .printLevel (Default = 0) Printing the progress of
 %                     the algorithm is useful when trying different values
 %                     of theta0 to start with the appropriate parameter
 %                     giving the lowest cardinality solution.
+%
 %                     * .maxRelaxR (Default = 1e4), maximum relaxation
 %                     of any bound or equality constraint permitted
 %
@@ -132,10 +142,10 @@ if ~isfield(param,'printLevel')
 else
     printLevel=param.printLevel;
 end
-if isfield(model,'SIntRxnBool')
+if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
     SIntRxnBool = model.SIntRxnBool;
 else
-    model_Ex = findSExRxnInd(model);
+    model_Ex = findSExRxnInd(model,size(model.S,1));
     SIntRxnBool = model_Ex.SIntRxnBool;
 end
 
@@ -209,7 +219,7 @@ if isfield(param,'epsilon') == 0
 end
 
 if isfield(param,'theta0') == 0
-    param.theta0   = 0.5;
+    param.theta0   = 0.1;
 end
 
 %make sure C is present if d is present
@@ -423,17 +433,20 @@ else
                 fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');
                 fprintf('%u%s\n', nnz(solution.q>=feasTol), ' upper bound relaxation(s)');
                 fprintf('%u%s\n', nnz(abs(solution.r)>=feasTol), ' steady state relaxation(s)');
-                if param.printLevel>0 && any(solution.p>=feasTol)
-                    fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
-                    printConstraints(model,-inf,inf, solution.p>=feasTol,relaxedModel,0);
-                end
-                if param.printLevel>0 && any(solution.q>=feasTol)
-                    fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
-                    printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
-                end
-                if param.printLevel>0 && any(abs(solution.r)>=feasTol)
-                    fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
-                    disp(model.mets(abs(solution.r)>=feasTol));
+                
+                if isfield(relaxedModel,'rxns')
+                    if param.printLevel>0 && any(solution.p>=feasTol)
+                        fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
+                        printConstraints(model,-inf,inf, solution.p>=feasTol,relaxedModel,0);
+                    end
+                    if param.printLevel>0 && any(solution.q>=feasTol)
+                        fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
+                        printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
+                    end
+                    if param.printLevel>0 && any(abs(solution.r)>=feasTol)
+                        fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
+                        disp(model.mets(abs(solution.r)>=feasTol));
+                    end
                 end
                 fprintf('%s\n','... done.')
             end

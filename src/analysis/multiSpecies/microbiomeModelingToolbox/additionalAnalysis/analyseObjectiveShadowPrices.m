@@ -4,29 +4,25 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 % optimized in one or more COBRA model structures. The objective functions
 % entered are optimized one by one. By default, all metabolites with
 % nonzero shadow prices are extracted from the computed flux solutions. The
-% function was written for the Microbiome Modeling Toolbox but can be used
-% for any COBRA model structure(s) and objective function(s).
-% When used with the Microbiome Modeling Toolbox, this function should be
-% used after running mgPipe and determining metabolites of interest that
-% are stratifying the modeled personalized microbiomes. The fecal exchanges
-% secreting the metabolites of interest (e.g., EX_co2[fe]) should be used
-% as the objective functions entered in the present function to determine
-% model compounds that have value for the secretion of the metabolite of
-% interest.
+% function was written for the Microbiome Modeling Toolbox, with the aim of 
+% allowing the computation of metabolic dependencies for metabolites of
+% interest secreted by the personalzied models, though it can also be used
+% for any other COBRA model. 
 %
 % USAGE:
 %
 %   [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,objectiveList,varargin)
 %
 % INPUTS:
-%   modelFolder       Folder containing one or more COBRA model
-%                     structures
+%   modelFolder       Folder containing one or more COBRA model structures  
 %   objectiveList     Cell array containing the names of one or more
 %                     objective functions of interest in vertical order
 %                     Optional: second column with exchange reaction IDs
 %                     for objective-specific precursors
 %
 % OPTIONAL INPUTS:
+%   resultsFolder     char with path of directory where results are saved
+%                     (default: current folder)
 %   osenseStr         String indicating whether objective function(s)
 %                     should be maximized or minimized. Allowed inputs:
 %                     'min','max', default:'max'.
@@ -36,8 +32,6 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                     default: 'Nonzero'.
 %   numWorkers        Number indicating number of workers in parallel pool
 %                     (default: 0).
-%   solutionFolder    Folder where the flux balance analysis solutions
-%                     should be stored (default =  current folder)
 %
 % OUTPUT:
 %   objectives        Computed objectives values
@@ -50,23 +44,26 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %                        01/2020: changed to models being loaded one by one
 %                        to reduce memory usage for large microbiome
 %                        sample sets
+%                        01/2021: included setting dietary constraints
+%                        inside the function
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
+parser.addParameter('resultsFolder',pwd, @ischar);
 parser.addParameter('osenseStr','max', @ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
-parser.addParameter('solutionFolder',pwd, @ischar);
+
 parser.parse(modelFolder,objectiveList, varargin{:})
 
 modelFolder = parser.Results.modelFolder;
+resultsFolder = parser.Results.resultsFolder;
 objectiveList = parser.Results.objectiveList;
 numWorkers = parser.Results.numWorkers;
 SPDef = parser.Results.SPDef;
-solutionFolder = parser.Results.solutionFolder;
 
-mkdir(solutionFolder)
+mkdir(resultsFolder)
 
 % set a solver if not done already
 global CBT_LP_SOLVER
@@ -84,53 +81,66 @@ if numWorkers > 0
     end
 end
 
+objectives{1,1}='Objective';
 shadowPrices{1,1}='Metabolite';
 shadowPrices{1,2}='Objective';
 if size(objectiveList,2)>1
-shadowPrices{1,3}='Source';
+    objectives{1,2}='Source';
+    shadowPrices{1,3}='Source';
 end
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
-modelList=modelList(3:end);
+modelList(find(strcmp(modelList(:,1),'.')),:)=[];
+modelList(find(strcmp(modelList(:,1),'..')),:)=[];
+modelList(find(~strncmp(modelList(:,1),'microbiota',length('microbiota'))),:)=[];
+
 
 % Compute the solutions for all entered models and objective functions
 solutions={};
 for j=1:length(objectiveList)
-    objectives{1,j+1} = objectiveList{j,1};
-    if size(objectives,2)>1
-    objectives{2,j+1} = objectiveList{j,2};
+    objectives{j+1,1} = objectiveList{j,1};
+    if size(objectiveList,2)>1
+        objectives{j+1,2} = objectiveList{j,2};
     end
 end
 
 for i=1:size(modelList,1)
     i
-    objectives{i+2,1}=strrep(modelList{i,1},'.mat','');
-    shadowPrices{1,i+3}=strrep(modelList{i,1},'.mat','');
-    load(strcat(modelFolder,modelList{i,1}));
+    objectives{1,2+i}=strrep(modelList{i,1},'.mat','');
+    shadowPrices{1,3+i}=strrep(modelList{i,1},'.mat','');
+    model=readCbModel([modelFolder filesep modelList{i,1}]);
     
-    [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
-    % store computed objective values
-    for j=1:length(objectiveList)
-        if ~isempty(FBAsolution{j,1})
-            objectives{i+2,j+1} = FBAsolution{j,1}.obj;
-        else
-            objectives{i+2,j+1} = 0;
+    % implement constraints on the model
+    for k = 1:length(model.rxns)
+        if strfind(model.rxns{k}, 'biomass')
+            model.lb(k) = 0;
         end
     end
+
+    % compute the flux balance analysis solution
+    [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
+%     % store computed objective values
+%     for j=1:length(objectiveList)
+%         if ~isempty(FBAsolution{j,1})
+%             objectives{j+1,3+i} = FBAsolution{j,1}.obj;
+%         else
+%             objectives{j+1,3+i} = 0;
+%         end
+%     end
     % save one model by one-file would be enourmous otherwise
-    save([solutionFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
+    save([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
     
     % Extract all shadow prices and save them in a table
-    objectives{i+2,1} = strrep(modelList{i,1},'.mat','');
-    shadowPrices{1,i+3} = strrep(modelList{i,1},'.mat','');
+    objectives{1,2+i} = strrep(modelList{i,1},'.mat','');
+    shadowPrices{1,3+i} = strrep(modelList{i,1},'.mat','');
     solutions(:,i)=FBAsolution;
 
     for j=1:size(objectiveList,1)
         % get the computed solutions
         solution = FBAsolution{j,1};
-        objectives{i+2,j+1} = solution.obj;
+        objectives{j+1,2+i} = solution.obj;
         % verify that a feasible solution was obtained
         if solution.stat==1
             [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
@@ -143,15 +153,17 @@ for i=1:size(modelList,1)
                     findObj=find(strcmp(shadowPrices(:,2),objectiveList{j,1}));
                     if ~isempty(intersect(findMet,findObj))
                         % Add the shadow price for this model
-                        shadowPrices{intersect(findMet,findObj),i+3}=extractedShadowPrices{k,2};
+                        shadowPrices{intersect(findMet,findObj),3+i}=extractedShadowPrices{k,2};
                     else
                         % Add a new row for this metabolite and objective function with the shadow price for this model
                         newRow=size(shadowPrices,1)+1;
                         shadowPrices{newRow,1}=extractedShadowPrices{k,1};
                         shadowPrices{newRow,2}=objectiveList{j,1};
-                        shadowPrices{newRow,3}=objectiveList{j,2};
-                        shadowPrices(newRow,4:length(modelList)+2)={'0'};
-                        shadowPrices{newRow,i+3}=extractedShadowPrices{k,2};
+                        if size(objectiveList,2)>1
+                            shadowPrices{newRow,3}=objectiveList{j,2};
+                        end
+                        shadowPrices(newRow,4:size(modelList,1)+3)={'0'};
+                        shadowPrices{newRow,3+i}=extractedShadowPrices{k,2};
                     end
                 end
             end
@@ -159,20 +171,20 @@ for i=1:size(modelList,1)
     end
     % Regularly save results
     if floor(i/10) == i/10
-        save('objectives','objectives');
+        save([resultsFolder filesep 'objectives'],'objectives');
     end
     if floor(i/50) == i/50
-        save('shadowPrices','shadowPrices');
+        save([resultsFolder filesep 'shadowPrices'],'shadowPrices');
     end
 end
 
-if size(objectives,2)<2
-    objectives(2,:)=[];
+if size(objectiveList,2)<2
+    objectives(:,2)=[];
     shadowPrices(:,3)=[];
 end
 
-save('objectives','objectives');
-save('shadowPrices','shadowPrices');
+writetable(cell2table(objectives),[resultsFolder filesep 'Objectives'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(shadowPrices),[resultsFolder filesep 'ShadowPrices'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end
 

@@ -54,6 +54,18 @@ cplexProblem.Model.ub = Problem.ub;
 cplexProblem.Model.lb = Problem.lb;
 
 if isfield(Problem,'F')
+    f = diag(Problem.F);
+    bool0 = f==0;
+    if any(bool0)
+        Fbar = Problem.F - diag(f);
+        if ~any(Fbar,'all')
+            feasTol = getCobraSolverParams('LP', 'feasTol');
+            f(bool0)=feasTol/10;
+            f(~bool0)=0;
+            Problem.F = Problem.F + diag(f);
+            warning(['Replacing zeros on the diagonal of QP problem.F with regularisation of ' num2str(feasTol/10)]) 
+        end
+    end
     cplexProblem.Model.Q = Problem.F;
 end
 

@@ -147,7 +147,7 @@ end
 if (nargin < 7 || isempty(cpxControl))
     cpxControl = struct([]);
 end
-if (nargin < 6 || isempty(matrixAS))
+if (nargin < 6 || isempty(matrixAS)) || ~isfield(model,'C')
     matrixAS = 'S';
 end
 if (nargin < 5 || isempty(rxnsList))
@@ -244,7 +244,7 @@ end
 LPproblem = buildLPproblemFromModel(model);
 
 % define the stoichiometric matrix to be solved
-if matrixAS == 'A'
+if matrixAS == 'A' 
     [A,b,csense,lb,ub,c] = deal(LPproblem.A,LPproblem.b,LPproblem.csense,LPproblem.lb,LPproblem.ub,LPproblem.c);
     if printLevel > 0
         fprintf(' >> Solving Model.A. (coupled) - Generalized\n');

@@ -79,5 +79,4 @@ function models = loadUncModels(modPath, organisms, objre, printLevel)
         % creating array with models as required as input from the following functions
         models(i, 1) = {ldm};
     end
-
 end

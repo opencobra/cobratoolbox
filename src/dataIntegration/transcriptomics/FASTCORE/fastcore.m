@@ -161,12 +161,16 @@ coreRxnBool=false(size(model.S,2),1);
 coreRxnBool(A)=1;
 
 rxnRemoveList = setdiff(model.rxns,model.rxns(A));
-if 0
-    tissueModel = removeRxns(model_orig, rxnRemoveList);
-else
-    %removes any infeasible coupling constraints also
-    [tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model_orig, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
+
+dummyMetBool = contains(model.mets,'dummy_Met_');
+dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
+if any(dummyMetBool) || any(dummyRxnBool)
+    model = destroyDummyModel(model,dummyMetBool,dummyRxnBool);
+    rxnRemoveList = rxnRemoveList(~dummyRxnBool);
 end
+        
+%removes any infeasible coupling constraints also
+[tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model_orig, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
 
 coreMetBool=~ismember(model_orig.mets,metRemoveList);
 if isfield(model,'ctrs')
