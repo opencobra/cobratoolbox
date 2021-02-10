@@ -25,6 +25,8 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = run
 %                          (default: "Reconstructions")
 % numWorkers               Number of workers in parallel pool (default: 2)
 % sbmlFolder               Folder where SBML files, if desired, will be saved
+% overwriteModels          Define whether already finished reconstructions
+%                          should be overwritten (default: false)
 %
 % OUTPUTS
 % reconVersion             Name of the refined reconstruction resource
@@ -50,6 +52,8 @@ parser.addParameter('inputDataFolder', '', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('sbmlFolder', '', @ischar);
+parser.addParameter('overwriteModels', false, @islogical);
+
 
 parser.parse(draftFolder, varargin{:});
 
@@ -62,6 +66,7 @@ inputDataFolder = parser.Results.inputDataFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 sbmlFolder = parser.Results.sbmlFolder;
+overwriteModels = parser.Results.overwriteModels;
 
 if isempty(infoFilePath)
     % create a file with reconstruction names based on file names. Note:
@@ -119,11 +124,13 @@ if size(modelList,1)>0
     modelList(~contains(modelList(:,1),'.mat'),:)=[];
     modelList(:,1)=strrep(modelList(:,1),'.mat','');
     
-    % remove models that were already created
-    [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
-    if ~isempty(C)
-        models(IA,:)=[];
-        folders(IA,:)=[];
+    if ~overwriteModels
+        % remove models that were already created
+        [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
+        if ~isempty(C)
+            models(IA,:)=[];
+            folders(IA,:)=[];
+        end
     end
 end
 

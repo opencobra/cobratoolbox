@@ -99,8 +99,8 @@ for i=1:length(inputDataToCheck)
     propagatedData = propagateExperimentalData(inputData, infoFile, agoraInfoFile);
     
     % remove organisms not in the current reconstruction resource
-    [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1));
-    propagatedData(IA,:) = [];
+    [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1),'stable');
+    propagatedData(IA(2:end),:) = [];
 
     writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
