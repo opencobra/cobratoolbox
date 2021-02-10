@@ -11,17 +11,17 @@ function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,v
 % REQUIRED INPUT
 % infoFilePath          File with information on reconstructions to refine
 % OPTIONAL INPUTS
-% inputDataFolder       Folder to save propagated data to (default: folder 
-%                       in current path called "InputData")                
-% spreadsheetFolder     Folder with comparative genomics data retrieved 
-%                       from PubSEED in spreadsheet format if available. 
-%                       For an example of the required format, see 
+% inputDataFolder       Folder to save propagated data to (default: folder
+%                       in current path called "InputData")
+% spreadsheetFolder     Folder with comparative genomics data retrieved
+%                       from PubSEED in spreadsheet format if available.
+%                       For an example of the required format, see
 %                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
 % OUTPUTS
 % adaptedInfoFilePath   Path to file with taxonomic information adapted
 %                       with gram staining information
-% inputDataFolder       Folder to save propagated data to (default: folder 
-%                       in current path called "InputData")                
+% inputDataFolder       Folder to save propagated data to (default: folder
+%                       in current path called "InputData")
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
@@ -101,7 +101,7 @@ for i=1:length(inputDataToCheck)
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1),'stable');
     propagatedData(IA(2:end),:) = [];
-
+    
     writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
@@ -156,34 +156,36 @@ end
 % remove organisms not in the current reconstruction resource
 [C,IA] = setdiff(data(:,1),infoFile(:,1));
 data(IA,:) = [];
-    
+
 writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
-%% Create genome annotations file with reactions from PubSeed spreadsheets if available
-% reactions that are annotated
-writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
-genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-genomeAnnotation = table2cell(genomeAnnotation);
+%% Create genome annotations file with reactions from PubSeed spreadsheets if available reactions that are annotated
 
-% remove organisms not in the current reconstruction resource
-[C,IA] = setdiff(genomeAnnotation(:,1),infoFile(:,1));
-genomeAnnotation(IA,:) = [];
-
-% Proceed if comparative genomics is available
-if size(genomeAnnotation,1)>0
-    
-    % Gap-fill reactions formulated by comparative genomics
-    gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation);
+if ~isempty(spreadsheetFolder)
+    writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
+    genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+    genomeAnnotation = table2cell(genomeAnnotation);
     
     % remove organisms not in the current reconstruction resource
-    [C,IA] = setdiff(gapfilledGenomeAnnotation(:,1),infoFile(:,1));
-    gapfilledGenomeAnnotation(IA,:) = [];
+    [C,IA] = setdiff(genomeAnnotation(:,1),infoFile(:,1));
+    genomeAnnotation(IA,:) = [];
     
-    writetable(cell2table(gapfilledGenomeAnnotation),[inputDataFolder filesep 'gapfilledGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-    
-    % Remove reactions that are not annotated
-    unannotatedRxns=getUnannotatedReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
-    writetable(cell2table(unannotatedRxns),[inputDataFolder filesep 'unannotatedGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    % Proceed if comparative genomics is available
+    if size(genomeAnnotation,1)>0
+        
+        % Gap-fill reactions formulated by comparative genomics
+        gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation);
+        
+        % remove organisms not in the current reconstruction resource
+        [C,IA] = setdiff(gapfilledGenomeAnnotation(:,1),infoFile(:,1));
+        gapfilledGenomeAnnotation(IA,:) = [];
+        
+        writetable(cell2table(gapfilledGenomeAnnotation),[inputDataFolder filesep 'gapfilledGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        
+        % Remove reactions that are not annotated
+        unannotatedRxns=getUnannotatedReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
+        writetable(cell2table(unannotatedRxns),[inputDataFolder filesep 'unannotatedGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    end
 end
 
 end
@@ -276,7 +278,7 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
                 % propagate the data to new organisms
                 % take the data from the strain with the most data
                 [C,IAsum]=max(sum(compData,2));
-                for j=1:length(newStrains)  
+                for j=1:length(newStrains)
                     inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),2:refCols(1)-1)=num2cell(compData(1,2:end));
                     % propagate references
                     inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum(1),refCols(1):refCols(end));
