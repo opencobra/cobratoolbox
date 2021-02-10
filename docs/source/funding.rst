@@ -65,6 +65,17 @@ Funding
         </tr>
     </table>
 
+    <table width="100%" class="noBorder">
+        <tr class="noBorder">
+        <td class="noBorderImg" width="60%">
+            <div style="align-center;"><a href="http://openmultimed.net"><img src="https://king.nuigalway.ie/cobratoolbox/img/cost.jpg" alt="cost" width="80%"></a></div>
+        </td>
+        <td class="noBorder" width="40%">
+        This project has received funding from the Open Multiscale Systems Medicine (OpenMultiMed), a COST (European Cooperation in Science and Technology) Action,  under the European Union’s Framework Programme Horizon 2020 research and innovation programme (Grant agreement no. CA15120)”
+        </td>
+        </tr>
+    </table>
+
     <br>
     <p>
     <div style="text-align: justify;">
