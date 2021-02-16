@@ -203,6 +203,7 @@ end
 minFluxes(2:end,1)=strrep(minFluxes(2:end,1),'_IEX','');
 minFluxes(2:end,1)=strrep(minFluxes(2:end,1),'[u]tr','');
 minFluxes(1,2:end)=strrep(minFluxes(1,2:end),'microbiota_model_samp_','');
+minFluxes(1,2:end)=strrep(minFluxes(1,2:end),'microbiota_model_diet_','');
 
 cnt=1;
 delArray=[];
@@ -217,6 +218,8 @@ minFluxes(delArray,:)=[];
 maxFluxes(2:end,1)=strrep(maxFluxes(2:end,1),'_IEX','');
 maxFluxes(2:end,1)=strrep(maxFluxes(2:end,1),'[u]tr','');
 maxFluxes(1,2:end)=strrep(maxFluxes(1,2:end),'microbiota_model_samp_','');
+maxFluxes(1,2:end)=strrep(maxFluxes(1,2:end),'microbiota_model_diet_','');
+
 cnt=1;
 delArray=[];
 for j=2:size(maxFluxes,1)
@@ -234,6 +237,8 @@ fluxSpans(:,1)=regexprep(fluxSpans(:,1),'pan','','once');
 fluxSpans(2:end,1)=strrep(fluxSpans(2:end,1),'_IEX','');
 fluxSpans(2:end,1)=strrep(fluxSpans(2:end,1),'[u]tr','');
 fluxSpans(1,2:end)=strrep(fluxSpans(1,2:end),'microbiota_model_samp_','');
+fluxSpans(1,2:end)=strrep(fluxSpans(1,2:end),'microbiota_model_diet_','');
+
 cnt=1;
 delArray=[];
 for j=2:size(fluxSpans,1)

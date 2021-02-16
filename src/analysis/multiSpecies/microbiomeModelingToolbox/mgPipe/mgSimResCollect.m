@@ -37,6 +37,7 @@ else
     patStat = 1;
 end
 
+tol = 1e-07;
 
 % Extract results from fluxes matrix and analyze: NMPCs will be computed for
 % rich (if enabled) and standard diet. NMPCs are computed under the assumption
@@ -60,6 +61,14 @@ else
     fl = 3;
 end
 
+% find empty rows in input data-tmp fix
+emptyRows=find(cellfun(@isempty,fvaCt{2,1}(:,2)));
+for i=1:size(fvaCt,2)
+    fvaCt{2,i}(emptyRows,:)=[];
+    nsCt{2,i}(emptyRows,:)=[];  
+end
+exchanges(emptyRows,:)=[];
+
 names = {'rich', 'inputDiet', 'personalized'};
 
 for j = init:fl
@@ -76,10 +85,17 @@ for j = init:fl
             uSp(:,k) = up;
             noPcoa = 1;
         else
-            sp = NaN(length(exchanges), 1);  % consexchangeser to remove preallocation
+            sp = NaN(length(exchanges), 1);  % consider to remove preallocation
             for i = 1:length(exchanges)
                 x = fvaCt{j,k}{i, 3};
+                
+                % cut off very small values below solver sensitivity
+                if abs(x) < tol
+                    fvaCt{j,k}{i, 3}=0;
+                end
+                
                 e = isempty(x);
+                
                 if e == 0
                     sp(i,1) = abs(fvaCt{j, k}{i,3} + fvaCt{j,k}{i, 2});
                 end

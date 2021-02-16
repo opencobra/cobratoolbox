@@ -166,8 +166,8 @@ carbGapfillAdd = {
     'Isomaltose', {'EX_isomal(e)', 'ISOMALabc', 'ISOMALT'}
     'Isovalerate', {'EX_isoval(e)', 'ISOVALt2r', 'FACOALiv', 'ACOAD8', 'MCCCr', ...
                     'MGCOAH', 'HMGL', 'OCOAT1r', 'ACACT1r', 'SUCD1', 'SUCD4'}
-    'D-lactate', {'EX_lac_D(e)', 'D_LACt2i', 'LDH_D', 'PYK'}
-    'L-lactate', {'EX_lac_L(e)', 'L_LACt2', 'LDH_L', 'PYK'}
+    'D-lactate', {'EX_lac_D(e)', 'D_LACt2', 'LDH_D', 'PYK'}
+    'L-lactate', {'EX_lac_L(e)', 'L_LACt2r', 'LDH_L', 'PYK'}
     'Lactose', {'EX_lcts(e)', 'GALK', 'UGLT', 'UDPG4E', 'PGMT', ...
                 'HEX1', 'PGI', 'PFK', 'TPI', 'GAPD', 'PGK', 'PGM', 'ENO', 'PYK'}
     'Laminarin', {'EX_lmn30(e)', 'EX_lmn2(e)', 'EX_glc_D(e)', 'GLCabc', 'LMNe', ...
