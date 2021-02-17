@@ -75,24 +75,39 @@ end
 
 % create consistent model from model input
 % consistent model does not contain any BlockedRxns anymore
-[consistModel, BlockedRxns] = identifyBlockedRxns(model,epsilon);
+if 1
+    [consistModel, BlockedRxns] = identifyBlockedRxns(model,epsilon);
+else
+    [BlockedRxns] = identifyFastBlockedRxns(model);
+    consistModel = removeRxns(model,BlockedRxns);
+end
 
 % generate SUX
 MatricesSUX = generateSUXComp(consistModel,dictionary, filename,blackList,listCompartments);
 
 %postprocessing
 %test consistency of MatricesSUX
-A = fastcc(MatricesSUX, epsilon);
-% A contains consistent reaction indices
-%consistRxnsSUX = MatricesSUX.rxns(A);
-
-%setdiff(MatricesSUX.rxns,consistRxns)
-%consistMatricesSUX = extractSubNetwork(MatricesSUX,consistRxnsSUX);
-inconsistRxnsSUX = setdiff(MatricesSUX.rxns,MatricesSUX.rxns(A));
-MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUX);
+if 0
+    A = fastcc(MatricesSUX, epsilon);
+    % A contains consistent reaction indices
+    %consistRxnsSUX = MatricesSUX.rxns(A);
+    
+    %setdiff(MatricesSUX.rxns,consistRxns)
+    %consistMatricesSUX = extractSubNetwork(MatricesSUX,consistRxnsSUX);
+    inconsistRxnsSUX = setdiff(MatricesSUX.rxns,MatricesSUX.rxns(A));
+    MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUX);
+else
+    [BlockedRxnsSUX] = identifyFastBlockedRxns(MatricesSUX);
+    MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,BlockedRxnsSUX)) = [];
+    MatricesSUX = removeRxns(MatricesSUX,BlockedRxnsSUX);
+end
 
 % now we need to add the reactions that we are currently blocked
-inconsistRxns = BlockedRxns.allRxns;
+if isfield(BlockedRxns,'allRxns')
+    inconsistRxns = BlockedRxns.allRxns;
+else
+    inconsistRxns = BlockedRxns;
+end
 rxnFormulas = printRxnFormula(model,inconsistRxns,false);
 [a,b] = size(MatricesSUX.S);
 
@@ -131,10 +146,12 @@ while m == 0
             NullRxns(i)=1;
         end
     end
-
+    
     EliR = [EliR; MatricesSUX.rxns(NullRxns==1)];
     MatricesSUX.S(:,NullRxns==1)=[];
     MatricesSUX.rxns(NullRxns==1)=[];
+    
+    MatricesSUX.MatrixPart(NullRxns==1)=[];
     %consistMatricesSUXextendedprime.rxnNames(NullRxns==1)=[];
     %consistMatricesSUXextendedprime.rxnFormulas(NullRxns==1)=[];
     %consistMatricesSUXextendedprime.subSystems(NullRxns==1)=[];
@@ -148,10 +165,14 @@ while m == 0
 end
 
 % recheck flux consistency
+if isfield(MatricesSUX,'csense')
+    MatricesSUX = rmfield(MatricesSUX,'csense');
+end
 A = fastcc(MatricesSUX, epsilon);
 
 consistRxnsModel = MatricesSUX.rxns(A);
 inconsistRxnsSUXprime = setdiff(MatricesSUX.rxns,consistRxnsModel);
+MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,inconsistRxnsSUXprime)) = [];
 MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUXprime);
 
 % define Core reaction set

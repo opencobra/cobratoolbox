@@ -150,10 +150,10 @@ showprogress(0.9, 'Finishing touches...');
 
 %Check, that there are no duplicated IDs in the primary key fields.
 ureacs = unique(modelNew.rxns);
-if ~(numel(modelNew.rxns) == numel(ureacs))
-    error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
-    strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
-end
+% if ~(numel(modelNew.rxns) == numel(ureacs))
+%     error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
+%     strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
+% end
 
 if mergeGenes && (isfield(model1,'rxnGeneMat') || isfield(model2, 'rxnGeneMat'))
     %recreating the rxnGeneMat
