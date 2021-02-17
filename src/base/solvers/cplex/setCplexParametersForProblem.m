@@ -23,7 +23,7 @@ cplexProblem.Param.output.writelevel.Cur = cobraParams.printLevel;
 cplexProblem.Param.barrier.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.simplex.display.Cur = cobraParams.printLevel;
 cplexProblem.Param.sifting.display.Cur = cobraParams.printLevel;
-cplexProblem.Param.paramdisplay.Cur = cobraParams.printLevel~=0;
+cplexProblem.Param.paramdisplay.Cur = double(cobraParams.printLevel~=0);
         
 %%turn off display output if printLevel is set to 0
 if cobraParams.printLevel == 0
