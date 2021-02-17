@@ -19,6 +19,10 @@ if ~exist('printLevel', 'var')
     printLevel = 1;
 end
 
+if ~exist('rxnList', 'var')
+    rxnList = model.rxns;
+end
+
 Rxns2CheckF = rxnList;
 L = length(Rxns2CheckF);
 

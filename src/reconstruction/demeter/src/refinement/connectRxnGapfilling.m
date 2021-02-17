@@ -132,28 +132,33 @@ model=changeObjective(model,previousObj);
 
 % perform flux variability analysis
 currentDir=pwd;
-try
-    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        resolveBlocked, 'S');
-catch
-    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-    cd(currentDir)
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
-end
-
-cnt=1;
-delArray=[];
 if ~isempty(resolveBlocked)
-    for i=1:length(resolveBlocked)
-        if abs(minFlux(i))<tol && abs(maxFlux(i))<tol
-            model=removeRxns(model,resolveBlocked{i,1});
-            delArray(cnt,1)=i;
-            cnt=cnt+1;
+    try
+        [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+            resolveBlocked, 'S');
+    catch
+        warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+        cd(currentDir)
+        FBA=optimizeCbModel(model,'max');
+        if FBA.f > tol
+            [minFluxNew, maxFluxNew] = fluxVariability(model, 0, 'max', resolveBlocked);
         end
     end
-end
-if ~isempty(delArray)
-    resolveBlocked(delArray,:)=[];
+    
+    cnt=1;
+    delArray=[];
+    if exist('minFluxNew','var')
+        for i=1:length(resolveBlocked)
+            if abs(minFluxNew(i))<tol && abs(maxFluxNew(i))<tol
+                model=removeRxns(model,resolveBlocked{i,1});
+                delArray(cnt,1)=i;
+                cnt=cnt+1;
+            end
+        end
+    end
+    if ~isempty(delArray)
+        resolveBlocked(delArray,:)=[];
+    end
 end
 
 end

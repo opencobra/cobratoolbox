@@ -59,8 +59,8 @@ fpathwayGapfillAdd = {
                          'FORt', 'FDHfdx', 'MTHFRfdx', 'FTHFL', 'MTHFC', 'METR', 'CODH_ACS', ...
                          'HYDFDNrfdx', 'HYDFDN2rfdx', 'PTAr', 'ACKr'}
     'Formate producer', {'EX_for(e)', 'FORt', 'PFL'}
-    'D-lactate producer or consumer', {'EX_lac_D(e)', 'D_LACt2ei', 'LDH_D', 'PYK'}
-    'L-lactate producer or consumer', {'EX_lac_L(e)', 'L_LACt2ei', 'LDH_L', 'PYK'}
+    'D-lactate producer', {'EX_lac_D(e)', 'D_LACt2', 'LDH_D', 'PYK'}
+    'L-lactate producer', {'EX_lac_L(e)', 'L_LACt2r', 'LDH_L', 'PYK'}
     'Ethanol producer or consumer', {'EX_etoh(e)', 'ETOHt2r', 'ALCD2x', 'ACALD', ...
                                      'ACALDt', 'EX_acald(e)', 'PYK'}
     'Succinate producer', {'EX_succ(e)', 'SUCCt2r', 'EX_fum(e)', 'FUMt2', 'FRD2', 'FRD3', 'FRD7', ...

@@ -61,6 +61,7 @@ for i = 1 : length(rxnAbbrs)
         model.S=model.A;
     else
         warning('Reaction with the same name already exists in the model');
+        
     end
     
 end

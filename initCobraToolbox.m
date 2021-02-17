@@ -22,7 +22,7 @@ function initCobraToolbox(updateToolbox)
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-%     Maintained by Ronan M.T. Fleming, Laurent Heirendt
+%     Maintained by Ronan M.T. Fleming
 
 % define GLOBAL variables
 global CBTDIR;
@@ -445,9 +445,13 @@ end
 % set the default solver and print out the default variables
 if ENV_VARS.printLevel
     fprintf(' > Setting default solvers ...');
-    changeCobraSolver('glpk', 'LP', 0);
-    changeCobraSolver('glpk', 'MILP', 0);
-    changeCobraSolver('pdco', 'QP', 0);
+    if SOLVERS.gurobi.working==1
+       changeCobraSolver('gurobi', 'all', 0);
+    else
+        changeCobraSolver('glpk', 'LP', 0);
+        changeCobraSolver('glpk', 'MILP', 0);
+        changeCobraSolver('pdco', 'QP', 0);
+    end
     changeCobraSolver('matlab', 'NLP', 0);
     for k = 1:length(OPT_PROB_TYPES)
         varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
