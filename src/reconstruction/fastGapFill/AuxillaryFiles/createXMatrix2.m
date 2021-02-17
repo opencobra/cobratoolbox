@@ -37,7 +37,15 @@ end
 showprogress(0,'Exchange reaction list ...');
 
 ExchangeRxnMatrix = createModel;
-
+if isfield(ExchangeRxnMatrix,'grRules')
+    ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'grRules');
+end
+if isfield(ExchangeRxnMatrix,'genes')
+    ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'genes');
+end
+if isfield(ExchangeRxnMatrix,'rxnGeneMat')
+    ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'rxnGeneMat');
+end
 cnt=1;
 HTABLE = java.util.Hashtable;
 
@@ -52,19 +60,6 @@ compoundsIn=regexprep(compoundsIn,' ','');
 
 compounds=unique(compoundsIn);
 
-%creates sparse matrix with corresponding dimensions
-if  transport==0
-    ExchangeRxnMatrix.S=spalloc(length(compounds),length(compounds),length(compounds));
-elseif transport == 1
-    if (strcmp(compartment,'[c]')==1)
-        ExchangeRxnMatrix.S=spalloc(length(compounds),2*length(compounds),3*length(compounds));
-    elseif (strcmp(compartment,'[p]')==1)
-        ExchangeRxnMatrix.S=spalloc(length(compounds),3*length(compounds),5*length(compounds));
-    elseif (strcmp(compartment,'all')==1)
-        ExchangeRxnMatrix.S=spalloc(7*length(compounds),10*length(compounds),10*length(compounds));
-    end
-end
-
 %ExchangeRxnMatrix.mets=compounds;
 for i=1:length(compounds)
     HTABLE.put(compounds{i}, i);
@@ -72,87 +67,44 @@ end
 for i=1:length(compounds)
     if ~isempty(compounds(i))
         if transport == 0
-            tmp = ['sink_' compounds(i) '[c]'];
-            ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
-            tmp = ['sink for ' compounds(i)];
-            ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-            tmp = ['1 ' compounds(i) '[c] <==>'];
-            ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
-            tmp = [compounds(i) '[c]'];
-            ExchangeRxnMatrix.mets(i) = strcat(tmp(1),tmp(2));
-            %   ExchangeRxnMatrix.grRules{cnt}='';
-            [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
-            cnt = cnt + 1;
-
+            R = ['sink_' compounds(i) '[c]'];
+            sub = cellstr([compounds{i} '[c]']);
+            [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
+            
         elseif transport == 1 %currently only this branch is taken.
-
+            
             if (strcmp(compartment,'[c]')==1)
-                tmp = ['Ex_' compounds(i) '[e]'];
-                ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
-                tmp = ['Exchange of ' compounds(i)];
-                ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                tmp = ['1 ' compounds(i) '[e] <==>'];
-                ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
-                tmp = [compounds(i) '[e]'];
-                % ExchangeRxnMatrix.mets(length() = strcat(tmp(1),tmp(2));
-                % HTABLE.put(ExchangeRxnMatrix.mets{i}, i);
-                %   ExchangeRxnMatrix.grRules{cnt}='';
-
-                [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
-                cnt = cnt + 1;
+                R = ['EX_' compounds(i) '[e]'];
+               
+                sub = cellstr([compounds{i} '[e]']);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
+            
                 % creates transport reaction from [c] to [e]
-                tmp = [compounds(i) 'tr'];
-                ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
-                tmp = ['Transport of ' compounds(i)];
-                ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                tmp = ['1 ' compounds(i) '[e] <==> 1 ' compounds(i) '[c]'];
-                ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
-                tmp = [compounds(i) '[c]'];
-                ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
-                HTABLE.put(ExchangeRxnMatrix.mets{end}, length(ExchangeRxnMatrix.mets));
-                %  ExchangeRxnMatrix.grRules{cnt}='';
-                [ExchangeRxnMatrix, HTABLE] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[], HTABLE);
-                cnt = cnt + 1;
-
+                R = [compounds(i) 'tr'];
+                sub = cellstr([compounds{i} '[e]']);
+                prod = cellstr([compounds{i} '[c]']);
+                
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+               
             elseif (strcmp(compartment,'[p]')==1) % keep this branch the same for now.
-                tmp = ['Ex_' compounds(i) '[e]'];
-                ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
-                tmp = ['Exchange of ' compounds(i)];
-                ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                tmp = ['1 ' compounds(i) '[e] <==>'];
-                ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
-                tmp = [compounds(i) '[e]'];
-                % ExchangeRxnMatrix.mets(length() = strcat(tmp(1),tmp(2));
-                % HTABLE.put(ExchangeRxnMatrix.mets{i}, i);
-                %   ExchangeRxnMatrix.grRules{cnt}='';
-
-                [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
-                cnt = cnt + 1;
+                R = ['EX_' compounds{i} '[e]'];
+                sub = cellstr([compounds{i} '[e]']);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
                 % creates transport reaction from [c] to [p]
-                tmp = [compounds(i) 'tpr'];
-                ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
-                tmp = ['[c] to [p] Transport of ' compounds(i)];
-                ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                tmp = ['1 ' compounds(i) '[p] <==> 1 ' compounds(i) '[c]'];
-                ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
-                tmp = [compounds(i) '[c]'];
-                ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
-                tmp = [compounds(i) '[p]'];
-                ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
-                %  ExchangeRxnMatrix.grRules{cnt}='';
-                [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
-                cnt = cnt + 1;
-
+                R = [compounds{i} 'tpr'];
+                sub = cellstr([compounds{i} '[p]']);
+                prod = cellstr([compounds{i} '[c]']);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+                
                 % creates transport reaction from [p] to [e]
-                tmp = [compounds(i) 'tr'];
-                ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2));
-                tmp = ['[p] to [e] Transport of ' compounds(i)];
-                ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                tmp = ['1 ' compounds(i) '[e] <==> 1 ' compounds(i) '[p]'];
-                ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5));
-                %    ExchangeRxnMatrix.grRules{cnt}='';
-                [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
-                cnt = cnt + 1;
+                R = [compounds{i} 'tr'];
+                prod = [compounds{i} '[p]'];
+                sub = [compounds{i} '[e]'];
+                sub = cellstr([compounds{i} '[e]']);
+                prod = cellstr([compounds{i} '[p]']);
+                
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+                
             elseif (strcmp(compartment,'all'))==1 % [m],[n],[g],[l],[x],[r]
                 % if compound(i) exists in a compartment than add a
                 % transport from [c] to compartment
@@ -199,7 +151,7 @@ for i=1:length(compounds)
                         [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
                         cnt = cnt + 1;
                     end
-
+                    
                     for j = 1 : length(remain)
                         if strcmp(remain(j),'[c]')==0 && strcmp(remain(j),'[e]')==0 && ~isempty(char(remain(j))) % is not cytosolic
                             % creates transport reaction from [c] to the compartment
@@ -218,9 +170,12 @@ for i=1:length(compounds)
                     end
                 end
                 clear tmp remain token;
-
+                
             end
         end
+    end
+    if isfield(ExchangeRxnMatrix,'grRules')
+        ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'grRules');
     end
     showprogress(i/length(compounds));
 end
