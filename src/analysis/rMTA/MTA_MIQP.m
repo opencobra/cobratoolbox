@@ -48,7 +48,7 @@ OptimizationModel = rmfield(OptimizationModel,'idx_variables');
 % implemented
 global SOLVERS;
 global CBT_MIQP_SOLVER
-if SOLVERS.ibm_cplex.installed && isempty(CBT_MIQP_SOLVER)
+if SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cplex')
     % Generate CPLEX model
     cplex = Cplex('MIQP');
     CplexModel = OptimizationModel;
