@@ -206,7 +206,7 @@ while nbIteration < nbMaxIteration && stop ~= true
     else
         v(abs(v) < one_over_theta) = 0;
         v_bar = -gamma1*sign(v) + sign(v)*gamma0*theta;
-
+        
         r(abs(r) < one_over_theta) = 0;
         r_bar = -lamda1*sign(r) + sign(r)*lambda0*theta;
         
@@ -219,7 +219,7 @@ while nbIteration < nbMaxIteration && stop ~= true
     
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
-
+    
     switch LPsolution.stat
         case 0
             solution.v = [];
@@ -229,22 +229,15 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.stat = 0;
             warning('Problem infeasible !');
             break
-        case 2
-            solution.v = [];
-            solution.r = [];
-            solution.p = [];
-            solution.q = [];
-            solution.stat = 2;
-            error('Problem unbounded !');
         case 1
             %Check stopping criterion
             x = [v;r;p;q];
             error_x = norm(x - x_old);
             obj_new = relaxFBA_cappedL1_obj(model,v,r,p,q,param);
             error_obj = abs(obj_new - obj_old);
-
+            
             if param.printLevel>0
-                if nbIteration==1
+                if nbIteration==0
                     fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
                 end
                 fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(v),nnz(r),nnz(p),nnz(q));
@@ -259,6 +252,27 @@ while nbIteration < nbMaxIteration && stop ~= true
                 theta = theta * 1.5;
             end
             nbIteration = nbIteration + 1;
+        case 2
+            solution.v = [];
+            solution.r = [];
+            solution.p = [];
+            solution.q = [];
+            solution.stat = 2;
+            error('Problem unbounded !');
+        case 3
+            solution.v = v;
+            solution.r = r;
+            solution.p = p;
+            solution.q = q;
+            solution.stat = 3;
+            warning('Numerical issues with final solution, may not be optimal !');
+            if param.printLevel>0
+                if nbIteration==0
+                    fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
+                end
+                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(v),nnz(r),nnz(p),nnz(q));
+            end
+            stop = true;
     end
 end
 if param.printLevel>0
@@ -269,8 +283,6 @@ if solution.stat == 1
     solution.r = r;
     solution.p = p;
     solution.q = q;
-    
-    
 end
 
 end
@@ -465,10 +477,17 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     else
         disp(param)
         warning(['solveCobraLP solution status is ' num2str(solution.stat) ', and original status is ' num2str(solution.origStat)])
-        v = [];
-        r = [];
-        p = [];
-        q = [];
+        if solution.stat==3
+            v = solution.full(1:n);
+            r = solution.full(n+1:n+m);
+            p = solution.full(n+m+1:n+m+n);
+            q = solution.full(n+m+n+1:n+m+n+n);
+        else
+            v = [];
+            r = [];
+            p = [];
+            q = [];
+        end
     end
 end
 
