@@ -427,7 +427,7 @@ else
         relaxedModel.b=relaxedModel.b-solution.r;
         
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
-        if LPsol.stat==1
+        if LPsol.stat==1 || solution.stat==3
             if param.printLevel>0
                 fprintf('%s\n%s\n','Relaxed model is feasible.','Statistics:')
                 fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');
