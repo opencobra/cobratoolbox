@@ -30,8 +30,8 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 %       - Almut Heinken, 02/2021
 
 % get the number of reactions and metabolites per model
-for i=1:size(modelList,1)
-    load([modelPath filesep modelList{i,1} '.mat']);
+for i=1:length(modelList)
+    load([modelPath filesep modelList{i} '.mat']);
     data(i,1)=length(microbiota_model.rxns);
     data(i,2)=length(microbiota_model.mets);
 end
@@ -55,7 +55,7 @@ end
 
 % print a table with model IDs and stats
 modelStats={'ModelIDs','Reactions','Metabolites'};
-modelStats(2:size(modelList,1)+1,1)=modelList;
+modelStats(2:length(modelList)+1,1)=modelList;
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_samp_','');
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_diet_','');
 modelStats(2:end,2:3)=num2cell(data);
@@ -75,8 +75,8 @@ else
     infoFile = table2cell(readtable(infoFilePath));
     
     % remove individuals not in simulations
-    modelList(:,1)=strrep(modelList(:,1),'microbiota_model_samp_','');
-    modelList(:,1)=strrep(modelList(:,1),'microbiota_model_diet_','');
+    modelList=strrep(modelList,'microbiota_model_samp_','');
+    modelList=strrep(modelList,'microbiota_model_diet_','');
     [C,IA] = setdiff(infoFile(:,1),modelList);
     infoFile(IA,:)=[];
     

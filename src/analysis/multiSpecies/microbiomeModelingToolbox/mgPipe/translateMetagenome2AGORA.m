@@ -217,4 +217,7 @@ for i=2:size(translatedAbundances,2)
     end
 end
 
+% export the translated abundances
+writetable(cell2table(translatedAbundances),'translatedAbundances','FileType','text','WriteVariableNames',false,'Delimiter','tab');
+
 end

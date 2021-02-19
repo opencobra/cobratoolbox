@@ -180,9 +180,9 @@ else
         
         % retrieving current model ID
         if ~isempty(host)
-            mId = [resPath filesep 'host_microbiota_model_samp_', sampNames{k,1}, '.mat'];
+            mId = [resPath filesep 'host_microbiota_model_samp_', sampNames{i,1}, '.mat'];
         else
-            mId = [resPath filesep 'microbiota_model_samp_', sampNames{k,1}, '.mat'];
+            mId = [resPath filesep 'microbiota_model_samp_', sampNames{i,1}, '.mat'];
         end
         
         % if the model doesn't exist yet
@@ -223,10 +223,14 @@ else
 end
 
 % get stats on microbiome models-number of reactions and metabolites
+for i=1:length(sampNames)
+modelNames{i}=['microbiota_model_samp_' sampNames{i}];
+end
+
 if ~isempty(infoFilePath)
-    [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, infoFilePath);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, infoFilePath);
 else
-    [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames);
 end
 
 end
