@@ -26,7 +26,7 @@ function [exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(r
 %                        is available and should be simulated
 %    saveConstrModels:   boolean indicating if models with imposed
 %                        constraints are saved externally
-%    computeProfiles:    boolean defining whether flux variability analysis to 
+%    computeProfiles:    boolean defining whether flux variability analysis to
 %                        compute the metabolic profiles should be performed.
 %    includeHumanMets:   boolean indicating if human-derived metabolites
 %                        present in the gut should be provexchangesed to the models (default: true)
@@ -63,9 +63,9 @@ end
 
 mapP = detectOutput(resPath, 'simRes.mat');
 if ~isempty(mapP) && repeatSim==0
+    load(strcat(resPath, 'simRes.mat'))
     s = 'simulations already done, file found: loading from resPath';
     disp(s)
-    load(strcat(resPath, 'simRes.mat'))
 else
     % Cell array to store results
     fvaCt = cell(3, length(sampNames));

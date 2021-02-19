@@ -118,6 +118,8 @@ global CBTDIR
     
 % set optional variables
 mkdir(resPath);
+
+currentDir=pwd;
     
 if ~contains(dietFilePath,'.txt')
    dietFilePath=[dietFilePath '.txt']; 
@@ -175,5 +177,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 init = true;
 
 [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+
+cd(currentDir)
 
 end
