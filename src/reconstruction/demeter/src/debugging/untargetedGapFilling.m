@@ -1,4 +1,4 @@
-function model = untargetedGapFilling(model,osenseStr,database)
+function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
 % This script is part of the DEMETER pipeline and attemps to find a
 % reaction from the complete reaction database through the use of
 % relaxedFBA that could enable flux through the objective function. This
@@ -33,7 +33,18 @@ database.reactions(IA,:) = [];
 % define reactions that should not be considered
 ExcludeRxns = {'DTTPte'};
 
+if nargin < 4
+    excludeDMs=1;
+end
+
+if nargin < 5
+    excludeSinks=1;
+end
+
+
 tol=0.00001;
+
+modelOrg=model;
 
 % get the reaction that needs to be gap-filled
 tRxn=model.rxns{model.c==1,1};
@@ -65,47 +76,52 @@ if abs(FBA.f) < tol
         [modelExpanded] = mergeTwoModels(rBioNetDB,model,1,0);
         modelExpanded = changeObjective(modelExpanded,tRxn);
         FBA2 = optimizeCbModel(modelExpanded);
-        FBA2
-        modelExpandedO = modelExpanded;
         if FBA2.origStat == 1 && FBA2.f > 0  % feasible non-zero solution found
             % now identify the minimum number of reactions to be added
-                    % 1. set all rBioNet reaction to 0
-                    % therefore find all reactions in rBioNetDB but not in model
-                    R = setdiff(rBioNetDB.rxns,model.rxns);
-                    modelExpanded.lb(ismember(modelExpanded.rxns,R)) = 0;
-                    modelExpanded.ub(ismember(modelExpanded.rxns,R)) = 0;
-                    % 2. use relaxFBA
-                    % Excluded reactions that are currently in the model to be
-                    % relaxed
-                    
-                    clear param
-                    param.printLevel = 1; % set to 0 if not print is desired
-                    
-                    % exclude original model reactions to have relaxed
-                    % bounds
-                    param.excludedReactions = ismember(modelExpanded.rxns,model.rxns);
-                    
-                    % exclude DM reactions to have relaxed bounds
-                    DMR = contains(modelExpanded.rxns,'DM_');
-                    param.excludedReactions(DMR)=1;
-                    % exclyde sink reactions to have relaxed bounds
-                    SinkR = contains(modelExpanded.rxns,'sink_');
-                    param.excludedReactions(SinkR)=1;
-                    param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
-                    % do not change these parameters
-                    param.theta=0.5;
-                    param.steadyStateRelax = 0;
-                    % run relaxed FBA
-                    [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
-                    %% get solutions for relaxation
-                    LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
-                    UBsol = modelExpanded.rxns(find(relaxedModel.ub(ismember(modelExpanded.rxns,R))));
+            % 1. set all rBioNet reaction to 0
+            % therefore find all reactions in rBioNetDB but not in model
+            R = setdiff(rBioNetDB.rxns,model.rxns);
+            modelExpanded.lb(ismember(modelExpanded.rxns,R)) = 0;
+            modelExpanded.ub(ismember(modelExpanded.rxns,R)) = 0;
+            % 2. use relaxFBA
+            % Excluded reactions that are currently in the model to be
+            % relaxed
+            
+            clear param
+            param.printLevel = 1; % set to 0 if not print is desired
+            
+            % do not change these parameters
+            param.theta=0.1;
+            param.steadyStateRelax = 0;
+            % exclude original model reactions to have relaxed
+            % bounds
+            param.excludedReactions = ismember(modelExpanded.rxns,model.rxns);
+            
+            % exclude DM reactions to have relaxed bounds
+            if excludeDMs
+                DMR = contains(modelExpanded.rxns,'DM_');
+                param.excludedReactions(DMR)=1;
+            end
+            if excludeSinks
+                % exclude sink reactions to have relaxed bounds
+                SinkR = contains(modelExpanded.rxns,'sink_');
+                param.excludedReactions(SinkR)=1;
+            end
+            if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
+                param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
+            end
+            % run relaxed FBA
+            [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
+            %% get solutions for relaxation
+            LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
+            UBsol = modelExpanded.rxns(find(relaxedModel.ub(ismember(modelExpanded.rxns,R))));
             % collect solutions into one list
             addedRxns = [LBsol;UBsol];
         end
     end
     
     % add successful gap-filling reactions to model
+    model=modelOrg;
     if ~isempty(addedRxns)
         for i=1:length(addedRxns)
             rxnInd=find(strcmp(database.reactions(:,1),addedRxns{i}));
