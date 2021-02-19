@@ -154,8 +154,8 @@ for i=2:size(mappedMedia,1)
 end
 
 % remove organisms not in the current reconstruction resource
-[C,IA] = setdiff(data(:,1),infoFile(:,1));
-data(IA,:) = [];
+[C,IA] = setdiff(data(:,1),infoFile(:,1),'stable');
+data(IA(2:end),:) = [];
 
 writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 

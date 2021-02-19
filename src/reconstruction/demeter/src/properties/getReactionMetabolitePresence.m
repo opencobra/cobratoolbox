@@ -68,11 +68,7 @@ modelsRenamed=strrep(modelsRenamed,'.xml','');
 modelList(IA,:)=[];
 
 % define the intervals in which the computations will be performed
-if length(modelList)>100000
-    steps=50000;
-elseif length(modelList)>20000
-    steps=10000;
-elseif length(modelList)>5000
+if length(modelList)>5000
     steps=2000;
 elseif length(modelList)>200
     steps=200;

@@ -1,4 +1,4 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
+function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 % This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
 % in the environment (in case that the function is called without a driver), does some checks on the
 % inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
@@ -42,13 +42,19 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, ab
 %    netSecretionFluxes:     Net secretion fluxes by microbiome community models
 %    netUptakeFluxes:        Net uptake fluxes by microbiome community models
 %    Y:                      Classical multidimensional scaling
+%    modelStats:             Reaction and metabolite numbers for each model
+%    summary:                Table with average, median, minimal, and maximal
+%                            reactions and metabolites
+%    statistics:             If info file with stratification is provided, will
+%                            determine if there is a significant difference.
 %
 % .. Author: Federico Baldini 2018
 %               - Almut Heinken 02/2020: removed unnecessary outputs
 %               - Almut Heinken 08/2020: added extra inputs and changed to
 %                                        varargin input
-%               - Almut Heinken 01/2021: added option for creation of each 
-%                                        personalized model separately
+%               - Almut Heinken 02/2021: added option for creation of each 
+%                                        personalized model separately and
+%                                        output of model stats
 
 
 % Define default input parameters if not specified
@@ -168,6 +174,6 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 end

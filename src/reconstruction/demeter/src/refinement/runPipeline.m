@@ -192,6 +192,7 @@ for i=1:steps:length(models)
         [model,summary]=refinementPipeline(draftModel,microbeID, infoFilePath, inputDataFolder);
         modelsTmp{j}=model;
         summariesTmp{j}=summary;
+
         outputFileNamesTmp{j,1}=microbeID;
         
         %% save translated version of the draft model as a mat file
@@ -208,7 +209,11 @@ for i=1:steps:length(models)
             model=draftModelsTmp{j};
             save([translatedDraftsFolder filesep outputFileNamesTmp{j,1}],'model');
         end
-        summaries.(outputFileNamesTmp{j,1})=summariesTmp{j};
+        if ~isnan(str2double(outputFileNamesTmp{j,1}))
+            summaries.(outputFileNamesTmp{j,1})=['m' summariesTmp{j}];
+        else
+            summaries.(outputFileNamesTmp{j,1})=summariesTmp{j};
+        end
     end
     save([summaryFolder filesep 'summaries_' reconVersion],'summaries');
 end

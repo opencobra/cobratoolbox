@@ -1,21 +1,20 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
-
-%MgPipe is a MATLAB based pipeline to integrate microbial abundances
-%(coming from metagenomic data) with constraint based modeling, creating
-%individuals' personalized models.
-%The pipeline is divided in 3 parts:
-%[PART 1] Analysis of individuals' specific microbes abundances are computed.
-%[PART 2]: 1 Constructing a global metabolic model (setup) containing all the
-%microbes listed in the study. 2 Building individuals' specific models
-%integrating abundance data retrieved from metagenomics. For each organism,
-%reactions are coupled to the objective function.
-%[PART 3] Simulations under different diet regimes.
-%MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
-%version 1.0 from https://www.vmh.life/#downloadview and place the mat files
-%into a folder.
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+% MgPipe is a MATLAB based pipeline to integrate microbial abundances
+% (coming from metagenomic data) with constraint based modeling, creating
+% individuals' personalized models.
+% The pipeline is divided in 3 parts:
+% [PART 1] Analysis of individuals' specific microbes abundances are computed.
+% [PART 2]: 1 Constructing a global metabolic model (setup) containing all the
+% microbes listed in the study. 2 Building individuals' specific models
+% integrating abundance data retrieved from metagenomics. For each organism,
+% reactions are coupled to the objective function.
+% [PART 3] Simulations under different diet regimes.
+% MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
+% version 1.0 from https://www.vmh.life/#downloadview and place the mat files
+% into a folder.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, constrModelsPath] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -54,6 +53,11 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 %    netSecretionFluxes:     Net secretion fluxes by microbiome community models
 %    netUptakeFluxes:        Net uptake fluxes by microbiome community models
 %    Y:                      Classical multidimensional scaling
+%    modelStats:             Reaction and metabolite numbers for each model
+%    summary:                Table with average, median, minimal, and maximal
+%                            reactions and metabolites
+%    statistics:             If info file with stratification is provided, will
+%                            determine if there is a significant difference.
 %
 % AUTHORS:
 %   - Federico Baldini, 2017-2018
@@ -210,5 +214,19 @@ end
 % profiles (using the different NMPCs as features) between individuals are also
 % evaluated with classical multidimensional scaling.
 
+if computeProfiles
 [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, fvaCt, nsCt, figForm);
+else
+    netSecretionFluxes={};
+    netUptakeFluxes={};
+    Y=[];
+end
+
+% get stats on microbiome models-number of reactions and metabolites
+if ~isempty(infoFilePath)
+    [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, infoFilePath);
+else
+    [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList);
+end
+
 end

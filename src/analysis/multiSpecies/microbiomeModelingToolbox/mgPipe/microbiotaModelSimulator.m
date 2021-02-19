@@ -109,11 +109,11 @@ else
     
     % Starting personalized simulations
     for k = startIter:length(sampNames)
-        exchangesInfo = sampNames{k,1};
+        sampleID = sampNames{k,1};
         if ~isempty(hostPath)
-            microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', exchangesInfo,'.mat'));
+            microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
         else
-            microbiota_model=readCbModel(strcat('microbiota_model_samp_', exchangesInfo,'.mat'));
+            microbiota_model=readCbModel(strcat('microbiota_model_samp_', sampleID,'.mat'));
         end
         model = microbiota_model;
         for j = 1:length(model.rxns)
@@ -218,7 +218,7 @@ else
             if rDiet==1 && saveConstrModels
                 microbiota_model=model;
                 mkdir([resPath filesep 'Rich'])
-                save([resPath filesep 'Rich' filesep 'microbiota_model_' exchangesInfo '.mat'],'microbiota_model')
+                save([resPath filesep 'Rich' filesep 'microbiota_model_' sampleID '.mat'],'microbiota_model')
             end
             
             % Using input diet
@@ -277,7 +277,7 @@ else
                 if saveConstrModels
                     microbiota_model=model_sd;
                     mkdir([resPath filesep 'Diet'])
-                    save([resPath filesep 'Diet' filesep 'microbiota_model_diet_' exchangesInfo '.mat'],'microbiota_model')
+                    save([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],'microbiota_model')
                 end
                 
                 save(strcat(resPath,'intRes.mat'),'fvaCt','presol','inFesMat', 'nsCt')
@@ -330,7 +330,7 @@ else
                         if saveConstrModels
                             microbiota_model=model_pd;
                             mkdir(strcat(resPath,'Personalized'))
-                            save([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' exchangesInfo '.mat'],'microbiota_model')
+                            save([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],'microbiota_model')
                         end
                         
                     end

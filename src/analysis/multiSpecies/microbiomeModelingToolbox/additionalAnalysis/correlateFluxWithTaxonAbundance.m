@@ -54,9 +54,9 @@ metaboliteDatabase=table2cell(metaboliteDatabase);
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
 fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
-for i=2:size(fluxes,1)
-fluxes{i,1}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),fluxes{i,1})),2};
-end
+% for i=2:size(fluxes,1)
+% fluxes{i,1}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),fluxes{i,1})),2};
+% end
 
 % Get the taxonomy information
 if exist('infoFilePath','var')

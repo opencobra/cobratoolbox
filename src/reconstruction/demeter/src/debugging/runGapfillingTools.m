@@ -23,7 +23,7 @@ function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biom
 %
 % OUTPUT
 % model:               COBRA model structure
-% gapfilledRxns:       Reactions that were added to enable flux throough
+% gapfilledRxns:       Reactions that were added to enable flux through
 %                      the objective function
 %
 % .. Author:
