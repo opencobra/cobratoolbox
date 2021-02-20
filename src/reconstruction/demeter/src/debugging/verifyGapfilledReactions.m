@@ -1,4 +1,4 @@
-function model = verifyGapfilledReactions(model,osenseStr)
+function [model,condGF,targetGF,relaxGF] = verifyGapfilledReactions(model,osenseStr)
 % Part of the DEMETER pipeline. Checks whether reactions that were added
 % by the gapfilling steps performed in DEMETER are required for biomass
 % production. Reactions that are no longer needed are removed.
@@ -14,9 +14,15 @@ function model = verifyGapfilledReactions(model,osenseStr)
 %
 % OUTPUT
 % model             COBRA model structure
+% condGF            Reactions added based on conditions (recognizing
+%                   certain patterns of reactions)
+% targetGF          Reactions added based on tagrted gapfilling (specific
+%                   metabolites that could not be produced)
+% relaxGF           Reactions added based on relaxFBA (lowest level of
+%                   confidence)
 %
-% .. Author:
-%       Almut Heinken, 2016-2019
+% .. Authors:
+%       Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 tol = 0.0001;
 
@@ -370,9 +376,28 @@ for i=1:length(GF_rxns)
     end
 end
 
-% rename the gapfill IDs
-model.rxns=strrep(model.rxns,'_csGF','_GF');
-model.rxns=strrep(model.rxns,'_tGF','_GF');
-model.rxns=strrep(model.rxns,'_untGF','_GF');
+% export the gapfill IDs
+condGF = model.rxns(contains(model.rxns,'_csGF'));
+targetGF = model.rxns(contains(model.rxns,'_tGF'));
+relaxGF = model.rxns(contains(model.rxns,'_untGF'));
+
+% remove the "gapfilled" IDs
+for n = 1:length(model.rxns)
+    if ~isempty(strfind(model.rxns{n, 1}, '_csGF'))
+        removeGF = strsplit(model.rxns{n, 1}, '_csGF');
+        model.rxns{n, 1} = removeGF{1, 1};
+        model.grRules{n, 1} = 'demeterGapfill';
+    end
+    if ~isempty(strfind(model.rxns{n, 1}, '_tGF'))
+        removeGF = strsplit(model.rxns{n, 1}, '_tGF');
+        model.rxns{n, 1} = removeGF{1, 1};
+        model.grRules{n, 1} = 'demeterGapfill';
+    end
+    if ~isempty(strfind(model.rxns{n, 1}, '_untGF'))
+        removeGF = strsplit(model.rxns{n, 1}, '_untGF');
+        model.rxns{n, 1} = removeGF{1, 1};
+        model.grRules{n, 1} = 'demeterGapfill';
+    end
+end
 
 end

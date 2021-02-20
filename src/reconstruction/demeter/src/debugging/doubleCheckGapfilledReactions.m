@@ -38,7 +38,7 @@ WesternDiet=cellstr(string(WesternDiet));
 cnt=1;
 remRxnsWD={};
 modelWD=useDiet(model,WesternDiet);
-gapfilledRxns=model.rxns(find(strcmp(model.grRules,'agoraGapfill')));
+gapfilledRxns=model.rxns(find(strcmp(model.grRules,'demeterGapfill')));
 if ~isempty(gapfilledRxns)
     modelTest=modelWD;
     [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(modelTest,'FBA',gapfilledRxns);
@@ -59,7 +59,7 @@ remRxnsDM={};
 if isnumeric(definedMediumGrowthOK)==1
     cnt=1;
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
-    gapfilledRxns=model.rxns(find(strcmp(model.grRules,'agoraGapfill')));
+    gapfilledRxns=model.rxns(find(strcmp(model.grRules,'demeterGapfill')));
     if ~isempty(gapfilledRxns)
         modelTest=constrainedModel;
         [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(modelTest,'FBA',gapfilledRxns);

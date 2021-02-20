@@ -258,6 +258,9 @@ for i=1:length(pipelineFields)
     writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
+% delete unneeded files
+delete('rBioNetDB.mat');
+
 %% create SBML files (default=not created)
 
 if ~isempty(sbmlFolder)

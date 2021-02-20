@@ -1,16 +1,17 @@
-function model = addRefinementComments(model)
+function model = addRefinementComments(model,summary)
 % Adds descriptions to the model.comments field based on refinement
 % performed by the DEMETER pipeline
 %
 % USAGE:
 %
-%   model = addRefinementComments(model)
+%   model = addRefinementComments(model,summary)
 %
 % INPUT
-% model:                   COBRA model structure
+% model:            COBRA model structure
+% summary           Structure with description of performed refineemnt
 %
 % OUTPUT
-% model:                   COBRA model structure with comments
+% model:            COBRA model structure with comments
 %
 % .. Author:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2020
@@ -48,9 +49,17 @@ for i=1:length(model.grRules)
         model.grRules{i}=strrep(model.grRules{i},'GrowthRequirementsGapfill','');
         model.comments{i}='Reaction added by DEMETER based on experimental data on growth requirements.';
     end
-    if strcmp(model.grRules{i},'demeterGapfill')
+    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('condGF'),model.rxns{i}))
         model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
-        model.comments{i}='Added by DEMETER to enable growth with VMH-consistent constraints.';
+        model.comments{i}='Added by DEMETER to enable flux with VMH-consistent constraints.';
+    end
+    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('targetGF'),model.rxns{i}))
+        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
+        model.comments{i}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
+    end
+    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('relaxGF'),model.rxns{i}))
+        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
+        model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
     end
     if strcmp(model.grRules{i},'essentialGapfill')
         model.grRules{i}=strrep(model.grRules{i},'essentialGapfill','');

@@ -35,6 +35,8 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'cobalt2[c]', '', {'EX_cobalt2(e)','Coabc'}
     'utp[c]', '', {'NDPK3','NDPK1','NDPK2','NDPK4','NDPK5','NDPK6','NDPK7','NDPK8','NDPK9','URIDK1','URIDK2'}
     'nad[c]', '', {'NADS1','NADS2','NNATr','EX_nac(e)','NACt2r'}
+    'nac[c]', '', {'EX_nac(e)','NACt2r'}
+    'ncam[c]', '', {'EX_ncam(e)','NCAMt2r'}
     'pydx5p[c]', '', {'EX_pydx(e)','PYDXabc','PYDXK'}
     'thmpp[c]', '', {'EX_thm(e)','THMabc','TMDPK'}
     'malcoa[c]', '', {'ACCOAC','H2CO3D'}
@@ -103,6 +105,9 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     '', 'EX_nadp(e)', {'NADK'}
     '', 'NTRIR4', {'EX_no2(e)','NO2t2'}
     '4ppcys[c]', '', {'PNTK','EX_pnto_R(e)','PNTOabc','EX_cys_L(e)','CYSt2r'}
+    'dtdp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
+    'dtmp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
+    'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
     };
 
 % First find out which biomass precursors cannot be synthesized

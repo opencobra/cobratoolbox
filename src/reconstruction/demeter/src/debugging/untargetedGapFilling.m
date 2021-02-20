@@ -26,10 +26,6 @@ function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,exclud
 humanComp = {'[m]','[l]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};
 database.reactions(contains(database.reactions(:,3),humanComp),:)=[];
 
-% remove reactions already in model from database
-[C,IA,IC] = intersect(database.reactions(:,1),model.rxns);
-database.reactions(IA,:) = [];
-
 % define reactions that should not be considered
 ExcludeRxns = {'DTTPte'};
 
@@ -54,10 +50,15 @@ addedRxns = {};
 FBA = optimizeCbModel(model,osenseStr);
 
 if abs(FBA.f) < tol
-    % create model out of reaction database
-    rBioNetDB = createModel;
-    for i = 2 : size(database.reactions,1)
-        rBioNetDB = addReaction(rBioNetDB,database.reactions{i,1},database.reactions{i,3});
+    % create model out of reaction database if not existing
+    if isfile('rBioNetDB.mat')
+        load('rBioNetDB.mat');
+    else
+        rBioNetDB = createModel;
+        for i = 2 : size(database.reactions,1)
+            rBioNetDB = addReaction(rBioNetDB,database.reactions{i,1},database.reactions{i,3});
+        end
+        save('rBioNetDB','rBioNetDB');
     end
     % find reaction(s) from the complete reaction database that can enable
     % growth
@@ -69,12 +70,11 @@ if abs(FBA.f) < tol
         model.ub(find(model.c))=-tol;
     end
     FBA = optimizeCbModel(model);
-    FBA
-    if FBA.origStat ==3 % cannot produce flux through the target reaction
+    if FBA.origStat ==3 % cannot produce biomass
         % try if adding rBioNetDB would fix the problem of not being able to
         % produce biomass
         [modelExpanded] = mergeTwoModels(rBioNetDB,model,1,0);
-        modelExpanded = changeObjective(modelExpanded,tRxn);
+        modelExpanded = changeObjective(modelExpanded,BM);
         FBA2 = optimizeCbModel(modelExpanded);
         if FBA2.origStat == 1 && FBA2.f > 0  % feasible non-zero solution found
             % now identify the minimum number of reactions to be added
@@ -97,6 +97,10 @@ if abs(FBA.f) < tol
             % bounds
             param.excludedReactions = ismember(modelExpanded.rxns,model.rxns);
             
+            % exclude irreversible reactions from relaxing lower bounds
+            irrRxns=database.reactions(find(strcmp(database.reactions(:,4),'0')),1);
+            param.excludedReactionLB = ismember(modelExpanded.rxns,irrRxns);
+            
             % exclude DM reactions to have relaxed bounds
             if excludeDMs
                 DMR = contains(modelExpanded.rxns,'DM_');
@@ -112,20 +116,58 @@ if abs(FBA.f) < tol
             end
             % run relaxed FBA
             [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
+            FBA=optimizeCbModel(relaxedModel,'max');
+            growth{i,3}=FBA.f;
+            
             %% get solutions for relaxation
             LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
             UBsol = modelExpanded.rxns(find(relaxedModel.ub(ismember(modelExpanded.rxns,R))));
             % collect solutions into one list
-            addedRxns = [LBsol;UBsol];
+            
+            addedRxns=union(LBsol,UBsol);
+            
+            exch=addedRxns(find(strncmp(addedRxns,'EX_',3)));
+            if ~isempty(exch)
+                for j=1:length(exch)
+                    met=strrep(exch{j},'EX_','');
+                    met=strrep(met,'(e)','[e]');
+                    % find reversible transporters
+                    findTransp=find(contains(database.reactions(:,3),met));
+                    revRxns=find(strcmp(database.reactions(:,4),'1'));
+                    metTrans=database.reactions(intersect(findTransp,revRxns),1);
+                    if length(metTrans)>1
+                        addedRxns = union(addedRxns,metTrans(1:2));
+                    else
+                        % try irreversible transporters
+                        findTransp=find(contains(database.reactions(:,3),met));
+                        irrRxns=find(strcmp(database.reactions(:,4),'0'));
+                        metTrans=database.reactions(intersect(findTransp,irrRxns),1);
+                        
+                    end
+                    addedRxns = union(addedRxns,metTrans);
+                end
+            end
+            gfs(i,1:length(addedRxns))=addedRxns;
+            
+            model=modelOld;
+            
+            for j=1:length(addedRxns)
+                rxnInd=find(strcmp(database.reactions(:,1),addedRxns{j}));
+                model = addReaction(model, database.reactions{rxnInd,1}, database.reactions{rxnInd,3});
+            end
+            
+            FBA=optimizeCbModel(model,'max');
         end
     end
     
-    % add successful gap-filling reactions to model
-    model=modelOrg;
-    if ~isempty(addedRxns)
-        for i=1:length(addedRxns)
-            rxnInd=find(strcmp(database.reactions(:,1),addedRxns{i}));
-            model = addReaction(model, [database.reactions{rxnInd,1} '_untGF'], database.reactions{rxnInd,3});
+    if abs(FBA.f) > tol
+        % add successful gap-filling reactions to model
+        model=modelOrg;
+        if ~isempty(addedRxns)
+            for i=1:length(addedRxns)
+                rxnInd=find(strcmp(database.reactions(:,1),addedRxns{i}));
+                model = addReaction(model, [database.reactions{rxnInd,1} '_untGF'], database.reactions{rxnInd,3});
+            end
         end
     end
 end
