@@ -49,17 +49,16 @@ for i=1:length(model.grRules)
         model.grRules{i}=strrep(model.grRules{i},'GrowthRequirementsGapfill','');
         model.comments{i}='Reaction added by DEMETER based on experimental data on growth requirements.';
     end
-    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('condGF'),model.rxns{i}))
+    if strcmp(model.grRules{i},'demeterGapfill')
         model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
-        model.comments{i}='Added by DEMETER to enable flux with VMH-consistent constraints.';
-    end
-    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('targetGF'),model.rxns{i}))
-        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
-        model.comments{i}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
-    end
-    if strcmp(model.grRules{i},'demeterGapfill') && find(strcmp(summary.('relaxGF'),model.rxns{i}))
-        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
-        model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
+        if ~isempty(find(strcmp(summary.('condGF'),model.rxns{i})))
+            model.comments{i}='Added by DEMETER to enable flux with VMH-consistent constraints.';
+        elseif ~isempty(find(strcmp(summary.('targetGF'),model.rxns{i})))
+            model.comments{i}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
+        elseif ~isempty(find(strcmp(summary.('relaxGF'),model.rxns{i})))
+            model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
+            model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
+        end
     end
     if strcmp(model.grRules{i},'essentialGapfill')
         model.grRules{i}=strrep(model.grRules{i},'essentialGapfill','');

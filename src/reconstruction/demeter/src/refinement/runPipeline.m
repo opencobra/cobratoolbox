@@ -209,12 +209,7 @@ for i=1:steps:length(models)
             model=draftModelsTmp{j};
             save([translatedDraftsFolder filesep outputFileNamesTmp{j,1}],'model');
         end
-        % workaround in case model ID is numeric
-        if ~isnan(str2double(outputFileNamesTmp{j,1}))
-            summaries.(outputFileNamesTmp{j,1})=['model_' summariesTmp{j}];
-        else
-            summaries.(outputFileNamesTmp{j,1})=summariesTmp{j};
-        end
+        summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end
     save([summaryFolder filesep 'summaries_' reconVersion],'summaries');
 end

@@ -101,7 +101,9 @@ else
 end
 model=removeRxns(model,toRemove);
 
-summary.gapfilledRxns=setdiff(summary.gapfilledRxns,toRemove);
+summary.condGF=setdiff(summary.condGF,toRemove);
+summary.targetGF=setdiff(summary.targetGF,toRemove);
+summary.relaxGF=setdiff(summary.relaxGF,toRemove);
 summary.balancedCycle_addedRxns=setdiff(summary.balancedCycle_addedRxns,toRemove);
 summary.addedMismatchRxns=setdiff(summary.addedMismatchRxns,toRemove);
 summary.addedReactionsBiomass=setdiff(summary.addedReactionsBiomass,toRemove);

@@ -27,7 +27,7 @@ humanComp = {'[m]','[l]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};
 database.reactions(contains(database.reactions(:,3),humanComp),:)=[];
 
 % define reactions that should not be considered
-% ExcludeRxns = {'DTTPte'};
+ExcludeRxns = {'DTTPte','COAt','COAti','DPCOAt','DPCOAti','AMPt2','AMPt2r','NADPt','NADPti','DGTPt','DGTPti','CMPt2i','CMPt2','GMPt2','GMPt2r','UMPt2','UMPt2i','GTPt','GTPti','DATPt','DATPti'};
 
 if nargin < 4
     excludeDMs=1;
@@ -109,8 +109,12 @@ if FBA.origStat ==3 % cannot produce biomass
         if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
         end
+        try
         % run relaxed FBA
         [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
+        catch
+            warning('relaxedFBA could not find a steady state!')
+        end
         
         %% get solutions for relaxation
         LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
