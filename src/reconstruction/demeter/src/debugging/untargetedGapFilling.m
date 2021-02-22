@@ -110,63 +110,64 @@ if FBA.origStat ==3 % cannot produce biomass
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
         end
         try
-        % run relaxed FBA
-        [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
-        catch
-            warning('relaxedFBA could not find a steady state!')
-        end
-        
-        %% get solutions for relaxation
-        LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
-        UBsol = modelExpanded.rxns(find(relaxedModel.ub(ismember(modelExpanded.rxns,R))));
-        % collect solutions into one list
-        
-        addedRxns=union(LBsol,UBsol);
-        
-        % find exchange reactions, transporters if not both are in the lsit
-        % for a given metabolite
-        [C,IA]=intersect(database.reactions(:,1),addedRxns);
-        forms=database.reactions(IA,3);
-        exRxns=C(find(contains(forms,'[e]')));
-        exMetList={};
-        for j=1:length(exRxns)
-            [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(forms{j});
-            exMetList=union(exMetList,metaboliteList(contains(metaboliteList,'[e]')));
-        end
-        if ~isempty(exMetList)
-            [exMets,~,J]=unique(exMetList);
-            cntExMets = histc(J, 1:numel(exMets));
-            for j=1:length(exMets)
-                if cntExMets(j) < 2 && isempty(find(strcmp(model.mets,exMets{j})))
-                    if ~any(strncmp(exRxns,['EX_' exMets{j}],length(['EX_' exMets{j}])))
-                    % find the exchange reaction
-                    met=strrep(exMets{j},'[e]','');
-                    addedRxns = union(addedRxns,database.reactions(find(strncmp(database.reactions(:,1),['EX_' met],length(['EX_' met]))),1));
-                    else
-                    % otherwise, find reversible transporters
-                    findTransp=find(contains(database.reactions(:,3),exMets{j}));
-                    revRxns=find(strcmp(database.reactions(:,4),'1'));
-                    metTrans=database.reactions(intersect(findTransp,revRxns),1);
-                    if length(metTrans)>1
-                        addedRxns = union(addedRxns,metTrans(1:2));
-                    else
-                        % try irreversible transporters
-                        findTransp=find(contains(database.reactions(:,3),exMets{j}));
-                        irrRxns=find(strcmp(database.reactions(:,4),'0'));
-                        metTrans=database.reactions(intersect(findTransp,irrRxns),1); 
-                    end
-                    addedRxns = union(addedRxns,metTrans);
+            % run relaxed FBA
+            [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
+            
+            
+            %% get solutions for relaxation
+            LBsol = modelExpanded.rxns(find(relaxedModel.lb(ismember(modelExpanded.rxns,R))));
+            UBsol = modelExpanded.rxns(find(relaxedModel.ub(ismember(modelExpanded.rxns,R))));
+            % collect solutions into one list
+            
+            addedRxns=union(LBsol,UBsol);
+            
+            % find exchange reactions, transporters if not both are in the lsit
+            % for a given metabolite
+            [C,IA]=intersect(database.reactions(:,1),addedRxns);
+            forms=database.reactions(IA,3);
+            exRxns=C(find(contains(forms,'[e]')));
+            exMetList={};
+            for j=1:length(exRxns)
+                [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(forms{j});
+                exMetList=union(exMetList,metaboliteList(contains(metaboliteList,'[e]')));
+            end
+            if ~isempty(exMetList)
+                [exMets,~,J]=unique(exMetList);
+                cntExMets = histc(J, 1:numel(exMets));
+                for j=1:length(exMets)
+                    if cntExMets(j) < 2 && isempty(find(strcmp(model.mets,exMets{j})))
+                        if ~any(strncmp(exRxns,['EX_' exMets{j}],length(['EX_' exMets{j}])))
+                            % find the exchange reaction
+                            met=strrep(exMets{j},'[e]','');
+                            addedRxns = union(addedRxns,database.reactions(find(strncmp(database.reactions(:,1),['EX_' met],length(['EX_' met]))),1));
+                        else
+                            % otherwise, find reversible transporters
+                            findTransp=find(contains(database.reactions(:,3),exMets{j}));
+                            revRxns=find(strcmp(database.reactions(:,4),'1'));
+                            metTrans=database.reactions(intersect(findTransp,revRxns),1);
+                            if length(metTrans)>1
+                                addedRxns = union(addedRxns,metTrans(1:2));
+                            else
+                                % try irreversible transporters
+                                findTransp=find(contains(database.reactions(:,3),exMets{j}));
+                                irrRxns=find(strcmp(database.reactions(:,4),'0'));
+                                metTrans=database.reactions(intersect(findTransp,irrRxns),1);
+                            end
+                            addedRxns = union(addedRxns,metTrans);
+                        end
                     end
                 end
             end
-        end
-        
-        % add the reactions that were found
-        model=modelOrg;
-        
-        for j=1:length(addedRxns)
-            rxnInd=find(strcmp(database.reactions(:,1),addedRxns{j}));
-            model = addReaction(model, [database.reactions{rxnInd,1} '_untGF'], database.reactions{rxnInd,3});
+            
+            % add the reactions that were found
+            model=modelOrg;
+            
+            for j=1:length(addedRxns)
+                rxnInd=find(strcmp(database.reactions(:,1),addedRxns{j}));
+                model = addReaction(model, [database.reactions{rxnInd,1} '_untGF'], database.reactions{rxnInd,3});
+            end
+        catch
+            warning('relaxedFBA could not find a steady state!')
         end
     end
 end
