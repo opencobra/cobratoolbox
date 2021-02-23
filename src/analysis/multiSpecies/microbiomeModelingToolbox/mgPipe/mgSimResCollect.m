@@ -63,9 +63,13 @@ end
 
 % find empty rows in input data-tmp fix
 emptyRows=find(cellfun(@isempty,fvaCt{2,1}(:,2)));
-for i=1:size(fvaCt,2)
-    fvaCt{2,i}(emptyRows,:)=[];
-    nsCt{2,i}(emptyRows,:)=[];  
+if ~isempty(emptyRows)
+    for i=1:size(fvaCt,2)
+        if ~isempty(fvaCt{2,i})
+            fvaCt{2,i}(emptyRows,:)=[];
+            nsCt{2,i}(emptyRows,:)=[];
+        end
+    end
 end
 exchanges(emptyRows,:)=[];
 

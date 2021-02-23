@@ -50,14 +50,14 @@ end
 
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
-% try gapfilling based on relaxFBA
-model = untargetedGapFilling(model,osenseStr,database,1,1);
-end
-
-% additional targeted gapfilling may be needed
-FBA = optimizeCbModel(model,osenseStr);
-if abs(FBA.f) < tol
-model = targetedGapFilling(model,osenseStr,database);
+    % try gapfilling based on relaxFBA
+    model = untargetedGapFilling(model,osenseStr,database,1,1);
+    
+    FBA = optimizeCbModel(model,osenseStr);
+    if abs(FBA.f) < tol
+        % try gapfilling without excluding sink and demand reactions
+        model = untargetedGapFilling(model,osenseStr,database,0,0);
+    end
 end
 
 % test if gapfilled reactions are really needed

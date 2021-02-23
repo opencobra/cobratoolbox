@@ -82,30 +82,34 @@ rxnsInModel=intersect(model.rxns,rxns2Unblock(:,1),'stable');
 
 % perform flux variability analysis
 currentDir=pwd;
-try
-    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        rxnsInModel, 'S');
-catch
-    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-    cd(currentDir)
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-end
 
-
-for i=1:length(rxnsInModel)
-    if minFlux(i) < tol && maxFlux(i) < tol
-        gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
-        gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
-        for j=1:length(gapfilledRxns)
-            if ~any(ismember(model.rxns, gapfilledRxns{j}))
-                formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
-                model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
-                resolveBlocked{cnt,1}=gapfilledRxns{j};
-                cnt=cnt+1;
+if ~isempty(rxnsInModel)
+    try
+        [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+            rxnsInModel, 'S');
+    catch
+        warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+        cd(currentDir)
+        [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+    end
+    
+    
+    for i=1:length(rxnsInModel)
+        if minFlux(i) < tol && maxFlux(i) < tol
+            gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
+            gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
+            for j=1:length(gapfilledRxns)
+                if ~any(ismember(model.rxns, gapfilledRxns{j}))
+                    formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
+                    model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
+                    resolveBlocked{cnt,1}=gapfilledRxns{j};
+                    cnt=cnt+1;
+                end
             end
         end
     end
 end
+
 % Metabolites that are commonly dead ends in the first column, and reactions
 % that can connect them. Passive diffusion of fatty acid metabolites is
 %  assumed. The solutions were determined manually.
