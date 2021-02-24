@@ -160,6 +160,9 @@ end
 
 abundance = table2cell(readtable(abunFilePath));
 
+% remove rows of organisms that are not present in any sample
+abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+
 % if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
 if buildSetupAll
