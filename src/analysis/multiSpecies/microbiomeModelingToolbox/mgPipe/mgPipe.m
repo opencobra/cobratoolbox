@@ -118,10 +118,15 @@ save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patO
 % If desired, a model of the host (e.g., Recon3D) can also be joined with
 % the microbiome models.
 if ~isempty(hostPath)
-    % host = readCbModel(hostPath);
-    modelStruct=load(hostPath);
-    getfn=fieldnames(modelStruct);
-    host=modelStruct.(getfn{1});
+    % workaround for models that give an error in readCbModel
+    try
+        host = readCbModel(hostPath);
+    catch
+        warning('Host model could not be read through readCbModel. Consider running verifyModel.')
+        modelStruct=load(hostPath);
+        getfn=fieldnames(modelStruct);
+        host=modelStruct.(getfn{1});
+    end
 else
     host = {};
 end

@@ -60,7 +60,6 @@ for i=2:size(sampleData,2)
 end
 sampleData(:,delArray)=[];
 
-
 % Fill out table header
 if length(groups)==2
     Statistics={'Feature','Description','p_value','Decision','Rank sum statistic','Z-statistics'};
@@ -73,6 +72,12 @@ for i=1:length(groups)
     cnt=cnt+1;
     Statistics{1,cnt}=['StandardDeviation_',groups{i}];
     cnt=cnt+1;
+end
+
+% test if sample information and sample names match
+C=intersect(sampleInformation(:,1),sampleData(:,1));
+if isempty(C)
+    error('Sample IDs are not present first column of sample data table. Consider transposing sample data table.')
 end
 
 for j=2:size(sampleData,1)

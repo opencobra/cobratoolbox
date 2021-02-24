@@ -72,8 +72,10 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(find(strcmp(modelList(:,1),'.')),:)=[];
 modelList(find(strcmp(modelList(:,1),'..')),:)=[];
-modelList(find(~strncmp(modelList(:,1),'microbiota',length('microbiota'))),:)=[];
 
+if size(modelList,1) ==0
+    error('There are no models to load in the model folder!')
+end
 
 % start from already computed results if function crashed
 if isfile('minFluxes.mat')
@@ -108,7 +110,16 @@ for i = startPnt:steps:length(modelList)
                 % prevent creation of log files
                 changeCobraSolverParams('LP', 'logFile', 0);
             end
-            model=readCbModel([modPath filesep modelList{j}]);
+            
+            % workaround for models that give an error in readCbModel
+            try
+                model=readCbModel([modPath filesep modelList{j,1}]);
+            catch
+                warning('Model could not be read through readCbModel. Consider running verifyModel.')
+                modelStr=load([modPath filesep modelList{j,1}]);
+                modelF=fieldnames(modelStr);
+                model=modelStr.(modelF{1});
+            end
 
             % get reactions for metabolites to analyze
             if isempty(metList)

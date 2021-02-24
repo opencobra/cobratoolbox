@@ -15,6 +15,10 @@ function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,exclud
 % database:           rBioNet reaction database containing min. 3 columns:
 %                     Column 1: reaction abbreviation, Column 2: reaction
 %                     name, Column 3: reaction formula.
+% excludeDMs          boolean indicating if demand reactions should be
+%                     excluded from gap-filling reactions (default: true)
+% excludeSinks        boolean indicating if sink reactions should be
+%                     excluded from gap-filling reactions (default: true)
 %
 % OUTPUT
 % model:               Gapfilled COBRA model structure

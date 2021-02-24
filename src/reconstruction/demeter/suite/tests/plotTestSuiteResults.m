@@ -99,6 +99,11 @@ for j=1:length(fields)
                 ylim([0 max(plotdata)+1])
                 set(h,'interpreter','none')
                 set(gca,'TickLabelInterpreter','none')
+                if contains(reconVersion,'_refined')
+                    suptitle('Refined reconstructions')
+                elseif contains(reconVersion,'_draft')
+                    suptitle('Draft reconstructions')
+                end
                 print(fields{j},'-dpng','-r300')
             end
         end
@@ -173,6 +178,11 @@ xtickangle(45)
 set(h,'interpreter','none')
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
+if contains(reconVersion,'_refined')
+    suptitle('Refined reconstructions')
+elseif contains(reconVersion,'_draft')
+    suptitle('Draft reconstructions')
+end
 print('FN_vs_TPs','-dpng','-r300')
 
 close all
