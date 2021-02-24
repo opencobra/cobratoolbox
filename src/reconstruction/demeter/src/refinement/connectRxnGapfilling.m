@@ -90,9 +90,20 @@ if ~isempty(rxnsInModel)
     catch
         warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
         cd(currentDir)
-        [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        FBA=optimizeCbModel(model,'max');
+        if FBA.f > tol
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(rxnsInModel)
+                modelNew=changeObjective(model,rxnsInModel{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
+        end
     end
-    
     
     for i=1:length(rxnsInModel)
         if minFlux(i) < tol && maxFlux(i) < tol
@@ -145,19 +156,26 @@ if ~isempty(resolveBlocked)
         cd(currentDir)
         FBA=optimizeCbModel(model,'max');
         if FBA.f > tol
-            [minFluxNew, maxFluxNew] = fluxVariability(model, 0, 'max', resolveBlocked);
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(resolveBlocked)
+                modelNew=changeObjective(model,resolveBlocked{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
         end
     end
     
     cnt=1;
     delArray=[];
-    if exist('minFluxNew','var')
-        for i=1:length(resolveBlocked)
-            if abs(minFluxNew(i))<tol && abs(maxFluxNew(i))<tol
-                model=removeRxns(model,resolveBlocked{i,1});
-                delArray(cnt,1)=i;
-                cnt=cnt+1;
-            end
+    for i=1:length(resolveBlocked)
+        if abs(minFlux(i))<tol && abs(maxFlux(i))<tol
+            model=removeRxns(model,resolveBlocked{i,1});
+            delArray(cnt,1)=i;
+            cnt=cnt+1;
         end
     end
     if ~isempty(delArray)

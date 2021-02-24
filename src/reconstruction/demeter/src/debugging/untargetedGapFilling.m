@@ -42,7 +42,7 @@ if nargin < 5
 end
 
 
-tol=0.001;
+tol=0.1;
 
 modelOrg=model;
 
