@@ -89,7 +89,7 @@ for j = init:fl
             uSp(:,k) = up;
             noPcoa = 1;
         else
-            sp = NaN(length(exchanges), 1);  % consider to remove preallocation
+            sp = zeros(length(exchanges), 1);  % consider to remove preallocation
             for i = 1:length(exchanges)
                 x = fvaCt{j,k}{i, 3};
                 
