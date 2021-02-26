@@ -26,12 +26,10 @@ mkdir('Metabolite_plots')
 cd('Metabolite_plots')
 
 % load reaction abundances
-abundance = readtable(abundancePath, 'ReadVariableNames', false);
-abundance = table2cell(abundance);
+abundance = table2cell(readtable(abundancePath, 'ReadVariableNames', false));
 
 % load fluxes
-fluxes = readtable(fluxPath, 'ReadVariableNames', false);
-fluxes = table2cell(fluxes);
+fluxes = table2cell(readtable(fluxPath, 'ReadVariableNames', false));
 
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 metaboliteDatabase=table2cell(metaboliteDatabase);
@@ -48,7 +46,9 @@ end
 for i=2:size(fluxes,1)
     fluxes{i,1}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),fluxes{i,1})),2};
     data=[];
-    data(:,1)=str2double(fluxes(i,2:end));
+    for j=2:size(fluxes,2)
+    data(j-1,1)=str2double(fluxes{i,j});
+    end
     if abs(sum(data(:,1)))>0.000001
     for j=2:size(abundance,1)
         for k=2:size(fluxes,2)

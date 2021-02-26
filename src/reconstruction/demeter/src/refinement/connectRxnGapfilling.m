@@ -82,30 +82,45 @@ rxnsInModel=intersect(model.rxns,rxns2Unblock(:,1),'stable');
 
 % perform flux variability analysis
 currentDir=pwd;
-try
-    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        rxnsInModel, 'S');
-catch
-    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-    cd(currentDir)
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-end
 
-
-for i=1:length(rxnsInModel)
-    if minFlux(i) < tol && maxFlux(i) < tol
-        gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
-        gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
-        for j=1:length(gapfilledRxns)
-            if ~any(ismember(model.rxns, gapfilledRxns{j}))
-                formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
-                model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
-                resolveBlocked{cnt,1}=gapfilledRxns{j};
-                cnt=cnt+1;
+if ~isempty(rxnsInModel)
+    try
+        [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+            rxnsInModel, 'S');
+    catch
+        warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+        cd(currentDir)
+        FBA=optimizeCbModel(model,'max');
+        if FBA.f > tol
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(rxnsInModel)
+                modelNew=changeObjective(model,rxnsInModel{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
+        end
+    end
+    
+    for i=1:length(rxnsInModel)
+        if minFlux(i) < tol && maxFlux(i) < tol
+            gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
+            gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
+            for j=1:length(gapfilledRxns)
+                if ~any(ismember(model.rxns, gapfilledRxns{j}))
+                    formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
+                    model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
+                    resolveBlocked{cnt,1}=gapfilledRxns{j};
+                    cnt=cnt+1;
+                end
             end
         end
     end
 end
+
 % Metabolites that are commonly dead ends in the first column, and reactions
 % that can connect them. Passive diffusion of fatty acid metabolites is
 %  assumed. The solutions were determined manually.
@@ -141,19 +156,26 @@ if ~isempty(resolveBlocked)
         cd(currentDir)
         FBA=optimizeCbModel(model,'max');
         if FBA.f > tol
-            [minFluxNew, maxFluxNew] = fluxVariability(model, 0, 'max', resolveBlocked);
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(resolveBlocked)
+                modelNew=changeObjective(model,resolveBlocked{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
         end
     end
     
     cnt=1;
     delArray=[];
-    if exist('minFluxNew','var')
-        for i=1:length(resolveBlocked)
-            if abs(minFluxNew(i))<tol && abs(maxFluxNew(i))<tol
-                model=removeRxns(model,resolveBlocked{i,1});
-                delArray(cnt,1)=i;
-                cnt=cnt+1;
-            end
+    for i=1:length(resolveBlocked)
+        if abs(minFlux(i))<tol && abs(maxFlux(i))<tol
+            model=removeRxns(model,resolveBlocked{i,1});
+            delArray(cnt,1)=i;
+            cnt=cnt+1;
         end
     end
     if ~isempty(delArray)

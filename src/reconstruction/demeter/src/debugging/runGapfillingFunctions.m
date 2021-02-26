@@ -1,4 +1,4 @@
-function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biomassReaction,osenseStr,database)
+function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database)
 % This function runs a set of gapfillling functions on a reconstruction to
 % refined as part of the DEMETER pipeline. Reactions are filled in to
 % enable flux through an objective function, e.g., the biomass objective
@@ -6,7 +6,7 @@ function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biom
 %
 % USAGE:
 %
-%   [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biomassReaction,osenseStr,database)
+%   [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database)
 %
 % INPUTS
 % model:               COBRA model structure
@@ -23,14 +23,17 @@ function [model,gapfilledRxns] = runGapfillingTools(model,objectiveFunction,biom
 %
 % OUTPUT
 % model:               COBRA model structure
-% gapfilledRxns:       Reactions that were added to enable flux throough
-%                      the objective function
+% condGF               Reactions added based on conditions (recognizing
+%                      certain patterns of reactions)
+% targetGF             Reactions added based on tagrted gapfilling 
+%                      (specific metabolites that could not be produced)
+% relaxGF              Reactions added based on relaxFBA (lowest level of
+%                      confidence)
 %
 % .. Author:
 %       - Almut Heinken, 2016-2020
 
 tol=0.0000001;
-
 
 model = changeObjective(model, objectiveFunction);
 modelOld=model;
@@ -47,37 +50,26 @@ end
 
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
-% if nothing else works-try adding reactions from entire database
-model = untargetedGapFilling(model,osenseStr,database);
+    % try gapfilling based on relaxFBA
+    model = untargetedGapFilling(model,osenseStr,database,1,1);
+    
+    FBA = optimizeCbModel(model,osenseStr);
+    if abs(FBA.f) < tol
+        % try gapfilling without excluding sink and demand reactions
+        model = untargetedGapFilling(model,osenseStr,database,0,0);
+    end
 end
 
 % test if gapfilled reactions are really needed
-model = verifyGapfilledReactions(model,osenseStr);
-
-% Save the gapfilled reactions
-gapfilledRxns = {};
-fgf = 1;
-for n = 1:length(model.rxns)
-    if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-        gapfilledRxns{fgf, 1} = strrep(model.rxns{n}, '_GF', '');
-        fgf = fgf + 1;
-    end
-end
-
-% remove the "gapfilled" IDs
-for n = 1:length(model.rxns)
-    if ~isempty(strfind(model.rxns{n, 1}, '_GF'))
-        removeGF = strsplit(model.rxns{n, 1}, '_GF');
-        model.rxns{n, 1} = removeGF{1, 1};
-        model.grRules{n, 1} = 'demeterGapfill';
-    end
-end
+[model,condGF,targetGF,relaxGF] = verifyGapfilledReactions(model,osenseStr);
 
 % if the changes make no difference, reverse the changes
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
     model=modelOld;
-    gapfilledRxns={};
+    condGF = {};
+    targetGF = {};
+    relaxGF = {};
 end
 
 % change back to biomass reaction

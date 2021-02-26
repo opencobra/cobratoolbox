@@ -192,6 +192,7 @@ for i=1:steps:length(models)
         [model,summary]=refinementPipeline(draftModel,microbeID, infoFilePath, inputDataFolder);
         modelsTmp{j}=model;
         summariesTmp{j}=summary;
+
         outputFileNamesTmp{j,1}=microbeID;
         
         %% save translated version of the draft model as a mat file
@@ -208,7 +209,7 @@ for i=1:steps:length(models)
             model=draftModelsTmp{j};
             save([translatedDraftsFolder filesep outputFileNamesTmp{j,1}],'model');
         end
-        summaries.(outputFileNamesTmp{j,1})=summariesTmp{j};
+        summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end
     save([summaryFolder filesep 'summaries_' reconVersion],'summaries');
 end
@@ -251,6 +252,9 @@ for i=1:length(pipelineFields)
     end
     writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
+
+% delete unneeded files
+delete('rBioNetDB.mat');
 
 %% create SBML files (default=not created)
 

@@ -38,7 +38,7 @@ WesternDiet=cellstr(string(WesternDiet));
 cnt=1;
 remRxnsWD={};
 modelWD=useDiet(model,WesternDiet);
-gapfilledRxns=model.rxns(find(strcmp(model.grRules,'agoraGapfill')));
+gapfilledRxns=model.rxns(find(strcmp(model.grRules,'demeterGapfill')));
 if ~isempty(gapfilledRxns)
     modelTest=modelWD;
     [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(modelTest,'FBA',gapfilledRxns);
@@ -59,7 +59,7 @@ remRxnsDM={};
 if isnumeric(definedMediumGrowthOK)==1
     cnt=1;
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
-    gapfilledRxns=model.rxns(find(strcmp(model.grRules,'agoraGapfill')));
+    gapfilledRxns=model.rxns(find(strcmp(model.grRules,'demeterGapfill')));
     if ~isempty(gapfilledRxns)
         modelTest=constrainedModel;
         [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(modelTest,'FBA',gapfilledRxns);
@@ -101,7 +101,9 @@ else
 end
 model=removeRxns(model,toRemove);
 
-summary.gapfilledRxns=setdiff(summary.gapfilledRxns,toRemove);
+summary.condGF=setdiff(summary.condGF,toRemove);
+summary.targetGF=setdiff(summary.targetGF,toRemove);
+summary.relaxGF=setdiff(summary.relaxGF,toRemove);
 summary.balancedCycle_addedRxns=setdiff(summary.balancedCycle_addedRxns,toRemove);
 summary.addedMismatchRxns=setdiff(summary.addedMismatchRxns,toRemove);
 summary.addedReactionsBiomass=setdiff(summary.addedReactionsBiomass,toRemove);

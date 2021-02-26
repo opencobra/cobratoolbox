@@ -94,8 +94,10 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(find(strcmp(modelList(:,1),'.')),:)=[];
 modelList(find(strcmp(modelList(:,1),'..')),:)=[];
-modelList(find(~strncmp(modelList(:,1),'microbiota',length('microbiota'))),:)=[];
 
+if size(modelList,1) ==0
+    error('There are no models to load in the model folder!')
+end
 
 % Compute the solutions for all entered models and objective functions
 solutions={};
@@ -110,7 +112,16 @@ for i=1:size(modelList,1)
     i
     objectives{1,2+i}=strrep(modelList{i,1},'.mat','');
     shadowPrices{1,3+i}=strrep(modelList{i,1},'.mat','');
-    model=readCbModel([modelFolder filesep modelList{i,1}]);
+    
+    % workaround for models that give an error in readCbModel
+    try
+        model=readCbModel([modelFolder filesep modelList{i,1}]);
+    catch
+        warning('Model could not be read through readCbModel. Consider running verifyModel.')
+        modelStr=load([modelFolder filesep modelList{i,1}]);
+        modelF=fieldnames(modelStr);
+        model=modelStr.(modelF{1});
+    end
     
     % implement constraints on the model
     for k = 1:length(model.rxns)
