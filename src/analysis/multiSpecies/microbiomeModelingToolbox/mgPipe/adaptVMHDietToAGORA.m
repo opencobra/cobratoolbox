@@ -99,6 +99,10 @@ for i = 1:  size(adaptedDietConstraints,1)
     if ~isempty(find(ismember(micronutrients,adaptedDietConstraints{i,1}))) && abs(str2double(adaptedDietConstraints{i,2}))<=0.1
         adaptedDietConstraints{i,2} = num2str(str2double(adaptedDietConstraints{i,2})*100);
     end
+    % pantothenate uptake needs to be at least 0.1
+    if any(strcmp(adaptedDietConstraints{i,1},{'EX_pnto_R(e)'})) && abs(str2double(adaptedDietConstraints{i,2}))<0.1
+        adaptedDietConstraints{i,2} = '-0.1';
+    end
     % folate, L-arabinose, D-xylose, AMP uptake need to be at least 1
     if any(strcmp(adaptedDietConstraints{i,1},{'EX_fol(e)','EX_arab_L(e)','EX_xyl_D(e)','EX_amp(e)'})) && abs(str2double(adaptedDietConstraints{i,2}))<1
         adaptedDietConstraints{i,2} = '-1';
