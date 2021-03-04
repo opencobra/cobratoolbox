@@ -22,16 +22,11 @@ make html
 
 Output HTML documentation will be in directory ./build/html
 
-To publish the updated documentation on the cobratoolbox website at 
-https://opencobra.github.io/cobratoolbox/stable/
-checkout the gh-pages branch of the https://github.com/opencobra/cobratoolbox.git repository
-and replace the ./stable or ./latest directory with the build output.
 
+## Building documenation using Docker
 
-== Building documenation using Docker
-
-Installing unwanted versions of Python and modules can be avoided by using a 
-Docker container.
+Installing unwanted versions of Python and modules can be avoided by 
+building with Docker: 
 
 Build the docker image:
 
@@ -47,7 +42,17 @@ To build the docs:
 docker run --rm -v /var/tmp:/output opencobra/cobratoolbox-docs
 ```
 
-This will deposit the built documentation in /var/tmp/cobratoolbox_doc_timestamp.tar.gz
+The above command will deposit the built HTML documentation  
+in /var/tmp/cobratoolbox_doc_timestamp.tar.gz 
 You can specify an alternative directory by changing the location of
-the /output mountpoint in the container.
+the /output mountpoint in the docker run command.
+
+
+
+## Publishing the HTML to live site
+
+To publish the updated documentation on the cobratoolbox website at
+https://opencobra.github.io/cobratoolbox/stable/
+checkout the gh-pages branch of the https://github.com/opencobra/cobratoolbox.git repository
+and replace the ./stable or ./latest directory with the build output.
 
