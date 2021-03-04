@@ -41,7 +41,7 @@ Results=struct;
 
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
-    savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
+    savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false, 'Delimiter','tab');
     Results.(fields{i}) = table2cell(savedResults);
     numberRecons=size(Results.(fields{i}),1);
     else
@@ -103,7 +103,7 @@ for j=1:length(fields)
                 elseif contains(pwd,'_draft')
                     suptitle('Draft reconstructions')
                 end
-                set(gca, 'FontSize', 16)
+                set(gca, 'FontSize', 12)
                 print(fields{j},'-dpng','-r300')
             end
         end

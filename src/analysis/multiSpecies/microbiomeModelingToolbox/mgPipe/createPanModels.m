@@ -1,4 +1,4 @@
-function createPanModels(agoraPath, panPath, taxonLevel)
+function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
 % This function creates pan-models for all unique taxa (e.g., species)
 % included in the AGORA resource. If reconstructions of multiple strains
 % in a given taxon are present, the reactions in these reconstructions will
@@ -6,15 +6,11 @@ function createPanModels(agoraPath, panPath, taxonLevel)
 % built from the average of all biomasses. Futile cycles that result from
 % the newly combined reaction content are removed by setting certain
 % reactions irreversible. These reactions have been determined manually.
-% NOTE: 
-% As of 10/2019, this function creates futile cycle-free pan-models up to
-% family level. The function has been tested for AGORA 1.03.
-% Pan-models at higher taxonomical levels (e.g., order) may
+% NOTE: Futile cycle removal has only been tested at the species and genus
+% level. Pan-models at higher taxonomical levels (e.g., family) may
 % contain futile cycles and produce unrealistically high ATP flux.
 % The pan-models can be used an input for mgPipe if taxon abundance data is
 % available at a higher level than strain, e.g., species, genus.
-% Please use the most recent version of AGORA, 1.03 (found at
-% https://github.com/VirtualMetabolicHuman/AGORA).
 %
 % USAGE:
 %
@@ -28,18 +24,45 @@ function createPanModels(agoraPath, panPath, taxonLevel)
 %    taxonLevel    String with desired taxonomical level of the pan-models.
 %                  Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
 %
+% OPTIONAL INPUTS
+%    numWorkers    Number of workers for parallel pool (default: no pool)
+%    taxTable      File with information on taxonomy of reconstruction
+%                  resource (default: 'AGORA_infoFile.xlsx')
+%
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 06/2018: adapted to function.
-%       - Almut Heinken, 10/2019: added error message for wrong taxon level
-%       input; removed creation of gene rules in pan-models, enabled
-%       creation of cycle-free pan-models up to family level
+%       - Almut Heinken, 03/2021: enabled parallelization
 
-if ~any(strcmp(taxonLevel,{'Species','Genus','Family','Order','Class','Phylum'}))
-    error('Incorrect entry for taxonomy level!')
+tol = 1e-5;
+
+if nargin <4
+    numWorkers = 0;
 end
 
-[~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');  % create the pan-models
+% initialize parallel pool
+if numWorkers > 0
+    % with parallelization
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
+global CBT_LP_SOLVER
+if isempty(CBT_LP_SOLVER)
+    initCobraToolbox
+end
+solver = CBT_LP_SOLVER;
+environment = getEnvironment();
+
+if ~exist('taxTable','var')
+    infoFile = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
+    infoFile = table2cell(infoFile);
+else
+    infoFile = readtable(taxTable, 'ReadVariableNames', false);
+    infoFile = table2cell(infoFile);
+end
 
 % get the reaction and metabolite database
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', '\t', 'ReadVariableNames', false);
@@ -64,161 +87,266 @@ built = strrep(built, '.mat', '');
 toCreate = setdiff(allTaxa, built);
 
 % Build pan-models
-for i = 1:size(toCreate, 1)
-    models = find(ismember(infoFile(:, findTaxCol), toCreate{i, 1}));
-    if size(models, 1) == 1
-        modelPath = [agoraPath filesep infoFile{models, 1} '.mat'];
-        model = readCbModel(modelPath);
+% define the intervals in which the testing and regular saving will be
+% performed
+if size(toCreate,1)>200
+    steps=100;
+else
+    steps=25;
+end
 
-        % rename biomass reaction to agree with other pan-models
-        bio = find(strncmp(model.rxns, 'bio', 3));
-        model.rxns{bio, 1} = 'biomassPan';
-    elseif size(models, 1) > 1
-        for j = 1:size(models, 1)
-            modelPath = [agoraPath filesep infoFile{models(j), 1} '.mat'];
-            model = readCbModel(modelPath);
-
-            bio = find(strncmp(model.rxns, 'bio', 3));
-            if j == 1
-                panModel.rxns = model.rxns;
-                panModel.grRules = model.grRules;
-                panModel.rxnNames = model.rxnNames;
-                panModel.subSystems = model.subSystems;
-                panModel.lb = model.lb;
-                panModel.ub = model.ub;
-                forms = printRxnFormula(model, model.rxns, false, false, false, [], false);
-                panModel.formulas = forms;
-                % biomass products and substrates with coefficients
-                bioPro = model.mets(find(model.S(:, bio) > 0), 1);
-                bioProSC = full(model.S(find(model.S(:, bio) > 0), bio));
-                bioSub = model.mets(find(model.S(:, bio) < 0), 1);
-                bioSubSC = full(model.S(find(model.S(:, bio) < 0), bio));
-            else
-                panModel.rxns = [panModel.rxns; model.rxns];
-                panModel.grRules = [panModel.grRules; model.grRules];
-                panModel.rxnNames = [panModel.rxnNames; model.rxnNames];
-                panModel.subSystems = [panModel.subSystems; model.subSystems];
-                panModel.lb = [panModel.lb; model.lb];
-                panModel.ub = [panModel.ub; model.ub];
-                forms = printRxnFormula(model, model.rxns, false, false, false, [], false);
-                panModel.formulas = [panModel.formulas; forms];
-                % biomass products and substrates with coefficients
-                bioPro = [bioPro; model.mets(find(model.S(:, bio) > 0), 1)];
-                bioProSC = [bioProSC; full(model.S(find(model.S(:, bio) > 0), bio))];
-                bioSub = [bioSub; model.mets(find(model.S(:, bio) < 0), 1)];
-                bioSubSC = [bioSubSC; full(model.S(find(model.S(:, bio) < 0), bio))];
-            end
-        end
-        % take out biomass reactions
-        bio = find(strncmp(panModel.rxns, 'bio', 3));
-        panModel.rxns(bio) = [];
-        panModel.grRules(bio) = [];
-        panModel.rxnNames(bio) = [];
-        panModel.subSystems(bio) = [];
-        panModel.lb(bio) = [];
-        panModel.ub(bio) = [];
-        panModel.formulas(bio) = [];
-        % set up data matrix for rBioNet
-        [uniqueRxns, oldInd] = unique(panModel.rxns);
-        rbio.data = cell(size(uniqueRxns, 1), 14);
-        rbio.data(:, 1) = num2cell(ones(size(rbio.data, 1), 1));
-        rbio.data(:, 2) = uniqueRxns;
-        rbio.data(:, 3) = panModel.rxnNames(oldInd);
-        rbio.data(:, 4) = panModel.formulas(oldInd);
-        rbio.data(:, 7) = num2cell(panModel.lb(oldInd));
-        rbio.data(:, 8) = num2cell(panModel.ub(oldInd));
-        rbio.data(:, 10) = panModel.subSystems(oldInd);
-        rbio.description = cell(7, 1);
-        % build model with rBioNet
-        model = data2model(rbio.data, rbio.description, database);
-        % build biomass reaction from average of all biomasses
-        subs = unique(bioSub);
-        prods = unique(bioPro);
-        bioForm = '';
-        for s = 1:size(subs, 1)
-            indS = find(ismember(bioSub, subs{s, 1}));
-            newCoeff = sum(bioSubSC(indS)) / j;
-            bioForm = [bioForm, num2str(-newCoeff), ' ', subs{s, 1}, ' + '];
-        end
-        bioForm = bioForm(1:end - 3);
-        bioForm = [bioForm, ' -> '];
-        for p = 1:size(prods, 1)
-            indP = find(ismember(bioPro, prods{p, 1}));
-            newCoeff = sum(bioProSC(indP)) / j;
-            bioForm = [bioForm, num2str(newCoeff), ' ', prods{p, 1}, ' + '];
-        end
-        bioForm = bioForm(1:end - 3);
-        % add biomass reaction to pan model
-        model = addReaction(model, 'biomassPan', bioForm);
-        model.comments{end + 1, 1} = '';
-        model.citations{end + 1, 1} = '';
-        model.rxnConfidenceScores{end + 1, 1} = '';
-        model.rxnECNumbers{end + 1, 1} = '';
-        model.rxnKEGGID{end + 1, 1} = '';
+for i = 1:steps:size(toCreate,1)
+    if size(toCreate,1)>steps-1 && (size(toCreate,1)-1)>=steps-1
+        endPnt=steps-1;
+    else
+        endPnt=size(toCreate,1)-i;
     end
-    % update some fields to new standards
-    model.osenseStr = 'max';
-    if isfield(model, 'rxnConfidenceScores')
-        model = rmfield(model, 'rxnConfidenceScores');
+    
+    modelsTmp={};
+    parfor j=i:i+endPnt
+        restoreEnvironment(environment);
+        changeCobraSolver(solver, 'LP', 0, -1);
+        if strcmp(solver,'ibm_cplex')
+            % prevent creation of log files
+            changeCobraSolverParams('LP', 'logFile', 0);
+        end
+        models = find(ismember(infoFile(:, findTaxCol), toCreate{j,1}));
+        
+        panModel=buildPanModel(agoraPath, models, toCreate{j,1}, infoFile, database);
+        modelsTmp{j}=panModel;
     end
-    model.rxnConfidenceScores = zeros(length(model.rxns), 1);
-    for j = 1:length(model.rxns)
-        model.subSystems{j, 1} = cellstr(model.subSystems{j, 1});
-        model.rxnKEGGID{j, 1} = '';
-        model.rxnECNumbers{j, 1} = '';
+    for j=i:i+endPnt
+        model=modelsTmp{j};
+        modelname=strrep(toCreate{j, 1}, ' ', '_');
+        modelname=strrep(modelname,'[','');
+        modelname=strrep(modelname,']','');
+        modelname=strrep(modelname,'(','_');
+        modelname=strrep(modelname,')','');
+        modelname=strrep(modelname,'/','_');
+        modelname=strrep(modelname,'-','_');
+        modelname=strrep(modelname,'.','');
+        savePath = [panPath filesep 'pan' modelname '.mat'];
+        save(savePath, 'model');
     end
-    for j = 1:length(model.mets)
-        if strcmp(model.metPubChemID{j, 1}, '[]') || isempty(model.metPubChemID{j, 1})
-            model.metPubChemID{j, 1} = string;
-        end
-        if strcmp(model.metChEBIID{j, 1}, '[]') || isempty(model.metChEBIID{j, 1})
-            model.metChEBIID{j, 1} = string;
-        end
-        if strcmp(model.metKEGGID{j, 1}, '[]') || isempty(model.metKEGGID{j, 1})
-            model.metKEGGID{j, 1} = string;
-        end
-        if strcmp(model.metInChIString{j, 1}, '[]') || isempty(model.metInChIString{j, 1})
-            model.metInChIString{j, 1} = string;
-        end
-        if strcmp(model.metHMDBID{j, 1}, '[]') || isempty(model.metHMDBID{j, 1})
-            model.metHMDBID{j, 1} = string;
-        end
-    end
-    model.metPubChemID = cellstr(model.metPubChemID);
-    model.metChEBIID = cellstr(model.metChEBIID);
-    model.metKEGGID = cellstr(model.metKEGGID);
-    model.metInChIString = cellstr(model.metInChIString);
-    model.metHMDBID = cellstr(model.metHMDBID);
-    % fill in descriptions
-    if isfield(model,'description')
-        model = rmfield(model, 'description');
-    end
-    model.description.organism = toCreate{i, 1};
-    model.description.name = toCreate{i, 1};
-    model.description.author = 'Stefania Magnusdottir, Almut Heinken, Laura Kutt, Dmitry A. Ravcheev, Eugen Bauer, Alberto Noronha, Kacy Greenhalgh, Christian Jaeger, Joanna Baginska, Paul Wilmes, Ronan M.T. Fleming, and Ines Thiele';
-    model.description.date = date;
-
-    % Adapt fields to current standard
-    model = convertOldStyleModel(model);
-    panName=strrep(toCreate{i, 1}, ' ', '_');
-    panName=strrep(panName,'.','');
-    panName=strrep(panName,'/','_');
-    panName=strrep(panName,'-','_');
-    savePath = [panPath filesep 'pan' panName '.mat'];
-    save(savePath, 'model');
 end
 
 %% Remove futile cycles
 % Create table with information on reactions to replace to remove futile
-% cycles. This information was determined manually by Almut Heinken and
-% Stefania Magnusdottir.
-reactionsToReplace = {'if','removed','added';'LYSt2r AND LYSt3r','LYSt3r','LYSt3';'FDHr','FDHr','FDH';'GLYO1','GLYO1','GLYO1i';'EAR40xr','EAR40xr','EAR40x';'PROt2r AND PROt4r','PROt4r','PROt4';'FOROXAtex AND FORt','FORt',[];'NO2t2r AND NTRIR5','NO2t2r','NO2t2';'NOr1mq AND NHFRBOr','NHFRBOr','NHFRBO';'NIR AND L_LACDr','L_LACDr','L_LACD';'PIt6b AND PIt7','PIt7','PIt7ir';'ABUTt2r AND GLUABUTt7','ABUTt2r','ABUTt2';'ABUTt2r AND ABTAr','ABTAr','ABTA';'Kt1r AND Kt3r','Kt3r','Kt3';'CYTDt4 AND CYTDt2r','CYTDt2r','CYTDt2';'ASPt2_2 AND ASPt2r','ASPt2r','ASPte';'ASPt2_3 AND ASPt2r','ASPt2r','ASPt2';'FUMt2_2 AND FUMt2r','FUMt2r','FUMt';'SUCCt2_2 AND SUCCt2r','SUCCt2r','SUCCt';'SUCCt2_3r AND SUCCt2r','SUCCt2r',[];'MALFADO AND MDH','MALFADO','MALFADOi';'MALFADO AND GLXS','MALFADO','MALFADOi';'r0392 AND GLXCL','r0392','ALDD8x';'HACD1 AND PHPB2','PHPB2','PHPB2i';'PPCKr AND PPCr','PPCKr','PPCK';'PPCKr AND GLFRDO AND FXXRDO','PPCKr','PPCK';'BTCOADH AND FDNADOX_H AND ACOAD1','ACOAD1','ACOAD1i';'ACKr AND ACEDIPIT AND APAT AND DAPDA AND 26DAPLLAT','26DAPLLAT','26DAPLLATi';'ACKr AND ACEDIPIT AND APAT AND DAPDA','DAPDA','DAPDAi';'MALNAt AND NAt3_1 AND MALt2r','NAt3_1','NAt3';'MALNAt AND NAt3_1 AND MALt2r','MALt2r','MALt2';'MALNAt AND NAt3_1 AND MALt2r AND URIt2r AND URIt4','URIt2r','URIt2';'DADNt2r AND HYXNt','HYXNt','HYXNti';'URIt2r AND URAt2r','URAt2r','URAt2';'XANt2r AND URAt2r','URAt2r','URAt2';'XANt2r AND CSNt6','CSNt6','CSNt2';'XANt2r AND DADNt2r','XANt2r','XANt2';'XANt2r AND XPPTr','XPPTr','XPPT';'XANt2r AND PUNP7','XANt2r','XANt2';'r1667 AND ARGt2r','ARGt2r','ARGt2';'GLUt2r AND NAt3_1 AND GLUt4r','GLUt4r','r1144';'GLYt2r AND NAt3_1 AND GLYt4r','GLYt2r','GLYt2';'MALNAt AND L_LACNa1t AND L_LACt2r','L_LACt2r','L_LACt2';'G3PD8 AND SUCD4 AND G3PD1','G3PD8','G3PD8i';'ACOAD1 AND ACOAD1f AND SUCD4','ACOAD1f','ACOAD1fi';'PGK AND D_GLY3PR','D_GLY3PR','D_GLY3PRi';'r0010 AND H202D','H202D','NPR';'ACCOACL AND BTNCL','BTNCL','BTNCLi';'r0220 AND r0318','r0318','r0318i';'MTHFRfdx AND FDNADOX_H','FDNADOX_H',[];'FDNADOX_H AND FDX_NAD_NADP_OX','FDX_NAD_NADP_OX','FDX_NAD_NADP_OXi';'r1088','r1088','CITt2';'NACUP AND NACt2r','NACUP',[];'NCAMUP AND NCAMt2r','NCAMUP',[];'ORNt AND ORNt2r','ORNt',[];'FORt AND FORt2r','FORt',[];'ARABt AND ARABDt2','ARABt',[];'ASPte AND ASPt2_2','ASPte',[];'ASPte AND ASPt2_3','ASPte',[];'ASPt2 AND ASPt2_2','ASPt2',[];'ASPt2 AND ASPt2_3','ASPt2',[];'THYMDt AND THMDt2r','THYMDt',[];'CBMK AND CBMKr','CBMKr',[];'SPTc AND TRPS2r AND TRPAS2','TRPS2r','TRPS2';'PROD3 AND PROD3i','PROD3',[];'PROPAT4te AND PROt2r AND PROt2','PROt2r',[];'CITt10i AND CITCAt AND CITCAti','CITCAt',[];'GUAt2r AND GUAt','GUAt2r','GUAt2';'PROPAT4te AND PROt4r AND PROt4','PROt4r',[];'INSt2 AND INSt','INSt2','INSt2i';'GNOXuq AND GNOXuqi','GNOXuq',[];'GNOXmq AND GNOXmqi','GNOXmq',[];'RBPC AND PRKIN','PRKIN','PRKINi';'MMSAD5 AND MSAS AND MALCOAPYRCT AND PPCr AND ACALD','ACALD','ACALDi';'PGK AND G1PP AND G16BPS AND G1PPT','G16BPS','G16BPSi';'FRD7 AND SUCD1 AND G3PD8','G3PD8','G3PD8i';'PROPAT4te AND PROt2r','PROt2r','PROt2';'LACLi AND PPCr AND RPE AND PKL AND FTHFL AND MTHFC','MTHFC','MTHFCi';'RMNt2 AND RMNt2_1','RMNt2_1',[];'MNLpts AND MANAD_D AND MNLt6','MNLt6','MNLt6i';'FDNADOX_H AND SULRi AND FXXRDO','FXXRDO','FXXRDOi';'FDNADOX_H AND AKGS AND BTCOADH AND OOR2r','OOR2r','OOR2';'FDNADOX_H AND AKGS AND BTCOADH AND OOR2 AND POR4','POR4','POR4i';'FDNADOX_H AND AKGS AND OAASr AND ICDHx AND POR4i','ICDHx','ICDHxi';'GLXS AND GCALDL AND GCALDDr','GCALDDr','GCALDD';'GLYCLTDxr AND GLYCLTDx','GLYCLTDxr',[];'GCALDD AND GCALDDr','GCALDDr',[];'BGLA AND BGLAr','BGLAr',[];'AKGMAL AND MALNAt AND AKGt2r','AKGt2r','AKGt2';'TRPS1 AND TRPS2r AND TRPS3r','TRPS2r','TRPS2';'OAACL AND OAACLi','OAACL',[];'DHDPRy AND DHDPRyr','DHDPRyr',[];'EDA_R AND EDA','EDA_R',[];'GLYC3Pt AND GLYC3Pti','GLYC3Pt',[];'FA180ACPHrev AND STCOATA AND FACOAL180','FACOAL180','FACOAL180i';'CITt2 AND CAt4i AND CITCAt','CITCAt','CITCAti';'AHCYSNS_r AND AHCYSNS','AHCYSNS_r',[];'FDOXR AND GLFRDO AND OOR2r AND FRDOr','FRDOr','FRDO';'GNOX AND GNOXy AND GNOXuq AND GNOXmq','GNOXmq','GNOXmqi';'GNOX AND GNOXy AND GNOXuq AND GNOXmqi','GNOXuq','GNOXuqi';'SHSL1r AND SHSL2 AND SHSL4r','SHSL4r','SHSL4';'AHSERL3 AND CYSS3r AND METSOXR1r AND SHSL4r','TRDRr','TRDR';'ACACT1r AND ACACt2 AND ACACCTr AND OCOAT1r','OCOAT1r','OCOAT1';'ACONT AND ACONTa AND ACONTb','ACONT',[];'ALAt2r AND ALAt4r','ALAt2r','ALAt2';'CYTK2 AND DCMPDA AND URIDK3','DCMPDA','DCMPDAi';'MALNAt AND NAt3_1 AND PIt7ir','NAt3_1','NAt3';'PIt6b AND PIt7ir','PIt6b','PIt6bi';'LEUTA AND LLEUDr','LLEUDr','LLEUD';'ILETA AND L_ILE3MR','L_ILE3MR','L_ILE3MRi';'TRSARry AND TRSARr','TRSARr','TRSAR';'THRD AND THRAr AND PYRDC','THRAr','THRAi';'THRD AND GLYAT AND PYRDC','GLYAT','GLYATi';'SUCD1 AND SUCD4 AND SUCDimq AND NADH6','SUCD1','SUCD1i';'POR4 AND SUCDimq AND NADH6 AND PDHa AND FRD7 AND FDOXR AND NTRIR4','POR4','POR4i';'SUCDimq AND NADH6 AND HYD1 AND HYD4 AND FRD7 AND FDOXR AND NTRIR4','FDOXR','FDOXRi';'PPCr AND SUCOAS AND OAASr AND ICDHx AND POR4i AND ACONTa AND ACONTb AND ACACT1r AND 3BTCOAI AND OOR2r','ICDHx','ICDHxi';'PYNP1r AND CSNt6','PYNP1r','PYNP1';'ASPK AND ASAD AND HSDy','ASPK','ASPKi';'GLUt2r AND GLUABUTt7 AND ABTAr','GLUt2r','GLUt2';'DURAD AND DHPM1 AND UPPN','DURAD','DURADi';'XU5PG3PL AND PKL','PKL',[];'G16BPS AND G1PPT AND PGK AND GAPD_NADP AND GAPD','G16BPS','G16BPSi';'G1PPT AND PGK AND GAPD_NADP AND GAPD','G1PPT','G1PPTi';'PPIt2e AND GUAPRT AND AACPS6 AND GALT','PPIt2e','PPIte';'PPIt2e AND GLGC AND NADS2 AND SADT','PPIt2e','PPIte';'MCOATA AND MALCOAPYRCT AND C180SNrev','MCOATA','MACPMT';'PPCr AND MALCOAPYRCT AND MMSAD5 AND MSAS','PPCr','PPC';'ACt2r AND ACtr','ACtr',[];'LEUt2r AND LEUtec','LEUtec',[];'PTRCt2r AND PTRCtex2','PTRCtex2',[];'TYRt2r AND TYRt','TYRt',[];'OCBT AND CITRH AND CBMKr','CBMKr','CBMK';'TSULt2 AND SO3t AND H2St AND TRDRr','TRDRr','TRDR';'AMPSO3OX AND SADT AND EX_h2s(e) AND CHOLSH','AMPSO3OX','AMPSO3OXi';'FUMt AND FUMt2r','FUMt',[];'SUCCt AND SUCCt2r','SUCCt',[];'PPAtr AND PPAt2r','PPAtr',[];'TARCGLYL AND TARTD AND PYRCT','TARCGLYL','TARCGLYLi';'SULR AND SO3rDmq AND SUCDimq','SULR','SULRi';'CITt15 AND ZN2t4 AND Kt1r AND CITt2','CITt15','CITt15i';'OIVD1r AND KLEURFd AND FDNADOX_H','OIVD1r','OIVD1';'FRDOr AND FDNADOX_H AND GLFRDO','FRDOr','FRDO';'FRDO AND FDNADOX_H AND GLFRDO','GLFRDO','GLFRDOi';'THMDt2r AND THYMDtr2','THMDt2r','THMDt2';'HXANt2r AND HYXNt','HXANt2r','HXANt2';'ETOHt2r AND ETOHt','ETOHt2r','ETOHt2';'GSNt2r AND GSNt','GSNt2r','GSNt2';'GALt2_2 AND GALt1r','GALt2_2','GALt2_2i';'FUCt2_1 AND FUCtp','FUCt2_1','FUCt2_1i';'GALt4 AND GALt1r','GALt4','GALt4i';'ACGAMtr2 AND ACGAt','ACGAMtr2','ACGAMt2';'GALt2_2 AND GALt4','GALt2_2','GALt2_2i'};
+% cycles. This information was determined manually by Stefania
+% Magnusdottir and Almut Heinken.
 
-% List Western diet constraints to test if the pan-model produces
-% reasonable ATP flux on this diet.
-dietConstraints = readtable('WesternDietAGORA.txt');
-dietConstraints = table2cell(dietConstraints);
-dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
+reactionsToReplace = {
+    'if','removed','added'
+    'LYSt2r AND LYSt3r','LYSt3r','LYSt3'
+    'FDHr','FDHr','FDH'
+    'GLYO1','GLYO1','GLYO1i'
+    'EAR40xr','EAR40xr','EAR40x'
+    'PROt2r AND PROt4r','PROt4r','PROt4'
+    'FOROXAtex AND FORt','FORt',[]
+    'NO2t2r AND NTRIR5','NO2t2r','NO2t2'
+    'NOr1mq AND NHFRBOr','NHFRBOr','NHFRBO'
+    'NIR AND L_LACDr','L_LACDr','L_LACD'
+    'PIt6b AND PIt7','PIt7','PIt7ir'
+    'ABUTt2r AND GLUABUTt7','ABUTt2r','ABUTt2'
+    'ABUTt2r AND ABTAr','ABTAr','ABTA'
+    'Kt1r AND Kt3r','Kt3r','Kt3'
+    'CYTDt4 AND CYTDt2r','CYTDt2r','CYTDt2'
+    'ASPt2_2 AND ASPt2r','ASPt2r','ASPte'
+    'ASPt2_3 AND ASPt2r','ASPt2r','ASPt2'
+    'FUMt2_2 AND FUMt2r','FUMt2r','FUMt'
+    'SUCCt2_2 AND SUCCt2r','SUCCt2r','SUCCt'
+    'SUCCt2_3r AND SUCCt2r','SUCCt2r',[]
+    'MALFADO AND MDH','MALFADO','MALFADOi'
+    'MALFADO AND GLXS','MALFADO','MALFADOi'
+    'r0392 AND GLXCL','r0392','ALDD8x'
+    'HACD1 AND PHPB2','PHPB2','PHPB2i'
+    'PPCKr AND PPCr','PPCKr','PPCK'
+    'PPCKr AND GLFRDO AND FXXRDO','PPCKr','PPCK'
+    'BTCOADH AND FDNADOX_H AND ACOAD1','ACOAD1','ACOAD1i'
+    'ACKr AND ACEDIPIT AND APAT AND DAPDA AND 26DAPLLAT','26DAPLLAT','26DAPLLATi'
+    'ACKr AND ACEDIPIT AND APAT AND DAPDA','DAPDA','DAPDAi'
+    'MALNAt AND NAt3_1 AND MALt2r','NAt3_1','NAt3'
+    'MALNAt AND NAt3_1 AND MALt2r','MALt2r','MALt2'
+    'MALNAt AND NAt3_1 AND MALt2r AND URIt2r AND URIt4','URIt2r','URIt2'
+    'DADNt2r AND HYXNt','HYXNt','HYXNti'
+    'URIt2r AND URAt2r','URAt2r','URAt2'
+    'XANt2r AND URAt2r','URAt2r','URAt2'
+    'XANt2r AND CSNt6','CSNt6','CSNt2'
+    'XANt2r AND DADNt2r','XANt2r','XANt2'
+    'XANt2r AND XPPTr','XPPTr','XPPT'
+    'XANt2r AND PUNP7','XANt2r','XANt2'
+    'r1667 AND ARGt2r','ARGt2r','ARGt2'
+    'GLUt2r AND NAt3_1 AND GLUt4r','GLUt4r','r1144'
+    'GLYt2r AND NAt3_1 AND GLYt4r','GLYt2r','GLYt2'
+    'MALNAt AND L_LACNa1t AND L_LACt2r','L_LACt2r','L_LACt2'
+    'G3PD8 AND SUCD4 AND G3PD1','G3PD8','G3PD8i'
+    'ACOAD1 AND ACOAD1f AND SUCD4','ACOAD1f','ACOAD1fi'
+    'PGK AND D_GLY3PR','D_GLY3PR','D_GLY3PRi'
+    'r0010 AND H2O2D','H2O2D','NPR'
+    'ACCOACL AND BTNCL','BTNCL','BTNCLi'
+    'r0220 AND r0318','r0318','r0318i'
+    'MTHFRfdx AND FDNADOX_H','FDNADOX_H',[]
+    'FDNADOX_H AND FDX_NAD_NADP_OX','FDX_NAD_NADP_OX','FDX_NAD_NADP_OXi'
+    'r1088','r1088','CITt2'
+    'NACUP AND NACt2r','NACUP',[]
+    'NCAMUP AND NCAMt2r','NCAMUP',[]
+    'ORNt AND ORNt2r','ORNt',[]
+    'FORt AND FORt2r','FORt',[]
+    'ARABt AND ARABDt2','ARABt',[]
+    'ASPte AND ASPt2_2','ASPte',[]
+    'ASPte AND ASPt2_3','ASPte',[]
+    'ASPt2 AND ASPt2_2','ASPt2',[]
+    'ASPt2 AND ASPt2_3','ASPt2',[]
+    'THYMDt AND THMDt2r','THYMDt',[]
+    'CBMK AND CBMKr','CBMKr',[]
+    'SPTc AND TRPS2r AND TRPAS2','TRPS2r','TRPS2'
+    'PROD3 AND PROD3i','PROD3',[]
+    'PROPAT4te AND PROt2r AND PROt2','PROt2r',[]
+    'CITt10i AND CITCAt AND CITCAti','CITCAt',[]
+    'GUAt2r AND GUAt','GUAt2r','GUAt2'
+    'PROPAT4te AND PROt4r AND PROt4','PROt4r',[]
+    'INSt2 AND INSt','INSt2','INSt2i'
+    'GNOXuq AND GNOXuqi','GNOXuq',[]
+    'GNOXmq AND GNOXmqi','GNOXmq',[]
+    'RBPC AND PRKIN','PRKIN','PRKINi'
+    % 'MMSAD5 AND MSAS AND MALCOAPYRCT AND PPCr AND ACALD','ACALD','ACALDi'
+    'PGK AND G1PP AND G16BPS AND G1PPT','G16BPS','G16BPSi'
+    'FRD7 AND SUCD1 AND G3PD8','G3PD8','G3PD8i'
+    'PROPAT4te AND PROt2r','PROt2r','PROt2'
+    'LACLi AND PPCr AND RPE AND PKL AND FTHFL AND MTHFC','MTHFC','MTHFCi'
+    'RMNt2 AND RMNt2_1','RMNt2_1',[]
+    'MNLpts AND MANAD_D AND MNLt6','MNLt6','MNLt6i'
+    'FDNADOX_H AND SULRi AND FXXRDO','FXXRDO','FXXRDOi'
+    'FDNADOX_H AND AKGS AND BTCOADH AND OOR2r','OOR2r','OOR2'
+    'FDNADOX_H AND AKGS AND BTCOADH AND OOR2 AND POR4','POR4','POR4i'
+    'FDNADOX_H AND AKGS AND OAASr AND ICDHx AND POR4i','ICDHx','ICDHxi'
+    'FDNADOX_H AND AKGS AND OAASr AND ICDHx AND POR4','ICDHx','ICDHxi'
+    'GLXS AND GCALDL AND GCALDDr','GCALDDr','GCALDD'
+    'GLYCLTDxr AND GLYCLTDx','GLYCLTDxr',[]
+    'GCALDD AND GCALDDr','GCALDDr',[]
+    'BGLA AND BGLAr','BGLAr',[]
+    'AKGMAL AND MALNAt AND AKGt2r','AKGt2r','AKGt2'
+    'TRPS1 AND TRPS2r AND TRPS3r','TRPS2r','TRPS2'
+    'OAACL AND OAACLi','OAACL',[]
+    'DHDPRy AND DHDPRyr','DHDPRyr',[]
+    'EDA_R AND EDA','EDA_R',[]
+    'GLYC3Pt AND GLYC3Pti','GLYC3Pt',[]
+    'FA180ACPHrev AND STCOATA AND FACOAL180','FACOAL180','FACOAL180i'
+    'CITt2 AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'CITt2ipp AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'AHCYSNS_r AND AHCYSNS','AHCYSNS_r',[]
+    'FDOXR AND GLFRDO AND OOR2r AND FRDOr','FRDOr','FRDO'
+    'GNOX AND GNOXy AND GNOXuq AND GNOXmq','GNOXmq','GNOXmqi'
+    'GNOX AND GNOXy AND GNOXuq AND GNOXmqi','GNOXuq','GNOXuqi'
+    'SHSL1r AND SHSL2 AND SHSL4r','SHSL4r','SHSL4'
+    'AHSERL3 AND CYSS3r AND METSOXR1r AND SHSL4r','TRDRr','TRDR'
+    'ACACT1r AND ACACt2 AND ACACCTr AND OCOAT1r','OCOAT1r','OCOAT1'
+    'ACONT AND ACONTa AND ACONTb','ACONT',[]
+    'ALAt2r AND ALAt4r','ALAt2r','ALAt2'
+    'CYTK2 AND DCMPDA AND URIDK3','DCMPDA','DCMPDAi'
+    'MALNAt AND NAt3_1 AND PIt7ir','NAt3_1','NAt3'
+    'PIt6b AND PIt7ir','PIt6b','PIt6bi'
+    'LEUTA AND LLEUDr','LLEUDr','LLEUD'
+    'ILETA AND L_ILE3MR','L_ILE3MR','L_ILE3MRi'
+    'TRSARry AND TRSARr','TRSARr','TRSAR'
+    'THRD AND THRAr AND PYRDC','THRAr','THRAi'
+    'THRD AND GLYAT AND PYRDC','GLYAT','GLYATi'
+    'SUCD1 AND SUCD4 AND SUCDimq AND NADH6','SUCD1','SUCD1i'
+    'POR4 AND SUCDimq AND NADH6 AND PDHa AND FRD7 AND FDOXR AND NTRIR4','POR4','POR4i'
+    'SUCDimq AND NADH6 AND HYD1 AND HYD4 AND FRD7 AND FDOXR AND NTRIR4','FDOXR','FDOXRi'
+    'PPCr AND SUCOAS AND OAASr AND ICDHx AND POR4i AND ACONTa AND ACONTb AND ACACT1r AND 3BTCOAI AND OOR2r','ICDHx','ICDHxi'
+    'PYNP1r AND CSNt6','PYNP1r','PYNP1'
+    'ASPK AND ASAD AND HSDy','ASPK','ASPKi'
+    'GLUt2r AND GLUABUTt7 AND ABTAr','GLUt2r','GLUt2'
+    'DURAD AND DHPM1 AND UPPN','DURAD','DURADi'
+    'XU5PG3PL AND PKL','PKL',[]
+    'G16BPS AND G1PPT AND PGK AND GAPD_NADP AND GAPD','G16BPS','G16BPSi'
+    'G1PPT AND PGK AND GAPD_NADP AND GAPD','G1PPT','G1PPTi'
+    'PPIt2e AND GUAPRT AND AACPS6 AND GALT','PPIt2e','PPIte'
+    'PPIt2e AND GLGC AND NADS2 AND SADT','PPIt2e','PPIte'
+    'MCOATA AND MALCOAPYRCT AND C180SNrev','MCOATA','MACPMT'
+    'PPCr AND MALCOAPYRCT AND MMSAD5 AND MSAS','PPCr','PPC'
+    'PPCr AND PYK AND ACTLDCCL AND HEDCHL AND OAAKEISO','PPCr','PPC'
+    'PPCr AND NDPK9 AND OAACL','PPCr','PPC'
+    'PPCr AND PYK AND ACPACT AND TDCOATA AND MCOATA AND HACD6','PPCr','PPC'
+    'ACt2r AND ACtr','ACtr',[]
+    'LEUt2r AND LEUtec','LEUtec',[]
+    'PTRCt2r AND PTRCtex2','PTRCtex2',[]
+    'TYRt2r AND TYRt','TYRt',[]
+    'OCBT AND CITRH AND CBMKr','CBMKr','CBMK'
+    'TSULt2 AND SO3t AND H2St AND TRDRr','TRDRr','TRDR'
+    'AMPSO3OX AND SADT AND EX_h2s(e) AND CHOLSH','AMPSO3OX','AMPSO3OXi'
+    'GALt2_2 AND GALt1r','GALt2_2','GALt2_2i'
+    'HISCAT1 AND HISt2r','HISt2r','HISt2'
+    'LDH_L AND L_LACDr','L_LACDr','L_LACD'
+    'ALAPAT4te AND ALAt4r','ALAt4r','ALAt4'
+    'UCO2L AND BUAMDH AND BURTADH AND H2CO3D','UCO2L','UCO2Li'
+    'r1106 AND RIBFLVt2r','RIBFLVt2r','RIBFLVt2'
+    'FDOXR AND NADH7 AND NTRIR4','FDOXR','FDOXRi'
+    'NADH6 AND SNG3POR AND G3PD2','SNG3POR','G3PD5'
+    'PPCOAOc AND NADH6 AND ACOAR','PPCOAOc','PPCOAOci'
+    'PGK AND G1PP AND G16BPS AND G1PPTi','G16BPS','G16BPSi'
+    'FACOAL140 AND FA140ACPH','FACOAL140','FACOAL140i'
+    'R5PAT AND PRPPS AND NADN AND NAPRT','R5PAT','R5PATi'
+    'R5PAT AND ADPRDPTS AND PPM','R5PAT','R5PATi'
+    'MCCCr AND HMGCOAS AND MGCOAH AND ACOAD8 AND ACACT1r','MCCCr','MCCC'
+    'FRUpts AND FRUt2r','FRUt2r','FRUt1r'
+    'ALAPAT4te AND ALAt2r','ALAt2r','ALAt2'
+    'ALAPAT4te AND ALAt2r','ALAt2r','ALAt2'
+    'r2526 AND SERt2r','SERt2r','r2471'
+    'PGMT AND G16BPS AND G1PPTi','G16BPS','G16BPSi'
+    'ILEt2r AND ILEtec','ILEt2r','ILEt2'
+    'VALt2r AND VALtec','VALt2r','VALt2'
+    'SUCCt AND SUCCt2r','SUCCt',[]
+    'DHLPHEOR AND DHPHEOGAT','DHLPHEOR','DHLPHEORi'
+    'SNG3POR AND OOR2r AND FUM AND POR4 AND HPYRI','SNG3POR','G3PD5'
+    'NTMAOR AND SUCDimq AND FRD7 AND NADH6','NTMAOR','NTMAORi'
+    'PIt6bi AND PIt7','PIt7','PIt7ir'
+    'THMt3 AND THMte','THMt3','THMt3i'
+    'PROPAT4te AND PROt4r','PROt4r','PROt4'
+    'GLUOR AND GALM1r AND NADH6','GLUOR','GLUORi'
+    'PGK AND G1PP AND G16BPS AND G1PPT','G1PP','G1PPi'
+    'FDOXR AND FDNADOX_H','FDOXR','FDOXRi'
+    'FRDOr AND HYD1 AND HYD4','FRDOr','FRDO'
+    'ASP4DC AND PYK AND PPCr','ASP4DC','ASP4DCi'
+    'NZP_NRe AND NZP_NR','NZP_NRe','NZP_NRei'
+    'NFORGLUAH AND 5MTHFGLUNFT AND FOMETR','NFORGLUAH','NFORGLUAHi'
+    'FDOXR AND POR4 AND FDH2','FDOXR','FDOXRi'
+    'ACGApts AND ACGAMtr2','ACGAMtr2','ACGAMt2'
+    'FDNADOX_H AND KLEURFd AND OIVD1r','OIVD1r','OIVD1'
+    'CITCAt AND CAt4i AND CITt13','CITCAt','CITCAti'
+    '4ABZt2r AND 4ABZt','4ABZt2r','4ABZt2'
+    'FUMt2r AND FUMt','FUMt2r','FUMt2'
+    'TARCGLYL AND TARTD AND PYRCT','TARCGLYL','TARCGLYLi'
+    'SULR AND SO3rDmq AND SUCDimq','SULR','SULRi'
+    'CITt15 AND ZN2t4 AND Kt1r AND CITt2','CITt15','CITt15i'
+    'FRDO AND FDNADOX_H AND GLFRDO','GLFRDO','GLFRDOi'
+    'THMDt2r AND THYMDtr2','THMDt2r','THMDt2'
+    'HXANt2r AND HYXNt','HXANt2r','HXANt2'
+    'ETOHt2r AND ETOHt','ETOHt2r','ETOHt2'
+    'GSNt2r AND GSNt','GSNt2r','GSNt2'
+    'FUCt2_1 AND FUCtp','FUCt2_1','FUCt2_1i'
+    'GALt4 AND GALt1r','GALt4','GALt4i'
+    'PHEt2r AND PHEtec','PHEt2r','PHEt2'
+    'ACOAD2f AND ACOAD2 AND NADH6','ACOAD2f','ACOAD2fi'
+    'THSr1mq AND TSULt2 AND H2St AND SO3t AND TSULST AND GTHRD AND SUCDimq','TSULt2','TSULt2i'
+    'PPCKr AND MALFADO AND ACKr AND PPDK AND PPIACPT','MALFADO','MALFADOi'
+    'AKGte AND AKGt2r','AKGt2r','AKGt2'
+    '5ASAp AND 5ASAt2r','5ASAt2r','5ASAt2'
+    'MAL_Lte AND MALt2r','MALt2r','MALt2'
+    'MAL_Lte AND GLUt2r AND MALNAt AND GLUt4r','MALNAt','MALt4'
+    'AKGMAL AND MALNAt AND AKGte','MALNAt','MALt4'
+    'r0792 AND 5MTHFOX AND FDNADOX_H AND MTHFD2 AND MTHFD','r0792','MTHFR2rev'
+    'H2O2D AND CYTBD AND r0010','H2O2D','NPR'
+    'PROD3 AND NADH6 AND HPROxr','PROD3','PROD3i'
+    'GLFRDO AND GLFRDOi','GLFRDO',[]
+    'DGOR AND SBTD_D2 AND GALM1r AND GNOXmq','DGOR','DGORi'
+    'DGORi AND SBTD_D2 AND GALM1r AND GNOXmq','GNOXmq','GNOXmqi'
+    'DGORi AND SBTD_D2 AND GALM1r AND GNOXuq','GNOXuq','GNOXuqi'
+    'LPCDH AND LPCOX AND NADH6pp AND ATPS4pp','LPCDH','LPCDHi'
+    'CITt2pp AND CITCAtpp AND CAt4ipp','CITCAt','CITCAtipp'
+    };
+
 % set a solver if not done yet
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
@@ -233,9 +361,16 @@ panModels(~contains(panModels(:, 1), '.mat'), :) = [];
 
 % Test ATP production and remove futile cycles if applicable.
 for i = 1:length(panModels)
-    modelPath = [panPath filesep panModels{i}];
- %               model = readCbModel(modelPath);
-              load(modelPath);
+    % workaround for models that give an error in readCbModel
+    try
+        model=readCbModel([panPath filesep panModels{i}]);
+    catch
+        warning('Model could not be read through readCbModel. Consider running verifyModel.')
+        modelStr=load([panPath filesep panModels{i}]);
+        modelF=fieldnames(modelStr);
+        model=modelStr.(modelF{1});
+    end
+    
     model = useDiet(model, dietConstraints);
     model = changeObjective(model, 'DM_atp_c_');
     FBA = optimizeCbModel(model, 'max');
@@ -246,27 +381,291 @@ for i = 1:length(panModels)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
             for k = 1:size(rxns, 2)
+                if ~isempty(intersect(rxns{k},'CITt2ipp'))
+                    rxns{k}=strrep(rxns{k},'CITt2ipp','CITt2pp');
+                end
+                RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
+                if contains(RxForm,'[e]')
+                    newName=[rxns{k} 'pp'];
+                    % make sure we get the correct reaction
+                    newForm=strrep(RxForm,'[e]','[p]');
+                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                    if ~isempty(rxnInd)
+                        dbForm=database.reactions{rxnInd, 3};
+                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                            rxns{k}=newName;
+                        end
+                    end
+                end
                 if isempty(find(ismember(model.rxns, rxns{k})))
                     go = false;
                 end
             end
             if go
+                % account for periplasmatic versions
+                replacePP=0;
+                RxForm = database.reactions{find(ismember(database.reactions(:, 1), reactionsToReplace{j, 2})), 3};
+                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                    newName=[reactionsToReplace{j, 2} 'pp'];
+                    % make sure we get the correct reaction
+                    newForm=strrep(RxForm,'[e]','[p]');
+                    dbForm=database.reactions{find(ismember(database.reactions(:, 1), {newName})), 3};
+                    replacePP=1;
+                end
                 % Only make the change if biomass can still be produced
-                modelTest = removeRxns(model, reactionsToReplace{j, 2});
+                if replacePP
+                    modelTest = removeRxns(model, newName);
+                else
+                    modelTest = removeRxns(model, reactionsToReplace{j, 2});
+                end
                 if ~isempty(reactionsToReplace{j, 3})
-                    RxForm = database.reactions(find(ismember(database.reactions(:, 1), reactionsToReplace{j, 3})), 3);
-                    modelTest = addReaction(modelTest, reactionsToReplace{j, 3}, RxForm{1, 1});
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), reactionsToReplace{j, 3})), 3};
+                    if replacePP
+                        % create a new formula
+                        RxForm = database.reactions{find(ismember(database.reactions(:, 1), reactionsToReplace{j, 3})), 3};
+                        if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                            newName=[reactionsToReplace{j, 3} 'ipp'];
+                            % make sure we get the correct reaction
+                            newForm=strrep(RxForm,'[e]','[p]');
+                            rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                            if ~isempty(rxnInd)
+                                dbForm=database.reactions{rxnInd, 3};
+                                if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                    RxForm=dbForm;
+                                end
+                            else
+                                % if not present already, add to database
+                                RxForm=newForm;
+                                database.reactions(size(database.reactions,1)+1,:)={reactionsToReplace{j, 3},newName,RxForm,'0','','','','','','',''};
+                            end
+                        end
+                        modelTest = addReaction(modelTest, newName, RxForm);
+                    else
+                        modelTest = addReaction(modelTest, reactionsToReplace{j, 3}, RxForm);
+                    end
                 end
                 FBA = optimizeCbModel(modelTest, 'max');
-                if FBA.f > 1e-5
+                if FBA.f > tol
                     model = modelTest;
                 end
             end
         end
-        % Rebuild model
-        model = rebuildModel(model,database);
+        % set back to unlimited medium
+        model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), -1000, 'l');
+        % account for periplasmatic versions
+        % fix some special cases
+        if ~isempty(intersect(model.rxns,'CITt2ipp'))
+            model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');
+        end
+        if ~isempty(intersect(model.rxns,'CITCAtiipp'))
+            model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');
+        end
+        % Rebuild model consistently
+        %         model = rebuildModel(model,database);
         save(modelPath, 'model');
     end
+end
+
+end
+
+function model=buildPanModel(agoraPath, models, taxonToCreate, infoFile, database)
+% Builds a pan-model from all models corresponding to strains that belong
+% to the respective taxon.
+
+tol = 1e-5;
+
+% List Western diet constraints to test if the pan-model produces
+% reasonable ATP flux on this diet.
+dietConstraints = readtable('WesternDietAGORA2.txt');
+dietConstraints = table2cell(dietConstraints);
+dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
+
+if size(models, 1) == 1
+    model = readCbModel([agoraPath filesep infoFile{models, 1} '.mat']);
+    % temporary fix
+    if find(strcmp(model.rxns,'EX_indprp(e)'))
+        model=removeRxns(model,'EX_indprp(e)');
+        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
+        model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
+    end
+    if find(strcmp(model.rxns,'INDPRPt2r'))
+        model=removeRxns(model,'INDPRPt2r');
+        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
+        model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
+    end
+    if find(strcmp(model.rxns,'GDOCAH'))
+        model=removeRxns(model,'GDOCAH');
+        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
+        model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
+    end
+    % rename biomass reaction to agree with other pan-models
+    bio = find(strncmp(model.rxns, 'bio', 3));
+    model.rxns{bio, 1} = 'biomassPan';
+elseif size(models, 1) > 1
+    for k = 1:size(models, 1)
+        model = readCbModel([agoraPath filesep infoFile{models(k), 1} '.mat']);
+        % temporary fix
+        if find(strcmp(model.rxns,'EX_indprp(e)'))
+            model=removeRxns(model,'EX_indprp(e)');
+            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
+            model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
+        end
+        if find(strcmp(model.rxns,'INDPRPt2r'))
+            model=removeRxns(model,'INDPRPt2r');
+            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
+            model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
+        end
+        if find(strcmp(model.rxns,'GDOCAH'))
+            model=removeRxns(model,'GDOCAH');
+            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
+            model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
+        end
+        bio = find(strncmp(model.rxns, 'bio', 3));
+        if k == 1
+            panModel.rxns = model.rxns;
+            panModel.grRules = model.grRules;
+            panModel.rxnNames = model.rxnNames;
+            panModel.subSystems = model.subSystems;
+            panModel.lb = model.lb;
+            panModel.ub = model.ub;
+            forms = printRxnFormula(model, model.rxns, false, false, false, [], false);
+            panModel.formulas = forms;
+            % biomass products and substrates with coefficients
+            bioPro = model.mets(find(model.S(:, bio) > 0), 1);
+            bioProSC = full(model.S(find(model.S(:, bio) > 0), bio));
+            bioSub = model.mets(find(model.S(:, bio) < 0), 1);
+            bioSubSC = full(model.S(find(model.S(:, bio) < 0), bio));
+        else
+            panModel.rxns = [panModel.rxns; model.rxns];
+            panModel.grRules = [panModel.grRules; model.grRules];
+            panModel.rxnNames = [panModel.rxnNames; model.rxnNames];
+            panModel.subSystems = [panModel.subSystems; model.subSystems];
+            panModel.lb = [panModel.lb; model.lb];
+            panModel.ub = [panModel.ub; model.ub];
+            forms = printRxnFormula(model, model.rxns, false, false, false, [], false);
+            panModel.formulas = [panModel.formulas; forms];
+            % biomass products and substrates with coefficients
+            bioPro = [bioPro; model.mets(find(model.S(:, bio) > 0), 1)];
+            bioProSC = [bioProSC; full(model.S(find(model.S(:, bio) > 0), bio))];
+            bioSub = [bioSub; model.mets(find(model.S(:, bio) < 0), 1)];
+            bioSubSC = [bioSubSC; full(model.S(find(model.S(:, bio) < 0), bio))];
+        end
+    end
+    % take out biomass reactions
+    bio = find(strncmp(panModel.rxns, 'bio', 3));
+    panModel.rxns(bio) = [];
+    panModel.grRules(bio) = [];
+    panModel.rxnNames(bio) = [];
+    panModel.subSystems(bio) = [];
+    panModel.lb(bio) = [];
+    panModel.ub(bio) = [];
+    panModel.formulas(bio) = [];
+    % set up data matrix for rBioNet
+    [uniqueRxns, oldInd] = unique(panModel.rxns);
+    rbio.data = cell(size(uniqueRxns, 1), 14);
+    rbio.data(:, 1) = num2cell(ones(size(rbio.data, 1), 1));
+    rbio.data(:, 2) = uniqueRxns;
+    rbio.data(:, 3) = panModel.rxnNames(oldInd);
+    rbio.data(:, 4) = panModel.formulas(oldInd);
+    rbio.data(:, 6) = panModel.grRules(oldInd);
+    rbio.data(:, 7) = num2cell(panModel.lb(oldInd));
+    rbio.data(:, 8) = num2cell(panModel.ub(oldInd));
+    rbio.data(:, 10) = panModel.subSystems(oldInd);
+    rbio.description = cell(7, 1);
+    % build model with rBioNet
+    model = data2model(rbio.data, rbio.description, database);
+    % build biomass reaction from average of all biomasses
+    subs = unique(bioSub);
+    prods = unique(bioPro);
+    bioForm = '';
+    for s = 1:size(subs, 1)
+        indS = find(ismember(bioSub, subs{s, 1}));
+        newCoeff = sum(bioSubSC(indS)) / k;
+        bioForm = [bioForm, num2str(-newCoeff), ' ', subs{s, 1}, ' + '];
+    end
+    bioForm = bioForm(1:end - 3);
+    bioForm = [bioForm, ' -> '];
+    for p = 1:size(prods, 1)
+        indP = find(ismember(bioPro, prods{p, 1}));
+        newCoeff = sum(bioProSC(indP)) / k;
+        bioForm = [bioForm, num2str(newCoeff), ' ', prods{p, 1}, ' + '];
+    end
+    bioForm = bioForm(1:end - 3);
+    % add biomass reaction to pan model
+    model = addReaction(model, 'biomassPan', bioForm);
+    model.comments{end + 1, 1} = '';
+    model.citations{end + 1, 1} = '';
+    model.rxnConfidenceScores{end + 1, 1} = '';
+    model.rxnECNumbers{end + 1, 1} = '';
+    model.rxnKEGGID{end + 1, 1} = '';
+end
+% update some fields to new standards
+model.osenseStr = 'max';
+if isfield(model, 'rxnConfidenceScores')
+    model = rmfield(model, 'rxnConfidenceScores');
+end
+model.rxnConfidenceScores = zeros(length(model.rxns), 1);
+for k = 1:length(model.rxns)
+    model.subSystems{k, 1} = cellstr(model.subSystems{k, 1});
+    model.rxnKEGGID{k, 1} = '';
+    model.rxnECNumbers{k, 1} = '';
+end
+for k = 1:length(model.mets)
+    if strcmp(model.metPubChemID{k, 1}, '[]') || isempty(model.metPubChemID{k, 1})
+        model.metPubChemID{k, 1} = string;
+    end
+    if strcmp(model.metChEBIID{k, 1}, '[]') || isempty(model.metChEBIID{k, 1})
+        model.metChEBIID{k, 1} = string;
+    end
+    if strcmp(model.metKEGGID{k, 1}, '[]') || isempty(model.metKEGGID{k, 1})
+        model.metKEGGID{k, 1} = string;
+    end
+    if strcmp(model.metInChIString{k, 1}, '[]') || isempty(model.metInChIString{k, 1})
+        model.metInChIString{k, 1} = string;
+    end
+    if strcmp(model.metHMDBID{k, 1}, '[]') || isempty(model.metHMDBID{k, 1})
+        model.metHMDBID{k, 1} = string;
+    end
+end
+model.metPubChemID = cellstr(model.metPubChemID);
+model.metChEBIID = cellstr(model.metChEBIID);
+model.metKEGGID = cellstr(model.metKEGGID);
+model.metInChIString = cellstr(model.metInChIString);
+model.metHMDBID = cellstr(model.metHMDBID);
+% fill in descriptions
+model = rmfield(model, 'description');
+model.description.organism = taxonToCreate;
+model.description.name = taxonToCreate;
+model.description.author = 'https://vmh.life';
+model.description.date = date;
+
+% Rebuild model consistently
+model = rebuildModel(model,database);
+model=changeObjective(model,'biomassPan');
+% remove duplicate reactions
+% Will remove reversible reactions of which an irreversible version is also
+% there but keep the irreversible version.
+[modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model);
+% test if the model can still grow
+modelRD = useDiet(modelRD,dietConstraints);
+FBA=optimizeCbModel(modelRD,'max');
+if FBA.f > tol
+    model=modelRD;
+else
+    toRM={};
+    modelTest=model;
+    for k=1:length(removedRxnInd)
+        modelTest=removeRxns(modelTest,modelTest.rxns(removedRxnInd(k)));
+        FBA=optimizeCbModel(modelTest,'max');
+        if FBA.f > tol
+            toRM{k} =  modelTest.rxns{removedRxnInd(k)};
+            model
+        else
+            toRM{k} =  modelTest.rxns{keptRxnInd(k)};
+        end
+        modelTest=removeRxns(modelTest,toRM{k});
+    end
+    model=removeRxns(model,toRM);
 end
 
 end
