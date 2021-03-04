@@ -88,7 +88,7 @@ end
 
 if bool
     if exist('varargin','var')
-        error('The following reaction IDs are already IDs of variables in the model:\n%s', strjoin(existing,'\n'));
+        warning('The following reaction IDs are already IDs of variables in the model:\n%s', strjoin(existing,'\n'));
     else
         %try to recover rather than fail ungracefully, passes
         %testBatchAddition and testMergeTwoModels!
