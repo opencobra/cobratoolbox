@@ -42,12 +42,12 @@ MatricesSUX.weights = NoWeight*ones(length(MatricesSUX.rxns),1);
 % get exchange and transport reactions in SUX
 ExTr = MatricesSUX.rxns(MatricesSUX.MatrixPart==3);
 % identify Exchange reactions of those
-ExR = ExTr(strncmp('Ex_',ExTr,3));
-TrR = ExTr(~strncmp('Ex_',ExTr,3));
+ExR = ExTr(strncmp('EX_',ExTr,3));
+TrR = ExTr(~strncmp('EX_',ExTr,3));
 % get metabolic Kegg reactions in SUX
 MetR = MatricesSUX.rxns(MatricesSUX.MatrixPart==2);
 
-%MatricesSUX.weights = zeros(length(MatricesSUX.rxns),1);
+MatricesSUX.weights = zeros(length(MatricesSUX.rxns),1);
 MatricesSUX.weights(ismember(MatricesSUX.rxns,MetR)) = weights.MetabolicRxns;
 MatricesSUX.weights(ismember(MatricesSUX.rxns,ExR)) = weights.ExchangeRxns;
 MatricesSUX.weights(ismember(MatricesSUX.rxns,TrR)) = weights.TransportRxns;

@@ -45,13 +45,12 @@ translateMets=table2cell(translateMets);
 % adapt IDs for translation
 model.mets = strrep(model.mets, '[c0]', '_c0');
 model.mets = strrep(model.mets, '[e0]', '_e0');
-model.rxns = strrep(model.rxns, 'R_', '');
 model.rxns = strrep(model.rxns, '_c0', '');
 model.rxns = strrep(model.rxns, '_e0', '');
 
 % proceed if the model contains any reactions in KBase nomenclature
 if ~isempty(intersect(model.rxns,translateRxns(:,1)))
-    
+    model.rxns = strrep(model.rxns, 'R_', '');
     % create a grRules field as KBase reconstructions do not have one
     model = creategrRulesField(model);
 

@@ -76,7 +76,7 @@ for i=1:length(analyzedFiles)
     end
     
     figure
-    plot(data,'Color','k')
+    plot(data,'Color', 'k')
     set(gca, 'FontSize', 12)
     box on
     h=title(analyzedFiles{i,1});

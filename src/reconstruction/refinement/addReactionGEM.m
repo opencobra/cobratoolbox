@@ -107,7 +107,7 @@ else
     useHashTable = false;
 end
 
-showprogress(0, 'Adding Rxns ...');
+%showprogress(0, 'Adding Rxns ...');
 for i = 1:length(rev)
     %IO indicates whether it is part of the reactants or part of the
     %product (ie. IO = -1 is reactant, IO = 1 products)
@@ -217,7 +217,7 @@ for i = 1:length(rev)
     clear parsing
 
     
-    showprogress(i/length(rev));
+  %  showprogress(i/length(rev));
 end
 
 

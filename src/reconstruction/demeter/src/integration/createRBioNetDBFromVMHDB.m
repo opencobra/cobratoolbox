@@ -41,9 +41,8 @@ end
 reactionDatabase(:,end)=[];
 rxn=cell(reactionDatabase);
 
-% load the existing rBioNetSettings file and the file with compartment
-% definition
-load('rBioNetSettingsDB.mat');
+% load the file with compartment definition
+
 load('compartments.mat');
 
 save([rBioNetDBFolder filesep 'rxn.mat'],'rxn');

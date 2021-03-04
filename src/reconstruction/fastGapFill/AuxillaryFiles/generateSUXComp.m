@@ -1,4 +1,4 @@
-function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments)
+function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments,KEGGMatrixLoad)
 % Creates the matrices for gap filling for compartmentalized metabolic models (`S`) such
 % that the universal database (`U`, e.g., KEGG) is placed in each compartment
 % specified and reversible transport reactions (`X`) are added for each compound present in
@@ -18,7 +18,7 @@ function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlack
 %                         (e.g., `KEGG`)
 %    listCompartments:    List of intracellular compartments in the model
 %                         (optional input, default compartments to be considered: '[c]' ,'[m]', '[l]', '[g]', '[r]', '[x]', '[n]')
-%
+%    KEGGMatrixLoad       load precomputed KEGG matrix (default: 0)
 % OUTPUT:
 %    MatricesSUX:         SUX matrix
 %
@@ -26,6 +26,9 @@ function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlack
 % gap filling efforts.
 %
 % .. Author: - Ines Thiele, June 2013, http://thielelab.eu
+% - Ines Thiele, Jan 2021, added the option to preload KEGG matrix and
+% KeggExchangeRxnMatrix, if multiple reconstructions will be tested this is
+% faster
 
 if ~exist('KEGGBlackList', 'var')
     KEGGBlackList = {};
@@ -39,10 +42,17 @@ if ~exist('listCompartments', 'var')
 end
 
 % create KEGG Matrix - U
-KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList);
-KEGG = transformKEGG2Model(KEGG,dictionary);
-KEGG.RxnSubsystem = KEGG.subSystems;
-save KEGGMatrix KEGG
+if ~exist('KEGGMatrixLoad', 'var')
+    KEGGMatrixLoad = 1;
+end
+if KEGGMatrixLoad
+    load KEGGMatrix
+else
+    KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList);
+    KEGG = transformKEGG2Model(KEGG,dictionary);
+    KEGG.RxnSubsystem = KEGG.subSystems;
+    save KEGGMatrix KEGG
+end
 % checks if model.mets has () or [] for compartment, or adds cytosol to
 % compounds if no compartment is specified
 model = CheckMetName(model);
@@ -54,26 +64,38 @@ end
 
 % merge model with KEGG reaction list for each defined compartment
 modelExpanded = model;
-for i = 1 : length(listCompartments)
-    KEGGComp = KEGG;
-    KEGGComp.mets = regexprep(KEGGComp.mets,'\[c\]',listCompartments{i});
-
-    % Try changing the reaction IDs so that there is no ambiguity between
-    % different compartments for each reaction
-    compartmentID = regexprep(listCompartments{i},'[\[\]]','');
-    if ~strcmp(compartmentID,'c')
-        KEGGComp.rxns = strcat(KEGGComp.rxns,'_',compartmentID);
+if KEGGMatrixLoad
+    load KeggExchangeRxnM
+else
+    KEGGOri = KEGG;
+    for i = 1 : length(listCompartments)
+        KEGGComp = KEGGOri;
+        KEGGComp.mets = regexprep(KEGGComp.mets,'\[c\]',listCompartments{i});
+        
+        % Try changing the reaction IDs so that there is no ambiguity between
+        % different compartments for each reaction
+        compartmentID = regexprep(listCompartments{i},'[\[\]]','');
+        if ~strcmp(compartmentID,'c')
+            KEGGComp.rxns = strcat(KEGGComp.rxns,'_',compartmentID);
+        end
+        
+        [KEGG] = mergeTwoModels(KEGG,KEGGComp,1,0);
     end
-
-    [modelExpanded] = mergeTwoModels(modelExpanded,KEGGComp,1);
+    %clear  KEGGComp KEGG;
+    % create U and X part - for all compartments
+    KeggExchangeRxnMatrix = createXMatrix2(KEGG.mets,1,listCompartments);
+    if isfield(KeggExchangeRxnMatrix,'subSystems')
+        KeggExchangeRxnMatrix.RxnSubsystem = KeggExchangeRxnMatrix.subSystems;
+    end
+    save KeggExchangeRxnM KeggExchangeRxnMatrix
 end
-clear  KEGGComp KEGG;
+% up to here it is always the same.
+modelExchangeRxnMatrix = createXMatrix2(modelExpanded.mets,1,listCompartments);
 
-% create U and X part - for all compartments
-ExchangeRxnMatrix = createXMatrix2(modelExpanded.mets,1,'all');
-ExchangeRxnMatrix.RxnSubsystem = ExchangeRxnMatrix.subSystems;
 
-[MatricesSUX] = mergeTwoModels(modelExpanded,ExchangeRxnMatrix,1);
+[MatricesSUX1] = mergeTwoModels(modelExpanded,KEGG,1,0);
+[MatricesSUX2] = mergeTwoModels(MatricesSUX1,modelExchangeRxnMatrix,1,0);
+[MatricesSUX] = mergeTwoModels(MatricesSUX2,KeggExchangeRxnMatrix,1,0);
 if length(MatricesSUX.genes) > 0
     MatricesSUX.rxnGeneMat(length(MatricesSUX.rxns),length(MatricesSUX.genes))=0;
     MatricesSUX.rxnGeneMat = sparse(MatricesSUX.rxnGeneMat);
@@ -84,8 +106,8 @@ end
 % MatrixPart indicates in which area of MatricesSUX the model reactions,
 % kegg reactions, and exchange/transport reactions are located (ie. 1 -
 % model, 2 - kegg, 3 - X)
-MatricesSUX.MatrixPart(1:length(model.rxns),1)=1; % model reactions
-MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(modelExpanded.rxns),1)=2;%KEGG DB reactions
+MatricesSUX.MatrixPart(1:length(modelExpanded.rxns),1)=1; % model reactions
+MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(KEGG.rxns),1)=2;%KEGG DB reactions
 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.rxns),1)=3; %exchange and transport reactions
 
 clear model*;

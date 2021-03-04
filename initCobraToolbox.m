@@ -22,7 +22,7 @@ function initCobraToolbox(updateToolbox)
 %     changeCobraSolver('tomlab_cplex', 'MIQP');
 %     changeCbMapOutput('svg');
 %
-%     Maintained by Ronan M.T. Fleming, Laurent Heirendt
+%     Maintained by Ronan M.T. Fleming
 
 % define GLOBAL variables
 global CBTDIR;

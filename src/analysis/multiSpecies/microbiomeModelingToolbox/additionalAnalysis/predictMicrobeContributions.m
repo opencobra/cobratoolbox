@@ -8,19 +8,10 @@ function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, 
 %    modPath              char with path of directory where models are stored
 %
 % OPTIONAL INPUTS:
-%    resPath              char with path of directory where results are saved
-%    dietFilePath         char with path to input file with dietary information                   
 %    metList              List of VMH IDs for metabolites to analyze 
 %                         (default: all exchanged metabolites)              
-%    includeHumanMets     boolean indicating if human-derived metabolites
-%                         present in the gut should be provided to the models 
-%                         (default: true)
 %    numWorkers           integer indicating the number of cores to use 
 %                         for parallelization
-%    lowerBMBound         lower bound on community biomass (default=0.4)
-%    adaptMedium          boolean indicating if the medium should be
-%                         adapted through the adaptVMHDietToAGORA
-%                         function or used as is (default=true)                  
 %
 % OUTPUTS:
 %    minFluxes:           Minimal fluxes through analyzed exchange reactions
@@ -35,27 +26,15 @@ function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, 
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addParameter('resPath', pwd, @ischar);
-parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('metList', {}, @iscell);
 parser.addParameter('numWorkers', 4, @isnumeric);
-parser.addParameter('includeHumanMets', true, @islogical);
-parser.addParameter('lowerBMBound', 0.4, @isnumeric);
-parser.addParameter('adaptMedium', true, @islogical);
 
 parser.parse(modPath, varargin{:});
 
 modPath = parser.Results.modPath;
 resPath = parser.Results.resPath;
-dietFilePath = parser.Results.dietFilePath;
 metList = parser.Results.metList;
-includeHumanMets = parser.Results.includeHumanMets;
 numWorkers = parser.Results.numWorkers;
-lowerBMBound = parser.Results.lowerBMBound;
-adaptMedium = parser.Results.adaptMedium;
-
-if ~exist('lowerBMBound','var')
-    lowerBMBound=0.4;
-end
 
 tol=0.0000001;
 
@@ -93,8 +72,10 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(find(strcmp(modelList(:,1),'.')),:)=[];
 modelList(find(strcmp(modelList(:,1),'..')),:)=[];
-modelList(find(~strncmp(modelList(:,1),'microbiota',length('microbiota'))),:)=[];
 
+if size(modelList,1) ==0
+    error('There are no models to load in the model folder!')
+end
 
 % start from already computed results if function crashed
 if isfile('minFluxes.mat')
@@ -129,57 +110,15 @@ for i = startPnt:steps:length(modelList)
                 % prevent creation of log files
                 changeCobraSolverParams('LP', 'logFile', 0);
             end
-            model=readCbModel([modPath filesep modelList{j}]);
             
-            % implement constraints on the model
-            for k = 1:length(model.rxns)
-                if strfind(model.rxns{k}, 'biomass')
-                    model.lb(k) = 0;
-                end
-            end
-            
-            % adapt constraints
-            BiomassNumber=find(strcmp(model.rxns,'communityBiomass'));
-            Components = model.mets(find(model.S(:, BiomassNumber)));
-            Components = strrep(Components,'_biomass[c]','');
-            for k=1:length(Components)
-                % remove constraints on demand reactions to prevent infeasibilities
-                findDm= model.rxns(find(strncmp(model.rxns,[Components{k} '_DM_'],length([Components{k} '_DM_']))));
-                model = changeRxnBounds(model, findDm, 0, 'l');
-                % constrain flux through sink reactions
-                findSink= model.rxns(find(strncmp(model.rxns,[Components{k} '_sink_'],length([Components{k} '_sink_']))));
-                model = changeRxnBounds(model, findSink, -1, 'l');
-            end
-            
-            model = changeObjective(model, 'EX_microbeBiomass[fe]');
-            AllRxn = model.rxns;
-            RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));
-            EXrxn = model.rxns(RxnInd);
-            EXrxn = regexprep(EXrxn, 'EX_', 'Diet_EX_');
-            model.rxns(RxnInd) = EXrxn;
-            model = changeRxnBounds(model, 'communityBiomass', lowerBMBound, 'l');
-            model = changeRxnBounds(model, 'communityBiomass', 1, 'u');
-            model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
-            model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');
-            model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
-            
-            if adaptMedium
-                diet = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
-            else
-                diet = readtable(dietFilePath, 'Delimiter', '\t'); 
-                diet = table2cell(diet);
-                for k = 1:length(diet)
-                    diet{k, 2} = num2str(-(diet{k, 2}));
-                end
-            end
-            model = useDiet(model, diet);
-            
-            if includeHumanMets
-                % add the human metabolites
-                HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
-                for l=1:length(HumanMets)
-                    model=changeRxnBounds(model,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
-                end
+            % workaround for models that give an error in readCbModel
+            try
+                model=readCbModel([modPath filesep modelList{j,1}]);
+            catch
+                warning('Model could not be read through readCbModel. Consider running verifyModel.')
+                modelStr=load([modPath filesep modelList{j,1}]);
+                modelF=fieldnames(modelStr);
+                model=modelStr.(modelF{1});
             end
 
             % get reactions for metabolites to analyze
@@ -189,7 +128,23 @@ for i = startPnt:steps:length(modelList)
                 rxnsInModel=model.rxns(find(contains(model.rxns,metList)));
             end
             
-            [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A');
+            % perform flux variability analysis
+            currentDir=pwd;
+            try
+                [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A');
+            catch
+                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                cd(currentDir)
+                solution=solveCobraLP(buildLPproblemFromModel(model));
+                if solution.stat==0
+                    warning('Model infeasible. Could not perform FVA.')
+                    ret=NaN;
+                else
+                [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
+                ret=0;
+                end
+            end
+            
             minFluxTmp{j}=minFlux;
             maxFluxTmp{j}=maxFlux;
             sols(j)=ret;
@@ -259,6 +214,7 @@ end
 minFluxes(2:end,1)=strrep(minFluxes(2:end,1),'_IEX','');
 minFluxes(2:end,1)=strrep(minFluxes(2:end,1),'[u]tr','');
 minFluxes(1,2:end)=strrep(minFluxes(1,2:end),'microbiota_model_samp_','');
+minFluxes(1,2:end)=strrep(minFluxes(1,2:end),'microbiota_model_diet_','');
 
 cnt=1;
 delArray=[];
@@ -273,6 +229,8 @@ minFluxes(delArray,:)=[];
 maxFluxes(2:end,1)=strrep(maxFluxes(2:end,1),'_IEX','');
 maxFluxes(2:end,1)=strrep(maxFluxes(2:end,1),'[u]tr','');
 maxFluxes(1,2:end)=strrep(maxFluxes(1,2:end),'microbiota_model_samp_','');
+maxFluxes(1,2:end)=strrep(maxFluxes(1,2:end),'microbiota_model_diet_','');
+
 cnt=1;
 delArray=[];
 for j=2:size(maxFluxes,1)
@@ -290,6 +248,8 @@ fluxSpans(:,1)=regexprep(fluxSpans(:,1),'pan','','once');
 fluxSpans(2:end,1)=strrep(fluxSpans(2:end,1),'_IEX','');
 fluxSpans(2:end,1)=strrep(fluxSpans(2:end,1),'[u]tr','');
 fluxSpans(1,2:end)=strrep(fluxSpans(1,2:end),'microbiota_model_samp_','');
+fluxSpans(1,2:end)=strrep(fluxSpans(1,2:end),'microbiota_model_diet_','');
+
 cnt=1;
 delArray=[];
 for j=2:size(fluxSpans,1)

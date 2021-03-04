@@ -33,7 +33,7 @@ addParameter(p, 'printLevel', 1,@(x)isnumeric(x)&&isscalar(x));
 parse(p, OptimizationModel, KOrxn, varargin{:});
 numWorkers = p.Results.numWorkers;
 timeLimit = p.Results.timeLimit;
-printLevel = p.Results.printLevel;
+printLevel = max(p.Results.printLevel, 0);
 
 
 %Indexation of variables
@@ -48,7 +48,7 @@ OptimizationModel = rmfield(OptimizationModel,'idx_variables');
 % implemented
 global SOLVERS;
 global CBT_MIQP_SOLVER
-if SOLVERS.ibm_cplex.installed && isempty(CBT_MIQP_SOLVER)
+if SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cplex')
     % Generate CPLEX model
     cplex = Cplex('MIQP');
     CplexModel = OptimizationModel;
@@ -115,25 +115,21 @@ else
     MIQPproblem.lb(KOrxn) = 0;
     MIQPproblem.ub(KOrxn) = 0;
 
-    % Solver Parameter
-    if printLevel <=1
-        logFile = 0;
-        if timeLimit > 1e75
-            timeLimit = 1e75;
-        end
-
-        % SOLVE the MIQP problem
-        solution = solveCobraMIQP(MIQPproblem, ...
-            'timeLimit',timeLimit, 'relMipGapTol',  1e-5, ...
-            'printLevel', 1, 'logFile', logFile,...
-            'threads',numWorkers);
-
-        if solution.stat ~= 0
-            v_res = solution.full(v);
-        else
-            v_res = zeros(length(v),1);
-        end
+    % Solver Parameter   
+    if timeLimit > 1e75
+        timeLimit = 1e75;
     end
 
+    % SOLVE the MIQP problem
+    solution = solveCobraMIQP(MIQPproblem, ...
+        'timeLimit',timeLimit, 'relMipGapTol',  1e-5, ...
+        'printLevel', max(printLevel-1,0), 'logFile', 0,...
+        'threads',numWorkers);
 
+    if solution.stat ~= 0
+        v_res = solution.full(v);
+    else
+        v_res = zeros(length(v),1);
+    end
+   
 end

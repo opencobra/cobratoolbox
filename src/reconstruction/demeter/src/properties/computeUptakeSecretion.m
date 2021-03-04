@@ -87,18 +87,14 @@ end
 environment = getEnvironment();
 
 % define the intervals in which the computations will be performed
-if length(modelList)>100000
-    steps=50000;
-elseif length(modelList)>20000
-    steps=10000;
-elseif length(modelList)>5000
+if length(modelList)>5000
     steps=2000;
 elseif length(modelList)>200
     steps=200;
 else
     steps=25;
 end
- 
+
 % in case of reruns, skip if all models are already analyzed
 if ~isempty(modelList)
     for i=1:steps:length(modelList)
@@ -131,15 +127,21 @@ if ~isempty(modelList)
             % open all exchanges
             model = changeRxnBounds(model, exRxns, -1000, 'l');
             model = changeRxnBounds(model, exRxns, 1000, 'u');
-
+            
             % only use the ones that should be analyzed
             exRxns=intersect(exRxns,allExch);
             
             % compute the total uptake and secretion potential
             if ~isempty(exRxns)
-                if ~isempty(ver('distcomp')) && any(strcmp(solver,{'ibm_cplex','tomlab_cplex','cplex_direct'}))
-                    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', solver, exRxns, 'S');
-                else
+                
+                % perform flux variability analysis
+                currentDir=pwd;
+                try
+                    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                        exRxns, 'S');
+                catch
+                    warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+                    cd(currentDir)
                     [minFlux, maxFlux] = fluxVariability(model, 0, 'max', exRxns);
                 end
             else

@@ -1,8 +1,8 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
+function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes, rmDuplRxns)
 % Merge two models. If fields conflict, the data from fields in model1 will be
 % used.
 % USAGE:
-%    [modelNew] = mergeTwoModels(model1,model2,objrxnmodel)
+%    [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes, rmDuplRxns)
 %
 % INPUTS:
 %
@@ -16,6 +16,8 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
 %                     field and the rules field will be cleared and other fields 
 %                     associated with genes will not be merged. GPR rules can be 
 %                     reconstructed using the grRules field.(Default = true)
+%    rmDuplRxns:      Boolean indicating whether duplicate reactions should
+%                     be removed (default=true)
 %
 % OUTPUT:
 %
@@ -25,6 +27,8 @@ function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes)
 %                   - Aarash Bordbar, 07/06/07 based on[model_metE] = CreateMetE(model_E,model_M)) ();
 %                   - Ines Thiele 11/10/2007
 %                   - Thomas Pfau June 2017, adapted to merge all fields.
+%                   - Almut Heinken 02/2021, added option to not remove
+%                   duplicate reactions to reduce computation time
 %
 
 if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
@@ -32,6 +36,10 @@ if ~exist('objrxnmodel','var') || isempty(objrxnmodel)
 end
 if ~exist('mergeGenes','var') || isempty(mergeGenes)
     mergeGenes = true;
+end
+
+if ~exist('rmDuplRxns','var') || isempty(rmDuplRxns)
+    rmDuplRxns = true;
 end
 
 modelNew = struct();
@@ -144,16 +152,18 @@ modelNew = mergeFields(modelNew,model1,model2red,'mets');
 
 showprogress(0.9, 'Finishing touches...');
 
+if rmDuplRxns
 %finish up by A: removing duplicate reactions
 %We will lose information here, but we will just remove the duplicates.
 [modelNew,rxnToRemove,rxnToKeep]= checkDuplicateRxn(modelNew,'S',1,0,1);
+end
 
 %Check, that there are no duplicated IDs in the primary key fields.
 ureacs = unique(modelNew.rxns);
-if ~(numel(modelNew.rxns) == numel(ureacs))
-    error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
-    strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
-end
+% if ~(numel(modelNew.rxns) == numel(ureacs))
+%     error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
+%     strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
+% end
 
 if mergeGenes && (isfield(model1,'rxnGeneMat') || isfield(model2, 'rxnGeneMat'))
     %recreating the rxnGeneMat

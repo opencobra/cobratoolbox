@@ -80,27 +80,47 @@ rxns2Unblock={
 
 rxnsInModel=intersect(model.rxns,rxns2Unblock(:,1),'stable');
 
-if ~isempty(ver('parallel')) && strcmp(solver,'ibm_cplex')
-    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        rxnsInModel, 'S');
-else
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
-end
+% perform flux variability analysis
+currentDir=pwd;
 
-for i=1:length(rxnsInModel)
-    if minFlux(i) < tol && maxFlux(i) < tol
-        gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
-        gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
-        for j=1:length(gapfilledRxns)
-            if ~any(ismember(model.rxns, gapfilledRxns{j}))
-                formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
-                model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
-                resolveBlocked{cnt,1}=gapfilledRxns{j};
-                cnt=cnt+1;
+if ~isempty(rxnsInModel)
+    try
+        [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+            rxnsInModel, 'S');
+    catch
+        warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+        cd(currentDir)
+        FBA=optimizeCbModel(model,'max');
+        if FBA.f > tol
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(rxnsInModel)
+                modelNew=changeObjective(model,rxnsInModel{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
+        end
+    end
+    
+    for i=1:length(rxnsInModel)
+        if minFlux(i) < tol && maxFlux(i) < tol
+            gapfilledRxns=rxns2Unblock(find(strcmp(rxns2Unblock(:,1),rxnsInModel{i})),2:end);
+            gapfilledRxns=gapfilledRxns(~cellfun('isempty',gapfilledRxns));
+            for j=1:length(gapfilledRxns)
+                if ~any(ismember(model.rxns, gapfilledRxns{j}))
+                    formula = database.reactions{ismember(database.reactions(:, 1), gapfilledRxns{j}), 3};
+                    model = addReaction(model, gapfilledRxns{j}, 'reactionFormula', formula);
+                    resolveBlocked{cnt,1}=gapfilledRxns{j};
+                    cnt=cnt+1;
+                end
             end
         end
     end
 end
+
 % Metabolites that are commonly dead ends in the first column, and reactions
 % that can connect them. Passive diffusion of fatty acid metabolites is
 %  assumed. The solutions were determined manually.
@@ -124,16 +144,33 @@ end
 % delete them if that is the case
 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),-1000,'l');
 model=changeObjective(model,previousObj);
-if ~isempty(ver('distcomp')) && any(strcmp(solver,{'ibm_cplex','tomlab_cplex','cplex_direct'}))
-    [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-        resolveBlocked, 'S');
-else
-    [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
-end
 
-cnt=1;
-delArray=[];
+% perform flux variability analysis
+currentDir=pwd;
 if ~isempty(resolveBlocked)
+    try
+        [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+            resolveBlocked, 'S');
+    catch
+        warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+        cd(currentDir)
+        FBA=optimizeCbModel(model,'max');
+        if FBA.f > tol
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', resolveBlocked);
+        else
+            % workaround if FVA may crash due to zero flux throufg BOF
+            for i=1:length(resolveBlocked)
+                modelNew=changeObjective(model,resolveBlocked{i});
+                FBA=optimizeCbModel(modelNew,'min');
+                minFlux(i)=FBA.f;
+                FBA=optimizeCbModel(modelNew,'max');
+                maxFlux(i)=FBA.f;
+            end
+        end
+    end
+    
+    cnt=1;
+    delArray=[];
     for i=1:length(resolveBlocked)
         if abs(minFlux(i))<tol && abs(maxFlux(i))<tol
             model=removeRxns(model,resolveBlocked{i,1});
@@ -141,9 +178,9 @@ if ~isempty(resolveBlocked)
             cnt=cnt+1;
         end
     end
-end
-if ~isempty(delArray)
-    resolveBlocked(delArray,:)=[];
+    if ~isempty(delArray)
+        resolveBlocked(delArray,:)=[];
+    end
 end
 
 end

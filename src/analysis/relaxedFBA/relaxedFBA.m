@@ -90,14 +90,14 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %
 %                     * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                     * .epsilon - stopping criteria - (Default value = 1e-6)
-%                     * .theta0 - initial parameter of the approximation (Default value = 0.5)
+%                     * .theta - initial parameter of the approximation (Default value = 0.5)
 %                                 Theoretically, the greater the value of step parameter, the better the approximation of a step function.
 %                                 However, practically, a greater inital value, will tend to optimise toward a local minima of the approximate 
 %                                 cardinality optimisation problem.
 %
 %                     * .printLevel (Default = 0) Printing the progress of
 %                     the algorithm is useful when trying different values
-%                     of theta0 to start with the appropriate parameter
+%                     of theta to start with the appropriate parameter
 %                     giving the lowest cardinality solution.
 %
 %                     * .maxRelaxR (Default = 1e4), maximum relaxation
@@ -218,8 +218,8 @@ if isfield(param,'epsilon') == 0
     param.epsilon=feasTol*100;
 end
 
-if isfield(param,'theta0') == 0
-    param.theta0   = 0.1;
+if isfield(param,'theta') == 0
+    param.theta   = 0.1;
 end
 
 %make sure C is present if d is present
@@ -414,7 +414,7 @@ else
     % solution.q(1052)
     % ans =
     %   -1.7053e-13
-    if solution.stat==1
+    if solution.stat==1 || solution.stat==3
         feasTol = getCobraSolverParams('LP', 'feasTol');
         solution.p(solution.p<feasTol) = 0;%lower bound relaxation
         solution.q(solution.q<feasTol) = 0;%upper bound relaxation
@@ -427,7 +427,7 @@ else
         relaxedModel.b=relaxedModel.b-solution.r;
         
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
-        if LPsol.stat==1
+        if LPsol.stat==1 || solution.stat==3
             if param.printLevel>0
                 fprintf('%s\n%s\n','Relaxed model is feasible.','Statistics:')
                 fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');

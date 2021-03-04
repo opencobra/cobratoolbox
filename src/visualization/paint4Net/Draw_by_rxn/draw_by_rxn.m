@@ -32,7 +32,7 @@
 %       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
 %       only those metabolites which are products for the specified reactions in 
 %       the argument rxns but in case of 'both' the algorithm visualizes both
-%       – substrates and products - for the specified reactions in the argument
+%       ï¿½ substrates and products - for the specified reactions in the argument
 %       rxns. For both cases the algorithm is using the same rules regarding to 
 %       calculation of the directions for each reaction as for case of 'sub'.
 %       This argument is essential for the command draw_by_met of the Paint4Net v1.0
@@ -77,7 +77,8 @@
 %
 % Andrejs Kostromins 03/10/2012 E-mail: andrejs.kostromins@gmail.com
 
-function [involvedMets,deadEnds,deadRxns]=draw_by_rxn(model,rxns,drawMap,direction,initialMet,excludeMets,flux,save,closev)
+function [involvedMets,deadEnds,deadRxns]=draw_by_rxn(model,rxns,drawMap,direction,initialMet,excludeMets,flux,save,closev,reportDeadEnds)
+
 
   if nargin<7 %if the number of arguments < 7, fill flux vector with x
         for v=1:length(model.rxns)
@@ -91,6 +92,11 @@ function [involvedMets,deadEnds,deadRxns]=draw_by_rxn(model,rxns,drawMap,directi
     if nargin<9
         closev=false; %if the number of arguments < 9, closev=false
     end
+if  nargin<10
+    reportDeadEnds = 0; % no deadends are returns
+    deadEnds =[];
+    deadRxns =[];
+end
 
 if ~isempty(flux) %if flux vector is not empty
     Start_time2=clock;
@@ -396,6 +402,7 @@ if ~isempty(flux) %if flux vector is not empty
         DeadRxnsID2(1)={'-1'};%declare variable
         
         %performe FVA
+        if reportDeadEnds == 1
         [minFlux,maxFlux] = fluxVariability(model,100,'max',rxns);
         
         for v=1:length(minFlux)
@@ -409,6 +416,7 @@ if ~isempty(flux) %if flux vector is not empty
         end     
         
         deadRxns=DeadRxnsID2';  %return list of dead reactions 
+        end
 
         if strcmp(drawMap,'true') %if drawMap=true
             

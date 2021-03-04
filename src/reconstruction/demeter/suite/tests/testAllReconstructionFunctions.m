@@ -102,8 +102,8 @@ end
 
 % define the intervals in which the testing and regular saving will be
 % performed
-if length(modelList)>20000
-    steps=10000;
+if length(modelList)>5000
+    steps=1000;
 elseif length(modelList)>1000
     steps=500;
 elseif length(modelList)>200

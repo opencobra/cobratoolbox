@@ -25,6 +25,8 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = run
 %                          (default: "Reconstructions")
 % numWorkers               Number of workers in parallel pool (default: 2)
 % sbmlFolder               Folder where SBML files, if desired, will be saved
+% overwriteModels          Define whether already finished reconstructions
+%                          should be overwritten (default: false)
 %
 % OUTPUTS
 % reconVersion             Name of the refined reconstruction resource
@@ -50,6 +52,8 @@ parser.addParameter('inputDataFolder', '', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
 parser.addParameter('sbmlFolder', '', @ischar);
+parser.addParameter('overwriteModels', false, @islogical);
+
 
 parser.parse(draftFolder, varargin{:});
 
@@ -62,6 +66,7 @@ inputDataFolder = parser.Results.inputDataFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
 sbmlFolder = parser.Results.sbmlFolder;
+overwriteModels = parser.Results.overwriteModels;
 
 if isempty(infoFilePath)
     % create a file with reconstruction names based on file names. Note:
@@ -119,11 +124,13 @@ if size(modelList,1)>0
     modelList(~contains(modelList(:,1),'.mat'),:)=[];
     modelList(:,1)=strrep(modelList(:,1),'.mat','');
     
-    % remove models that were already created
-    [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
-    if ~isempty(C)
-        models(IA,:)=[];
-        folders(IA,:)=[];
+    if ~overwriteModels
+        % remove models that were already created
+        [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
+        if ~isempty(C)
+            models(IA,:)=[];
+            folders(IA,:)=[];
+        end
     end
 end
 
@@ -185,6 +192,7 @@ for i=1:steps:length(models)
         [model,summary]=refinementPipeline(draftModel,microbeID, infoFilePath, inputDataFolder);
         modelsTmp{j}=model;
         summariesTmp{j}=summary;
+
         outputFileNamesTmp{j,1}=microbeID;
         
         %% save translated version of the draft model as a mat file
@@ -201,7 +209,7 @@ for i=1:steps:length(models)
             model=draftModelsTmp{j};
             save([translatedDraftsFolder filesep outputFileNamesTmp{j,1}],'model');
         end
-        summaries.(outputFileNamesTmp{j,1})=summariesTmp{j};
+        summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end
     save([summaryFolder filesep 'summaries_' reconVersion],'summaries');
 end
@@ -244,6 +252,9 @@ for i=1:length(pipelineFields)
     end
     writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
+
+% delete unneeded files
+delete('rBioNetDB.mat');
 
 %% create SBML files (default=not created)
 

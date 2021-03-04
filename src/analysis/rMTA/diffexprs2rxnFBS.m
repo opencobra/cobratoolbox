@@ -80,6 +80,8 @@ geneFBS_aux(pos_down) = -1;
 % Generate geneFBS for all genes in the model
 geneFBS = zeros(length(model.genes),1);
 [~,idx] = ismember(diff_exprs.gene,model.genes);
+geneFBS_aux = geneFBS_aux(idx~=0);
+idx= idx(idx~=0);
 geneFBS(idx) = geneFBS_aux;
 
 % If a gene is down-regulated in the source state,the flux activity should
@@ -103,17 +105,22 @@ end
 
 % Transform geneFBS into rxnFBS
 % in order to produce changes, all changes must be in the same sense
+minSum = false;
+parsedGPR = GPRparser(model,minSum);
 
 % Calculate changes to produce more flux
 geneFBS_plus = geneFBS;
 geneFBS_plus.value(geneFBS_plus.value<=0) = 0;
-rxnFBS_plus = mapExpressionToReactions(model, geneFBS_plus);  % COBRA function
+geneFBS_plus.value(geneFBS_plus.value>0) = +1;
+[gene_id_plus, gene_expr_plus] = findUsedGenesLevels(model,geneFBS_plus);
+rxnFBS_plus = selectGeneFromGPR(model, gene_id_plus, gene_expr_plus, parsedGPR, minSum);  
 
 % Calculate changes to produce less flux
 geneFBS_minus = geneFBS;
 geneFBS_minus.value(geneFBS_minus.value>=0) = 0;
 geneFBS_minus.value(geneFBS_minus.value<0) = +1;
-rxnFBS_minus = mapExpressionToReactions(model, geneFBS_minus);  % COBRA function
+[gene_id_minus, gene_expr_minus] = findUsedGenesLevels(model,geneFBS_minus);
+rxnFBS_minus = selectGeneFromGPR(model, gene_id_minus, gene_expr_minus, parsedGPR, minSum); 
 
 % all changes in same sense or they neglect each other
 rxnFBS_plus(rxnFBS_plus<=0) = 0;

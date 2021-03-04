@@ -93,12 +93,17 @@ for j=1:length(fields)
             if sum(plotdata) ~= length(plotdata)
                 violinplot(plotdata, {reconVersion});
                 ylabel(label)
-                set(gca, 'FontSize', 16)
                 box on
                 h=title(fields{j});
                 ylim([0 max(plotdata)+1])
                 set(h,'interpreter','none')
                 set(gca,'TickLabelInterpreter','none')
+                if contains(pwd,'_refined')
+                    suptitle('Refined reconstructions')
+                elseif contains(pwd,'_draft')
+                    suptitle('Draft reconstructions')
+                end
+                set(gca, 'FontSize', 16)
                 print(fields{j},'-dpng','-r300')
             end
         end
@@ -164,7 +169,7 @@ h=bar(plotdata);
 barvalues(h)
 h(1).FaceColor = [1 0 0];
 h(2).FaceColor = [0 0 1];
-set(gca, 'FontSize', 8)
+set(gca, 'FontSize', 12)
 box on
 h=title('Features succesfully and unsuccessfully captured by reconstructions');
 xticklabels(labels);
@@ -173,6 +178,11 @@ xtickangle(45)
 set(h,'interpreter','none')
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
+if contains(pwd,'_refined')
+    suptitle('Refined reconstructions')
+elseif contains(pwd,'_draft')
+    suptitle('Draft reconstructions')
+end
 print('FN_vs_TPs','-dpng','-r300')
 
 close all
