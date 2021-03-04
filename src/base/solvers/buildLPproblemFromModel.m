@@ -1,4 +1,4 @@
-function optProblem = buildOptProblemFromModel(model, verify)
+function optProblem = buildLPproblemFromModel(model, verify)
 % Builds an COBRA Toolbox LP/QP problem structure from a COBRA Toolbox model structure.
 %
 % 

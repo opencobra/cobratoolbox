@@ -104,6 +104,11 @@ switch solverType
     case 'MILP'
         global CBT_MILP_PARAMS
         parametersGlobal = CBT_MILP_PARAMS;
+    case 'EP'
+        global CBT_EP_PARAMS
+        parametersGlobal = CBT_EP_PARAMS;
+        valDef.feasTol = 1e-6; % (primal) feasibility tolerance
+        valDef.optTol = 1e-6;  % (dual) optimality tolerance
     case 'MIQP'
         global CBT_MIQP_PARAMS
         parametersGlobal = CBT_MIQP_PARAMS;
