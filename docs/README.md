@@ -42,10 +42,12 @@ docker build -t opencobra/cobratoolbox-docs .
 
 To build the docs:
 
-(TODO)
 
 ```
-docker run --rm opencobra/cobratoolbox-docs
+docker run --rm -v /var/tmp:/output opencobra/cobratoolbox-docs
 ```
 
+This will deposit the built documentation in /var/tmp/cobratoolbox_doc_timestamp.tar.gz
+You can specify an alternative directory by changing the location of
+the /output mountpoint in the container.
 
