@@ -96,7 +96,7 @@ else
 end
 
 for i = 1:steps:size(toCreate,1)
-    if size(toCreate,1)>steps-1 && (size(toCreate,1)-1)>=steps-1
+    if size(toCreate,1)-i >= steps-1
         endPnt=steps-1;
     else
         endPnt=size(toCreate,1)-i;
@@ -344,15 +344,14 @@ reactionsToReplace = {
     'DGORi AND SBTD_D2 AND GALM1r AND GNOXmq','GNOXmq','GNOXmqi'
     'DGORi AND SBTD_D2 AND GALM1r AND GNOXuq','GNOXuq','GNOXuqi'
     'LPCDH AND LPCOX AND NADH6pp AND ATPS4pp','LPCDH','LPCDHi'
-    'CITt2pp AND CITCAtpp AND CAt4ipp','CITCAt','CITCAtipp'
+    'CITt2pp AND CITCAtpp AND CAt4ipp','CITCAt','CITCAti'
     };
 
-% set a solver if not done yet
-global CBT_LP_SOLVER
-solver = CBT_LP_SOLVER;
-if isempty(solver)
-    initCobraToolbox;
-end
+% List Western diet constraints to test if the pan-model produces
+% reasonable ATP flux on this diet.
+dietConstraints = readtable('WesternDietAGORA2.txt');
+dietConstraints = table2cell(dietConstraints);
+dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
 
 dInfo = dir(panPath);
 panModels = {dInfo.name};
@@ -381,9 +380,6 @@ for i = 1:length(panModels)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
             for k = 1:size(rxns, 2)
-                if ~isempty(intersect(rxns{k},'CITt2ipp'))
-                    rxns{k}=strrep(rxns{k},'CITt2ipp','CITt2pp');
-                end
                 RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
                 if contains(RxForm,'[e]')
                     newName=[rxns{k} 'pp'];
@@ -447,22 +443,23 @@ for i = 1:length(panModels)
                 FBA = optimizeCbModel(modelTest, 'max');
                 if FBA.f > tol
                     model = modelTest;
+                    % account for periplasmatic versions
+                    % fix some special cases
+                    if ~isempty(intersect(model.rxns,'CITt2ipp'))
+                        model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');
+                        
+                    end
+                    if ~isempty(intersect(model.rxns,'CITCAtiipp'))
+                        model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');
+                    end
                 end
             end
         end
         % set back to unlimited medium
         model = changeRxnBounds(model, model.rxns(strmatch('EX_', model.rxns)), -1000, 'l');
-        % account for periplasmatic versions
-        % fix some special cases
-        if ~isempty(intersect(model.rxns,'CITt2ipp'))
-            model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');
-        end
-        if ~isempty(intersect(model.rxns,'CITCAtiipp'))
-            model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');
-        end
         % Rebuild model consistently
         %         model = rebuildModel(model,database);
-        save(modelPath, 'model');
+        save([panPath filesep panModels{i}], 'model');
     end
 end
 
@@ -474,8 +471,7 @@ function model=buildPanModel(agoraPath, models, taxonToCreate, infoFile, databas
 
 tol = 1e-5;
 
-% List Western diet constraints to test if the pan-model produces
-% reasonable ATP flux on this diet.
+% List Western diet constraints
 dietConstraints = readtable('WesternDietAGORA2.txt');
 dietConstraints = table2cell(dietConstraints);
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
