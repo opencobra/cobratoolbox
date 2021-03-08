@@ -1,6 +1,5 @@
 function rMTAsaveInExcel(xls_filename, TSscore, deletedGenes, alpha_values, varargin)
 % Save in Excel all the results calculated using rMTA.
-% It is neccesary to have Spreadsheet Link™ installed
 %
 % USAGE:
 %
