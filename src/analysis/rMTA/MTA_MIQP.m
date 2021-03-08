@@ -126,7 +126,7 @@ else
         'printLevel', max(printLevel-1,0), 'logFile', 0,...
         'threads',numWorkers);
 
-    if solution.stat ~= 0
+    if solution.stat == 1
         v_res = solution.full(v);
     else
         v_res = zeros(length(v),1);
