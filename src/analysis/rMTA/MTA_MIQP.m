@@ -10,6 +10,8 @@ function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 %    OptimizationModel:    Cplex Model struct
 %    KOrxn:                perturbation in the model (reactions)
 %    numWorkers:           number of threads used by Cplex.
+%    FORCE_CPLEX:          1 to force CPLEX solver, 0 (default) for COBRA 
+%                          solver.
 %    printLevel:           1 if the process is wanted to be shown on the
 %                          screen, 0 otherwise. Default: 1.
 %
@@ -29,12 +31,13 @@ addRequired(p, 'KOrxn');
 addParameter(p, 'numWorkers', 0,@(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'timeLimit', inf,@(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'printLevel', 1,@(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'FORCE_CPLEX', 0,@(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, OptimizationModel, KOrxn, varargin{:});
 numWorkers = p.Results.numWorkers;
 timeLimit = p.Results.timeLimit;
 printLevel = max(p.Results.printLevel, 0);
-
+FORCE_CPLEX = p.Results.FORCE_CPLEX;
 
 %Indexation of variables
 v = OptimizationModel.idx_variables.v;
@@ -48,7 +51,7 @@ OptimizationModel = rmfield(OptimizationModel,'idx_variables');
 % implemented
 global SOLVERS;
 global CBT_MIQP_SOLVER
-if SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cplex')
+if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cplex'))
     % Generate CPLEX model
     cplex = Cplex('MIQP');
     CplexModel = OptimizationModel;
@@ -126,7 +129,7 @@ else
         'printLevel', max(printLevel-1,0), 'logFile', 0,...
         'threads',numWorkers);
 
-    if solution.stat ~= 0
+    if solution.stat == 1
         v_res = solution.full(v);
     else
         v_res = zeros(length(v),1);
