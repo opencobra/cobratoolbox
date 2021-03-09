@@ -43,6 +43,8 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %    numWorkers:         Integer: is the maximun number of workers
 %                        used by the solver. 0 = automatic, 1 = sequential,
 %                        > 1 = parallel. (default = 0)
+%    FORCE_CPLEX:        1 to force CPLEX solver, 0 (default) for COBRA 
+%                        solver.
 %    printLevel:         Integer. 1 if the process is wanted to be shown
 %                        on the screen, 0 otherwise. (default = 1)
 %
@@ -73,6 +75,7 @@ addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
 addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'deprecated_rTS', 0, @(x)islogical(x)||isscalar(x));
+addParameter(p, 'FORCE_CPLEX', 0,@(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, model, rxnFBS, Vref, varargin{:});
 alpha = p.Results.alpha;
@@ -85,6 +88,8 @@ SeparateTranscript = p.Results.SeparateTranscript;
 numWorkers = p.Results.numWorkers;
 printLevel = p.Results.printLevel;
 deprecated_rTS = p.Results.deprecated_rTS;
+FORCE_CPLEX = p.Results.FORCE_CPLEX;
+
 
 if printLevel >0
     fprintf('===================================\n');
@@ -203,7 +208,7 @@ else
             for w = 1:100
                 i = i+1;
                 KOrxn = find(geneKO.matrix(:,i));
-                v_res = MTA_MIQP (CplexModelBest, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel);
+                v_res = MTA_MIQP (CplexModelBest, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel, 'FORCE_CPLEX', FORCE_CPLEX);
                 Vres.bMTA{i_alpha}(:,i) = v_res;
                 if ~isempty(KOrxn) && norm(v_res)>1
                     score_best(i,i_alpha) = MTA_TS(v_res,Vref,rxnFBS_best);
@@ -351,7 +356,7 @@ else
             for w = 1:100
                 k = k+1;
                 KOrxn = find(geneKO.matrix(:,k));
-                v_res = MTA_MIQP (CplexModelWorst, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel);
+                v_res = MTA_MIQP (CplexModelWorst, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel, 'FORCE_CPLEX', FORCE_CPLEX);
                 Vres.wMTA{k_alpha}(:,k) = v_res;
                 if ~isempty(KOrxn) && norm(v_res)>1
                     score_worst(k,k_alpha) = MTA_TS(v_res,Vref,rxnFBS_worst);
