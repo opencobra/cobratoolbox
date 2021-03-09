@@ -10,7 +10,7 @@ function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 %    OptimizationModel:    Cplex Model struct
 %    KOrxn:                perturbation in the model (reactions)
 %    numWorkers:           number of threads used by Cplex.
-%    FORCE_CPLEX:          1 to force CPLEX solver, 0 (default) for COBRA 
+%    FORCE_CPLEX:          1 to force CPLEX solver, 0 (default) for COBRA
 %                          solver.
 %    printLevel:           1 if the process is wanted to be shown on the
 %                          screen, 0 otherwise. Default: 1.
@@ -22,6 +22,7 @@ function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 26/10/2018, University of Navarra, CIMA & TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 09/03/2021, University of Navarra, CIMA & TECNUN School of Engineering.
 
 p = inputParser; % check the input information
 % check requiered arguments
@@ -55,7 +56,7 @@ if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cp
     % Generate CPLEX model
     cplex = Cplex('MIQP');
     CplexModel = OptimizationModel;
-
+    
     b_L(CplexModel.csense == 'E') = CplexModel.b(CplexModel.csense == 'E');
     b_U(CplexModel.csense == 'E') = CplexModel.b(CplexModel.csense == 'E');
     b_L(CplexModel.csense == 'G') = CplexModel.b(CplexModel.csense == 'G');
@@ -68,12 +69,12 @@ if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cp
     CplexModel.obj = CplexModel.c;
     CplexModel.ctype = CplexModel.vartype;
     CplexModel.sense = 'minimize';
-
+    
     cplex.Model = CplexModel;
     % include the knock-out reactions
     cplex.Model.lb(KOrxn) = 0;
     cplex.Model.ub(KOrxn) = 0;
-
+    
     % Cplex Parameter
     if numWorkers>0
         cplex.Param.threads.Cur = numWorkers;
@@ -91,7 +92,7 @@ if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cp
     cplex.Param.mip.tolerances.mipgap.Cur = 1e-5;
     % cplex.Param.mip.tolerances.absmipgap.Cur = 1e-8;
     % cplex.Param.threads.Cur = 16;
-
+    
     % SOLVE the CPLEX problem if not singular
     try
         cplex.solve();
@@ -99,7 +100,7 @@ if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cp
         v_res = zeros(length(v),1);
         return
     end
-
+    
     if cplex.Solution.status ~= 103
         v_res = cplex.Solution.x(v);
         solution = cplex.Solution;
@@ -107,7 +108,7 @@ if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cp
         v_res = zeros(length(v),1);
         solution = nan;
     end
-
+    
     % clear the cplex object
     delete(cplex)
     clear cplex
@@ -117,22 +118,29 @@ else
     % include the knock-out reactions
     MIQPproblem.lb(KOrxn) = 0;
     MIQPproblem.ub(KOrxn) = 0;
-
-    % Solver Parameter   
+    
+    % Solver Parameter
     if timeLimit > 1e75
         timeLimit = 1e75;
     end
-
+    
     % SOLVE the MIQP problem
     solution = solveCobraMIQP(MIQPproblem, ...
         'timeLimit',timeLimit, 'relMipGapTol',  1e-5, ...
         'printLevel', max(printLevel-1,0), 'logFile', 0,...
         'threads',numWorkers);
-
-    if solution.stat == 1
+    
+    if isnumeric(solution.stat) && solution.stat == 1
+        v_res = solution.full(v);
+    elseif ischar(solution.stat) && strcmp(solution.stat, 'OPTIMAL')
         v_res = solution.full(v);
     else
-        v_res = zeros(length(v),1);
+        % Use of try for different outputs of COBRA MIQP solver
+        try
+            v_res = solution.full(v);
+        catch
+            v_res = zeros(length(v),1);
+        end
     end
-   
+    
 end
