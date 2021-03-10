@@ -17,8 +17,15 @@ function training_data = prepareTrainingData(model, printLevel, params)
 %
 %
 % OUTPUTS:
-%    training_data:                    strucutre with fields
+%    trainingData:      structure with the following fields:
 %
+%                         * .S - the stoichiometric matrix of measured reactions
+%                         * .G - the group incidence matrix
+%                         * .dG0 - the observation vector (standard Gibbs energy of reactions)
+%                         * .weights - the weight vector for each reaction in `S`
+%                         * .Model2TrainingMap
+
+
 %                                        * .DfG0 - `m x 1` array of component contribution estimated
 %                                          standard Gibbs energies of formation.
 %                                        * .covf - `m x m` estimated covariance matrix for standard
@@ -46,9 +53,22 @@ else
         use_model_pKas_by_default=params.use_model_pKas_by_default;
     end
 end
+
 % load the training data (from TECRDB, Alberty, etc.)
 training_data = loadTrainingData();
-
+% OUTPUT:
+%    training_data:       structure with data for Component Contribution
+%                         *.S   `m x n` stoichiometric matrix of training data
+%                         *.cids: `m x 1` compound ids
+%                         *.dG0_prime: `n x 1`
+%                         *.T:  `n x 1`
+%                         *.I:  `n x 1`
+%                         *.pH:  `n x 1`
+%                         *.pMg:  `n x 1`
+%                         *.weights:  `n x 1`
+%                         *.balance:  `n x 1`
+%                         *.cids_that_dont_decompose: k x 1 ids of compounds that do not decompose
+                     
 % get the InChIs for all the compounds in the training data
 % (note that all of them have KEGG IDs)
 kegg_inchies = getInchies(training_data.cids, use_cached_kegg_inchis);

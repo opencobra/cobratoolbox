@@ -1,4 +1,4 @@
-function pseudoisomers = estimate_pKa(mets, inchi, npKas, takeMajorTaut)
+function [pseudoisomers,errorMets] = estimate_pKa(mets, inchi, npKas, takeMajorTaut, printLevel)
 % Estimates pKa values with ChemAxon's Calculator plugins and determines
 % all physiologically relevant pseudoisomers.
 %
@@ -78,10 +78,14 @@ else
     takeMajorTaut = 'true';
 end
 
+if ~exist('printLevel','var')
+    printLevel = 0;
+end
+
 % Only estimate pKa for unique metabolites to increase speed
 bool = ~cellfun('isempty',inchi);
 inchi(~bool) = {''};
-bool(ismember(inchi,{'InChI=1/p+1/fH/q+1'; 'InChI=1/H2/h1H'})) = false; % do not estimate for H+ and H2
+bool(ismember(inchi,{'InChI=1/p+1/fH/q+1'; 'InChI=1/H2/h1H';'InChI=1S/p+1'})) = false; % do not estimate for H+ and H2
 
 [umets,crossi,crossj] = unique(mets(bool));
 uinchi = inchi(bool);
@@ -161,15 +165,13 @@ if length(result) ~= length(uinchi)
 end
 
 errorMets = {};
+i=1;
 for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
-    if 1
+    if printLevel>0
         disp(n)
         disp(umets{n})
-        if n==433
-            pause(0.1)
-        end
     end
 
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
@@ -183,7 +185,9 @@ for n = 1:length(uinchi)
         pkalist = sort(pkalist,'descend');
         pkalist = pkalist(pkalist >= 0 & pkalist <= 14);
     else
-        errorMets = [errorMets; {met}];
+        errorMets{i,1} = met;
+        errorMets{i,2} = currentInchi;
+        i=i+1;
         upKa(n).success = false;
         pkalist = [];
     end
@@ -228,7 +232,8 @@ end
 
 
 if ~isempty(errorMets)
-    fprintf(['\nChemAxon''s pKa calculator plugin returned an error for metabolites:\n' sprintf('%s\n',errorMets{:})]);
+    fprintf(['\nChemAxon''s pKa calculator plugin returned an error for ' int2str(i-1) ' metabolites:\n']);
+    disp(errorMets)
 end
 
 % Create final output structure

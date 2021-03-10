@@ -8,10 +8,22 @@ cc_dir = which('addThermoToModel.m');
 [status,result] = system('python2 --version');
 if status~=0
     disp(result)
+    %check the current version of python that is running
+    [status,result] = system('python --version');
+    disp('Current version of python that is running:')
+    disp(result)
+    
+    %find out what python is running and change to another version of
+    %python (after a new version of python is installe)
+    %     which python
+    %     ls -al /usr/bin/python
+    %     sudo rm -rf /usr/bin/python
+    %     sudo ln -s /usr/bin/python3.7 /usr/bin/python
+    
     error('python2 should be installed')
 end
 
-%test if call to cxcalc works
+%test if call to cxcalc is installed
 [status,result] = system('cxcalc');
 if status ~= 0
     if status==127
@@ -29,6 +41,18 @@ if status ~= 0
         end
     end
 end
+
+
+[FILEPATH,NAME,EXT] = fileparts(which('testVonBertalanffy.m'));
+%test if call to cxcalc is working
+[status,result] = system(['cxcalc pka -a 20 -b 20 -M false ' FILEPATH filesep 'test.inchi']);
+if contains(result,'FAILED')
+    disp(result)
+    error('Check that ChemAxon Marvin Beans is installed, but may not have a working licence.')
+else
+    disp('ChemAxon Marvin Beans is installed and working.')
+end
+
 
 %check if call to obabel works
 [status,result] = system('ldd /usr/bin/obabel');

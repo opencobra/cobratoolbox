@@ -1,4 +1,4 @@
-function [model, params] = componentContribution(model, trainingData)
+function [model, solution] = componentContribution(model, trainingData, param)
 % Perform the component contribution method
 %
 % USAGE:
@@ -30,81 +30,164 @@ function [model, params] = componentContribution(model, trainingData)
 %                           Gibbs energy estimates.  Will be large for
 %                           reactions that are not covered by component
 %                           contributions.
-%    params:            structure
+%    solution:            structure containing various solution vectors
 
 if ~isfield(model,'SIntRxnBool')
     model = findSExRxnInd(model);
 end
+if ~exist('param','var')
+    param=struct();
+end
+if ~isfield(param,'debug')
+    param.debug = 1;
+end
 
 fprintf('Running Component Contribution method\n');
-[S,G,dG0,weights]=deal(trainingData.S, trainingData.G, trainingData.dG0, trainingData.weights);
-[m, n] = size(S);
+[S,G,DrG0,weights]=deal(trainingData.S, trainingData.G, trainingData.dG0, trainingData.weights);
+[mlt, nlt] = size(S);
+
 %assert Generate an error when a condition is violated.
-assert (size(G, 1) == m);
-assert (size(dG0, 1) == n);
-assert (size(dG0, 2) == 1);
+assert (size(G, 1) == mlt);
+assert (size(DrG0, 1) == nlt);
+assert (size(DrG0, 2) == 1);
 assert (length(weights) == size(S, 2));
 
-% Apply weighing
-W = diag(weights);
-GS = G' * S;
-
+%%
 %[inv_A, r, P_R, P_N] = invertProjection(A, epsilon)
 %     inv_A - the pseudoinverse of A
 %     r     - the rank of A
 %     P_R   - the projection matrix onto the range(A)
 %     P_N   - the projection matrix onto the null(A')
-% Linear regression for the reactant layer (aka RC)
-[inv_S, r_rc, P_R_rc, P_N_rc] = invertProjection(S * W);
 
-% calculate the reactant contribution
-dG0_rc = inv_S' * W * dG0;
+if 0
+    % Linear regression for the reactant layer (aka RC)
+    [inv_St, r_rc, P_R_rc, P_N_rc] = invertProjection(S');
+    
+    % calculate the reactant contribution
+    dfG0_rc = inv_St*DrG0;
+    drG0_rc = P_R_rc*DrG0;
+    
+    % Linear regression for the group layer (aka GC)
+    [inv_StG, r_gc, P_R_gc, P_N_gc] = invertProjection(S'*G);
+    
+    % calculate the group contribution
+    DgG0_gc = inv_StG*DrG0;
+    DrG0_gc = P_R_gc*DrG0;
+    
+    % Calculate the component contribution
+    DfG0_cc = dfG0_rc + G*DgG0_gc;
+    
+    %projection matrices onto range(S) and null(S')
+    [~,~, P_R_S, P_N_St] = invertProjection(S);
+    %DfG0_cc = P_R_S*inv_St*DrG0 + P_N_St*G*inv_StG*DrG0;
+    %DfG0_cc = (P_R_S*inv_St + P_N_St*G*inv_StG) * DrG0;
+    DfG0_cc = P_R_S*dfG0_rc + P_N_St*G*DgG0_gc;
+    %DrG0_cc = S'*(P_R_S*inv_St + P_N_St*G*inv_StG) * DrG0;
+    %DrG0_cc = S'*DfG0_cc;
+    
+    DrG0_cc = S'*DfG0_cc;
+    
+    % Calculate the residual of the reactant contribution
+    e_rc = DrG0 - drG0_rc;
+    %e_rc = (In - P_R_rc)*DrG0;
+    
+    %mean square error of reactant contribution (unweighted squared error divided by N - rank)
+    MSE_rc = (e_rc' * e_rc) / (min(size(S)) - r_rc);
+    
+    % Calculate the residual of the group contribution
+    e_gc = DrG0 - DrG0_gc;
+    
+    %mean square error of group contribution
+    MSE_gc = (e_gc' * e_gc) / (min(size(S'*G)) - r_gc);
+    
 
-% Linear regression for the group layer (aka GC)
-[inv_GS, r_gc, P_R_gc, P_N_gc] = invertProjection(GS * W);
+    
+else
+    GS = G' * S;
+    
+    % Linear regression for the reactant layer (aka RC)
+    [inv_S, r_rc, P_R_rc, P_N_rc] = invertProjection(S);
+    
+    % calculate the reactant contribution
+    DfG0_rc = inv_S'* DrG0;
+    
+    % Linear regression for the group layer (aka GC)
+    [inv_GS, r_gc, P_R_gc, P_N_gc] = invertProjection(GS);
+    
+    % calculate the group contribution
+    DgG0_gc = inv_GS'* DrG0;
+    
+    % Calculate the contributions in the stoichiometric space
+    DfG0_cc = P_R_rc * DfG0_rc + P_N_rc * G * DgG0_gc;
+    
+    % Calculate the residual error (unweighted squared error divided by N - rank)
+    e_rc = (DrG0 - S' * DfG0_rc);
+    MSE_rc = (e_rc' *  e_rc) / (min(size(S)) - r_rc);
+    
+    e_gc = (DrG0 - GS' * DgG0_gc);
 
-% calculate the group contribution
-dG0_gc = inv_GS' * W * dG0;
+    MSE_gc = (e_gc' * e_gc) / (min(size(GS)) - r_gc);
+    
+end
 
-% Calculate the contributions in the stoichiometric space
-dG0_cc = P_R_rc * dG0_rc + P_N_rc * G * dG0_gc;
+%DrG0_cc = S'*DfG0_cc;
 
-% Calculate the residual error (unweighted squared error divided by N - rank)
-e_rc = (S' * dG0_rc - dG0); %sign opposite to eq 3 in suText_S1.pdf
-MSE_rc = (e_rc' * W * e_rc) / (n - r_rc);
+%calculate the residual of the model
+e_m = e_gc - e_rc;
 
-%e_gc = (S' * G_gc - dG0); - was this in Elad's v1 matlab code
-e_gc = (GS' * dG0_gc - dG0); %this is as in Elad's v2 matlab code on git
-%e_gc = (GS.T * dG0_gc - b); %this is as in Elad's python code on git
-MSE_gc = (e_gc' * W * e_gc) / (n - r_gc);
+%mean square error of component contribution model
+MSE_em = sqrt((e_m' * e_m) / (size(GS,2) - r_gc));
+
+MSE_inf = 1e10;
+    
+% Calculate the uncertainty covariance matrices
+[inv_SWS, ~, ~, ~] = invertProjection(S*S');
+
+epsilon = 1e-10;
+[inv_GSWGS, ~, ~, ~] = invertProjection(GS*GS',epsilon);
+%zero out small entries
+P_N_gc(abs(P_N_gc)<epsilon)=0;
+
+if 0
+    V_rc = P_R_rc * inv_SWS * P_R_rc;
+    V_gc  = P_N_rc * G * inv_GSWGS * G' * P_N_rc;
+    V_inf = P_N_rc * G * P_N_gc * G' * P_N_rc;
+else
+    V_rc = inv_SWS;
+    V_gc  = G * inv_GSWGS * G';
+    V_inf = G * P_N_gc * G';
+end
 
 MSE_inf = 1e10;
 
-% Calculate the uncertainty covariance matrices
-[inv_SWS, ~, ~, ~] = invertProjection(S*W*S');
-[inv_GSWGS, ~, ~, ~] = invertProjection(GS*W*GS');
-
-V_rc = P_R_rc * inv_SWS * P_R_rc;
-V_gc  = P_N_rc * G * inv_GSWGS * G' * P_N_rc;
-V_inf = P_N_rc * G * P_N_gc * G' * P_N_rc;
-
-% Put all the calculated data in 'params' for the sake of debugging
-params.contributions = {dG0_rc, dG0_gc};
-params.covariances = {V_rc, V_gc, V_inf};
-params.MSEs = {MSE_rc, MSE_gc, MSE_inf};
-params.projections = {              P_R_rc, ...
-                      P_R_gc * G' * P_N_rc, ...
-                      P_N_gc * G' * P_N_rc};
+% Put all the calculated data in 'solution' for the sake of debugging
+if param.debug
+    solution.DfG0_rc = DfG0_rc;
+    solution.DgG0_gc = DgG0_gc;
+    solution.V_rc = V_rc;
+    solution.V_gc = V_gc;
+    solution.V_inf = V_inf;
+    solution.MSE_rc = MSE_rc;
+    solution.MSE_gc = MSE_gc;
+    solution.MSE_inf = MSE_inf;
+    solution.P_R_rc = P_R_rc;
+    solution.P_N_rc = P_N_rc;
+    
+    DgG0_gc = solution.DgG0_gc(solution.DgG0_gc~=0);
+    DgG0_gc_sorted = sort(DgG0_gc);
+    figure;
+    plot(DgG0_gc_sorted,'.')
+    title('Sorted nonzero DgG0_gc')
+else
+    solution = [];
+end
 
 % Calculate the total of the contributions and covariances
 cov_dG0 = V_rc * MSE_rc + V_gc * MSE_gc + V_inf * MSE_inf;
 
-% dG0_cc
-% cov_dG0       %uf = diag(sqrt(model.covf));
-% params
 
 % Map estimates back to model
-model.DfG0 = dG0_cc(trainingData.Model2TrainingMap);
+model.DfG0 = DfG0_cc(trainingData.Model2TrainingMap);
 model.covf = cov_dG0(trainingData.Model2TrainingMap, trainingData.Model2TrainingMap);
 
 %model.DfG0_Uncertainty = diag(sqrt(model.covf));
@@ -112,7 +195,7 @@ diag_conf=diag(model.covf);
 if any(diag_conf<0)
     error('diag(model.covf) has a negative entries')
 end
-model.DfG0_Uncertainty=sqrt(diag_conf);
+model.DfG0_Uncertainty=columnVector(sqrt(diag_conf));
 if ~real(model.DfG0_Uncertainty)
     error('DfG0_Uncertainty has a complex part')
 end
@@ -121,22 +204,23 @@ if any(DfG0NaNBool)
     error([int2str(nnz(DfG0NaNBool)) ' DfG0 are NaN']);
 end
 
-diag_St_conf_S=diag(model.S'*model.covf*model.S);
-model.DrGt0_Uncertainty(model.SIntRxnBool)=NaN;
+diag_St_conf_S=diag(model.S'*diag(diag(model.covf))*model.S);
+
+diag_St_conf_S(~model.SIntRxnBool)=0;
 if any(diag_St_conf_S<0)
     if norm(diag_St_conf_S(diag_St_conf_S<0))<1e-12
         diag_St_conf_S(diag_St_conf_S<0)=0;
     else
-        error('diag(model.S''*model.covf*model.S) has a large negative entries')
+        error('diag(model.S''*model.covf*model.S) has large negative entries')
     end
 end
-model.DrGt0_Uncertainty = sqrt(diag_St_conf_S);
-if ~real(model.DrGt0_Uncertainty)
-    error('DrGt0_Uncertainty has a complex part')
+model.DrG0_Uncertainty = columnVector(sqrt(diag_St_conf_S));
+if ~real(model.DrG0_Uncertainty)
+    error('DrG0_Uncertainty has a complex part')
 end
-model.DrGt0_Uncertainty(~model.SIntRxnBool)=NaN;
-% model.DrGt0_Uncertainty(model.DrGt0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-% model.DrGt0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
+model.DrG0_Uncertainty(~model.SIntRxnBool,1)=NaN;
+% model.DrG0_Uncertainty(model.DrG0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
+% model.DrG0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
 
 % Debug
 % model.G = trainingData.G(trainingData.Model2TrainingMap,:);

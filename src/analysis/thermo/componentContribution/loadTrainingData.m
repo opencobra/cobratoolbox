@@ -1,4 +1,4 @@
-function training_data = loadTrainingData(formation_weight)
+function training_data = loadTrainingData(param)
 % Generates the structure that contains all the training data needed for
 % Component Contribution.
 %
@@ -12,9 +12,36 @@ function training_data = loadTrainingData(formation_weight)
 %
 % OUTPUT:
 %    training_data:       structure with data for Component Contribution
+%                         *.S   `m x n` stoichiometric matrix of training data
+%                         *.cids: `m x 1` compound ids
+%                         *.dG0_prime: `n x 1`
+%                         *.T:  `n x 1`
+%                         *.I:  `n x 1`
+%                         *.pH:  `n x 1`
+%                         *.pMg:  `n x 1`
+%                         *.weights:  `n x 1`
+%                         *.balance:  `n x 1`
+%                         *.cids_that_dont_decompose: k x 1 ids of compounds that do not decompose
 
-if nargin < 1
+if ~exist('param','var')
     formation_weight = 1;
+    use_cached_kegg_inchis=true;
+    use_model_pKas_by_default=true;
+else
+    if ~isfield(param,'formation_weight')
+        formation_weight = 1;
+    end
+    if ~isfield(params,'use_cached_kegg_inchis')
+        use_cached_kegg_inchis = true;
+        % use_cached_kegg_inchis = false;
+    else
+        use_cached_kegg_inchis=params.use_cached_kegg_inchis;
+    end
+    if ~isfield(params,'use_model_pKas_by_default')
+        use_model_pKas_by_default = true;
+    else
+        use_model_pKas_by_default=params.use_model_pKas_by_default;
+    end
 end
 
 TECRDB_TSV_FNAME = 'data/TECRDB.tsv';
@@ -24,8 +51,12 @@ REDOX_TSV_FNAME = 'data/redox.tsv';
 WEIGHT_TECRDB = 1;
 WEIGHT_FORMATION = formation_weight;
 WEIGHT_REDOX = formation_weight;
-R = 8.31e-3; % kJ/mol/K
-F = 96.45; % kC/mol
+
+R=8.31451;
+%Energies are expressed in kJ mol^-1.*)
+R=R/1000; % kJ/mol/K
+%Faraday Constant (kJ/mol)
+F=96.48; %kJ/mol
 
 if ~exist(TECRDB_TSV_FNAME, 'file')
     error(['file not found: ', TECRDB_TSV_FNAME]);
@@ -45,9 +76,24 @@ cids = [];
 cids_that_dont_decompose = [];
 thermo_params = []; % columns are: dG'0, T, I, pH, pMg, weight, balance?
 
+
 fid = fopen(TECRDB_TSV_FNAME, 'r');
-% fields are: URL, REF_ID, METHOD, EVAL, EC, ENZYME NAME, REACTION IN
-% KEGG IDS, REACTION IN COMPOUND NAMES, K, K', T, I, pH, pMg
+% fields are: 
+% URL
+% REF_ID
+% METHOD
+% EVAL
+% EC
+% ENZYME NAME
+% REACTION IN KEGG IDS
+% REACTION IN COMPOUND NAMES
+% K
+% K'
+% T
+% I
+% pH
+% pMg
+
 res = textscan(fid, '%s%s%s%s%s%s%s%s%f%f%f%f%f%f', 'delimiter','\t');
 fclose(fid);
 
@@ -66,10 +112,23 @@ for i = 1:length(inds)
 end
 fprintf('Successfully added %d values from TECRDB\n', length(inds));
 
+
+
+
 % Read the Formation Energy data.
 fid = fopen(FORMATION_TSV_FNAME, 'r');
 fgetl(fid); % skip the first header line
-% fields are: cid, name, dG'0, pH, I, pMg, T, decompose?, compound_ref, remark
+% fields are: 
+% cid
+% name
+% dG'0
+% pH
+% I
+% pMg
+% T
+% decompose?
+% compound_ref
+% remark
 res = textscan(fid, '%f%s%f%f%f%f%f%f%s%s', 'delimiter','\t');
 fclose(fid);
 
@@ -89,11 +148,30 @@ cids_that_dont_decompose = res{1}(find(res{8} == 0));
 
 fprintf('Successfully added %d formation energies\n', length(res{1}));
 
+
+
+
+
+
+
+
 % Read the Reduction potential data.
 fid = fopen(REDOX_TSV_FNAME, 'r');
 fgetl(fid); % skip the first header line
-% fields are: name, CID_ox, nH_ox, charge_ox, CID_red, nH_red,
-%             charge_red, E'0, pH, I, pMg, T, ref
+% fields are: 
+% name
+% CID_ox
+% nH_ox
+% charge_ox
+% CID_red
+% nH_red,
+% charge_red
+% E'0
+% pH
+% I
+% pMg
+% T
+% ref
 res = textscan(fid, '%s%f%f%f%f%f%f%f%f%f%f%f%s', 'delimiter', '\t');
 fclose(fid);
 
@@ -123,10 +201,19 @@ for i = 1:length(reactions)
     S(ismember(cids, find(r)), i) = r(r ~= 0);
 end
 
-training_data.cids = cids;
-training_data.cids_that_dont_decompose = cids_that_dont_decompose;
-
 training_data.S = sparse(S);
+training_data.cids = cids';
+
+% get the InChIs for all the compounds in the training data
+% (note that all of them have KEGG IDs)
+kegg_inchies = getInchies(training_data.cids, use_cached_kegg_inchis);
+inds = ismember(kegg_inchies.cids, training_data.cids);
+
+training_data.std_inchi = kegg_inchies.std_inchi(inds)';
+training_data.std_inchi_stereo = kegg_inchies.std_inchi_stereo(inds)';
+training_data.std_inchi_stereo_charge = kegg_inchies.std_inchi_stereo_charge(inds)';
+training_data.nstd_inchi = kegg_inchies.nstd_inchi(inds)';
+
 training_data.dG0_prime = thermo_params(:, 1);
 training_data.T = thermo_params(:, 2);
 training_data.I = thermo_params(:, 3);
@@ -134,3 +221,6 @@ training_data.pH = thermo_params(:, 4);
 training_data.pMg = thermo_params(:, 5);
 training_data.weights = thermo_params(:, 6);
 training_data.balance = thermo_params(:, 7);
+training_data.cids_that_dont_decompose = cids_that_dont_decompose;
+
+

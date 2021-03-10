@@ -53,7 +53,7 @@ GROUP_CSV = StringIO(""""NAME","PROTONS","CHARGE","MAGNESIUMS","SMARTS","FOCAL_A
 "C-PO3",0,-2,0,"CP(=O)([O-])[O-]","1|2|3|4","terminal phosphate group attached to carbon",
 "C-PO3",1,-1,0,"CP(=O)([O-])O","1|2|3|4","terminal phosphate group attached to carbon",
 "C-PO3",2,0,0,"CP(=O)(O)O","1|2|3|4","terminal phosphate group attached to carbon",
-"-NO2",0,0,0,"[C,c,N,n]N(=O)=O","1|2|3","Nitro",
+"-NO2",0,0,0,"[C,c,N,n]N(=O)O","1|2|3","Nitro",
 "NC(=N)N",0,0,0,"NC(=N)N","1","guanidine",
 "ring nc(=n)n",0,0,0,"[N,n][c;H0,+0](~[N,n])[N,n]","1","aromatic guanidine",
 "two fused rings =n<",0,0,0,"[nR2]","All","participating in two fused aromatic rings",
@@ -148,8 +148,25 @@ GROUP_CSV = StringIO(""""NAME","PROTONS","CHARGE","MAGNESIUMS","SMARTS","FOCAL_A
 "ring -C-",2,0,0,"*[C;H2;R1]*","1","secondary carbon (participating in one aliphatic ring)",
 "-C-",2,0,0,"*[C;H2;R0]*","1","secondary carbon",
 "-C",3,0,0,"*[C;H3]","1","primary carbon",
+"sulfur replace single bound O on phosphate -2 charge",0,-2,0,"CSP([O-])([O-])=O","1|2|3|4|5","sulfur replace single bound O on phosphate -2 charge",
+"sulfur replace single bound O on phosphate -1 charge",1,-1,0,"CSP([O-])(O)=O","1|2|3|4|5","sulfur replace single bound O on phosphate -1 charge",
+"sulfur replace single bound O on phosphate 0 charge",2,0,0,"CSP(O)(O)=O","1|2|3|4|5","sulfur replace single bound O on phosphate 0 charge",
+"aromatic N",3,0,0,"An1nnna1","1|2|3|4","four nitrogens on aromatic ring",
+"C negative charge",0,-1,0,"A[C-1](A)A","1","C- connected to three other atoms",
+"terminal phosphate with S double bond to P -2 charge",0,-2,0,"AOP([O-])([O-])=S","1|2|3|4|5","terminal phosphate with S double bond to P -2 charge",
+"terminal phosphate with S double bond to P -1 charge",1,-1,0,"AOP([O-])(O)=S","1|2|3|4|5","terminal phosphate with S double bond to P -1 charge",
+"terminal phosphate with S double bond to P 0 charge",2,0,0,"AOP(O)(O)=S","1|2|3|4|5","terminal phosphate with S double bond to P 0 charge",
+"middle phosphate with S double bond to P -1 charge",0,-1,0,"AOP([O-1])(A)=S","1|2|3|4","middle phosphate with S double bond to P -1 charge",
+"middle phosphate with S double bond to P 0 charge",1,0,0,"AOP([O-1])(A)=S","1|2|3|4","middle phosphate with S double bond to P 0 charge",
+"Oxygen -1 charge attached to aromatic N +1 charge",0,0,0,"[n+]([O-])","1","Oxygen -1 charge attached to aromatic N +1 charge",
+"charge -1 -CO-OPO2-",0,-1,0,"AC(=O)OP([O-])(=O)A","1|2|3|4|5|6","charge -1 -CO-OPO2-",
+"charge 0 -CO-OPO2-",1,0,0,"AC(=O)OP(O)(=O)A","1|2|3|4|5|6","charge 0 -CO-OPO2-",
+"N-CS-",0,0,0,"N[C;H0;X3;+0](=S)[C,c,N,n]","1|2","carbox(sulfur)amide",
+"phosphonate group -2 charge",0,-2,0,"[O-]P([O-])(=O)*","0|1|2|3","phosphonate group -2 charge",
+"phosphonate group -1 charge",1,-1,0,"OP([O-])(=O)*","0|1|2|3","phosphonate group -1 charge",
+"phosphonate group 0 charge",2,0,0,"OP(O)(=O)*","0|1|2|3","phosphonate group 0 charge",
+"double bond aromatic C", 0,0,0,"c=*","0","double bond aromatic C",
 """)
-
 
 class GroupVector(list):
     """A vector of groups."""
