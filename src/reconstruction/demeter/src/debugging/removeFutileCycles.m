@@ -1,5 +1,5 @@
 function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
-% Part of the DEMETER pipeline. Resolves reactions that are running in 
+% Part of the DEMETER pipeline. Resolves reactions that are running in
 % infeasible directions and causing futile cycles that result in
 % unrealistically high ATP production. All solutions were identified
 % through manual inspection. Any new solutions identified for reaction
@@ -17,8 +17,8 @@ function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReac
 %                      name, Column 3: reaction formula.
 % unionRxns:           Union of reactions from  multiple reconstructions
 %                      (only for debugging multi-species models)
-% constrainedModels:   COBRA model constrained with defined medium (for 
-%                      certain steps of DEMETER) 
+% constrainedModels:   COBRA model constrained with defined medium (for
+%                      certain steps of DEMETER)
 %
 % OUTPUT
 % model:               COBRA model structure
@@ -247,7 +247,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'POR4 AND FRDOr',[],'FRDOr','FRDO'
     'TRPAS2',[],'TRPAS2','TRPAS2i'
     'TRPS2r',[],'TRPS2r','TRPS2'
-    'DPCOAt',[],'DPCOAt','DPCOAti'
+   % 'DPCOAt',[],'DPCOAt','DPCOAti'
     'AMPt2r',[],'AMPt2r','AMPt2'
     'dTMPt2r',[],'dTMPt2r','dTMPt2'
     'NADPt',[],'NADPt','NADPti'
@@ -323,8 +323,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'DDGLKr',[],'DDGLKr','DDGLK'
     'XYLKr',[],'XYLKr','XYLK'
     'RBK_Dr','ARABI','RBK_Dr','RBK_D'
-    'METSr',[],'METSr','METS'
-    'METSr',[],'METSr','METS AND EX_met_L(e) AND METt2r'
+  %  'METSr',[],'METSr','METS'
+  %  'METSr',[],'METSr','METS AND EX_met_L(e) AND METt2r'
     'SUCCt2i',[],'SUCCt2i','SUCCt2'
     'THMt3 AND THMte',[],'THMte',[]
     'PPAt2r AND PPAtr',[],'PPAtr',[]
@@ -357,20 +357,20 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'AKGt2r AND AKGte',[],'AKGte',[]
     'PHEt2r AND PHEtec',[],'PHEt2r','PHEt2'
     'CHOLOX',[],'CHOLOX','CHOLOXi'
-    '34DCCBR',[],'34DCCBR','34DCCBRi'
+    %  '34DCCBR',[],'34DCCBR','34DCCBRi'
     'r0389',[],'r0389','r0389i'
     'URAOX',[],'URAOX','URAOXi'
     'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-    'SQLE',[],'SQLE','SQLEi'
+  %  'SQLE',[],'SQLE','SQLEi'
     '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
     'HSNOOX',[],'HSNOOX','HSNOOXi'
-    'SALCACD',[],'SALCACD','SALCACDi'
-    '34HPPORdc',[],'34HPPORdc','34HPPORdci'
+    % 'SALCACD',[],'SALCACD','SALCACDi'
+    %  '34HPPORdc',[],'34HPPORdc','34HPPORdci'
     'SULR AND SULRi',[],'SULR',[]
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
     'ADMDCr',[],'ADMDCr','ADMDC'
-    'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
+   % 'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
     'OOR2r AND POR4 AND FRD2 AND FUM AND ACONTb AND ACONTa AND SUCCt AND SUCCt2r',[],'SUCCt','FDNADOX_H'
     'ACKr AND NNAM AND NAPRT AND NACt AND NACt2r',[],'NACt','EX_asp_L(e) AND ASPt2r'
     'HYD4 AND POR4 AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r',[],'FORt2r',[]
@@ -379,9 +379,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','PTAr','FORt2r AND SUCCt','PTAr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','ACtr','FORt2r AND SUCCt','EX_ac(e) AND ACtr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'PIt7 AND EX_na1(e) AND ACKr AND OAASr AND FORt AND FORt2r','PIabc','FORt2r','DM_NA1'
-    'PPHISNPPT',[],'PPHISNPPT','PPHISNPPTi'
-    'PPHISPT',[],'PPHISPT','PPHISPTi'
-    'PPHNPPT',[],'PPHNPPT','PPHNPPTi'
+    %  'PPHISNPPT',[],'PPHISNPPT','PPHISNPPTi'
+    % 'PPHISPT',[],'PPHISPT','PPHISPTi'
+    %  'PPHNPPT',[],'PPHNPPT','PPHNPPTi'
     'PPHPT',[],'PPHPT','PPHPTi'
     'ICDHyr AND SUCOAS AND PYK AND FDNADOX_H AND POR4',[],'ICDHyr','ICDHy'
     
@@ -469,9 +469,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
 % production through a more realistic pathway.
 growthGapfills={
     'EX_succ(e) AND SUCCt'
-    'EX_fum(e) AND FUMt2'
+       'EX_fum(e) AND FUMt2'
     'EX_succ(e) AND SUCCt2r'
-    'EX_fum(e) AND FUMt2 AND EX_succ(e) AND SUCCt2r'
+        'EX_fum(e) AND FUMt2 AND EX_succ(e) AND SUCCt2r'
     'EX_for(e) AND FORt2r'
     'EX_ac(e) AND ACt2r'
     'EX_asp_L(e) AND ASPt2r'
@@ -528,7 +528,9 @@ for i = 2:size(reactionsToReplace, 1)
             rxns=strsplit(reactionsToReplace{i, 4},' AND ');
             for j=1:length(rxns)
                 % create a new formula
+                rxns{j}
                 RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
+                
                 if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                     newName=[rxns{j} 'ipp'];
                     % make sure we get the correct reaction
@@ -544,6 +546,7 @@ for i = 2:size(reactionsToReplace, 1)
                 else
                     modelTest = addReaction(modelTest, rxns{j}, RxForm);
                 end
+                
             end
         end
         FBA = optimizeCbModel(modelTest, 'max');
@@ -633,6 +636,7 @@ end
 % make sure gene rule and notes are kept while replacing
 if ~isempty(addedRxns)
     for j = 1:size(addedRxns,1)
+        addedRxns{j, 2}
         model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
         % if a reaction from the old version is replaced, keep the GPR
         if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))

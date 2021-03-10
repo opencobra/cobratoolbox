@@ -3,7 +3,7 @@
 %modelClosed = modelConsistent;
 clear FF R
 % add demands for all metabolites in Recon
-modelClosed = model;
+%modelClosed = model;
 %modelClosed = addDemandReaction(modelClosed,modelClosed.mets);
 
 modelexchanges1 = strmatch('Ex_',modelClosed.rxns);

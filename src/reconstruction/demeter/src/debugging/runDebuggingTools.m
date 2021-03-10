@@ -137,7 +137,9 @@ if length(failedModels)>0
             
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
-            [gapfilledReactions,replacedReactions,revisedModel]=debugModel(model,testResultsFolder,inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
+            
+            % run the gapfilling suite
+            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction);
             gapfilledReactionsTmp{j} = gapfilledReactions;
             replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;

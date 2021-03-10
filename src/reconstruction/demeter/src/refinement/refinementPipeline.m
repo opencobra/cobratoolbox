@@ -16,6 +16,7 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 %                   databases that inform the refinement process
 % OUTPUT
 % refinedModel      COBRA model structure refined through AGORA pipeline
+% summary           Structure with description of performed refineemnt
 %
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
@@ -69,6 +70,7 @@ if isempty(biomassReaction)
 end
 
 %% Translate to VMH if it is an untranslated KBase model
+if 0
 [model,notInTableRxns,notInTableMets] = translateKBaseModel2VMHModel(model,biomassReaction,database);
 if ~isempty(notInTableRxns)
     summary.('untranslatedRxns') = notInTableRxns;
@@ -76,7 +78,7 @@ end
 if ~isempty(notInTableMets)
     summary.('untranslatedMets') = notInTableMets;
 end
-
+end
 %% add some reactions that need to be in every reconstruction
 essentialRxns={'DM_atp_c_','sink_PGPm1[c]','EX_nh4(e)','NH4tb','Kt1r'};
 if ~find(strcmp(model.mets,'pi[e]'))
@@ -86,6 +88,11 @@ end
 for i=1:length(essentialRxns)
     model = addReaction(model, essentialRxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), essentialRxns{i})), 3}, 'geneRule', 'essentialGapfill');
 end
+
+%% prepare summary file
+summary.('condGF') = {};
+summary.('targetGF') = {};
+summary.('relaxGF') = {};
 
 %% Refinement steps
 % The following sections include the various refinement steps of the pipeline.
@@ -115,13 +122,15 @@ summary.('updateGPRCnt') = updateGPRCnt;
 [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary);
 
 %% Reconnect blocked reactions and perform gapfilling to enable growth
-% connect speciifc pathways
+% connect specific pathways
 [resolveBlocked,model]=connectRxnGapfilling(model,database);
 summary.('resolveBlocked') = resolveBlocked;
 
 % run gapfilling tools to enable biomass production
-[model,gapfilledRxns] = runGapfillingTools(model,biomassReaction, biomassReaction,'max',database);
-summary.('gapfilledRxns') = gapfilledRxns;
+[model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
+summary.('condGF') = union(summary.('condGF'),condGF);
+summary.('targetGF') = union(summary.('targetGF'),targetGF);
+summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
 
 %% Anaerobic growth-may need to run twice
 
@@ -141,11 +150,14 @@ if AnaerobicGrowth(1,2) < tol
     model = useDiet(model,WesternDiet);
     % run gapfilling tools to enable biomass production if no growth on
     % Western diet
-    [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction, biomassReaction,'max',database);
-    summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
+    summary.('condGF') = union(summary.('condGF'),condGF);
+    summary.('targetGF') = union(summary.('targetGF'),targetGF);
+    summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
 end
 
 %% Stoichiometrically balanced cycles
+
 [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
 summary.('balancedCycle_addedRxns') = unique(addedRxns);
 summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
@@ -172,8 +184,10 @@ for i=1:2
         % apply Western diet
         model = useDiet(model,WesternDiet);
         % run gapfilling tools to enable biomass production
-        [model,gapfilledRxns] = runGapfillingTools(model,biomassReaction,biomassReaction,'max',database);
-        summary.('gapfilledRxns') = union(summary.('gapfilledRxns'),gapfilledRxns);
+        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
+        summary.('condGF') = union(summary.('condGF'),condGF);
+        summary.('targetGF') = union(summary.('targetGF'),targetGF);
+        summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
     end
     
     if AnaerobicGrowth(1,1) < tol
@@ -310,11 +324,12 @@ if FBA.f>tol
 end
 
 %% addd refinement descriptions to model.comments field
-model = addRefinementComments(model);
+model = addRefinementComments(model,summary);
 
 %% rebuild model
-[model] = rebuildModel(model,database);
-
+if 1
+model = rebuildModel(model,database);
+end
 %% constrain sink reactions
 model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 

@@ -29,8 +29,9 @@ global CBTDIR;
 global SOLVERS;
 global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
-global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
+global CBT_EP_SOLVER;
+global CBT_MILP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global GUROBI_PATH;
@@ -316,6 +317,11 @@ changeCobraSolverParams('LP', 'feasTol', 1e-6);
 % (dual) optimality tolerance
 changeCobraSolverParams('LP', 'optTol', 1e-6);
 
+% (primal) feasibility tolerance
+changeCobraSolverParams('EP', 'feasTol', 1e-8);
+% (dual) optimality tolerance
+changeCobraSolverParams('EP', 'optTol', 1e-12);
+
 % Check that SBML toolbox is installed and accessible
 if ~exist('TranslateSBML', 'file')
     if ENV_VARS.printLevel
@@ -344,7 +350,7 @@ if ENV_VARS.printLevel
 end
 
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
-OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
+OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP','EP'};
 
 %Define a set of "use first" solvers, other supported solvers will also be added to the struct.
 %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
@@ -357,9 +363,9 @@ SOLVERS = struct('gurobi',struct(),...
 
 % active support - supported solvers
 SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.mosek.type = {'LP', 'QP'};
+SOLVERS.mosek.type = {'LP', 'QP','EP'};
 SOLVERS.glpk.type = {'LP', 'MILP'};
-SOLVERS.pdco.type = {'LP', 'QP'};
+SOLVERS.pdco.type = {'LP', 'QP','EP'};
 SOLVERS.quadMinos.type = {'LP'};
 SOLVERS.dqqMinos.type = {'LP','QP'};
 SOLVERS.matlab.type = {'LP', 'NLP'};
@@ -408,7 +414,12 @@ SOLVERS.lp_solve.categ = 'legacy';
 
 % definition of categories of solvers
 supportedSolversNames = fieldnames(SOLVERS);
-catSolverNames.LP = {}; catSolverNames.MILP = {}; catSolverNames.QP = {}; catSolverNames.MIQP = {}; catSolverNames.NLP = {};
+catSolverNames.LP = {}; 
+catSolverNames.MILP = {}; 
+catSolverNames.QP = {}; 
+catSolverNames.MIQP = {}; 
+catSolverNames.NLP = {}; 
+catSolverNames.EP = {};
 for i = 1:length(supportedSolversNames)
     SOLVERS.(supportedSolversNames{i}).installed = false;
     SOLVERS.(supportedSolversNames{i}).working = false;
@@ -422,15 +433,15 @@ end
 for i = 1:length(supportedSolversNames)
     if 0 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'cplex_direct')
+        if strcmp(supportedSolversNames{i},'mosek')
             pause(0.1)
         end
     end
     %We will validate all solvers in init. After this, all solvers are
     %checked, whether they actually work and the SOLVERS field is set.
     [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 2);
-    if strcmp(SOLVERS.(supportedSolversNames{i}),'gurobi')
-        disp(SOLVERS.(supportedSolversNames{i}));
+    if strcmp(supportedSolversNames{i},'gurobi') && 0%use fordebugging
+        disp(supportedSolversNames{i});
     end
     if solverOK
         SOLVERS.(supportedSolversNames{i}).working = true;
@@ -445,13 +456,11 @@ end
 % set the default solver and print out the default variables
 if ENV_VARS.printLevel
     fprintf(' > Setting default solvers ...');
-    if SOLVERS.gurobi.working==1
-       changeCobraSolver('gurobi', 'all', 0);
-    else
-        changeCobraSolver('glpk', 'LP', 0);
-        changeCobraSolver('glpk', 'MILP', 0);
-        changeCobraSolver('pdco', 'QP', 0);
-    end
+    changeCobraSolver('glpk', 'LP', 0);
+    changeCobraSolver('glpk', 'MILP', 0);
+    changeCobraSolver('glpk', 'LP', 0);
+    changeCobraSolver('pdco', 'QP', 0);
+    changeCobraSolver('mosek', 'EP', 0);
     changeCobraSolver('matlab', 'NLP', 0);
     for k = 1:length(OPT_PROB_TYPES)
         varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
@@ -467,13 +476,24 @@ for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
     catList{i} = SOLVERS.(supportedSolversNames{i}).categ;
     for j = 1:length(types)
+        if 0 %set to 1 to debug a new solver
+            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
+                pause(0.1)
+            end
+        end
         k = find(ismember(OPT_PROB_TYPES, types{j}));
         if SOLVERS.(supportedSolversNames{i}).installed
             solverStatus(i, k + 1) = 1;
             solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
             
             % set the default MIQP solver based on the solvers that are installed
-            if strcmpi(types{j}, 'MIQP')
+            if strcmp(supportedSolversNames{i},'gurobi') && strcmp(types{j},'LP')
+                changeCobraSolver('gurobi', 'LP', 0);
+                changeCobraSolver('gurobi', 'MILP', 0);
+                changeCobraSolver('gurobi', 'LP', 0);
+                changeCobraSolver('gurobi', 'QP', 0);
+            end
+            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
                 changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
             end
         else
@@ -491,7 +511,7 @@ solverStatus(end + 1, :) = ones(1, length(OPT_PROB_TYPES) + 1);
 solverStatus(end + 1, 2:end) = solverTypeInstalled';
 
 statusTable = {};
-for k = 1:5
+for k = 1:length(OPT_PROB_TYPES)
     statusTable{k} = cellstr(num2str(solverStatus(:, k+1)));
     for p = 1:length(solverStatus(:, k+1))
         if strcmp(statusTable{k}(p), '-1')
@@ -535,21 +555,21 @@ end
 
 % print out a summary table
 if ENV_VARS.printLevel
-    colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
-    sep = '\t----------------------------------------------------------------------\n';
+    colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+    sep = '\t------------------------------------------------------------------------------\n';
     fprintf('\n > Summary of available solvers and solver interfaces\n\n');
     if ispc
-        topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s\n';
+        topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     else
-        topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     end
-    fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5})
+    fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5}, OPT_PROB_TYPES{6})
     fprintf(sep);
     for i = 1:length(catList)-2
-        fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i})
+        fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i}, statusTable{6}{i})
     end
     fprintf(sep);
-    fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end})
+    fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end}, statusTable{6}{end})
     fprintf('\n + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
 end
 

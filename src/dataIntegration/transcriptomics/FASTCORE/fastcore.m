@@ -89,6 +89,7 @@ P = setdiff(nbRxns, coreRxnInd);
 [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsilon);
 
 if ~isempty(setdiff(J, Supp))
+    model.rxns(setdiff(J, Supp))
     error ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
 end
 

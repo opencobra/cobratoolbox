@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, fvaCt, nsCt, figForm)
+function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, netProduction, netUptake, figForm)
 % This function is called from the MgPipe pipeline. Its purpose is to compute
 % NMPCs from simulations with different diet on multiple microbiota models.
 % Results are outputted as .csv and a PCoA on NMPCs to group microbiota
@@ -7,7 +7,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sam
 %
 % USAGE:
 %
-%    [fSp, Y]= mgSimResCollect(resPath, sampNames, sampNames, rDiet, pDiet, infoFilePath, fvaCt, figForm)
+%    [fSp, Y]= mgSimResCollect(resPath, sampNames, sampNames, rDiet, pDiet, infoFilePath, netProduction, figForm)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -20,7 +20,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sam
 %    infoFilePath:    char indicating, if stratification criteria are available,
 %                        full path and name to related documentation(default: no)
 %                        is available
-%    fvaCt:              cell array containing FVA values for maximal uptake
+%    netProduction:              cell array containing FVA values for maximal uptake
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
@@ -62,10 +62,10 @@ else
 end
 
 % find empty rows in input data-tmp fix
-emptyRows=find(cellfun(@isempty,fvaCt{2,1}(:,2)));
-for i=1:size(fvaCt,2)
-    fvaCt{2,i}(emptyRows,:)=[];
-    nsCt{2,i}(emptyRows,:)=[];  
+emptyRows=find(cellfun(@isempty,netProduction{2,1}(:,2)));
+for i=1:size(netProduction,2)
+    netProduction{2,i}(emptyRows,:)=[];
+    netUptake{2,i}(emptyRows,:)=[];  
 end
 exchanges(emptyRows,:)=[];
 
@@ -76,7 +76,7 @@ for j = init:fl
     fSp=[];
     uSp=[];
     for k = 1:length(sampNames)
-        if isempty(fvaCt{fl,k}) == 1
+        if isempty(netProduction{fl,k}) == 1
             disp('Jumping not feasible model')
             warning('NAN rows in fluxes matrix, no PCoA will be plotted')
             sp = NaN(length(exchanges), 1);
@@ -85,22 +85,22 @@ for j = init:fl
             uSp(:,k) = up;
             noPcoa = 1;
         else
-            sp = NaN(length(exchanges), 1);  % consider to remove preallocation
+            sp = zeros(length(exchanges), 1);  % consider to remove preallocation
             for i = 1:length(exchanges)
-                x = fvaCt{j,k}{i, 3};
+                x = netProduction{j,k}{i, 3};
                 
                 % cut off very small values below solver sensitivity
                 if abs(x) < tol
-                    fvaCt{j,k}{i, 3}=0;
+                    netProduction{j,k}{i, 3}=0;
                 end
                 
                 e = isempty(x);
                 
                 if e == 0
-                    sp(i,1) = abs(fvaCt{j, k}{i,3} + fvaCt{j,k}{i, 2});
+                    sp(i,1) = abs(netProduction{j, k}{i,3} + netProduction{j,k}{i, 2});
                 end
                 if e == 0
-                    up(i,1) = abs(nsCt{j, k}{i,3} + nsCt{j,k}{i, 2});
+                    up(i,1) = abs(netUptake{j, k}{i,3} + netUptake{j,k}{i, 2});
                 end
             end
             fSp(:,k) = sp;

@@ -108,11 +108,12 @@ for i = 1:length(GeneID)
     if isfield(model,'rxnNames')
         results.(tempGene)(:, 4) = model.rxnNames(Ind_rxns);
     end
-    
+        results.(tempGene)(:, 5) = model.grRules(Ind_rxns);
+
     if ListResultsFlag
         LR_RowCnt = size(ListResults, 1);
-        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 1:4) = results.(tempGene);
-        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 5) = {tempGene};
+        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 1:5) = results.(tempGene);
+        ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 6) = {tempGene};
     end
 end
 

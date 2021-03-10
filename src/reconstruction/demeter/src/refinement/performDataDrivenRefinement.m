@@ -46,7 +46,9 @@ summary.('secretionRxnsAdded') = secretionRxnsAdded;
 summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 
 %% test pathways to make sure they work
+if 0
 model=rebuildModel(model,database);
+end
 FNs = {};
 % Carbon sources
 [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
@@ -64,7 +66,7 @@ if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
-        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
+        [model,gapfilledRxns] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
     end
     if ~isempty(dataDrivenGapfill)
@@ -87,16 +89,14 @@ FNs=union(FNs,FalseNegatives);
 % gapfill if there are any false negatives
 osenseStr='max';
 
-dataDrivenGapfill={};
 if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
-        [model,gapfilledRxns] = runGapfillingTools(model,metExch,biomassReaction,osenseStr,database);
-        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
-    end
-    if ~isempty(dataDrivenGapfill)
-        summary.('DataDrivenGapfill')=dataDrivenGapfill;
+        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+        summary.('condGF') = union(summary.('condGF'),condGF);
+        summary.('targetGF') = union(summary.('targetGF'),targetGF);
+        summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
     end
 end
 

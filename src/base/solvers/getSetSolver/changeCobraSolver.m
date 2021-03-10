@@ -178,6 +178,7 @@ global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
+global CBT_EP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
@@ -214,6 +215,8 @@ if validationLevel == -1
             CBT_NLP_SOLVER = solverName;
         case 'MIQP'
             CBT_MIQP_SOLVER = solverName;
+        case 'EP'
+            CBT_EP_SOLVER = solverName;
     end
     return
 end

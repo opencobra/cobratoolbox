@@ -27,7 +27,12 @@ try
     %       cpxControl.PARALLELMODE = 1;
 %       cpxControl.THREADS = 1;
 %       cpxControl.AUXROOTTHREADS = 2;
-      [minFlux,maxFlux] = fastFVA(model,99.99,'max',{},rl,'A');
+      [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rl,'A');
+      if ret~=0
+          % infeasibilities in the solution
+          minFlux=NaN(length(rl),1);
+          maxFlux=NaN(length(rl),1);
+      end
       % cpxControl.threads=1;
       % cpxControl.parallel=1;
       % cpxControl.auxrootthreads=2;

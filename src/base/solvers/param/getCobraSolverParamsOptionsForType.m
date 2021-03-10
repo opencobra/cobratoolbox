@@ -47,7 +47,15 @@ switch problemType
                       'logFile', ...        % file (location) to write logs to
                       'solver'};            % the solver to use
 
-
+   case 'EP'
+        paramNames = {'verify',...          % verify that it is a suitable  QP problem
+                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
+                      'printLevel', ...     % print level
+                      'debug', ...          % run debgugging code
+                      'feasTol',...         % feasibility tolerance
+                      'optTol',...          % optimality tolerance
+                      'solver'};            % the solver to use
+                  
     case 'MILP'
         paramNames = {'intTol', ...         % integer tolerance (accepted derivation from integer numbers)
                       'relMipGapTol', ...   % relative MIP Gap tolerance

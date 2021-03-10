@@ -1,22 +1,23 @@
-function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coverage,cutoff)
+function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
 % This functions normalizes the coverage in a given file with organism
 % abundances such that they sum up to 1 for each sample.
 %
 % USAGE
-%   [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(coveragePath)
+%   [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
 %
 % INPUT
-% coverage                Table with not yet normalized relative abundances
+% abunFilePath           	Path to table with not yet normalized relative 
+%                           abundances
 %
 % OPTIONAL INPUT
-% cutoff                  Cutoff for normalized abundances that are
-%                         considered below detection limit, respective
-%                         organisms will be removed from the samples
-%                         (default: 0.0001)
+% cutoff                    Cutoff for normalized abundances that are
+%                           considered below detection limit, respective
+%                           organisms will be removed from the samples
+%                           (default: 0.0001)
 %
 % OUTPUTS
-% normalizedCoverage      Table with normalized abundances
-% normalizedCoveragePath  Path to csv file with normalized abundances
+% normalizedCoverage        Table with normalized abundances
+% normalizedCoveragePath    Path to csv file with normalized abundances
 %
 % .. Author:
 %       - Almut Heinken, 01/2021
@@ -28,6 +29,7 @@ if nargin == 1
     cutoff=0.0001;
 end
 
+coverage = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
 coverage{1,1}='ID';
 abundanceNew = coverage;
 

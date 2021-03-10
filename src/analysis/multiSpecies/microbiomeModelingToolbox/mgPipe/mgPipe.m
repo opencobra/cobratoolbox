@@ -1,26 +1,25 @@
-function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
-
-%MgPipe is a MATLAB based pipeline to integrate microbial abundances
-%(coming from metagenomic data) with constraint based modeling, creating
-%individuals' personalized models.
-%The pipeline is divided in 3 parts:
-%[PART 1] Analysis of individuals' specific microbes abundances are computed.
-%[PART 2]: 1 Constructing a global metabolic model (setup) containing all the
-%microbes listed in the study. 2 Building individuals' specific models
-%integrating abundance data retrieved from metagenomics. For each organism,
-%reactions are coupled to the objective function.
-%[PART 3] Simulations under different diet regimes.
-%MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
-%version 1.0 from https://www.vmh.life/#downloadview and place the mat files
-%into a folder.
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+% MgPipe is a MATLAB based pipeline to integrate microbial abundances
+% (coming from metagenomic data) with constraint based modeling, creating
+% individuals' personalized models.
+% The pipeline is divided in 3 parts:
+% [PART 1] Analysis of individuals' specific microbes abundances are computed.
+% [PART 2]: 1 Constructing a global metabolic model (setup) containing all the
+% microbes listed in the study. 2 Building individuals' specific models
+% integrating abundance data retrieved from metagenomics. For each organism,
+% reactions are coupled to the objective function.
+% [PART 3] Simulations under different diet regimes.
+% MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
+% version 1.0 from https://www.vmh.life/#downloadview and place the mat files
+% into a folder.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, constrModelsPath] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
-%    computeProfiles:        boolean defining whether flux variability analysis to 
+%    computeProfiles:        boolean defining whether flux variability analysis to
 %                            compute the metabolic profiles should be performed.
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved
@@ -31,7 +30,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 %                            biomass reaction (default: zero)
 %    objre:                  char with reaction name of objective function of microbeNames
 %    buildSetupAll:       	 boolean indicating the strategy that should be used to
-%                            build personalized models: if true, build a global setup model 
+%                            build personalized models: if true, build a global setup model
 %                            containing all organisms in at least model (default), false: create
 %                            models one by one (recommended for more than ~500 organisms total)
 %    saveConstrModels:       boolean indicating if models with imposed
@@ -47,13 +46,18 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgPipe(modPath, abunFilePath
 %                            overwritten (default=false)
 %    adaptMedium:            boolean indicating if the medium should be
 %                            adapted through the adaptVMHDietToAGORA
-%                            function or used as is (default=true)                  
+%                            function or used as is (default=true)
 %
 % OUTPUTS:
 %    init:                   status of initialization
 %    netSecretionFluxes:     Net secretion fluxes by microbiome community models
 %    netUptakeFluxes:        Net uptake fluxes by microbiome community models
 %    Y:                      Classical multidimensional scaling
+%    modelStats:             Reaction and metabolite numbers for each model
+%    summary:                Table with average, median, minimal, and maximal
+%                            reactions and metabolites
+%    statistics:             If info file with stratification is provided, will
+%                            determine if there is a significant difference.
 %
 % AUTHORS:
 %   - Federico Baldini, 2017-2018
@@ -88,12 +92,12 @@ if isempty(mapP)
             error(['modPath (' modPath ') does not exist.']);
         end
     end
-
+    
     % Computing genetic information
     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
     
-      %Create tables and save all the created variables
+    %Create tables and save all the created variables
     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
     reacSet=cell2table(reacSet,'VariableNames',sampNames');
     reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
@@ -111,7 +115,27 @@ save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patO
 % computed: if the associated file is already present in the results folder its
 % execution is skipped else its execution starts
 
-[mapP]=detectOutput(resPath,'Setup_allbacs.mat');
+% If desired, a model of the host (e.g., Recon3D) can also be joined with
+% the microbiome models.
+if ~isempty(hostPath)
+    % workaround for models that give an error in readCbModel
+    try
+        host = readCbModel(hostPath);
+    catch
+        warning('Host model could not be read through readCbModel. Consider running verifyModel.')
+        modelStruct=load(hostPath);
+        getfn=fieldnames(modelStruct);
+        host=modelStruct.(getfn{1});
+    end
+else
+    host = {};
+end
+
+if ~isempty(host)
+    [mapP]=detectOutput(resPath,'Setup_host_allbacs.mat');
+else
+    [mapP]=detectOutput(resPath,'Setup_allbacs.mat');
+end
 
 if isempty(mapP)
     modbuild = 1;
@@ -128,17 +152,6 @@ end
 % models. The result of this section will be automatically saved in the results
 % folder.
 
-% If desired, a model of the host (e.g., Recon3D) can also be joined with
-% the microbiome models.
-if ~isempty(hostPath)
-    % host = readCbModel(hostPath);
-    modelStruct=load(hostPath);
-    getfn=fieldnames(modelStruct);
-    host=modelStruct.(getfn{1});
-else
-    host = {};
-end
-
 %% PIPELINE: [PART 2]
 % Now we will create the different microbiota models integrating the given abundances.
 % Coupling constraints and personalized "cumulative biomass" objective functions
@@ -147,6 +160,9 @@ end
 
 abundance = table2cell(readtable(abunFilePath));
 
+% remove rows of organisms that are not present in any sample
+abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+
 % if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
 if buildSetupAll
@@ -154,7 +170,11 @@ if buildSetupAll
         setup=fastSetupCreator(modPath, microbeNames, host, objre, numWorkers);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
         setup.recon=0;
-        save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
+        if ~isempty(host)
+            save(strcat(resPath,'Setup_host_allbacs.mat'), 'setup')
+        else
+            save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
+        end
     end
     
     if modbuild==0
@@ -176,14 +196,14 @@ else
         
         % retrieving current model ID
         if ~isempty(host)
-            mId = [resPath filesep 'host_microbiota_model_samp_', sampNames{k,1}, '.mat'];
+            mId = ['host_microbiota_model_samp_', sampNames{i,1}, '.mat'];
         else
-            mId = [resPath filesep 'microbiota_model_samp_', sampNames{k,1}, '.mat'];
+            mId = ['microbiota_model_samp_', sampNames{i,1}, '.mat'];
         end
         
         % if the model doesn't exist yet
         mapP = detectOutput(resPath, mId);
-        if isempty(mapP) 
+        if isempty(mapP)
             microbeNamesSample = microbeNames;
             abunRed=abundance(:,i+1);
             abunRed=[abundance(:,1),abunRed];
@@ -202,7 +222,7 @@ end
 % analysis for all the exchange reactions of the diet and fecal compartment is
 % also computed and saved in a file called "simRes".
 
-[exchanges, fvaCt, nsCt, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 % Finally, NMPCs (net maximal production capability) are computed in a metabolite
 % resolved manner and saved in a comma delimited file in the results folder. NMPCs
 % indicate the maximal production of each metabolite and are computing summing
@@ -210,5 +230,26 @@ end
 % profiles (using the different NMPCs as features) between individuals are also
 % evaluated with classical multidimensional scaling.
 
-[netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, fvaCt, nsCt, figForm);
+if computeProfiles
+    [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, netProduction, netUptake, figForm);
+else
+    netSecretionFluxes={};
+    netUptakeFluxes={};
+    Y=[];
+    delete('simRes.mat','intRes.mat')
+end
+
+% get stats on microbiome models-number of reactions and metabolites
+for i=1:length(sampNames)
+    modelNames{i}=['microbiota_model_samp_' sampNames{i}];
+end
+
+close all
+
+if ~isempty(infoFilePath)
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, infoFilePath);
+else
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames);
+end
+
 end
