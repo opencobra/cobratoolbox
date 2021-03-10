@@ -1,4 +1,4 @@
-function [modelThermo, directions] = thermoConstrainFluxBounds(model, confidenceLevel, DrGt0_Uncertainty_Cutoff, printLevel)
+function [modelThermo, directions] = thermoConstrainFluxBounds(model, confidenceLevel, DrG0_Uncertainty_Cutoff, printLevel)
 % Thermodynamically constrain reaction bounds.
 %
 % USAGE:
@@ -13,7 +13,7 @@ function [modelThermo, directions] = thermoConstrainFluxBounds(model, confidence
 %                                   * .DrGtMax - `n x 1` array of estimated upper bounds on
 %                                     transformed reaction Gibbs energies.
 %    confidenceLevel:
-%    DrGt0_Uncertainty_Cutoff:    Thermodynamic data not used if uncertainty is
+%    DrG0_Uncertainty_Cutoff:    Thermodynamic data not used if uncertainty is
 %                                 high in estimates
 %
 % OPTIONAL INPUT:
@@ -101,10 +101,10 @@ if nnz(model.SIntRxnBool)~=(nnz(fwdRecon)+nnz(revRecon)+nnz(reversibleRecon))+nn
 end
 
 if 0
-    hist(model.DrGt0_Uncertainty(model.DrGt0_Uncertainty<100),100)
+    hist(model.DrG0_Uncertainty(model.DrG0_Uncertainty<100),100)
 end
 %Thermodynamic data unreliable if estimation uncertainty is high
-lowUncertaintyDrGt0=model.DrGt0_Uncertainty <= DrGt0_Uncertainty_Cutoff;
+lowUncertaintyDrGt0=model.DrG0_Uncertainty <= DrG0_Uncertainty_Cutoff;
 model.directions.lowUncertaintyDrGt0=lowUncertaintyDrGt0;
 
 %Thermo and recon where thermo not available
@@ -156,7 +156,7 @@ modelThermo=model;
 forwardProbability=NaN*ones(nRxn,1);
 for n=1:nRxn
     if model.SIntRxnBool(n)
-        forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrGt0_Uncertainty(n),tValue*model.DrGt0_Uncertainty(n));
+        forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
         if strcmp(model.rxns{n},'ACYP')
             fprintf('%s\n',model.rxns{n})
         end
@@ -170,7 +170,7 @@ end
 
 if 0
     figure
-    plot(model.DrGt0_Uncertainty,model.directions.forwardProbability,'*')
+    plot(model.DrG0_Uncertainty,model.directions.forwardProbability,'*')
     figure
     hist(forwardProbability(model.SIntRxnBool),100)
 end

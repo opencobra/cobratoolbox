@@ -34,6 +34,9 @@ function model = estimateDfGt0(model, confidenceLevel)
 %                        and `DrGt0` interval estimates. Default is 0.95,
 %                        corresponding to 95% confidence intervals.
 %
+%                          * .DfH0 - `m x 1` array of standard Enthalpies of formation.
+%
+%
 % OUTPUT:
 %    model:              Model structure with following fields added:
 %

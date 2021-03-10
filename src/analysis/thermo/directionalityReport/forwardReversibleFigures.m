@@ -64,8 +64,8 @@ thorStandard=1;
 if thorStandard
     %DrGt0
     Y0=model.DrGt0;
-    L0=tValue*model.DrGt0_Uncertainty;
-    U0=tValue*model.DrGt0_Uncertainty;
+    L0=tValue*model.DrG0_Uncertainty;
+    U0=tValue*model.DrG0_Uncertainty;
     %DrGt
     Y=model.DrGtMean;
     L=Y-model.DrGtMin;
@@ -74,8 +74,8 @@ if thorStandard
     forwardProbability=NaN*ones(nRxn,1);
     for n=1:nRxn
         if model.SIntRxnBool(n)
-            %forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrGt0_Uncertainty(n),tValue*model.DrGt0_Uncertainty(n));
-            forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrGt0_Uncertainty(n),tValue*model.DrGt0_Uncertainty(n));
+            %forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
+            forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
             if strcmp(model.rxns{n},'ACYP') & 0
                 fprintf('%s\n',model.rxns{n})
             end
@@ -99,7 +99,7 @@ end
 
 if 0
     figure
-    plot(model.DrGt0_Uncertainty,model.directions.forwardProbability,'*')
+    plot(model.DrG0_Uncertainty,model.directions.forwardProbability,'*')
 
     figure
     hist(forwardProbability(model.SIntRxnBool),100)

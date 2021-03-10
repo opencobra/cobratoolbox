@@ -1,10 +1,10 @@
 function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default)
+% Calculate the reverse transform for all reactions in training_data.
 
 R = 8.31e-3; % kJ/mol/K
 
-fprintf('Performing reverse transform\n');
+fprintf('Performing reverse Legendre transform\n');
 
-% Calculate the reverse transform for all reactions in training_data.
 % Note that many of the compounds in the training data are missing from the iAF1260
 % model and therefore do not have a BiGG abbreviation or a pKa struct. This
 % needs to be fixed somehow.
@@ -17,7 +17,7 @@ for i = 1:size(training_data.S, 2) % for each reaction in S
     for j = 1:length(inds)
         training_diss = [];
         model_diss = [];
-
+        
         if inds(j) <= length(training_data.cids)
             % find the diss table from the training data structure
             k = find(cell2mat({training_data.kegg_pKa.cid}) == training_data.cids(inds(j)));

@@ -37,6 +37,33 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %    missingFormulaeBool:    `nMet` x 1 boolean vector indicating metabolites without formulae
 %    balancedMetBool:        boolean vector indicating metabolites exclusively involved in balanced reactions
 %
+%
+% OPTIONAL OUTPUT FILES:
+% fileName_mass_imbalanced_reactions.txt  provides a human readable summary
+% for each mass imbalanced reaction. 
+%
+% For each reaction it contains:
+% j             the index of the column of the stoichiometric matrix corresponding to the reaction
+% rxns{j}       the abbreviation of the reaction
+% imbalance     the number of each element that is unbalanced
+% equation      the reaction equation
+%
+% For each metabolite involved in a reaction it contains
+% i               the index of the row of the stoichiometric matrix corresponding to the metabolite
+% mets{i}         the abbreviation of the reaction
+% S(i,j)          the stoichiometric coefficient
+% metFormulas{i}  the chemical formula of the metabolite
+% 
+% Example
+% #Rxn;rxnAbbr;imbalance;equation
+% 32;2AMACSULT;3 O, 1 S;2amac[c] + nadph[c] + paps[c]  -> nadp[c] + Lcyst[c] + pap[c] 
+%    58	       2amac[c]	-1	C3H5NO2
+%    60	       nadph[c]	-1	C21H26N7O17P3
+%    61	        nadp[c]	1	C21H25N7O17P3
+%    62	        paps[c]	-1	C10H11N5O10P2
+%    63	       Lcyst[c]	1	C3H6NO5S
+%    64	         pap[c]	1	C10H11N5O10P2
+% 
 % .. Authors:
 %       - Ines Thiele 12/09
 %       - IT, 06/10, Corrected some bugs and improved speed.
@@ -123,7 +150,8 @@ if printLevel==-1
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
                 if ~firstMissing
                     fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
-                    fprintf(fid, '%s;%s;%s;%s\n', '#Rxn', 'rxnAbbr', 'imbalance', 'equation');
+                    fprintf(fid, '%s;%s;%s;%s\n', 'j', 'rxns{j}', 'imbalance', 'equation');
+                    fprintf(fid, '%s;%s;%s;%s\n\n', 'i', 'mets{i}', 'S(i,j)', 'metFormulas{i}');
                     fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end

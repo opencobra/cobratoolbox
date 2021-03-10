@@ -34,7 +34,7 @@ fixedMappings = textscan(fid, '%d%s', 'delimiter', '\t');
 fclose(fid);
 
 % create a matrix that has the matching scores for each model met and nist compound
-mappingScore = sparse(size(model.mets, 1), size(training_data.cids, 2));
+mappingScore = sparse(size(model.mets, 1), length(training_data.cids));
 for n = 1:length(model.mets)
     met = model.mets{n}(1:end-3); % the name of the metabolite without the compartment
     mappingScore(n, strcmp(training_data.std_inchi, model.inchi.standard{n})) = 1;

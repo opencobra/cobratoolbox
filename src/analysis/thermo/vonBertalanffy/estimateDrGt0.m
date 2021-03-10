@@ -114,8 +114,8 @@ if 1
     %Legendre transform for intercompartmental effects
     model.DrGt0 = model.DrGt0 + delta_pH + delta_chi;
 
-    model.DrGt0Max = model.DrGt0 + tValue*model.DrGt0_Uncertainty;
-    model.DrGt0Min = model.DrGt0 - tValue*model.DrGt0_Uncertainty;
+    model.DrGt0Max = model.DrGt0 + tValue*model.DrG0_Uncertainty;
+    model.DrGt0Min = model.DrGt0 - tValue*model.DrG0_Uncertainty;
 
     %matrices for computing min and max change in chemical potential
     F=-model.S;

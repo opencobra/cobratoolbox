@@ -94,7 +94,9 @@ for m = 1:length(molfileNames)
         try
             atomCount = str2double(lines{4}(1:3));
         catch
+            disp('Failure to read mol file:')
             disp(lines)
+            continue;
         end
         if atomCount > 0
             atomBlock = lines(5:5 + atomCount - 1);
@@ -123,7 +125,7 @@ for m = 1:length(molfileNames)
 end
 fclose(fid);
 
-noMolFileCount = sum(~ismember(mets,molfileNames));
+noMolFileCount = sum(~ismember(mets,molfileNames'));
 fprintf('Percentage of metabolites without mol files: %.1f%%\n', 100*noMolFileCount/length(mets));
 
 metList = reshape(metList,length(metList),1);

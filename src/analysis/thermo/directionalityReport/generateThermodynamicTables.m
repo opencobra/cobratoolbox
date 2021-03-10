@@ -31,7 +31,7 @@ T = model.T; % K
 % Rxns
 rxnID = model.rxns;
 DrG0 = model.DrG0;
-DrGt0_Uncertainty = model.DrGt0_Uncertainty;
+DrG0_Uncertainty = model.DrG0_Uncertainty;
 DrGt0 = model.DrGt0;
 DrGtMin = model.DrGtMin;
 DrGtMax = model.DrGtMax;
@@ -60,7 +60,7 @@ fclose(fid);
 fid = fopen(reactionTab,'w+');
 fprintf(fid, 'Reaction ID\tStandard reaction Gibbs energy (kJ/mol)\tUncertainty corresponding to 95%% confidence interval (kJ/mol)\tStandard transformed reaction Gibbs energy (kJ/mol)\tMinimum transformed reaction Gibbs energy (kJ/mol)\tMaximum transformed reaction Gibbs energy (kJ/mol)\r\n');
 for n = 1:length(rxnID)
-    fprintf(fid, '%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\r\n', rxnID{n}, DrG0(n), DrGt0_Uncertainty(n), DrGt0(n), DrGtMin(n), DrGtMax(n));
+    fprintf(fid, '%s\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\r\n', rxnID{n}, DrG0(n), DrG0_Uncertainty(n), DrGt0(n), DrGtMin(n), DrGtMax(n));
 end
 fclose(fid);
 
