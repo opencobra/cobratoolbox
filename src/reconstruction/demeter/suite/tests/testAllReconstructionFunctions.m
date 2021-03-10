@@ -140,7 +140,14 @@ for i = 1:steps:length(modelList)
             for k=1:length(fields)
                 tmpStruct.(fields{k}){j, 1} = strrep(modelList{j},'.mat','');
             end
-            model=readCbModel(modelsToLoad{j});
+            try
+                model=readCbModel(modelsToLoad{j});
+            catch
+                modelsToLoad{j}
+                model=load(modelsToLoad{j});
+                fieldnames(model)
+                model=model.model;
+            end
             
             microbeID=strrep(modelList{j},'.mat','');
             biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};

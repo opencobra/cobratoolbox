@@ -70,6 +70,7 @@ if isempty(biomassReaction)
 end
 
 %% Translate to VMH if it is an untranslated KBase model
+if 0
 [model,notInTableRxns,notInTableMets] = translateKBaseModel2VMHModel(model,biomassReaction,database);
 if ~isempty(notInTableRxns)
     summary.('untranslatedRxns') = notInTableRxns;
@@ -77,7 +78,7 @@ end
 if ~isempty(notInTableMets)
     summary.('untranslatedMets') = notInTableMets;
 end
-
+end
 %% add some reactions that need to be in every reconstruction
 essentialRxns={'DM_atp_c_','sink_PGPm1[c]','EX_nh4(e)','NH4tb','Kt1r'};
 if ~find(strcmp(model.mets,'pi[e]'))
@@ -156,6 +157,7 @@ if AnaerobicGrowth(1,2) < tol
 end
 
 %% Stoichiometrically balanced cycles
+
 [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
 summary.('balancedCycle_addedRxns') = unique(addedRxns);
 summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
@@ -325,8 +327,9 @@ end
 model = addRefinementComments(model,summary);
 
 %% rebuild model
+if 1
 model = rebuildModel(model,database);
-
+end
 %% constrain sink reactions
 model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 

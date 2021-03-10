@@ -39,7 +39,7 @@ rxnFields={
     };
 
 for i=1:length(rxnFields)
-if length(model.(rxnFields{i}))<length(model.rxns)
+if isfield(model,rxnFields{i}) && length(model.(rxnFields{i}))<length(model.rxns)
     if iscell(model.(rxnFields{i}))
     model.(rxnFields{i}){length(model.rxns),1}='';
     elseif isnumeric(model.(rxnFields{i}))
@@ -53,7 +53,8 @@ rbio=struct;
 for i=1:length(model.rxns)
     if ~strncmp('bio',model.rxns{i,1},3)
         % find reaction index
-        rInd=find(ismember(database.reactions(:, 1), model.rxns{i,1}));
+try
+    rInd=find(ismember(database.reactions(:, 1), model.rxns{i,1}));
         model.rxns{i,1}=database.reactions{rInd, 1};
         model.grRules{i,1}=model.grRules{i};
         model.rxnNames{i,1}=database.reactions{rInd, 2};
@@ -66,6 +67,10 @@ for i=1:length(model.rxns)
             model.ub(i,1)=1000;
         end
         model.formulas{i,1}=database.reactions{rInd, 3};
+catch
+    errorR{i}=model.rxns{i,1};
+    save errorRxns errorR
+end
     else
         model.rxns{i,1}=model.rxns{i};
         model.grRules{i,1}=model.grRules{i};
@@ -87,12 +92,20 @@ rbio.data(:,6)=model.grRules(oldInd);
 rbio.data(:,7)=num2cell(model.lb(oldInd));
 rbio.data(:,8)=num2cell(model.ub(oldInd));
 rbio.data(:,10)=model.subSystems(oldInd);
+if isfield(model,'citations')
 rbio.data(:,11)=model.citations(oldInd);
+end
+if isfield(model,'comments')
 rbio.data(:,12)=model.comments(oldInd);
+end
+if isfield(model,'rxnECNumbers')
 rbio.data(:,13)=model.rxnECNumbers(oldInd);
+end
+if isfield(model,'rxnKEGGID')
 rbio.data(:,14)=model.rxnKEGGID(oldInd);
+end
 rbio.description=cell(7,1);
-
+try
 % build model with rBioNet
 bInd = find(strncmp('bio',rbio.data(:,2),3));
 bAbb = rbio.data{bInd,2};
@@ -105,7 +118,9 @@ model.citations{end+1,1} = '';
 model.rxnECNumbers{end+1,1} = '';
 model.rxnKEGGID{end+1,1} = '';
 model.rxnConfidenceScores{end+1,1} = '';
+end
 % fix incorrect format of PubChemID, metChEBIID, and metKEGGID
+if isfield(model,'metPubChemID')
 for i=1:length(model.metPubChemID)
 model.metPubChemID{i,1}=char(string(model.metPubChemID{i,1}));
 model.metChEBIID{i,1}=char(string(model.metChEBIID{i,1}));
@@ -117,6 +132,7 @@ model.metKEGGID=cellstr(model.metKEGGID);
 % fill in descriptions
 model.description.author = 'Created by DEMETER, Molecular Systems Physiology group';
 model.description.date=date;
+end
 
 % set biomass reaction as objective function
 model=changeObjective(model,bAbb);

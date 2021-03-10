@@ -38,12 +38,13 @@ fields = {
     };
 
 Results=struct;
-
+length(fields)
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
     savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
     Results.(fields{i}) = table2cell(savedResults);
     numberRecons=size(Results.(fields{i}),1);
+    size(Results.(fields{i}),1)
     else
         Results.(fields{i}) = {};
     end

@@ -271,6 +271,13 @@ D(:, SConsistentRxnBool) = speye(p);
 isF = [SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
 isR = [SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
 
+if param.debug
+    %internal reactions in larger problem size structure
+    isInternal = [SConsistentRxnBool; false(p,1)];
+    isExternal = [~SConsistentRxnBool; false(p,1)];
+    isAuxiliary = [false(size(model_S,2),1);true(p,1)];
+end
+
 % objective: minimize one-norm
 c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
 
@@ -309,9 +316,20 @@ else
     csense(m+1:end) = 'L';
 end
 
-% bounds
-lb = [v0; zeros(p, 1)]; % fixed exchange fluxes
+% bounds % fixed exchange fluxes
+lb = [v0; zeros(p, 1)];
 ub = [v0; abs(v0(SConsistentRxnBool))+feasTol*10]; %allow x to be slightly greater
+
+if 1
+    % slightly relax bounds on exchange reactions with non-zero net flux
+    % because fixing them can lead to infeasibility due to numerical issues 
+    isExF = [~SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+    isExR = [~SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
+    lb(isExF) = (1-feasTol)*v0(isExF);
+    ub(isExF) = (1+feasTol)*v0(isExF);
+    lb(isExR) = (1+feasTol)*v0(isExR);
+    ub(isExR) = (1-feasTol)*v0(isExR);
+end
 
 if param.relaxBounds
     lb(isF) = 0; % internal reaction directionality same as in input flux

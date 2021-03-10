@@ -45,7 +45,7 @@ mkdir(inputDataFolder)
 global CBTDIR
 % find the folder with information that was collected for DEMETER
 demeterInputFolder = [CBTDIR filesep 'papers' filesep '2021_demeter' filesep 'input'];
-
+demeterInputFolder = ['/Users/inesthiele/Documents/COBRA.papers/2021_demeter/input'];
 % Get taxonomy information on AGORA2 that will serve to inform new
 % organisms
 agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx'], 'ReadVariableNames', false);
@@ -162,6 +162,9 @@ writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],
 %% Create genome annotations file with reactions from PubSeed spreadsheets if available reactions that are annotated
 
 if ~isempty(spreadsheetFolder)
+    adaptedInfoFilePath
+    inputDataFolder
+    spreadsheetFolder
     writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
     genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
     genomeAnnotation = table2cell(genomeAnnotation);
