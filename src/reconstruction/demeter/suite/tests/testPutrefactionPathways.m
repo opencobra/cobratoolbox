@@ -102,7 +102,9 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
+        if ~isempty(find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})))
         FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        end
     end
 end
 

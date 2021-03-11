@@ -147,17 +147,17 @@ if length(failedModels)>0
         for j=i:i+endPnt
             % print the results of the debug gapfilling
             if ~isempty(replacedReactionsTmp{j})
-            debuggingReport(cnt,1:size(replacedReactionsTmp{j},2))=replacedReactionsTmp{j};
-            cnt=cnt+1;
-            end
-            if ~isempty(gapfilledReactionsTmp{j})
-            for k=1:size(gapfilledReactionsTmp{j},1)
-                debuggingReport(cnt,1:size(gapfilledReactionsTmp{j},2))=gapfilledReactionsTmp{j}(k,:);
+                debuggingReport(cnt,1:size(replacedReactionsTmp{j},2))=replacedReactionsTmp{j};
                 cnt=cnt+1;
             end
+            if ~isempty(gapfilledReactionsTmp{j})
+                for k=1:size(gapfilledReactionsTmp{j},1)
+                    debuggingReport(cnt,1:size(gapfilledReactionsTmp{j},2))=gapfilledReactionsTmp{j}(k,:);
+                    cnt=cnt+1;
+                end
             end
             % save the revised model for re-testing
-            model = revisedModelTmp{i};
+            model = revisedModelTmp{j};
             save([debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1} '.mat'],'model');
         end
         % regularly save the results

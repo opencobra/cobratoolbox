@@ -135,8 +135,8 @@ if size(modelList,1)>0
 end
 
 %% load the results from existing pipeline run and restart from there
-if isfile([summaryFolder filesep 'summaries.mat'])
-    load([summaryFolder filesep 'summaries.mat']);
+if isfile([summaryFolder filesep 'summaries_' reconVersion '.mat'])
+    load([summaryFolder filesep 'summaries_' reconVersion '.mat']);
 else
     summaries=struct;
 end
