@@ -139,7 +139,7 @@ if length(failedModels)>0
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
             
             % run the gapfilling suite
-            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction);
+            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
             gapfilledReactionsTmp{j} = gapfilledReactions;
             replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;
