@@ -204,7 +204,7 @@ if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
     replacedReactions{1,1}=microbeID;
     replacedReactions{1,2}='Futile cycle correction';
     replacedReactions{1,3}='To replace';
-    replacedReactions(1,4:length(deletedRxns)+2)=deletedRxns;
+    replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
 end
 
 % rebuild and export the model
