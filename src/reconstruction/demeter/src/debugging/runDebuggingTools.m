@@ -106,6 +106,21 @@ for i=1:size(fileList,1)
     failedModels=union(failedModels,FNlist(:,1));
 end
 
+% get already debugged reconstructions
+dInfo = dir([debuggingFolder filesep 'RevisedModels']);
+modelList={dInfo.name};
+modelList=modelList';
+if size(modelList,1)>0
+    modelList(~contains(modelList(:,1),'.mat'),:)=[];
+    modelList(:,1)=strrep(modelList(:,1),'.mat','');
+    
+    % remove models that were already debugged
+    [C,IA]=intersect(failedModels(:,1),modelList(:,1));
+    if ~isempty(C)
+        failedModels(IA,:)=[];
+    end
+end
+
 currentDir=pwd;
 cd(inputDataFolder)
 
@@ -171,7 +186,8 @@ if length(failedModels)>0
     tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     
     testAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
-    
+    plotTestSuiteResults(testResultsFolder,reconVersion);
+
     % get all models that still fail at least one test
     stillFailedModels = {};
     

@@ -63,22 +63,22 @@ if AnaerobicGrowth(1,1) < tol
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Condition-specific gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
+        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
         gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Targeted gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
+        gapfilledReactions{cntGF,3}='Targeted gapfilling';
         gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Gapfilling based on relaxFBA';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
+        gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
     end
@@ -92,22 +92,22 @@ if AerobicGrowth(1,2) < tol
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Condition-specific gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
         gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Targeted gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,3}='Targeted gapfilling';
         gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Gapfilling based on relaxFBA';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
     end
@@ -121,22 +121,22 @@ if growsOnDefinedMedium == 0
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Condition-specific gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on defined medium';
+        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
         gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Targeted gapfilling';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on defined medium';
+        gapfilledReactions{cntGF,3}='Targeted gapfilling';
         gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Gapfilling based on relaxFBA';
-        gapfilledReactions{cntGF,3}=biomassReaction;
+        gapfilledReactions{cntGF,2}='Growth on defined medium';
+        gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
     end
@@ -172,22 +172,22 @@ if size(fileList,1)>0
                 % export the gapfilled reactions
                 if ~isempty(condGF)
                     gapfilledReactions{cntGF,1}=microbeID;
-                    gapfilledReactions{cntGF,2}='Condition-specific gapfilling';
-                    gapfilledReactions{cntGF,3}=biomassReaction;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
                     gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
                     cntGF=cntGF+1;
                 end
                 if ~isempty(targetGF)
                     gapfilledReactions{cntGF,1}=microbeID;
-                    gapfilledReactions{cntGF,2}='Targeted gapfilling';
-                    gapfilledReactions{cntGF,3}=biomassReaction;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Targeted gapfilling';
                     gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
                     cntGF=cntGF+1;
                 end
                 if ~isempty(relaxGF)
                     gapfilledReactions{cntGF,1}=microbeID;
-                    gapfilledReactions{cntGF,2}='Gapfilling based on relaxFBA';
-                    gapfilledReactions{cntGF,3}=biomassReaction;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
                     gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
                     cntGF=cntGF+1;
                 end
@@ -202,8 +202,9 @@ if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
     % let us try if running removeFutileCycles again will work
     [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
     replacedReactions{1,1}=microbeID;
-    replacedReactions{1,2}='To replace';
-    replacedReactions(1,3:length(deletedRxns)+2)=deletedRxns;
+    replacedReactions{1,2}='Futile cycle correction';
+    replacedReactions{1,3}='To replace';
+    replacedReactions(1,4:length(deletedRxns)+2)=deletedRxns;
 end
 
 % rebuild and export the model
