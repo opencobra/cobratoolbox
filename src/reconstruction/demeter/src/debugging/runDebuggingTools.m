@@ -70,8 +70,15 @@ environment = getEnvironment();
 % get all models that failed at least one test
 failedModels = {};
 fixedModels = {};
-debuggingReport = {};
-cnt=1;
+
+% start from existing progress if available
+if isfile([debuggingFolder filesep 'debuggingReport.mat'])
+    load([debuggingFolder filesep 'debuggingReport.mat'])
+    cnt=size(debuggingReport,1)+1;
+else
+    debuggingReport = {};
+    cnt=1;
+end
 
 mkdir(debuggingFolder)
 mkdir([debuggingFolder filesep 'RevisedModels'])
@@ -227,6 +234,9 @@ if length(failedModels)>0
     save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
     save([debuggingFolder filesep 'fixedModels.mat'],'fixedModels');
     save([debuggingFolder filesep 'failedModels.mat'],'failedModels');
+    
+    % write debugging report as text file
+    writetable(cell2table(debuggingReport),[debuggingFolder filesep 'DebuggingReport_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     
 else
     fprintf('All models passed all tests. Exiting debugging tools.\n')
