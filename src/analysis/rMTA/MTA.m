@@ -46,6 +46,8 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %    numWorkers:          Integer: is the maximun number of workers
 %                         used by the solver. 0 = automatic, 1 = sequential,
 %                         > 1 = parallel. (default = 0)
+%    FORCE_CPLEX:         1 to force CPLEX solver, 0 (default) for COBRA 
+%                         solver.
 %    printLevel:          Integer. 1 if the process is wanted to be shown
 %                         on the screen, 0 otherwise. (default = 1)
 %
@@ -74,6 +76,7 @@ addParameter(p, 'listKO', {}, @(x)iscell(x));
 addParameter(p, 'timelimit', inf, @(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'SeparateTranscript', '', @(x)ischar(x));
 addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'FORCE_CPLEX', 0,@(x)isnumeric(x)&&isscalar(x));
 addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 % extract variables from parser
 parse(p, model, rxnFBS, Vref, varargin{:});
@@ -85,6 +88,7 @@ timelimit = p.Results.timelimit;
 SeparateTranscript = p.Results.SeparateTranscript;
 numWorkers = p.Results.numWorkers;
 printLevel = p.Results.printLevel;
+FORCE_CPLEX = p.Results.FORCE_CPLEX;
 
 if printLevel >0
     fprintf('===================================\n');
@@ -178,7 +182,7 @@ while i_alpha < num_alphas
         for w = 1:100
             i = i+1;
             KOrxn = find(geneKO.matrix(:,i));
-            v_res = MTA_MIQP (CplexModelBest, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel);
+            v_res = MTA_MIQP (CplexModelBest, KOrxn, 'numWorkers', numWorkers, 'timelimit', timelimit, 'printLevel', printLevel, 'FORCE_CPLEX', FORCE_CPLEX);
             Vres{i_alpha}(:,i) = v_res;
             if ~isempty(KOrxn) && norm(v_res)>1
                 TSscore(i,i_alpha) = MTA_TS(v_res,Vref,rxnFBS_best);

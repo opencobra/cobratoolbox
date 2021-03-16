@@ -44,7 +44,9 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 
 if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defaults
     if isfield(model, 'SIntRxnBool')
+        warning('Assuming SConsistentMetBool and SConsistentRxnBool heuristically. Better to use findStoichConsistentSubset')
         SConsistentRxnBool = model.SIntRxnBool;
+        SConsistentMetBool = true(size(model.S,1),1);
     else
         tmp = model;
         tmp.c(:) = 0;
@@ -53,11 +55,14 @@ if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defa
             tmp = rmfield(tmp, 'biomassRxnAbbr');
         end
         
-        [~, SConsistentRxnBool] = findStoichConsistentSubset(tmp, 0, 0);
+        [SConsistentMetBool, SConsistentRxnBool] = findStoichConsistentSubset(tmp, 0, 0);
         
         clear tmp
     end
+else
+    SConsistentMetBool = model.SConsistentMetBool;
 end
+
 
 if ~exist('param','var')
     param = struct();
@@ -110,7 +115,7 @@ if param.debug
         v0 = V0(:, i);
         
         %check if the solution provided is an accurate steady state
-        res = norm(model.S*v0 - model.b,inf);
+        res = norm(model.S(SConsistentMetBool,:)*v0 - model.b(SConsistentMetBool),inf);
         if res>param.eta
             error('Solution provided is not a steady state')
         end
@@ -163,7 +168,7 @@ if ~exist('parallelize', 'var') || isempty(parallelize)
 end
 
 % parameters
-[model_S, model_b, model_lb, model_ub] = deal(model.S, model.b, model.lb, model.ub);
+[model_S, model_b, model_csense, model_lb, model_ub, ] = deal(model.S(SConsistentMetBool,:), model.b(SConsistentMetBool), model.csense(SConsistentMetBool), model.lb, model.ub);
 
 [~,osense] = getObjectiveSense(model);
 
@@ -180,10 +185,10 @@ if parallelize
         c0 = C(:, i);
         
         try
-            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
+            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
             V1(:, i) = v1;
         catch 
-            v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
+            v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
             V1(:, i) = v2;
             fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
         end
@@ -195,12 +200,12 @@ else
         c0 = C(:, i);
         
         try
-            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
+            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
         catch ME
             if param.relaxBounds==0
                 disp(ME.message)
                 param.relaxBounds=1;
-                v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
+                v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
                 fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
             else
                 rethrow(ME)
@@ -213,7 +218,7 @@ end
 
 end
 
-function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_lb, model_ub, SConsistentRxnBool, param)
+function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param)
 
 if ~isfield(param,'removeFixedBool')
     %by default, do not remove fixed variables, let the solver deal with them
@@ -294,6 +299,7 @@ if any(c0)
     b = [model_b;  c0' * v0; zeros(2*p, 1)];
     
     csense = repmat('E', size(A, 1), 1);
+    csense(1:m) = model_csense;
     csense(m+2:end) = 'L';
     
     %this approach is more numerically robust than forcing the new objective to equal the
@@ -313,6 +319,7 @@ else
     b = [model_b; zeros(2*p, 1)];
     
     csense = repmat('E', size(A, 1), 1);
+    csense(1:m) = model_csense;
     csense(m+1:end) = 'L';
 end
 

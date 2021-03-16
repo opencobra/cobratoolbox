@@ -1,4 +1,4 @@
-function group_def = getGroupVectorFromInchi(inchi, silent, debug)
+function group_def = getGroupVectorFromInchi(inchi, printLevel)
 % USAGE:
 %
 %    group_def = getGroupVectorFromInchi(inchi, silent, debug)
@@ -13,11 +13,8 @@ function group_def = getGroupVectorFromInchi(inchi, silent, debug)
 % OUTPUT:
 %    group_def:
 
-if nargin < 2
-    silent = true;
-end
-if nargin < 3
-    debug = false;
+if nargin ==1 
+    printLevel = 0;
 end
 
 if isempty(inchi)
@@ -28,10 +25,17 @@ end
 fullpath = which('getGroupVectorFromInchi.m');
 fullpath = regexprep(fullpath,'getGroupVectorFromInchi.m','');
 
-if silent
-    cmd = ['python2 ' fullpath 'inchi2gv.py -s -i '];
+if 1
+    inchi2gv = 'inchi2gv';
 else
-    cmd = ['python2 ' fullpath 'inchi2gv.py -i '];
+    inchi2gv = 'compound_groups';
+end
+
+
+if printLevel<=1
+    cmd = ['python2 ' fullpath  inchi2gv '.py -s -i '];
+else
+    cmd = ['python2 ' fullpath inchi2gv '.py -i '];
 end
 
 if ~ispc
@@ -51,8 +55,8 @@ if rval == 0 % && ~strcmp('Traceback', group_def(1:9))
         group_def = [];
     end
 else
-    if debug > 1
-        fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
+    if printLevel>1
+        fprintf('%s\n',['getGroupVectorFromInchi did not decompose: ' inchi])
     end
     group_def = [];
 end

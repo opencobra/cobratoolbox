@@ -1,10 +1,13 @@
 function [PR, PN, PC, PL] = subspaceProjector(A, printLevel, sub_space)
-% Returns the matrix for projection onto the sub_space of the internal
-% reaction stoichiometric matrix specified by `sub_space`
-% If `sub_space` is 'all' then all are returned
+% Returns the matrix for projection onto the subspace of matrix A,
+% specified by `sub_space`
+%   * 'all'
+%   * 'R' row space         i.e. range(A')
+%   * 'N' nullspace         i.e. null(A)
+%   * 'C' column space      i.e. range(A)
+%   * 'L' left nullspace    i.e. null(A')
 %
-% Let M denote the Moore-Penrose pseudoinverse of the internal reaction
-% stoichiometric matrix S and the subscripts are the following
+% Let M denote the Moore-Penrose pseudoinverse of the A and the subscripts are the following
 % `_R` row space        i.e. range(A')
 % `_N` nullspace        i.e. null(A)
 % `_C` column space     i.e. range(A)

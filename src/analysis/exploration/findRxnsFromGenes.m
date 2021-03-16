@@ -25,6 +25,7 @@ function [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, L
 %       - edited 04/05/09 (MUCH faster now -- NL)
 %       - edited 06/11/10 (yet even faster now -- NL)
 %       - Ronan, Ines - edited interface for backward compatibility
+% - Ines Thiele Feb 2021 - Now also grRule is returned in the output
 
 if nargin==4
    warning('3rd argument is numericFlag, currently redundant, will be depreciated')
@@ -108,8 +109,7 @@ for i = 1:length(GeneID)
     if isfield(model,'rxnNames')
         results.(tempGene)(:, 4) = model.rxnNames(Ind_rxns);
     end
-        results.(tempGene)(:, 5) = model.grRules(Ind_rxns);
-
+    results.(tempGene)(:, 5) = model.grRules(Ind_rxns);
     if ListResultsFlag
         LR_RowCnt = size(ListResults, 1);
         ListResults(LR_RowCnt + 1 : LR_RowCnt + size(results.(tempGene), 1), 1:5) = results.(tempGene);

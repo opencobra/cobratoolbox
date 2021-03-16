@@ -70,8 +70,15 @@ environment = getEnvironment();
 % get all models that failed at least one test
 failedModels = {};
 fixedModels = {};
-debuggingReport = {};
-cnt=1;
+
+% start from existing progress if available
+if isfile([debuggingFolder filesep 'debuggingReport.mat'])
+    load([debuggingFolder filesep 'debuggingReport.mat'])
+    cnt=size(debuggingReport,1)+1;
+else
+    debuggingReport = {};
+    cnt=1;
+end
 
 mkdir(debuggingFolder)
 mkdir([debuggingFolder filesep 'RevisedModels'])
@@ -104,6 +111,21 @@ for i=1:size(fileList,1)
     % remove all rows with no cases
     FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
     failedModels=union(failedModels,FNlist(:,1));
+end
+
+% get already debugged reconstructions
+dInfo = dir([debuggingFolder filesep 'RevisedModels']);
+modelList={dInfo.name};
+modelList=modelList';
+if size(modelList,1)>0
+    modelList(~contains(modelList(:,1),'.mat'),:)=[];
+    modelList(:,1)=strrep(modelList(:,1),'.mat','');
+    
+    % remove models that were already debugged
+    [C,IA]=intersect(failedModels(:,1),modelList(:,1));
+    if ~isempty(C)
+        failedModels(IA,:)=[];
+    end
 end
 
 currentDir=pwd;
@@ -139,7 +161,7 @@ if length(failedModels)>0
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
             
             % run the gapfilling suite
-            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction);
+            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
             gapfilledReactionsTmp{j} = gapfilledReactions;
             replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;
@@ -147,17 +169,17 @@ if length(failedModels)>0
         for j=i:i+endPnt
             % print the results of the debug gapfilling
             if ~isempty(replacedReactionsTmp{j})
-            debuggingReport(cnt,1:size(replacedReactionsTmp{j},2))=replacedReactionsTmp{j};
-            cnt=cnt+1;
-            end
-            if ~isempty(gapfilledReactionsTmp{j})
-            for k=1:size(gapfilledReactionsTmp{j},1)
-                debuggingReport(cnt,1:size(gapfilledReactionsTmp{j},2))=gapfilledReactionsTmp{j}(k,:);
+                debuggingReport(cnt,1:size(replacedReactionsTmp{j},2))=replacedReactionsTmp{j};
                 cnt=cnt+1;
             end
+            if ~isempty(gapfilledReactionsTmp{j})
+                for k=1:size(gapfilledReactionsTmp{j},1)
+                    debuggingReport(cnt,1:size(gapfilledReactionsTmp{j},2))=gapfilledReactionsTmp{j}(k,:);
+                    cnt=cnt+1;
+                end
             end
             % save the revised model for re-testing
-            model = revisedModelTmp{i};
+            model = revisedModelTmp{j};
             save([debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1} '.mat'],'model');
         end
         % regularly save the results
@@ -171,7 +193,8 @@ if length(failedModels)>0
     tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     
     testAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
-    
+    plotTestSuiteResults(testResultsFolder,reconVersion);
+
     % get all models that still fail at least one test
     stillFailedModels = {};
     
@@ -211,6 +234,9 @@ if length(failedModels)>0
     save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
     save([debuggingFolder filesep 'fixedModels.mat'],'fixedModels');
     save([debuggingFolder filesep 'failedModels.mat'],'failedModels');
+    
+    % write debugging report as text file
+    writetable(cell2table(debuggingReport),[debuggingFolder filesep 'DebuggingReport_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     
 else
     fprintf('All models passed all tests. Exiting debugging tools.\n')

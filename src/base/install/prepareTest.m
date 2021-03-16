@@ -21,6 +21,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsQP`: Whether a QP solver is required (default: false)
 %                   - `needsMIQP`: Whether a MIQP solver is required (default: false)
 %                   - `needsNLP`: Whether a NLP solver is required (default: false)
+%                   - `needsEP`: Whether a EP solver is required (default: false)
 %                   - `needsUnix`: Whether the test only works on a Unix system (macOS or Linux) (default: false)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
@@ -50,6 +51,7 @@ function [solversToUse] = prepareTest(varargin)
 %                      QP: {'gurobi'}
 %                    MIQP: {'gurobi'}
 %                     NLP: {'matlab'}
+%                      EP: {'pdco'}
 %
 %      % request gurobi, ibm_cplex and tomlab if available
 %      >> solvers = prepareTest('useIfAvailable', {'tomlab', 'ibm_cplex', 'gurobi'})
@@ -62,6 +64,7 @@ function [solversToUse] = prepareTest(varargin)
 %                      QP: {2×1 cell}
 %                    MIQP: {'gurobi'}
 %                     NLP: {'matlab'}
+%                      EP: {'pdco'}
 %
 %
 
@@ -96,6 +99,7 @@ parser.addParamValue('needsMILP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsNLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsQP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMIQP', false, @(x) islogical(x) || x == 1 || x == 0);
+parser.addParamValue('needsEP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsUnix', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
@@ -111,6 +115,7 @@ useLP = parser.Results.needsLP;
 useMIQP = parser.Results.needsMIQP;
 useNLP = parser.Results.needsNLP;
 useMILP = parser.Results.needsMILP;
+useEP = parser.Results.needsEP;
 
 macOnly = parser.Results.needsMac;
 windowsOnly = parser.Results.needsWindows;
@@ -343,6 +348,18 @@ else
         defaultNLPSolver = solversForTest.NLP{1};
     else
         defaultNLPSolver = '';
+    end
+end
+
+if isempty(solversForTest.EP)
+    if useEP
+        errorMessage{end + 1} = 'The test requires at least one EP solver but no solver is installed';
+    end
+else
+    if ~isempty(solversForTest.EP)
+        defaultEPSolver = solversForTest.EP{1};
+    else
+        defaultEPSolver = '';
     end
 end
 

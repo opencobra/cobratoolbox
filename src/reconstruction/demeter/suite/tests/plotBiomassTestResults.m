@@ -31,7 +31,7 @@ function notGrowing = plotBiomassTestResults(refinedFolder, reconVersion, vararg
 parser = inputParser();
 parser.addRequired('refinedFolder', @ischar);
 parser.addRequired('reconVersion', @ischar);
-parser.addParameter('testResultsFolder', [pwd filesep 'TestResults']', @ischar);
+parser.addParameter('testResultsFolder', [pwd filesep 'TestResults'], @ischar);
 parser.addParameter('numWorkers', 0, @isnumeric);
 parser.addParameter('translatedDraftsFolder', '', @ischar);
 

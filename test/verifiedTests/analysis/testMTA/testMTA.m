@@ -58,7 +58,7 @@ solverPkgs = solversToUse.MIQP;
 
 % Test solving for different solvers
 for k = 1:length(solverPkgs)
-    fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});
+    fprintf(' -- Running testMTA using the solver interface: %s ... ', solverPkgs{k});
 
     % Eliminate temp files if they exist
     if exist([currentDir filesep 'temp_MTA.mat'], 'file')

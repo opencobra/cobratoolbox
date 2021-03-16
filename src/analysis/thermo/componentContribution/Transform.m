@@ -31,12 +31,12 @@ DH = (alpha * sqrt(I)) / (1 + 1.6 * sqrt(I)); % Debye Huckel
 
 % dG0' = dG0 + nH * (RTlog(10) * pH + DH) + charge^2 * DH;
 dG0_prime_vector = pseudoisomers(:, 1) + ...
-                   pseudoisomers(:, 2) * (R*T*log(10)*pH + DH) - ...
-                   pseudoisomers(:, 3).^2 * DH;
+    pseudoisomers(:, 2) * (R*T*log(10)*pH + DH) - ...
+    pseudoisomers(:, 3).^2 * DH;
 
-               try
-                   dG0_prime = -R * T * maxstar(dG0_prime_vector / (-R * T));
-               catch
-                   disp(dG0_prime_vector)
-                   return
-               end
+try
+    dG0_prime = -R * T * maxstar(dG0_prime_vector / (-R * T));
+catch
+    disp(dG0_prime_vector)
+    return
+end
