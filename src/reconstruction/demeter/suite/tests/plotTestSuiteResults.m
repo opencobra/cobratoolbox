@@ -8,21 +8,11 @@ cd(testResultsFolder)
 
 %% load all test results
 fields = {
-    'Mass_imbalanced'
-    'Charge_imbalanced'
-    'Mets_without_formulas'
-    'Leaking_metabolites'
-    'ATP_from_O2'
-    'Blocked_reactions'
-    'RefinedReactionsCarryingFlux'
-    'BlockedRefinedReactions'
-    'Incorrect_Gene_Rules'
     'Carbon_sources_TruePositives'
     'Carbon_sources_FalseNegatives'
     'Fermentation_products_TruePositives'
     'Fermentation_products_FalseNegatives'
     'growsOnDefinedMedium'
-    'growthOnKnownCarbonSources'
     'Metabolite_uptake_TruePositives'
     'Metabolite_uptake_FalseNegatives'
     'Secretion_products_TruePositives'
@@ -41,71 +31,69 @@ Results=struct;
 
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
-    savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false);
-    Results.(fields{i}) = table2cell(savedResults);
-    numberRecons=size(Results.(fields{i}),1);
+        savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'ReadVariableNames', false, 'Delimiter','tab');
+        Results.(fields{i}) = table2cell(savedResults);
+        numberRecons=size(Results.(fields{i}),1);
     else
         Results.(fields{i}) = {};
     end
 end
 
 for j=1:length(fields)
-    if ~any(strcmp(fields{j},{'growthOnKnownCarbonSources','essentialExchanges'}))
-        data=Results.(fields{j});
-        if size(data,2)>1
-            plotdata=[];
-            % if there are no entries for data
-            if size(data,2)==1
-                for k=1:length(data)
-                    plotdata(k,1)=0;
-                end
-                label='Number of entries';
+    data=Results.(fields{j});
+    if size(data,2)>1
+        plotdata=[];
+        % if there are no entries for data
+        if size(data,2)==1
+            for k=1:length(data)
+                plotdata(k,1)=0;
+            end
+            label='Number of entries';
+        else
+            if strcmp(fields{j},'growsOnDefinedMedium')
+                plotdata=data(:,2);
+                plotdata(find(strcmp(plotdata(:,1),'NA')),:)=[];
+                plotdata=str2double(plotdata);
             else
-                if strcmp(fields{j},'growsOnDefinedMedium')
-                    plotdata=data(:,2);
-                    plotdata(find(strcmp(plotdata(:,1),'NA')),:)=[];
-                    plotdata=str2double(plotdata);
-                else
-                    if isnumeric(data{1,2}) && ~isempty(data{1,2})
-                        % if the data is fluxes-plot the values
-                        plotdata=cell2mat(data(:,2));
-                        if ~any(strcmp(fields{j},{'Number_genes', 'Number_reactions', 'Number_metabolites'}))
-                            label='Flux (mmol*gDW-1*hr-1)';
-                        else
-                            label='Number of entries';
-                        end
+                if isnumeric(data{1,2}) && ~isempty(data{1,2})
+                    % if the data is fluxes-plot the values
+                    plotdata=cell2mat(data(:,2));
+                    if ~any(strcmp(fields{j},{'Number_genes', 'Number_reactions', 'Number_metabolites'}))
+                        label='Flux (mmol*gDW-1*hr-1)';
                     else
-                        % count the non-empty data entries
-                        for k=1:size(data,1)
-                            plotdata(k,1)=length(find(~cellfun(@isempty,data(k,2:end))));
-                        end
                         label='Number of entries';
                     end
+                else
+                    % count the non-empty data entries
+                    for k=1:size(data,1)
+                        plotdata(k,1)=length(find(~cellfun(@isempty,data(k,2:end))));
+                    end
+                    label='Number of entries';
                 end
             end
-            figure;
-            hold on
-            % need a workaround if all data is zero
-            if sum(plotdata)==0
-                plotdata(1,1)=0.00001;
+        end
+        figure;
+        hold on
+        % need a workaround if all data is zero
+        if sum(plotdata)==0
+            plotdata(1,1)=0.00001;
+        end
+        % does not work if all values are ones
+        if sum(plotdata) ~= length(plotdata)
+            violinplot(plotdata, {reconVersion});
+            ylabel(label)
+            box on
+            h=title(fields{j});
+            ylim([0 max(plotdata)+1])
+            set(h,'interpreter','none')
+            set(gca,'TickLabelInterpreter','none')
+            if contains(pwd,'_refined')
+                suptitle('Refined reconstructions')
+            elseif contains(pwd,'_draft')
+                suptitle('Draft reconstructions')
             end
-            % does not work if all values are ones
-            if sum(plotdata) ~= length(plotdata)
-                violinplot(plotdata, {reconVersion});
-                ylabel(label)
-                box on
-                h=title(fields{j});
-                ylim([0 max(plotdata)+1])
-                set(h,'interpreter','none')
-                set(gca,'TickLabelInterpreter','none')
-                if contains(pwd,'_refined')
-                    suptitle('Refined reconstructions')
-                elseif contains(pwd,'_draft')
-                    suptitle('Draft reconstructions')
-                end
-                set(gca, 'FontSize', 16)
-                print(fields{j},'-dpng','-r300')
-            end
+            set(gca, 'FontSize', 12)
+            print(fields{j},'-dpng','-r300')
         end
     end
 end
@@ -151,6 +139,8 @@ for i=1:length(features)
     plotdata(i,1)=sum(FNs);
     plotdata(i,2)=sum(TPs);
     labels{i,1}=strrep(features{i},'_',' ');
+    labels{i,1}=strrep(labels{i,1},'AromaticAminoAcidDegradation','Amino acid degradation');
+    labels{i,1}=strrep(labels{i,1},'PutrefactionPathways','Putrefaction pathways');
     cnt=cnt+1;
 end
 % remove drug metabolism-better plot separately
@@ -176,6 +166,7 @@ xticklabels(labels);
 set(gca,'XTick',1:numel(plotdata))
 xtickangle(45)
 set(h,'interpreter','none')
+set(gca,'YTickLabel',[])
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
 if contains(pwd,'_refined')
@@ -220,7 +211,7 @@ features={
     'Bile_acid_biosynthesis'
     'Drug_metabolism'
     'growsOnDefinedMedium'
-};
+    };
 for i=1:length(features)
     Percentages{i+1,1} = features{i};
     cntData=0;
@@ -241,8 +232,8 @@ for i=1:length(features)
             end
         end
     else
-       cntData=length(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2));
-       cntAgreeing=sum(str2double(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2)));
+        cntData=length(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2));
+        cntAgreeing=sum(str2double(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2)));
     end
     Percentages{i+1,2} = cntData;
     Percentages{i+1,3} = cntAgreeing/cntData;
