@@ -812,13 +812,13 @@ if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
     
     metRemoveBoolTest=ismember(model.mets,metRemoveList);
     if ~all(model.metRemoveBool==metRemoveBoolTest)
-        if all(model.metRemoveBool== (metRemoveBoolTest || model.SInConsistentMetBool))
+        if all(model.metRemoveBool== (metRemoveBoolTest | model.SInConsistentMetBool))
             metRemoveList2 = setdiff(model.mets(model.SInConsistentMetBool), metRemoveList);
             %zero rows are inconsistent and should be removed
             removeRxnFlag = 0;
             [stoichConsistModel, ~] = removeMetabolites(stoichConsistModel,metRemoveList2, removeRxnFlag);
         else
-            error('inconsistent metabolite removal')
+            warning('inconsistent metabolite removal')
         end
     end
     try
@@ -829,3 +829,4 @@ if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
 else
     stoichConsistModel = model;
 end
+

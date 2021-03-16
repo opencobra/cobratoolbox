@@ -69,8 +69,9 @@ model.rxns(find(ismember(model.rxns,'ATPM')))={'DM_atp_c_'};
 model.rxns(find(ismember(model.rxns,'ATPhyd')))={'DM_atp_c_'};
 % adds DM_atp to model if not exist
 
-if isempty(strmatch('DM_atp_c_',model.rxns))
-    [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+if isempty(strmatch('DM_atp_c_',model.rxns,'exact'))
+   % [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+    [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', '1 atp[c] ->');
 end
 
 model.rxns(find(ismember(model.rxns,'EX_biomass_reaction')))={'biomass_reaction'};
@@ -139,6 +140,7 @@ if 1
     modelClosed.lb(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=0;
     modelClosedATP = changeObjective(modelClosed,'DM_atp_c_');
     modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',0,'l');
+    modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',1000,'u');
     modelClosedATP = changeRxnBounds(modelClosedATP,strcat('EX_h2o',ExtraCellCompIn),-1,'l');
     FBA3=optimizeCbModel(modelClosedATP);
     TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, except h2o';
@@ -162,6 +164,7 @@ if 1
     modelClosed.lb(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=0;
     modelClosedATP = changeObjective(modelClosed,'DM_atp_c_');
     modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',0,'l');
+    modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',1000,'u');
     modelClosedATP = changeRxnBounds(modelClosedATP,strcat('EX_h2o',ExtraCellCompIn),-1,'l');
     modelClosedATP = changeRxnBounds(modelClosedATP,strcat('EX_o2',ExtraCellCompIn),-1,'l');
     
@@ -189,7 +192,7 @@ if 1
     modelClosed = changeObjective(modelClosed,'DM_atp_c_');
     modelClosed.lb(find(ismember(modelClosed.rxns,'DM_atp_c_'))) = -1000;
     modelClosed.ub(selExc)=1000;
-    FBA = optimizeCbModel(modelClosed);
+    FBA = optimizeCbModel(modelClosed,'min');
     TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, allow DM_atp_c_ to be reversible';
     if abs(FBA.f) > 1e-6
         TableChecks{cnt,2} = 'model produces matter when atp demand is reversed!';
@@ -248,7 +251,7 @@ if 0
 end
 %% model has flux through h[c] demand !
 if 1
-    modelClosed = model;
+   % modelClosed = model;
     modelexchanges1 = strmatch('Ex_',modelClosed.rxns);
     modelexchanges4 = strmatch('EX_',modelClosed.rxns);
     modelexchanges2 = strmatch('DM_',modelClosed.rxns);

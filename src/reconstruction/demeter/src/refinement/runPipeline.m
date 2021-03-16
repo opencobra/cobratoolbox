@@ -107,6 +107,9 @@ folders=folders';
 delInd=find(~any(contains(models(:,1),{'sbml','mat'})));
 models(delInd,:)=[];
 folders(delInd,:)=[];
+delInd=find((contains(models(:,1),{'DS_Store'})));
+models(delInd,:)=[];
+folders(delInd,:)=[];
 % remove duplicates if there are any
 for i=1:length(models)
     outputNamesToTest{i,1}=adaptDraftModelID(models{i,1});
@@ -187,7 +190,13 @@ for i=1:steps:length(models)
         microbeID=adaptDraftModelID(models{j});
         
         % load the model
-        draftModel = readCbModel([folders{j} filesep models{j}]);
+        try
+            draftModel = readCbModel([folders{j} filesep models{j}]);
+        catch
+            draftModel = load([folders{j} filesep models{j}]);
+            F = fieldnames(draftModel);
+            draftModel = draftModel.(F{1});
+        end
         %% create the model
         [model,summary]=refinementPipeline(draftModel,microbeID, infoFilePath, inputDataFolder);
         modelsTmp{j}=model;

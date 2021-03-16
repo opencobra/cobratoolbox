@@ -24,7 +24,7 @@ metaboliteDatabase=table2cell(metaboliteDatabase);
 metaboliteDatabase(1,:)=[];
 for i=1:size(metaboliteDatabase,1)
     metaboliteDatabase{i,5}=num2str(metaboliteDatabase{i,5});
-    metaboliteDatabase{i,12}=datestr(metaboliteDatabase{i,12});
+   % metaboliteDatabase{i,12}=datestr(metaboliteDatabase{i,12});
 end
 metab=cell(metaboliteDatabase);
 
@@ -35,10 +35,10 @@ for i=1:size(reactionDatabase,1)
     if isempty(reactionDatabase{i,9})
     reactionDatabase{i,9}=cell2mat(reactionDatabase{i,9});
     end
-    reactionDatabase{i,10}=datestr(reactionDatabase{i,10});
+  %  reactionDatabase{i,10}=datestr(reactionDatabase{i,10});
 end
 % remove the subsystem column since rBioNet does not account for that
-reactionDatabase(:,end)=[];
+%reactionDatabase(:,end)=[];
 rxn=cell(reactionDatabase);
 
 % load the file with compartment definition

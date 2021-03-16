@@ -46,7 +46,9 @@ summary.('secretionRxnsAdded') = secretionRxnsAdded;
 summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 
 %% test pathways to make sure they work
+if 0
 model=rebuildModel(model,database);
+end
 FNs = {};
 % Carbon sources
 [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);

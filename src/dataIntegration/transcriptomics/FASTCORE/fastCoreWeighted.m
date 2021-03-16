@@ -42,8 +42,9 @@ J = intersect( C, I ); fprintf('|J|=%d  ', length(J));
 P = setdiff( N, C);
 Supp = findSparseModeWeighted( J, P, singleton, model, LPproblem, weights, epsilon );
 if ~isempty( setdiff( J, Supp ) )
-  fprintf ('Error: Inconsistent irreversible core reactions.\n');
-  return;
+  fprintf ('Error: Inconsistent irreversible core reactions:\n');
+    model.rxns(setdiff( J, Supp ))
+ return;
 end
 A = Supp;  fprintf('|A|=%d\n', length(A));
 J = setdiff( C, A ); fprintf('|J|=%d  ', length(J));
