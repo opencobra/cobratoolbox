@@ -19,15 +19,17 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 %    hexColour          colour of overlay (hex color format)
 %                       e.g. '#009933' corresponds to http://www.color-hex.com/color/009933
 %    thickness:         maximum thickness
-%    normalizedFluxesOption     if 'true' (default) then fluxes will be
+%    normalizedFluxesOption:     if 'true' (default) then fluxes will be
 %                       normalized, otw they will be displayed as is
+%    content:           character array with the following format for each
+%                       reaction to be displayed. Bypasses the use of solution.v to set the format. 
+%                       'name%09reactionIdentifier%09lineWidth%09color%0D'
 %
 % OUTPUT:
 %    serverResponse:          Response of the MINERVA
 %
 % .. Author: - Alberto Noronha Jan/2016
-%            - Ines Thiele April/2020, fixed issue with using ReconMap-3 as
-%            target map.
+%            - Ines Thiele April/2020, fixed issue with using ReconMap-3 as target map.
 
 if ~exist('thickness', 'var')
     thickness = 10;
@@ -62,13 +64,9 @@ if ~exist('content','var')
         if contains(mapReactionId,'%') || contains(mapReactionId,' ')
             error('ReactionID cannot contain delimiting characters, such as: %')
         end
-        
-        if solution.v(i) ~= 0
-            line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
-            content = strcat(content, line);
-        end
     end
 end
+
 %   get all the parameters
 login = minerva.login;
 password = minerva.password;
