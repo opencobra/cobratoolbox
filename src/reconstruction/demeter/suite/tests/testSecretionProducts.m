@@ -29,7 +29,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-solver = CBT_LP_SOLVER;
 
 metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 

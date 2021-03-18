@@ -160,8 +160,51 @@ if length(failedModels)>0
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
             
+            % load the test results
+            fields = {
+                'Mass_imbalanced'
+                'Charge_imbalanced'
+                'Mets_without_formulas'
+                'Leaking_metabolites'
+                'ATP_from_O2'
+                'Blocked_reactions'
+                'RefinedReactionsCarryingFlux'
+                'BlockedRefinedReactions'
+                'Incorrect_Gene_Rules'
+                'Incorrect_Compartments'
+                'Carbon_sources_TruePositives'
+                'Carbon_sources_FalseNegatives'
+                'Fermentation_products_TruePositives'
+                'Fermentation_products_FalseNegatives'
+                'growsOnDefinedMedium'
+                'growthOnKnownCarbonSources'
+                'Biomass_precursor_biosynthesis_TruePositives'
+                'Biomass_precursor_biosynthesis_FalseNegatives'
+                'Metabolite_uptake_TruePositives'
+                'Metabolite_uptake_FalseNegatives'
+                'Secretion_products_TruePositives'
+                'Secretion_products_FalseNegatives'
+                'Bile_acid_biosynthesis_TruePositives'
+                'Bile_acid_biosynthesis_FalseNegatives'
+                'Drug_metabolism_TruePositives'
+                'Drug_metabolism_FalseNegatives'
+                'PutrefactionPathways_TruePositives'
+                'PutrefactionPathways_FalseNegatives'
+                };
+            
+            Results=struct;
+            
+            for k=1:length(fields)
+                if isfile([testResultsFolder filesep fields{k} '_' reconVersion '.txt'])
+                    savedResults = readtable([testResultsFolder filesep fields{k} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+                    Results.(fields{k}) = table2cell(savedResults);
+                else
+                    Results.(fields{k})={};
+                end
+            end
+            
             % run the gapfilling suite
-            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,failedModels{j,1},biomassReaction);
+            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,Results, inputDataFolder,failedModels{j,1},biomassReaction);
             gapfilledReactionsTmp{j} = gapfilledReactions;
             replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;
@@ -180,7 +223,7 @@ if length(failedModels)>0
             end
             % save the revised model for re-testing
             model = revisedModelTmp{j};
-            save([debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1} '.mat'],'model');
+            writeCbModel(model, 'format', 'mat', 'fileName', [debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1}]);
         end
         % regularly save the results
         save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
@@ -194,7 +237,7 @@ if length(failedModels)>0
     
     testAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
     plotTestSuiteResults(testResultsFolder,reconVersion);
-
+    
     % get all models that still fail at least one test
     stillFailedModels = {};
     

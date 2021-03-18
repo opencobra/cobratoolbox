@@ -1,20 +1,19 @@
-function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
+function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
 % and anaerobically, and whether or not unrealistically high ATP is
-% produced on the Western diet.
+% produced on a complex medium.
 %
 % USAGE:
 %
-%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction)
+%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
 %
 % INPUTS
 % model:                 COBRA model structure
-% testResultsFolder:     Folder where the test results are saved
+% testResults:           Structure with results of test run
 % inputDataFolder:       Folder with input tables with experimental data
 %                        and databases that inform the refinement process
-% reconVersion:          Name of the refined reconstruction resource
 % microbeID:             ID of the reconstructed microbe that serves as
 %                        the reconstruction name and to identify it in
 %                        input tables
@@ -142,26 +141,21 @@ if growsOnDefinedMedium == 0
     end
 end
 
-% load all test result files for experimental data
-dInfo = dir([testResultsFolder filesep reconVersion '_refined']);
-fileList={dInfo.name};
-fileList=fileList';
-fileList(~(contains(fileList(:,1),{'.txt'})),:)=[];
-fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
-
 % if there are any false negative predictions
 % find what reactions should be added to enable agreement with experimental
 % data
-if size(fileList,1)>0
-    for i=1:size(fileList,1)
+
+fields=fieldname(testResults);
+
+    for i=1:length(fields)
+        if contains(fields{i},'FalseNegatives')
         % define if objective should be maximized or minimized
-        if any(contains(fileList{i,1},{'Carbon_sources','Metabolite_uptake'}))
+        if any(contains(fields{i},{'Carbon_sources','Metabolite_uptake'}))
             osenseStr = 'min';
-        elseif any(contains(fileList{i,1},{'Fermentation_products','Secretion_products'}))
+        elseif any(contains(fields{i},{'Fermentation_products','Secretion_products'}))
             osenseStr = 'max';
         end
-        FNlist = readtable([[testResultsFolder filesep reconVersion '_refined'] filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
-        FNlist = table2cell(FNlist);
+        FNlist = testResults.(fields{i});
         FNs = FNlist(find(strcmp(FNlist(:,1),microbeID)),2:end);
         FNs = FNs(~cellfun(@isempty, FNs));
         if ~isempty(FNs)
@@ -193,8 +187,8 @@ if size(fileList,1)>0
                 end
             end
         end
+        end
     end
-end
 
 % remove futile cycles if any exist
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);

@@ -1,4 +1,4 @@
-function [outputFile] = reportPDF(model, microbeID, biomassReaction, reportFolder, ncbiID)
+function [outputFile] = reportPDF(model, microbeID, biomassReaction, inputDataFolder, reportFolder, ncbiID)
 % Runs all test functions and writes a report in a .tex file. Writes a PDF
 % using pdf2latex.
 % Requires a LaTex installation, e.g. MiKTex (https://miktex.org/download)
@@ -8,6 +8,8 @@ function [outputFile] = reportPDF(model, microbeID, biomassReaction, reportFolde
 % model             COBRA model structure
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Model biomass reaction
+% inputDataFolder   Folder with experimental data and database files
+%                   to load
 % reportFolder      Path to folder where report documents should be written
 %                   (e.g., 'C:\Reports')
 %
@@ -146,7 +148,7 @@ fprintf(fid, '\n');
 
 % Carbon sources
 fprintf(fid, '\\section{Carbon sources}\n');
-[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, '\\textit{In vitro} carbon source & Taken up by model\\\\\n');
@@ -169,7 +171,7 @@ end
 
 % Fermentation products
 fprintf(fid, '\\section{Fermentation products}\n');
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, '\\textit{In vitro} fermentation product & Secreted by model\\\\\n');
@@ -190,35 +192,9 @@ else
     fprintf(fid, 'No fermentation products reported for organism.\n');
 end
 
-% Growth on defined media
-[growsOnDefinedMedium,~,growthOnKnownCarbonSources] = ...
-    testGrowthOnDefinedMedia(model, microbeID, biomassReaction);
-fprintf(fid, '\\section{Growth on defined medium}\n');
-if ~strcmp(growsOnDefinedMedium,'NA')
-    fprintf(fid, '\\begin{tabular}{ll}\n');
-    if growsOnDefinedMedium==1
-        fprintf(fid, 'The model grows on defined medium with at least one carbon source.\n');
-    elseif growsOnDefinedMedium==0
-        fprintf(fid, 'The model cannot on defined medium reported for the organism.\n');
-    end
-        fprintf(fid, '\\end{tabular}\n');
-    fprintf(fid, '\n');
-%     fprintf(fid, '\\subsection{Growth rates on defined medium}\n');
-%     fprintf(fid, '\\begin{tabular}{ll}\n');
-%     fprintf(fid, 'Carbon source & Aerobic & Anaerobic\\\\\n');
-%     fprintf(fid, '\\hline\\\\\n');
-%     for i=1:size(growthOnKnownCarbonSources,1)
-%         fprintf(fid, '%s & %s\\\\\n', growthOnKnownCarbonSources{i,1}, str2double(growthOnKnownCarbonSources{i,2}), str2double(growthOnKnownCarbonSources{i,3}));
-%     end
-%     fprintf(fid, '\\end{tabular}\n');
-%     fprintf(fid, '\n');
-else
-    fprintf(fid, 'No growth media reported for organism.\n');
-end
-
 % Uptake of known consumed metabolites
 fprintf(fid, '\\section{Known consumed metabolites}\n');
-[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, 'Consumed metabolites in model\\\\\n');
@@ -241,7 +217,7 @@ end
 
 % Production of known secretion products
 fprintf(fid, '\\section{Known secretion products}\n');
-[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, 'Secretion products in model\\\\\n');
@@ -260,6 +236,31 @@ if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\n');
 else
     fprintf(fid, 'No known secretion products reported for organism.\n');
+end
+
+% Growth on defined media
+[growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
+fprintf(fid, '\\section{Growth on defined medium}\n');
+if ~strcmp(growsOnDefinedMedium,'NA')
+    fprintf(fid, '\\begin{tabular}{ll}\n');
+    if growsOnDefinedMedium==1
+        fprintf(fid, 'The model grows on defined medium with at least one carbon source.\n');
+    elseif growsOnDefinedMedium==0
+        fprintf(fid, 'The model cannot on defined medium reported for the organism.\n');
+    end
+        fprintf(fid, '\\end{tabular}\n');
+    fprintf(fid, '\n');
+%     fprintf(fid, '\\subsection{Growth rates on defined medium}\n');
+%     fprintf(fid, '\\begin{tabular}{ll}\n');
+%     fprintf(fid, 'Carbon source & Aerobic & Anaerobic\\\\\n');
+%     fprintf(fid, '\\hline\\\\\n');
+%     for i=1:size(growthOnKnownCarbonSources,1)
+%         fprintf(fid, '%s & %s\\\\\n', growthOnKnownCarbonSources{i,1}, str2double(growthOnKnownCarbonSources{i,2}), str2double(growthOnKnownCarbonSources{i,3}));
+%     end
+%     fprintf(fid, '\\end{tabular}\n');
+%     fprintf(fid, '\n');
+else
+    fprintf(fid, 'No growth media reported for organism.\n');
 end
 
 % Bile acid biosynthesis

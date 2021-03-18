@@ -213,10 +213,10 @@ for i=1:steps:length(models)
     % save the data
     for j=i:i+endPnt
         model=modelsTmp{j};
-        save([refinedFolder filesep outputFileNamesTmp{j,1}],'model');
+        writeCbModel(model, 'format', 'mat', 'fileName', [refinedFolder filesep outputFileNamesTmp{j,1}]);
         if contains(models{j},'sbml')
             model=draftModelsTmp{j};
-            save([translatedDraftsFolder filesep outputFileNamesTmp{j,1}],'model');
+            writeCbModel(model, 'format', 'mat', 'fileName', [translatedDraftsFolder filesep outputFileNamesTmp{j,1}]);
         end
         summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end

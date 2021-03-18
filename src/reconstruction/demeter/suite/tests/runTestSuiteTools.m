@@ -60,7 +60,7 @@ mkdir(testResultsFolder)
 if ~isempty(translatedDraftsFolder)
     % Draft reconstructions
     mkdir([testResultsFolder filesep reconVersion '_draft'])
-    testAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],inputDataFolder,reconVersion,numWorkers);   plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
+    batchTestAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],inputDataFolder,reconVersion,numWorkers);   plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
 end
 
 % Refined reconstructions
@@ -69,9 +69,8 @@ testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVer
 plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
 
 %% prepare a report of the QA/QC status of the models
-curationReport={};
 
-% curationReport = printRefinementReport(testResultsFolder,reconVersion);
+curationReport = printRefinementReport(testResultsFolder,reconVersion);
 
 %% Give an individual report of each reconstruction if desired.
 % Note: this is time-consuming.
@@ -118,7 +117,7 @@ if createReports
             else
                 ncbiID='';
             end
-            [outputFile] = reportPDF(model, strrep(modelList{i},'.mat',''), biomassReaction, reportsFolder, ncbiID);
+            [outputFile] = reportPDF(model, strrep(modelList{i},'.mat',''), biomassReaction, inputDataFolder, reportsFolder, ncbiID);
         end
     else
         warning('No organism information provided. Report generation skipped.')

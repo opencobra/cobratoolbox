@@ -21,18 +21,10 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
-if ~isempty(infoFilePath)
-    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-    if ~any(strcmp(infoFile(:,1),microbeID))
-        warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
-    end
-else
-    infoFile = readtable('AGORA2_infoFile.xlsx', 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
-    if ~any(strcmp(infoFile(:,1),microbeID))
-        warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
-    end
+infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+infoFile = table2cell(infoFile);
+if ~any(strcmp(infoFile(:,1),microbeID))
+    warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
 end
 
 tol=0.0000001;
@@ -70,7 +62,6 @@ if isempty(biomassReaction)
 end
 
 %% Translate to VMH if it is an untranslated KBase model
-if 0
 [model,notInTableRxns,notInTableMets] = translateKBaseModel2VMHModel(model,biomassReaction,database);
 if ~isempty(notInTableRxns)
     summary.('untranslatedRxns') = notInTableRxns;
@@ -78,7 +69,7 @@ end
 if ~isempty(notInTableMets)
     summary.('untranslatedMets') = notInTableMets;
 end
-end
+
 %% add some reactions that need to be in every reconstruction
 essentialRxns={'DM_atp_c_','sink_PGPm1[c]','EX_nh4(e)','NH4tb','Kt1r'};
 if ~find(strcmp(model.mets,'pi[e]'))

@@ -159,7 +159,8 @@ h=bar(plotdata);
 barvalues(h)
 h(1).FaceColor = [1 0 0];
 h(2).FaceColor = [0 0 1];
-set(gca, 'FontSize', 12)
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+
 box on
 h=title('Features succesfully and unsuccessfully captured by reconstructions');
 xticklabels(labels);
@@ -169,6 +170,7 @@ set(h,'interpreter','none')
 set(gca,'YTickLabel',[])
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
+set(gca,'FontSize',14)
 if contains(pwd,'_refined')
     suptitle('Refined reconstructions')
 elseif contains(pwd,'_draft')

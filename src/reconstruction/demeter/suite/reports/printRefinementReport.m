@@ -13,7 +13,7 @@ function curationReport = printRefinementReport(testResultsFolder,reconVersion)
 % OUTPUT
 % curationReport            Summary of results of QC/QA tests
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 06/2020
 
 tol=0.000001;
