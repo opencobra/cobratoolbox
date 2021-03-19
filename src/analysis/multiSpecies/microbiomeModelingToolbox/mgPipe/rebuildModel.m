@@ -134,6 +134,11 @@ model.description.author = 'Created by DEMETER, Molecular Systems Physiology gro
 model.description.date=date;
 end
 
+% adapt model.subSystems to current standard
+for i=1:length(model.subSystems)
+    model.subSystems{i,1}=char(model.subSystems{i,1});
+end
+
 % set biomass reaction as objective function
 model=changeObjective(model,bAbb);
 
