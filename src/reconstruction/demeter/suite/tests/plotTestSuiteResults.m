@@ -25,6 +25,9 @@ fields = {
     'PutrefactionPathways_FalseNegatives'
     'AromaticAminoAcidDegradation_TruePositives'
     'AromaticAminoAcidDegradation_FalseNegatives'
+    'Mass_imbalanced'
+    'Charge_imbalanced'
+    'Leaking_metabolites'
     };
 
 Results=struct;

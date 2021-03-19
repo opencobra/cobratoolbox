@@ -40,7 +40,7 @@ parser.addRequired('testResultsFolder', @ischar);
 parser.addRequired('inputDataFolder', @ischar);
 parser.addRequired('reconVersion', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
-parser.addParameter('debuggingFolder', [pwd filesep 'DebuggingResults']', @ischar);
+parser.addParameter('debuggingFolder', [pwd filesep 'DebuggingResults'], @ischar);
 
 parser.parse(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin{:});
 

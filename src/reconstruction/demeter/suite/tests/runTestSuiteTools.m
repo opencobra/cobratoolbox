@@ -65,7 +65,7 @@ end
 
 % Refined reconstructions
 mkdir([testResultsFolder filesep reconVersion '_refined'])
-testAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],inputDataFolder,reconVersion,numWorkers);
+batchTestAllReconstructionFunctions(refinedFolder,[testResultsFolder filesep reconVersion '_refined'],inputDataFolder,reconVersion,numWorkers);
 plotTestSuiteResults([testResultsFolder filesep reconVersion '_refined'],reconVersion);
 
 %% prepare a report of the QA/QC status of the models
