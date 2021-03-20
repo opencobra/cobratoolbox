@@ -1,6 +1,6 @@
 function batchTestAllReconstructionFunctions(modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers)
-% Part of the DEMETER pipeline. This function performs all quality 
-% control/quality assurance tests on a batch of reconstructions and saves 
+% Part of the DEMETER pipeline. This function performs all quality
+% control/quality assurance tests on a batch of reconstructions and saves
 % the results for each reconstruction in the input folder.
 %
 % USAGE:
@@ -155,12 +155,13 @@ for i = 1:steps:length(modelList)
             if j <= length(modelList)
                 res=tmpData{j};
                 
-                Results.(fields{k})(size(Results.(fields{k}),1)+1,1:size(res.(fields{k}),2)) = res.(fields{k})(1,1:end);
                 if strcmp(fields{k},'Blocked_reactions') && length(modelList) + length(alreadyAnalyzedStrains) > 10000
                     % do not save for very large-scale resources-file would be
                     % enormous
-                    Results.(fields{k})(end,:)=[];
-                    Results.(fields{k})(size(Results.(fields{k}),1)+1,:) = [res.(fields{k})(1,1),size(res.(fields{k}),2)-1];
+                    Results.(fields{k}){size(Results.(fields{k}),1)+1,1} = res.(fields{k}){1,1};
+                    Results.(fields{k}){size(Results.(fields{k}),1),2} = size(res.(fields{k}),2)-1;
+                else
+                    Results.(fields{k})(size(Results.(fields{k}),1)+1,1:size(res.(fields{k}),2)) = res.(fields{k})(1,1:end);
                 end
             end
         end

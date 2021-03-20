@@ -141,6 +141,7 @@ testResults.ATP_from_O2{1, 2} = FBA.f;
 model = changeRxnBounds(model, model.rxns(strncmp('EX_', model.rxns, 3)), -1000, 'l');
 model = changeRxnBounds(model, model.rxns(strncmp('EX_', model.rxns, 3)), 1000, 'u');
 [consistModel, BlockedRxns] = identifyBlockedRxns(model);
+testResults.Blocked_reactions(1, 2:length(Blocked_reactions)+1) = Blocked_reactions;
 
 %% Test whether reactions added through refinement of gene annotations carry flux
 [RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedReactions(microbeID, BlockedRxns);
