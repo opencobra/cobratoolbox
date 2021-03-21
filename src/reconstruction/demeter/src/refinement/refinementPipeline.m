@@ -29,10 +29,10 @@ end
 
 tol=0.0000001;
 
-% implement Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', 'tab');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
@@ -134,13 +134,13 @@ end
 summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
 summary.('anaerobicGrowthOK') = anaerGrowthOK;
 
-%% gapfilling for growth on Western diet
+%% gapfilling for growth on complex medium
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AnaerobicGrowth(1,2) < tol
-    % apply Western diet
-    model = useDiet(model,WesternDiet);
+    % apply complex medium
+    model = useDiet(model,constraints);
     % run gapfilling tools to enable biomass production if no growth on
-    % Western diet
+    % complex medium
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
     summary.('condGF') = union(summary.('condGF'),condGF);
     summary.('targetGF') = union(summary.('targetGF'),targetGF);
@@ -168,12 +168,12 @@ summary.('transportersWithoutExchanges') = transportersWithoutExchanges;
 summary.('unusedExchanges') = unusedExchanges;
 
 %% Perform any gapfilling still needed
-% in rare cases: gapfilling for anaerobic growth or growth on Western diet still needed
+% in rare cases: gapfilling for anaerobic growth or growth on complex medium still needed
 for i=1:2
     [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
     if AerobicGrowth(1,2) < tol
-        % apply Western diet
-        model = useDiet(model,WesternDiet);
+        % apply complex medium
+        model = useDiet(model,constraints);
         % run gapfilling tools to enable biomass production
         [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
         summary.('condGF') = union(summary.('condGF'),condGF);
@@ -208,7 +208,7 @@ summary.('definedMediumGrowth')=growsOnDefinedMedium;
 %% remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
-modelTest = useDiet(model,WesternDiet);
+modelTest = useDiet(model,constraints);
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelTest);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
@@ -220,7 +220,7 @@ else
         toRM={};
         for j=1:length(removedRxnInd)
             modelRD=removeRxns(modelTest,model.rxns(removedRxnInd(j)));
-            modelRD = useDiet(modelRD,WesternDiet);
+            modelRD = useDiet(modelRD,constraints);
             FBA=optimizeCbModel(modelRD,'max');
             if FBA.f > tol
                 modelTest=removeRxns(modelTest, model.rxns{removedRxnInd(j)});
@@ -281,11 +281,11 @@ end
 %% remove duplicate reactions-needs repetition for some microbes
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
-% use defined medium if possible, otherwise Western diet
+% use defined medium if possible, otherwise complex medium
 if growsOnDefinedMedium==1
     [~,modelTest] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
 else
-modelTest = useDiet(model,WesternDiet);
+modelTest = useDiet(model,constraints);
 end
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelTest);
 % test if the model can still grow
@@ -296,7 +296,7 @@ if FBA.f > tol
 else
     for j=1:length(removedRxnInd)
         modelTest=removeRxns(model,model.rxns(removedRxnInd(j)));
-        modelTest = useDiet(modelTest,WesternDiet);
+        modelTest = useDiet(modelTest,constraints);
         FBA=optimizeCbModel(modelTest,'max');
         if FBA.f > tol
             model =  removeRxns(model,model.rxns{removedRxnInd(j)});

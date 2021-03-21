@@ -38,13 +38,13 @@ tol = 1e-8;
 model_old = model;
 model = changeObjective(model, biomassReaction);
 
-% implement Western diet
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', 'tab');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
-% apply Western diet
-model = useDiet(model,WesternDiet);
+% apply complex medium
+model = useDiet(model,constraints);
 
 if nargin > 4 && ~isempty(constrainedModel)
     model=constrainedModel;

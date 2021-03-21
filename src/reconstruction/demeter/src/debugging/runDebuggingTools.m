@@ -3,7 +3,7 @@ function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggi
 % reconstructions produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
 % and anaerobically, and whether or not unrealistically high ATP is
-% produced on the Western diet.
+% produced on the complex medium.
 %
 % USAGE
 %       [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,numWorkers,reconVersion,varargin)

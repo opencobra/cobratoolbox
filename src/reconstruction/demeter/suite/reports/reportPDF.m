@@ -141,8 +141,8 @@ fprintf(fid, '\\section{Growth}\n');
 fprintf(fid, '\\begin{tabular}{ll}\n');
 fprintf(fid, 'Unlimited growth (aerobic): & %4.4f mmol/gDW/h\\\\\n', AerobicGrowth(1, 1));
 fprintf(fid, 'Unlimited growth (anaerobic): & %4.4f mmol/gDW/h\\\\\n', AnaerobicGrowth(1, 1));
-fprintf(fid, 'Western diet growth (aerobic): & %4.4f mmol/gDW/h\\\\\n', AerobicGrowth(1, 2));
-fprintf(fid, 'Western diet growth (anaerobic): & %4.4f mmol/gDW/h\\\\\n', AnaerobicGrowth(1, 2));
+fprintf(fid, 'C omplex medium growth (aerobic): & %4.4f mmol/gDW/h\\\\\n', AerobicGrowth(1, 2));
+fprintf(fid, 'Complex medium growth (anaerobic): & %4.4f mmol/gDW/h\\\\\n', AnaerobicGrowth(1, 2));
 fprintf(fid, '\\end{tabular}\n');
 fprintf(fid, '\n');
 

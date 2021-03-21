@@ -30,6 +30,8 @@ conditionSpecificGapfills={'rxnPresent','rxnAbsent','changeConstraints','gapfill
 'EX_cmp(e)',[],1,'EX_cytd(e) AND CYTDt2'
 'EX_dtmp(e)',[],1,'EX_thymd(e) AND THMDt2r AND TMDK1 AND TMDK2'
 'EX_ump(e)',[],1,'EX_ura(e) AND URAt2'
+'EX_ump(e)',[],1,'EX_uri(e) AND URIt2'
+'EX_ump(e)',[],1,'EX_orot(e) AND OROte AND PRPPS AND RPI AND ADPRDP'
 'EX_gmp(e)',[],1,'EX_gua(e) AND GUAt2 AND GUAPRT'
 'EX_dgtp(e)',[],1,'EX_dgsn(e) AND DGSNt2 AND r0456'
 'EX_nadp(e)','NADK',1,'NADK'

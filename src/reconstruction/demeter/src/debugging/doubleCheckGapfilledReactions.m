@@ -30,17 +30,17 @@ function [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReac
 
 tol=0.0000001;
 
-% load Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', '\t');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
 cnt=1;
-remRxnsWD={};
-modelWD=useDiet(model,WesternDiet);
+remRxnsCM={};
+modelCM=useDiet(model,constraints);
 gapfilledRxns=model.rxns(find(strcmp(model.grRules,'demeterGapfill')));
 if ~isempty(gapfilledRxns)
-    modelTest=modelWD;
+    modelTest=modelCM;
     [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(modelTest,'FBA',gapfilledRxns);
     remRxns=gapfilledRxns(grRatio>0);
     % test which reactions can be removed
@@ -49,7 +49,7 @@ if ~isempty(gapfilledRxns)
         FBA=optimizeCbModel(modelChanged,'max');
         if FBA.f > tol
             modelTest=modelChanged;
-            remRxnsWD{cnt}=remRxns{i};
+            remRxnsCM{cnt}=remRxns{i};
             cnt=cnt+1;
         end
     end
@@ -95,9 +95,9 @@ end
 
 % get all reactions that can be safely deleted
 if ~isempty(remRxnsDM)
-toRemove=intersect(remRxnsWD,remRxnsDM);
+toRemove=intersect(remRxnsCM,remRxnsDM);
 else
-    toRemove=remRxnsWD;
+    toRemove=remRxnsCM;
 end
 model=removeRxns(model,toRemove);
 

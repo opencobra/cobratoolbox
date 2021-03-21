@@ -21,17 +21,14 @@ function futileCycleReactions=identifyFutileCycles(model)
 %
 % .. Authors:
 %       - Almut Heinken, 2016-2020
-
-futileCycleReactions = {};
     
-% load Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
-FutileCyclesTest={};
-% apply Western diet
-model = useDiet(model,WesternDiet);
+% apply complex medium
+model = useDiet(model,constraints);
 model=changeObjective(model,'DM_atp_c_');
 FBAorg=optimizeCbModel(model,'max');
 

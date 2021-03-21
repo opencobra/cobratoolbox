@@ -36,10 +36,10 @@ tol=0.0000001;
 
 model=changeObjective(model,biomassReaction);
 
-% implement Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', 'tab');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% implement complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
 metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
@@ -85,27 +85,27 @@ end
 
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AerobicGrowth(1,2) < tol
-    % identify blocked reactions on Western diet
-    model=useDiet(model,WesternDiet);
+    % identify blocked reactions on complex medium
+    model=useDiet(model,constraints);
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,2}='Growth on complex medium';
         gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
         gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,2}='Growth on complex medium';
         gapfilledReactions{cntGF,3}='Targeted gapfilling';
         gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
         gapfilledReactions{cntGF,1}=microbeID;
-        gapfilledReactions{cntGF,2}='Growth on Western diet';
+        gapfilledReactions{cntGF,2}='Growth on complex medium';
         gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
