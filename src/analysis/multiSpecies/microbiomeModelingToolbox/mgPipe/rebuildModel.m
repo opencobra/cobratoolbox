@@ -53,7 +53,6 @@ rbio=struct;
 for i=1:length(model.rxns)
     if ~strncmp('bio',model.rxns{i,1},3)
         % find reaction index
-try
     rInd=find(ismember(database.reactions(:, 1), model.rxns{i,1}));
         model.rxns{i,1}=database.reactions{rInd, 1};
         model.grRules{i,1}=model.grRules{i};
@@ -67,10 +66,6 @@ try
             model.ub(i,1)=1000;
         end
         model.formulas{i,1}=database.reactions{rInd, 3};
-catch
-    errorR{i}=model.rxns{i,1};
-    save errorRxns errorR
-end
     else
         model.rxns{i,1}=model.rxns{i};
         model.grRules{i,1}=model.grRules{i};
@@ -105,7 +100,7 @@ if isfield(model,'rxnKEGGID')
 rbio.data(:,14)=model.rxnKEGGID(oldInd);
 end
 rbio.description=cell(7,1);
-try
+
 % build model with rBioNet
 bInd = find(strncmp('bio',rbio.data(:,2),3));
 bAbb = rbio.data{bInd,2};
@@ -118,7 +113,7 @@ model.citations{end+1,1} = '';
 model.rxnECNumbers{end+1,1} = '';
 model.rxnKEGGID{end+1,1} = '';
 model.rxnConfidenceScores{end+1,1} = '';
-end
+
 % fix incorrect format of PubChemID, metChEBIID, and metKEGGID
 if isfield(model,'metPubChemID')
 for i=1:length(model.metPubChemID)

@@ -54,6 +54,8 @@ reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAs
 reactionDatabase=table2cell(reactionDatabase);
 database.reactions=reactionDatabase;
 
+model=rebuildModel(model,database);
+
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AnaerobicGrowth(1,1) < tol
     % find reactions that are preventing the model from growing

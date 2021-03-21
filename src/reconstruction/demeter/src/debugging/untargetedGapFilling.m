@@ -1,4 +1,4 @@
-function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
+function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
 % This script is part of the DEMETER pipeline and attemps to find a
 % reaction from the complete reaction database through the use of
 % relaxedFBA that could enable flux through the objective function. This
@@ -21,7 +21,8 @@ function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,exclud
 %                     excluded from gap-filling reactions (default: true)
 %
 % OUTPUT
-% model:               Gapfilled COBRA model structure
+% model:              Gapfilled COBRA model structure
+% addedRxns:          Added gapfilled reactions
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 02/2021
