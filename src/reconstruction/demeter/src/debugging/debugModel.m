@@ -106,6 +106,7 @@ if AerobicGrowth(1,2) < tol
     if ~isempty(relaxGF)
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on complex medium';
+        
         gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
@@ -116,7 +117,7 @@ end
 [growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
 if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
-    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(constrainedModel,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;

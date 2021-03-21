@@ -462,6 +462,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OOR2r AND FDNADOX_H AND AKGS',[],'OOR2r','OOR2'
     'OAASr AND ICDHx AND ACONTa AND ACONTb AND ALCD2x AND FDH AND PTAr AND ACKr',[],'ICDHx','ICDHxi'
     'METt2r AND METt3r',[],'METt2r','METt2'
+    'NTP9 AND NDPK4',[],'NTP9','NTP9i'
     };
 
 % growth-restoring gapfills: needed if the futile cycle was the model's
