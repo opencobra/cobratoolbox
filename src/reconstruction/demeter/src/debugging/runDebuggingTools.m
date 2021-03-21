@@ -195,8 +195,8 @@ if length(failedModels)>0
             Results=struct;
             
             for k=1:length(fields)
-                if isfile([testResultsFolder filesep fields{k} '_' reconVersion '.txt'])
-                    savedResults = readtable([testResultsFolder filesep fields{k} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
+                if isfile([testResultsFolder filesep reconVersion '_refined' filesep fields{k} '_' reconVersion '.txt'])
+                    savedResults = readtable([testResultsFolder filesep reconVersion '_refined' filesep fields{k} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
                     Results.(fields{k}) = table2cell(savedResults);
                 else
                     Results.(fields{k})={};
@@ -235,7 +235,7 @@ if length(failedModels)>0
     notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
     
-    testAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
+    batchTestAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
     plotTestSuiteResults(testResultsFolder,reconVersion);
     
     % get all models that still fail at least one test

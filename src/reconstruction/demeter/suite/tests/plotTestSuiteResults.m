@@ -224,7 +224,7 @@ for i=1:length(features)
     if i < length(features)
         for j=1:size(Results.(strcat(features{i},'_TruePositives')),1)
             TP=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_TruePositives'))(j,2:end))));
-            if size(Results.(strcat(features{i},'_FalseNegatives')),2)
+            if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
                 FN=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_FalseNegatives'))(j,2:end))));
             else
                 FN = 0;
