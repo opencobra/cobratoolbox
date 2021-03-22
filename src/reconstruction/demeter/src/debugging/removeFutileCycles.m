@@ -247,7 +247,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'POR4 AND FRDOr',[],'FRDOr','FRDO'
     'TRPAS2',[],'TRPAS2','TRPAS2i'
     'TRPS2r',[],'TRPS2r','TRPS2'
-   % 'DPCOAt',[],'DPCOAt','DPCOAti'
+    % 'DPCOAt',[],'DPCOAt','DPCOAti'
     'AMPt2r',[],'AMPt2r','AMPt2'
     'dTMPt2r',[],'dTMPt2r','dTMPt2'
     'NADPt',[],'NADPt','NADPti'
@@ -323,8 +323,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'DDGLKr',[],'DDGLKr','DDGLK'
     'XYLKr',[],'XYLKr','XYLK'
     'RBK_Dr','ARABI','RBK_Dr','RBK_D'
-  %  'METSr',[],'METSr','METS'
-  %  'METSr',[],'METSr','METS AND EX_met_L(e) AND METt2r'
+    %  'METSr',[],'METSr','METS'
+    %  'METSr',[],'METSr','METS AND EX_met_L(e) AND METt2r'
     'SUCCt2i',[],'SUCCt2i','SUCCt2'
     'THMt3 AND THMte',[],'THMte',[]
     'PPAt2r AND PPAtr',[],'PPAtr',[]
@@ -361,7 +361,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'r0389',[],'r0389','r0389i'
     'URAOX',[],'URAOX','URAOXi'
     'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-  %  'SQLE',[],'SQLE','SQLEi'
+    %  'SQLE',[],'SQLE','SQLEi'
     '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
     'HSNOOX',[],'HSNOOX','HSNOOXi'
     % 'SALCACD',[],'SALCACD','SALCACDi'
@@ -370,7 +370,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
     'ADMDCr',[],'ADMDCr','ADMDC'
-   % 'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
+    % 'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
     'OOR2r AND POR4 AND FRD2 AND FUM AND ACONTb AND ACONTa AND SUCCt AND SUCCt2r',[],'SUCCt','FDNADOX_H'
     'ACKr AND NNAM AND NAPRT AND NACt AND NACt2r',[],'NACt','EX_asp_L(e) AND ASPt2r'
     'HYD4 AND POR4 AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r',[],'FORt2r',[]
@@ -470,17 +470,22 @@ reactionsToReplace = {'if present','if not present','removed','added'
 % production through a more realistic pathway.
 growthGapfills={
     'EX_succ(e) AND SUCCt'
-       'EX_fum(e) AND FUMt2'
+    'EX_fum(e) AND FUMt2'
     'EX_succ(e) AND SUCCt2r'
-        'EX_fum(e) AND FUMt2 AND EX_succ(e) AND SUCCt2r'
+    'EX_fum(e) AND FUMt2 AND EX_succ(e) AND SUCCt2r'
     'EX_for(e) AND FORt2r'
     'EX_ac(e) AND ACt2r'
-    'EX_asp_L(e) AND ASPt2r'
+    'EX_etoh(e) AND ETOHt2r'
+    % consider adding glycolysis
+    'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK'
+    'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK AND EX_etoh(e) AND ETOHt2r'
     'EX_q8(e) AND Q8abc'
     'EX_2dmmq8(e) AND 2DMMQ8abc'
     'DM_q8h2[c]'
     'DM_NA1'
     'EX_lac_L(e) AND L_LACt2r'
+    'EX_acald(e) AND ACALDt'
+    'EX_asp_L(e) AND ASPt2r'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -529,7 +534,6 @@ for i = 2:size(reactionsToReplace, 1)
             rxns=strsplit(reactionsToReplace{i, 4},' AND ');
             for j=1:length(rxns)
                 % create a new formula
-                rxns{j}
                 RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
                 
                 if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
@@ -570,6 +574,7 @@ for i = 2:size(reactionsToReplace, 1)
             end
         else
             % try growth-restoring gapfills
+            gf=1;
             modelPrevious=modelTest;
             for k=1:size(growthGapfills,1)
                 ggrxns=strsplit(growthGapfills{k, 1},' AND ');
@@ -589,9 +594,13 @@ for i = 2:size(reactionsToReplace, 1)
                                 RxForm=dbForm;
                             end
                         end
-                        modelTest = addReaction(modelTest, newName, RxForm);
+                        if isempty(find(contains(model.rxns,newName)))
+                            modelTest = addReaction(modelTest, newName, RxForm);
+                        end
                     else
-                        modelTest = addReaction(modelTest, ggrxns{j}, RxForm);
+                        if isempty(find(contains(model.rxns,ggrxns{j})))
+                            modelTest = addReaction(modelTest, ggrxns{j}, RxForm);
+                        end
                     end
                 end
                 FBA = optimizeCbModel(modelTest, 'max');
@@ -618,9 +627,35 @@ for i = 2:size(reactionsToReplace, 1)
                         addedRxns{addCnt, j+1} = ggrxns{j};
                     end
                     addCnt = addCnt + 1;
+                    gf=0;
                     break
                 end
                 modelTest=modelPrevious;
+            end
+            % if none of that worked
+            if gf==1
+                [modelTest,untGF] = untargetedGapFilling(modelTest,'max',database,1,1);
+                if ~isempty(untGF)
+                    if ~isempty(reactionsToReplace{i, 3})
+                        for j=1:length(toRemove)
+                            deletedRxns{delCnt, 1} = toRemove{j};
+                            delCnt = delCnt + 1;
+                        end
+                    end
+                    if ~isempty(reactionsToReplace{i, 4})
+                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
+                            addedRxns{addCnt, 1} = toRemove{1};
+                        end
+                        for j=1:length(rxns)
+                            addedRxns{addCnt, j+1} = rxns{j};
+                        end
+                        addCnt = addCnt + 1;
+                    end
+                    for j=1:length(untGF)
+                        addedRxns{addCnt, j+1} = untGF{j};
+                    end
+                    addCnt = addCnt + 1;
+                end
             end
         end
     end
@@ -637,7 +672,6 @@ end
 % make sure gene rule and notes are kept while replacing
 if ~isempty(addedRxns)
     for j = 1:size(addedRxns,1)
-        addedRxns{j, 2}
         model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
         % if a reaction from the old version is replaced, keep the GPR
         if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))

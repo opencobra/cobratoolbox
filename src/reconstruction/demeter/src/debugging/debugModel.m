@@ -119,7 +119,7 @@ end
 [growsOnDefinedMedium,constrainedModel,~] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder);
 if growsOnDefinedMedium == 0
     % find reactions that are preventing the model from growing
-    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(constrainedModel,biomassReaction,biomassReaction,'max',database);
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(constrainedModel,biomassReaction,biomassReaction,'max',database,1);
     % export the gapfilled reactions
     if ~isempty(condGF)
         gapfilledReactions{cntGF,1}=microbeID;
@@ -204,6 +204,17 @@ if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
     replacedReactions{1,2}='Futile cycle correction';
     replacedReactions{1,3}='To replace';
     replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
+    
+    % if any futile cycles remain
+    [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
+    if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
+        % let us try if running removeFutileCycles again will work
+        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+        replacedReactions{1,1}=microbeID;
+        replacedReactions{1,2}='Futile cycle correction';
+        replacedReactions{1,3}='To replace';
+        replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
+    end
 end
 
 % rebuild and export the model

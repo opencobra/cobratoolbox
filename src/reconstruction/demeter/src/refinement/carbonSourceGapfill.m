@@ -51,7 +51,7 @@ end
 carbGapfillAdd = {
     '2-oxoglutarate', {'EX_akg(e)', 'AKGt2r'}
     '2-oxobutyrate', {'EX_2obut(e)', '2OBUTt2r'}
-    '4-Hydroxyproline', {'EX_4hpro_LT(e)', '4HPRO_LTt', 'HYPD'}
+    '4-Hydroxyproline', {'EX_4hpro_LT(e)', '4HPRO_LTt', 'HYPD', 'P5CR'}
     'Acetate', {'EX_ac(e)', 'ACtr'}
     'Alginate', {'EX_algin(e)', 'ALGIN_DEGe', 'EX_mannur(e)', 'MANNURabc', 'EX_gulur(e)', 'MANNURRx', 'MANNURRy'}
     'alpha-Mannan', {'EX_mannan(e)', 'MANNANASEe', 'EX_man(e)', 'MANabc', ...

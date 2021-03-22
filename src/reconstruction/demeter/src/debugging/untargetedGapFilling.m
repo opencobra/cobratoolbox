@@ -1,4 +1,4 @@
-function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
+function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks,excludeExchanges)
 % This script is part of the DEMETER pipeline and attemps to find a
 % reaction from the complete reaction database through the use of
 % relaxedFBA that could enable flux through the objective function. This
@@ -19,6 +19,8 @@ function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,exclu
 %                     excluded from gap-filling reactions (default: true)
 % excludeSinks        boolean indicating if sink reactions should be
 %                     excluded from gap-filling reactions (default: true)
+% excludeExchanges    boolean indicating if exchanges reactions should be
+%                     excluded from gap-filling reactions (default: false)
 %
 % OUTPUT
 % model:              Gapfilled COBRA model structure
@@ -44,6 +46,10 @@ end
 
 if nargin < 5
     excludeSinks=1;
+end
+
+if nargin < 6
+    excludeExchanges=0;
 end
 
 
@@ -120,6 +126,11 @@ if FBA.origStat ==3 % cannot produce biomass
             % exclude sink reactions to have relaxed bounds
             SinkR = contains(modelExpanded.rxns,'sink_');
             param.excludedReactions(SinkR)=1;
+        end
+        if excludeExchanges
+            % exclude sink reactions to have relaxed bounds
+            ExR = contains(modelExpanded.rxns,'EX_');
+            param.excludedReactions(ExR)=1;
         end
         if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
