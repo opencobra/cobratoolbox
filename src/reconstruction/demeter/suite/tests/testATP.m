@@ -1,6 +1,6 @@
 function [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
-% Tests flux through the ATP demand reaction (DM_atp_c_) on a Western diet
-% constrained model, both aerobic and anaerobic.
+% Tests flux through the ATP demand reaction (DM_atp_c_) on a complex
+% medium-constrained model, both aerobic and anaerobic.
 %
 % INPUT
 % model             COBRA model structure
@@ -21,13 +21,13 @@ if ~any(ismember(model.rxns, 'DM_atp_c_'))
                         'atp[c] + h2o[c] -> adp[c] + h[c] + pi[c]');
 end
 
-% load Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
-% apply Western diet
-model = useDiet(model,WesternDiet);
+% apply complex medium
+model = useDiet(model,constraints);
 
 % aerobic
 model = changeRxnBounds(model, 'EX_o2(e)', -10, 'l');
@@ -40,7 +40,7 @@ FBA = optimizeCbModel(model, 'max');
 
 % store result
 atpFluxAerobic = FBA.f;
-fprintf('Aerobic ATP flux on Western diet: %d mmol/gDW/h\n', FBA.f)
+fprintf('Aerobic ATP flux on complex medium: %d mmol/gDW/h\n', FBA.f)
 
 % anaerobic
 model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
@@ -58,4 +58,4 @@ FBA = optimizeCbModel(model, 'max');
 
 % store result
 atpFluxAnaerobic = FBA.f;
-fprintf('Anaerobic ATP flux on Western diet: %d mmol/gDW/h\n', FBA.f)
+fprintf('Anaerobic ATP flux on complex medium: %d mmol/gDW/h\n', FBA.f)

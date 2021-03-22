@@ -1,5 +1,5 @@
 function [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
-% Tests growth, both on unlimited media and Western diet, both aerobic and
+% Tests growth, both on unlimited media and complex medium, both aerobic and
 % anaerobic conditions. In anaerobic conditions, both oxygen uptake
 % (exchange reaction) and cytosolic oxygen-utilizing reactions are blocked.
 %
@@ -12,14 +12,14 @@ function [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
 %                   reaction (aerobic conditions):
 %                   Column 1: "unlimited" media (all exchanges to -1000
 %                   mmol/gDW/h)
-%                   Column 2: Western diet as defined in
-%                   InputFiles\WesternDiet.txt
+%                   Column 2: complex medium as defined in
+%                   InputFiles\ComplexMedium.txt
 % AnaerobicGrowth   Numeric vector showing the flux through the biomass
 %                   reaction (anaerobic conditions):
 %                   Column 1: "unlimited" media (all exchanges to -1000
 %                   mmol/gDW/h)
-%                   Column 2: Western diet as defined in
-%                   InputFiles\WesternDiet.txt
+%                   Column 2: complex medium as defined in
+%                   InputFiles\ComplexMedium.txt
 %
 % Stefania Magnusdottir, Nov 2017
 
@@ -75,13 +75,13 @@ else
     warning('Model cannot grow on unlimited media (anaerobic)')
 end
 
-% load Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% implement complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
-% apply Western diet
-model = useDiet(model,WesternDiet);
+% apply complex medium
+model = useDiet(model,constraints);
 
 % aerobic environment
 modelO2 = changeRxnBounds(model, 'EX_o2(e)', -10, 'l');
@@ -91,12 +91,12 @@ FBA = optimizeCbModel(modelO2, 'max');
 if FBA.stat==1
     AerobicGrowth(1, 2) = FBA.f;
     if FBA.f > tol
-        fprintf('Model grows on Western diet (aerobic), flux through BOF: %d mmol/gDW/h\n', FBA.f)
+        fprintf('Model grows on complex medium (aerobic), flux through BOF: %d mmol/gDW/h\n', FBA.f)
     else
-        warning('Model cannot grow on Western diet (aerobic)')
+        warning('Model cannot grow on complex medium (aerobic)')
     end
 else
-    warning('Model cannot grow on Western diet (aerobic)')
+    warning('Model cannot grow on complex medium (aerobic)')
 end
 
 % anaerobic environment
@@ -107,12 +107,12 @@ FBA = optimizeCbModel(modelNoO2, 'max');
 if FBA.stat==1
     AnaerobicGrowth(1, 2) = FBA.f;
     if FBA.f > tol
-        fprintf('Model grows on Western diet (anaerobic), flux through BOF: %d mmol/gDW/h\n', FBA.f)
+        fprintf('Model grows on complex medium (anaerobic), flux through BOF: %d mmol/gDW/h\n', FBA.f)
     else
-        warning('Model cannot grow on Western diet (anaerobic)')
+        warning('Model cannot grow on complex medium (anaerobic)')
     end
 else
-    warning('Model cannot grow on Western diet (anaerobic)')
+    warning('Model cannot grow on complex medium (anaerobic)')
 end
 
 end

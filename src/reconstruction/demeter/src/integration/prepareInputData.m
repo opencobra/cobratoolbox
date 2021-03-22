@@ -45,7 +45,6 @@ mkdir(inputDataFolder)
 global CBTDIR
 % find the folder with information that was collected for DEMETER
 demeterInputFolder = [CBTDIR filesep 'papers' filesep '2021_demeter' filesep 'input'];
-demeterInputFolder = ['/Users/inesthiele/Documents/COBRA.papers/2021_demeter/input'];
 % Get taxonomy information on AGORA2 that will serve to inform new
 % organisms
 agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx'], 'ReadVariableNames', false);

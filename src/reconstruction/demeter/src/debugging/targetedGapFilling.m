@@ -108,6 +108,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'dtdp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'dtmp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
+    'PGPm1[c]','',{'sink_PGPm1[c]'}
     };
 
 % First find out which biomass precursors cannot be synthesized

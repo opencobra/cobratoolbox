@@ -131,13 +131,13 @@ for i = 1:size(checkDelete, 1)
 end
 
 % then the reactions that are not blocked but may be safely deleted
-% load Western diet
-WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', '\t');
-WesternDiet=table2cell(WesternDiet);
-WesternDiet=cellstr(string(WesternDiet));
+% load complex medium
+constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+constraints=table2cell(constraints);
+constraints=cellstr(string(constraints));
 
-% apply Western diet
-modelTest = useDiet(model,WesternDiet);
+% apply complex medium
+modelTest = useDiet(model,constraints);
 for i = 1:size(checkDelete, 1)
     if ~isempty(find(ismember(transp(:, 1), checkDelete{i, 1})))  % if deleted reaction is in transporter list
         trListInd = find(ismember(transp(:, 1), checkDelete{i, 1}));

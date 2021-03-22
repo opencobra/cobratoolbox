@@ -1,4 +1,4 @@
-function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
+function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks)
 % This script is part of the DEMETER pipeline and attemps to find a
 % reaction from the complete reaction database through the use of
 % relaxedFBA that could enable flux through the objective function. This
@@ -21,7 +21,8 @@ function model = untargetedGapFilling(model,osenseStr,database,excludeDMs,exclud
 %                     excluded from gap-filling reactions (default: true)
 %
 % OUTPUT
-% model:               Gapfilled COBRA model structure
+% model:              Gapfilled COBRA model structure
+% addedRxns:          Added gapfilled reactions
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 02/2021
@@ -85,7 +86,7 @@ if FBA.origStat ==3 % cannot produce biomass
     modelExpanded = changeObjective(modelExpanded,targetRxn);
     FBA2 = optimizeCbModel(modelExpanded);
     
-    if FBA2.origStat == 1 && FBA2.f > 0  % feasible non-zero solution found
+    if FBA2.origStat == 1 && abs(FBA2.f) > 0  % feasible non-zero solution found
         % now identify the minimum number of reactions to be added
         % 1. set all rBioNet reaction to 0
         % therefore find all reactions in rBioNetDB but not in model
