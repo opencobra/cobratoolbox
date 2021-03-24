@@ -6,7 +6,7 @@ function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,exclu
 %
 % USAGE:
 %
-%   model = untargetedGapFilling(model,osenseStr,database)
+%   [model,addedRxns] = untargetedGapFilling(model,osenseStr,database)
 %
 % INPUTS
 % model:              COBRA model structure
@@ -28,6 +28,8 @@ function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,exclu
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 02/2021
+
+addedRxns = {};
 
 % remove human reactions from database
 humanComp = {'[m]','[l]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};

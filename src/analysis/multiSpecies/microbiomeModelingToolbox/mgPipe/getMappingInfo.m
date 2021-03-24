@@ -31,7 +31,6 @@ function [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reac
 %
 % .. Author: Federico Baldini 2017-2018
 
-
 reac = {}; % array with unique set of all the reactions present in the models
 exMets = {}; % array with unique set of all the extracellular metabolites present in the models
 

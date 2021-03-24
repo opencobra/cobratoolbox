@@ -1,9 +1,10 @@
 function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
-% This function is called from the MgPipe driver `StartMgPipe` takes care of saving some variables
-% in the environment (in case that the function is called without a driver), does some checks on the
-% inputs, and automatically launches MgPipe. As matter of fact, if all the inputs are properly inserted
-% in the function it can replace the driver.
-
+% This function initializes the mgPipe pipeline and sets the optional input 
+% variables if not defined.
+%
+% USAGE
+%       [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
+%
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
@@ -12,7 +13,10 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
-%    dietFilePath:           char with path of directory where the diet is saved
+%    dietFilePath:           char with path of directory where the diet is saved.
+%                            Can also be a character array with a separate diet for
+%                            each individual, in that case, size(dietFilePath,1) 
+%                            needs to equal the length of samples.
 %    infoFilePath:           char with path to stratification criteria if available
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
@@ -55,6 +59,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %               - Almut Heinken 02/2021: added option for creation of each 
 %                                        personalized model separately and
 %                                        output of model stats
+%               - Almut Heinken 03/2021: inserted error message if 
+%                                        abundances are not normalized.
 
 
 % Define default input parameters if not specified
@@ -126,6 +132,13 @@ if ~contains(dietFilePath,'.txt')
 end
 if exist(dietFilePath)==0
     error('Path to file with dietary information is incorrect!');
+end
+
+% test if abundances are normalized
+abundance = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
+totalAbun=sum(cell2mat(abundance(2:end,2:end)),1);
+if any(totalAbun > 1.01)
+    error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
 
 if strcmp(infoFilePath, '')

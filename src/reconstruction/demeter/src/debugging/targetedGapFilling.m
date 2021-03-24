@@ -136,11 +136,11 @@ if abs(FBA.f) < tol || FBA.stat==0
     growthEnablingMets={};
     cnt=1;
     
-    for i=1:length(model.mets)
-        modelSink=addSinkReactions(model,model.mets{i});
+    for i=2:size(gapfillSolutions,1)
+        modelSink=addSinkReactions(model,gapfillSolutions{i,1});
         FBA = optimizeCbModel(modelSink,osenseStr);
         if abs(FBA.f) > tol
-            growthEnablingMets{cnt,1}=model.mets{i};
+            growthEnablingMets{cnt,1}=gapfillSolutions{i,1};
             cnt=cnt+1;
         end
     end
@@ -152,11 +152,11 @@ if abs(FBA.f) < tol || FBA.stat==0
             
             % try adding one after another
             model_old=model;
-            for i=1:length(model.mets)
-                model=addSinkReactions(model,model.mets{i});
+            for i=1:length(gapfillSolutions{i,1})
+                model=addSinkReactions(model,gapfillSolutions{i,1});
                 FBA = optimizeCbModel(model,osenseStr);
                 if abs(FBA.f) > tol
-                    growthEnablingMets=model.mets{i};
+                    growthEnablingMets=gapfillSolutions{i,1};
                     break
                 end
             end

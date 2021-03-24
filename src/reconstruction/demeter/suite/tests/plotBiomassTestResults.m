@@ -316,6 +316,8 @@ end
 
 notGrowing=unique(notGrowing);
 notGrowing=strrep(notGrowing,'.mat','');
-save([testResultsFolder filesep 'notGrowing.mat'],'notGrowing');
+if size(notGrowing,1)>0
+    save([testResultsFolder filesep 'notGrowing.mat'],'notGrowing');
+end
 
 end

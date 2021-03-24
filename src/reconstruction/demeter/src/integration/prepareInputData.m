@@ -161,9 +161,6 @@ writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],
 %% Create genome annotations file with reactions from PubSeed spreadsheets if available reactions that are annotated
 
 if ~isempty(spreadsheetFolder)
-    adaptedInfoFilePath
-    inputDataFolder
-    spreadsheetFolder
     writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
     genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
     genomeAnnotation = table2cell(genomeAnnotation);

@@ -44,6 +44,7 @@ if FBA.f < tol
         'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'}
         'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'}
         'AHMMPS', {'AMPMS2'}
+        'UNKENZ',{'ACCOAC'}
         };
     
     % add anaerobic reactions to model (if contains O2-using reaction)

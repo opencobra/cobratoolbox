@@ -203,6 +203,8 @@ end
 
 tooHighATP=unique(tooHighATP);
 tooHighATP=strrep(tooHighATP,'.mat','');
-save([testResultsFolder filesep 'tooHighATP.mat'],'tooHighATP');
+if size(tooHighATP,1)>0
+    save([testResultsFolder filesep 'tooHighATP.mat'],'tooHighATP');
+end
 
 end
