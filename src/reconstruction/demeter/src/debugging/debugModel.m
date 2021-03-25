@@ -151,44 +151,42 @@ end
 fields=fieldnames(testResults);
 
 for i=1:length(fields)
-    if contains(fields{i},'FalseNegatives')
-        % define if objective should be maximized or minimized
-        if any(contains(fields{i},{'Carbon_sources','Metabolite_uptake'}))
-            osenseStr = 'min';
-        elseif any(contains(fields{i},{'Fermentation_products','Secretion_products'}))
-            osenseStr = 'max';
-        end
-        FNlist = testResults.(fields{i});
-        if size(FNlist,1)>1
-            FNs = FNlist(find(strcmp(FNlist(:,1),microbeID)),2:end);
-            FNs = FNs(~cellfun(@isempty, FNs));
-            if ~isempty(FNs)
-                for j=1:length(FNs)
-                    metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-                    % find reactions that could be gap-filled to enable flux
-                    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
-                    % export the gapfilled reactions
-                    if ~isempty(condGF)
-                        gapfilledReactions{cntGF,1}=microbeID;
-                        gapfilledReactions{cntGF,2}=FNs{j};
-                        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
-                        gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
-                        cntGF=cntGF+1;
-                    end
-                    if ~isempty(targetGF)
-                        gapfilledReactions{cntGF,1}=microbeID;
-                        gapfilledReactions{cntGF,2}=FNs{j};
-                        gapfilledReactions{cntGF,3}='Targeted gapfilling';
-                        gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
-                        cntGF=cntGF+1;
-                    end
-                    if ~isempty(relaxGF)
-                        gapfilledReactions{cntGF,1}=microbeID;
-                        gapfilledReactions{cntGF,2}=FNs{j};
-                        gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
-                        gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
-                        cntGF=cntGF+1;
-                    end
+    % define if objective should be maximized or minimized
+    if any(contains(fields{i},{'Carbon_sources','Metabolite_uptake','Drug_metabolism'}))
+        osenseStr = 'min';
+    elseif any(contains(fields{i},{'Fermentation_products','Secretion_products','Bile_acid_biosynthesis'}))
+        osenseStr = 'max';
+    end
+    FNlist = testResults.(fields{i});
+    if size(FNlist,1)>1
+        FNs = FNlist(find(strcmp(FNlist(:,1),microbeID)),2:end);
+        FNs = FNs(~cellfun(@isempty, FNs));
+        if ~isempty(FNs)
+            for j=1:length(FNs)
+                metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+                % find reactions that could be gap-filled to enable flux
+                [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+                % export the gapfilled reactions
+                if ~isempty(condGF)
+                    gapfilledReactions{cntGF,1}=microbeID;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
+                    gapfilledReactions(cntGF,4:length(condGF)+3)=condGF;
+                    cntGF=cntGF+1;
+                end
+                if ~isempty(targetGF)
+                    gapfilledReactions{cntGF,1}=microbeID;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Targeted gapfilling';
+                    gapfilledReactions(cntGF,4:length(targetGF)+3)=targetGF;
+                    cntGF=cntGF+1;
+                end
+                if ~isempty(relaxGF)
+                    gapfilledReactions{cntGF,1}=microbeID;
+                    gapfilledReactions{cntGF,2}=FNs{j};
+                    gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
+                    gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
+                    cntGF=cntGF+1;
                 end
             end
         end

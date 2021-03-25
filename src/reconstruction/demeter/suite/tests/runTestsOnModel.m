@@ -89,11 +89,14 @@ model=changeRxnBounds(model,relaxConstraints,0,'l');
 % 3) the metabolite formula, and (col 4) the metabolite charge.
 % * *metsMissingFormulas*: Cell array listing (col 1) all metabolites that do
 % not have metabolite formulas and (col 2) the metabolite names.
-
+try
 [massImbalancedRxns, chargeImbalancedRxns, ~, metsMissingFormulas] = testModelMassChargeBalance(model, true, biomassReaction);
 testResults.Mass_imbalanced(1, 2:size(massImbalancedRxns,1)) =massImbalancedRxns(2:end,1);
 testResults.Charge_imbalanced(1, 2:size(chargeImbalancedRxns,1))= chargeImbalancedRxns(2:end,1);
 testResults.Mets_without_formulas(1, 2:length(metsMissingFormulas)) = metsMissingFormulas(2:end,1);
+catch
+    warning('Mass and charge balance could not be tested for draft reconstructions!')
+end
 %%
 % A metabolic reconstruction should contain no mass or charge imbalanced
 % reactions. However, some reactions will always be imbalanced by definition (exchange,
