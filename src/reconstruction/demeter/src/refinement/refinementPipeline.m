@@ -194,7 +194,7 @@ end
 summary.('addedMismatchRxns')={};
 summary.('deletedMismatchRxns')={};
 for i = 1:6
-    [growsOnDefinedMedium,essentialExchanges] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
+    [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==0
         [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder);
         summary.('addedMismatchRxns') = union(summary.('addedMismatchRxns'),addedMismatchRxns);

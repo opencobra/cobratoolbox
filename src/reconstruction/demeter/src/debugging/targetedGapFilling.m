@@ -130,6 +130,8 @@ end
 % otherwise enable growth if either produced or consumed. This makes 
 % targeted gap-filling possible.
 
+growthEnablingMets = {};
+
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol || FBA.stat==0
     
