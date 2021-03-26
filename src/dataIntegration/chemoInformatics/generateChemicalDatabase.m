@@ -30,15 +30,30 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %
 %    options:  A structure containing all the arguments for the function:
 %
-%                  * .printlevel - name of objective function ('')
-%                  * .standardisationApproach - list of reactions to remove ('')
-%                  * .keepMolComparison - table containing: names, rxnFormulas, subSystems,
-%                                rxnGrRules, and rxnReferences to add to the model
-%                                ('')
-%                  * .adjustToModelpH - a table containing mediaData constraints, with
-%                  * .onlyUnmapped - Logic value indicating if the reactions
-%                               will be atom maaped or not (default: true)
-%                  * .outputDir - a table containing mediaData constraints, with
+%               * .outputDir: The path to the directory containing the RXN 
+%                 files with atom mappings (default: current directory)
+%               * .printlevel: Verbose level 
+%               * .standardisationApproach: String containing the type of 
+%                 standardisation for the molecules (default: 'explicitH' 
+%                 if openBabel is installed, otherwise default: 'basic'):
+%                   - explicitH: Normal chemical graphs; 
+%                   - implicitH: Hydrogen suppressed chemical graph; 
+%                   - neutral: Chemical graphs with protonated molecules; 
+%                   - basic: Update the header.  
+%               * .keepMolComparison: Logic value for comparing MDL MOL 
+%                 files from various sources (default: FALSE) 
+%               * .onlyUnmapped: Logic value to select create only unmapped 
+%                 MDL RXN files (default: FALSE). 
+%               * .adjustToModelpH: Logic value used to determine whether a 
+%                 molecule's pH must be adjusted in accordance with the 
+%                 COBRA model. (default: TRUE, requires MarvinSuite). 
+%               * .addDirsToCompare: Cell(s) with the path to directory to 
+%                 an existing database (default: empty).
+%               * .dirNames: Cell(s) with the name of the directory(ies) 
+%                 (default: empty).
+%               * .debug: Logical value used to determine whether or not 
+%                 the results of different points in the function will be 
+%                 saved for debugging (default: empty).
 %
 % OUTPUTS:
 %

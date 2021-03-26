@@ -1,6 +1,6 @@
 function mappedRxns = transportRxnAM(rxnDir, outputDir)
-% This function atom map the transport reactions in MDL RXN file format for
-% a given directory
+% This function atom maps the transport reactions for a given director in 
+% MDL RXN file format.
 %
 % USAGE:
 %

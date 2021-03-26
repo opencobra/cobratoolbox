@@ -1,7 +1,7 @@
 function molCollectionReport = obtainMetStructures(model, outputDir, updateDB, standardisationApproach, orderOfPreference)
-% Obtain MDL MOL files from different database databases such as: KEGG,
-% HMDB, ChEBI and PubChem. Or by converting from InChI strings or SMILES
-% using openBabel
+% Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI, 
+% and PubChem. Alternatively, openBabel can be used to convert InChI 
+% strings or SMILES in MDL MOL files.
 %
 % USAGE:
 %

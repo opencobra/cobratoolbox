@@ -1,6 +1,9 @@
 function standardisationReport = standardiseMolDatabase(molDir, metList, standardisedDir, standardisationApproach)
-% Standardize a MDL MOL file directory as described in the fluxCobra
-% pipeline[cite] using standardizer from ChemAxon and openBabel
+% Standardize an MDL MOL file directory by representing the reaction using 
+% normal chemical graphs, hydrogen suppressed chemical graphs, and chemical 
+% graphs with protonated molecules. The function also updates the header 
+% with the standardization information. It makes use of ChemAxon's 
+% standardizer and openBabel.
 %
 % USAGE:
 %

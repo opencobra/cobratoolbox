@@ -1,6 +1,7 @@
 function newFormula = editChemicalFormula(metFormula, addOrRemove)
-% Removes FULLR, newFormula or Y in all chemical formulas by substutue them with an
-% R group for each instance. Additionally removes atoms from the formula.
+% For each instance, removes non-chemical characters from the chemical
+% formula and replaces them with a R group. Removes atoms from the formula 
+% as well. Produces a chemical formula from a string of atoms.
 %
 % USAGE:
 %

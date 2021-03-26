@@ -1,5 +1,5 @@
 function metsIdsStatistics = checkMetIdsInModel(model)
-% Function to print the statistics of the metabolites id in the a model
+% Prints the statistics of the metabolites id in the a model.
 %
 % USAGE:
 %
@@ -12,9 +12,9 @@ function metsIdsStatistics = checkMetIdsInModel(model)
 %                                 Should match metabolite identifiers in
 %                                 RXN.
 % OUTPUTS:
-%    metsIdsStatistics:	 Information such as number per database, coverage
-%                        or times another ID is shared for the same
-%                        metabolite.
+%    metsIdsStatistics:	 Information such as the number of metabolites per 
+%                        database, coverage, or the number of times another 
+%                        ID is shared for the same metabolite.
 
 fields = fieldnames(model);
 sources = {'kegg', 'hmdb', 'chebi', 'pubchem', 'smiles', 'inchi'};

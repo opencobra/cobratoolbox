@@ -1,6 +1,9 @@
 function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, onlyUnmapped)
-% Compute atom mappings for reactions with implicit hydrogens in a
-% metabolic network using RDT algorithm
+% Using the reaction decoder tool, compute atom mappings for reactions in a 
+% COBRA model. Atom mapping data is presented in a variety of formats, 
+% including MDL RXN, SMILES, and images. If this option is selected, the 
+% function can remove all protons from the model and represent the 
+% reactions as a hydrogen suppressed chemical graph.
 %
 % USAGE:
 %

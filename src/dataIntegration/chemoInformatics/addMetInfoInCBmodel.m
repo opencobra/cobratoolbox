@@ -1,5 +1,5 @@
 function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
-% Integrates metabolite information from an external file and add it into
+% Integrates metabolite data from an external file and incorporates it into 
 % the COBRA model.
 %
 % USAGE:
@@ -15,11 +15,11 @@ function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %    inputData:     COBRA model with following fields:
 %
 % OPTIONAL INPUTS:
-%    replace:       Logical value indicating if the new id should replace
-%                   an existing ID (default: false).
+%    replace:       If the new ID should replace an existing ID, this 
+%                   logical value indicates so (default: false).
 %
-% OUTPUTS:
-%    newModel:      COBRA model with the identifiers updated.
+% OUTPUTS:          COBRA model with updated identifiersCOBRA model with 
+%                   the identifiers updated.
 
 if nargin < 3 || isempty(replace)
     replace = false;
