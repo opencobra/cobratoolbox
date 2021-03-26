@@ -31,16 +31,13 @@ function [metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includ
 if ~strcmp(molfileDir(end),filesep) % Format inputs
     molfileDir = [molfileDir filesep];
 end
-
-if ~exist('sdfFileName','var')
-    sdfFileName = 'MetStructures.sdf';
-end
-if isempty(sdfFileName)
+if ~exist('sdfFileName','var') ||  isempty(sdfFileName)
     sdfFileName = 'MetStructures.sdf';
 end
 if ~strcmp(sdfFileName(end-3:end),'.sdf')
     sdfFileName = [sdfFileName '.sdf'];
 end
+sdfFileName = [molfileDir sdfFileName];
 
 mets = reshape(mets,length(mets),1);
 omets = mets; % store original metabolite identifiers
@@ -61,7 +58,7 @@ d = dir(molfileDir);
 dirbool = cat(1,d.isdir);
 d = d(~dirbool);
 molfileNames = {d.name};
-molfileNames = regexprep(molfileNames,'(\.mol)$','');
+molfileNames = regexprep(molfileNames,'(\.mol)$','')';
 
 molfileNames = molfileNames(ismember(molfileNames,mets)); % Only include molfiles for metabolites in mets
 

@@ -1,9 +1,10 @@
-function [model,noInchiBool,compositeInchiBool] = addInchiToModel(model, molFileDir, metKEGGID, printLevel)
-% Assigns Inchi to model.inchi structure given external data
+function model = addInchiToModel(model, molFileDir,  method, printLevel)
+% Assigns Inchi to model.inchi structure given set of mol files for each
+% metabolite
 %
 % USAGE:
 %
-%    model = assignInchiToModel(model, molFileDir, metKEGGID, printLevel)
+%    model = assignInchiToModel(model, molFileDir, printLevel)
 %
 % INPUT:
 %    model          Model structure with following fields:
@@ -24,11 +25,8 @@ function [model,noInchiBool,compositeInchiBool] = addInchiToModel(model, molFile
 %                   each metabolite at pH 7. Molfiles should be
 %                   named with the metabolite identifiers in
 %                   model.mets (without compartment assignments).
-%                   Not required if metKEGGID are specified.
 %
 % OPTIONAL INPUTS:
-%    metKEGGID:           `m x 1` cell array of KEGG Compound identifiers.
-%                   Not required if molfiledir is specified.
 %    printLevel:    Verbose level
 %
 % OUTPUTS:
@@ -43,52 +41,64 @@ function [model,noInchiBool,compositeInchiBool] = addInchiToModel(model, molFile
 %                   * .inchi.standardWithStereoAndCharge: m x 1 cell array of standard inchi with stereo and charge
 %                   * .inchi.nonstandard: m x 1 cell array of non-standard inchi
 %
+%   inchiBool           m x 1 true if inchi exists
+%   molBool             m x 1 true if mol file exists
+%   compositeInchiBool  m x 1 true if inchi is composite
+
+
 % Written output - MetStructures.sdf - An SDF containing all structures input to the
 % component contribution method for estimation of standard Gibbs energies.           
 
-if ~exist('metKEGGID','var')
-    metKEGGID = [];
-end
 if ~exist('printLevel','var')
     printLevel = 1;
 end
-
-if isempty(metKEGGID)
-    % Get metabolite structures in molfileDir.
-    if printLevel>0
-        fprintf('Creating MetStructures.sdf from molfiles.\n')
-    end
-    sdfFileName = 'MetStructures.sdf';
-    includeRs = 0; % Do not include structures with R groups in SDF
-    [sdfMetList,noMolMetList] = mol2sdf(model.mets,molFileDir,sdfFileName,includeRs);
-else
-    % Retreive molfiles from KEGG if KEGG ID are given.
-    molFileDir = 'molfilesFromKegg';
-    fprintf('\nRetreiving molfiles from KEGG.\n');
-    takeMajorMS = true; % Convert molfile from KEGG to major tautomer of major microspecies at pH 7
-    pH = 7;
-    takeMajorTaut = true;
-    kegg2mol(metKEGGID,molFileDir,model.mets,takeMajorMS,pH,takeMajorTaut); % Retreive mol files
+if ~exist('method','var')
+    method = 'sdf';
 end
 
-if printLevel>0
-    fprintf('Converting SDF to InChI strings.\n')
+
+switch method
+    case 'sdf'
+        % Get metabolite structures in molfileDir.
+        if printLevel>0
+            fprintf('Creating MetStructures.sdf from molfiles.\n')
+        end
+        sdfFileName = 'MetStructures.sdf';
+        includeRs = 0; % Do not include structures with R groups in SDF
+        [sdfMetList,noMolMetList] = mol2sdf(model.mets,molFileDir,sdfFileName,includeRs);
+        
+        sdfBool = ismember(model.mets,sdfMetList);
+        
+        model.molBool = ~ismember(model.mets,noMolMetList);
+        
+        if printLevel>0
+            fprintf('Converting SDF to InChI strings.\n')
+        end
+        model.inchi = createInChIStruct(model.mets,[molFileDir filesep sdfFileName]);
+    case 'mol'
+        %assumes that model.mets without compartment info provides the name of
+        %the mol files in molFileDir
+        [model.inchi,model.molBool] = createInChIStruct(model.mets,[],molFileDir);
+    otherwise
+        error('unrecognised method')
 end
 
-model.inchi = createInChIStruct(model.mets,sdfFileName);
+%identify the metabolites without inchi
+model.inchiBool = ~cellfun('isempty',model.inchi.nonstandard);
 
 % Remove InChI for composite compounds as they cause problems later.
-compositeInchiBool = ~cellfun('isempty',regexp(model.inchi.nonstandard,'\.'));
-model.inchi.standard(compositeInchiBool) = cell(sum(compositeInchiBool),1);
-model.inchi.standardWithStereo(compositeInchiBool) = cell(sum(compositeInchiBool),1);
-model.inchi.standardWithStereoAndCharge(compositeInchiBool) = cell(sum(compositeInchiBool),1);
-model.inchi.nonstandard(compositeInchiBool) = cell(sum(compositeInchiBool),1);
+model.compositeInchiBool = ~cellfun('isempty',regexp(model.inchi.nonstandard,'\.'));
+model.inchi.standard(model.compositeInchiBool) = cell(sum(model.compositeInchiBool),1);
+model.inchi.standardWithStereo(model.compositeInchiBool) = cell(sum(model.compositeInchiBool),1);
+model.inchi.standardWithStereoAndCharge(model.compositeInchiBool) = cell(sum(model.compositeInchiBool),1);
+model.inchi.nonstandard(model.compositeInchiBool) = cell(sum(model.compositeInchiBool),1);
 
-noInchiBool = cellfun('isempty',model.inchi.nonstandard);
 
 if printLevel>0
     fprintf('%u%s\n',length(model.mets),' = number of model metabolites')
-    fprintf('%u%s\n',nnz(~noInchiBool),' = number of model metabolites with nonstandard inchi')
-    fprintf('%u%s\n',nnz(noInchiBool),' = number of model metabolites without nonstandard inchi')
-    fprintf('%u%s\n',nnz(compositeInchiBool),' = number of model metabolites compositie inchi removed')
+    fprintf('%u%s\n',nnz(model.molBool),' ... with mol files')
+    fprintf('%u%s\n',nnz(~model.molBool),' ... without mol files')
+    fprintf('%u%s\n',nnz(model.inchiBool),' ... with nonstandard inchi')
+    fprintf('%u%s\n',nnz(~model.inchiBool),' ... without nonstandard inchi')
+    fprintf('%u%s\n',nnz(model.compositeInchiBool),' ... compositie inchi removed')
 end

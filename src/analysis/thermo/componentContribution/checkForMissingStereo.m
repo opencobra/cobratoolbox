@@ -1,38 +1,39 @@
-function missingStereo = checkForMissingStereo(model, nist)
+function missingStereo = checkForMissingStereo(model, trainingModel)
 % USAGE:
 %
-%    missingStereo = checkForMissingStereo(model, nist)
+%    missingStereo = checkForMissingStereo(model, trainingModel)
 %
 % INPUTS:
 %    model:    structure with fields:
 %
-%                * model.mets
-%                * model.inchi.standard
-%                * model.inchi.standardWithStereo
-%    nist:     structure with fields:
+%                * .mets
+%                * .inchi.standard
+%                * .inchi.standardWithStereo
 %
-%                * nist.std_inchi
-%                * nist.std_inchi_stereo
+%    trainingModel:     structure with fields:
+%
+%                *.inchi.standard
+%                *.inchi.standardWithStereo
 %
 % OUTPUTS:
 %    missingStereo:
 
-nistStdBool = false(length(nist.std_inchi));
-for n = 1:length(nist.std_inchi)
-   if ~isempty(nist.std_inchi{n})
+nistStdBool = false(length(trainingModel.inchi.standard));
+for n = 1:length(trainingModel.inchi.standard)
+   if ~isempty(trainingModel.inchi.standard{n})
        if ~any(nistStdBool(:,n))
            nistStdBool(n,n) = true;
-           nistStdBool(n,strcmp(nist.std_inchi{n},nist.std_inchi)) = true;
+           nistStdBool(n,strcmp(trainingModel.inchi.standard{n},trainingModel.inchi.standard)) = true;
        end
    end
 end
 
-nistStdStereoBool = false(length(nist.std_inchi_stereo));
-for n = 1:length(nist.std_inchi_stereo)
-   if ~isempty(nist.std_inchi_stereo{n})
+nistStdStereoBool = false(length(trainingModel.inchi.standardWithStereo));
+for n = 1:length(trainingModel.inchi.standardWithStereo)
+   if ~isempty(trainingModel.inchi.standardWithStereo{n})
        if ~any(nistStdStereoBool(:,n))
            nistStdStereoBool(n,n) = true;
-           nistStdStereoBool(n,strcmp(nist.std_inchi_stereo{n},nist.std_inchi_stereo)) = true;
+           nistStdStereoBool(n,strcmp(trainingModel.inchi.standardWithStereo{n},trainingModel.inchi.standardWithStereo)) = true;
        end
    end
 end
@@ -41,7 +42,7 @@ nistStdStereoBool(diag(true(size(nistStdStereoBool,1),1))) = false;
 nistBool = nistStdBool & ~nistStdStereoBool;
 nistBool = nistBool(sum(nistBool,2)>1,:);
 
-nistStdInchi = nist.std_inchi(any(nistBool));
+nistStdInchi = trainingModel.inchi.standard(any(nistBool));
 modelStdInchi = model.inchi.standard;
 modelStdInchi(cellfun(@isempty,modelStdInchi)) = {'N/A'};
 

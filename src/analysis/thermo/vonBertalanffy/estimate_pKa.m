@@ -169,7 +169,7 @@ i=1;
 for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
-    if printLevel>0
+    if printLevel>1
         disp(n)
         disp(umets{n})
     end
@@ -177,7 +177,7 @@ for n = 1:length(uinchi)
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);
 
     pkalist = regexp(result{n},'\t','split');
-    if length(pkalist) == 2*npKas + 2;
+    if length(pkalist) == 2*npKas + 2
         pkalist = pkalist(2:end-1);
         pkalist = pkalist(~cellfun('isempty',pkalist));
         pkalist = regexprep(pkalist,',','.');

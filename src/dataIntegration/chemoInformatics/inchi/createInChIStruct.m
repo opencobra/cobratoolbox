@@ -1,4 +1,4 @@
-function inchiStruct = createInChIStruct(mets, sdfFileName)
+function [inchiStruct,molBool] = createInChIStruct(mets, sdfFileName, molFileDir)
 % Converts metabolite structures in SDF to InChI strings with OpenBabel,
 % and maps InChIs to mets.
 %
@@ -21,29 +21,6 @@ function inchiStruct = createInChIStruct(mets, sdfFileName)
 %
 % .. Author: - Hulda SH, Nov. 2012
 
-[standard,metList1] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg/nostereo'); % Convert SDF to InChIs
-
-[standardWithStereo,metList2] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg');
-if ~all(strcmp(metList1,metList2))
-    error('Error creating InChI structure.');
-end
-
-[standardWithStereoAndCharge,metList3] = sdf2inchi(sdfFileName,'-xtT/noiso');
-if ~all(strcmp(metList1,metList3))
-    error('Error creating InChI structure.');
-end
-
-[nonstandard,metList4] = sdf2inchi(sdfFileName,'-xtFT/noiso');
-if ~all(strcmp(metList1,metList4))
-    error('Error creating InChI structure.');
-end
-
-%  Map InChIs to mets
-inchiStruct.standard = cell(size(mets));
-inchiStruct.standardWithStereo = cell(size(mets));
-inchiStruct.standardWithStereoAndCharge = cell(size(mets));
-inchiStruct.nonstandard = cell(size(mets));
-
 mets = reshape(mets,length(mets),1);
 if ischar(mets)
     mets = strtrim(cellstr(mets));
@@ -55,9 +32,64 @@ if isnumeric(mets)
     mets = strtrim(cellstr(num2str(mets)));
 end
 
-for i = 1:length(metList1)
-    inchiStruct.standard(ismember(mets,metList1{i})) = standard(i);
-    inchiStruct.standardWithStereo(ismember(mets,metList1{i})) = standardWithStereo(i);
-    inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i);
-    inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i);
+%preallocate inchi sructure
+inchiStruct.standard = cell(size(mets));
+inchiStruct.standardWithStereo = cell(size(mets));
+inchiStruct.standardWithStereoAndCharge = cell(size(mets));
+inchiStruct.nonstandard = cell(size(mets));
+
+molBool = false(length(mets),1);
+if isempty(sdfFileName)
+    % create inchi from individual mol files
+    for i=1:length(mets)
+        molFileName = [molFileDir filesep mets{i} '.mol'];
+        if exist(molFileName,'file')
+            molBool(i)=1;
+            [inchi, annotation] = mol2inchi(molFileName, '-xtT/noiso/nochg/nostereo');
+            if ~contains(annotation,mets{i})
+                fprintf('%s\n',['createInChIStruct: no molecule identifier in ' mets{i}])
+            end
+            inchiStruct.standard{i,1} = inchi;
+            inchiStruct.standardWithStereo{i,1} = mol2inchi(molFileName, '-xtT/noiso/nochg');
+            inchiStruct.standardWithStereoAndCharge{i,1} = mol2inchi(molFileName, '-xtT/noiso');
+            inchiStruct.nonstandard{i,1} = mol2inchi(molFileName, '-xtFT/noiso');
+        else
+            inchiStruct.standard{i,1} = '';
+            inchiStruct.standardWithStereo{i,1} = '';
+            inchiStruct.standardWithStereoAndCharge{i,1} = '';
+            inchiStruct.nonstandard{i,1} = '';
+        end
+    end
+else
+    %create inchi from sdf file
+    [standard,metList1] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg/nostereo'); % Convert SDF to InChIs
+    
+    [standardWithStereo,metList2] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg');
+    if ~all(strcmp(metList1,metList2))
+        error('Error creating InChI structure.');
+    end
+    
+    [standardWithStereoAndCharge,metList3] = sdf2inchi(sdfFileName,'-xtT/noiso');
+    if ~all(strcmp(metList1,metList3))
+        error('Error creating InChI structure.');
+    end
+    
+    [nonstandard,metList4] = sdf2inchi(sdfFileName,'-xtFT/noiso');
+    if ~all(strcmp(metList1,metList4))
+        error('Error creating InChI structure.');
+    end
+    %  Map InChIs to mets
+    for i = 1:length(metList1)
+        inchiStruct.standard(ismember(mets,metList1{i})) = standard(i);
+        inchiStruct.standardWithStereo(ismember(mets,metList1{i})) = standardWithStereo(i);
+        inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i);
+        inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i);
+    end
+    
+    molBool = ismember(mets,metList1);
 end
+
+
+
+
+

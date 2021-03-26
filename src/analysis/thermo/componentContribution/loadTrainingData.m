@@ -112,9 +112,6 @@ for i = 1:length(inds)
 end
 fprintf('Successfully added %d values from TECRDB\n', length(inds));
 
-
-
-
 % Read the Formation Energy data.
 fid = fopen(FORMATION_TSV_FNAME, 'r');
 fgetl(fid); % skip the first header line
@@ -147,12 +144,6 @@ cids = union(cids, res{1}');
 cids_that_dont_decompose = res{1}(find(res{8} == 0));
 
 fprintf('Successfully added %d formation energies\n', length(res{1}));
-
-
-
-
-
-
 
 
 % Read the Reduction potential data.
@@ -202,18 +193,20 @@ for i = 1:length(reactions)
 end
 
 training_data.S = sparse(S);
+
+if ~isfield(training_data,'rxns')
+    for i=1:size(training_data.S,2)
+        training_data.rxns{i,1}=['rxn' int2str(i)];
+    end
+end
+if ~isfield(training_data,'lb')
+    training_data.lb=ones(size(training_data.S,2),1)*-inf;
+end
+if ~isfield(training_data,'ub')
+    training_data.lb=ones(size(training_data.S,2),1)*inf;
+end
+
 training_data.cids = cids';
-
-% get the InChIs for all the compounds in the training data
-% (note that all of them have KEGG IDs)
-kegg_inchies = getInchies(training_data.cids, use_cached_kegg_inchis);
-inds = ismember(kegg_inchies.cids, training_data.cids);
-
-training_data.std_inchi = kegg_inchies.std_inchi(inds)';
-training_data.std_inchi_stereo = kegg_inchies.std_inchi_stereo(inds)';
-training_data.std_inchi_stereo_charge = kegg_inchies.std_inchi_stereo_charge(inds)';
-training_data.nstd_inchi = kegg_inchies.nstd_inchi(inds)';
-
 training_data.dG0_prime = thermo_params(:, 1);
 training_data.T = thermo_params(:, 2);
 training_data.I = thermo_params(:, 3);
@@ -222,5 +215,6 @@ training_data.pMg = thermo_params(:, 5);
 training_data.weights = thermo_params(:, 6);
 training_data.balance = thermo_params(:, 7);
 training_data.cids_that_dont_decompose = cids_that_dont_decompose;
+
 
 
