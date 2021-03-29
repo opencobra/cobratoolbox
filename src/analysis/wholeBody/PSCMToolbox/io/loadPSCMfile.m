@@ -4,11 +4,11 @@ function variable = loadPSCMfile(fileName)
 % otherwise the set of variables in the mat file are returned as a
 % structure, where each field is a variable.
 %
-% INPUT: 
+% INPUT:
 % fileName:     nickname of .mat file to load
-%               or 
+%               or
 %               full name of .mat file to load
-% 
+%
 % OUTPUT:
 % variable:     matlab variable returned
 
@@ -36,7 +36,11 @@ switch fileName
             else
                 %COBRA v3 format
                 %load Harvey_1_02c
-                load Harvey_1_03c
+                try
+                    load Harvey_1_03d
+                catch
+                    load Harvey_1_03c
+                end
             end
         end
         if isfield(male,'gender')
@@ -52,12 +56,15 @@ switch fileName
     case 'Harvetta'
         if useSolveCobraLPCPLEX
             %COBRA v2 format
-            load Harvetta_1_01c
-            
+            try
+                load Harvetta_1_01d
+            catch
+                load Harvetta_1_01c
+            end
             female.subSystems(strmatch('Transport, endoplasmic reticular',female.subSystems,'exact'))={'Transport, endoplasmic reticulum'};
             female.subSystems(strmatch('Arginine and Proline Metabolism',female.subSystems,'exact'))={'Arginine and proline Metabolism'};
             female.subSystems(strmatch(' ',female.subSystems,'exact'))={'Miscellaneous'};
-                        
+            
             if 1
                 %convert to v3 format except for coupling constraints
                 female = convertOldStyleModel(female,0,0);
