@@ -67,8 +67,12 @@ if numWorkers>0 && ~isempty(ver('parallel'))
 end
 environment = getEnvironment();
 
-% get all models that failed at least one test
-failedModels = {};
+if isfile([debuggingFolder filesep 'failedModels.mat'])
+    load([debuggingFolder filesep 'failedModels.mat']);
+else
+    % get all models that failed at least one test
+    failedModels = {};
+end
 fixedModels = {};
 
 % start from existing progress if available

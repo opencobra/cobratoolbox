@@ -40,6 +40,8 @@ if nargin <4
     numWorkers = 0;
 end
 
+mkdir(panPath)
+
 % initialize parallel pool
 if numWorkers > 0
     % with parallelization
@@ -79,12 +81,24 @@ allTaxa = unique(infoFile(2:end, findTaxCol));
 % Remove unclassified organisms
 allTaxa(strncmp('unclassified', allTaxa, 12)) = [];
 allTaxa(~cellfun(@isempty, strfind(allTaxa, 'bacteri')))
-built = ls(panPath);
 
 % Remove models that have already been assembled from the list of models to create
-built = cellstr(built);
+dInfo = dir(panPath);
+dInfo = dInfo(~[dInfo.isdir]);
+built={dInfo.name};
+built=built';
 built = strrep(built, '.mat', '');
-toCreate = setdiff(allTaxa, built);
+built=regexprep(built,'pan','','once');
+translTaxa=strrep(allTaxa,'[','');
+translTaxa=strrep(translTaxa,' ','_');
+translTaxa=strrep(translTaxa,']','');
+translTaxa=strrep(translTaxa,'(','_');
+translTaxa=strrep(translTaxa,')','');
+translTaxa=strrep(translTaxa,'/','_');
+translTaxa=strrep(translTaxa,'-','_');
+translTaxa=strrep(translTaxa,'.','');
+[C,IA] = setdiff(translTaxa, built);
+toCreate=allTaxa(IA);
 
 % Build pan-models
 % define the intervals in which the testing and regular saving will be
@@ -233,7 +247,7 @@ reactionsToReplace = {
     'GLYC3Pt AND GLYC3Pti','GLYC3Pt',[]
     'FA180ACPHrev AND STCOATA AND FACOAL180','FACOAL180','FACOAL180i'
     'CITt2 AND CAt4i AND CITCAt','CITCAt','CITCAti'
-    'CITt2ipp AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'CITt2pp AND CAt4i AND CITCAt','CITCAt','CITCAti'
     'AHCYSNS_r AND AHCYSNS','AHCYSNS_r',[]
     'FDOXR AND GLFRDO AND OOR2r AND FRDOr','FRDOr','FRDO'
     'GNOX AND GNOXy AND GNOXuq AND GNOXmq','GNOXmq','GNOXmqi'
@@ -381,7 +395,7 @@ for i = 1:length(panModels)
             go = true;
             for k = 1:size(rxns, 2)
                 RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
-                if contains(RxForm,'[e]')
+                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                     newName=[rxns{k} 'pp'];
                     % make sure we get the correct reaction
                     newForm=strrep(RxForm,'[e]','[p]');
@@ -446,8 +460,7 @@ for i = 1:length(panModels)
                     % account for periplasmatic versions
                     % fix some special cases
                     if ~isempty(intersect(model.rxns,'CITt2ipp'))
-                        model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');
-                        
+                        model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');      
                     end
                     if ~isempty(intersect(model.rxns,'CITCAtiipp'))
                         model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');

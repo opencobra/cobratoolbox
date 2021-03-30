@@ -214,9 +214,12 @@ for i=1:steps:length(models)
     for j=i:i+endPnt
         model=modelsTmp{j};
         writeCbModel(model, 'format', 'mat', 'fileName', [refinedFolder filesep outputFileNamesTmp{j,1}]);
-        if contains(models{j},'sbml')
+        if contains(models{j},'sbml') || contains(models{j},'xml')
+            % save translated version of the draft model as a mat file, otherwise keep the orinal mat file
             model=draftModelsTmp{j};
             writeCbModel(model, 'format', 'mat', 'fileName', [translatedDraftsFolder filesep outputFileNamesTmp{j,1}]);
+        else
+            copyfile([folders{j} filesep models{j} '.mat'],[translatedDraftsFolder filesep outputFileNamesTmp{j,1} '.mat']);
         end
         summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end

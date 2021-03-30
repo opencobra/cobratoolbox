@@ -81,8 +81,8 @@ for j=1:length(fields)
         if sum(plotdata)==0
             plotdata(1,1)=0.00001;
         end
-        % does not work if all values are ones
-        if sum(plotdata) ~= length(plotdata)
+        % does not work if all values are equal
+        if numel(unique(plotdata))~=1
             violinplot(plotdata, {reconVersion});
             ylabel(label)
             box on
@@ -190,9 +190,9 @@ writetable(Table,[reconVersion '_Properties'],'FileType','spreadsheet','WriteVar
 % report all unbalanced reactions
 if size(Results.Mass_imbalanced,2)>1 || size(Results.Charge_imbalanced,2)>1
     Mass_imbalanced=Results.Mass_imbalanced(:,2:end);
-    Mass_imbalanced(cellfun(@isempty,Mass_imbalanced)==1)=[];
+%     Mass_imbalanced(cellfun(@isempty,Mass_imbalanced)==1)=[];
     Charge_imbalanced=Results.Charge_imbalanced(:,2:end);
-    Charge_imbalanced(cellfun(@isempty,Charge_imbalanced)==1)=[];
+%     Charge_imbalanced(cellfun(@isempty,Charge_imbalanced)==1)=[];
     Unbalanced_reactions=unique([Mass_imbalanced,Charge_imbalanced]);
     Unbalanced_reactions=cell2table(Unbalanced_reactions);
     writetable(Unbalanced_reactions,'Unbalanced_reactions','FileType','text','WriteVariableNames',false);

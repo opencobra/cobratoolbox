@@ -68,7 +68,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % The number of microbeNames, their names, the number of samples and their identifiers
 % are automatically detected from the input file.
 
-[sampNames,microbeNames]=getIndividualSizeName(abunFilePath);
+[sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath);
 %%
 % If PART1 was already
 % computed: if the associated file is already present in the results folder its
@@ -93,20 +93,24 @@ if isempty(mapP)
         end
     end
     
+    % Computing reaction abundance
+    ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
+    writetable(cell2table(ReactionAbundance.('Total')),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
     % Computing genetic information
-    [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
-    writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
-    
-    %Create tables and save all the created variables
-    reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
-    reacSet=cell2table(reacSet,'VariableNames',sampNames');
-    reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
+%     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
+%     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
+%     
+%     %Create tables and save all the created variables
+%     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
+%     reacSet=cell2table(reacSet,'VariableNames',sampNames');
+%     reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
 end
+save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'sampNames', 'microbeNames')
 
 % Plotting genetic information
-[PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
+% [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
 
-save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampNames', 'microbeNames')
+% save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampNames', 'microbeNames')
 
 %end of trigger for Autoload
 %% PIPELINE: [PART 2.1]

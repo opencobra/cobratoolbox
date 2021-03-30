@@ -65,7 +65,7 @@ end
 if data{2,2}>0
     fprintf('Fermentation pathways were refined for %s reconstructions.\n',num2str(data{2,2}))
     curationReport(size(curationReport,1)+1,:)={'Reconstructions with fermentation experimental data',num2str(data{2,2}),''};
-    fprintf('%0.2f %% of reconstructions agree with all fermentation experimental data.\n',data{2,2}*100)
+    fprintf('%0.2f %% of reconstructions agree with all fermentation experimental data.\n',data{2,3}*100)
     curationReport{size(curationReport,1),3}=num2str(data{2,3});
 end
 if data{3,2}>0

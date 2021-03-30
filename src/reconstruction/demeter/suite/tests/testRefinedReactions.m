@@ -33,8 +33,8 @@ if isfile('gapfilledGenomeAnnotation.txt')
         annRxns(:,1)=genomeAnnotation(findRxns(:,1),2);
         
         % find the overlap with blocked reactions in the model
-        BlockedRefinedReactions = intersect(annRxns(:,1),BlockedRxns.allRxns);
-        RefinedReactionsCarryingFlux = setdiff(annRxns(:,1),BlockedRxns.allRxns);
+        BlockedRefinedReactions = intersect(annRxns(:,1),BlockedRxns);
+        RefinedReactionsCarryingFlux = setdiff(annRxns(:,1),BlockedRxns);
     end
     
 end

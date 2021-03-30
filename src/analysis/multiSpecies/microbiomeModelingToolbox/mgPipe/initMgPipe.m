@@ -136,7 +136,7 @@ end
 
 % test if abundances are normalized
 abundance = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
-totalAbun=sum(cell2mat(abundance(2:end,2:end)),1);
+totalAbun=sum(str2double(abundance(2:end,2:end)),1);
 if any(totalAbun > 1.01)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
