@@ -68,7 +68,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % The number of microbeNames, their names, the number of samples and their identifiers
 % are automatically detected from the input file.
 
-[sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath);
+[sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
 %%
 % If PART1 was already
 % computed: if the associated file is already present in the results folder its
@@ -95,7 +95,7 @@ if isempty(mapP)
     
     % Computing reaction abundance
     ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
-    writetable(cell2table(ReactionAbundance.('Total')),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
+    writetable(cell2table(ReactionAbundance.('Total')'),[resPath filesep 'reactions.csv'], 'WriteVariableNames', false);
     % Computing genetic information
 %     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
 %     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
@@ -182,7 +182,11 @@ if buildSetupAll
     end
     
     if modbuild==0
-        load(strcat(resPath,'Setup_allbacs.mat'))
+        if ~isempty(host)
+            load(strcat(resPath,'Setup_host_allbacs.mat'))
+        else
+            load(strcat(resPath,'Setup_allbacs.mat'))
+        end
     end
     
     [createdModels]=createPersonalizedModel(abundance,resPath,setup,sampNames,microbeNames,host,hostBiomassRxn);

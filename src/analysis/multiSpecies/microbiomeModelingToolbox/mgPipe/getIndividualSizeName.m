@@ -1,4 +1,4 @@
-function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath)
+function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,modPath)
 % This function automatically detects organisms, names and number of individuals present
 % in the study.
 %
@@ -7,11 +7,12 @@ function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath)
 %   [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath)
 %
 % INPUTS:
-%   abunFilePath:        char with path and name of file from which to retrieve information
+%   abunFilePath:      char with path and name of file from which to retrieve information
+%   modPath:           char with path of directory where models are stored
 %
 % OUTPUTS:
-%   sampNames:          nx1 cell array cell array with names of individuals in the study
-%   organisms:           nx1 cell array cell array with names of organisms in the study
+%   sampNames:         nx1 cell array cell array with names of individuals in the study
+%   organisms:         nx1 cell array cell array with names of organisms in the study
 %   exMets:            cell array with all unique extracellular metabolites
 %                      contained in the models
 %
@@ -73,10 +74,10 @@ parfor i = 1:length(organisms) % find the unique set of all the reactions contai
     models{i, 1} = model;
 end
 
+exMets = {};
 for i = 1:length(organisms) % find the unique set of all the reactions contained in the models
-    smd = models{i, 1};
-    reac = union(reac,smd.rxns);
-    findmets = smd.mets(find(contains(smd.mets,'[e]')));
+    model = models{i, 1};
+    findmets = model.mets(find(contains(model.mets,'[e]')));
     exMets = union(exMets,findmets);
 end
 
