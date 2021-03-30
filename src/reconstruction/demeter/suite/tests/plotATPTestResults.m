@@ -140,8 +140,10 @@ if ~isempty(translatedDraftsFolder)
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under aerobic conditions.\n'])
         for i=1:length(tooHigh)
-            tooHighATP{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+            if tooHigh(i)
+                tooHighATP{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
     else
         fprintf('All models produce reasonable amounts of ATP under aerobic conditions.\n')
@@ -151,8 +153,10 @@ if ~isempty(translatedDraftsFolder)
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under anaerobic conditions.\n'])
         for i=1:length(tooHigh)
-            tooHighATP{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+            if tooHigh(i)
+                tooHighATP{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
     else
         fprintf('All models produce reasonable amounts of ATP under anaerobic conditions.\n')
@@ -198,7 +202,7 @@ else
         end
     else
         fprintf('All models produce reasonable amounts of ATP under anaerobic conditions.\n')
-    end 
+    end
 end
 
 tooHighATP=unique(tooHighATP);
