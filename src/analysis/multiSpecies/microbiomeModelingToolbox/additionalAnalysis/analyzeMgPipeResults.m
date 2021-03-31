@@ -113,7 +113,7 @@ for i=1:length(fileList)
             cd(violinPath)
             
             % create violin plots for net uptake and secretion files
-            if any(strcmp(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
+            if any(contains(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
                 makeViolinPlots(sampleData, infoFile, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename, 'unit', 'mmol/person/day')
             end
             cd(currentDir)
