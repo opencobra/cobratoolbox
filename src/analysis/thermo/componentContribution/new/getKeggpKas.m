@@ -5,15 +5,15 @@ end
 
 if ismac
     cxcalc_cmd = '/Applications/ChemAxon/JChem/bin/cxcalc';
-    babel_cmd = '/usr/local/bin/obabel';
+    babel_cmd = '/usr/local/bin/babel';
 else
     cxcalc_cmd = 'cxcalc';
-    babel_cmd = 'obabel';
+    babel_cmd = 'babel';
 end
 
 [success, ~] = system(cxcalc_cmd);
 if success ~= 0
-    error('Please make sure the command line program "obabel" is installed and in the path');
+    error('Please make sure the command line program "babel" is installed and in the path');
 end
 
 KeggSpeciespKa = [];
@@ -80,9 +80,9 @@ for i = 1:length(target_cids)
         end
 
         if ispc
-            cmd = ['echo ' majorms_smiles ' | obabel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
+            cmd = ['echo ' majorms_smiles ' | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
         else
-            cmd = ['echo "' majorms_smiles '" | obabel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
+            cmd = ['echo "' majorms_smiles '" | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
         end
         [success, babel_stdout] = system(cmd);
         if success == 0 && ~isempty(babel_stdout) && strcmp('InChI=',babel_stdout(1:6))

@@ -33,7 +33,6 @@ if ~isempty(options)
    options = [' ' strtrim(options)];
 end
 
-%babelcmd = 'obabel';
 babelcmd = 'babel';
 
 % Convert to InChI with OpenBabel

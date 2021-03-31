@@ -185,7 +185,7 @@ for k = 1:nMets
             end
 
             % Get inchis for all species in abundantSpecies.sdf
-            [~, inchis] = system('obabel abundantSpecies.sdf -oinchi -xFwT/nostereo');
+            [~, inchis] = system('babel abundantSpecies.sdf -oinchi -xFwT/nostereo');
             inchis = regexp(inchis, '\n', 'split');
             inchiIdx = regexp(inchis,'InChI=');
             inchis = inchis(~cellfun('isempty',inchiIdx))';
@@ -228,7 +228,7 @@ for k = 1:nMets
             dataArray = [dataArray, num2cell(abundanceAtpH7)];
 
             % Get inchis for all species in abundantSpecies.sdf
-            %                 [~, uniqueInchis] = system('obabel abundantSpecies.sdf -oinchi -xFwuT/nostereo');
+            %                 [~, uniqueInchis] = system('babel abundantSpecies.sdf -oinchi -xFwuT/nostereo');
             %                 uniqueInchis = regexp(uniqueInchis, '\n', 'split');
             %                 uniqueInchis = uniqueInchis(strmatch('InChI=',uniqueInchis))';
             inchis = dataArray(:,1);

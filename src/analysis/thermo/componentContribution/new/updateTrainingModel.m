@@ -82,14 +82,14 @@ if forceMolReplacement
         end
         
         if ismac
-            babel_cmd = '/usr/local/bin/obabel';
+            babel_cmd = '/usr/local/bin/babel';
         else
-            babel_cmd = 'obabel';
+            babel_cmd = 'babel';
         end
         
         [success, ~] = system(babel_cmd);
         if success ~= 0
-            error('Please make sure the command line program "obabel" is installed and in the path');
+            error('Please make sure the command line program "babel" is installed and in the path');
         end
         
         % load the InChIs for all KEGG compounds in the 'kegg_additions.tsv' file.
