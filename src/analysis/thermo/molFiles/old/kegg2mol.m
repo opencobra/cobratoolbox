@@ -1,34 +1,35 @@
-function kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)
-% Retrieve molfiles from the KEGG Compound database.
-%
-% USAGE:
-%
-%    kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)
-%
-% INPUT:
-%    cid:              `m x 1` array of KEGG Compound identifiers.
-%
-% OPTIONAL INPUTS:
-%    molfileDir:       Path to directory where molfiles will be saved. Default
-%                      is `molfilesFromKegg`.
-%    mets:             `m x 1` array of metabolite identifiers. Used to name
-%                      molfiles. KEGG Compound ID will be used if mets is omitted.
-%    takeMajorMS:      {(0), 1}. If 0 (default), molfiles will be downloaded
-%                      directly from KEGG. If 1, they will save as the major
-%                      microspecies at the pH specified in input variable pH.
-%                      Computing major microspecies requires ChemAxon's
-%                      calculator plugins (cxcalc).
-%    pH:               pH for computing major microspecies.
-%    takeMajorTaut:    {0, (1)}. If 1 (default), molfiles will be saved as the
-%                      major tautomers of the major microspecies at the specified pH.
-%
+function kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut)
+% Retreive molfiles from the KEGG Compound database.
+% 
+% kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut)
+% 
+% INPUTS
+% cid               m x 1 array of KEGG Compound identifiers.
+% 
+% OPTIONAL INPUTS
+% molfileDir        Path to directory where molfiles will be saved. Default
+%                   is molfilesFromKegg.
+% mets              m x 1 array of metabolite identifiers. Used to name
+%                   molfiles. KEGG Compound ID will be used if mets is
+%                   omitted. 
+% takeMajorMS       {(0),1}. If 0 (default), molfiles will be downloaded
+%                   directly from KEGG. If 1, they will save as the major
+%                   microspecies at the pH specified in input variable pH.
+%                   Computing major microspecies requires ChemAxon's
+%                   calculator plugins (cxcalc).
+% pH                pH for computing major microspecies.
+% takeMajorTaut     {0,(1)}. If 1 (default), molfiles will be saved as the
+%                   major tautomers of the major microspecies at the
+%                   specified pH. 
+% 
+% WRITTEN OUTPUTS
+% One molfile for each metabolite with a KEGG Compound ID.
 
-% Written output - One molfile for each metabolite with a KEGG Compound ID.
-%
-% If takeMajorMS = 1 - approximately 2 seconds per kegg id.
-% If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.
+% If takeMajorMS == 1; approximately 2 seconds per kegg id
+% If takeMajorMS == 0; approximately 0.3 seconds per kegg id
 
-cid = reshape(cid,length(cid),1); % Configure inputs
+% Configure inputs
+cid = reshape(cid,length(cid),1);
 if ischar(cid)
     cid = strtrim(cellstr(cid));
 end
@@ -100,16 +101,16 @@ for i = 1:length(umets)
     met = umets{i};
     id = ucid{i};
     [mol,success] = urlread(sprintf('http://rest.kegg.jp/get/cpd:%s/mol', id)); % API
-
+    
     if success == 0
         nomol = [nomol; {met}];
         continue;
     end
-
+    
     mol = regexprep(mol,'\r',''); % Remove carriage returns
     mol = regexprep(mol,'[^\n]*\n',[id '\n'],'once'); % Replace top line with KEGG ID
     mol = regexprep(mol,'M  END.*','M  END'); % Remove all lines after end of molfile
-
+    
     % Identify variable structures containing R groups, repeat units etc.
     % ChemAxon's calculator plugins cannot compute major microspecies for
     % such structures.
@@ -125,13 +126,13 @@ for i = 1:length(umets)
             atoms = [atoms{:}]';
             atoms = {atoms.atom}';
         end
-
+        
         % Check for repeat units
         if ~isempty(strmatch('M  STY',lines))
             atoms = {};
         end
     end
-
+    
     if takeMajorMS == 0 || ~all(ismember(atoms,elements)) || isempty(atoms) || (length(atoms) == 2 && all(strcmp(atoms,'H'))) % Write raw molfile from KEGG directly to file
         fid = fopen([molfileDir met '.mol'],'w+');
         fprintf(fid,'%s',mol);
@@ -140,20 +141,14 @@ for i = 1:length(umets)
         fid = fopen('tmp.mol','w+'); % Write raw molfile from KEGG to temporary file
         fprintf(fid,'%s',mol);
         fclose(fid);
-
+        
         if takeMajorTaut == 1
             majorTautOption = 'true';
         else
             majorTautOption = 'false';
         end
-
-        if ismac
-            %expecting the default installation location
-           status = system(['/Applications/MarvinSuite/bin/cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
-        else
-            %user must make sure cxcalc is on their $PATH
-           status = system(['cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
-        end
+        
+        status = system(['cxcalc -o ' molfileDir met '.mol majorms -H ' num2str(pH) ' -f mol -M ' majorTautOption ' tmp.mol']); % Call ChemAxon's calculator plugin (cxcalc) to compute major microspecies
         
         if status ~= 0
             nomol = [nomol; {met}];

@@ -14,14 +14,14 @@ if ~exist(KEGG_ADDITIONS_TSV_FNAME, 'file')
 end
 
 if ismac
-    babel_cmd = '/usr/local/bin/obabel';
+    babel_cmd = '/usr/local/bin/babel';
 else
-    babel_cmd = 'obabel';
+    babel_cmd = 'babel';
 end
 
 [success, ~] = system(babel_cmd);
 if success ~= 0
-    error('Please make sure the command line program "obabel" is installed and in the path');
+    error('Please make sure the command line program "babel" is installed and in the path');
 end
 
 % Load relevant InChIs (for all compounds in the training data)

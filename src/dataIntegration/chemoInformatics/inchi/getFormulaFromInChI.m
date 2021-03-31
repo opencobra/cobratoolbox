@@ -30,7 +30,6 @@ if ~isempty(p_layer)
     protonationProtons = cellfun(@(x) sum(cellfun(@(y) eval(y) , x)), individualProtons);
 end
 
-
 %Calc the coefs for all formulas
 if (numel(tokens) > 1) || (~isempty(regexp(formula,'(^[0-9]+)'))) || (~isempty(p_layer))
     CoefLists = cellfun(@(x) calcFormula(x), tokens,'UniformOutput',0);
@@ -69,6 +68,20 @@ else
     protons = numAtomsOfElementInFormula(formula, 'H',0);
 end
 
+zero='0';
+indZero=strfind(formula,zero);
+if ~isempty(indZero)
+    if isletter(formula(indZero-1))
+        if 0
+            warning('Formula contains a zero with a letter preceeding it, replacing with letter.')
+            fprintf('%s%s\n','Formula before:, ', formula)
+        end
+        formula = strrep(formula, formula(indZero-1:indZero), formula(indZero-1));
+        if 0
+            fprintf('%s%s\n','Formula after:, ', formula)
+        end
+    end
+end
 
 end
 

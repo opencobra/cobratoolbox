@@ -1,36 +1,28 @@
-function [model, params] = componentContribution(model, trainingData)
+function [model,params] = componentContribution(model,trainingData)
 % Perform the component contribution method
 %
-% USAGE:
+% INPUTS
+% trainingData      structure from prepareTrainingData with the following fields
+% .S                the stoichiometric matrix of measured reactions
+% .G                the group incidence matrix
+% .dG0              the observation vector (standard Gibbs energy of reactions)
+% .weights          the weight vector for each reaction in S
+% .Model2TrainingMap
 %
-%    [model, params] = componentContribution(model, trainingData)
-%
-% INPUTS:
-%    model:             COBRA structure
-%    trainingData:      structure from `prepareTrainingData` with the following fields:
-%
-%                         * .S - the stoichiometric matrix of measured reactions
-%                         * .G - the group incidence matrix
-%                         * .dG0 - the observation vector (standard Gibbs energy of reactions)
-%                         * .weights - the weight vector for each reaction in `S`
-%                         * .Model2TrainingMap
-%
-% OUTPUTS:
-%    model:             structure with the following fields:
-%
-%                         * .DfG0 - `m x 1` array of component contribution estimated
-%                           standard Gibbs energies of formation.
-%                         * .covf - `m x m` estimated covariance matrix for standard
-%                           Gibbs energies of formation.
-%                         * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
-%                           Gibbs energies of formation. Will be large for
-%                           metabolites that are not covered by component
-%                           contributions.
-%                         * .DrG0_Uncertainty - `n x 1` array of uncertainty in standard reaction
-%                           Gibbs energy estimates.  Will be large for
-%                           reactions that are not covered by component
-%                           contributions.
-%    params:            structure
+% OUTPUTS
+% model             structure with the following fields
+% .DfG0                 m x 1 array of component contribution estimated
+%                       standard Gibbs energies of formation.
+% .covf                 m x m estimated covariance matrix for standard
+%                       Gibbs energies of formation.
+% .DfG0_Uncertainty     m x 1 array of uncertainty in estimated standard
+%                       Gibbs energies of formation. Will be large for
+%                       metabolites that are not covered by component
+%                       contributions.
+% .DrG0_Uncertainty     n x 1 array of uncertainty in standard reaction
+%                       Gibbs energy estimates.  Will be large for
+%                       reactions that are not covered by component
+%                       contributions.
 
 if ~isfield(model,'SIntRxnBool')
     model = findSExRxnInd(model);
@@ -70,7 +62,7 @@ dG0_gc = inv_GS' * W * dG0;
 dG0_cc = P_R_rc * dG0_rc + P_N_rc * G * dG0_gc;
 
 % Calculate the residual error (unweighted squared error divided by N - rank)
-e_rc = (S' * dG0_rc - dG0); %sign opposite to eq 3 in supp Text_S1.pdf
+e_rc = (S' * dG0_rc - dG0); %sign opposite to eq 3 in suText_S1.pdf
 MSE_rc = (e_rc' * W * e_rc) / (n - r_rc);
 
 %e_gc = (S' * G_gc - dG0); - was this in Elad's v1 matlab code
@@ -84,15 +76,10 @@ MSE_inf = 1e10;
 [inv_SWS, ~, ~, ~] = invertProjection(S*W*S');
 [inv_GSWGS, ~, ~, ~] = invertProjection(GS*W*GS');
 
-if 0
-    V_rc = P_R_rc * inv_SWS * P_R_rc;
-    V_gc  = P_N_rc * G * inv_GSWGS * G' * P_N_rc;
-    V_inf = P_N_rc * G * P_N_gc * G' * P_N_rc;
-else
-    V_rc = inv_SWS;
-    V_gc  = G * inv_GSWGS * G';
-    V_inf = G * P_N_gc * G';
-end
+V_rc = P_R_rc * inv_SWS * P_R_rc;
+V_gc  = P_N_rc * G * inv_GSWGS * G' * P_N_rc;
+V_inf = P_N_rc * G * P_N_gc * G' * P_N_rc;
+
 % Put all the calculated data in 'params' for the sake of debugging
 params.contributions = {dG0_rc, dG0_gc};
 params.covariances = {V_rc, V_gc, V_inf};
@@ -117,7 +104,7 @@ diag_conf=diag(model.covf);
 if any(diag_conf<0)
     error('diag(model.covf) has a negative entries')
 end
-model.DfG0_Uncertainty=columnVector(sqrt(diag_conf));
+model.DfG0_Uncertainty=sqrt(diag_conf);
 if ~real(model.DfG0_Uncertainty)
     error('DfG0_Uncertainty has a complex part')
 end
@@ -127,8 +114,7 @@ if any(DfG0NaNBool)
 end
 
 diag_St_conf_S=diag(model.S'*model.covf*model.S);
-
-diag_St_conf_S(~model.SIntRxnBool)=0;
+model.DrGt0_Uncertainty(model.SIntRxnBool)=NaN;
 if any(diag_St_conf_S<0)
     if norm(diag_St_conf_S(diag_St_conf_S<0))<1e-12
         diag_St_conf_S(diag_St_conf_S<0)=0;
@@ -136,13 +122,16 @@ if any(diag_St_conf_S<0)
         error('diag(model.S''*model.covf*model.S) has a large negative entries')
     end
 end
-model.DrG0_Uncertainty = columnVector(sqrt(diag_St_conf_S));
-if ~real(model.DrG0_Uncertainty)
-    error('DrG0_Uncertainty has a complex part')
+model.DrGt0_Uncertainty = sqrt(diag_St_conf_S);
+if ~real(model.DrGt0_Uncertainty)
+    error('DrGt0_Uncertainty has a complex part')
 end
-model.DrG0_Uncertainty(~model.SIntRxnBool,1)=NaN;
-% model.DrG0_Uncertainty(model.DrG0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-% model.DrG0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
+model.DrGt0_Uncertainty(~model.SIntRxnBool)=NaN;
+% model.DrGt0_Uncertainty(model.DrGt0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
+% model.DrGt0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
+
+%TODO, this is a temporary fix
+model.DrG0_Uncertainty = model.DrGt0_Uncertainty;
 
 % Debug
 % model.G = trainingData.G(trainingData.Model2TrainingMap,:);

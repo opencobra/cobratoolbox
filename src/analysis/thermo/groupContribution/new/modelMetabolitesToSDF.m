@@ -88,12 +88,12 @@ else
     end
 end
 
-%check that obabel is installed and working on the current unix machine
-[status, result] = system('obabel -V');
+%check that babel is installed and working on the current unix machine
+[status, result] = system('babel -V');
 if status~=0 || ~isunix
     error('Babel must be installed and it is assumed this is a *nix machine');
 end
-%todo - add support for obabel on windows
+%todo - add support for babel on windows
 
 %preallocate cell array of already printed metabolites
 printedMetAbbr=cell(nMet,1);
@@ -107,7 +107,7 @@ printedMetAbbr=cell(nMet,1);
 fid2=fopen('water.inchi','w');
 fprintf(fid2,'%s\n','InChI=1/H2O/h1H2');
 fclose(fid2);
-[status, result] = system('obabel --title  water -iinchi water.inchi -omol mater.mol');
+[status, result] = system('babel --title  water -iinchi water.inchi -omol mater.mol');
 
 %exact mass for H
 HexactMass=1.0078250321;
@@ -117,7 +117,7 @@ sdfFilename=[model.description '.sdf'];
 fid=fopen(sdfFilename,'w');
 fclose(fid);
 
-%create a file with problematic InChI for obabel
+%create a file with problematic InChI for babel
 fidBabel=fopen('InChI_Babel_NoMol.txt','w');
 fclose(fidBabel);
 
@@ -184,7 +184,7 @@ for m=1:nMet
             fprintf(fid2,'%s\n',model.met(m).InChI);
             fclose(fid2);
             %better to use mol output since no $$$$ at the end
-            sysCall1=['obabel --title ' metAbbr ' -iinchi tmp.inchi -omol ' metAbbr '.mol'];
+            sysCall1=['babel --title ' metAbbr ' -iinchi tmp.inchi -omol ' metAbbr '.mol'];
             [status, result] = system(sysCall1);
 
             %check size of mol file, leave it out if zero bytes

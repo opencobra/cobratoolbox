@@ -40,8 +40,10 @@ if ~isempty(options)
    options = [' ' strtrim(options)];
 end
 
+babelcmd = 'babel';
+
 % Convert to InChI with OpenBabel
-[success,resultOri] = system(['obabel ' molFileName ' -oinchi' options]);
+[success,resultOri] = system([babelcmd ' ' molFileName ' -oinchi' options]);
 
 [filepath,name,ext] = fileparts(molFileName);
 
@@ -53,10 +55,10 @@ if success == 0
     if isempty(result)
         fprintf('%s\n',['mol2inchi: could not generate inchi for ' name])
         if contains(resultOri,'Alias R was not chemically interpreted')
-            fprintf('%s\n','obabel: Alias R was not chemically interpreted')
+            fprintf('%s\n',[babelcmd ': Alias R was not chemically interpreted'])
         else
             if contains(resultOri,'Unknown element(s): Xx')
-                fprintf('%s\n','obabel: Unknown element(s): Xx')
+                fprintf('%s\n',[babelcmd ': Unknown element(s): Xx'])
             else
                 disp(resultOri)
             end
