@@ -1,17 +1,9 @@
 function mappingScore = getMappingScores(model, training_data)
-% Finds the best mapping between the model compounds and the training data (KEGG) compounds
+% finds the best mapping between the model compounds and the training data (KEGG) compounds
+% INPUTS
 %
-% USAGE:
+% OUTPUTS
 %
-%    mappingScore = getMappingScores(model, training_data)
-%
-% INPUTS:
-%    model:            COBRA structure
-%    training_data:    training data
-%
-% OUTPUT:
-%    mappingScore:     best mapping
-
 FIXED_MAPPING_TSV_FNAME = 'data/fixed_mappings.tsv';
 if ~exist(FIXED_MAPPING_TSV_FNAME, 'file')
     error(['file not found: ', FIXED_MAPPING_TSV_FNAME]);
@@ -34,7 +26,7 @@ fixedMappings = textscan(fid, '%d%s', 'delimiter', '\t');
 fclose(fid);
 
 % create a matrix that has the matching scores for each model met and nist compound
-mappingScore = sparse(size(model.mets, 1), length(training_data.cids));
+mappingScore = sparse(size(model.mets, 1), size(training_data.cids, 2));
 for n = 1:length(model.mets)
     met = model.mets{n}(1:end-3); % the name of the metabolite without the compartment
     mappingScore(n, strcmp(training_data.std_inchi, model.inchi.standard{n})) = 1;

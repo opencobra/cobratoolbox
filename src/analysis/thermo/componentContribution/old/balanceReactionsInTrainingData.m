@@ -1,5 +1,6 @@
 function training_data = balanceReactionsInTrainingData(training_data)
 
+
 if ~isfield(training_data, 'Ematrix') || isempty(training_data.Ematrix)
     [MW, Ematrix] = getMolecularWeight(training_data.nstd_inchi, 0);
     training_data.Ematrix = Ematrix(:, 2:end); % remove H, columns are [C, N, O, P, S, e-]

@@ -73,6 +73,13 @@ if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},op
 
 end
 
+if ~isfield(model,'lb')
+    model.lb=ones(size(model.S,2),1)*-inf;
+end
+if ~isfield(model,'ub')
+    model.lb=ones(size(model.S,2),1)*inf;
+end
+
 parser = inputParser();
 parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
 parser.addParamValue('rxnAbbrList',model.rxns,@(x) iscell(x) || ischar(x))

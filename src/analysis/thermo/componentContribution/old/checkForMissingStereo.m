@@ -1,21 +1,15 @@
 function missingStereo = checkForMissingStereo(model, nist)
-% USAGE:
 %
-%    missingStereo = checkForMissingStereo(model, nist)
 %
-% INPUTS:
-%    model:    structure with fields:
+% INPUTS
+% model.mets
+% model.inchi.standard
+% model.inchi.standardWithStereo
+% nist.std_inchi
+% nist.std_inchi_stereo
 %
-%                * model.mets
-%                * model.inchi.standard
-%                * model.inchi.standardWithStereo
-%    nist:     structure with fields:
-%
-%                * nist.std_inchi
-%                * nist.std_inchi_stereo
-%
-% OUTPUTS:
-%    missingStereo:
+% OUTPUTS
+% missingStereo
 
 nistStdBool = false(length(nist.std_inchi));
 for n = 1:length(nist.std_inchi)
