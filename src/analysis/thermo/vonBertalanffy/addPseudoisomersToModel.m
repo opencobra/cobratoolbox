@@ -94,7 +94,8 @@ takeMajorTaut = false;
 % Estimate pKa and determine pseudoisomers
 [pseudoisomers,pKaErrorMets] = estimate_pKa(model.mets,model.inchi.nonstandard,npKas,takeMajorTaut); 
 
-pKaErrorMetBool = ismember(model.mets,pKaErrorMets(:,1));
+mets = regexprep(model.mets,'(\[\w\])$','');
+pKaErrorMetBool = ismember(mets,pKaErrorMets(:,1));
 
 model.pseudoisomers = pseudoisomers;
 model.pseudoisomers = rmfield(model.pseudoisomers,'met');
@@ -104,17 +105,25 @@ if any(~[model.pseudoisomers.success]) && printLevel>0
     fprintf('Assuming that metabolite species in model.metFormulas are representative for metabolites where pKa could not be estimated.\n');
 end
 
+nonphysicalMetBool = false(length(model.mets),1);
 nonphysicalMetSpecies = {};
 for i = 1:length(model.mets)
-    model_z = model.metCharges(i); % Get charge from model
-    model_nH = numAtomsOfElementInFormula(model.metFormulas{i},'H'); % Get number of hydrogens from metabolite formula in model
-    if ~model.pseudoisomers(i).success
-        model.pseudoisomers(i).zs = model_z;
-        model.pseudoisomers(i).nHs = model_nH;
-        model.pseudoisomers(i).majorMSpH7 = true; % Assume species in model is the major (and only) metabolite species %RF: this seems dubious
-    end
-    if ~any(model.pseudoisomers(i).nHs == model_nH)
-        nonphysicalMetSpecies = [nonphysicalMetSpecies; model.mets(i)];
+    if ~isempty(model.metFormulas{i})
+        model_z = model.metCharges(i); % Get charge from model
+        model_nH = numAtomsOfElementInFormula(model.metFormulas{i},'H'); % Get number of hydrogens from metabolite formula in model
+        if ~model.pseudoisomers(i).success
+            model.pseudoisomers(i).zs = model_z;
+            model.pseudoisomers(i).nHs = model_nH;
+            model.pseudoisomers(i).majorMSpH7 = true; % Assume species in model is the major (and only) metabolite species %RF: this seems dubious
+        end
+        if ~any(model.pseudoisomers(i).nHs == model_nH)
+            nonphysicalMetBool(i) = true;
+        end
+    else
+        %fail gracefully if no model.metFormulas
+        model.pseudoisomers(i).zs = NaN;
+        model.pseudoisomers(i).nHs = NaN;
+        model.pseudoisomers(i).majorMSpH7 = NaN; % Assume species in model is the major (and only) metabolite species %RF: this seems dubious
     end
 end
 if ~isempty(nonphysicalMetSpecies)
@@ -126,7 +135,6 @@ if ~isempty(nonphysicalMetSpecies)
         end
     end
 end
-nonphysicalMetBool = ismember(model.mets,nonphysicalMetSpecies);
 
 if printLevel>0
     fprintf('%u%s\n',length(model.mets),' = number of model metabolites')
