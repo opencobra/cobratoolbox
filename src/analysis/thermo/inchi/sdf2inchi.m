@@ -33,8 +33,11 @@ if ~isempty(options)
    options = [' ' strtrim(options)];
 end
 
+%babelcmd='obabel';
+babelcmd='babel';
+
 % Convert to InChI with OpenBabel
-[success,result] = system(['obabel ' sdfFileName ' -oinchi' options]);
+[success,result] = system([babelcmd ' ' sdfFileName ' -oinchi' options]);
 
 % Parse output from OpenBabel
 if success == 0
@@ -46,7 +49,7 @@ if success == 0
     inchi = strtrim(inchi);
     metList = strtrim(metList);
 else
-    [success,result] = system(['obabel ' sdfFileName ' -oinchi' options])
+    [success,result] = system([babelcmd ' ' sdfFileName ' -oinchi' options])
     fprintf('%s\n','If you get a ''not found'' message from the call to Babel, make sure that Matlab''s LD_LIBRARY_PATH is edited to include correct system libraries. See initVonBertylanffy')
     error('Conversion to InChI not successful. Make sure OpenBabel is installed correctly.\n')
 end
