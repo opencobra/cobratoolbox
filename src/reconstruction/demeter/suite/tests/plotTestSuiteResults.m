@@ -25,6 +25,9 @@ fields = {
     'PutrefactionPathways_FalseNegatives'
     'AromaticAminoAcidDegradation_TruePositives'
     'AromaticAminoAcidDegradation_FalseNegatives'
+    'Mass_imbalanced'
+    'Charge_imbalanced'
+    'Leaking_metabolites'
     };
 
 Results=struct;
@@ -159,7 +162,8 @@ h=bar(plotdata);
 barvalues(h)
 h(1).FaceColor = [1 0 0];
 h(2).FaceColor = [0 0 1];
-set(gca, 'FontSize', 12)
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+
 box on
 h=title('Features succesfully and unsuccessfully captured by reconstructions');
 xticklabels(labels);
@@ -169,6 +173,7 @@ set(h,'interpreter','none')
 set(gca,'YTickLabel',[])
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
+set(gca,'FontSize',14)
 if contains(pwd,'_refined')
     suptitle('Refined reconstructions')
 elseif contains(pwd,'_draft')
@@ -219,7 +224,7 @@ for i=1:length(features)
     if i < length(features)
         for j=1:size(Results.(strcat(features{i},'_TruePositives')),1)
             TP=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_TruePositives'))(j,2:end))));
-            if size(Results.(strcat(features{i},'_FalseNegatives')),2)
+            if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
                 FN=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_FalseNegatives'))(j,2:end))));
             else
                 FN = 0;

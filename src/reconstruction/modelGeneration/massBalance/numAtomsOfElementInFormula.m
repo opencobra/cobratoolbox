@@ -46,8 +46,10 @@ zero='0';
 indZero=strfind(formula,zero);
 if ~isempty(indZero)
     if isletter(formula(indZero-1))
-        % formula = strrep(formula, zero, 'O');
-        error('Formula contains a zero with a letter preceeding it, represent oxygen with a the character O not zero')
+        fprintf('%s%s\n','Formula before:, ', formula)
+        warning('Formula contains a zero with a letter preceeding it, replacing with letter.')
+        formula = strrep(formula, formula(indZero-1:indZero), formula(indZero-1));
+        fprintf('%s%s\n','Formula after:, ', formula)
     end
 end
 

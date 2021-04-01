@@ -139,10 +139,10 @@ if ~isempty(translatedDraftsFolder)
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
     set(gca, 'FontSize', 12)
     box on
-    h=title(['Growth on Western diet, ' reconVersion]);
+    h=title(['Growth on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
-    print([testResultsFolder filesep 'Growth_rates_Western_diet_' reconVersion],'-dpng','-r300')
+    print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
     
     % report draft models that are unable to grow
     fprintf('Report for draft models:\n')
@@ -162,16 +162,16 @@ if ~isempty(translatedDraftsFolder)
     
     noGrowth=growth{1}(:,3) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium.\n'])
     else
-        fprintf('All models are able to produce biomass on Western diet.\n')
+        fprintf('All models are able to produce biomass on complex medium.\n')
     end
     
     noGrowth=growth{1}(:,4) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet under anaerobic conditions.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium under anaerobic conditions.\n'])
     else
-        fprintf('All models are able to produce biomass on Western diet under anaerobic conditions.\n')
+        fprintf('All models are able to produce biomass on complex medium under anaerobic conditions.\n')
     end
     
     % report refined models that are unable to grow
@@ -204,7 +204,7 @@ if ~isempty(translatedDraftsFolder)
     
     noGrowth=growth{2}(:,3) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium.\n'])
         for i=1:length(noGrowth)
             if noGrowth(i)
                 notGrowing{cnt,1}=modelList{i,1};
@@ -212,12 +212,12 @@ if ~isempty(translatedDraftsFolder)
             end
         end
     else
-        fprintf('All models are able to produce biomass on Western diet.\n')
+        fprintf('All models are able to produce biomass on complex medium.\n')
     end
     
     noGrowth=growth{2}(:,4) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet under anaerobic conditions.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium under anaerobic conditions.\n'])
         for i=1:length(noGrowth)
             if noGrowth(i)
                 notGrowing{cnt,1}=modelList{i,1};
@@ -225,7 +225,7 @@ if ~isempty(translatedDraftsFolder)
             end
         end
     else
-        fprintf('All models are able to produce biomass on Western diet under anaerobic conditions.\n')
+        fprintf('All models are able to produce biomass on complex medium under anaerobic conditions.\n')
     end
     
 else
@@ -253,10 +253,10 @@ else
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         box on
-        h=title(['Growth on Western diet, ' reconVersion]);
+        h=title(['Growth on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
-        print([testResultsFolder filesep 'Growth_rates_Western_diet_' reconVersion],'-dpng','-r300')
+        print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
     end
     
     % report refined models that are unable to grow
@@ -289,7 +289,7 @@ else
     
     noGrowth=growth{1}(:,3) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium.\n'])
         for i=1:length(noGrowth)
             if noGrowth(i)
                 notGrowing{cnt,1}=modelList{i,1};
@@ -297,12 +297,12 @@ else
             end
         end
     else
-        fprintf('All models are able to produce biomass on Western diet.\n')
+        fprintf('All models are able to produce biomass on complex medium.\n')
     end
     
     noGrowth=growth{1}(:,4) < tol;
     if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on Western diet under anaerobic conditions.\n'])
+        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium under anaerobic conditions.\n'])
         for i=1:length(noGrowth)
             if noGrowth(i)
                 notGrowing{cnt,1}=modelList{i,1};
@@ -310,7 +310,7 @@ else
             end
         end
     else
-        fprintf('All models are able to produce biomass on Western diet under anaerobic conditions.\n')
+        fprintf('All models are able to produce biomass on complex medium under anaerobic conditions.\n')
     end
 end
 

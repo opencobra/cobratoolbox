@@ -68,6 +68,16 @@ existingModels(find(strcmp(existingModels(:,1),'..')),:)=[];
 
 % then join all models in modelList
 for i = 1:size(modelList, 1)
+
+    % Load the reconstructions to be joined
+    inputModels={};
+    model=readCbModel([modelFolder filesep modelList{i,1} '.mat']);
+    inputModels{i}=model;
+    for k = i + 1:size(modelList, 1)
+        model=readCbModel([modelFolder filesep modelList{k,1} '.mat']);
+        inputModels{k}=model;
+    end
+
     if numWorkers > 0
         % with parallelization
         poolobj = gcp('nocreate');
@@ -75,16 +85,7 @@ for i = 1:size(modelList, 1)
             parpool(numWorkers)
         end
         pairedModelsTemp = {};
-        
-        % Load the reconstructions to be joined
-        inputModels={};
-        model=readCbModel([modelFolder filesep modelList{i,1} '.mat']);
-        inputModels{i}=model;
-        for k = i + 1:size(modelList, 1)
-            model=readCbModel([modelFolder filesep modelList{k,1} '.mat']);
-            inputModels{k}=model;
-        end
-        
+                
         parfor k = i + 1:size(modelList, 1)
             model1 = inputModels{i};
             model2 = inputModels{k};

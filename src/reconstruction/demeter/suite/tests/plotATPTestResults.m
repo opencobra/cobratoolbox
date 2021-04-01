@@ -22,7 +22,7 @@ function tooHighATP = plotATPTestResults(refinedFolder, reconVersion, varargin)
 %
 % OUTPUT
 % tooHighATP                List of IDs for refined reconstructions that
-%                           produce too much ATP on Western diet
+%                           produce too much ATP on complex medium
 %
 % .. Authors:
 %       - Almut Heinken, 09/2020
@@ -113,10 +113,10 @@ if ~isempty(translatedDraftsFolder)
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
     set(gca, 'FontSize', 12)
     box on
-    h=title(['ATP production on Western diet, ' reconVersion]);
+    h=title(['ATP production on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
-    print([testResultsFolder filesep 'ATP_Western_diet_' reconVersion],'-dpng','-r300')
+    print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
     
     % report draft models that produce too much ATP
     fprintf('Report for draft models:\n')
@@ -166,10 +166,10 @@ else
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         box on
-        h=title(['ATP production on Western diet, ' reconVersion]);
+        h=title(['ATP production on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
-        print([testResultsFolder filesep 'ATP_Western_diet_' reconVersion],'-dpng','-r300')
+        print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
     end
     
     % report refined models that produce too much ATP
