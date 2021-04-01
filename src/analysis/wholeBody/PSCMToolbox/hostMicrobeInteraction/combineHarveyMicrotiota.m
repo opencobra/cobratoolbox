@@ -168,7 +168,7 @@ if ~isempty(Rem)
     modelM2 = removeRxns(modelM2,Rem);
 end
 
-[modelHM] = mergeTwoModels(modelH,modelM2,1,0);
+[modelHM] = mergeTwoModels(modelH,modelM2,1,1,0);
 modelHM.A = modelHM.S;
 % make sure that all new metabolites in luLI compartment can be excreted
 
