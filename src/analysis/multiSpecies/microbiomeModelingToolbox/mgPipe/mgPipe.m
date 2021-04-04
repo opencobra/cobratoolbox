@@ -28,7 +28,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux:     double with the desired flux through the host
 %                            biomass reaction (default: zero)
-%    objre:                  char with reaction name of objective function of microbeNames
+%    objre:                  char with reaction name of objective function
 %    buildSetupAll:       	 boolean indicating the strategy that should be used to
 %                            build personalized models: if true, build a global setup model
 %                            containing all organisms in at least model (default), false: create
@@ -65,11 +65,6 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %   - Almut Heinken, 01/21: added option for creation of each personalized model separately
 
 %% PIPELINE: [PART 1]
-% The number of microbeNames, their names, the number of samples and their identifiers
-% are automatically detected from the input file.
-
-[sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
-%%
 % If PART1 was already
 % computed: if the associated file is already present in the results folder its
 % execution is skipped else its execution starts
@@ -93,19 +88,33 @@ if isempty(mapP)
         end
     end
     
+    abundance = table2cell(readtable(abunFilePath));
+    
+    % The number of microbeNames, their names, the number of samples and their identifiers
+    % are automatically detected from the input file.
+    [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
+    
+    % remove rows of organisms that are not present in any sample
+    microbeNames(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    
+    % Extracellular spaces simulating the lumen are built and stored for
+    % each microbe.
+    [exch,modelStoragePath]=buildModelStorage(microbeNames,modPath);
+    
     % Computing reaction abundance
-    ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
-    writetable(cell2table(ReactionAbundance.('Total')'),[resPath filesep 'reactions.csv'], 'WriteVariableNames', false);
+    %     ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
+    %     writetable(cell2table(ReactionAbundance.('Total')'),[resPath filesep 'reactions.csv'], 'WriteVariableNames', false);
     % Computing genetic information
-%     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
-%     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
-%     
-%     %Create tables and save all the created variables
-%     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
-%     reacSet=cell2table(reacSet,'VariableNames',sampNames');
-%     reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
+    %     [reac,exMets,micRea,binOrg,patOrg,reacPat,reacNumb,reacSet,reacTab,reacAbun,reacNumber]=getMappingInfo(modPath,microbeNames,abunFilePath);
+    %     writetable(cell2table(reacAbun,'VariableNames',['Reactions';sampNames]'),strcat(resPath,'reactions.csv'));
+    %
+    %     %Create tables and save all the created variables
+    %     reacTab=[array2table(reac),array2table(reacTab,'VariableNames',sampNames')],[resPath 'compfile' filesep 'ReacTab.csv'];
+    %     reacSet=cell2table(reacSet,'VariableNames',sampNames');
+    %     reacPat=[array2table(microbeNames),array2table(reacPat,'VariableNames',sampNames')];
 end
-save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'sampNames', 'microbeNames')
+save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'exch', 'sampNames', 'microbeNames', 'modelStoragePath','abundance','-v7.3')
 
 % Plotting genetic information
 % [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
@@ -162,16 +171,19 @@ end
 % are also added. Models that are already existent will not be recreated, and
 % new microbiota models will be saved in the results folder.
 
-abundance = table2cell(readtable(abunFilePath));
-
-% remove rows of organisms that are not present in any sample
-abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
 
 % if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
 if buildSetupAll
     if modbuild == 1
-        setup=fastSetupCreator(modPath, microbeNames, host, objre, numWorkers);
+        setup=fastSetupCreator(exch, modelStoragePath, microbeNames, host, objre, numWorkers);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
         setup.recon=0;
         if ~isempty(host)
@@ -196,28 +208,31 @@ else
     % define what counts as zero abundance
     tol=0.0000001;
     
-    for i=1:length(sampNames)
-        % Here, we will not be starting from one joined model containing all
-        % reconstructions. Instead, each personalized model will be created separately.)
-        % get the list of models for each sample and remove the ones not in
-        % this sample
-        
-        % retrieving current model ID
-        if ~isempty(host)
-            mId = ['host_microbiota_model_samp_', sampNames{i,1}, '.mat'];
+    clear('microbeNames','exMets','abundance')
+    
+    steps=50;
+    % proceed in batches for improved effiency
+    for j=1:steps:length(sampNames)
+        if length(sampNames)-j>=steps-1
+            endPnt=steps-1;
         else
-            mId = ['microbiota_model_samp_', sampNames{i,1}, '.mat'];
+            endPnt=length(sampNames)-j;
         end
         
-        % if the model doesn't exist yet
-        mapP = detectOutput(resPath, mId);
-        if isempty(mapP)
-            microbeNamesSample = microbeNames;
-            abunRed=abundance(:,i+1);
-            abunRed=[abundance(:,1),abunRed];
+        parfor i=j:j+endPnt
+            % Here, we will not be starting from one joined model containing all
+            % reconstructions. Instead, each personalized model will be created separately.)
+            % get the list of models for each sample and remove the ones not in
+            % this sample
+            mappingData=load([resPath filesep 'mapInfo.mat'])
+            microbeNamesSample = mappingData.microbeNames;
+            abunRed=mappingData.abundance(:,i+1);
+            abunRed=[mappingData.abundance(:,1),abunRed];
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-            setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre, numWorkers);
+            setupModel = fastSetupCreator(exch, modelStoragePath, microbeNamesSample, host, objre);
+            
+            % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
         end
     end
@@ -230,6 +245,7 @@ end
 % analysis for all the exchange reactions of the diet and fecal compartment is
 % also computed and saved in a file called "simRes".
 
+load([resPath filesep 'mapInfo.mat'])
 [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 % Finally, NMPCs (net maximal production capability) are computed in a metabolite
 % resolved manner and saved in a comma delimited file in the results folder. NMPCs

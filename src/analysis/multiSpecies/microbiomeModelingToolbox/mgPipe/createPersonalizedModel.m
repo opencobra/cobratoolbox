@@ -28,7 +28,7 @@ function [createdModels] = createPersonalizedModel(abundance, resPath, model, sa
 createdModels = {};
 
 % use the setup model containing every strain in every sample
-parfor k = 1:length(sampNames)
+for k = 1:length(sampNames)
     mgmodel = model;
     abunRed = abundance(:,k+1);
     
@@ -64,7 +64,7 @@ parfor k = 1:length(sampNames)
         % Coupling constraints for bacteria
         for i = 1:length(presBac)
             IndRxns=find(strncmp(mgmodel.rxns,[presBac{i,1} '_'],length(presBac{i,1})+1));%finding indixes of specific reactions
-            % find the name of biomass reacion in the microbe model
+            % find the name of biomass reaction in the microbe model
             bioRxn=mgmodel.rxns{find(strncmp(mgmodel.rxns,strcat(presBac{i,1},'_bio'),length(char(strcat(presBac{i,1},'_bio')))))};
             mgmodel=coupleRxnList2Rxn(mgmodel,mgmodel.rxns(IndRxns(1:length(mgmodel.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0); %couple the specific reactions
         end
