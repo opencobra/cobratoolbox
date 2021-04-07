@@ -120,6 +120,7 @@ end
 mets = model.mets;
 fmets = regexprep(mets, '(\[\w\])', '');
 rxns = rxnsToAM;
+rxnsInModel = model.rxns;
 clear model
 
 % Get list of MOL files
@@ -143,27 +144,32 @@ fprintf('\n\nGenerating RXN files.\n');
 % the stoichiometry
 rxnFilesWrittenBool = false(length(rxns), 1);
 for i = 1:length(rxns)
-    a = ismember(fmets(find(S(:, i))), aMets);
-    s = S(find(S(:, i)), i);
-    if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s) - s) < (1e-2))
-        writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [rxnDir...
+    rxnBool = ismember(rxnsInModel, rxns{i});
+    metsInRxns = ismember(fmets(find(S(:, rxnBool))), aMets);
+    stoichiometry = S(find(S(:, rxnBool)), rxnBool);
+    if ~any(~metsInRxns) && length(metsInRxns) > 1 && all(abs(round(stoichiometry) - stoichiometry) < (1e-2))
+        writeRxnfile(S(:, rxnBool), mets, fmets, molFileDir, rxns{i}, [rxnDir...
             filesep 'unMapped' filesep])
         rxnFilesWrittenBool(i) = true;
     end
 end
 atomMappingReport.rxnFilesWritten = rxns(rxnFilesWrittenBool);
 
-fnames = dir([rxnDir filesep 'unMapped' filesep '*.rxn']);
-% Start from the lighter RXN to the heavier
-[~, bytes] = sort([fnames.bytes]);
-mappedBool = false(length(fnames), 1);
+% Get list of new RXN files
+d = dir([rxnDir filesep 'unMapped' filesep]);
+d = d(~[d.isdir]);
+aRxns = regexprep({d.name}', '.rxn', '');
+assert(~isempty(aRxns), 'No rxn file was written.');
+rxnsToAM = rxnsToAM(ismember(rxnsToAM, aRxns));
+
+mappedBool = false(length(rxnsToAM), 1);
 
 % Atom map RXN files
 if javaInstalled == 1 && ~onlyUnmapped
-    fprintf('Computing atom mappings for %d reactions.\n\n', length(fnames));
-    for i = 1:length(fnames)
+    fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
+    for i = 1:length(rxnsToAM)
         
-        name = [rxnDir 'unMapped' filesep fnames(bytes(i)).name];
+        name = [rxnDir 'unMapped' filesep rxnsToAM{i} '.rxn'];
         command = ['timeout ' num2str(maxTime) 's java -jar ' rxnDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
         
         if ismac
@@ -190,28 +196,18 @@ if javaInstalled == 1 && ~onlyUnmapped
         
     end
     
-    mappedRxns = split(strtrim(regexprep([fnames(bytes(mappedBool)).name], '.rxn', ' ')));
+    mappedRxns = rxnsToAM(mappedBool);
     atomMappingReport.mappedRxns = mappedRxns;
     
-    delete([rxnDir filesep 'rdtAlgorithm.jar'])
+    delete([rxnDir 'rdtAlgorithm.jar'])
     
-    % Standarize atom mapped RXN file
-    
-    % Get list of RXN files to check
-    d = dir([rxnDir filesep 'atomMapped']);
-    d = d(~[d.isdir]);
-    rxnList = {d.name}';
-    rxnList = rxnList(~cellfun('isempty', regexp(rxnList,'(\.rxn)$')));
-    rxnList = regexprep(rxnList, '.rxn', '');
-    rxnList(~ismember(rxnList, rxnsToAM)) = [];
-    
-    for i = 1:length(rxnList)
+    for i = 1:length(mappedRxns)
         
-        name = [rxnList{i} '.rxn'];
+        name = [mappedRxns{i} '.rxn'];
         
         % Add header
-        mappedFile = regexp(fileread([rxnDir filesep 'atomMapped' filesep name]), '\n', 'split')';
-        standardFile = regexp(fileread([rxnDir filesep 'unMapped' filesep name]), '\n', 'split')';
+        mappedFile = regexp(fileread([rxnDir 'atomMapped' filesep name]), '\n', 'split')';
+        standardFile = regexp(fileread([rxnDir 'unMapped' filesep name]), '\n', 'split')';
         mappedFile{2} = standardFile{2};
         mappedFile{3} = ['COBRA Toolbox v3.0 - Atom mapped - ' datestr(datetime)];
         mappedFile{4} = standardFile{4};
@@ -260,7 +256,7 @@ if javaInstalled == 1 && ~onlyUnmapped
             mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, rxnDir);
         end
         % Rewrite the file
-        fid2 = fopen([rxnDir filesep 'atomMapped' filesep name], 'w');
+        fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
         fprintf(fid2, '%s\n', mappedFile{:});
         fclose(fid2);
     end
