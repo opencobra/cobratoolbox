@@ -107,8 +107,8 @@ if isempty(mapP)
     writetable(cell2table(ReactionPresence),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
 
     % Computing reaction abundance
-    ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
-    writetable(cell2table(ReactionAbundance.('Total')'),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
+    ReactionAbundance = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
+    writetable(cell2table(ReactionAbundance'),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
     
     % Computing subsystem abundance
     subsystemAbundance = calculateSubsystemAbundance([resPath filesep 'ReactionAbundance.csv']);
