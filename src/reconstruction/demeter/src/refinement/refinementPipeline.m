@@ -293,6 +293,7 @@ if growsOnDefinedMedium==1
 else
     modelTest = useDiet(model,constraints);
 end
+
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelTest);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
@@ -300,17 +301,22 @@ if FBA.f > tol
     summary.('deletedDuplicateRxns') = model.rxns(removedRxnInd);
     model=modelRD;
 else
+    modelTest=model;
+    toRM={};
     for j=1:length(removedRxnInd)
-        modelTest=removeRxns(model,model.rxns(removedRxnInd(j)));
-        modelTest = useDiet(modelTest,constraints);
-        FBA=optimizeCbModel(modelTest,'max');
+        modelRD=removeRxns(modelTest,model.rxns(removedRxnInd(j)));
+        modelRD = useDiet(modelRD,constraints);
+        FBA=optimizeCbModel(modelRD,'max');
         if FBA.f > tol
-            model =  removeRxns(model,model.rxns{removedRxnInd(j)});
-            summary.('deletedDuplicateRxns') = union(summary.('deletedDuplicateRxns'),model.rxns{removedRxnInd(j)});
+            modelTest=removeRxns(modelTest, model.rxns{removedRxnInd(j)});
+            toRM{j}=model.rxns{removedRxnInd(j)};
         else
-            summary.('deletedDuplicateRxns') = union(summary.('deletedDuplicateRxns'),model.rxns{keptRxnInd(j)});
+            modelTest=removeRxns(modelTest, model.rxns{keptRxnInd(j)});
+            toRM{j}=model.rxns{keptRxnInd(j)};
         end
     end
+    summary.('deletedDuplicateRxns') =union(summary.('deletedDuplicateRxns'),toRM);
+    model=removeRxns(model,toRM);
 end
 
 %% Delete sink for petidoglycan if not needed
