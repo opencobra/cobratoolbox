@@ -54,6 +54,4 @@ for i=1:length(subs)
     end
 end
 
-writetable(cell2table(subsystemAbundance),'SubsystemAbundance.txt','FileType','text','WriteVariableNames',false,'Delimiter','\t');
-
 end

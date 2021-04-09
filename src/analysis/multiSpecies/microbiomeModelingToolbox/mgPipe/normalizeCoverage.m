@@ -31,6 +31,17 @@ end
 
 coverage = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
 coverage{1,1}='ID';
+
+% delete samples that are all zeros (if applies)
+totalAbun=sum(str2double(coverage(2:end,2:end)),1);
+allzero=find(totalAbun<0.0000001);
+if ~isempty(allzero)
+    for i=1:length(allzero)
+        allzero(i)=allzero(i)+1;
+    end
+    coverage(:,allzero)=[];
+end
+
 abundanceNew = coverage;
 
 for i=2:size(coverage,2)
