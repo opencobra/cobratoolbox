@@ -58,10 +58,11 @@ end
 % Check if chemAxon and OpenBabel are installed
 [oBabelInstalled, ~] = system('obabel');
 [marvinInstalled, ~] = system('cxcalc');
-if marvinInstalled == 0
-    marvinInstalled = ~marvinInstalled;
+if marvinInstalled ~= 0
+    marvinInstalled = false;
 end
-if oBabelInstalled == 0
+if oBabelInstalled ~= 1
+    oBabelInstalled = false;
     standardisationApproach = 'basic';
 end
 

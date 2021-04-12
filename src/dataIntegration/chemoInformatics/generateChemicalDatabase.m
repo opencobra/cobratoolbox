@@ -118,22 +118,24 @@ else
 end
 
 % Check if ChemAxon and openBabel are installed
-[marvinInstalled, ~] = system('cxcalc');
-marvinInstalled = ~marvinInstalled;
-if marvinInstalled == 0
+[cxcalcInstalled, ~] = system('cxcalc');
+cxcalcInstalled = ~cxcalcInstalled;
+if cxcalcInstalled == 0
+    cxcalcInstalled = false;
     display('cxcalc is not installed, two features cannot be used: ')
     display('1 - jpeg files for molecular structures (obabel required)')
     display('2 - pH adjustment according to model.met Formulas')
 end
 [oBabelInstalled, ~] = system('obabel');
-if ~oBabelInstalled
+if oBabelInstalled ~= 1
+    oBabelInstalled = false;
     options.standardisationApproach = 'basic';
     display('obabel is not installed, two features cannot be used: ')
     display('1 - Generation of SMILES, InChI and InChIkey')
     display('2 - MOL file standardisation')
 end
 [javaInstalled, ~] = system('java');
-if ~javaInstalled  && ~options.onlyUnmapped
+if javaInstalled ~= 1 && ~options.onlyUnmapped
     display('java is not installed, atom mappings cannot be computed')
     options.onlyUnmapped = true;
 end
@@ -535,7 +537,7 @@ end
 if ~options.keepMolComparison
     rmdir(comparisonDir, 's')
 end
-if ~options.adjustToModelpH || ~marvinInstalled
+if ~options.adjustToModelpH || ~cxcalcInstalled
     model.comparison = info.comparisonTable;
 end
 if options.debug
@@ -544,7 +546,7 @@ end
 
 %% 4. Adjust pH based on the model's chemical formula
 
-if options.adjustToModelpH && marvinInstalled
+if options.adjustToModelpH && cxcalcInstalled
     
     info.adjustedpHTable = info.comparisonTable;
     
@@ -714,6 +716,7 @@ switch options.standardisationApproach
         hMapping = false;
     case 'neutral'
     case 'basic'
+        hMapping = true;
 end
 
 % Atom map metabolic reactions
@@ -911,7 +914,9 @@ if ~options.onlyUnmapped
         display(info.bondsData.bondsDataTable)
     else
         [bondsBF, bondsE, meanBBF, meanBE] = findBEandBBF(model, [rxnDir filesep 'atomMapped']);
-        info.bondsData = table(model.rxns, model.rxnNames, bondsBF, bondsE);
+        info.bondsData.table = table(model.rxns, model.rxnNames, bondsBF, bondsE, ...
+            'VariableNames', {'rxns','rxnNames','bondsBF','bondsE'});
+        info.bondsData.table = sortrows(info.bondsData.table, {'bondsBF'}, {'descend'});
         info.bondsData.meanBBF = meanBBF;
         info.bondsData.meanBE = meanBE;
     end
