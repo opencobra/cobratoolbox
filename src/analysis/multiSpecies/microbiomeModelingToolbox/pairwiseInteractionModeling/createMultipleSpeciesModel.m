@@ -162,7 +162,7 @@ unionRxns=unique(unionRxns);
 for i = 1:modelNumber
     model=models{i, 1};
     biomassReaction=model.rxns(find(strncmp(model.rxns, 'bio', 3)));
-    model = removeBalancedCycles(model, biomassReaction, database,unionRxns);
+    model = removeFutileCycles(model, biomassReaction, database,unionRxns);
     models{i, 1} = model;
 end
 %% define some variables

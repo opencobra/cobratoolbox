@@ -185,7 +185,7 @@ if (length(Y(1,:))>2)
 %         hold on
 %     end
 
-    print(strcat(resPath, 'PCoA reactions'), figForm)
+    print(strcat(resPath, 'PCoA_reactions'), figForm)
 else
     disp('noPcoA will be plotted')
 end
