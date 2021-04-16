@@ -195,7 +195,7 @@ end
 
 % remove futile cycles if any exist
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
-if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
+if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
     % let us try if running removeFutileCycles again will work
     [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
     replacedReactions{1,1}=microbeID;
@@ -205,7 +205,7 @@ if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
     
     % if any futile cycles remain
     [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
-    if atpFluxAerobic > 150 || atpFluxAnaerobic > 100
+    if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
         % let us try if running removeFutileCycles again will work
         [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
         replacedReactions{1,1}=microbeID;

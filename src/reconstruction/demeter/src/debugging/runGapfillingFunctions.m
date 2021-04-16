@@ -77,7 +77,7 @@ end
 
 % if the changes make no difference, reverse the changes
 FBA = optimizeCbModel(model,osenseStr);
-if abs(FBA.f) < tol
+if abs(FBA.f) < tol || FBA.stat==0
     model=modelOld;
     condGF = {};
     targetGF = {};

@@ -44,7 +44,7 @@ if FBA.f < tol
         'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'}
         'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'}
         'AHMMPS', {'AMPMS2'}
-        'UNKENZ',{'ACCOAC'}
+        'UNKENZ',{'ACCOAC','H2CO3D'}
         };
     
     % add anaerobic reactions to model (if contains O2-using reaction)
@@ -86,6 +86,7 @@ if FBA.f < tol
             'r0389', {'EX_pydx(e)', 'PYDXabc'}  % could be replaced by reaction 1.1.1.65 but only found in few bacteria
             'ASPT', {'EX_asp_L(e)', 'ASPt2r'}  % need aspartate to produce fumarate
             'QUILSYN', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
+            'CYTBD', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
             'PYAM5POr', {'EX_pydx(e)', 'PYDXabc'}  % some can only produce PYDX5P aerobically
             'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'}  % some can only produce PYDX5P aerobically
             };

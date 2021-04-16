@@ -20,7 +20,8 @@ function producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatu
 %   - AUTHOR
 %   Almut Heinken, 06/2020
 
-distance='jaccard';
+% euclidean should work for most
+distance='euclidean';
 alg='barneshut';
 
 currentDir=pwd;
@@ -143,7 +144,9 @@ for k=1:size(analyzedFiles,1)
             if size(data,1)>10
                 
                 % adjust perplicity to number of variables
-                if size(data,1) > 50
+                if size(data,1) > 150
+                    perpl=50;
+                elseif size(data,1) >= 50
                     perpl=30;
                 elseif size(data,1) >= 20
                     perpl=10;

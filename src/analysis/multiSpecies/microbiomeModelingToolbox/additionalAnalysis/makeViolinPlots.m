@@ -87,6 +87,9 @@ for i=2:size(sampleData,1)
         else
             set(gca, 'FontSize', 14)
         end
+        if length(strats) > 6
+            xtickangle(45)
+        end
         box on
         ylim([0 max(max(str2double(sampleData(i,2:end))))])
         if ~isempty(unit)

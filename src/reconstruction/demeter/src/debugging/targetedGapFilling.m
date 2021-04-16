@@ -115,6 +115,8 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
 % Needed if more than one compound is missing
 [missingMets, presentMets] = biomassPrecursorCheck(model);
 
+modelPrevious=model;
+
 for i=2:size(gapfillSolutions,1)
     if ~isempty(find(ismember(missingMets,gapfillSolutions{i,1}))) || ~isempty(intersect(model.rxns,gapfillSolutions{i,2}))
         rxns=gapfillSolutions{i,3};
@@ -134,6 +136,8 @@ growthEnablingMets = {};
 
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol || FBA.stat==0
+    
+    model=modelPrevious;
     
     % try adding sink reactions
     sinks=gapfillSolutions(2:end,1);

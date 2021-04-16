@@ -463,7 +463,17 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OAASr AND ICDHx AND ACONTa AND ACONTb AND ALCD2x AND FDH AND PTAr AND ACKr',[],'ICDHx','ICDHxi'
     'METt2r AND METt3r',[],'METt2r','METt2'
     'NTP9 AND NDPK4',[],'NTP9','NTP9i'
+    'HEX4 AND HMR_7271 AND MAN1PT2 AND MAN6PI AND PGM AND PMANM',[],'PMANM','PMANMi'
+    'PGMT AND GALU AND GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND NDPK2 AND PPA AND r1393',[],'NDPK2','NDPK2i'
+    'D_GLUMANt AND MANt2r AND GLU_Dt2r',[],'GLU_Dt2r','GLU_Dt2'
+    'NACUP AND NACSMCTte AND NAt3_1',[],'NAt3_1','NAt3'
+    'GALU AND DCLMPDOH AND GDPGALP AND GDPMANNE AND GALT',[],'GALT','GALTi'
+    'HYD2 AND HYD4 AND NTRIR4 AND FDOXR',[],'FDOXR','FDOXRi'
+    'RE3245C AND FACOAL181',[],'FACOAL181','FACOAL181i'
+    'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
+    'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
     };
+
 
 % growth-restoring gapfills: needed if the futile cycle was the model's
 % only way to produce ATP and growth rate without it is zero. Enables ATP
