@@ -66,7 +66,17 @@ function [tissueModel, cRes] = pruningModel(model, rankNonCore, coreRxn, zeroExp
                 model_rem = removeRxns(tissueModel, r);
             end
             % Check for inactive reactions after removal of r
-            [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(model_rem,paramConsistency);
+            try
+                [fluxConsistentMetBool,fluxConsistentRxnBool] = findFluxConsistentSubset(model_rem,paramConsistency);
+                rStatus_and_not_error = true;
+            catch
+                rStatus_and_not_error = false;
+            end
+        else
+            rStatus_and_not_error = false;
+        end
+        
+        if rStatus_and_not_error
             inactive_G= [ r; model_rem.rxns(fluxConsistentRxnBool==0)];
             
             inactiveCore = intersect(inactive_G, coreRxn);

@@ -118,20 +118,20 @@ growthRates={};
 solutionsTmp={};
 
 if isfile([pairwiseModelFolder filesep 'pairedModelInfo.mat'])
-load([pairwiseModelFolder filesep 'pairedModelInfo.mat'])
+load([pairwiseModelFolder filesep 'pairedModelInfo.mat'],'pairedModelInfo')
 else
     error('Pairwise models have not been created. Please run joinModelsPairwiseFromList first.')
 end
 
-parfor i = 1:size(pairedModelInfo, 1)
+info=pairedModelInfo;
+parfor i = 1:size(info, 1)
     restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
     changeCobraSolverParams('LP', 'logFile', 0);
     
     % load the model
-    fileToLoad=load([pairwiseModelFolder filesep pairedModelInfo{i,1}]);
-    toLoad=fieldnames(fileToLoad);
-    pairedModel=fileToLoad.(toLoad{1});
+    filename=[pairwiseModelFolder filesep info{i,1}];
+    pairedModel=readCbModel(filename);
     pairedModelOrg=pairedModel;
     % if a diet was input
     if ~isempty(inputDiet)
@@ -139,8 +139,8 @@ parfor i = 1:size(pairedModelInfo, 1)
     end
     % for each paired model, set both biomass objective functions as
     % objectives
-    biomass1 = strcat(pairedModelInfo{i, 2}, '_', pairedModelInfo{i, 3});
-    biomass2 = strcat(pairedModelInfo{i, 4}, '_', pairedModelInfo{i, 5});
+    biomass1 = strcat(info{i, 2}, '_', info{i, 3});
+    biomass2 = strcat(info{i, 4}, '_', info{i, 5});
     model1biomass = find(ismember(pairedModel.rxns, biomass1));
     pairedModel.c(model1biomass, 1) = 1;
     model2biomass = find(ismember(pairedModel.rxns, biomass2));
@@ -160,7 +160,7 @@ parfor i = 1:size(pairedModelInfo, 1)
     end
     pairedModel = changeObjective(pairedModel, biomass1);
     % disable flux through the second model
-    pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 4}, '_'), pairedModel.rxns)), 0, 'b');
+    pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(info{i, 4}, '_'), pairedModel.rxns)), 0, 'b');
     % calculate single biomass
     solutionSingle1 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
     % silence model 1 and optimize model 2
@@ -172,7 +172,7 @@ parfor i = 1:size(pairedModelInfo, 1)
     end
     pairedModel = changeObjective(pairedModel, biomass2);
     % disable flux through the first model
-    pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(pairedModelInfo{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
+    pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(info{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
     % calculate single biomass
     solutionSingle2 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
     
