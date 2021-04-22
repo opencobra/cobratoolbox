@@ -17,7 +17,7 @@ function subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)
 % AUTHOR
 %       - Almut Heinken, 08/2020
 
-reactionDatabase = readtable('reactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
 reactionDatabase=table2cell(reactionDatabase);
 
 reactionAbundance = readtable(reactionAbundancePath, 'ReadVariableNames', false);
@@ -53,7 +53,5 @@ for i=1:length(subs)
         subsystemAbundance{i+1,k}=abunTmp(k)/length(rxns);
     end
 end
-
-writetable(cell2table(subsystemAbundance),'SubsystemAbundance.txt','FileType','text','WriteVariableNames',false,'Delimiter','\t');
 
 end

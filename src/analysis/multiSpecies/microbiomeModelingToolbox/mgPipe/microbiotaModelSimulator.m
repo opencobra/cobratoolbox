@@ -50,6 +50,13 @@ function [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaMod
 % .. Author: Federico Baldini, 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
 
+% set a solver if not done yet
+global CBT_LP_SOLVER
+solver = CBT_LP_SOLVER;
+if isempty(solver)
+    initCobraToolbox(false); %Don't update the toolbox automatically
+end
+
 for i=1:length(exMets)
     exchanges{i,1} = ['EX_' exMets{i}];
 end
@@ -219,12 +226,6 @@ else
                 end
             end
             
-            % set a solver if not done yet
-            global CBT_LP_SOLVER
-            solver = CBT_LP_SOLVER;
-            if isempty(solver)
-                initCobraToolbox(false); %Don't update the toolbox automatically
-            end
             solution_allOpen = solveCobraLP(buildLPproblemFromModel(model));
             % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
             if solution_allOpen.stat==0
