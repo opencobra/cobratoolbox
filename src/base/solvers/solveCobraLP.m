@@ -8,14 +8,14 @@ function solution = solveCobraLP(LPproblem, varargin)
 % INPUT:
 %    LPproblem:     Structure containing the following fields describing the LP problem to be solved
 %
-%                     * .A - LHS matrix
-%                     * .b - RHS vector
-%                     * .c - Objective coeff vector
-%                     * .lb - Lower bound vector
-%                     * .ub - Upper bound vector
-%                     * .osense - Objective sense (-1 means maximise (default), 1 means minimise)
-%                     * .csense - Constraint senses, a string containting the constraint sense for
-%                       each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                     * .A - m x n linear constraint matrix
+%                     * .b - m x 1 right hand sider vector for constraint A*x = b
+%                     * .c - n x 1 linear objective coefficient vector
+%                     * .lb - n x 1 lower bound vector for lb <= x
+%                     * .ub - n x 1 upper bound vector for       x <= ub
+%                     * .osense - scalar objective sense (-1 means maximise (default), 1 means minimise)
+%                     * .csense - m x 1 character array of constraint senses, one for each row in A
+%                                 must be either ('E', equality, 'G' greater than, 'L' less than).
 %
 % OPTIONAL INPUTS:
 %    varargin:      Additional parameters either as parameter struct, or as
@@ -153,7 +153,12 @@ if ~isfield(LPproblem, 'A') && isfield(LPproblem, 'S')
 end
 
 % assume constraint A*v = b if csense not provided
-if ~isfield(LPproblem, 'csense')
+if isfield(LPproblem, 'csense')
+    bool = LPproblem.csense == 'E' | LPproblem.csense == 'G' | LPproblem.csense == 'L';
+    if any(~bool)
+        error('Incorrect formulation of LPproblem.csense \n%s','LPproblem.csense must be an m x 1 character array containing the constraint sense {''E'',''L'',''G''} corresponding to each row of LPproblem.A')
+    end
+else
     % if csense is not declared in the model, assume that all
     % constraints are equalities.
     LPproblem.csense(1:size(LPproblem.A,1), 1) = 'E';
