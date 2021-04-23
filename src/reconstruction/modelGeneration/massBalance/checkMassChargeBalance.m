@@ -83,8 +83,13 @@ end
 if ~exist('fileName','var')
     fileName='';
 end
+if ~isfield(model,'rxns')
+    for i=1:nRxn
+        model.rxns{i,1}=['rxn' int2str(i)];
+    end
+end
 % List of elements
-elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','R','Ca','Y','I','Na','Cl','K','R','FULLR'};
+elements = {'H','C', 'O', 'P', 'S', 'N', 'Mg','X','Fe','Zn','Co','Ca','Y','I','Na','Cl','K','R','FULLR'};
 
 E=sparse(nMet, length(elements));
 massImbalance=zeros(nRxn, length(elements));

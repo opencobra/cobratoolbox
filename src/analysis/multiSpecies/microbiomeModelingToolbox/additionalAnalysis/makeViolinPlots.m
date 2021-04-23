@@ -83,9 +83,9 @@ for i=2:size(sampleData,1)
         hold on
         violinplot(plotdata,sampleStratification);
         if length(strats) > 3
-            set(gca, 'FontSize', 12)
-        else
             set(gca, 'FontSize', 14)
+        else
+            set(gca, 'FontSize', 18)
         end
         if length(strats) > 6
             xtickangle(45)
@@ -96,7 +96,7 @@ for i=2:size(sampleData,1)
             h=ylabel(unit);
             set(h,'interpreter','none')
         end
-        h=title(varname,'FontSize',16);
+        h=title(varname,'FontSize',24);
         set(h,'interpreter','none')
         if ~isempty(plottedFeature)
             h=suptitle(plottedFeature);

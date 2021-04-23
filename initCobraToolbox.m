@@ -630,6 +630,15 @@ end
 % set up the COBRA System path
 addCOBRABinaryPathToSystemPath();
 
+%remove /new thermo folders from path
+%TODO resolve issues with new file versions
+aPath = which('initVonBertalanffy');
+basePath = strrep(aPath,'vonBertalanffy/initVonBertalanffy.m','');
+addpath(genpath(basePath))
+folderPattern=[filesep 'new'];
+method = 'remove';
+editCobraToolboxPath(basePath,folderPattern,method)
+
 % change back to the current directory
 cd(currentDir);
 

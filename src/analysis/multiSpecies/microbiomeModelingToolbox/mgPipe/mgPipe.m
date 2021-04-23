@@ -127,10 +127,22 @@ if isempty(mapP)
         xticklabels(xlabels);
         xtickangle(90)
     end
-    if length(ylabels)<50
+    
+    if length(xlabels)<30
+        set(gca,'xtick',1:length(xlabels));
+        xticklabels(xlabels);
+        xtickangle(90)
+    end
     set(gca,'ytick',1:length(ylabels));
     yticklabels(ylabels);
+    ax=gca;
+    
+    if length(ylabels)<50
+        ax.YAxis.FontSize = 8;
+    else
+        ax.YAxis.FontSize = 6;
     end
+    
     set(gca,'TickLabelInterpreter', 'none');
     title('Relative reaction abundances summarized by subsystem')
     print(strcat(resPath, 'Subsystem_abundances'), figForm)
@@ -281,6 +293,7 @@ else
     netUptakeFluxes={};
     Y=[];
     delete('simRes.mat','intRes.mat')
+    rmdir([resPath filesep 'modelStorage'],'s')
 end
 
 % get stats on microbiome models-number of reactions and metabolites
