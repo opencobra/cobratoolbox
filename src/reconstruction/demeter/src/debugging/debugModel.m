@@ -54,6 +54,13 @@ reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAs
 reactionDatabase=table2cell(reactionDatabase);
 database.reactions=reactionDatabase;
 
+% create a temporary summary file of the performed refinement
+summary=struct;
+summary.condGF={};
+summary.targetGF={};
+summary.relaxGF={};
+
+% rebuild model
 model=rebuildModel(model,database);
 
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
@@ -63,6 +70,8 @@ if AnaerobicGrowth(1,1) < tol
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)
+        summary.condGF=union(summary.condGF,condGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
         gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
@@ -70,6 +79,8 @@ if AnaerobicGrowth(1,1) < tol
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
+        summary.targetGF=union(summary.targetGF,targetGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
         gapfilledReactions{cntGF,3}='Targeted gapfilling';
@@ -77,6 +88,8 @@ if AnaerobicGrowth(1,1) < tol
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
+        summary.relaxGF=union(summary.relaxGF,relaxGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
         gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
@@ -92,6 +105,8 @@ if AerobicGrowth(1,2) < tol
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)
+        summary.condGF=union(summary.condGF,condGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on complex medium';
         gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
@@ -99,6 +114,8 @@ if AerobicGrowth(1,2) < tol
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
+        summary.targetGF=union(summary.targetGF,targetGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on complex medium';
         gapfilledReactions{cntGF,3}='Targeted gapfilling';
@@ -106,9 +123,10 @@ if AerobicGrowth(1,2) < tol
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
+        summary.relaxGF=union(summary.relaxGF,relaxGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on complex medium';
-        
         gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
         gapfilledReactions(cntGF,4:length(relaxGF)+3)=relaxGF;
         cntGF=cntGF+1;
@@ -122,6 +140,8 @@ if growsOnDefinedMedium == 0
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(constrainedModel,biomassReaction,biomassReaction,'max',database,1);
     % export the gapfilled reactions
     if ~isempty(condGF)
+        summary.condGF=union(summary.condGF,condGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on defined medium';
         gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
@@ -129,6 +149,8 @@ if growsOnDefinedMedium == 0
         cntGF=cntGF+1;
     end
     if ~isempty(targetGF)
+        summary.targetGF=union(summary.targetGF,targetGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on defined medium';
         gapfilledReactions{cntGF,3}='Targeted gapfilling';
@@ -136,6 +158,8 @@ if growsOnDefinedMedium == 0
         cntGF=cntGF+1;
     end
     if ~isempty(relaxGF)
+        summary.relaxGF=union(summary.relaxGF,relaxGF);
+        
         gapfilledReactions{cntGF,1}=microbeID;
         gapfilledReactions{cntGF,2}='Growth on defined medium';
         gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
@@ -168,6 +192,8 @@ for i=1:length(fields)
                 [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
                 % export the gapfilled reactions
                 if ~isempty(condGF)
+                    summary.condGF=union(summary.condGF,condGF);
+                    
                     gapfilledReactions{cntGF,1}=microbeID;
                     gapfilledReactions{cntGF,2}=FNs{j};
                     gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
@@ -175,6 +201,8 @@ for i=1:length(fields)
                     cntGF=cntGF+1;
                 end
                 if ~isempty(targetGF)
+                    summary.targetGF=union(summary.targetGF,targetGF);
+                    
                     gapfilledReactions{cntGF,1}=microbeID;
                     gapfilledReactions{cntGF,2}=FNs{j};
                     gapfilledReactions{cntGF,3}='Targeted gapfilling';
@@ -182,6 +210,8 @@ for i=1:length(fields)
                     cntGF=cntGF+1;
                 end
                 if ~isempty(relaxGF)
+                    summary.relaxGF=union(summary.relaxGF,relaxGF);
+                    
                     gapfilledReactions{cntGF,1}=microbeID;
                     gapfilledReactions{cntGF,2}=FNs{j};
                     gapfilledReactions{cntGF,3}='Gapfilling based on relaxFBA';
@@ -212,6 +242,20 @@ if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
         replacedReactions{1,2}='Futile cycle correction';
         replacedReactions{1,3}='To replace';
         replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
+    end
+end
+
+% add the gap-filling to model.comments field
+for i=1:length(model.rxns)
+    if strcmp(model.grRules{i},'demeterGapfill')
+        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
+        if ~isempty(find(strcmp(summary.condGF,model.rxns{i})))
+            model.comments{i}='Added by DEMETER to enable flux with VMH-consistent constraints.';
+        elseif ~isempty(find(strcmp(summary.targetGF,model.rxns{i})))
+            model.comments{i}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
+        elseif ~isempty(find(strcmp(summary.relaxGF,model.rxns{i})))
+            model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
+        end
     end
 end
 

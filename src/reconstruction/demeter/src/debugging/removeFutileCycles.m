@@ -357,15 +357,15 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'AKGt2r AND AKGte',[],'AKGte',[]
     'PHEt2r AND PHEtec',[],'PHEt2r','PHEt2'
     'CHOLOX',[],'CHOLOX','CHOLOXi'
-    %  '34DCCBR',[],'34DCCBR','34DCCBRi'
+    '34DCCBR',[],'34DCCBR','34DCCBRi'
     'r0389',[],'r0389','r0389i'
     'URAOX',[],'URAOX','URAOXi'
     'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-    %  'SQLE',[],'SQLE','SQLEi'
+    'SQLE',[],'SQLE','SQLEi'
     '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
     'HSNOOX',[],'HSNOOX','HSNOOXi'
-    % 'SALCACD',[],'SALCACD','SALCACDi'
-    %  '34HPPORdc',[],'34HPPORdc','34HPPORdci'
+    'SALCACD',[],'SALCACD','SALCACDi'
+    '34HPPORdc',[],'34HPPORdc','34HPPORdci'
     'SULR AND SULRi',[],'SULR',[]
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
@@ -472,6 +472,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'RE3245C AND FACOAL181',[],'FACOAL181','FACOAL181i'
     'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
     'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
+    'GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND GPDDA1',[],'GLDBRAN',[]
     };
 
 

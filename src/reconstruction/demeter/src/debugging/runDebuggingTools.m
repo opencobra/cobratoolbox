@@ -214,8 +214,8 @@ if length(failedModels)>0
     refinedFolder = [debuggingFolder filesep 'RevisedModels'];
     testResultsFolder = [debuggingFolder filesep 'Retest'];
     
-    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
-    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
+    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
+    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
     
     batchTestAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
     plotTestSuiteResults(testResultsFolder,reconVersion);

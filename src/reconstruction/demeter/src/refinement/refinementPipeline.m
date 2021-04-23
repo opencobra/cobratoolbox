@@ -81,9 +81,9 @@ for i=1:length(essentialRxns)
 end
 
 %% prepare summary file
-summary.('condGF') = {};
-summary.('targetGF') = {};
-summary.('relaxGF') = {};
+summary.('conditionSpecificGapfill') = {};
+summary.('targetedGapfill') = {};
+summary.('relaxFBAGapfill') = {};
 
 %% Refinement steps
 % The following sections include the various refinement steps of the pipeline.
@@ -119,9 +119,9 @@ summary.('resolveBlocked') = resolveBlocked;
 
 % run gapfilling tools to enable biomass production
 [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
-summary.('condGF') = union(summary.('condGF'),condGF);
-summary.('targetGF') = union(summary.('targetGF'),targetGF);
-summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 
 %% Anaerobic growth-may need to run twice
 
@@ -142,9 +142,9 @@ if AnaerobicGrowth(1,2) < tol
     % run gapfilling tools to enable biomass production if no growth on
     % complex medium
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
-    summary.('condGF') = union(summary.('condGF'),condGF);
-    summary.('targetGF') = union(summary.('targetGF'),targetGF);
-    summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+    summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+    summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+    summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 end
 
 %% Stoichiometrically balanced cycles
@@ -176,9 +176,9 @@ for i=1:2
         model = useDiet(model,constraints);
         % run gapfilling tools to enable biomass production
         [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
-        summary.('condGF') = union(summary.('condGF'),condGF);
-        summary.('targetGF') = union(summary.('targetGF'),targetGF);
-        summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+        summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+        summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+        summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
     end
     
     if AnaerobicGrowth(1,1) < tol
@@ -269,6 +269,10 @@ if growsOnDefinedMedium==0
     end
 end
 
+%% debug models that cannot grow if coupling constraints are implemented (rare cases)
+[model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database);
+summary.('addedCouplingRxns') = addedCouplingRxns;
+
 %% remove futile cycles if any remain
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAnaerobic>100
@@ -330,9 +334,8 @@ end
 model = addRefinementComments(model,summary);
 
 %% rebuild model
-if 1
-    model = rebuildModel(model,database);
-end
+model = rebuildModel(model,database);
+
 %% constrain sink reactions
 model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 

@@ -262,7 +262,9 @@ for i=1:length(pipelineFields)
     else
         spreadsheet=cell2table(pipelineSummary.(pipelineFields{i}));
     end
-    writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    if size(spreadsheet,2)>1
+        writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    end
 end
 
 % delete unneeded files

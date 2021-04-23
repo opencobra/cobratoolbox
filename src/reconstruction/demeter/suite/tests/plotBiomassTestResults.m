@@ -1,11 +1,11 @@
-function notGrowing = plotBiomassTestResults(refinedFolder, reconVersion, varargin)
+function [notGrowing,Biomass_fluxes] = plotBiomassTestResults(refinedFolder, reconVersion, varargin)
 % This function plots the growth of refined reconstructions and
 % reports whether any reconstructions are incapable of biomass production.
 % Optionally, draft reconstructions can be included.
 %
 % USAGE:
 %
-%    plotBiomassTestResults(refinedFolder, reconVersion, varargin)
+%    [notGrowing,Biomass_fluxes] = plotBiomassTestResults(refinedFolder, reconVersion, varargin)
 %
 %
 % REQUIRED INPUTS
@@ -23,6 +23,7 @@ function notGrowing = plotBiomassTestResults(refinedFolder, reconVersion, vararg
 % OUTPUT
 % notGrowing                List of IDs for refined reconstructions that
 %                           cannot produce biomass on at least one condition
+% Biomass_fluxes             Computed biomass production fluxes for each model
 %
 % .. Authors:
 %       - Almut Heinken, 09/2020
@@ -120,6 +121,8 @@ if ~isempty(translatedDraftsFolder)
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
     set(gca, 'FontSize', 12)
     box on
+    maxval=max(data,[],'all');
+    ylim([0 maxval + maxval/10])
     h=title(['Growth on rich medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -139,6 +142,8 @@ if ~isempty(translatedDraftsFolder)
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
     set(gca, 'FontSize', 12)
     box on
+    maxval=max(data,[],'all');
+    ylim([0 maxval + maxval/10])
     h=title(['Growth on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -236,6 +241,8 @@ else
         violinplot(data, {'Aerobic,','Anaerobic'});
         set(gca, 'FontSize', 12)
         box on
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
         h=title(['Growth on rich medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -253,6 +260,8 @@ else
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         box on
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
         h=title(['Growth on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -314,10 +323,25 @@ else
     end
 end
 
+% export models that cannot grow on at least one condition
 notGrowing=unique(notGrowing);
 notGrowing=strrep(notGrowing,'.mat','');
 if size(notGrowing,1)>0
     save([testResultsFolder filesep 'notGrowing.mat'],'notGrowing');
+end
+
+% export computed biomass  fluxes
+if ~isempty(translatedDraftsFolder)
+    data=growth{1}(:,1:4);
+    data=[data,growth{2}(:,5:8)];
+    Biomass_fluxes = {'','Unlimited aerobic, Draft','Unlimited anaerobic, Draft','Complex medium aerobic, Draft','Complex medium anaerobic, Draft','Unlimited aerobic, Refined','Unlimited anaerobic, Refined','Complex medium aerobic, Refined','Complex medium anaerobic, Refined'};
+    Biomass_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
+    Biomass_fluxes(2:end,2:9) = num2cell(data);
+else
+    data=growth{1}(:,1:4);
+    Biomass_fluxes = {'','Unlimited aerobic, Refined','Unlimited anaerobic, Refined','Complex medium aerobic, Refined','Complex medium anaerobic, Refined'};
+    Biomass_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
+    Biomass_fluxes(2:end,2:5) = num2cell(data);
 end
 
 end
