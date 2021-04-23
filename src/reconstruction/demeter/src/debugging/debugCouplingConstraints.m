@@ -49,16 +49,26 @@ if solution.f < tol
     end
     solution=optimizeCbModel(model);
     if solution.f > tol
-        [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(model, 'FBA', growthFixes2Add);
-        growthEnablingRxns=growthFixes2Add(grRateKO(:,1)<tol);
+        % find out which of the added reactions were essential
+        cnt=1;
+        addedCouplingRxns = {};
+        for j=1:length(growthFixes2Add)
+            modelTest=removeRxns(model,growthFixes2Add{j});
+            solution=optimizeCbModel(modelTest);
+            if solution.f < tol
+                addedCouplingRxns{cnt}=growthFixes2Add{j};
+                cnt=cnt+1;
+            else
+                model=modelTest;
+            end
+        end
         
         % save the enabled model
-        for j=1:length(growthEnablingRxns)
-            formula = database.reactions{ismember(database.reactions(:, 1), growthEnablingRxns{j}), 3};
-            modelPrevious = addReaction(modelPrevious, growthEnablingRxns{j}, 'reactionFormula', formula);
+        model=modelPrevious;
+        for j=1:length(addedCouplingRxns)
+            formula = database.reactions{ismember(database.reactions(:, 1), addedCouplingRxns{j}), 3};
+            model = addReaction(model, addedCouplingRxns{j}, 'reactionFormula', formula);
         end
-        model = modelPrevious;
-        addedCouplingRxns = growthEnablingRxns;
     end
 end
 
