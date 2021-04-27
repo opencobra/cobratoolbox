@@ -21,7 +21,6 @@ modelList=modelList';
 modelList=strrep(modelList,'.mat','');
 microbesNames=setdiff(microbeNames,modelList);
 
-
 if length(microbesNames)>0
     %% create a new extracellular space [u] for microbes
     for j = 1:size(microbeNames, 1)
@@ -64,7 +63,7 @@ if length(microbesNames)>0
         model.rxns = strcat(strcat(microbeNames{j, 1}, '_'), model.rxns);
         model.mets = strcat(strcat(microbeNames{j, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
         [model] = mergeTwoModels(dummyMicEU, model, 2, false, false);
-        
+   
         %finish up by A: removing duplicate reactions
         %We will lose information here, but we will just remove the duplicates.
         [model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);

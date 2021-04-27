@@ -149,9 +149,11 @@ end
 
 %% Stoichiometrically balanced cycles
 
-[model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
-summary.('balancedCycle_addedRxns') = unique(addedRxns);
-summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
+[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database);
+summary.('futileCycles_addedRxns') = unique(addedRxns);
+summary.('futileCycles_deletedRxns') = unique(deletedRxns);
+summary.('futileCycles_gapfilledRxns') = unique(gfRxns);
+
 
 %% Remove unneeded reactions
 % Delete gap-filled reactions by KBase/ ModelSEED that are no longer needed
@@ -280,12 +282,14 @@ if atpFluxAnaerobic>100
     % cases -> need to use the constrained model as input
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==1
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
+        [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
     else
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+        [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database);
     end
-    summary.('balancedCycle_addedRxns') = union(summary.('balancedCycle_addedRxns'),unique(addedRxns));
-    summary.('balancedCycle_deletedRxns') = union(summary.('balancedCycle_deletedRxns'),unique(deletedRxns));
+    summary.('futileCycles_addedRxns') = union(summary.('futileCycles_addedRxns'),unique(addedRxns));
+    summary.('futileCycles_deletedRxns') = union(summary.('futileCycles_deletedRxns'),unique(deletedRxns));
+    summary.('futileCycles_gapfilledRxns') = union(summary.('futileCycles_gapfilledRxns'),unique(gfRxns));
+
 end
 
 %% remove duplicate reactions-needs repetition for some microbes

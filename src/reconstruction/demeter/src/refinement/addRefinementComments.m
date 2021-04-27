@@ -20,55 +20,65 @@ function model = addRefinementComments(model,summary)
 model.grRules=strrep(model.grRules,'exchange_reaction','');
 %% remove other temporary labels
 for i=1:length(model.grRules)
-    if strcmp(model.grRules{i},'gap_filled')
-        model.grRules{i}=strrep(model.grRules{i},'gap_filled','');
-        model.comments{i}='Reaction added based in gap-filling during comparative genomic analyses.';
+    if strcmp(model.grRules{i,1},'gap_filled')
+        model.grRules{i,1}=strrep(model.grRules{i},'gap_filled','');
+        model.comments{i,1}='Reaction added based in gap-filling during comparative genomic analyses.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'CarbonSourceGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'CarbonSourceGapfill','');
-        model.comments{i}='Reaction added by DEMETER based on experimental data on carbon sources.';
+    if strcmp(model.grRules{i,1},'CarbonSourceGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'CarbonSourceGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER based on experimental data on carbon sources.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'FermentationGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'FermentationGapfill','');
-        model.comments{i}='Reaction added by DEMETER based on experimental data on fermentation products.';
+    if strcmp(model.grRules{i,1},'FermentationGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'FermentationGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER based on experimental data on fermentation products.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'uptakeMetaboliteGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'uptakeMetaboliteGapfill','');
-        model.comments{i}='Reaction added by DEMETER based on experimental data on consumed metabolites.';
+    if strcmp(model.grRules{i,1},'uptakeMetaboliteGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'uptakeMetaboliteGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER based on experimental data on consumed metabolites.';
     end
-    if strcmp(model.grRules{i},'secretionProductGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'secretionProductGapfill','');
-        model.comments{i}='Reaction added by DEMETER based on experimental data on secretion products.';
+    if strcmp(model.grRules{i,1},'secretionProductGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'secretionProductGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER based on experimental data on secretion products.';
+        model.rxnConfidenceScores(i,1)=2;
     end
     if strcmp(model.grRules{i},'PutrefactionGapfill')
         model.grRules{i}=strrep(model.grRules{i},'PutrefactionGapfill','');
         model.comments{i}='Reaction added by DEMETER based on experimental data on putrefaction pathways.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'AnaerobicGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'AnaerobicGapfill','');
-        model.comments{i}='Reaction added by DEMETER to enable anaerobic growth.';
+    if strcmp(model.grRules{i,1},'AnaerobicGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'AnaerobicGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER to enable anaerobic growth.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'GrowthRequirementsGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'GrowthRequirementsGapfill','');
-        model.comments{i}='Reaction added by DEMETER based on experimental data on growth requirements.';
+    if strcmp(model.grRules{i,1},'GrowthRequirementsGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'GrowthRequirementsGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER based on experimental data on growth requirements.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'demeterGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'demeterGapfill','');
-        if ~isempty(find(strcmp(summary.('condGF'),model.rxns{i})))
-            model.comments{i}='Added by DEMETER to enable flux with VMH-consistent constraints.';
-        elseif ~isempty(find(strcmp(summary.('targetGF'),model.rxns{i})))
-            model.comments{i}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
-        elseif ~isempty(find(strcmp(summary.('relaxGF'),model.rxns{i})))
+    if strcmp(model.grRules{i,1},'demeterGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i},'demeterGapfill','');
+        if ~isempty(find(strcmp(summary.('conditionSpecificGapfill'),model.rxns{i,1})))
+            model.comments{i,1}='Added by DEMETER to enable flux with VMH-consistent constraints.';
+        elseif ~isempty(find(strcmp(summary.('targetedGapfill'),model.rxns{i,1})))
+            model.comments{i,1}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
+        elseif ~isempty(find(strcmp(summary.('relaxFBAGapfill'),model.rxns{i,1})))
             model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
+            model.rxnConfidenceScores(i,1)=1;
         end
     end
-    if strcmp(model.grRules{i},'essentialGapfill')
-        model.grRules{i}=strrep(model.grRules{i},'essentialGapfill','');
-        model.comments{i}='Added by DEMETER, reactions that should always be present.';
+    if strcmp(model.grRules{i,1},'essentialGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'essentialGapfill','');
+        model.comments{i,1}='Added by DEMETER, reactions that should always be present.';
+        model.rxnConfidenceScores(i,1)=2;
     end
-    if strcmp(model.grRules{i},'Unknown')
-        model.grRules{i}=strrep(model.grRules{i},'Unknown','');
-        model.comments{i}='Added by Model SEED/KBase gap-filling pipeline.';
+    if strcmp(model.grRules{i,1},'Unknown')
+        model.grRules{i,1}=strrep(model.grRules{i},'Unknown','');
+        model.comments{i,1}='Added by Model SEED/KBase gap-filling pipeline.';
+        model.rxnConfidenceScores(i,1)=1;
     end
 end
 
