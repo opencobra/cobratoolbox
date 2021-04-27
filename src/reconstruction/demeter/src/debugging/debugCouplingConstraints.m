@@ -43,7 +43,7 @@ tol = 0.000001;
 solution=optimizeCbModel(model);
 if solution.f < tol
     growthFixes2Add=growthFixes;
-    [C,IA]=setdiff(growthFixes2Add(:,1),model.rxns);
+    [C,IA]=intersect(growthFixes2Add(:,1),model.rxns);
     growthFixes2Add(IA,:)=[];
     [C,IA]=intersect(growthFixes2Add(:,2),model.rxns);
     growthFixes2Add(IA,:)=[];

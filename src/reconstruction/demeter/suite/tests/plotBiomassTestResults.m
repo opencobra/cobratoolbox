@@ -333,7 +333,7 @@ end
 % export computed biomass  fluxes
 if ~isempty(translatedDraftsFolder)
     data=growth{1}(:,1:4);
-    data=[data,growth{2}(:,5:8)];
+    data=[data,growth{2}(:,1:4)];
     Biomass_fluxes = {'','Unlimited aerobic, Draft','Unlimited anaerobic, Draft','Complex medium aerobic, Draft','Complex medium anaerobic, Draft','Unlimited aerobic, Refined','Unlimited anaerobic, Refined','Complex medium aerobic, Refined','Complex medium anaerobic, Refined'};
     Biomass_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
     Biomass_fluxes(2:end,2:9) = num2cell(data);

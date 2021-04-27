@@ -100,7 +100,7 @@ if isempty(mapP)
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [exch,modelStoragePath]=buildModelStorage(microbeNames,modPath);
+    [exch,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath);
     
     % Computing reaction presence
     ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
@@ -148,7 +148,7 @@ if isempty(mapP)
     print(strcat(resPath, 'Subsystem_abundances'), figForm)
     
     % save mapping info
-    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'exch', 'sampNames', 'microbeNames', 'modelStoragePath','abundance','-v7.3')
+    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'exch', 'sampNames', 'microbeNames', 'couplingMatrix', 'modelStoragePath','abundance','-v7.3')
 end
 
 %end of trigger for Autoload
@@ -231,7 +231,7 @@ if buildSetupAll
         end
     end
     
-    [createdModels]=createPersonalizedModel(abundance,resPath,setup,sampNames,microbeNames,host,hostBiomassRxn);
+    [createdModels]=createPersonalizedModel(abundance,resPath,setup,sampNames,microbeNames,couplingMatrix,host,hostBiomassRxn);
     
 else
     % create a separate setup model for each sample
@@ -256,14 +256,16 @@ else
             % this sample
             mappingData=load([resPath filesep 'mapInfo.mat'])
             microbeNamesSample = mappingData.microbeNames;
+            couplingMatrixSample = mappingData.couplingMatrix;
             abunRed=mappingData.abundance(:,i+1);
             abunRed=[mappingData.abundance(:,1),abunRed];
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
+            couplingMatrixSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
             setupModel = fastSetupCreator(exch, modelStoragePath, microbeNamesSample, host, objre, buildSetupAll);
             
             % create personalized models for the batch
-            createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
+            createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);
         end
     end
 end

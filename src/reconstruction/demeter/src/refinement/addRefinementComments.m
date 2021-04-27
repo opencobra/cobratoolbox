@@ -28,12 +28,12 @@ for i=1:length(model.grRules)
     if strcmp(model.grRules{i,1},'CarbonSourceGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'CarbonSourceGapfill','');
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on carbon sources.';
-        model.rxnConfidenceScores(i,1)=2;
+        model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
     end
     if strcmp(model.grRules{i,1},'FermentationGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'FermentationGapfill','');
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on fermentation products.';
-        model.rxnConfidenceScores(i,1)=2;
+        model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
     end
     if strcmp(model.grRules{i,1},'uptakeMetaboliteGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'uptakeMetaboliteGapfill','');
@@ -42,7 +42,7 @@ for i=1:length(model.grRules)
     if strcmp(model.grRules{i,1},'secretionProductGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'secretionProductGapfill','');
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on secretion products.';
-        model.rxnConfidenceScores(i,1)=2;
+        model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
     end
     if strcmp(model.grRules{i},'PutrefactionGapfill')
         model.grRules{i}=strrep(model.grRules{i},'PutrefactionGapfill','');
@@ -52,12 +52,12 @@ for i=1:length(model.grRules)
     if strcmp(model.grRules{i,1},'AnaerobicGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'AnaerobicGapfill','');
         model.comments{i,1}='Reaction added by DEMETER to enable anaerobic growth.';
-        model.rxnConfidenceScores(i,1)=2;
+        model.rxnConfidenceScores(i,1)=1;
     end
     if strcmp(model.grRules{i,1},'GrowthRequirementsGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'GrowthRequirementsGapfill','');
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on growth requirements.';
-        model.rxnConfidenceScores(i,1)=2;
+        model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
     end
     if strcmp(model.grRules{i,1},'demeterGapfill')
         model.grRules{i,1}=strrep(model.grRules{i},'demeterGapfill','');
@@ -79,6 +79,15 @@ for i=1:length(model.grRules)
         model.grRules{i,1}=strrep(model.grRules{i},'Unknown','');
         model.comments{i,1}='Added by Model SEED/KBase gap-filling pipeline.';
         model.rxnConfidenceScores(i,1)=1;
+    end
+end
+
+% add appropriate score for exchange and demand reactions
+for i=1:length(model.rxns)
+    if strncmp(model.rxns{i},'EX_',3) || strncmp(model.rxns{i},'DM_',3) || strncmp(model.rxns{i},'sink_',5)
+        model.rxnConfidenceScores(i,1)=1;
+        model.grRules{i,1}='';
+        model.comments{i,1}='';
     end
 end
 
