@@ -1,7 +1,8 @@
 FROM ubuntu:18.04
 RUN apt update; apt install -y git vim python-pip
 RUN mkdir /repos; cd /repos; git clone https://github.com/opencobra/cobratoolbox
-RUN pip install -r /repos/cobratoolbox/docs/requirements.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 CMD cd /repos/cobratoolbox; \
 	echo "Checking out lastest from opencobra/cobratoolbox master branch..."; \
 	git pull origin master; \
