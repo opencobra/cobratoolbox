@@ -11,9 +11,11 @@ function combinedModel = createGroupIncidenceMatrix(model, trainingModel, param)
 %
 % trainingModel:
 % trainingModel.S:                          p x n stoichiometric matrix of training data
+% trainingModel.mets                        p x 1 metabolite abbreviations
+% trainingModel.rxns                        n x 1 reaction abbreviations
 % trainingModel.metKEGGID:                  p x 1 cell array of metabolite KEGGID
 % trainingModel.inchi.nonstandard:          p x 1 cell array of nonstandard InChI
-% trainingModel.test2CombinedModelMap:          m x 1 mapping of model.mets to training data metabolites
+% trainingModel.test2CombinedModelMap:      m x 1 mapping of model.mets to training data metabolites
 % trainingModel.mappingScore
 %
 % OUTPUT:
