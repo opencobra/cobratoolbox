@@ -56,3 +56,17 @@ https://opencobra.github.io/cobratoolbox/stable/
 checkout the gh-pages branch of the https://github.com/opencobra/cobratoolbox.git repository
 and replace the ./stable or ./latest directory with the build output.
 
+## Checking for broken links
+
+Install 'linkchecker' utility:
+
+```
+sudo apt install linkchecker
+```
+
+Execute link check scan with the following command:
+
+```
+linkchecker https://opencobra.github.io/cobratoolbox/stable/
+```
+
