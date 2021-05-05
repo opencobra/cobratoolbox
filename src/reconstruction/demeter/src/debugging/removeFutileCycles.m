@@ -501,8 +501,8 @@ growthGapfills={
     'EX_2dmmq8(e) AND 2DMMQ8abc'
     'DM_q8h2[c]'
     'DM_NA1'
-    'G3PFDXOR' % tentative-some models would not produce feasible amounts of ATP without it
-    'ADPRDP AND ASP4DCi' % tentative-some models would not produce feasible amounts of ATP without it
+    'G3PFDXORi' % tentative-some models would not produce feasible amounts of ATP without it
+    'ASP4DCi' % tentative-some models would not produce feasible amounts of ATP without it
     'EX_lac_L(e) AND L_LACt2r'
     'EX_acald(e) AND ACALDt'
     'EX_asp_L(e) AND ASPt2r'

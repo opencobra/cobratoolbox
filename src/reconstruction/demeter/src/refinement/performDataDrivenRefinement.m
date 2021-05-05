@@ -92,6 +92,10 @@ osenseStr='max';
 if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
+        if isempty(find(ismember(model.rxns,metExch)))
+            % reaction ID itself provided
+            metExch = FNs{j};
+        end
         % find reactions that could be gap-filled to enable flux
         [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
         summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);

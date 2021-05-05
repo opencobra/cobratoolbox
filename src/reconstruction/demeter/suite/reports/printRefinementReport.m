@@ -49,8 +49,8 @@ end
 if isfile(([testResultsFolder filesep 'notGrowing.mat']))
     load([testResultsFolder filesep 'notGrowing.mat'])
     if size(notGrowing,1) > 0
-    fprintf('%s reconstructions cannot produce biomass.\n',num2str(notGrowing))
-    curationReport(size(curationReport,1)+1,:)={'Reconstructions not producing biomass',num2str(notGrowing),'N/A'};
+    fprintf('%s reconstructions cannot produce biomass.\n',num2str(size(notGrowing,1)))
+    curationReport(size(curationReport,1)+1,:)={'Reconstructions not producing biomass',num2str(size(notGrowing,1)),'N/A'};
     end
 end
 %%

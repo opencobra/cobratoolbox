@@ -21,7 +21,13 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
+try
+    infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
+catch
+    % if the input file is not a text file
+    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+end
+
 infoFile = table2cell(infoFile);
 if ~any(strcmp(infoFile(:,1),microbeID))
     warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
