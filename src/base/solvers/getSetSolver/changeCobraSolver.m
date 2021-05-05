@@ -218,6 +218,7 @@ if validationLevel == -1
         case 'EP'
             CBT_EP_SOLVER = solverName;
     end
+    solverOK = NaN;
     return
 end
 

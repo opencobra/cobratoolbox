@@ -16,7 +16,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 %                             * 1: compatible with the COBRA Toolbox (tested)
 %                             * 2: unverified compatibility with the COBRA Toolbox (not tested)
 %
-% .. Author: - Laurent Heirendt, August 2017
+% .. Author: - Laurent Heirendt, Ronan Fleming
 %
 
     global CBTDIR
