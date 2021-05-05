@@ -11,9 +11,11 @@ function combinedModel = createGroupIncidenceMatrix(model, trainingModel, param)
 %
 % trainingModel:
 % trainingModel.S:                          p x n stoichiometric matrix of training data
+% trainingModel.mets                        p x 1 metabolite abbreviations
+% trainingModel.rxns                        n x 1 reaction abbreviations
 % trainingModel.metKEGGID:                  p x 1 cell array of metabolite KEGGID
 % trainingModel.inchi.nonstandard:          p x 1 cell array of nonstandard InChI
-% trainingModel.test2CombinedModelMap:          m x 1 mapping of model.mets to training data metabolites
+% trainingModel.test2CombinedModelMap:      m x 1 mapping of model.mets to training data metabolites
 % trainingModel.mappingScore
 %
 % OUTPUT:
@@ -71,14 +73,57 @@ switch param.fragmentationMethod
         %function model = createFragmentIncidenceMatrix(inchi,radius,dGPredictorPath,canonicalise)
         % model.G:    k x g  fragment incidence matrix
         
-
+        %function [fragmentedMol,decomposableBool,inchiExistBool] = autoFragment(inchi,radius,dGPredictorPath,canonicalise,cacheName,printLevel)
+        %given one or more inchi, automatically fragment it into a set of smiles
+        %each centered around an atom with radius specifying the number of bonds to
+        %neighbouring atoms
+        %
+        % INPUT
+        % inchi             n x 1 cell array of molecules each specified by InChI strings
+        %                   or a single InChI string as a char
+        % OPTIONAL INPUT
+        % radius            number of bonds around each central smiles atom
+        % dGPredictorPath   path to the folder containg a git clone of https://github.com/maranasgroup/dGPredictor
+        %                   path must be the full absolute path without ~/
+        % cacheName         fileName of cache to load (if it exists) or save to (if it does not exist)
+        %
+        % OUTPUT
+        % fragmentedMol      n x 1 structure with the following fields for each inchi:
+        % *.inchi            inchi string
+        % *.smilesCount      Map structure
+        %                    Each Key is a canonical smiles string (not canonical smiles if canonicalise==0)
+        %                    Each value is the incidence of each smiles string in a molecule
 
         %fragment each of the trainingModel inchi
         if param.printLevel>0
             fprintf('%s\n','Ab inito fragmentation of each of the trainingModel inchi...')
         end
-        trainingModelInchi=trainingModel.inchi.nonstandard;
-        [trainingModelFragmentedMol,trainingModelDecomposableBool,trainingModelInchiExistBool] = autoFragment(trainingModelInchi,param.radius,param.dGPredictorPath,param.canonicalise,'autoFragment_trainingModel',param.printLevel-1);
+
+        %decide which inchi to use for fragmentation
+        trainingModelInchi = trainingModel.inchi.nonstandard;
+        modelInchi = model.inchi.nonstandard;
+        
+        nTrainingModelMets=length(trainingModelInchi);
+        for i=1:nTrainingModelMets
+            trainingModelFragmentedMol(i).inchi = trainingModelInchi{i};
+            trainingModelFragmentedMol(i).smilesCounts = containers.Map();
+        end
+        trainingModelDecomposableBool=false(nTrainingModelMets,1);
+        trainingModelInchiExistBool=false(nTrainingModelMets,1);
+        for r=1:param.radius
+            [trainingModelFragmentedMolr,trainingModelDecomposableBoolr,trainingModelInchiExistBoolr] = autoFragment(trainingModelInchi,r,param.dGPredictorPath,param.canonicalise,['autoFragment_trainingModel_' int2str(r)],param.printLevel-1);
+            for i=1:nTrainingModelMets
+                %disp(i)
+%                 if i==55
+%                     pause(0.1)
+%                 end
+                if ~isempty(trainingModelFragmentedMolr(i).smilesCounts)
+                    trainingModelFragmentedMol(i).smilesCounts = [trainingModelFragmentedMol(i).smilesCounts;trainingModelFragmentedMolr(i).smilesCounts];
+                end
+            end
+            trainingModelDecomposableBool = trainingModelDecomposableBool | trainingModelDecomposableBoolr;
+            trainingModelInchiExistBool = trainingModelInchiExistBool | trainingModelInchiExistBoolr;
+        end
         if param.printLevel>0
             fprintf('%s\n','...done.')
         end
@@ -87,17 +132,31 @@ switch param.fragmentationMethod
         if param.printLevel>0
             fprintf('%s\n','Ab inito fragmentation of each of the model inchi...')
         end
-        modelInchi=model.inchi.nonstandard;
-        [modelFragmentedMol,modelDecomposableBool,modelInchiExistBool] = autoFragment(modelInchi,param.radius,param.dGPredictorPath,param.canonicalise,param.modelCache,param.printLevel-1);
+        
+        nModelMets=length(modelInchi);
+        for i=1:nModelMets
+            modelFragmentedMol(i).inchi = modelInchi{i};
+            modelFragmentedMol(i).smilesCounts = containers.Map();
+        end
+        modelDecomposableBool=false(nModelMets,1);
+        modelInchiExistBool=false(nModelMets,1);
+        for r=1:param.radius
+            [modelFragmentedMolr,modelDecomposableBoolr,modelInchiExistBoolr] = autoFragment(modelInchi,r,param.dGPredictorPath,param.canonicalise,[param.modelCache '_' int2str(r)],param.printLevel-1);
+            for i=1:nModelMets
+                %disp(i)
+                if ~isempty(modelFragmentedMolr(i).smilesCounts)
+                    modelFragmentedMol(i).smilesCounts = [modelFragmentedMol(i).smilesCounts;modelFragmentedMolr(i).smilesCounts];
+                end
+            end
+            modelDecomposableBool = modelDecomposableBool | modelDecomposableBoolr;
+            modelInchiExistBool = modelInchiExistBool | modelInchiExistBoolr;
+        end
+        %modelInchi=model.inchi.nonstandard;
+        %[modelFragmentedMol,modelDecomposableBool,modelInchiExistBool] = autoFragment(modelInchi,param.radius,param.dGPredictorPath,param.canonicalise,param.modelCache,param.printLevel-1);
         if param.printLevel>0
             fprintf('%s\n','...done.')
         end
 
-               
-
-        nTrainingModelMets=length(trainingModelFragmentedMol);
-        nModelMets=length(modelFragmentedMol);
-        
         trainingFragmentSmiles = cell(0); 
         %collate the fragments in the training model
         for i = 1:nTrainingModelMets
@@ -180,12 +239,13 @@ switch param.fragmentationMethod
         combinedModel.G = sparse(nMets,nFrag+nNonDecomposable);
         
         %use the keys to define the groups
-        combinedModel.groups = [uniqueFragmentSmiles;trainingModel.inchi.nonstandard(~trainingModelDecomposableBool);model.inchi.nonstandard(~modelDecomposableBool)];
+        combinedModel.groups = [uniqueFragmentSmiles;trainingModelInchi(~trainingModelDecomposableBool);modelInchi(~modelDecomposableBool)];
         
         %map each of the training model fragments to the consolidated list of fragments
         d=1;
         for i = 1:nTrainingModelMets
             if trainingModelDecomposableBool(i)
+                disp(i)
                 bool = isKey(trainingModelFragmentedMol(i).smilesCounts,uniqueFragmentSmiles);
                 combinedModel.G(i,bool)=cell2mat(values(trainingModelFragmentedMol(i).smilesCounts));
             else
@@ -386,12 +446,12 @@ switch param.fragmentationMethod
             trainingModel.trainingMetBool(i)=1;
             [score, modelRow] = max(full(mappingScore(:,i)));
             if score == 0
-                inchi = trainingModel.inchi.nonstandard{i};
+                inchi = trainingModelInchi{i};
                 trainingModel.testMetBool(i)=0;
                 
             else
                 % if there is a match to the model, use the InChI from there to be consistent with later transforms
-                inchi = model.inchi.nonstandard{modelRow};
+                inchi = modelInchi{modelRow};
                 trainingModel.testMetBool(i)=1;
             end
             
@@ -432,7 +492,7 @@ switch param.fragmentationMethod
             end
             done = [done; {met}];
             
-            inchi = model.inchi.nonstandard{n};
+            inchi = modelInchi{n};
             
             [score, trainingRow] = max(full(mappingScore(n,:)));
             if score == 0 % this compound is not in the training data

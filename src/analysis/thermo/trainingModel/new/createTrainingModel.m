@@ -10,8 +10,10 @@ function trainingModel = createTrainingModel(trainingModel,trainingMolFileDir,fo
 % 
 % OUTPUTS:
 %    trainingModel:  trainingModel structure with following additional fields:
-%                   * .mets  ;
-%                   * .metKEGGID = trainingModel.cids;
+%                   * .mets   m x 1 metabolite abbreviations
+%                   * .rxns   n x 1 reaction abbreviations
+%                   * .metKEGGID m x 1 trainingModel.cids;
+%                   * .metChEBIID  m x 1 ChEBI identifier of the metabolite.       
 %                   * .inchi - Structure containing four `m x 1` cell array's of
 %                     IUPAC InChI strings for metabolites, with varying
 %                     levels of structural detail.
