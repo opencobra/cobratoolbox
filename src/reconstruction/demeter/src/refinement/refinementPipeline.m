@@ -295,9 +295,19 @@ if atpFluxAnaerobic>100
     summary.('futileCycles_addedRxns') = union(summary.('futileCycles_addedRxns'),unique(addedRxns));
     summary.('futileCycles_deletedRxns') = union(summary.('futileCycles_deletedRxns'),unique(deletedRxns));
     summary.('futileCycles_gapfilledRxns') = union(summary.('futileCycles_gapfilledRxns'),unique(gfRxns));
-
 end
 
+%% perform growth gap-filling if still needed
+[AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
+if AerobicGrowth(1,2) < tol
+    % apply complex medium
+    model = useDiet(model,constraints);
+    % run gapfilling tools to enable biomass production
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
+    summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+    summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+    summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
+end
 %% remove duplicate reactions-needs repetition for some microbes
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.

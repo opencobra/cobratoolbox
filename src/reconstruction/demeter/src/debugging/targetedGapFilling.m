@@ -85,6 +85,9 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'mqn8[c]', '', {'EX_mqn8(e)','MK8t'}
     'ade[c]', '', {'EX_ade(e)','ADEt2r'}
     'fol[c]', '', {'EX_fol(e)','FOLabc'}
+    'fru[c]', '', {'EX_fru(e)','FRUt2r'}
+    'sucr[c]', '', {'EX_sucr(e)','SUCRt2'}
+    'glc_D[c]', '', {'EX_glc_D(e)','GLCabc'}
     'glc_D[c]', 'HEX1', {'EX_glc_D(e)','GLCabc','PFK','FBA'}
     'pep[c]', 'HEX1', {'PGK','GAPD'}
     '4hba[c]', '', {'DM_4HBA'}
@@ -108,6 +111,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'dtdp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'dtmp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
+    'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNC','PTPAT'}
     'PGPm1[c]','',{'sink_PGPm1[c]'}
     };
 
