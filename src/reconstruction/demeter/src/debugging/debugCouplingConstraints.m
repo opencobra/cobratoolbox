@@ -26,11 +26,10 @@ function [model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReact
 modelPrevious=model;
 addedCouplingRxns = {};
 
-% couple all reactions except biomass and exchange reactions to the biomass
+% couple all reactions except biomass reactions to the biomass
 % reaction
 rxns2Couple=model.rxns;
 rxns2Couple(find(strncmp(rxns2Couple,biomassReaction,length(biomassReaction))),:)=[];
-rxns2Couple(find(strncmp(rxns2Couple,'EX_',3)),:)=[];
 
 model=coupleRxnList2Rxn(model,rxns2Couple,biomassReaction,400,0); %couple the specific reactions
 
