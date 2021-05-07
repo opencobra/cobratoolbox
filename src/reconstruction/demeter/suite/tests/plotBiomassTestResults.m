@@ -132,7 +132,10 @@ if ~isempty(translatedDraftsFolder)
     for f=1:length(folders)
         data(:,size(data,2)+1:size(data,2)+2)=growth{f}(:,3:4);
     end
-    % workaround if growth for drafts on anaerobic is all zeros
+    % workaround if growth for drafts is all zeros
+    if sum(data(:,1))< tol
+        data(1,1)=tol;
+    end
     if sum(data(:,2))< tol
         data(1,2)=tol;
     end
