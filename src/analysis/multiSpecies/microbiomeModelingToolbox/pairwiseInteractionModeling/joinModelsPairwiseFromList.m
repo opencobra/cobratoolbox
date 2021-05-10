@@ -110,7 +110,7 @@ for i = 1:size(modelList, 1)
             strcat(modelList{i}, '_')
             strcat(modelList{k}, '_')
             };
-        if isempty(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat']))
+        if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))
             [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'bio', 3)))), c, u);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'bio', 3)))), c, u);
@@ -135,7 +135,7 @@ for i = 1:size(modelList, 1)
             save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
         end
         
-        if isempty(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat']))
+        if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))
             pairedModel=pairedModelsTemp{k};
             save([pairwiseModelFolder filesep pairedModelInfo{cnt,1}],'pairedModel');
         end
