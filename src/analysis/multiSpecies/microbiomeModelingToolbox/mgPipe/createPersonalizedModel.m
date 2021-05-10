@@ -15,15 +15,19 @@ function [createdModels] = createPersonalizedModel(abundance, resPath, model, sa
 %   model:              "global setup" model in COBRA model structure format
 %   sampNames:          cell array with names of individuals in the study
 %   orglist:            cell array with names of organisms in the study
+%   couplingMatrix:     cell array containing pre-created coupling matrices for
+%                       each organism to be joined (created by
+%                       buildModelStorage function)
 %   host:               Contains the host model if path to host model was
 %                       defined. Otherwise empty.
 %   hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
 %
 % OUTPUT:
-%   createdModels:   created personalized models
+%   createdModels:      created personalized models
 %
 % .. Author: Federico Baldini 2017-2018
-%            Almut Heinken, 03/2021: simplified function
+%            Almut Heinken, 05/2021: changed to creating coupling matrix by
+%            merging pre-created matrices for improved speed
 
 createdModels = {};
 
@@ -71,7 +75,7 @@ for k = 1:length(sampNames)
         
         pruned_model.C=sparse(matSize,length(pruned_model.rxns));
         pruned_model.d=zeros(length(pruned_model.rxns),1);
-        pruned_model.dsense=strings(length(pruned_model.rxns),1);
+        pruned_model.dsense=char(length(pruned_model.rxns),1);
         pruned_model.ctrs=cell(length(pruned_model.rxns),1);
         
         % Coupling constraints for bacteria-merge matrices
@@ -85,7 +89,7 @@ for k = 1:length(sampNames)
                 matInd1(size(matInd1,1)+1,1)=j+matStart;
                 % merge the fields
                 pruned_model.d(cnt,1)=couplingMatrixRed{i,2}(j,1);
-                pruned_model.dsense(cnt,1)=couplingMatrixRed{i,3}(j,1);
+                pruned_model.dsense(cnt,1)=char(couplingMatrixRed{i,3}(j,1));
                 pruned_model.ctrs{cnt,1}=couplingMatrixRed{i,4}{j,1};
                 cnt=cnt+1;
             end
@@ -95,7 +99,6 @@ for k = 1:length(sampNames)
             
             matStart=matStart+size(couplingMatrixRed{i,1},1);
         end
-        pruned_model.dsense=char(pruned_model.dsense);
         
         % Coupling constraints for host (optional but recommended)
         if ~isempty(host) && ~isempty(hostBiomassRxn)
