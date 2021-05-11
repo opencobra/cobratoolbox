@@ -170,8 +170,7 @@ for n = 1:length(uinchi)
     met = umets{n};
     currentInchi = uinchi{n};
     if printLevel>1
-        disp(n)
-        disp(umets{n})
+        fprintf('%u\t%s',n,umets{n})
     end
 
     [formula, nH, charge] = getFormulaAndChargeFromInChI(currentInchi);

@@ -1,10 +1,13 @@
-function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, rxnsToAM, hMapping, maxTime, standariseRxn)
-% Compute atom mappings for reactions with implicit hydrogens in a
-% metabolic network using RDT algorithm
+function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, onlyUnmapped)
+% Using the reaction decoder tool, compute atom mappings for reactions in a 
+% COBRA model. Atom mapping data is presented in a variety of formats, 
+% including MDL RXN, SMILES, and images. If this option is selected, the 
+% function can remove all protons from the model and represent the 
+% reactions as a hydrogen suppressed chemical graph.
 %
 % USAGE:
 %
-%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, rxnsToAM, hMapping, maxTime, standariseRxn)
+%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, maxTime, standariseRxn)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -24,16 +27,14 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
-%    rxnsToAM:      List of reactions to atom map (default: all in the 
+%    rxnsToAM:      List of reactions to atom map (default: all in the
 %                   model).
 %    hMapping:      Logic value to select if hydrogen atoms will be atom
 %                   mapped (default: TRUE).
 %    rxnDir:        Path to directory that will contain the RXN files with
 %                   atom mappings (default: current directory).
-%    maxTime:       Maximum time assigned to compute atom mapping (default
-%                   1800s).
-%    standariseRxn: Logic value for standardising the atom mapped RXN file.
-%                   ChemAxon license is required (default: TRUE).
+%    onlyUnmapped:  Logic value to select create only unmapped MDL RXN
+%                   files (default: FALSE).
 %
 % OUTPUTS:
 %    balancedRxns:	List of standadised atom mapped reactions.
@@ -56,11 +57,11 @@ function standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, 
 %
 % .. Author: - German A. Preciat Gonzalez 25/05/2017
 
-if nargin < 3 || isempty(outputDir)
-    outputDir = [pwd filesep];
+if nargin < 3 || isempty(rxnDir)
+    rxnDir = [pwd filesep];
 else
     % Make sure input path ends with directory separator
-    outputDir = [regexprep(outputDir,'(/|\\)$',''), filesep];
+    rxnDir = [regexprep(rxnDir,'(/|\\)$',''), filesep];
 end
 if nargin < 4 || isempty(rxnsToAM)
     rxnsToAM = model.rxns;
@@ -68,36 +69,37 @@ end
 if nargin < 5 || isempty(hMapping)
     hMapping = true;
 end
-if nargin < 6 || isempty(maxTime)
-    maxTime = 1800;
+if nargin < 6 || isempty(onlyUnmapped)
+    onlyUnmapped = false;
 end
-if nargin < 7 || isempty(standariseRxn)
-    standariseRxn = true;
-end
-if exist('rtdDir','var')
-    rtdDir = [pwd filesep];
-else
-    % Make sure input path ends with directory separator
-    rtdDir = [regexprep(rdtDir,'(/|\\)$',''), filesep];
-end
+
+maxTime = 1800;
+
+% Check if JAVA is installed
+[javaInstalled, ~] = system('java');
+
 % Generating new directories
-if ~exist([outputDir filesep 'rxnFiles'],'dir')
-    mkdir([outputDir filesep 'rxnFiles'])
+if ~exist([rxnDir filesep 'unMapped'],'dir')
+    mkdir([rxnDir filesep 'unMapped'])
 end
-if ~exist([outputDir filesep 'atomMapped'],'dir')
-    mkdir([outputDir filesep 'atomMapped'])
-end
-if ~exist([outputDir filesep 'images'],'dir')
-    mkdir([outputDir filesep 'images'])
-end
-if ~exist([outputDir filesep 'txtData'],'dir')
-    mkdir([outputDir filesep 'txtData'])
+if javaInstalled && ~onlyUnmapped
+    if ~exist([rxnDir filesep 'atomMapped'],'dir')
+        mkdir([rxnDir filesep 'atomMapped'])
+    end
+    if ~exist([rxnDir filesep 'images'],'dir')
+        mkdir([rxnDir filesep 'images'])
+    end
+    if ~exist([rxnDir filesep 'txtData'],'dir')
+        mkdir([rxnDir filesep 'txtData'])
+    end
 end
 
 % Download the RDT algorithm, if it is not present in the output directory
-if exist([rdtDir filesep 'rdtAlgorithm.jar'])~=2
-    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[rdtDir filesep 'rdtAlgorithm.jar']);
-    %urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
+    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+    % Previous releases:
+    %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+    %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
 end
 
 % Delete the protons (hydrogens) for the metabolic network
@@ -114,20 +116,20 @@ if ~hMapping && isfield(model,'metFormulas')
     model.S = S;
 end
 
-
 % Format inputs
 mets = model.mets;
 fmets = regexprep(mets, '(\[\w\])', '');
 rxns = rxnsToAM;
+rxnsInModel = model.rxns;
 clear model
 
 % Get list of MOL files
 d = dir(molFileDir);
 d = d(~[d.isdir]);
 aMets = {d.name}';
-aMets = aMets(~cellfun('isempty',regexp(aMets,'(\.mol)$')));
+aMets = aMets(~cellfun('isempty', regexp(aMets,'(\.mol)$')));
 % Identifiers for atom mapped reactions
-aMets = regexprep(aMets, '(\.mol)$','');
+aMets = regexprep(aMets, '(\.mol)$', '');
 assert(~isempty(aMets), 'MOL files directory is empty or nonexistent.');
 
 % Extract MOL files
@@ -140,72 +142,203 @@ fprintf('\n\nGenerating RXN files.\n');
 % Create the RXN files. Three conditions are required: 1) To have all the
 % MOL files in the reaction, 2) No exchange reactions, 3) Only integers in
 % the stoichiometry
-for i=1:length(rxns)
-    a = ismember(regexprep(mets(find(S(:,i))), '(\[\w\])', ''), aMets);
-    s = S(find(S(:, i)), i);
-    if all(a(:) > 0) && length(a) ~= 1 && all(abs(round(s) - s) < (1e-2))
-        writeRxnfile(S(:, i), mets, fmets, molFileDir, rxns{i}, [outputDir...
-            filesep 'rxnFiles' filesep])
+rxnFilesWrittenBool = false(length(rxns), 1);
+for i = 1:length(rxns)
+    rxnBool = ismember(rxnsInModel, rxns{i});
+    metsInRxns = ismember(fmets(find(S(:, rxnBool))), aMets);
+    stoichiometry = S(find(S(:, rxnBool)), rxnBool);
+    if ~any(~metsInRxns) && length(metsInRxns) > 1 && all(abs(round(stoichiometry) - stoichiometry) < (1e-2))
+        writeRxnfile(S(:, rxnBool), mets, fmets, molFileDir, rxns{i}, [rxnDir...
+            filesep 'unMapped' filesep])
+        rxnFilesWrittenBool(i) = true;
     end
 end
+atomMappingReport.rxnFilesWritten = rxns(rxnFilesWrittenBool);
+
+% Get list of new RXN files
+d = dir([rxnDir filesep 'unMapped' filesep]);
+d = d(~[d.isdir]);
+aRxns = regexprep({d.name}', '.rxn', '');
+assert(~isempty(aRxns), 'No rxn file was written.');
+rxnsToAM = rxnsToAM(ismember(rxnsToAM, aRxns));
+
+mappedBool = false(length(rxnsToAM), 1);
 
 % Atom map RXN files
-fnames = dir([outputDir filesep 'rxnFiles' filesep '*.rxn']);
-fprintf('Computing atom mappings for %d reactions.\n\n', length(fnames));
-
-% Start from the lighter RXN to the heavier
-[~,bytes] = sort([fnames.bytes]);
-counterBalanced = 0;
-counterNotMapped = 0;
-counterUnbalanced = 0;
-for i=1:length(fnames)
-    name = [outputDir 'rxnFiles' filesep fnames(bytes(i)).name];
-    command = ['timeout ' num2str(maxTime) 's java -jar ' rdtDir filesep 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
-    if ismac
-        command = ['g' command];
-    end
-    [status, result] = system(command);
-    if status ~= 0
-        fprintf(result);
-        error('Command %s could not be run.\n', command);
+if javaInstalled == 1 && ~onlyUnmapped
+    fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
+    for i = 1:length(rxnsToAM)
+        
+        name = [rxnDir 'unMapped' filesep rxnsToAM{i} '.rxn'];
+        command = ['timeout ' num2str(maxTime) 's java -jar ' rxnDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
+        
+        if ismac
+            command = ['g' command];
+        end
+        [status, result] = system(command);
+        if contains(result, 'file not found!')
+            warning(['The file ' name ' was not found'])
+        end
+        if ~status
+            fprintf(result);
+            error('Command %s could not be run.\n', command);
+        end
+        mNames = dir('ECBLAST_*');
+        if length(mNames) == 3
+            name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
+            cellfun(@movefile, {mNames.name}, name)
+            cellfun(@movefile, name, {[rxnDir 'images'], [rxnDir...
+                'atomMapped'], [rxnDir 'txtData']})
+            mappedBool(i) = true;
+        elseif ~isempty(mNames)
+            delete(mNames.name)
+        end
+        
     end
     
-    mNames = dir('ECBLAST_*');
-    if length(mNames) == 3
-        name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
-        cellfun(@movefile, {mNames.name}, name)
-        cellfun(@movefile, name, {[outputDir 'images'], [outputDir...
-            'atomMapped'], [outputDir 'txtData']})
-    elseif ~isempty(mNames)
-        delete(mNames.name)
-        counterNotMapped = counterNotMapped + 1;
-    else
-        counterNotMapped = counterNotMapped + 1;
-    end
-end
-
-% Standarize reactions
-if standariseRxn == true
-    fnames = dir([outputDir filesep 'atomMapped' filesep '*.rxn']);
-    for i = 1:length(fnames)
-        standardised = canonicalRxn(fnames(i).name, [outputDir...
-            'atomMapped'], [outputDir 'rxnFiles']);
-        if standardised
-            counterBalanced = counterBalanced + 1;
-            standardisedRxns{counterBalanced} = regexprep(fnames(i).name, '.rxn', '');
-        else
-            counterUnbalanced = counterUnbalanced + 1;
+    mappedRxns = rxnsToAM(mappedBool);
+    atomMappingReport.mappedRxns = mappedRxns;
+    
+    delete([rxnDir 'rdtAlgorithm.jar'])
+    
+    for i = 1:length(mappedRxns)
+        
+        name = [mappedRxns{i} '.rxn'];
+        
+        % Add header
+        mappedFile = regexp(fileread([rxnDir 'atomMapped' filesep name]), '\n', 'split')';
+        standardFile = regexp(fileread([rxnDir 'unMapped' filesep name]), '\n', 'split')';
+        mappedFile{2} = standardFile{2};
+        mappedFile{3} = ['COBRA Toolbox v3.0 - Atom mapped - ' datestr(datetime)];
+        mappedFile{4} = standardFile{4};
+        
+        formula = strsplit(mappedFile{4}, {'->', '<=>'});
+        
+        substratesFormula = strtrim(strsplit(formula{1}, '+'));
+        % Check if a metabolite is repeated in the substrates formula
+        repMetsSubInx = find(~cellfun(@isempty, regexp(substratesFormula, ' ')));
+        if ~isempty(repMetsSubInx)
+            for j = 1:length(repMetsSubInx)
+                metRep = strsplit(substratesFormula{repMetsSubInx(j)});
+                timesRep = str2double(metRep{1});
+                metRep = metRep{2};
+                substratesFormula{repMetsSubInx(j)} = strjoin(repmat({metRep}, [1 timesRep]));
+            end
+            substratesFormula = strsplit(strjoin(substratesFormula));
         end
+        
+        productsFormula = strtrim(strsplit(formula{2}, '+'));
+        % Check if a metabolite is repeated in the products formula
+        repMetsProInx = find(~cellfun(@isempty, regexp(productsFormula, ' ')));
+        if ~isempty(repMetsProInx)
+            for     j = 1:length(repMetsProInx)
+                metRep = strsplit(productsFormula{repMetsProInx(j)});
+                timesRep = str2double(metRep{1});
+                metRep = metRep{2};
+                productsFormula{repMetsProInx(j)} = strjoin(repmat({metRep}, [1 timesRep]));
+            end
+            productsFormula = strsplit(strjoin(productsFormula));
+        end
+        
+        % RXN file data
+        begmol = strmatch('$MOL', mappedFile);
+        noOfMolSubstrates = str2double(mappedFile{5}(1:3));
+        substratesMol = mappedFile(begmol(1:noOfMolSubstrates) + 1)';
+        noOfMolProducts = str2double(mappedFile{5}(4:6));
+        productsMol = mappedFile(begmol(noOfMolSubstrates + 1:noOfMolSubstrates + noOfMolProducts) + 1)';
+        
+        % Formula data
+        noOfsubstrates = numel(substratesFormula);
+        noOfproducts = numel(productsFormula);
+        
+        % Check if the stoichemestry is correct
+        if ~isequal(noOfsubstrates, substratesMol) || ~isequal(noOfproducts, productsMol)
+            mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, rxnDir);
+        end
+        % Rewrite the file
+        fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
+        fprintf(fid2, '%s\n', mappedFile{:});
+        fclose(fid2);
     end
 else
-    standardisedRxns = [];
-    counterUnbalanced = length(dir([outputDir 'atomMapped' filesep '*.rxn']));
+    atomMappingReport.mappedRxns = [];
 end
 
-fprintf('\n%d reactions were atom mapped\n', length(dir([outputDir 'atomMapped' filesep '*.rxn'])));
-fprintf('%d reactions are not standardised\n', counterUnbalanced);
-fprintf('%d reactions were not mapped\n\n\n', counterNotMapped);
+% fprintf('\n%d reactions were atom mapped\n', length(dir([outputDir 'atomMapped' filesep '*.rxn'])));
+% fprintf('%d reactions are not standardised\n', counterUnbalanced);
+% fprintf('%d reactions were not mapped\n\n\n', counterNotMapped);
+%
+% fprintf('RDT algorithm was developed by:\n');
+% fprintf('SA Rahman et al.: Reaction Decoder Tool (RDT): Extracting Features from Chemical\n');
+% fprintf('Reactions, Bioinformatics (2016), doi: 10.1093/bioinformatics/btw096\n');
+end
 
-fprintf('RDT algorithm was developed by:\n');
-fprintf('SA Rahman et al.: Reaction Decoder Tool (RDT): Extracting Features from Chemical\n');
-fprintf('Reactions, Bioinformatics (2016), doi: 10.1093/bioinformatics/btw096\n');
+
+function newFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, outputDir)
+% Function to sort the metabolites as in the model's stoichiometry
+
+begmol = strmatch('$MOL', mappedFile);
+
+% Check if bondless atoms were divided
+if numel(substratesFormula) ~= numel(substratesMol) || numel(productsFormula) ~= numel(productsMol)
+    
+    if ~exist([outputDir filesep 'atomMapped' filesep 'toFix'],'dir')
+        mkdir([outputDir filesep 'atomMapped' filesep 'toFix'])
+    end
+    copyfile([outputDir filesep 'atomMapped' filesep mappedFile{2} '.rxn'], [outputDir filesep 'atomMapped' filesep 'toFix'])
+    newFile(1:5, 1) = mappedFile(1:5);
+else
+    
+    newFile(1:5, 1) = mappedFile(1:5);
+    
+    %%% Sort substrates
+    [~,idm] = sort(substratesMol);
+    [~,ids] = sort(substratesFormula);
+    [~,ids] = sort(ids);
+    indexes = idm(ids);
+    
+    % Save each metabolite
+    for k = 1:numel(substratesFormula)
+        lineInMol = 1;
+        eval(sprintf('molS%d{%d} = mappedFile{begmol(%d)};', k, lineInMol, k))
+        while ~isequal(mappedFile{begmol(k) + lineInMol}, 'M  END')
+            eval(sprintf('molS%d{%d + 1} = mappedFile{begmol(%d) + %d};', k, lineInMol, k, lineInMol))
+            lineInMol = lineInMol + 1;
+        end
+        eval(sprintf('molS%d{%d + 1} = ''M  END'';', k, lineInMol))
+    end
+    % From the start of the mol files
+    c = 5;
+    for k = 1:numel(substratesFormula)
+        eval(sprintf('noOfLines = numel(molS%d);', indexes(k)))
+        for j = 1:noOfLines
+            c = c + 1;
+            eval(sprintf('newFile{%d} = molS%d{%d};', c, indexes(k), j))
+        end
+    end
+    
+    %%% Sort products
+    [~,idmp] = sort(productsMol);
+    [~,idp] = sort(productsFormula);
+    [~,idp] = sort(idp);
+    indexes = idmp(idp);
+    
+    for i = numel(substratesFormula) + 1:numel(substratesFormula) + numel(productsFormula)
+        lineInMol=1;
+        eval(sprintf('molP%d{%d} = mappedFile{begmol(%d)};', i - numel(substratesFormula), lineInMol, i))
+        while ~isequal(mappedFile{begmol(i) + lineInMol}, 'M  END')
+            eval(sprintf('molP%d{%d + 1} = mappedFile{begmol(%d) + %d};', i - numel(substratesFormula), lineInMol, i, lineInMol))
+            lineInMol = lineInMol + 1;
+        end
+        eval(sprintf('molP%d{%d + 1} = ''M  END'';', i - numel(substratesFormula), lineInMol))
+    end
+    for i = numel(substratesFormula) + 1:numel(substratesFormula) + numel(productsFormula)
+        molName = regexprep(productsFormula{i - numel(substratesFormula)}, '\[|\]', '_');
+        eval(sprintf('noOfLines = numel(molP%d);', indexes(i - numel(substratesFormula))))
+        for j = 1:noOfLines
+            c = c + 1;
+            eval(sprintf('newFile{%d} = molP%d{%d};', c, indexes(i - numel(substratesFormula)), j))
+        end
+    end
+end
+end

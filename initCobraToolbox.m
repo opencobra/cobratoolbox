@@ -229,6 +229,7 @@ elseif status_curl == 0
     % reset each submodule
     %https://github.com/bazelbuild/continuous-integration/issues/727
     %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive "git reset --hard"'); % [opencobra/cobratoolbox] Matlab installation error (#1490)
     %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
     
 %     if status_gitReset ~= 0

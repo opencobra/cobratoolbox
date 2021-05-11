@@ -1,5 +1,5 @@
 function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
-% MgPipe is a MATLAB based pipeline to integrate microbial abundances
+% mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
 % The pipeline is divided in 3 parts:
@@ -9,7 +9,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % integrating abundance data retrieved from metagenomics. For each organism,
 % reactions are coupled to the objective function.
 % [PART 3] Simulations under different diet regimes.
-% MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
+% mgPipe was created (and tested) for AGORA 1.0 please first download AGORA
 % version 1.0 from https://www.vmh.life/#downloadview and place the mat files
 % into a folder.
 %
@@ -28,7 +28,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux:     double with the desired flux through the host
 %                            biomass reaction (default: zero)
-%    objre:                  char with reaction name of objective function of microbeNames
+%    objre:                  char with reaction name of objective function
 %    buildSetupAll:       	 boolean indicating the strategy that should be used to
 %                            build personalized models: if true, build a global setup model
 %                            containing all organisms in at least model (default), false: create
@@ -65,11 +65,14 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %   - Almut Heinken, 01/21: added option for creation of each personalized model separately
 
 %% PIPELINE: [PART 1]
+<<<<<<< HEAD
 % The number of microbeNames, their names, the number of samples and their identifiers
 % are automatically detected from the input file.
 
 [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
 %%
+=======
+>>>>>>> upstream/develop
 % If PART1 was already
 % computed: if the associated file is already present in the results folder its
 % execution is skipped else its execution starts
@@ -93,6 +96,7 @@ if isempty(mapP)
         end
     end
     
+<<<<<<< HEAD
     % Computing reaction abundance
     ReactionAbundance = calculateReactionAbundance(abunFilePath, modPath, {}, {}, numWorkers, 0);
     writetable(cell2table(ReactionAbundance.('Total')'),[resPath filesep 'reactions.csv'], 'WriteVariableNames', false);
@@ -111,6 +115,63 @@ save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'sampNames', 'microbeNam
 % [PCoA]=plotMappingInfo(resPath,patOrg,reacPat,reacTab,reacNumber,infoFilePath,figForm,sampNames,microbeNames);
 
 % save([resPath filesep 'mapInfo.mat'],'binOrg', 'mapP', 'exMets', 'micRea', 'patOrg', 'PCoA', 'reac', 'reacAbun', 'reacNumb', 'reacNumber', 'reacPat', 'reacSet', 'reacTab', 'sampNames', 'microbeNames')
+=======
+    abundance = table2cell(readtable(abunFilePath));
+    
+    % The number of microbeNames, their names, the number of samples and their identifiers
+    % are automatically detected from the input file.
+    [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
+    
+    % remove rows of organisms that are not present in any sample
+    microbeNames(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    
+    % Extracellular spaces simulating the lumen are built and stored for
+    % each microbe.
+    [exch,modelStoragePath]=buildModelStorage(microbeNames,modPath);
+    
+    % Computing reaction presence
+    ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
+    writetable(cell2table(ReactionPresence),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
+
+    % Computing reaction abundance
+    ReactionAbundance = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
+    writetable(cell2table(ReactionAbundance'),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
+    
+    % Computing subsystem abundance
+    subsystemAbundance = calculateSubsystemAbundance([resPath filesep 'ReactionAbundance.csv']);
+    writetable(cell2table(subsystemAbundance),[resPath filesep 'SubsystemAbundance.csv'], 'WriteVariableNames', false);
+
+    % plot subsystem abundance
+    data=cell2mat(subsystemAbundance(2:end,2:end));
+    xlabels=subsystemAbundance(1,2:end);
+    ylabels=subsystemAbundance(2:end,1);
+    figure;
+    imagesc(data)
+    colormap('hot')
+    colorbar
+    if length(xlabels)<30
+        set(gca,'xtick',1:length(xlabels));
+        xticklabels(xlabels);
+        xtickangle(90)
+    end
+    set(gca,'ytick',1:length(ylabels));
+    yticklabels(ylabels);
+    ax=gca;
+    
+    if length(ylabels)<50
+        ax.YAxis.FontSize = 8;
+    else
+        ax.YAxis.FontSize = 6;
+    end
+    set(gca,'TickLabelInterpreter', 'none');
+    title('Relative reaction abundances summarized by subsystem')
+    print(strcat(resPath, 'Subsystem_abundances'), figForm)
+    
+    % save mapping info
+    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'exch', 'sampNames', 'microbeNames', 'modelStoragePath','abundance','-v7.3')
+end
+>>>>>>> upstream/develop
 
 %end of trigger for Autoload
 %% PIPELINE: [PART 2.1]
@@ -162,16 +223,19 @@ end
 % are also added. Models that are already existent will not be recreated, and
 % new microbiota models will be saved in the results folder.
 
-abundance = table2cell(readtable(abunFilePath));
-
-% remove rows of organisms that are not present in any sample
-abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
 
 % if there is 500 reconstruction total or less, use fast setup creator to
 % carve each personalized model from one large setup model.
 if buildSetupAll
     if modbuild == 1
-        setup=fastSetupCreator(modPath, microbeNames, host, objre, numWorkers);
+        setup=fastSetupCreator(exch, modelStoragePath, microbeNames, host, objre, buildSetupAll);
         setup.name='Global reconstruction with lumen / fecal compartments no host';
         setup.recon=0;
         if ~isempty(host)
@@ -196,28 +260,31 @@ else
     % define what counts as zero abundance
     tol=0.0000001;
     
-    for i=1:length(sampNames)
-        % Here, we will not be starting from one joined model containing all
-        % reconstructions. Instead, each personalized model will be created separately.)
-        % get the list of models for each sample and remove the ones not in
-        % this sample
-        
-        % retrieving current model ID
-        if ~isempty(host)
-            mId = ['host_microbiota_model_samp_', sampNames{i,1}, '.mat'];
+    clear('microbeNames','exMets','abundance')
+    
+    steps=50;
+    % proceed in batches for improved effiency
+    for j=1:steps:length(sampNames)
+        if length(sampNames)-j>=steps-1
+            endPnt=steps-1;
         else
-            mId = ['microbiota_model_samp_', sampNames{i,1}, '.mat'];
+            endPnt=length(sampNames)-j;
         end
         
-        % if the model doesn't exist yet
-        mapP = detectOutput(resPath, mId);
-        if isempty(mapP)
-            microbeNamesSample = microbeNames;
-            abunRed=abundance(:,i+1);
-            abunRed=[abundance(:,1),abunRed];
+        parfor i=j:j+endPnt
+            % Here, we will not be starting from one joined model containing all
+            % reconstructions. Instead, each personalized model will be created separately.)
+            % get the list of models for each sample and remove the ones not in
+            % this sample
+            mappingData=load([resPath filesep 'mapInfo.mat'])
+            microbeNamesSample = mappingData.microbeNames;
+            abunRed=mappingData.abundance(:,i+1);
+            abunRed=[mappingData.abundance(:,1),abunRed];
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-            setupModel = fastSetupCreator(modPath, microbeNamesSample, host, objre, numWorkers);
+            setupModel = fastSetupCreator(exch, modelStoragePath, microbeNamesSample, host, objre, buildSetupAll);
+            
+            % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,host,hostBiomassRxn);
         end
     end
@@ -230,13 +297,16 @@ end
 % analysis for all the exchange reactions of the diet and fecal compartment is
 % also computed and saved in a file called "simRes".
 
-[exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
-% Finally, NMPCs (net maximal production capability) are computed in a metabolite
-% resolved manner and saved in a comma delimited file in the results folder. NMPCs
-% indicate the maximal production of each metabolite and are computing summing
-% the maximal secretion flux with the maximal uptake flux. Similarity of metabolic
-% profiles (using the different NMPCs as features) between individuals are also
-% evaluated with classical multidimensional scaling.
+load([resPath filesep 'mapInfo.mat'])
+if computeProfiles || saveConstrModels
+    [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+    % Finally, NMPCs (net maximal production capability) are computed in a metabolite
+    % resolved manner and saved in a comma delimited file in the results folder. NMPCs
+    % indicate the maximal production of each metabolite and are computing summing
+    % the maximal secretion flux with the maximal uptake flux. Similarity of metabolic
+    % profiles (using the different NMPCs as features) between individuals are also
+    % evaluated with classical multidimensional scaling.
+end
 
 if computeProfiles
     [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, netProduction, netUptake, figForm);
@@ -245,6 +315,7 @@ else
     netUptakeFluxes={};
     Y=[];
     delete('simRes.mat','intRes.mat')
+    rmdir([resPath filesep 'modelStorage'],'s')
 end
 
 % get stats on microbiome models-number of reactions and metabolites

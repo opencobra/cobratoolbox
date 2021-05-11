@@ -46,3 +46,6 @@
 	path = external/base/samplers/looplessFluxSampler
 	url = https://github.com/rmtfleming/looplessFluxSampler
 	ignore = dirty
+[submodule "external/base/utilities/condalab"]
+	path = external/base/utilities/condalab
+	url = https://github.com/sg-s/condalab

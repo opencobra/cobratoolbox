@@ -38,6 +38,14 @@ inchiStruct.standardWithStereo = cell(size(mets));
 inchiStruct.standardWithStereoAndCharge = cell(size(mets));
 inchiStruct.nonstandard = cell(size(mets));
 
+%populate with empty string by default
+for i=1:length(inchiStruct.standard)
+    inchiStruct.standard{i,1} = '';
+    inchiStruct.standardWithStereo{i,1} = '';
+    inchiStruct.standardWithStereoAndCharge{i,1} = '';
+    inchiStruct.nonstandard{i,1} = '';
+end
+
 molBool = false(length(mets),1);
 if isempty(sdfFileName)
     % create inchi from individual mol files
@@ -53,11 +61,6 @@ if isempty(sdfFileName)
             inchiStruct.standardWithStereo{i,1} = mol2inchi(molFileName, '-xtT/noiso/nochg');
             inchiStruct.standardWithStereoAndCharge{i,1} = mol2inchi(molFileName, '-xtT/noiso');
             inchiStruct.nonstandard{i,1} = mol2inchi(molFileName, '-xtFT/noiso');
-        else
-            inchiStruct.standard{i,1} = '';
-            inchiStruct.standardWithStereo{i,1} = '';
-            inchiStruct.standardWithStereoAndCharge{i,1} = '';
-            inchiStruct.nonstandard{i,1} = '';
         end
     end
 else
@@ -80,14 +83,21 @@ else
     end
     %  Map InChIs to mets
     for i = 1:length(metList1)
-        inchiStruct.standard(ismember(mets,metList1{i})) = standard(i);
-        inchiStruct.standardWithStereo(ismember(mets,metList1{i})) = standardWithStereo(i);
-        inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i);
-        inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i);
+        inchiStruct.standard(ismember(mets,metList1{i})) = standard(i,1);
+        inchiStruct.standardWithStereo(ismember(mets,metList1{i})) = standardWithStereo(i,1);
+        inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i,1);
+        inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i,1);
     end
     
     molBool = ismember(mets,metList1);
 end
+
+% for i=1:length(inchiStruct.standard)
+%     inchiStruct.standard = erase(inchiStruct.standard{i,1},'''');
+%     inchiStruct.standardWithStereo = erase(inchiStruct.standardWithStereo{i,1},'''');
+%     inchiStruct.standardWithStereoAndCharge = erase(inchiStruct.standardWithStereoAndCharge{i,1},'''');
+%     inchiStruct.nonstandard = erase(inchiStruct.nonstandard{i,1},'''');
+% end
 
 
 
