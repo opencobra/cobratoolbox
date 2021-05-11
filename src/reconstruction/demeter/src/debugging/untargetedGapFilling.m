@@ -82,7 +82,10 @@ elseif strcmp(osenseStr,'min')
     model.ub(find(model.c))=-tol;
 end
 FBA = optimizeCbModel(model);
-if FBA.origStat ==3 % cannot produce biomass
+
+% check if the model cannot produce biomass
+
+if FBA.stat ==3 || FBA.stat ==0
     
     % remove reactions already in model
     [C]=intersect(rBioNetDB.rxns,model.rxns);
@@ -94,7 +97,7 @@ if FBA.origStat ==3 % cannot produce biomass
     modelExpanded = changeObjective(modelExpanded,targetRxn);
     FBA2 = optimizeCbModel(modelExpanded);
     
-    if FBA2.origStat == 1 && abs(FBA2.f) > 0  % feasible non-zero solution found
+    if FBA2.stat == 1 && abs(FBA2.f) > 0  % feasible non-zero solution found
         % now identify the minimum number of reactions to be added
         % 1. set all rBioNet reaction to 0
         % therefore find all reactions in rBioNetDB but not in model
@@ -140,7 +143,7 @@ if FBA.origStat ==3 % cannot produce biomass
         % run relaxed FBA
         try
             [solution, relaxedModel] = relaxedFBA(modelExpanded, param);
-%             FBA2 = optimizeCbModel(relaxedModel);
+            %             FBA2 = optimizeCbModel(relaxedModel);
             %         while FBA2.origStat ==3 % cannot produce biomass
             %             % repeat relaxFBA this time with the relaxed model
             %             [solution, relaxedModel] = relaxedFBA(relaxedModel, param);

@@ -69,7 +69,7 @@ modelList(IA,:)=[];
 
 % define the intervals in which the computations will be performed
 if length(modelList)>5000
-    steps=2000;
+    steps=1000;
 elseif length(modelList)>200
     steps=200;
 else

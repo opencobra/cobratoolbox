@@ -218,9 +218,7 @@ for i=1:steps:length(models)
             % save translated version of the draft model as a mat file, otherwise keep the orinal mat file
             model=draftModelsTmp{j};
             writeCbModel(model, 'format', 'mat', 'fileName', [translatedDraftsFolder filesep outputFileNamesTmp{j,1}]);
-        else
-            copyfile([folders{j} filesep models{j} '.mat'],[translatedDraftsFolder filesep outputFileNamesTmp{j,1} '.mat']);
-        end
+         end
         summaries.(['m_' outputFileNamesTmp{j,1}])=summariesTmp{j};
     end
     save([summaryFolder filesep 'summaries_' reconVersion],'summaries');
@@ -262,7 +260,9 @@ for i=1:length(pipelineFields)
     else
         spreadsheet=cell2table(pipelineSummary.(pipelineFields{i}));
     end
-    writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    if size(spreadsheet,2)>1
+        writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    end
 end
 
 % delete unneeded files

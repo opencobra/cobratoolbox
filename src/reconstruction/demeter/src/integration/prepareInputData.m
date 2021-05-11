@@ -99,7 +99,7 @@ for i=1:length(inputDataToCheck)
     
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1),'stable');
-    propagatedData(IA(2:end),:) = [];
+    propagatedData(IA,:) = [];
     
     writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end

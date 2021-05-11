@@ -21,7 +21,13 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
+try
+    infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
+catch
+    % if the input file is not a text file
+    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+end
+
 infoFile = table2cell(infoFile);
 if ~any(strcmp(infoFile(:,1),microbeID))
     warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
@@ -81,9 +87,9 @@ for i=1:length(essentialRxns)
 end
 
 %% prepare summary file
-summary.('condGF') = {};
-summary.('targetGF') = {};
-summary.('relaxGF') = {};
+summary.('conditionSpecificGapfill') = {};
+summary.('targetedGapfill') = {};
+summary.('relaxFBAGapfill') = {};
 
 %% Refinement steps
 % The following sections include the various refinement steps of the pipeline.
@@ -119,9 +125,9 @@ summary.('resolveBlocked') = resolveBlocked;
 
 % run gapfilling tools to enable biomass production
 [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
-summary.('condGF') = union(summary.('condGF'),condGF);
-summary.('targetGF') = union(summary.('targetGF'),targetGF);
-summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 
 %% Anaerobic growth-may need to run twice
 
@@ -142,16 +148,18 @@ if AnaerobicGrowth(1,2) < tol
     % run gapfilling tools to enable biomass production if no growth on
     % complex medium
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
-    summary.('condGF') = union(summary.('condGF'),condGF);
-    summary.('targetGF') = union(summary.('targetGF'),targetGF);
-    summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+    summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+    summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+    summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 end
 
 %% Stoichiometrically balanced cycles
 
-[model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
-summary.('balancedCycle_addedRxns') = unique(addedRxns);
-summary.('balancedCycle_deletedRxns') = unique(deletedRxns);
+[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database);
+summary.('futileCycles_addedRxns') = unique(addedRxns);
+summary.('futileCycles_deletedRxns') = unique(deletedRxns);
+summary.('futileCycles_gapfilledRxns') = unique(gfRxns);
+
 
 %% Remove unneeded reactions
 % Delete gap-filled reactions by KBase/ ModelSEED that are no longer needed
@@ -176,9 +184,9 @@ for i=1:2
         model = useDiet(model,constraints);
         % run gapfilling tools to enable biomass production
         [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
-        summary.('condGF') = union(summary.('condGF'),condGF);
-        summary.('targetGF') = union(summary.('targetGF'),targetGF);
-        summary.('relaxGF') = union(summary.('relaxGF'),relaxGF);
+        summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+        summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+        summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
     end
     
     if AnaerobicGrowth(1,1) < tol
@@ -269,6 +277,10 @@ if growsOnDefinedMedium==0
     end
 end
 
+%% debug models that cannot grow if coupling constraints are implemented (rare cases)
+[model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database);
+summary.('addedCouplingRxns') = addedCouplingRxns;
+
 %% remove futile cycles if any remain
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAnaerobic>100
@@ -276,14 +288,26 @@ if atpFluxAnaerobic>100
     % cases -> need to use the constrained model as input
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
     if growsOnDefinedMedium==1
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
+        [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
     else
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+        [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database);
     end
-    summary.('balancedCycle_addedRxns') = union(summary.('balancedCycle_addedRxns'),unique(addedRxns));
-    summary.('balancedCycle_deletedRxns') = union(summary.('balancedCycle_deletedRxns'),unique(deletedRxns));
+    summary.('futileCycles_addedRxns') = union(summary.('futileCycles_addedRxns'),unique(addedRxns));
+    summary.('futileCycles_deletedRxns') = union(summary.('futileCycles_deletedRxns'),unique(deletedRxns));
+    summary.('futileCycles_gapfilledRxns') = union(summary.('futileCycles_gapfilledRxns'),unique(gfRxns));
 end
 
+%% perform growth gap-filling if still needed
+[AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
+if AerobicGrowth(1,2) < tol
+    % apply complex medium
+    model = useDiet(model,constraints);
+    % run gapfilling tools to enable biomass production
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
+    summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+    summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+    summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
+end
 %% remove duplicate reactions-needs repetition for some microbes
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
@@ -293,6 +317,7 @@ if growsOnDefinedMedium==1
 else
     modelTest = useDiet(model,constraints);
 end
+
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelTest);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
@@ -300,17 +325,22 @@ if FBA.f > tol
     summary.('deletedDuplicateRxns') = model.rxns(removedRxnInd);
     model=modelRD;
 else
+    modelTest=model;
+    toRM={};
     for j=1:length(removedRxnInd)
-        modelTest=removeRxns(model,model.rxns(removedRxnInd(j)));
-        modelTest = useDiet(modelTest,constraints);
-        FBA=optimizeCbModel(modelTest,'max');
+        modelRD=removeRxns(modelTest,model.rxns(removedRxnInd(j)));
+        modelRD = useDiet(modelRD,constraints);
+        FBA=optimizeCbModel(modelRD,'max');
         if FBA.f > tol
-            model =  removeRxns(model,model.rxns{removedRxnInd(j)});
-            summary.('deletedDuplicateRxns') = union(summary.('deletedDuplicateRxns'),model.rxns{removedRxnInd(j)});
+            modelTest=removeRxns(modelTest, model.rxns{removedRxnInd(j)});
+            toRM{j}=model.rxns{removedRxnInd(j)};
         else
-            summary.('deletedDuplicateRxns') = union(summary.('deletedDuplicateRxns'),model.rxns{keptRxnInd(j)});
+            modelTest=removeRxns(modelTest, model.rxns{keptRxnInd(j)});
+            toRM{j}=model.rxns{keptRxnInd(j)};
         end
     end
+    summary.('deletedDuplicateRxns') =union(summary.('deletedDuplicateRxns'),toRM);
+    model=removeRxns(model,toRM);
 end
 
 %% Delete sink for petidoglycan if not needed
@@ -324,9 +354,8 @@ end
 model = addRefinementComments(model,summary);
 
 %% rebuild model
-if 1
-    model = rebuildModel(model,database);
-end
+model = rebuildModel(model,database);
+
 %% constrain sink reactions
 model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 

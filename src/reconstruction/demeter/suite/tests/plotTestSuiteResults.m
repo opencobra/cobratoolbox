@@ -213,6 +213,7 @@ features={
     'PutrefactionPathways'
     'Secretion_products'
     'Metabolite_uptake'
+    'AromaticAminoAcidDegradation'
     'Bile_acid_biosynthesis'
     'Drug_metabolism'
     'growsOnDefinedMedium'

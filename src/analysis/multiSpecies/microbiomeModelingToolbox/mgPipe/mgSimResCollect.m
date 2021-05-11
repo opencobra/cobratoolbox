@@ -130,6 +130,7 @@ for j = init:fl
         if patStat == 0
             % catch if there are too few individuals to plot
             if ~isempty(Y)
+                figure
                 plot(Y(:, 1), Y(:, 2), 'bx')
                 xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
