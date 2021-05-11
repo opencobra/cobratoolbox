@@ -105,6 +105,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'g1p[c]', {'G16BPS','G1PP','G1PPT'}, {'G1PACT','UAGDP'}
     'gam[c]', '', {'GF6PTA'}
     'g1p[c]', {'G1PACT','UAGDP','HEX10','G6PDA'}, {'GF6PTA'}
+    'g1p[c]', '', {'G16BPS','G1PPi','G1PPT','G1PACT','UAGDP'}
     'nadp[c]', 'EX_nadp(e)', {'NADK'}
     'no2[c]', 'NTRIR4', {'EX_no2(e)','NO2t2'}
     '4ppcys[c]', '', {'PNTK','EX_pnto_R(e)','PNTOabc','EX_cys_L(e)','CYSt2r'}

@@ -4,7 +4,7 @@ function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,mod
 %
 % USAGE:
 %
-%   [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath)
+%   [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,modPath)
 %
 % INPUTS:
 %   abunFilePath:      char with path and name of file from which to retrieve information

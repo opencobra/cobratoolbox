@@ -62,13 +62,15 @@ modelStats(2:end,2:3)=num2cell(data);
 
 % create violin plot of model stats
 if nargin <3
-    % have reactions and emtabolites in one plot
-    figure
-    violinplot(data,{'Reactions','Metabolites'});
-    set(gca, 'FontSize', 12)
-    box on
-    title('Reaction and metabolite numbers in microbiome models')
-    print('MicrobiomeModel_Sizes','-dpng','-r300')
+    % have reactions and metabolites in one plot
+    try
+        figure
+        violinplot(data,{'Reactions','Metabolites'});
+        set(gca, 'FontSize', 12)
+        box on
+        title('Reaction and metabolite numbers in microbiome models')
+        print('MicrobiomeModel_Sizes','-dpng','-r300')
+    end
     
 else
     % perform statistical analysis if file with stratification is provided
