@@ -133,7 +133,7 @@ if find(strcmp(infoFile(:,1),microbeID))
         archaealRxns={'AGAIAGT','ATIH','AGAID','ASD','ATSH','CDGGGSAT','CDGGGPP3','CDGGGS','DGGGPS','GGGPS','HASD','HATSH','CDGGGSAT2','CDGGGPP4','DGGPGP2','HATGH','CDGGGS2','DGGGPS2','FRTT2','GRTT2','DMATT2','DPMVD2','ATGH','DGGPGP','HATIH','CDGGIPT','CDGGIPT2','MI1PP','DMATT','FRTT','GRTT','DPMVDc','PMEVKc','MEVK1c','HMGCOARxi','HMGCOAS','ACACT1r','G3PD1','PGMT','MI1PS'};
         for i = 1:length(archaealRxns)
             RxnForm = database.reactions(find(ismember(database.reactions(:, 1), archaealRxns{i})), 3);
-            model = addReaction(model, archaealRxns{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','agoraGapfill');
+            model = addReaction(model, archaealRxns{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','demeterGapfill');
         end
         addedReactionsBiomass=union(addedReactionsBiomass,archaealRxns);
         
@@ -271,7 +271,7 @@ if find(strcmp(infoFile(:,1),microbeID))
                 rxns2Add=setdiff(gramposRxns,model.rxns);
                 for i = 1:length(rxns2Add)
                     RxnForm = database.reactions(find(ismember(database.reactions(:, 1), rxns2Add{i})), 3);
-                    model = addReaction(model, rxns2Add{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','agoraGapfill');
+                    model = addReaction(model, rxns2Add{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','demeterGapfill');
                 end
                 addedReactionsBiomass=union(addedReactionsBiomass,rxns2Add);
                 
@@ -333,7 +333,7 @@ if find(strcmp(infoFile(:,1),microbeID))
                 rxns2Add=setdiff(gramnegRxns,model.rxns);
                 for i = 1:length(rxns2Add)
                     RxnForm = database.reactions(find(ismember(database.reactions(:, 1), rxns2Add{i})), 3);
-                    model = addReaction(model, rxns2Add{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','agoraGapfill');
+                    model = addReaction(model, rxns2Add{i}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','demeterGapfill');
                 end
                 addedReactionsBiomass=union(addedReactionsBiomass,rxns2Add);
                 
