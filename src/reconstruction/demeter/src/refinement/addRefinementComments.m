@@ -63,11 +63,16 @@ for i=1:length(model.grRules)
         model.grRules{i,1}=strrep(model.grRules{i},'demeterGapfill','');
         if ~isempty(find(strcmp(summary.('conditionSpecificGapfill'),model.rxns{i,1})))
             model.comments{i,1}='Added by DEMETER to enable flux with VMH-consistent constraints.';
+            model.rxnConfidenceScores(i,1)=1;
         elseif ~isempty(find(strcmp(summary.('targetedGapfill'),model.rxns{i,1})))
             model.comments{i,1}='Added by DEMETER during targeted gapfilling to enable production of required metabolites.';
+            model.rxnConfidenceScores(i,1)=1;
         elseif ~isempty(find(strcmp(summary.('relaxFBAGapfill'),model.rxns{i,1})))
             model.comments{i}='Added by DEMETER based on relaxFBA. Low confidence level.';
+        elseif ~isempty(find(strcmp(summary.('addedReactionsBiomass'),model.rxns{i,1})))
             model.rxnConfidenceScores(i,1)=1;
+            model.comments{i}='Added by DEMETER to enable synthesis of biomass components according to gram status of the organism.';
+            model.rxnConfidenceScores(i,1)=2;
         end
     end
     if strcmp(model.grRules{i,1},'essentialGapfill')

@@ -105,13 +105,14 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'g1p[c]', {'G16BPS','G1PP','G1PPT'}, {'G1PACT','UAGDP'}
     'gam[c]', '', {'GF6PTA'}
     'g1p[c]', {'G1PACT','UAGDP','HEX10','G6PDA'}, {'GF6PTA'}
+    'g1p[c]', '', {'G16BPS','G1PPi','G1PPT','G1PACT','UAGDP'}
     'nadp[c]', 'EX_nadp(e)', {'NADK'}
     'no2[c]', 'NTRIR4', {'EX_no2(e)','NO2t2'}
     '4ppcys[c]', '', {'PNTK','EX_pnto_R(e)','PNTOabc','EX_cys_L(e)','CYSt2r'}
     'dtdp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'dtmp[c]', '', {'ADK10','DTMPK','NADK2','TMDK1','EX_thymd(e)','THMDt2'}
     'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
-    'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNC','PTPAT'}
+    'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNCL','PTPAT'}
     'PGPm1[c]','',{'sink_PGPm1[c]'}
     };
 
