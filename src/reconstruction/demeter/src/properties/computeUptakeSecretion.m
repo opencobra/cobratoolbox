@@ -11,7 +11,6 @@ function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metLis
 % propertiesFolder      Folder where the retrieved uptake and secretion
 %                       potential will be stored (default: current folder)
 % reconVersion          Name assigned to the reconstruction resource
-%                       (default: "Reconstructions")
 % metList               List of VMH IDs of metabolites to analyze (default:
 %                       all metabolites in reconstruction resource)
 % numWorkers            Number of workers in parallel pool (default: 0)
@@ -168,7 +167,7 @@ if ~isempty(modelList)
             exRxns=intersect(exRxns,allExch);
             
             for k=1:length(exRxns)
-                findInd=find(strcmp(allExch,exRxns{k}));
+                findInd=find(strcmp(uptakeFluxes(1,:),exRxns{k}));
                 uptakeFluxes{plusonerow,findInd}=minFluxes{j}(k);
                 secretionFluxes{plusonerow,findInd}=maxFluxes{j}(k);
             end
