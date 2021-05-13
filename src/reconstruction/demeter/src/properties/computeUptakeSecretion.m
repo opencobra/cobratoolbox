@@ -177,6 +177,11 @@ if ~isempty(modelList)
     end
     
     % save both combined in one file
+     for i=2:size(uptakeFluxes,2)
+        uptakeFluxes{1,i} = [uptakeFluxes{1,i} '_uptake'];
+        secretionFluxes{1,i} = [secretionFluxes{1,i} '_secretion'];
+    end
+    
     UptakeSecretion=secretionFluxes;
     UptakeSecretion(:,size(UptakeSecretion,2)+1:size(UptakeSecretion,2)+length(allExch))=uptakeFluxes(:,2:end);
     writetable(cell2table(UptakeSecretion),[propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
