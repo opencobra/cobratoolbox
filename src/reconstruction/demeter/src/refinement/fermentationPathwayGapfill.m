@@ -161,6 +161,12 @@ for i = 1:length(fpathways)
             addedRxns{length(addedRxns)+1,1} = addRxns{j};
         end
     end
+    
+    % remove transport reactions if alternative was already present
+    if length(intersect(model.rxns,{'FORt','FORt2r'}))==2
+        model=removeRxns(model,'FORt');
+        addedRxns(find(strcmp(addedRxns,'FORt')),:)=[];
+    end
 end
 
 % add conditional reactions-only if necessary

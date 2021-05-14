@@ -32,8 +32,11 @@ cd('tSNE_Plots')
 tol=0.0000001;
 
 % get taxonomical information
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+try
+    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab'));
+catch
+    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false));
+end
 
 % define files to analyze
 analyzedFiles={

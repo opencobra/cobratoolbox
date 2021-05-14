@@ -160,7 +160,6 @@ summary.('futileCycles_addedRxns') = unique(addedRxns);
 summary.('futileCycles_deletedRxns') = unique(deletedRxns);
 summary.('futileCycles_gapfilledRxns') = unique(gfRxns);
 
-
 %% Remove unneeded reactions
 % Delete gap-filled reactions by KBase/ ModelSEED that are no longer needed
 [model,deletedSEEDRxns]=deleteSeedGapfilledReactions(model,biomassReaction);
@@ -287,7 +286,7 @@ if atpFluxAnaerobic>100
     % if models can grow on defined medium, this will be abolishd in some
     % cases -> need to use the constrained model as input
     [growsOnDefinedMedium,constrainedModel] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction,inputDataFolder);
-    if growsOnDefinedMedium==1
+    if isnumeric(growsOnDefinedMedium) && growsOnDefinedMedium==1 
         [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,{},constrainedModel);
     else
         [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database);
