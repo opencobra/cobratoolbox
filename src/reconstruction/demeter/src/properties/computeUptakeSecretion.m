@@ -11,7 +11,6 @@ function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metLis
 % propertiesFolder      Folder where the retrieved uptake and secretion
 %                       potential will be stored (default: current folder)
 % reconVersion          Name assigned to the reconstruction resource
-%                       (default: "Reconstructions")
 % metList               List of VMH IDs of metabolites to analyze (default:
 %                       all metabolites in reconstruction resource)
 % numWorkers            Number of workers in parallel pool (default: 0)
@@ -88,7 +87,7 @@ environment = getEnvironment();
 
 % define the intervals in which the computations will be performed
 if length(modelList)>5000
-    steps=2000;
+    steps=1000;
 elseif length(modelList)>200
     steps=200;
 else
@@ -168,7 +167,7 @@ if ~isempty(modelList)
             exRxns=intersect(exRxns,allExch);
             
             for k=1:length(exRxns)
-                findInd=find(strcmp(allExch,exRxns{k}));
+                findInd=find(strcmp(uptakeFluxes(1,:),exRxns{k}));
                 uptakeFluxes{plusonerow,findInd}=minFluxes{j}(k);
                 secretionFluxes{plusonerow,findInd}=maxFluxes{j}(k);
             end
@@ -178,6 +177,11 @@ if ~isempty(modelList)
     end
     
     % save both combined in one file
+     for i=2:size(uptakeFluxes,2)
+        uptakeFluxes{1,i} = [uptakeFluxes{1,i} '_uptake'];
+        secretionFluxes{1,i} = [secretionFluxes{1,i} '_secretion'];
+    end
+    
     UptakeSecretion=secretionFluxes;
     UptakeSecretion(:,size(UptakeSecretion,2)+1:size(UptakeSecretion,2)+length(allExch))=uptakeFluxes(:,2:end);
     writetable(cell2table(UptakeSecretion),[propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');

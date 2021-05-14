@@ -1,4 +1,4 @@
-function computeMetabolicDistance(propertiesFolder,reconVersion)
+function computeMetabolicDistance(propertiesFolder,reconVersion,numWorkers)
 % This function computes the Jaccard distance for each pairwise combination
 % of analysed strains in terms of reaction presence and metabolite uptake
 % and secretion potential. 
@@ -14,8 +14,16 @@ function computeMetabolicDistance(propertiesFolder,reconVersion)
 %   - AUTHOR
 %   Almut Heinken, 07/2020
 
+if numWorkers>0 && ~isempty(ver('parallel'))
+    % with parallelization
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
 files={
-    [propertiesFolder filesep 'UptakeSecretion' filesep 'UptakeSecretion_' reconVersion '.txt']
+    [propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion '.txt']
     [propertiesFolder filesep 'ReactionPresence' filesep 'ReactionPresence_' reconVersion '.txt']
         };
 
@@ -26,15 +34,20 @@ for i=1:length(files)
     data = table2cell(data);
     
     cnt=2;
+    for j=2:100:size(data,1)-1
+        parfor k=j:j+99
+            comDistTmp{k}=pdist(str2double(data(k,k+1:end)),'jaccard');
+        end
+        save('comDistTmp','comDistTmp','-v7.3');
+    end
+    
     for j=2:size(data,1)-1
-        j
         for k=j+1:size(data,1)
             metabolicDistance{cnt,1}=data{k,1};
             metabolicDistance{cnt,2}=data{j,1};
             cnt=cnt+1;
         end
     end
-    comDist=pdist(str2double(data(2:end,2:end)),'jaccard');
     if i==1
         metabolicDistance(:,3)=comDist';
     elseif i==2

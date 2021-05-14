@@ -48,6 +48,8 @@ fields = {
     'Drug_metabolism_FalseNegatives'
     'PutrefactionPathways_TruePositives'
     'PutrefactionPathways_FalseNegatives'
+    'AromaticAminoAcidDegradation_TruePositives'
+    'AromaticAminoAcidDegradation_FalseNegatives'
     };
 
 testResults=struct();
@@ -89,11 +91,14 @@ model=changeRxnBounds(model,relaxConstraints,0,'l');
 % 3) the metabolite formula, and (col 4) the metabolite charge.
 % * *metsMissingFormulas*: Cell array listing (col 1) all metabolites that do
 % not have metabolite formulas and (col 2) the metabolite names.
-
+try
 [massImbalancedRxns, chargeImbalancedRxns, ~, metsMissingFormulas] = testModelMassChargeBalance(model, true, biomassReaction);
 testResults.Mass_imbalanced(1, 2:size(massImbalancedRxns,1)) =massImbalancedRxns(2:end,1);
 testResults.Charge_imbalanced(1, 2:size(chargeImbalancedRxns,1))= chargeImbalancedRxns(2:end,1);
 testResults.Mets_without_formulas(1, 2:length(metsMissingFormulas)) = metsMissingFormulas(2:end,1);
+catch
+    warning('Mass and charge balance could not be tested for draft reconstructions!')
+end
 %%
 % A metabolic reconstruction should contain no mass or charge imbalanced
 % reactions. However, some reactions will always be imbalanced by definition (exchange,
@@ -262,5 +267,29 @@ end
 [TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
 testResults.PutrefactionPathways_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
+%% Aromatic amino acid degradation
+% Performs an FVA and reports those AromaticAA pathway end reactions (exchange reactions)
+% that can carry flux in the model and should carry flux according to
+% data (true positives) and those AromaticAA pathway end reactions that
+% cannot carry flux in the model but should be secreted according to in
+% vitro data (false negatives).
+%
+% INPUT
+% model             COBRA model structure
+% microbeID         Microbe ID in carbon source data file
+% biomassReaction   Biomass objective functions (low flux through BOF
+%                   required in analysis)
+%
+% OUTPUT
+% TruePositives     Cell array of strings listing all aromatic amino acid
+% degradation products
+% that can be secreted by the model and in comnparative genomic data.
+% FalseNegatives    Cell array of strings listing all aromatic amino acid
+% degradation products
+% that cannot be secreted by the model but should be secreted according to comparative genomic data.
+
+[TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction);
+testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
+testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 
 end

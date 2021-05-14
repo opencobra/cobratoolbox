@@ -67,8 +67,12 @@ if numWorkers>0 && ~isempty(ver('parallel'))
 end
 environment = getEnvironment();
 
-% get all models that failed at least one test
-failedModels = {};
+if isfile([debuggingFolder filesep 'failedModels.mat'])
+    load([debuggingFolder filesep 'failedModels.mat']);
+else
+    % get all models that failed at least one test
+    failedModels = {};
+end
 fixedModels = {};
 
 % start from existing progress if available
@@ -160,36 +164,14 @@ if length(failedModels)>0
             model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
             
-            % load the test results
+            % load the relevant test results
             fields = {
-                'Mass_imbalanced'
-                'Charge_imbalanced'
-                'Mets_without_formulas'
-                'Leaking_metabolites'
-                'ATP_from_O2'
-                'Blocked_reactions'
-                'RefinedReactionsCarryingFlux'
-                'BlockedRefinedReactions'
-                'Incorrect_Gene_Rules'
-                'Incorrect_Compartments'
-                'Carbon_sources_TruePositives'
                 'Carbon_sources_FalseNegatives'
-                'Fermentation_products_TruePositives'
                 'Fermentation_products_FalseNegatives'
-                'growsOnDefinedMedium'
-                'growthOnKnownCarbonSources'
-                'Biomass_precursor_biosynthesis_TruePositives'
-                'Biomass_precursor_biosynthesis_FalseNegatives'
-                'Metabolite_uptake_TruePositives'
                 'Metabolite_uptake_FalseNegatives'
-                'Secretion_products_TruePositives'
                 'Secretion_products_FalseNegatives'
-                'Bile_acid_biosynthesis_TruePositives'
                 'Bile_acid_biosynthesis_FalseNegatives'
-                'Drug_metabolism_TruePositives'
                 'Drug_metabolism_FalseNegatives'
-                'PutrefactionPathways_TruePositives'
-                'PutrefactionPathways_FalseNegatives'
                 };
             
             Results=struct;
@@ -232,8 +214,8 @@ if length(failedModels)>0
     refinedFolder = [debuggingFolder filesep 'RevisedModels'];
     testResultsFolder = [debuggingFolder filesep 'Retest'];
     
-    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
-    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers, 'reconVersion', reconVersion);
+    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
+    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
     
     batchTestAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
     plotTestSuiteResults(testResultsFolder,reconVersion);

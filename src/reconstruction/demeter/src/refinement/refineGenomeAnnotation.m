@@ -51,7 +51,7 @@ if isfile([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'])
                 model.citations{rxnID,1}='';
                 model.rxnECNumbers{rxnID,1}='';
                 model.rxnKEGGID{rxnID,1}='';
-                %         model.rxnConfidenceScores(rxnID,1)=0;
+                model.rxnConfidenceScores(rxnID,1)=2;
                 updateGPRCnt=updateGPRCnt+1;
             else
                 % add the reaction with the GPR
@@ -63,7 +63,7 @@ if isfile([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'])
                 model.citations{rxnID,1}='';
                 model.rxnECNumbers{rxnID,1}='';
                 model.rxnKEGGID{rxnID,1}='';
-                % %         model.rxnConfidenceScores(rxnID,1)=0;
+                model.rxnConfidenceScores(rxnID,1)=2;
                 addAnnRxns{cnt,1}=annRxns{i,1};
                 cnt=cnt+1;
             end

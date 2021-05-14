@@ -85,7 +85,7 @@ gapfills={
     {'ICCOAR2HICCOAT'},{'EX_isocapr(e)'},{'EX_isocapr(e)','ISOCAPRt2r'}
     {'IVCOASadp'},{'EX_isoval(e)'},{'EX_isoval(e)','ISOVALt2r'}
     {'INDRYPR'},{'EX_indlac(e)'},{'EX_indlac(e)','INDLACt'}
-    {'INDPRPCOAINDLAACCOAT'},{'EX_indprp(e)'},{'EX_indprp(e)','INDPRPt2r'}
+    {'INDPRPCOAINDLAACCOAT'},{'EX_ind3ppa(e)'},{'EX_ind3ppa(e)','IND3PPAt2r'}
     {'PHACK'},{'EX_pac(e)'},{'EX_pac(e)','PACt2r'}
     {'HPHACK'},{'EX_4hphac(e)'},{'EX_4hphac(e)','HPACt2r'}
     {'PPPNCOAPLACOAT'},{'EX_pppn(e)'},{'EX_pppn(e)','PPPNt2r'}

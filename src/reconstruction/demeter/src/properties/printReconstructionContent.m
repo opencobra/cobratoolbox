@@ -15,16 +15,6 @@ function printReconstructionContent(modelFolder,propertiesFolder,reconVersion,nu
 %   - AUTHOR
 %   Almut Heinken, 07/2020
 
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-end
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
-
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
@@ -80,6 +70,17 @@ for i=1:length(models)
     uniqueRxns=unique(vertcat(uniqueRxns,rxnsTmp{i}));
     uniqueMets=unique(vertcat(uniqueMets,metsTmp{i}));
 end
+
+% load VMH database
+metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+metaboliteDatabase=table2cell(metaboliteDatabase);
+database.metabolites=metaboliteDatabase;
+for i=1:size(database.metabolites,1)
+    database.metabolites{i,5}=num2str(database.metabolites{i,5});
+end
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase=table2cell(reactionDatabase);
+database.reactions=reactionDatabase;
 
 % print out the unique reactions and metabolites of the resource-only if it
 % used VMH nomenclature

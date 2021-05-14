@@ -54,6 +54,9 @@ end
 FutileCyclesTest(find(cellfun(@isempty, FutileCyclesTest(:,1))),:)=[];
 futileCycleReactions=FutileCyclesTest(cell2mat(FutileCyclesTest(:,5))<150,1);
 
+else
+    FutileCyclesTest = {};
+    futileCycleReactions = {};
 end
 
 end

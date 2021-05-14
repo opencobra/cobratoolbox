@@ -1,4 +1,4 @@
-function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database)
+function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database,curateDefMedia)
 % This function runs a set of gapfillling functions on a reconstruction to
 % refined as part of the DEMETER pipeline. Reactions are filled in to
 % enable flux through an objective function, e.g., the biomass objective
@@ -20,6 +20,9 @@ function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiv
 % database:            rBioNet reaction database containing min. 3 columns:
 %                      Column 1: reaction abbreviation, Column 2: reaction
 %                      name, Column 3: reaction formula.
+% OPTIONAL INPUT
+% curateDefMedia:      boolean indicating that growth on defined medium is
+%                      being curated (default=false)
 %
 % OUTPUT
 % model:               COBRA model structure
@@ -38,6 +41,10 @@ tol=0.0000001;
 model = changeObjective(model, objectiveFunction);
 modelOld=model;
 
+if nargin<6
+    curateDefMedia=0;
+end
+
 % Perform gapfilling to enable growth
 model = conditionSpecificGapFilling(model, database);
 
@@ -50,13 +57,18 @@ end
 
 FBA = optimizeCbModel(model,osenseStr);
 if abs(FBA.f) < tol
-    % try gapfilling based on relaxFBA
-    model = untargetedGapFilling(model,osenseStr,database,1,1);
-    
-    FBA = optimizeCbModel(model,osenseStr);
-    if abs(FBA.f) < tol
-        % try gapfilling without excluding sink and demand reactions
-        model = untargetedGapFilling(model,osenseStr,database,0,0);
+    if curateDefMedia==1
+        % special case: curate defined medium growth
+        model = untargetedGapFilling(model,osenseStr,database,1,1,1);
+    else
+        % try gapfilling based on relaxFBA
+        model = untargetedGapFilling(model,osenseStr,database,1,1);
+        
+        FBA = optimizeCbModel(model,osenseStr);
+        if abs(FBA.f) < tol
+            % try gapfilling without excluding sink and demand reactions
+            model = untargetedGapFilling(model,osenseStr,database,0,0);
+        end
     end
 end
 
@@ -65,7 +77,7 @@ end
 
 % if the changes make no difference, reverse the changes
 FBA = optimizeCbModel(model,osenseStr);
-if abs(FBA.f) < tol
+if abs(FBA.f) < tol || FBA.stat==0
     model=modelOld;
     condGF = {};
     targetGF = {};
