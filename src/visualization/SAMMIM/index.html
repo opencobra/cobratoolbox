@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!--
+SAMMI is a tool for visualization of metabolic networks
+
+Copyright (C) 2019 The University of Texas MD Anderson Cancer Center.
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+any later version.
+
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+with this program. If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<head>
+    <meta charset="utf-8" />
+    <link rel='stylesheet' href='sammi.css'>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.js"></script>
+    <script type="text/javascript" src="helpfunctions.js"></script>
+    <script type="text/javascript" src="uploaddownload.js"></script>
+    <script type="text/javascript" src="simulationfunctions.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/liningfunctions.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/textandshapes.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tippy.js@2.5.2/dist/tippy.all.min.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/jscolor.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="shortcut icon" href="https://bioinformatics.mdanderson.org/favicon.ico">
+
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/dialogwindow.js"></script>
+    <script type="text/javascript">
+        //http://api.jqueryui.com/dialog/
+        //https://www.w3schools.com/howto/howto_js_draggable.asp
+        $( function() {
+            $("#dialog").dialog({
+            dialogClass: "no-close",
+            minWidth: 400,
+            }).draggable()
+            .css("display","none");
+        });
+
+        $( function() {
+            $( "#dialog2" ).dialog({
+            dialogClass: "no-close",
+            minWidth: 600,
+            }).draggable()
+            .css("display","none");
+        });
+
+    </script>
+</head>
+
+<body>
+    <div id="topbar">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Upload/Download</button>
+                <div class="dropdown-content">
+                    <h3>Secondaries</h3>
+                    <button class="topmenubtn" onclick='shelveStandard()'>Shelve Standard Metabolites</button><br/>
+
+                    <h3>Model Downloads</h3>
+                    <button onclick="downloadSammi();" class="topmenubtn">Download SAMMI</button><br/>
+                    <button onclick="downloadCurrent();" class="topmenubtn">Download Current</button><br/>
+                    <button id="downloadescher" onclick="downloadEscher();" class="topmenubtn">Download ESCHER</button><br/>
+                    <button id="downloadmez" onclick="downloadMEV();" class="topmenubtn">Download MetExploreViz</button>
+                    <input type="checkbox" id='mezanimated'> Animated
+
+                    <h3>Model Download Parameters</h3>
+                    Scale: <input id="eschescale" type="number" min="0" step="1" value="3"><br/>
+                    LB Field: <input id="lbfield" type="text" value="lower_bound"><br/>
+                    Name Field: <input id="namefield" type="text" value="name"><br/>
+                    Pathway Field: <input id="pathfield" type="text" value="subsystem"><br/>
+                    Compartment Field: <input id="compfield" type="text" value="compartment">
+
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Coloring</button>
+                <div class="dropdown-content">
+                        <h3>Graph Coloring</h3>
+                        <input type="color" class="jscolor" id="metcolor" value="#8080ff" onchange="reDefineColors()"> Metabolite<br/>
+                        <input type="color" class="jscolor" id="rxncolor" value="#1919ff" onchange="reDefineColors()"> Reaction<br/>
+                        <input type="color" class="jscolor" id="fixmetcolor" value="#ff8080" onchange="reDefineColors()"> Fixed Metabolite<br/>
+                        <input type="color" class="jscolor" id="fixrxncolor" value="#ff0000" onchange="reDefineColors()"> Fixed Reaction<br/>
+                        <input type="color" class="jscolor" id="edgecolor" value="#b3b6b7" onchange="reDefineColors()"> Edge<br/>
+                        <input type="color" class="jscolor" id="metcolorsize" value="#8080ff" onchange="reDefineColors()"> Metabolites with size data<br/>
+                        <input type="color" class="jscolor" id="rxncolorsize" value="#1919ff" onchange="reDefineColors()"> Reactions with size data<br/>
+                        <input type="color" class="jscolor" id="widthcolorsize" value="#b3b6b7" onchange="reDefineColors()"> Links with link width data<br/>
+
+                        <h3>Reaction Coloring</h3>
+                        <button onclick="makeColorScaleGlobal('rxn')" class="topmenubtn">Make Color Scale Global</button><br/>
+                        <input type="number" id="fluxmin" value="-1" max="0" onchange="fluxmin=this.valueAsNumber;defineFluxColorVectors()" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="edgemin" value="#009933" onchange="defineFluxColorVectors();defineFluxColorBar();reDefineColors();">
+                        - Minimum Flux<br/>
+                        <input type="number" id="fluxmax" value="1" min="0" onchange="fluxmax=this.valueAsNumber;defineFluxColorVectors()" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="edgemax" value="#cc3399" onchange="defineFluxColorVectors();defineFluxColorBar();reDefineColors();">
+                        - Maximum Flux<br/>
+                        <button onclick="addReactionColorBreak(this);defineFluxColorVectors();defineFluxColorBar();reDefineColors();" id="addrxnbreak"  class="topmenubtn">Add Break</button><br/>
+                        <canvas width="310" height="30" id="fluxcolorbar"></canvas>
+
+                        <h3>Metabolite Coloring</h3>
+                        <button onclick="makeColorScaleGlobal('met')" class="topmenubtn">Make Color Scale Global</button><br/>
+                        <input type="number" id="metminvalue" value="-1" max="0" onchange="concentrationmin=this.valueAsNumber;defineMetColorVectors();defineMetColorBar();reDefineColors();" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="metmin" value="#009933" onchange="defineMetColorVectors();defineMetColorBar();reDefineColors();">
+                        - Minimum Concentration<br/>
+                        <input type="number" id="metmaxvalue" value="1" min="0" onchange="concentrationmax=this.valueAsNumber;defineMetColorVectors();defineMetColorBar();reDefineColors();" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="metmax" value="#cc3399" onchange="defineMetColorVectors();defineMetColorBar();reDefineColors();">
+                        - Maximum concentration<br/>
+                        <button onclick="addMetaboliteColorBreak(this);defineMetColorVectors();defineMetColorBar();reDefineColors();" id="addmetbreak"  class="topmenubtn">Add Break</button><br/>
+                        <canvas width="310" height="30" id="metcolorbar"></canvas>
+                        
+                        <h3>Reference Node Color</h3>
+                        <input type="color" class="jscolor" id="addednodecolor" value="#add8e6" onchange="reDefineColors()"> Reference Node
+
+                        <h3>Link Strain Color</h3>
+                        <input type="color" class="jscolor" id="linkstraincolor" value="#ff0000" onchange="reDefineColors()"> Link Strain Color
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Sizing</button>
+                <div class="dropdown-content">
+                        <h3>Graph Looks</h3>
+                        <input id="labelsize" type="number" value="5" step="1" min="0" onchange="reDefineSimulation(),simulation.alpha(0);"> Label Size<br/>
+                        <input id="addedtextsize" type="number" value="14" step="1" min="0" onchange="reDefineSimulation(),simulation.alpha(0);"> Added Text Size<br/>
+                        <input id="strokewidth" type="number" value="1" step="1" min="0" onchange="manageArrows();reDefineSimulation();ticked();simulation.alpha(0)"> Link Width<br/>
+                        <input id="nodescale" type="number" value="1" step="0.1" min="0" onchange="nodedegree();manageArrows();reDefineSimulation();simulation.alpha(0)"> Node size<br/>
+                        <input id="refnodescale" type="number" value="2" step="0.1" min="0" onchange="nodedegree();manageArrows();reDefineSimulation();simulation.alpha(0)"> Reference Node size<br/>
+                        <input id="arrowsize" type="number" value="4" step="1" min="1" onchange="manageArrows();reDefineSimulation();ticked();simulation.alpha(0)"> Arrow Size<br/>
+                        <input id="sizeref" type="checkbox" onchange="reDefineSimulation(),simulation.alpha(0);"> View Size Reference<br/>
+        
+                        <h3>Reaction Size</h3>
+                        <input type="number" id="maxrxnsize" value="2" min="0" onchange="maxrxnsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minrxnsize" value="1" min="0" onchange="minrxnsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="rxnsizescale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale<br/>
+
+                        <h3>Metabolite Size</h3>
+                        <input type="number" id="maxmetsize" value="2" min="0" onchange="maxmetsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minmetsize" value="1" min="0" onchange="minmetsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="metsizescale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale
+
+                        <h3>Link Width</h3>
+                        <input type="number" id="maxwidth" value="1" min="0" onchange="maxwidth=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minwidth" value="0" min="0" onchange="minwidth=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="widthscale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Settings</button>
+                <div class="dropdown-content">
+                        <h3>Simulation Parameters</h3>
+                        <input id="linkstrength" type="number" value="30" step="5" min="0" onchange="reDefineSimulationParameters()"> Link Repulsion Strength<br/>
+                        <input id="nodestrength" type="number" value="0" step="1" min="0" onchange="reDefineSimulationParameters()"> Node Collision Buffer<br/>
+                        <input id="maparea" type="number" value="30" step="5" min="0" onchange="reDefineSimulationParameters()"> Node Repulsion Strength<br/>
+                        <input id="velocityDecay" type="number" value="0.4" step="0.1" min="0" max="1" onchange="reDefineSimulationParameters()"> Inertia<br/>
+                        <input id="centerstrength" type="number" value="0.02" step="0.01" min="0" onchange="reDefineSimulationParameters()"> Center Strength<br/>
+                        <input id="secondarystrength" type="number" value="0.1" step="0.01" min="0" onchange="reDefineSimulationParameters()"> Secondary Strength<br/>
+                        <input id="shortpathtime" type="number" value="3" step="1" min="0"> Path Execution Timeout (s)<br/>
+                        <input id="centersize" type="number" value="0" step="5" min="0" onchange="centerref._groups[0][0].attributes['r'].value = document.getElementById('centersize').value"> Center Size<br/>
+                        <input id="pretify" type="number" value="40" step="5" min="0" onchange="pretify()"> Pretify Size
+
+                        <h3>Naming</h3>
+                        <!-- <button onclick="defineNameOptions()">Define Options</button><br/> -->
+                        Primary Metabolites: <select id="metNameOpts" onchange="renameNodes();behave()"></select><br/>
+                        Secondary Metabolites: <select id="secMetNameOpts" onchange="renameNodes();behave()"></select><br/>
+                        Reactions: <select id="rxnNameOpts" onchange="renameNodes();behave()"></select>
+
+                        <h3>Reversibility</h3>
+                        <select id="reversibility" onchange="reDefineSimulation()">
+                            <option>None</option>
+                            <option>Both Ways</option>
+                            <option>Diamond Arrowheads</option>
+                        </select>
+
+                        <h3>Node Shape</h3>
+                        <select id="rxnshape" onchange="reDefineSimulation()">
+                            <option value="rect" selected="selected">Square</option>
+                            <option value="circle">Circle</option>
+                        </select>
+                        - Reaction Nodes<br/>
+                        <select id="metshape" onchange="reDefineSimulation()">
+                            <option value="rect">Square</option>
+                            <option value="circle" selected="selected">Circle</option>
+                        </select>
+                        - Metabolite Nodes
+
+                </div>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="dropbtn" onclick="openDocs('shortcuts')">Keyboard Shortcuts</button>
+            </div> -->
+            <div class="dropdown">
+                <button class="dropbtn" onclick="openDocs('documentation')">Documentation</button>
+            </div>
+            <div class="dropdown" style="float: right;">
+                <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/MDACC2.png" id="toplogo">
+            </div>
+    </div>
+        <div id="dialog" title="Menu">
+            <div id="onloadoptions">
+            </div>
+
+            <h3>Modes:</h3>
+            <h4>Arrows: </h4><input type='checkbox' id='arrows' onclick='checkchange=true;manageArrows();' checked>
+            <h4>Tooltips: </h4><input type='checkbox' id='tooltipbool' onclick='manageTooltips();'>
+            <h4>Hide Rxns: </h4><input type='checkbox' id='hiderxns' onclick='checkchange=true;reDefineSimulation();'><br/>
+            <h4>Move Labels (m): </h4><input type='checkbox' id='movelabels' onclick='dragLabels();'>
+            <h4>Link Strain: </h4><input type='checkbox' id='linkstrain' onclick='reDefineColors();'><br/>
+
+            <h3>Graph Manipulations:</h3>
+            <div class="wrapper">
+            <button onclick="behave()" class="menubutton">Reload Graph (r)</button>
+            <button onclick="simulation.stop()" class="menubutton">Pause Simulation (p)</button>
+            <button onclick="zoom.transform(gMain, d3.zoomIdentity.translate(0,0).scale(1));" class="menubutton">Recenter Graph</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); fixSelected()" class="menubutton">Fix Nodes (f)</button>
+            <button onclick="defineBackupGraph(); toggleSelected()" class="menubutton">Toggle Fix (t)</button>
+            </div>
+
+            <div  class="wrapper">
+            <button onclick="defineBackupGraph(); isolateRxn()" class="menubutton">Isolate Reaction (i)</button>
+            <button onclick="defineBackupGraph(); isolateMetabolite()" class="menubutton">Isolate Metabolite (i)</button>
+            <button onclick="defineBackupGraph(); selectConnected()" class="menubutton">Select Neighbors (n)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); splitMet()" class="menubutton">Break Metabolite (b)</button>
+            <button onclick="defineBackupGraph(); joinMetabolite()" class="menubutton">Join Metabolite (j)</button>
+            <button onclick="defineBackupGraph(); suspendMetabolite()" class="menubutton">Shelve Metabolite (s)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); deleteNodes()" class="menubutton">Delete Nodes (del)</button>
+            <button onclick="defineBackupGraph(); keepNodes()" class="menubutton">Keep Nodes</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); makeSecondary()" class="menubutton">Make Secondary (q)</button>
+            <button onclick="defineBackupGraph(); makePrimary()" class="menubutton">Make Primary (q)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); editBezier()" class="menubutton">Curve Link (c)</button>
+            <button onclick="defineBackupGraph(); deleteBezi()" class="menubutton">Delete Curve</button>
+            <button onclick="defineBackupGraph(); autoBezi()" class="menubutton">Auto Curve (d)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="groupNodes()" class="menubutton">Group Nodes</button>
+            <button onclick="unGroupNodes()" class="menubutton">Ungroup Nodes</button>
+            <button onclick="defineBackupGraph(); collapse()" class="menubutton">Collapse</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); shortestPath('short')" class="menubutton">Shortest Path (p)</button>   
+            <button onclick="defineBackupGraph(); shortestPath('long')" class="menubutton">Find Long Path</button>
+            <button onclick="defineBackupGraph(); shortestCircle()" class="menubutton">Smallest Circle</button>
+            <button onclick="defineBackupGraph(); getComponent()" class="menubutton">Find Component</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="editNodeProperties(graph.nodes[selected[0]])" class="menubutton">Edit Attributes</button>
+            <button onclick="defineBackupGraph(); reverseReactions()" class="menubutton">Reverse Reaction</button>
+            <div style="width:32%;height:40px;font-size: 12px;float:right;line-height:normal"><input type="checkbox" id="reverseflux" checked><b>Reverse Flux</b></div>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); pretify()" class="menubutton">Pretify Reactions</button>
+            <button onclick="defineBackupGraph(); untrap()" class="menubutton">Untrap Nodes (u)</button>
+            </div>
+
+            <h3>Subgraph Manipulations:</h3>
+            <button onclick="joinSubGraphs()" class="menubutton">Join Subgraphs</button>
+            <button onclick="renameSubgraph()" class="menubutton">Rename Subgraph</button><br/>
+            
+            <h3>Search:</h3> <input id="searchbox" type="text" onkeypress="getSearchNodes(event,this.value)" onclick="typing=true;" onfocus="typing=true;" style="width:120px;"><br/>
+            <input type="checkbox" id="searchhighlight" checked> Focus
+            <input type="checkbox" id="searchregexp" checked> RegExp<br/>
+            <button onclick="trackMet()" class="menubutton" id="trackmet">Highlight Metabolite (h)</button><br/>
+
+            <h3>Arranging:</h3>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/vertline.png" width="25" onclick="defineBackupGraph(); vertline()" title="Arrange nodes in a vertical line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/horzline.png" width="25" onclick="defineBackupGraph(); horzline()" title="Arrange nodes in a horizontal line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/diagline.png" width="25" onclick="defineBackupGraph(); diagline()" title="Arrange nodes in a line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/circle.png" width="25" onclick="defineBackupGraph(); circle()" title="Arrange nodes in a circle" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/rectangle.png" width="25" onclick="defineBackupGraph(); rectangleInit()" title="Arrange nodes in a rectangle" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/rotate.png" width="25" onclick="defineBackupGraph(); rotateNodesInit()" title="Rotate nodes" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/scale.png" width="25" onclick="defineBackupGraph(); scaleAll();" title="Scale node position" class="imgbtn"/><br/>
+            <input type="checkbox" id="reverseline"> Reverse 
+            <select id="orderby">
+                <option value="selection order">Selection Order</option>
+                <option value="position">Position</option>
+            </select><br/>
+
+            <h3>Text and Shapes:</h3>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/text.png" width="30" onclick="texting=true;this.style='opacity: 0.2'" id="textingImage" title="Add text (double click to edit)"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/shape.png" width="30" onclick="shaping=true;this.style='opacity: 0.2'" id="shapingImage" title="Add shape (Drop nodes inside to trap)"/><br/>
+
+            <h3>Shelved Metabolites:</h3>
+            <select id="suspended" onchange="putBack(this)">
+                <option id="suspendeddefault">Select Node</option>
+            </select><button onclick="putAllBack()"  class="topmenubtn">Put All Back</button><br/>
+
+            <h3>Commits:</h3>
+            Description: <input id="commitname" type="text" onclick="typing=true;" onfocus="typing=true;"><br/>
+            <button id="commitgraph" onclick="commitGraph()"  class="topmenubtn">Commit Current</button><br/>
+            <select id="commits" onchange="putBackCommit(this)">
+                <option id="commitdefault">Select Commit</option>
+            </select><br/>
+            
+            <h3>Add Nodes and Edges:</h3>
+            <div class="autocomplete" style="width:230px;">
+                Reaction: <input id="existingReactions" type="text" placeholder="Reaction" onkeydown="addExistingReaction(event)" onclick="typing=true;" onfocus="typing=true;" style="width:120px">
+            </div>
+            <div class="autocomplete" style="width:230px;">
+                Metabolite: <input id="existingMetabolites" type="text" placeholder="Metabolite" onkeydown=addExistingMetabolite(event) onclick="typing=true;" onfocus="typing=true;" style="width:120px">
+            </div>
+            <button onclick="defineBackupGraph(); addAs('substrate')"  class="topmenubtn">Connect as Substrate</button>
+            <button onclick="defineBackupGraph(); addAs('product')"  class="topmenubtn">Connect as Product</button>
+        </div>
+
+        <div id="dialog2" title="Edit"></div>
+
+    <div id="d3_selectable_force_directed_graph" style="display:none;" class="svg-container">
+        <!-- <svg id="graphsvg"></svg> -->
+    </div>
+    <div id="blankdiv"></div>
+
+    <script type="text/javascript">
+        //document.getElementById("savePNG").addEventListener('click', savePNG);    
+
+        //setTimeout(function(){document.getElementById("dialog").style = "display:none;"},100)
+        setTimeout(function(){defineFluxColorVectors()},1000)
+        setTimeout(function(){defineFluxColorBar()},2000)
+        setTimeout(function(){defineMetColorVectors()},1000)
+        setTimeout(function(){defineMetColorBar()},2000)
+
+        //Background Drag
+        var dialogxy = [0,0];
+        document.getElementById("dialog").onmousedown = function(event){
+            dialogxy = [event.clientX,Number(document.getElementsByClassName("ui-dialog")[0].style.left.match(/[-,0-9]*/)[0]),
+            event.clientY,Number(document.getElementsByClassName("ui-dialog")[0].style.top.match(/[-,0-9]*/)[0])];
+        }
+        document.getElementById("dialog").ondrag = function(event){
+            document.getElementsByClassName("ui-dialog")[0].style.left = dialogxy[1] - dialogxy[0] + event.clientX + "px";
+            document.getElementsByClassName("ui-dialog")[0].style.top  = dialogxy[3] - dialogxy[2] + event.clientY + "px";
+        }
+        document.getElementById("dialog2").onmousedown = function(event){
+            dialogxy = [event.clientX,Number(document.getElementsByClassName("ui-dialog")[1].style.left.match(/[-,0-9]*/)[0]),
+            event.clientY,Number(document.getElementsByClassName("ui-dialog")[1].style.top.match(/[-,0-9]*/)[0])];
+        }
+        document.getElementById("dialog2").ondrag = function(event){
+            document.getElementsByClassName("ui-dialog")[1].style.left = dialogxy[1] - dialogxy[0] + event.clientX + "px";
+            document.getElementsByClassName("ui-dialog")[1].style.top  = dialogxy[3] - dialogxy[2] + event.clientY + "px";
+        }
+
+        //Re-size svg on window resize
+        window.addEventListener("resize", function(){
+           svg.attr("height",d3.select('svg').node().parentNode.clientHeight-70);
+           svg.attr("width",d3.select('svg').node().parentNode.clientWidth-5);
+           document.getElementById("dialog").parentNode.style.left = "10px";
+           document.getElementById("dialog").parentNode.style.top = -window.innerHeight + 5 + "px";
+           document.getElementById("dialog2").parentNode.style.left = "50px";
+           document.getElementById("dialog2").parentNode.style.top = -window.innerHeight + 5 - document.getElementById("dialog").clientHeight + "px";
+        });
+        
+        document.addEventListener("contextmenu",function(e){
+            e.preventDefault();    
+        },false);
+
+        setTimeout(function(){
+        setdisplay()
+
+        //MATLAB_CODE_HERE//
+
+        },1000)
+
+
+    </script>
+</body>
+
