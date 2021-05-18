@@ -1,11 +1,11 @@
-function tooHighATP = plotATPTestResults(refinedFolder, reconVersion, varargin)
+function [tooHighATP,ATP_fluxes] = plotATPTestResults(refinedFolder, reconVersion, varargin)
 % This function plots the maximal ATP yield by refined reconstructions and
 % reports whether ATP production is feasible. Optionally, draft
 % reconstructions can be included.
 %
 % USAGE:
 %
-%    tooHighATP = plotATPTestResults(refinedFolder, reconVersion, varargin)
+%    [tooHighATP,ATP_fluxes] = plotATPTestResults(refinedFolder, reconVersion, varargin)
 %
 %
 % REQUIRED INPUTS
@@ -23,6 +23,7 @@ function tooHighATP = plotATPTestResults(refinedFolder, reconVersion, varargin)
 % OUTPUT
 % tooHighATP                List of IDs for refined reconstructions that
 %                           produce too much ATP on complex medium
+% ATP_fluxes                 Computed ATP production fluxes for each model
 %
 % .. Authors:
 %       - Almut Heinken, 09/2020
@@ -113,6 +114,8 @@ if ~isempty(translatedDraftsFolder)
     violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
     set(gca, 'FontSize', 12)
     box on
+    maxval=max(data,[],'all');
+    ylim([0 maxval + maxval/10])
     h=title(['ATP production on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -136,23 +139,27 @@ if ~isempty(translatedDraftsFolder)
     
     % report refined models that produce too much ATP
     fprintf('Report for refined models:\n')
-    tooHigh=atp{2}(:,1) > 150;
+    tooHigh=atp{2}(:,1) > 200;
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under aerobic conditions.\n'])
         for i=1:length(tooHigh)
-            tooHighATP{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+            if tooHigh(i)
+                tooHighATP{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
     else
         fprintf('All models produce reasonable amounts of ATP under aerobic conditions.\n')
     end
     
-    tooHigh=atp{2}(:,2) > 100;
+    tooHigh=atp{2}(:,2) > 150;
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under anaerobic conditions.\n'])
         for i=1:length(tooHigh)
-            tooHighATP{cnt,1}=modelList{i,1};
-            cnt=cnt+1;
+            if tooHigh(i)
+                tooHighATP{cnt,1}=modelList{i,1};
+                cnt=cnt+1;
+            end
         end
     else
         fprintf('All models produce reasonable amounts of ATP under anaerobic conditions.\n')
@@ -166,6 +173,8 @@ else
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         box on
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
         h=title(['ATP production on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -174,7 +183,7 @@ else
     
     % report refined models that produce too much ATP
     fprintf('Report for refined models:\n')
-    tooHigh=atp{1}(:,1) > 150;
+    tooHigh=atp{1}(:,1) > 200;
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under aerobic conditions.\n'])
         for i=1:length(tooHigh)
@@ -187,7 +196,7 @@ else
         fprintf('All models produce reasonable amounts of ATP under aerobic conditions.\n')
     end
     
-    tooHigh=atp{1}(:,2) > 100;
+    tooHigh=atp{1}(:,2) > 150;
     if sum(tooHigh) > 0
         fprintf([num2str(sum(tooHigh)) '  models produce too much ATP under anaerobic conditions.\n'])
         for i=1:length(tooHigh)
@@ -198,13 +207,25 @@ else
         end
     else
         fprintf('All models produce reasonable amounts of ATP under anaerobic conditions.\n')
-    end 
+    end
 end
 
+% export list of refined models producing too much ATP
 tooHighATP=unique(tooHighATP);
 tooHighATP=strrep(tooHighATP,'.mat','');
 if size(tooHighATP,1)>0
     save([testResultsFolder filesep 'tooHighATP.mat'],'tooHighATP');
+end
+
+% export computed ATP fluxes
+if ~isempty(translatedDraftsFolder)
+    ATP_fluxes = {'','Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'};
+    ATP_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
+    ATP_fluxes(2:end,2:5) = num2cell(data);
+else
+    ATP_fluxes = {'','Aerobic, Refined','Anaerobic, Refined'};
+    ATP_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
+    ATP_fluxes(2:end,2:3) = num2cell(data);
 end
 
 end

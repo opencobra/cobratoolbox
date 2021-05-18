@@ -341,6 +341,12 @@ conditionSpecificGapfills={'rxnPresent','rxnAbsent','changeConstraints','gapfill
 'AHC AND GNMT AND DMQMT AND HCYSMT',[],0,'DM_hcys_L[c]'
 'MCOATA AND H2CO3D',[],0,'ACCOAC'
 'ACTNabc',[],0,'ACTNdiff'
+'UDCPDPabc AND EX_udcpdp(e)',[],0,'UDPDPS'
+'ADPRIBte AND EX_adprib(e)',[],0,'ADPRDP AND NADN'
+'tDHNACOA AND EX_dhnacoa(e)',[],0,'DHNAS'
+'NADPti AND EX_nadp(e)',[],0,'NADS1 AND NADS2 AND NADK'
+'G1PP AND GALU AND GLCpts',[],0,'PGMT'
+'GLYMET1c AND EX_glymet(e)',[],0,'EX_met_L(e) AND METt2r AND EX_gly(e) AND GLYt2r'
 };
 
 % define the conditions for adding gap-filling reactions

@@ -20,7 +20,8 @@ function producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatu
 %   - AUTHOR
 %   Almut Heinken, 06/2020
 
-distance='jaccard';
+% euclidean should work for most
+distance='euclidean';
 alg='barneshut';
 
 currentDir=pwd;
@@ -31,8 +32,11 @@ cd('tSNE_Plots')
 tol=0.0000001;
 
 % get taxonomical information
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+try
+    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab'));
+catch
+    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false));
+end
 
 % define files to analyze
 analyzedFiles={
@@ -143,7 +147,9 @@ for k=1:size(analyzedFiles,1)
             if size(data,1)>10
                 
                 % adjust perplicity to number of variables
-                if size(data,1) > 50
+                if size(data,1) > 150
+                    perpl=50;
+                elseif size(data,1) >= 50
                     perpl=30;
                 elseif size(data,1) >= 20
                     perpl=10;
@@ -151,7 +157,7 @@ for k=1:size(analyzedFiles,1)
                     perpl=5;
                 end
                 
-                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
+                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
                 Summary.(taxonlevels{i})(:,1)=red_orgs;
                 Summary.(taxonlevels{i})(:,2)=taxa;
                 Summary.(taxonlevels{i})(:,3:size(Y,2)+2)=cellstr(string(Y));
@@ -165,7 +171,7 @@ for k=1:size(analyzedFiles,1)
                         cmarkers=[cmarkers '+o*xsdp'];
                     end
                     cmarkers=cmarkers(1:length(unique(taxa)));
-                    h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
+                    h=gscatter3(Y(:,1),Y(:,2),Y(:,3),taxa,cols,cmarkers);
                     hold on
                     set(h,'MarkerSize',6)
                     title(analyzedFiles{k,1})
@@ -175,13 +181,13 @@ for k=1:size(analyzedFiles,1)
                     
                     h=legend('Location','northeastoutside');
                     if length(uniqueXX) < 12
-                        set(h,'FontSize',11)
+                        set(h,'FontSize',12)
                     elseif length(uniqueXX) < 20
-                        set(h,'FontSize',9)
+                        set(h,'FontSize',11)
                     else
-                        set(h,'FontSize',6)
+                        set(h,'FontSize',8)
                     end
-                    
+                    grid off
                     f.Renderer='painters';
                     print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                 else
@@ -216,25 +222,33 @@ for k=1:size(analyzedFiles,1)
                     
                     if size(data,1) >= 10
                         
-                        %     % remove features with too few members
-                        %     [uniqueXX, ~, J]=unique(feats) ;
-                        %     occ = histc(J, 1:numel(uniqueXX));
-                        %         toofew=uniqueXX(occ<sum(occ)/2000);
-                        %     data(find(ismember(feats,toofew)),:)=[];
-                        %     red_orgs(ismember(feats,toofew),:)=[];
-                        %     feats(find(ismember(feats,toofew)),:)=[];
+                        % remove features with too few members
+                        [uniqueXX, ~, J]=unique(feats) ;
+                        occ = histc(J, 1:numel(uniqueXX));
+                        toofew=uniqueXX(occ<sum(occ)/2000);
+                        data(find(ismember(feats,toofew)),:)=[];
+                        red_orgs(ismember(feats,toofew),:)=[];
+                        feats(find(ismember(feats,toofew)),:)=[];
                         
-                        Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl);
+                        Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
                         Summary.(strrep(customFeatures{i},' ','_'))(:,1)=red_orgs;
                         Summary.(strrep(customFeatures{i},' ','_'))(:,2)=feats;
                         Summary.(strrep(customFeatures{i},' ','_'))(:,3:4)=cellstr(string(Y));
-                        
+                                                
                         f=figure;
-                        h=gscatter(Y(:,1),Y(:,2),feats);
-                        set(h,'MarkerSize',10)
+                        hold on
+                        gscatter3(Y(:,1),Y(:,2),Y(:,3),feats);
+                        set(h,'MarkerSize',6)
                         title(analyzedFiles{k,1})
                         h=legend('Location','northeastoutside');
-                        set(h,'FontSize',9)
+                        if length(uniqueXX) < 12
+                            set(h,'FontSize',11)
+                        elseif length(uniqueXX) < 20
+                            set(h,'FontSize',9)
+                        else
+                            set(h,'FontSize',6)
+                        end
+                        grid off
                         f.Renderer='painters';
                         print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                     else

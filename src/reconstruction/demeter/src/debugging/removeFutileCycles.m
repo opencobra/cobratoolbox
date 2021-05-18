@@ -1,4 +1,4 @@
-function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
 % Part of the DEMETER pipeline. Resolves reactions that are running in
 % infeasible directions and causing futile cycles that result in
 % unrealistically high ATP production. All solutions were identified
@@ -7,7 +7,7 @@ function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReac
 %
 % USAGE:
 %
-%   [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+%   [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
 %
 % INPUTS
 % model:               COBRA model structure
@@ -24,12 +24,15 @@ function [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReac
 % model:               COBRA model structure
 % deletedRxns:         Deleted reactions that were causing futile cycles
 % addedRxns:           Added irreversible versions of the deleted reactions
+% gfRxns:              Additional gap-filled reactions needed to enable
+%                      growth. Low confidence score.
 %
 % .. Author:
 %       - Almut Heinken, 2016-2019
 
 deletedRxns = {};
 addedRxns = {};
+gfRxns = {};
 
 tol = 1e-8;
 
@@ -148,6 +151,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'PYRCT AND SUCOAS AND PPCr',[],'PPCr','PPC'
     '3CARLPDH AND r0163c AND r0556c',[],'r0556c','r0556ci'
     'NACUP AND NACt2r',[],'NACUP',[]
+    'NACt AND NACt2r',[],'NACt',[]
     'NCAMUP AND NCAMt2r',[],'NCAMUP',[]
     'ORNt AND ORNt2r',[],'ORNt',[]
     'FORt AND FORt2r',[],'FORt',[]
@@ -268,13 +272,14 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'GNOXuq AND GNOXmq AND DGOR AND SBTD_D2 AND NADH6',[],'GNOXuq','GNOXuqi'
     'GNOXuq AND GNOXmq AND DGOR AND SBTD_D2 AND NADH6',[],'GNOXmq','GNOXmqi'
     'GNOXuqi AND GNOXmq AND DGOR AND SBTD_D2 AND NADH6',[],'GNOXmq','GNOXmqi'
-    'FACOAL160 AND FACOAE160',[],'FACOAL160','FACOAL160i'
-    'FACOAL180 AND FACOAE180',[],'FACOAL180','FACOAL180i'
-    'FACOAL181 AND FACOAE181',[],'FACOAL181','FACOAL181i'
+    'FACOAL160',[],'FACOAL160','FACOAL160i'
+    'FACOAL180',[],'FACOAL180','FACOAL180i'
     'SUCD1 AND SUCCt AND SUCCt2r',[],'SUCCt',[]
     'SUCD4 AND SUCCt AND SUCCt2r',[],'SUCCt',[]
     'CBMKr AND CBMK',[],'CBMK',[]
     'ETOHt2r AND ETOHt',[],'ETOHt',[]
+    'ETOHt2r AND ETOHt3',[],'ETOHt2r',[]
+    'ETOHt2r AND ETOHt3',[],'ETOHt3',[]
     'DTTPti',[],'DTTPti',[]
     'UCO2L AND BUAMDH AND BURTADH',[],'UCO2L','UCO2Li'
     'NADH6 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
@@ -357,15 +362,15 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'AKGt2r AND AKGte',[],'AKGte',[]
     'PHEt2r AND PHEtec',[],'PHEt2r','PHEt2'
     'CHOLOX',[],'CHOLOX','CHOLOXi'
-    %  '34DCCBR',[],'34DCCBR','34DCCBRi'
+    '34DCCBR',[],'34DCCBR','34DCCBRi'
     'r0389',[],'r0389','r0389i'
     'URAOX',[],'URAOX','URAOXi'
     'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-    %  'SQLE',[],'SQLE','SQLEi'
+    'SQLE',[],'SQLE','SQLEi'
     '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
     'HSNOOX',[],'HSNOOX','HSNOOXi'
-    % 'SALCACD',[],'SALCACD','SALCACDi'
-    %  '34HPPORdc',[],'34HPPORdc','34HPPORdci'
+    'SALCACD',[],'SALCACD','SALCACDi'
+    '34HPPORdc',[],'34HPPORdc','34HPPORdci'
     'SULR AND SULRi',[],'SULR',[]
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
@@ -398,7 +403,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CITt2ipp AND CAt4i AND CITCAt',[],'CITCAt','CITCAti'
     'G16BPS AND G1PPT AND PGK AND GAPD_NADP AND GAPD',[],'G16BPS','G16BPSi'
     'PPCr AND PYK AND ACTLDCCL AND HEDCHL AND OAAKEISO',[],'PPCr','PPC'
-    'PPCr AND NDPK9 AND OAACL',[],'PPCr','PPC'
+    'PPCr AND OAACL',[],'OAACL','OAACLi'
     'PPCr AND PYK AND ACPACT AND TDCOATA AND MCOATA AND HACD6',[],'PPCr','PPC'
     'OCBT AND CITRH AND CBMKr',[],'CBMKr','CBMK'
     'GALt2_2 AND GALt1r',[],'GALt2_2','GALt2_2i'
@@ -463,7 +468,18 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OAASr AND ICDHx AND ACONTa AND ACONTb AND ALCD2x AND FDH AND PTAr AND ACKr',[],'ICDHx','ICDHxi'
     'METt2r AND METt3r',[],'METt2r','METt2'
     'NTP9 AND NDPK4',[],'NTP9','NTP9i'
+    'HEX4 AND HMR_7271 AND MAN1PT2 AND MAN6PI AND PGM AND PMANM',[],'PMANM','PMANMi'
+    'PGMT AND GALU AND GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND NDPK2 AND PPA AND r1393',[],'NDPK2','NDPK2i'
+    'D_GLUMANt AND MANt2r AND GLU_Dt2r',[],'GLU_Dt2r','GLU_Dt2'
+    'NACUP AND NACSMCTte AND NAt3_1',[],'NAt3_1','NAt3'
+    'GALU AND DCLMPDOH AND GDPGALP AND GDPMANNE AND GALT',[],'GALT','GALTi'
+    'HYD2 AND HYD4 AND NTRIR4 AND FDOXR',[],'FDOXR','FDOXRi'
+    'FACOAL181',[],'FACOAL181','FACOAL181i'
+    'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
+    'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
+    'GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND GPDDA1',[],'GLDBRAN',[]
     };
+
 
 % growth-restoring gapfills: needed if the futile cycle was the model's
 % only way to produce ATP and growth rate without it is zero. Enables ATP
@@ -476,6 +492,7 @@ growthGapfills={
     'EX_for(e) AND FORt2r'
     'EX_ac(e) AND ACt2r'
     'EX_etoh(e) AND ETOHt2r'
+    'EX_hco3(e) AND HCO3abc AND H2CO3D'
     % consider adding glycolysis
     'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK'
     'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK AND EX_etoh(e) AND ETOHt2r'
@@ -483,6 +500,8 @@ growthGapfills={
     'EX_2dmmq8(e) AND 2DMMQ8abc'
     'DM_q8h2[c]'
     'DM_NA1'
+    'G3PFDXORi' % tentative-some models would not produce feasible amounts of ATP without it
+    'ASP4DCi' % tentative-some models would not produce feasible amounts of ATP without it
     'EX_lac_L(e) AND L_LACt2r'
     'EX_acald(e) AND ACALDt'
     'EX_asp_L(e) AND ASPt2r'
@@ -624,9 +643,8 @@ for i = 2:size(reactionsToReplace, 1)
                     end
                     % add growth-restoring gapfilled reactions
                     for j=1:length(ggrxns)
-                        addedRxns{addCnt, j+1} = ggrxns{j};
+                        gfRxns{length(gfRxns)+1, 1} = ggrxns{j};
                     end
-                    addCnt = addCnt + 1;
                     gf=0;
                     break
                 end
@@ -652,9 +670,8 @@ for i = 2:size(reactionsToReplace, 1)
                         addCnt = addCnt + 1;
                     end
                     for j=1:length(untGF)
-                        addedRxns{addCnt, j+1} = untGF{j};
+                        gfRxns{length(gfRxns)+1, 1} = untGF{j};
                     end
-                    addCnt = addCnt + 1;
                 end
             end
         end
@@ -678,18 +695,31 @@ if ~isempty(addedRxns)
             rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
             rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
             model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
-            %             model.comments{rxnIDNew,1}=model_old.comments{rxnIDOld,1};
+            model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
         end
+        model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
+        model.rxnConfidenceScores(end,1)=1;
         % if more than one reaction is added
         if size(addedRxns,2)>2
             if ~isempty(addedRxns{j,3})
                 for k=3:size(addedRxns(j,:),2)
                     if ~isempty(addedRxns{j,k})
                         model = addReaction(model, addedRxns{j, k}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, k})), 3});
+                         model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
+                         model.rxnConfidenceScores(end,1)=1;
                     end
                 end
             end
         end
+    end
+end
+
+% add any gapf-ileld reactions
+if ~isempty(gfRxns)
+    for i=1:length(gfRxns)
+        model = addReaction(model, gfRxns{i,1}, database.reactions{find(ismember(database.reactions(:, 1), gfRxns{i,1})), 3});
+        model.comments{end,1}='Added to enable growth after eliminating futile cycles during DEMETER pipeline.';
+        model.rxnConfidenceScores(end,1)=1;
     end
 end
 

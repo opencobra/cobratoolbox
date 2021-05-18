@@ -101,10 +101,10 @@ else
 end
 model=removeRxns(model,toRemove);
 
-summary.condGF=setdiff(summary.condGF,toRemove);
-summary.targetGF=setdiff(summary.targetGF,toRemove);
-summary.relaxGF=setdiff(summary.relaxGF,toRemove);
-summary.balancedCycle_addedRxns=setdiff(summary.balancedCycle_addedRxns,toRemove);
+summary.conditionSpecificGapfill=setdiff(summary.conditionSpecificGapfill,toRemove);
+summary.targetedGapfill=setdiff(summary.targetedGapfill,toRemove);
+summary.relaxFBAGapfill=setdiff(summary.relaxFBAGapfill,toRemove);
+summary.futileCycles_addedRxns=setdiff(summary.futileCycles_addedRxns,toRemove);
 summary.addedMismatchRxns=setdiff(summary.addedMismatchRxns,toRemove);
 summary.addedReactionsBiomass=setdiff(summary.addedReactionsBiomass,toRemove);
 

@@ -1,19 +1,18 @@
-function [model, solution] = componentContribution(model, trainingData, param)
+function [model, solution] = componentContribution(model, combinedModel, param)
 % Perform the component contribution method
 %
 % USAGE:
 %
-%    [model, params] = componentContribution(model, trainingData)
+%    [model, params] = componentContribution(model, combinedModel)
 %
 % INPUTS:
 %    model:             COBRA structure
-%    trainingData:      structure from `prepareTrainingData` with the following fields:
+%    combinedModel:      structure from `prepareTrainingData` with the following fields:
 %
 %                         * .S - the stoichiometric matrix of measured reactions
 %                         * .G - the group incidence matrix
 %                         * .dG0 - the observation vector (standard Gibbs energy of reactions)
-%                         * .weights - the weight vector for each reaction in `S`
-%                         * .Model2TrainingMap
+%                         * .test2CombinedModelMap
 %
 % OUTPUTS:
 %    model:             structure with the following fields:
@@ -43,14 +42,13 @@ if ~isfield(param,'debug')
 end
 
 fprintf('Running Component Contribution method\n');
-[S,G,DrG0,weights]=deal(trainingData.S, trainingData.G, trainingData.dG0, trainingData.weights);
+[S,G,DrG0]=deal(combinedModel.S, combinedModel.G, combinedModel.dG0);
 [mlt, nlt] = size(S);
 
 %assert Generate an error when a condition is violated.
 assert (size(G, 1) == mlt);
 assert (size(DrG0, 1) == nlt);
 assert (size(DrG0, 2) == 1);
-assert (length(weights) == size(S, 2));
 
 %%
 %[inv_A, r, P_R, P_N] = invertProjection(A, epsilon)
@@ -108,26 +106,28 @@ else
     % Linear regression for the reactant layer (aka RC)
     [inv_S, r_rc, P_R_rc, P_N_rc] = invertProjection(S);
     
-    % calculate the reactant contribution
-    DfG0_rc = inv_S'* DrG0;
+    % reactant contribution
+    DfG0_rc = inv_S' * DrG0;
+    
+    % residual error (unweighted squared error divided by N - rank)
+    e_rc = (DrG0 - S' * DfG0_rc);
+    MSE_rc = (e_rc' *  e_rc) / (min(size(S)) - r_rc);
     
     % Linear regression for the group layer (aka GC)
     [inv_GS, r_gc, P_R_gc, P_N_gc] = invertProjection(GS);
     
-    % calculate the group contribution
-    DgG0_gc = inv_GS'* DrG0;
-    
-    % Calculate the contributions in the stoichiometric space
-    DfG0_cc = P_R_rc * DfG0_rc + P_N_rc * G * DgG0_gc;
-    
-    % Calculate the residual error (unweighted squared error divided by N - rank)
-    e_rc = (DrG0 - S' * DfG0_rc);
-    MSE_rc = (e_rc' *  e_rc) / (min(size(S)) - r_rc);
+    % group contribution
+    DgG0_gc = inv_GS' * DrG0;
     
     e_gc = (DrG0 - GS' * DgG0_gc);
-
     MSE_gc = (e_gc' * e_gc) / (min(size(GS)) - r_gc);
     
+    % component contribution
+    %DfG0_cc = (P_R_rc * inv_S' + P_N_rc * G * inv_GS')* DrG0;
+    DfG0_cc = P_R_rc * DfG0_rc + P_N_rc * G * DgG0_gc;
+    
+    e_cc = (DrG0 - S' * DfG0_cc);
+    MSE_cc = (e_cc' * e_cc) / (min(size(GS)) - r_gc);
 end
 
 %DrG0_cc = S'*DfG0_cc;
@@ -162,22 +162,29 @@ MSE_inf = 1e10;
 
 % Put all the calculated data in 'solution' for the sake of debugging
 if param.debug
+    %reactant contribution
     solution.DfG0_rc = DfG0_rc;
-    solution.DgG0_gc = DgG0_gc;
-    solution.V_rc = V_rc;
-    solution.V_gc = V_gc;
-    solution.V_inf = V_inf;
-    solution.MSE_rc = MSE_rc;
-    solution.MSE_gc = MSE_gc;
-    solution.MSE_inf = MSE_inf;
+    solution.inv_S = inv_S;
     solution.P_R_rc = P_R_rc;
-    solution.P_N_rc = P_N_rc;
+    solution.e_rc = e_rc;
+    solution.MSE_rc = MSE_rc;
+    solution.V_rc = V_rc;
     
-    DgG0_gc = solution.DgG0_gc(solution.DgG0_gc~=0);
-    DgG0_gc_sorted = sort(DgG0_gc);
-    figure;
-    plot(DgG0_gc_sorted,'.')
-    title('Sorted nonzero DgG0_gc')
+    %group contribution
+    solution.DgG0_gc = DgG0_gc;
+    solution.inv_GS = inv_GS;
+    solution.P_N_rc = P_N_rc;
+    solution.e_gc = e_gc;
+    solution.MSE_gc = MSE_gc;
+    solution.V_gc = V_gc;
+    
+    % component contribution
+    solution.DfG0_cc = DfG0_cc;
+    solution.e_cc = e_cc;
+    solution.MSE_cc = MSE_cc;
+    
+    solution.V_inf = V_inf;
+    solution.MSE_inf = MSE_inf;
 else
     solution = [];
 end
@@ -187,8 +194,8 @@ cov_dG0 = V_rc * MSE_rc + V_gc * MSE_gc + V_inf * MSE_inf;
 
 
 % Map estimates back to model
-model.DfG0 = DfG0_cc(trainingData.Model2TrainingMap);
-model.covf = cov_dG0(trainingData.Model2TrainingMap, trainingData.Model2TrainingMap);
+model.DfG0 = DfG0_cc(combinedModel.test2CombinedModelMap);
+model.covf = cov_dG0(combinedModel.test2CombinedModelMap, combinedModel.test2CombinedModelMap);
 
 %model.DfG0_Uncertainty = diag(sqrt(model.covf));
 diag_conf=diag(model.covf);
@@ -218,11 +225,7 @@ model.DrG0_Uncertainty = columnVector(sqrt(diag_St_conf_S));
 if ~real(model.DrG0_Uncertainty)
     error('DrG0_Uncertainty has a complex part')
 end
-model.DrG0_Uncertainty(~model.SIntRxnBool,1)=NaN;
-% model.DrG0_Uncertainty(model.DrG0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
-% model.DrG0_Uncertainty(sum(model.S~=0)==1) = 1e10; % set uncertainty of exchange, demand and sink reactions to inf
+model.DrG0_Uncertainty(~model.SIntRxnBool,1)=inf;
+%model.DrG0_Uncertainty(model.DrG0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf
 
-% Debug
-% model.G = trainingData.G(trainingData.Model2TrainingMap,:);
-% model.groups = trainingData.groups;
-% model.has_gv = trainingData.has_gv(trainingData.Model2TrainingMap);
+

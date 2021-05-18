@@ -44,7 +44,6 @@ else
     stratCol=2;
 end
 
-groups=unique(sampleInformation(2:end,stratCol));
 % delete empty columns in the data
 sampleData{1,1}='Averages';
 delIndices =cellfun(@isempty, sampleData(1,:));
@@ -59,6 +58,14 @@ for i=2:size(sampleData,2)
     end
 end
 sampleData(:,delArray)=[];
+
+% delete metadata entries not in the sample data
+[C,IA]=setdiff(sampleInformation(:,1),sampleData(:,1),'stable');
+sampleInformation(IA(2:end),:)=[];
+
+groups=unique(sampleInformation(2:end,stratCol));
+
+if length(groups) > 1
 
 % Fill out table header
 if length(groups)==2
@@ -180,6 +187,11 @@ for i=2:size(Statistics,1)
     else
         Statistics{i,2}='NA';
     end
+end
+
+else
+    Statistics = {};
+    significantFeatures = {};
 end
 
 end

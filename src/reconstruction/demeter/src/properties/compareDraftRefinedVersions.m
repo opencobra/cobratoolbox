@@ -76,7 +76,7 @@ for j=1:size(toCompare,1)
         models(IA,:)=[];
     end
     
-    if length(models)>1000
+    if length(models)>5000
         steps=1000;
     elseif length(models)>2000
         steps=200;

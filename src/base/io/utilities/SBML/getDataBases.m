@@ -27,7 +27,7 @@ function [databases,ids,qualifiers] = getDataBases(Ressources,qualifier)
 try
     %Try to parse identifiers.org ids. if this doesn't work leave them
     %empty.
-    tokens = cellfun(@(x) regexp(x,'https?://identifiers\.org/([^/]*)/(.*)','tokens'),Ressources);
+    tokens = cellfun(@(x) regexp(x,'https?://identifiers\.org/([^:/]*)[/:](.*)','tokens'),Ressources);
 catch
     tokens = {};
 end

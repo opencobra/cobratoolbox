@@ -44,7 +44,6 @@ if FBA.f < tol
         'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'}
         'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'}
         'AHMMPS', {'AMPMS2'}
-        'UNKENZ',{'ACCOAC'}
         };
     
     % add anaerobic reactions to model (if contains O2-using reaction)
@@ -86,8 +85,10 @@ if FBA.f < tol
             'r0389', {'EX_pydx(e)', 'PYDXabc'}  % could be replaced by reaction 1.1.1.65 but only found in few bacteria
             'ASPT', {'EX_asp_L(e)', 'ASPt2r'}  % need aspartate to produce fumarate
             'QUILSYN', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
+            'CYTBD', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
             'PYAM5POr', {'EX_pydx(e)', 'PYDXabc'}  % some can only produce PYDX5P aerobically
             'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'}  % some can only produce PYDX5P aerobically
+            'UNKENZ',{'ACCOAC','H2CO3D'}
             };
         for i = 1:size(testFix, 1)
             if any(ismember(model.rxns, testFix{i, 1}))
@@ -120,7 +121,7 @@ if FBA.f < tol
         for j = 1:length(newRxns)
             % add reactions
             formula = database.reactions{ismember(database.reactions(:, 1), newRxns{j}), 3};
-            modelTest = addReaction(modelTest, newRxns{j}, 'reactionFormula', formula, 'geneRule', 'AnaerobicGapfill');
+            modelTest = addReaction(modelTest, newRxns{j}, 'reactionFormula', formula);
         end
         % test growth
         FBA = optimizeCbModel(modelTest, 'max');
@@ -133,7 +134,7 @@ if FBA.f < tol
     if any(ismember(model.rxns, 'AMMQT8'))
         modelTest = model;
         formula = database.reactions{ismember(database.reactions(:, 1), 'AMMQLT8'), 3};
-        modelTest = addReaction(modelTest, 'AMMQLT8', 'reactionFormula', formula, 'geneRule', 'AnaerobicGapfill');
+        modelTest = addReaction(modelTest, 'AMMQLT8', 'reactionFormula', formula);
         % test growth
         FBA = optimizeCbModel(modelTest, 'max');
         if FBA.f >= tol
@@ -150,7 +151,7 @@ if FBA.f < tol
     modelTest=model;
     for i=1:length(rxns)
         if isempty(find(ismember(model.rxns, rxns{i})))
-            modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+            modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
         end
     end
     % test growth
@@ -162,7 +163,7 @@ if FBA.f < tol
     % some models can't consume 5-Methylthio-D-ribose
     if any(ismember(model.rxns, 'DKMPPD2'))
         formula = database.reactions{ismember(database.reactions(:, 1), 'DM_5MTR'), 3};
-        model = addReaction(model, 'DM_5MTR', 'reactionFormula', formula, 'geneRule', 'AnaerobicGapfill');
+        model = addReaction(model, 'DM_5MTR', 'reactionFormula', formula);
     end
     
     % some models need oxygen to produce 3-methyl-2-oxopentanoate
@@ -174,7 +175,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -193,7 +194,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -211,7 +212,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -230,7 +231,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -248,7 +249,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -266,7 +267,7 @@ if FBA.f < tol
         modelTest=model;
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, 'geneRule', 'AnaerobicGapfill');
+                modelTest = addReaction(modelTest, rxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
             end
         end
         % test growth
@@ -284,25 +285,34 @@ if FBA.f < tol
             'EX_q8(e)'
             'Q8abc'
             };
+        modelTest=model;
         for i = 1:length(quinoneRxns)
             formula = database.reactions{ismember(database.reactions(:, 1), quinoneRxns{i}), 3};
-            model = addReaction(model, quinoneRxns{i}, 'reactionFormula', formula, 'geneRule', 'AnaerobicGapfill');
+            modelTest = addReaction(modelTest, quinoneRxns{i}, 'reactionFormula', formula);
+            modelTest.rxnConfidenceScores(end,1)=1;
         end
         % test growth
         FBA = optimizeCbModel(modelTest, 'max');
         if FBA.f >= tol
             model = modelTest;
+        else
+            % add demethylmenaquinone transporters and exchanges
+            quinoneRxns = {
+                'EX_2dmmq8(e)'
+                '2DMMQ8abc'
+                };
+            modelTest=model;
+            for i = 1:length(quinoneRxns)
+                formula = database.reactions{ismember(database.reactions(:, 1), quinoneRxns{i}), 3};
+                modelTest = addReaction(modelTest, quinoneRxns{i}, 'reactionFormula', formula);
+                modelTest.rxnConfidenceScores(end,1)=1;
+            end
+            % test growth
+            FBA = optimizeCbModel(modelTest, 'max');
+            if FBA.f >= tol
+                model = modelTest;
+            end
         end
-    end
-    
-    % add demethylmenaquinone transporters and exchanges
-    quinoneRxns = {
-        'EX_2dmmq8(e)'
-        '2DMMQ8abc'
-        };
-    for i = 1:length(quinoneRxns)
-        formula = database.reactions{ismember(database.reactions(:, 1), quinoneRxns{i}), 3};
-        model = addReaction(model, quinoneRxns{i}, 'reactionFormula', formula, 'geneRule', 'AnaerobicGapfill');
     end
     
     % final test for anaerobic growth
