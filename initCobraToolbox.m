@@ -434,7 +434,7 @@ end
 for i = 1:length(supportedSolversNames)
     if 0 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'mosek')
+        if strcmp(supportedSolversNames{i},'quadMinos')
             pause(0.1)
         end
     end

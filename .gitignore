@@ -26,6 +26,9 @@ diary.txt
 *.log
 *.zip
 
+#lock files
+.~lock.*
+
 # coverage
 coverage.json
 coverage_html
@@ -176,4 +179,3 @@ external/Smith-Decomposition/
 external/gaimc/
 external/lusol/
 external/pdco/
-.DS_Store

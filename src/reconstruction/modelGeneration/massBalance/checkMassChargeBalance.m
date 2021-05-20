@@ -1,4 +1,4 @@
-function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
+function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, modelName)
 % Tests for a list of reactions if these reactions are
 % mass-balanced by adding all elements on left hand side and comparing them
 % with the sums of elements on the right hand side of the reaction.
@@ -7,7 +7,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %
 % USAGE:
 %
-%    [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, fileName)
+%    [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(model, printLevel, modelName)
 %
 % INPUT:
 %    model:                  COBRA model structure:
@@ -24,7 +24,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %                            0 = silent,
 %                            1 = print elements as they are checked (display progress),
 %                            2 = also print out diagnostics on problem reactions to screen
-%    fileName:               name of the file
+%    modelName:               name of the file
 %
 % OUTPUTS:
 %    massImbalance:          `nRxn` x `nElement` matrix with mass imbalance
@@ -39,7 +39,7 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %
 %
 % OPTIONAL OUTPUT FILES:
-% fileName_mass_imbalanced_reactions.txt  provides a human readable summary
+% modelName_mass_imbalanced_reactions.txt  provides a human readable summary
 % for each mass imbalanced reaction. 
 %
 % For each reaction it contains:
@@ -80,8 +80,8 @@ if ~isfield(model,'SIntRxnBool')
     model.SIntRxnBool=true(nRxn,1);%assume all reactions are supposed to be internal if no other info provided
 end
 
-if ~exist('fileName','var')
-    fileName='';
+if ~exist('modelName','var')
+    modelName='';
 end
 if ~isfield(model,'rxns')
     for i=1:nRxn
@@ -154,10 +154,10 @@ if printLevel==-1
             %no formula
             if ~strcmp(imBalancedMass{p, 1}, 'NaN')
                 if ~firstMissing
-                    fid=fopen([fileName 'mass_imbalanced_reactions.txt'],'w');
+                    fid=fopen([modelName 'mass_imbalanced_reactions.txt'],'w');
                     fprintf(fid, '%s;%s;%s;%s\n', 'j', 'rxns{j}', 'imbalance', 'equation');
                     fprintf(fid, '%s;%s;%s;%s\n\n', 'i', 'mets{i}', 'S(i,j)', 'metFormulas{i}');
-                    fprintf('%s\n',['There are mass imbalanced reactions, see ' fileName 'mass_imbalanced_reactions.txt'])
+                    fprintf('%s\n',['There are mass imbalanced reactions, see ' modelName 'mass_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(p), 0);
@@ -215,7 +215,7 @@ if isfield(model, 'metCharges')
             end
             if printLevel==-1
                 if ~firstMissing
-                    fid=fopen([fileName 'metabolites_without_charge.txt'],'w');
+                    fid=fopen([modelName 'metabolites_without_charge.txt'],'w');
                 end
                 firstMissing=1;
                 fprintf(fid, '%s\t%s\n', int2str(m), model.mets{m});
@@ -232,8 +232,8 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
         for q=1:nRxn
             if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') && imBalancedCharge(q) ~= 0
                 if ~firstMissing
-                    fid=fopen([fileName 'mass_balanced_charge_imbalanced_reactions.txt'],'w');
-                    fprintf('%s\n',['There are mass balanced, but charge imbalanced reactions, see ' fileName 'charge_imbalanced_reactions.txt'])
+                    fid=fopen([modelName 'mass_balanced_charge_imbalanced_reactions.txt'],'w');
+                    fprintf('%s\n',['There are mass balanced, but charge imbalanced reactions, see ' modelName 'charge_imbalanced_reactions.txt'])
                     firstMissing=1;
                 end
                 equation=printRxnFormula(model, model.rxns(q), 0);

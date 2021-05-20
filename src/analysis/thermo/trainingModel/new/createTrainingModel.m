@@ -167,3 +167,6 @@ end
 if ~isfield(trainingModel,'ub')
     trainingModel.ub=ones(size(trainingModel.S,2),1)*inf;
 end
+
+trainingModel.DrGt0 = trainingModel.dG0_prime;
+trainingModel = rmfield(trainingModel,'dG0_prime');
