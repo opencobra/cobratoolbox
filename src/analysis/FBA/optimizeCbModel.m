@@ -19,8 +19,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %
 %                         * S  - `m x n` Stoichiometric matrix
 %                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
+%                         * lb - `n x 1` Lower bounds on net flux
+%                         * ub - `n x 1` Upper bounds on net flux
 %
 % OPTIONAL INPUTS:
 %    model:
