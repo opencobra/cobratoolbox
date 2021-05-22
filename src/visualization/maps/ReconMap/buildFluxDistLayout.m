@@ -48,6 +48,7 @@ end
 if ~exist('content','var')
     normalizedFluxes = normalizeFluxes(abs(solution.v), thickness);
     content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
+    cmap = makeColorGradient('#ff0000', defaultColor, 11);
     for i=1:length(solution.v)
         mapReactionId = model.rxns{i};
         
@@ -57,7 +58,8 @@ if ~exist('content','var')
         end
         
         if solution.v(i) ~= 0
-            line = strcat('%09', mapReactionId, '%09', num2str(normalizedFluxes(i)), '%09', defaultColor, '%0D');
+            color = cmap{round(normalizedFluxes(i)) + 1};
+            line = strcat('%09', mapReactionId, '%09', 1, '%09', color, '%0D');            
             content = strcat(content, line);
         end
         
