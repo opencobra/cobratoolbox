@@ -255,10 +255,22 @@ if javaInstalled == 1 && ~onlyUnmapped
         if ~isequal(noOfsubstrates, substratesMol) || ~isequal(noOfproducts, productsMol)
             mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, rxnDir);
         end
+        if length(mappedFile) > 5
+            mappedFile = acsendingAtomMaps(mappedFile);
+        end
+        
         % Rewrite the file
-        fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
-        fprintf(fid2, '%s\n', mappedFile{:});
-        fclose(fid2);
+        if any(contains(mappedFile, '$MOL'))
+            fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
+            fprintf(fid2, '%s\n', mappedFile{:});
+            fclose(fid2);
+        else
+            if ~exist([rxnDir filesep 'atomMapped' filesep 'inconsistent'],'dir')
+                mkdir([rxnDir filesep 'atomMapped' filesep 'inconsistent'])
+            end
+            movefile([rxnDir 'atomMapped' filesep name], ...
+                [rxnDir filesep 'atomMapped' filesep 'inconsistent'])
+        end
     end
 else
     atomMappingReport.mappedRxns = [];
@@ -282,10 +294,10 @@ begmol = strmatch('$MOL', mappedFile);
 % Check if bondless atoms were divided
 if numel(substratesFormula) ~= numel(substratesMol) || numel(productsFormula) ~= numel(productsMol)
     
-    if ~exist([outputDir filesep 'atomMapped' filesep 'toFix'],'dir')
-        mkdir([outputDir filesep 'atomMapped' filesep 'toFix'])
+    if ~exist([outputDir filesep 'atomMapped' filesep 'inconsistent'],'dir')
+        mkdir([outputDir filesep 'atomMapped' filesep 'inconsistent'])
     end
-    copyfile([outputDir filesep 'atomMapped' filesep mappedFile{2} '.rxn'], [outputDir filesep 'atomMapped' filesep 'toFix'])
+    copyfile([outputDir filesep 'atomMapped' filesep mappedFile{2} '.rxn'], [outputDir filesep 'atomMapped' filesep 'inconsistent'])
     newFile(1:5, 1) = mappedFile(1:5);
 else
     
