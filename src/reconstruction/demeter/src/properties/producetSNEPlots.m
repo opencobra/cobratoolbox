@@ -134,8 +134,8 @@ for k=1:size(analyzedFiles,1)
                     % remove all that are just one entry
                     uniqueXX(B==1)=[];
                 else
-                    % remove all but 15 highest
-                    uniqueXX=uniqueXX(1:15);
+                    % remove all but 20 highest
+                    uniqueXX=uniqueXX(1:20);
                 end
                 
                 [C,IA]=setdiff(taxa,uniqueXX);
@@ -156,8 +156,9 @@ for k=1:size(analyzedFiles,1)
                 else
                     perpl=5;
                 end
-                
-                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
+            
+                Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',2);
+%                 Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
                 Summary.(taxonlevels{i})(:,1)=red_orgs;
                 Summary.(taxonlevels{i})(:,2)=taxa;
                 Summary.(taxonlevels{i})(:,3:size(Y,2)+2)=cellstr(string(Y));
@@ -171,9 +172,10 @@ for k=1:size(analyzedFiles,1)
                         cmarkers=[cmarkers '+o*xsdp'];
                     end
                     cmarkers=cmarkers(1:length(unique(taxa)));
-                    h=gscatter3(Y(:,1),Y(:,2),Y(:,3),taxa,cols,cmarkers);
+                    gscatter3(Y(:,1),Y(:,2),Y(:,3),taxa,cols,{},30);
+                    % h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
+                    % set(h,'MarkerSize',6)
                     hold on
-                    set(h,'MarkerSize',6)
                     title(analyzedFiles{k,1})
                     plottitle=strrep(reconVersion,'_refined','');
                     plottitle=strrep(plottitle,'_draft','');

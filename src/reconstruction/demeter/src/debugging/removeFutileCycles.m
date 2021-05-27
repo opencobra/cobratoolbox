@@ -286,8 +286,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'UCO2L AND BUAMDH AND BURTADH',[],'UCO2L','UCO2Li'
     'NADH6 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
     'NADH8 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
-    'NADH6 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
-    'NADH8 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
+    'NADH6 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
+    'NADH8 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
     'NADH6 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
     'NADH8 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
     'FDH2 AND SNG3POR AND FDNADOX_H',[],'SNG3POR','G3PD5'
@@ -509,6 +509,9 @@ growthGapfills={
     'EX_lac_L(e) AND L_LACt2r'
     'EX_acald(e) AND ACALDt'
     'EX_asp_L(e) AND ASPt2r'
+    'EX_arg_L(e) AND ARGt2r'
+    'EX_ser_L(e) AND SERt2r'
+    'PPA'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -529,9 +532,11 @@ for i = 2:size(reactionsToReplace, 1)
         if ~(length(intersect(model.rxns,present))==length(present))
             go= 0;
         end
-        notpresent=reactionsToReplace{i,2};
-        if ~isempty(intersect(model.rxns,notpresent))
-            go= 0;
+        if ~isempty(reactionsToReplace{i,2})
+            notpresent=strsplit(reactionsToReplace{i,2},' AND ');
+            if length(intersect(model.rxns,notpresent))==length(notpresent)
+                go= 0;
+            end
         end
     end
     if go == 1
@@ -621,7 +626,7 @@ for i = 2:size(reactionsToReplace, 1)
                             modelTest = addReaction(modelTest, newName, RxForm);
                         end
                     else
-                        if isempty(find(contains(model.rxns,ggrxns{j})))
+                        if isempty(find(strcmp(model.rxns,ggrxns{j})))
                             modelTest = addReaction(modelTest, ggrxns{j}, RxForm);
                         end
                     end
@@ -653,30 +658,6 @@ for i = 2:size(reactionsToReplace, 1)
                     break
                 end
                 modelTest=modelPrevious;
-            end
-            % if none of that worked
-            if gf==1
-                [modelTest,untGF] = untargetedGapFilling(modelTest,'max',database,1,1);
-                if ~isempty(untGF)
-                    if ~isempty(reactionsToReplace{i, 3})
-                        for j=1:length(toRemove)
-                            deletedRxns{delCnt, 1} = toRemove{j};
-                            delCnt = delCnt + 1;
-                        end
-                    end
-                    if ~isempty(reactionsToReplace{i, 4})
-                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
-                            addedRxns{addCnt, 1} = toRemove{1};
-                        end
-                        for j=1:length(rxns)
-                            addedRxns{addCnt, j+1} = rxns{j};
-                        end
-                        addCnt = addCnt + 1;
-                    end
-                    for j=1:length(untGF)
-                        gfRxns{length(gfRxns)+1, 1} = untGF{j};
-                    end
-                end
             end
         end
     end
@@ -718,7 +699,7 @@ if ~isempty(addedRxns)
     end
 end
 
-% add any gapf-ileld reactions
+% add any gapf-filled reactions
 if ~isempty(gfRxns)
     for i=1:length(gfRxns)
         model = addReaction(model, gfRxns{i,1}, database.reactions{find(ismember(database.reactions(:, 1), gfRxns{i,1})), 3});
