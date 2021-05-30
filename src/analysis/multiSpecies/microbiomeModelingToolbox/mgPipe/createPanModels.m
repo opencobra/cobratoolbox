@@ -367,6 +367,12 @@ reactionsToReplace = {
     'PPCr AND MALCOAPYRCT AND MMSAD5 AND MMSAD4','PPCr','PPC'
     'SERD_Lr','SERD_Lr','SERD_L'
     'LDH_L AND LDH_L2','LDH_L',[]
+    '25DOPOX AND GLCRAL AND D4DGCD','D4DGCD','D4DGCDi'
+    'CITt7 AND SUCCt AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'HEDCHL AND OAAKEISO AND ACTLDCCL','ACTLDCCL','ACTLDCCLi'
+    'ADNt AND ADNCNT3tc','ADNCNT3tc','ADNt2'
+    'PGMT AND G1PP AND GK_adp_','G1PP','G1PPi'
+    'LPCDH AND LPCOX AND NADH6','LPCDH','LPCDHi'
     };
 
 % List Western diet constraints to test if the pan-model produces
@@ -659,28 +665,32 @@ model.description.date = date;
 % Rebuild model consistently
 model = rebuildModel(model,database);
 model=changeObjective(model,'biomassPan');
+
+% constrain sink reactions
+model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
+
 % remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model);
 % test if the model can still grow
-modelRD = useDiet(modelRD,dietConstraints);
 FBA=optimizeCbModel(modelRD,'max');
 if FBA.f > tol
     model=modelRD;
 else
-    toRM={};
     modelTest=model;
-    for k=1:length(removedRxnInd)
-        modelTest=removeRxns(modelTest,modelTest.rxns(removedRxnInd(k)));
-        FBA=optimizeCbModel(modelTest,'max');
+    toRM={};
+    for j=1:length(removedRxnInd)
+        modelRD=removeRxns(modelTest,model.rxns(removedRxnInd(j)));
+        modelRD = useDiet(modelRD,dietConstraints);
+        FBA=optimizeCbModel(modelRD,'max');
         if FBA.f > tol
-            toRM{k} =  modelTest.rxns{removedRxnInd(k)};
-            model
+            modelTest=removeRxns(modelTest, model.rxns{removedRxnInd(j)});
+            toRM{j}=model.rxns{removedRxnInd(j)};
         else
-            toRM{k} =  modelTest.rxns{keptRxnInd(k)};
+            modelTest=removeRxns(modelTest, model.rxns{keptRxnInd(j)});
+            toRM{j}=model.rxns{keptRxnInd(j)};
         end
-        modelTest=removeRxns(modelTest,toRM{k});
     end
     model=removeRxns(model,toRM);
 end
