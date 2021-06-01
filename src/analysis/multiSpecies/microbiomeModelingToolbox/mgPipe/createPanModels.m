@@ -379,10 +379,11 @@ reactionsToReplace = {
     'PYDAMtr AND PYDAMt','PYDAMtr',[]
     'ENO AND GLXS AND PGM AND PGK AND TPI AND OAACL','OAACL','OAACLi'
     'NAt3_1 AND SUCCt2r AND SUCCt4_3','SUCCt4_3','SUCCt4_3i'
-    'PNTOt2 AND r0974 AND PNTOte','PNTOte','PNTOti'
+    'PNTOt2 AND PNTOte','PNTOte','PNTOti'
     'ARGSL AND ARGSSr AND ARGDr AND ACS AND ACKr AND PTAr','ARGSSr','ARGSS'
     'METt2r AND METt3r','METt2r','METt2'
     'GLUOOR AND GLUR AND H2O2D','H2O2D','NPR'
+    'KAS17rev AND RE3245C AND FAO181O','FAO181O','FAO181Oi'
     };
 
 % List Western diet constraints to test if the pan-model produces
