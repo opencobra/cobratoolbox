@@ -76,7 +76,7 @@ if (printHeaderFlag)
 end
 
 if (sortCol == 0)
-    [tmp, sortInd] = sort(labels);
+    [tmp, sortInd] = sort(labels(:,1));
     labels = labels(sortInd, :);
     data = data(sortInd, :);
 elseif(sortCol > 0)
