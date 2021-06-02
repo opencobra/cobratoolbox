@@ -640,6 +640,10 @@ folderPattern=[filesep 'new'];
 method = 'remove';
 editCobraToolboxPath(basePath,folderPattern,method)
 
+if exist([CBTDIR filesep 'binary' filesep 'glnxa64' filesep 'lib_old'],'dir')
+    rmpath([CBTDIR filesep 'binary' filesep 'glnxa64' filesep 'lib_old']);
+end
+
 % change back to the current directory
 cd(currentDir);
 

@@ -52,11 +52,16 @@ end
 
 % Add reaction formulas
 if (formulaFlag)
-    rxnNames = labels;
-    formulas = printRxnFormula(model, labels, false, false);
-    for i = 1:length(rxnNames)
-        labels{i, 2} = formulas{i};
+    if nonZeroFlag
+        bool=fluxData~=0;
+        formulas = printRxnFormula(model, labels(bool), false, false);
+        labels = [labels(bool), formulas];
+        printLabeledData(labels, fluxData(bool), 0, sortCol, fileName, headerRow)
+    else
+        formulas = printRxnFormula(model, labels, false, false);
+        labels = [labels, formulas];
+        printLabeledData(labels, fluxData(bool), nonZeroFlag, sortCol, fileName, headerRow)
     end
+else
+    printLabeledData(labels, fluxData, nonZeroFlag, sortCol, fileName, headerRow)
 end
-
-printLabeledData(labels, fluxData, nonZeroFlag, sortCol, fileName, headerRow)

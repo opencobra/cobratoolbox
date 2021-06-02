@@ -522,6 +522,12 @@ if solverOK
         % if unvalidated, simply set the solver without testing.
         eval(['CBT_', solverType, '_SOLVER = solverName;']);
     end
+else
+    switch solverName
+        case 'gurobi'
+            fprintf('%s\n',['Gurobi installed at this location? ' getenv('GUROBI_HOME')])
+            fprintf('%s\n',['Licence file current? ' getenv('GRB_LICENSE_FILE')])
+    end
 end
 end
 
