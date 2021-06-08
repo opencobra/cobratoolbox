@@ -509,7 +509,12 @@ if solverOK
         problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
         try
             %This is the code that actually tests if a solver is working
-            eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
+            if validationLevel>1
+                %display progress
+                eval(['solveCobra' solverType '(problem,''printLevel'',3);']);
+            else
+                eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
+            end
         catch ME
             if printLevel > 0
                 disp(ME.message);
