@@ -1,8 +1,8 @@
-function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag)
+function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag, gprFlag)
 % Prints a flux vector with reaction labels
 %
 % USAGE:
-%    printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag)
+%    printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag, gprFlag)
 %
 % INPUTS:
 %    model:          COBRA model structure
@@ -16,9 +16,11 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %    fileName:       Name of output file (Default = [])
 %    headerRow:      Header (Default = [])
 %    formulaFlag:    Print reaction formulas (Default = false)
+%    gprFlag:      Print reaction GPR (Default = false)
 %
+
 % .. Authors:
-%       - Markus Herrgard 6/9/06
+%       - Markus Herrgard, Ronan Fleming
 
 if isempty(fluxData)
     return
@@ -41,6 +43,9 @@ end
 if nargin < 8
     formulaFlag = false;
 end
+if nargin < 9
+    gprFlag = false;
+end
 
 if (excFlag)
     selExchange = findExcRxns(model, true, false);
@@ -50,18 +55,37 @@ else
     labels = model.rxns;
 end
 
+if nonZeroFlag
+    bool = fluxData~=0;
+end
+
 % Add reaction formulas
-if (formulaFlag)
+if formulaFlag
     if nonZeroFlag
-        bool=fluxData~=0;
+        %only generate the formulas for the nonzero entries
         formulas = printRxnFormula(model, labels(bool), false, false);
-        labels = [labels(bool), formulas];
-        printLabeledData(labels, fluxData(bool), 0, sortCol, fileName, headerRow)
+        labels(bool,end+1) = formulas;
     else
         formulas = printRxnFormula(model, labels, false, false);
         labels = [labels, formulas];
-        printLabeledData(labels, fluxData(bool), nonZeroFlag, sortCol, fileName, headerRow)
     end
-else
-    printLabeledData(labels, fluxData, nonZeroFlag, sortCol, fileName, headerRow)
 end
+
+% Add GPR
+if gprFlag
+    if nonZeroFlag
+        %only generate the gprs for the nonzero entries
+        labels(bool,end+1) = model.grRules(bool);
+    else
+        labels = [labels, model.grRules];
+    end
+end
+
+%only print the nonzeros
+if nonZeroFlag
+    labels = labels(bool,:);
+    fluxData = fluxData(bool);
+end
+
+%print the labeled data
+printLabeledData(labels, fluxData, 0, sortCol, fileName, headerRow)

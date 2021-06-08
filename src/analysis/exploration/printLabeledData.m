@@ -51,11 +51,9 @@ if (nargin < 7)
     sortMode = 'ascend';
 end
 
-
-
 if (printToFileFlag)
     if (~isempty(fileName))
-        fid = fopen(fileName, 'w');
+        fid = fopen(fileName, 'a');%change to append by default, in case something already there
     end
     format = '%g\t';
     stringHeaderFormat = '%-s\t';
