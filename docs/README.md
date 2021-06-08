@@ -62,3 +62,17 @@ Tracking code can be added to the template by editing layout.html or footer.html
 in https://github.com/opencobra/sphinx_cobra_theme/tree/develop/sphinx_cobra_theme/
 
 (details will be added shortly)
+## Checking for broken links
+
+Install 'linkchecker' utility:
+
+```
+sudo apt install linkchecker
+```
+
+Execute link check scan with the following command:
+
+```
+linkchecker https://opencobra.github.io/cobratoolbox/stable/
+```
+
