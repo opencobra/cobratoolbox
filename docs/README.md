@@ -61,7 +61,7 @@ and replace the ./stable or ./latest directory with the build output.
 Tracking code can be added to the template by editing layout.html or footer.html
 in https://github.com/opencobra/sphinx_cobra_theme/tree/develop/sphinx_cobra_theme/
 
-(details will be added shortly)
+
 ## Checking for broken links
 
 Install 'linkchecker' utility:
