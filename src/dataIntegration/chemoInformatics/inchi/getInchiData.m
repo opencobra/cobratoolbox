@@ -1,9 +1,12 @@
 function inchiLayersDetail = getInchiData(inchi)
-% Classify the inchi according to its various layers of information
+% Classify the inchi according to its various layers of information. All layers 
+% and sub-layers (except for the chemical formula sub-layer of the Main layer) 
+% start with /? where ? is a lower-case letter to indicate the type of information 
+% held in that layer. 
 % 
 % USAGE:
 %
-% detailLevelInchi = inchiDetail(inchi)
+%   inchiLayersDetail = getInchiData(inchi)
 %
 % INPUTS:
 %    inchi:             String with the InChI to classify
@@ -11,60 +14,78 @@ function inchiLayersDetail = getInchiData(inchi)
 % OUTPUTS:
 %    detailLevelInchi:  Struct file with the following fields:
 %
-%                       * .layers - Number of layers in the InChI.
-%                       * .standart - Logical, indicates whether the inchi 
-%                                     is standard or not.
-%                       * .metFormulas - The molecula formula.
-%                       * .positiveCharges - Number of positive charges.
-%                       * .negativeCharges - Number of negative charges.
-%                       * .netCharge - Summ of the charges.
-%                       * .stereochemicalLayer - Logical, indicates whether 
-%                                                the inchi  represent 
-%                                                stereochemical information
-%                                                or not.
-%                       * .isotopicLayer - Logical, indicates whether the 
-%                                          inchi represent isotopic 
-%                                          information or not.
+%       * .layers              - Number of layers in the InChI.
+%       * .mainLayer           - Number of layers in the InChI.
+%       * .standart            - Logical, indicates whether the inchi is 
+%                                standard or not.
+%       * .metFormula          - The molecula formula.
+%       * .netCharge           - Summ of the charges.
+%       * .stereochemicalLayer - Logical, indicates whether the inchi   
+%                                represent stereochemical information or not.
+%       * .isotopicLayer       - Logical, indicates whether the inchi represent 
+%                                isotopic information or not.
 
 inchiSplited = split(inchi, '/');
 
-% Check inchi layers
+% Count inchi layers
 inchiLayersDetail.layers = numel(inchiSplited);
 
-% Check if it is a standard inchi 
+% Check if it is a standard InChI 
 assert(contains(inchiSplited{1}, 'InChI='), [inchi ' is not an InChI'])
 if contains(inchiSplited{1}, '1S')
-    inchiLayersDetail.standart = true;
+    inchiLayersDetail.standard = true;
 else
-    inchiLayersDetail.standart = false;
+    inchiLayersDetail.standard = false;
 end
     
 % Chemical formula 
-inchiLayersDetail.metFormulas = inchiSplited{2};
+if isempty(regexp(inchiSplited{2}(1), '[a-z]')) % ignore protons; they don't have formula
+    inchiLayersDetail.metFormula = inchiSplited{2};
+elseif isequal(inchiSplited{2}, 'p+1')
+    inchiLayersDetail.metFormula = 'H';
+else
+    inchiLayersDetail.metFormula = [];
+end
 
+% Main layer
+mainLayer = [inchiSplited{1} '/' inchiLayersDetail.metFormula];
+if length(inchiSplited) > 3 && ismember(inchiSplited{3}(1), {'c', 'h'}) 
+    mainLayer = [mainLayer  '/' inchiSplited{3}];
+end
+if length(inchiSplited) >= 4 && ismember(inchiSplited{4}(1), 'h') 
+    mainLayer = [mainLayer '/' inchiSplited{4}];
+end
+inchiLayersDetail.mainLayer = mainLayer;
+    
 % Charge layer
 pLayer = contains(inchiSplited, 'p');
 if any(pLayer)
-    inchiLayersDetail.positiveCharges = str2double(regexprep(inchiSplited{pLayer}, 'p-|;', ''));
+    protons = str2double(regexprep(inchiSplited{pLayer}, 'p|;', ''));
 else
-    inchiLayersDetail.positiveCharges = 0;
+    protons = 0;
 end
 qLayer = contains(inchiSplited, 'q');
 if any(qLayer)
-    inchiLayersDetail.negativeCharges = str2double(regexprep(inchiSplited{qLayer}, 'q\+|;', ''));
+    charge = str2double(regexprep(inchiSplited{qLayer}, 'q\+|;', ''));
 else
-    inchiLayersDetail.negativeCharges = 0;
+    charge = 0;
 end
-inchiLayersDetail.netCharge = inchiLayersDetail.positiveCharges - inchiLayersDetail.negativeCharges;
+inchiLayersDetail.netCharge = charge + protons;
 
 % Stereochemical layer
-if any(~cellfun(@isempty, regexp(inchiSplited, 'b|t|m|s')))
-    inchiLayersDetail.stereochemicalLayer = true;
+stereochemicalLayerBool = ~cellfun(@isempty, regexp(inchiSplited, 'b|t|m|s'));
+if any(stereochemicalLayerBool)
+    inchiLayersDetail.stereochemicalSubLayers = sum(stereochemicalLayerBool);
+else
+    inchiLayersDetail.stereochemicalSubLayers = 0;
 end
 
 % Isotopic layer
-if any(~cellfun(@isempty, regexp(inchiSplited, 'i|h')))
+isotopicLayerBool = ~cellfun(@isempty, regexp(inchiSplited, 'i'));
+if any(isotopicLayerBool)
     inchiLayersDetail.isotopicLayer = true;
+else
+    inchiLayersDetail.isotopicLayer = 0;
 end
 
 end

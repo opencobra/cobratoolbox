@@ -189,4 +189,11 @@ else
     notInTableMets = {};
 end
 
+% add confidence scores for future reference
+for i=1:length(model.grRules)
+    if ~strcmp(model.grRules{i,1},'Unknown') && ~isempty(model.grRules{i,1})
+        model.rxnConfidenceScores(i,1) = 2;
+    end
+end
+
 end

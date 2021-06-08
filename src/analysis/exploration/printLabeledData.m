@@ -51,11 +51,9 @@ if (nargin < 7)
     sortMode = 'ascend';
 end
 
-
-
 if (printToFileFlag)
     if (~isempty(fileName))
-        fid = fopen(fileName, 'w');
+        fid = fopen(fileName, 'a');%change to append by default, in case something already there
     end
     format = '%g\t';
     stringHeaderFormat = '%-s\t';
@@ -76,7 +74,7 @@ if (printHeaderFlag)
 end
 
 if (sortCol == 0)
-    [tmp, sortInd] = sort(labels);
+    [tmp, sortInd] = sort(labels(:,1));
     labels = labels(sortInd, :);
     data = data(sortInd, :);
 elseif(sortCol > 0)

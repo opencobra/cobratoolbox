@@ -69,6 +69,7 @@ end
 try
     pythonPath = py_addpath(dGPredictorPath);
     decompose_groups = py.importlib.import_module('decompose_groups');
+    py.importlib.reload(decompose_groups); %uncomment if edits to decompose_groups.py made since the last load
 catch
     current_py_path = get_py_path();
     [pyEnvironment,pySearchPath]=initPythonEnvironment('dGPredictor',1);

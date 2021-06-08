@@ -218,6 +218,7 @@ if validationLevel == -1
         case 'EP'
             CBT_EP_SOLVER = solverName;
     end
+    solverOK = NaN;
     return
 end
 
@@ -284,7 +285,7 @@ if ~ENV_VARS.STATUS
 end
 
 % set path to MINOS and DQQ
-MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos' filesep];
+MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos'];
 
 % legacy support for MPS (will be removed in future release)
 if nargin > 0 && strcmpi(solverName, 'mps')
@@ -508,7 +509,12 @@ if solverOK
         problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
         try
             %This is the code that actually tests if a solver is working
-            eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
+            if validationLevel>1
+                %display progress
+                eval(['solveCobra' solverType '(problem,''printLevel'',3);']);
+            else
+                eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
+            end
         catch ME
             if printLevel > 0
                 disp(ME.message);
@@ -520,6 +526,12 @@ if solverOK
     else
         % if unvalidated, simply set the solver without testing.
         eval(['CBT_', solverType, '_SOLVER = solverName;']);
+    end
+else
+    switch solverName
+        case 'gurobi'
+            fprintf('%s\n',['Gurobi installed at this location? ' getenv('GUROBI_HOME')])
+            fprintf('%s\n',['Licence file current? ' getenv('GRB_LICENSE_FILE')])
     end
 end
 end

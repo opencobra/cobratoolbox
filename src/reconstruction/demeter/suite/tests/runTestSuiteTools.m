@@ -89,14 +89,13 @@ end
 if createReports
     
     if isempty(reportsFolder)
-        cd(currentDir)
-        mkdir([currentDir filesep 'modelReports'])
-        reportsFolder=[currentDir filesep 'modelReports' filesep];
+        mkdir('modelReports')
+        reportsFolder=[pwd filesep 'modelReports' filesep];
     end
     
     cd(reportsFolder)
     if ~isempty(infoFilePath)
-        infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
+        infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
         infoFile = table2cell(infoFile);
         
         dInfo = dir(refinedFolder);

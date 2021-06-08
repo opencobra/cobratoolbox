@@ -1,4 +1,4 @@
-function [output1, output2] = functionTemplate(model, arg1, varargin)
+function [output1, output2] = functionTemplate(model, arg1, optArg1, optArg2, optArg3)
 % (Description of the function) Template for a main utility function for
 % the COBRA toolbox. Allow passing COBRA-toolbox-wide parameters (e.g., feasTol, optTol, printLevel) 
 % and solver-specific parameter structure (e.g., struct('lpmethod', 1) for Cplex, struct('Presolve', 1) for Gurobi) 
@@ -14,15 +14,15 @@ function [output1, output2] = functionTemplate(model, arg1, varargin)
 %
 % INPUT(S):
 % (must be inputted as positional arguments)
-%     model:              COBRA model
-%     arg1:               argument 1
+%     model:               COBRA model
+%     arg1:                argument 1
 %
 % OPTIONAL INPUT(S):
 % (can be inputted as positional arguments, or name/value arguments, or a single parameter structure)
 %     optArg1:            optional argument 1
 %     optArg2:            optional argument 2
 %     optArg3:            optional argument 3
-%     ......
+%     ...
 %
 % OUTPUT(S):
 %     output1:            output argument 1

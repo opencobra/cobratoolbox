@@ -56,6 +56,12 @@ https://opencobra.github.io/cobratoolbox/stable/
 checkout the gh-pages branch of the https://github.com/opencobra/cobratoolbox.git repository
 and replace the ./stable or ./latest directory with the build output.
 
+## Adding Google Analytics tracking code to the template
+
+Tracking code can be added to the template by editing layout.html or footer.html
+in https://github.com/opencobra/sphinx_cobra_theme/tree/develop/sphinx_cobra_theme/
+
+
 ## Checking for broken links
 
 Install 'linkchecker' utility:

@@ -1,4 +1,4 @@
-function [exch,modelStoragePath] = buildModelStorage(microbeNames,modPath)
+function [exch,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath)
 
 currentDir=pwd;
 mkdir('modelStorage')
@@ -20,7 +20,6 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList=strrep(modelList,'.mat','');
 microbesNames=setdiff(microbeNames,modelList);
-
 
 if length(microbesNames)>0
     %% create a new extracellular space [u] for microbes
@@ -64,12 +63,22 @@ if length(microbesNames)>0
         model.rxns = strcat(strcat(microbeNames{j, 1}, '_'), model.rxns);
         model.mets = strcat(strcat(microbeNames{j, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
         [model] = mergeTwoModels(dummyMicEU, model, 2, false, false);
-        
+   
         %finish up by A: removing duplicate reactions
         %We will lose information here, but we will just remove the duplicates.
         [model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);
         
         writeCbModel(model,'format','mat','fileName',[microbeNames{j,1} '.mat']);  % store model
+        
+        % add coupling constraints and store them
+        IndRxns=find(strncmp(model.rxns,[microbeNames{j,1} '_'],length(microbeNames{j,1})+1));%finding indixes of specific reactions
+        % find the name of biomass reaction in the microbe model
+        bioRxn=model.rxns{find(strncmp(model.rxns,strcat(microbeNames{j,1},'_bio'),length(char(strcat(microbeNames{j,1},'_bio')))))};
+        model=coupleRxnList2Rxn(model,model.rxns(IndRxns(1:length(model.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0); %couple the specific reactions
+        couplingMatrix{j,1}=model.C;
+        couplingMatrix{j,2}=model.d;
+        couplingMatrix{j,3}=model.dsense;
+        couplingMatrix{j,4}=model.ctrs;
     end
 end
 
