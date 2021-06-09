@@ -1,4 +1,4 @@
-function [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, thickness, content)
+function [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, maxThickness, content)
 % Builds a layout for MINERVA from a flux distribution. If a dictionary
 % of identifiers is not provided it is assumed that the map and the COBRA
 % model's nomenclature is coherent. Sends the layout to the remote MINERVA
@@ -18,9 +18,11 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 % OPTIONAL INPUT:
 %    hexColour          colour of overlay (hex color format)
 %                       e.g. '#009933' corresponds to http://www.color-hex.com/color/009933
-%    thickness:         maximum thickness
-%    normalizedFluxesOption:     if 'true' (default) then fluxes will be
-%                       normalized, otw they will be displayed as is
+%                       If you want to make a color gradient, you can input
+%                       an array of 2 or 3 colors like ["#ff0000", "#6617B5", "#0000ff"]
+%                       note that they should be declared with (") rather
+%                       than with (')
+%    maxThickness:      maximum thickness
 %    content:           character array with the following format for each
 %                       reaction to be displayed. Bypasses the use of solution.v to set the format. 
 %                       'name%09reactionIdentifier%09lineWidth%09color%0D'
@@ -32,13 +34,30 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 %            - Ines Thiele April/2020, fixed issue with using ReconMap-3 as target map.
 
 if ~exist('thickness', 'var')
-    thickness = 10;
+    maxThickness = 10;
 end
 
-if exist('hexColour','var')
-    defaultColor = hexColour;
-else
+useThickness = true; % flag to change thickness according to the flux
+
+if ~exist('hexColour','var')
     defaultColor = '#57c657';
+else
+    hexColour = convertStringsToChars(hexColour);
+    if ischar(hexColour)
+        defaultColor = hexColour;
+    elseif length(hexColour) == 1
+        defaultColor = hexColour{1};
+    else
+        useThickness = false;
+        
+        if length(hexColour) >= 2
+            cmap = makeColorGradient(hexColour{2}, hexColour{1}, maxThickness + 1);
+        end
+        
+        if length(hexColour) >= 3
+            ncmap = makeColorGradient(hexColour{3}, hexColour{2}, maxThickness + 1);
+        end
+    end
 end
 
 %nRxn=length(solution.v);
@@ -46,9 +65,9 @@ end
 
 % build input data for minerva
 if ~exist('content','var')
-    normalizedFluxes = normalizeFluxes(abs(solution.v), thickness);
+    normalizedFluxes = normalizeFluxes(abs(solution.v), maxThickness);
     content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
-    cmap = makeColorGradient('#ff0000', defaultColor, 11);
+
     for i=1:length(solution.v)
         mapReactionId = model.rxns{i};
         
@@ -58,8 +77,20 @@ if ~exist('content','var')
         end
         
         if solution.v(i) ~= 0
-            color = cmap{round(normalizedFluxes(i)) + 1};
-            line = strcat('%09', mapReactionId, '%09', 1, '%09', color, '%0D');            
+            
+            if useThickness
+                thickness = normalizedFluxes(i);
+                color = defaultColor;
+            else
+                thickness = 1;
+                if solution.v(i) > 0
+                    color = cmap{round(normalizedFluxes(i)) + 1};
+                else
+                    color = ncmap{round(normalizedFluxes(i)) + 1};
+                end
+            end
+            
+            line = strcat('%09', mapReactionId, '%09', num2str(thickness), '%09', color, '%0D');
             content = strcat(content, line);
         end
         
