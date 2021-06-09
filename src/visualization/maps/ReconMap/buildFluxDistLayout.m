@@ -83,10 +83,10 @@ if ~exist('content','var')
                 color = defaultColor;
             else
                 thickness = 1;
-                if solution.v(i) > 0
-                    color = cmap{round(normalizedFluxes(i)) + 1};
-                else
+                if solution.v(i) < 0 && exist('ncmap','var')
                     color = ncmap{round(normalizedFluxes(i)) + 1};
+                else
+                    color = cmap{round(normalizedFluxes(i)) + 1};
                 end
             end
             
