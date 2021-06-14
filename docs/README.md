@@ -61,6 +61,24 @@ and replace the ./stable or ./latest directory with the build output.
 Tracking code can be added to the template by editing layout.html or footer.html
 in https://github.com/opencobra/sphinx_cobra_theme/tree/develop/sphinx_cobra_theme/
 
+The tracking code is located near the end of the page.
+
+```
+ <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+```
+
+## Remarks about sphinx_cobra_theme
+
+The project logo (top-left) is hardcoded in layout.html at approx line 127. A comment in the code indicates this was done
+to expedite configuration issues earlier in the project. Ideally the template should be reuseable (without modification)
+for all the opencobra sub-projects: so need to find a way to externally configure the project logo.
 
 ## Checking for broken links
 
