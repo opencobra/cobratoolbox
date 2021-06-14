@@ -87,7 +87,7 @@
 
           
             
-            <img src="https://king.nuigalway.ie/cobratoolbox/img/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
           <h1>The COBRA Toolbox</h1>
@@ -166,9 +166,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#solver-compatibility">Solver compatibility</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#linux-ubuntu">Linux Ubuntu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#macos-10-12">macOS 10.12</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#macos-10-13">macOS 10.13</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#windows-7">Windows 7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macos-10-13">macOS 10.13+</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#windows-10">Windows 10</a></li>
 </ul>
 </li>
@@ -195,6 +193,8 @@
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,18 +232,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="contents.html">Docs</a> &raquo;</li>
+      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -264,37 +266,37 @@
 <h3>Can I check if everything is properly set up before I start?<a class="headerlink" href="#can-i-check-if-everything-is-properly-set-up-before-i-start" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="matlab">
 <h4>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h4>
-<p>Please ensure that you have a compatible and working <code class="docutils literal"><span class="pre">MATLAB</span></code>
+<p>Please ensure that you have a compatible and working <code class="docutils literal notranslate"><span class="pre">MATLAB</span></code>
 <a class="reference external" href="https://nl.mathworks.com/help/install/">installation</a>.
 The list of compatible solvers is available <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
 <p>No support is provided for versions older than R2014b.
-<code class="docutils literal"><span class="pre">MATLAB</span></code> is released on a twice-yearly schedule. After the latest release (version b),
+<code class="docutils literal notranslate"><span class="pre">MATLAB</span></code> is released on a twice-yearly schedule. After the latest release (version b),
 it may be a couple of months before certain methods with dependencies
-on other software become compatible. For example, the latest releases of <code class="docutils literal"><span class="pre">MATLAB</span></code>
+on other software become compatible. For example, the latest releases of <code class="docutils literal notranslate"><span class="pre">MATLAB</span></code>
 may not be compatible with the existing solver interfaces,
-necessitating an update of the <code class="docutils literal"><span class="pre">MATLAB</span></code> interface provided by the solver developers,
+necessitating an update of the <code class="docutils literal notranslate"><span class="pre">MATLAB</span></code> interface provided by the solver developers,
 or an update of the COBRA Toolbox, or both.</p>
 </div>
 <div class="section" id="git">
 <h4>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h4>
-<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">git</span></code> by typing in
-the <code class="docutils literal"><span class="pre">Terminal</span></code> (on <code class="docutils literal"><span class="pre">linux</span></code> and <code class="docutils literal"><span class="pre">macOS</span></code>) or <code class="docutils literal"><span class="pre">cmd</span></code> (in
-<code class="docutils literal"><span class="pre">Windows</span></code>, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git --version
+<p>You can check if you have a working installation of <code class="docutils literal notranslate"><span class="pre">git</span></code> by typing in
+the <code class="docutils literal notranslate"><span class="pre">Terminal</span></code> (on <code class="docutils literal notranslate"><span class="pre">linux</span></code> and <code class="docutils literal notranslate"><span class="pre">macOS</span></code>) or <code class="docutils literal notranslate"><span class="pre">cmd</span></code> (in
+<code class="docutils literal notranslate"><span class="pre">Windows</span></code>, not <code class="docutils literal notranslate"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git --version
 </pre></div>
 </div>
-<p>If installed properly, this will return <code class="docutils literal"><span class="pre">git</span> <span class="pre">version</span> <span class="pre">2.13.1</span> <span class="pre">[...]</span></code> or
+<p>If installed properly, this will return <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">version</span> <span class="pre">2.13.1</span> <span class="pre">[...]</span></code> or
 similar with another version number.</p>
 </div>
 <div class="section" id="curl">
 <h4>curl<a class="headerlink" href="#curl" title="Permalink to this headline">¶</a></h4>
-<p>You can check if you have a working installation of <code class="docutils literal"><span class="pre">curl</span></code> by typing
-in the terminal (<code class="docutils literal"><span class="pre">cmd</span></code> on Windows, not <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> curl --version
+<p>You can check if you have a working installation of <code class="docutils literal notranslate"><span class="pre">curl</span></code> by typing
+in the terminal (<code class="docutils literal notranslate"><span class="pre">cmd</span></code> on Windows, not <code class="docutils literal notranslate"><span class="pre">Git</span> <span class="pre">Bash</span></code>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl --version
 </pre></div>
 </div>
-<p>which will return <code class="docutils literal"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
-number if installed properly. If you encounter any issues with <code class="docutils literal"><span class="pre">curl</span></code>, please
+<p>which will return <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">7.51.0</span> <span class="pre">[...]</span></code> or similar with another version
+number if installed properly. If you encounter any issues with <code class="docutils literal notranslate"><span class="pre">curl</span></code>, please
 post in our <a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img alt="ImageLink" src="https://img.shields.io/badge/COBRA-forum-blue.svg" /></a>.</p>
 </div>
 </div>
@@ -302,21 +304,21 @@ post in our <a class="reference external" href="https://groups.google.com/forum/
 <h3>What if my system is not properly configured?<a class="headerlink" href="#what-if-my-system-is-not-properly-configured" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="linux-ubuntu-or-debian">
 <h4>Linux (Ubuntu or Debian)<a class="headerlink" href="#linux-ubuntu-or-debian" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git-all curl
 </pre></div>
 </div>
 <p>There is a known issue on Matlab 2016b (or earlier) with a default library that is used to access web resources. Please have a look at the <a class="reference external" href="https://opencobra.github.io/cobratoolbox/stable/faq.html#on-linux-matlab-suddenly-crashes-without-any-error">FAQ</a>.</p>
 </div>
 <div class="section" id="macos">
 <h4>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h4>
-<p>In order to install <code class="docutils literal"><span class="pre">git</span></code>, install the <a class="reference external" href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">Xcode Command Line
+<p>In order to install <code class="docutils literal notranslate"><span class="pre">git</span></code>, install the <a class="reference external" href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">Xcode Command Line
 Tools</a>.
-For <code class="docutils literal"><span class="pre">curl</span></code>, follow the instructions
+For <code class="docutils literal notranslate"><span class="pre">curl</span></code>, follow the instructions
 <a class="reference external" href="http://macappstore.org/curl/">here</a>.</p>
 </div>
 <div class="section" id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
-<p>Please download the <code class="docutils literal"><span class="pre">git</span></code> tools for Windows from
+<p>Please download the <code class="docutils literal notranslate"><span class="pre">git</span></code> tools for Windows from
 <a class="reference external" href="https://git-scm.com/download/win">here</a>. During the installation
 process, please ensure that you select <strong>Use Git Bash and optional Unix
 tools from the Windows Command prompt</strong>. In addition, please make sure
@@ -329,17 +331,17 @@ that you select <strong>Checkout as-is, commit Unix-style line endings</strong>.
 <div class="section" id="download-and-installation">
 <h2>Download and installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Download this repository (the folder <code class="docutils literal"><span class="pre">./cobratoolbox/</span></code> will be
+<li><p class="first">Download this repository (the folder <code class="docutils literal notranslate"><span class="pre">./cobratoolbox/</span></code> will be
 created). You can clone the repository using:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/opencobra/cobratoolbox.git cobratoolbox
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/opencobra/cobratoolbox.git cobratoolbox
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Please note the <code class="docutils literal"><span class="pre">--depth=1</span></code> in the clone command. Run this command in <code class="docutils literal"><span class="pre">Terminal</span></code> (on <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> and <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">) or in <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Bash</span></code> (on <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">) -
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Please note the <code class="docutils literal notranslate"><span class="pre">--depth=1</span></code> in the clone command. Run this command in <code class="docutils literal notranslate"><span class="pre">Terminal</span></code> (on <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> and <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">) or in <code class="docutils literal notranslate"><span class="pre">Git</span> <span class="pre">Bash</span></code> (on <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">) -
 <strong>not</strong> in <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">. Although not recommended, you can download the
 repository as a <a class="reference external" href="https://king.nuigalway.ie/cobratoolbox/releases/theCOBRAToolbox.zip">compressed archive</a>.</p>
 </li>
-<li><p class="first">Change to the folder <code class="docutils literal"><span class="pre">cobratoolbox/</span></code> and run from <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab"></p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">initCobraToolbox</span>
+<li><p class="first">Change to the folder <code class="docutils literal notranslate"><span class="pre">cobratoolbox/</span></code> and run from <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab"></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">initCobraToolbox</span>
 </pre></div>
 </div>
 </li>
@@ -351,422 +353,70 @@ repository as a <a class="reference external" href="https://king.nuigalway.ie/co
 <h3>Linux Ubuntu<a class="headerlink" href="#linux-ubuntu" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
+<col width="19%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">SolverName</th>
-<th class="head">R2018b</th>
-<th class="head">R2018a</th>
-<th class="head">R2017b</th>
-<th class="head">R2017a</th>
-<th class="head">R2016b</th>
-<th class="head">R2016a</th>
-<th class="head">R2015b</th>
-<th class="head">R2015a</th>
-<th class="head">R2014b</th>
-<th class="head">R2014a</th>
+<th class="head">R2021b</th>
+<th class="head">R2021a</th>
+<th class="head">R2020b</th>
+<th class="head">R2020a</th>
 </tr>
 </thead>
 <tbody valign="top">
+<tr class="row-even"><td>IBM CPLEX 20.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+</tr>
+<tr class="row-odd"><td>IBM CPLEX 12.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+</tr>
 <tr class="row-even"><td>IBM CPLEX 12.8</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+</tr>
+<tr class="row-odd"><td>GUROBI 9.1.1</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-odd"><td>IBM CPLEX 12.7.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<tr class="row-even"><td>TOMLAB CPLEX 8.6</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-even"><td>IBM CPLEX 12.7</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.6.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 8.0.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 8.0.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.5.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 7.5.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.0.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 6.5.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>TOMLAB CPLEX 8.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>MOSEK 8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<tr class="row-odd"><td>MOSEK 9.2</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>GLPK</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-odd"><td>DQQ MINOS</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>PDCO</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="macos-10-12">
-<h3>macOS 10.12<a class="headerlink" href="#macos-10-12" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">SolverName</th>
-<th class="head">R2018b</th>
-<th class="head">R2018a</th>
-<th class="head">R2017b</th>
-<th class="head">R2017a</th>
-<th class="head">R2016b</th>
-<th class="head">R2016a</th>
-<th class="head">R2015b</th>
-<th class="head">R2015a</th>
-<th class="head">R2014b</th>
-<th class="head">R2014a</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>IBM CPLEX 12.8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.7.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>IBM CPLEX 12.7</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.6.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 8.0.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 8.0.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.5.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 7.5.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.0.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 6.5.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>TOMLAB CPLEX 8.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>MOSEK 8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>GLPK</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>DQQ MINOS</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>PDCO</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
@@ -776,425 +426,73 @@ repository as a <a class="reference external" href="https://king.nuigalway.ie/co
 </table>
 </div>
 <div class="section" id="macos-10-13">
-<h3>macOS 10.13<a class="headerlink" href="#macos-10-13" title="Permalink to this headline">¶</a></h3>
+<h3>macOS 10.13+<a class="headerlink" href="#macos-10-13" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
+<col width="19%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">SolverName</th>
-<th class="head">R2018b</th>
-<th class="head">R2018a</th>
-<th class="head">R2017b</th>
-<th class="head">R2017a</th>
-<th class="head">R2016b</th>
-<th class="head">R2016a</th>
-<th class="head">R2015b</th>
-<th class="head">R2015a</th>
-<th class="head">R2014b</th>
-<th class="head">R2014a</th>
+<th class="head">R2021b</th>
+<th class="head">R2021a</th>
+<th class="head">R2020b</th>
+<th class="head">R2020a</th>
 </tr>
 </thead>
 <tbody valign="top">
+<tr class="row-even"><td>IBM CPLEX 20.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+</tr>
+<tr class="row-odd"><td>IBM CPLEX 12.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+</tr>
 <tr class="row-even"><td>IBM CPLEX 12.8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.7.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>IBM CPLEX 12.7</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.6.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 8.0.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 8.0.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.5.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 7.5.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.0.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 6.5.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>TOMLAB CPLEX 8.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>MOSEK 8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GLPK</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>DQQ MINOS</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>PDCO</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="windows-7">
-<h3>Windows 7<a class="headerlink" href="#windows-7" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">SolverName</th>
-<th class="head">R2018b</th>
-<th class="head">R2018a</th>
-<th class="head">R2017b</th>
-<th class="head">R2017a</th>
-<th class="head">R2016b</th>
-<th class="head">R2016a</th>
-<th class="head">R2015b</th>
-<th class="head">R2015a</th>
-<th class="head">R2014b</th>
-<th class="head">R2014a</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>IBM CPLEX 12.8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.7.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>IBM CPLEX 12.7</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.6.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-even"><td>GUROBI 8.0.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 8.0.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.5.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 7.5.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<tr class="row-odd"><td>GUROBI 9.1.1</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-even"><td>GUROBI 7.0.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<tr class="row-even"><td>TOMLAB CPLEX 8.6</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-odd"><td>GUROBI 6.5.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-even"><td>TOMLAB CPLEX 8.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-</tr>
-<tr class="row-odd"><td>MOSEK 8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<tr class="row-odd"><td>MOSEK 9.2</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>GLPK</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-odd"><td>DQQ MINOS</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>PDCO</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
@@ -1207,212 +505,74 @@ repository as a <a class="reference external" href="https://king.nuigalway.ie/co
 <h3>Windows 10<a class="headerlink" href="#windows-10" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
+<col width="19%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">SolverName</th>
-<th class="head">R2018b</th>
-<th class="head">R2018a</th>
-<th class="head">R2017b</th>
-<th class="head">R2017a</th>
-<th class="head">R2016b</th>
-<th class="head">R2016a</th>
-<th class="head">R2015b</th>
-<th class="head">R2015a</th>
-<th class="head">R2014b</th>
-<th class="head">R2014a</th>
+<th class="head">R2021b</th>
+<th class="head">R2021a</th>
+<th class="head">R2020b</th>
+<th class="head">R2020a</th>
 </tr>
 </thead>
 <tbody valign="top">
+<tr class="row-even"><td>IBM CPLEX 20.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+</tr>
+<tr class="row-odd"><td>IBM CPLEX 12.10</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+</tr>
 <tr class="row-even"><td>IBM CPLEX 12.8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.7.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>IBM CPLEX 12.7</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>IBM CPLEX 12.6.3</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 8.0.1</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
 </tr>
-<tr class="row-odd"><td>GUROBI 8.0.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>GUROBI 7.5.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>GUROBI 7.5.1</td>
+<tr class="row-odd"><td>GUROBI 9.1.1</td>
 <td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-even"><td>GUROBI 7.0.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
+<tr class="row-even"><td>TOMLAB CPLEX 8.6</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
-<tr class="row-odd"><td>GUROBI 6.5.0</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-even"><td>TOMLAB CPLEX 8.2</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-</tr>
-<tr class="row-odd"><td>MOSEK 8</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
+<tr class="row-odd"><td>MOSEK 9.2</td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>GLPK</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-odd"><td>DQQ MINOS</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 <tr class="row-even"><td>PDCO</td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
-<td><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
+<td><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"></td>
 </tr>
 </tbody>
 </table>
@@ -1420,16 +580,16 @@ repository as a <a class="reference external" href="https://king.nuigalway.ie/co
 <ul class="simple">
 <li><img src="https://king.nuigalway.ie/cobratoolbox/img/white_check_mark.png" height="20px" width="20px" alt="white_check_mark"> : compatible with the COBRA Toolbox (tested)</li>
 <li><img src="https://king.nuigalway.ie/cobratoolbox/img/x.png" height="20px" width="20px" alt="warning"> : not compatible with the COBRA Toolbox (tested)</li>
-<li><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> : unverified compatibility with the COBRA Toolbox (not tested)</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> : possibly incompatibile with the COBRA Toolbox (problems reported)</li>
 </ul>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li>Make sure to install the correct Tomlab version for your version of <code class="docutils literal"><span class="pre">macOS</span></code>. Please note that there is a different Tomlab installer for MATLAB <code class="docutils literal"><span class="pre">R2017a+</span></code>.</li>
+<li>Make sure to install the correct Tomlab version for your version of <code class="docutils literal notranslate"><span class="pre">macOS</span></code>. Please note that there is a different Tomlab installer for MATLAB <code class="docutils literal notranslate"><span class="pre">R2017a+</span></code>.</li>
 <li>Only <strong>actively</strong> supported interfaces are evaluated for compatibility.</li>
-<li>The <code class="docutils literal"><span class="pre">matlab</span></code> solver interface is compatible with all actively supported MATLAB versions.</li>
-<li>The interfaces <code class="docutils literal"><span class="pre">cplex_direct</span></code> and <code class="docutils literal"><span class="pre">tomlab_snopt</span></code> bear the same compatibility pattern as <code class="docutils literal"><span class="pre">tomlab_cplex</span></code>.</li>
-<li>The interface <code class="docutils literal"><span class="pre">quadMinos</span></code> bears the same compatibility pattern as <code class="docutils literal"><span class="pre">dqqMinos</span></code>.</li>
-<li>The interface <code class="docutils literal"><span class="pre">lindo_old</span></code> bears the same compatibility pattern as <code class="docutils literal"><span class="pre">lindo_legacy</span></code>.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">matlab</span></code> solver interface is compatible with all actively supported MATLAB versions.</li>
+<li>The interfaces <code class="docutils literal notranslate"><span class="pre">cplex_direct</span></code> and <code class="docutils literal notranslate"><span class="pre">tomlab_snopt</span></code> bear the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">tomlab_cplex</span></code>.</li>
+<li>The interface <code class="docutils literal notranslate"><span class="pre">quadMinos</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">dqqMinos</span></code>.</li>
+<li>The interface <code class="docutils literal notranslate"><span class="pre">lindo_old</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">lindo_legacy</span></code>.</li>
 </ul>
 </div>
 </div>
@@ -1438,7 +598,7 @@ repository as a <a class="reference external" href="https://king.nuigalway.ie/co
 <p>For convenience, we provide
 <a class="reference external" href="https://github.com/blegat/glpkmex">glpk_mex</a> and
 <a class="reference external" href="http://sbml.org/Software/libSBML">libSBML-5.17+</a> in
-<code class="docutils literal"><span class="pre">/external</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">/external</span></code>.</p>
 <p><a class="reference external" href="https://github.com/opencobra/COBRA.binary">Binaries</a> for these
 libraries are provided in a submodule for Mac OS X 10.6 or later
 (64-bit), GNU/Linux Ubuntu 14.0+ (64-bit), and Microsoft Windows 7+
@@ -1450,12 +610,12 @@ instructions
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/notes.html">here</a>.</p>
 <div class="section" id="gcc-compiler">
 <h3>gcc compiler<a class="headerlink" href="#gcc-compiler" title="Permalink to this headline">¶</a></h3>
-<p>You can download <code class="docutils literal"><span class="pre">gcc</span></code> from <a class="reference external" href="https://gcc.gnu.org/wiki/InstallingGCC">here</a>.
-You may find information on how to install <code class="docutils literal"><span class="pre">gcc</span></code> <a class="reference external" href="http://preshing.com/20141108/how-to-install-the-latest-gcc-on-windows/">here</a>.</p>
+<p>You can download <code class="docutils literal notranslate"><span class="pre">gcc</span></code> from <a class="reference external" href="https://gcc.gnu.org/wiki/InstallingGCC">here</a>.
+You may find information on how to install <code class="docutils literal notranslate"><span class="pre">gcc</span></code> <a class="reference external" href="http://preshing.com/20141108/how-to-install-the-latest-gcc-on-windows/">here</a>.</p>
 </div>
 <div class="section" id="gfortran-compiler">
 <h3>gfortran compiler<a class="headerlink" href="#gfortran-compiler" title="Permalink to this headline">¶</a></h3>
-<p>You can install <code class="docutils literal"><span class="pre">gfortran</span></code> by following the instructions <a class="reference external" href="https://gcc.gnu.org/wiki/GFortranBinaries">here</a>.</p>
+<p>You can install <code class="docutils literal notranslate"><span class="pre">gfortran</span></code> by following the instructions <a class="reference external" href="https://gcc.gnu.org/wiki/GFortranBinaries">here</a>.</p>
 </div>
 </div>
 <div class="section" id="solver-installation">
@@ -1475,53 +635,53 @@ compatibility
 <li><strong>macOS</strong> - <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></li>
 <li><strong>linux</strong> - <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></li>
 </ul>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Most steps require superuser or administrator rights (<code class="docutils literal"><span class="pre">sudo</span></code>).</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil"> Make sure that you replace <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> with the respective
-<code class="docutils literal"><span class="pre">version</span></code> of the installed solver when setting the environment
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> Most steps require superuser or administrator rights (<code class="docutils literal notranslate"><span class="pre">sudo</span></code>).</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil"> Make sure that you replace <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> with the respective
+<code class="docutils literal notranslate"><span class="pre">version</span></code> of the installed solver when setting the environment
 variables.</p>
 <div class="section" id="tomlab">
 <h3>TOMLAB<a class="headerlink" href="#tomlab" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Download <code class="docutils literal"><span class="pre">TOMLAB/CPLEX</span></code> from
+<li><p class="first">Download <code class="docutils literal notranslate"><span class="pre">TOMLAB/CPLEX</span></code> from
 <a class="reference external" href="https://tomopt.com/scripts/register.php">here</a>, where you can also
-download <code class="docutils literal"><span class="pre">TOMLAB/SNOPT</span></code>. You must purchase the <code class="docutils literal"><span class="pre">tomlab.lic</span></code>
+download <code class="docutils literal notranslate"><span class="pre">TOMLAB/SNOPT</span></code>. You must purchase the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code>
 license separately.</p>
 </li>
 <li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> In a terminal window, navigate to the download directory of
-<code class="docutils literal"><span class="pre">Tomlab</span></code> and do the following:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;filename&gt;.bin
+<code class="docutils literal notranslate"><span class="pre">Tomlab</span></code> and do the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;filename&gt;.bin
 <span class="gp">$</span> sudo ./&lt;filename&gt;.bin
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run the <code class="docutils literal"><span class="pre">tomlab-win64-setup_&lt;ver&gt;.exe</span></code> as an administrator.</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Double-click on <code class="docutils literal"><span class="pre">tomlab-osx64-setup.app</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run the <code class="docutils literal notranslate"><span class="pre">tomlab-win64-setup_&lt;ver&gt;.exe</span></code> as an administrator.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Double-click on <code class="docutils literal notranslate"><span class="pre">tomlab-osx64-setup.app</span></code>.</p>
 </li>
-<li><p class="first">Follow the installation instructions and install <code class="docutils literal"><span class="pre">tomlab</span></code> in:</p>
+<li><p class="first">Follow the installation instructions and install <code class="docutils literal notranslate"><span class="pre">tomlab</span></code> in:</p>
 <ul class="simple">
-<li><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">: <code class="docutils literal"><span class="pre">/opt</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code>.</li>
-<li><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">: <code class="docutils literal"><span class="pre">C:\</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>.</li>
-<li><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">: <code class="docutils literal"><span class="pre">/Applications</span></code> such that you will have a folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">: <code class="docutils literal notranslate"><span class="pre">/opt</span></code> such that you will have a folder <code class="docutils literal notranslate"><span class="pre">/opt/tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">: <code class="docutils literal notranslate"><span class="pre">C:\</span></code> such that you will have a folder <code class="docutils literal notranslate"><span class="pre">C:\tomlab</span></code>.</li>
+<li><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">: <code class="docutils literal notranslate"><span class="pre">/Applications</span></code> such that you will have a folder <code class="docutils literal notranslate"><span class="pre">/Applications/tomlab</span></code>.</li>
 </ul>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">/opt/tomlab</span></code> and
-change its permissions (you must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">644</span> tomlab.lic
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal notranslate"><span class="pre">/opt/tomlab</span></code> and
+change its permissions (you must have superuser or <code class="docutils literal notranslate"><span class="pre">sudo</span></code> rights):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">644</span> tomlab.lic
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal"><span class="pre">C:\tomlab</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the <code class="docutils literal"><span class="pre">tomlab.lic</span></code> license to the
-folder <code class="docutils literal"><span class="pre">/Applications/tomlab</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal notranslate"><span class="pre">C:\tomlab</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the
+folder <code class="docutils literal notranslate"><span class="pre">/Applications/tomlab</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
 <p>Append the following lines, hit the
-<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export TOMLAB_PATH=&quot;/opt/tomlab&quot;</span>
+<code class="docutils literal notranslate"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal notranslate"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal notranslate"><span class="pre">ENTER</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export TOMLAB_PATH=&quot;/opt/tomlab&quot;</span>
 </pre></div>
 </div>
-<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+<p>Reload your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the
@@ -1533,53 +693,53 @@ environment variables on Windows, please follow the instructions
 <div class="section" id="ibm-ilog-cplex">
 <h3>IBM ILOG CPLEX<a class="headerlink" href="#ibm-ilog-cplex" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Download the <code class="docutils literal"><span class="pre">CPLEX</span></code> installation binary. The limited community
+<li><p class="first">Download the <code class="docutils literal notranslate"><span class="pre">CPLEX</span></code> installation binary. The limited community
 edition is
 <a class="reference external" href="https://www.ibm.com/products/ilog-cplex-optimization-studio">here</a>.
 CPLEX is free for students (and academics) and further information
 how to register and download is
 <a class="reference external" href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en">here</a>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Add <code class="docutils literal"><span class="pre">execute</span></code> permission to binary</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;cplexbinary&gt;.bin
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Add <code class="docutils literal notranslate"><span class="pre">execute</span></code> permission to binary</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod +x &lt;cplexbinary&gt;.bin
 </pre></div>
 </div>
 </li>
 <li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Run the installer binary as superuser, follow the installation
 procedure, and accept the default installation path.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./&lt;cplexbinary&gt;.bin
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./&lt;cplexbinary&gt;.bin
 </pre></div>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run
-<code class="docutils literal"><span class="pre">cplex_studio&lt;ver&gt;.win-x86-64.exe</span></code> as an administrator. Follow the
-installation instructions and install <code class="docutils literal"><span class="pre">CPLEX</span></code> in
-<code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\IBM\ILOG\CPLEX_Studio&lt;ver&gt;</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">cplex_studio&lt;ver&gt;.win-x86-64.exe</span></code> as an administrator. Follow the
+installation instructions and install <code class="docutils literal notranslate"><span class="pre">CPLEX</span></code> in
+<code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\IBM\ILOG\CPLEX_Studio&lt;ver&gt;</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Set the environment variable by editing your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
 <p>Append the following lines, hit the
-<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal notranslate"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal notranslate"><span class="pre">ENTER</span></code>.</p>
 <p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/opt/ibm/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/opt/ibm/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
 </pre></div>
 </div>
 <p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/Applications/IBM/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export ILOG_CPLEX_PATH=&quot;/Applications/IBM/ILOG/CPLEX_Studio&lt;ver&gt;&quot;</span>
 </pre></div>
 </div>
-<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+<p>Reload your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+" /> Make sure that you select <code class="docutils literal notranslate"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
 also follow the instructions
 <a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> <img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal notranslate"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
 In this startup file add the following command:
-<code class="docutils literal"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
-where <code class="docutils literal"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
+<code class="docutils literal notranslate"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
+where <code class="docutils literal notranslate"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
 </li>
 </ol>
 </div>
@@ -1590,119 +750,119 @@ where <code class="docutils literal"><span class="pre">&lt;yourCPLEXPath&gt;</sp
 </li>
 <li><p class="first">Request license from the <a class="reference external" href="http://www.gurobi.com/downloads/download-center">download
 center</a> and
-retrieve <code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code></p>
+retrieve <code class="docutils literal notranslate"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code></p>
 </li>
-<li><p class="first">Download the <code class="docutils literal"><span class="pre">Gurobi</span></code> optimizer from
+<li><p class="first">Download the <code class="docutils literal notranslate"><span class="pre">Gurobi</span></code> optimizer from
 <a class="reference external" href="http://www.gurobi.com/downloads/gurobi-optimizer">here</a></p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to the directory where <code class="docutils literal"><span class="pre">Gurobi</span></code> was downloaded and enter</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> tar -xvzf &lt;archive&gt;.tar.gz
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to the directory where <code class="docutils literal notranslate"><span class="pre">Gurobi</span></code> was downloaded and enter</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tar -xvzf &lt;archive&gt;.tar.gz
 <span class="gp">$</span> sudo mv gurobi&lt;ver&gt; /opt/.
 <span class="gp">$</span> <span class="nb">cd</span> /opt/gurobi&lt;ver&gt;/linux64/bin/
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">Gurobi-&lt;ver&gt;-win64.msi</span></code> and follow the installation
-instructions. Accept the default path <code class="docutils literal"><span class="pre">C:\gurobi&lt;ver&gt;\</span></code>.</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Run <code class="docutils literal"><span class="pre">gurobi&lt;ver&gt;_mac64.pkg</span></code> and follow the installation instructions.
-Accept the default path <code class="docutils literal"><span class="pre">/Applications/gurobi&lt;ver&gt;/</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal notranslate"><span class="pre">Gurobi-&lt;ver&gt;-win64.msi</span></code> and follow the installation
+instructions. Accept the default path <code class="docutils literal notranslate"><span class="pre">C:\gurobi&lt;ver&gt;\</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Run <code class="docutils literal notranslate"><span class="pre">gurobi&lt;ver&gt;_mac64.pkg</span></code> and follow the installation instructions.
+Accept the default path <code class="docutils literal notranslate"><span class="pre">/Applications/gurobi&lt;ver&gt;/</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Edit the <code class="docutils literal"><span class="pre">bash</span></code> settings to include paths</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Edit the <code class="docutils literal notranslate"><span class="pre">bash</span></code> settings to include paths</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
 <p>Append the following lines, hit the
-<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal"><span class="pre">ENTER</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export GUROBI_HOME=&quot;/opt/gurobi&lt;ver&gt;&quot;</span>
+<code class="docutils literal notranslate"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal notranslate"><span class="pre">CTRL-X</span></code> and hitting <code class="docutils literal notranslate"><span class="pre">ENTER</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export GUROBI_HOME=&quot;/opt/gurobi&lt;ver&gt;/linux64&quot;</span>
 <span class="go">export PATH=&quot;${PATH}:${GUROBI_HOME}/bin&quot;</span>
 <span class="go">export LD_LIBRARY_PATH=&quot;${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib&quot;</span>
 <span class="go">export GUROBI_PATH=&quot;${GUROBI_HOME}&quot;</span>
 </pre></div>
 </div>
-<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+<p>Reload your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to set the environment variables on Windows, please follow the
 instructions <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
 </li>
 <li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Activate your license by running:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> grbgetkey YOUR-LICENSE-KEY-FROM-SITE
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> grbgetkey YOUR-LICENSE-KEY-FROM-SITE
 </pre></div>
 </div>
 <p>You will be prompted</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>In which directory would you like to store the Gurobi license key file?
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>In which directory would you like to store the Gurobi license key file?
 [hit Enter to store it in /home/&lt;userid&gt;]:
 </pre></div>
 </div>
-<p>Hit <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<p>Hit <code class="docutils literal notranslate"><span class="pre">ENTER</span></code>.</p>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
-<code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.
 This should prompt to enter the license key
-<code class="docutils literal"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code>. Enter this key and hiter <code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">YOUR-LICENSE-KEY-FROM-SITE</span></code>. Enter this key and hiter <code class="docutils literal notranslate"><span class="pre">ENTER</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">Gurobi</span></code> is successfully installed by launching the
-<code class="docutils literal"><span class="pre">Gurobi</span></code> prompt:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> gurobi.sh
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal notranslate"><span class="pre">Gurobi</span></code> is successfully installed by launching the
+<code class="docutils literal notranslate"><span class="pre">Gurobi</span></code> prompt:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> gurobi.sh
 </pre></div>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Browse to
-<code class="docutils literal"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code>and double-click on <code class="docutils literal"><span class="pre">Gurobi&lt;ver&gt;</span></code> to
+<code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">&gt;</span> <span class="pre">All</span> <span class="pre">Programs</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">&lt;</span> <span class="pre">VER&gt;</span> <span class="pre">&gt;</span> <span class="pre">Gurobi</span> <span class="pre">Interactive</span> <span class="pre">Shell</span> <span class="pre">(&lt;ver&gt;)</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal notranslate"><span class="pre">/Applications</span></code>and double-click on <code class="docutils literal notranslate"><span class="pre">Gurobi&lt;ver&gt;</span></code> to
 start the Gurobi shell.</p>
-<p>This command should give you the prompt for <code class="docutils literal"><span class="pre">Gurobi</span></code>. Exit by
-entering <code class="docutils literal"><span class="pre">exit()</span></code> or hitting <code class="docutils literal"><span class="pre">CTRL-D</span></code> on your keyboard.</p>
+<p>This command should give you the prompt for <code class="docutils literal notranslate"><span class="pre">Gurobi</span></code>. Exit by
+entering <code class="docutils literal notranslate"><span class="pre">exit()</span></code> or hitting <code class="docutils literal notranslate"><span class="pre">CTRL-D</span></code> on your keyboard.</p>
 </li>
 </ol>
 </div>
 <div class="section" id="mosek">
 <h3>MOSEK<a class="headerlink" href="#mosek" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Download <code class="docutils literal"><span class="pre">MOSEK</span></code> as an archive
+<li><p class="first">Download <code class="docutils literal notranslate"><span class="pre">MOSEK</span></code> as an archive
 <a class="reference external" href="https://mosek.com/downloads">here</a></p>
 </li>
 <li><p class="first">Apply for a license
 <a class="reference external" href="https://mosek.com/products/trial/">here</a>. A free academic
 license is <a class="reference external" href="https://www.mosek.com/products/academic-licenses/">here</a>. You will
-receive an email with your <code class="docutils literal"><span class="pre">mosek.lic</span></code> file.</p>
+receive an email with your <code class="docutils literal notranslate"><span class="pre">mosek.lic</span></code> file.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Save (or move) the downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/opt/.</span></code> (you
-must have superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Save (or move) the downloaded archive <code class="docutils literal notranslate"><span class="pre">tar.bz2</span></code> to <code class="docutils literal notranslate"><span class="pre">/opt/.</span></code> (you
+must have superuser or <code class="docutils literal notranslate"><span class="pre">sudo</span></code> rights).
 <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Save (or move) the
-downloaded archive <code class="docutils literal"><span class="pre">tar.bz2</span></code> to <code class="docutils literal"><span class="pre">/Applications/.</span></code> (you must have
-superuser or <code class="docutils literal"><span class="pre">sudo</span></code> rights).</p>
+downloaded archive <code class="docutils literal notranslate"><span class="pre">tar.bz2</span></code> to <code class="docutils literal notranslate"><span class="pre">/Applications/.</span></code> (you must have
+superuser or <code class="docutils literal notranslate"><span class="pre">sudo</span></code> rights).</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to <code class="docutils literal"><span class="pre">/opt</span></code> and extract the archive</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd /opt</span>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Navigate to <code class="docutils literal notranslate"><span class="pre">/opt</span></code> and extract the archive</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd /opt</span>
 <span class="gp">$</span> tar xvjf &lt;filename&gt;.tar.bz2
 </pre></div>
 </div>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal"><span class="pre">Typical</span></code> installation. This
-will install <code class="docutils literal"><span class="pre">mosek</span></code> in <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Mosek</span></code>.</p>
-<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
-<img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> It is important to run the script <code class="docutils literal"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Run <code class="docutils literal notranslate"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal notranslate"><span class="pre">Typical</span></code> installation. This
+will install <code class="docutils literal notranslate"><span class="pre">mosek</span></code> in <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Mosek</span></code>.</p>
+<p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Browse to <code class="docutils literal notranslate"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
+<img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning"> It is important to run the script <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
 which makes important updates to the installation.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Configure the <code class="docutils literal"><span class="pre">PATH</span></code> and <code class="docutils literal"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
-variables in <code class="docutils literal"><span class="pre">~/.bashrc</span></code> by editing your <code class="docutils literal"><span class="pre">bashrc</span></code> file</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Configure the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> and <code class="docutils literal notranslate"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
+variables in <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> by editing your <code class="docutils literal notranslate"><span class="pre">bashrc</span></code> file</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> nano ~/.bashrc
 </pre></div>
 </div>
 <p>Append the following lines, hit the
-<code class="docutils literal"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal"><span class="pre">CTRL-X</span></code> and hitting
-<code class="docutils literal"><span class="pre">ENTER</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">ESC</span></code> key, then save and exit by typing <code class="docutils literal notranslate"><span class="pre">CTRL-X</span></code> and hitting
+<code class="docutils literal notranslate"><span class="pre">ENTER</span></code>.</p>
 <p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export PATH=/opt/mosek/&lt;ver&gt;/:$PATH</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export PATH=/opt/mosek/&lt;ver&gt;/:$PATH</span>
 <span class="go">export MOSEKLM_LICENSE_FILE=/opt/mosek/</span>
 </pre></div>
 </div>
 <p>On <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export MOSEK_PATH=/Applications/mosek/&lt;ver&gt;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export MOSEK_PATH=/Applications/mosek/&lt;ver&gt;</span>
 <span class="go">export PATH=$MOSEK_PATH:$PATH</span>
 <span class="go">export MOSEKLM_LICENSE_FILE=/Applications/mosek/</span>
 </pre></div>
 </div>
-<p>Reload your <code class="docutils literal"><span class="pre">~/.bashrc</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
+<p>Reload your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">source</span> ~/.bashrc
 </pre></div>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> In order to
@@ -1710,17 +870,17 @@ set the environment variables on Windows, please follow the
 instructions
 <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">here</a>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/opt/mosek/</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the
-license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">C:\Users\&lt;yourUsername&gt;\mosek\</span></code>.
-<img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the license file <code class="docutils literal"><span class="pre">mosek.lic</span></code> to <code class="docutils literal"><span class="pre">/Applications/mosek/</span></code>.</p>
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Copy the license file <code class="docutils literal notranslate"><span class="pre">mosek.lic</span></code> to <code class="docutils literal notranslate"><span class="pre">/opt/mosek/</span></code>. <img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> Copy the
+license file <code class="docutils literal notranslate"><span class="pre">mosek.lic</span></code> to <code class="docutils literal notranslate"><span class="pre">C:\Users\&lt;yourUsername&gt;\mosek\</span></code>.
+<img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> Copy the license file <code class="docutils literal notranslate"><span class="pre">mosek.lic</span></code> to <code class="docutils literal notranslate"><span class="pre">/Applications/mosek/</span></code>.</p>
 </li>
-<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal"><span class="pre">MOSEK</span></code> is correctly installed by using the following
+<li><p class="first"><img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux"> Verify that <code class="docutils literal notranslate"><span class="pre">MOSEK</span></code> is correctly installed by using the following
 command in your terminal</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /opt/mosek/&lt;ver&gt;/tools/platform/linux64x86/bin/./msktestlic
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> /opt/mosek/&lt;ver&gt;/tools/platform/linux64x86/bin/./msktestlic
 </pre></div>
 </div>
 <p>This command should give an output similar to this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Problem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Problem</span>
   <span class="n">Name</span>                   <span class="p">:</span>
   <span class="n">Objective</span> <span class="n">sense</span>        <span class="p">:</span> <span class="nb">min</span>
   <span class="n">Type</span>                   <span class="p">:</span> <span class="n">LO</span> <span class="p">(</span><span class="n">linear</span> <span class="n">optimization</span> <span class="n">problem</span><span class="p">)</span>
@@ -1753,7 +913,7 @@ command in your terminal</p>
 </div>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows"> By browsing to <cite>Start &gt; All Programs &gt; Mosek Optimization Tools</cite>, you can run <cite>Test license system</cite>. This should open a window and display the output as shown above.</p>
 <p><img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS"> In a terminal, run:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> /Applications/mosek//tools/platform/osx64x86/bin/./msktestlic
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> /Applications/mosek//tools/platform/osx64x86/bin/./msktestlic
 </pre></div>
 </div>
 <p>This should produce an output as shown above.</p>
@@ -1764,7 +924,7 @@ command in your terminal</p>
 <div class="section" id="test-the-installation">
 <h2>Test the installation<a class="headerlink" href="#test-the-installation" title="Permalink to this headline">¶</a></h2>
 <p>You may test your installation by running from <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab"></p>
-<div class="highlight-matlab"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">testAll</span>
 </pre></div>
 </div>
 <p>If you need support, please feel free to post your question in our <a class="reference external" href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img alt="ImageLink" src="https://img.shields.io/badge/COBRA-forum-blue.svg" /></a>.</p>
@@ -1793,7 +953,7 @@ command in your terminal</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -1824,6 +984,7 @@ command in your terminal</p>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -1843,5 +1004,14 @@ command in your terminal</p>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>
