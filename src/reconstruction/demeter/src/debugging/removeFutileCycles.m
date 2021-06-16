@@ -484,6 +484,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
     'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
     'GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND GPDDA1',[],'GLDBRAN',[]
+    'CDPDPH AND CYTK1',[],'CDPDPH','CDPDPHi'
+    'UMPK AND NDP7',[],'NDP7','NDP7i'
+    'CLt4r AND r2137',[],'r2137','CLti'
     };
 
 

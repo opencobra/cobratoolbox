@@ -32,6 +32,24 @@ end
 coverage = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
 coverage{1,1}='ID';
 
+% summarize duplicate entries
+[uniqueA,i,j] = unique(coverage(:,1));
+n  = accumarray(j(:),1);
+Dupes=uniqueA(find(n>1));
+delArray=[];
+cnt=1;
+for i=1:length(Dupes)
+    indexToDupes = find(strcmp(coverage(:,1),Dupes{i}));
+    for j=2:length(indexToDupes)
+        for k=2:size(coverage,2)
+            coverage{indexToDupes(1),k}=num2str(str2double(coverage{indexToDupes(1),k})+str2double(coverage{indexToDupes(j),k}));
+        end
+        delArray(cnt,1)=indexToDupes(j);
+        cnt=cnt+1;
+    end
+end
+coverage(delArray,:)=[];
+
 % delete samples that are all zeros (if applies)
 totalAbun=sum(str2double(coverage(2:end,2:end)),1);
 allzero=find(totalAbun<0.0000001);

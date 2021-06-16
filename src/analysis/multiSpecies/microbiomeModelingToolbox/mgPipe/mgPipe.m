@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -14,7 +14,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % into a folder.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -29,10 +29,6 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    hostBiomassRxnFlux:     double with the desired flux through the host
 %                            biomass reaction (default: zero)
 %    objre:                  char with reaction name of objective function
-%    buildSetupAll:       	 boolean indicating the strategy that should be used to
-%                            build personalized models: if true, build a global setup model
-%                            containing all organisms in at least model (default), false: create
-%                            models one by one (recommended for more than ~500 organisms total)
 %    saveConstrModels:       boolean indicating if models with imposed
 %                            constraints are saved externally
 %    figForm:                format to use for saving figures
@@ -209,51 +205,38 @@ if numWorkers > 1
     end
 end
 
-% if there is 500 reconstruction total or less, use fast setup creator to
-% carve each personalized model from one large setup model.
-if buildSetupAll
-    if modbuild == 1
-        setup=fastSetupCreator(exch, modelStoragePath, microbeNames, host, objre, buildSetupAll);
-        setup.name='Global reconstruction with lumen / fecal compartments no host';
-        setup.recon=0;
-        if ~isempty(host)
-            save(strcat(resPath,'Setup_host_allbacs.mat'), 'setup')
-        else
-            save(strcat(resPath,'Setup_allbacs.mat'), 'setup')
-        end
-    end
-    
-    if modbuild==0
-        if ~isempty(host)
-            load(strcat(resPath,'Setup_host_allbacs.mat'))
-        else
-            load(strcat(resPath,'Setup_allbacs.mat'))
-        end
-    end
-    
-    [createdModels]=createPersonalizedModel(abundance,resPath,setup,sampNames,microbeNames,couplingMatrix,host,hostBiomassRxn);
-    
-else
-    % create a separate setup model for each sample
-    % define what counts as zero abundance
-    tol=0.0000001;
-    
-    clear('microbeNames','exMets','abundance')
-    
+% create a separate setup model for each sample
+% define what counts as zero abundance
+tol=0.0000001;
+
+clear('microbeNames','exMets','abundance')
+
+if length(sampNames)>50
     steps=50;
-    % proceed in batches for improved effiency
-    for j=1:steps:length(sampNames)
-        if length(sampNames)-j>=steps-1
-            endPnt=steps-1;
-        else
-            endPnt=length(sampNames)-j;
-        end
+else
+    steps=length(sampNames);
+end
+% proceed in batches for improved effiency
+for j=1:steps:length(sampNames)
+    if length(sampNames)-j>=steps-1
+        endPnt=steps-1;
+    else
+        endPnt=length(sampNames)-j;
+    end
+    
+    parfor i=j:j+endPnt
+        % Each personalized model will be created separately.
+        % get the list of models for each sample and remove the ones not in
+        % this sample
         
-        parfor i=j:j+endPnt
-            % Here, we will not be starting from one joined model containing all
-            % reconstructions. Instead, each personalized model will be created separately.)
-            % get the list of models for each sample and remove the ones not in
-            % this sample
+        % check if model already exists
+        if ~isempty(host)
+            mId = strcat('host_microbiota_model_samp_', sampNames{i,1}, '.mat');
+        else
+            mId = strcat('microbiota_model_samp_', sampNames{i,1}, '.mat');
+        end
+        if ~isfile(mId)
+            
             mappingData=load([resPath filesep 'mapInfo.mat'])
             microbeNamesSample = mappingData.microbeNames;
             couplingMatrixSample = mappingData.couplingMatrix;
@@ -262,7 +245,7 @@ else
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             couplingMatrixSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-            setupModel = fastSetupCreator(exch, modelStoragePath, microbeNamesSample, host, objre, buildSetupAll);
+            setupModel = fastSetupCreator(exch, modelStoragePath, microbeNamesSample, host, objre);
             
             % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);

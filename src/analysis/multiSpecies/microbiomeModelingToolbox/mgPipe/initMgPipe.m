@@ -23,10 +23,6 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    hostBiomassRxnFlux:     double with the desired upper bound on flux through the host
 %                            biomass reaction (default: 1)
 %    objre:                  char with reaction name of objective function of organisms
-%    buildSetupAll:       	 boolean indicating the strategy that should be used to
-%                            build personalized models: if true, build a global setup model 
-%                            containing all organisms in at least model (default), false: create
-%                            models one by one (recommended for more than ~500 organisms total)
 %    saveConstrModels:       boolean indicating if models with imposed
 %                            constraints are saved externally
 %    numWorkers:             integer indicating the number of cores to use for parallelization
@@ -75,7 +71,6 @@ parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
 parser.addParameter('hostBiomassRxnFlux', 1, @isnumeric);
 parser.addParameter('objre', '', @ischar);
-parser.addParameter('buildSetupAll', true, @islogical);
 parser.addParameter('saveConstrModels', false, @islogical);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('rDiet', false, @islogical);
@@ -97,7 +92,6 @@ hostPath = parser.Results.hostPath;
 hostBiomassRxn = parser.Results.hostBiomassRxn;
 hostBiomassRxnFlux = parser.Results.hostBiomassRxnFlux;
 objre = parser.Results.objre;
-buildSetupAll = parser.Results.buildSetupAll;
 saveConstrModels = parser.Results.saveConstrModels;
 numWorkers = parser.Results.numWorkers;
 rDiet = parser.Results.rDiet;
@@ -189,7 +183,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
 
 cd(currentDir)
 
