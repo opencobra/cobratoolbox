@@ -15,8 +15,7 @@ function generateTutorials(destinationFolder, varargin)
 
     if strcmp(version('-release'), '2016b')
         openAndConvert = @matlab.internal.richeditor.openAndConvert;
-    end
-    if strcmp(version('-release'), '2017b')
+    else
         openAndConvert = @matlab.internal.liveeditor.openAndConvert;
     end
     [~, ~, ~] = mkdir(destinationFolder);
