@@ -96,7 +96,7 @@ if isempty(mapP)
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [exch,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath);
+    [exch,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath,numWorkers);
     
     % Computing reaction presence
     ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
