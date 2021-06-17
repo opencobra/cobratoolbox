@@ -143,10 +143,10 @@ else
     end
     % proceed in batches for improved effiency
     for s=1:steps:length(sampNames)
-        if length(sampNames)-j>=steps-1
+        if length(sampNames)-s>=steps-1
             endPnt=steps-1;
         else
-            endPnt=length(sampNames)-j;
+            endPnt=length(sampNames)-s;
         end
         
         presolTmp={};
@@ -162,7 +162,7 @@ else
         end
         
         % Starting personalized simulations
-        parfor k=s:s+endPnt
+        for k=s:s+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             
@@ -240,7 +240,7 @@ else
                 % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
                 if solution_allOpen.stat==0
                     warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-                    inFesMatTmp{k}(1) = model.name;
+                    inFesMatTmp{k}{1} = model.name;
                 else
                     presolTmp{k}(1) = solution_allOpen.obj;
                     AllRxn = model.rxns;
@@ -298,7 +298,7 @@ else
                     presolTmp{k}(2)=solution_sDiet.obj;
                     if solution_sDiet.stat==0
                         warning('Presolve detected one or more infeasible models. Please check InFesMat object !')
-                        inFesMatTmp{k}(2) = model.name;
+                        inFesMatTmp{k}{2} = model.name;
                     else
                         if computeProfiles
                             [minFlux,maxFlux]=guidedSim(model_sd,FecalRxn);
@@ -393,8 +393,10 @@ else
                     inFesMat{k,l}=inFesMatTmp{k}(l);
                 end
             end
-            for l=1:size(presolTmp{k},2)
-                presol{k,l}=presolTmp{k}(l);
+            if ~isempty(presolTmp)
+                for l=1:size(presolTmp{k},2)
+                    presol{k,l}=presolTmp{k}(l);
+                end
             end
             
             if computeProfiles
@@ -402,8 +404,10 @@ else
                     netProduction{1,k}=netProdTmp1{k};
                     netUptake{1,k}=netUptTmp1{k};
                 end
-                netProduction{2,k}=netProdTmp2{k};
-                netUptake{2,k}=netUptTmp2{k};
+                if ~isempty(netProdTmp2)
+                    netProduction{2,k}=netProdTmp2{k};
+                    netUptake{2,k}=netUptTmp2{k};
+                end
                 if ~isempty(netProdTmp3)
                     netProduction{3,k}=netProdTmp3{k};
                     netUptake{3,k}=netUptTmp3{k};

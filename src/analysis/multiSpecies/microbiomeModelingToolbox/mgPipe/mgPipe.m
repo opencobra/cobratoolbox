@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,pruneModels)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -40,9 +40,11 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
 %    repeatSim:              boolean defining if simulations should be repeated and previous results
 %                            overwritten (default=false)
-%    adaptMedium:            boolean indicating if the medium should be
-%                            adapted through the adaptVMHDietToAGORA
-%                            function or used as is (default=true)
+%    adaptMedium:            boolean indicating if the medium should be adapted through the
+%                            adaptVMHDietToAGORA function or used as is (default=true)
+%    pruneModels:            boolean indicating whether exchanges and reactions that cannot carry flux
+%                            under the given constraints should be removed (default=false).
+%                            Recommended for large-scale simulation projects.
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -96,7 +98,7 @@ if isempty(mapP)
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [exch,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath,numWorkers);
+    [exch,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath,pruneModels,dietFilePath, includeHumanMets, adaptMedium, numWorkers);
     
     % Computing reaction presence
     ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
