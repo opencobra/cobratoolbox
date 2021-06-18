@@ -149,6 +149,8 @@ if length(setdiff(microbeNames,modelList))>0
             selExc = findExcRxns(model);
             Reactions2 = model.rxns(find(selExc));
             allex = Reactions2(strmatch('EX', Reactions2));
+            allex=strrep(allex,'EX_','');
+            allex=strrep(allex,'(e)','[e]');
             [C]=setdiff(allex,exch);
             model=removeRxns(model,C);
             
