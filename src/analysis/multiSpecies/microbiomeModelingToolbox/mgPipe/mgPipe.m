@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,pruneModels)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsWithErrors] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,pruneModels)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -9,12 +9,9 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % integrating abundance data retrieved from metagenomics. For each organism,
 % reactions are coupled to the objective function.
 % [PART 3] Simulations under different diet regimes.
-% mgPipe was created (and tested) for AGORA 1.0 please first download AGORA
-% version 1.0 from https://www.vmh.life/#downloadview and place the mat files
-% into a folder.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics, modelsWithErrors] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -56,6 +53,8 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %                            reactions and metabolites
 %    statistics:             If info file with stratification is provided, will
 %                            determine if there is a significant difference.
+%    modelsWithErrors:       List of created models that did not pass
+%                            verifyModel. If empty, all models passed.
 %
 % AUTHORS:
 %   - Federico Baldini, 2017-2018
@@ -219,12 +218,16 @@ else
     steps=length(sampNames);
 end
 % proceed in batches for improved effiency
+cnt=1;
+modelsWithErrors={};
+
 for j=1:steps:length(sampNames)
     if length(sampNames)-j>=steps-1
         endPnt=steps-1;
     else
         endPnt=length(sampNames)-j;
     end
+    getErrors={};
     
     parfor i=j:j+endPnt
         % Each personalized model will be created separately.
@@ -251,6 +254,16 @@ for j=1:steps:length(sampNames)
             
             % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);
+            results=verifyModel(createdModel{1});
+            getErrors{i} = results;
+        end
+    end
+    for i=j:j+endPnt
+        if length(getErrors) >= i
+            if ~isempty(getErrors{i})
+                modelsWithErrors{cnt,1} = sampNames{i,1};
+                cnt=cnt+1;
+            end
         end
     end
 end

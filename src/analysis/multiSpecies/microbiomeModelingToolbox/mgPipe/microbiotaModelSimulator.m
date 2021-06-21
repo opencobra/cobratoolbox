@@ -175,9 +175,15 @@ if computeProfiles
                 % simulations either not done yet or done incorrectly -> go
                 sampleID = sampNames{k,1};
                 if ~isempty(hostPath)
-                    microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    % microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    modelStr=load(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    modelF=fieldnames(modelStr);
+                    microbiota_model=modelStr.(modelF{1});
                 else
-                    microbiota_model=readCbModel(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    % microbiota_model=readCbModel(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    modelStr=load(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    modelF=fieldnames(modelStr);
+                    microbiota_model=modelStr.(modelF{1});
                 end
                 model = microbiota_model;
                 for j = 1:length(model.rxns)

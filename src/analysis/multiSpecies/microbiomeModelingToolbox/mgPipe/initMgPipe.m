@@ -1,4 +1,4 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
+function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsWithErrors] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 % This function initializes the mgPipe pipeline and sets the optional input 
 % variables if not defined.
 %
@@ -38,6 +38,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    pruneModels:            boolean indicating whether exchanges and reactions that cannot carry flux
 %                            under the given constraints should be removed (default=false).
 %                            Recommended for large-scale simulation projects.
+%    modelsWithErrors:       List of created models that did not pass
+%                            verifyModel. If empty, all models passed.
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -187,7 +189,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, pruneModels);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsWithErrors] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, pruneModels);
 
 cd(currentDir)
 
