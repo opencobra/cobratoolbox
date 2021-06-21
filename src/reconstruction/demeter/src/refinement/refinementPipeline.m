@@ -360,7 +360,7 @@ model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 
 %% add periplasmatic space
 if ~isempty(infoFilePath)
-    if ~any(strcmp(infoFile(:,1),microbeID))
+    if any(strcmp(infoFile(:,1),microbeID))
         model = createPeriplasmaticSpace(model,microbeID,infoFile);
     end
 end

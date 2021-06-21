@@ -50,12 +50,21 @@ function [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaMod
 % .. Author: Federico Baldini, 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
 
-% set a solver if not done yet
+% initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
-solver = CBT_LP_SOLVER;
-if isempty(solver)
-    initCobraToolbox(false); %Don't update the toolbox automatically
+if isempty(CBT_LP_SOLVER)
+    initCobraToolbox
 end
+solver = CBT_LP_SOLVER;
+
+if numWorkers>0 && ~isempty(ver('parallel'))
+    % with parallelization
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+environment = getEnvironment();
 
 if saveConstrModels
         mkdir([resPath filesep 'Diet'])
@@ -70,6 +79,11 @@ exchanges = setdiff(exchanges, 'EX_biomass[fe]', 'stable');
 % reload existing simulation results by default
 if ~exist('repeatSim', 'var')
     repeatSim=0;
+end
+
+% define human-derived metabolites present in the gut: primary bile acids, amines, mucins, host glycans
+if includeHumanMets
+    HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
 end
 
 if computeProfiles
@@ -145,12 +159,6 @@ if computeProfiles
         
         if ~exist('lowerBMBound','var')
             lowerBMBound=0.4;
-        end
-        
-        % determine human-derived metabolites present in the gut: primary bile
-        % acexchangess, amines, mucins, host glycans
-        if includeHumanMets
-            HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
         end
         
         % Starting personalized simulations
@@ -418,6 +426,7 @@ else
                 restoreEnvironment(environment);
                 changeCobraSolver(solver, 'LP', 0, -1);
                 
+                sampleID = sampNames{k,1};
                 if ~isempty(hostPath)
                     microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
                 else
@@ -515,8 +524,8 @@ else
                 if ~isempty(infesMatTmp)
                     inFesMat{k,2} = infesMatTmp{k};
                 end
-                save([resPath filesep 'presol.mat'],presol)
-                save([resPath filesep 'inFesMat.mat'],inFesMat)
+                save([resPath filesep 'presol.mat'],'presol')
+                save([resPath filesep 'inFesMat.mat'],'inFesMat')
             end
         end
     end
