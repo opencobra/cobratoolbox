@@ -265,11 +265,8 @@ if computeProfiles
                     FecalRxn = AllRxn(FecalInd);
                     FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
                     DietRxn = AllRxn(DietInd);
-                    
-                    % remove exchanges that cannot carry flux
-                    FecalRxn=intersect(FecalRxn,allFecalExch);
-                    DietRxn=intersect(DietRxn,allDietExch);
-                
+                       
+                    %% computing fluxes on the rich diet
                     if rDiet==1 && computeProfiles
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                         minFluxFecal = minFlux;
@@ -293,7 +290,11 @@ if computeProfiles
                         save([resPath filesep 'Rich' filesep 'microbiota_model_' sampleID '.mat'],'microbiota_model')
                     end
                     
-                    % Using input diet
+                    %% Computing fluxes on the input diet
+                    
+                    % remove exchanges that cannot carry flux on the diet
+                    FecalRxn=intersect(FecalRxn,allFecalExch);
+                    DietRxn=intersect(DietRxn,allDietExch);
                     
                     model_sd=model;
                     if adaptMedium
@@ -353,7 +354,7 @@ if computeProfiles
                         
                         save(strcat(resPath,'intRes.mat'),'netProduction','presol','inFesMat', 'netUptake')
                         
-                        % Using personalized diet not documented in MgPipe and bug checked yet!!!!
+                        %% Using personalized diet not documented in MgPipe and bug checked yet!!!!
                         
                         if pDiet==1
                             model_pd=model;
