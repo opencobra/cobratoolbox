@@ -12,8 +12,8 @@ function [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaMod
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
-%    exMets:             cell array with all unique extracellular metabolites
-%                        contained in the models
+%    exMets:             list of exchanged metabolites present in at least
+%                        one microbe model that can carry flux
 %    sampNames:          cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
 %    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
@@ -37,8 +37,8 @@ function [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaMod
 %                        adaptVMHDietToAGORA function or used as is (default=true)
 %
 % OUTPUTS:
-%    exchanges:          cell array with list of all unique Exchanges to diet/
-%                        fecal compartment
+%    exchanges:          cell array with list of all unique exchanges to diet/
+%                        fecal compartment that were interrogated in simulations      
 %    netProduction:      cell array containing FVA values for maximal uptake
 %                        and secretion for setup lumen / diet exchanges
 %    netUptake:          cell array containing FVA values for minimal uptake
@@ -75,6 +75,11 @@ for i=1:length(exMets)
 end
 exchanges = regexprep(exchanges, '\[e\]', '\[fe\]');
 exchanges = setdiff(exchanges, 'EX_biomass[fe]', 'stable');
+
+allFecalExch = exchanges;
+allDietExch = exchanges;
+allDietExch = regexprep(allDietExch,'EX_','Diet_EX_');
+allDietExch = regexprep(allDietExch,'\[fe\]','\[d\]');
 
 % reload existing simulation results by default
 if ~exist('repeatSim', 'var')
@@ -260,6 +265,11 @@ if computeProfiles
                     FecalRxn = AllRxn(FecalInd);
                     FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
                     DietRxn = AllRxn(DietInd);
+                    
+                    % remove exchanges that cannot carry flux
+                    FecalRxn=intersect(FecalRxn,allFecalExch);
+                    DietRxn=intersect(DietRxn,allDietExch);
+                
                     if rDiet==1 && computeProfiles
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                         minFluxFecal = minFlux;
@@ -434,9 +444,15 @@ else
                 
                 sampleID = sampNames{k,1};
                 if ~isempty(hostPath)
-                    microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    % microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    modelStr=load(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
+                    modelF=fieldnames(modelStr);
+                    microbiota_model=modelStr.(modelF{1});
                 else
-                    microbiota_model=readCbModel(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    % microbiota_model=readCbModel(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    modelStr=load(strcat('microbiota_model_samp_', sampleID,'.mat'));
+                    modelF=fieldnames(modelStr);
+                    microbiota_model=modelStr.(modelF{1});
                 end
                 model = microbiota_model;
                 for j = 1:length(model.rxns)
