@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,pruneModels)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,removeBlockedRxns)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -39,6 +39,8 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %                            overwritten (default=false)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
+%    removeBlockedRxns:      Remove reactions blocked on the input diet to
+%                            reduce computation time (default=false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -94,7 +96,7 @@ if isempty(mapP)
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, dietFilePath, includeHumanMets, adaptMedium, numWorkers);
+    [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, dietFilePath, includeHumanMets, adaptMedium, numWorkers, removeBlockedRxns);
     
     % Computing reaction presence
     ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});

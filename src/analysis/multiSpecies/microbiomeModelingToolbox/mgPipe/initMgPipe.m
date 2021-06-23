@@ -35,9 +35,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            overwritten (default=false)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
-%    pruneModels:            boolean indicating whether exchanges and reactions that cannot carry flux
-%                            under the given constraints should be removed (default=false).
-%                            Recommended for large-scale simulation projects.
+%    removeBlockedRxns:      Remove reactions blocked on the input diet to
+%                            reduce computation time (default=false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -83,7 +82,7 @@ parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
-parser.addParameter('pruneModels', false, @islogical);
+parser.addParameter('removeBlockedRxns', false, @islogical);
 
 parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
@@ -105,7 +104,7 @@ includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
 adaptMedium = parser.Results.adaptMedium;
-pruneModels = parser.Results.pruneModels;
+removeBlockedRxns = parser.Results.removeBlockedRxns;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -189,7 +188,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, pruneModels);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, removeBlockedRxns);
 
 cd(currentDir)
 

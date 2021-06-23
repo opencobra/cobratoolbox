@@ -1,4 +1,4 @@
-function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath, includeHumanMets, adaptMedium, numWorkers)
+function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath, includeHumanMets, adaptMedium, numWorkers,removeBlockedRxns)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
@@ -16,6 +16,8 @@ function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(micr
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
 %    numWorkers:             integer indicating the number of cores to use for parallelization
+%    removeBlockedRxns:      Remove reactions blocked on the input diet to
+%                            reduce computation time (optional)
 %
 % OUTPUTS
 %    activeExMets:           list of exchanged metabolites present in at
@@ -122,6 +124,28 @@ if length(setdiff(microbeNames,modelList))>0
         finrex = setdiff(allex, biomass);
         model = changeRxnBounds(model, finrex, -1000, 'l');
         model = changeRxnBounds(model, finrex, 1000, 'u');
+        
+        % optional: remove blocked reactions on the diet from the models
+        if removeBlockedRxns
+            modelDiet = useDiet(model, diet,0);
+            
+            if includeHumanMets
+                % add the human metabolites
+                for l=1:length(HumanMets)
+                    modelDiet=changeRxnBounds(modelDiet,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
+                end
+            end
+            
+            try
+                [minFlux,maxFlux]=fastFVA(modelDiet,0,'max','ibm_cplex');
+            catch
+                [minFlux,maxFlux]=fluxVariability(modelDiet,0,'max');
+            end
+            nominflux=find(abs(minFlux) < 0.00000001);
+            nomaxflux=find(abs(maxFlux) < 0.00000001);
+            noflux=intersect(nominflux,nomaxflux);
+            model=removeRxns(model,model.rxns(noflux));
+        end
         
         % removing blocked reactions from the bacs
         %BlockedRxns = identifyFastBlockedRxns(model,model.rxns, printLevel);

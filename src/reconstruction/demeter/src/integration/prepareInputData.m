@@ -224,7 +224,7 @@ for i=1:length(species)
         for j=1:length(C)
             sumData(j,1)=abs(nansum(nonzeros(str2double(inputData(IA(j),2:end)))));
         end
-        if any(sumData)>0
+        if any(sumData>0)
             % if there is any data, propagate the experimental data from
             % the strain with the most data to the strains with no data
             % find the row with the most experimental data
