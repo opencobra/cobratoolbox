@@ -22,6 +22,9 @@ function [taskReport, essentialRxns, taskStructure]=checkMetabolicTasks(model,in
 %                        (default - true)
 %    printOnlyFailed:    true if only tasks that failed should be displayed
 %                        (default - false)
+%    printDetails:       true if the details of each metabolic tasks check
+%                        should be displayed during the computation
+%                        (default - false)
 %    getEssential:       true if the minimal number of reactions that need to be
 %                        active to pass the task need to be computed
 %                        (default - false)
