@@ -1,4 +1,4 @@
-function taskStruct = generateTaskStructure(inputFile)
+function taskStruct=generateTaskStructure(inputFile)
 % Generates a task structure from a Excell sheet containing a list of tasks
 %
 % USAGE:
@@ -41,8 +41,6 @@ function taskStruct = generateTaskStructure(inputFile)
 %                     * SHOULD FAIL - 1 if the correct behavior of the model is to
 %                       not have a feasible solution given the constraints
 %                       (opt, default 0)
-%                     * COMP - specify the compartment where occurs the task
-%                       (defaut [c], cytosol)
 %
 % OUTPUT:
 %    taskStruct:    array of structures with the following fields:
@@ -58,28 +56,19 @@ function taskStruct = generateTaskStructure(inputFile)
 %                     * .outputs - cell array with output metabolites (in the form metName[comps])
 %                     * .LBout - array with lower bounds on outputs (default, 1e-04)
 %                     * .UBout - array with upper bounds on outputs (default, 1000)
-%                     * .COMP - compartment where occurs the task (default [c], cytosol)
 %
-% NOTE:
-%
-%    This function is used for defining a set of tasks for a model to
-%    perform. The tasks are defined by defining constraints on the exchange
-%    and transport reaction fluxes associated with the inputs and the outputs,
-%    and if the problem is feasible, then the task is considered successful.
-%    In general, each row can contain one constraint on uptakes, one
-%    constraint on outputs.
 %
 % .. Authors:
 %    - Originally written for RAVEN toolbox by Rasmus Agren, 2013-08-01
-%    - Adapted for cobratoolbox and modified to rely only on flux constraints by Richelle Anne, 2017-04-18
+%    - Adapted for cobratoolbox by Richelle Anne, 2017-04-18
 
-[crap,crap,raw]=xlsread(inputFile,'TASKS'); %Load the tasks file
+%Load the tasks file
+[~,~,raw]=xlsread(inputFile,'TASKS');
 
 %Captions of the column in the excell file
-columns={'ID';'DESCRIPTION';'IN';'IN LB';'IN UB';'OUT';'OUT LB';'OUT UB';'SHOULD FAIL';'COMP';'SYSTEM';'SUBSYSTEM'};
+columns={'ID';'DESCRIPTION';'IN';'IN LB';'IN UB';'OUT';'OUT LB';'OUT UB';'SHOULD FAIL';'SYSTEM';'SUBSYSTEM'};
 
-[I colI]=ismember(columns,raw(1,1:end));
-colI=colI;
+[I, colI]=ismember(columns,raw(1,1:end));
 
 %Check that the ID field is present
 if I(1)==0
@@ -88,16 +77,15 @@ end
 
 %Prepare the input file a little. Put NaN for missing strings and default
 %bounds where needed
-for i=1:numel(colI)
-    I=cellfun(@isBad,raw(:,colI(i)));
-    if ~ismember(i,[4 5 7 8])
-        raw(I,colI(i))={NaN};
-    else
-        if i==5 || i==8
-            raw(I,colI(i))={1000};
-        else
-             raw(I,colI(i))={1e-04};
-        end
+for i=[4 5 7 8]
+    for j=1:length(raw(:,1))
+        if isnan(raw{j,colI(i)})
+            if i==5 || i==8
+                raw{j,colI(i)}=10000;
+            else
+                raw{j,colI(i)}=1e-04;
+            end
+        end    
     end
 end
 
@@ -106,8 +94,6 @@ eTask.id='';
 eTask.description='';
 eTask.system='';
 eTask.subsystem='';
-
-%eTask.shouldFail=false;
 eTask.shouldFail=[];
 eTask.inputs={};
 eTask.LBin=[];
@@ -115,45 +101,44 @@ eTask.UBin=[];
 eTask.outputs={};
 eTask.LBout=[];
 eTask.UBout=[];
-eTask.COMP='';
 
 %Main loop
 taskStruct=[];
 task=eTask;
+
 if isnumeric(raw{2,colI(1)})
-    task.id=num2str(raw{2,colI(1)});
+	task.id=num2str(raw{2,colI(1)});
 else
     task.id=raw{2,colI(1)};
 end
 task.description=raw{2,colI(2)};
-task.shouldFail=raw{2,colI(9)};
-task.COMP=raw{2,colI(10)};
-task.system=raw{2,colI(11)};
-task.subsystem=raw{2,colI(12)};
+task.shouldFail=(raw{2,colI(9)});
+task.system=raw{2,colI(10)};
+task.subsystem=raw{2,colI(11)};
 
 for i=2:size(raw,1)
     %Set the inputs
-    if ischar(raw{i,colI(3)})
+    if ~isnan(raw{i,colI(3)})
         inputs=regexp(raw{i,colI(3)},';','split');
         task.inputs=[task.inputs;inputs(:)];
-        task.LBin=[task.LBin;ones(numel(inputs),1)*raw{i,colI(4)}];
-        task.UBin=[task.UBin;ones(numel(inputs),1)*raw{i,colI(5)}];
+        task.LBin=[task.LBin;(raw{i,colI(4)})];
+        task.UBin=[task.UBin;(raw{i,colI(5)})];
     end
     %Set the outputs
-    if ischar(raw{i,colI(6)})
+    if ~isnan(raw{i,colI(6)})
         outputs=regexp(raw{i,colI(6)},';','split');
         task.outputs=[task.outputs;outputs(:)];
-        task.LBout=[task.LBout;ones(numel(outputs),1)*raw{i,colI(7)}];
-        task.UBout=[task.UBout;ones(numel(outputs),1)*raw{i,colI(8)}];
+        task.LBout=[task.LBout;(raw{i,colI(7)})];
+        task.UBout=[task.UBout;(raw{i,colI(8)})];
     end
 
     %Check if it should add more constraints
-    if i<size(raw,1)
+    if i<size(raw,1) 
         if isnan(raw{i+1,colI(1)})
             continue;
         end
     end
-
+    
     taskStruct=[taskStruct;task];
     task=eTask;
     if i<size(raw,1)
@@ -164,26 +149,10 @@ for i=2:size(raw,1)
         end
         task.description=raw{i+1,colI(2)};
         task.shouldFail=raw{i+1,colI(9)};
-        task.COMP=raw{i+1,colI(10)};
-        task.system=raw{i+1,colI(11)};
-        task.subsystem=raw{i+1,colI(12)};
+        task.system=raw{i+1,colI(10)};
+        task.subsystem=raw{i+1,colI(11)};
 
     end
 end
 
-end
-function I=isBad(x)
-    I=false;
-    if ischar(x)
-        if numel(x)==0 || all(isstrprop(x, 'wspace'))
-           I=true;
-        end
-    else
-       if isnan(x)
-          I=true;
-       end
-    end
-    if isempty(x)
-        I=true;
-    end
 end
