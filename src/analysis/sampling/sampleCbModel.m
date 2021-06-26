@@ -228,6 +228,19 @@ switch samplerName
 
         modelSampling=[];
         samples=[];
+    
+    case 'RHMC' 
+
+        P = struct;
+        P.Aeq = model.S; 
+        P.beq = model.b;
+        P.lb = model.lb;
+        P.ub = model.ub;
+
+        opts = default_options();
+        opts.maxTime = maxTime;
+        o = sample(P, nPointsReturned, opts);
+        samples = o.samples; 
 
     otherwise
         error(['Unknown sampler: ' samplerName]);

@@ -49,3 +49,6 @@
 [submodule "external/base/utilities/condalab"]
 	path = external/base/utilities/condalab
 	url = https://github.com/sg-s/condalab
+[submodule "external/analysis/PolytopeSamplerMatlab"]
+	path = external/analysis/PolytopeSamplerMatlab
+	url = https://github.com/ConstrainedSampler/PolytopeSamplerMatlab
