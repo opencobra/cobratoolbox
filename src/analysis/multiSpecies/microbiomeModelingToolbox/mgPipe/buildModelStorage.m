@@ -1,23 +1,18 @@
-function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath, includeHumanMets, adaptMedium, numWorkers,removeBlockedRxns)
+function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers,removeBlockedRxns)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
 % given diet are removed to reduce computation time.
 %
 % USAGE
-% [exMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath, includeHumanMets, adaptMedium, numWorkers)
+%    [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
 %
 % INPUTS
 %    microbeNames:           list of microbe models included in the microbiome models
 %    modPath:                char with path of directory where models are stored
-%    dietFilePath:           char with path of directory where the diet is saved
-%    includeHumanMets:       boolean indicating if human-derived metabolites
-%                            present in the gut should be provided to the models (default: true)
-%    adaptMedium:            boolean indicating if the medium should be adapted through the
-%                            adaptVMHDietToAGORA function or used as is (default=true)
 %    numWorkers:             integer indicating the number of cores to use for parallelization
 %    removeBlockedRxns:      Remove reactions blocked on the input diet to
-%                            reduce computation time (optional)
+%                            reduce computation time (default=false)
 %
 % OUTPUTS
 %    activeExMets:           list of exchanged metabolites present in at
@@ -41,23 +36,6 @@ if numWorkers>0 && ~isempty(ver('parallel'))
     end
 end
 
-% determine human-derived metabolites present in the gut: primary bile
-% amines, mucins, host glycans
-if includeHumanMets
-    HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
-end
-
-% load diet constraints
-if adaptMedium
-    [diet] = adaptVMHDietToAGORA(dietFilePath,'AGORA');
-else
-    diet = readtable(dietFilePath, 'Delimiter', '\t');  % load the text file with the diet
-    diet = table2cell(diet);
-    for i = 1:length(diet)
-        diet{i, 2} = num2str(-(diet{i, 2}));
-    end
-end
-
 % get all exchanges that can carry flux in at least one model on the given
 % diet, including metabolites that can be secreted
 activeExMets = {};
@@ -73,19 +51,11 @@ for i = 1:size(microbeNames, 1)
     % account for depracated nomenclature
     ex_rxns=intersect(ex_rxns,model.rxns);
 
-        % Using input diet
-        model = useDiet(model, diet,0);
-        
-        if includeHumanMets
-            % add the human metabolites
-            for l=1:length(HumanMets)
-                model=changeRxnBounds(model,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
-            end
-        end
-        
         % compute which exchanges can carry flux
         try
+            tic
             [minFlux,maxFlux]=fastFVA(model,0,'max','ibm_cplex',ex_rxns);
+        toc
         catch
             [minFlux,maxFlux]=fluxVariability(model,0,'max',ex_rxns);
         end
@@ -115,6 +85,9 @@ if length(setdiff(microbeNames,modelList))>0
             model=rmfield(model,'d');
         end
         %
+        % make sure biomass reaction is the objective function
+        bio=model.rxns{find(strncmp(model.rxns,'bio',3)),1};
+        model=changeObjective(model,bio);
         
         % removing possible constraints of the bacs
         selExc = findExcRxns(model);
@@ -125,32 +98,15 @@ if length(setdiff(microbeNames,modelList))>0
         model = changeRxnBounds(model, finrex, -1000, 'l');
         model = changeRxnBounds(model, finrex, 1000, 'u');
         
-        % optional: remove blocked reactions on the diet from the models
         if removeBlockedRxns
-            modelDiet = useDiet(model, diet,0);
-            
-            if includeHumanMets
-                % add the human metabolites
-                for l=1:length(HumanMets)
-                    modelDiet=changeRxnBounds(modelDiet,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
-                end
-            end
-            
-            try
-                [minFlux,maxFlux]=fastFVA(modelDiet,0,'max','ibm_cplex');
-            catch
-                [minFlux,maxFlux]=fluxVariability(modelDiet,0,'max');
-            end
-            nominflux=find(abs(minFlux) < 0.00000001);
-            nomaxflux=find(abs(maxFlux) < 0.00000001);
-            noflux=intersect(nominflux,nomaxflux);
-            model=removeRxns(model,model.rxns(noflux));
+            % remove blocked reactions from the models
+            tic
+            BlockedRxns = identifyFastBlockedRxns(model,model.rxns, 1,1e-8);
+            toc
+            model= removeRxns(model, BlockedRxns);
+            BlockedReaction = findBlockedReaction(model,'L2');
+            model=removeRxns(model,BlockedReaction);
         end
-        
-        % removing blocked reactions from the bacs
-        %BlockedRxns = identifyFastBlockedRxns(model,model.rxns, printLevel);
-        %model= removeRxns(model, BlockedRxns);
-        %BlockedReaction = findBlockedReaction(model,'L2')
         
         model = convertOldStyleModel(model);
         exmod = model.rxns(strncmp('EX_', model.rxns, 3));  % find exchange reactions
@@ -169,7 +125,7 @@ if length(setdiff(microbeNames,modelList))>0
         model.rxns = strcat(strcat(microbeNames{i, 1}, '_'), model.rxns);
         model.mets = strcat(strcat(microbeNames{i, 1}, '_'), regexprep(model.mets, '\[e\]', '\[u\]'));  % replace [e] with [u]
         [model] = mergeTwoModels(dummyMicEU, model, 2, false, false);
-   
+        
         %finish up by A: removing duplicate reactions
         %We will lose information here, but we will just remove the duplicates.
         [model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);
@@ -186,8 +142,7 @@ if length(setdiff(microbeNames,modelList))>0
         couplingMatrix{i,3}=model.dsense;
         couplingMatrix{i,4}=model.ctrs;
     end
-end
-
-cd(currentDir)
-
+    
+    cd(currentDir)
+    
 end
