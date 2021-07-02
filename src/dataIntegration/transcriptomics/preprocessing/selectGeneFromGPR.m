@@ -25,7 +25,7 @@ function [expressionCol,  gene_used, signifCol] = selectGeneFromGPR(model, gene_
 % OUTPUTS:
 %   expressionCol:  reaction expression, corresponding to model.rxns.
 %                   No gene-expression data and orphan reactions will
-%                   be given a value of -1.
+%                   be given a value of NaN.
 %   gene_used:      gene identifier, corresponding to model.rxns, from GPRs
 %                   whose value (expression and/or significance) was chosen for that
 %                   reaction

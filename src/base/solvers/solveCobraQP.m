@@ -1072,11 +1072,11 @@ if solution.stat==1
         if ~isempty(solution.full)
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
-            if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100
-                warning('solveCobraQP: Objectives do not match. Switch to a different solver if you rely on the value of the optimal objective.')
-                fprintf('%s\n%g\n%s\n%g\n%s\n%g\n',['The optimal value of the objective from ' solution.solver ' is:'],f, ...
-                    'while the value constructed from c''*x + 0.5*x''*F*x:', solution.obj,...
-                    'while the value constructed from osense*(c''*x + x''*F*x) :', osense*(c'*solution.full + solution.full'*F*solution.full))
+            %expect some variability if the norm of the optimal flux vector is large
+            %TODO how to scale this
+            if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
+                warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
+                fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
             end
         else
             solution.obj = NaN;

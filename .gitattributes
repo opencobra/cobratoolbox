@@ -2,6 +2,32 @@
 *.html  linguist-vendored=true
 *.gms   linguist-vendored=true
 
-*.mat -crlf -diff -merge
-*.mlx -crlf -diff -merge
-*.xlsx -crlf -diff -merge
+## https://nl.mathworks.com/help/matlab/matlab_prog/set-up-git-source-control.html#buhx2d6-1_3
+*.fig binary
+*.mat binary
+*.mdl binary
+*.mdlp binary
+*.mexa64 binary
+*.mexw64 binary
+*.mexmaci64 binary
+*.mlapp binary
+*.mldatx binary
+*.mlproj binary
+*.mlx binary
+*.p binary
+*.sfx binary
+*.sldd binary
+*.slreqx binary
+*.slmx binary
+*.sltx binary
+*.slxc binary
+*.slx binary merge=mlAutoMerge
+*.slxp binary
+
+## Other common binary file types
+*.docx binary
+*.exe binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.xlsx binary
