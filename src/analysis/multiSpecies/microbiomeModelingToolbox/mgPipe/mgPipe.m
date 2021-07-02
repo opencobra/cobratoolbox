@@ -313,5 +313,6 @@ if ~isempty(infoFilePath)
 else
     [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames);
 end
+save([resPath filesep 'modelStatistics.mat'],'modelStats','summary','statistics')
 
 end
