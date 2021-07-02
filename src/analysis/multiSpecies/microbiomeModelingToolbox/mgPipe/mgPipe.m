@@ -297,9 +297,9 @@ else
     netSecretionFluxes={};
     netUptakeFluxes={};
     Y=[];
-    delete('simRes.mat','intRes.mat')
-    rmdir([resPath filesep 'modelStorage'],'s')
+    delete('simRes.mat','intRes.mat')  
 end
+rmdir([resPath filesep 'modelStorage'],'s')
 
 % get stats on microbiome models-number of reactions and metabolites
 for i=1:length(sampNames)
