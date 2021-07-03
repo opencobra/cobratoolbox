@@ -28,6 +28,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                     * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
 %                     * .toRound - Option to round the model before sampling (true). CHRR only.
 %                     * .lambda - the bias vector for exponential sampling. CHRR_EXP only.
+%                     * .nWorkers - Number of parallel workers. RHMC only.
 %    modelSampling: From a previous round of sampling the same
 %                   model. Input to avoid repeated preprocessing.
 %
@@ -108,6 +109,9 @@ if exist('options','var')
     end
     if (isfield(options,'optPercentage'))
         optPercentage = options.optPercentage;
+    end
+    if (isfield(options,'nWorkers'))
+        nWorkers = options.nWorkers;
     end
 end
 
@@ -230,15 +234,31 @@ switch samplerName
         samples=[];
     
     case 'RHMC' 
-
-        P = struct;
-        P.Aeq = model.S; 
-        P.beq = model.b;
-        P.lb = model.lb;
-        P.ub = model.ub;
+        P = struct;        
+        if (~isfield(model,'S') || ~isfield(model,'b'))
+            error('You need to define both P.A and P.b for a polytope {x | P.A*x = P.b}.');
+        else
+            P.Aeq = model.S;
+            P.beq = model.b;
+        end        
+        if isfield(model,'lb')
+            P.lb = model.lb;
+        end
+        if isfield(model,'ub')
+            P.ub = model.ub;
+        end
 
         opts = default_options();
-        opts.maxTime = maxTime;
+        if isfield(options,'maxTime')
+            opts.maxTime = options.maxTime;
+        end
+        if isfield(options,'nWorkers')
+            opts.nWorkers = options.nWorkers;
+        end
+        if ~isfield(options,'nPointsReturned')
+            nPointsReturned = 3;
+        end
+
         o = sample(P, nPointsReturned, opts);
         samples = o.samples; 
 
