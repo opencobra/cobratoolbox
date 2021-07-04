@@ -268,6 +268,8 @@ switch samplerName
         if size(samples,2) > nPointsReturned
             samples = samples(:, ((size(samples,2)-nPointsReturned):end));
         end
+        
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end
