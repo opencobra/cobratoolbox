@@ -14,7 +14,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
-%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to
+%    samplerName:   {('CHRR'), 'ACHR', 'RHMC'} Name of the sampler to be used to
 %                   sample the solution.
 %    options:       Options for sampling and pre/postprocessing (default values
 %                   in parenthesis).
@@ -236,32 +236,38 @@ switch samplerName
     case 'RHMC' 
         P = struct;        
         if (~isfield(model,'S') || ~isfield(model,'b'))
-            error('You need to define both P.A and P.b for a polytope {x | P.A*x = P.b}.');
+            error('You need to define both model.S and model.b');
         else
             P.Aeq = model.S;
             P.beq = model.b;
-        end        
+        end
         if isfield(model,'lb')
             P.lb = model.lb;
         end
         if isfield(model,'ub')
             P.ub = model.ub;
         end
+        if isfield(model,'dsense')
+            I = (model.dsense == 'E');
+            P.Aeq = [P.Aeq; model.C(I,:)];
+            P.beq = [P.beq; model.d(I)];
+            P.Aineq = model.C(~I,:);
+            P.bineq = model.d(~I,:);
+            flip = 1-2*(model.dsense(~I) == 'G');
+            P.Aineq = flip.*P.Aineq;
+            P.bineq = flip.*P.bineq;
+        end
 
         opts = default_options();
-        if isfield(options,'maxTime')
-            opts.maxTime = options.maxTime;
-        end
+        opts.maxTime = maxTime;
         if isfield(options,'nWorkers')
             opts.nWorkers = options.nWorkers;
         end
-        if ~isfield(options,'nPointsReturned')
-            nPointsReturned = 3;
-        end
-
         o = sample(P, nPointsReturned, opts);
-        samples = o.samples; 
-
+        samples = o.samples;
+        if size(samples,2) > nPointsReturned
+            samples = samples(:, ((size(samples,2)-nPointsReturned):end));
+        end
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end
