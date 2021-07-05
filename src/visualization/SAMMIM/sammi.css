@@ -1,0 +1,324 @@
+/* SAMMI is a tool for visualization of metabolic networks
+
+Copyright (C) 2019 The University of Texas MD Anderson Cancer Center.
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+any later version.
+
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+with this program. If not, see <https://www.gnu.org/licenses/>. */
+
+body, html{
+  padding:0;
+  margin:0;
+  height: 100%;
+  width: 100%;
+  line-height: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+svg {
+  border: 1px solid black;
+}
+
+input[type=number]{
+  width: 50px;
+} 
+
+#d3_selectable_force_directed_graph .node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  transform-origin: 0 0;
+  -ms-transform-origin: 0%,0%;
+  text-align: center;
+}
+
+.node .selected {
+  stroke: black;
+}
+
+.link {
+  stroke: #999;
+}
+
+select {
+  max-width: 200px;
+}
+
+button :not(.orgbtn) {
+  background-color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 1px;
+  padding: 3px 6px;
+  text-align: center;
+  margin: 3px 3px;
+  cursor: pointer;
+  border-radius: 12px;
+  /* border: 2px solid rgb(150, 150, 150); */
+}
+button:hover :not(.orgbtn){
+  background-color: rgb(209, 209, 209);
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+.ui-dialog-titlebar {
+  background-color: rgb(209, 209, 209);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  font-size: 15px;
+  max-width: 300px;
+  display: none;
+}
+.ui-dialog-content {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  max-height: 400px;
+  max-width: 300px;
+  overflow-y: scroll;
+}
+.ui-widget-content {
+  max-width: 300px;
+}
+
+#myProgress {
+  width: 100px;
+  background-color: grey;
+  margin: auto;
+  text-align: center;
+}
+#myBar {
+  width: 1%;
+  height: 10px;
+  background-color: green;
+  margin: auto;
+  text-align: center;
+}
+
+.dropbtn {
+  background-color: rgb(255, 255, 255);
+  padding: 6px  10px;
+  border: none;
+  border-radius: 4px;
+  margin: 3px;
+  border: solid 1px rgb(209, 209, 209);
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 14px;
+}
+#topbar {
+  display: none;
+}
+.dropdown {
+  float: left;
+  padding: 8px 0px 0px 10px;
+}
+#toplogo {
+  width: 270px;
+  padding: 5px 20px 5px 0px;
+
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgb(255,255,255);
+  min-width: 420px;
+  max-width: 1000px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+  padding: 15px;
+  border-radius: 10px;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+}
+.dropdown-content a:hover {background-color: #ddd}
+/* .dropdown:hover .dropdown-content {
+  display: block;
+} */
+.dropbtn:hover {
+  background-color: rgb(209, 209, 209);
+}
+
+#ruler {
+  visibility: hidden; 
+  white-space: nowrap;
+}
+
+
+.scrollopts:hover  {
+  background-color: #ddd;
+  color: black;
+  cursor: context-menu;
+}
+
+.scrollopts {
+  background-color: #f1f1f1;
+  color: black;
+  padding: 1px 5px;
+  width: 10px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.imgbtn:active {
+  opacity: 0.2
+}
+.menubutton {
+  font-size: 9px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  width: 32%;
+  height: 38px;
+  vertical-align: top;
+}
+.menubutton:hover {
+  opacity: 0.5;
+}
+.wrapper {
+  text-align: left;
+}
+
+select {
+  background: transparent;
+  padding: 3px 3px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+input[type=text], input[type=number]  {
+  background: transparent;
+  padding: 3px 3px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  border-width:1px;
+}
+
+h4 {
+  display: inline
+}
+
+h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+#leftColDoc {
+  position: fixed;
+  width: 150px;
+  background-color: rgb(183, 194, 247); 
+  font-size: 13px;
+  overflow-y: scroll;
+  top: 0;
+  bottom: 0;
+  font-family: "Arial Black", Gadget, sans-serif;
+}
+
+#contentDoc {
+  position: relative;            
+  margin-left: 150px;
+  font-family: "Arial", Gadget, sans-serif;
+  font-size: 14px;
+}
+
+figcaption {
+  font-size: 12px;
+}
+
+#fileannotation {
+  background-color: rgb(230, 230, 230);
+  font-family: "Times New Roman";
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+  font-size: 16px;
+}
+
+.topmenubtn {
+  background-color: rgb(255, 255, 255);
+  padding: 2px  4px;
+  border: none;
+  border-radius: 4px;
+  margin: 2px;
+  border: solid 1px rgb(209, 209, 209);
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 12px
+}
+.topmenubtn:hover {
+  background-color: rgb(209, 209, 209);
+}
+
+.labels {
+  font-family: sans-serif;
+}
+
+.subheader {
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 16px;
+}

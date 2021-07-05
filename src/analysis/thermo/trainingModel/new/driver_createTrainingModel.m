@@ -40,7 +40,7 @@ fileName =[pwd filesep 'trainingData_'];
 [training_massImbalance, training_imBalancedMass, training_imBalancedCharge, training_imBalancedRxnBool, elements, training_missingFormulaeBool, training_balancedMetBool]...
     = checkMassChargeBalance(trainingModel, -1, fileName);
 %% 
-% Identify the reactions that (a) do not involve metabolites without formulae, 
+% Identify the reactions that (a) exclsively involve metabolites with formulae, 
 % (b) are mass imbalanced ignoring H, (c ) are not formation reactions.
 
 removeBool = ~any(isnan(training_massImbalance),2) & sum(training_massImbalance(:,~strcmp(elements,'H')),2)~=0 & (sum(trainingModel.S~=0,1)~=1)';

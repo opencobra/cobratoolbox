@@ -1,0 +1,2245 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 10">
+<meta name=Originator content="Microsoft Word 10">
+<link rel=File-List href="grepdemo_files/filelist.xml">
+<title>fgrepdem</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>us</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>us</o:LastAuthor>
+  <o:Revision>868</o:Revision>
+  <o:Created>2006-01-25T12:38:00Z</o:Created>
+  <o:LastSaved>2006-04-02T23:53:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>3765</o:Words>
+  <o:Characters>21465</o:Characters>
+  <o:Company>office</o:Company>
+  <o:Lines>178</o:Lines>
+  <o:Paragraphs>50</o:Paragraphs>
+  <o:CharactersWithSpaces>25180</o:CharactersWithSpaces>
+  <o:Version>10.4219</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DoNotShowRevisions/>
+  <w:DoNotPrintRevisions/>
+  <w:DoNotShowMarkup/>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--p
+	{max-width: 600px;
+	width:expression(document.body.clientWidth > 620 ? "600px": "auto" );}
+h1
+	{max-width: 600px;
+	width:expression(document.body.clientWidth > 620 ? "600px": "auto" );}
+h2
+	{max-width: 600px;
+	width:expression(document.body.clientWidth > 620 ? "600px": "auto" );}
+div.CONTENT div
+	{max-width: 600px;
+	width:expression(document.body.clientWidth > 620 ? "600px": "auto" );}
+
+ /* Font Definitions */
+ @font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-alt:"ＭＳ 明朝";
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"MS Mincho";
+	mso-believe-normal-left:yes;}
+h1
+	{mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:24.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	color:#990000;
+	font-weight:bold;}
+h2
+	{mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:13.5pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	color:#990000;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:teal;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"MS Mincho";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";}
+p.footer, li.footer, div.footer
+	{mso-style-name:footer;
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	text-align:right;
+	mso-pagination:widow-orphan;
+	font-size:7.5pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"MS Mincho";
+	color:gray;
+	font-style:italic;}
+span.keyword
+	{mso-style-name:keyword;
+	color:blue;}
+span.comment
+	{mso-style-name:comment;
+	color:forestgreen;}
+span.string
+	{mso-style-name:string;
+	color:#A020F0;}
+span.untermstring
+	{mso-style-name:untermstring;
+	color:#B20000;}
+span.syscmd
+	{mso-style-name:syscmd;
+	color:#B28C00;}
+span.StylecommentCourierNew10ptBoldSkyBlue
+	{mso-style-name:"Style comment + Courier New 10 pt Bold Sky Blue";
+	mso-style-parent:comment;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";
+	color:red;
+	font-weight:bold;
+	text-decoration:underline;
+	text-underline:single;}
+span.StylecommentCourierNew10ptBoldAuto
+	{mso-style-name:"Style comment + Courier New 10 pt Bold Auto";
+	mso-style-parent:comment;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";
+	color:windowtext;
+	font-weight:bold;
+	text-decoration:underline;
+	text-underline:single;}
+span.StyleStylecommentCourierNew10ptBoldAutoNounderline
+	{mso-style-name:"Style Style comment + Courier New 10 pt Bold Auto + No underline";
+	mso-style-parent:"Style comment + Courier New 10 pt Bold Auto";
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";
+	color:windowtext;
+	mso-text-animation:none;
+	font-weight:bold;
+	text-decoration:none;
+	text-underline:none;
+	text-decoration:none;
+	text-line-through:none;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]--><![if mso 9]>
+<style>
+p.MsoNormal
+	{margin-left:7.5pt;}
+</style>
+<![endif]><!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+<meta name=date content=2006-01-25>
+<meta name=m-file content=fgrepdem>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="22530"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white lang=EN-US link=blue vlink=teal style='tab-interval:.5in;
+margin-left:7.5pt;margin-top:7.5pt;margin-right:7.5pt;margin-bottom:7.5pt'>
+
+<div class=Section1>
+
+<div><pre style='background:#EEEEEE'><span class=comment>% </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>GREP EXAMPLES</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% - note only selected output is shown for the sake of brevity<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% - note clicking on any <u>underlined text</u><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+1'>     </span></span><span class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment><o:p></o:p></span></pre><pre style='background:#EEEEEE'><span
+class=comment>%<span style='mso-tab-count:1'>     </span></span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span class=comment><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-spacerun:yes'>   </span>will open the file at the matching line</span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% show sparse information about syntax and option flags<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%</span><span style='mso-tab-count:
+1'>     </span><span class=MsoHyperlink><a href="#grepoptions"><b
+style='mso-bidi-font-weight:normal'>help grep</b></a><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% show extended syntax/peculiarities of option/pattern/file arguments<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%</span><span style='mso-tab-count:
+1'>     </span><span class=MsoHyperlink><a href="#grepP"><b style='mso-bidi-font-weight:
+normal'>grep -p</b></a><o:p></o:p></span></pre><pre style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre
+style='background:#EEEEEE'><span class=comment>% show extended information of the second output argument (for programmers)<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%</span><span style='mso-tab-count:
+1'>     </span><span class=MsoHyperlink><a href="#grepF"><b style='mso-bidi-font-weight:
+normal'>grep -f</b></a><o:p></o:p></span></pre><pre style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre
+style='background:#EEEEEE'><span class=comment>% show several examples (see also GREPDEMO.M)<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%</span><span style='mso-tab-count:
+1'>     </span><span class=MsoHyperlink><b style='mso-bidi-font-weight:normal'><a
+href="#grepE">grep -e</a></b><o:p></o:p></span></pre><pre style='background:
+#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% create a line separator</span></pre><pre style='background:
+#EEEEEE'><span style='mso-tab-count:1'>      </span><span class=GramE>sep</span>=@(x) <span
+class=SpellE>disp</span>(<span class=SpellE>sprintf</span>(<span class=SpellE>repmat</span>(<span
+class=string>'-'</span>,1,75)));</pre><pre style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% assume <b style='mso-bidi-font-weight:normal'>GREP.TXT</b> is in your current working folder</span></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=SpellE><span class=GramE>fnam</span></span>=<span class=comment><b>'grep.txt'</b></span>;</pre><pre
+style='background:#EEEEEE'><span class=GramE><span class=comment>% - show contents (note all spaces are TABs!)</span></span></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>type(</span><span class=SpellE><span class=comment><b>fnam</b></span></span>);</pre><pre><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span class=GramE><span
+class=comment><b><span style='color:windowtext'>us</span></b></span></span><span
+class=comment><b><span style='color:windowtext'><o:p></o:p></span></b></span></pre><pre><span
+class=comment><b><span style='color:windowtext'>Version<o:p></o:p></span></b></span></pre><pre><span
+class=comment><b><span style='color:windowtext'><span style='mso-tab-count:
+2'>              </span>n=-n;<o:p></o:p></span></b></span></pre><pre><span
+class=SpellE><span class=comment><b><span style='color:windowtext'>par.class</span></b></span></span><span
+class=comment><b><span style='color:windowtext'>=<span class=SpellE>t.class</span>;<o:p></o:p></span></b></span></pre><pre><span
+class=comment><b><span style='color:windowtext'><span style='mso-tab-count:
+1'>      </span><span class=GramE>if</span><span style='mso-tab-count:1'>      </span><span
+class=SpellE>par.opt.c</span><o:p></o:p></span></b></span></pre><pre><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='background:
+#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% simple case insensitive </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-<span class=SpellE>i</span>]</span><span
+class=comment> string search in <b style='mso-bidi-font-weight:normal'>GREP.M</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>Version</span></b></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% listing </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] and the </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline> [-n] </span><span
+class=comment>of occurrences</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>grep</span> <span
+class=string>-<span class=SpellE>i</span></span> <span class=string>-n</span> <span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>Version</span></span> <span
+class=SpellE><span class=comment>grep.m</span></span><o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>231</span><span
+style='color:#666666'>: <span style='mso-tab-count:3'>                 </span><span
+class=SpellE>p.mver</span>=</span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>version</span></b></span><span
+style='color:#666666'>;<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>965</span><span
+style='color:#666666'>: %$<span style='mso-tab-count:1'>        </span><span style='mso-spacerun:yes'>    </span><span
+class=SpellE>ver</span>:<span style='mso-spacerun:yes'>   </span>char<span
+style='mso-tab-count:3'>                </span>current GREP </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>version</span></b></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>966</span><span
+style='color:#666666'>: %$<span style='mso-tab-count:1'>        </span><span style='mso-spacerun:yes'>   </span><span
+class=SpellE>mver</span>:<span style='mso-spacerun:yes'>   </span>char<span
+style='mso-tab-count:3'>                </span>current ML<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>version</span></b></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre style='text-align:center'><b><span
+style='color:#FF9900'>***** MANY LINES DELETED *****</span></b><span
+style='color:#FF9900'><o:p></o:p></span></pre><pre><span style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% regular expression search </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-R]</span><span
+class=comment> in <b style='mso-bidi-font-weight:normal'>GREP.M</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>=true </span></b>or </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>=false</span></b></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% listing </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline> [-n] </span><span
+class=comment>but </span><span class=StylecommentCourierNew10ptBoldSkyBlue>not</span><span
+class=comment> the </span><span class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-Q]</span></pre><pre
+style='background:#EEEEEE'><span class=comment><span lang=PT-BR
+style='mso-ansi-language:PT-BR'>%-------------------------------------------------------------------------------</span></span><span
+lang=PT-BR style='mso-ansi-language:PT-BR'><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+lang=PT-BR style='mso-ansi-language:PT-BR'><span style='mso-tab-count:1'>      </span>grep <span
+class=string>-Q</span> <span class=string>-n</span> <span class=string>-R</span> <span
+class=comment><span style='color:blue'>=true</span></span><span class=string>|</span><span
+class=comment><span style='color:blue'>=false</span></span> <span
+class=comment>grep.m</span><o:p></o:p></span></b></pre><pre style='background:
+#EEEEEE'><span lang=PT-BR style='mso-ansi-language:PT-BR'><span
+style='mso-tab-count:1'>      </span></span><span class=GramE>sep(</span>);</pre><pre><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto>220</span><span style='color:#666666'>:<span
+style='mso-tab-count:2'>          </span><span class=SpellE>par.chkpath</span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>=false</span></b></span><span
+style='color:#666666'>;<span style='mso-tab-count:1'>     </span>% true if <span
+class=GramE>I[</span>]/X[] flags are set;<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto>222</span><span style='color:#666666'>:<span
+style='mso-tab-count:2'>          </span><span class=SpellE>par.hasmatch</span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>=false</span></b></span><span
+style='color:#666666'>;<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto>298</span><span style='color:#666666'>:<span
+style='mso-tab-count:2'>          </span><span class=SpellE>msg</span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>=true</span></b></span><span
+style='color:#666666'>;<o:p></o:p></span></pre><pre style='text-align:center'><b><span
+style='color:#FF9900'>***** MANY LINES DELETED *****</span></b><span
+style='color:#FF9900'><o:p></o:p></span></pre><pre><span style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% simple string search in <b style='mso-bidi-font-weight:normal'>GREP.M</b> for exactly matching </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-x]</span><span
+class=comment> instances of</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%<span style='mso-tab-count:2'>             </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>\t\<span
+class=SpellE>tmsg</span>=true;</span></b></span></pre><pre style='background:
+#EEEEEE'><span class=comment>% listing the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] and the </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span class=comment> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-n]</span><span
+class=comment> for each occurrence</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=comment><b><span style='color:blue'>TAB</span></b></span>=<span
+class=SpellE><span class=GramE>sprintf</span></span><span class=GramE>(</span><span
+class=string>'\t'</span>);</pre><pre style='background:#EEEEEE'><b
+style='mso-bidi-font-weight:normal'><span style='mso-tab-count:1'>      </span><span
+class=GramE>fl=</span>grep(<span class=string>'-x -n'</span>,[<span
+class=SpellE><span class=comment><span style='color:blue'>TAB,TAB</span></span>,<span
+class=string>'</span><span class=comment><span style='color:blue'>msg</span></span></span><span
+class=comment><span style='color:blue'>=true;</span></span><span class=string>'</span>],<span
+class=comment><span style='mso-bidi-font-weight:bold'>'<span class=SpellE>grep.m</span></span></span><span
+class=string>'</span>);<o:p></o:p></b></pre><pre style='background:#EEEEEE'><span
+style='mso-tab-count:1'>      </span><span class=GramE>sep(</span>);</pre><pre><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>298</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'><span style='mso-tab-count:2'>          </span><span
+class=SpellE>msg</span>=true;</span></b></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>301</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'><span style='mso-tab-count:2'>          </span><span
+class=SpellE>msg</span>=true;</span></b></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>304</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'><span style='mso-tab-count:2'>          </span><span
+class=SpellE>msg</span>=true;</span></b></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% simple string search in <b style='mso-bidi-font-weight:normal'>GREP.TXT</b> for</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>every line of itself in turn</span></b></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% using the </span><span
+class=StylecommentCourierNew10ptBoldAuto>pattern-file</span><span
+class=comment> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-f]</span><span
+class=comment> option and</span></pre><pre style='background:#EEEEEE'><span
+class=comment>% listing the </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:#993366'>full file name and pattern for each file with matches</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-l]</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% as well as the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] for each occurrence</span></pre><pre style='background:
+#EEEEEE'><span class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>fl=</span>grep(<span
+class=string>'-l -<span class=SpellE>f'<span style='color:windowtext'>,</span><span
+class=comment><span style='mso-bidi-font-weight:bold'>fnam,fnam</span></span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:#993366'>F:/usr/matlab/tmp/tok/grep.txt</span></b> </span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'>[</span><span
+class=comment><span style='color:blue'>us</span></span><span style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>us</span></b></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>F:/usr/matlab/tmp/tok/grep.txt</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>Version</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>Version</span></b></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>F:/usr/matlab/tmp/tok/grep.txt</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [<span
+style='mso-tab-count:2'>             </span></span><span class=comment><span
+style='color:blue'>n=-n;</span></span><span style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: <span style='mso-tab-count:2'>            </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>n=-n;</span></b></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>F:/usr/matlab/tmp/tok/grep.txt</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>par.class</span></span></span><span
+class=comment><span style='color:blue'>=<span class=SpellE>t.class</span>;</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: </span><span class=SpellE><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:blue'>par.class</span></b></span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>=<span
+class=SpellE>t.class</span>;</span></b></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>F:/usr/matlab/tmp/tok/grep.txt</span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'><span style='mso-tab-count:1'>     </span>if<span
+style='mso-tab-count:1'>      </span><span class=SpellE>par.opt.c</span></span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'><span style='mso-tab-count:1'>    </span>if<span
+style='mso-tab-count:1'>      </span><span class=SpellE>par.opt.c</span></span></b></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre><span style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% simple string search in <b style='mso-bidi-font-weight:normal'>GREP.TXT</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>-n</span></b></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% using the </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-e]</span><span
+class=comment> option since </span><b style='mso-bidi-font-weight:normal'>-n</b><span
+class=comment> itself is an option flag (listing line number!)</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% and listing the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] for each </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>non-matching line</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-v]</span><span
+class=comment> only</span><span style='color:forestgreen'><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% - <b style='mso-bidi-font-weight:
+normal'>compare with previous example!</b></span></pre><pre style='background:
+#EEEEEE'><span class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>fl=</span>grep(<span
+class=string>'-v -e'</span>,{<span class=string>'-n'</span>},<span
+class=SpellE><span class=comment><span style='mso-bidi-font-weight:bold'>fnam</span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: us<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: Version<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: <span class=SpellE>par.class</span>=<span class=SpellE>t.class</span>;<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>grep.txt</span><span
+style='color:#666666'>: <span style='mso-tab-count:1'>    </span>if<span
+style='mso-tab-count:1'>      </span><span class=SpellE>par.opt.c</span><o:p></o:p></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% full depth search </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-r]</span><span
+class=comment> of the entire <b style='mso-bidi-font-weight:normal'>ELFUN TOOLBOX</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>sign</span></b> or </span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b> or </span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span></pre><pre style='background:
+#EEEEEE'><span class=comment>% listing the </span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:#993366'>full file name and pattern for each file with matches</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-l]</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% as well as the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] and the </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline> [-n]</span><span
+class=comment> for each occurrence</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=SpellE><span class=GramE>fpat</span></span>=[<span class=SpellE><span
+class=comment><b>matlabroot,'/toolbox/matlab/elfun</b></span></span><span
+class=comment><b>'</b></span>];</pre><pre style='background:#EEEEEE'><b
+style='mso-bidi-font-weight:normal'><span style='mso-tab-count:1'>      </span><span
+class=GramE>fl=</span>grep(<span class=string>'-r -l -n'</span>,{<span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>'<span
+class=SpellE>sign','cosine','atan</span>'</span></span>},<span class=SpellE><span
+class=comment><span style='mso-bidi-font-weight:bold'>fpat</span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>74</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span>mod<span style='mso-spacerun:yes'>         </span>- Modulus (</span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'>ed remainder after division).<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>76</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>        </span>- <span
+class=SpellE>Signum</span>.<o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>cosine</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>12</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>cosh</span><span style='mso-spacerun:yes'>        </span>- Hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>Contents.m</span></span><span lang=PT-BR style='color:#666666;
+mso-ansi-language:PT-BR'>:</span><span
+class=StylecommentCourierNew10ptBoldAuto><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>13</span></span><span lang=PT-BR style='color:#666666;mso-ansi-language:
+PT-BR'>: %<span style='mso-spacerun:yes'>   </span>acos<span style='mso-spacerun:yes'>        </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span lang=PT-BR
+style='color:blue;mso-ansi-language:PT-BR'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span lang=PT-BR
+style='color:#666666;mso-ansi-language:PT-BR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>14</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosd</span><span style='mso-spacerun:yes'>       </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+style='color:#666666'>, result in degrees</span><span class=comment><span
+style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>15</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosh</span><span style='mso-spacerun:yes'>      </span><span style='mso-spacerun:yes'> </span>- Inverse hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre
+style='text-align:center'><b style='mso-bidi-font-weight:normal'><span
+style='color:#FF9900'>***** MANY LINES DELETED *****<o:p></o:p></span></b></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/unwrap.m</span></span></b></span><b style='mso-bidi-font-weight:
+normal'><span style='color:#666666'> [</span><span class=comment><span
+style='color:blue'>sign</span></span><span style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>unwrap.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>87</span><span
+style='color:#666666'>: <span class=SpellE><span class=GramE>dps</span></span><span
+class=GramE>(</span><span class=SpellE>dps</span>==-pi &amp; <span
+class=SpellE>dp</span>&gt;0,:) = pi;<span style='mso-spacerun:yes'>     </span>% Preserve variation </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'> for pi vs. -pi<o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>76</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>        </span>- Ö<o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>atan</span></span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>19</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span><span style='color:#666666'><span style='mso-spacerun:yes'>        </span>- t³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>20</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>d</span></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span>- xÅoÍ³êét³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>21</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>atan</span></b></span><span
+style='color:#666666'>2<span style='mso-spacerun:yes'>       </span>- 4ÛÀt³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>Contents.m</span></span><span lang=PT-BR style='color:#666666;
+mso-ansi-language:PT-BR'>:</span><span
+class=StylecommentCourierNew10ptBoldAuto><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>22</span></span><span lang=PT-BR style='color:#666666;mso-ansi-language:
+PT-BR'>: %<span style='mso-spacerun:yes'>   </span></span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span lang=PT-BR style='color:blue;
+mso-ansi-language:PT-BR'>atan</span></b></span><span lang=PT-BR
+style='color:#666666;mso-ansi-language:PT-BR'>h<span style='mso-spacerun:yes'>       </span>- toÈü³Úl<o:p></o:p></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% full depth search </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-r]</span><span
+class=comment> of the entire <b style='mso-bidi-font-weight:normal'>ELFUN TOOLBOX</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>sign</span></b> or </span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b> or </span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span></pre><pre style='background:
+#EEEEEE'><span class=comment>% using the two versions of the </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-e]</span><span
+class=comment> option and</span></pre><pre style='background:#EEEEEE'><span
+class=comment>% listing the </span><span class=comment><b><span
+style='color:#993366'>full file name and pattern for each file with matches</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-l]</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% as well as the </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>count</span><span
+class=comment> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-c]</span><span
+class=comment> of all instances</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>fl=</span>grep(<span
+class=string>'-r -l -c -e </span><span class=comment><span style='color:blue;
+mso-bidi-font-weight:bold'>sign</span></span><span class=string> -e'</span>,{<span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>'<span
+class=SpellE>cosine','atan</span>'</span></span>},<span class=SpellE><span
+class=comment><span style='mso-bidi-font-weight:bold'>fpat</span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto><span style='text-decoration:none;
+text-underline:none'>2<o:p></o:p></span></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>cosine</span></span><span
+style='color:#666666'>]</span></b><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto><span style='text-decoration:none;
+text-underline:none'>4<o:p></o:p></span></span></pre><pre style='text-align:
+center'><b><span style='color:#FF9900'>***** MANY LINES DELETED *****</span></b><span
+style='color:#FF9900'><o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/unwrap.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto><span style='text-decoration:none;
+text-underline:none'>1<o:p></o:p></span></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]</span></b><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto><span style='text-decoration:none;
+text-underline:none'>1<o:p></o:p></span></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>atan</span></span></span><span
+style='color:#666666'>]</span></b><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldAuto><span style='text-decoration:none;
+text-underline:none'>4<o:p></o:p></span></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% full depth search </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-r]</span><span
+class=comment> of the entire <b style='mso-bidi-font-weight:normal'>ELFUN TOOLBOX</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>sign</span></b> or </span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b> or </span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span></pre><pre style='background:
+#EEEEEE'><span class=comment>%<span style='mso-tab-count:1'>     </span>only including files with a regular expression pattern </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-If]</span><span
+class=comment><o:p></o:p></span></pre><pre style='background:#EEEEEE'><span
+class=comment>%<span style='mso-tab-count:2'>             </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>[Cc<span
+class=GramE>]<span class=SpellE>ont</span></span></span></b><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% using the two versions of the </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-e]</span><span
+class=comment> option and<o:p></o:p></span></pre><pre style='background:#EEEEEE'><span
+class=comment>% listing the </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:#993366'>full file name and pattern for each file with matches</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-l]</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% as well as the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] and the </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline> [-n]</span><span
+class=comment> for each occurrence</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>fl=</span>grep(<span
+class=string>'-r -l –n –If </span><span class=comment><span style='color:blue'>[Cc]<span
+class=SpellE>ont</span></span></span><span class=string> -e </span><span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>sign</span></span><span
+class=string> -e'</span>,{<span class=comment><span style='color:blue;
+mso-bidi-font-weight:bold'>'<span class=SpellE>cosine','atan</span>'</span></span>},<span
+class=SpellE><span class=comment><span style='mso-bidi-font-weight:bold'>fpat</span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>74</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span>mod<span style='mso-spacerun:yes'>         </span>- Modulus (</span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'>ed remainder after division).<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>76</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>        </span>- <span
+class=SpellE>Signum</span>.<o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>cosine</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>12</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>cosh</span><span style='mso-spacerun:yes'>        </span>- Hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>Contents.m</span></span><span lang=PT-BR style='color:#666666;
+mso-ansi-language:PT-BR'>:</span><span
+class=StylecommentCourierNew10ptBoldAuto><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>13</span></span><span lang=PT-BR style='color:#666666;mso-ansi-language:
+PT-BR'>: %<span style='mso-spacerun:yes'>   </span>acos<span style='mso-spacerun:yes'>        </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span lang=PT-BR
+style='color:blue;mso-ansi-language:PT-BR'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span lang=PT-BR
+style='color:#666666;mso-ansi-language:PT-BR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>14</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosd</span><span style='mso-spacerun:yes'>       </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+style='color:#666666'>, result in degrees</span><span class=comment><span
+style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>15</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosh</span><span style='mso-spacerun:yes'>       </span>- Inverse hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>atan</span></span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=FR style='mso-ansi-language:
+FR'>Contents.m</span></span><span lang=FR style='color:#666666;mso-ansi-language:
+FR'>:</span><span class=StylecommentCourierNew10ptBoldAuto><span lang=FR
+style='mso-ansi-language:FR'>19</span></span><span lang=FR style='color:#666666;
+mso-ansi-language:FR'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+lang=FR style='color:blue;mso-ansi-language:FR'>atan</span></b></span></span><span
+lang=FR style='color:#666666;mso-ansi-language:FR'><span style='mso-spacerun:yes'>        </span>- Inverse tangent</span><span
+class=comment><span style='color:blue'>.</span></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>20</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>d</span></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span>- Inverse tangent, result in degrees</span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=FR style='mso-ansi-language:
+FR'>Contents.m</span></span><span lang=FR style='color:#666666;mso-ansi-language:
+FR'>:</span><span class=StylecommentCourierNew10ptBoldAuto><span lang=FR
+style='mso-ansi-language:FR'>21</span></span><span lang=FR style='color:#666666;
+mso-ansi-language:FR'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span lang=FR
+style='color:blue;mso-ansi-language:FR'>atan</span></b></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'>2<span style='mso-spacerun:yes'>       </span>- Four quadrant inverse tangent</span><span
+class=comment><span style='color:blue'>.</span></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>22</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>h</span></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span>- Inverse hyperbolic tangent</span><span
+class=comment><span style='color:blue'>.<o:p></o:p></span></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>76</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>        </span>- Ö<o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/ja/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>atan</span></span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>19</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span><span style='color:#666666'><span style='mso-spacerun:yes'>        </span>- t³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>20</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>d</span></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span>- xÅoÍ³êét³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>21</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>atan</span></b></span><span
+style='color:#666666'>2<span style='mso-spacerun:yes'>       </span>- 4ÛÀt³Úl<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>Contents.m</span></span><span lang=PT-BR style='color:#666666;
+mso-ansi-language:PT-BR'>:</span><span
+class=StylecommentCourierNew10ptBoldAuto><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>22</span></span><span lang=PT-BR style='color:#666666;mso-ansi-language:
+PT-BR'>: %<span style='mso-spacerun:yes'>   </span></span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span lang=PT-BR style='color:blue;
+mso-ansi-language:PT-BR'>atan</span></b></span><span lang=PT-BR
+style='color:#666666;mso-ansi-language:PT-BR'>h<span style='mso-spacerun:yes'>       </span>- toÈü³Úl<o:p></o:p></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><span
+class=comment>% full depth search </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-r]</span><span
+class=comment> of the entire <b style='mso-bidi-font-weight:normal'>ELFUN TOOLBOX</b> for instances of</span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>sign</span></b> or </span><span class=comment><b
+style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b> or </span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span></span></pre><pre style='background:
+#EEEEEE'><span class=comment>%<span style='mso-tab-count:1'>     </span>only including files with a regular expression pattern </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-If]</span><span
+class=comment><o:p></o:p></span></pre><pre style='background:#EEEEEE'><span
+class=comment>%<span style='mso-tab-count:2'>             </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>[Cc<span
+class=GramE>]<span class=SpellE>ont</span></span></span></b><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+1'>     </span>and excluding folders with a pattern </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-<span class=SpellE><span
+class=GramE>Xd</span></span>]</span><span class=comment><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>%<span style='mso-tab-count:
+2'>             </span></span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:blue'>/<span class=SpellE><span class=GramE>ja</span></span></span></b><o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><span class=comment>% using the two versions of the </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-e]</span><span
+class=comment> option and<o:p></o:p></span></pre><pre style='background:#EEEEEE'><span
+class=comment>% listing the </span><span class=comment><b style='mso-bidi-font-weight:
+normal'><span style='color:#993366'>full file name and pattern for each file with matches</span></b> </span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline>[-l]</span></pre><pre
+style='background:#EEEEEE'><span class=comment>% as well as the </span><span
+class=StylecommentCourierNew10ptBoldSkyBlue>file name</span><span
+class=comment> [def] and the </span><span
+class=StylecommentCourierNew10ptBoldAuto>line number</span><span
+class=StyleStylecommentCourierNew10ptBoldAutoNounderline> [-n]</span><span
+class=comment> for each occurrence</span></pre><pre style='background:#EEEEEE'><span
+class=comment>%-------------------------------------------------------------------------------</span></pre><pre
+style='background:#EEEEEE'><b style='mso-bidi-font-weight:normal'><span
+style='mso-tab-count:1'>      </span><span class=GramE>fl=</span>grep(<span
+class=string>'-r -l –n –If </span><span class=comment><span style='color:blue'>[Cc]<span
+class=SpellE>ont</span></span></span><span class=string> -e </span><span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>sign</span></span><span
+class=string> -e'</span>,{<span class=comment><span style='color:blue;
+mso-bidi-font-weight:bold'>'<span class=SpellE>cosine','atan</span>'</span></span>},<span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>'</span></span><span
+class=string>-<span class=SpellE>Xd<span class=comment><span style='color:blue;
+mso-bidi-font-weight:bold'>'</span></span><span style='color:windowtext'>,</span><span
+class=comment><span style='color:blue;mso-bidi-font-weight:bold'>'/ja'</span></span><span
+style='color:windowtext'>,</span><span class=comment><span style='mso-bidi-font-weight:
+bold'>fpat</span></span></span></span>);<o:p></o:p></b></pre><pre
+style='background:#EEEEEE'><span style='mso-tab-count:1'>      </span><span
+class=GramE>sep(</span>);</pre><pre><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>sign</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>74</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span>mod<span style='mso-spacerun:yes'>         </span>- Modulus (</span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'>ed remainder after division).<o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>76</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>sign</span></b></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>        </span>- <span
+class=SpellE>Signum</span>.<o:p></o:p></span></pre><pre><span class=comment><b><span
+style='color:#993366'>$MLROOT$/toolbox/<span class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=comment><span style='color:blue'>cosine</span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>12</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>cosh</span><span style='mso-spacerun:yes'>        </span>- Hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>Contents.m</span></span><span lang=PT-BR style='color:#666666;
+mso-ansi-language:PT-BR'>:</span><span
+class=StylecommentCourierNew10ptBoldAuto><span lang=PT-BR style='mso-ansi-language:
+PT-BR'>13</span></span><span lang=PT-BR style='color:#666666;mso-ansi-language:
+PT-BR'>: %<span style='mso-spacerun:yes'>   </span>acos<span style='mso-spacerun:yes'>        </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span lang=PT-BR
+style='color:blue;mso-ansi-language:PT-BR'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span lang=PT-BR
+style='color:#666666;mso-ansi-language:PT-BR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>14</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosd</span><span style='mso-spacerun:yes'>       </span>- Inverse </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+style='color:#666666'>, result in degrees</span><span class=comment><span
+style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>15</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span><span
+class=SpellE>acosh</span><span style='mso-spacerun:yes'>       </span>- Inverse hyperbolic </span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span style='color:blue'>cosine</span></b></span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=comment><b><span style='color:#993366'>$MLROOT$/toolbox/<span
+class=SpellE>matlab/elfun/Contents.m</span></span></b></span><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'> [</span><span
+class=SpellE><span class=comment><span style='color:blue'>atan</span></span></span><span
+style='color:#666666'>]<o:p></o:p></span></b></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=FR style='mso-ansi-language:
+FR'>Contents.m</span></span><span lang=FR style='color:#666666;mso-ansi-language:
+FR'>:</span><span class=StylecommentCourierNew10ptBoldAuto><span lang=FR
+style='mso-ansi-language:FR'>19</span></span><span lang=FR style='color:#666666;
+mso-ansi-language:FR'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+lang=FR style='color:blue;mso-ansi-language:FR'>atan</span></b></span></span><span
+lang=FR style='color:#666666;mso-ansi-language:FR'><span style='mso-spacerun:yes'>        </span>- Inverse tangent</span><span
+class=comment><span style='color:blue'>.</span></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>20</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>d</span></span><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span>- Inverse tangent, result in degrees</span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue><span lang=FR style='mso-ansi-language:
+FR'>Contents.m</span></span><span lang=FR style='color:#666666;mso-ansi-language:
+FR'>:</span><span class=StylecommentCourierNew10ptBoldAuto><span lang=FR
+style='mso-ansi-language:FR'>21</span></span><span lang=FR style='color:#666666;
+mso-ansi-language:FR'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=comment><b style='mso-bidi-font-weight:normal'><span lang=FR
+style='color:blue;mso-ansi-language:FR'>atan</span></b></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'>2<span style='mso-spacerun:yes'>       </span>- Four quadrant inverse tangent</span><span
+class=comment><span style='color:blue'>.</span></span><span lang=FR
+style='color:#666666;mso-ansi-language:FR'><o:p></o:p></span></pre><pre><span
+class=StylecommentCourierNew10ptBoldSkyBlue>Contents.m</span><span
+style='color:#666666'>:</span><span class=StylecommentCourierNew10ptBoldAuto>22</span><span
+style='color:#666666'>: %<span style='mso-spacerun:yes'>   </span></span><span
+class=SpellE><span class=comment><b style='mso-bidi-font-weight:normal'><span
+style='color:blue'>atan</span></b></span><span style='color:#666666'>h</span></span><span
+style='color:#666666'> <span style='mso-spacerun:yes'>      </span>- Inverse hyperbolic tangent</span><span
+class=comment><span style='color:blue'>.</span></span><span style='color:#666666'><o:p></o:p></span></pre><pre><span
+style='color:#666666'>---------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><a
+name=grepoptions><span style='mso-tab-count:1'>      </span></a><span
+class=GramE><span style='mso-bookmark:grepoptions'><b style='mso-bidi-font-weight:
+normal'>help</b></span></span><span style='mso-bookmark:grepoptions'><b
+style='mso-bidi-font-weight:normal'> grep<o:p></o:p></b></span></pre><span
+style='mso-bookmark:grepoptions'></span><pre style='margin-right:7.5pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>  </span>GREP<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span><span
+class=GramE>a</span> <span class=SpellE>unix</span>-like, very fast utility to find patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span><span
+class=GramE>in</span> any files in folders and their subfolders<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>SYNTAX<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span><span
+class=GramE>help</span><o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'> <span style='mso-tab-count:4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions">GREP</a></b><span
+style='mso-tab-count:2'>         </span>show this screen<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepP">GREP -p</a></b><span
+style='mso-tab-count:1'>      </span>show extended help for PATTERN/FILE<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepF">GREP -f</a></b><span
+style='mso-tab-count:1'>      </span>show contents of output structure P<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepE">GREP -e</a></b><span
+style='mso-tab-count:1'>      </span>show examples<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span><span
+class=GramE>search</span><o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'> <span style='mso-tab-count:4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions">GREP</a></b> <a
+href="#grepP">PATTERN</a> <a href="#grepP"><span class=GramE>FILE</span></a>(*)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions">GREP</a></b> <a
+href="#grepoptions">OPT1 ... OPTn</a> <a href="#grepP">PATTERN</a> <a
+href="#grepP"><span class=GramE>FILE</span></a>(*)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepP">PATTERN</a>,<a href="#grepP">FILE</a>(*))<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>({<a
+href="#grepP">PATTERN(s)</a>},{<a href="#grepP">FILE1(*),...,<span
+class=SpellE>FILEn</span>(*)</a>})<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepoptions">OPT1,...,OPTn</a>,<a href="#grepP">PATTERN</a>,<a
+href="#grepP">FILE</a>)<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'> <span style='mso-tab-count:3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepoptions">OPT1,...,OPTn</a>,{<a href="#grepP">PATTERN(s)</a>},{<a
+href="#grepP">FILE1(*),...,<span class=SpellE>FILEn</span>(*)</a>})<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>OPT<span
+style='mso-tab-count:1'>        </span>: <span class=SpellE>arg</span><span
+style='mso-tab-count:1'>   </span>processing<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-c<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>prints only a count of the lines that contain the pattern(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-D<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>debug mode: shows major processing steps<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-d<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>debug mode: shows all<span style='mso-spacerun:yes'>   </span>processing steps<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-<span
+class=SpellE>da</span><span style='mso-tab-count:1'>        </span>:<span
+style='mso-tab-count:1'>       </span>debug mode: shows all<span style='mso-spacerun:yes'>   </span>output including debug messages<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-e<span
+style='mso-tab-count:2'>         </span>:<span style='mso-spacerun:yes'>  </span>PL<span
+style='mso-tab-count:1'>   </span>searches for a string in pattern-list PL or {PL1,...<span
+class=GramE>,<span class=SpellE>PLn</span></span>}<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span>: {PL}<span style='mso-tab-count:1'>  </span>useful syntax when the string contains an option flag character (-)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'>    </span><span
+class=GramE>multiple</span> instances of &lt;-e PL&gt; and/or &lt;-e {PL,...}&gt; may be listed<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>   </span>PL<span
+style='mso-tab-count:1'>   </span><span style='mso-spacerun:yes'>   </span>searches for the first token in pattern without white spaces<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span>{PL}<span
+style='mso-tab-count:1'>  </span><span style='mso-spacerun:yes'>   </span>searches for complete pattern(s) including white spaces<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-f<span
+style='mso-tab-count:2'>         </span>:<span style='mso-spacerun:yes'>  </span>PF<span
+style='mso-tab-count:1'>   </span>takes the list of patterns from ASCII pattern-file PF<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'>    </span><span
+class=GramE>each</span> line defines a single pattern that may include white spaces<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-<span
+class=SpellE>i</span><span style='mso-tab-count:2'>         </span>:<span
+style='mso-tab-count:1'>       </span>ignores upper/lower case distinction during comparisons<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-I?<span
+style='mso-tab-count:1'>        </span>:<span style='mso-spacerun:yes'>  </span>IL<span
+style='mso-tab-count:1'>   </span>only includes folders/files with at least one matching pattern<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span>{IL}<span
+style='mso-tab-count:1'>  </span><span style='mso-spacerun:yes'>   </span>from IL or {IL1<span
+class=GramE>,...</span><span class=SpellE>ILn</span>}, which may include regular expressions<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'>    </span><span
+class=SpellE><span class=GramE>multple</span></span> instances of &lt;-I? IL&gt; and/or &lt;I? {IL<span
+class=GramE>,...</span>}&gt; may be listed<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>-Id<span
+style='mso-tab-count:1'>      </span>:<span style='mso-tab-count:1'>       </span>searches for inclusions in folders<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>-If<span
+style='mso-tab-count:1'>      </span>:<span style='mso-tab-count:1'>       </span>searches for inclusions in file names<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>-<span
+class=SpellE>Ip</span><span style='mso-tab-count:1'>      </span>:<span
+style='mso-tab-count:1'>       </span>searches for inclusions in full paths: folder/filename<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-l<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>prints the names of files with matching lines once<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-n<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>precedes each line by its line number in the file<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-Q<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>does not prefix output with file name<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-R<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>uses the regular expression engine &lt;<span
+class=SpellE>regexp</span>&gt; [def: &lt;<span class=SpellE>strfind</span>&gt;]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-r<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>recursively searches in subfolder(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-s<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>works silently and displays only error messages<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-u<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>does not produce underlined text<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-V<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>prints name of each file before it is searched<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-v<span
+style='mso-tab-count:1'> </span><span style='mso-tab-count:1'>        </span>:<span
+style='mso-tab-count:1'>       </span>prints all lines except those that contain the pattern<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-x<span
+style='mso-tab-count:2'>         </span>:<span style='mso-tab-count:1'>       </span>prints only lines that are matched entirely<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>-X?<span
+style='mso-tab-count:1'>        </span>:<span style='mso-spacerun:yes'>  </span>XL<span
+style='mso-tab-count:1'>   </span>excludes folders/files with at least one matching pattern<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+2'>            </span><span style='mso-spacerun:yes'>  </span>{XL}<span
+style='mso-tab-count:1'>  </span><span style='mso-spacerun:yes'>   </span>from XL or {XL1<span
+class=GramE>,...</span><span class=SpellE>XLn</span>}, which may include regular expressions<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'>    </span><span
+class=SpellE><span class=GramE>multple</span></span> instances of &lt;-X? XL&gt; and/or &lt;X? {XL<span
+class=GramE>,...</span>}&gt; may be listed<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span><span
+class=GramE>-<span class=SpellE>Xd</span></span><span style='mso-tab-count:
+1'>      </span>:<span style='mso-tab-count:1'>       </span>searches for exclusions in folders<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>-<span
+class=SpellE>Xf</span><span style='mso-tab-count:1'>      </span>:<span
+style='mso-tab-count:1'>       </span>searches for exclusions in file names<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>-<span
+class=SpellE>Xp</span><span style='mso-tab-count:1'>      </span>:<span
+style='mso-tab-count:1'>       </span>searches for exclusions in full paths: folder/filename<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>NOTES<span
+style='mso-tab-count:2'>             </span> all folder separators are replaced by <span
+class=SpellE>unix</span>-style &lt;/&gt; to facilitate<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span><span style='mso-spacerun:yes'>    </span><span
+class=GramE>the</span> use of regular expressions with &lt;-I?|X?&gt; options<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span> &lt;-I<span class=GramE>?|</span>X?&gt; options allow wildcard searches using regular expressions<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span> <span class=GramE>clicking</span> on underlined text opens the file at the matching line<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><a
+name=grepP><span style='mso-tab-count:1'>      </span></a><span class=GramE><span
+style='mso-bookmark:grepP'><b style='mso-bidi-font-weight:normal'>grep</b></span></span><span
+style='mso-bookmark:grepP'><b style='mso-bidi-font-weight:normal'> -p<o:p></o:p></b></span></pre><span
+style='mso-bookmark:grepP'></span><pre style='margin-right:7.5pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>  </span>SYNTAX<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions">GREP</a></b> <a
+href="#grepP">PATTERN</a> <a href="#grepP"><span class=GramE>FILE</span></a>(*)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+4'>                           </span><span style='mso-spacerun:yes'>  </span><b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions">GREP</a></b> <a
+href="#grepoptions">OPT1 ... OPTn</a> <a href="#grepP">PATTERN</a> <a
+href="#grepP"><span class=GramE>FILE</span></a>(*)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepP">PATTERN</a>,<a href="#grepP">FILE</a>(*))<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>({<a
+href="#grepP">PATTERN(s)</a>},{<a href="#grepP">FILE1(*),...,<span
+class=SpellE>FILEn</span>(*)</a>})<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <span style='mso-tab-count:
+3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepoptions">OPT1,...,OPTn</a>,<a href="#grepP">PATTERN</a>,<a
+href="#grepP">FILE</a>)<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'> <span style='mso-tab-count:3'>                   </span><span style='mso-spacerun:yes'> </span>[FL<span
+class=GramE>,</span><a href="#grepF">P</a>] = <b style='mso-bidi-font-weight:
+normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepoptions">OPT1,...,OPTn</a>,{<a href="#grepP">PATTERN(s)</a>},{<a
+href="#grepP">FILE1(*),...,<span class=SpellE>FILEn</span>(*)</a>})<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'> <o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span><span
+class=GramE>input</span> arguments/formats<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>OPT<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>for</span> available options,<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>see</span> &lt;grep&gt; or &lt;help grep&gt;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>any</span> mixture of<span style='mso-tab-count:
+1'> </span>...,'-a -b -d','-k','-y -z',...<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>note</span><span style='mso-tab-count:1'>    </span>the input parser will tokenize strings<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>into</span> single options and other arguments<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>see</span>: &lt;<span class=SpellE>P.opt.arg</span>&gt; for parsing results<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>special</span> cases<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-e</b><span
+style='mso-tab-count:1'>      </span>'-e -l'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>add</span> pattern &lt;-l&gt; AND<span
+style='mso-tab-count:1'>   </span>set option [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>'-e'<span class=GramE>,{</span>'-n'}<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>add</span> pattern &lt;-n&gt; do NOT set option [-n]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-e</b><span
+style='mso-tab-count:1'>      </span>'this is'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>by</span> definition will only search for &lt;this&gt;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-e</b><span
+style='mso-tab-count:1'>      </span>{'this <span class=SpellE>is','a</span> test'}<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>will</span> first search for &lt;this is&gt;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>than</span> &lt;a test&gt;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-s</b><span
+style='mso-tab-count:1'>      </span>silent mode will run <span class=GramE>much(</span>!) faster<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>results</span> can easily be extracted from P<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>see</span>: &lt;grep -f&gt; for information<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>inclusion/exclusion</span> of folder(s)/file(s)/full path(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>assume</span> this folder/file structure/contents<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/ghi/foo.m</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/abc/def/ghi/foo.txt<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/ghi/goo.p</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/xxy/goo.p</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/abc/def/xxy/goo.txt<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>assume</span> this root folder when running GREP<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span><span class=GramE>z</span>:/<span class=SpellE>abc</span>/def<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>assume</span> the recursion flag [-r] is set<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-Id</b><span
+style='mso-tab-count:1'>     </span>'/xx'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> searches in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span><span class=GramE>z</span>:/<span class=SpellE>abc/def/xxy</span><span
+style='mso-tab-count:1'> </span>... all files<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-Id</b><span
+style='mso-tab-count:1'>     </span>'xx'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-If</b><span
+style='mso-tab-count:1'>     </span>'\.t'<span style='mso-tab-count:1'>   </span>(note regular expression for &lt;.&gt;)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>***or***<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><b
+style='mso-bidi-font-weight:normal'>-<span class=SpellE>Ip</span></b><span
+style='mso-tab-count:1'>     </span>'y/g.*\.t'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> searches in folder/file<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/abc/def/xxy/goo.txt<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-<span class=SpellE>Xd</span></b><span
+style='mso-tab-count:1'>     </span>'(de)<span class=GramE>|(</span>xx)'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>does</span> not search any folder/file<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE><b style='mso-bidi-font-weight:normal'>-<span
+class=SpellE>Xd</span></b></span><span style='mso-tab-count:1'>     </span>'x'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> searches in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span><span class=GramE>z</span>:/<span class=SpellE>abc/def/ghi</span><span
+style='mso-tab-count:1'> </span>... all files<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE><b style='mso-bidi-font-weight:normal'>-<span
+class=SpellE>Xd</span></b></span><span style='mso-tab-count:1'>     </span>'x'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-<span class=SpellE>Xf</span></b><span
+style='mso-tab-count:1'>     </span>'txt'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> searches in folder/files<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/ghi/foo.m</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/ghi/goo.p</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE><b style='mso-bidi-font-weight:normal'>-<span
+class=SpellE>Xd</span></b></span><span style='mso-tab-count:1'>     </span>'xxx'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><b style='mso-bidi-font-weight:normal'>-If</b><span
+style='mso-tab-count:1'>     </span>'<span class=SpellE>foo</span>'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>***or***<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><b
+style='mso-bidi-font-weight:normal'>-<span class=SpellE>Ip</span></b><span
+style='mso-tab-count:1'>     </span>'<span class=SpellE>ghi/fo</span>'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> searches in folder/files<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/<span class=SpellE>abc/def/ghi/foo.m</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span>z:/abc/def/ghi/foo.txt<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>note</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>ALL folder separators are replaced by<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=SpellE><span class=GramE>unix</span></span><span class=GramE>-style</span> &lt;/&gt; for entry checks to<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>facilitate</span> the use of regular expression<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>leading/trailing</span> &lt;/&gt;s are significant<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>inclusions</span> and exclusions are <span
+class=SpellE>ANDed</span>, but single tokens<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>within</span> an option are <span class=SpellE>OREed</span> for final results<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>multiple</span> inclusions/exclusions may be<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>listed</span> in any order<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>using</span> &lt;-<span class=SpellE>Ip</span>&gt; and &lt;-<span
+class=SpellE>Xp</span>&gt; only may be significantly slower<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>compared</span> to combinations of &lt;-I[<span class=SpellE>df</span>]&gt; and &lt;-X[<span
+class=SpellE>df</span>]&gt;<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:2'>             </span><span
+class=GramE>since</span> folders are resolved sequentially in depth, &lt;-<span
+class=SpellE>Xd</span>&gt;<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>options</span> will exclude any subfolder below the<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>excluded</span> folder(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>PATTERN<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span> 'p1'<span style='mso-tab-count:2'>          </span>will search<span
+style='mso-tab-count:1'>    </span> &lt;p1&gt; in each FILE<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>{<span class=GramE>'p1',...,'<span class=SpellE>pn</span>'</span>} will search each &lt;<span
+class=SpellE>px</span>&gt; in each FILE<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>note</span><span style='mso-tab-count:1'>    </span> 'p1' cannot include white spaces<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>{'p1'}<span style='mso-spacerun:yes'>   </span>may include white spaces<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>&lt;<span class=SpellE><span class=GramE>px</span></span>&gt; may be a regular expression [-R]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>only</span> one input type will be used at runtime<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>precedence</span>: 1. -f / 2. <span
+class=GramE>-e / 3.</span> PATTERN<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>FILE<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span> 'f1'<span style='mso-tab-count:2'>          </span>will search in<span
+style='mso-tab-count:1'> </span><span style='mso-spacerun:yes'>    </span>folder/file &lt;f1&gt;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>{<span class=GramE>'f1',...,'fn'</span>} will search in each folder/file &lt;<span
+class=SpellE>fx</span>&gt;<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>folder/file(s)</span> are determined/expanded according to these rules<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>FILE<span style='mso-tab-count:2'>           </span>folder<span
+style='mso-tab-count:1'>  </span>file<span style='mso-tab-count:1'>    </span>remark<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>----------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>f</span>*.x<span style='mso-tab-count:2'>           </span>./<span
+style='mso-tab-count:1'>      </span>f*.x<span style='mso-tab-count:1'>    </span>uses current folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b<span style='mso-tab-count:2'>           </span>/a/b/<span
+style='mso-tab-count:1'>   </span>*.*<span style='mso-tab-count:1'>     </span>search all files in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b/<span style='mso-tab-count:2'>          </span>/a/b/<span
+style='mso-tab-count:1'>   </span>*.*<span style='mso-tab-count:1'>     </span>search all files in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b/*<span style='mso-tab-count:2'>         </span>/a/b/<span
+style='mso-tab-count:1'>   </span>*.*<span style='mso-tab-count:1'>     </span>search all files in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b/*.x<span style='mso-tab-count:1'>       </span>/a/b/<span
+style='mso-tab-count:1'>   </span>*.x<span style='mso-tab-count:1'>     </span>search <span
+class=GramE>all<span style='mso-spacerun:yes'>  </span>&lt;</span>.x&gt; in folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b/f<span style='mso-tab-count:2'>         </span>/a/b/<span
+style='mso-tab-count:1'>   </span>f*.*<span style='mso-tab-count:1'>    </span>if &lt;f&gt; is NOT a folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>/a/b/f*.x<span style='mso-tab-count:1'>      </span>/a/b/<span
+style='mso-tab-count:1'>   </span>f*.x<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>note</span><span style='mso-tab-count:1'>    </span>if recursive folder search is selected [-r],<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>file(s)</span> will be searched in the root path and<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>its</span> subfolder(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=GramE>the</span> recursion engine does NOT use &lt;<span
+class=SpellE>genpath</span>&gt;<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:2'>             </span><span
+class=GramE>use</span> the &lt;-I?&gt; and &lt;-X?&gt; options to use wildcard<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>searches</span> on folders/files<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span><span
+class=GramE>output</span> arguments<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>FL<span
+style='mso-tab-count:1'> </span>cell array with unique list of files with matching patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>P<span
+style='mso-tab-count:1'>  </span><span class=GramE>structure<span style='mso-spacerun:yes'>  </span>with</span> timing and result of the engines (for programmers)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>see</span>: &lt;grep -f&gt; for information about .fields<o:p></o:p></span></pre><pre
+style='background:#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><a
+name=grepF><span style='mso-tab-count:1'>      </span></a><span class=GramE><span
+style='mso-bookmark:grepF'><b style='mso-bidi-font-weight:normal'>grep</b></span></span><span
+style='mso-bookmark:grepF'><b style='mso-bidi-font-weight:normal'> -f<o:p></o:p></b></span></pre><span
+style='mso-bookmark:grepF'></span><pre style='margin-right:7.5pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>  </span>SYNTAX<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+3'>                    </span> [FL<span class=GramE>,</span><a href="#grepF">P</a>] = <b
+style='mso-bidi-font-weight:normal'><a href="#grepoptions"><span class=GramE>GREP</span></a></b>(<a
+href="#grepP">PATTERN</a>,<a href="#grepP">FILE(*)</a>)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span><span
+class=GramE>output</span> arguments<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>FL<span
+style='mso-tab-count:1'> </span>cell array with unique list of files with matching patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>P<span
+style='mso-tab-count:1'>  </span><span class=GramE>structure<span style='mso-spacerun:yes'>  </span>with</span> timing and result of the engines (for programmers)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span><span
+class=SpellE>P.fieldname</span>:<span style='mso-spacerun:yes'>  </span>contents<span style='mso-spacerun:yes'>              </span>explanation<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>---------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>        </span><span
+class=GramE>magic</span>:<span style='mso-spacerun:yes'>  </span>'GREP'<span style='mso-spacerun:yes'>                </span>magic id<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>          </span><span
+class=SpellE><span class=GramE>ver</span></span>:<span style='mso-spacerun:yes'>   </span>char<span style='mso-spacerun:yes'>                 </span>current GREP version<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>         </span><span
+class=SpellE><span class=GramE>mver</span></span>:<span style='mso-spacerun:yes'>   </span>char<span style='mso-spacerun:yes'>                 </span>current ML<span style='mso-spacerun:yes'>   </span>version<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=SpellE><span class=GramE>rundate</span></span>:<span style='mso-spacerun:yes'>   </span>char<span style='mso-spacerun:yes'>                 </span><span
+class=SpellE>datestr</span>(clock)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=GramE>runtime</span>:<span style='mso-spacerun:yes'>  </span>[t1 t2 t3]<span style='mso-spacerun:yes'>         </span><span style='mso-spacerun:yes'>   </span>runtimes [sec]:<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>- t1: full time spent in grep<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>- t2: engine for (sub<span
+class=GramE>)folder</span>(s)<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>- t3: engine for pattern matching<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>          </span><span
+class=GramE>opt</span>:<span style='mso-spacerun:yes'>  </span>[<span
+class=SpellE>struct</span>]<span style='mso-spacerun:yes'>   </span><span style='mso-spacerun:yes'>           </span>current options and input <span
+class=SpellE>args</span><o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>          </span><span
+class=SpellE><span class=GramE>msg</span></span>:<span style='mso-spacerun:yes'>   </span>char<span style='mso-spacerun:yes'>                 </span>error message(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>section_1:<span style='mso-spacerun:yes'>  </span>'===== <span
+class=GramE>FOLDERS<span style='mso-spacerun:yes'>  </span>=</span>'<span style='mso-spacerun:yes'>    </span>FOLDER STATS<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=SpellE><span class=GramE>nfolder</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of unique folder(s) found<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>     </span><span
+class=SpellE><span class=GramE>nxfolder</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of excluded (sub)folder(s) [-<span
+class=SpellE>Id|Xd</span>]<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>     </span><span
+class=SpellE><span class=GramE>nafolder</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of all (sub)folder(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=GramE>folder</span>:<span style='mso-spacerun:yes'>  </span>{char}<span style='mso-spacerun:yes'>                </span>unique folder name(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>        </span><span
+class=SpellE><span class=GramE>fenum</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>enumerator of (sub)folder(s) in .folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                   </span><span style='mso-spacerun:yes'>                   </span>- <span
+class=GramE>subfolder(s)</span> keep the .<span class=SpellE>fenum</span> of their root<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>mdepth</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>max depth of subfolder(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>fdepth</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>depth of each subfolder [0: root]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>section_2:<span style='mso-spacerun:yes'>  </span>'===== PATTERNS ='<span style='mso-spacerun:yes'>    </span>PATTERN STATS<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span><span style='mso-spacerun:yes'>     </span><span
+class=SpellE><span class=GramE>npat</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=GramE>pattern</span>:<span style='mso-spacerun:yes'>  </span>{char}<span style='mso-spacerun:yes'>                </span>pattern(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=SpellE><span class=GramE>porigin</span></span>:<span style='mso-spacerun:yes'>   </span>char<span style='mso-spacerun:yes'>                 </span>origin of pattern(s):<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>- 'command line'<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>-<span style='mso-spacerun:yes'>  </span><span
+class=GramE>name</span> of pattern file [-f]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>section_3:<span style='mso-spacerun:yes'>  </span>'===== FILES<span style='mso-spacerun:yes'>    </span>='<span style='mso-spacerun:yes'>    </span>FILE STATS<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>nfiles</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of files searched<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=SpellE><span class=GramE>nxfiles</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of excluded file(s)<span style='mso-spacerun:yes'>  </span>[-<span
+class=SpellE>If|Xf</span>]<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>      </span><span
+class=SpellE><span class=GramE>nafiles</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of all file(s) after [-<span
+class=SpellE>Id|Xd</span>]<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>nbytes</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of bytes read<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>nlines</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of lines searched<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>    </span>section_4:<span style='mso-spacerun:yes'>  </span>'===== <span
+class=GramE>MATCHES<span style='mso-spacerun:yes'>  </span>=</span>'<span style='mso-spacerun:yes'>    </span>MATCH STATS<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>mfiles</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of file(s) with matching patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>mbytes</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of bytes of .<span
+class=SpellE>mfiles</span> file(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>mlines</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of lines of .<span
+class=SpellE>mfiles</span> file(s)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>pfiles</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of .files with matching patterns<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>pcount</span></span>:<span style='mso-spacerun:yes'>   </span>double<span style='mso-spacerun:yes'>               </span>nr of lines with a match<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>        </span><span
+class=GramE>files</span>:<span style='mso-spacerun:yes'>  </span>{char}<span style='mso-spacerun:yes'>                </span>file name for each match<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>                                      </span>- repeated for each matching pattern<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>lcount</span></span>:<span style='mso-spacerun:yes'>  </span>[double]<span style='mso-spacerun:yes'>              </span>count of matching lines in .files [-c]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>findex</span></span>:<span style='mso-spacerun:yes'>  </span>[double]<span style='mso-spacerun:yes'>              </span>index into .files<span style='mso-spacerun:yes'>   </span>for each match<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=SpellE><span class=GramE>pindex</span></span>:<span style='mso-spacerun:yes'>  </span>[double]<span style='mso-spacerun:yes'>              </span>index into .pattern for each match<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>         </span><span
+class=GramE>line</span>:<span style='mso-spacerun:yes'>  </span>[double]<span style='mso-spacerun:yes'>              </span>nr of matching line<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>        </span><span
+class=GramE>match</span>:<span style='mso-spacerun:yes'>  </span>{char}<span style='mso-spacerun:yes'>                </span>matching line<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>       </span><span
+class=GramE>result</span>:<span style='mso-spacerun:yes'>  </span>[char]<span style='mso-spacerun:yes'>                </span>runtime output<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-spacerun:yes'>  </span>NOTE<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>to</span> reconstruct user defined results from P, which may be useful<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=GramE>with</span> the [-s] option, a programmer can use constructs like<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>- file <span class=SpellE>name|nr</span> counts<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span class=SpellE><span class=GramE>fmt</span></span><span
+class=GramE>=</span><span class=SpellE>repmat</span>(max(<span class=SpellE>cellfun</span>('<span
+class=SpellE>length',P.files</span>)),P.pfiles,1);<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>r<span class=GramE>=[</span>num2cell(fmt+3),...<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=SpellE>P.files</span><span class=GramE>,...</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>num2cell(</span><span class=SpellE>P.lcount</span>)].';<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>s=<span class=SpellE><span class=GramE>sprintf</span></span><span
+class=GramE>(</span>'%-*s: %5d\n',r{:})<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span>- file <span class=SpellE>name|pattern|line</span> <span
+class=SpellE>nr|nr</span> <span class=SpellE>counts|matching</span> line<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span>r<span class=GramE>=[</span><span class=SpellE>P.files</span>(<span
+class=SpellE>P.findex</span>),...<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=SpellE><span class=GramE>P.pattern</span></span><span class=GramE>(</span><span
+class=SpellE>P.pindex</span>),...<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><span style='mso-tab-count:2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>num2cell(</span><span class=SpellE>P.line</span>),...<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=GramE>num2cell(</span><span class=SpellE>P.lcount</span>(<span
+class=SpellE>P.findex</span>)),...<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+2'>             </span><span style='mso-spacerun:yes'>   </span><span
+class=SpellE>P.match</span>]<o:p></o:p></span></pre><pre style='background:
+#EEEEEE'><o:p>&nbsp;</o:p></pre><pre style='background:#EEEEEE'><a name=grepE><span
+style='mso-tab-count:1'>      </span></a><span class=GramE><span
+style='mso-bookmark:grepE'><b style='mso-bidi-font-weight:normal'>grep</b></span></span><span
+style='mso-bookmark:grepE'><b style='mso-bidi-font-weight:normal'> -e<o:p></o:p></b></span></pre><span
+style='mso-bookmark:grepE'></span><pre style='margin-right:7.5pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% GREP EXAMPLES<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% assume GREP.TXT is in your current working folder<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><span style='mso-tab-count:
+1'>     </span><span class=SpellE><span class=GramE><b style='mso-bidi-font-weight:
+normal'>fnam</b></span></span><b style='mso-bidi-font-weight:normal'>='grep.txt';<o:p></o:p></b></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span class=GramE><span style='color:#666666'>% - show contents (note all spaces are TABs!)</span></span><span
+style='color:#666666'><o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><b
+style='mso-bidi-font-weight:normal'><span style='color:#666666'><span
+style='mso-tab-count:1'>     </span><span class=GramE>type(</span><span
+class=SpellE>fnam</span>);<o:p></o:p></span></b></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% simple case insensitive [-<span class=SpellE>i</span>] string search in GREP.M for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>Version<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% listing file name [def] and the line number [-n] of occurrences<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>grep</span> -<span class=SpellE>i</span> -n Version <span
+class=SpellE>grep.m</span><o:p></o:p></span></b></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% regular expression search [-R] in GREP.M for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>=true or =false<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing line number [-n] but not the file name [-Q]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>grep</span> -Q -n -R =true|=false <span class=SpellE>grep.m</span><o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% simple string search in GREP.M for exactly matching [-x] instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>\t\<span class=SpellE>tmsg</span>=true;<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing the file name [def] and the line number [-n] for each occurrence<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span>TAB=<span
+class=SpellE><span class=GramE>sprintf</span></span><span class=GramE>(</span>'\t');<o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-x -n',[<span class=SpellE>TAB,TAB,'msg</span>=true;'],'<span
+class=SpellE>grep.m</span>');<o:p></o:p></span></b></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% simple string search in GREP.TXT for<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>every line of itself in turn<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% using the pattern-file [-f] option and<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing the full file name and pattern for each file with matches [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% as well as the file name [def] for each occurrence<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-l -<span class=SpellE>f',fnam,fnam</span>);<o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% simple string search in GREP.TXT for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>-n<o:p></o:p></span></pre><pre style='margin-top:0in;
+margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% using the [-e] option since -n itself is an option flag (listing line number!)<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% and listing the file name [def] for each non-matching line [-v] only<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% - compare with previous example!<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-v -e',{'-n'},<span class=SpellE>fnam</span>);<o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% full depth search [-r] of the entire ELFUN TOOLBOX for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>sign or cosine or <span class=SpellE>atan</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing the full file name and pattern for each file with matches [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% as well as the file name [def] and the line number [-n] for each occurrence<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=SpellE><span class=GramE>fpat</span></span>=[<span class=SpellE>matlabroot,'/toolbox/matlab/elfun</span>'];<o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-r -l -n',{'<span class=SpellE>sign','cosine','atan</span>'},<span
+class=SpellE>fpat</span>);<o:p></o:p></span></b></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% full depth search [-r] of the entire ELFUN TOOLBOX for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>sign or cosine or <span class=SpellE>atan</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% using the two versions of the [-e] option and<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing the full file name and pattern for each file with matches [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% as well as the count [-c] of all instances<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-r -l -c -e sign -e',{'<span class=SpellE>cosine','atan</span>'},<span
+class=SpellE>fpat</span>);<o:p></o:p></span></b></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>% full depth search [-r] of the entire ELFUN TOOLBOX for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>sign or cosine or <span class=SpellE>atan</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+1'>    </span>only including files with a regular expression pattern [-If]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>[Cc<span class=GramE>]<span class=SpellE>ont</span></span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% using the two versions of the [-e] option and<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% listing the full file name and pattern for each file with matches [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% as well as the file name [def] and the line number [-n] for each occurrence<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-r -l -n -If [Cc]<span class=SpellE>ont</span> -e sign -e',{'<span
+class=SpellE>cosine','atan</span>'},<span class=SpellE>fpat</span>);<o:p></o:p></span></b></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% full depth search [-r] of the entire ELFUN TOOLBOX for instances of<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>sign or cosine or <span class=SpellE>atan</span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+1'>    </span>only including files with a regular expression pattern [-If]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+2'>            </span>[Cc<span class=GramE>]<span class=SpellE>ont</span></span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%<span style='mso-tab-count:
+1'>    </span>and excluding folders with a pattern [-<span class=SpellE><span
+class=GramE>Xd</span></span>]<o:p></o:p></span></pre><pre style='margin-top:
+0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;margin-bottom:.0001pt'><span
+style='color:#666666'>%<span style='mso-tab-count:2'>            </span>/<span
+class=SpellE><span class=GramE>ja</span></span><o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% - using the two versions of the [-e] option,<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% and listing the full file name and pattern for each file with matches [-l]<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>% as well as the file name [def] and the line number [-n] for each occurrence<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><span style='color:#666666'>%-------------------------------------------------------------------------------<o:p></o:p></span></pre><pre
+style='margin-top:0in;margin-right:15.0pt;margin-bottom:0in;margin-left:7.5pt;
+margin-bottom:.0001pt'><b style='mso-bidi-font-weight:normal'><span
+style='color:#666666'><span style='mso-tab-count:1'>     </span><span
+class=GramE>fl=</span>grep('-r -l -n -If [Cc]<span class=SpellE>ont</span> -e sign -e',{'<span
+class=SpellE>cosine','atan</span>'},'-<span class=SpellE>Xd','/ja',fpat</span>);<o:p></o:p></span></b></pre><pre
+style='margin-right:7.5pt'><span style='color:#666666'><o:p>&nbsp;</o:p></span></pre>
+
+<p class=footer style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><br>
+Published with MATLAB® 7.2<o:p></o:p></p>
+
+</div>
+
+</div>
+
+<!--
+##### SOURCE BEGIN #####
+% FGREP EXAMPLES
+%
+% - note only selected output is shown for sake of brevity
+
+% line separator
+        lin=@(x) disp(sprintf(repmat('-',1,75)));
+
+% assume FGREP.TXT is in your current working folder
+        fnam='fgrep.txt';
+
+% - show contents (spaces are produce by TABs)
+        type(fnam);
+
+% Simple case insensitive [-i] string search in FGREP.M for instances of
+%       Version
+% listing file name and the line number [-n] of occurrences
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+        fgrep -i -n Version fgrep.m
+        lin();
+
+% Regular expression search [-R] in FGREP.M for instances of
+%       =true or =false
+% listing line numbers only [-Q]
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+        fgrep -Q -n -R =true|=false fgrep.m
+        lin();
+
+% Simple string search in FGREP.M for exactly matching [-x] instances of
+%       \t\tmsg=true;
+% listing the the file name and the line number [-n] for each occurrence
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+        TAB=sprintf('\t');
+        fl=fgrep('-n',[TAB,TAB,'msg=true;'],'fgrep.m');
+        lin();
+
+% Simple string search in FGREP.TXT for
+%       every line of itself
+% using the pattern-file [-f] option
+% listing the full file name and pattern for each file with matches [-l]
+% as well as the file name and the line number [-n] for each occurrence
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+        fl=fgrep('-l -f',fnam,fnam);
+        lin();
+
+% Simple string search in FGREP.TXT for instances of
+%       -n
+% using the [-e] option since -n itself is an option flag (!)
+% listing the the file name for each non-matching line [-v] only
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+        fl=fgrep('-v -e',{'-n'},fnam);
+        lin();
+
+% Full depth search [-r] of the entire ELFUN TOOLBOX for instances of
+%       cosine or atan
+% listing the full file name and pattern for each file with matches [-l]
+% as well as the file name and the line number [-n] for each occurrence
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+        fpat=[matlabroot,'/toolbox/matlab/elfun'];
+        fl=fgrep('-r -l -n',{'sign','cosine','atan'},fpat);
+        lin();
+
+% Full depth search [-r] of the entire ELFUN TOOLBOX for instances of
+%       sign or cosine or atan
+% using the two versions of the [-e] option
+% listing the full file name and pattern for each file with matches [-l]
+% and the count of instances
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+        fl=fgrep('-r -l -c -n -e sign -e',{'cosine','atan'},fpat);
+        lin();
+
+##### SOURCE END #####
+-->
+</body>
+
+</html>

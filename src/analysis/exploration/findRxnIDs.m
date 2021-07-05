@@ -1,27 +1,29 @@
 function rxnID = findRxnIDs(model, rxnList)
-% Finds reaction numbers in a model
+% Finds reaction indices in a model
 %
 % USAGE:
 %
 %    rxnID = findRxnIDs(model, rxnList)
 %
 % INPUTS:
-%    model:      COBRA model strcture
-%    rxnList:    List of reactions
+%    model:      COBRA model structure
+%    rxnList:    cell array of reaction abbreviations
 %
 % OUTPUT:
-%    rxnID:      IDs for reactions corresponding to rxnList
-%
-% .. Author: -  Markus Herrgard 4/21/06
+%    rxnID:      indices for reactions corresponding to rxnList
 
-if (iscell(rxnList))
-    [tmp,rxnID] = ismember(rxnList,model.rxns);
-else
-    rxnID = find(strcmp(model.rxns,rxnList));
-    if (isempty(rxnID))
-        rxnID = 0;
-    end
-    if (length(rxnID) > 1)
-        rxnID = rxnID(1);
-    end
+% .. Author: -  Ronan Fleming
+
+if ~iscell(rxnList)
+    rxnList = cellstr(rxnList);
 end
+[~,rxnID] = ismember(rxnList,model.rxns);
+
+%TODO, must be a faster way to do this
+% if length(rxnID)~=1
+%     [bool,LOCB] = ismember(model.rxns,rxnList);
+%     rxnID2 = find(bool);
+%     if length(rxnID2)~=length(rxnList)
+%         [~,rxnID2] = ismember(rxnList,model.rxns(bool));
+%     end
+% end

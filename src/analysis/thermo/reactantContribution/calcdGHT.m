@@ -410,7 +410,7 @@ if strcmp(which('mp'),'') || 1 %TODO install
         dHf0=NaN;
     end
 else
-    %     fprintf('%s\n','Using multiple precision toolbox');
+    fprintf('%s\n','Using multiple precision toolbox');
     dGzero=mp(dGzero);
     dHzero=mp(dHzero);
     zi=mp(zi);

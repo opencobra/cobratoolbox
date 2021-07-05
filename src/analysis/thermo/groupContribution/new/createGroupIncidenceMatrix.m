@@ -15,18 +15,27 @@ function combinedModel = createGroupIncidenceMatrix(model, trainingModel, param)
 % trainingModel.rxns                        n x 1 reaction abbreviations
 % trainingModel.metKEGGID:                  p x 1 cell array of metabolite KEGGID
 % trainingModel.inchi.nonstandard:          p x 1 cell array of nonstandard InChI
-% trainingModel.test2CombinedModelMap:      m x 1 mapping of model.mets to training data metabolites
 % trainingModel.mappingScore
 %
+% OPTIONAL INPUT:
+% trainingModel.cids_that_dont_decompose    cid of kegg compounds that are not decomposable with param.fragmentationMethod='manual';
+% 
 % OUTPUT:
 % combinedModel:
 % combinedModel.S:                          k x n stoichiometric matrix of training padded with zero rows for metabolites exclusive to test data
-% combinedModel.G:                          k x g group incicence matrix
+% combinedModel.drG0:                       n x 1 experimental standard reaction Gibbs energy
+% combinedModel.drG0_prime:                 n x 1 experimental standard transformed reaction Gibbs energy
+% combinedModel.T:                          n x 1 temperature
+% combinedModel.I:                          n x 1 ionic strength
+% combinedModel.pH:                         n x 1 pH
+% combinedModel.pMg:                        n x 1 pMg
+% combinedModel.G:                          k x g group incidence matrix
 % combinedModel.groups:                     g x 1 cell array of group definitions
 % combinedModel.trainingMetBool             k x 1 boolean indicating training metabolites in G
 % combinedModel.testMetBool                 k x 1 boolean indicating test metabolites in G
 % combinedModel.groupDecomposableBool:      k x 1 boolean indicating metabolites with group decomposition
 % combinedModel.inchiBool                   k x 1 boolean indicating metabolites with inchi
+% combinedModel.test2CombinedModelMap:      m x 1 mapping of model.mets to combinedModel.mets
 
 % combinedModel.cids_that_dont_decompose:   z x 1 ids of compounds that do not decomopose
 
@@ -245,7 +254,7 @@ switch param.fragmentationMethod
         d=1;
         for i = 1:nTrainingModelMets
             if trainingModelDecomposableBool(i)
-                disp(i)
+                %disp(i)
                 bool = isKey(trainingModelFragmentedMol(i).smilesCounts,uniqueFragmentSmiles);
                 combinedModel.G(i,bool)=cell2mat(values(trainingModelFragmentedMol(i).smilesCounts));
             else
@@ -273,7 +282,7 @@ switch param.fragmentationMethod
         end
         
         nExclusivelyTestMets = nnz(~combinedModel.trainingMetBool & combinedModel.testMetBool);
-        combinedModel.S = [trainingModel.S; sparse(nExclusivelyTestMets,size(trainingModel.S,2))]; % Add an empty row to S
+        combinedModel.S = [trainingModel.S; sparse(nExclusivelyTestMets,size(trainingModel.S,2))]; % Add an empty row to S for each metabolite in the test model
         combinedModel.mets=[trainingModel.mets;model.mets];
         combinedModel.rxns=trainingModel.rxns;
         
@@ -285,91 +294,92 @@ switch param.fragmentationMethod
             error('combinedModel.mets is not a primary key')
         end
         
-        if 0
-        save('debug_prior_to_regulariseGroupIncidenceMatrix')
-        
-        %analyse similar and duplicate metabolites
-        [groupM,inchiM] = regulariseGroupIncidenceMatrix(combinedModel,param.printLevel);
-        
-        %assume that metabolites with the same group decomposition are identical
-        test2CombinedModelM = groupM;
-        
-        %ignore duplicates within the training metabolite set
-        test2CombinedModelM(:,combinedModel.trainingMetBool)=0;
-
-        %boolean identifier of duplicates
-        duplicatesBool = any(test2CombinedModelM,1);
-        
-        %add the test metabolites on the diagonal to preserve mapping to unique metabolites in test model
-        test2CombinedModelM = test2CombinedModelM + diag(combinedModel.testMetBool);
-        
-        %remove all duplicate metabolites from the arguments to the map
-        test2CombinedModelM = test2CombinedModelM(~duplicatesBool,:);
-        
-        combinedModel.test2CombinedModelMap=zeros(nModelMets,1);
-        for i=1:size(test2CombinedModelM,1)
-            if any(test2CombinedModelM(i,:))
-                combinedModel.test2CombinedModelMap(test2CombinedModelM(i,combinedModel.testMetBool)~=0)=i;
+        if 1
+            save('debug_prior_to_regulariseGroupIncidenceMatrix')
+            %%
+            %analyse similar and duplicate metabolites
+            [groupM,inchiM] = regulariseGroupIncidenceMatrix(combinedModel,param.printLevel);
+            
+            %assume that metabolites with the same group decomposition are identical
+            test2CombinedModelM = groupM;
+            
+            %ignore duplicates within the training metabolite set
+            test2CombinedModelM(:,combinedModel.trainingMetBool)=0;
+            
+            %boolean identifier of duplicates
+            duplicatesBool = any(test2CombinedModelM,1);
+            
+            %add the test metabolites on the diagonal to preserve mapping to unique metabolites in test model
+            test2CombinedModelM = test2CombinedModelM + diag(combinedModel.testMetBool);
+            
+            %remove all duplicate metabolites from the arguments to the map
+            test2CombinedModelM = test2CombinedModelM(~duplicatesBool,:);
+            
+            combinedModel.test2CombinedModelMap=zeros(nModelMets,1);
+            for i=1:size(test2CombinedModelM,1)
+                if any(test2CombinedModelM(i,:))
+                    combinedModel.test2CombinedModelMap(test2CombinedModelM(i,combinedModel.testMetBool)~=0)=i;
+                end
             end
-        end
-        if any(combinedModel.test2CombinedModelMap==0)
-            error('Mismatch in combinedModel.test2CombinedModelMap')
-        end
-        
-        %                            S: [6507×4149 double]
-        %                         rxns: {4149×1 cell}
-        %                           lb: [4149×1 double]
-        %                         cids: {672×1 cell}
-        %                    dG0_prime: [4149×1 double]
-        %                            T: [4149×1 double]
-        %                            I: [4149×1 double]
-        %                           pH: [4149×1 double]
-        %                          pMg: [4149×1 double]
-        %                      weights: [4149×1 double]
-        %                      balance: [4149×1 double]
-        %     cids_that_dont_decompose: [43×1 double]
-        %                         mets: {6507×1 cell}
-        %                    metKEGGID: {672×1 cell}
-        %                        inchi: [1×1 struct]
-        %                      molBool: [672×1 logical]
-        %                    inchiBool: [6507×1 logical]
-        %           compositeInchiBool: [672×1 logical]
-        %                  metFormulas: {672×1 cell}
-        %                   metCharges: [672×1 double]
-        %                pseudoisomers: [672×1 struct]
-        %                           ub: [4149×1 double]
-        %                          dG0: [4149×1 double]
-        %        groupDecomposableBool: [6507×1 logical]
-        %              trainingMetBool: [6507×1 logical]
-        %                  testMetBool: [6507×1 logical]
-        %                            G: [6507×1536 double]
-        %                       groups: {1536×1 cell}
-        %        test2CombinedModelMap: [5835×1 double]
-                
-        %save the original combined model
-        combinedModelOld = combinedModel;
-        clear combinedModel;
-        
-        %each row of the group incidence matrix should correspond to a unique metabolite
-        %account for any metabolites in the test dataset that are duplicated in the training dataset
-        combinedModel.S = combinedModelOld.S(~duplicatesBool,:);
-        combinedModel.mets = combinedModelOld.mets(~duplicatesBool);
-        combinedModel.inchi.nonstandard = combinedModelOld.inchi.nonstandard(~duplicatesBool);
-        combinedModel.inchiBool = combinedModelOld.inchiBool(~duplicatesBool);
-        combinedModel.groupDecomposableBool = combinedModelOld.groupDecomposableBool(~duplicatesBool);
-        combinedModel.trainingMetBool = combinedModelOld.trainingMetBool(~duplicatesBool);
-        combinedModel.testMetBool = combinedModelOld.testMetBool(~duplicatesBool);
-        combinedModel.rxns = combinedModelOld.rxns;
-        combinedModel.dG0 = combinedModelOld.dG0;
-        combinedModel.T = combinedModelOld.T;
-        combinedModel.pH = combinedModelOld.pH;
-        combinedModel.pMg = combinedModelOld.pMg;
-        combinedModel.I = combinedModelOld.I;
-        combinedModel.G = combinedModelOld.G(~duplicatesBool,:);
-        combinedModel.groups = combinedModelOld.groups;
-        combinedModel.test2CombinedModelMap = combinedModelOld.test2CombinedModelMap;
+            if any(combinedModel.test2CombinedModelMap==0)
+                error('Mismatch in combinedModel.test2CombinedModelMap')
+            end
+            
+            %                            S: [6507×4149 double]
+            %                         rxns: {4149×1 cell}
+            %                           lb: [4149×1 double]
+            %                         cids: {672×1 cell}
+            %                    dG0_prime: [4149×1 double]
+            %                            T: [4149×1 double]
+            %                            I: [4149×1 double]
+            %                           pH: [4149×1 double]
+            %                          pMg: [4149×1 double]
+            %                      weights: [4149×1 double]
+            %                      balance: [4149×1 double]
+            %     cids_that_dont_decompose: [43×1 double]
+            %                         mets: {6507×1 cell}
+            %                    metKEGGID: {672×1 cell}
+            %                        inchi: [1×1 struct]
+            %                      molBool: [672×1 logical]
+            %                    inchiBool: [6507×1 logical]
+            %           compositeInchiBool: [672×1 logical]
+            %                  metFormulas: {672×1 cell}
+            %                   metCharges: [672×1 double]
+            %                pseudoisomers: [672×1 struct]
+            %                           ub: [4149×1 double]
+            %                          dG0: [4149×1 double]
+            %        groupDecomposableBool: [6507×1 logical]
+            %              trainingMetBool: [6507×1 logical]
+            %                  testMetBool: [6507×1 logical]
+            %                            G: [6507×1536 double]
+            %                       groups: {1536×1 cell}
+            %        test2CombinedModelMap: [5835×1 double]
+            
+            %save the original combined model
+            combinedModelOld = combinedModel;
+            clear combinedModel;
+            %%
+            %each row of the group incidence matrix should correspond to a unique metabolite
+            %account for any metabolites in the test dataset that are duplicated in the training dataset
+            combinedModel.S = combinedModelOld.S(~duplicatesBool,:);
+            combinedModel.mets = combinedModelOld.mets(~duplicatesBool);
+            combinedModel.inchi.nonstandard = combinedModelOld.inchi.nonstandard(~duplicatesBool);
+            combinedModel.inchiBool = combinedModelOld.inchiBool(~duplicatesBool);
+            combinedModel.groupDecomposableBool = combinedModelOld.groupDecomposableBool(~duplicatesBool);
+            combinedModel.trainingMetBool = combinedModelOld.trainingMetBool(~duplicatesBool);
+            combinedModel.testMetBool = combinedModelOld.testMetBool(~duplicatesBool);
+            combinedModel.rxns = combinedModelOld.rxns;
+            combinedModel.DrG0 = combinedModelOld.DrG0;
+            combinedModel.T = combinedModelOld.T;
+            combinedModel.pH = combinedModelOld.pH;
+            combinedModel.pMg = combinedModelOld.pMg;
+            combinedModel.I = combinedModelOld.I;
+            combinedModel.G = combinedModelOld.G(~duplicatesBool,:);
+            combinedModel.groups = combinedModelOld.groups;
+            combinedModel.test2CombinedModelMap = combinedModelOld.test2CombinedModelMap;
+
         else
-            combinedModel.test2CombinedModelMap = (1:nModelMets)' + nTrainingModelMets;
+            combinedModel.test2CombinedModelMap = nTrainingModelMets + (1:nModelMets)';
         end
     case 'manual'
         %

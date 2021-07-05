@@ -1,4 +1,4 @@
-function [transportRxnBool] = transportReactionBool(model, originCompartment, destinationCompartment, unidirectionalBool)
+function transportRxnBool = transportReactionBool(model, originCompartment, destinationCompartment, unidirectionalBool)
 % Return a boolean vector indicating which reactions transport between compartments.
 %
 % USAGE:
