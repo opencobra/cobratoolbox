@@ -487,6 +487,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CDPDPH AND CYTK1',[],'CDPDPH','CDPDPHi'
     'UMPK AND NDP7',[],'NDP7','NDP7i'
     'CLt4r AND r2137',[],'r2137','CLti'
+    'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     };
 
 
@@ -517,6 +518,7 @@ growthGapfills={
     'EX_arg_L(e) AND ARGt2r'
     'EX_ser_L(e) AND SERt2r'
     'PPA'
+    'EX_glyald[e] AND GLYALDt'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -587,6 +589,8 @@ for i = 2:size(reactionsToReplace, 1)
                 
             end
         end
+        % sometimes oxygen uptake needs to be enabled
+        modelTest=changeRxnBounds(modelTest,'EX_o2(e)',-10,'l');
         FBA = optimizeCbModel(modelTest, 'max');
         if FBA.f > tol
             model = modelTest;
@@ -638,29 +642,36 @@ for i = 2:size(reactionsToReplace, 1)
                 end
                 FBA = optimizeCbModel(modelTest, 'max');
                 if FBA.f > tol
-                    model = modelTest;
-                    % add replaced reactions
-                    if ~isempty(reactionsToReplace{i, 3})
-                        for j=1:length(toRemove)
-                            deletedRxns{delCnt, 1} = toRemove{j};
-                            delCnt = delCnt + 1;
+                    % ensure this does not add new futile cycles
+                    modelATPBefore=changeObjective(model,'DM_atp_c_');
+                    fbaATPBefore=optimizeCbModel(modelATPBefore,'max');
+                    modelATPAfter=changeObjective(modelTest,'DM_atp_c_');
+                    fbaATPAfter=optimizeCbModel(modelATPAfter,'max');
+                    if fbaATPAfter.f-fbaATPBefore.f < 100
+                        model = modelTest;
+                        % add replaced reactions
+                        if ~isempty(reactionsToReplace{i, 3})
+                            for j=1:length(toRemove)
+                                deletedRxns{delCnt, 1} = toRemove{j};
+                                delCnt = delCnt + 1;
+                            end
                         end
-                    end
-                    if ~isempty(reactionsToReplace{i, 4})
-                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
-                            addedRxns{addCnt, 1} = toRemove{1};
+                        if ~isempty(reactionsToReplace{i, 4})
+                            if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
+                                addedRxns{addCnt, 1} = toRemove{1};
+                            end
+                            for j=1:length(rxns)
+                                addedRxns{addCnt, j+1} = rxns{j};
+                            end
+                            addCnt = addCnt + 1;
                         end
-                        for j=1:length(rxns)
-                            addedRxns{addCnt, j+1} = rxns{j};
+                        % add growth-restoring gapfilled reactions
+                        for j=1:length(ggrxns)
+                            gfRxns{length(gfRxns)+1, 1} = ggrxns{j};
                         end
-                        addCnt = addCnt + 1;
+                        gf=0;
+                        break
                     end
-                    % add growth-restoring gapfilled reactions
-                    for j=1:length(ggrxns)
-                        gfRxns{length(gfRxns)+1, 1} = ggrxns{j};
-                    end
-                    gf=0;
-                    break
                 end
                 modelTest=modelPrevious;
             end

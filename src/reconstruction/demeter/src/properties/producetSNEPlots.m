@@ -172,9 +172,9 @@ for k=1:size(analyzedFiles,1)
                         cmarkers=[cmarkers '+o*xsdp'];
                     end
                     cmarkers=cmarkers(1:length(unique(taxa)));
-                    gscatter3(Y(:,1),Y(:,2),Y(:,3),taxa,cols,{},30);
-                    % h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
-                    % set(h,'MarkerSize',6)
+%                     gscatter3(Y(:,1),Y(:,2),Y(:,3),taxa,cols,{},30);
+                    h=gscatter(Y(:,1),Y(:,2),taxa,cols,cmarkers);
+                    set(h,'MarkerSize',6)
                     hold on
                     title(analyzedFiles{k,1})
                     plottitle=strrep(reconVersion,'_refined','');
