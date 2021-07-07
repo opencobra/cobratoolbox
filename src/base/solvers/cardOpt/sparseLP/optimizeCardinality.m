@@ -886,7 +886,7 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.origStat = LPsolution.origStat;
             warningMessage =['Problem unbounded ! Solver original status is: ' num2str(LPsolution.origStat) ];
             stop = 1;
-        case 1
+        case 1 || 3
             %Check stopping criterion
             delta_x = norm([x;y;z] - [x_old;y_old;z_old]);
             obj_new = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,o,theta,lambda0,lambda1,delta0,delta1,alpha1,regularizeOuter);
@@ -1139,7 +1139,10 @@ subLPproblem.c =     [c(1:p)           - x_bar + cw2;... % x
     %Solve the linear problem
     LPsolution = solveCobraLP(subLPproblem);
     
-    if LPsolution.stat == 1
+    if LPsolution.stat == 1 || LPsolution.stat == 3
+        if LPsolution.stat == 3
+            fprintf('%s\n','optimizeCardinality: LPsolution.stat == 3, proceeding but check inputs for numerical instability')
+        end
         
         x = LPsolution.full(1:p);
         y = LPsolution.full(p+1:p+q);

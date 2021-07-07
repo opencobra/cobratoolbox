@@ -19,8 +19,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %
 %                         * S  - `m x n` Stoichiometric matrix
 %                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
+%                         * lb - `n x 1` Lower bounds on net flux
+%                         * ub - `n x 1` Upper bounds on net flux
 %
 % OPTIONAL INPUTS:
 %    model:
@@ -118,7 +118,10 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 % OUTPUT:
 %    solution:       solution object:
 %
-%                          * f - Objective value
+%                          * f - Linear objective value
+%                          * f0 - Zero-norm objective value (optional)
+%                          * f1 - One-norm objective value  (optional)
+%                          * f2 - Two-norm objective value  (optional)
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
 %                          * y - Dual to the matrix inequality constraints (Shadow prices)
 %                          * w - Dual to the box constraints (Reduced costs)
@@ -271,8 +274,12 @@ if ischar(minNorm)
     end
 end
 
-if isfield(model,'g') 
-    error('model.g no longer supported. zero and one norm weights must be separately specified in model.g0 and model.g1 respectively')
+if isfield(model,'g')
+    if isfield(model,'g0') || isfield(model,'g1')
+        warning('model.g ignored by optimizeCbModel. zero and one norm weights are separately specified in model.g0 and model.g1 respectively')
+    else
+        error('model.g no longer supported by optimizeCbModel. zero and one norm weights must be separately specified in model.g0 and model.g1 respectively')
+    end
 end
 
 %weights on zero norm
@@ -704,14 +711,19 @@ if solution.stat == 1 || solution.stat == 3
     %the value of the linear part of the objective is always the optimal objective from the first LP
     solution.f = objective;
     
+    %dummy parts of the solution
+    solution.f0 = 0;
+    solution.f1 = 0;
+    solution.f2 = 0;
+    
     %the value of the second part of the objective depends on the norm
     if strcmp(minNorm, 'zero')
         %zero norm
         zeroNormTol = 0; %TODO set based on sparseLP tolerance
-        solution.f2 = sum(solution.full(1:nTotalVars,1) > zeroNormTol);
+        solution.f0 = sum(solution.full(1:nTotalVars,1) > zeroNormTol);
     elseif strcmp(minNorm, 'one')
         %one norm
-        solution.f2 = sum(abs(solution.full(1:nTotalVars,1)));
+        solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
     else
         if exist('LPproblem2','var')
             if isfield(optProblem2,'F')
@@ -775,7 +787,7 @@ if solution.stat == 1 || solution.stat == 3
     
     solution.time = etime(clock, t1);
     
-    fieldOrder = {'f';'v';'y';'w';'s';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
+    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
     % reorder fields for better readability
     currentfields = fieldnames(solution);
     presentfields = ismember(fieldOrder,currentfields);

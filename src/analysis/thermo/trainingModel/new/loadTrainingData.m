@@ -112,6 +112,9 @@ for i = 1:length(inds)
     cids = unique([cids, find(sprs)]);
     reactions = [reactions, {sprs}];
     rxns = [rxns;strtrim(['TECRDB_' int2str(res{15}(inds(i)))])];
+    if strcmp('TECRDB_4403',strtrim(['TECRDB_' int2str(res{15}(inds(i)))]))
+        pause(0.1);
+    end
 end
 fprintf('Successfully added %d values from TECRDB\n', length(inds));
 
@@ -198,6 +201,10 @@ S = zeros(length(cids), length(reactions));
 for i = 1:length(reactions)
     r = reactions{i};
     S(ismember(cids, find(r)), i) = r(r ~= 0);
+    %production of h20 in certain redox reactions
+    if any(strcmp(rxns{i},{'REDOX_dimethyl_sulfoxide';'REDOX_Trimethylamine'}))
+        S(cids==1,i)=1;
+    end
 end
 
 trainingModel.S = sparse(S);
@@ -211,7 +218,7 @@ if ~isfield(trainingModel,'lb')
     trainingModel.lb=ones(size(trainingModel.S,2),1)*-inf;
 end
 if ~isfield(trainingModel,'ub')
-    trainingModel.lb=ones(size(trainingModel.S,2),1)*inf;
+    trainingModel.ub=ones(size(trainingModel.S,2),1)*inf;
 end
 
 trainingModel.rxns = rxns;
@@ -225,5 +232,76 @@ trainingModel.weights = thermo_params(:, 6);
 trainingModel.balance = thermo_params(:, 7);
 trainingModel.cids_that_dont_decompose = cids_that_dont_decompose;
 
+%remove some problematic entries
+boolRemove=false(size(trainingModel.rxns,1),1);
 
+%http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=66DED_421	C00089 + C06215 = C00031 + C06215	sucrose(aq) + (2,6--D-fructosyl)n(aq) = D-glucose(aq) + (2,6--D-fructosyl)n+1(aq)
+%C06215 present on both sides of the reaction
+%Need proper ID's for (2,6--D-fructosyl)n(aq) and (2,6--D-fructosyl)n+1(aq)
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_695');
 
+% http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=93AND/BUL_1509	93AND/BUL	radioactivity	B	2.3.1.129	UDP-N-acetylglucosamine acyltransferase	C04688 + C00043 = C03688 + C04738	(R)-3-hydroxytetradecanoyl-[acyl-carrier-protein](aq) + UDP-N-acetyl-D-glucosamine(aq) = acyl-carrier-protein(aq) + UDP-3-O-(3-hydroxytetradecanoyl)-N-acetyl-D-glucosamine(aq)		0.007	296.15		7.4		2905
+% http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=93AND/BUL_1509	93AND/BUL	radioactivity	B	2.3.1.129	UDP-N-acetylglucosamine acyltransferase	C04688 + C00043 = C03688 + C04738	(R)-3-hydroxytetradecanoyl-[acyl-carrier-protein](aq) + UDP-N-acetyl-D-glucosamine(aq) = acyl-carrier-protein(aq) + UDP-3-O-(3-hydroxytetradecanoyl)-N-acetyl-D-glucosamine(aq)		0.004	296.15		8.5		2906
+% http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=93AND/BUL_1509	93AND/BUL	radioactivity	B	2.3.1.129	UDP-N-acetylglucosamine acyltransferase	C04688 + C00043 = C03688 + C04738	(R)-3-hydroxytetradecanoyl-[acyl-carrier-protein](aq) + UDP-N-acetyl-D-glucosamine(aq) = acyl-carrier-protein(aq) + UDP-3-O-(3-hydroxytetradecanoyl)-N-acetyl-D-glucosamine(aq)		0.002	296.15		9		2907
+% http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=93AND/BUL_1509	93AND/BUL	radioactivity	B	2.3.1.129	UDP-N-acetylglucosamine acyltransferase	C04688 + C00043 = C03688 + C04738	(R)-3-hydroxytetradecanoyl-[acyl-carrier-protein](aq) + UDP-N-acetyl-D-glucosamine(aq) = acyl-carrier-protein(aq) + UDP-3-O-(3-hydroxytetradecanoyl)-N-acetyl-D-glucosamine(aq)		0.0095	296.15		8		2908
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_2905');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_2906');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_2907');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_2908');
+
+%These were missing water on the rhs, fixed in TECRDB.tsv
+%TECRDB_4540 85LIE		A	4.3.-.-	formaldehyde condensation with THF	C00101 + C00067 = C00143 + C00001	THF(aq) + formaldehyde(aq) = 5,10-CH2-THF(aq) + H2O(l)		30000	311.15	0.25	7		4540
+%TECRDB_4541 +66KAL/JEN		E	4.3.-.-	formaldehyde condensation with THF	C00101 + C00067 = C00143 + C00001	THF(aq) + formaldehyde(aq) = 5,10-CH2-THF(aq) + H2O(l)		32000	298.15	1	7		4541
+%TECRDB_4544 +59BLA		E	4.3.-.-	formaldehyde condensation with THF	C00101 + C00067 = C00143 + C00001	THF(aq) + formaldehyde(aq) = 5,10-CH2-THF(aq)		7700	293.15		7.2		4544
+
+%The record of 85LIE is problematic i.e. TECRDB_870 - TECRDB_884
+%e.g. http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=85LIE_292	85LIE	spectrophotometry and enzymatic assay	A	1.4.4.2	glycine dehydrogenase (decarboxylating)	C00037 + C00725 = C80069 + C00288	glycine(aq) + lipoate(aq) = S-aminomethyldihydro--lipoate(aq) + carbon dioxide(aq)		0.031	311.15		6.39		870
+%is C00725 really C00248 ???
+%C80069 is InChI=1S/C9H19NO2S2/c10-7-14-6-5-8(13)3-1-2-4-9(11)12/h8,13H,1-7,10H2,(H,11,12)
+%C80069	but is it  InChI=1S/C9H20N2OS2/c10-7-14-6-5-8(13)3-1-2-4-9(11)12/h8,13H,1-7,10H2,(H2,11,12)/p+1  ???
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_870');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_871');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_872');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_873');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_874');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_875');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_876');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_877');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_878');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_879');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_880');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_881');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_882');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_883');
+boolRemove = boolRemove | ismember(trainingModel.rxns,'TECRDB_884');
+% The overall reaction reported in the abstract of the dissertation (https://digitalcommons.library.tmc.edu/dissertations/AAI8516325/) is as follows:
+%85LIE		A	1.1.-.-	glycine cleavage system (a series of enzymes)	C00037 + C00003 + C00101 = C00143 + C00004 + C00014 + C00011 	glycine(aq) + NAD+(aq) + THF(aq) = 5,10-CH2-THF(aq) + NADH(aq) + NH3(aq) + CO2(aq)		0.00156	311.15	0.25	7		4539
+
+%http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=65STR_520	65STR	spectrophotometry	C	2.6.1.13	ornithine-oxo-acid transaminase	C00077 + C00026 = C03912 + C00025	L-ornithine(aq) + 2-oxoglutarate(aq) = DL-D-1-pyrroline-5-carboxylate(aq) + L-glutamate(aq)		71	310.15		7.1		2719
+%is http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=65STR_520	65STR	spectrophotometry	C	2.6.1.13	ornithine-oxo-acid transaminase	C00077 + C00026 = C01165 + C00025 + C00001	L-ornithine(aq) + 2-oxoglutarate(aq) = DL-D-1-pyrroline-5-carboxylate(aq) + L-glutamate(aq)		71	310.15		7.1		2719
+%i.e. C00001 added to rhs, it is balanced, but is this correct?
+
+%85LIE		A	1.1.-.-	glycine cleavage system	C00037 + C00003 + C00101 = C00143 + C00004 + C00014 + C00288 	glycine(aq) + NAD+(aq) + THF(aq) = 5,10-CH2-THF(aq) + NADH(aq) + NH3(aq) + CO2(aq)		0.00156	311.15	0.25	7		4539
+%is 85LIE		A	1.1.-.-	glycine cleavage system	C00037 + C00003 + C00101 = C00143 + C00004 + C00014 + C00011 	glycine(aq) + NAD+(aq) + THF(aq) = 5,10-CH2-THF(aq) + NADH(aq) + NH3(aq) + CO2(aq)		0.00156	311.15	0.25	7		4539
+%i.e. C00288 replaced by C00011
+
+%http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=07LIN/ALG_1584	07LIN/ALG	spectrophotometry	A	1.1.1.87	homoisocitrate dehydrogenase	 C05662 + C00003 = C00322 + C00288 + C00004	(1R,2S)-1-hydroxybutane-1,2,4-tricarboxylate(aq) + NAD(ox) = 2-oxoadipate(aq) + carbon dioxide(aq) + NAD(red)		0.45	298.15		7.5		1
+%is http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=07LIN/ALG_1584	07LIN/ALG	spectrophotometry	A	1.1.1.87	homoisocitrate dehydrogenase	C00001 + C05662 + C00003 = C00322 + C00288 + C00004	H2O(l) + (1R,2S)-1-hydroxybutane-1,2,4-tricarboxylate(aq) + NAD(ox) = 2-oxoadipate(aq) + carbon dioxide(aq) + NAD(red)		0.45	298.15		7.5		1
+%i.e. lhs missing h20
+
+%http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=95PEL/MAC_1595	95PEL/MAC	spectrophotometry and enzymatic assay	B	1.5.1.5	methylenetetrahydrofolate dehydrogenase (NADP+)	C00143 + C00006 = C00234 + C00005	5,10-methylenetetrahydrofolate(aq) + NADP(ox)(aq) = 10-formyltetrahydrofolate(aq) + NADP(red)(aq)		16	303.15		7.3		267
+%is http://xpdb.nist.gov/enzyme_thermodynamics/enzyme_data1.pl?col=1.&T1=95PEL/MAC_1595	95PEL/MAC	spectrophotometry and enzymatic assay	B	1.5.1.5	methylenetetrahydrofolate dehydrogenase (NADP+)	C00001 + C00143 + C00006 = C00234 + C00005	H2O(l) + 5,10-methylenetetrahydrofolate(aq) + NADP(ox)(aq) = 10-formyltetrahydrofolate(aq) + NADP(red)(aq)		16	303.15		7.3		267
+%i.e. lhs missing h20
+
+%remove some of the training reactions that are problematic, e.g. those involving ACP
+trainingModel.S = trainingModel.S(:,~boolRemove);
+trainingModel.lb = trainingModel.lb(~boolRemove);
+trainingModel.ub = trainingModel.ub(~boolRemove);
+trainingModel.rxns = trainingModel.rxns(~boolRemove);
+trainingModel.dG0_prime = trainingModel.dG0_prime(~boolRemove);
+trainingModel.T = trainingModel.T(~boolRemove);
+trainingModel.I = trainingModel.I(~boolRemove);
+trainingModel.pH = trainingModel.pH(~boolRemove);
+trainingModel.pMg = trainingModel.pMg(~boolRemove);
+trainingModel.weights = trainingModel.weights(~boolRemove);
+trainingModel.balance = trainingModel.balance(~boolRemove);

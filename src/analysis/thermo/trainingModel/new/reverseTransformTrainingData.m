@@ -7,6 +7,10 @@ function trainingModel = reverseTransformTrainingData(trainingModel, use_model_p
 % OPTIONAL INPUT
 % use_model_pKas_by_default
 % model
+%
+% OUTPUT
+% trainingModel.DrG0:                        n x 1 standard Gibbs energy
+
 
 if ~exist('use_model_pKas_by_default','var')
     use_model_pKas_by_default=0;
@@ -81,4 +85,4 @@ for i = 1:size(trainingModel.S, 2) % for each reaction in S
     reverse_ddG0(i) = trainingModel.S(inds, i)' * reaction_ddG0s;
 end
 
-trainingModel.dG0 = trainingModel.dG0_prime - reverse_ddG0;
+trainingModel.DrG0 = trainingModel.DrGt0 - reverse_ddG0;

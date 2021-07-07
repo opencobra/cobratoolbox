@@ -451,6 +451,12 @@ switch solver
         if contains(cmdout, 'error')
            disp(sysCall);
            disp(cmdout);
+           if contains(cmdout,'libgfortran')
+               disp('quadMinos depends on libgfortran.so.3 so make sure it is accessible on the system path.')
+               disp('TODO update to depend on libgfortran.so.5')
+               %sudo apt-get install libgfortran5
+               disp('https://stackoverflow.com/questions/62908955/how-to-install-libgfortran-so-3-on-ubuntu-20-04')
+           end
            error('Call to runfba failed.');
         end
 

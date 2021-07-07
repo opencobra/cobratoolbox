@@ -55,12 +55,13 @@ if nargin < 4 || isempty(standardisationApproach)
     standardisationApproach = 'explicitH';
 end
 
-% Check if chemAxon and OpenBabel are installed
-[oBabelInstalled, ~] = system('obabel');
-[marvinInstalled, ~] = system('cxcalc');
-if marvinInstalled ~= 0
-    marvinInstalled = false;
+% Check if cxcalc and OpenBabel are installed
+[cxcalcInstalled, ~] = system('cxcalc');
+cxcalcInstalled = ~cxcalcInstalled;
+if cxcalcInstalled == 0
+    cxcalcInstalled = false;
 end
+[oBabelInstalled, ~] = system('obabel');
 if oBabelInstalled ~= 1
     oBabelInstalled = false;
     standardisationApproach = 'basic';
@@ -68,12 +69,12 @@ end
 
 % Assign directories and create them
 standardisedMolFiles = [standardisedDir 'molFiles' filesep];
-if marvinInstalled
+if cxcalcInstalled
     standardisedImages = [standardisedDir 'images' filesep];
 end
 if ~exist(standardisedMolFiles, 'dir')
     mkdir(standardisedMolFiles)
-    if marvinInstalled
+    if cxcalcInstalled
         mkdir(standardisedImages)
     end
 end
@@ -175,7 +176,7 @@ for i = 1:size(aMets, 1)
         fprintf(fid2, '%s\n', molFile{:});
         fclose(fid2);
         % Generate images
-        if marvinInstalled
+        if cxcalcInstalled
             fdata = dir([standardisedMolFiles name]);
             command = ['molconvert jpeg:w' num2str(fdata.bytes / 10) ',h' num2str(fdata.bytes / 10) ' ' standardisedMolFiles name ' -o ' standardisedImages name(1:end-4) '.jpeg'];
             [~, ~] = system(command);

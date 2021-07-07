@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<!--
+SAMMI is a tool for visualization of metabolic networks
+
+Copyright (C) 2019 The University of Texas MD Anderson Cancer Center.
+
+This program is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+any later version.
+
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+with this program. If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<head>
+    <meta charset="utf-8" />
+    <link rel='stylesheet' href='sammi.css'>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.js"></script>
+    <script type="text/javascript" src="helpfunctions.js"></script>
+    <script type="text/javascript" src="uploaddownload.js"></script>
+    <script type="text/javascript" src="simulationfunctions.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/liningfunctions.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/textandshapes.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tippy.js@2.5.2/dist/tippy.all.min.js"></script>
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/jscolor.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="shortcut icon" href="https://bioinformatics.mdanderson.org/favicon.ico">
+
+    <script type="text/javascript" src="https://bioinformatics.mdanderson.org/Software/SAMMI/dialogwindow.js"></script>
+    <script type="text/javascript">
+        //http://api.jqueryui.com/dialog/
+        //https://www.w3schools.com/howto/howto_js_draggable.asp
+        $( function() {
+            $("#dialog").dialog({
+            dialogClass: "no-close",
+            minWidth: 400,
+            }).draggable()
+            .css("display","none");
+        });
+
+        $( function() {
+            $( "#dialog2" ).dialog({
+            dialogClass: "no-close",
+            minWidth: 600,
+            }).draggable()
+            .css("display","none");
+        });
+
+    </script>
+</head>
+
+<body>
+    <div id="topbar">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Upload/Download</button>
+                <div class="dropdown-content">
+                    <h3>Secondaries</h3>
+                    <button class="topmenubtn" onclick='shelveStandard()'>Shelve Standard Metabolites</button><br/>
+
+                    <h3>Model Downloads</h3>
+                    <button onclick="downloadSammi();" class="topmenubtn">Download SAMMI</button><br/>
+                    <button onclick="downloadCurrent();" class="topmenubtn">Download Current</button><br/>
+                    <button id="downloadescher" onclick="downloadEscher();" class="topmenubtn">Download ESCHER</button><br/>
+                    <button id="downloadmez" onclick="downloadMEV();" class="topmenubtn">Download MetExploreViz</button>
+                    <input type="checkbox" id='mezanimated'> Animated
+
+                    <h3>Model Download Parameters</h3>
+                    Scale: <input id="eschescale" type="number" min="0" step="1" value="3"><br/>
+                    LB Field: <input id="lbfield" type="text" value="lower_bound"><br/>
+                    Name Field: <input id="namefield" type="text" value="name"><br/>
+                    Pathway Field: <input id="pathfield" type="text" value="subsystem"><br/>
+                    Compartment Field: <input id="compfield" type="text" value="compartment">
+
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Coloring</button>
+                <div class="dropdown-content">
+                        <h3>Graph Coloring</h3>
+                        <input type="color" class="jscolor" id="metcolor" value="#8080ff" onchange="reDefineColors()"> Metabolite<br/>
+                        <input type="color" class="jscolor" id="rxncolor" value="#1919ff" onchange="reDefineColors()"> Reaction<br/>
+                        <input type="color" class="jscolor" id="fixmetcolor" value="#ff8080" onchange="reDefineColors()"> Fixed Metabolite<br/>
+                        <input type="color" class="jscolor" id="fixrxncolor" value="#ff0000" onchange="reDefineColors()"> Fixed Reaction<br/>
+                        <input type="color" class="jscolor" id="edgecolor" value="#b3b6b7" onchange="reDefineColors()"> Edge<br/>
+                        <input type="color" class="jscolor" id="metcolorsize" value="#8080ff" onchange="reDefineColors()"> Metabolites with size data<br/>
+                        <input type="color" class="jscolor" id="rxncolorsize" value="#1919ff" onchange="reDefineColors()"> Reactions with size data<br/>
+                        <input type="color" class="jscolor" id="widthcolorsize" value="#b3b6b7" onchange="reDefineColors()"> Links with link width data<br/>
+
+                        <h3>Reaction Coloring</h3>
+                        <button onclick="makeColorScaleGlobal('rxn')" class="topmenubtn">Make Color Scale Global</button><br/>
+                        <input type="number" id="fluxmin" value="-1" max="0" onchange="fluxmin=this.valueAsNumber;defineFluxColorVectors()" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="edgemin" value="#009933" onchange="defineFluxColorVectors();defineFluxColorBar();reDefineColors();">
+                        - Minimum Flux<br/>
+                        <input type="number" id="fluxmax" value="1" min="0" onchange="fluxmax=this.valueAsNumber;defineFluxColorVectors()" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="edgemax" value="#cc3399" onchange="defineFluxColorVectors();defineFluxColorBar();reDefineColors();">
+                        - Maximum Flux<br/>
+                        <button onclick="addReactionColorBreak(this);defineFluxColorVectors();defineFluxColorBar();reDefineColors();" id="addrxnbreak"  class="topmenubtn">Add Break</button><br/>
+                        <canvas width="310" height="30" id="fluxcolorbar"></canvas>
+
+                        <h3>Metabolite Coloring</h3>
+                        <button onclick="makeColorScaleGlobal('met')" class="topmenubtn">Make Color Scale Global</button><br/>
+                        <input type="number" id="metminvalue" value="-1" max="0" onchange="concentrationmin=this.valueAsNumber;defineMetColorVectors();defineMetColorBar();reDefineColors();" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="metmin" value="#009933" onchange="defineMetColorVectors();defineMetColorBar();reDefineColors();">
+                        - Minimum Concentration<br/>
+                        <input type="number" id="metmaxvalue" value="1" min="0" onchange="concentrationmax=this.valueAsNumber;defineMetColorVectors();defineMetColorBar();reDefineColors();" onclick="typing=true;" onfocus="typing=true;">
+                        <input type="color" class="jscolor" id="metmax" value="#cc3399" onchange="defineMetColorVectors();defineMetColorBar();reDefineColors();">
+                        - Maximum concentration<br/>
+                        <button onclick="addMetaboliteColorBreak(this);defineMetColorVectors();defineMetColorBar();reDefineColors();" id="addmetbreak"  class="topmenubtn">Add Break</button><br/>
+                        <canvas width="310" height="30" id="metcolorbar"></canvas>
+                        
+                        <h3>Reference Node Color</h3>
+                        <input type="color" class="jscolor" id="addednodecolor" value="#add8e6" onchange="reDefineColors()"> Reference Node
+
+                        <h3>Link Strain Color</h3>
+                        <input type="color" class="jscolor" id="linkstraincolor" value="#ff0000" onchange="reDefineColors()"> Link Strain Color
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Sizing</button>
+                <div class="dropdown-content">
+                        <h3>Graph Looks</h3>
+                        <input id="labelsize" type="number" value="5" step="1" min="0" onchange="reDefineSimulation(),simulation.alpha(0);"> Label Size<br/>
+                        <input id="addedtextsize" type="number" value="14" step="1" min="0" onchange="reDefineSimulation(),simulation.alpha(0);"> Added Text Size<br/>
+                        <input id="strokewidth" type="number" value="1" step="1" min="0" onchange="manageArrows();reDefineSimulation();ticked();simulation.alpha(0)"> Link Width<br/>
+                        <input id="nodescale" type="number" value="1" step="0.1" min="0" onchange="nodedegree();manageArrows();reDefineSimulation();simulation.alpha(0)"> Node size<br/>
+                        <input id="refnodescale" type="number" value="2" step="0.1" min="0" onchange="nodedegree();manageArrows();reDefineSimulation();simulation.alpha(0)"> Reference Node size<br/>
+                        <input id="arrowsize" type="number" value="4" step="1" min="1" onchange="manageArrows();reDefineSimulation();ticked();simulation.alpha(0)"> Arrow Size<br/>
+                        <input id="sizeref" type="checkbox" onchange="reDefineSimulation(),simulation.alpha(0);"> View Size Reference<br/>
+        
+                        <h3>Reaction Size</h3>
+                        <input type="number" id="maxrxnsize" value="2" min="0" onchange="maxrxnsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minrxnsize" value="1" min="0" onchange="minrxnsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="rxnsizescale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale<br/>
+
+                        <h3>Metabolite Size</h3>
+                        <input type="number" id="maxmetsize" value="2" min="0" onchange="maxmetsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minmetsize" value="1" min="0" onchange="minmetsize=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="metsizescale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale
+
+                        <h3>Link Width</h3>
+                        <input type="number" id="maxwidth" value="1" min="0" onchange="maxwidth=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Maximum Size<br/>
+                        <input type="number" id="minwidth" value="0" min="0" onchange="minwidth=this.valueAsNumber;checkSizeLimits(this.id)" onclick="typing=true;" onfocus="typing=true;">
+                        - Minimum Size<br/>
+                        <input type="number" id="widthscale" value="5" min="0" step="0.1" onchange="reDefineSimulation();simulation.alpha(0)" onclick="typing=true;" onfocus="typing=true;">
+                        - Size Scale
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="selectOpenMenu(this);">Settings</button>
+                <div class="dropdown-content">
+                        <h3>Simulation Parameters</h3>
+                        <input id="linkstrength" type="number" value="30" step="5" min="0" onchange="reDefineSimulationParameters()"> Link Repulsion Strength<br/>
+                        <input id="nodestrength" type="number" value="0" step="1" min="0" onchange="reDefineSimulationParameters()"> Node Collision Buffer<br/>
+                        <input id="maparea" type="number" value="30" step="5" min="0" onchange="reDefineSimulationParameters()"> Node Repulsion Strength<br/>
+                        <input id="velocityDecay" type="number" value="0.4" step="0.1" min="0" max="1" onchange="reDefineSimulationParameters()"> Inertia<br/>
+                        <input id="centerstrength" type="number" value="0.02" step="0.01" min="0" onchange="reDefineSimulationParameters()"> Center Strength<br/>
+                        <input id="secondarystrength" type="number" value="0.1" step="0.01" min="0" onchange="reDefineSimulationParameters()"> Secondary Strength<br/>
+                        <input id="shortpathtime" type="number" value="3" step="1" min="0"> Path Execution Timeout (s)<br/>
+                        <input id="centersize" type="number" value="0" step="5" min="0" onchange="centerref._groups[0][0].attributes['r'].value = document.getElementById('centersize').value"> Center Size<br/>
+                        <input id="pretify" type="number" value="40" step="5" min="0" onchange="pretify()"> Pretify Size
+
+                        <h3>Naming</h3>
+                        <!-- <button onclick="defineNameOptions()">Define Options</button><br/> -->
+                        Primary Metabolites: <select id="metNameOpts" onchange="renameNodes();behave()"></select><br/>
+                        Secondary Metabolites: <select id="secMetNameOpts" onchange="renameNodes();behave()"></select><br/>
+                        Reactions: <select id="rxnNameOpts" onchange="renameNodes();behave()"></select>
+
+                        <h3>Reversibility</h3>
+                        <select id="reversibility" onchange="reDefineSimulation()">
+                            <option>None</option>
+                            <option>Both Ways</option>
+                            <option>Diamond Arrowheads</option>
+                        </select>
+
+                        <h3>Node Shape</h3>
+                        <select id="rxnshape" onchange="reDefineSimulation()">
+                            <option value="rect" selected="selected">Square</option>
+                            <option value="circle">Circle</option>
+                        </select>
+                        - Reaction Nodes<br/>
+                        <select id="metshape" onchange="reDefineSimulation()">
+                            <option value="rect">Square</option>
+                            <option value="circle" selected="selected">Circle</option>
+                        </select>
+                        - Metabolite Nodes
+
+                </div>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="dropbtn" onclick="openDocs('shortcuts')">Keyboard Shortcuts</button>
+            </div> -->
+            <div class="dropdown">
+                <button class="dropbtn" onclick="openDocs('documentation')">Documentation</button>
+            </div>
+            <div class="dropdown" style="float: right;">
+                <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/MDACC2.png" id="toplogo">
+            </div>
+    </div>
+        <div id="dialog" title="Menu">
+            <div id="onloadoptions">
+            </div>
+
+            <h3>Modes:</h3>
+            <h4>Arrows: </h4><input type='checkbox' id='arrows' onclick='checkchange=true;manageArrows();' checked>
+            <h4>Tooltips: </h4><input type='checkbox' id='tooltipbool' onclick='manageTooltips();'>
+            <h4>Hide Rxns: </h4><input type='checkbox' id='hiderxns' onclick='checkchange=true;reDefineSimulation();'><br/>
+            <h4>Move Labels (m): </h4><input type='checkbox' id='movelabels' onclick='dragLabels();'>
+            <h4>Link Strain: </h4><input type='checkbox' id='linkstrain' onclick='reDefineColors();'><br/>
+
+            <h3>Graph Manipulations:</h3>
+            <div class="wrapper">
+            <button onclick="behave()" class="menubutton">Reload Graph (r)</button>
+            <button onclick="simulation.stop()" class="menubutton">Pause Simulation (p)</button>
+            <button onclick="zoom.transform(gMain, d3.zoomIdentity.translate(0,0).scale(1));" class="menubutton">Recenter Graph</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); fixSelected()" class="menubutton">Fix Nodes (f)</button>
+            <button onclick="defineBackupGraph(); toggleSelected()" class="menubutton">Toggle Fix (t)</button>
+            </div>
+
+            <div  class="wrapper">
+            <button onclick="defineBackupGraph(); isolateRxn()" class="menubutton">Isolate Reaction (i)</button>
+            <button onclick="defineBackupGraph(); isolateMetabolite()" class="menubutton">Isolate Metabolite (i)</button>
+            <button onclick="defineBackupGraph(); selectConnected()" class="menubutton">Select Neighbors (n)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); splitMet()" class="menubutton">Break Metabolite (b)</button>
+            <button onclick="defineBackupGraph(); joinMetabolite()" class="menubutton">Join Metabolite (j)</button>
+            <button onclick="defineBackupGraph(); suspendMetabolite()" class="menubutton">Shelve Metabolite (s)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); deleteNodes()" class="menubutton">Delete Nodes (del)</button>
+            <button onclick="defineBackupGraph(); keepNodes()" class="menubutton">Keep Nodes</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); makeSecondary()" class="menubutton">Make Secondary (q)</button>
+            <button onclick="defineBackupGraph(); makePrimary()" class="menubutton">Make Primary (q)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); editBezier()" class="menubutton">Curve Link (c)</button>
+            <button onclick="defineBackupGraph(); deleteBezi()" class="menubutton">Delete Curve</button>
+            <button onclick="defineBackupGraph(); autoBezi()" class="menubutton">Auto Curve (d)</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="groupNodes()" class="menubutton">Group Nodes</button>
+            <button onclick="unGroupNodes()" class="menubutton">Ungroup Nodes</button>
+            <button onclick="defineBackupGraph(); collapse()" class="menubutton">Collapse</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); shortestPath('short')" class="menubutton">Shortest Path (p)</button>   
+            <button onclick="defineBackupGraph(); shortestPath('long')" class="menubutton">Find Long Path</button>
+            <button onclick="defineBackupGraph(); shortestCircle()" class="menubutton">Smallest Circle</button>
+            <button onclick="defineBackupGraph(); getComponent()" class="menubutton">Find Component</button>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="editNodeProperties(graph.nodes[selected[0]])" class="menubutton">Edit Attributes</button>
+            <button onclick="defineBackupGraph(); reverseReactions()" class="menubutton">Reverse Reaction</button>
+            <div style="width:32%;height:40px;font-size: 12px;float:right;line-height:normal"><input type="checkbox" id="reverseflux" checked><b>Reverse Flux</b></div>
+            </div>
+
+            <div class="wrapper">
+            <button onclick="defineBackupGraph(); pretify()" class="menubutton">Pretify Reactions</button>
+            <button onclick="defineBackupGraph(); untrap()" class="menubutton">Untrap Nodes (u)</button>
+            </div>
+
+            <h3>Subgraph Manipulations:</h3>
+            <button onclick="joinSubGraphs()" class="menubutton">Join Subgraphs</button>
+            <button onclick="renameSubgraph()" class="menubutton">Rename Subgraph</button><br/>
+            
+            <h3>Search:</h3> <input id="searchbox" type="text" onkeypress="getSearchNodes(event,this.value)" onclick="typing=true;" onfocus="typing=true;" style="width:120px;"><br/>
+            <input type="checkbox" id="searchhighlight" checked> Focus
+            <input type="checkbox" id="searchregexp" checked> RegExp<br/>
+            <button onclick="trackMet()" class="menubutton" id="trackmet">Highlight Metabolite (h)</button><br/>
+
+            <h3>Arranging:</h3>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/vertline.png" width="25" onclick="defineBackupGraph(); vertline()" title="Arrange nodes in a vertical line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/horzline.png" width="25" onclick="defineBackupGraph(); horzline()" title="Arrange nodes in a horizontal line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/diagline.png" width="25" onclick="defineBackupGraph(); diagline()" title="Arrange nodes in a line" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/circle.png" width="25" onclick="defineBackupGraph(); circle()" title="Arrange nodes in a circle" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/rectangle.png" width="25" onclick="defineBackupGraph(); rectangleInit()" title="Arrange nodes in a rectangle" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/rotate.png" width="25" onclick="defineBackupGraph(); rotateNodesInit()" title="Rotate nodes" class="imgbtn"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/scale.png" width="25" onclick="defineBackupGraph(); scaleAll();" title="Scale node position" class="imgbtn"/><br/>
+            <input type="checkbox" id="reverseline"> Reverse 
+            <select id="orderby">
+                <option value="selection order">Selection Order</option>
+                <option value="position">Position</option>
+            </select><br/>
+
+            <h3>Text and Shapes:</h3>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/text.png" width="30" onclick="texting=true;this.style='opacity: 0.2'" id="textingImage" title="Add text (double click to edit)"/>
+            <img src="https://bioinformatics.mdanderson.org/Software/SAMMI/Thumbnails/shape.png" width="30" onclick="shaping=true;this.style='opacity: 0.2'" id="shapingImage" title="Add shape (Drop nodes inside to trap)"/><br/>
+
+            <h3>Shelved Metabolites:</h3>
+            <select id="suspended" onchange="putBack(this)">
+                <option id="suspendeddefault">Select Node</option>
+            </select><button onclick="putAllBack()"  class="topmenubtn">Put All Back</button><br/>
+
+            <h3>Commits:</h3>
+            Description: <input id="commitname" type="text" onclick="typing=true;" onfocus="typing=true;"><br/>
+            <button id="commitgraph" onclick="commitGraph()"  class="topmenubtn">Commit Current</button><br/>
+            <select id="commits" onchange="putBackCommit(this)">
+                <option id="commitdefault">Select Commit</option>
+            </select><br/>
+            
+            <h3>Add Nodes and Edges:</h3>
+            <div class="autocomplete" style="width:230px;">
+                Reaction: <input id="existingReactions" type="text" placeholder="Reaction" onkeydown="addExistingReaction(event)" onclick="typing=true;" onfocus="typing=true;" style="width:120px">
+            </div>
+            <div class="autocomplete" style="width:230px;">
+                Metabolite: <input id="existingMetabolites" type="text" placeholder="Metabolite" onkeydown=addExistingMetabolite(event) onclick="typing=true;" onfocus="typing=true;" style="width:120px">
+            </div>
+            <button onclick="defineBackupGraph(); addAs('substrate')"  class="topmenubtn">Connect as Substrate</button>
+            <button onclick="defineBackupGraph(); addAs('product')"  class="topmenubtn">Connect as Product</button>
+        </div>
+
+        <div id="dialog2" title="Edit"></div>
+
+    <div id="d3_selectable_force_directed_graph" style="display:none;" class="svg-container">
+        <!-- <svg id="graphsvg"></svg> -->
+    </div>
+    <div id="blankdiv"></div>
+
+    <script type="text/javascript">
+        //document.getElementById("savePNG").addEventListener('click', savePNG);    
+
+        //setTimeout(function(){document.getElementById("dialog").style = "display:none;"},100)
+        setTimeout(function(){defineFluxColorVectors()},1000)
+        setTimeout(function(){defineFluxColorBar()},2000)
+        setTimeout(function(){defineMetColorVectors()},1000)
+        setTimeout(function(){defineMetColorBar()},2000)
+
+        //Background Drag
+        var dialogxy = [0,0];
+        document.getElementById("dialog").onmousedown = function(event){
+            dialogxy = [event.clientX,Number(document.getElementsByClassName("ui-dialog")[0].style.left.match(/[-,0-9]*/)[0]),
+            event.clientY,Number(document.getElementsByClassName("ui-dialog")[0].style.top.match(/[-,0-9]*/)[0])];
+        }
+        document.getElementById("dialog").ondrag = function(event){
+            document.getElementsByClassName("ui-dialog")[0].style.left = dialogxy[1] - dialogxy[0] + event.clientX + "px";
+            document.getElementsByClassName("ui-dialog")[0].style.top  = dialogxy[3] - dialogxy[2] + event.clientY + "px";
+        }
+        document.getElementById("dialog2").onmousedown = function(event){
+            dialogxy = [event.clientX,Number(document.getElementsByClassName("ui-dialog")[1].style.left.match(/[-,0-9]*/)[0]),
+            event.clientY,Number(document.getElementsByClassName("ui-dialog")[1].style.top.match(/[-,0-9]*/)[0])];
+        }
+        document.getElementById("dialog2").ondrag = function(event){
+            document.getElementsByClassName("ui-dialog")[1].style.left = dialogxy[1] - dialogxy[0] + event.clientX + "px";
+            document.getElementsByClassName("ui-dialog")[1].style.top  = dialogxy[3] - dialogxy[2] + event.clientY + "px";
+        }
+
+        //Re-size svg on window resize
+        window.addEventListener("resize", function(){
+           svg.attr("height",d3.select('svg').node().parentNode.clientHeight-70);
+           svg.attr("width",d3.select('svg').node().parentNode.clientWidth-5);
+           document.getElementById("dialog").parentNode.style.left = "10px";
+           document.getElementById("dialog").parentNode.style.top = -window.innerHeight + 5 + "px";
+           document.getElementById("dialog2").parentNode.style.left = "50px";
+           document.getElementById("dialog2").parentNode.style.top = -window.innerHeight + 5 - document.getElementById("dialog").clientHeight + "px";
+        });
+        
+        document.addEventListener("contextmenu",function(e){
+            e.preventDefault();    
+        },false);
+
+        setTimeout(function(){
+        setdisplay()
+
+        graph ={"metabolites":[{"id":"13dpg[c]","metNames":"3-Phospho-D-glyceroyl-phosphate","metFormulas":"C3H4O10P2","b":0},{"id":"2pg[c]","metNames":"D-Glycerate-2-phosphate","metFormulas":"C3H4O7P","b":0},{"id":"3pg[c]","metNames":"3-Phospho-D-glycerate","metFormulas":"C3H4O7P","b":0},{"id":"6pgc[c]","metNames":"6-Phospho-D-gluconate","metFormulas":"C6H10O10P","b":0},{"id":"6pgl[c]","metNames":"6-phospho-D-glucono-1-5-lactone","metFormulas":"C6H9O9P","b":0},{"id":"accoa[c]","metNames":"Acetyl-CoA","metFormulas":"C23H34N7O17P3S","b":0},{"id":"acon-C[c]","metNames":"cis-Aconitate","metFormulas":"C6H3O6","b":0},{"id":"adp[c]","metNames":"ADP","metFormulas":"C10H12N5O10P2","b":0},{"id":"akg[c]","metNames":"2-Oxoglutarate","metFormulas":"C5H4O5","b":0},{"id":"amp[c]","metNames":"AMP","metFormulas":"C10H12N5O7P","b":0},{"id":"atp[c]","metNames":"ATP","metFormulas":"C10H12N5O13P3","b":0},{"id":"cit[c]","metNames":"Citrate","metFormulas":"C6H5O7","b":0},{"id":"co2[c]","metNames":"CO2","metFormulas":"CO2","b":0},{"id":"coa[c]","metNames":"Coenzyme-A","metFormulas":"C21H32N7O16P3S","b":0},{"id":"dhap[c]","metNames":"Dihydroxyacetone-phosphate","metFormulas":"C3H5O6P","b":0},{"id":"e4p[c]","metNames":"D-Erythrose-4-phosphate","metFormulas":"C4H7O7P","b":0},{"id":"f6p[c]","metNames":"D-Fructose-6-phosphate","metFormulas":"C6H11O9P","b":0},{"id":"fdp[c]","metNames":"D-Fructose-1-6-bisphosphate","metFormulas":"C6H10O12P2","b":0},{"id":"fum[c]","metNames":"Fumarate","metFormulas":"C4H2O4","b":0},{"id":"g3p[c]","metNames":"Glyceraldehyde-3-phosphate","metFormulas":"C3H5O6P","b":0},{"id":"g6p[c]","metNames":"D-Glucose-6-phosphate","metFormulas":"C6H11O9P","b":0},{"id":"h2o[c]","metNames":"H2O","metFormulas":"H2O","b":0},{"id":"h[c]","metNames":"H","metFormulas":"H","b":0},{"id":"icit[c]","metNames":"Isocitrate","metFormulas":"C6H5O7","b":0},{"id":"mal-L[c]","metNames":"L-Malate","metFormulas":"C4H4O5","b":0},{"id":"nad[c]","metNames":"Nicotinamide-adenine-dinucleotide","metFormulas":"C21H26N7O14P2","b":0},{"id":"nadh[c]","metNames":"Nicotinamide-adenine-dinucleotide-reduced","metFormulas":"C21H27N7O14P2","b":0},{"id":"nadp[c]","metNames":"Nicotinamide-adenine-dinucleotide-phosphate","metFormulas":"C21H25N7O17P3","b":0},{"id":"nadph[c]","metNames":"Nicotinamide-adenine-dinucleotide-phosphate-reduced","metFormulas":"C21H26N7O17P3","b":0},{"id":"oaa[c]","metNames":"Oxaloacetate","metFormulas":"C4H2O5","b":0},{"id":"pep[c]","metNames":"Phosphoenolpyruvate","metFormulas":"C3H2O6P","b":0},{"id":"pi[c]","metNames":"Phosphate","metFormulas":"HO4P","b":0},{"id":"pyr[c]","metNames":"Pyruvate","metFormulas":"C3H3O3","b":0},{"id":"r5p[c]","metNames":"alpha-D-Ribose-5-phosphate","metFormulas":"C5H9O8P","b":0},{"id":"ru5p-D[c]","metNames":"D-Ribulose-5-phosphate","metFormulas":"C5H9O8P","b":0},{"id":"s7p[c]","metNames":"Sedoheptulose-7-phosphate","metFormulas":"C7H13O10P","b":0},{"id":"succ[c]","metNames":"Succinate","metFormulas":"C4H4O4","b":0},{"id":"succoa[c]","metNames":"Succinyl-CoA","metFormulas":"C25H35N7O19P3S","b":0},{"id":"xu5p-D[c]","metNames":"D-Xylulose-5-phosphate","metFormulas":"C5H9O8P","b":0}],"reactions":[{"id":"ACONTa","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(5) | x(36))","grRules":"(b0118 or b1276)","subSystems":"Citric Acid Cycle","rxnNames":"aconitase (half-reaction A, Citrate hydro-lyase)","metabolites":{"acon-C[c]": 1,"cit[c]":-1,"h2o[c]": 1}},{"id":"ACONTb","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(5) | x(36))","grRules":"(b0118 or b1276)","subSystems":"Citric Acid Cycle","rxnNames":"aconitase (half-reaction B, Isocitrate hydro-lyase)","metabolites":{"acon-C[c]":-1,"h2o[c]":-1,"icit[c]": 1}},{"id":"AKGDH","rev":0,"lb":0,"ub":1000,"c":0,"rules":"( x(4)  &  x(16)  &  x(17) )","grRules":"( b0116  and  b0726  and  b0727 )","subSystems":"Citric Acid Cycle","rxnNames":"2-Oxoglutarate dehydrogenase","metabolites":{"akg[c]":-1,"co2[c]": 1,"coa[c]":-1,"nad[c]":-1,"nadh[c]": 1,"succoa[c]": 1}},{"id":"CS","rev":0,"lb":0,"ub":1000,"c":0,"rules":"x(11)","grRules":"b0720","subSystems":"Citric Acid Cycle","rxnNames":"citrate synthase","metabolites":{"accoa[c]":-1,"cit[c]": 1,"coa[c]": 1,"h2o[c]":-1,"h[c]": 1,"oaa[c]":-1}},{"id":"ENO","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(88)","grRules":"b2779","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"enolase","metabolites":{"2pg[c]":-1,"h2o[c]": 1,"pep[c]": 1}},{"id":"FBA","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(61) | x(51) | x(90))","grRules":"(b2097 or b1773 or b2925)","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"fructose-bisphosphate aldolase","metabolites":{"dhap[c]": 1,"fdp[c]":-1,"g3p[c]": 1}},{"id":"FBP","rev":0,"lb":0,"ub":1000,"c":0,"rules":"(x(119) | x(134))","grRules":"(b3925 or b4232)","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"fructose-bisphosphatase","metabolites":{"f6p[c]": 1,"fdp[c]":-1,"h2o[c]":-1,"pi[c]": 1}},{"id":"FUM","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"( x(45)  |  x(129)  |  x(44) )","grRules":"( b1612  or  b4122  or  b1611 )","subSystems":"Citric Acid Cycle","rxnNames":"fumarase","metabolites":{"fum[c]":-1,"h2o[c]":-1,"mal-L[c]": 1}},{"id":"G6PDH2r","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(58)","grRules":"b1852","subSystems":"Pentose Phosphate Pathway","rxnNames":"glucose 6-phosphate dehydrogenase","metabolites":{"6pgl[c]": 1,"g6p[c]":-1,"h[c]": 1,"nadp[c]":-1,"nadph[c]": 1}},{"id":"GAPD","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(52)","grRules":"b1779","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"glyceraldehyde-3-phosphate dehydrogenase","metabolites":{"13dpg[c]": 1,"g3p[c]":-1,"h[c]": 1,"nad[c]":-1,"nadh[c]": 1,"pi[c]":-1}},{"id":"GND","rev":0,"lb":0,"ub":1000,"c":0,"rules":"x(60)","grRules":"b2029","subSystems":"Pentose Phosphate Pathway","rxnNames":"phosphogluconate dehydrogenase","metabolites":{"6pgc[c]":-1,"co2[c]": 1,"nadp[c]":-1,"nadph[c]": 1,"ru5p-D[c]": 1}},{"id":"ICDHyr","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(34)","grRules":"b1136","subSystems":"Citric Acid Cycle","rxnNames":"isocitrate dehydrogenase (NADP)","metabolites":{"akg[c]": 1,"co2[c]": 1,"icit[c]":-1,"nadp[c]":-1,"nadph[c]": 1}},{"id":"MDH","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(100)","grRules":"b3236","subSystems":"Citric Acid Cycle","rxnNames":"malate dehydrogenase","metabolites":{"h[c]": 1,"mal-L[c]":-1,"nad[c]":-1,"nadh[c]": 1,"oaa[c]": 1}},{"id":"PDH","rev":0,"lb":0,"ub":1000,"c":0,"rules":"( x(2)  &  x(3)  &  x(4) )","grRules":"( b0114  and  b0115  and  b0116 )","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"pyruvate dehydrogenase","metabolites":{"accoa[c]": 1,"co2[c]": 1,"coa[c]":-1,"nad[c]":-1,"nadh[c]": 1,"pyr[c]":-1}},{"id":"PFK","rev":0,"lb":0,"ub":1000,"c":0,"rules":"( x(117)  |  x(49) )","grRules":"( b3916  or  b1723 )","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"phosphofructokinase","metabolites":{"adp[c]": 1,"atp[c]":-1,"f6p[c]":-1,"fdp[c]": 1,"h[c]": 1}},{"id":"PGI","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(126)","grRules":"b4025","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"glucose-6-phosphate isomerase","metabolites":{"f6p[c]": 1,"g6p[c]":-1}},{"id":"PGK","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(91)","grRules":"b2926","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"phosphoglycerate kinase","metabolites":{"13dpg[c]": 1,"3pg[c]":-1,"adp[c]": 1,"atp[c]":-1}},{"id":"PGL","rev":0,"lb":0,"ub":1000,"c":0,"rules":"x(23)","grRules":"b0767","subSystems":"Pentose Phosphate Pathway","rxnNames":"6-phosphogluconolactonase","metabolites":{"6pgc[c]": 1,"6pgl[c]":-1,"h2o[c]":-1,"h[c]": 1}},{"id":"PGM","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(106) | x(136) | x(22))","grRules":"(b3612 or b4395 or b0755)","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"phosphoglycerate mutase","metabolites":{"2pg[c]":-1,"3pg[c]": 1}},{"id":"PPS","rev":0,"lb":0,"ub":1000,"c":0,"rules":"x(48)","grRules":"b1702","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"phosphoenolpyruvate synthase","metabolites":{"amp[c]": 1,"atp[c]":-1,"h2o[c]":-1,"h[c]": 2,"pep[c]": 1,"pi[c]": 1,"pyr[c]":-1}},{"id":"PYK","rev":0,"lb":0,"ub":1000,"c":0,"rules":"(x(59) | x(47))","grRules":"(b1854 or b1676)","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"pyruvate kinase","metabolites":{"adp[c]":-1,"atp[c]": 1,"h[c]":-1,"pep[c]":-1,"pyr[c]": 1}},{"id":"RPE","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(101) | x(135))","grRules":"(b3386 or b4301)","subSystems":"Pentose Phosphate Pathway","rxnNames":"ribulose 5-phosphate 3-epimerase","metabolites":{"ru5p-D[c]":-1,"xu5p-D[c]": 1}},{"id":"RPI","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"( x(89)  |  x(128) )","grRules":"( b2914  or  b4090 )","subSystems":"Pentose Phosphate Pathway","rxnNames":"ribose-5-phosphate isomerase","metabolites":{"r5p[c]":-1,"ru5p-D[c]": 1}},{"id":"SUCOAS","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"( x(18)  &  x(19) )","grRules":"( b0728  and  b0729 )","subSystems":"Citric Acid Cycle","rxnNames":"succinyl-CoA synthetase (ADP-forming)","metabolites":{"adp[c]": 1,"atp[c]":-1,"coa[c]":-1,"pi[c]": 1,"succ[c]":-1,"succoa[c]": 1}},{"id":"TALA","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"(x(83) | x(1))","grRules":"(b2464 or b0008)","subSystems":"Pentose Phosphate Pathway","rxnNames":"transaldolase","metabolites":{"e4p[c]": 1,"f6p[c]": 1,"g3p[c]":-1,"s7p[c]":-1}},{"id":"TKT1","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"( x(92)  |  x(84) )","grRules":"( b2935  or  b2465 )","subSystems":"Pentose Phosphate Pathway","rxnNames":"transketolase","metabolites":{"g3p[c]": 1,"r5p[c]":-1,"s7p[c]": 1,"xu5p-D[c]":-1}},{"id":"TKT2","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"( x(92)  |  x(84) )","grRules":"( b2935  or  b2465 )","subSystems":"Pentose Phosphate Pathway","rxnNames":"transketolase","metabolites":{"e4p[c]":-1,"f6p[c]": 1,"g3p[c]": 1,"xu5p-D[c]":-1}},{"id":"TPI","rev":1,"lb":-1000,"ub":1000,"c":0,"rules":"x(118)","grRules":"b3919","subSystems":"Glycolysis/Gluconeogenesis","rxnNames":"triose-phosphate isomerase","metabolites":{"dhap[c]":-1,"g3p[c]": 1}}]};
+e =[["TCA Cycle",["ACONTa","0.358399"],["ACONTb","-1.20013"],["AKGDH","-0.486715"],["CS","-0.213721"],["FUM","-0.438446"],["ICDHyr","-1.19447"],["MDH","-1.18854"],["SUCOAS","1.09171"]],["Glycolysis",["ENO","0.0618021"],["FBA","0.132196"],["FBP","-1.03978"],["GAPD","-0.568287"],["PDH","2.99761"],["PFK","0.516148"],["PGI","0.520323"],["PGK","-0.69408"],["PGM","0.520438"],["PPS","-1.37677"],["PYK","1.37859"],["TPI","1.33046"]],["Pentose Phosphate Pathway",["G6PDH2r","1.11179"],["GND","0.161749"],["PGL","0.686075"],["RPE","0.302802"],["RPI","1.63303"],["TALA","0.714528"],["TKT1","-2.15326"],["TKT2","-0.21127"]]];
+filterWrapper(e);
+
+        },1000)
+
+
+    </script>
+</body>
+

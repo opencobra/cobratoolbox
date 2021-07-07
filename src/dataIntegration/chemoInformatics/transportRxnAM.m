@@ -66,7 +66,7 @@ for i = 1:length(fnames)
         atom = 0;
         for j = 1:numel(metSubs)
             nuOfAtoms = str2double(rxnFile{begMol(j) + 4}(1:3));
-            productIdx = strmatch(metSubs{j}, metProds);
+            productIdx = strmatch(metSubs{j}, metProds, 'exact');
             for k = 1:nuOfAtoms
                 atom = atom + 1;
                 switch length(num2str(atom))

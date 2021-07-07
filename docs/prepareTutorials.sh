@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 usage="$(basename $0) -p=pdfPath -t=COBRATutorialsPath -c=COBRAToolBoxPath [-f=folderNameOfATutorial] [-h] [-l] [-m=mode] -- script to create tutorial documentation for the COBRA Toolbox.
 
 where:
@@ -118,7 +118,7 @@ buildHTMLTutorials(){
     do
         createLocalVariables $tutorial
         # create PDF file
-        /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
+        wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
         sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
         sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
         sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
@@ -131,7 +131,7 @@ buildHTMLSpecificTutorial(){
     $matlab -nodesktop -nosplash -r "restoredefaultpath;initCobraToolbox;addpath('.artenolis');generateTutorials('$pdfPath', '$specificTutorial');restoredefaultpath;savepath;exit;"
     createLocalVariables $specificTutorial
     # create PDF file
-    /usr/local/bin/wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
+    wkhtmltopdf --page-size A8 --margin-right 2 --margin-bottom 3 --margin-top 3 --margin-left 2 $pdfPath/tutorials/$tutorialFolder/$tutorialName.html $pdfPath/tutorials/$tutorialFolder/$tutorialName.pdf
     sed 's#<html><head>#&<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script>#g' "$pdfPath/tutorials/$tutorialFolder/$tutorialName.html" > "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     sed -i.bak 's/white-space:\ pre-wrap/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
     sed -i.bak 's/white-space:\ pre/white-space:\ normal/g' "$pdfPath/tutorials/$tutorialFolder/iframe_$tutorialName.html"
