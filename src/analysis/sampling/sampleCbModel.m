@@ -11,6 +11,9 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                        * .b - Right hand side vector
 %                        * .lb - Lower bounds
 %                        * .ub - Upper bounds
+%                        * .C - 'k x n' matrix of additional inequality constraints
+%                        * .d - 'k x 1' rhs of the above constraints
+%                        * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G')
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
