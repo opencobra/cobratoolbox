@@ -473,8 +473,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'METt2r AND METt3r',[],'METt2r','METt2'
     'NTP9 AND NDPK4',[],'NTP9','NTP9i'
     'MAN1PT2r',[],'MAN1PT2r','MAN1PT2'
-    'HEX4 AND HMR_7271 AND MAN1PT2 AND MAN6PI AND PGM AND PMANM',[],'PMANM','PMANMi'
-    'MANISO AND HMR_7271 AND MAN1PT2 AND MAN6PI AND PGM AND PMANM',[],'PMANM','PMANMi'
+    'HMR_7271 AND MAN1PT2 AND MAN6PI AND PMANM',[],'PMANM','PMANMi'
+    'HMR_7271 AND MAN1PT2 AND MANISO AND PMANM',[],'PMANM','PMANMi'
     'PGMT AND GALU AND GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND NDPK2 AND PPA AND r1393',[],'NDPK2','NDPK2i'
     'D_GLUMANt AND MANt2r AND GLU_Dt2r',[],'GLU_Dt2r','GLU_Dt2'
     'NACUP AND NACSMCTte AND NAt3_1',[],'NAt3_1','NAt3'
@@ -537,23 +537,26 @@ for i = 2:size(reactionsToReplace, 1)
     else
         go = 1;
         present=strsplit(reactionsToReplace{i,1},' AND ');
-        if ~(length(intersect(model.rxns,present))==length(present))
-            % try periplasmatic reactions
+        if any(contains(model.mets,'[p]'))
+            % if a periplasmatic reaction exists, use that
             for j=1:length(present)
-                present{j}=[present{j} 'pp'];
+                if ~isempty(intersect(database.reactions(:,1),[present{j} 'pp']))
+                    present{j}=[present{j} 'pp'];
+                end
             end
-            if ~(length(intersect(model.rxns,present))==length(present))
-                go= 0;
-            end
+        end
+        if ~(length(intersect(model.rxns,present))==length(present))
+            go= 0;
         end
         if ~isempty(reactionsToReplace{i,2})
             notpresent=strsplit(reactionsToReplace{i,2},' AND ');
-            if length(intersect(model.rxns,notpresent))==length(notpresent)
-                go= 0;
-            end
-            % try periplasmatic reactions
-            for j=1:length(notpresent)
-                notpresent{j}=[notpresent{j} 'pp'];
+            if any(contains(model.mets,'[p]'))
+                % if a periplasmatic reaction exists, use that
+                for j=1:length(notpresent)
+                    if ~isempty(intersect(database.reactions(:,1),[notpresent{j} 'pp']))
+                    notpresent{j}=[notpresent{j} 'pp'];
+                    end
+                end
             end
             if length(intersect(model.rxns,notpresent))==length(notpresent)
                 go= 0;

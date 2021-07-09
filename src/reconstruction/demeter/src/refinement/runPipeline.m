@@ -24,9 +24,8 @@ function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = run
 % reconVersion             Name of the refined reconstruction resource
 %                          (default: "Reconstructions")
 % numWorkers               Number of workers in parallel pool (default: 2)
-% sbmlFolder               Folder where SBML files, if desired, will be saved
-% overwriteModels          Define whether already finished reconstructions
-%                          should be overwritten (default: false)
+% createSBML               Defines whether refined reconstructions should
+%                          be exported in SBML format (default: false)
 %
 % OUTPUTS
 % reconVersion             Name of the refined reconstruction resource
@@ -51,8 +50,7 @@ parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('inputDataFolder', '', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('reconVersion', 'Reconstructions', @ischar);
-parser.addParameter('sbmlFolder', '', @ischar);
-parser.addParameter('overwriteModels', false, @islogical);
+parser.addParameter('createSBML', false, @islogical);
 
 
 parser.parse(draftFolder, varargin{:});
@@ -65,8 +63,7 @@ infoFilePath = parser.Results.infoFilePath;
 inputDataFolder = parser.Results.inputDataFolder;
 numWorkers = parser.Results.numWorkers;
 reconVersion = parser.Results.reconVersion;
-sbmlFolder = parser.Results.sbmlFolder;
-overwriteModels = parser.Results.overwriteModels;
+createSBML = parser.Results.createSBML;
 
 if isempty(infoFilePath)
     % create a file with reconstruction names based on file names. Note:
@@ -91,9 +88,6 @@ end
 mkdir(refinedFolder)
 mkdir(translatedDraftsFolder)
 mkdir(summaryFolder)
-if ~isempty(sbmlFolder)
-mkdir(sbmlFolder)
-end
 
 %% prepare pipeline run
 % Get all models from the input folder
@@ -270,7 +264,8 @@ delete('rBioNetDB.mat');
 
 %% create SBML files (default=not created)
 
-if ~isempty(sbmlFolder)
+if createSBML
+    sbmlFolder = [pwd filesep refinedFolder '_SBML'];
     createSBMLFiles(refinedFolder, sbmlFolder)
 end
 
