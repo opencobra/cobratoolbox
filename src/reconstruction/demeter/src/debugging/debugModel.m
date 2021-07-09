@@ -252,9 +252,6 @@ for i=1:length(fields)
     end
 end
 
-% may need to rebuild periplasm compartment
-[model] = createPeriplasmaticSpace(model,microbeID,infoFile);
-
 % remove futile cycles if any exist
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
