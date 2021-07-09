@@ -81,7 +81,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CYTDt4 AND CYTDt2r',[],'CYTDt2r','CYTDt2'
     'ASPt2_2 AND ASPt2r',[],'ASPt2_2','ASPt2_2i'
     'ASPt2_3 AND ASPt2r',[],'ASPt2r','ASPt2'
-    'FUMt2_2 AND FUMt2r',[],'FUMt2r','FUMt'
+    'FUMt2_2 AND FUMt2r','FUMt','FUMt2r','FUMt'
     'SUCCt2_2 AND SUCCt2r','SUCCt','SUCCt2r','SUCCt'
     'SUCCt2_3r AND SUCCt2r',[],'SUCCt2r',[]
     'MALFADO AND MDH',[],'MALFADO','MALFADOi'
@@ -488,6 +488,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'UMPK AND NDP7',[],'NDP7','NDP7i'
     'CLt4r AND r2137',[],'r2137','CLti'
     'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
+    'LDH_L2 AND LDH_L',[],'LDH_L',[]
     };
 
 
@@ -537,10 +538,23 @@ for i = 2:size(reactionsToReplace, 1)
         go = 1;
         present=strsplit(reactionsToReplace{i,1},' AND ');
         if ~(length(intersect(model.rxns,present))==length(present))
-            go= 0;
+            % try periplasmatic reactions
+            for j=1:length(present)
+                present{j}=[present{j} 'pp'];
+            end
+            if ~(length(intersect(model.rxns,present))==length(present))
+                go= 0;
+            end
         end
         if ~isempty(reactionsToReplace{i,2})
             notpresent=strsplit(reactionsToReplace{i,2},' AND ');
+            if length(intersect(model.rxns,notpresent))==length(notpresent)
+                go= 0;
+            end
+            % try periplasmatic reactions
+            for j=1:length(notpresent)
+                notpresent{j}=[notpresent{j} 'pp'];
+            end
             if length(intersect(model.rxns,notpresent))==length(notpresent)
                 go= 0;
             end
