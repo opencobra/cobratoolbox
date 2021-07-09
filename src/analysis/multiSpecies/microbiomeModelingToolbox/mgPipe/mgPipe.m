@@ -299,7 +299,9 @@ else
     Y=[];
     delete('simRes.mat','intRes.mat')  
 end
-rmdir([resPath filesep 'modelStorage'],'s')
+if isdir([resPath filesep 'modelStorage'])
+    rmdir([resPath filesep 'modelStorage'],'s')
+end
 
 % get stats on microbiome models-number of reactions and metabolites
 for i=1:length(sampNames)
@@ -313,6 +315,10 @@ if ~isempty(infoFilePath)
 else
     [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames);
 end
-save([resPath filesep 'modelStatistics.mat'],'modelStats','summary','statistics')
+writetable(cell2table(modelStats),[resPath filesep 'ModelStatistics.csv'], 'WriteVariableNames', false);
+writetable(cell2table(summary),[resPath filesep 'ModelStatsSummary.csv'], 'WriteVariableNames', false);
+if ~isempty(statistics)
+    writetable(cell2table(statistics),[resPath filesep 'ModelStatsStratification.csv'], 'WriteVariableNames', false);
+end
 
 end

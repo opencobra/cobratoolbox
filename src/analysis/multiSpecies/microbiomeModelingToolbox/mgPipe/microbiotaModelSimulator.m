@@ -38,7 +38,7 @@ function [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaMod
 %
 % OUTPUTS:
 %    exchanges:          cell array with list of all unique exchanges to diet/
-%                        fecal compartment that were interrogated in simulations      
+%                        fecal compartment that were interrogated in simulations
 %    netProduction:      cell array containing FVA values for maximal uptake
 %                        and secretion for setup lumen / diet exchanges
 %    netUptake:          cell array containing FVA values for minimal uptake
@@ -67,7 +67,7 @@ end
 environment = getEnvironment();
 
 if saveConstrModels
-        mkdir([resPath filesep 'Diet'])
+    mkdir([resPath filesep 'Diet'])
 end
 
 for i=1:length(exMets)
@@ -98,23 +98,29 @@ if computeProfiles
     skipSim=0;
     if isfile(strcat(resPath, 'simRes.mat'))
         load(strcat(resPath, 'simRes.mat'))
-        skipSim=1;
-        for i=1:size(presol,1)
-            % check for all feasible models that simulations were properly
-            % executed
-            if presol{i,2} > lowerBMBound
-                if isempty(netProduction{2,i}(:,2))
-                    % feasible model was skipped, repeat simulations
-                    skipSim=0;
-                end
-                vals=netProduction{2,i}(find(~cellfun(@isempty,(netProduction{2,i}(:,2)))),2);
-                if abs(sum(cell2mat(vals)))<0.000001
-                    % feasible model was skipped, repeat simulations
-                    skipSim=0;
+        
+        % if any simulations were infeasible, repeat simulations
+        if length(inFesMat)>0
+            skipSim=0;
+        else
+            skipSim=1;
+            % verify that every simulation result is correct
+            for i=1:size(presol,1)
+                % check for all feasible models that simulations were properly
+                % executed
+                if presol{i,2} > lowerBMBound
+                    if isempty(netProduction{2,i}(:,2))
+                        % feasible model was skipped, repeat simulations
+                        skipSim=0;
+                    end
+                    vals=netProduction{2,i}(find(~cellfun(@isempty,(netProduction{2,i}(:,2)))),2);
+                    if abs(sum(cell2mat(vals)))<0.000001
+                        % feasible model was skipped, repeat simulations
+                        skipSim=0;
+                    end
                 end
             end
         end
-        % verify that every simulation result is correct
     end
     
     % if repeatSim is true, simulations will be repeated in any case
@@ -265,7 +271,7 @@ if computeProfiles
                     FecalRxn = AllRxn(FecalInd);
                     FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
                     DietRxn = AllRxn(DietInd);
-                       
+                    
                     %% computing fluxes on the rich diet
                     if rDiet==1 && computeProfiles
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);

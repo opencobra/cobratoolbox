@@ -61,14 +61,6 @@ else
     fl = 3;
 end
 
-% find empty rows in input data-tmp fix
-emptyRows=find(cellfun(@isempty,netProduction{2,1}(:,2)));
-for i=1:size(netProduction,2)
-    netProduction{2,i}(emptyRows,:)=[];
-    netUptake{2,i}(emptyRows,:)=[];  
-end
-exchanges(emptyRows,:)=[];
-
 names = {'rich', 'inputDiet', 'personalized'};
 
 for j = init:fl

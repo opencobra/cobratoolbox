@@ -50,6 +50,7 @@ if ~isempty(find(strcmp(infoFile(:,1),microbeID)))
         
         modelNew=model;
         % Add all new periplasmatic metabolites
+        pMets=setdiff(pMets,model.mets);
         for i=1:length(pMets)
             modelNew = addMetabolite(modelNew, pMets{i}, 'metName', metNames{i}, 'metFormula', metFormulas{i}, 'Charge', metCharges(i));
         end
