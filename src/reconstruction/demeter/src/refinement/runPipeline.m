@@ -121,13 +121,11 @@ if size(modelList,1)>0
     modelList(~contains(modelList(:,1),'.mat'),:)=[];
     modelList(:,1)=strrep(modelList(:,1),'.mat','');
     
-    if ~overwriteModels
-        % remove models that were already created
-        [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
-        if ~isempty(C)
-            models(IA,:)=[];
-            folders(IA,:)=[];
-        end
+    % remove models that were already created
+    [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
+    if ~isempty(C)
+        models(IA,:)=[];
+        folders(IA,:)=[];
     end
 end
 
