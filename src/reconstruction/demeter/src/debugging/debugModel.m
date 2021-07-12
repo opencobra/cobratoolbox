@@ -1,4 +1,4 @@
-function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, infoFilePath, inputDataFolder,microbeID,biomassReaction)
+function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -12,7 +12,6 @@ function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,te
 % INPUTS
 % model:                 COBRA model structure
 % testResults:           Structure with results of test run
-% infoFilePath:          File with information on reconstructions to refine
 % inputDataFolder:       Folder with input tables with experimental data
 %                        and databases that inform the refinement process
 % microbeID:             ID of the reconstructed microbe that serves as
@@ -36,18 +35,6 @@ replacedReactions = {};
 tol=0.0000001;
 
 model=changeObjective(model,biomassReaction);
-
-% read the info file
-try
-    infoFile = readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab');
-catch
-    % if the input file is not a text file
-    infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-end
-infoFile = table2cell(infoFile);
-if ~any(strcmp(infoFile(:,1),microbeID))
-    warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
-end
 
 % implement complex medium
 constraints = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
