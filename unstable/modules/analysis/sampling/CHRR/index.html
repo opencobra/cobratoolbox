@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -199,6 +200,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -236,11 +239,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -253,7 +258,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -269,7 +274,7 @@
 <span id="id1"></span><h1>CHRR<a class="headerlink" href="#chrr" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sampling.CHRR"></span><dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrExpSampler">
-<code class="descname">chrrExpSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>lambda</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/sampling/CHRR/chrrExpSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrExpSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrExpSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>lambda</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrExpSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random flux samples from an exponential distribution
 with CHRR Coordinate Hit-and-Run with Rounding.
 chrrExpSampler will generate <cite>numSamples</cite> samples from model, taking <cite>numSkip</cite> steps of a random walk between each sample.
@@ -277,150 +282,132 @@ Rounding the polytope is a potentially expensive step. If you generate multiple 
 of samples from a single model, you can save <cite>roundedPolytope</cite> from the first round and
 input it for subsequent rounds. It is allowed to change lambda without
 recomputing roundedPolytope.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[samples, roundedPolytope, minFlux, maxFlux] = chrrExpSampler(model, numSkip, numSamples, lambda, toRound, roundedPolytope, useFastFVA)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:               COBRA model structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
 <li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
 <li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
 <li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
 <li>.c - <cite>n x 1</cite> linear objective</li>
 </ul>
-</li>
-<li><strong>numSkip</strong> &#8211;
-Number of steps of coordinate hit-and-run between samples</li>
-<li><strong>numSamples</strong> &#8211;
-Number of samples</li>
-</ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p class="last">numSkip:             Number of steps of coordinate hit-and-run between samples
+numSamples:          Number of samples</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>lambda:              the bias vector, i.e. generate samples from exp(-&lt;lambda, x&gt;)</dt>
+<dd>restricted to the feasible region. OPTIONAL ONLY IF <cite>model.c</cite>
+is nonzero, in which case we set <cite>lambda=model.c</cite>.</dd>
+</dl>
+<p>toRound:             <cite>{0, 1}</cite> Option to round the polytope before sampling.
+roundedPolytope:     The rounded polytope from a previous round of</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>lambda</strong> &#8211;
-the bias vector, i.e. generate samples from exp(-&lt;lambda, x&gt;)
-restricted to the feasible region. OPTIONAL ONLY IF <cite>model.c</cite>
-is nonzero, in which case we set <cite>lambda=model.c</cite>.</li>
-<li><strong>toRound</strong> &#8211;
-<cite>{0, 1}</cite> Option to round the polytope before sampling.</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope from a previous round of
-sampling the same model.</li>
-<li><strong>useFastFVA</strong> &#8211;
-Boolean to use fastFVA (default: <cite>false</cite>)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+<div>sampling the same model.</div></blockquote>
+<p class="last">useFastFVA:          Boolean to use fastFVA (default: <cite>false</cite>)</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">samples:             <cite>n x numSamples</cite> matrix of random flux samples
+roundedPolytope:     The rounded polytope. Save for use in subsequent</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>samples</strong> &#8211;
-<cite>n x numSamples</cite> matrix of random flux samples</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope. Save for use in subsequent
-rounds of sampling.</li>
-<li><strong>minFlux, maxFlux</strong> &#8211;
-flux minima and maxima</li>
-</ul>
-</div></blockquote>
+<div>rounds of sampling.</div></blockquote>
+<p class="last">minFlux, maxFlux:    flux minima and maxima</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrParseModel">
-<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/sampling/CHRR/chrrParseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrParseModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrParseModel</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrParseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a COBRA model into the right format for the CHRR sampler</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[P,model] = chrrParseModel(model);</div></blockquote>
 <p>We are trying to sample uniformly at random from the points v that satisfy:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}Sv = b\\
 ~~ l_b \leq v \leq u_b\end{split}\]</div>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:    COBRA model structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
 <li>.S - The <cite>m x n</cite> stoichiometric matrix</li>
 <li>.lb - <cite>n x 1</cite> lower bounds on fluxes</li>
 <li>.ub - <cite>n x 1</cite> upper bounds on fluxes</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><ul class="first last simple">
+<li>.C - ‘k x n’ matrix of additional inequality constraints</li>
+<li>.d - ‘k x 1’ rhs of the above constraints</li>
+<li>.dsense - ‘k x 1’ the sense of the above constraints (‘L’ or ‘G’)</li>
+</ul>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">P:        A structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>P</strong> &#8211;
-A structure with fields:<ul>
 <li>.A_eq - Equality constraint matrix (<cite>model.S</cite>)</li>
 <li>.b_eq - Right hand side of equality constraints (<cite>model.b</cite>)</li>
 <li>.A - Inequality constraint matrix (<cite>[I_n 0; 0 -I_n]</cite>)</li>
 <li>.b - Right hand side of inequality constraints (<cite>[lb; -ub]</cite>)</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.sampling.CHRR.chrrSampler">
-<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em>, <em>optPercentage</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/sampling/CHRR/chrrSampler.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrSampler" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chrrSampler</code><span class="sig-paren">(</span><em>model</em>, <em>numSkip</em>, <em>numSamples</em>, <em>toRound</em>, <em>roundedPolytope</em>, <em>useFastFVA</em>, <em>optPercentage</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sampling.CHRR.chrrSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
 chrrSampler will generate numSamples samples from model, taking <cite>numSkip</cite> steps of a random walk between each sample.
 Rounding the polytope is a potentially expensive step. If you generate multiple rounds
 of samples from a single model, you can save roundedPolytope from the first round and
 input it for subsequent rounds.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[samples, roundedPolytope] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:            COBRA model structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
 <li>.S - The m x n stoichiometric matrix</li>
 <li>.lb - n x 1 lower bounds on fluxes</li>
 <li>.ub - n x 1 upper bounds on fluxes</li>
 <li>.c - n x 1 linear objective</li>
 </ul>
-</li>
-<li><strong>numSkip</strong> &#8211;
-Number of steps of coordinate hit-and-run between samples</li>
-<li><strong>numSamples</strong> &#8211;
-Number of samples</li>
-</ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p class="last">numSkip:          Number of steps of coordinate hit-and-run between samples
+numSamples:       Number of samples</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">toRound:          <cite>{0,(1)}</cite> Option to round the polytope before sampling.
+roundedPolytope:  The rounded polytope from a previous round of</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>toRound</strong> &#8211;
-<cite>{0,(1)}</cite> Option to round the polytope before sampling.</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope from a previous round of
-sampling the same model.</li>
-<li><strong>useFastFVA</strong> &#8211;
-Boolean to use fastFVA (default: <cite>false</cite>)</li>
-<li><strong>optPercentage</strong> &#8211;
-Only consider solutions that give you at least a certain
-percentage of the optimal solution (Default = 100)
-Can decrease optPercentage slightly if getting errors.</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+<div>sampling the same model.</div></blockquote>
+<p>useFastFVA:       Boolean to use fastFVA (default: <cite>false</cite>)
+optPercentage:    Only consider solutions that give you at least a certain</p>
+<blockquote class="last">
+<div>percentage of the optimal solution (Default = 100)
+Can decrease optPercentage slightly if getting errors.</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">samples:          <cite>n x numSamples</cite> matrix of random flux samples
+roundedPolytope:  The rounded polytope. Save for use in subsequent</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>samples</strong> &#8211;
-<cite>n x numSamples</cite> matrix of random flux samples</li>
-<li><strong>roundedPolytope</strong> &#8211;
-The rounded polytope. Save for use in subsequent
-rounds of sampling.</li>
-<li><strong>minFlux, maxFlux</strong> &#8211;
-flux minima and maxima</li>
-</ul>
-</div></blockquote>
+<div>rounds of sampling.</div></blockquote>
+<p class="last">minFlux, maxFlux:    flux minima and maxima</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -447,7 +434,7 @@ flux minima and maxima</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -478,6 +465,7 @@ flux minima and maxima</li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -497,5 +485,14 @@ flux minima and maxima</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

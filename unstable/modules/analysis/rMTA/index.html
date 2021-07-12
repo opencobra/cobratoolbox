@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,194 +268,165 @@
 <span id="id1"></span><h1>rMTA<a class="headerlink" href="#rmta" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.rMTA"></span><dl class="function">
 <dt id="src.analysis.rMTA.MTA">
-<code class="descname">MTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.MTA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Metabolic Transformation Analysis (MTA) using the the
 solver CPLEX.
 Code was prepared to be able to be stopped and be launched again by using
-a temporary file called &#8216;temp_MTA.mat&#8217;.
+a temporary file called ‘temp_MTA.mat’.
 Outputs are cell array for each alpha (one simulation by alpha). It
 there is only one alpha, content of cell will be returned
 The code here has been based on:</p>
 <blockquote>
 <div>Yizhak, K., Gabay, O., Cohen, H., &amp; Ruppin, E. (2013).
-&#8216;Model-based identification of drug targets that revert disrupted
-metabolism and its application to ageing&#8217;. Nature communications, 4.
+‘Model-based identification of drug targets that revert disrupted
+metabolism and its application to ageing’. Nature communications, 4.
 <a class="reference external" href="http://www.nature.com/ncomms/2013/131024/ncomms3632/full/ncomms3632.html">http://www.nature.com/ncomms/2013/131024/ncomms3632/full/ncomms3632.html</a></div></blockquote>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[TSscore,deletedGenes,Vout] = MTA(model, rxnFBS, Vref, alpha, epsilon, varargin)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:               Metabolic model structure (COBRA Toolbox format).
+rxnFBS:              Array that contains the desired change: Forward,</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>rxnFBS</strong> &#8211;
-Array that contains the desired change: Forward,
-Backward and Unchanged (+1;0;-1). This is calculated
-from the rules and differential expression analysis.</li>
-<li><strong>Vref</strong> &#8211;
-Reference flux of the source state.</li>
+<div>Backward and Unchanged (+1;0;-1). This is calculated
+from the rules and differential expression analysis.</div></blockquote>
+<p class="last">Vref:                Reference flux of the source state.</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>alpha:               Numeric value or array. Parameter of the quadratic</dt>
+<dd>problem (default = 0.66)</dd>
+<dt>epsilon:             Numeric value or array. Minimun perturbation for each</dt>
+<dd>reaction (default = 0)</dd>
+<dt>rxnKO:               Binary value. Calculate knock outs at reaction level</dt>
+<dd>instead of gene level. (default = false)</dd>
+<dt>listKO:             Cell array containing the name of genes or</dt>
+<dd>reactions to knockout. (default = all)</dd>
+<dt>timelimit:           Time limit for the calculation of each knockout.</dt>
+<dd>(default = inf)</dd>
+<dt>SeparateTranscript:  Character used to separate different transcripts of a gene. (default = ‘’).</dt>
+<dd><dl class="first last docutils">
+<dt>Examples:</dt>
+<dd><ul class="first last simple">
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1    ==&gt;    gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005.2</li>
+<li>gene 10005.3    ==&gt;    gene 10005.3</li>
 </ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>alpha</strong> &#8211;
-Numeric value or array. Parameter of the quadratic
-problem (default = 0.66)</p>
+</dd>
+</dl>
 </li>
-<li><p class="first"><strong>epsilon</strong> &#8211;
-Numeric value or array. Minimun perturbation for each
-reaction (default = 0)</p>
-</li>
-<li><p class="first"><strong>rxnKO</strong> &#8211;
-Binary value. Calculate knock outs at reaction level
-instead of gene level. (default = false)</p>
-</li>
-<li><p class="first"><strong>listKO</strong> &#8211;
-Cell array containing the name of genes or
-reactions to knockout. (default = all)</p>
-</li>
-<li><p class="first"><strong>timelimit</strong> &#8211;
-Time limit for the calculation of each knockout.
-(default = inf)</p>
-</li>
-<li><p class="first"><strong>SeparateTranscript</strong> &#8211;
-Character used to separate different transcripts of a gene. (default = &#8216;&#8217;).
-<strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.1</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.2</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.3</span>
-<span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mi">10005</span>
-      <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><strong>numWorkers</strong> &#8211;
-Integer: is the maximun number of workers
-used by the solver. 0 = automatic, 1 = sequential,
-&gt; 1 = parallel. (default = 0)</p>
-</li>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-Integer. 1 if the process is wanted to be shown
-on the screen, 0 otherwise. (default = 1)</p>
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘.’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005</li>
+<li>gene 10005.3</li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>TSscore</strong> &#8211;
-Transformation score by each transformation</li>
-<li><strong>deletedGenes</strong> &#8211;
-The list of genes/reactions removed in each knock-out</li>
-<li><strong>Vres</strong> &#8211;
-Matrix of resulting fluxes</li>
-</ul>
-</div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>numWorkers:          Integer: is the maximun number of workers</dt>
+<dd>used by the solver. 0 = automatic, 1 = sequential,
+&gt; 1 = parallel. (default = 0)</dd>
+<dt>FORCE_CPLEX:         1 to force CPLEX solver, 0 (default) for COBRA</dt>
+<dd>solver.</dd>
+<dt>printLevel:          Integer. 1 if the process is wanted to be shown</dt>
+<dd>on the screen, 0 otherwise. (default = 1)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>TSscore:             Transformation score by each transformation
+deletedGenes:        The list of genes/reactions removed in each knock-out
+Vres:                Matrix of resulting fluxes</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.MTA_MIQP">
-<code class="descname">MTA_MIQP</code><span class="sig-paren">(</span><em>OptimizationModel</em>, <em>KOrxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA_MIQP.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_MIQP" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA_MIQP</code><span class="sig-paren">(</span><em>OptimizationModel</em>, <em>KOrxn</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.MTA_MIQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the OptimizationModel solution of a particular MTA problem and
 an specific model</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[v_res, success, unsuccess] = MTA_MIQP (OptimizationModel, KOrxn, numWorkers, timeLimit, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">OptimizationModel:    Cplex Model struct
+KOrxn:                perturbation in the model (reactions)
+numWorkers:           number of threads used by Cplex.
+FORCE_CPLEX:          1 to force CPLEX solver, 0 (default) for COBRA</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>OptimizationModel</strong> &#8211;
-Cplex Model struct</li>
-<li><strong>KOrxn</strong> &#8211;
-perturbation in the model (reactions)</li>
-<li><strong>numWorkers</strong> &#8211;
-number of threads used by Cplex.</li>
-<li><strong>printLevel</strong> &#8211;
-1 if the process is wanted to be shown on the
-screen, 0 otherwise. Default: 1.</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Vout</strong> &#8211;
-Solution flux of MIQP formulation for each case</li>
-<li><strong>solution</strong> &#8211;
-Cplex solution struct</li>
-</ul>
-</div></blockquote>
+<div>solver.</div></blockquote>
+<dl class="last docutils">
+<dt>printLevel:           1 if the process is wanted to be shown on the</dt>
+<dd>screen, 0 otherwise. Default: 1.</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>Vout:                 Solution flux of MIQP formulation for each case
+solution:             Cplex solution struct</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.MTA_TS">
-<code class="descname">MTA_TS</code><span class="sig-paren">(</span><em>Vout</em>, <em>Vref</em>, <em>rxnFBS</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/MTA_TS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.MTA_TS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">MTA_TS</code><span class="sig-paren">(</span><em>Vout</em>, <em>Vref</em>, <em>rxnFBS</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.MTA_TS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the TS score of a particular solution of the MTA perturbation
 algorithm.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>score = MTA_TS(v_res,vref,Model,success,unsuccess)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Vout</strong> &#8211;
-Solution flux of MIQP formulation for each case</li>
-<li><strong>Vref</strong> &#8211;
-Reference flux of source state</li>
-<li><strong>rxnFBS</strong> &#8211;
-Array that contains the desired change: Forward,
-Backward and Unchanged (+1;0;-1).</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>score</strong> &#8211;
-TS score for each case</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">Vout:             Solution flux of MIQP formulation for each case
+Vref:             Reference flux of source state
+rxnFBS:           Array that contains the desired change: Forward,</p>
+<blockquote class="last">
+<div>Backward and Unchanged (+1;0;-1).</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>score:            TS score for each case</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.buildMTAproblemFromModel">
-<code class="descname">buildMTAproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/buildMTAproblemFromModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.buildMTAproblemFromModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">buildMTAproblemFromModel</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.buildMTAproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the COBRA Optimization model needed to perform the MTA</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,alpha,epsilon)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:                 Metabolic model (COBRA format)
+rxnFBS:                Forward, Backward and Unchanged (+1;0;-1) values</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Metabolic model (COBRA format)</li>
-<li><strong>rxnFBS</strong> &#8211;
-Forward, Backward and Unchanged (+1;0;-1) values
-corresponding to each reaction.</li>
-<li><strong>Vref</strong> &#8211;
-Reference flux of the source state.</li>
-<li><strong>alpha</strong> &#8211;
-parameter of the quadratic problem (default = 0.66)</li>
-<li><strong>epsilon                minimun disturbance for each reaction, (default = 0)</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>OptimizationModel</strong> &#8211;
-COBRA model struct that includes the
-stoichiometric contrains, the thermodinamic
-constrains and the binary variables.</li>
-</ul>
-</div></blockquote>
+<div>corresponding to each reaction.</div></blockquote>
+<p class="last">Vref:                  Reference flux of the source state.
+alpha:                 parameter of the quadratic problem (default = 0.66)
+epsilon                minimun disturbance for each reaction, (default = 0)</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>OptimizationModel:     COBRA model struct that includes the</dt>
+<dd>stoichiometric contrains, the thermodinamic
+constrains and the binary variables.</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.calculateEPSILON">
-<code class="descname">calculateEPSILON</code><span class="sig-paren">(</span><em>samples</em>, <em>rxnFBS</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/calculateEPSILON.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateEPSILON" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateEPSILON</code><span class="sig-paren">(</span><em>samples</em>, <em>rxnFBS</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.calculateEPSILON" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the minimum required flux change (epsilon) for reactions to be
 considered as significantly changed with p-value of 0.05
 The code below is based on the method presented in:</p>
@@ -458,106 +434,100 @@ The code below is based on the method presented in:</p>
 <div>Yizhak, K., Gabay, O., Cohen, H., &amp; Ruppin, E. (2013). Model-based
 identification of drug targets that revert disrupted metabolism and
 its application to ageing. Nature communications, 4, 2632.</div></blockquote>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>epsilon = calculateEPSILON(samples, rxnFBS, &#8216;unique_epsilon&#8217;, false, &#8216;minimum&#8217;, 1e-3)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
+<div>epsilon = calculateEPSILON(samples, rxnFBS, ‘unique_epsilon’, false, ‘minimum’, 1e-3)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">samples:           Matrix of sampled fluxes.
+rxnFBS:            Array that contains the desired change: Forward,</p>
+<blockquote class="last">
+<div>Backward and Unchanged (+1;0;-1). This is calculated
+from the rules and differential expression analysis.</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">varargin:  <cite>ParameterName</cite> value pairs with the following options:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>samples</strong> &#8211;
-Matrix of sampled fluxes.</li>
-<li><strong>rxnFBS</strong> &#8211;
-Array that contains the desired change: Forward,
-Backward and Unchanged (+1;0;-1). This is calculated
-from the rules and differential expression analysis.</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>varargin</strong> &#8211;
-<cite>ParameterName</cite> value pairs with the following options:<ul>
 <li><cite>unique_epsilon</cite>: True = unique epsilon, False = each reaction has different epsilon (default=false)</li>
 <li><cite>minimum</cite>: Minimun value for epsilon requiered (default=1e-3)</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>epsilon</strong> &#8211;
-Numeric value or array with the epsilon for the different reactions</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>epsilon:           Numeric value or array with the epsilon for the different reactions</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.calculateGeneKOMatrix">
-<code class="descname">calculateGeneKOMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/calculateGeneKOMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.calculateGeneKOMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculateGeneKOMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.calculateGeneKOMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a rxn-gene matrix such that the i-th column indicates what
-reactions become inactive because of the i-th gene&#8217;s knock-out.</p>
-<p><strong>Usage</strong></p>
+reactions become inactive because of the i-th gene’s knock-out.</p>
+<p>USAGE:</p>
 <blockquote>
 <div>geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:             The COBRA Model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>SeparateTranscript Character used to separate</dt>
+<dd><p class="first">different transcripts of a gene. (default = ‘’)
+Examples:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-The COBRA Model structure</li>
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1    ==&gt;    gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005.2</li>
+<li>gene 10005.3    ==&gt;    gene 10005.3</li>
 </ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>SeparateTranscript Character used to separate</strong> &#8211;</p>
-<p>different transcripts of a gene. (default = &#8216;&#8217;)
-<strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.1</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.2</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.3</span>
-<span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mi">10005</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>
-</pre></div>
-</div>
+</dd>
+</dl>
 </li>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-Integer. 1 if the process is wanted to be shown
-on the screen, 0 otherwise. (default = 1)</p>
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘.’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005</li>
+<li>gene 10005.3</li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>geneKO</strong> &#8211;
-Struct which contains matrix with blocked
-reactions for each gene in the metabolic model,
-name of reactions and name of genes.</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>printLevel:       Integer. 1 if the process is wanted to be shown</dt>
+<dd>on the screen, 0 otherwise. (default = 1)</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>geneKO:            Struct which contains matrix with blocked</dt>
+<dd>reactions for each gene in the metabolic model,
+name of reactions and name of genes.</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.diffexprs2rxnFBS">
-<code class="descname">diffexprs2rxnFBS</code><span class="sig-paren">(</span><em>model</em>, <em>diff_exprs</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/diffexprs2rxnFBS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.diffexprs2rxnFBS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">diffexprs2rxnFBS</code><span class="sig-paren">(</span><em>model</em>, <em>diff_exprs</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.diffexprs2rxnFBS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Forward - Backward - Unchanged (+1;0;-1) for each reaction.
 (+1)R_f    (-1)R_b     (0)unchanged</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, &#8216;SeparateTranscript&#8217;, &#8216;&#8217;, &#8216;logFC&#8217;, 0, &#8216;pval&#8217;,0.05)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, ‘SeparateTranscript’, ‘’, ‘logFC’, 0, ‘pval’,0.05)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:             The COBRA Model structure
+diff_exprs:        MATLAB Table including the information of the</p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-The COBRA Model structure</p>
-</li>
-<li><p class="first"><strong>diff_exprs</strong> &#8211;
-MATLAB Table including the information of the
-differentially expressed genes.
+<div><p>differentially expressed genes.
 Required columns (with theses names):</p>
 <blockquote>
 <div><ul class="simple">
@@ -566,123 +536,141 @@ Required columns (with theses names):</p>
 <li>pval (p-value or adjusted-p-value)</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>Vref</strong> &#8211;
-Reference flux of the model</p>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
+<p class="last">Vref:              Reference flux of the model</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">varargin:          <cite>ParameterName</cite> value pairs with the following options:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>varargin</strong> &#8211;
-<cite>ParameterName</cite> value pairs with the following options:<ul>
-<li><cite>SeparateTranscript</cite>: Character used to separate different transcripts of a gene. (default: &#8216;&#8217;)</li>
+<li><cite>SeparateTranscript</cite>: Character used to separate different transcripts of a gene. (default: ‘’)</li>
 <li><cite>logFC</cite>: minimum log2 (fold change) requiered (default = 0)</li>
 <li><cite>pval</cite>: maximum p-value admited (default = 0.05)</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>rxnFBS</strong> &#8211;
-array containting the information of altered
-reactions: Forward - Backward - Unchanged
-(+1;0;-1);</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>rxnFBS:             array containting the information of altered</dt>
+<dd>reactions: Forward - Backward - Unchanged
+(+1;0;-1);</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.rMTA.rMTA">
-<code class="descname">rMTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/rMTA/rMTA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.rMTA.rMTA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rMTA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnFBS</em>, <em>Vref</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.rMTA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate robust Metabolic Transformation Analysis (rMTA) using the
 solver CPLEX.
 Code was prepared to be able to be stopped and be launched again by using
-a temporally file called &#8216;temp_rMTA.mat&#8217;.
+a temporally file called ‘temp_rMTA.mat’.
 Outputs are cell array for each alpha (one simulation by alpha). It
 there is only one alpha, content of cell will be returned</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[TSscore,deletedGenes,Vout] = rMTA(model, rxnFBS, Vref, alpha, epsilon, varargin)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:              Metabolic model structure (COBRA Toolbox format).
+rxnFBS:             Array that contains the desired change: Forward,</p>
+<blockquote>
+<div>Backward and Unchanged (+1;0;-1). This is calculated
+from the rules and differential expression analysis.</div></blockquote>
+<p class="last">Vref:               Reference flux of the source state.</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>alpha:              Numeric value or array. Parameter of the quadratic</dt>
+<dd>problem (default = 0.66)</dd>
+<dt>epsilon:            Numeric value or array. Minimun perturbation for each</dt>
+<dd>reaction (default = 0)</dd>
+<dt>parameterK:         Numeric value value. Parameter to calculate rTS</dt>
+<dd>score. (default = 100)</dd>
+<dt>rxnKO:              Binary value. Calculate knock outs at reaction level</dt>
+<dd>instead of gene level. (default = false)</dd>
+<dt>listKO:             Cell array containing the name of genes or</dt>
+<dd>reactions to knockout. (default = all)</dd>
+</dl>
+<p>timelimit:          Time limit for the calculation of each knockout. (default = inf)
+SeparateTranscript: Character used to separate</p>
+<blockquote>
+<div><p>different transcripts of a gene. (default = ‘’)
+Examples:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>rxnFBS</strong> &#8211;
-Array that contains the desired change: Forward,
-Backward and Unchanged (+1;0;-1). This is calculated
-from the rules and differential expression analysis.</li>
-<li><strong>Vref</strong> &#8211;
-Reference flux of the source state.</li>
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1    ==&gt;    gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005.2</li>
+<li>gene 10005.3    ==&gt;    gene 10005.3</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>SeparateTranscript = ‘.’</dt>
+<dd><ul class="first last">
+<li>gene 10005.1</li>
+<li>gene 10005.2    ==&gt;    gene 10005</li>
+<li>gene 10005.3</li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+</div></blockquote>
+<dl class="last docutils">
+<dt>numWorkers:         Integer: is the maximun number of workers</dt>
+<dd>used by the solver. 0 = automatic, 1 = sequential,
+&gt; 1 = parallel. (default = 0)</dd>
+<dt>FORCE_CPLEX:        1 to force CPLEX solver, 0 (default) for COBRA</dt>
+<dd>solver.</dd>
+<dt>printLevel:         Integer. 1 if the process is wanted to be shown</dt>
+<dd>on the screen, 0 otherwise. (default = 1)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>TSscore:            Transformation score by each transformation
+deletedGenes:       The list of genes/reactions removed in each knock-out
+Vref:               Matrix of resulting fluxes</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.rMTA.rMTAsaveInExcel">
+<code class="descname">rMTAsaveInExcel</code><span class="sig-paren">(</span><em>xls_filename</em>, <em>TSscore</em>, <em>deletedGenes</em>, <em>alpha_values</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rMTA.rMTAsaveInExcel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save in Excel all the results calculated using rMTA.</p>
+<p>USAGE:</p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>alpha</strong> &#8211;
-Numeric value or array. Parameter of the quadratic
-problem (default = 0.66)</p>
-</li>
-<li><p class="first"><strong>epsilon</strong> &#8211;
-Numeric value or array. Minimun perturbation for each
-reaction (default = 0)</p>
-</li>
-<li><p class="first"><strong>parameterK</strong> &#8211;
-Numeric value value. Parameter to calculate rTS
-score. (default = 100)</p>
-</li>
-<li><p class="first"><strong>rxnKO</strong> &#8211;
-Binary value. Calculate knock outs at reaction level
-instead of gene level. (default = false)</p>
-</li>
-<li><p class="first"><strong>listKO</strong> &#8211;
-Cell array containing the name of genes or
-reactions to knockout. (default = all)</p>
-</li>
-<li><p class="first"><strong>timelimit</strong> &#8211;
-Time limit for the calculation of each knockout. (default = inf)</p>
-</li>
-<li><p class="first"><strong>SeparateTranscript</strong> &#8211;
-Character used to separate
-different transcripts of a gene. (default = &#8216;&#8217;)
-<strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.1</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.2</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mf">10005.3</span>
-<span class="o">-</span> <span class="n">SeparateTranscript</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.1</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.2</span>    <span class="o">==&gt;</span>    <span class="n">gene</span> <span class="mi">10005</span>
-   <span class="o">-</span> <span class="n">gene</span> <span class="mf">10005.3</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><strong>numWorkers</strong> &#8211;
-Integer: is the maximun number of workers
-used by the solver. 0 = automatic, 1 = sequential,
-&gt; 1 = parallel. (default = 0)</p>
-</li>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-Integer. 1 if the process is wanted to be shown
-on the screen, 0 otherwise. (default = 1)</p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>TSscore</strong> &#8211;
-Transformation score by each transformation</li>
-<li><strong>deletedGenes</strong> &#8211;
-The list of genes/reactions removed in each knock-out</li>
-<li><strong>Vref</strong> &#8211;
-Matrix of resulting fluxes</li>
-</ul>
-</div></blockquote>
+<div>rMTAsaveInExcel(output_file, TSscore, deletedGenes, alpha_values, varargin)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">xls_filename:       name of the resulting excel file
+TSscore:            Transformation score by each transformation
+deletedGenes:       The list of genes/reactions removed in each knock-out
+alpha_values:       Numeric value or array. Parameter of the quadratic</p>
+<blockquote class="last">
+<div>problem (default = alpha_1, alpha_2,…)</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>gene_info:          Table with the gene names and additional</dt>
+<dd>information. It needs a column called ‘gene’,
+which contains the same information as the
+deletedGenes variable.</dd>
+<dt>differ_genes:       Table with the gene differential expression</dt>
+<dd>information. It needs a column called ‘gene’,
+which contains the same information as the
+deletedGenes variable.</dd>
+<dt>RankingGeneID:      Caracter array with the ID of the gene which score</dt>
+<dd>is desired to know.</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -709,7 +697,7 @@ Matrix of resulting fluxes</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -740,6 +728,7 @@ Matrix of resulting fluxes</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -759,5 +748,14 @@ Matrix of resulting fluxes</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

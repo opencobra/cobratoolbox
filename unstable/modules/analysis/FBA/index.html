@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,135 +268,98 @@
 <span id="id1"></span><h1>FBA<a class="headerlink" href="#fba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.FBA"></span><dl class="function">
 <dt id="src.analysis.FBA.changeObjective">
-<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/changeObjective.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeObjective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.changeObjective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes the objective function of a constraint-based model</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>model = changeObjective(model, rxnNameList, objectiveCoeff)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of reactions (cell array or string)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>objectiveCoeff</strong> &#8211;
-Value of objective coefficient for each reaction (Default = 1)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with new objective</li>
-</ul>
-</div></blockquote>
+<div>model = changeObjective(model, rxns, objectiveCoeff)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:         COBRA model structure
+rxns:          a string or a cell array of strings matching some model.rxns{i}</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>objectiveCoeff:    Value of objective coefficient for each reaction (Default = 1)</dd>
+<dt>OUTPUT:</dt>
+<dd>model:             COBRA model structure with new objective</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.FBA.changeRxnBounds">
-<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/changeRxnBounds.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
+<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes upper or lower bounds of a reaction or a set of reactions</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = changeRxnBounds(model, rxnNameList, value, boundType)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of reactions (cell array or string)</li>
-<li><strong>value</strong> &#8211;
-Bound values.
-Can either be a vector or a single scalar value if the same
-bound value is to be assinged to all reactions</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>boundType</strong> &#8211;
-&#8216;u&#8217; - upper, &#8216;l&#8217; - lower, &#8216;b&#8217; - both (Default = &#8216;b&#8217;)
-Bound type can either be a cell array of strings or a
-string with as many letters as there are reactions in  <cite>rxnNameList</cite></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with modified reaction bounds</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:          COBRA model structure
+rxnNameList:    List of reactions (cell array or string)
+value:          Bound values.</p>
+<blockquote class="last">
+<div>Can either be a vector or a single scalar value if the same
+bound value is to be assinged to all reactions</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>boundType:      ‘u’ - upper, ‘l’ - lower, ‘b’ - both (Default = ‘b’)</dt>
+<dd>Bound type can either be a cell array of strings or a
+string with as many letters as there are reactions in  <cite>rxnNameList</cite></dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>model:          COBRA model structure with modified reaction bounds</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.FBA.enumerateOptimalSolutions">
-<code class="descname">enumerateOptimalSolutions</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/enumerateOptimalSolutions.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.enumerateOptimalSolutions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">enumerateOptimalSolutions</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.enumerateOptimalSolutions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a set of optimal flux distributions
 spanning the optimal set</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[solution] = enumerateOptimalSolution(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:       COBRA model structure</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:    solution structure</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-solution structure<ul>
 <li>fluxes - Flux distribution for each iteration</li>
 <li>nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.FBA.minimizeModelFlux">
-<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/minimizeModelFlux.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
+<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds the minimum flux through the network and returns the
 minimized flux and an irreversible model</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[MinimizedFlux modelIrrev]= minimizeModelFlux(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>osenseStr</strong> &#8211;
-Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216;max&#8217;)</p>
-</li>
-<li><p class="first"><strong>minNorm</strong> &#8211;
-{(0), &#8216;one&#8217;, &#8216;zero&#8217;, &gt; 0 , <cite>n x 1</cite> vector}, where <cite>[m,n]=size(S)</cite>;
-0 - Default, normal LP,
-&#8216;one&#8217;  Minimise the Taxicab Norm using LP.</p>
-<div class="math">
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:              COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">osenseStr:         Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’)
+minNorm:           {(0), ‘one’, ‘zero’, &gt; 0 , <cite>n x 1</cite> vector}, where <cite>[m,n]=size(S)</cite>;</p>
+<blockquote class="last">
+<div><p>0 - Default, normal LP,
+‘one’  Minimise the Taxicab Norm using LP.</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp;~ |v| \\
 s.t. ~&amp;~ S v = b \\
      ~&amp;~ c^T v = f \\
      ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
 <p>A LP solver is required.
-&#8216;zero&#8217; Minimize the cardinality (zero-norm) of v</p>
-<div class="math">
+‘zero’ Minimize the cardinality (zero-norm) of v</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp;~ ||v||_0 \\
 s.t. ~&amp;~ S v = b \\
      ~&amp;~ c^T v = f \\
@@ -404,89 +372,85 @@ the best result in term of sparsity.</p>
 <p>The remaining options work only with a valid QP solver:</p>
 <p>&gt; 0    Minimises the Euclidean Norm of internal fluxes.
 Typically 1e-6 works well.</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp;~ ||v||      \\
 s.t. ~&amp;~ S v = b    \\
      ~&amp;~ c^T v = f  \\
      ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
 <p><cite>n</cite> x 1   Forms the diagonal of positive definiate
 matrix <cite>F</cite> in the quadratic program</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp;~ 0.5 v^T F v  \\
 s.t. ~&amp;~ S v = b      \\
      ~&amp;~ c^T v = f    \\
     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>MinimizedFlux</strong> &#8211;
-minimum flux possible through the netwok</li>
-<li><strong>modelIrrev</strong> &#8211;
-irreversible version of &#8216;model&#8217;</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>MinimizedFlux:    minimum flux possible through the netwok
+modelIrrev:       irreversible version of ‘model’</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.FBA.optimizeCbModel">
-<code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>zeroNormApprox</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/optimizeCbModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves a flux balance analysis problem</p>
+<code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves flux balance analysis problems, and variants thereof</p>
 <p>Solves LP problems of the form</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}max/min  ~&amp; c^T v \\
-s.t.     ~&amp; S v = dxdt ~~~~~~~~~~~:y \\
+s.t.     ~&amp; S v = b ~~~~~~~~~~~:y \\
          ~&amp; C v \leq d~~~~~~~~:y \\
          ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<div>solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:             (the following fields are required - others can be supplied)</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-(the following fields are required - others can be supplied)<ul>
-<li>S  - <cite>m x 1</cite> Stoichiometric matrix</li>
+<li>S  - <cite>m x n</cite> Stoichiometric matrix</li>
 <li>c  - <cite>n x 1</cite> Linear objective coefficients</li>
-<li>lb - <cite>n x 1</cite> Lower bounds</li>
-<li>ub - <cite>n x 1</cite> Upper bounds</li>
-</ul>
-</li>
+<li>lb - <cite>n x 1</cite> Lower bounds on net flux</li>
+<li>ub - <cite>n x 1</cite> Upper bounds on net flux</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;</p>
-<ul class="simple">
-<li>dxdt - <cite>m x 1</cite> change in concentration with time</li>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><blockquote class="first">
+<div><dl class="docutils">
+<dt>model:</dt>
+<dd><ul class="first last simple">
+<li>b - <cite>m x 1</cite> change in concentration with time</li>
 <li>csense - <cite>m x 1</cite> character array with entries in {L,E,G}
 (The code is backward compatible with an m + k x 1 csense vector,
 where k is the number of coupling constraints)</li>
 <li>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</li>
 <li>d - <cite>k x n</cite> Right hand side of C*v &lt;= d</li>
 <li>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</li>
+<li>g0 - <cite>n x 1</cite> weights on zero norm</li>
+<li>g1 - <cite>n x 1</cite> weights on one norm</li>
+<li>g2 - <cite>n x 1</cite> weights on two norm</li>
 </ul>
-</li>
-<li><p class="first"><strong>osenseStr</strong> &#8211;
-Maximize (&#8216;max&#8217;)/minimize (&#8216;min&#8217;) (opt, default = &#8216;max&#8217;)</p>
-</li>
-<li><p class="first"><strong>minNorm</strong> &#8211;
-{(0), &#8216;one&#8217;, &#8216;zero&#8217;, &gt; 0 , n x 1 vector}, where <cite>[m,n]=size(S)</cite>;
-0 - Default, normal LP
-&#8216;one&#8217;  Minimise the Taxicab Norm using LP.</p>
-<div class="math">
-\[\begin{split}min  ~&amp; |v| \\
-s.t. ~&amp; S v = dxdt \\
+</dd>
+<dt>osenseStr:         Maximize (‘max’)/minimize (‘min’) (opt, default =</dt>
+<dd>‘max’) linear part of the objective. Nonlinear
+parts of the objective are always assumed to be
+minimised.</dd>
+<dt>minNorm:           {(0), ‘one’, ‘zero’, &gt; 0 , n x 1 vector}, where <cite>[m,n]=size(S)</cite>;</dt>
+<dd><p class="first">0 - Default, normal LP
+‘one’  Minimise the Taxicab Norm using LP.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp; d.*|v| \\
+s.t. ~&amp; S v = b \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>A LP solver is required.
-&#8216;zero&#8217; Minimize the cardinality (zero-norm) of v</p>
-<div class="math">
-\[\begin{split}min  ~&amp; ||v||_0 \\
-s.t. ~&amp; S v = dxdt \\
+‘zero’ Minimize the cardinality (zero-norm) of v</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp; d.*||v||_0 \\
+s.t. ~&amp; S v = b \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
 <p>The zero-norm is approximated by a non-convex approximation
@@ -497,58 +461,68 @@ the best result in term of sparsity.</p>
 <p>The remaining options work only with a valid QP solver:</p>
 <p>&gt; 0    Minimises the squared Euclidean Norm of internal fluxes.
 Typically 1e-6 works well.</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp; 1/2 v'*v \\
-s.t. ~&amp; S v = dxdt \\
+s.t. ~&amp; S v = b \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
-<p><cite>n</cite> x 1   Forms the diagonal of positive definiate
+<p><cite>n</cite> x 1   Forms the diagonal of positive definite
 matrix <cite>F</cite> in the quadratic program</p>
-<div class="math">
+<div class="last math notranslate nohighlight">
 \[\begin{split}min  ~&amp; 0.5 v^T F v \\
-s.t. ~&amp; S v = dxdt \\
+s.t. ~&amp; S v = b \\
      ~&amp; c^T v = f \\
      ~&amp; lb \leq v \leq ub\end{split}\]</div>
-</li>
-<li><p class="first"><strong>allowLoops</strong> &#8211;
-{0,(1)} If false, then instead of a conventional FBA,
-the solver will run an MILP version which does not allow
+</dd>
+<dt>allowLoops:        {0,(1)} If false, then instead of a conventional FBA,</dt>
+<dd>the solver will run an MILP version which does not allow
 loops in the final solution.  Default is true.
 Runs much slower when set to false.
-See <cite>addLoopLawConstraints.m</cite> to for more info.</p>
-</li>
-<li><p class="first"><strong>zeroNormApprox</strong> &#8211;
-appoximation type of zero-norm (only available when minNorm=&#8217;zero&#8217;) (default = &#8216;cappedL1&#8217;)</p>
-<ul class="simple">
-<li>&#8216;cappedL1&#8217; : Capped-L1 norm</li>
-<li>&#8216;exp&#8217;      : Exponential function</li>
-<li>&#8216;log&#8217;      : Logarithmic function</li>
-<li>&#8216;SCAD&#8217;     : SCAD function</li>
-<li>&#8216;lp-&#8216;      : L_p norm with p&lt;0</li>
-<li>&#8216;lp+&#8217;      : L_p norm with 0&lt;p&lt;1</li>
-<li>&#8216;all&#8217;      : try all approximations and return the best result</li>
-</ul>
-</li>
-</ul>
+See <cite>addLoopLawConstraints.m</cite> to for more info.</dd>
+</dl>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>solution</strong> &#8211;
-solution object:</p>
+<dl class="docutils">
+<dt>param:              parameters structure passed directly to solver</dt>
+<dd>The following are some optional fields (amongst many others)</dd>
+</dl>
+<p><a href="#id2"><span class="problematic" id="id3">*</span></a>.zeroNormApprox:    appoximation type of zero-norm (only available when minNorm=’zero’) (default = ‘cappedL1’)</p>
 <blockquote>
 <div><ul class="simple">
-<li>f - Objective value</li>
-<li>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</li>
-<li>y - Dual for the metabolites</li>
-<li>w - Reduced costs of the reactions</li>
-<li>s - Slacks of the metabolites</li>
-<li>stat - Solver status in standardized form:<ul>
-<li><cite>-1</cite> - No solution reported (timelimit, numerical problem etc)</li>
-<li><cite>1</cite> - Optimal solution</li>
-<li><cite>2</cite> - Unbounded solution</li>
-<li><cite>0</cite> - Infeasible</li>
+<li>‘cappedL1’ : Capped-L1 norm</li>
+<li>‘exp’      : Exponential function</li>
+<li>‘log’      : Logarithmic function</li>
+<li>‘SCAD’     : SCAD function</li>
+<li>‘lp-’      : L_p norm with p&lt;0</li>
+<li>‘lp+’      : L_p norm with 0&lt;p&lt;1</li>
+<li>‘all’      : try all approximations and return the best result</li>
 </ul>
+</div></blockquote>
+<p class="last"><a href="#id4"><span class="problematic" id="id5">*</span></a>.verify:     verify that the input fields are consistent (default: false);</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:       solution object:</p>
+<blockquote class="last">
+<div><blockquote>
+<div><ul class="simple">
+<li>f - Linear objective value</li>
+<li>f0 - Zero-norm objective value (optional)</li>
+<li>f1 - One-norm objective value  (optional)</li>
+<li>f2 - Two-norm objective value  (optional)</li>
+<li>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</li>
+<li>y - Dual to the matrix inequality constraints (Shadow prices)</li>
+<li>w - Dual to the box constraints (Reduced costs)</li>
+<li>s - Slacks of the metabolites</li>
+<li><dl class="first docutils">
+<dt>stat - Solver status in standardized form:</dt>
+<dd><ul class="first last">
+<li>0 - Infeasible problem</li>
+<li>1 - Optimal solution</li>
+<li>2 - Unbounded solution</li>
+<li>3 - Almost optimal solution</li>
+<li>-1 - Some other problem (timelimit, numerical problem etc)</li>
+</ul>
+</dd>
+</dl>
 </li>
 <li>origStat - Original status returned by the specific solver</li>
 </ul>
@@ -557,7 +531,7 @@ solution object:</p>
 <blockquote>
 <div><ul class="simple">
 <li>ctrs_y - the duals for the constraints from C</li>
-<li>ctrs_slack - Slacks of the additional constraints</li>
+<li>ctrs_s - Slacks of the additional constraints</li>
 </ul>
 </div></blockquote>
 <p>If the model contains the <cite>E</cite> field, the following fields are added to the solution:</p>
@@ -567,17 +541,18 @@ solution object:</p>
 <li>vars_w - The reduced costs of the additional variables from E</li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p><cite>solution.stat</cite> is either 1, 2, 0 or -1, and is a translation from <cite>solution.origStat</cite>,
+<p><cite>solution.stat</cite> is either 1, 2, 3, 0 or -1, and is a translation from <cite>solution.origStat</cite>,
 which is returned by each solver in a solver specific way. That is, not all solvers return
 the same type of <cite>solution.origStat</cite> and because the cobra toolbox can use many solvers,
 we need to return to the user of <cite>optimizeCbModel.m</cite> a standard representation, which is what
 <cite>solution.stat</cite> is.</p>
-<p class="last">When running <cite>optimizeCbModel.m</cite>, unless <cite>solution.stat = 1</cite>, then no solution is returned.
+<p class="last">If <cite>solution.stat = 1 or = 3</cite>, then a solution is returned, otherwise no solution is returned
+and the solution.f = NaN
 This means that it is up to the person calling <cite>optimizeCbModel</cite> to adapt their code to the
 case when no solution is returned, by checking the value of <cite>solution.stat</cite> first.</p>
 </div>
@@ -585,33 +560,27 @@ case when no solution is returned, by checking the value of <cite>solution.stat<
 
 <dl class="function">
 <dt id="src.analysis.FBA.randomObjFBASol">
-<code class="descname">randomObjFBASol</code><span class="sig-paren">(</span><em>model</em>, <em>initArgs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FBA/randomObjFBASol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FBA.randomObjFBASol" title="Permalink to this definition">¶</a></dt>
+<code class="descname">randomObjFBASol</code><span class="sig-paren">(</span><em>model</em>, <em>initArgs</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.randomObjFBASol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves an FBA problem with a random objective function</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>x0 = randomObjSol(model, initArgs)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>initArgs</strong> &#8211;
-Cell array containing the following data:<ol class="arabic">
-<li>osenseStr - Maximize (&#8216;max&#8217;) / minimize (&#8216;min&#8217;)</li>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:        COBRA model structure
+initArgs:     Cell array containing the following data:</p>
+<blockquote class="last">
+<div><ol class="arabic simple">
+<li>osenseStr - Maximize (‘max’) / minimize (‘min’)</li>
 <li>minObjFrac - Minimum initial objective fraction</li>
 <li>minObjValue - Minimum initial objective value (opt)
 (Default = <cite>minObjFrac*sol.f</cite>)</li>
 </ol>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>x0</strong> &#8211;
-solution of FBA problem</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>x0:           solution of FBA problem</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -638,7 +607,7 @@ solution of FBA problem</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -669,6 +638,7 @@ solution of FBA problem</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -688,5 +658,14 @@ solution of FBA problem</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

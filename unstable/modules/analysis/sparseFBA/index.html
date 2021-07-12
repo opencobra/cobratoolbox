@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -262,92 +267,96 @@
   <div class="section" id="sparsefba">
 <span id="id1"></span><h1>sparseFBA<a class="headerlink" href="#sparsefba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.sparseFBA"></span><dl class="function">
+<dt id="src.analysis.sparseFBA.findSparsePathway">
+<code class="descname">findSparsePathway</code><span class="sig-paren">(</span><em>model</em>, <em>rxnPenalty</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sparseFBA.findSparsePathway" title="Permalink to this definition">¶</a></dt>
+<dd><p>input a cobra model and find a sparse pathway given penalties on certain
+reactions being active rxnPenalty(j)&gt;0 and incentives on certain reactions
+being active rxnPenalty(j)&lt;0 and indifferent to the activity of other
+reactions rxnPenalty(j)==0</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="src.analysis.sparseFBA.sparseFBA">
-<code class="descname">sparseFBA</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>checkMinimalSet</em>, <em>checkEssentialSet</em>, <em>zeroNormApprox</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/sparseFBA/sparseFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sparseFBA</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>checkMinimalSet</em>, <em>checkEssentialSet</em>, <em>zeroNormApprox</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the minimal set of reactions subject to a LP objective</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min ~&amp;~ ||v||_0 \\
 s.t ~&amp;~ S v \leq, = or \geq b \\
     ~&amp;~ c^T v = f* \\
     ~&amp;~ l \leq v \leq u\end{split}\]</div>
-<p>where <span class="math">\(f*\)</span> is the optimal value of objective (default is <span class="math">\(max c^T v\)</span>).</p>
-<p><strong>Usage</strong></p>
+<p>where <span class="math notranslate nohighlight">\(f*\)</span> is the optimal value of objective (default is <span class="math notranslate nohighlight">\(max c^T v\)</span>).</p>
+<p>USAGE:</p>
 <blockquote>
 <div>[vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)</div></blockquote>
-<p><strong>Input</strong></p>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>model:               (the following fields are required - others can be supplied):</dt>
+<dd><ul class="first last simple">
+<li>S - Stoichiometric matrix</li>
+<li>b - Right hand side = dx/dt</li>
+<li>c - Objective coefficients</li>
+<li>lb - Lower bounds</li>
+<li>ub - Upper bounds</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>model:               (optional for C*v&lt;=d):</dt>
+<dd><ul class="first last simple">
+<li>C - Stoichiometric matrix</li>
+<li>d - Right hand side = dx/dt</li>
+</ul>
+</dd>
+</dl>
+<p>osenseStr:           (default = ‘max’)</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-(the following fields are required - others can be supplied):
-* S - Stoichiometric matrix
-* b - Right hand side = dx/dt
-* c - Objective coefficients
-* lb - Lower bounds
-* ub - Upper bounds</li>
+<li>max: <span class="math notranslate nohighlight">\(f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>min: <span class="math notranslate nohighlight">\(f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
+<li>none: ignore the constraint <span class="math notranslate nohighlight">\(c^T v = f*\)</span></li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-(optional for C*v&lt;=d):
-* C - Stoichiometric matrix
-* d - Right hand side = dx/dt</p>
-</li>
-<li><p class="first"><strong>osenseStr</strong> &#8211;
-(default = &#8216;max&#8217;)</p>
-<ul class="simple">
-<li>max: <span class="math">\(f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
-<li>min: <span class="math">\(f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></li>
-<li>none: ignore the constraint <span class="math">\(c^T v = f*\)</span></li>
-</ul>
-</li>
-<li><p class="first"><strong>checkMinimalSet</strong> &#8211;
-{0,(1)} Heuristically check if the selected set of reactions is minimal
-by removing one by one the predicted active reaction</p>
-<blockquote>
+<dl class="docutils">
+<dt>checkMinimalSet:     {0,(1)} Heuristically check if the selected set of reactions is minimal</dt>
+<dd><p class="first">by removing one by one the predicted active reaction</p>
+<blockquote class="last">
 <div><ul class="simple">
 <li>true = check (default value)</li>
 <li>false = do not check</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>checkEssentialSet</strong> &#8211;
-{0,(1)} Heuristically check if the selected set of reactions is essential</p>
-</li>
-<li><p class="first"><strong>zeroNormApprox</strong> &#8211;
-appoximation type of zero-norm (only available when minNorm = &#8216;zero&#8217;) (default = &#8216;cappedL1&#8217;)</p>
-<ul class="simple">
-<li>&#8216;cappedL1&#8217; : Capped-L1 norm</li>
-<li>&#8216;exp&#8217;      : Exponential function</li>
-<li>&#8216;log&#8217;      : Logarithmic function</li>
-<li>&#8216;SCAD&#8217;     : SCAD function</li>
-<li>&#8216;lp-&#8216;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(p &lt; 0\)</span></li>
-<li>&#8216;lp+&#8217;      : <span class="math">\(L_p\)</span> norm with <span class="math">\(0 &lt; p &lt; 1\)</span></li>
-<li>&#8216;l1&#8217;       : L1 norm</li>
-<li>&#8216;all&#8217;      : try all approximations and return the best result</li>
+</dd>
+</dl>
+<p>checkEssentialSet:   {0,(1)} Heuristically check if the selected set of reactions is essential
+zeroNormApprox:      appoximation type of zero-norm (only available when minNorm = ‘zero’) (default = ‘cappedL1’)</p>
+<blockquote>
+<div><ul class="simple">
+<li>‘cappedL1’ : Capped-L1 norm</li>
+<li>‘exp’      : Exponential function</li>
+<li>‘log’      : Logarithmic function</li>
+<li>‘SCAD’     : SCAD function</li>
+<li>‘lp-’      : <span class="math notranslate nohighlight">\(L_p\)</span> norm with <span class="math notranslate nohighlight">\(p &lt; 0\)</span></li>
+<li>‘lp+’      : <span class="math notranslate nohighlight">\(L_p\)</span> norm with <span class="math notranslate nohighlight">\(0 &lt; p &lt; 1\)</span></li>
+<li>‘l1’       : L1 norm</li>
+<li>‘all’      : try all approximations and return the best result</li>
 </ul>
-</li>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-Printing level</p>
-<ul class="simple">
+</div></blockquote>
+<p>printLevel:          Printing level</p>
+<blockquote class="last">
+<div><ul class="simple">
 <li>0 - Silent (Default)</li>
 <li>1 - Summary information</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>vSparse</strong> &#8211;
-Depends on the set of reactions</li>
-<li><strong>sparseRxnBool</strong> &#8211;
-Returns a vector with 1 and 0&#8217;s, where 1 means sparse</li>
-<li><strong>essentialRxnBool</strong> &#8211;
-Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>vSparse:             Depends on the set of reactions
+sparseRxnBool:       Returns a vector with 1 and 0’s, where 1 means sparse
+essentialRxnBool:    Returns a vector with 1 and 0’s, where 1 means essential</dd>
+</dl>
 <p>Authors: - Hoai Minh Le, Ronan Fleming</p>
 </dd></dl>
 
@@ -375,7 +384,7 @@ Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -406,6 +415,7 @@ Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -425,5 +435,14 @@ Returns a vector with 1 and 0&#8217;s, where 1 means essential</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

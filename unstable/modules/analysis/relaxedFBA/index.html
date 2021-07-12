@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,19 +268,18 @@
 <span id="id1"></span><h1>relaxedFBA<a class="headerlink" href="#relaxedfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.relaxedFBA"></span><dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxFBA_cappedL1">
-<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxFBA_cappedL1</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state constraints to make the FBA problem feasible.
 The zero-norm is appproximated by capped-L1 norm</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[solution] = relaxFBA_cappedL1(model, param)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:          COBRA model structure
+param:    Structure containing the relaxation options:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>param</strong> &#8211;
-Structure containing the relaxation options:<ul>
 <li>excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
 * excludedReactions(i) = false : allow to relax bounds on reaction i
 * excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
@@ -296,29 +300,27 @@ Structure containing the relaxation options:<ul>
 <li>lamda - weight on relaxation on steady state constraint (overridden by excludedMetabolites)</li>
 <li>alpha - weight on relaxation on bounds (overridden by excludedReactions)</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:       Structure containing the following fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
 <li>stat - status<ul>
 <li>1  = Solution found</li>
 <li>0  = Infeasible</li>
 <li>-1 = Invalid input</li>
 </ul>
 </li>
-<li>r - relaxation on steady state constraints <span class="math">\(S*v = b\)</span></li>
+<li>r - relaxation on steady state constraints <span class="math notranslate nohighlight">\(S*v = b\)</span></li>
 <li>p - relaxation on lower bound of reactions</li>
 <li>q - relaxation on upper bound of reactions</li>
 <li>v - reaction rate</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<div class="math">
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp;~ c^T v + \gamma_1 ||v||_1 + \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
      ~&amp;~   + \alpha_1 (||p||_1 + ||q||_1) + \alpha_0 (||p||_0 + ||q||_0) \\
 s.t. ~&amp;~ S v + r = b \\
@@ -331,11 +333,11 @@ s.t. ~&amp;~ S v + r = b \\
 
 <dl class="function">
 <dt id="src.analysis.relaxedFBA.relaxedFBA">
-<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">relaxedFBA</code><span class="sig-paren">(</span><em>model</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the mimimal set of relaxations on bounds and steady state
 constraints to make the FBA problem feasible. The optional parameters,
 excludedReactions and excludedMetabolites override all other relaxation options.</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min ~&amp;~ c^T v + \gamma ||v||_0 + \lambda ||r||_0 + \alpha (||p||_0 + ||q||_0) \\
 s.t ~&amp;~ S v + r \leq, =, \geq  b \\
     ~&amp;~ l - p \leq v \leq u + q \\
@@ -343,59 +345,69 @@ s.t ~&amp;~ S v + r \leq, =, \geq  b \\
     ~&amp;~ p,q \in R_+^nRxns\end{split}\]</div>
 <p><cite>nMets</cite> - number of metabolites,
 <cite>nRxns</cite> - number of reactions</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[solution] = relaxedFBA(model, param)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>model.S</strong></li>
-<li><strong>model.SIntRxnBool</strong></li>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>model:          COBRA model structure with the fields:</dt>
+<dd><ul class="first last simple">
+<li>.S</li>
+<li>.b</li>
+<li>.ub</li>
+<li>.ub</li>
+<li>.mets  (required if model.SIntRxnBool absent)</li>
+<li>.rxns  (required if model.SIntRxnBool absent)</li>
 </ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-COBRA model structure</p>
-</li>
-<li><p class="first"><strong>model.SIntRxnBool</strong></p>
-</li>
-<li><p class="first"><strong>param</strong> &#8211;
-Structure optionally containing the relaxation parameters:</p>
-<blockquote>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>model:          COBRA model structure with the fields</dt>
+<dd><ul class="first last simple">
+<li>.csense</li>
+<li>.C</li>
+<li>.d</li>
+<li>.dsense</li>
+<li>.SIntRxnBool</li>
+</ul>
+</dd>
+</dl>
+<p>param:    Structure optionally containing the relaxation parameters:</p>
+<blockquote class="last">
+<div><blockquote>
 <div><ul class="simple">
-<li>internalRelax:<ul>
+<li>.internalRelax:<ul>
 <li>0 = do not allow to relax bounds on internal reactions</li>
 <li>1 = do not allow to relax bounds on internal reactions with finite bounds</li>
 <li>{2} = allow to relax bounds on all internal reactions</li>
 </ul>
 </li>
-<li>exchangeRelax:<ul>
+<li>.exchangeRelax:<ul>
 <li>0 = do not allow to relax bounds on exchange reactions</li>
 <li>1 = do not allow to relax bounds on exchange reactions of the type [0,0]</li>
 <li>{2} = allow to relax bounds on all exchange reactions</li>
 </ul>
 </li>
-<li>steadyStateRelax:<ul>
+<li>.steadyStateRelax:<ul>
 <li>0 = do not allow to relax the steady state constraint S*v = b</li>
 <li>{1} = allow to relax the steady state constraint S*v = b</li>
 </ul>
 </li>
-<li>toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked<ul>
+<li>.toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked<ul>
 <li>toBeUnblockedReactions(i) = 1 : impose v(i) to be positive</li>
 <li>toBeUnblockedReactions(i) = -1 : impose v(i) to be negative</li>
 <li>toBeUnblockedReactions(i) = 0 : do not add any constraint (default)</li>
 </ul>
 </li>
-<li>excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation<ul>
+<li>.excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation<ul>
 <li>excludedReactions(i) = false : allow to relax bounds on reaction i (default)</li>
 <li>excludedReactions(i) = true : do not allow to relax bounds on reaction i</li>
 </ul>
 </li>
-<li>excludedReactionLB - nRxns x 1 bool vector indicating</li>
+<li>.excludedReactionLB - nRxns x 1 bool vector indicating</li>
 </ul>
 <p>the reactions with lower bounds to be excluded from
 relaxation (overridden by excludedReactions)</p>
@@ -406,7 +418,7 @@ relaxation (overridden by excludedReactions)</p>
 </ul>
 </div></blockquote>
 <ul class="simple">
-<li>excludedReactionUB - nRxns x 1 bool vector indicating</li>
+<li>.excludedReactionUB - nRxns x 1 bool vector indicating</li>
 </ul>
 <p>the reactions with upper bounds to be excluded from relaxation (overridden by excludedReactions)</p>
 <blockquote>
@@ -416,21 +428,21 @@ relaxation (overridden by excludedReactions)</p>
 </ul>
 </div></blockquote>
 <ul class="simple">
-<li>excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation<ul>
+<li>.excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation<ul>
 <li>excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i (default)</li>
 <li>excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</li>
 </ul>
 </li>
-<li>lamda - weighting on relaxation of relaxation on steady state constraints S*v = b</li>
-<li>alpha - weighting on relaxation of reaction bounds</li>
-<li>gamma - weighting on zero norm of fluxes</li>
+<li>.lamda - weighting on relaxation of relaxation on steady state constraints S*v = b</li>
+<li>.alpha - weighting on relaxation of reaction bounds</li>
+<li>.gamma - weighting on zero norm of fluxes</li>
 </ul>
 </div></blockquote>
 <ul class="simple">
 <li>.nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)</li>
 <li>.epsilon - stopping criteria - (Default value = 1e-6)</li>
 <li><dl class="first docutils">
-<dt>.theta0 - initial parameter of the approximation (Default value = 0.5)</dt>
+<dt>.theta - initial parameter of the approximation (Default value = 0.5)</dt>
 <dd>Theoretically, the greater the value of step parameter, the better the approximation of a step function.
 However, practically, a greater inital value, will tend to optimise toward a local minima of the approximate
 cardinality optimisation problem.</dd>
@@ -439,16 +451,18 @@ cardinality optimisation problem.</dd>
 <li>.printLevel (Default = 0) Printing the progress of</li>
 </ul>
 <p>the algorithm is useful when trying different values
-of theta0 to start with the appropriate parameter
+of theta to start with the appropriate parameter
 giving the lowest cardinality solution.</p>
-</li>
+<ul class="simple">
+<li>.maxRelaxR (Default = 1e4), maximum relaxation</li>
 </ul>
+<p>of any bound or equality constraint permitted</p>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:       Structure containing the following fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>solution</strong> &#8211;
-Structure containing the following fields:<ul>
 <li>stat - status<ul>
 <li>1  = Solution found</li>
 <li>0  = Infeasible</li>
@@ -460,9 +474,9 @@ Structure containing the following fields:<ul>
 <li>q - relaxation on upper bound of reactions</li>
 <li>v - reaction rate</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 <p>relaxedModel       model structure that admits a flux balance solution</p>
 </dd></dl>
 
@@ -490,7 +504,7 @@ Structure containing the following fields:<ul>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -521,6 +535,7 @@ Structure containing the following fields:<ul>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -540,5 +555,14 @@ Structure containing the following fields:<ul>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

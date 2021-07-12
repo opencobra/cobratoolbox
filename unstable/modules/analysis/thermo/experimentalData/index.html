@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -213,6 +214,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -250,11 +253,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -267,7 +272,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -288,75 +293,67 @@
 </div>
 <span class="target" id="module-src.analysis.thermo.experimentalData"></span><dl class="function">
 <dt id="src.analysis.thermo.experimentalData.boundsToFiles">
-<code class="descname">boundsToFiles</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/experimentalData/boundsToFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalData.boundsToFiles" title="Permalink to this definition">¶</a></dt>
+<code class="descname">boundsToFiles</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.experimentalData.boundsToFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out the model bounds as a tab delimited text file</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>boundsToFiles(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.experimentalData.readMetRxnBoundsFiles">
-<code class="descname">readMetRxnBoundsFiles</code><span class="sig-paren">(</span><em>model</em>, <em>setDefaultConc</em>, <em>setDefaultFlux</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>metBoundsFile</em>, <em>rxnBoundsFile</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.experimentalData.readMetRxnBoundsFiles" title="Permalink to this definition">¶</a></dt>
+<code class="descname">readMetRxnBoundsFiles</code><span class="sig-paren">(</span><em>model</em>, <em>setDefaultConc</em>, <em>setDefaultFlux</em>, <em>concMinDefault</em>, <em>concMaxDefault</em>, <em>metBoundsFile</em>, <em>rxnBoundsFile</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.experimentalData.readMetRxnBoundsFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets default concentration and flux bounds, and/or optionally read in upper and lower bounds from files.</p>
 <p>Upper and lower bounds on metabolite concentrations and reaction fluxes may be read in and
 mapped to the model. Bounds read from files overwrite reconstruction bounds, or default bounds.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, concMinDefault, concMaxDefault, metBoundsFile, rxnBoundsFile, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:             structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>model.mets</li>
 <li>model.rxns</li>
 </ul>
-</li>
-<li><strong>setDefaultConc</strong> &#8211;
-1 = sets default bounds on conc</li>
-<li><strong>setDefaultFlux</strong> &#8211;
-1 = sets all reactions reversible [-1000, 1000]</li>
-<li><strong>concMaxDefault</strong> &#8211;
-Default upper bound on metabolite
-concentrations in <cite>M</cite></li>
-<li><strong>concMinDefault</strong> &#8211;
-Default lower bound on metabolite
-concentrations in <cite>M</cite></li>
-</ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<p>setDefaultConc:    1 = sets default bounds on conc
+setDefaultFlux:    1 = sets all reactions reversible [-1000, 1000]
+concMaxDefault:    Default upper bound on metabolite</p>
 <blockquote>
+<div>concentrations in <cite>M</cite></div></blockquote>
+<dl class="last docutils">
+<dt>concMinDefault:    Default lower bound on metabolite</dt>
+<dd>concentrations in <cite>M</cite></dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>metBoundsFile:    name of tab delimited file with metabolite bounds</dt>
+<dd>format: ‘%s %f %f’
+i.e. abbreviation lowerBound upperBound</dd>
+<dt>rxnBoundsFile:    name of tab delimited file with reaction bounds</dt>
+<dd>format: ‘%s %f %f’
+i.e. abbreviation lowerBound upperBound</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">model:            structure with fileds:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>metBoundsFile</strong> &#8211;
-name of tab delimited file with metabolite bounds
-format: &#8216;%s %f %f&#8217;
-i.e. abbreviation lowerBound upperBound</li>
-<li><strong>rxnBoundsFile</strong> &#8211;
-name of tab delimited file with reaction bounds
-format: &#8216;%s %f %f&#8217;
-i.e. abbreviation lowerBound upperBound</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fileds:<ul>
 <li>model.concMin(j)</li>
 <li>model.concMax(j)</li>
 <li>model.lb</li>
 <li>model.ub</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -383,7 +380,7 @@ structure with fileds:<ul>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -414,6 +411,7 @@ structure with fileds:<ul>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -433,5 +431,14 @@ structure with fileds:<ul>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

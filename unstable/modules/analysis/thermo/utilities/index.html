@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -210,6 +211,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -247,11 +250,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -264,7 +269,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -280,7 +285,7 @@
 <span id="utilities"></span><span id="utilities-thermo"></span><h1>Utilities<a class="headerlink" href="#module-src.analysis.thermo.utilities" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.analysis.thermo.utilities.maxstar">
-<code class="descname">maxstar</code><span class="sig-paren">(</span><em>x</em>, <em>w</em>, <em>dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/utilities/maxstar.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.utilities.maxstar" title="Permalink to this definition">¶</a></dt>
+<code class="descname">maxstar</code><span class="sig-paren">(</span><em>x</em>, <em>w</em>, <em>dim</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.utilities.maxstar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log of a sum of exponentials.
 For vectors, <cite>maxstar(x)</cite> is equivalent to <cite>log(sum(exp(x)))</cite>.
 For matrices, <cite>maxstar(x)</cite> is a row vector and maxstar operates on
@@ -294,23 +299,17 @@ as columns of <cite>x</cite>. Weights may be zero or negative, but the result
 <cite>sum(w.*exp(x))`</cite> must be greater than zero.</p>
 <p><cite>maxstar(x, [], dim)</cite> operates along the dimension dim, and has
 the same dimensions as the MATLAB function <cite>max(x, [], dim)</cite>.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>y = maxstar(x, w, dim)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>x</strong></li>
-<li><strong>w</strong></li>
-<li><strong>dim</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>y</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>x:
+w:
+dim:</dd>
+<dt>OUTPUT:</dt>
+<dd>y:</dd>
+</dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <cite>max*</cite> function is described in <cite>Lin &amp; Costello, Error Control
@@ -324,17 +323,15 @@ The function <cite>max*</cite> can be applied iteratively:
 The double precision MATLAB expresson <cite>log(sum(exp(x)))</cite> fails
 if <cite>all(x &lt; -745)</cite>, or if <cite>any(x &gt; 706)</cite>. This is avoided using
 <cite>m = max(x)</cite> in  <cite>max*(x) = m + log(sum(exp(x - m)))</cite>.</p>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">If</span>
-<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">8</span> <span class="mi">4</span> <span class="mi">7</span> <span class="mi">3</span> <span class="mi">9</span><span class="p">]</span>
-<span class="o">%</span> <span class="n">then</span>
-<span class="n">maxstar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">%</span> <span class="ow">is</span> <span class="p">[</span><span class="mf">7.0067</span> <span class="mf">8.0067</span> <span class="mf">9.0067</span><span class="p">],</span>
-<span class="o">%</span> <span class="ow">and</span>
-<span class="n">maxstar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">2</span><span class="p">)</span>
-<span class="o">%</span> <span class="ow">is</span> <span class="p">[</span><span class="mf">8.0206</span> <span class="mf">9.1291</span><span class="p">]</span><span class="o">.</span>
-</pre></div>
-</div>
+<p class="rubric">Example</p>
+<p>% If
+x = [2 8 4 7 3 9]
+% then
+maxstar(x, [], 1)
+% is [7.0067 8.0067 9.0067],
+% and
+maxstar(x, [], 2)
+% is [8.0206 9.1291].</p>
 </dd></dl>
 
 </div>
@@ -361,7 +358,7 @@ if <cite>all(x &lt; -745)</cite>, or if <cite>any(x &gt; 706)</cite>. This is av
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -392,6 +389,7 @@ if <cite>all(x &lt; -745)</cite>, or if <cite>any(x &gt; 706)</cite>. This is av
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -411,5 +409,14 @@ if <cite>all(x &lt; -745)</cite>, or if <cite>any(x &gt; 706)</cite>. This is av
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

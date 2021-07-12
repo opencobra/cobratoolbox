@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,26 +268,20 @@
 <span id="id1"></span><h1>KLdistance<a class="headerlink" href="#kldistance" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.KLdistance"></span><dl class="function">
 <dt id="src.analysis.KLdistance.KLDis">
-<code class="descname">KLDis</code><span class="sig-paren">(</span><em>P</em>, <em>Q</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/KLdistance/KLDis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.KLdistance.KLDis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">KLDis</code><span class="sig-paren">(</span><em>P</em>, <em>Q</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.KLdistance.KLDis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Kullback-Leibler Distance of two discrete
 probability distributions. P and Q  are automatically normalised to have
 the sum of one on rows have the length of one at each.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>dist = KLDis(P, Q)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>P =  n x nbins</strong></li>
-<li><strong>Q =  1 x nbins or n x nbins(one to one)</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dist = n x 1</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>P =  n x nbins
+Q =  1 x nbins or n x nbins(one to one)</dd>
+<dt>OUTPUTS:</dt>
+<dd>dist = n x 1</dd>
+</dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">adapted from <a class="reference external" href="https://nl.mathworks.com/matlabcentral/fileexchange/20688-kullback-leibler-divergence">https://nl.mathworks.com/matlabcentral/fileexchange/20688-kullback-leibler-divergence</a></p>
@@ -291,36 +290,11 @@ the sum of one on rows have the length of one at each.</p>
 
 <dl class="function">
 <dt id="src.analysis.KLdistance.KLdistance">
-<code class="descname">KLdistance</code><span class="sig-paren">(</span><em>data1</em>, <em>data2</em>, <em>num_iter</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/KLdistance/KLdistance.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.KLdistance.KLdistance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">KLdistance</code><span class="sig-paren">(</span><em>data1</em>, <em>data2</em>, <em>num_iter</em>, <em>parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.KLdistance.KLdistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates the Kullback-Leibler Distance (KLD) between two
 distributions then runs a certain number of iterations where the labels
 are randomised and the KLD is calculated. Then, the distribution of the
-Disergences is plotted.
-<strong>Usage</strong></p>
-<blockquote>
-<div>dist = KLdistance(data1, data2, num_iter, parameters);</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>data1</strong> &#8211;
-n x m matrix where each column reprensents the values
-of a certain parameter for one of the populations (e.g. controls)</li>
-<li><strong>data2</strong> &#8211;
-same as data1 for the population to compare</li>
-<li><strong>num_iter</strong> &#8211;
-number of randomisations</li>
-<li><strong>parameters</strong> &#8211;
-a cell array of strings containing the name of each
-parameter</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dist</strong> &#8211;
-an array of KL Distances at each iteration</li>
-</ul>
-</div></blockquote>
+Disergences is plotted.</p>
 </dd></dl>
 
 </div>
@@ -347,7 +321,7 @@ an array of KL Distances at each iteration</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -378,6 +352,7 @@ an array of KL Distances at each iteration</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -397,5 +372,14 @@ an array of KL Distances at each iteration</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

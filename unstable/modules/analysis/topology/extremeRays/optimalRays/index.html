@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../../index.html">
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -206,6 +207,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -243,11 +246,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../../index.html">Functions</a> &raquo;</li>
         
@@ -262,7 +267,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -278,94 +283,63 @@
 <span id="id1"></span><h1>optimalRays<a class="headerlink" href="#optimalrays" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.topology.extremeRays.optimalRays"></span><dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.findExtremePathway">
-<code class="descname">findExtremePathway</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/topology/extremeRays/optimalRays/findExtremePathway.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePathway" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findExtremePathway</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePathway" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds an extreme ray</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[x, output] = findExtremePathway(fbaModel, obj)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>fbaModel</strong> &#8211;
-FBA type model</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>obj</strong> &#8211;
-default = random vector with size depending on fbaModel.S</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>x</strong> &#8211;
-vector from <cite>result</cite>, where <cite>result</cite> is an output of <cite>solveCobraLP</cite> function</li>
-<li><strong>output</strong> &#8211;
-<cite>output.objval</cite> contains <cite>result.obj</cite></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>fbaModel:    FBA type model</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>obj:         default = random vector with size depending on fbaModel.S</dd>
+<dt>OUTPUTS:</dt>
+<dd>x:           vector from <cite>result</cite>, where <cite>result</cite> is an output of <cite>solveCobraLP</cite> function
+output:      <cite>output.objval</cite> contains <cite>result.obj</cite></dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.findExtremePool">
-<code class="descname">findExtremePool</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/topology/extremeRays/optimalRays/findExtremePool.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findExtremePool</code><span class="sig-paren">(</span><em>fbaModel</em>, <em>obj</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds an extreme ray in the left nullspace of the stoichiometric matrix</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[x, output] = findExtremePool(fbaModel, obj, printLevel)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>fbaModel</strong> &#8211;
-FBA type model</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>obj</strong> &#8211;
-default = random vector with size depending on <cite>fbaModel.S</cite></li>
-<li><strong>printLevel</strong> &#8211;
-argument for <cite>solveCobraLP</cite> function, default = 0</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>x</strong> &#8211;
-<cite>x = output.full</cite></li>
-<li><strong>output</strong> &#8211;
-<cite>output = solveCobraLP(LPProblem)</cite></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>fbaModel:       FBA type model</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>obj:            default = random vector with size depending on <cite>fbaModel.S</cite>
+printLevel:     argument for <cite>solveCobraLP</cite> function, default = 0</dd>
+<dt>OUTPUTS:</dt>
+<dd>x:              <cite>x = output.full</cite>
+output:         <cite>output = solveCobraLP(LPProblem)</cite></dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis">
-<code class="descname">greedyExtremePoolBasis</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/topology/extremeRays/optimalRays/greedyExtremePoolBasis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">greedyExtremePoolBasis</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a non-negative basis for the left nullspace of the stoichiometric
 matrix using optimization to pick random extreme rays, then test a
 posteriori if each is linearly independent from the existing stored
 extreme rays.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[B, L] = greedyExtremePoolBasis(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>B, L</strong> &#8211;
-non-negative basus fi the left nullspace</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:    model structure</dd>
+<dt>OUTPUTS:</dt>
+<dd>B, L:     non-negative basus fi the left nullspace</dd>
+</dl>
+</dd></dl>
+
+<dl class="script">
+<dt id="src.analysis.topology.extremeRays.optimalRays.optimalExtremePoolDriver">
+<code class="descname">optimalExtremePoolDriver</code><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.optimalExtremePoolDriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Script to test extremePathways.m</p>
 </dd></dl>
 
 </div>
@@ -392,7 +366,7 @@ non-negative basus fi the left nullspace</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -423,6 +397,7 @@ non-negative basus fi the left nullspace</li>
     <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -442,5 +417,14 @@ non-negative basus fi the left nullspace</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

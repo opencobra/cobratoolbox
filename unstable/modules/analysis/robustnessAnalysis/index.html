@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,140 +268,132 @@
 <span id="robustnessanalysis"></span><h1>robustnessAnalysis<a class="headerlink" href="#module-src.analysis.robustnessAnalysis" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.doubleRobustnessAnalysis">
-<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doubleRobustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.robustnessAnalysis.doubleRobustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs robustness analysis for a pair of reactions of
 interest and an objective of interest</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:          COBRA model structure
+controlRxn1:    Reaction of interest whose value is to be controlled
+controlRxn2:    Reaction of interest whose value is to be controlled</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">nPoints:        Number of flux values per dimension (Default = 20)
+plotResFlag:    Plot results (Default = true)
+objRxn:         Objective reaction to be maximized (Default = whatever</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>controlRxn1</strong> &#8211;
-Reaction of interest whose value is to be controlled</li>
-<li><strong>controlRxn2</strong> &#8211;
-Reaction of interest whose value is to be controlled</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nPoints</strong> &#8211;
-Number of flux values per dimension (Default = 20)</li>
-<li><strong>plotResFlag</strong> &#8211;
-Plot results (Default = true)</li>
-<li><strong>objRxn</strong> &#8211;
-Objective reaction to be maximized (Default = whatever
-is defined in model)</li>
-<li><strong>objType</strong> &#8211;
-Maximize (&#8216;max&#8217;) or minimize (&#8216;min&#8217;) objective
-(Default = &#8216;max&#8217;)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>controlFlux</strong> &#8211;
-Flux values within the range of the maximum and minimum for
-reaction of interest</li>
-<li><strong>objFlux</strong> &#8211;
-Optimal values of objective reaction at each control
-reaction flux value</li>
-</ul>
-</div></blockquote>
+<div>is defined in model)</div></blockquote>
+<dl class="last docutils">
+<dt>objType:        Maximize (‘max’) or minimize (‘min’) objective</dt>
+<dd>(Default = ‘max’)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>controlFlux:    Flux values within the range of the maximum and minimum for</dt>
+<dd>reaction of interest</dd>
+<dt>objFlux:        Optimal values of objective reaction at each control</dt>
+<dd>reaction flux value</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.phenotypePhasePlane">
-<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/phenotypePhasePlane.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
+<code class="descname">phenotypePhasePlane</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn1</em>, <em>controlRxn2</em>, <em>nPts</em>, <em>range1</em>, <em>range2</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.robustnessAnalysis.phenotypePhasePlane" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots three phenotype phase planes for two reactions.  The first plot is
 a double robustness analysis, a kind of 3D surface plot.  The second
 two plots show the shadow prices of the metabolites from the two control
 reactions, which define the phases.  Use the COLORMAP and SHADING
 functions to change the looks of the plots.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[growthRates, shadowPrices1, shadowPrices2] = phenotypePhasePlane(model, controlRxn1, controlRxn2, nPts, range1, range2)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>controlRxn1</strong> &#8211;
-the first reaction to be plotted</li>
-<li><strong>controlRxn2</strong> &#8211;
-the second reaction to be plotted</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nPts</strong> &#8211;
-the number of points to plot in each dimension (Default = 50)</li>
-<li><strong>range1</strong> &#8211;
-the range of reaction 1 to plot (Default = 20)</li>
-<li><strong>range2</strong> &#8211;
-the range of reaction 2 to plot (Default = 20)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>growthRates1</strong> &#8211;
-a matrix of maximum growth rates</li>
-<li><strong>shadowPrices1</strong> &#8211;
-a matrix of <cite>rxn</cite> 1 shadow prices</li>
-<li><strong>shadowPrices2</strong> &#8211;
-a matrix of <cite>rxn</cite> 2 shadow prices</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:            COBRA model structure
+controlRxn1:      the first reaction to be plotted
+controlRxn2:      the second reaction to be plotted</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>nPts:             the number of points to plot in each dimension (Default = 50)
+range1:           the range of reaction 1 to plot (Default = 20)
+range2:           the range of reaction 2 to plot (Default = 20)</dd>
+<dt>OUTPUTS:</dt>
+<dd>growthRates1:     a matrix of maximum growth rates
+shadowPrices1:    a matrix of <cite>rxn</cite> 1 shadow prices
+shadowPrices2:    a matrix of <cite>rxn</cite> 2 shadow prices</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.robustnessAnalysis.robustnessAnalysis">
-<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/robustnessAnalysis/robustnessAnalysis.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.robustnessAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">robustnessAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.robustnessAnalysis.robustnessAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs robustness analysis for a reaction of
 interest and an objective of interest</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:         COBRA model structure
+controlRxn:    Reaction of interest whose value is to be controlled</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">nPoints:        Number of points to show on plot (Default = 20)
+plotResFlag:    Plot results (Default true)
+objRxn:         Objective reaction to be maximized</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>controlRxn</strong> &#8211;
-Reaction of interest whose value is to be controlled</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<div>(Default = whatever is defined in model)</div></blockquote>
+<dl class="last docutils">
+<dt>objType:        Maximize (‘max’) or minimize (‘min’) objective</dt>
+<dd>(Default = ‘max’)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>controlFlux:    Flux values within the range of the maximum and minimum for</dt>
+<dd>reaction of interest</dd>
+<dt>objFlux:        Optimal values of objective reaction at each control</dt>
+<dd>reaction flux value</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.robustnessAnalysis.robustnessAnalysisWB">
+<code class="descname">robustnessAnalysisWB</code><span class="sig-paren">(</span><em>model</em>, <em>controlRxn</em>, <em>nPoints</em>, <em>plotResFlag</em>, <em>objRxn</em>, <em>objType</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.robustnessAnalysis.robustnessAnalysisWB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs robustness analysis for a reaction of
+interest and an objective of interest</p>
+<p>USAGE:</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>nPoints</strong> &#8211;
-Number of points to show on plot (Default = 20)</li>
-<li><strong>plotResFlag</strong> &#8211;
-Plot results (Default true)</li>
-<li><strong>objRxn</strong> &#8211;
-Objective reaction to be maximized
-(Default = whatever is defined in model)</li>
-<li><strong>objType</strong> &#8211;
-Maximize (&#8216;max&#8217;) or minimize (&#8216;min&#8217;) objective
-(Default = &#8216;max&#8217;)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+<div>[controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, nPoints, plotResFlag, objRxn, objType)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:         COBRA model structure
+controlRxn:    Reaction of interest whose value is to be controlled</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">nPoints:        Number of points to show on plot (Default = 20)
+plotResFlag:    Plot results (Default true)
+objRxn:         Objective reaction to be maximized</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>controlFlux</strong> &#8211;
-Flux values within the range of the maximum and minimum for
-reaction of interest</li>
-<li><strong>objFlux</strong> &#8211;
-Optimal values of objective reaction at each control
-reaction flux value</li>
-</ul>
-</div></blockquote>
+<div>(Default = whatever is defined in model)</div></blockquote>
+<dl class="last docutils">
+<dt>objType:        Maximize (‘max’) or minimize (‘min’) objective</dt>
+<dd>(Default = ‘max’)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>controlFlux:    Flux values within the range of the maximum and minimum for</dt>
+<dd>reaction of interest</dd>
+<dt>objFlux:        Optimal values of objective reaction at each control</dt>
+<dd>reaction flux value</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -423,7 +420,7 @@ reaction flux value</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -454,6 +451,7 @@ reaction flux value</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -473,5 +471,14 @@ reaction flux value</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

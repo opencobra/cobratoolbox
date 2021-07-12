@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -210,6 +211,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -247,11 +250,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -264,7 +269,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -279,77 +284,24 @@
   <div class="section" id="componentcontribution">
 <span id="id1"></span><h1>componentContribution<a class="headerlink" href="#componentcontribution" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.componentContribution"></span><dl class="function">
-<dt id="src.analysis.thermo.componentContribution.Transform">
-<code class="descname">Transform</code><span class="sig-paren">(</span><em>pseudoisomers</em>, <em>pH</em>, <em>I</em>, <em>T</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/Transform.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.Transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pseudoisomer group standard transformed Gibbs energy of
-formation at specified pH, ionic strength and temperature.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>dG0_prime = Transform(pseudoisomers, pH, I, T)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>pseudoisomers</strong> &#8211;
-<cite>p x 3</cite> matrix with a row for each of the p pseudoisomers
-in the group, and the following columns:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li>Standard Gibbs energy of formation,</li>
-<li>Number of hydrogen atoms,</li>
-<li>Charge.</li>
-</ol>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>pH</strong> &#8211;
-pH.</p>
-</li>
-<li><p class="first"><strong>I</strong> &#8211;
-Ionic strength in mol/L.</p>
-</li>
-<li><p class="first"><strong>T</strong> &#8211;
-Temperature in Kelvin.</p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dG0_prime</strong> &#8211;
-Pseudoisomer group standard transformed Gibbs energy of
-formation in kJ/mol.</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.analysis.thermo.componentContribution.addThermoToModel">
-<code class="descname">addThermoToModel</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/addThermoToModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.addThermoToModel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addThermoToModel</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.componentContribution.addThermoToModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a standard COBRA model, add thermodynamic data to it using
 the Component Contribution method</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = addThermoToModel(model, params, printLevel)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                               COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>params.use_cached_kegg_inchis:
+params.use_model_pKas_by_default:
+params.uf:                           maximum uncertainty</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">model:                               COBRA model structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>params.use_cached_kegg_inchis</strong></li>
-<li><strong>params.use_model_pKas_by_default</strong></li>
-<li><strong>params.uf</strong> &#8211;
-maximum uncertainty</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure with fields:<ul>
 <li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
 standard Gibbs energies of formation.</li>
 <li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
@@ -358,303 +310,77 @@ Gibbs energies of formation.</li>
 Gibbs energies of formation. uf will be large for
 metabolites that are not covered by component contributions.</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.analysis.thermo.componentContribution.checkForMissingStereo">
-<code class="descname">checkForMissingStereo</code><span class="sig-paren">(</span><em>model</em>, <em>nist</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/checkForMissingStereo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.checkForMissingStereo" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Usage</strong></p>
+<dt id="src.analysis.thermo.componentContribution.setupComponentContribution">
+<code class="descname">setupComponentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>molFileDir</em>, <em>cid</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.componentContribution.setupComponentContribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates standard transformed reaction Gibbs energy and directionality
+at in vivo conditions in multicompartmental metabolic reconstructions.
+Has external dependencies on the COBRA toolbox, the component
+contribution method, Python (with numpy and Open Babel bindings),
+ChemAxon’s Calculator Plugins, and Open Babel. See details on
+availability at the end of help text.</p>
+<dl class="docutils">
+<dt>modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,…</dt>
+<dd>is,chi,concMin,concMax,confidenceLevel)</dd>
+</dl>
+<p>INPUTS
+model             Model structure with following fields:
+.S                m x n stoichiometric matrix.
+.mets             m x 1 array of metabolite identifiers.
+.rxns             n x 1 array of reaction identifiers.
+.metFormulas      m x 1 cell array of metabolite formulas. Formulas for</p>
 <blockquote>
-<div>missingStereo = checkForMissingStereo(model, nist)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div>protons should be H, and formulas for water should be
+H2O.</div></blockquote>
+<p>.metCharges       m x 1 numerical array of metabolite charges.</p>
+<p>OPTIONAL INPUTS
+molFileDir                Path to a directory containing molfiles for the</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
-<li>model.mets</li>
-<li>model.inchi.standard</li>
-<li>model.inchi.standardWithStereo</li>
-</ul>
-</li>
-<li><strong>nist</strong> &#8211;
-structure with fields:<ul>
-<li>nist.std_inchi</li>
-<li>nist.std_inchi_stereo</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
+<div>major tautomer of the major microspecies of
+each metabolite at pH 7. Molfiles should be
+named with the metabolite identifiers in
+model.mets (without compartment assignments).
+Not required if cid are specified.</div></blockquote>
+<dl class="docutils">
+<dt>cid                       m x 1 cell array of KEGG Compound identifiers.</dt>
+<dd>Not required if molfiledir is specified.</dd>
+<dt>model.metCompartments     m x 1 array of metabolite compartment</dt>
+<dd>assignments. Not required if metabolite
+identifiers are strings of the format ID[*]
+where * is the appropriate compartment
+identifier.</dd>
+</dl>
+<p>OUTPUTS
+model                 Model structure with following additional fields:
+.inchi                Structure containing four m x 1 cell array’s of</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>missingStereo</strong></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.componentContribution">
-<code class="descname">componentContribution</code><span class="sig-paren">(</span><em>model</em>, <em>trainingData</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/componentContribution.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.componentContribution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform the component contribution method</p>
-<p><strong>Usage</strong></p>
+<div>IUPAC InChI strings for metabolites, with varying
+levels of structural detail.</div></blockquote>
+<dl class="docutils">
+<dt>.pKa                  m x 1 structure containing metabolite pKa values</dt>
+<dd>estimated with ChemAxon’s Calculator Plugins.</dd>
+<dt>.pseudoisomers        p x 4 matrix with the following columns:</dt>
+<dd><ol class="first arabic simple">
+<li>Metabolite index.</li>
+<li>Estimated pseudoisomer standard Gibbs energy.</li>
+</ol>
+<p class="last">3. Number of hydrogen atoms in pseudoisomer
+chemical formula.
+4. Charge on pseudoisomer.</p>
+</dd>
+</dl>
+<p>WRITTEN OUTPUTS
+MetStructures.sdf     An SDF containing all structures input to the</p>
 <blockquote>
-<div>[model, params] = componentContribution(model, trainingData)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure</li>
-<li><strong>trainingData</strong> &#8211;
-structure from <cite>prepareTrainingData</cite> with the following fields:<ul>
-<li>.S - the stoichiometric matrix of measured reactions</li>
-<li>.G - the group incidence matrix</li>
-<li>.dG0 - the observation vector (standard Gibbs energy of reactions)</li>
-<li>.weights - the weight vector for each reaction in <cite>S</cite></li>
-<li>.Model2TrainingMap</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with the following fields:<ul>
-<li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
-standard Gibbs energies of formation.</li>
-<li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
-Gibbs energies of formation.</li>
-<li>.DfG0_Uncertainty - <cite>m x 1</cite> array of uncertainty in estimated standard
-Gibbs energies of formation. Will be large for
-metabolites that are not covered by component
-contributions.</li>
-<li>.DrG0_Uncertainty - <cite>n x 1</cite> array of uncertainty in standard reaction
-Gibbs energy estimates.  Will be large for
-reactions that are not covered by component
-contributions.</li>
-</ul>
-</li>
-<li><strong>params</strong> &#8211;
-structure</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.createGroupIncidenceMatrix">
-<code class="descname">createGroupIncidenceMatrix</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.createGroupIncidenceMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize <cite>G</cite> matrix, and then use the python script &#8220;inchi2gv.py&#8221; to decompose each of the
-compounds that has an &#8216;InChI&#8217; and save the decomposition as a row in the <cite>G</cite> matrix.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>training_data = createGroupIncidenceMatrix(model, training_data)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong></li>
-<li><strong>training_data</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>training_data</strong></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI">
-<code class="descname">getFormulaAndChargeFromInChI</code><span class="sig-paren">(</span><em>inchi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/getFormulaAndChargeFromInChI.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Usage</strong></p>
-<blockquote>
-<div>[formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>inchi</strong> &#8211;
-Nonstandard IUPAC InChI for a particular pseudoisomer of a
-metabolite</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>formula</strong> &#8211;
-The chemical formula for the input pseudoisomer</li>
-<li><strong>nH</strong> &#8211;
-The number of total Hydrogen in the actual protonation form</li>
-<li><strong>charge</strong> &#8211;
-The charge on the input pseudoisomer (excluding the protonation state)</li>
-</ul>
-</div></blockquote>
-<p>Get the Formula and the number of protons</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.getMappingScores">
-<code class="descname">getMappingScores</code><span class="sig-paren">(</span><em>model</em>, <em>training_data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/getMappingScores.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMappingScores" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the best mapping between the model compounds and the training data (KEGG) compounds</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>mappingScore = getMappingScores(model, training_data)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure</li>
-<li><strong>training_data</strong> &#8211;
-training data</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>mappingScore</strong> &#8211;
-best mapping</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.getMolecularWeight">
-<code class="descname">getMolecularWeight</code><span class="sig-paren">(</span><em>inchis</em>, <em>warnings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/getMolecularWeight.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.getMolecularWeight" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes molecular weight and elemental matrix of compounds</p>
-<p>[MW, Ematrix] = computeMW(model, metList, warnings)</p>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure
-(must define .mets and .metFormulas)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metList</strong> &#8211;
-Cell array of which metabolites to search for.
-(Default = all metabolites in model)</li>
-<li><strong>warnings</strong> &#8211;
-Display warnings if there are errors with the
-formula. (Default = true)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>MW</strong> &#8211;
-Vector of molecular weights</li>
-<li><strong>Ematrix</strong> &#8211;
-<cite>m x 8</cite> matrix of order [H, C, N, O, P, S, e-]
-Note that the number of electrons (e-) is counted only for these 6
-common elements (i.e. we assume all other elements are not involved
-in redox reactions anyway).</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.invertProjection">
-<code class="descname">invertProjection</code><span class="sig-paren">(</span><em>A</em>, <em>epsilon</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/invertProjection.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.invertProjection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inverts a general matrix A using the pseudoinverse</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[inv_A, r, P_R, P_N] = invertProjection(A, epsilon)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>A</strong> &#8211;
-general matrix</li>
-<li><strong>epsilon</strong> &#8211;
-default = 1e-10</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>inv_A</strong> &#8211;
-the pseudoinverse of <cite>A</cite></li>
-<li><strong>r</strong> &#8211;
-the rank of <cite>A</cite></li>
-<li><strong>P_R</strong> &#8211;
-the projection matrix onto the <cite>range(A)</cite></li>
-<li><strong>P_N</strong> &#8211;
-the projection matrix onto the <cite>null(A&#8217;)</cite></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.loadTrainingData">
-<code class="descname">loadTrainingData</code><span class="sig-paren">(</span><em>formation_weight</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/loadTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.loadTrainingData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the structure that contains all the training data needed for
-Component Contribution.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>training_data = loadTrainingData(formation_weight)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>formation_weight</strong> &#8211;
-the relative weight to give the formation energies (Alberty&#8217;s data)
-compared to the reaction measurements (TECRDB)</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>training_data</strong> &#8211;
-structure with data for Component Contribution</li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.analysis.thermo.componentContribution.prepareTrainingData">
-<code class="descname">prepareTrainingData</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em>, <em>params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/componentContribution/prepareTrainingData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.componentContribution.prepareTrainingData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a standard COBRA model, adds thermodynamic data to it using
-the Component Contribution method</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>training_data = prepareTrainingData(model, printLevel, params)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>printLevel</strong> &#8211;
-verbose level, default = 0</li>
-<li><strong>params.use_cached_kegg_inchis</strong></li>
-<li><strong>params.use_model_pKas_by_default</strong></li>
-<li><strong>params.uf</strong> &#8211;
-maximum uncertainty</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>training_data</strong> &#8211;
-strucutre with fields<ul>
-<li>.DfG0 - <cite>m x 1</cite> array of component contribution estimated
-standard Gibbs energies of formation.</li>
-<li>.covf - <cite>m x m</cite> estimated covariance matrix for standard
-Gibbs energies of formation.</li>
-<li>.uf - <cite>m x 1</cite> array of uncertainty in estimated standard
-Gibbs energies of formation. uf will be large for
-metabolites that are not covered by component contributions.</li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
+<div>component contribution method for estimation of
+standard Gibbs energies.</div></blockquote>
+<p>Ronan M. T. Fleming, Sept. 2012   Version 1.0
+Hulda S. H., Dec. 2012            Version 2.0</p>
 </dd></dl>
 
 </div>
@@ -681,7 +407,7 @@ metabolites that are not covered by component contributions.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -712,6 +438,7 @@ metabolites that are not covered by component contributions.</li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -731,5 +458,14 @@ metabolites that are not covered by component contributions.</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

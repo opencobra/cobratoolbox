@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,7 +268,7 @@
 <span id="id1"></span><h1>findMIIS<a class="headerlink" href="#findmiis" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.findMIIS"></span><dl class="function">
 <dt id="src.analysis.findMIIS.findMIIS">
-<code class="descname">findMIIS</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/findMIIS/findMIIS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.findMIIS.findMIIS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">findMIIS</code><span class="sig-paren">(</span><em>LPProblem</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.findMIIS.findMIIS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the Minimal Irreducible Infeasible Subset (MIIS) in an infeasible
 linear program. It uses (for now) the IBM ILOG CPLEX conflict refine
 routine. The MIIS is the smallest infeasible submodel that becomes feasbile if one
@@ -272,32 +277,20 @@ Where relaxedFBA and feasOpt take corrective measures automatically,
 findMIIS points the user to the infeasible subset which guides decision
 making. The user can then check errors in the data or correct the model based on
 the literature.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE</p>
 <blockquote>
 <div>MIIS = findMIIS(model,1)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>LPProblem</strong> &#8211;
-Infeasible model as COBRA model structure</li>
-<li><strong>printLevel</strong> &#8211;
-0/1/2</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>MIIS.rxns</strong> &#8211;
-Reactions of MIIS</li>
-<li><strong>MIIS.mets</strong> &#8211;
-Mets of MIIS</li>
-<li><strong>MIIS.rxnsStat</strong> &#8211;
-Status of infeasiblity of reactions</li>
-<li><strong>MIIS.metsStat</strong> &#8211;
-Status of infeasiblity of metabolites</li>
-<li><strong>please refer to this link for status meaning</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>LPProblem:        Infeasible model as COBRA model structure
+printLevel:       0/1/2</dd>
+<dt>OUTPUT:</dt>
+<dd>MIIS.rxns:        Reactions of MIIS
+MIIS.mets:        Mets of MIIS
+MIIS.rxnsStat:    Status of infeasiblity of reactions
+MIIS.metsStat:    Status of infeasiblity of metabolites
+please refer to this link for status meaning</dd>
+</dl>
 <p><a class="reference external" href="https://www.ibm.com/support/knowledgecenter/de/SSSA5P_12.7.0/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html">https://www.ibm.com/support/knowledgecenter/de/SSSA5P_12.7.0/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html</a></p>
 </dd></dl>
 
@@ -325,7 +318,7 @@ Status of infeasiblity of metabolites</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -356,6 +349,7 @@ Status of infeasiblity of metabolites</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -375,5 +369,14 @@ Status of infeasiblity of metabolites</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

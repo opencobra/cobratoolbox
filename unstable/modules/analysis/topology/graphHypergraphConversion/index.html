@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -202,6 +203,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -239,11 +242,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -256,7 +261,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -272,29 +277,19 @@
 <span id="id1"></span><h1>graphHypergraphConversion<a class="headerlink" href="#graphhypergraphconversion" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.topology.graphHypergraphConversion"></span><dl class="function">
 <dt id="src.analysis.topology.graphHypergraphConversion.convertHypergraphToBipartiteGraph">
-<code class="descname">convertHypergraphToBipartiteGraph</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.graphHypergraphConversion.convertHypergraphToBipartiteGraph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convertHypergraphToBipartiteGraph</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.graphHypergraphConversion.convertHypergraphToBipartiteGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a hypergraph into an undirected bipartite graph</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[A, B] = convertHypergraphToBipartiteGraph(S, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>S</strong> &#8211;
-<cite>m x n</cite> matrix with <cite>m</cite> nodes and <cite>n</cite> hyperedges</li>
-<li><strong>printLevel</strong> &#8211;
-timer</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>A</strong> &#8211;
-<cite>(m+n) x (m+n)</cite> adjacency matrix for an undirected graph (symmetric)</li>
-<li><strong>B</strong> &#8211;
-<cite>(m+n) x nnz(S)</cite> incidence matrix for a directed graph</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>S:             <cite>m x n</cite> matrix with <cite>m</cite> nodes and <cite>n</cite> hyperedges
+printLevel:    timer</dd>
+<dt>OUTPUTS:</dt>
+<dd>A:             <cite>(m+n) x (m+n)</cite> adjacency matrix for an undirected graph (symmetric)
+B:             <cite>(m+n) x nnz(S)</cite> incidence matrix for a directed graph</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -321,7 +316,7 @@ timer</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -352,6 +347,7 @@ timer</li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -371,5 +367,14 @@ timer</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

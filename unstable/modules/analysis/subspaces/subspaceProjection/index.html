@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -202,6 +203,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -239,11 +242,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -256,7 +261,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -272,7 +277,7 @@
 <span id="id1"></span><h1>subspaceProjection<a class="headerlink" href="#subspaceprojection" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.subspaceProjection"></span><dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectOntoSubspace">
-<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectOntoSubspace</code><span class="sig-paren">(</span><em>A</em>, <em>vf</em>, <em>vr</em>, <em>vnet</em>, <em>u</em>, <em>u0</em>, <em>lnx</em>, <em>printLevel</em>, <em>rowBool</em>, <em>colBool</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectOntoSubspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Projects flux, net flux, potential and logarithmic concentration onto
 their respective subspaces of A using projection matrices generated either
 derived from SVD, or by using the Moore-Penrose pseudoinverse</p>
@@ -286,181 +291,144 @@ projected and the remaining rows and columns are not affected</p>
 <cite>_L</cite> left nullspace,</p>
 <p>Example for flux of net flux</p>
 <p>Let</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}vf   &amp;= vf_R + vf_N \\
 vf_R &amp;= M A vf = PR vf \\
 vf_N &amp;= (I - M A) vf = PN vf\end{split}\]</div>
 <p>Example for potential or logarithmic concentration</p>
 <p>Let</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}u   &amp;= u_C + u_L \\
 u_C &amp;= A M u = PC u \\
 u_L &amp;= (I - A M) u = PL u\end{split}\]</div>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>A          `m x n` matrix</strong></li>
-<li><strong>vf</strong> &#8211;
-<cite>n x 1</cite> - forward flux</li>
-<li><strong>vr</strong> &#8211;
-<cite>n x 1</cite> - reverse flux</li>
-<li><strong>vnet</strong> &#8211;
-<cite>n x 1</cite> - net flux</li>
-<li><strong>u</strong> &#8211;
-<cite>m x 1</cite> - chemical potential</li>
-<li><strong>u0</strong> &#8211;
-<cite>m x 1</cite> - standard chemical potential</li>
-<li><strong>lnx</strong> &#8211;
-<cite>m x 1</cite> - logarithmic concentration</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>rowBool    `m x 1` - boolean indicating the subset of rows of A</strong></li>
-<li><strong>colBool    &#8216;n x 1&#8217; - boolean indicating the subset of cols of A</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>vfN</strong> &#8211;
-forward flux - nullspace</li>
-<li><strong>vfR</strong> &#8211;
-forward flux - row space</li>
-<li><strong>vrN</strong> &#8211;
-reverse flux - nullspace</li>
-<li><strong>vrR</strong> &#8211;
-reverse flux - row space</li>
-<li><strong>vnetN</strong> &#8211;
-net flux - nullspace</li>
-<li><strong>vnetR</strong> &#8211;
-net flux - row space</li>
-<li><strong>uL</strong> &#8211;
-chemical potential - left nullspace</li>
-<li><strong>uC</strong> &#8211;
-chemical potential - column space</li>
-<li><strong>lnxL</strong> &#8211;
-logarithmic concentration - left nullspace</li>
-<li><strong>lnxC</strong> &#8211;
-logarithmic concentration - column space</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>A          <cite>m x n</cite> matrix
+vf:        <cite>n x 1</cite> - forward flux
+vr:        <cite>n x 1</cite> - reverse flux
+vnet:      <cite>n x 1</cite> - net flux
+u:         <cite>m x 1</cite> - chemical potential
+u0:        <cite>m x 1</cite> - standard chemical potential
+lnx:       <cite>m x 1</cite> - logarithmic concentration</dd>
+<dt>OPTIONAL INPUTS</dt>
+<dd>rowBool    <cite>m x 1</cite> - boolean indicating the subset of rows of A
+colBool    ‘n x 1’ - boolean indicating the subset of cols of A</dd>
+<dt>OUTPUTS:</dt>
+<dd>vfN:       forward flux - nullspace
+vfR:       forward flux - row space
+vrN:       reverse flux - nullspace
+vrR:       reverse flux - row space
+vnetN:     net flux - nullspace
+vnetR:     net flux - row space
+uL:        chemical potential - left nullspace
+uC:        chemical potential - column space
+lnxL:      logarithmic concentration - left nullspace
+lnxC:      logarithmic concentration - column space</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.projectSVD">
-<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/subspaceProjection/projectSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">projectSVD</code><span class="sig-paren">(</span><em>U1</em>, <em>u</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.projectSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assumes that <cite>U1</cite> has orthonormal columns
-so that <span class="math">\(U1 U1^T\)</span> is a projector.
+so that <span class="math notranslate nohighlight">\(U1 U1^T\)</span> is a projector.
 It returns the projections</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}u1 &amp;= U1 U1^T u \\
 u2 &amp;= (I - U1 U1^T) u\end{split}\]</div>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[u1, u2] = projectSVD(U1, u)</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">U1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">subspaceSVD</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
-<span class="p">[</span><span class="n">uC</span><span class="p">,</span> <span class="n">uL</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>
-<span class="p">[</span><span class="n">vfR</span><span class="p">,</span> <span class="n">vfN</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">vf</span><span class="p">);</span>
-<span class="p">[</span><span class="n">vrR</span><span class="p">,</span> <span class="n">vrN</span><span class="p">]</span> <span class="o">=</span> <span class="n">projectSVD</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">vr</span><span class="p">);</span>
-</pre></div>
-</div>
+<p class="rubric">Example</p>
+<p>[U1, D1, V1, r] = subspaceSVD(S);
+[uC, uL] = projectSVD(U1, u);
+[vfR, vfN] = projectSVD(V1, vf);
+[vrR, vrN] = projectSVD(V1, vr);</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceProjector">
-<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/subspaceProjection/subspaceProjector.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the matrix for projection onto the sub_space of the internal
-reaction stoichiometric matrix specified by <cite>sub_space</cite>
-If <cite>sub_space</cite> is &#8216;all&#8217; then all are returned</p>
-<p>Let M denote the Moore-Penrose pseudoinverse of the internal reaction
-stoichiometric matrix S and the subscripts are the following
-<cite>_R</cite> row space        i.e. range(A&#8217;)
+<code class="descname">subspaceProjector</code><span class="sig-paren">(</span><em>A</em>, <em>printLevel</em>, <em>sub_space</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceProjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the matrix for projection onto the subspace of matrix A,
+specified by <cite>sub_space</cite></p>
+<blockquote>
+<div><ul class="simple">
+<li>‘all’</li>
+<li>‘R’ row space         i.e. range(A’)</li>
+<li>‘N’ nullspace         i.e. null(A)</li>
+<li>‘C’ column space      i.e. range(A)</li>
+<li>‘L’ left nullspace    i.e. null(A’)</li>
+</ul>
+</div></blockquote>
+<p>Let M denote the Moore-Penrose pseudoinverse of the A and the subscripts are the following
+<cite>_R</cite> row space        i.e. range(A’)
 <cite>_N</cite> nullspace        i.e. null(A)
 <cite>_C</cite> column space     i.e. range(A)
-<cite>_L</cite> left nullspace   i.e. null(A&#8217;)</p>
+<cite>_L</cite> left nullspace   i.e. null(A’)</p>
 <p>Let</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}v   &amp;= v_R + v_N \\
 v_R &amp;= M A v = PR v \\
 v_N &amp;= (I - M A) v = PN v\end{split}\]</div>
 <p>Let</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}u   &amp;= u_C + u_L \\
 u_C &amp;= A M u = PC u \\
 u_L &amp;= (I - A M) u = PL u\end{split}\]</div>
 <p>Examples:</p>
-<p>Given <span class="math">\(A v = b\)</span>, then <span class="math">\(v_R = M b\)</span></p>
-<p>Given <span class="math">\(A^Tu = q\)</span>, then <span class="math">\(u_C = M^T q\)</span></p>
-<p><strong>Usage</strong></p>
+<p>Given <span class="math notranslate nohighlight">\(A v = b\)</span>, then <span class="math notranslate nohighlight">\(v_R = M b\)</span></p>
+<p>Given <span class="math notranslate nohighlight">\(A^Tu = q\)</span>, then <span class="math notranslate nohighlight">\(u_C = M^T q\)</span></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>A          <cite>m x n</cite> matrix</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">printLevel:          {(1), 0}, 1 = print diagnostics, 0 = silent
+sub_space:           returns projection matrices onto all or one select</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>A          `m x n` matrix</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>printLevel</strong> &#8211;
-{(1), 0}, 1 = print diagnostics, 0 = silent</li>
-<li><strong>sub_space</strong> &#8211;
-returns projection matrices onto all or one select<ul>
 <li>sub_space</li>
-<li>&#8216;all&#8217;</li>
-<li>&#8216;R&#8217; row space</li>
-<li>&#8216;N&#8217; nullspace</li>
-<li>&#8216;C&#8217; column space</li>
-<li>&#8216;L&#8217; left nullspace</li>
-</ul>
-</li>
+<li>‘all’</li>
+<li>‘R’ row space</li>
+<li>‘N’ nullspace</li>
+<li>‘C’ column space</li>
+<li>‘L’ left nullspace</li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>[PR, PN, PC, PL]</strong> &#8211;
-matrices for projection onto the row, null,
-column and left nullspace of A, respectively</li>
-</ul>
-</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>[PR, PN, PC, PL]:    matrices for projection onto the row, null,</dt>
+<dd>column and left nullspace of A, respectively</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.subspaces.subspaceProjection.subspaceSVD">
-<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/subspaces/subspaceProjection/subspaceSVD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns quantities satisfying <span class="math">\(S = U1 D1 V1^T\)</span>,
+<code class="descname">subspaceSVD</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.subspaceProjection.subspaceSVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns quantities satisfying <span class="math notranslate nohighlight">\(S = U1 D1 V1^T\)</span>,
 where <cite>U1</cite> and <cite>V1</cite> have <cite>r</cite> orthonormal columns,
 and <cite>D1</cite> is <cite>r x r</cite> diagonal and has numerical rank <cite>r</cite>.</p>
 <p>The matrix <cite>S</cite> may be diagonal.
 Matrices <cite>U1</cite> and <cite>V1</cite> may be used by <cite>projectSVD.m</cite>
 to project given vectors onto certain subspaces.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[U1, D1, V1, r] = subspaceSVD(S)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>S</strong> &#8211;
-matrix</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>U1, D1, V1</strong> &#8211;
-matrices</li>
-<li><strong>r</strong> &#8211;
-numerical rank of <cite>D1</cite></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>S:             matrix</dd>
+<dt>OUTPUTS:</dt>
+<dd>U1, D1, V1:    matrices
+r:             numerical rank of <cite>D1</cite></dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -487,7 +455,7 @@ numerical rank of <cite>D1</cite></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -518,6 +486,7 @@ numerical rank of <cite>D1</cite></li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -537,5 +506,14 @@ numerical rank of <cite>D1</cite></li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

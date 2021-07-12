@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,54 +268,48 @@
 <span id="id1"></span><h1>parsimoniousFBA<a class="headerlink" href="#parsimoniousfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.parsimoniousFBA"></span><dl class="function">
 <dt id="src.analysis.parsimoniousFBA.pFBA">
-<code class="descname">pFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/parsimoniousFBA/pFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.parsimoniousFBA.pFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.parsimoniousFBA.pFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parsimoneous enzyme usage Flux Balance Analysis - method that optimizes
-the user&#8217;s objective function and then minimizes the flux through the
+the user’s objective function and then minimizes the flux through the
 model and subsequently classifies each gene by how it contributes to the
 optimal solution. See <cite>Lewis, et al. Mol Syst Bio doi:10.1038/msb.2010.47</cite></p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model            COBRA model
+varargin:        including:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model            COBRA model</strong></li>
-<li><strong>varargin</strong> &#8211;
-including:<ul>
-<li>&#8216;geneoption&#8217; - 0 = minimize the sum of all fluxes in the network,
+<li>‘geneoption’ - 0 = minimize the sum of all fluxes in the network,
 1 = only minimize the sum of the flux through
 gene-associated fluxes (default),
 2 = only minimize the sum of the flux through
 non-gene-associated fluxes</li>
-<li>&#8216;map&#8217; - map structure from readCbMap.m (no map written if empty)</li>
-<li>&#8216;mapoutname&#8217; - File Name for map</li>
-<li>&#8216;skipclass&#8217; - 1 = Don&#8217;t classify genes and reactions. Only return
+<li>‘map’ - map structure from readCbMap.m (no map written if empty)</li>
+<li>‘mapoutname’ - File Name for map</li>
+<li>‘skipclass’ - 1 = Don’t classify genes and reactions. Only return
 model with the minimium flux set as upper bound.
 0 = classify genes and reactions (default).</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">GeneClasses:     Structure with fields for each gene class
+RxnsClasses:     Structure with fields for each reaction class
+modelIrrevFM:    Irreversible model used for minimizing flux with</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>GeneClasses</strong> &#8211;
-Structure with fields for each gene class</li>
-<li><strong>RxnsClasses</strong> &#8211;
-Structure with fields for each reaction class</li>
-<li><strong>modelIrrevFM</strong> &#8211;
-Irreversible model used for minimizing flux with
-the minimum flux set as a flux upper bound</li>
-</ul>
-</div></blockquote>
+<div>the minimum flux set as a flux upper bound</div></blockquote>
+<p class="last">MinimizedFlux    minimized flux</p>
+</dd>
+</dl>
 <p>Note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
 reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
 blue (2) = zero flux reactions, purple (1) = blocked reactions,
 black (0) = not classified</p>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">GeneClasses</span> <span class="n">RxnClasses</span> <span class="n">modelIrrevFM</span><span class="p">]</span> <span class="o">=</span> <span class="n">pFBA</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;geneoption&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">,</span><span class="mf">1e-7</span><span class="p">)</span>
-</pre></div>
-</div>
+<p class="rubric">Example</p>
+<p>[GeneClasses RxnClasses modelIrrevFM] = pFBA(model, ‘geneoption’,0, ‘tol’,1e-7)</p>
 </dd></dl>
 
 </div>
@@ -337,7 +336,7 @@ black (0) = not classified</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -368,6 +367,7 @@ black (0) = not classified</p>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -387,5 +387,14 @@ black (0) = not classified</p>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

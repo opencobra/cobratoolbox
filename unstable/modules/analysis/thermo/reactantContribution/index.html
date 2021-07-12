@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -210,6 +211,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -247,11 +250,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -264,7 +269,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -280,123 +285,78 @@
 <span id="id1"></span><h1>reactantContribution<a class="headerlink" href="#reactantcontribution" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.reactantContribution"></span><dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.acidDissociationConstant">
-<code class="descname">acidDissociationConstant</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/reactantContribution/acidDissociationConstant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
+<code class="descname">acidDissociationConstant</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Acid dissociation constant for the different metabolite species that make up a reactant</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, is, chi)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">metAbbr:               reconstruction reactant abbreviation
+Alberty2006:           Basic data on the metabolite species that make</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>metAbbr</strong> &#8211;
-reconstruction reactant abbreviation</li>
-<li><strong>Alberty2006</strong> &#8211;
-Basic data on the metabolite species that make
-up a reactant, compiled by Robert A. Alberty,
+<div>up a reactant, compiled by Robert A. Alberty,
 Massachusetts Institute of Technology.
 In Print: <cite>Robert A. Alberty, Biochemical Thermodynamics:
 Applications of Mathematica. John Wiley &amp; Sons, 2006. p391-395</cite>
 Online: BasicBioChemData3.nb
-<a class="reference external" href="http://library.wolfram.com/infocenter/MathSource/5704/">http://library.wolfram.com/infocenter/MathSource/5704/</a></li>
-<li><strong>metAbbrAlbertyAbbr</strong> &#8211;
-mapping from model metabolite primary key to
-primary key of reactants in <cite>Alberty2006</cite></li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>temp</strong> &#8211;
-temperature (default 298.15 K)</li>
-<li><strong>is</strong> &#8211;
-ionic strength (default 0 M)</li>
-<li><strong>chi</strong> &#8211;
-electrical potential (default 0)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Ka</strong> &#8211;
-apparent equilibrium constants</li>
-<li><strong>pKa</strong> &#8211;
-<span class="math">\(-log_{10}(Ka)\)</span></li>
-</ul>
-</div></blockquote>
+<a class="reference external" href="http://library.wolfram.com/infocenter/MathSource/5704/">http://library.wolfram.com/infocenter/MathSource/5704/</a></div></blockquote>
+<dl class="last docutils">
+<dt>metAbbrAlbertyAbbr:    mapping from model metabolite primary key to</dt>
+<dd>primary key of reactants in <cite>Alberty2006</cite></dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUT</dt>
+<dd>temp:                  temperature (default 298.15 K)
+is:                    ionic strength (default 0 M)
+chi:                   electrical potential (default 0)</dd>
+<dt>OUTPUTS:</dt>
+<dd>Ka:                    apparent equilibrium constants
+pKa:                   <span class="math notranslate nohighlight">\(-log_{10}(Ka)\)</span></dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.calcdGHT">
-<code class="descname">calcdGHT</code><span class="sig-paren">(</span><em>dGzero</em>, <em>dHzero</em>, <em>zi</em>, <em>nH</em>, <em>pHr</em>, <em>is</em>, <em>temp</em>, <em>chi</em>, <em>Legendre</em>, <em>LegendreCHI</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/reactantContribution/calcdGHT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calcdGHT</code><span class="sig-paren">(</span><em>dGzero</em>, <em>dHzero</em>, <em>zi</em>, <em>nH</em>, <em>pHr</em>, <em>is</em>, <em>temp</em>, <em>chi</em>, <em>Legendre</em>, <em>LegendreCHI</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the standard transformed Gibbs energy of a reactant</p>
 <p>Reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
 gives the standard transformed Gibbs energy of formation of a reactant
 (sum of species) and the standard transformed enthalpy of a reactant.</p>
 <p>Assuming p pseudoisomer species corresponding to one reactant</p>
 <p>Optional output dependent on multiple precision toolbox</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>dGzero:         <cite>p x 1</cite> standard Gibbs energy of formation at 298.15 K
+zi:             <cite>p x 1</cite> electric charge
+nH:             <cite>p x 1</cite> number of hydrogen atoms in each species
+pHr:            real pH of 5 to 9 (see realpH.m)
+is:             ionic strength 0 to 0.35 M
+temp:           temperature 273.15 K to 313.15 K</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>dHzero:         <cite>p x 1</cite> standard enthalpy of formation at 298.15 K
+chi:            electrical potential
+Legendre:       {(1), 0} Legendre Transformation for specifc pHr?
+LegendreCHI:    {(1), 0} Legendre Transformation for specifc electrical potential?</dd>
+<dt>OUTPUT:</dt>
+<dd>dGf0:           reactant standard transformed Gibbs energy of formation
+dHf0:           reactant standard transformed enthalpy of formation
+mf:             mole fraction of each species within a pseudoisomer group
+aveHbound:      average number of protons bound to a reactant
+aveZi:          average charge of a reactant
+lambda:         activity coefficient for each metabolite species
+gpfnsp:         metabolite species standard transformed Gibbs energy of formation</dd>
+</dl>
+<p>OPTIONAL OUTPUT:</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>dGzero</strong> &#8211;
-<cite>p x 1</cite> standard Gibbs energy of formation at 298.15 K</li>
-<li><strong>zi</strong> &#8211;
-<cite>p x 1</cite> electric charge</li>
-<li><strong>nH</strong> &#8211;
-<cite>p x 1</cite> number of hydrogen atoms in each species</li>
-<li><strong>pHr</strong> &#8211;
-real pH of 5 to 9 (see realpH.m)</li>
-<li><strong>is</strong> &#8211;
-ionic strength 0 to 0.35 M</li>
-<li><strong>temp</strong> &#8211;
-temperature 273.15 K to 313.15 K</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dHzero</strong> &#8211;
-<cite>p x 1</cite> standard enthalpy of formation at 298.15 K</li>
-<li><strong>chi</strong> &#8211;
-electrical potential</li>
-<li><strong>Legendre</strong> &#8211;
-{(1), 0} Legendre Transformation for specifc pHr?</li>
-<li><strong>LegendreCHI</strong> &#8211;
-{(1), 0} Legendre Transformation for specifc electrical potential?</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dGf0</strong> &#8211;
-reactant standard transformed Gibbs energy of formation</li>
-<li><strong>dHf0</strong> &#8211;
-reactant standard transformed enthalpy of formation</li>
-<li><strong>mf</strong> &#8211;
-mole fraction of each species within a pseudoisomer group</li>
-<li><strong>aveHbound</strong> &#8211;
-average number of protons bound to a reactant</li>
-<li><strong>aveZi</strong> &#8211;
-average charge of a reactant</li>
-<li><strong>lambda</strong> &#8211;
-activity coefficient for each metabolite species</li>
-<li><strong>gpfnsp</strong> &#8211;
-metabolite species standard transformed Gibbs energy of formation</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dHf0</strong> &#8211;
-standard transformed enthalpy of formation</li>
-</ul>
-</div></blockquote>
+<div>dHf0:           standard transformed enthalpy of formation</div></blockquote>
 <p>The values of the standard transformed Gibbs energy of formation
 and the standard transformed enthalpy of formation can be calculated
-temperature in the range 273.15 K to 313.15 K, using the van&#8217;t Hoff equation.
-<cite>pHr</cite> in the range 5 to 9 (these correspond to the pH range of the species in Alberty&#8217;s tables)
+temperature in the range 273.15 K to 313.15 K, using the van’t Hoff equation.
+<cite>pHr</cite> in the range 5 to 9 (these correspond to the pH range of the species in Alberty’s tables)
 ionic strength in the range 0 to 0.35 M.
 See Mathematica program <cite>calcdGHT p289 Alberty 2003</cite></p>
 <p>The changes in the values of standard transformed Gibbs energy of formation
@@ -409,40 +369,34 @@ See <cite>p41 Alberty 2003</cite></p>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation">
-<code class="descname">setCommonZeroStandardGibbsEnergyOfFormation</code><span class="sig-paren">(</span><em>model</em>, <em>adjustedMetList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets all Alberty&#8217;s cofactor metabolites to have a common thermodynamic baseline.</p>
+<code class="descname">setCommonZeroStandardGibbsEnergyOfFormation</code><span class="sig-paren">(</span><em>model</em>, <em>adjustedMetList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all Alberty’s cofactor metabolites to have a common thermodynamic baseline.</p>
 <p>Sets all the exceptional metabolites to have a common baseline.
 i.e. Standard transformed Gibbs energies of reactants with the baseline adjusted
 for certain paired cofactors e.g. <cite>fad</cite> &amp; <cite>fadh2</cite>, such that the
 difference between the two is the same as in Albertys data but
 the absolute values are consistent with the group contribution data</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetList)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:              Thermodynamic model:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Thermodynamic model:<ul>
 <li>.met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)</li>
 <li>.met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)</li>
 <li>.met(m).dGft0Source - origin of data, <cite>Keq</cite> or <cite>groupContFileName.txt</cite></li>
 <li>.met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
+</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>adjustedMetList:</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">model:              structure with field:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>adjustedMetList</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with field:<ul>
 <li>.met(m).dGft0 - Standard transformed Gibbs energies of reactants
 with the baseline adjusted for certain paired
 cofactors e.g. <cite>fad</cite> &amp; <cite>fadh2</cite>, such that the
@@ -450,71 +404,69 @@ difference between the two is the same as in
 Albertys data but the absolute values are
 consistent with the group contribution data</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction">
-<code class="descname">singleMetaboliteSpeciesReaction</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleMetaboliteSpeciesReaction</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies reactions involving reactants with only one metabolite species.</p>
 <p>Identifies the reactions involving one substrate metabolite species reactant,
 one product metabolite species reactant and where each reactant is composed
 of only one metabolite species.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.S</li>
 <li>.met(m).mf - mole fraction of each species</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry">
-<code class="descname">thermodynamicAdjustmentToStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Thermodynamic adjustments to the stoichiometric matrix for &#8216;co2&#8217;, &#8216;h2o&#8217;, and bound cofactors.</p>
-<p>In aqueous phase, carbon dioxide is distributed between &#8216;CO2(aq)&#8217;, &#8216;H2CO3&#8217;, &#8216;HCO3^-&#8216;, &#8216;CO3^2-&#8216;.
-For each &#8216;CO2(tot)&#8217; in a reaction  add an &#8216;H2O&#8217; to the other side of reaction, and change the formula for
-carbon dioxide to &#8216;CO2.H20&#8217; = &#8216;H2CO3&#8217; see <cite>p150 Alberty 2003</cite>.</p>
+<code class="descname">thermodynamicAdjustmentToStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermodynamic adjustments to the stoichiometric matrix for ‘co2’, ‘h2o’, and bound cofactors.</p>
+<p>In aqueous phase, carbon dioxide is distributed between ‘CO2(aq)’, ‘H2CO3’, ‘HCO3^-’, ‘CO3^2-‘.
+For each ‘CO2(tot)’ in a reaction  add an ‘H2O’ to the other side of reaction, and change the formula for
+carbon dioxide to ‘CO2.H20’ = ‘H2CO3’ see <cite>p150 Alberty 2003</cite>.</p>
 <p>Also adjust stoichiometric matrix to account for the fact that the cofactors of
 succinate dehydrogenase, FAD/FADH, are bound.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = thermodynamicAdjustmentToStoichiometry(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.S</li>
 <li>.mets</li>
 <li>.rxns</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.S - thermodynamically adjusted stoichiometric matrix</li>
 <li>.mets</li>
 <li>.rxns</li>
 <li>.Sold</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -541,7 +493,7 @@ structure with fields:<ul>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -572,6 +524,7 @@ structure with fields:<ul>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -591,5 +544,14 @@ structure with fields:<ul>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,46 +268,34 @@
 <span id="id1"></span><h1>geometricFBA<a class="headerlink" href="#geometricfba" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.geometricFBA"></span><dl class="function">
 <dt id="src.analysis.geometricFBA.geometricFBA">
-<code class="descname">geometricFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/geometricFBA/geometricFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.geometricFBA.geometricFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">geometricFBA</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.geometricFBA.geometricFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a unique optimal FBA solution that is (in some sense)
 central to the range of possible fluxes; as described in
 <cite>K Smallbone, E Simeonidis (2009). Flux balance analysis:
 A geometric perspective. J Theor Biol 258: 311-315
 http://dx.doi.org/10.1016/j.jtbi.2009.01.027</cite></p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>flux = geometricFBA(model, varargin)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>printLevel</strong> &#8211;
-[default: 1]  printing level,
-= 0 - silent
-= 1 - show algorithm progress and times</li>
-<li><strong>epsilon</strong> &#8211;
-[default: 1e-6]      convergence tolerance of algorithm,
-defined in more detail in paper above</li>
-<li><strong>flexRel</strong> &#8211;
-[default: 0] flexibility to flux bounds
-try e.g. 1e-3 if the algorithm has convergence problems</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>flux</strong> &#8211;
-unique centered flux</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:         COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>printLevel:    [default: 1]  printing level,</dt>
+<dd>= 0 - silent
+= 1 - show algorithm progress and times</dd>
+<dt>epsilon:       [default: 1e-6]      convergence tolerance of algorithm,</dt>
+<dd>defined in more detail in paper above</dd>
+<dt>flexRel:       [default: 0] flexibility to flux bounds</dt>
+<dd>try e.g. 1e-3 if the algorithm has convergence problems</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>flux:          unique centered flux</dd>
+</dl>
 <p>Optional parameters can be entered as parameter name followed by
-parameter value: i.e. ...,&#8217;epsilon&#8217;, 1e-9)</p>
+parameter value: i.e. …,’epsilon’, 1e-9)</p>
 </dd></dl>
 
 </div>
@@ -329,7 +322,7 @@ parameter value: i.e. ...,&#8217;epsilon&#8217;, 1e-9)</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -360,6 +353,7 @@ parameter value: i.e. ...,&#8217;epsilon&#8217;, 1e-9)</p>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -379,5 +373,14 @@ parameter value: i.e. ...,&#8217;epsilon&#8217;, 1e-9)</p>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

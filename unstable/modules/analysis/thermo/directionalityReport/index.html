@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -210,6 +211,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -247,11 +250,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -264,7 +269,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -280,15 +285,15 @@
 <span id="id1"></span><h1>directionalityReport<a class="headerlink" href="#directionalityreport" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.directionalityReport"></span><dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.analyseThermoConstrainedModel">
-<code class="descname">analyseThermoConstrainedModel</code><span class="sig-paren">(</span><em>model</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/analyseThermoConstrainedModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.analyseThermoConstrainedModel" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Usage</strong></p>
+<code class="descname">analyseThermoConstrainedModel</code><span class="sig-paren">(</span><em>model</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.analyseThermoConstrainedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>USAGE:</p>
 <blockquote>
 <div>[out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLevel, resultsBaseFileName)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:                  structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.DfGt0 - <cite>m x 1</cite> array of estimated standard transformed Gibbs
 energies of formation.</li>
 <li>.DrGt0 - <cite>n x 1</cite> array of estimated standard transformed
@@ -307,46 +312,38 @@ irreversible in the forward direction, -1 for
 reactions that are irreversible in the reverse
 direction, and 0 for reversible reactions.</li>
 </ul>
-</li>
-<li><strong>cumNormProbCutoff</strong> &#8211;
-default = 0.2</li>
-<li><strong>printLevel</strong> &#8211;
-verbose level, default = 1</li>
-<li><strong>resultsBaseFileName</strong></li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>out</strong></li>
-</ul>
-</div></blockquote>
+<p class="last">cumNormProbCutoff:      default = 0.2
+printLevel:             verbose level, default = 1
+resultsBaseFileName:</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>out:</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.assignQualDir">
-<code class="descname">assignQualDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/assignQualDir.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.assignQualDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assignQualDir</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.assignQualDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a qualitative direction to each reaction based on the upper and
 lower bounds</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>model = assignQualDir(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>model.lb</li>
 <li>model.ub</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>model.quantDir - Quantitative directionality assignments.<ul>
 <li>quantDir = 1 for reactions that are irreversible in the forward direction.</li>
 <li>quantDir = -1 for reactions that are irreversible in the reverse direction.</li>
@@ -354,14 +351,14 @@ structure with fields:<ul>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.directionalityChangeReport">
-<code class="descname">directionalityChangeReport</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/directionalityChangeReport.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityChangeReport" title="Permalink to this definition">¶</a></dt>
+<code class="descname">directionalityChangeReport</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityChangeReport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks for changes to reconstruction reaction direction to
 thermodynamically constrained model direction .</p>
 <p>Checks to see which metabolites are involved in reactions that change the
@@ -370,18 +367,15 @@ metabolites are involved in.
 Does not include reactions that cannot be assigned reaction directionality
 due to missing thermodynamic data for certain metabolites involved
 in that reaction.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>directionalityChangeReport(model, directions, cumNormProbCutoff, printLevel, resultsBaseFileName)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:                  COBRA structure
+directions:             a structue of boolean vectors with different directionality</p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-COBRA structure</p>
-</li>
-<li><p class="first"><strong>directions</strong> &#8211;
-a structue of boolean vectors with different directionality
-assignments where some vectors contain subsets of others</p>
+<div><p>assignments where some vectors contain subsets of others</p>
 <p>qualtiative -&gt; quantiative changed reaction directions</p>
 <blockquote>
 <div><ul class="simple">
@@ -414,42 +408,39 @@ assignments where some vectors contain subsets of others</p>
 <li>.forward2Reversible_byConc_positive_uncertain_DrG0</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>cumNormProbCutoff</strong> &#8211;
-{0.2} cutoff for probablity that reaction is
-reversible within this cutoff of 0.5</p>
-</li>
-<li><p class="first"><strong>printLevel</strong> &#8211;
-verbose level</p>
-</li>
-<li><p class="first"><strong>resultsBaseFileName</strong></p>
-</li>
-</ul>
 </div></blockquote>
+<dl class="docutils">
+<dt>cumNormProbCutoff:      {0.2} cutoff for probablity that reaction is</dt>
+<dd>reversible within this cutoff of 0.5</dd>
+</dl>
+<p class="last">printLevel:             verbose level
+resultsBaseFileName:</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.directionalityStats">
-<code class="descname">directionalityStats</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/directionalityStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityStats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">directionalityStats</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>cumNormProbCutoff</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build Boolean vectors with reaction directionality statistics</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[model, directions] = directionalityStats(model, directions, cumNormProbCutoff, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>model</strong> &#8211;
-a structue of boolean vectors with different directionality
-assignments where some vectors contain subsets of others with field:</p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>model:                 a structue of boolean vectors with different directionality</dt>
+<dd><p class="first">assignments where some vectors contain subsets of others with field:</p>
+<blockquote class="last">
 <div><ul class="simple">
 <li>.directions</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>directions</strong> &#8211;
-structure with field:</p>
-<blockquote>
+</dd>
+</dl>
+<p>directions:            structure with field:</p>
+<blockquote class="last">
+<div><blockquote>
 <div><ul class="simple">
 <li>.forwardProbability</li>
 </ul>
@@ -474,27 +465,21 @@ thermodynamic data is lacking</p>
 <li>.equilibriumThermo</li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>cumNormProbCutoff</strong> &#8211;
-{0.2} cutoff for probablity that reaction is
-reversible within this cutoff of 0.5</li>
-<li><strong>printLevel</strong> &#8211;
--1 to print out to file,
-0 to silent,
-1 to print out to command window</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>directions</strong> &#8211;
-a structue of boolean vectors with different directionality
-assignments where some vectors contain subsets of others</p>
+</dd>
+<dt>OPTIONAL INPUT</dt>
+<dd><dl class="first last docutils">
+<dt>cumNormProbCutoff:     {0.2} cutoff for probablity that reaction is</dt>
+<dd>reversible within this cutoff of 0.5</dd>
+<dt>printLevel:            -1 to print out to file,</dt>
+<dd>0 to silent,
+1 to print out to command window</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>directions:            a structue of boolean vectors with different directionality</dt>
+<dd><p class="first">assignments where some vectors contain subsets of others</p>
 <p>qualtiative -&gt; quantiative changed reaction directions</p>
 <blockquote>
 <div><ul class="simple">
@@ -514,7 +499,7 @@ assignments where some vectors contain subsets of others</p>
 </ul>
 </div></blockquote>
 <p>subsets of qualtiatively forward  -&gt; quantiatively reversible</p>
-<blockquote>
+<blockquote class="last">
 <div><ul class="simple">
 <li>.forward2Reversible_bydGt0</li>
 <li>.forward2Reversible_bydGt0LHS</li>
@@ -527,24 +512,24 @@ assignments where some vectors contain subsets of others</p>
 <li>.forward2Reversible_byConc_positive_uncertain_DrG0</li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
-</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.directionalityStatsFigures">
-<code class="descname">directionalityStatsFigures</code><span class="sig-paren">(</span><em>directions</em>, <em>resultsBaseFileName</em>, <em>saveFigures</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/directionalityStatsFigures.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityStatsFigures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">directionalityStatsFigures</code><span class="sig-paren">(</span><em>directions</em>, <em>resultsBaseFileName</em>, <em>saveFigures</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.directionalityStatsFigures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates pie charts of directionality stats</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>directionalityStatsFigures(directions, resultsBaseFileName, saveFigures)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>directions</strong> &#8211;
-a structue of boolean vectors with different directionality
-assignments where some vectors contain subsets of others</p>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first docutils">
+<dt>directions:    a structue of boolean vectors with different directionality</dt>
+<dd><p class="first">assignments where some vectors contain subsets of others</p>
 <p>qualitatively assigned directions:</p>
 <blockquote>
 <div><ul class="simple">
@@ -582,7 +567,7 @@ thermodynamic data is lacking</p>
 </ul>
 </div></blockquote>
 <p>subsets of forward qualtiative -&gt; reversible quantiative change</p>
-<blockquote>
+<blockquote class="last">
 <div><ul class="simple">
 <li>directions.forward2Reversible_bydGt0</li>
 <li>directions.forward2Reversible_bydGt0LHS</li>
@@ -595,30 +580,29 @@ thermodynamic data is lacking</p>
 <li>directions.forward2Reversible_byConc_positive_uncertain_DrG0</li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>resultsBaseFileName</strong></p>
-</li>
-<li><p class="first"><strong>saveFigures</strong></p>
-</li>
-</ul>
-</div></blockquote>
+</dd>
+</dl>
+<p class="last">resultsBaseFileName:
+saveFigures:</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.forwardProbablyReverseFigures">
-<code class="descname">forwardProbablyReverseFigures</code><span class="sig-paren">(</span><em>model</em>, <em>miliMolarStandard</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardProbablyReverseFigures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forwardProbablyReverseFigures</code><span class="sig-paren">(</span><em>model</em>, <em>miliMolarStandard</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardProbablyReverseFigures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure of qualitatively forward reactions that are probably quantiatively reverse.
 creates a vertical errorbar figure of the qualitatively forward reactions
 that end up being probably quantiatively reverse by at least one metabolite
 group contribution estimate</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>forwardProbablyReverseFigures(model,m iliMolarStandard)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:    structure with field:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with field:<ul>
 <li>.directions (subsets of forward qualtiative -&gt; probably quantiative reverse):<ul>
 <li>.forwardReversible_bydGt0RHS</li>
 <li>.forwardReversible_byConc_positive_fixed_DrG0</li>
@@ -626,30 +610,31 @@ structure with field:<ul>
 </ul>
 </li>
 </ul>
-</li>
-<li><strong>miliMolarStandard</strong></li>
-</ul>
 </div></blockquote>
+<p class="last">miliMolarStandard:</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.forwardReversibleFigures">
-<code class="descname">forwardReversibleFigures</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/forwardReversibleFigures.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardReversibleFigures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forwardReversibleFigures</code><span class="sig-paren">(</span><em>model</em>, <em>directions</em>, <em>confidenceLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardReversibleFigures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figures of different classes of reactions: qualitatively forward -&gt; quantitatively reversible</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>forwardReversibleFigures(model, directions, confidenceLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:              structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.S</li>
 <li>.DrGt0</li>
 </ul>
-</li>
-<li><strong>directions</strong> &#8211;
-subsets of qualtiatively forward -&gt; quantiatively reversible<ul>
+</div></blockquote>
+<p>directions:         subsets of qualtiatively forward -&gt; quantiatively reversible</p>
+<blockquote>
+<div><ul class="simple">
 <li>.forwardReversible</li>
 <li>.forwardReversible_bydGt0</li>
 <li>.forwardReversible_bydGt0LHS</li>
@@ -661,142 +646,122 @@ subsets of qualtiatively forward -&gt; quantiatively reversible<ul>
 <li>.forwardReversible_byConc_negative_uncertain_DrG0</li>
 <li>.forwardReversible_byConc_positive_uncertain_DrG0</li>
 </ul>
-</li>
-<li><strong>confidenceLevel</strong> &#8211;
-default = 0.95</li>
-</ul>
 </div></blockquote>
+<p class="last">confidenceLevel:    default = 0.95</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.forwardTransportQuantReverseFigures">
-<code class="descname">forwardTransportQuantReverseFigures</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardTransportQuantReverseFigures" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forwardTransportQuantReverseFigures</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.forwardTransportQuantReverseFigures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Figure of the qualitatively forward transport reactions that are quantitatively reversible.
 Creates a vertical errorbar figure of the qualitatively forward transport reactions
 that are quantitatively reversible, whether from group contribution or
 Keq, that then need to be assigned to be forward, to limit the growth rate
 i.e. abc transporters or reactions involving protons.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>forwardTransportQuantReverseFigures(model)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:    structure with fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure with fields:<ul>
 <li>.transportRxnBool</li>
 <li>.dGt0Min</li>
 <li>.dGt0Max</li>
 <li>.directions.forwardReversible</li>
 </ul>
-</li>
-</ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.generateThermodynamicTables">
-<code class="descname">generateThermodynamicTables</code><span class="sig-paren">(</span><em>model</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/generateThermodynamicTables.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.generateThermodynamicTables" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generateThermodynamicTables</code><span class="sig-paren">(</span><em>model</em>, <em>resultsBaseFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.generateThermodynamicTables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate tab delimited tables detailing the thermodynamic estimates
 generated for a model</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>generateThermodynamicTables(model, resultsBaseFileName)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure</li>
-<li><strong>resultsBaseFileName</strong> &#8211;
-default = &#8216;out&#8217;</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                  structure
+resultsBaseFileName:    default = ‘out’</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.plotFeasibleReactionEnergyRanges">
-<code class="descname">plotFeasibleReactionEnergyRanges</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.plotFeasibleReactionEnergyRanges" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots feasible dGr0&#8217; and dGr&#8217; for all reactions with quantitatively
+<code class="descname">plotFeasibleReactionEnergyRanges</code><span class="sig-paren">(</span><em>modelT</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.plotFeasibleReactionEnergyRanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots feasible dGr0’ and dGr’ for all reactions with quantitatively
 determined reaction energies</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>plotFeasibleReactionEnergyRanges(modelT)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelT</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>modelT:</dd>
+</dl>
+</dd></dl>
+
+<dl class="script">
+<dt id="src.analysis.thermo.directionalityReport.qualitativeVSquantitativeChangesTable">
+<code class="descname">qualitativeVSquantitativeChangesTable</code><a class="headerlink" href="#src.analysis.thermo.directionalityReport.qualitativeVSquantitativeChangesTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Example of a script that can be used to set up different thermodynamic models depending on the pH temp etc</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.singleMetaboliteThermoFigure">
-<code class="descname">singleMetaboliteThermoFigure</code><span class="sig-paren">(</span><em>model</em>, <em>miliMolarStandard</em>, <em>metAbbr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.singleMetaboliteThermoFigure" title="Permalink to this definition">¶</a></dt>
+<code class="descname">singleMetaboliteThermoFigure</code><span class="sig-paren">(</span><em>model</em>, <em>miliMolarStandard</em>, <em>metAbbr</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.singleMetaboliteThermoFigure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a vertical errorbar figure of the reactions involving the
 metabolite given by the abbreviation</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>singleMetaboliteThermoFigure(model, miliMolarStandard, metAbbr)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-structure</li>
-<li><strong>miliMolarStandard</strong></li>
-<li><strong>metAbbr</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                structure
+miliMolarStandard:
+metAbbr:</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.standardGibbsFormationEnergyStats">
-<code class="descname">standardGibbsFormationEnergyStats</code><span class="sig-paren">(</span><em>modelT</em>, <em>figures</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.standardGibbsFormationEnergyStats" title="Permalink to this definition">¶</a></dt>
+<code class="descname">standardGibbsFormationEnergyStats</code><span class="sig-paren">(</span><em>modelT</em>, <em>figures</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.standardGibbsFormationEnergyStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the stats +/- pie chart on the provinence of the metabolite standard Gibbs energies.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[nKeq, nGC, nNone] = standardGibbsFormationEnergyStats(modelT, figures)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>modelT</strong></li>
-<li><strong>figures</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>nKeq</strong></li>
-<li><strong>nGC</strong></li>
-<li><strong>nNone</strong></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>modelT:
+figures:</dd>
+<dt>OUTPUTS:</dt>
+<dd>nKeq:
+nGC:
+nNone:</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.thermo.directionalityReport.writeReactionListThermo">
-<code class="descname">writeReactionListThermo</code><span class="sig-paren">(</span><em>model</em>, <em>FileName</em>, <em>start</em>, <em>stop</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/directionalityReport/writeReactionListThermo.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.directionalityReport.writeReactionListThermo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">writeReactionListThermo</code><span class="sig-paren">(</span><em>model</em>, <em>FileName</em>, <em>start</em>, <em>stop</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.directionalityReport.writeReactionListThermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a list of reactions and bounds to a text file</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>writeReactionListThermo(model, FileName, start, stop)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-model structure</li>
-<li><strong>FileName</strong> &#8211;
-Name of output file</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>start</strong> &#8211;
-integer index of first reaction index to write out</li>
-<li><strong>stop</strong> &#8211;
-integer index of last reaction index to write out</li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:       model structure
+FileName:    Name of output file</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>start:       integer index of first reaction index to write out
+stop:        integer index of last reaction index to write out</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -823,7 +788,7 @@ integer index of last reaction index to write out</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -854,6 +819,7 @@ integer index of last reaction index to write out</li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -873,5 +839,14 @@ integer index of last reaction index to write out</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

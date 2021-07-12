@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,54 +268,38 @@
 <span id="dynamic-fba"></span><span id="dynamicfba"></span><h1>Dynamic FBA<a class="headerlink" href="#module-src.analysis.dynamicFBA" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="src.analysis.dynamicFBA.dynamicFBA">
-<code class="descname">dynamicFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/dynamicFBA/dynamicFBA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.dynamicFBA.dynamicFBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dynamicFBA</code><span class="sig-paren">(</span><em>model</em>, <em>substrateRxns</em>, <em>initConcentrations</em>, <em>initBiomass</em>, <em>timeStep</em>, <em>nSteps</em>, <em>plotRxns</em>, <em>exclUptakeRxns</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.dynamicFBA.dynamicFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs dynamic FBA simulation using the static optimization approach</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[concentrationMatrix, excRxnNames, timeVec, biomassVec] = dynamicFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:                  COBRA model structure
+substrateRxns:          List of exchange reaction names for substrates</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-<li><strong>substrateRxns</strong> &#8211;
-List of exchange reaction names for substrates
-initially in the media that may change (e.g. not
-h2o or co2)</li>
-<li><strong>initConcentrations</strong> &#8211;
-Initial concentrations of substrates (in the same
-structure as <cite>substrateRxns</cite>)</li>
-<li><strong>initBiomass</strong> &#8211;
-Initial biomass (must be non zero)</li>
-<li><strong>timeStep</strong> &#8211;
-Time step size</li>
-<li><strong>nSteps</strong> &#8211;
-Maximum number of time steps</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>plotRxns</strong> &#8211;
-Reactions to be plotted (Default = {&#8216;EX_glc(e)&#8217;, &#8216;EX_ac(e)&#8217;, &#8216;EX_for(e)&#8217;})</li>
-<li><strong>exclUptakeRxns</strong> &#8211;
-List of uptake reactions whose substrate concentrations do not change
-(Default = {&#8216;EX_co2(e)&#8217;, &#8216;EX_o2(e)&#8217;, &#8216;EX_h2o(e)&#8217;, &#8216;EX_h(e)&#8217;})</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>concentrationMatrix</strong> &#8211;
-Matrix of extracellular metabolite concentrations</li>
-<li><strong>excRxnNames</strong> &#8211;
-Names of exchange reactions for the EC metabolites</li>
-<li><strong>timeVec</strong> &#8211;
-Vector of time points</li>
-<li><strong>biomassVec</strong> &#8211;
-Vector of biomass values</li>
-</ul>
-</div></blockquote>
+<div>initially in the media that may change (e.g. not
+h2o or co2)</div></blockquote>
+<dl class="docutils">
+<dt>initConcentrations:     Initial concentrations of substrates (in the same</dt>
+<dd>structure as <cite>substrateRxns</cite>)</dd>
+</dl>
+<p class="last">initBiomass:            Initial biomass (must be non zero)
+timeStep:               Time step size
+nSteps:                 Maximum number of time steps</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">plotRxns:               Reactions to be plotted (Default = {‘EX_glc(e)’, ‘EX_ac(e)’, ‘EX_for(e)’})
+exclUptakeRxns:         List of uptake reactions whose substrate concentrations do not change</p>
+<blockquote class="last">
+<div>(Default = {‘EX_co2(e)’, ‘EX_o2(e)’, ‘EX_h2o(e)’, ‘EX_h(e)’})</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>concentrationMatrix:    Matrix of extracellular metabolite concentrations
+excRxnNames:            Names of exchange reactions for the EC metabolites
+timeVec:                Vector of time points
+biomassVec:             Vector of biomass values</dd>
+</dl>
 <p>If no initial concentration is given for a substrate that has an open
 uptake in the model (i.e. <cite>model.lb &lt; 0</cite>) the concentration is assumed to
 be high enough to not be limiting. If the uptake rate for a nutrient is
@@ -352,7 +341,7 @@ described in [<cite>Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)</cite>].
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -383,6 +372,7 @@ described in [<cite>Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)</cite>].
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -402,5 +392,14 @@ described in [<cite>Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)</cite>].
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

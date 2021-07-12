@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,36 +268,26 @@
 <span id="id1"></span><h1>fluxEnrichmentAnalysis<a class="headerlink" href="#fluxenrichmentanalysis" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.fluxEnrichmentAnalysis"></span><dl class="function">
 <dt id="src.analysis.fluxEnrichmentAnalysis.FEA">
-<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/fluxEnrichmentAnalysis/FEA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.fluxEnrichmentAnalysis.FEA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FEA</code><span class="sig-paren">(</span><em>model</em>, <em>rxnSet</em>, <em>group</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.fluxEnrichmentAnalysis.FEA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Significance analysis - Flux enrichment analysis using hypergeometric
 1-sided test and FDR correction for multiple testing</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>resultCell = FEA(model, rxnSet, &#8216;subSystems&#8217;)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA structure model</li>
-<li><strong>rxnSet</strong> &#8211;
-reaction set to be enriched (vector of reaction indices e.g. 1:10)</li>
-<li><strong>group</strong> &#8211;
-model.group structure e.g.
-&#8216;subSystems&#8217; : FEA looks for significantly enriched subsystems in rxnSet</li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>resultCell</strong> &#8211;
-cell structure of enriched groups</li>
-</ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">load</span> <span class="n">ecoli_core_model</span><span class="p">;</span>
-<span class="n">resultCell</span> <span class="o">=</span> <span class="n">FEA</span><span class="p">(</span><span class="n">modelEcore</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;subSystems&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
+<div>resultCell = FEA(model, rxnSet, ‘subSystems’)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:           COBRA structure model
+rxnSet:          reaction set to be enriched (vector of reaction indices e.g. 1:10)
+group:           model.group structure e.g.</p>
+<blockquote class="last">
+<div>‘subSystems’ : FEA looks for significantly enriched subsystems in rxnSet</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>resultCell:    cell structure of enriched groups</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>load ecoli_core_model;
+resultCell = FEA(modelEcore, 1:10, ‘subSystems’);</p>
 </dd></dl>
 
 </div>
@@ -319,7 +314,7 @@ cell structure of enriched groups</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -350,6 +345,7 @@ cell structure of enriched groups</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -369,5 +365,14 @@ cell structure of enriched groups</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

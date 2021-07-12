@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -202,6 +203,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -239,11 +242,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -256,7 +261,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -277,18 +282,16 @@
 </div>
 <span class="target" id="module-src.analysis.multiSpecies.SteadyCom"></span><dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.SteadyCom">
-<code class="descname">SteadyCom</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/SteadyCom/SteadyCom.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyCom" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyCom</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyCom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the maximum community growth rate at community steady-state using the <cite>SteadyCom</cite> algorithm</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
-(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
-<blockquote>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, parameter, ‘param1’, value1, ‘param2’, value2, …)</dd>
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>modelCom:       A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)</dt>
+<dd><p class="first">(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
+<blockquote class="last">
 <div><ul class="simple">
 <li>S - Stoichiometric matrix</li>
 <li>b - Right hand side</li>
@@ -299,34 +302,32 @@ A community COBRA model structure with the following fields (created using <cite
 <li>indCom - the index structure corresponding to <cite>infoCom</cite></li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>options</strong> &#8211;
-struct with the following possible fields:
-(for constraining individual growth rates and biomass amounts, default []):</p>
-<blockquote>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>options:        struct with the following possible fields:</dt>
+<dd><p class="first">(for constraining individual growth rates and biomass amounts, default []):</p>
+<blockquote class="last">
 <div><ul>
 <li><p class="first">GRfx - Fixed growth rate for organisms apart from the community
-(<span class="math">\(N_{organisms} * 1\)</span> vector, NaN for unfixed growth rate,
+(<span class="math notranslate nohighlight">\(N_{organisms} * 1\)</span> vector, NaN for unfixed growth rate,
 or [#organisms | value]) e.g. to fix organisms 2, 3
 at growth rate 0.1, <cite>GRfx = [2, 0.1; 3, 0.1];</cite></p>
 </li>
-<li><p class="first">BMcon - Biomass constraint matrix <span class="math">\((\sum (a_{ij} * X_j) &lt;/=/&gt; b_i)\)</span>
-(given as <span class="math">\(K * N_{organisms}\)</span> matrix for <cite>K</cite> constraints)
-e.g. [0 1 1 0] for <span class="math">\(X_2 + X_3\)</span> in a 4-organisms model</p>
+<li><p class="first">BMcon - Biomass constraint matrix <span class="math notranslate nohighlight">\((\sum (a_{ij} * X_j) &lt;/=/&gt; b_i)\)</span>
+(given as <span class="math notranslate nohighlight">\(K * N_{organisms}\)</span> matrix for <cite>K</cite> constraints)
+e.g. [0 1 1 0] for <span class="math notranslate nohighlight">\(X_2 + X_3\)</span> in a 4-organisms model</p>
 </li>
 <li><p class="first">BMrhs - RHS for BMcon, <cite>K x 1</cite> vector for <cite>K</cite> constraints</p>
 </li>
-<li><p class="first">BMcsense - Sense of the constraint, &#8216;L&#8217;, &#8216;E&#8217;, &#8216;G&#8217; for &lt;=, =, &gt;=
+<li><p class="first">BMcsense - Sense of the constraint, ‘L’, ‘E’, ‘G’ for &lt;=, =, &gt;=
 (for general constraints on e.g. total carbon uptake, molecular crowding, default [])</p>
 </li>
-<li><p class="first">MC - <span class="math">\(K * (N_{rxns}+N_{organisms})\)</span> coefficient matrix, for <cite>K</cite> additional constraints</p>
+<li><p class="first">MC - <span class="math notranslate nohighlight">\(K * (N_{rxns}+N_{organisms})\)</span> coefficient matrix, for <cite>K</cite> additional constraints</p>
 </li>
-<li><p class="first">MCmode - <span class="math">\(K * (N_{rxns}+N_{organisms})\)</span> matrix , with number 0 ~ 3</p>
+<li><p class="first">MCmode - <span class="math notranslate nohighlight">\(K * (N_{rxns}+N_{organisms})\)</span> matrix , with number 0 ~ 3</p>
 <ul class="simple">
 <li>0: original variable</li>
 <li>1: positive part of the variable</li>
@@ -347,13 +348,13 @@ whether a feasible solution can be found.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Use a threshold total biomass <cite>BMweight</cite> (see below).
-i.e. <span class="math">\(\sum X \geq BMweight\)</span>
+i.e. <span class="math notranslate nohighlight">\(\sum X \geq BMweight\)</span>
 (use it if the total biomass is known, the most common usage)</li>
 <li>Use a threshold on minimum biomass production
-(=specific growth rate x <span class="math">\(\sum biomass\)</span>, which is roughly
+(=specific growth rate x <span class="math notranslate nohighlight">\(\sum biomass\)</span>, which is roughly
 constant over a range of growth rate if the sum of biomass
 is not bounded above)
-i.e. <span class="math">\(\sum X * gr \geq BMtol * BMref * GR0\)</span>
+i.e. <span class="math notranslate nohighlight">\(\sum X * gr \geq BMtol * BMref * GR0\)</span>
 where <cite>BMref</cite> is the maximum biomass at a small growth rate <cite>GR0</cite>
 and <cite>BMtol</cite> is a fraction ranging from 0 to 1</li>
 </ol>
@@ -362,7 +363,7 @@ and <cite>BMtol</cite> is a fraction ranging from 0 to 1</li>
 <li><p class="first">algorithm [1] - Algorithm to find the maximum growth rate</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><cite>Fzero</cite> after finding <cite>grLB</cite> and <cite>grUB</cite> with simple guessing [<span class="math">\(gr^T = gr * \sum X / \sum X^T\)</span>]</li>
+<li><cite>Fzero</cite> after finding <cite>grLB</cite> and <cite>grUB</cite> with simple guessing [<span class="math notranslate nohighlight">\(gr^T = gr * \sum X / \sum X^T\)</span>]</li>
 <li>Simple guessing with minimum one percent step size</li>
 <li>Bisection method</li>
 </ol>
@@ -379,7 +380,7 @@ feasibility. Used only if <cite>feasCrit = 2</cite></p>
 </li>
 <li><p class="first">solveGR0[false] - true to solve the model at a low growth rate <cite>GR0</cite> first to test feasibility</p>
 </li>
-<li><p class="first">GRtol [1e-6] - Precision for the growth rate found (<span class="math">\(grUB - grLB &lt; GRtol\)</span>)</p>
+<li><p class="first">GRtol [1e-6] - Precision for the growth rate found (<span class="math notranslate nohighlight">\(grUB - grLB &lt; GRtol\)</span>)</p>
 </li>
 <li><p class="first">BMtolAbs [1e-5] - Absolute tolerance for positivity of biomass</p>
 </li>
@@ -399,31 +400,27 @@ when doing the maximization at each step.
 </li>
 <li><p class="first">LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.</p>
 </li>
-<li><p class="first">saveModel [&#8216;&#8217;]  String, if non-empty, save the LP structure.</p>
+<li><p class="first">saveModel [‘’]  String, if non-empty, save the LP structure.</p>
 </li>
 </ul>
 </div></blockquote>
-</li>
-<li><p class="first"><strong>parameter</strong> &#8211;
-structure for solver-specific parameters.
-&#8216;param1&#8217;, value1, ...:  name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</p>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
+</dd>
+<dt>parameter:      structure for solver-specific parameters.</dt>
+<dd>‘param1’, value1, …:  name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">sol:            COBRA solution structure (Cplex structure if using ibm_cplex)
+result:         structure with the following fields:</p>
+<blockquote class="last">
 <div><ul class="simple">
-<li><strong>sol</strong> &#8211;
-COBRA solution structure (Cplex structure if using ibm_cplex)</li>
-<li><strong>result</strong> &#8211;
-structure with the following fields:<ul>
 <li>GRmax: maximum specific growth rate found (/h)</li>
 <li>vBM: biomass formation rate (gdw/h)</li>
 <li>BM: Biomass vector at GRmax (gdw)</li>
 <li>Ut: uptake fluxes (mmol/h)</li>
 <li>Ex: export fluxes (mmol/h)</li>
 <li>flux: flux distribution for the original model
-(the following &#8216;iter&#8217; fields are status in each iteration:)
+(the following ‘iter’ fields are status in each iteration:)
 [GR | biomass X | biomass flux (<cite>GR * X</cite>) | max. infeas. of solution])</li>
 <li>iter0: stationary, no growth, <cite>gr = 0</cite></li>
 <li>iter: iterations for finding max gr</li>
@@ -433,32 +430,30 @@ structure with the following fields:<ul>
 <li>minimal growth: feasible at a minimal growth rate (possible only if options.solveGR0 = true)</li>
 <li>infeasible: infeasible model, even with maintenance requirement only</li>
 <li>LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)</li>
-<li>xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. &#8216;xxx&#8217; is one of the status above.</li>
-</ul>
-</li>
+<li>xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. ‘xxx’ is one of the status above.</li>
 </ul>
 </li>
 </ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.SteadyComFVA">
-<code class="descname">SteadyComFVA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComFVA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComFVA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComFVA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flux variability analysis for community model at community steady-state for a range of growth rates.
 The function is capable of saving intermediate results and continuing from previous results
 if the file path is given in <cite>options.saveFVA</cite>. It also allows switch from single thread to parallel
 computation from intermediate results (but not the other way round).</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(modelCom, options, parameter, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
-(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
-<blockquote>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(modelCom, options, parameter, ‘param1’, value1, ‘param2’, value2, …)</dd>
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>modelCom:     A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)</dt>
+<dd><p class="first">(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
+<blockquote class="last">
 <div><ul class="simple">
 <li>S - Stoichiometric matrix</li>
 <li>b - Right hand side</li>
@@ -469,20 +464,19 @@ A community COBRA model structure with the following fields (created using <cite
 <li>indCom - the index structure corresponding to <cite>infoCom</cite></li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">options:    struct with the following possible fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>options</strong> &#8211;
-struct with the following possible fields:<ul>
 <li>optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])</li>
 <li>optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)</li>
 <li>rxnNameList - List of reactions (index row vector or subset of <cite>*.rxns</cite>) for which FVA is performed.
 (Default = biomass reaction of each species)
-Or a <span class="math">\((N_{rxns} + N_{organism}) x K\)</span> matrix for FVA of <cite>K</cite> linear combinations of fluxes and/or abundances
-e.g., <cite>[1; -2; 0]</cite> for finding the max/min of <span class="math">\(1 v_1 - 2 v_2 + 0 v_3\)</span></li>
+Or a <span class="math notranslate nohighlight">\((N_{rxns} + N_{organism}) x K\)</span> matrix for FVA of <cite>K</cite> linear combinations of fluxes and/or abundances
+e.g., <cite>[1; -2; 0]</cite> for finding the max/min of <span class="math notranslate nohighlight">\(1 v_1 - 2 v_2 + 0 v_3\)</span></li>
 <li>rxnFluxList - List of reactions (index vector or subset of <cite>*.rxns</cite>) whose fluxes are
 also returned along with the FVA result of each entry in <cite>rxnNameList</cite>
 (Default = biomass reaction of each species)</li>
@@ -499,58 +493,45 @@ Provide them only if you want to constrain the total biomass to a particular val
 (Requires Matlab parallel toolbox)</li>
 <li>verbFlag - Verbose output. 1 to have waitbar, &gt;1 to have stepwise output (default 3)</li>
 <li>loadModel - (<cite>ibm_cplex</cite> only) String of filename to be loaded. If non-empty, load the cplex
-model (&#8216;loadModel.mps&#8217;), basis (&#8216;loadModel.bas&#8217;) and parameters (&#8216;loadModel.prm&#8217;).
+model (‘loadModel.mps’), basis (‘loadModel.bas’) and parameters (‘loadModel.prm’).
 (May add also other parameters in <cite>SteadyCom</cite> for calculating the maximum growth rate.)</li>
 </ul>
-</li>
-<li><strong>parameter</strong> &#8211;
-structure for solver-specific parameters.
-&#8216;param1&#8217;, value1, ...   name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</li>
-</ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>minFlux</strong> &#8211;
-Minimum flux for each reaction</li>
-<li><strong>maxFlux</strong> &#8211;
-Maximum flux for each reaction</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>minFD</strong> &#8211;
-<span class="math">\(rxnFluxList * rxnNameList\)</span> matrix containing the fluxes in <cite>options.rxnFluxList</cite>
-corresponding to minimizing each reaction in <cite>options.rxnNameList</cite></li>
-<li><strong>maxFD</strong> &#8211;
-<span class="math">\(rxnFluxList * rxnNameList\)</span> matrix containing the fluxes in <cite>options.rxnFluxList</cite>
-corresponding to maximizing each reaction in <cite>options.rxnNameList</cite></li>
-<li><strong>GRvector</strong> &#8211;
-a vector of growth rates at which FVA has been performed</li>
-<li><strong>result</strong> &#8211;
-result structure from <cite>SteadyCom</cite></li>
-<li><strong>LP</strong> &#8211;
-<cite>LP</cite> problem structure (<cite>Cplex LP</cite> object for <cite>ibm_cplex</cite>)</li>
-</ul>
-</div></blockquote>
+<dl class="last docutils">
+<dt>parameter:  structure for solver-specific parameters.</dt>
+<dd>‘param1’, value1, …   name-value pairs for <cite>solveCobraLP</cite> parameters. See <cite>solveCobraLP</cite> for details</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>minFlux:    Minimum flux for each reaction
+maxFlux:    Maximum flux for each reaction</dd>
+<dt>OPTIONAL OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>minFD:      <span class="math notranslate nohighlight">\(rxnFluxList * rxnNameList\)</span> matrix containing the fluxes in <cite>options.rxnFluxList</cite></dt>
+<dd>corresponding to minimizing each reaction in <cite>options.rxnNameList</cite></dd>
+<dt>maxFD:      <span class="math notranslate nohighlight">\(rxnFluxList * rxnNameList\)</span> matrix containing the fluxes in <cite>options.rxnFluxList</cite></dt>
+<dd>corresponding to maximizing each reaction in <cite>options.rxnNameList</cite></dd>
+</dl>
+<p class="last">GRvector:   a vector of growth rates at which FVA has been performed
+result:     result structure from <cite>SteadyCom</cite>
+LP:         <cite>LP</cite> problem structure (<cite>Cplex LP</cite> object for <cite>ibm_cplex</cite>)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.multiSpecies.SteadyCom.SteadyComPOA">
-<code class="descname">SteadyComPOA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComPOA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">SteadyComPOA</code><span class="sig-paren">(</span><em>modelCom</em>, <em>options</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.multiSpecies.SteadyCom.SteadyComPOA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze pairwise relationship between reaction fluxes/biomass variables for a community model
 at community steady-state at a given growth rate. See <cite>tutorial_SteadyCom</cite> for more details.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, &#8216;param1&#8217;, value1, &#8216;param2&#8217;, value2, ...)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>modelCom</strong> &#8211;
-A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)
-(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
-<blockquote>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[POAtable, fluxRange, Stat, GRvector] = SteadyComPOA(modelCom, options, parameters, ‘param1’, value1, ‘param2’, value2, …)</dd>
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>modelCom:  A community COBRA model structure with the following fields (created using <cite>createMultipleSpeciesModel</cite>)</dt>
+<dd><p class="first">(the first 5 fields are required, at least one of the last two is needed. Can be obtained using <cite>getMultiSpecisModelId</cite>):</p>
+<blockquote class="last">
 <div><ul class="simple">
 <li>S - Stoichiometric matrix</li>
 <li>b - Right hand side</li>
@@ -561,22 +542,20 @@ A community COBRA model structure with the following fields (created using <cite
 <li>indCom - the index structure corresponding to <cite>infoCom</cite></li>
 </ul>
 </div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">options:    option structure with the following fields:</p>
 <blockquote>
 <div><ul>
-<li><p class="first"><strong>options</strong> &#8211;
-option structure with the following fields:</p>
-<ul>
 <li><p class="first">GRmax - maximum growth rate of the model (default to be found SteadyCom.m)</p>
 </li>
 <li><p class="first">optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])</p>
 </li>
 <li><p class="first">optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)</p>
 </li>
-<li><p class="first">rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a <span class="math">\((N_{rxns} + N_{organism}) x K\)</span> matrix for POA of <cite>K</cite>
+<li><p class="first">rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a <span class="math notranslate nohighlight">\((N_{rxns} + N_{organism}) x K\)</span> matrix for POA of <cite>K</cite>
 linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,</p>
 </li>
 <li><p class="first">pairList - pairs in <cite>rxnNameList</cite> to be analyzed. <cite>N_pair</cite> by 2 array of:</p>
@@ -586,13 +565,13 @@ linear combinations of fluxes and/or abundances (Default = biomass reaction of e
 </ul>
 </li>
 <li><ul class="first">
-<li>rxn names which are members of <cite>rxnNameList</cite>, e.g., <cite>{&#8216;EX_glc-D(e)&#8217;, &#8216;EX_ac(e)&#8217;}</cite></li>
+<li>rxn names which are members of <cite>rxnNameList</cite>, e.g., <cite>{‘EX_glc-D(e)’, ‘EX_ac(e)’}</cite></li>
 </ul>
 </li>
 </ul>
 <p>If not supplied, analyze all <cite>K(K-1)</cite> pairs from the <cite>K</cite> targets in <cite>rxnNameList</cite>.</p>
 </li>
-<li><p class="first">symmetric - true to avoid running symmetric pairs (e.g. analyze pair <cite>(j,k)</cite> only if <span class="math">\(j &gt; k\)</span>, total <span class="math">\(K(K-1)/2 pairs)\)</span>.
+<li><p class="first">symmetric - true to avoid running symmetric pairs (e.g. analyze pair <cite>(j,k)</cite> only if <span class="math notranslate nohighlight">\(j &gt; k\)</span>, total <span class="math notranslate nohighlight">\(K(K-1)/2 pairs)\)</span>.
 Used only when <cite>pairList</cite> is not supplied.</p>
 </li>
 <li><p class="first">Nstep - number of steps for fixing one flux at a value between the min. and the max. possible fluxes. Default 10.
@@ -601,14 +580,14 @@ e.g. <cite>[0 0.5 1]</cite> means computing at <cite>minFlux</cite>, <cite>0.5(m
 </li>
 <li><p class="first">NstepScale - used only when Nstep is a single number.</p>
 <ul class="simple">
-<li>-&#8216;lin&#8217; for a linear (uniform) scale of step size</li>
-<li>-&#8216;log&#8217; for a log scaling of the step sizes</li>
+<li>-‘lin’ for a linear (uniform) scale of step size</li>
+<li>-‘log’ for a log scaling of the step sizes</li>
 </ul>
 </li>
 <li><p class="first">fluxRange - flux range for each entry in <cite>rxnNameList</cite>. <cite>K x 2</cite> matrix. Defaulted to be found by <cite>SteadyComFVA.m</cite>
 (other parameters)</p>
 </li>
-<li><p class="first">savePOA - filename to save the POA results (default &#8216;POAtmp/POA&#8217;). Must be non-empty. New folder is recommended</p>
+<li><p class="first">savePOA - filename to save the POA results (default ‘POAtmp/POA’). Must be non-empty. New folder is recommended</p>
 </li>
 <li><p class="first">threads - for parallelization: &gt; 1 for explicitly stating the no. of threads used,
 0 or -1 for using all available threads. Default 1.</p>
@@ -616,36 +595,33 @@ e.g. <cite>[0 0.5 1]</cite> means computing at <cite>minFlux</cite>, <cite>0.5(m
 <li><p class="first">verbFlag - verbose output. 0 or 1.</p>
 </li>
 <li><p class="first">loadModel - (<cite>ibm_cplex</cite> only) string of filename to be loaded. If non-empty, load the
-cplex model (&#8216;loadModel.mps&#8217;), basis (&#8216;loadModel.bas&#8217;) and parameters (&#8216;loadModel.prm&#8217;).
+cplex model (‘loadModel.mps’), basis (‘loadModel.bas’) and parameters (‘loadModel.prm’).
 (May add also other parameters in <cite>SteadyCom</cite> for calculating the maximum growth rate.)</p>
 </li>
 </ul>
-</li>
-<li><p class="first"><strong>parameter</strong> &#8211;
-structure for solver-specific parameters.
-&#8216;param1&#8217;, value1, ...:  name-value pairs for <cite>solveCobraLP</cite> parameters. See solveCobraLP for details</p>
-</li>
-</ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<dl class="last docutils">
+<dt>parameter:  structure for solver-specific parameters.</dt>
+<dd>‘param1’, value1, …:  name-value pairs for <cite>solveCobraLP</cite> parameters. See solveCobraLP for details</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>POAtable:    <cite>K x K</cite> cells. Each <cite>(i, i)</cite> -cell contains a <cite>Nstep x 1 x N_gr</cite> matrix of the fluxes at which <cite>rxnNameList{i}</cite> is fixed.</dt>
+<dd>Each <cite>(i, j)</cite> -cell contains a <cite>Nstep x 2 x N_gr</cite> matrix, the <cite>(p,:,q)</cite> -entry being the range of <cite>rxnNameList{j}</cite>
+when <cite>rxnNameList{i}</cite> is fixed at <cite>POAtable{i, i}(p, 1, q)</cite> at growth rate = GRvector(q)</dd>
+</dl>
+<p>fluxRange:   <cite>K x 2 x N_gr</cite> matrix of flux range for each entry in <cite>rxnNameList</cite>
+Stat:        <cite>K x K x N_gr</cite> structure array with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>POAtable</strong> &#8211;
-<cite>K x K</cite> cells. Each <cite>(i, i)</cite> -cell contains a <cite>Nstep x 1 x N_gr</cite> matrix of the fluxes at which <cite>rxnNameList{i}</cite> is fixed.
-Each <cite>(i, j)</cite> -cell contains a <cite>Nstep x 2 x N_gr</cite> matrix, the <cite>(p,:,q)</cite> -entry being the range of <cite>rxnNameList{j}</cite>
-when <cite>rxnNameList{i}</cite> is fixed at <cite>POAtable{i, i}(p, 1, q)</cite> at growth rate = GRvector(q)</li>
-<li><strong>fluxRange</strong> &#8211;
-<cite>K x 2 x N_gr</cite> matrix of flux range for each entry in <cite>rxnNameList</cite></li>
-<li><strong>Stat</strong> &#8211;
-<cite>K x K x N_gr</cite> structure array with fields:<ul>
-<li>-&#8216;cor&#8217;: the slope from linear regression between the fluxes of a pair</li>
-<li>-&#8216;r2&#8217;:  the corresponding coefficient of determination (R-square)</li>
-</ul>
-</li>
-<li><strong>GRvector</strong> &#8211;
-vector of growth rates being analyzed</li>
+<li>-‘cor’: the slope from linear regression between the fluxes of a pair</li>
+<li>-‘r2’:  the corresponding coefficient of determination (R-square)</li>
 </ul>
 </div></blockquote>
+<p class="last">GRvector:    vector of growth rates being analyzed</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -672,7 +648,7 @@ vector of growth rates being analyzed</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -703,6 +679,7 @@ vector of growth rates being analyzed</li>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -722,5 +699,14 @@ vector of growth rates being analyzed</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

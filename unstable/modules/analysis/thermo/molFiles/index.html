@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../../index.html">
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -210,6 +211,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -247,11 +250,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../../index.html">Functions</a> &raquo;</li>
         
@@ -264,7 +269,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -279,44 +284,35 @@
   <div class="section" id="molfiles">
 <span id="id1"></span><h1>molFiles<a class="headerlink" href="#molfiles" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.thermo.molFiles"></span><dl class="function">
-<dt id="src.analysis.thermo.molFiles.kegg2mol">
-<code class="descname">kegg2mol</code><span class="sig-paren">(</span><em>cid</em>, <em>molfileDir</em>, <em>mets</em>, <em>takeMajorMS</em>, <em>pH</em>, <em>takeMajorTaut</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/thermo/molFiles/kegg2mol.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.molFiles.kegg2mol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve molfiles from the KEGG Compound database.</p>
-<p><strong>Usage</strong></p>
+<dt id="src.analysis.thermo.molFiles.molFilesToCDFfile">
+<code class="descname">molFilesToCDFfile</code><span class="sig-paren">(</span><em>model</em>, <em>cdfFileName</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.molFiles.molFilesToCDFfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates all the mol files in current folder into a cdf file.</p>
+<p>Creates a cdf file, named  cdfFileNam, out of all the mol files in the
+current folder. The cdf file can then be used with the web based
+implementation of the group contribution method to estimate the Standard
+Gibbs energy of formation for a batch of metabolite species
+The web-based implementation of this new group contribution method is
+available free at <a class="reference external" href="http://sparta.chem-eng.northwestern.edu/cgi-bin/GCM/WebGCM.cgi">http://sparta.chem-eng.northwestern.edu/cgi-bin/GCM/WebGCM.cgi</a>.
+The code checks for a .mol file with the filename prefix given by the
+abbreviation in the model, therefore, you should name your own mol files
+accordingly.</p>
+<p>USAGE:</p>
 <blockquote>
-<div>kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)</div></blockquote>
-<p><strong>Input</strong></p>
+<div>metList = molFilesToCDFfile(model, cdfFileName)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:              structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>cid</strong> &#8211;
-<cite>m x 1</cite> array of KEGG Compound identifiers.</li>
+<li>model.mets - cell array of metabolite abbreviations corresponding to the mol files</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>molfileDir</strong> &#8211;
-Path to directory where molfiles will be saved. Default
-is <cite>molfilesFromKegg</cite>.</li>
-<li><strong>mets</strong> &#8211;
-<cite>m x 1</cite> array of metabolite identifiers. Used to name
-molfiles. KEGG Compound ID will be used if mets is omitted.</li>
-<li><strong>takeMajorMS</strong> &#8211;
-{(0), 1}. If 0 (default), molfiles will be downloaded
-directly from KEGG. If 1, they will save as the major
-microspecies at the pH specified in input variable pH.
-Computing major microspecies requires ChemAxon&#8217;s
-calculator plugins (cxcalc).</li>
-<li><strong>pH</strong> &#8211;
-pH for computing major microspecies.</li>
-<li><strong>takeMajorTaut</strong> &#8211;
-{0, (1)}. If 1 (default), molfiles will be saved as the
-major tautomers of the major microspecies at the specified pH.</li>
-</ul>
-</div></blockquote>
-<p>Written output - One molfile for each metabolite with a KEGG Compound ID.</p>
-<p>If takeMajorMS = 1 - approximately 2 seconds per kegg id.
-If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.</p>
+<p class="last">cdfFileName:        name of cdf file</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>metList:
+cdfFileName.cdf:    cdf file with all the mol files in order of the model metabolite abbreviations</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -343,7 +339,7 @@ If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -374,6 +370,7 @@ If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.</p>
     <script type="text/javascript" src="../../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -393,5 +390,14 @@ If takeMajorMS = 0 - approximately 0.3 seconds per kegg id.</p>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

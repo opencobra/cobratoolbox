@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -195,6 +196,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -232,11 +235,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -247,7 +252,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -263,49 +268,34 @@
 <span id="id1"></span><h1>ROOM<a class="headerlink" href="#room" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-src.analysis.ROOM"></span><dl class="function">
 <dt id="src.analysis.ROOM.ROOM">
-<code class="descname">ROOM</code><span class="sig-paren">(</span><em>model</em>, <em>fluxWT</em>, <em>rxnKO</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/ROOM/ROOM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.ROOM.ROOM" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ROOM</code><span class="sig-paren">(</span><em>model</em>, <em>fluxWT</em>, <em>rxnKO</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.ROOM.ROOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a MILP version of the ROOM (Regulatory on/off minimization of
 metabolic flux changes) approach</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, WTflux, rxnKO, delta, epsilon, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Metabolic model</li>
-<li><strong>fluxWT</strong> &#8211;
-Numeric array with flux distribution of wild type</li>
-<li><strong>rxnKO</strong> &#8211;
-List of perturbations performed to the model
-(reactions that are eliminated)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>delta</strong> &#8211;
-Multiplicative tol for flux change (Default = 0.03)</li>
-<li><strong>epsilon</strong> &#8211;
-Additive tolerance for flux change (Default = 0.001)</li>
-<li><strong>printLevel</strong> &#8211;
-Verbose output (Default = 1)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>fluxROOM</strong> &#8211;
-Flux distribution after ROOM calculation</li>
-<li><strong>solutionROOM</strong> &#8211;
-Solution structure</li>
-<li><strong>totalFluxDiff</strong> &#8211;
-Euclidean distance of ROOM objective, i.e.
-<span class="math">\(\sum (v_{wt}-v_{del})^2\)</span></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:            Metabolic model
+fluxWT:           Numeric array with flux distribution of wild type
+rxnKO:            List of perturbations performed to the model</p>
+<blockquote class="last">
+<div>(reactions that are eliminated)</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>delta:            Multiplicative tol for flux change (Default = 0.03)
+epsilon:          Additive tolerance for flux change (Default = 0.001)
+printLevel:       Verbose output (Default = 1)</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">fluxROOM:         Flux distribution after ROOM calculation
+solutionROOM:     Solution structure
+totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
+<blockquote class="last">
+<div><span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></div></blockquote>
+</dd>
+</dl>
 <p>Solve the following problem:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min ~&amp;~ \sum y_{i} \\
     ~&amp;~ S_{del}v_{del} = 0 \\
     ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del} \\
@@ -315,60 +305,45 @@ Euclidean distance of ROOM objective, i.e.
     ~&amp;~ y_{i} \in {0,1} \\
     ~&amp;~ w_{wt,i}^u = w_{wt,i} + \delta |w_{wt,i}| + \epsilon \\
     ~&amp;~ w_{wt,i}^l = w_{wt,i} - \delta |w_{wt,i}| - \epsilon \\\end{split}\]</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The code here has been based on:
-Shlomi, T., Berkman, O., &amp; Ruppin, E. (2005). Regulatory on/off
-minimization of metabolic flux changes after genetic perturbations.
-Proceedings of the National Academy of Sciences, 102(21), 7695-7700</p>
+<p>NOTE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">code</span> <span class="n">here</span> <span class="n">has</span> <span class="n">been</span> <span class="n">based</span> <span class="n">on</span><span class="p">:</span>
+<span class="n">Shlomi</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="p">,</span> <span class="n">Berkman</span><span class="p">,</span> <span class="n">O</span><span class="o">.</span><span class="p">,</span> <span class="o">&amp;</span> <span class="n">Ruppin</span><span class="p">,</span> <span class="n">E</span><span class="o">.</span> <span class="p">(</span><span class="mi">2005</span><span class="p">)</span><span class="o">.</span> <span class="n">Regulatory</span> <span class="n">on</span><span class="o">/</span><span class="n">off</span>
+<span class="n">minimization</span> <span class="n">of</span> <span class="n">metabolic</span> <span class="n">flux</span> <span class="n">changes</span> <span class="n">after</span> <span class="n">genetic</span> <span class="n">perturbations</span><span class="o">.</span>
+<span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="n">National</span> <span class="n">Academy</span> <span class="n">of</span> <span class="n">Sciences</span><span class="p">,</span> <span class="mi">102</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span> <span class="mi">7695</span><span class="o">-</span><span class="mi">7700</span>
+</pre></div>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.ROOM.linearROOM">
-<code class="descname">linearROOM</code><span class="sig-paren">(</span><em>model</em>, <em>fluxWT</em>, <em>rxnKO</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/ROOM/linearROOM.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.ROOM.linearROOM" title="Permalink to this definition">¶</a></dt>
+<code class="descname">linearROOM</code><span class="sig-paren">(</span><em>model</em>, <em>fluxWT</em>, <em>rxnKO</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.ROOM.linearROOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a LP version of the ROOM (Regulatory on/off minimization of
 metabolic flux changes) approach</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>[fluxROOM, solutionROOM, totalFluxDiff] = linearROOM(model, WTflux, rxnKO, delta, epsilon, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> &#8211;
-Metabolic model</li>
-<li><strong>fluxWT</strong> &#8211;
-Numeric array with flux distribution of wild type</li>
-<li><strong>rxnKO</strong> &#8211;
-List of perturbations performed to the model
-(reactions that are eliminated)</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>delta</strong> &#8211;
-Multiplicative tol for flux change (Default = 0.03)</li>
-<li><strong>epsilon</strong> &#8211;
-Additive tolerance for flux change (Default = 0.001)</li>
-<li><strong>printLevel</strong> &#8211;
-Verbose output (Default = 1)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>fluxROOM</strong> &#8211;
-Flux distribution after ROOM calculation</li>
-<li><strong>solutionROOM</strong> &#8211;
-Solution structure</li>
-<li><strong>totalFluxDiff</strong> &#8211;
-Euclidean distance of ROOM objective, i.e.
-<span class="math">\(\sum (v_{wt}-v_{del})^2\)</span></li>
-</ul>
-</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:            Metabolic model
+fluxWT:           Numeric array with flux distribution of wild type
+rxnKO:            List of perturbations performed to the model</p>
+<blockquote class="last">
+<div>(reactions that are eliminated)</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>delta:            Multiplicative tol for flux change (Default = 0.03)
+epsilon:          Additive tolerance for flux change (Default = 0.001)
+printLevel:       Verbose output (Default = 1)</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">fluxROOM:         Flux distribution after ROOM calculation
+solutionROOM:     Solution structure
+totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
+<blockquote class="last">
+<div><span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></div></blockquote>
+</dd>
+</dl>
 <p>Solve the following problem:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}min ~&amp;~ \sum y_{i} \\
     ~&amp;~ S_{del}v_{del} = 0 \\
     ~&amp;~ lb_{del} \leq v_{del} \leq ub_{del} \\
@@ -378,12 +353,12 @@ Euclidean distance of ROOM objective, i.e.
     ~&amp;~ 0 \leq y_{i} \leq 1 \\
     ~&amp;~ w_{wt,i}^u = w_{wt,i} + \delta |w_{wt,i}| + \epsilon \\
     ~&amp;~ w_{wt,i}^l = w_{wt,i} - \delta |w_{wt,i}| - \epsilon \\\end{split}\]</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The code here has been based on:
-Shlomi, T., Berkman, O., &amp; Ruppin, E. (2005). Regulatory on/off
-minimization of metabolic flux changes after genetic perturbations.
-Proceedings of the National Academy of Sciences, 102(21), 7695-7700</p>
+<p>NOTE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">code</span> <span class="n">here</span> <span class="n">has</span> <span class="n">been</span> <span class="n">based</span> <span class="n">on</span><span class="p">:</span>
+<span class="n">Shlomi</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="p">,</span> <span class="n">Berkman</span><span class="p">,</span> <span class="n">O</span><span class="o">.</span><span class="p">,</span> <span class="o">&amp;</span> <span class="n">Ruppin</span><span class="p">,</span> <span class="n">E</span><span class="o">.</span> <span class="p">(</span><span class="mi">2005</span><span class="p">)</span><span class="o">.</span> <span class="n">Regulatory</span> <span class="n">on</span><span class="o">/</span><span class="n">off</span>
+<span class="n">minimization</span> <span class="n">of</span> <span class="n">metabolic</span> <span class="n">flux</span> <span class="n">changes</span> <span class="n">after</span> <span class="n">genetic</span> <span class="n">perturbations</span><span class="o">.</span>
+<span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="n">National</span> <span class="n">Academy</span> <span class="n">of</span> <span class="n">Sciences</span><span class="p">,</span> <span class="mi">102</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span> <span class="mi">7695</span><span class="o">-</span><span class="mi">7700</span>
+</pre></div>
 </div>
 </dd></dl>
 
@@ -411,7 +386,7 @@ Proceedings of the National Academy of Sciences, 102(21), 7695-7700</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -442,6 +417,7 @@ Proceedings of the National Academy of Sciences, 102(21), 7695-7700</p>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -461,5 +437,14 @@ Proceedings of the National Academy of Sciences, 102(21), 7695-7700</p>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

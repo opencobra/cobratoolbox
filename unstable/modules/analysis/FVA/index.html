@@ -83,14 +83,15 @@
           
 
           
-            <a href="../../../index.html">
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
           
 
           
-            
-            <img src="https://king.nuigalway.ie/img/logos/logo.png" class="logo" alt="logo"/>
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
+
+              
           <h1>The COBRA Toolbox</h1>
 
           
@@ -198,6 +199,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
 
           
@@ -235,11 +238,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../contents.html">Docs</a> &raquo;</li>
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Functions</a> &raquo;</li>
         
@@ -250,7 +255,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -271,104 +276,168 @@
 </div>
 <span class="target" id="module-src.analysis.FVA"></span><dl class="function">
 <dt id="src.analysis.FVA.fluxVariability">
-<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>printLevel</em>, <em>allowLoops</em>, <em>method</em>, <em>cpxControl</em>, <em>advind</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs flux variablity analysis</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)</div></blockquote>
-<p><strong>Input</strong></p>
+<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
+[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics, useMtFVA)
+[…] = fluxVariability(model, …, ‘name’, value, …, solverParams)
+[…] = fluxVariability(model, …, paramStruct)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:            COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>(support name-value argument inputs or a single [function + solver] parameter structure input)</dt>
+<dd><dl class="first docutils">
+<dt>optPercentage:    Only consider solutions that give you at least a certain</dt>
+<dd>percentage of the optimal solution (Default = 100
+or optimal solutions only)</dd>
+</dl>
+<p>osenseStr:        Objective sense, ‘min’ or ‘max’ (default)
+rxnNameList:      List of reactions for which FVA is performed</p>
+<blockquote>
+<div>(Default = all reactions in the model)</div></blockquote>
+<p>printLevel:       Verbose level (default: 0). 1 to show a progress bar. 2 to print results for each reaction
+allowLoops:       Whether loops are allowed in solution or which method to block loops.</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> &#8211;
-COBRA model structure</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><blockquote>
-<div><ul class="simple">
-<li><strong>optPercentage</strong> &#8211;
-Only consider solutions that give you at least a certain
-percentage of the optimal solution (Default = 100
-or optimal solutions only)</li>
-<li><strong>osenseStr</strong> &#8211;
-Objective sense (&#8216;min&#8217; or &#8216;max&#8217;) (Default = &#8216;max&#8217;)</li>
-<li><strong>rxnNameList</strong> &#8211;
-List of reactions for which FVA is performed
-(Default = all reactions in the model)</li>
-<li><strong>printLevel</strong> &#8211;
-Verbose level (default: 0)</li>
-<li><strong>allowLoops</strong> &#8211;
-Whether loops are allowed in solution. (Default = true)
-See <cite>optimizeCbModel</cite> for description</li>
-<li><strong>method</strong> &#8211;
-when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):<ul>
-<li>&#8216;FBA&#8217;    : standards FBA solution</li>
-<li>&#8216;0-norm&#8217; : minimzes the vector  0-norm</li>
-<li>&#8216;1-norm&#8217; : minimizes the vector 1-norm</li>
-<li>&#8216;2-norm&#8217; : minimizes the vector 2-norm</li>
-<li>&#8216;minOrigSol&#8217; : minimizes the euclidean distance of each vector to the original solution vector</li>
-</ul>
+<li>1 (or true) : loops allowed (default)</li>
+<li>0 (or false): loops not allowed. Use  to find loopless solutions</li>
+<li>‘original’  : original loopless FVA</li>
+<li>‘fastSNP’   : loopless FVA with with Fast-SNP preprocessing of nullspace</li>
+<li>‘LLC-NS’    : localized loopless FVA using information from nullsapce</li>
+<li><dl class="first docutils">
+<dt>‘LLC-EFM’ <span class="classifier-delimiter">:</span> <span class="classifier">localized loopless FVA using information from EFMs.</span></dt>
+<dd>Require CalculateFluxModes.m from EFMtool to calculate EFMs.</dd>
+</dl>
 </li>
 </ul>
 </div></blockquote>
-<p>cpxControl:        solver-specific parameter structure</p>
-<p>advind:            switch to use the solution basis</p>
+<p>method:           when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):</p>
+<blockquote>
+<div><ul class="simple">
+<li>‘FBA’    : standards FBA solution</li>
+<li>‘0-norm’ : minimzes the vector  0-norm</li>
+<li>‘1-norm’ : minimizes the vector 1-norm</li>
+<li>‘2-norm’ : minimizes the vector 2-norm</li>
+<li>‘minOrigSol’ : minimizes the euclidean distance of each vector to the original solution vector</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>solverParams:     solver-specific parameter structure. Can also be inputted as the first or last arguement</dt>
+<dd>if using name-value argument inputs (with or without the keyword ‘solverParams’).
+Can also be inputted as part of a parameter structure together with other function parameters</dd>
+</dl>
+<p>advind:           switch to use the solution basis</p>
 <blockquote>
 <div><ul class="simple">
 <li>0 : default</li>
 <li>1 : uses the original problem solution basis as advanced basis</li>
 </ul>
 </div></blockquote>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+<dl class="last docutils">
+<dt>threads:          number of threads used for the analysis</dt>
+<dd><ul class="first simple">
+<li>1, 2, 3, …: number of threads</li>
+<li>0:            defaulted number of threads for the parallel computing toolbox</li>
+</ul>
+<p class="last">(default to be 1 if no parpool is activited, otherwise use the existing parpool)</p>
+</dd>
+<dt>heuristics:       level of heuristics to accelerate FVA.</dt>
+<dd>0: no heuristics (default if rxnNameList has &lt; 5 reactions)
+1: solve max-sum-flux and min-sum-flux LPs to get reactions which already hit the bounds
+2: solve additionally a single LP to find all blocked irreversible reactions (default if rxnNameList has &gt;= 5 reactions)</dd>
+</dl>
+</dd>
+<dt>useMtFVA:          run FVA multi-threaded via an external JVM with CPLEX as solver</dt>
+<dd><blockquote class="first">
+<div><p>does not return Vmin, Vmax; requires allowLoops = true and method = ‘FBA’</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>minFlux</strong> &#8211;
-Minimum flux for each reaction</li>
-<li><strong>maxFlux</strong> &#8211;
-Maximum flux for each reaction</li>
+<li>0 : default, do not use mtFVA</li>
+<li>1 : use mtFVA</li>
 </ul>
 </div></blockquote>
-<p><strong>Optional outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Vmin</strong> &#8211;
-Matrix of column flux vectors, where each column is a
-separate minimization.</li>
-<li><strong>Vmax</strong> &#8211;
-Matrix of column flux vectors, where each column is a
-separate maximization.</li>
-</ul>
 </div></blockquote>
+<p class="last">paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>minFlux:          Minimum flux for each reaction
+maxFlux:          Maximum flux for each reaction</dd>
+<dt>OPTIONAL OUTPUT:</dt>
+<dd>Vmin:             Matrix of column flux vectors, where each column is a separate minimization.
+Vmax:             Matrix of column flux vectors, where each column is a separate maximization.</dd>
+</dl>
+<p class="rubric">Examples</p>
+<dl class="docutils">
+<dt>FVA for all rxns at 100% max value of the objective function:</dt>
+<dd>[minFlux, maxFlux] = fluxVariability(model);</dd>
+<dt>Loopless FVA for rxns in <cite>rxnNames</cite> at &lt;= 90% min value of the objective function, print results for each reaction:</dt>
+<dd>[minFlux, maxFlux] = fluxVariability(model, 90, ‘min’, rxnNames, 2, 0);</dd>
+<dt>Same as the 1st example, but also return the corresponding flux distributions with 2-norm minimized:</dt>
+<dd>[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, [], [],    [],       0, 1, ‘2-norm’);</dd>
+<dt>Name-value inputs, with Cobra LP parameter <cite>feasTol</cite> and solver-specific (gurobi) parameter <cite>Presolve</cite>:</dt>
+<dd>[minFlux, maxFlux] = fluxVariability(model, ‘optPercentage’, 99, ‘allowLoops’, 0, ‘threads’, 0, ‘feasTol’, 1e-8, struct(‘Presolve’, 0));</dd>
+<dt>Single parameter structure input including function, Cobra LP and solver parameters:</dt>
+<dd>[minFlux, maxFlux] = fluxVariability(model, struct(‘optPercentage’, 99, ‘allowLoops’, ‘original’, ‘threads’, 0, ‘feasTol’, 1e-8, ‘Presolve’, 0));</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="src.analysis.FVA.fvaJaccardIndex">
-<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/analysis/FVA/fvaJaccardIndex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares flux ranges by computing the Jaccard index</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
 <div>J = fvaJaccardIndex(minFlux, maxFlux);</div></blockquote>
-<p><strong>Inputs</strong></p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>minFlux:    An <cite>n x k</cite> matrix of minimum fluxes through <cite>n</cite> reactions in <cite>k</cite></dt>
+<dd>different constraint-based models (<cite>k &gt; 1</cite>).</dd>
+<dt>maxFlux:    An <cite>n x k</cite> matrix of maximum fluxes through n reactions in <cite>k</cite></dt>
+<dd>different constraint-based models (<cite>k &gt; 1</cite>).</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>J:           An <cite>n x 1</cite> vector of Jaccard indices, defined as the</dt>
+<dd>intersection divided by the union of all <cite>k</cite> flux ranges</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.analysis.FVA.mtFVA">
+<code class="descname">mtFVA</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>rxnsIdx</em>, <em>cpxControl</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.mtFVA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform flux variability analysis using multi-threading (via a JAVA VM)
+and CPLEX as solver.</p>
+<p>USAGE:</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>minFlux</strong> &#8211;
-An <cite>n x k</cite> matrix of minimum fluxes through <cite>n</cite> reactions in <cite>k</cite>
-different constraint-based models (<cite>k &gt; 1</cite>).</li>
-<li><strong>maxFlux</strong> &#8211;
-An <cite>n x k</cite> matrix of maximum fluxes through n reactions in <cite>k</cite>
-different constraint-based models (<cite>k &gt; 1</cite>).</li>
-</ul>
+<div>[minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><blockquote class="first">
+<div><p>LPproblem:   COBRA LPproblem structure</p>
+<dl class="docutils">
+<dt>rxnsIdx:     Vector of reaction indices for which to run the</dt>
+<dd>optimizations; a positive index indicates a maximization,
+a negative index a minimization of the respective
+reaction; by default the fluxes through all reactions are
+minimzed and maximized</dd>
+</dl>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>J</strong> &#8211;
-An <cite>n x 1</cite> vector of Jaccard indices, defined as the
-intersection divided by the union of all <cite>k</cite> flux ranges</li>
-</ul>
-</div></blockquote>
+<p class="last">cpxControl:   used as parameter for setCplexParam</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>minFlux:     Minimum flux for each reaction
+maxFlux:     Maximum flux for each reaction</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -395,7 +464,7 @@ intersection divided by the union of all <cite>k</cite> flux ranges</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, The COBRA Toolbox developers.
+        &copy; Copyright 2017-2020, The COBRA Toolbox developers.
 
     </p>
   </div>
@@ -426,6 +495,7 @@ intersection divided by the union of all <cite>k</cite> flux ranges</li>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -445,5 +515,14 @@ intersection divided by the union of all <cite>k</cite> flux ranges</li>
   </script>
    
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>
