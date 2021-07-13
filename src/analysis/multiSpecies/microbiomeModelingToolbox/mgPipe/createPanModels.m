@@ -411,9 +411,16 @@ reactionsToReplace = {
     '2S6HCC AND SHCHCS AND SSALxr AND OOR2r AND SUCOAS','SSALxr','SSALx'
     'ADK8 AND NDPK7 AND NTP13','NTP13','NTP13i'
     'ADK10 AND NDPK4 AND NTP9','NTP9','NTP9i'
+    'ADK1 AND NDPK4 AND NTP9','NTP9','NTP9i'
     'RE0583C AND SUCD1 AND ACOAD8f','ACOAD8f','ACOAD8fi'
     'TYRAL AND 4HBZOR AND 4HBZCL AND TYRL','4HBZCL','4HBZCLi'
     'NADH8 AND H2Ot AND SO3rDdmq AND SO3t AND H2St','SO3t','SO3ti'
+    'PHE_Ltex AND PHEt2rpp AND PHEtec','PHEtec',[]
+    'TYR_Ltex AND TYRt2rpp AND TYRt','TYRt',[]
+    'LYSt3rpp AND LYS_Ltex AND LYSt2r','LYSt2r',[]
+    'CITt2 AND CITt4_4','CITt4_4','CITt'
+    'SUCD1 AND 5MTHFOR','5MTHFOR','5MTHFORi'
+    'MLTHFTRU AND AMETRNAMT AND 5MTHCYST AND 5MTHGLUS','AMETRNAMT','AMETRNAMTi'
     };
 
 % List Western diet constraints to test if the pan-model produces
@@ -449,16 +456,18 @@ for i = 1:length(panModels)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
             for k = 1:size(rxns, 2)
-                RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
-                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                    newName=[rxns{k} 'pp'];
-                    % make sure we get the correct reaction
-                    newForm=strrep(RxForm,'[e]','[p]');
-                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                    if ~isempty(rxnInd)
-                        dbForm=database.reactions{rxnInd, 3};
-                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                            rxns{k}=newName;
+                if isempty(intersect(model.rxns,rxns{k}))
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
+                    if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                        newName=[rxns{k} 'pp'];
+                        % make sure we get the correct reaction
+                        newForm=strrep(RxForm,'[e]','[p]');
+                        rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                        if ~isempty(rxnInd)
+                            dbForm=database.reactions{rxnInd, 3};
+                            if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                rxns{k}=newName;
+                            end
                         end
                     end
                 end
@@ -478,7 +487,7 @@ for i = 1:length(panModels)
                     replacePP=1;
                 end
                 % Only make the change if biomass can still be produced
-                if replacePP
+                if replacePP && isempty(intersect(model.rxns,reactionsToReplace{j, 2}))
                     modelTest = removeRxns(model, newName);
                 else
                     modelTest = removeRxns(model, reactionsToReplace{j, 2});
