@@ -70,7 +70,7 @@ for j=1:size(toCompare,1)
         load(['stats_' toCompare{j,1} '.mat']);
         
         % remove models that were already analyzed
-        modelsRenamed=strrep(modelList(:,1),'.mat','');
+        modelsRenamed=strrep(models(:,1),'.mat','');
         modelsRenamed=strrep(modelsRenamed,'.sbml','');
         [C,IA]=intersect(modelsRenamed(:,1),stats(2:end,1));
         models(IA,:)=[];
@@ -150,7 +150,7 @@ for j=1:size(toCompare,1)
         for i=l:l+endPnt
             % grab all statistics
             onerowmore=size(stats,1)+1;
-            modelID=strrep(models{j},'.mat','');
+            modelID=strrep(models{i},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             stats{onerowmore,1}=modelID;
             for k=2:12

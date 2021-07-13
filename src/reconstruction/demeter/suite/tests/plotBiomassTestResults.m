@@ -123,6 +123,7 @@ if ~isempty(translatedDraftsFolder)
     box on
     maxval=max(data,[],'all');
     ylim([0 maxval + maxval/10])
+    ylabel('mmol *g dry weight-1 * hr-1')
     h=title(['Growth on rich medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -147,6 +148,7 @@ if ~isempty(translatedDraftsFolder)
     box on
     maxval=max(data,[],'all');
     ylim([0 maxval + maxval/10])
+    ylabel('mmol *g dry weight-1 * hr-1')
     h=title(['Growth on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -246,6 +248,7 @@ else
         box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
         h=title(['Growth on rich medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -265,6 +268,7 @@ else
         box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
         h=title(['Growth on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')

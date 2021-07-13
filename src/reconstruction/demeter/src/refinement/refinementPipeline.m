@@ -27,7 +27,6 @@ catch
     % if the input file is not a text file
     infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
 end
-
 infoFile = table2cell(infoFile);
 if ~any(strcmp(infoFile(:,1),microbeID))
     warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
@@ -297,6 +296,12 @@ if atpFluxAnaerobic>100
 end
 
 %% perform growth gap-filling if still needed
+
+% tmp fix
+if isfield(model,'C')
+    model=rmfield(model,'C');
+    model=rmfield(model,'d');
+end
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AerobicGrowth(1,2) < tol
     % apply complex medium
@@ -360,7 +365,7 @@ model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 
 %% add periplasmatic space
 if ~isempty(infoFilePath)
-    if ~any(strcmp(infoFile(:,1),microbeID))
+    if any(strcmp(infoFile(:,1),microbeID))
         model = createPeriplasmaticSpace(model,microbeID,infoFile);
     end
 end

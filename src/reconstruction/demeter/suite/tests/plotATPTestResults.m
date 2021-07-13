@@ -116,6 +116,7 @@ if ~isempty(translatedDraftsFolder)
     box on
     maxval=max(data,[],'all');
     ylim([0 maxval + maxval/10])
+    ylabel('mmol *g dry weight-1 * hr-1')
     h=title(['ATP production on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -175,6 +176,7 @@ else
         box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
         h=title(['ATP production on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')

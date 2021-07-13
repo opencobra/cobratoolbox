@@ -110,6 +110,11 @@ for k = 1:length(sampNames)
         % allmod(k,1)={finam};
         microbiota_model=pruned_model;
         microbiota_model.name=sampNames{k,1};
+        
+        % remove unnecessary fields
+        toRemove={'citations';'comments';'grRules';'rxnConfidenceScores';'rxnECNumbers';'rxnKEGGID';'subSystems';'metHMDBID';'metInChIString';'metKEGGID';'metPubChemID';'metSmiles';'genes'};
+        microbiota_model = rmfield(microbiota_model,toRemove);
+        
         sresPath=resPath(1:(length(resPath)-1));
         cd(sresPath)
         % give a different name if host is present
@@ -118,6 +123,8 @@ for k = 1:length(sampNames)
         else
             parsave(sprintf(strcat('microbiota_model_samp_',sampNames{k,1},'%d.mat')),microbiota_model)
         end
+        
+        createdModels{k} = microbiota_model;
     else
         s= 'microbiota model file found: skipping model creation for this sample';
         disp(s)

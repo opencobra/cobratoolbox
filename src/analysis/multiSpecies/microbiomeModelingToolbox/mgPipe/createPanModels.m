@@ -359,6 +359,68 @@ reactionsToReplace = {
     'DGORi AND SBTD_D2 AND GALM1r AND GNOXuq','GNOXuq','GNOXuqi'
     'LPCDH AND LPCOX AND NADH6pp AND ATPS4pp','LPCDH','LPCDHi'
     'CITt2pp AND CITCAtpp AND CAt4ipp','CITCAt','CITCAti'
+    'KAS17rev AND FACOAE181 AND FAO181E','FAO181E','FAO181Ei'
+    'KAS17rev AND RE3245C AND FAO181E','FAO181E','FAO181Ei'
+    'G1PGTi AND PGMT2 AND G1PPT AND G16BPS','G16BPS','G16BPSi'
+    'HISSNAT5tc AND HISt2r','HISt2r','HISt2'
+    'TDCOATA AND ACPACT AND FAS140ACPrev','FAS140ACPrev','FAS140ACP'
+    'SHCHCS AND 2S6HCC AND ACONTa AND ACONTb AND CITL AND ICDHx','ICDHx','ICDHxi'
+    'PPCr AND MALCOAPYRCT AND MMSAD5 AND MMSAD4','PPCr','PPC'
+    'SERD_Lr','SERD_Lr','SERD_L'
+    'LDH_L AND LDH_L2','LDH_L',[]
+    '25DOPOX AND GLCRAL AND D4DGCD','D4DGCD','D4DGCDi'
+    'CITt7 AND SUCCt AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'HEDCHL AND OAAKEISO AND ACTLDCCL','ACTLDCCL','ACTLDCCLi'
+    'ADNt AND ADNCNT3tc','ADNCNT3tc','ADNt2'
+    'PGMT AND G1PP AND GK_adp_','G1PP','G1PPi'
+    'LPCDH AND LPCOX AND NADH6','LPCDH','LPCDHi'
+    'THMtrbc AND THMt3','THMtrbc','THMti'
+    'MAN6PI AND HEX4 AND DCLMPDOH AND HMR_7271 AND PMANM','PMANM','PMANMi'
+    'DRPAr AND r0570 AND ACALD AND DURIPP AND PYNP2r AND DURI2OR','DURI2OR','DURI2ORi'
+    'PYDAMtr AND PYDAMt','PYDAMtr',[]
+    'ENO AND GLXS AND PGM AND PGK AND TPI AND OAACL','OAACL','OAACLi'
+    'NAt3_1 AND SUCCt2r AND SUCCt4_3','SUCCt4_3','SUCCt4_3i'
+    'PNTOt2 AND PNTOte','PNTOt2','PNTOt2i'
+    'r0974 AND PNTOte','r0974','PNTOt4'
+    'ARGSL AND ARGSSr AND ARGDr AND ACS AND ACKr AND PTAr','ARGSSr','ARGSS'
+    'METt2r AND METt3r','METt2r','METt2'
+    'GLUOOR AND GLUR AND H2O2D','H2O2D','NPR'
+    'KAS17rev AND RE3245C AND FAO181O','FAO181O','FAO181Oi'
+    'KAS17rev AND FACOAL181 AND FAO181O','FAO181O','FAO181Oi'
+    'TMAt2r AND TMAOR2e AND TMAOt2r','TMAOR2e','TMAOR2ei'
+    'ORNt2r AND PROPAT4te AND r2018 AND r1667','ORNt2r','ORNt2'
+    'G1PP AND PGMT AND XYLI2 AND MAN6PI AND PNPHPT','G1PP','G1PPi'
+    'DCLMPDOH AND HMR_7271 AND MAN1PT2 AND PMANM','PMANM','PMANMi'
+    'ADEt2r AND ADEt','ADEt2r','ADEt2'
+    'PPCr AND PPC','PPCr',[]
+    'DGLU6Pt2 AND G6Pt6_2 AND PIt7 AND NAt3_1','PIt7','PIt7ir'
+    'LEUt2r AND r1642 AND PROPAT4te','PROPAT4te','PROte'
+    'AGPAT120 AND PLIPA2A120 AND FA120ACPH','FA120ACPH','FA120ACPHi'
+    'AGPAT160 AND PLIPA2A160 AND FA160ACPH','FA160ACPH','FA160ACPHi'
+    'FAO181E AND DESAT18_3 AND FACOAL181','FAO181E','FAO181Ei'
+    'GLUt2r AND GLUDy AND GLUt4r','GLUt2r','GLUt2'
+    'ACOATA AND KAS14 AND C180SNrev AND 3HAD100','C180SNrev','C180SN'
+    'ECOAH5 AND HACD2 AND HACD5 AND ACACT1r','ACACT1r','ACACT1'
+    'FOLt2 AND FOLt','FOLt','FOLTle'
+    'BTNt2 AND BTNT5r','BTNt2','BTNt2i'
+    'AGOR AND SBTPD AND SBTpts AND SBTt6','SBTt6','SBTt6i'
+    'PGM AND PGMT AND G16BPS AND G1PPT','G16BPS','G16BPSi'
+    'EX_HC00319(e) AND MALNt AND C180SNrev AND ACACPT','C180SNrev','C180SN'
+    'LYS6OR AND L2AADIPADOR AND LYSOR','LYSOR','LYSORi'
+    'TRPt2r AND TRPt','TRPt2r','TRPt2'
+    '2S6HCC AND SHCHCS AND SSALxr AND OOR2r AND SUCOAS','SSALxr','SSALx'
+    'ADK8 AND NDPK7 AND NTP13','NTP13','NTP13i'
+    'ADK10 AND NDPK4 AND NTP9','NTP9','NTP9i'
+    'ADK1 AND NDPK4 AND NTP9','NTP9','NTP9i'
+    'RE0583C AND SUCD1 AND ACOAD8f','ACOAD8f','ACOAD8fi'
+    'TYRAL AND 4HBZOR AND 4HBZCL AND TYRL','4HBZCL','4HBZCLi'
+    'NADH8 AND H2Ot AND SO3rDdmq AND SO3t AND H2St','SO3t','SO3ti'
+    'PHE_Ltex AND PHEt2rpp AND PHEtec','PHEtec',[]
+    'TYR_Ltex AND TYRt2rpp AND TYRt','TYRt',[]
+    'LYSt3rpp AND LYS_Ltex AND LYSt2r','LYSt2r',[]
+    'CITt2 AND CITt4_4','CITt4_4','CITt'
+    'SUCD1 AND 5MTHFOR','5MTHFOR','5MTHFORi'
+    'MLTHFTRU AND AMETRNAMT AND 5MTHCYST AND 5MTHGLUS','AMETRNAMT','AMETRNAMTi'
     };
 
 % List Western diet constraints to test if the pan-model produces
@@ -394,16 +456,18 @@ for i = 1:length(panModels)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
             for k = 1:size(rxns, 2)
-                RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
-                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                    newName=[rxns{k} 'pp'];
-                    % make sure we get the correct reaction
-                    newForm=strrep(RxForm,'[e]','[p]');
-                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                    if ~isempty(rxnInd)
-                        dbForm=database.reactions{rxnInd, 3};
-                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                            rxns{k}=newName;
+                if isempty(intersect(model.rxns,rxns{k}))
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{k})), 3};
+                    if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                        newName=[rxns{k} 'pp'];
+                        % make sure we get the correct reaction
+                        newForm=strrep(RxForm,'[e]','[p]');
+                        rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                        if ~isempty(rxnInd)
+                            dbForm=database.reactions{rxnInd, 3};
+                            if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                rxns{k}=newName;
+                            end
                         end
                     end
                 end
@@ -423,7 +487,7 @@ for i = 1:length(panModels)
                     replacePP=1;
                 end
                 % Only make the change if biomass can still be produced
-                if replacePP
+                if replacePP && isempty(intersect(model.rxns,reactionsToReplace{j, 2}))
                     modelTest = removeRxns(model, newName);
                 else
                     modelTest = removeRxns(model, reactionsToReplace{j, 2});
@@ -651,28 +715,32 @@ model.description.date = date;
 % Rebuild model consistently
 model = rebuildModel(model,database);
 model=changeObjective(model,'biomassPan');
+
+% constrain sink reactions
+model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
+
 % remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model);
 % test if the model can still grow
-modelRD = useDiet(modelRD,dietConstraints);
 FBA=optimizeCbModel(modelRD,'max');
 if FBA.f > tol
     model=modelRD;
 else
-    toRM={};
     modelTest=model;
-    for k=1:length(removedRxnInd)
-        modelTest=removeRxns(modelTest,modelTest.rxns(removedRxnInd(k)));
-        FBA=optimizeCbModel(modelTest,'max');
+    toRM={};
+    for j=1:length(removedRxnInd)
+        modelRD=removeRxns(modelTest,model.rxns(removedRxnInd(j)));
+        modelRD = useDiet(modelRD,dietConstraints);
+        FBA=optimizeCbModel(modelRD,'max');
         if FBA.f > tol
-            toRM{k} =  modelTest.rxns{removedRxnInd(k)};
-            model
+            modelTest=removeRxns(modelTest, model.rxns{removedRxnInd(j)});
+            toRM{j}=model.rxns{removedRxnInd(j)};
         else
-            toRM{k} =  modelTest.rxns{keptRxnInd(k)};
+            modelTest=removeRxns(modelTest, model.rxns{keptRxnInd(j)});
+            toRM{j}=model.rxns{keptRxnInd(j)};
         end
-        modelTest=removeRxns(modelTest,toRM{k});
     end
     model=removeRxns(model,toRM);
 end

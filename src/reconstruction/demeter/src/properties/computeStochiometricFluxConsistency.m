@@ -79,7 +79,7 @@ for t=1:size(versions,1)
     end
     
     for i=1:steps:length(models)
-        if length(models)>steps-1 && (length(models)-1)>=steps-1
+        if length(models)-i>=steps-1
             endPnt=steps-1;
         else
             endPnt=length(models)-i;

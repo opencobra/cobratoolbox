@@ -186,7 +186,7 @@ if length(failedModels)>0
             end
             
             % run the gapfilling suite
-            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,Results, inputDataFolder,failedModels{j,1},biomassReaction);
+            [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,Results,inputDataFolder,failedModels{j,1},biomassReaction);
             gapfilledReactionsTmp{j} = gapfilledReactions;
             replacedReactionsTmp{j} = replacedReactions;
             revisedModelTmp{j} = revisedModel;

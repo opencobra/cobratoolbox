@@ -12,15 +12,15 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sam
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
 %    sampNames:          nx1 cell array cell array with names of individuals in the study
-%    exchanges:          cell array with list of all unique Exchanges to diet/
-%                        fecal compartment
+%    exchanges:          cell array with list of all unique exchanges to diet/
+%                        fecal compartment that were interrogated in simulations      
 %    rDiet:              number (double) indicating if to simulate a rich diet
 %    pDiet:              number (double) indicating if a personalized diet
 %                        is available and should be simulated
-%    infoFilePath:    char indicating, if stratification criteria are available,
+%    infoFilePath:       char indicating, if stratification criteria are available,
 %                        full path and name to related documentation(default: no)
 %                        is available
-%    netProduction:              cell array containing FVA values for maximal uptake
+%    netProduction:      cell array containing FVA values for maximal uptake
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
@@ -60,14 +60,6 @@ if pDiet == 0
 else
     fl = 3;
 end
-
-% find empty rows in input data-tmp fix
-emptyRows=find(cellfun(@isempty,netProduction{2,1}(:,2)));
-for i=1:size(netProduction,2)
-    netProduction{2,i}(emptyRows,:)=[];
-    netUptake{2,i}(emptyRows,:)=[];  
-end
-exchanges(emptyRows,:)=[];
 
 names = {'rich', 'inputDiet', 'personalized'};
 

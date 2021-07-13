@@ -51,7 +51,7 @@ for j=1:length(fields)
             for k=1:length(data)
                 plotdata(k,1)=0;
             end
-            label='Number of entries';
+            label='Number of data points to test';
         else
             if strcmp(fields{j},'growsOnDefinedMedium')
                 plotdata=data(:,2);
@@ -64,14 +64,14 @@ for j=1:length(fields)
                     if ~any(strcmp(fields{j},{'Number_genes', 'Number_reactions', 'Number_metabolites'}))
                         label='Flux (mmol*gDW-1*hr-1)';
                     else
-                        label='Number of entries';
+                        label='Number of data points to test';
                     end
                 else
                     % count the non-empty data entries
                     for k=1:size(data,1)
                         plotdata(k,1)=length(find(~cellfun(@isempty,data(k,2:end))));
                     end
-                    label='Number of entries';
+                    label='Number of data points to test';
                 end
             end
         end
@@ -171,6 +171,7 @@ set(gca,'XTick',1:numel(plotdata))
 xtickangle(45)
 set(h,'interpreter','none')
 set(gca,'YTickLabel',[])
+ylabel('Total number of model predictions')
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
 set(gca,'FontSize',14)

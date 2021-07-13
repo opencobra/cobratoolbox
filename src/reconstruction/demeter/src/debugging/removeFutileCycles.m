@@ -76,11 +76,12 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'Kt1r AND Kt3r AND EX_chsterol(e) AND ARGDA',[],'Kt3r','Kt3 AND ASPTA AND PC AND H2CO3D AND ASPNH4L AND r1667 AND EX_orn(e)'
     'Kt1r AND Kt3r','EX_for(e)','Kt3r','Kt3 AND EX_for(e) AND FORt2r'
     'Kt1r AND Kt3r',[],'Kt3r','Kt3'
+    'Kt1r AND Kt2r',[],'Kt2r','Kt2'
     'Kt1r AND Kt3r AND ACtr',[],'Kt3r AND ACtr','Kt3 AND ACt2r'
     'CYTDt4 AND CYTDt2r',[],'CYTDt2r','CYTDt2'
     'ASPt2_2 AND ASPt2r',[],'ASPt2_2','ASPt2_2i'
     'ASPt2_3 AND ASPt2r',[],'ASPt2r','ASPt2'
-    'FUMt2_2 AND FUMt2r',[],'FUMt2r','FUMt'
+    'FUMt2_2 AND FUMt2r','FUMt','FUMt2r','FUMt'
     'SUCCt2_2 AND SUCCt2r','SUCCt','SUCCt2r','SUCCt'
     'SUCCt2_3r AND SUCCt2r',[],'SUCCt2r',[]
     'MALFADO AND MDH',[],'MALFADO','MALFADOi'
@@ -239,7 +240,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'NTRIR4 AND FDNADOX_H AND FDOXR',[],'FDOXR','FDOXRi'
     'ASPNH4L AND ASPt2r',[],'ASPNH4L','ASPNH4Li'
     'DDGLKr AND DDGLCNt2r',[],'DDGLKr','DDGLK'
-    'ORNt2r AND OCBT AND ARGSSr',[],'ARGSSr','ARGSS'
+    'ARGSSr',[],'ARGSSr','ARGSS'
+    'ARGDr',[],'ARGDr','ARGDA'
+    'SERD_Lr',[],'SERD_Lr','SERD_L'
     'G1PP AND GLGC AND GLCP',[],'G1PP','G1PPi'
     'CBMKr AND OCBT AND r1667','ARGDA','CBMKr','CBMK'
     'TRPS3r AND TRPS1 AND TRPS2r',[],'TRPS3r','TRPS3'
@@ -284,8 +287,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'UCO2L AND BUAMDH AND BURTADH',[],'UCO2L','UCO2Li'
     'NADH6 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
     'NADH8 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
-    'NADH6 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
-    'NADH8 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
+    'NADH6 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
+    'NADH8 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
     'NADH6 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
     'NADH8 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
     'FDH2 AND SNG3POR AND FDNADOX_H',[],'SNG3POR','G3PD5'
@@ -424,6 +427,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'SNG3POR AND OOR2r AND FUM AND POR4 AND HPYRI',[],'SNG3POR','G3PD5'
     'NTMAOR AND SUCDimq AND FRD7 AND NADH6',[],'NTMAOR','NTMAORi'
     'PIt6bi AND PIt7',[],'PIt7','PIt7ir'
+    'PIt6b AND PIt7',[],'PIt7','PIt7ir'
     'THMt3 AND THMte',[],'THMt3','THMt3i'
     'PROPAT4te AND PROt4r',[],'PROt4r','PROt4'
     'GLUOR AND GALM1r AND NADH6',[],'GLUOR','GLUORi'
@@ -468,7 +472,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OAASr AND ICDHx AND ACONTa AND ACONTb AND ALCD2x AND FDH AND PTAr AND ACKr',[],'ICDHx','ICDHxi'
     'METt2r AND METt3r',[],'METt2r','METt2'
     'NTP9 AND NDPK4',[],'NTP9','NTP9i'
-    'HEX4 AND HMR_7271 AND MAN1PT2 AND MAN6PI AND PGM AND PMANM',[],'PMANM','PMANMi'
+    'MAN1PT2r',[],'MAN1PT2r','MAN1PT2'
+    'HMR_7271 AND MAN1PT2 AND MAN6PI AND PMANM',[],'PMANM','PMANMi'
+    'HMR_7271 AND MAN1PT2 AND MANISO AND PMANM',[],'PMANM','PMANMi'
     'PGMT AND GALU AND GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND NDPK2 AND PPA AND r1393',[],'NDPK2','NDPK2i'
     'D_GLUMANt AND MANt2r AND GLU_Dt2r',[],'GLU_Dt2r','GLU_Dt2'
     'NACUP AND NACSMCTte AND NAt3_1',[],'NAt3_1','NAt3'
@@ -478,6 +484,13 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
     'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
     'GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND GPDDA1',[],'GLDBRAN',[]
+    'CDPDPH AND CYTK1',[],'CDPDPH','CDPDPHi'
+    'UMPK AND NDP7',[],'NDP7','NDP7i'
+    'CLt4r AND r2137',[],'r2137','CLti'
+    'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
+    'LDH_L2 AND LDH_L',[],'LDH_L',[]
+    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNtpp'
+    'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
     };
 
 
@@ -505,6 +518,10 @@ growthGapfills={
     'EX_lac_L(e) AND L_LACt2r'
     'EX_acald(e) AND ACALDt'
     'EX_asp_L(e) AND ASPt2r'
+    'EX_arg_L(e) AND ARGt2r'
+    'EX_ser_L(e) AND SERt2r'
+    'PPA'
+    'EX_glyald[e] AND GLYALDt'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -523,27 +540,49 @@ for i = 2:size(reactionsToReplace, 1)
         go = 1;
         present=strsplit(reactionsToReplace{i,1},' AND ');
         if ~(length(intersect(model.rxns,present))==length(present))
-            go= 0;
+            if any(contains(model.mets,'[p]'))
+                % if a periplasmatic reaction exists, use that
+                for j=1:length(present)
+                    if ~isempty(intersect(database.reactions(:,1),[present{j} 'pp']))
+                        present{j}=[present{j} 'pp'];
+                    end
+                end
+            end
+            if ~(length(intersect(model.rxns,present))==length(present))
+                go= 0;
+            end
         end
-        notpresent=reactionsToReplace{i,2};
-        if ~isempty(intersect(model.rxns,notpresent))
-            go= 0;
+        if ~isempty(reactionsToReplace{i,2})
+            notpresent=strsplit(reactionsToReplace{i,2},' AND ');
+            if any(contains(model.mets,'[p]'))
+                % if a periplasmatic reaction exists, use that
+                for j=1:length(notpresent)
+                    if ~isempty(intersect(database.reactions(:,1),[notpresent{j} 'pp']))
+                    notpresent{j}=[notpresent{j} 'pp'];
+                    end
+                end
+            end
+            if length(intersect(model.rxns,notpresent))==length(notpresent)
+                go= 0;
+            end
         end
     end
     if go == 1
         % Only make the change if biomass can still be produced
         toRemove=strsplit(reactionsToReplace{i,3},' AND ');
         for k=1:length(toRemove)
-            RxForm = database.reactions{find(ismember(database.reactions(:, 1), toRemove{k})), 3};
-            if contains(RxForm,'[e]')
-                newName=[toRemove{k} 'pp'];
-                % make sure we get the correct reaction
-                newForm=strrep(RxForm,'[e]','[p]');
-                rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                if ~isempty(rxnInd)
-                    dbForm=database.reactions{rxnInd, 3};
-                    if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                        toRemove{k}=newName;
+            if isempty(intersect(model.rxns,toRemove{k}))
+                RxForm = database.reactions{find(ismember(database.reactions(:, 1), toRemove{k})), 3};
+                if contains(RxForm,'[e]')
+                    newName=[toRemove{k} 'pp'];
+                    % make sure we get the correct reaction
+                    newForm=strrep(RxForm,'[e]','[p]');
+                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                    if ~isempty(rxnInd)
+                        dbForm=database.reactions{rxnInd, 3};
+                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                            toRemove{k}=newName;
+                        end
                     end
                 end
             end
@@ -552,27 +591,30 @@ for i = 2:size(reactionsToReplace, 1)
         if ~isempty(reactionsToReplace{i, 4})
             rxns=strsplit(reactionsToReplace{i, 4},' AND ');
             for j=1:length(rxns)
-                % create a new formula
-                RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
-                
-                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                    newName=[rxns{j} 'ipp'];
-                    % make sure we get the correct reaction
-                    newForm=strrep(RxForm,'[e]','[p]');
-                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                    if ~isempty(rxnInd)
-                        dbForm=database.reactions{rxnInd, 3};
-                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                            RxForm=dbForm;
+                if isempty(intersect(model.rxns,rxns{j}))
+                    % create a new formula
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
+                    
+                    if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                        newName=[rxns{j} 'ipp'];
+                        % make sure we get the correct reaction
+                        newForm=strrep(RxForm,'[e]','[p]');
+                        rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                        if ~isempty(rxnInd)
+                            dbForm=database.reactions{rxnInd, 3};
+                            if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                RxForm=dbForm;
+                            end
                         end
+                        modelTest = addReaction(modelTest, newName, RxForm);
+                    else
+                        modelTest = addReaction(modelTest, rxns{j}, RxForm);
                     end
-                    modelTest = addReaction(modelTest, newName, RxForm);
-                else
-                    modelTest = addReaction(modelTest, rxns{j}, RxForm);
                 end
-                
             end
         end
+        % sometimes oxygen uptake needs to be enabled
+        modelTest=changeRxnBounds(modelTest,'EX_o2(e)',-10,'l');
         FBA = optimizeCbModel(modelTest, 'max');
         if FBA.f > tol
             model = modelTest;
@@ -617,62 +659,45 @@ for i = 2:size(reactionsToReplace, 1)
                             modelTest = addReaction(modelTest, newName, RxForm);
                         end
                     else
-                        if isempty(find(contains(model.rxns,ggrxns{j})))
+                        if isempty(find(strcmp(model.rxns,ggrxns{j})))
                             modelTest = addReaction(modelTest, ggrxns{j}, RxForm);
                         end
                     end
                 end
                 FBA = optimizeCbModel(modelTest, 'max');
                 if FBA.f > tol
-                    model = modelTest;
-                    % add replaced reactions
-                    if ~isempty(reactionsToReplace{i, 3})
-                        for j=1:length(toRemove)
-                            deletedRxns{delCnt, 1} = toRemove{j};
-                            delCnt = delCnt + 1;
+                    % ensure this does not add new futile cycles
+                    modelATPBefore=changeObjective(model,'DM_atp_c_');
+                    fbaATPBefore=optimizeCbModel(modelATPBefore,'max');
+                    modelATPAfter=changeObjective(modelTest,'DM_atp_c_');
+                    fbaATPAfter=optimizeCbModel(modelATPAfter,'max');
+                    if fbaATPAfter.f-fbaATPBefore.f < 100
+                        model = modelTest;
+                        % add replaced reactions
+                        if ~isempty(reactionsToReplace{i, 3})
+                            for j=1:length(toRemove)
+                                deletedRxns{delCnt, 1} = toRemove{j};
+                                delCnt = delCnt + 1;
+                            end
                         end
-                    end
-                    if ~isempty(reactionsToReplace{i, 4})
-                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
-                            addedRxns{addCnt, 1} = toRemove{1};
+                        if ~isempty(reactionsToReplace{i, 4})
+                            if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
+                                addedRxns{addCnt, 1} = toRemove{1};
+                            end
+                            for j=1:length(rxns)
+                                addedRxns{addCnt, j+1} = rxns{j};
+                            end
+                            addCnt = addCnt + 1;
                         end
-                        for j=1:length(rxns)
-                            addedRxns{addCnt, j+1} = rxns{j};
+                        % add growth-restoring gapfilled reactions
+                        for j=1:length(ggrxns)
+                            gfRxns{length(gfRxns)+1, 1} = ggrxns{j};
                         end
-                        addCnt = addCnt + 1;
+                        gf=0;
+                        break
                     end
-                    % add growth-restoring gapfilled reactions
-                    for j=1:length(ggrxns)
-                        gfRxns{length(gfRxns)+1, 1} = ggrxns{j};
-                    end
-                    gf=0;
-                    break
                 end
                 modelTest=modelPrevious;
-            end
-            % if none of that worked
-            if gf==1
-                [modelTest,untGF] = untargetedGapFilling(modelTest,'max',database,1,1);
-                if ~isempty(untGF)
-                    if ~isempty(reactionsToReplace{i, 3})
-                        for j=1:length(toRemove)
-                            deletedRxns{delCnt, 1} = toRemove{j};
-                            delCnt = delCnt + 1;
-                        end
-                    end
-                    if ~isempty(reactionsToReplace{i, 4})
-                        if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
-                            addedRxns{addCnt, 1} = toRemove{1};
-                        end
-                        for j=1:length(rxns)
-                            addedRxns{addCnt, j+1} = rxns{j};
-                        end
-                        addCnt = addCnt + 1;
-                    end
-                    for j=1:length(untGF)
-                        gfRxns{length(gfRxns)+1, 1} = untGF{j};
-                    end
-                end
             end
         end
     end
@@ -714,7 +739,7 @@ if ~isempty(addedRxns)
     end
 end
 
-% add any gapf-ileld reactions
+% add any gapf-filled reactions
 if ~isempty(gfRxns)
     for i=1:length(gfRxns)
         model = addReaction(model, gfRxns{i,1}, database.reactions{find(ismember(database.reactions(:, 1), gfRxns{i,1})), 3});

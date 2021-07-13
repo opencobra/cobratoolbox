@@ -24,7 +24,7 @@ metaboliteDatabase=table2cell(metaboliteDatabase);
 metaboliteDatabase(1,:)=[];
 for i=1:size(metaboliteDatabase,1)
     metaboliteDatabase{i,5}=num2str(metaboliteDatabase{i,5});
-   % metaboliteDatabase{i,12}=datestr(metaboliteDatabase{i,12});
+    metaboliteDatabase{i,12}=datestr(metaboliteDatabase{i,12});
 end
 metab=cell(metaboliteDatabase);
 
