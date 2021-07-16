@@ -1,4 +1,4 @@
-function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, options)
+function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, varargin)
 % Calculate Minimal Cut Sets (MCSs) using the warm-start strategy available
 % in CPLEX, namely cplex.populate(), with or without selecting a given
 % knockout, among all the reactions included in the model or a given subset
@@ -62,6 +62,7 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, option
 % .. Revisions:
 %       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 30/06/2021, University of Navarra, TECNUN School of Engineering.
 
 % Check the installation of cplex
 global SOLVERS;
@@ -76,52 +77,32 @@ end
 
 time_aa = tic;
 % Set Parameters
-% Optional inputs
-if nargin == 3
-    KO = [];
-    rxn_set = [];
-    target_b = 1e-3;
-    timelimit = 1e75;
-    forceLength = true;
-    numWorkers = 0;
-    printLevel = 1;
-else
-    if isfield(options, 'KO')
-        KO = options.KO;
-    else
-        KO = [];
-    end
-    if isfield(options, 'rxn_set')
-        rxn_set = options.rxn_set;
-    else
-        rxn_set = [];
-    end
-    if isfield(options, 'timelimit')
-        timelimit = options.timelimit;
-    else
-        timelimit = 1e75;
-    end
-    if isfield(options, 'target_b')
-        target_b = options.target_b;
-    else
-        target_b = 1e-3;
-    end
-    if isfield(options, 'forceLength')
-        forceLength = options.forceLength;
-    else
-        forceLength = 1;
-    end
-    if isfield(options, 'numWorkers')
-        numWorkers = options.numWorkers;
-    else
-        numWorkers = 0;
-    end
-    if isfield(options, 'printLevel')
-        printLevel = options.printLevel;
-    else
-        printLevel = 1;
-    end
-end
+p = inputParser;
+% check required arguments
+addRequired(p, 'model_struct');
+addRequired(p, 'n_mcs', @isnumeric);
+addRequired(p, 'max_len_mcs', @isnumeric);
+% Add optional name-value pair argument
+addParameter(p, 'KO', [], @(x)ischar(x)||isempty(x));
+addParameter(p, 'rxn_set', [], @(x)iscell(x)||isempty(x));
+addParameter(p, 'target_b', 1e-3, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'timelimit', 1e75, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'forceLength', true, @(x)islogical(x)||(isnumeric(x)&&isscalar(x)));
+addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
+% extract variables from parser
+parse(p, model_struct, n_mcs, max_len_mcs, varargin{:});
+model_struct = p.Results.model_struct;
+n_mcs = p.Results.n_mcs;
+max_len_mcs = p.Results.max_len_gmcs;
+KO = p.Results.KO;
+rxn_set = p.Results.rxn_set;
+target_b = p.Results.target_b;
+timelimit = p.Results.timelimit;
+forceLength = p.Results.forceLength;
+numWorkers = p.Results.numWorkers;
+printLevel = p.Results.printLevel;
+
 
 integrality_tolerance = 1e-5;
 M = 1e3;    % Big Value
