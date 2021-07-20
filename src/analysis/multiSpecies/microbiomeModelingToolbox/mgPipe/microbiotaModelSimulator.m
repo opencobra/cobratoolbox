@@ -423,6 +423,12 @@ if computeProfiles
     end
     
 else
+    exchanges = {};
+    netProduction = {};
+    netUptake = {};
+    presol = {};
+    inFesMat = {};
+    
     if saveConstrModels
         %% just export the models with diet constraints
         inFesMat = {};
