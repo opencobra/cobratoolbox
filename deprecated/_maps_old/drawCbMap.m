@@ -105,7 +105,7 @@ end
 if ~isfield(options,'textSize')
     options.textSize = ones(max(nNodes,nEdges),1)*12;
     if strcmp(CB_MAP_OUTPUT,'svg')
-        options.textSize = ones(max(nNodes,nEdges),1)*6;
+        options.textSize = ones(max(nNodes,nEdges),1)*10;
     end
 end
 %Font Color
@@ -286,7 +286,7 @@ for i = 1:size(map.rxnLabelPosition,2)
       if isfield(options, 'rxnTextSize')
         drawText(map.rxnLabelPosition(1,i),map.rxnLabelPosition(2,i),map.connectionAbb{find(map.rxnIndex(i)==map.connection,1)},options.rxnTextSize(i),'italic');
       else
-        drawText(map.rxnLabelPosition(1,i),map.rxnLabelPosition(2,i),map.connectionAbb{find(map.rxnIndex(i)==map.connection,1)},8,'italic');
+        drawText(map.rxnLabelPosition(1,i),map.rxnLabelPosition(2,i),map.connectionAbb{find(map.rxnIndex(i)==map.connection,1)},10,'italic');
       end
     end
 end
