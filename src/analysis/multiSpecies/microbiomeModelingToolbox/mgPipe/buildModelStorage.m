@@ -42,10 +42,10 @@ activeExMets = {};
 for i = 1:size(microbeNames, 1)
     model = readCbModel([modPath filesep microbeNames{i,1} '.mat']);
 
-    activeExMets = model.mets(~cellfun(@isempty, strfind(model.mets, '[e]')));
+    ex_mets = model.mets(~cellfun(@isempty, strfind(model.mets, '[e]')));
     ex_rxns = {};
-    for j=1:length(activeExMets)
-        ex_rxns{j}=['EX_' activeExMets{j}];
+    for j=1:length(ex_mets)
+        ex_rxns{j}=['EX_' ex_mets{j}];
          ex_rxns{j}=strrep(ex_rxns{j},'[e]','(e)');
     end
     % account for depracated nomenclature
@@ -53,9 +53,7 @@ for i = 1:size(microbeNames, 1)
 
         % compute which exchanges can carry flux
         try
-            tic
             [minFlux,maxFlux]=fastFVA(model,0,'max','ibm_cplex',ex_rxns);
-        toc
         catch
             [minFlux,maxFlux]=fluxVariability(model,0,'max',ex_rxns);
         end
@@ -144,5 +142,4 @@ if length(setdiff(microbeNames,modelList))>0
     end
     
     cd(currentDir)
-    
 end

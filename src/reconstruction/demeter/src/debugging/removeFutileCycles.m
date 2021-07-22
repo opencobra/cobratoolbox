@@ -489,6 +489,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CLt4r AND r2137',[],'r2137','CLti'
     'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
+    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNtpp'
+    'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
     };
 
 
@@ -537,16 +539,18 @@ for i = 2:size(reactionsToReplace, 1)
     else
         go = 1;
         present=strsplit(reactionsToReplace{i,1},' AND ');
-        if any(contains(model.mets,'[p]'))
-            % if a periplasmatic reaction exists, use that
-            for j=1:length(present)
-                if ~isempty(intersect(database.reactions(:,1),[present{j} 'pp']))
-                    present{j}=[present{j} 'pp'];
+        if ~(length(intersect(model.rxns,present))==length(present))
+            if any(contains(model.mets,'[p]'))
+                % if a periplasmatic reaction exists, use that
+                for j=1:length(present)
+                    if ~isempty(intersect(database.reactions(:,1),[present{j} 'pp']))
+                        present{j}=[present{j} 'pp'];
+                    end
                 end
             end
-        end
-        if ~(length(intersect(model.rxns,present))==length(present))
-            go= 0;
+            if ~(length(intersect(model.rxns,present))==length(present))
+                go= 0;
+            end
         end
         if ~isempty(reactionsToReplace{i,2})
             notpresent=strsplit(reactionsToReplace{i,2},' AND ');
@@ -567,16 +571,18 @@ for i = 2:size(reactionsToReplace, 1)
         % Only make the change if biomass can still be produced
         toRemove=strsplit(reactionsToReplace{i,3},' AND ');
         for k=1:length(toRemove)
-            RxForm = database.reactions{find(ismember(database.reactions(:, 1), toRemove{k})), 3};
-            if contains(RxForm,'[e]')
-                newName=[toRemove{k} 'pp'];
-                % make sure we get the correct reaction
-                newForm=strrep(RxForm,'[e]','[p]');
-                rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                if ~isempty(rxnInd)
-                    dbForm=database.reactions{rxnInd, 3};
-                    if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                        toRemove{k}=newName;
+            if isempty(intersect(model.rxns,toRemove{k}))
+                RxForm = database.reactions{find(ismember(database.reactions(:, 1), toRemove{k})), 3};
+                if contains(RxForm,'[e]')
+                    newName=[toRemove{k} 'pp'];
+                    % make sure we get the correct reaction
+                    newForm=strrep(RxForm,'[e]','[p]');
+                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                    if ~isempty(rxnInd)
+                        dbForm=database.reactions{rxnInd, 3};
+                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                            toRemove{k}=newName;
+                        end
                     end
                 end
             end
@@ -585,25 +591,26 @@ for i = 2:size(reactionsToReplace, 1)
         if ~isempty(reactionsToReplace{i, 4})
             rxns=strsplit(reactionsToReplace{i, 4},' AND ');
             for j=1:length(rxns)
-                % create a new formula
-                RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
-                
-                if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                    newName=[rxns{j} 'ipp'];
-                    % make sure we get the correct reaction
-                    newForm=strrep(RxForm,'[e]','[p]');
-                    rxnInd=find(ismember(database.reactions(:, 1), {newName}));
-                    if ~isempty(rxnInd)
-                        dbForm=database.reactions{rxnInd, 3};
-                        if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
-                            RxForm=dbForm;
+                if isempty(intersect(model.rxns,rxns{j}))
+                    % create a new formula
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
+                    
+                    if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
+                        newName=[rxns{j} 'ipp'];
+                        % make sure we get the correct reaction
+                        newForm=strrep(RxForm,'[e]','[p]');
+                        rxnInd=find(ismember(database.reactions(:, 1), {newName}));
+                        if ~isempty(rxnInd)
+                            dbForm=database.reactions{rxnInd, 3};
+                            if checkFormulae(newForm, dbForm) && any(contains(model.mets,'[p]'))
+                                RxForm=dbForm;
+                            end
                         end
+                        modelTest = addReaction(modelTest, newName, RxForm);
+                    else
+                        modelTest = addReaction(modelTest, rxns{j}, RxForm);
                     end
-                    modelTest = addReaction(modelTest, newName, RxForm);
-                else
-                    modelTest = addReaction(modelTest, rxns{j}, RxForm);
                 end
-                
             end
         end
         % sometimes oxygen uptake needs to be enabled
