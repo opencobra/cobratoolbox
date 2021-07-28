@@ -7,7 +7,7 @@ function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,te
 %
 % USAGE:
 %
-%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
+%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, infoFilePath, inputDataFolder,microbeID,biomassReaction)
 %
 % INPUTS
 % model:                 COBRA model structure
@@ -67,6 +67,18 @@ model=rebuildModel(model,database);
 if AnaerobicGrowth(1,1) < tol
     % find reactions that are preventing the model from growing
     % anaerobically
+    % first gapfilling specialized for anaerobic growth
+    [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
+    if ~isempty(oxGapfillRxns)
+        summary.condGF=union(summary.condGF,oxGapfillRxns);
+        
+        gapfilledReactions{cntGF,1}=microbeID;
+        gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
+        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
+        gapfilledReactions(cntGF,4:length(oxGapfillRxns)+3)=oxGapfillRxns;
+        cntGF=cntGF+1;
+    end
+    % then less targeted gapfilling
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)

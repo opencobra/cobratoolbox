@@ -99,7 +99,7 @@ for i=1:length(inputDataToCheck)
     
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1),'stable');
-    propagatedData(IA,:) = [];
+    propagatedData(IA(2:end),:) = [];
     
     writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
@@ -224,7 +224,7 @@ for i=1:length(species)
         for j=1:length(C)
             sumData(j,1)=abs(nansum(nonzeros(str2double(inputData(IA(j),2:end)))));
         end
-        if any(sumData)>0
+        if any(sumData>0)
             % if there is any data, propagate the experimental data from
             % the strain with the most data to the strains with no data
             % find the row with the most experimental data
@@ -256,33 +256,33 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
             strains=agoraInfoFile(find(strcmp(agoraInfoFile(:,genusCol),genera{i})),1);
             % if there is more than 10 strains from this genus in the
             % experimental data table so a consensus can be reached
-            if length(strains)>10
-                compData=[];
-                % find the strains in the input table with experimental data
-                [C,IA,IB] = intersect(inputData(:,1),strains);
-                % find out if data agrees for all strains so the same can be
-                % assumed for new organisms of the genus
-                for j=1:length(C)
-                    for k=2:refCols(1)-1
-                        compData(j,k)=str2double(inputData{IA(j),k});
-                    end
-                end
-                % remove the ones that do not agree for at least 90% of
-                % cases
+            % if length(strains)>10
+            compData=[];
+            % find the strains in the input table with experimental data
+            [C,IA,IB] = intersect(inputData(:,1),strains);
+            % find out if data agrees for all strains so the same can be
+            % assumed for new organisms of the genus
+            for j=1:length(C)
                 for k=2:refCols(1)-1
-                    if sum(compData(:,k)) < 0.9*length(C)
-                        compData(:,k)=0;
-                    end
-                end
-                % propagate the data to new organisms
-                % take the data from the strain with the most data
-                [C,IAsum]=max(sum(compData,2));
-                for j=1:length(newStrains)
-                    inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),2:refCols(1)-1)=num2cell(compData(1,2:end));
-                    % propagate references
-                    inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum(1),refCols(1):refCols(end));
+                    compData(j,k)=str2double(inputData{IA(j),k});
                 end
             end
+            % remove the ones that do not agree for at least 90% of
+            % cases
+            for k=2:refCols(1)-1
+                if sum(compData(:,k)) < 0.9*length(C)
+                    compData(:,k)=0;
+                end
+            end
+            % propagate the data to new organisms
+            % take the data from the strain with the most data
+            [C,IAsum]=max(sum(compData,2));
+            for j=1:length(newStrains)
+                inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),2:refCols(1)-1)=num2cell(compData(1,2:end));
+                % propagate references
+                inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum(1),refCols(1):refCols(end));
+            end
+            % end
         end
     end
 end

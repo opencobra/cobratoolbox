@@ -27,8 +27,8 @@ model = changeRxnBounds(model, 'EX_o2(e)', 0, 'l');
 
 % block internal O2-utilizing cytosolic reactions
 if any(ismember(model.mets, 'o2[c]'))
-    o2rxns = find(any(model.S(ismember(model.mets, 'o2[c]'), :), 1));
-    model = changeRxnBounds(model, model.rxns(o2rxns), 0, 'b');
+    o2rxns = findRxnsFromMets(model,'o2[c]');
+    model = changeRxnBounds(model, o2rxns, 0, 'b');
 end
 
 % check anaerobic growth
@@ -44,6 +44,8 @@ if FBA.f < tol
         'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'}
         'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'}
         'AHMMPS', {'AMPMS2'}
+        % reaction with low confidence
+        'UNKENZ',{'ACCOAC','H2CO3D'}
         };
     
     % add anaerobic reactions to model (if contains O2-using reaction)
@@ -88,7 +90,8 @@ if FBA.f < tol
             'CYTBD', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
             'PYAM5POr', {'EX_pydx(e)', 'PYDXabc'}  % some can only produce PYDX5P aerobically
             'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'}  % some can only produce PYDX5P aerobically
-            'UNKENZ',{'ACCOAC','H2CO3D'}
+            'SUCDi', {'EX_succ(e)','SUCCt','EX_q8(e)','Q8abc'}
+            'DHFOR2', {'EX_fol(e)','FOLabc'}
             };
         for i = 1:size(testFix, 1)
             if any(ismember(model.rxns, testFix{i, 1}))

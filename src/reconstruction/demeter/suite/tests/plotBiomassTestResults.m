@@ -123,6 +123,7 @@ if ~isempty(translatedDraftsFolder)
     box on
     maxval=max(data,[],'all');
     ylim([0 maxval + maxval/10])
+    ylabel('mmol *g dry weight-1 * hr-1')
     h=title(['Growth on rich medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -147,6 +148,7 @@ if ~isempty(translatedDraftsFolder)
     box on
     maxval=max(data,[],'all');
     ylim([0 maxval + maxval/10])
+    ylabel('mmol *g dry weight-1 * hr-1')
     h=title(['Growth on complex medium, ' reconVersion]);
     set(h,'interpreter','none')
     set(gca,'TickLabelInterpreter','none')
@@ -223,19 +225,6 @@ if ~isempty(translatedDraftsFolder)
         fprintf('All models are able to produce biomass on complex medium.\n')
     end
     
-    noGrowth=growth{2}(:,4) < tol;
-    if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium under anaerobic conditions.\n'])
-        for i=1:length(noGrowth)
-            if noGrowth(i)
-                notGrowing{cnt,1}=modelList{i,1};
-                cnt=cnt+1;
-            end
-        end
-    else
-        fprintf('All models are able to produce biomass on complex medium under anaerobic conditions.\n')
-    end
-    
 else
     % only refined reconstructions
     if size(data,1)>5
@@ -246,6 +235,7 @@ else
         box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
         h=title(['Growth on rich medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -265,6 +255,7 @@ else
         box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
         h=title(['Growth on complex medium, ' reconVersion]);
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
@@ -310,19 +301,6 @@ else
         end
     else
         fprintf('All models are able to produce biomass on complex medium.\n')
-    end
-    
-    noGrowth=growth{1}(:,4) < tol;
-    if sum(noGrowth) > 0
-        fprintf([num2str(sum(noGrowth)) ' models are unable to produce biomass on complex medium under anaerobic conditions.\n'])
-        for i=1:length(noGrowth)
-            if noGrowth(i)
-                notGrowing{cnt,1}=modelList{i,1};
-                cnt=cnt+1;
-            end
-        end
-    else
-        fprintf('All models are able to produce biomass on complex medium under anaerobic conditions.\n')
     end
 end
 

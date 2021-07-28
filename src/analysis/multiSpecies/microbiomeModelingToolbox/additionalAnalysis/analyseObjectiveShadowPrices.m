@@ -81,6 +81,15 @@ if numWorkers > 0
     end
 end
 
+% reload existing results if applies
+if isfile([resultsFolder filesep 'objectives'])
+    load([resultsFolder filesep 'objectives']);
+    load([resultsFolder filesep 'shadowPrices']);
+    startPnt=size(objectives,2)-1;
+else
+    startPnt=1;
+end
+
 objectives{1,1}='Objective';
 shadowPrices{1,1}='Metabolite';
 shadowPrices{1,2}='Objective';
@@ -108,7 +117,7 @@ for j=1:length(objectiveList)
     end
 end
 
-for i=1:size(modelList,1)
+for i=startPnt:size(modelList,1)
     i
     objectives{1,2+i}=strrep(modelList{i,1},'.mat','');
     shadowPrices{1,3+i}=strrep(modelList{i,1},'.mat','');
@@ -183,8 +192,6 @@ for i=1:size(modelList,1)
     % Regularly save results
     if floor(i/10) == i/10
         save([resultsFolder filesep 'objectives'],'objectives');
-    end
-    if floor(i/50) == i/50
         save([resultsFolder filesep 'shadowPrices'],'shadowPrices');
     end
 end
