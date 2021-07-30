@@ -11,10 +11,13 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                        * .b - Right hand side vector
 %                        * .lb - Lower bounds
 %                        * .ub - Upper bounds
+%                        * .C - 'k x n' matrix of additional inequality constraints
+%                        * .d - 'k x 1' rhs of the above constraints
+%                        * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G')
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
-%    samplerName:   {('CHRR'), 'ACHR'} Name of the sampler to be used to
+%    samplerName:   {('CHRR'), 'ACHR', 'RHMC'} Name of the sampler to be used to
 %                   sample the solution.
 %    options:       Options for sampling and pre/postprocessing (default values
 %                   in parenthesis).
@@ -28,6 +31,7 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                     * .maxTime - Maximum time limit (Default = 36000 s). ACHR only.
 %                     * .toRound - Option to round the model before sampling (true). CHRR only.
 %                     * .lambda - the bias vector for exponential sampling. CHRR_EXP only.
+%                     * .nWorkers - Number of parallel workers. RHMC only.
 %    modelSampling: From a previous round of sampling the same
 %                   model. Input to avoid repeated preprocessing.
 %
@@ -108,6 +112,9 @@ if exist('options','var')
     end
     if (isfield(options,'optPercentage'))
         optPercentage = options.optPercentage;
+    end
+    if (isfield(options,'nWorkers'))
+        nWorkers = options.nWorkers;
     end
 end
 
@@ -228,7 +235,44 @@ switch samplerName
 
         modelSampling=[];
         samples=[];
+    
+    case 'RHMC' 
+        P = struct;        
+        if (~isfield(model,'S') || ~isfield(model,'b'))
+            error('You need to define both model.S and model.b');
+        else
+            P.Aeq = model.S;
+            P.beq = model.b;
+        end
+        if isfield(model,'lb')
+            P.lb = model.lb;
+        end
+        if isfield(model,'ub')
+            P.ub = model.ub;
+        end
+        if isfield(model,'dsense')
+            I = (model.dsense == 'E');
+            P.Aeq = [P.Aeq; model.C(I,:)];
+            P.beq = [P.beq; model.d(I)];
+            P.Aineq = model.C(~I,:);
+            P.bineq = model.d(~I,:);
+            flip = 1-2*(model.dsense(~I) == 'G');
+            P.Aineq = flip.*P.Aineq;
+            P.bineq = flip.*P.bineq;
+        end
 
+        opts = default_options();
+        opts.maxTime = maxTime;
+        if isfield(options,'nWorkers')
+            opts.nWorkers = options.nWorkers;
+        end
+        o = sample(P, nPointsReturned, opts);
+        samples = o.samples;
+        if size(samples,2) > nPointsReturned
+            samples = samples(:, ((size(samples,2)-nPointsReturned):end));
+        end
+        
+        volume = 'Set samplerName = ''MFE'' to estimate volume.';
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end
