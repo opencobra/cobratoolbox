@@ -439,34 +439,58 @@ if options.printlevel > 0
     
     % heatMap comparison
     figure
-    subplot(1, 2, 1)
+    subplot(1, 3, 1)
     scoreMatrix = info.sourcesComparison.comparisonMatrix;
     for i = 1:size(scoreMatrix, 2)
         for j = 1:size(scoreMatrix, 2)
             boolToCompare = scoreMatrix(:, i) ~= 0 & scoreMatrix(:, j) ~= 0;
             group1 = scoreMatrix(boolToCompare, i);
             group2 = scoreMatrix(boolToCompare, j);
-            comparisonMatrix(i, j) = sqrt(sum((group1 - group2).^2));
+            comparisonMatrix(i, j) = corr(group1,group2,'Type','Spearman');
         end
     end
     h = heatmap(comparisonMatrix);
-    h.YDisplayLabels = directories;
-    h.XDisplayLabels = directories;
+    title('1. Spearman correlation')
+    % Labels
+    directoriesLabels = regexprep(directories, 'inchi','InChI');
+    directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
+    h.YDisplayLabels = directoriesLabels;
+    h.XDisplayLabels = directoriesLabels;
     h.FontSize = 16;
-    title('Sources disimilarity comparison')
     
     % Sources comparison
-    subplot(1, 2, 2)
+    subplot(1, 3, 2)
     [db, ~, idx] = unique(split(strjoin(info.sourcesComparison.comparisonTable.source, ' '), ' '));
     [~, ib1] = ismember(db, directories);
     [timesMatched, ia] = sort(histcounts(idx, size(db, 1)), 'descend');
-    bar([timesMatched; info.sourcesCoverage.totalCoverage(ib1)]')
-    title({'Sources comparison', ...
-        ['Metabolites collected: ' num2str(size(info.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 20)
-    legend({'Times with highest score', 'IDs coverage'})
-    set(gca, 'XTick', 1:size(db, 1), 'xticklabel', db(ia), 'FontSize', 18)
+    bar(timesMatched')
+    title({'2. Sources comparison', ...
+        ['Metabolites collected: ' num2str(size(info.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 16)
+    % Labels
+    directoriesLabels = regexprep(db, 'inchi','InChI');
+    directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
+    set(gca, 'XTick', 1:size(db, 1), 'xticklabel', directoriesLabels(ia), 'FontSize', 16)
     ylabel('Metabolites')
     xtickangle(45)
+    
+    % Features comparison
+    subplot(1, 3, 3)
+    fnames = fieldnames(info.sourcesComparison);
+    fnames = fnames(contains(fnames, 'met_'));
+    sterochemicalCounter = zeros(7, 1);
+    chargeCounter = zeros(7, 1);
+    formula = zeros(7, 1);
+    for i = 1:length(fnames)
+        formula = formula + info.sourcesComparison.(fnames{i}).formulaOkBool;
+        sterochemicalCounter = sterochemicalCounter + info.sourcesComparison.(fnames{i}).stereochemicalSubLayers;
+        chargeCounter = chargeCounter + info.sourcesComparison.(fnames{i}).chargeOkBool;
+    end
+    plot([formula, sterochemicalCounter, chargeCounter], 'LineWidth', 2)
+    legend({'Formula', 'Sterochemestry', 'Charge'}, 'Location', 'best')
+    title('3. Features comparison', 'FontSize', 16)
+    directoriesLabels = regexprep(directories, 'inchi','InChI');
+    directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
+    set(gca, 'XTick', 1:size(directoriesLabels, 1), 'xticklabel', directoriesLabels, 'FontSize', 16)
     
     if options.printlevel > 1
         display(groupedInChIs)
@@ -487,9 +511,6 @@ for i = 1:length(info.sourcesComparison.comparisonTable.mets)
     else
         copyfile([comparisonDir dirToCopy{1} filesep metName '.mol'], tmpDir)
     end
-end
-if isfile([outputDir 'tmp.mol'])
-    delete([outputDir 'tmp.mol'])
 end
 if ~options.keepMolComparison
     rmdir(comparisonDir, 's')
@@ -688,115 +709,14 @@ end
 
 % Atom map metabolic reactions
 reactionsReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, options.onlyUnmapped);
-info.reactionsReport = reactionsReport;
 
 rxnsFilesDir = [rxnDir filesep 'unMapped'];
-if ~options.onlyUnmapped
-    
-    % Atom map transport reactions
-    mappedRxns = transportRxnAM(rxnsFilesDir, [rxnDir filesep 'atomMapped']);
-    for i = 1:size(mappedRxns, 2)
-        delete([rxnDir filesep 'images' filesep mappedRxns{i} '.png']);
-    end
-    
-    % Generate rinchis and reaction SMILES
-    if oBabelInstalled
-        
-        nRows = size(rxnsToAM, 1);
-        varTypes = {'string', 'string', 'string'};
-        varNames = {'rxns', 'rinchi', 'rsmi'};
-        info.reactionsReport.rxnxIDsTable = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
-        
-        model.rinchi = repmat({''}, size(model.rxns));
-        model.rsmi = repmat({''}, size(model.rxns));
-        for i = 1:size(rxnsToAM, 1)
-            info.reactionsReport.rxnxIDsTable.rxns(i) = rxnsToAM(i);
-            if isfile([rxnDir filesep 'atomMapped' filesep rxnsToAM{i} '.rxn'])
-                
-                % Remove parenthesis for RDT
-                if contains(rxnsToAM{i}, '(')
-                    rxnFileName = regexprep(rxnsToAM{i}, '\(', '\_40');
-                    rxnFileName = regexprep(rxnFileName, '\)', '\_41');
-                    movefile([rxnDir filesep 'atomMapped' filesep rxnsToAM{i} '.rxn'], ...
-                        [rxnDir filesep 'atomMapped' filesep rxnFileName '.rxn'])
-                    reverseName = 1;
-                else
-                    rxnFileName = rxnsToAM{i};
-                end
-                
-                % Get rinchis
-                command = ['obabel -irxn ' rxnDir filesep 'atomMapped' filesep rxnFileName '.rxn -orinchi'];
-                [~, result] = system(command);
-                if ~any(contains(result, '0 molecules converted'))
-                    result = split(result);
-                    info.reactionsReport.rxnxIDsTable.rinchi(i) = result{~cellfun(@isempty, regexp(result, 'RInChI='))};
-                    model.rinchi{findRxnIDs(model, rxnsToAM{i})} = result{~cellfun(@isempty, regexp(result, 'RInChI='))};
-                end
-                
-                % Get reaction SMILES
-                command = ['obabel -irxn ' rxnDir filesep 'atomMapped' filesep rxnFileName '.rxn -osmi'];
-                [~, result] = system(command);
-                if ~any(contains(result, '0 molecules converted'))
-                    result = splitlines(result);
-                    result = split(result{end - 2});
-                    info.reactionsReport.rxnxIDsTable.rsmi(i) = result{1};
-                    model.rsmi{findRxnIDs(model, rxnsToAM{i}), 1} = result{1};
-                end
-                
-                if exist('reverseName', 'var')
-                    movefile([rxnDir filesep 'atomMapped' filesep rxnFileName '.rxn'], ...
-                        [rxnDir filesep 'atomMapped' filesep rxnsToAM{i} '.rxn'])
-                    clear reverseName
-                end
-            end
-        end
-    end
-end
-
-% Find unbalanced RXN files
-% Get list of RXN files to check
-rxnList = dir([rxnDir filesep 'unMapped' filesep '*.rxn']);
-rxnList = regexprep({rxnList.name}, '.rxn', '')';
-rxnList(~ismember(rxnList, rxnsToAM)) = [];
-
-[unbalancedBool, v3000] = deal(false(size(rxnList)));
-for i = 1:size(rxnList, 1)
-    
-    name = [rxnList{i} '.rxn'];
-    % Read the RXN file
-    rxnFile = regexp(fileread([rxnsFilesDir filesep name]), '\n', 'split')';
-    
-    % Identify molecules
-    substrates = str2double(rxnFile{5}(1:3));
-    products = str2double(rxnFile{5}(4:6));
-    begMol = strmatch('$MOL', rxnFile);
-    
-    if ~isnan(products)
-        % Count atoms in substrates and products
-        atomsS = 0;
-        for j = 1:substrates
-            atomsS = atomsS + str2double(rxnFile{begMol(j) + 4}(1:3));
-        end
-        atomsP = 0;
-        for j = substrates + 1: substrates +products
-            atomsP = atomsP + str2double(rxnFile{begMol(j) + 4}(1:3));
-        end
-        
-        % Check if the file is unbalanced
-        if atomsS ~= atomsP
-            unbalancedBool(i) = true;
-        end
-    else
-        v3000(i) = true;
-    end
-end
-
 % Final database table
 
 % Reactions in the database
-info.reactionsReport.rxnInDatabase = rxnList;
+info.reactionsReport.rxnInDatabase = reactionsReport.rxnFilesWritten;
 % List atom mapped reactions
-if isfolder([rxnDir filesep 'atomMapped' filesep '*.rxn'])
+if isfolder([rxnDir filesep 'atomMapped'])
     atomMappedRxns = dir([rxnDir filesep 'unMapped' filesep '*.rxn']);
     atomMappedRxns = regexprep({atomMappedRxns.name}, '.rxn', '')';
     atomMappedRxns(~ismember(atomMappedRxns, rxnsToAM)) = [];
@@ -805,17 +725,17 @@ else
 end
 info.reactionsReport.mappedRxns = atomMappedRxns;
 % Balanced reactions
-info.reactionsReport.balancedReactions = rxnList(~unbalancedBool);
+info.reactionsReport.balancedReactions = reactionsReport.balanced;
 % Unalanced reactions
-info.reactionsReport.unbalancedReactions = rxnList(unbalancedBool);
+info.reactionsReport.unbalancedReactions = reactionsReport.unbalanced;
 % Missing reactions
 model = findSExRxnInd(model);
-info.reactionsReport.rxnMissing = setdiff(model.rxns(model.SIntRxnBool), info.reactionsReport.rxnFilesWritten);
+info.reactionsReport.rxnMissing = setdiff(model.rxns(model.SIntRxnBool), reactionsReport.rxnFilesWritten);
 
 % Find metabolites in balanced reactions
-metsInBalanced = unique(regexprep(findMetsFromRxns(model, rxnList(~unbalancedBool)), '(\[\w\])', ''));
+metsInBalanced = unique(regexprep(findMetsFromRxns(model, reactionsReport.balanced), '(\[\w\])', ''));
 % Find metabolites in unbalanced reactions
-metsInUnbalanced = unique(regexprep(findMetsFromRxns(model, rxnList(unbalancedBool)), '(\[\w\])', ''));
+metsInUnbalanced = unique(regexprep(findMetsFromRxns(model, reactionsReport.unbalanced), '(\[\w\])', ''));
 % Metabolites not used in reactions
 metsNotUsed = info.sourcesComparison.comparisonTable.mets(~ismember(...
     info.sourcesComparison.comparisonTable.mets, [metsInBalanced; ...
@@ -844,7 +764,7 @@ info.reactionsReport.table = table([ ...
     size(info.reactionsReport.mappedRxns, 1); ...
     size(info.reactionsReport.balancedReactions, 1); ...
     size(info.reactionsReport.unbalancedReactions, 1); ...
-    size(info.reactionsReport.missingMets, 1)],...
+    size(info.reactionsReport.rxnMissing, 1)],...
     ...
     'VariableNames', ...
     {'Var'},...
@@ -864,32 +784,14 @@ info.reactionsReport.table = table([ ...
 if options.printlevel > 0
     
     if ~options.onlyUnmapped
-        display(info.reactionsReport.rxnxIDsTable)
+        display(info.reactionsReport.table)
     end
     
     display(info.reactionsReport.table)
     
-    % Reactions
-    figure
-    labelsToAdd = {'Balanced', 'Unbalanced', 'Missing'};
-    X = [size(info.reactionsReport.balancedReactions, 1);...
-        size(info.reactionsReport.unbalancedReactions, 1);...
-        size(info.reactionsReport.rxnMissing, 1)];
-    ax = gca();
-    pieChart = pie(ax, X(find(X)));
-    newColors = [...
-        0.9608,    0.8353,    0.8353;
-        0.7961,    0.8824,    0.9608;
-        0.9137,    1.0000,    0.8392];
-    ax.Colormap = newColors;
-    title({'Reaction coverage', ['From ' num2str(sum(X)) ' internal rxns in the model']}, 'FontSize', 20)
-    lh = legend(labelsToAdd(find(X)), 'FontSize', 16);
-    lh.Position(1) = 0.5 - lh.Position(3)/2;
-    lh.Position(2) = 0.5 - lh.Position(4)/2;
-    set(findobj(pieChart,'type','text'),'fontsize',18)
-    
     % Metabolites
     figure
+    subplot(1, 2, 1)
     labelsToAdd = {'In balanced rxn', 'Ocassionally in unbalanced rxn', 'In unbalanced rxn', 'Missing'};
     X = [size(info.reactionsReport.metsAllwaysInBalancedRxns, 1);...
         size(info.reactionsReport.metsSometimesInUnbalancedRxns, 1);...
@@ -908,7 +810,24 @@ if options.printlevel > 0
     lh.Position(1) = 0.5 - lh.Position(3)/2;
     lh.Position(2) = 0.5 - lh.Position(4)/2;
     legend(labelsToAdd(find(X)), 'FontSize', 16)
-    title({'Metabolite percentage coverage', ['From ' num2str(size(umets, 1)) ' unique mets in the model']}, 'FontSize', 20)
+    title({'1. Metabolite percentage coverage', [num2str(size(umets, 1)) ' unique metabolites in the model']}, 'FontSize', 20)
+    set(findobj(pieChart,'type','text'),'fontsize',18)
+    
+    % Reactions
+    subplot(1, 2, 2)
+    labelsToAdd = {'Balanced', 'Unbalanced', 'Missing'};
+    X = [size(info.reactionsReport.balancedReactions, 1);...
+        size(info.reactionsReport.unbalancedReactions, 1);...
+        size(info.reactionsReport.rxnMissing, 1)];
+    ax = gca();
+    pieChart = pie(ax, X(find(X)));
+    newColors = [...
+        0.9608,    0.8353,    0.8353;
+        0.7961,    0.8824,    0.9608;
+        0.9137,    1.0000,    0.8392];
+    ax.Colormap = newColors;
+    title({'2. Reaction coverage', [num2str(sum(X)) ' internal reactions in the model']}, 'FontSize', 20)
+    lh = legend(labelsToAdd(find(X)), 'FontSize', 16, 'Location', 'best');
     set(findobj(pieChart,'type','text'),'fontsize',18)
     
 end
@@ -960,6 +879,10 @@ if ~options.onlyUnmapped
     model.meanBBF = meanBBF;
     model.meanBE = meanBE;
     
+end
+
+if isfile([outputDir 'tmp.mol'])
+    delete([outputDir 'tmp.mol'])
 end
 
 newModel = model;
