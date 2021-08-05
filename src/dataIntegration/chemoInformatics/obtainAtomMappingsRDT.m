@@ -75,7 +75,10 @@ end
 
 maxTime = 1800;
 
-% Check if JAVA is installed
+% Check installation
+[cxcalcInstalled, ~] = system('cxcalc');
+cxcalcInstalled = ~cxcalcInstalled;
+[oBabelInstalled, ~] = system('obabel');
 [javaInstalled, ~] = system('java');
 
 % Generating new directories
@@ -166,10 +169,23 @@ mappedBool = false(length(rxnsToAM), 1);
 
 % Atom map RXN files
 if javaInstalled == 1 && ~onlyUnmapped
+    
+    % Atom map RXN files
     fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
-    for i = 1:length(rxnsToAM)
+    
+    % Atom map passive transport reactions; The atoms are mapped for the
+    % same molecular structures in the substrates as they are in the
+    % products i.e. A[m] + B[c] -> A[c] + B[m].
+    mappedTransportRxns = transportRxnAM([rxnDir 'unMapped'], [rxnDir 'atomMapped']);
+    mappedBool = false(size(rxnsToAM));
+    transportBool = ismember(rxnsToAM, mappedTransportRxns);
+    mappedBool(transportBool) = true;
+    nonTransport = setdiff(rxnsToAM, rxnsToAM(mappedBool));
+    
+    % Atom map the rest
+    for i = 1:length(nonTransport)
         
-        name = [rxnDir 'unMapped' filesep rxnsToAM{i} '.rxn'];
+        name = [rxnDir 'unMapped' filesep nonTransport{i} '.rxn'];
         command = ['timeout ' num2str(maxTime) 's java -jar ' rxnDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
         
         if ismac
@@ -189,18 +205,17 @@ if javaInstalled == 1 && ~onlyUnmapped
             cellfun(@movefile, {mNames.name}, name)
             cellfun(@movefile, name, {[rxnDir 'images'], [rxnDir...
                 'atomMapped'], [rxnDir 'txtData']})
-            mappedBool(i) = true;
+            mappedBool(ismember(rxnsToAM, nonTransport{i})) = true;
         elseif ~isempty(mNames)
             delete(mNames.name)
         end
         
     end
+    delete([rxnDir 'rdtAlgorithm.jar'])
     
     mappedRxns = rxnsToAM(mappedBool);
     atomMappingReport.mappedRxns = mappedRxns;
-    
-    delete([rxnDir 'rdtAlgorithm.jar'])
-    
+    [unbalancedBool, inconsistentBool] = deal(false(size(rxnsToAM)));
     for i = 1:length(mappedRxns)
         
         name = [mappedRxns{i} '.rxn'];
@@ -215,7 +230,9 @@ if javaInstalled == 1 && ~onlyUnmapped
         formula = strsplit(mappedFile{4}, {'->', '<=>'});
         
         substratesFormula = strtrim(strsplit(formula{1}, '+'));
-        % Check if a metabolite is repeated in the substrates formula
+        % Check if a metabolite is modified in the substrate's formula;
+        % metabolites with an iron atom but no bonds are splited by the RDT
+        % algorithm, which modifies the stoichiometry.
         repMetsSubInx = find(~cellfun(@isempty, regexp(substratesFormula, ' ')));
         if ~isempty(repMetsSubInx)
             for j = 1:length(repMetsSubInx)
@@ -228,7 +245,9 @@ if javaInstalled == 1 && ~onlyUnmapped
         end
         
         productsFormula = strtrim(strsplit(formula{2}, '+'));
-        % Check if a metabolite is repeated in the products formula
+        % Check if a metabolite is modified in the product's formula;
+        % metabolites with an iron atom but no bonds are splited by the RDT
+        % algorithm, which modifies the stoichiometry.
         repMetsProInx = find(~cellfun(@isempty, regexp(productsFormula, ' ')));
         if ~isempty(repMetsProInx)
             for     j = 1:length(repMetsProInx)
@@ -243,6 +262,13 @@ if javaInstalled == 1 && ~onlyUnmapped
         % RXN file data
         begmol = strmatch('$MOL', mappedFile);
         noOfMolSubstrates = str2double(mappedFile{5}(1:3));
+        if isnan(noOfMolSubstrates)
+            if ~isfolder([rxnDir 'atomMapped' filesep 'v3000'])
+                mkdir([rxnDir 'atomMapped' filesep 'v3000']);
+            end
+            movefile([rxnDir 'atomMapped' filesep name], [rxnDir 'atomMapped' filesep 'v3000'])
+            continue
+        end
         substratesMol = mappedFile(begmol(1:noOfMolSubstrates) + 1)';
         noOfMolProducts = str2double(mappedFile{5}(4:6));
         productsMol = mappedFile(begmol(noOfMolSubstrates + 1:noOfMolSubstrates + noOfMolProducts) + 1)';
@@ -255,23 +281,114 @@ if javaInstalled == 1 && ~onlyUnmapped
         if ~isequal(noOfsubstrates, substratesMol) || ~isequal(noOfproducts, productsMol)
             mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, rxnDir);
         end
-        if length(mappedFile) > 5
+        
+        % SMILES TO MOL
+        begmol = strmatch('$MOL', mappedFile);
+        if cxcalcInstalled && ~inconsistentBool(i) && ~isempty(begmol)
+            
+            begmolStd = strmatch('$MOL', standardFile);
+            newMappedFile = {};
+            newMappedFile = mappedFile(1:5);
+            for j = 1:str2double(mappedFile{5, 1}(1:3)) + str2double(mappedFile{5, 1}(4:6))
+                
+                % Write a new MOL file and save it
+                c = 0;
+                molFile = {};
+                while ~isequal(mappedFile{begmol(j) + 1 + c},  '$MOL') && begmol(j) + 1 + c < length(mappedFile)
+                    c = c + 1;
+                    molFile{c, 1} = regexprep(mappedFile{begmol(j) + c}, '\*', 'A');
+                end
+                fid2 = fopen('tmp.mol', 'w');
+                fprintf(fid2, '%s\n', molFile{:});
+                fclose(fid2);
+                
+                % Rewrite the MOL file
+                command = ['molconvert smiles ' pwd filesep 'tmp.mol -o ' pwd filesep 'tmp.smiles'];
+                [~, ~] = system(command);
+                command = ['molconvert rxn ' pwd filesep 'tmp.smiles -o ' pwd filesep 'tmp.mol'];
+                [~, ~] = system(command);
+                delete([pwd filesep 'tmp.smiles'])
+                molFile = regexp(fileread([pwd filesep 'tmp.mol']), '\n', 'split')';
+                newMappedFile(length(newMappedFile) + 1: length(newMappedFile) + 4) = standardFile(begmolStd(j): begmolStd(j) + 3);
+                newMappedFile(length(newMappedFile) + 1: length(newMappedFile)  + length(molFile) - 4) = molFile(4:end - 1);                
+                
+            end
+            mappedFile = newMappedFile;
+        end
+        
+        % Sort the atoms in the substrates in ascending order and then map
+        % them to the atoms in the products.
+        if any(contains(mappedFile, '$MOL'))
             mappedFile = acsendingAtomMaps(mappedFile);
+        else
+            inconsistentBool(i) = true;
+        end
+        
+        % Check if the reaction is atomically balanced
+        if ~inconsistentBool(i)
+            begmol = strmatch('$MOL', mappedFile);
+            atomsSubstrates = 0;
+            for j = 1:noOfsubstrates
+                atomsSubstrates = atomsSubstrates + str2double(mappedFile{begmol(j) + 4}(1:3));
+            end
+            atomsProducts = 0;
+            for j = noOfsubstrates + 1:noOfsubstrates + noOfproducts
+                atomsProducts = atomsProducts + str2double(mappedFile{begmol(j) + 4}(1:3));
+            end
+            if atomsSubstrates ~= atomsProducts
+                unbalancedBool(i) = true;
+            end
         end
         
         % Rewrite the file
-        if any(contains(mappedFile, '$MOL'))
+        if ~unbalancedBool(i) && ~inconsistentBool(i)
             fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
             fprintf(fid2, '%s\n', mappedFile{:});
             fclose(fid2);
-        else
+        elseif inconsistentBool(i)
             if ~exist([rxnDir filesep 'atomMapped' filesep 'inconsistent'],'dir')
                 mkdir([rxnDir filesep 'atomMapped' filesep 'inconsistent'])
             end
             movefile([rxnDir 'atomMapped' filesep name], ...
-                [rxnDir filesep 'atomMapped' filesep 'inconsistent'])
+                [rxnDir 'atomMapped' filesep 'inconsistent'])
+        elseif unbalancedBool(i)
+            if ~exist([rxnDir filesep 'atomMapped' filesep 'unbalanced'],'dir')
+                mkdir([rxnDir filesep 'atomMapped' filesep 'unbalanced'])
+            end
+            fid2 = fopen([rxnDir 'atomMapped' filesep 'unbalanced' filesep name], 'w');
+            fprintf(fid2, '%s\n', mappedFile{:});
+            fclose(fid2);
+        end
+        
+        if oBabelInstalled
+            
+            % Get rinchis
+            command = ['obabel -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -orinchi'];
+            [~, result] = system(command);
+            if ~any(contains(result, '0 molecules converted'))
+                result = split(result);
+                atomMappingReport.rinchi{i, 1} = [result{~cellfun(@isempty, ...
+                    regexp(result, 'RInChI='))} ' - ' rxnsToAM{i}];
+            end
+            
+            % Get rsmi
+            command = ['obabel -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -osmi'];
+            [~, result] = system(command);
+            if ~any(contains(result, '0 molecules converted'))
+                result = splitlines(result);
+                result = split(result{end - 2});
+                atomMappingReport.rsmi{i, 1} = result{1};
+            end
+            
         end
     end
+    
+    atomMappingReport.rxnFilesWritten = rxnsToAM;
+    atomMappingReport.balanced = rxnsToAM(~unbalancedBool);
+    atomMappingReport.unbalanced = rxnsToAM(unbalancedBool);
+    atomMappingReport.inconsistentBool = rxnsToAM(inconsistentBool);
+    atomMappingReport.notMapped = setdiff(rxnsToAM, mappedRxns);
+    
 else
     atomMappingReport.mappedRxns = [];
 end
