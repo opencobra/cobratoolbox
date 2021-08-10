@@ -1,6 +1,6 @@
 function [hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, nCarbonThr)
 % Returns the list of reactions that act of compounds which
-% contain cabons greater than the thershhold set.
+% contain cabons greater than the threshold set.
 %
 % USAGE:
 %
