@@ -82,9 +82,9 @@ if numWorkers > 0
 end
 
 % reload existing results if applies
-if isfile([resultsFolder filesep 'objectives'])
-    load([resultsFolder filesep 'objectives']);
-    load([resultsFolder filesep 'shadowPrices']);
+if isfile([resultsFolder filesep 'objectives.mat'])
+    load([resultsFolder filesep 'objectives.mat']);
+    load([resultsFolder filesep 'shadowPrices.mat']);
     startPnt=size(objectives,2)-1;
 else
     startPnt=1;
@@ -211,6 +211,7 @@ function [model, FBAsolution] = computeSolForObj(model, objectiveList,solver)
 environment = getEnvironment();
 
 parfor j = 1:size(objectiveList, 1)
+    j
     restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
     % prevent creation of log files
