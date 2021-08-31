@@ -1,4 +1,4 @@
-function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)
+function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, varargin)
 % Calculate genetic Minimal Cut Sets (gMCSs) using the warm-start strategy
 % available in CPLEX, namely cplex.populate(), with or without selecting a
 % given knockout, among all the genes included in the model or a given
@@ -6,7 +6,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %
 % USAGE:
 %
-%    [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)
+%    [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, varargin)
 %
 % INPUTS:
 %    model_name:      Name of the metabolic model under study (in order to
@@ -15,36 +15,47 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %    n_gmcs:          Number of gMCSs to calculate.
 %    max_len_gmcs:    Number of genes in the largest gMCS to be calculated.
 %
-% OPTIONAL INPUT:
-%    options:         Structure with fields:
-%
-%                       * .KO - Selected gene knockout. Default: [].
-%                       * .gene_set - Cell array containing the set of
-%                         genes among which the gMCSs are wanted to be calculated.
-%                         Default: [] (all genes are included).
-%                       * .timelimit - Time limit for the calculation of gMCSs
-%                         each time the solver is called. Default: 1e75.
-%                       * .target_b - Desired activity level of the metabolic
-%                         task to be disrupted. Default: 1e-3;
-%                       * .separate_transcript - Character used to discriminate
-%                         different transcripts of a gene. Default: ''.
-%                         Example: separate_transcript = ''
-%                                   gene 10005.1    ==>    gene 10005.1
-%                                   gene 10005.2    ==>    gene 10005.2
-%                                   gene 10005.3    ==>    gene 10005.3
-%                                  separate_transcript = '.'
-%                                   gene 10005.1
-%                                   gene 10005.2    ==>    gene 10005
-%                                   gene 10005.3
-%                       * .forceLength - 1 if the constraint limiting the
-%                         length of the gMCSs is to be active (recommended for
-%                         enumerating low order gMCSs), 0 otherwise.
-%                         Default: 1.
-%                       * .numWorkers  - is the maximun number of workers
-%                       used by Cplex and GPR2models. 0 = automatic, 1 =
-%                       sequential, >1 = parallel. Default = 0;
-%                       * .printLevel - 1 if the process is wanted to be
-%                         shown on the screen, 0 otherwise. Default: 1.
+% OPTIONAL INPUTS:
+%    KO:                 Selected gene knockout. (default = [])
+%    gene_set:           Cell array containing the set of genes among which
+%                        the gMCSs are wanted to be calculated.
+%                        (default = [], all genes)
+%    target_b:           Desired activity level of the metabolic task to be
+%                        disrupted. (default = 1e-3)
+%    nutrientGMCS:       Boolean variable.  0 to calculate GeneMCS, 1 to 
+%                        calculate MCS containing genes and nutrients, 
+%                        known as ngMCS. (default = false)
+%    exchangeRxns:       Cell array containing the set of reactions to be
+%                        included as inputs of nutrients from the cell
+%                        environment / culture medium. (default = [], which
+%                        are all reactions with only one 1 metabolite
+%                        consiedered as input for the model)
+%    onlyNutrients:      Boolean variable.  1 to calculate MCS only using 
+%                        selected KO and nutrients, 0 to use everything. 
+%                        If there is no KO selected, it is set to false.
+%                        (default = false)
+%    separate_transcript:Character used to separate
+%                        different transcripts of a gene. (default = '')
+%                        Examples:
+%                          - separate_transcript = ''
+%                             - gene 10005.1    ==>    gene 10005.1
+%                             - gene 10005.2    ==>    gene 10005.2
+%                             - gene 10005.3    ==>    gene 10005.3
+%                          - separate_transcript = '.'
+%                             - gene 10005.1
+%                             - gene 10005.2    ==>    gene 10005
+%                             - gene 10005.3
+%    forceLength:        1 if the constraint limiting the length of the 
+%                        gMCSs is to be active (recommended for
+%                        enumerating low order gMCSs), 0 otherwise 
+%                        (default = 1)
+%    timelimit:          Time limit for the calculation of gMCSs each time 
+%                        the solver is called. (default = 1e75)
+%    numWorkers:         Integer: is the maximun number of workers used 
+%                        by Cplex and GPR2models. 0 = automatic, 
+%                        1 = sequential, > 1 = parallel. (default = 0)
+%    printLevel:         Integer. 1 if the process is wanted to be shown
+%                        on the screen, 0 otherwise. (default = 1)
 %
 % OUTPUTS:
 %    gmcs:         Cell array containing the calculated gMCSs.
@@ -53,15 +64,14 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 %
 % EXAMPLE:
 %    %With optional values
-%    [gmcs, gmcs_time] = calculateGeneMCS('Recon2.v04', modelR204, 100, 10, options)
-%    %Being:
-%    %options.KO = '6240'
-%    %options.gene_set = {'2987'; '6241'}
-%    %options.timelimit = 300
-%    %options.target_b = 1e-4
-%    %options.separate_transcript = '.';
-%    %options.forceLength = 0
-%    %options.printLevel = 0
+%    [gmcs, gmcs_time] = calculateGeneMCS('Recon2.v04', modelR204, 100, 10, ...
+%                                           'KO' = '6240', ...
+%                                           'gene_set' = {'2987'; '6241'},  ...
+%                                           'timelimit' = 300,  ...
+%                                           'target_b' = 1e-4, 
+%                                           'separate_transcript' = '.',  ...
+%                                           'forceLength' = 0, ...
+%                                           'printLevel' = 0)
 %
 %    %Without optional values
 %    [gmcs, gmcs_time] = calculateGeneMCS('ecoli_core_model', model, 100, 10)
@@ -73,6 +83,7 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 % .. Revisions:
 %       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 20/04/2021, University of Navarra, TECNUN School of Engineering.
 
 % Check the installation of cplex
 global SOLVERS;
@@ -85,58 +96,43 @@ else
     error('This version calculateMCS only works with IBM CPLEX. Newer versions will include more solvers included in COBRA Toolbox')
 end
 
-if nargin == 4              % Set Parameters
-    KO = [];                % Optional inputs
-    gene_set = [];
-    target_b = 1e-3;
-    timelimit = 1e75;
-    separate_transcript = '';
-    forceLength = true;
-    numWorkers = 0;
-    printLevel = 1;
-else
-    if isfield(options, 'KO')
-        KO = options.KO;
-    else
-        KO = [];
-    end
-    if isfield(options, 'gene_set')
-        gene_set = options.gene_set;
-    else
-        gene_set = [];
-    end
-    if isfield(options, 'timelimit')
-        timelimit = options.timelimit;
-    else
-        timelimit = 1e75;
-    end
-    if isfield(options, 'target_b')
-        target_b = options.target_b;
-    else
-        target_b = 1e-3;
-    end
-    if isfield(options, 'separate_transcript')
-        separate_transcript = options.separate_transcript;
-    else
-        separate_transcript = '';
-    end
-    if isfield(options, 'forceLength')
-        forceLength = options.forceLength;
-    else
-        forceLength = true;
-    end
-    if isfield(options, 'numWorkers')
-        numWorkers = options.numWorkers;
-    else
-        numWorkers = 0;
-    end
-    if isfield(options, 'printLevel')
-        printLevel = options.printLevel;
-    else
-        printLevel = 1;
-    end
-end
+p = inputParser;
+% check required arguments
+addRequired(p, 'model_name', @(x)ischar(x));
+addRequired(p, 'model_struct');
+addRequired(p, 'n_gmcs', @isnumeric);
+addRequired(p, 'max_len_gmcs', @isnumeric);
+% Add optional name-value pair argument
+addParameter(p, 'KO', [], @(x)ischar(x)||isempty(x));
+addParameter(p, 'gene_set', [], @(x)iscell(x)||isempty(x));
+addParameter(p, 'target_b', 1e-3, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'timelimit', 1e75, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'forceLength', true, @(x)islogical(x)||(isnumeric(x)&&isscalar(x)));
+addParameter(p, 'separate_transcript', '', @(x)ischar(x));
+addParameter(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
+addParameter(p, 'nutrientGMCS', false, @(x)islogical(x)||(isnumeric(x)&&isscalar(x)));
+addParameter(p, 'exchangeRxns', [], @(x)iscell(x)||isempty(x));
+addParameter(p, 'onlyNutrients', false, @(x)islogical(x)||(isnumeric(x)&&isscalar(x)));
+% extract variables from parser
+parse(p, model_name, model_struct, n_gmcs, max_len_gmcs, varargin{:});
+model_name = p.Results.model_name;
+model_struct = p.Results.model_struct;
+n_gmcs = p.Results.n_gmcs;
+max_len_gmcs = p.Results.max_len_gmcs;
+KO = p.Results.KO;
+gene_set = p.Results.gene_set;
+target_b = p.Results.target_b;
+timelimit = p.Results.timelimit;
+forceLength = p.Results.forceLength;
+separate_transcript = p.Results.separate_transcript;
+numWorkers = p.Results.numWorkers;
+printLevel = p.Results.printLevel;
+nutrientGMCS = p.Results.nutrientGMCS;
+exchangeRxns = p.Results.exchangeRxns;
+onlyNutrients = p.Results.onlyNutrients;
 
+% Define parameters for the gMCSs
 integrality_tolerance = 1e-5;
 M = 1e3;    % Big Value
 alpha = 1;  % used to relate the lower bound of v variables with z variables
@@ -144,12 +140,23 @@ c = 1e-3;   % used to activate w variable
 b = 1e-3;   % used to activate KnockOut constraint
 phi = 1000; % b/c;
 
+
+% Prepare model for ngMCS
+if nutrientGMCS
+    model_struct = prepareModelNutrientGeneMCS(model_struct, exchangeRxns);
+    if onlyNutrients && ~isempty(KO)
+        % select only artificial genes for nutrients
+        gene_set = model_struct.genes(startsWith(model_struct.genes, 'gene_'));
+    end
+end
+
 % Load or Build the G Matrix
 G_file = [pwd filesep 'G_' model_name '.mat'];
 if exist(G_file) == 2
     load(G_file)
 else
     [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_transcript, numWorkers, printLevel);
+    assert(size(G,2) == numel(model_struct.rxns));
 end
 gmcs_time{1, 1} = '------ TIMING ------';
 gmcs_time{1, 2} = '--- G MATRIX ---';
@@ -381,6 +388,7 @@ if isempty(KO)
                 return;
             end
         end
+        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); end
         try save('tmp.mat', 'gmcs', 'gmcs_time'); end
         try largest_gmcs = max(cellfun(@length, gmcs)); end
     end
@@ -611,6 +619,7 @@ else
                 return;
             end
         end
+        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); end
         try save('tmp.mat', 'gmcs', 'gmcs_time'); end
         try largest_gmcs = max(cellfun(@length, gmcs)); end
     end
