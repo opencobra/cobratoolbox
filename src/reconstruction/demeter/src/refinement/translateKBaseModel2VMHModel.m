@@ -47,6 +47,7 @@ model.mets = strrep(model.mets, '[c0]', '_c0');
 model.mets = strrep(model.mets, '[e0]', '_e0');
 model.rxns = strrep(model.rxns, '_c0', '');
 model.rxns = strrep(model.rxns, '_e0', '');
+model.rxns = strrep(model.rxns, 'R_', '');
 
 % proceed if the model contains any reactions in KBase nomenclature
 if ~isempty(intersect(model.rxns,translateRxns(:,1)))
@@ -60,9 +61,13 @@ if ~isempty(intersect(model.rxns,translateRxns(:,1)))
     biomassMets = model.mets(model.S(:, ismember(model.rxns, biomassReaction)) ~= 0);
     biomassMets = strrep(biomassMets, '_c0', '');
     biomassMets = strrep(biomassMets, '_e0', '');
+    biomassMets = strrep(biomassMets, '[c]', '');
+    biomassMets = strrep(biomassMets, '[e]', '');
     
-    % check if all biomass metabolites are in translation table
+    % check if all biomass metabolites are in translation table and also
+    % not already translated
     notInTableBiomassMets = setdiff(biomassMets, translateMets(:, 1));
+    notInTableBiomassMets = setdiff(notInTableBiomassMets, translateMets(:, 2));
     if ~isempty(notInTableBiomassMets)
         error('Model contains biomass metabolites that are not present in translation table')
     end
@@ -84,17 +89,14 @@ if ~isempty(intersect(model.rxns,translateRxns(:,1)))
     % remove biomass reaction from model (add translated reaction at the end)
     model = removeRxns(model, biomassReaction);
     
-    % adust metabolite and reaction IDs
+    % adust metabolite IDs
     % model.mets = strrep(model.mets, '[c0]', '_c0');
     % model.mets = strrep(model.mets, '[e0]', '_e0');
     model.mets = strrep(model.mets, '[c0]', '');
     model.mets = strrep(model.mets, '[e0]', '');
     model.mets = strrep(model.mets, '_c0', '');
     model.mets = strrep(model.mets, '_e0', '');
-    model.rxns = strrep(model.rxns, '_c0', '');
-    model.rxns = strrep(model.rxns, '_e0', '');
-    model.rxns = strrep(model.rxns, 'R_', '');
-    
+
     % check if there are any reactions in model that are not in translation
     % table
     notInTableRxns = setdiff(model.rxns, translateRxns(:, 1));
@@ -127,7 +129,9 @@ if ~isempty(intersect(model.rxns,translateRxns(:,1)))
     newModel.ub = zeros(size(newModel.rxns));
     newModel.rules = cell(0, 1);
     newModel.genes = model.genes;
-    newModel.geneNames = model.geneNames;
+    if isfield(model,'geneNames')
+        newModel.geneNames = model.geneNames;
+    end
     newModel.comments = cell(0, 1);
     newModel.citations = cell(0, 1);
     newModel.rxnECNumbers = cell(0, 1);

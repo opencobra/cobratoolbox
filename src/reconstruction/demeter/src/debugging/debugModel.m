@@ -190,7 +190,7 @@ for i=1:length(fields)
     % define if objective should be maximized or minimized
     if any(contains(fields{i},{'Carbon_sources','Metabolite_uptake','Drug_metabolism'}))
         osenseStr = 'min';
-    elseif any(contains(fields{i},{'Fermentation_products','Secretion_products','Bile_acid_biosynthesis'}))
+    elseif any(contains(fields{i},{'Fermentation_products','Secretion_products','Bile_acid_biosynthesis','PutrefactionPathways'}))
         osenseStr = 'max';
     end
     FNlist = testResults.(fields{i});
@@ -200,12 +200,18 @@ for i=1:length(fields)
         if ~isempty(FNs)
             for j=1:length(FNs)
                 metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-                if isempty(find(ismember(model.rxns,metExch)))
+                if contains(fields{i},'PutrefactionPathways')
                     % reaction ID itself provided
                     metExch = FNs{j};
                 end
                 % find reactions that could be gap-filled to enable flux
-                [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+                try
+                    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+                catch
+                    condGF = {};
+                    targetGF = {};
+                    relaxGF = {};
+                end
                 % export the gapfilled reactions
                 if ~isempty(condGF)
                     summary.condGF=union(summary.condGF,condGF);
