@@ -21,6 +21,7 @@ function [rebuiltModel] = rebuildModel(model,database)
 
 % to account for older versions of AGORA
 toReplace={'EX_4hpro(e)','EX_4hpro_LT(e)';'EX_indprp(e)','EX_ind3ppa(e)';'INDPRPt2r','IND3PPAt2r';'EX_adpcbl(e','EX_adocbl(e';'H202D','H2O2D'};
+
 for i=1:size(toReplace,1)
     model.rxns=strrep(model.rxns,toReplace{i,1},toReplace{i,2});
 end

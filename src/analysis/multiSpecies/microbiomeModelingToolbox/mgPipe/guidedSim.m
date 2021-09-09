@@ -24,20 +24,20 @@ currentDir=pwd;
 
 % Check for installation of fastFVA
 try
-    %       cpxControl.PARALLELMODE = 1;
-%       cpxControl.THREADS = 1;
-%       cpxControl.AUXROOTTHREADS = 2;
-      [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rl,'A');
-      if ret~=0
-          % infeasibilities in the solution
-          minFlux=NaN(length(rl),1);
-          maxFlux=NaN(length(rl),1);
-      end
-      % cpxControl.threads=1;
-      % cpxControl.parallel=1;
-      % cpxControl.auxrootthreads=2;
-      % cpxControl.SCAIND =-1;
-%      [minFlux,maxFlux] = fastFVA(model,99.99,'max',{},rl,'A',cpxControl)
+    cpxControl.PARALLELMODE = 1;
+    cpxControl.THREADS = 1;
+    cpxControl.AUXROOTTHREADS = 2;
+    [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rl,'A',cpxControl);
+    if ret~=0
+        % infeasibilities in the solution
+        minFlux=NaN(length(rl),1);
+        maxFlux=NaN(length(rl),1);
+    end
+    % cpxControl.threads=1;
+    % cpxControl.parallel=1;
+    % cpxControl.auxrootthreads=2;
+    % cpxControl.SCAIND =-1;
+    %      [minFlux,maxFlux] = fastFVA(model,99.99,'max',{},rl,'A',cpxControl)
 
 catch
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');

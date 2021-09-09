@@ -82,9 +82,9 @@ if numWorkers > 0
 end
 
 % reload existing results if applies
-if isfile([resultsFolder filesep 'objectives'])
-    load([resultsFolder filesep 'objectives']);
-    load([resultsFolder filesep 'shadowPrices']);
+if isfile([resultsFolder filesep 'objectives.mat'])
+    load([resultsFolder filesep 'objectives.mat']);
+    load([resultsFolder filesep 'shadowPrices.mat']);
     startPnt=size(objectives,2)-1;
 else
     startPnt=1;
@@ -142,13 +142,13 @@ for i=startPnt:size(modelList,1)
     % compute the flux balance analysis solution
     [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
 %     % store computed objective values
-%     for j=1:length(objectiveList)
-%         if ~isempty(FBAsolution{j,1})
-%             objectives{j+1,3+i} = FBAsolution{j,1}.obj;
-%         else
-%             objectives{j+1,3+i} = 0;
-%         end
-%     end
+    for j=1:length(objectiveList)
+        if ~isempty(FBAsolution{j,1})
+            objectives{j+1,3+i} = FBAsolution{j,1}.obj;
+        else
+            objectives{j+1,3+i} = 0;
+        end
+    end
     % save one model by one-file would be enourmous otherwise
     save([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
     
