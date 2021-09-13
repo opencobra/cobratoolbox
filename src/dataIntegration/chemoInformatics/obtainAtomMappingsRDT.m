@@ -37,7 +37,12 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %                   files (default: FALSE).
 %
 % OUTPUTS:
-%    balancedRxns:	List of standadised atom mapped reactions.
+%    atomMappingReport:	A report with the atom mapping data
+%        *. rxnFilesWritten the MDL RXN written written
+%        *. balanced the balanced reactions
+%        *. unbalancedBool the unbalanced reactions
+%        *. inconsistentBool the inconsistent reactions
+%        *. notMapped the that couldn't be mapped            
 %    A directory with standardised RXN files.
 %    A directory with atom mapped RXN files.
 %    A directory images for atom mapped reactions.
