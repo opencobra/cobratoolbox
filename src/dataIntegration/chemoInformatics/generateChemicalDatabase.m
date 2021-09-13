@@ -656,7 +656,7 @@ metList(~ismember(metList, regexprep(model.mets, '(\[\w\])', ''))) = [];
 % Standardise MOL files the most consitent MOL files
 standardisationReport = standardiseMolDatabase(tmpDir, metList, metDir, standardisationApproach);
 info.standardisationReport = standardisationReport;
-
+save
 if oBabelInstalled
     % Create table
     nRows = size(standardisationReport.SMILES, 1);
@@ -827,7 +827,7 @@ if options.printlevel > 0
         0.9137,    1.0000,    0.8392];
     ax.Colormap = newColors;
     title({'2. Reaction coverage', [num2str(sum(X)) ' internal reactions in the model']}, 'FontSize', 20)
-    lh = legend(labelsToAdd(find(X)), 'FontSize', 16, 'Location', 'best');
+    lh = legend(labelsToAdd(find(X)), 'FontSize', 16);
     set(findobj(pieChart,'type','text'),'fontsize',18)
     
 end
@@ -861,16 +861,26 @@ if ~options.onlyUnmapped
     % Get bond enthalpies and bonds broken and formed
     if options.printlevel  > 0
         display('Obtaining RInChIes and reaction SMILES ...')
-        [bondsBF, bondsE, meanBBF, meanBE] = findBEandBBF(model, [rxnDir filesep 'atomMapped'], 1);
-        info.bondsData.table = table(model.rxns, model.rxnNames, bondsBF, bondsE, ...
-            'VariableNames', {'rxns', 'rxnNames', 'bondsBF', 'bondsE'});
-        info.bondsData.table = sortrows(info.bondsData.table, {'bondsBF'}, {'descend'});
+    end
+    
+    [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model, [rxnDir ...
+        filesep 'atomMapped'], options.printlevel);
+    
+    % Replace NaN values to 'Missing'
+    missingRxns = isnan(bondsBF);
+    bondsBF = cellstr(num2str(bondsBF));
+    bondsBF(missingRxns) = {'Missing'};
+    bondsE = cellstr(num2str(bondsE));
+    bondsE(missingRxns) = {'Missing'};
+    
+    % Create table & sort values
+    info.bondsData.table = table(model.rxns, model.rxnNames, bondsBF, bondsE, substrateMass, ...
+            'VariableNames', {'rxns', 'rxnNames', 'bondsBF', 'bondsE', 'substrateMass'});
+    info.bondsData.table = [sortrows(info.bondsData.table(~missingRxns, :), ...
+        {'bondsBF'}, {'descend'}); info.bondsData.table(missingRxns, :)];   
+        
+    if options.printlevel  > 0
         display(info.bondsData.table)
-    else
-        [bondsBF, bondsE, meanBBF, meanBE] = findBEandBBF(model, [rxnDir filesep 'atomMapped']);
-        info.bondsData.table = table(model.rxns, model.rxnNames, bondsBF, bondsE, ...
-            'VariableNames', {'rxns','rxnNames','bondsBF','bondsE'});
-        info.bondsData.table = sortrows(info.bondsData.table, {'bondsBF'}, {'descend'});
     end
         
     % Add data in the model
@@ -891,7 +901,7 @@ if options.debug
 end
 
 diary off
-if options.printlevel > 0 > 0
+if options.printlevel > 0 
     fprintf('%s\n', ['Diary written to: ' options.outputDir])
     fprintf('%s\n', 'generateChemicalDatabase run is complete.')
 end
