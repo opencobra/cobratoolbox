@@ -182,10 +182,14 @@ if javaInstalled == 1 && ~onlyUnmapped
     % same molecular structures in the substrates as they are in the
     % products i.e. A[m] + B[c] -> A[c] + B[m].
     mappedTransportRxns = transportRxnAM([rxnDir 'unMapped'], [rxnDir 'atomMapped']);
-    mappedBool = false(size(rxnsToAM));
-    transportBool = ismember(rxnsToAM, mappedTransportRxns);
-    mappedBool(transportBool) = true;
-    nonTransport = setdiff(rxnsToAM, rxnsToAM(mappedBool));
+    if ~isempty(mappedTransportRxns)
+        mappedBool = false(size(rxnsToAM));
+        transportBool = ismember(rxnsToAM, mappedTransportRxns);
+        mappedBool(transportBool) = true;
+        nonTransport = setdiff(rxnsToAM, rxnsToAM(mappedBool));
+    else
+        nonTransport = rxnsToAM;
+    end
     
     % Atom map the rest
     for i = 1:length(nonTransport)
@@ -388,6 +392,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         end
     end
     
+    delete([pwd filesep 'tmp.mol'])
     atomMappingReport.rxnFilesWritten = rxnsToAM;
     atomMappingReport.balanced = rxnsToAM(~unbalancedBool);
     atomMappingReport.unbalanced = rxnsToAM(unbalancedBool);

@@ -1,88 +1,64 @@
-function molCollectionReport = obtainMetStructures(model, outputDir, updateDB, standardisationApproach, orderOfPreference)
-% Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI, 
-% and PubChem. Alternatively, openBabel can be used to convert InChI 
+function molCollectionReport = obtainMetStructures(model, metList, outputDir, sources)
+% Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI,
+% and PubChem. Alternatively, openBabel can be used to convert InChI
 % strings or SMILES in MDL MOL files.
 %
 % USAGE:
 %
-% missingMolFiles = obtainMetStructures(model, outputDir, updateDB, standardisationApproach, orderOfPreference)
+% molCollectionReport = obtainMetStructures(model, mets, sources, standardisationApproach)
 %
 % INPUTS:
-%    model:         COBRA model with following fields:
+%    model: COBRA model with following fields:
 %
-%                       * .S - The m x n stoichiometric matrix for the
-%                              metabolic network.
-%                       * .mets - An m x 1 array of metabolite identifiers.
-%                       * .metInChIString - An m x 1 array of metabolite identifiers.
-%                       * .metSmiles - An m x 1 array of metabolite identifiers.
-%                       * .metVMHID - An m x 1 array of metabolite identifiers.
-%                       * .metCHEBIID - An m x 1 array of metabolite identifiers.
-%                       * .metKEGGID - An m x 1 array of metabolite identifiers.
-%                       * .metPubChemID - An m x 1 array of metabolite identifiers.
-%                       * .metHMDBID - An m x 1 array of metabolite identifiers.
+%               * .S - The m x n stoichiometric matrix for the metabolic network.
+%               * .mets - An m x 1 array of metabolite identifiers.
+%               * .metInChIString - An m x 1 array of metabolite identifiers.
+%               * .metSmiles - An m x 1 array of metabolite identifiers.
+%               * .metVMHID - An m x 1 array of metabolite identifiers.
+%               * .metCHEBIID - An m x 1 array of metabolite identifiers.
+%               * .metKEGGID - An m x 1 array of metabolite identifiers.
+%               * .metPubChemID - An m x 1 array of metabolite identifiers.
+%               * .metHMDBID - An m x 1 array of metabolite identifiers.
 %
 % OPTIONAL INPUTS:
-%    outputDir:            Path to directory that will contain the MOL files
-%                          (default: current directory).
-%    updateDB:             Logical value idicating if the database will be
-%                          updated or not. If it's true, "outputDir" should
-%                          contain an existing database (default: false).
-%    standardisationApproach:  String contianing the type of standarization for
-%                          the moldecules (default: empty)
-%                             * explicitH - Normal chemical graphs.
-%                             * implicitH - Hydrogen suppressed chemical
-%                                           graphs.
-%                             * Neutral   - Chemical graphs with protonated
-%                                           molecules.
-%                             * basic     - Adding the header.
-%    orderOfPreference:    Vector indicating the source of preference
-%                          (default: 1:7)
-%                          1.- VMH (http://vmh.life/)
-%                          2.- InChI (requires openBabel)
-%                          3.- Smiles (requires openBabel)
-%                          4.- KEGG (https://www.genome.jp/)
-%                          5.- HMDB (https://hmdb.ca/)
-%                          6.- PubChem (https://pubchem.ncbi.nlm.nih.gov/)
-%                          7.- CHEBI (https://www.ebi.ac.uk/)
+%    mets: List of metabolites to be download (Default: All)
+%    outputDir: Directory that will contain the obtained metabolite structures.
+%    sources: Sources where the MOL files will be obtained (Default: all).
+%             The sources supported are:
+%
+%               1.- 'inchi' (requires openBabel)
+%               2.- 'smiles' (requires openBabel)
+%               3.- 'kegg' (https://www.genome.jp/)
+%               4.- 'hmdb' (https://hmdb.ca/)
+%               5.- 'pubchem' (https://pubchem.ncbi.nlm.nih.gov/)
+%               6.- 'chebi' (https://www.ebi.ac.uk/)
 %
 % OUTPUTS:
-%    missingMolFiles:      List of missing MOL files
-%    nonStandardised:      List of non-standardised MDL MOL file.
+%    molCollectionReport: Report of the obtained MDL MOL files
+%
 
-if nargin < 2 || isempty(outputDir)
+if nargin < 2 || isempty(metList)
+    metList = unique(regexprep(model.mets, '(\[\w\])', ''));
+else
+    metList = unique(regexprep(metList, '(\[\w\])', ''));
+end
+if nargin < 3 || isempty(outputDir)
     outputDir = [pwd filesep];
 else
     % Make sure input path ends with directory separator
     outputDir = [regexprep(outputDir,'(/|\\)$',''), filesep];
 end
-if nargin < 3
-    updateDB = false;
+if nargin < 4 || isempty(sources)
+    sources = {'VMH'; 'inchi'; 'smiles'; 'kegg'; 'hmdb'; 'pubchem'; 'chebi'};
 end
-if nargin < 4
-    standardisationApproach = [];
-end
-if nargin < 5
-    orderOfPreference = 1:7;
-end
-
 [oBabelInstalled, ~] = system('obabel');
-webTimeout = weboptions('Timeout', 30);
 
-% Set directories
-if exist([outputDir 'newMol'], 'dir') == 0
-    mkdir([outputDir 'newMol'])
-end
-newMolFilesDir  = [outputDir 'newMol' filesep];
-if updateDB
-    if exist([outputDir 'met' filesep standardisationApproach filesep], 'dir') ~= 0
-        modelMets = regexprep(model.mets,'(\[\w\])','');
-        fnames = dir([newMolFilesDir '*.mol']);
-        model = removeMetabolites(model, model.mets(~ismember(modelMets, setdiff(modelMets, split([fnames(:).name], '.mol')))));
-    else
-        display('Directory with MOL files was not found to be updated in:')
-        display([outputDir 'met' filesep standardisationApproach filesep])
-        display('A new database will be created')
-    end
+webTimeout = weboptions('Timeout', 60);
+
+% Set directory
+newMolFilesDir  = [outputDir 'metabolites' filesep];
+if exist(newMolFilesDir, 'dir') == 0
+    mkdir(newMolFilesDir)
 end
 
 %% Obtain met data
@@ -127,253 +103,199 @@ end
 %% Obtain met structures
 
 % Unique metabolites idexes
-[umets, ia] = unique(regexprep(model.mets, '(\[\w\])', ''));
+mets = regexprep(model.mets, '(\[\w\])', '');
 % umets = model.mets;
 % ia = 1:numel(model.mets);
 
-missingMetBool = true(length(umets), 1);
+missingMetBool = true(length(metList), 1);
 % Obtain MDL MOL files
 idsToCheck = {};
-for i = 1:length(umets)
-    for j = 1:7
-        switch orderOfPreference(j)
-            
-            case 1
-                % VMH
-                %                     if prod(~isnan(VMH{metIdxs(i)})) && ~isempty(VMH{metIdxs(i)}) && exist('VMH', 'var') && missing
-                %
-                %                     end
-                
-            case 2 % inchi
-                if prod(~isnan(inchis{ia(i)})) && ~isempty(inchis{ia(i)}) && oBabelInstalled && missingMetBool(i)
-                    try
-                        fid2 = fopen([outputDir 'tmp'], 'w');
-                        fprintf(fid2, '%s\n', inchis{ia(i)});
-                        fclose(fid2);
-                        command = ['obabel -iinchi ' outputDir 'tmp -O ' newMolFilesDir umets{i} '.mol mol'];
-                        [status, cmdout] = system(command);
-                        if contains(cmdout, '1 molecule converted')
-                            missingMetBool(i) = false;
-                        end
-                        delete([outputDir 'tmp'])
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = inchis(ia(i));
-                    end
-                end
-                
-            case 3 % Smiles
-                if prod(~isnan(smiles{ia(i)})) && ~isempty(smiles{ia(i)}) && oBabelInstalled && missingMetBool(i)
-                    try
-                    fid2 = fopen([outputDir 'tmp'], 'w');
-                    fprintf(fid2, '%s\n', smiles{ia(i)});
-                    fclose(fid2);
-                    command = ['obabel -ismi ' outputDir 'tmp -O ' newMolFilesDir umets{i} '.mol mol'];
-                    [status,cmdout] = system(command);
-                    if status == 0
-                        missingMetBool(i) = false;
-                    end
-                    delete([outputDir 'tmp'])
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = smiles(ia(i));
-                    end
-                end
-                
-            case 4 % KEGG
-                if  prod(~isnan(keggIDs{ia(i)})) && ~isempty(keggIDs{ia(i)}) && missingMetBool(i)
-                    try
-                        switch keggIDs{ia(i)}(1)
-                            case 'C'
-                                molFile = webread(['https://www.genome.jp/dbget-bin/www_bget?-f+m+compound+' keggIDs{ia(i)}], webTimeout);
-                            case 'D'
-                                molFile = webread(['https://www.kegg.jp/dbget-bin/www_bget?-f+m+drug+' keggIDs{ia(i)}], webTimeout);
-                        end
-                        if ~isempty(regexp(molFile, 'M  END'))
-                            fid2 = fopen([newMolFilesDir umets{i} '.mol'], 'w');
-                            fprintf(fid2, '%s\n', molFile);
-                            fclose(fid2);
-                            missingMetBool(i) = false;
-                        end
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = keggIDs(ia(i));
-                    end
-                end
-                
-            case 5 % HMDB
-                if  prod(~isnan(hmdbIDs{ia(i)})) && ~isempty(hmdbIDs{ia(i)}) && missingMetBool(i)
-                    try
-                        numbersID = hmdbIDs{ia(i)}(5:end);
-                        if size(numbersID, 2) < 7
-                            numbersID = [repelem('0', 7 - size(numbersID, 2)) numbersID];
-                        end
-                        molFile = webread(['https://hmdb.ca/structures/metabolites/HMDB' numbersID '.mol'], webTimeout);
-                        if ~isempty(regexp(molFile, 'M  END'))
-                            fid2 = fopen([newMolFilesDir umets{i} '.mol'], 'w');
-                            fprintf(fid2, '%s\n', molFile);
-                            fclose(fid2);
-                            missingMetBool(i) = false;
-                        end
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = hmdbIDs(ia(i));
-                    end
-                end
-                
-            case 6 % PubChem
-                if  prod(~isnan(PubChemIDs{ia(i)})) && ~isempty(PubChemIDs{ia(i)}) && missingMetBool(i)
-                    try
-                    molFile = webread(['https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/'...
-                        num2str(PubChemIDs{ia(i)}) ...
-                        '/record/SDF/?record_type=2d&response_type=display'], webTimeout);
-                    %         Delete all after 'M  END' from the SDF filte to
-                    %         make it MOL file
-                    if ~isempty(regexp(molFile, 'M  END'))
-                        molFile(regexp(molFile, 'M  END') + 6:end) = [];
-                        fid2 = fopen([newMolFilesDir umets{i} '.mol'], 'w');
-                        fprintf(fid2, '%s\n', molFile);
-                        fclose(fid2);
-                        missingMetBool(i) = false;
-                    end
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = PubChemIDs(ia(i));
-                    end
-                end
-                
-            case 7 % ChEBI
-                if  prod(~isnan(chebiIDs{ia(i)})) && ~isempty(chebiIDs{ia(i)}) && missingMetBool(i)
-                    try
-                    molFile = webread(['https://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=true&chebiId=' num2str(chebiIDs{ia(i)}) '&imageId=0'], webTimeout);
-                    if ~isempty(regexp(molFile, 'M  END'))
-                        fid2 = fopen([newMolFilesDir umets{i} '.mol'], 'w');
-                        fprintf(fid2, '%s\n', molFile);
-                        fclose(fid2);
-                        missingMetBool(i) = false;
-                    end
-                    catch ME
-                        disp(ME.message)
-                        idsToCheck(end + 1, 1) = chebiIDs(ia(i));
-                    end
-                end
+for i = 1:length(metList)
+    
+    % identify met in model
+    idx = find(ismember(mets, metList{i}));
+    
+    % InChI
+    if ~isempty(inchis{idx(1)}) && oBabelInstalled && ismember({'inchi'}, sources)
+        try
+            saveFileDir = [newMolFilesDir 'inchi' filesep];
+            if exist(saveFileDir, 'dir') == 0
+                mkdir(saveFileDir)
+            end
+            newFormat = openBabelConverter(inchis{idx(1)}, 'mol', [saveFileDir ...
+                metList{i} '.mol']);
+            missingMetBool(i) = false;
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['inchi - ' keggIDs{idx(1)}];
         end
     end
-end
-
-%% Standardise Mol Files
-
-if ~isempty(standardisationApproach)
     
-    % Set up directories
-    switch standardisationApproach
-        case 'explicitH'
-            standardisedDir = [outputDir 'explicitH' filesep];
-        case 'implicitH'
-            standardisedDir = [outputDir 'implicitH' filesep];
-        case 'protonated'
-            standardisedDir = [outputDir 'protonated' filesep];
-        otherwise
-            standardisationApproach = 'basic';
-            standardisedDir = molDir;
-    end
-    
-    % Standardise files
-    umets(missingMetBool) = [];
-    standardisationReport = standardiseMolDatabase(tmpDir, umets, standardisedDir, standardisationApproach);
-    
-    % Get SMILES and InChIs
-    if isfield(standardisationReport, 'SMILES')
-        SMILES = standardisationReport.SMILES;
-    else
-        SMILES = '';
-    end
-    if isfield(standardisationReport, 'InChIs')
-        InChIs = standardisationReport.InChIs;
-    else
-        InChIs = '';
-    end
-    % Delete empty cells
-    InChIs(cellfun(@isempty, InChIs)) = [];
-    SMILES(cellfun(@isempty, SMILES)) = [];
-    
-    if updateDB && ~isempty(InChIs) && ~isempty(SMILES)
-        
-        % For InChIs
-        if isfile([standardisedDir 'InChIs'])
-            % Merge old and new InChIs
-            InChIsFile = regexp( fileread([standardisedDir 'InChIs']), '\n', 'split')';
-            InChIsFile(cellfun(@isempty, InChIsFile)) = [];
-            InChIsFileSp = split(InChIsFile, ' - ');
-            smilesSp = split(InChIs, ' - ');
-            mergedSmiles(:, 2) = unique([InChIsFileSp(:, 2); smilesSp(:, 2)]);
-            mergedSmiles(ismember(mergedSmiles(:, 2), smilesSp(:, 2)), 1) = smilesSp(:, 2);
-            mergedSmiles(ismember(mergedSmiles(:, 2), InChIsFileSp(:, 2)), 1) = InChIsFileSp(:, 2);
-            mergedSmiles = strcat(mergedSmiles(:, 1), {' - '}, mergedSmiles(:, 2));
-            % Write InChIs
-            fid2 = fopen([standardisedDir 'InChIs'], 'w');
-            fprintf(fid2, '%s\n', mergedSmiles{:});
-            fclose(fid2);
-        else
-            % Write InChIs
-            fid2 = fopen([standardisedDir 'InChIs'], 'w');
-            fprintf(fid2, '%s\n', InChIs{:});
-            fclose(fid2);
+    % SMILES
+    if ~isempty(inchis{idx(1)}) && oBabelInstalled && ismember({'smiles'}, sources)
+        try
+            saveFileDir = [newMolFilesDir 'smiles' filesep];
+            if exist(saveFileDir, 'dir') == 0
+                mkdir(saveFileDir)
+            end
+            newFormat = openBabelConverter(smiles{idx(1)}, 'mol', [saveFileDir ...
+                metList{i} '.mol']);
+            missingMetBool(i) = false;
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['inchi - ' keggIDs{idx(1)}];
         end
-        
-        % For SMILES
-        if isfile([standardisedDir 'SMILES'])
-            % Merge old and new InChIs
-            smilesFile = regexp( fileread([standardisedDir 'SMILES']), '\n', 'split')';
-            smilesFile(cellfun(@isempty, smilesFile)) = [];
-            smilesFileSp = split(smilesFile, ' - ');
-            smilesSp = split(SMILES, ' - ');
-            mergedSmiles(:, 2) = unique([smilesFileSp(:, 2); smilesSp(:, 2)]);
-            mergedSmiles(ismember(mergedSmiles(:, 2), smilesSp(:, 2)), 1) = smilesSp(:, 2);
-            mergedSmiles(ismember(mergedSmiles(:, 2), smilesFileSp(:, 2)), 1) = smilesFileSp(:, 2);
-            mergedSmiles = strcat(mergedSmiles(:, 1), {' - '}, mergedSmiles(:, 2));
-            % Write InChIs
-            fid2 = fopen([standardisedDir 'SMILES'], 'w');
-            fprintf(fid2, '%s\n', mergedSmiles{:});
-            fclose(fid2);
-        else
-            % Write InChIs
-            fid2 = fopen([standardisedDir 'SMILES'], 'w');
-            fprintf(fid2, '%s\n', SMILES{:});
-            fclose(fid2);
+    end
+    
+    % KEGG
+    if ~isempty(keggIDs{idx(1)})  && ismember({'kegg'}, sources)
+        saveFileDir = [newMolFilesDir 'kegg' filesep];
+        if exist(saveFileDir, 'dir') == 0
+            mkdir(saveFileDir)
         end
-        
-    else
-        % Write InChIs
-        fid2 = fopen([standardisedDir 'InChIs'], 'w');
-        fprintf(fid2, '%s\n', InChIs{:});
-        fclose(fid2);
-        % Write SMILES
-        fid2 = fopen([standardisedDir 'SMILES'], 'w');
-        fprintf(fid2, '%s\n', SMILES{:});
-        fclose(fid2);
+        try
+            switch keggIDs{idx(1)}(1)
+                case 'C'
+                    molFile = webread(['https://www.genome.jp/dbget-bin/www_bget?-f+m+compound+' keggIDs{idx}], webTimeout);
+                case 'D'
+                    molFile = webread(['https://www.kegg.jp/dbget-bin/www_bget?-f+m+drug+' keggIDs{idx}], webTimeout);
+            end
+            if ~isempty(regexp(molFile, 'M  END'))
+                fid2 = fopen([newMolFilesDir 'kegg' filesep metList{i} '.mol'], 'w');
+                fprintf(fid2, '%s\n', molFile);
+                fclose(fid2);
+                missingMetBool(i) = false;
+            end
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['kegg - ' keggIDs{idx(1)}];
+        end
+    end
+    
+    % HMDB
+    if ~isempty(hmdbIDs{idx(1)})  && ismember({'hmdb'}, sources)
+        saveFileDir = [newMolFilesDir 'hmdb' filesep];
+        if exist(saveFileDir, 'dir') == 0
+            mkdir(saveFileDir)
+        end
+        try
+            numbersID = hmdbIDs{idx(1)}(5:end);
+            if size(numbersID, 2) < 7
+                numbersID = [repelem('0', 7 - size(numbersID, 2)) numbersID];
+            end
+            molFile = webread(['https://hmdb.ca/structures/metabolites/HMDB' numbersID '.mol'], webTimeout);
+            if ~isempty(regexp(molFile, 'M  END'))
+                fid2 = fopen([newMolFilesDir 'hmdb' filesep metList{i} '.mol'], 'w');
+                fprintf(fid2, '%s\n', molFile);
+                fclose(fid2);
+                missingMetBool(i) = false;
+            end
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['hmdb - ' hmdbIDs{idx(1)}];
+        end
+    end
+    %
+    %
+    %     % hmdb
+    %     if ~isempty(hmdbIDs{ia(i)}) && ismember('hmdb', sources)
+    %         saveFileDir = [newMolFilesDir 'hmdb' filesep];
+    %         if exist(saveFileDir, 'dir') == 0
+    %             mkdir(saveFileDir)
+    %         end
+    %         try
+    %             numbersID = hmdbIDs{idx}(5:end);
+    %             if size(numbersID, 2) < 7
+    %                 numbersID = [repelem('0', 7 - size(numbersID, 2)) numbersID];
+    %             end
+    %             molFile = webread(['https://hmdb.ca/structures/metabolites/HMDB' numbersID '.mol'], webTimeout);
+    %             if ~isempty(regexp(molFile, 'M  END'))
+    %                 fid2 = fopen([newMolFilesDir idx '.mol'], 'w');
+    %                 fprintf(fid2, '%s\n', molFile);
+    %                 fclose(fid2);
+    %                 missingMetBool(i) = false;
+    %             end
+    %         catch ME
+    %             disp(ME.message)
+    %             idsToCheck(end + 1, 1) = hmdbIDs(ia(i));
+    %         end
+    %     end
+    
+    
+    % PubChem
+    if ~isempty(PubChemIDs{idx(1)})  && ismember({'pubchem'}, sources)
+        saveFileDir = [newMolFilesDir 'pubchem' filesep];
+        if exist(saveFileDir, 'dir') == 0
+            mkdir(saveFileDir)
+        end
+        try
+            molFile = webread(['https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/'...
+                num2str(PubChemIDs{idx(1)}) ...
+                '/record/SDF/?record_type=2d&response_type=display'], webTimeout);
+            if ~isempty(regexp(molFile, 'M  END'))
+                molFile(regexp(molFile, 'M  END') + 6:end) = [];
+                fid2 = fopen([newMolFilesDir 'pubchem' filesep metList{i} '.mol'], 'w');
+                fprintf(fid2, '%s\n', molFile);
+                fclose(fid2);
+                missingMetBool(i) = false;
+            end
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['pubchem - ' PubChemIDs{idx(1)}];
+        end
+    end
+    %
+    %
+    %             case 6
+    %                 if  prod(~isnan(PubChemIDs{ia(i)})) && ~isempty(PubChemIDs{ia(i)}) && missingMetBool(i)
+    %                     try
+    %                     molFile = webread(['https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/'...
+    %                         num2str(PubChemIDs{ia(i)}) ...
+    %                         '/record/SDF/?record_type=2d&response_type=display'], webTimeout);
+    %                     %         Delete all after 'M  END' from the SDF filte to
+    %                     %         make it MOL file
+    %                     if ~isempty(regexp(molFile, 'M  END'))
+    %                         molFile(regexp(molFile, 'M  END') + 6:end) = [];
+    %                         fid2 = fopen([newMolFilesDir umets{i} '.mol'], 'w');
+    %                         fprintf(fid2, '%s\n', molFile);
+    %                         fclose(fid2);
+    %                         missingMetBool(i) = false;
+    %                     end
+    %                     catch ME
+    %                         disp(ME.message)
+    %                         idsToCheck(end + 1, 1) = PubChemIDs(ia(i));
+    %                     end
+    %                 end
+    %
+    
+    % ChEBI
+    if ~isempty(chebiIDs{idx(1)})  && ismember({'chebi'}, sources)
+        saveFileDir = [newMolFilesDir 'chebi' filesep];
+        if exist(saveFileDir, 'dir') == 0
+            mkdir(saveFileDir)
+        end
+        try
+            molFile = webread(['https://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=true&chebiId=' num2str(chebiIDs{idx}) '&imageId=0'], webTimeout);
+            if ~isempty(regexp(molFile, 'M  END'))
+                fid2 = fopen([newMolFilesDir 'chebi' filesep metList{i} '.mol'], 'w');
+                fprintf(fid2, '%s\n', molFile);
+                fclose(fid2);
+                missingMetBool(i) = false;
+            end
+        catch ME
+            disp(ME.message)
+            idsToCheck{end + 1, 1} = ['chebi - ' chebiIDs{idx(1)}];
+        end
     end
 end
 
 %% Report
 
 % Make report
-molCollectionReport.noOfMets = size(umets, 1);
-molCollectionReport.noOfMetsWithMol = sum(~missingMetBool);
-molCollectionReport.noOfMetsWithoutMol = sum(missingMetBool);
-molCollectionReport.coverage = (molCollectionReport.noOfMetsWithMol * 100) / molCollectionReport.noOfMets;
-
-% Check standardised data
-if ~isempty(standardisationApproach)
-    nRows = size(standardisationReport.SMILES, 1);
-    varTypes = {'string', 'string', 'string', 'string'};
-    varNames = {'mets', 'InChIKeys', 'InChIs', 'SMILES'};
-    molCollectionReport.standardisationReport = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
-    molCollectionReport.standardisationApproach = standardisationApproach;
-    molCollectionReport.standardisationReport(1:end) = standardisationReport.standardised;
-    molCollectionReport.standardisationReport.InChIKeys(1:size(standardisationReport.InChIKeys, 1)) = standardisationReport.InChIKeys;
-    molCollectionReport.standardisationReport.InChIs(1:size(standardisationReport.InChIs, 1)) = standardisationReport.InChIs;
-    molCollectionReport.standardisationReport.SMILES(1:size(standardisationReport.SMILES, 1)) = standardisationReport.SMILES;
-end
+molCollectionReport.mets = metList;
+molCollectionReport.metsWithMol = metList(~missingMetBool);
+molCollectionReport.metsWithoutMol = metList(missingMetBool);
+molCollectionReport.coverage = (numel(molCollectionReport.metsWithMol) * 100) / numel(molCollectionReport.mets);
+molCollectionReport.idsToCheck = idsToCheck;
 
 end
