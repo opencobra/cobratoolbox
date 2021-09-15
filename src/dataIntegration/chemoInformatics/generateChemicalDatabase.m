@@ -155,7 +155,7 @@ if options.printlevel > 0
     disp('--------------------------------------------------------------')
 end
 
-directories = {'inchi'; 'smiles'; 'KEGG'; 'HMDB'; 'PubChem'; 'CHEBI'};
+directories = {'inchi'; 'smiles'; 'kegg'; 'hmdb'; 'pubchem'; 'chebi'};
 if dirsToCompare
     directories = [directories; options.dirNames];
 end
@@ -177,26 +177,21 @@ if options.printlevel > 0
     fprintf('%s\n\n', 'Obtaining MOL files from chemical databases ...')
 end
 
-comparisonDir = [metDir filesep 'sourcesComparison' filesep];
-source = [0 0 0 0 0 0 0];
-for i = 1:6
+for i = 1:length(directories)
     dirBool(i) = false;
     if any(~cellfun(@isempty, regexpi(modelFields, directories{i})))
         dirBool(i) = true;
-        sourceData = source;
-        sourceData(i + 1) = source(i + 1) + i + 1;
-        molCollectionReport = obtainMetStructures(model, comparisonDir, false, [], sourceData);
-        movefile([comparisonDir filesep 'newMol'], ...
-            [comparisonDir filesep directories{i}])
+        molCollectionReport = obtainMetStructures(model, model.mets, outputDir, directories{i});
         info.sourcesCoverage.(directories{i}) = molCollectionReport;
-        info.sourcesCoverage.totalCoverage(i) = molCollectionReport.noOfMets;
-        info.sourcesCoverage.source{i} = directories{i};
         if options.printlevel > 0
             disp([directories{i} ':'])
             display(molCollectionReport)
         end
     end
 end
+comparisonDir = [outputDir 'molComparison'];
+movefile([outputDir 'metabolites'], comparisonDir)
+        
 if ~isempty(dirsToCompare)
     for i = 1:length(options.dirsToCompare)
         % Get list of MOL files
@@ -206,21 +201,24 @@ if ~isempty(dirsToCompare)
         metList = metList(~cellfun('isempty', regexp(metList,'(\.mol)$')));
         metList = regexprep(metList, '.mol', '');
         metList(~ismember(metList, umets)) = [];
-        info.sourcesCoverage.totalCoverage(i + 6) = length(metList);
-        info.sourcesCoverage.source{i + 6} = options.dirNames{i};
+        info.sourcesCoverage.(options.dirNames{i}).mets = umets;
+        info.sourcesCoverage.(options.dirNames{i}).metsWithMol = metList;
+        info.sourcesCoverage.(options.dirNames{i}).metsWithoutMol = setdiff(umets, metList);
+        info.sourcesCoverage.(options.dirNames{i}).coverage = ...
+            (numel(info.sourcesCoverage.(options.dirNames{i}).metsWithMol) * 100) /...
+            numel(molCollectionReport.mets);
+        if options.printlevel > 0
+            disp([options.dirNames{i} ':'])
+            display(info.sourcesCoverage.(options.dirNames{i}))
+        end
     end
 end
+
 % Remove sources without a single metabolite present the model
-if dirsToCompare
-    emptySourceBool = info.sourcesCoverage.totalCoverage == 0;
-    info.sourcesCoverage.totalCoverage(emptySourceBool) = [];
-    directories(emptySourceBool) = [];
-    dirsToDeleteBool = ismember(options.dirNames, info.sourcesCoverage.source(emptySourceBool));
-    options.dirsToCompare(dirsToDeleteBool) = [];
-    options.dirNames(dirsToDeleteBool) = [];
-    info.sourcesCoverage.source(emptySourceBool) = [];
-else
-    directories(~dirBool) = [];
+for i = length(directories):-1:1
+    if info.sourcesCoverage.(directories{i}).coverage == 0
+        directories{i} = [];
+    end
 end
 
 if options.debug
@@ -240,7 +238,7 @@ for i = 1:size(directories, 1)
     if i > 6 && dirsToCompare
         sourceDir = options.dirsToCompare{i - 6};
     else
-        sourceDir = [comparisonDir directories{i} filesep];
+        sourceDir = [comparisonDir filesep directories{i} filesep];
     end
     
     % Get list of MOL files
@@ -509,7 +507,7 @@ for i = 1:length(info.sourcesComparison.comparisonTable.mets)
     if isfield(options, 'dirNames') && ismember(dirToCopy{1}, options.dirNames)
         copyfile([options.dirsToCompare{ismember(options.dirNames, dirToCopy{1})} metName '.mol'], tmpDir)
     else
-        copyfile([comparisonDir dirToCopy{1} filesep metName '.mol'], tmpDir)
+        copyfile([comparisonDir filesep dirToCopy{1} filesep metName '.mol'], tmpDir)
     end
 end
 if ~options.keepMolComparison
@@ -656,7 +654,7 @@ metList(~ismember(metList, regexprep(model.mets, '(\[\w\])', ''))) = [];
 % Standardise MOL files the most consitent MOL files
 standardisationReport = standardiseMolDatabase(tmpDir, metList, metDir, standardisationApproach);
 info.standardisationReport = standardisationReport;
-save
+
 if oBabelInstalled
     % Create table
     nRows = size(standardisationReport.SMILES, 1);
@@ -860,7 +858,7 @@ if ~options.onlyUnmapped
     
     % Get bond enthalpies and bonds broken and formed
     if options.printlevel  > 0
-        display('Obtaining RInChIes and reaction SMILES ...')
+        display('Calculating bonds broken and formed, and enthalpy change...')
     end
     
     [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model, [rxnDir ...
