@@ -36,19 +36,24 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %       - Francisco J. Planes, Aug 2017, University of Navarra, TECNUN School of Engineering.
 %       - Inigo Apaolaza, April 2018, University of Navarra, TECNUN School of Engineering.
 
-if (nargin < 5 || isempty(printLevel))
-    printLevel = 1; % Default is show progress
-end
 
-if (nargin < 4 || isempty(numWorkers))
-    numWorkers = 0; % Default is gpc('nocreate')
-end
+p = inputParser;
+% check required arguments
+addRequired(p, 'metabolic_model');
+addOptional(p, 'selected_rxns', [], @isnumeric);
+addOptional(p, 'separate_transcript', '', @(x)ischar(x)); % default is empty
+addOptional(p, 'numWorkers', 0, @(x)isnumeric(x)&&isscalar(x)); % Default is gpc('nocreate')
+addOptional(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
+% extract variables from parser
+parse(p, metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel);
+metabolic_model = p.Results.metabolic_model;
+selected_rxns = p.Results.selected_rxns;
+separate_transcript = p.Results.separate_transcript;
+numWorkers = p.Results.numWorkers;
+printLevel = p.Results.printLevel;
 
-if (nargin < 3)
-    separate_transcript = ''; % default is empty
-end
-
-if (nargin < 2)
+% fill with all reactions
+if (isempty(selected_rxns))
     selected_rxns = 1:length(metabolic_model.rxns);
 end
 

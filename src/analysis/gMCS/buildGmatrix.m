@@ -176,12 +176,16 @@ else
             DM = ~cellfun(@isempty, DM);
             n_DM = sum(DM);
             DM = rxns(find(DM));
-            options.rxn_set = DM;
-            options.timelimit = timelimit;
-            options.target_b = target_b;
-            options.printLevel = 0;
+%             options.rxn_set = DM;
+% %             options.timelimit = timelimit;
+%             options.target_b = target_b;
+%             options.printLevel = 0;
             max_len_mcs = length(DM);
-            [act_mcs, act_mcs_time] = calculateMCS(act_model, n_mcs, max_len_mcs, options);
+            [act_mcs, act_mcs_time] = calculateMCS(act_model, n_mcs, max_len_mcs,...
+                'rxn_set', DM,...
+                'timelimit', timelimit,... 
+                'target_b', target_b,...
+                'printLevel', 0);
             mcs{i, 1} = act_mcs;
             mcs_time{i, 1} = act_mcs_time;
             save(search_filename_3, 'act_mcs', 'act_mcs_time');

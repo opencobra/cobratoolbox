@@ -16,9 +16,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testSampleCbModel'));
 cd(fileDir);
 % define the samplers
-samplers = {'CHRR','CHRR_EXP','ACHR'}; %'MFE'
-samplers = {'CHRR'};
-    
+samplers = {'CHRR','CHRR_EXP','ACHR','RHMC'}; %'MFE'
+samplers = {'RHMC'};
+
 % create a parallel pool (if possible)
 try
     minWorkers = 2;
@@ -88,7 +88,14 @@ for k = 1:length(solverPkgs.LP)
                 [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR_EXP', options);
 
                 assert(norm(samples) > 0)
+            case 'RHMC'
+                fprintf('\nTesting the Riemann Hamiltonian Monte Carlo (RHMC) sampler\n.');
+				
+                options.nPointsReturned = 10;
 
+                [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'RHMC', options);
+
+                assert(norm(samples) > 0)
         end
     end
 end

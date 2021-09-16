@@ -51,11 +51,12 @@ if ~isfield(options,'rxnDirMultiplier'), options.rxnDirMultiplier = 2; end
 if ~isfield(options,'rxnDirFlag'), rxnDirFlag = false; else rxnDirFlag = options.rxnDirFlag; end
 rxnListZero = model.rxns(abs(flux)<=1e-9);
 absFlag=false;
+origFlux = flux; %need this to set the arrow directions correct if abs is used -mfarshada
 switch lower(options.scaleType)
     case {1, 'linear'}
         options.scaleTypeLabel='Linear;';
     case {2 ,'linear absolute'}
-        flux=abs(flux);
+        flux=abs(flux); 
         absFlag=true;
         options.scaleTypeLabel='Linear absolute;';
     case {3,'log10'}
@@ -109,8 +110,8 @@ end
 if rxnDirFlag
     options.rxnDir = zeros(length(map.connectionAbb),1);
     for i = 1:length(map.connectionAbb)
-        options.rxnDir(ismember(map.connectionAbb,model.rxns(flux>0))) = 1;
-        options.rxnDir(ismember(map.connectionAbb,model.rxns(flux<0))) = -1;
+        options.rxnDir(ismember(map.connectionAbb,model.rxns(origFlux>0))) = -1; %was 1, inconsistent with drawLine -mfarshada
+        options.rxnDir(ismember(map.connectionAbb,model.rxns(origFlux<0))) = 1; %was -1 
     end
 end
 

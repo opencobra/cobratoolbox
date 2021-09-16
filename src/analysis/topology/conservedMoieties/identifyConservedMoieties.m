@@ -7,13 +7,19 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 % is
 %       N = inv(M2M*M2M')*M2M*M*M2R;
 %
+% where
+%       N   = model.S(arm.MRH.metAtomMappedBool,arm.MRH.rxnAtomMappedBool) = arm.MRH.S(arm.MRH.metAtomMappedBool,arm.MRH.rxnAtomMappedBool);
+%       M2M = arm.M2M;
+%       M   = incidence(arm.MTG);
+%       M2R = arm.M2R;
+%
 % where M2M*M2M' is a diagonal matrix and each diagonal entry is the number
 % of moieties in a metabolite.
 %
 %
 % USAGE:
 %
-%    [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atrans2isomorphismClass, moietyTransition2rxns, atrans2mtrans] = identifyConservedMoieties(model, dATM)
+%    [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %
 % INPUTS:
 %    model:        Structure with following fields:
@@ -46,9 +52,9 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                on computations, but substantially more computation time
 %
 % OUTPUTS:
-% arm            atomically resolved model as a matlab structure with following fields:
+% arm            atomically resolved model as a matlab structure with the following fields:
 %
-% arm.MRH:                    Directed metabolic reaction hypergraph (i.e. standard COBRA model)
+% arm.MRH:                    Directed metabolic reaction hypergraph, i.e. standard COBRA model, with additional fields:
 % arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
 % arm.MRH.rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
 % 
@@ -94,7 +100,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 % arm.I2A  `i x a` matrix to map each isomorphism class to one or more atoms of the atom transition graph (ATG)
 % arm.A2I  `u x i` matrix to map one or more atom transitions to each isomorphism class
 % 
-% arm.MTG = MTG; % (undirected) moitey transition graph
+% arm.MTG = MTG; % (undirected) moiety transition graph
 
 % arm.MTG:  (undirected) moitey transition graph, as a MATLAB graph structure with the following tables and variables:
 %
@@ -112,14 +118,15 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Edges.Component - numeric id of the corresponding connected component (columns of M2C)
 %          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of M2I)
 %          * .Edges.IsFirst - boolean, true if moiety transition is within first component of an isomorphism class 
+%          Note that M = incidence(arm.MTG); gives the p x q incidence matrix of the moitey transition graph
 %
-% arm.I2M Matrix to map each isomorphism class to one or more moieties
+% arm.I2M Matrix to map each isomorphism class to one or more moiety instances
 % arm.M2I Matrix to map one or more moiety transitions to each isomorphism class
 %
-% arm.M2M Matrix to map each metabolite to one or more moieties
+% arm.M2M Matrix to map each metabolite to one or more moiety instances
 % arm.M2R Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
 %
-% arm.L Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
+% arm.L Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes may map to multiple metabolites.
 %
 % Note: if options.sanityChecks = 1; the following are also returned
 %
@@ -195,7 +202,7 @@ Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedR
 %incidence matrix of directed atom transition multigraph
 Ti = incidence(dATM);
 
-%atomic decomposition
+%decomposition of a stoichiometric matrix into a directed atom transition multigraph
 res=M2Ai*M2Ai'*N - M2Ai*Ti*Ti2R;
 if max(max(abs(res)))~=0
     error('Inconsistent directed atom transition multigraph')
@@ -458,7 +465,7 @@ if sanityChecks
     end
 end
 
-%atomic decomposition
+%decomposition of a stoichiometric matrix into an atom transition graph
 res=M2A*M2A'*N - M2A*A*A2R;
 if max(max(abs(res)))~=0
     error('Inconsistent directed atom transition graph')
@@ -618,7 +625,7 @@ end
 %matrix to map connected component to atoms
 C2A = sparse(atoms2component,(1:nAtoms)',1,nComps,nAtoms);
 
-%matrix to map atom one or more atom transitions to connected components
+%matrix to map one or more atom transitions to connected components
 A2C = sparse((1:nTrans)',atrans2component,1,nTrans,nComps);
 
 if sanityChecks
@@ -1121,6 +1128,8 @@ if ~sanityChecks
     
     ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'}),ATG.Nodes);
 end
+
+%for i=1:6 Mk = diag(arm.I2M(i,:))*M; Nk = arm.M2M*Mk*arm.M2R;Nk2=diag(arm.L(i,:))*N; disp(norm(Nk-Nk2)); end
 
 %collect outputs
 model.metAtomMappedBool = metAtomMappedBool;

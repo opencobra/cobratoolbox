@@ -1,9 +1,9 @@
-function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
+function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 % This function initializes the mgPipe pipeline and sets the optional input 
 % variables if not defined.
 %
 % USAGE
-%       [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
+%       [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -23,10 +23,6 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    hostBiomassRxnFlux:     double with the desired upper bound on flux through the host
 %                            biomass reaction (default: 1)
 %    objre:                  char with reaction name of objective function of organisms
-%    buildSetupAll:       	 boolean indicating the strategy that should be used to
-%                            build personalized models: if true, build a global setup model 
-%                            containing all organisms in at least model (default), false: create
-%                            models one by one (recommended for more than ~500 organisms total)
 %    saveConstrModels:       boolean indicating if models with imposed
 %                            constraints are saved externally
 %    numWorkers:             integer indicating the number of cores to use for parallelization
@@ -37,9 +33,10 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    lowerBMBound:           lower bound on community biomass (default=0.4)
 %    repeatSim:              boolean defining if simulations should be repeated and previous results
 %                            overwritten (default=false)
-%    adaptMedium:            boolean indicating if the medium should be
-%                            adapted through the adaptVMHDietToAGORA
-%                            function or used as is (default=true)                  
+%    adaptMedium:            boolean indicating if the medium should be adapted through the
+%                            adaptVMHDietToAGORA function or used as is (default=true)
+%    removeBlockedRxns:      Remove reactions blocked on the input diet to
+%                            reduce computation time (default=false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -51,6 +48,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            reactions and metabolites
 %    statistics:             If info file with stratification is provided, will
 %                            determine if there is a significant difference.
+%    modelsOK:               Boolean indicating if the created microbiome models
+%                            passed verifyModel. If true, all models passed.
 %
 % .. Author: Federico Baldini 2018
 %               - Almut Heinken 02/2020: removed unnecessary outputs
@@ -75,7 +74,6 @@ parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
 parser.addParameter('hostBiomassRxnFlux', 1, @isnumeric);
 parser.addParameter('objre', '', @ischar);
-parser.addParameter('buildSetupAll', true, @islogical);
 parser.addParameter('saveConstrModels', false, @islogical);
 parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('rDiet', false, @islogical);
@@ -84,6 +82,7 @@ parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('repeatSim', false, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
+parser.addParameter('removeBlockedRxns', false, @islogical);
 
 parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
@@ -97,7 +96,6 @@ hostPath = parser.Results.hostPath;
 hostBiomassRxn = parser.Results.hostBiomassRxn;
 hostBiomassRxnFlux = parser.Results.hostBiomassRxnFlux;
 objre = parser.Results.objre;
-buildSetupAll = parser.Results.buildSetupAll;
 saveConstrModels = parser.Results.saveConstrModels;
 numWorkers = parser.Results.numWorkers;
 rDiet = parser.Results.rDiet;
@@ -106,6 +104,7 @@ includeHumanMets = parser.Results.includeHumanMets;
 lowerBMBound = parser.Results.lowerBMBound;
 repeatSim = parser.Results.repeatSim;
 adaptMedium = parser.Results.adaptMedium;
+removeBlockedRxns = parser.Results.removeBlockedRxns;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -189,7 +188,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, buildSetupAll, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium, removeBlockedRxns);
 
 cd(currentDir)
 

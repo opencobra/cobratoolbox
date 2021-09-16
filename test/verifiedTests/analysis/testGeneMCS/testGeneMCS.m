@@ -78,8 +78,8 @@ for k = 1:length(solverPkgs)
         assert(sum(~logical(gmcsIsTrue))==0);
         %Now, test with a gene_set
         options = struct();
-        options.gene_set = model.genes([1 2 4 5 6]);
-        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, options);
+%         options.gene_set = model.genes([1 2 4 5 6]);
+        [gmcs, gmcs_time] = calculateGeneMCS('toy_example_gMCS', model, 20, 5, 'gene_set', model.genes([1 2 4 5 6]));
             % Check the gMCS
         [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gmcs);
         assert(all(IsMinimal));

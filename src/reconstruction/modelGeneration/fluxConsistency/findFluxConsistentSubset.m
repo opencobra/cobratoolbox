@@ -74,6 +74,9 @@ if isfield(model,'C') || isfield(model,'E')
     end
 end
 
+if ~isfield(model,'c')
+    model.c = zeros(size(model.S,2),1);
+end
 sol = optimizeCbModel(model);
 
 if (sol.stat == 1)

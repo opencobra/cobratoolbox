@@ -7,7 +7,7 @@ function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,te
 %
 % USAGE:
 %
-%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
+%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, infoFilePath, inputDataFolder,microbeID,biomassReaction)
 %
 % INPUTS
 % model:                 COBRA model structure
@@ -67,6 +67,18 @@ model=rebuildModel(model,database);
 if AnaerobicGrowth(1,1) < tol
     % find reactions that are preventing the model from growing
     % anaerobically
+    % first gapfilling specialized for anaerobic growth
+    [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
+    if ~isempty(oxGapfillRxns)
+        summary.condGF=union(summary.condGF,oxGapfillRxns);
+        
+        gapfilledReactions{cntGF,1}=microbeID;
+        gapfilledReactions{cntGF,2}='Enabling anaerobic growth';
+        gapfilledReactions{cntGF,3}='Condition-specific gapfilling';
+        gapfilledReactions(cntGF,4:length(oxGapfillRxns)+3)=oxGapfillRxns;
+        cntGF=cntGF+1;
+    end
+    % then less targeted gapfilling
     [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
     % export the gapfilled reactions
     if ~isempty(condGF)
@@ -178,7 +190,7 @@ for i=1:length(fields)
     % define if objective should be maximized or minimized
     if any(contains(fields{i},{'Carbon_sources','Metabolite_uptake','Drug_metabolism'}))
         osenseStr = 'min';
-    elseif any(contains(fields{i},{'Fermentation_products','Secretion_products','Bile_acid_biosynthesis'}))
+    elseif any(contains(fields{i},{'Fermentation_products','Secretion_products','Bile_acid_biosynthesis','PutrefactionPathways'}))
         osenseStr = 'max';
     end
     FNlist = testResults.(fields{i});
@@ -188,12 +200,18 @@ for i=1:length(fields)
         if ~isempty(FNs)
             for j=1:length(FNs)
                 metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
-                if isempty(find(ismember(model.rxns,metExch)))
+                if contains(fields{i},'PutrefactionPathways')
                     % reaction ID itself provided
                     metExch = FNs{j};
                 end
                 % find reactions that could be gap-filled to enable flux
-                [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+                try
+                    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+                catch
+                    condGF = {};
+                    targetGF = {};
+                    relaxGF = {};
+                end
                 % export the gapfilled reactions
                 if ~isempty(condGF)
                     summary.condGF=union(summary.condGF,condGF);

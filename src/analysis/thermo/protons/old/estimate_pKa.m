@@ -193,6 +193,8 @@ for n = 1:length(uinchi)
         pkas(2:end,1:end-1) = diag(pkalist);
         pkas = pkas + pkas';
         
+        %here is where the ph = 7 is set
+        %TODO: make the pH an argument to this function
         mmsbool = false(size(pkas,1),1);
         if any(pkalist <= 7)
             mmsbool(find(pkalist <= 7,1)) = true;

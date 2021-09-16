@@ -50,11 +50,11 @@ if isfile([inputDataFolder filesep 'unannotatedGenomeAnnotation.txt'])
                 modelDM=modelTest;
             end
         end
-        % ensure that anaerobic growth on Western diet is not abolished
-        WesternDiet = readtable('WesternDietAGORA2.txt', 'Delimiter', 'tab');
-        WesternDiet=table2cell(WesternDiet);
-        WesternDiet=cellstr(string(WesternDiet));
-        model=useDiet(model,WesternDiet);
+        % ensure that anaerobic growth on complex medium is not abolished
+        diet = readtable('ComplexMedium.txt', 'Delimiter', 'tab');
+        diet=table2cell(diet);
+        diet=cellstr(string(diet));
+        model=useDiet(model,diet);
         
         cnt=1;
         for i=1:size(unannRxns,1)

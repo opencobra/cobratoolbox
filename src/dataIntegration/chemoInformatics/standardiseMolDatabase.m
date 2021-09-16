@@ -79,6 +79,9 @@ if ~exist(standardisedMolFiles, 'dir')
     end
 end
 
+% do not standardize
+moleculesNotS = {'nad.mol'; 'nadh.mol'; 'nadp.mol'; 'nadph.mol'};
+
 % The new MOL files are readed
 % Get list of MOL files
 d = dir(molDir);
@@ -133,7 +136,11 @@ for i = 1:size(aMets, 1)
                 fprintf(fid2, '%s\n', cmdout{contains(cmdout,'InChI=1S')});
                 fclose(fid2);
                 % Create an InChI based-MOL file
-                command = ['obabel -iinchi tmp -O ' standardisedMolFiles name ' --gen2D'];
+                if ~ismember(aMets{i}, moleculesNotS)
+                    command = ['obabel -iinchi tmp -O ' standardisedMolFiles name ' --gen2D'];
+                else
+                    copyfile([molDir name], standardisedMolFiles)
+                end
                 [~, ~] = system(command);
                 delete('tmp')
             else
@@ -141,7 +148,11 @@ for i = 1:size(aMets, 1)
                 fid2 = fopen('tmp', 'w');
                 fprintf(fid2, '%s\n', smiles);
                 fclose(fid2);
-                command = ['obabel -ismiles tmp -O ' standardisedMolFiles name ' --gen2D'];
+                if ~ismember(aMets{i}, moleculesNotS)
+                    command = ['obabel -ismiles tmp -O ' standardisedMolFiles name ' --gen2D'];
+                else
+                    copyfile([molDir name], standardisedMolFiles)
+                end    
                 [~, ~] = system(command);
                 delete('tmp')
             end
