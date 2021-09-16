@@ -69,7 +69,7 @@ for i=1:length(compounds)
         if transport == 0
             R = ['sink_' compounds(i) '[c]'];
             sub = cellstr([compounds{i} '[c]']);
-            [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
+            [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000,'upperBound',10000);
             
         elseif transport == 1 %currently only this branch is taken.
             
@@ -77,24 +77,24 @@ for i=1:length(compounds)
                 R = ['EX_' compounds(i) '[e]'];
                
                 sub = cellstr([compounds{i} '[e]']);
-                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000,'upperBound',10000);
             
                 % creates transport reaction from [c] to [e]
                 R = [compounds(i) 'tr'];
                 sub = cellstr([compounds{i} '[e]']);
                 prod = cellstr([compounds{i} '[c]']);
                 
-                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000,'upperBound',10000);
                
             elseif (strcmp(compartment,'[p]')==1) % keep this branch the same for now.
                 R = ['EX_' compounds{i} '[e]'];
                 sub = cellstr([compounds{i} '[e]']);
-                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000','upperBound',10000);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000,'upperBound',10000);
                 % creates transport reaction from [c] to [p]
                 R = [compounds{i} 'tpr'];
                 sub = cellstr([compounds{i} '[p]']);
                 prod = cellstr([compounds{i} '[c]']);
-                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000,'upperBound',10000);
                 
                 % creates transport reaction from [p] to [e]
                 R = [compounds{i} 'tr'];
@@ -103,7 +103,7 @@ for i=1:length(compounds)
                 sub = cellstr([compounds{i} '[e]']);
                 prod = cellstr([compounds{i} '[p]']);
                 
-                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000','upperBound',10000);
+                [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',[sub(1) prod(1)],'stoichCoeffList',[-1 1],'lowerBound',-10000,'upperBound',10000);
                 
             elseif (strcmp(compartment,'all'))==1 % [m],[n],[g],[l],[x],[r]
                 % if compound(i) exists in a compartment than add a

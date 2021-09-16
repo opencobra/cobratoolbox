@@ -17,18 +17,27 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 % inherits the orientation of its corresponding reaction.
 %
 % A stoichimetric matrix may be decomposed into a set of atom transitions
-% That is: 
-%  N = inv(M2Ai*M2Ai')*M2Ai*Ti*Ti2R;
+% with the following atomic decomposition: 
 %
-% Note that M2Ai*M2Ai' is a diagonal matrix, where each diagonal entry is
-% the number of atoms in each metabolite.
+%  N=\left(VV^{T}\right)^{-1}VAE
+%
+% VV^{T} is a diagonal matrix, where each diagonal entry is the number of 
+% atoms in each metabolite, so V*V^{T}*N = V*A*E
+% 
+% With respect to the input, N is the subset of model.S corresponding to atom mapped reactions
+%
+% With respect to the output V := M2Ai 
+%                            E := Ti2R
+%                            A := incidence(dATM);
+% so we have the atomic decomposition M2Ai*M2Ai'*N = M2Ai*A*Ti2R
 %
 % USAGE:
 %
-%    ATN = buildAtomTransitionNetwork(model, rxnfileDir, options)
+%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork(model, rxnfileDir, options)
 %
 % INPUTS:
-%    model:         Structure with following fields:
+%    model:         Directed stoichiometric hypergraph
+%                   Represented by a matlab structure with following fields:
 %
 %                     * .S - The `m` x `n` stoichiometric matrix for the metabolic network
 %                     * .mets - An `m` x 1 array of metabolite identifiers. Should match
@@ -37,9 +46,13 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                       rxnfile names in `rxnFileDir`.
 %                     * .lb -  An `n` x 1 vector of lower bounds on fluxes.
 %                     * .ub - An `n` x 1 vector of upper bounds on fluxes.
+%
 %    rxnfileDir:    Path to directory containing `rxnfiles` with atom mappings
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
+%                   e.g. git clone https://github.com/opencobra/ctf ~/fork-ctf
+%                        then rxnfileDir = ~/fork-ctf/rxns/atomMapped        
+% 
 %    options: 
 %                   *.directed - transition split into two oppositely
 %                                directed edges for reversible reactions
@@ -70,7 +83,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 
 
 % .. Authors: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015
-%               Ronan M. T. Fleming, 2020 revision.
+%               Ronan M. T. Fleming, 2020, 2021 revision.
 
 if ~exist('options','var')
     options=[];
