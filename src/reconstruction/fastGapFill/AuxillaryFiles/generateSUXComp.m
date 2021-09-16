@@ -1,4 +1,4 @@
-function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments,KEGGMatrixLoad)
+function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments, KEGGMatrixLoad)
 % Creates the matrices for gap filling for compartmentalized metabolic models (`S`) such
 % that the universal database (`U`, e.g., KEGG) is placed in each compartment
 % specified and reversible transport reactions (`X`) are added for each compound present in

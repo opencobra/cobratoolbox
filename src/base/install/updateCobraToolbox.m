@@ -26,6 +26,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
     if status_gitLastCommit ~= 0
         fprintf(result_gitLastCommit);
         fprintf(' > The SHA1 of the last commit could not be retrieved.');
+        lastCommit = [];
     else
         lastCommit = result_gitLastCommit(1:6);
     end
