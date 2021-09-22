@@ -31,21 +31,21 @@ modelList=modelList';
 modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 % check if output file already exists
-if isfile([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion '.txt'])
-    reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion '.txt'], 'ReadVariableNames', false);
-    ReactionPresence = table2cell(reactionPresence);
-    allRxns=ReactionPresence(1,2:end)';
-    metabolitePresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion '.txt'], 'ReadVariableNames', false);
-    MetabolitePresence = table2cell(metabolitePresence);
-    allMets=MetabolitePresence(1,2:end)';
+if isfile([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'])
+    reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'],'ReadVariableNames',true);
+    reactionPresence = [reactionPresence.Properties.VariableDescriptions;table2cell(reactionPresence)];
+    allRxns=reactionPresence(1,2:end)';
+    metabolitePresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion '.txt'],'ReadVariableNames',true);
+    metabolitePresence = [metabolitePresence.Properties.VariableDescriptions;table2cell(metabolitePresence)];
+    allMets=metabolitePresence(1,2:end)';
 else
     % restart from existing data if possible
     if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-        reactions = table2cell(reactions);
+        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
+        reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
         allRxns=reactions(:,1);
-        metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', false);
-        metabolites = table2cell(metabolites);
+        metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt']);
+        metabolites = [metabolites.Properties.VariableDescriptions;table2cell(metabolites)];
         allMets=metabolites(:,1);
     else
         allRxns={};
@@ -56,15 +56,15 @@ else
             allMets=unique(vertcat(allMets,model.mets));
         end
     end
-    MetabolitePresence(1,2:length(allMets)+1)=allMets';
-    ReactionPresence(1,2:length(allRxns)+1)=allRxns';
+    metabolitePresence(1,2:length(allMets)+1)=allMets';
+    reactionPresence(1,2:length(allRxns)+1)=allRxns';
 end
 
 % remove models that were already retrieved
 modelsRenamed=strrep(modelList(:,1),'.mat','');
 modelsRenamed=strrep(modelsRenamed,'.sbml','');
 modelsRenamed=strrep(modelsRenamed,'.xml','');
-[C,IA]=intersect(modelsRenamed,ReactionPresence(2:end,1));
+[C,IA]=intersect(modelsRenamed,reactionPresence(2:end,1));
 modelList(IA,:)=[];
 
 % define the intervals in which the computations will be performed
@@ -100,34 +100,33 @@ if ~isempty(modelList)
         end
         
         for j=i:i+endPnt
-            plusonerow=size(ReactionPresence,1)+1;
+            plusonerow=size(reactionPresence,1)+1;
             modelID=strrep(modelList{j},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             modelID=strrep(modelID,'.xml','');
-            ReactionPresence{plusonerow,1}=modelID;
-            MetabolitePresence{plusonerow,1}=modelID;
+            reactionPresence{plusonerow,1}=modelID;
+            metabolitePresence{plusonerow,1}=modelID;
             for k=1:length(allRxns)
                 if ~isempty(find(ismember(rxnsTmp{j},allRxns{k})))
-                    ReactionPresence{plusonerow,k+1}=1;
+                    reactionPresence{plusonerow,k+1}='1';
                 else
-                    ReactionPresence{plusonerow,k+1}=0;
+                    reactionPresence{plusonerow,k+1}='0';
                 end
             end
             for k=1:length(allMets)
                 if any(find(ismember(metsTmp{j},{[allMets{k} '[c]'],[allMets{k} '[p]'],[allMets{k} '[e]'],[allMets{k} '[c0]'],[allMets{k} '[e0]']})))
-                    MetabolitePresence{plusonerow,k+1}=1;
+                    metabolitePresence{plusonerow,k+1}='1';
                 else
-                    MetabolitePresence{plusonerow,k+1}=0;
+                    metabolitePresence{plusonerow,k+1}='0';
                 end
             end
         end
+        metabolitePresence{1,1}='Model_ID';
+        reactionPresence{1,1}='Model_ID';
         % export the results as a table
-        writetable(cell2table(ReactionPresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-        writetable(cell2table(MetabolitePresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(reactionPresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(metabolitePresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     end
 end
-
-writetable(cell2table(ReactionPresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-writetable(cell2table(MetabolitePresence),[propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 end

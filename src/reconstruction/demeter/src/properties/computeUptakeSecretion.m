@@ -36,11 +36,11 @@ if ~isempty(metList)
 else
     % start from existing progress if possible
     if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt'])
-        uptakeFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt'], 'ReadVariableNames', false);
-        uptakeFluxes = table2cell(uptakeFluxes);
+        uptakeFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt'], 'ReadVariableNames', true);
+        uptakeFluxes = [uptakeFluxes.Properties.VariableDescriptions;table2cell(uptakeFluxes)];
         allExch=uptakeFluxes(1,2:end)';
-        secretionFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion  '.txt'], 'ReadVariableNames', false);
-        secretionFluxes = table2cell(secretionFluxes);
+        secretionFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion  '.txt'], 'ReadVariableNames', true);
+        secretionFluxes = [secretionFluxes.Properties.VariableDescriptions;table2cell(secretionFluxes)];
         
         % remove models that were already retrieved
         modelsRenamed=strrep(modelList(:,1),'.mat','');
@@ -51,8 +51,8 @@ else
     else
         % restart from existing data if possible
         if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-            reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-            reactions = table2cell(reactions);
+            reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', true);
+            reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
             allExch=reactions(find(strncmp(reactions(:,1),'EX_',3)),1);
         else
             % load all reconstructions and get the exchange reactions
@@ -168,10 +168,12 @@ if ~isempty(modelList)
             
             for k=1:length(exRxns)
                 findInd=find(strcmp(uptakeFluxes(1,:),exRxns{k}));
-                uptakeFluxes{plusonerow,findInd}=minFluxes{j}(k);
-                secretionFluxes{plusonerow,findInd}=maxFluxes{j}(k);
+                uptakeFluxes{plusonerow,findInd}=num2str(minFluxes{j}(k));
+                secretionFluxes{plusonerow,findInd}=num2str(maxFluxes{j}(k));
             end
         end
+        uptakeFluxes{1,1}='Model_ID';
+        secretionFluxes{1,1}='Model_ID';
         writetable(cell2table(uptakeFluxes),[propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
         writetable(cell2table(secretionFluxes),[propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     end
@@ -192,13 +194,13 @@ tol=0.0000001;
 
 files={['uptakeFluxes_' reconVersion],['secretionFluxes_' reconVersion],['UptakeSecretion_' reconVersion]};
 for i=1:length(files)
-    data = readtable([propertiesFolder filesep 'ComputedFluxes' filesep files{i}  '.txt'], 'ReadVariableNames', false);
-    data = table2cell(data);
+    data = readtable([propertiesFolder filesep 'ComputedFluxes' filesep files{i}  '.txt'], 'ReadVariableNames', true);
+    data = [data.Properties.VariableDescriptions;table2cell(data)];
     for j=2:size(data,1)
         for k=2:size(data,2)
-            if str2double(data{j,k}) < -tol
+            if data{j,k} < -tol
                 data{j,k}=-1;
-            elseif str2double(data{j,k}) > tol
+            elseif data{j,k} > tol
                 data{j,k}=1;
             else
                 data{j,k}=0;

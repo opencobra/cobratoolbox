@@ -29,23 +29,13 @@ addedRxns = {};
 removedRxns = {};
 
 % read in the fermentation pathway data
-fermDataTable = readtable([inputDataFolder filesep 'FermentationTable.txt'], 'Delimiter', '\t', 'ReadVariableNames', false);
+fermDataTable = readtable([inputDataFolder filesep 'FermentationTable.txt'], 'Delimiter', '\t');
 for i=1:11
     if ismember(['Ref' num2str(i)],fermDataTable.Properties.VariableNames)
 fermDataTable.(['Ref' num2str(i)])=[];
     end
 end
-fermDataTable = table2cell(fermDataTable);
-
-mInd = find(ismember(fermDataTable(:, 1), microbeID));
-if isempty(mInd)
-    warning(['Microbe ID not found in fermentation data table: ', microbeID])
-end
-
-fpathways = fermDataTable(1,find(strcmp(fermDataTable(mInd, 1:end),'1')));
-if isempty(fpathways)
-    warning(['No fermentation pathways found for ', microbeID])
-end
+fermDataTable = [fermDataTable.Properties.VariableDescriptions;table2cell(fermDataTable)];
 
 tol = 1e-8;
 
@@ -140,6 +130,18 @@ fpathwayAddConditional = {
     'Sulfate producer','EX_h2s(e)', 'any(strncmp(microbeID, ''Desulfo'',7))', {'EX_so4(e)', 'SO4t2','SADT','AMPSO3OX','EX_so3(e)','SO3t','POR4','FDHr','HYD2','FDNADOX_H','FDX_NAD_NADP_OXi','SO3rDmq'}
     };
 
+% find the microbe
+mInd = find(ismember(fermDataTable(:, 1), microbeID));
+if isempty(mInd)
+    warning(['Microbe ID not found in fermentation data table: ', microbeID])
+end
+
+% find the pathways to add
+pathways=fermDataTable(1,2:end);
+fpathways = pathways(find(cell2mat(fermDataTable(mInd, 2:end)) == 1));
+if isempty(fpathways)
+    warning(['No fermentation pathways found for ', microbeID])
+end
 
 % go through fermentation pathways
 for i = 1:length(fpathways)

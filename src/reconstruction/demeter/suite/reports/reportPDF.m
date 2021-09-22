@@ -22,12 +22,8 @@ function [outputFile] = reportPDF(model, microbeID, biomassReaction, inputDataFo
 % Stefania Magnusdottir, Nov 2017
 % Almut Heinken, Sep 2018-adapted nomenclature
 
-currentDir=pwd;
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-cd(fileDir);
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-cd(currentDir)
+% load database
+database=loadVMHDatabase;
 
 % switch directory to create the LaTex file
 currentDir = pwd;
@@ -148,7 +144,7 @@ fprintf(fid, '\n');
 
 % Carbon sources
 fprintf(fid, '\\section{Carbon sources}\n');
-[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, database, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, '\\textit{In vitro} carbon source & Taken up by model\\\\\n');
@@ -171,7 +167,7 @@ end
 
 % Fermentation products
 fprintf(fid, '\\section{Fermentation products}\n');
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, '\\textit{In vitro} fermentation product & Secreted by model\\\\\n');
@@ -194,7 +190,7 @@ end
 
 % Uptake of known consumed metabolites
 fprintf(fid, '\\section{Known consumed metabolites}\n');
-[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, 'Consumed metabolites in model\\\\\n');
@@ -217,7 +213,7 @@ end
 
 % Production of known secretion products
 fprintf(fid, '\\section{Known secretion products}\n');
-[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, 'Secretion products in model\\\\\n');
@@ -265,7 +261,7 @@ end
 
 % Bile acid biosynthesis
 fprintf(fid, '\\section{Bile acid biosynthesis}\n');
-[TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction, database);
 if ~isempty(FalseNegatives) || ~isempty(TruePositives)
     fprintf(fid, '\\begin{tabular}{ll}\n');
     fprintf(fid, 'Bile acid biosynthesis in model\\\\\n');

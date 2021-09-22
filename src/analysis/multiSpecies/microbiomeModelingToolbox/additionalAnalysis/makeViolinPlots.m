@@ -37,8 +37,7 @@ plottedFeature = parser.Results.plottedFeature;
 unit = parser.Results.unit;
 
 % read metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+database = loadVMHDatabase;
 
 % find the column with the sample information to split the samples by
 if ~isempty(stratification)
@@ -66,15 +65,15 @@ for i=2:size(sampleData,1)
     % get the predicted metabolite
     varname=strrep(sampleData{i,1},'EX_','');
     varname=strrep(varname,'[fe]','');
-    if ~isempty(find(strcmp(metaboliteDatabase(:,1),varname)))
-        varname=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),varname)),2};
+    if ~isempty(find(strcmp(database.metabolites(:,1),varname)))
+        varname=database.metabolites{find(strcmp(database.metabolites(:,1),varname)),2};
     end
     figure;
     % plot the violins
     % if there are nonzero values in each stratification group and the
     % values aren't all the same
     strats=unique(sampleStratification);
-    plotdata=str2double(sampleData(i,2:end))';
+    plotdata=cell2mat(sampleData(i,2:end))';
     for j=1:length(strats)
         valsinstrat(j)=sum(plotdata(find(strcmp(sampleStratification,strats{j}))));
         uniquevals(j)=numel(unique(plotdata(find(strcmp(sampleStratification,strats{j})))));
@@ -83,20 +82,19 @@ for i=2:size(sampleData,1)
         hold on
         violinplot(plotdata,sampleStratification);
         if length(strats) > 3
-            set(gca, 'FontSize', 14)
+            set(gca, 'FontSize', 12)
         else
-            set(gca, 'FontSize', 18)
+            set(gca, 'FontSize', 14)
         end
         if length(strats) > 6
             xtickangle(45)
         end
-        box on
-        ylim([0 max(max(str2double(sampleData(i,2:end))))])
+        ylim([0 max(max(cell2mat(sampleData(i,2:end))))])
         if ~isempty(unit)
             h=ylabel(unit);
             set(h,'interpreter','none')
         end
-        h=title(varname,'FontSize',24);
+        h=title(varname,'FontSize',14);
         set(h,'interpreter','none')
         if ~isempty(plottedFeature)
             h=suptitle(plottedFeature);

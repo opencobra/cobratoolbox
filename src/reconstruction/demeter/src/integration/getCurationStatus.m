@@ -30,8 +30,13 @@ function curationStatus = getCurationStatus(infoFilePath,inputDataFolder,getComp
 %       - Almut Heinken, 12/2020
 
 % get file with information on reconstructed organisms
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+try
+    infoFile = readtable(infoFilePath, 'Delimiter', 'tab');
+catch
+    % if the input file is not a text file
+    infoFile = readtable(infoFilePath);
+end
+infoFile = [infoFile.Properties.VariableNames;table2cell(infoFile)];
 
 % load experimental data
 inputDataToCheck={
@@ -44,17 +49,27 @@ inputDataToCheck={
 
 for i = 1:length(inputDataToCheck)
     curationStatus{1,i+1} = inputDataToCheck{i,2};
-    inputData = readtable([inputDataFolder filesep inputDataToCheck{i,1} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-    inputData = table2cell(inputData);
+    inputData = readtable([inputDataFolder filesep inputDataToCheck{i,1} '.txt'], 'Delimiter', 'tab');
+    inputData = [inputData.Properties.VariableDescriptions;table2cell(inputData)];
+
+    % remove NaNs
+    for j=2:size(inputData,1)
+        for k=2:size(inputData,2)
+            if isnan(inputData{j,k})
+                inputData{j,k}=[];
+            end
+        end
+    end
+    
     newCol = size(infoFile,2)+1;
     infoFile{1,newCol} = inputDataToCheck{i,2};
     refCols=find(strncmp(inputData(1,:),'Ref',3));
     for j=2:size(infoFile,1)
         curationStatus{j,1}=infoFile{j,1};
         findRow = find(strcmp(inputData(:,1),infoFile{j,1}));
-        if abs(sum(str2double(inputData(findRow,2:min(refCols)-1)))) > 0
+        if abs(sum(cell2mat(inputData(findRow,2:min(refCols)-1)))) > 0
             curationStatus{j,i+1} = 2;
-        elseif ~isempty(inputData{findRow,min(refCols)})
+        elseif any(~isempty(inputData{findRow,min(refCols)}))
             curationStatus{j,i+1} = 1;
         else
             curationStatus{j,i+1} = 0;

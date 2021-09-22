@@ -138,11 +138,12 @@ if FBA.stat ==3 || FBA.stat ==0
             param.excludedReactions(SinkR)=1;
         end
         if excludeExchanges
-            % exclude sink reactions to have relaxed bounds
+            % exclude exchange reactions from relaxing lower bounds-for
+            % growth medium gap-filling
             ExR = contains(modelExpanded.rxns,'EX_');
-            param.excludedReactions(ExR)=1;
+            param.excludedReactionLB = ismember(modelExpanded.rxns,ExR);
         end
-        if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
+         if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
         end
         % run relaxed FBA

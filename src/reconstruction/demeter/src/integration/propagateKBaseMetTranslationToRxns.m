@@ -23,10 +23,13 @@ function [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
 % .. Author: Almut Heinken, 06/2020
 
 % read in the reactions to translate
-toTranslate=table2cell(readtable(toTranslatePath,'readVariableName',false));
+toTranslate=readtable(toTranslatePath,'readVariableName',false);
+toTranslate = [toTranslate.Properties.VariableNames;table2cell(toTranslate)];
 
 % remove already translated reactions
-translateRxns = table2cell(readtable('ReactionTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']));
+translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
+translateRxns = [translateRxns.Properties.VariableNames;table2cell(translateRxns)];
+
 [C,IA]=intersect(toTranslate,translateRxns(:,1));
 if ~isempty(C)
     warning('Already translated reactions were removed.')
@@ -37,7 +40,9 @@ end
 % ModelSEED GitHub
 system('curl -LJO https://raw.githubusercontent.com/ModelSEED/ModelSEEDDatabase/master/Biochemistry/reactions.tsv');
 
-KBaseRxns = table2cell(readtable('reactions.tsv', 'ReadVariableNames', false,'FileType','text'));
+KBaseRxns = readtable('reactions.tsv', 'ReadVariableNames', false,'FileType','text');
+KBaseRxns = [KBaseRxns.Properties.VariableNames;table2cell(KBaseRxns)];
+
 nameCol=find(strcmp(KBaseRxns(1,:),'name'));
 formCol=find(strcmp(KBaseRxns(1,:),'equation'));
 delArray=[];
@@ -61,7 +66,7 @@ toTranslate(delArray,:)=[];
 
 % get already translated metabolites
 translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
-translateMets=table2cell(translateMets);
+translateMets = [translateMets.Properties.VariableNames;table2cell(translateMets)];
 
 for i=1:size(translateMets,1)
     toTranslate(:,3)=strrep(toTranslate(:,3),translateMets{i,1},[translateMets{i,2},'[c]']);

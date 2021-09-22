@@ -54,13 +54,26 @@ createReports = parser.Results.createReports;
 reportsFolder = parser.Results.reportsFolder;
 translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 
+currentDir=pwd;
 mkdir(testResultsFolder)
 
 %% run test suite
 if ~isempty(translatedDraftsFolder)
+    % plot growth for both draft and refined
+    notGrowing = plotBiomassTestResults(refinedFolder,reconVersion,'translatedDraftsFolder',translatedDraftsFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
+
+    % plot ATP production for both draft and refined
+    tooHighATP = plotATPTestResults(refinedFolder,reconVersion,'translatedDraftsFolder',translatedDraftsFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
+
     % Draft reconstructions
     mkdir([testResultsFolder filesep reconVersion '_draft'])
     batchTestAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],inputDataFolder,reconVersion,numWorkers);   plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
+else
+      % plot growth only for refined
+    notGrowing = plotBiomassTestResults(refinedFolder,reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
+
+    % plot ATP production only for refined
+    tooHighATP = plotATPTestResults(refinedFolder,reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
 end
 
 % Refined reconstructions
@@ -122,5 +135,7 @@ if createReports
         warning('No organism information provided. Report generation skipped.')
     end
 end
+
+cd(currentDir)
 
 end

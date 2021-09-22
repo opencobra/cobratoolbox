@@ -20,10 +20,12 @@ function [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
 % .. Author: Almut Heinken, 01/2021
 
 % read in the reactions to translate
-toTranslateMets=table2cell(readtable(toTranslatePath));
+toTranslateMets = table2cell(readtable(toTranslatePath));
+toTranslateMets = [toTranslateMets.Properties.VariableNames;table2cell(toTranslateMets)];
 
 % remove already translated metabolites
-translateMets = table2cell(readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']));
+translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
+translateMets = [translateMets.Properties.VariableNames;table2cell(translateMets)];
 [C,IA]=intersect(toTranslateMets,translateMets(:,1));
 if ~isempty(C)
     warning('Already translated metabolites were removed.')
@@ -35,13 +37,14 @@ toTranslate={'KBase_ID','KBase_name','KBase_formula','KBase_charge','VMH_ID','VM
 toTranslate(2:size(toTranslateMets,1)+1,1)=toTranslateMets;
 
 % load the VMH metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+database=loadVMHDatabase;
 
 % get the KBase/Model SEED metabolite database on ModelSEED GitHub
 system('curl -LJO https://raw.githubusercontent.com/ModelSEED/ModelSEEDDatabase/master/Biochemistry/compounds.tsv');
 
-KBaseMets = table2cell(readtable('compounds.tsv', 'ReadVariableNames', false,'FileType','text'));
+KBaseMets = readtable('compounds.tsv', 'ReadVariableNames', false,'FileType','text');
+KBaseMets = [KBaseMets.Properties.VariableNames;table2cell(KBaseMets)];
+
 % get some columns that can be used to match IDs
 kbaseNameCol=find(strcmp(KBaseMets(1,:),'name'));
 kbaseBiGGCol=find(strcmp(KBaseMets(1,:),'abbreviation'));
@@ -60,19 +63,19 @@ for i=2:size(toTranslate,1)
     altNames=strsplit(KBaseMets{metRow,kbaseAltNameCol},';');
     
     % try to match with IDs from VMH database
-    findVMH=find(strcmp(metaboliteDatabase(:,2),metName));
+    findVMH=find(strcmp(database.metabolites(:,2),metName));
     if isempty(findVMH) && ~isempty(biggID)
-        findVMH=find(strcmp(metaboliteDatabase(:,1),biggID));
+        findVMH=find(strcmp(database.metabolites(:,1),biggID));
     end
     if isempty(findVMH) && ~isempty(inchiID)
-        findVMH=find(strcmp(metaboliteDatabase(:,9),inchiID));
+        findVMH=find(strcmp(database.metabolites(:,9),inchiID));
     end
     if isempty(findVMH) && ~isempty(smileID)
-        findVMH=find(strcmp(metaboliteDatabase(:,10),smileID));
+        findVMH=find(strcmp(database.metabolites(:,10),smileID));
     end
     if isempty(findVMH)
         for j=1:length(altNames)
-            findVMH=find(strcmp(metaboliteDatabase(:,2),altNames{j}));
+            findVMH=find(strcmp(database.metabolites(:,2),altNames{j}));
             if ~isempty(findVMH)
                 break
             end
@@ -85,10 +88,10 @@ for i=2:size(toTranslate,1)
         toTranslate{i,4}=KBaseMets{metRow,8};
         
         % fill in the information from the matched VMH metabolite
-        toTranslate{i,5}=metaboliteDatabase{findVMH,1};
-        toTranslate{i,6}=metaboliteDatabase{findVMH,2};
-        toTranslate{i,7}=metaboliteDatabase{findVMH,4};
-        toTranslate{i,8}=metaboliteDatabase{findVMH,5};
+        toTranslate{i,5}=database.metabolites{findVMH,1};
+        toTranslate{i,6}=database.metabolites{findVMH,2};
+        toTranslate{i,7}=database.metabolites{findVMH,4};
+        toTranslate{i,8}=database.metabolites{findVMH,5};
     end
 end
 

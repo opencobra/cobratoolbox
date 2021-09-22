@@ -29,8 +29,8 @@ function ReactionAbundance = fastCalculateReactionAbundance(abundancePath, model
 % .. Author: - Almut Heinken, 04/2021
 
 % read the csv file with the abundance data
-abundance = readtable(abundancePath, 'ReadVariableNames', false);
-abundance = table2cell(abundance);
+abundance = readtable(abundancePath);
+abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
@@ -106,7 +106,7 @@ parfor i = 2:size(ReactionAbundance, 1)
         
         for k = 1:length(presentRxns)
             % summarize total abundance
-            totalAbun{i}(presentRxns(k),1) = totalAbun{i}(presentRxns(k),1) + str2double(abundance{j,i});
+            totalAbun{i}(presentRxns(k),1) = totalAbun{i}(presentRxns(k),1) + abundance{j,i};
         end
     end
 end

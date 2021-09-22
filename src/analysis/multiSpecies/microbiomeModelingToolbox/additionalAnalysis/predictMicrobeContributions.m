@@ -9,7 +9,8 @@ function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, 
 %
 % OPTIONAL INPUTS:
 %    metList              List of VMH IDs for metabolites to analyze 
-%                         (default: all exchanged metabolites)              
+%                         (default: all exchanged metabolites)  
+%    resultsFolder        Path where results will be saved
 %    numWorkers           integer indicating the number of cores to use 
 %                         for parallelization
 %
@@ -25,20 +26,20 @@ function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, 
 % Define default input parameters if not specified
 parser = inputParser();
 parser.addRequired('modPath', @ischar);
-parser.addParameter('resPath', pwd, @ischar);
+parser.addParameter('resultsFolder', [pwd filesep 'Contributions'], @ischar);
 parser.addParameter('metList', {}, @iscell);
 parser.addParameter('numWorkers', 4, @isnumeric);
 
 parser.parse(modPath, varargin{:});
 
 modPath = parser.Results.modPath;
-resPath = parser.Results.resPath;
+resultsFolder = parser.Results.resultsFolder;
 metList = parser.Results.metList;
 numWorkers = parser.Results.numWorkers;
 
 tol=0.0000001;
 
-mkdir(resPath)
+mkdir(resultsFolder)
 
 if ~isempty(metList)
     for i=1:length(metList)
@@ -260,9 +261,9 @@ for j=2:size(fluxSpans,1)
 end
 fluxSpans(delArray,:)=[];
 
-writetable(cell2table(minFluxes),[resPath filesep 'Contributions_minFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(maxFluxes),[resPath filesep 'Contributions_maxFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(fluxSpans),[resPath filesep 'Contributions_fluxSpans.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+writetable(cell2table(minFluxes),[resultsFolder filesep 'Contributions_minFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+writetable(cell2table(maxFluxes),[resultsFolder filesep 'Contributions_maxFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+writetable(cell2table(fluxSpans),[resultsFolder filesep 'Contributions_fluxSpans.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 
 delete('minFluxes.mat')
 delete('maxFluxes.mat')
