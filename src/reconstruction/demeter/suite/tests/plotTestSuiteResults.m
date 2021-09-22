@@ -51,7 +51,7 @@ for j=1:length(fields)
             for k=1:length(data)
                 plotdata(k,1)=0;
             end
-            label='Number of data points to test';
+            label='Number of data points';
         else
             if strcmp(fields{j},'growsOnDefinedMedium')
                 plotdata=data(:,2);
@@ -64,14 +64,14 @@ for j=1:length(fields)
                     if ~any(strcmp(fields{j},{'Number_genes', 'Number_reactions', 'Number_metabolites'}))
                         label='Flux (mmol*gDW-1*hr-1)';
                     else
-                        label='Number of data points to test';
+                        label='Number of data points';
                     end
                 else
                     % count the non-empty data entries
                     for k=1:size(data,1)
                         plotdata(k,1)=length(find(~cellfun(@isempty,data(k,2:end))));
                     end
-                    label='Number of data points to test';
+                    label='Number of data points';
                 end
             end
         end
@@ -81,11 +81,10 @@ for j=1:length(fields)
         if sum(plotdata)==0
             plotdata(1,1)=0.00001;
         end
-        % does not work if all values are equal
-        if numel(unique(plotdata))~=1
+        % does not work if all values are equal or there are too few values
+        try
             violinplot(plotdata, {reconVersion});
             ylabel(label)
-            box on
             h=title(fields{j});
             ylim([0 max(plotdata)+1])
             set(h,'interpreter','none')
@@ -137,7 +136,11 @@ for i=1:length(features)
     end
     
     Sensitivity=sum(TPs)/(sum(TPs)+sum(FNs));
-    Table{cnt,2}=Sensitivity;
+    if isnan(Sensitivity)
+        Table{cnt,2}='N/A';
+    else
+        Table{cnt,2}=Sensitivity;
+    end
     % to plot all results
     plotdata(i,1)=sum(FNs);
     plotdata(i,2)=sum(TPs);
@@ -163,8 +166,6 @@ barvalues(h)
 h(1).FaceColor = [1 0 0];
 h(2).FaceColor = [0 0 1];
 set(findall(gcf,'-property','FontSize'),'FontSize',12)
-
-box on
 h=title('Features succesfully and unsuccessfully captured by reconstructions');
 xticklabels(labels);
 set(gca,'XTick',1:numel(plotdata))
@@ -191,9 +192,9 @@ writetable(Table,[reconVersion '_Properties'],'FileType','spreadsheet','WriteVar
 % report all unbalanced reactions
 if size(Results.Mass_imbalanced,2)>1 || size(Results.Charge_imbalanced,2)>1
     Mass_imbalanced=Results.Mass_imbalanced(:,2:end);
-%     Mass_imbalanced(cellfun(@isempty,Mass_imbalanced)==1)=[];
+    %     Mass_imbalanced(cellfun(@isempty,Mass_imbalanced)==1)=[];
     Charge_imbalanced=Results.Charge_imbalanced(:,2:end);
-%     Charge_imbalanced(cellfun(@isempty,Charge_imbalanced)==1)=[];
+    %     Charge_imbalanced(cellfun(@isempty,Charge_imbalanced)==1)=[];
     Unbalanced_reactions=unique([Mass_imbalanced,Charge_imbalanced]);
     Unbalanced_reactions=cell2table(Unbalanced_reactions);
     writetable(Unbalanced_reactions,'Unbalanced_reactions','FileType','text','WriteVariableNames',false);
@@ -225,22 +226,30 @@ for i=1:length(features)
     cntAgreeing=0;
     if i < length(features)
         for j=1:size(Results.(strcat(features{i},'_TruePositives')),1)
+            if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
+                if ~isempty(Results.(strcat(features{i},'_TruePositives')){j,2}) || ~isempty(Results.(strcat(features{i},'_FalseNegatives')){j,2})
+                    cntData=cntData+1;
+                end
+            else
+                if ~isempty(Results.(strcat(features{i},'_TruePositives')){j,2})
+                    cntData=cntData+1;
+                end
+            end
             TP=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_TruePositives'))(j,2:end))));
             if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
                 FN=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_FalseNegatives'))(j,2:end))));
             else
                 FN = 0;
             end
-            if TP > 0 || FN > 0
-                cntData=cntData+1;
-                if TP > 0 && FN == 0
-                    cntAgreeing=cntAgreeing+1;
-                end
+            if TP > 0 && FN == 0
+                cntAgreeing=cntAgreeing+1;
             end
         end
     else
-        cntData=length(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2));
-        cntAgreeing=sum(str2double(Results.(features{i})(find(~strcmp(Results.(features{i})(:,2),'NA')),2)));
+        growth=length(find(cell2mat(Results.(features{i})(:,2))==1));
+        nogrowth=length(find(cell2mat(Results.(features{i})(:,2))==0));
+        cntData=growth+nogrowth;
+        cntAgreeing=growth;
     end
     Percentages{i+1,2} = cntData;
     Percentages{i+1,3} = cntAgreeing/cntData;

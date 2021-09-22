@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database)
 % Performs an FVA and reports those AromaticAA pathway end reactions (exchange reactions)
 % that can carry flux in the model and should carry flux according to
 % data (true positives) and those AromaticAA pathway end reactions that
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, micr
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all aromatic amino acid
@@ -24,10 +26,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-solver = CBT_LP_SOLVER;
-
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
 
 % read aromatic amino acid degradation product tables
 AromaticAATable = readtable('AromaticAATable.txt', 'Delimiter', '\t');
@@ -104,7 +102,7 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
     
     for i=1:length(TruePositives)
-        TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
 end
 
@@ -114,7 +112,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
         warning(['Microbe "' microbeID, '" cannot produce aromatic amino acid degradation product"', FalseNegatives{i}, '".'])
     end
 end

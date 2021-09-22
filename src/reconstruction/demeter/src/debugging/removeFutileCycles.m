@@ -36,8 +36,6 @@ gfRxns = {};
 
 tol = 1e-8;
 
-% model needs to be rebuilt, pipeline may crash otherwise
-% model = rebuildModel(model);
 model_old = model;
 model = changeObjective(model, biomassReaction);
 
@@ -112,10 +110,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'GLYt2r AND NAt3_1 AND GLYt4r',[],'GLYt2r','GLYt2'
     'GLUt2r AND NAt3 AND GLUt4r',[],'GLUt4r','r1144'
     'L_LACNa1t AND L_LACt2r',[],'L_LACt2r','L_LACt'
-    'G3PD8 AND SUCD1 AND G3PD1 AND EX_succ(e)',[],'G3PD8','G3PD8i'
-    'G3PD8 AND SUCD4 AND G3PD1 AND EX_succ(e)',[],'G3PD8','G3PD8i'
-    'G3PD8 AND SUCD1 AND G3PD1','SUCCt2r','G3PD8','G3PD8i AND EX_succ(e) AND SUCCt'
-    'G3PD8 AND SUCD4 AND G3PD1','SUCCt2r','G3PD8','G3PD8i AND EX_succ(e) AND SUCCt'
     'ACOAD1 AND ACOAD1f AND SUCD4',[],'ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR',[],'D_GLY3PR','D_GLY3PRi'
     'H2O2D',[],'H2O2D','NPR'
@@ -174,7 +168,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'GNOXmq AND GNOXmqi',[],'GNOXmq',[]
     'MMSAD5 AND MSAS AND MALCOAPYRCT AND PPCr AND ACALD',[],'ACALD','ACALDi'
     'PGK AND G1PP AND G16BPS AND G1PPT',[],'G16BPS','G16BPSi'
-    'FRD7 AND SUCD1 AND G3PD8',[],'G3PD8','G3PD8i'
     'LACLi AND PPCr AND RPE AND PKL AND FTHFL AND MTHFC',[],'MTHFC','MTHFCi'
     'RMNt2 AND RMNt2_1',[],'RMNt2_1',[]
     'MNLpts AND MANAD_D AND MNLt6',[],'MNLt6','MNLt6i'
@@ -342,7 +335,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'MCCCr AND ACOAD8 AND ACACT1r AND HMGCOAS AND MGCOAH',[],'MCCCr','MCCC'
     'r0392 AND ALCD19 AND GLYD',[],'r0392','ALDD8x'
     'FDNADOX_H AND BTCOADH AND GLFRDO',[],'GLFRDO','GLFRDOi'
-    'NADH6 AND SUCD4 AND G3PD8',[],'G3PD8','G3PD8i AND EX_thr_L(e) AND THRt2r'
     'RIBFLVt4 AND r1106',[],'RIBFLVt4','RIBFLVt4i'
     'ASP4DC AND PPCr AND ALATA_L',[],'ASP4DC','ASP4DCi'
     'ASP4DC AND PPCr AND PYK',[],'ASP4DC','ASP4DCi'
@@ -392,14 +384,11 @@ reactionsToReplace = {'if present','if not present','removed','added'
     %  'PPHNPPT',[],'PPHNPPT','PPHNPPTi'
     'PPHPT',[],'PPHPT','PPHPTi'
     'ICDHyr AND SUCOAS AND PYK AND FDNADOX_H AND POR4',[],'ICDHyr','ICDHy'
-    
-    % added additionally to prevent futile cycles in pairwise models
     'ASPt2_2 AND ASPt2r',[],'ASPt2r','ASPte'
     'SUCCt AND SUCCt2r',[],'SUCCt',[]
     'SUCCt AND SUCCt2_2 AND SUCCt2_3',[],'SUCCt',[]
     'ACKr AND ACEDIPIT AND APAT AND DAPDA AND 26DAPLLAT',[],'26DAPLLAT','26DAPLLATi'
     'MALNAt AND L_LACNa1t AND L_LACt2r',[],'L_LACt2r','L_LACt2'
-    'G3PD8 AND SUCD4 AND G3PD1',[],'G3PD8','G3PD8i'
     'r0010 AND H2O2D',[],'H2O2D','NPR'
     'r1088',[],'r1088','CITt2'
     'FDNADOX_H AND AKGS AND OAASr AND ICDHx AND POR4',[],'ICDHx','ICDHxi'
@@ -409,7 +398,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'PPCr AND OAACL',[],'OAACL','OAACLi'
     'PPCr AND PYK AND ACPACT AND TDCOATA AND MCOATA AND HACD6',[],'PPCr','PPC'
     'OCBT AND CITRH AND CBMKr',[],'CBMKr','CBMK'
-    'GALt2_2 AND GALt1r',[],'GALt2_2','GALt2_2i'
     'LDH_L AND L_LACDr',[],'L_LACDr','L_LACD'
     'UCO2L AND BUAMDH AND BURTADH AND H2CO3D',[],'UCO2L','UCO2Li'
     'FDOXR AND NADH7 AND NTRIR4',[],'FDOXR','FDOXRi'
@@ -491,6 +479,22 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
     'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNtpp'
     'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
+    'POR4 AND FDHfdx AND MTHFRfdx AND GLFRDOi',[],'POR4','POR4i'
+    'SUCCt2_3r AND CITt7',[],'SUCCt2_3r','SUCCt2_3'
+    '3HPCOAHL AND 3HPCOAS AND ACOAR',[],'3HPCOAHL','3HPCOAHLi'
+    'LYSOR AND SACCD2 AND SACCRPOR',[],'LYSOR','LYSORi'
+    'AKGMAL AND MALt2r AND AKGte',[],'MALt2r','MALt2'
+    'AKGDa AND 3CARLPDH AND r0163c',[],'AKGDa','AKGDai'
+    'L_LACNa1t AND AKGMAL AND L_LACt',[],'L_LACt',[]
+    'r0559 AND AEPPT AND ETHAP AND PACTH',[],'r0559','r0559i'
+    'HXANt2r AND HYXNti',[],'HYXNti',[]
+    'FA141ACPH AND AGPAT141 AND DASYN141 AND G3PAT141',[],'FA141ACPH','FA141ACPHi'
+    'DALAt2r AND ALA_Dt',[],'DALAt2r','DALAt2'
+    'DALAt2r AND ALA_Dtex',[],'DALAt2r','DALAt2'
+    'LCADi AND MTHGXLDH AND LALDO3',[],'LALDO3','LALDO3i'
+    'ORNt AND PTRCORNt7 AND PTRCAT AND ABUTR',[],'PTRCAT','PTRCATi'
+    'GUAD AND PUNP3 AND PUNP7 AND r1384 AND GUAt2r',[],'GUAt2r','GUAt2'
+    'r0480 AND r0788 AND r0789',[],'r0480','r0480'
     };
 
 
@@ -568,6 +572,7 @@ for i = 2:size(reactionsToReplace, 1)
         end
     end
     if go == 1
+        clear newForm;
         % Only make the change if biomass can still be produced
         toRemove=strsplit(reactionsToReplace{i,3},' AND ');
         for k=1:length(toRemove)
@@ -628,7 +633,9 @@ for i = 2:size(reactionsToReplace, 1)
                 if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                     addedRxns{addCnt, 1} = toRemove{1};
                 end
-                for j=1:length(rxns)
+                if exist('newForm','var')
+                    addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
+                else
                     addedRxns{addCnt, j+1} = rxns{j};
                 end
                 addCnt = addCnt + 1;
@@ -684,7 +691,9 @@ for i = 2:size(reactionsToReplace, 1)
                             if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                                 addedRxns{addCnt, 1} = toRemove{1};
                             end
-                            for j=1:length(rxns)
+                            if exist('newForm','var')
+                                addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
+                            else
                                 addedRxns{addCnt, j+1} = rxns{j};
                             end
                             addCnt = addCnt + 1;

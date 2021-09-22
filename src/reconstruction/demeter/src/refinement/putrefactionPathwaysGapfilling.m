@@ -23,7 +23,7 @@ function [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,databa
 %       - Almut Heinken, 2019-2020
 
 PutrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');
-PutrefactionTable = table2cell(PutrefactionTable);
+PutrefactionTable = [PutrefactionTable.Properties.VariableNames;table2cell(PutrefactionTable)];
 
 rxnsAdded={};
 % model index in data table

@@ -96,7 +96,7 @@ end
 %% calculate the statistics
 for i=2:size(sampleData,2)
     Statistics{i,1}=sampleData{1,i};
-    dataAll=str2double(sampleData(2:end,i));
+    dataAll=cell2mat(sampleData(2:end,i));
     
     % separate data by group
     for j=1:length(groups)
@@ -166,10 +166,7 @@ significantFeatures=sampleData;
 significantFeatures(:,ia)=[];
 
 %% add reaction/metabolite annotations if possible
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
+database=loadVMHDatabase;
 
 significantFeatures(1,:)=strrep(significantFeatures(1,:),'EX_','');
 significantFeatures(1,:)=strrep(significantFeatures(1,:),'(e)','');
@@ -180,10 +177,10 @@ for i=2:size(Statistics,1)
         feat=strrep(feat,'EX_','');
         feat=strrep(feat,'[fe]','');
     end
-    if ~isempty(find(strcmp(metaboliteDatabase(:,1),feat)))
-        Statistics{i,2}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),feat)),2};
-    elseif ~isempty(find(strcmp(reactionDatabase(:,1),feat)))
-        Statistics{i,2}=reactionDatabase{find(strcmp(reactionDatabase(:,1),feat)),2};
+    if ~isempty(find(strcmp(database.metabolites(:,1),feat)))
+        Statistics{i,2}=database.metabolites{find(strcmp(database.metabolites(:,1),feat)),2};
+    elseif ~isempty(find(strcmp(database.reactions(:,1),feat)))
+        Statistics{i,2}=database.reactions{find(strcmp(database.reactions(:,1),feat)),2};
     else
         Statistics{i,2}='NA';
     end

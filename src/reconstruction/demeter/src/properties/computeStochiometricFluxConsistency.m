@@ -145,13 +145,11 @@ subplot(2,1,1)
 hold on
 violinplot(dataSConsistPlotted, {'Draft models','Curated models'});
 set(gca, 'FontSize', 16)
-box on
 title('Stochiometric consistency');
 subplot(2,1,2)
 hold on
 violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
 set(gca, 'FontSize', 16)
-box on
 title('Flux consistency');
 print([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'Consistency_' reconVersion],'-dpng','-r300')
 

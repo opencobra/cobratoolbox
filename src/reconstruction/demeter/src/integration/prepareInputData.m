@@ -47,12 +47,18 @@ global CBTDIR
 demeterInputFolder = [CBTDIR filesep 'papers' filesep '2021_demeter' filesep 'input'];
 % Get taxonomy information on AGORA2 that will serve to inform new
 % organisms
-agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx'], 'ReadVariableNames', false);
-agoraInfoFile = table2cell(agoraInfoFile);
+agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx']);
+agoraInfoFile = [agoraInfoFile.Properties.VariableDescriptions;table2cell(agoraInfoFile)];
 
 % get taxonomic information of new organisms to reconstruct
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+try
+    infoFile = readtable(infoFilePath, 'Delimiter', 'tab');
+catch
+    % if the input file is not a text file
+    infoFile = readtable(infoFilePath);
+end
+infoFile = [infoFile.Properties.VariableDescriptions;table2cell(infoFile)];
+infoFile{1,1}='MicrobeID';
 
 taxa={'Phylum','Class','Order','Family','Genus','Species'};
 
@@ -65,22 +71,22 @@ end
 
 %% Check for duplicate and removed strains in the input files
 
-% get list of files to check
-inputDataToCheck={
-    'CarbonSourcesTable'
-    'FermentationTable'
-    'GrowthRequirementsTable'
-    'secretionProductTable'
-    'strainGrowth'
-    'uptakeTable'
-    };
-
-for i=1:length(inputDataToCheck)
-    data=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-    data=table2cell(data);
-    checkedData = checkInputData(data,agoraInfoFile);
-    writetable(cell2table(checkedData),[demeterInputFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-end
+% % get list of files to check
+% inputDataToCheck={
+%     'CarbonSourcesTable'
+%     'FermentationTable'
+%     'GrowthRequirementsTable'
+%     'secretionProductTable'
+%     'strainGrowth'
+%     'uptakeTable'
+%     };
+% 
+% for i=1:length(inputDataToCheck)
+%     data=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt']);
+%     data = [data.Properties.VariableDescriptions;table2cell(data)];
+%     checkedData = checkInputData(data,agoraInfoFile);
+%     writetable(cell2table(checkedData),[demeterInputFolder filesep inputDataToCheck{i}],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+% end
 
 %% propagate experimental data from the input files to new strains
 
@@ -93,20 +99,28 @@ inputDataToCheck={
     };
 
 for i=1:length(inputDataToCheck)
-    inputData=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-    inputData=table2cell(inputData);
+    inputData=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt']);
+    inputData = [inputData.Properties.VariableDescriptions;table2cell(inputData)];
+    
     propagatedData = propagateExperimentalData(inputData, infoFile, agoraInfoFile);
     
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(propagatedData(:,1),infoFile(:,1),'stable');
-    propagatedData(IA(2:end),:) = [];
+    propagatedData(IA,:) = [];
     
-    writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    % remove NaNs
+    for j=2:size(propagatedData,1)
+        for k=2:size(propagatedData,2)
+            if isnan(propagatedData{j,k})
+                propagatedData{j,k}=[];
+            end
+        end
+    end
+    
+    writetable(cell2table(propagatedData),[inputDataFolder filesep inputDataToCheck{i}],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 end
 
 %% propagate gram staining information
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
 gramCol=find(strcmp(infoFile(1,:),'Gram Staining'));
 if isempty(gramCol)
     infoFile{1,size(infoFile,2)+1}='Gram Staining';
@@ -118,33 +132,38 @@ agoraGramCol=find(strcmp(agoraInfoFile(1,:),'Gram Staining'));
 
 for i=2:size(infoFile,1)
     for j=1:length(taxa)
-        taxon=infoFile{i,find(strcmp(infoFile(1,:),taxa{j}))};
-        taxCol=find(strcmp(agoraInfoFile(1,:),taxa{j}));
-        taxRow=find(strcmp(agoraInfoFile(:,taxCol),taxon));
-        if ~isempty(taxRow)
-            infoFile{i,gramCol}=agoraInfoFile{taxRow,agoraGramCol};
-            break
+        if ~isempty(find(strcmp(infoFile(1,:),taxa{j})))
+            taxon=infoFile{i,find(strcmp(infoFile(1,:),taxa{j}))};
+            
+            taxCol=find(strcmp(agoraInfoFile(1,:),taxa{j}));
+            taxRow=find(strcmp(agoraInfoFile(:,taxCol),taxon));
+            if ~isempty(taxRow)
+                infoFile{i,gramCol}=agoraInfoFile{taxRow,agoraGramCol};
+                break
+            end
         end
     end
 end
 infoFile(:,1)=strrep(infoFile(:,1),'-','_');
 
 % save adapted file with taxonomic information as a text file
-writetable(cell2table(infoFile),[inputDataFolder filesep 'adaptedInfoFile'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(infoFile),[inputDataFolder filesep 'adaptedInfoFile'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 adaptedInfoFilePath = [inputDataFolder filesep 'adaptedInfoFile.txt'];
 
 %% Map growth on defined media to in silico constraints
 % Takes the growth on defined media reported by Tramontano et al. 2018 (PMID:29556107) and
 % maps them into input data usable by DEMETER
-inputMedia=readtable([demeterInputFolder filesep 'inputMedia.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-inputMedia = table2cell(inputMedia);
-strainGrowth=readtable([demeterInputFolder filesep 'strainGrowth.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-strainGrowth = table2cell(strainGrowth);
+inputMedia=readtable([demeterInputFolder filesep 'inputMedia.txt'], 'Delimiter', 'tab');
+inputMedia = [inputMedia.Properties.VariableDescriptions;table2cell(inputMedia)];
+
+strainGrowth=readtable([demeterInputFolder filesep 'strainGrowth.txt'], 'Delimiter', 'tab');
+strainGrowth = [strainGrowth.Properties.VariableDescriptions;table2cell(strainGrowth)];
+
 mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia);
 
 % add the data to file with growth requirement data
-data=readtable([inputDataFolder filesep 'GrowthRequirementsTable.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-data=table2cell(data);
+data=readtable([inputDataFolder filesep 'GrowthRequirementsTable.txt']);
+data = [data.Properties.VariableDescriptions;table2cell(data)];
 
 notintable=setdiff(mappedMedia(2:end,1),data(2:end,1));
 data(size(data,1)+1:size(data,1)+length(notintable),1)=notintable;
@@ -156,14 +175,23 @@ end
 [C,IA] = setdiff(data(:,1),infoFile(:,1),'stable');
 data(IA(2:end),:) = [];
 
-writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+% remove NaNs
+for j=2:size(data,1)
+    for k=2:size(data,2)
+        if isnan(data{j,k})
+            data{j,k}=[];
+        end
+    end
+end
+
+writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 
 %% Create genome annotations file with reactions from PubSeed spreadsheets if available reactions that are annotated
 
 if ~isempty(spreadsheetFolder)
     writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
-    genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-    genomeAnnotation = table2cell(genomeAnnotation);
+    genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab');
+    genomeAnnotation = [genomeAnnotation.Properties.VariableDescriptions;table2cell(genomeAnnotation)];
     
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(genomeAnnotation(:,1),infoFile(:,1));
@@ -179,11 +207,11 @@ if ~isempty(spreadsheetFolder)
         [C,IA] = setdiff(gapfilledGenomeAnnotation(:,1),infoFile(:,1));
         gapfilledGenomeAnnotation(IA,:) = [];
         
-        writetable(cell2table(gapfilledGenomeAnnotation),[inputDataFolder filesep 'gapfilledGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(gapfilledGenomeAnnotation),[inputDataFolder filesep 'gapfilledGenomeAnnotation'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
         
         % Remove reactions that are not annotated
         unannotatedRxns=getUnannotatedReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
-        writetable(cell2table(unannotatedRxns),[inputDataFolder filesep 'unannotatedGenomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(unannotatedRxns),[inputDataFolder filesep 'unannotatedGenomeAnnotation'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
     end
 end
 
@@ -222,7 +250,7 @@ for i=1:length(species)
         [C,IA,IB] = intersect(inputData(:,1),strains);
         % find the strain with the most data available
         for j=1:length(C)
-            sumData(j,1)=abs(nansum(nonzeros(str2double(inputData(IA(j),2:end)))));
+            sumData(j,1)=abs(nansum(nonzeros(cell2mat(inputData(IA(j),2:find(strncmp(inputData(1,:),'Ref',3))-1)))));
         end
         if any(sumData>0)
             % if there is any data, propagate the experimental data from
@@ -264,7 +292,7 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
             % assumed for new organisms of the genus
             for j=1:length(C)
                 for k=2:refCols(1)-1
-                    compData(j,k)=str2double(inputData{IA(j),k});
+                    compData(j,k)=inputData{IA(j),k};
                 end
             end
             % remove the ones that do not agree for at least 90% of
@@ -282,11 +310,9 @@ if strcmp(inputData{1,2},'Acetate kinase (acetate producer or consumer)')
                 % propagate references
                 inputData(find(strcmp(inputData(:,1),infoFile{newStrains(j),1})),refCols(1):refCols(end))=inputData(IAsum(1),refCols(1):refCols(end));
             end
-            % end
         end
     end
 end
 
 propagatedData=inputData;
-
 end

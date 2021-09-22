@@ -106,8 +106,9 @@ secretionRxns.Lmalate = {'EX_mal_L(e)','MALt2r'};
 secretionRxns.Sulfide = {'EX_h2s(e)','H2St'};
 
 % read in the secretion product data
-secretionTable = readtable([inputDataFolder filesep 'secretionProductTable.txt'], 'Delimiter', '\t', 'ReadVariableNames', false);
-secretionTable = table2cell(secretionTable);
+secretionTable = readtable([inputDataFolder filesep 'secretionProductTable.txt'], 'Delimiter', '\t');
+secretionTable = [secretionTable.Properties.VariableNames;table2cell(secretionTable)];
+
 % remove the reference columns
 for i=1:11
     if ~isempty(find(strcmp(['Ref' num2str(i)],secretionTable(1,:))))
@@ -136,7 +137,7 @@ products = regexprep(products, '\W', '');% remove special characters
 orgRow = find(strcmp(microbeID, secretionTable(:, 1)));
 
 % find the secretion products for this microbe
-spCols = find(cellfun(@str2num, secretionTable(orgRow, 2:end)) == 1);
+spCols = find(cell2mat(secretionTable(orgRow, 2:end)) == 1);
 
 % added rxns list
 secretionRxnsAdded = {};

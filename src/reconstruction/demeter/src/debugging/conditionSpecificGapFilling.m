@@ -347,6 +347,7 @@ conditionSpecificGapfills={'rxnPresent','rxnAbsent','changeConstraints','gapfill
 'NADPti AND EX_nadp(e)',[],0,'NADS1 AND NADS2 AND NADK'
 'G1PP AND GALU AND GLCpts',[],0,'PGMT'
 'GLYMET1c AND EX_glymet(e)',[],0,'EX_met_L(e) AND METt2r AND EX_gly(e) AND GLYt2r'
+'DHORDfum AND ASPTA AND FUM AND GLNS AND EX_akg(e)',[],0,'GLUDxi AND GLUDy'
 };
 
 % define the conditions for adding gap-filling reactions

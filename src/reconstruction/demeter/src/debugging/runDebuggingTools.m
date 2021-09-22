@@ -1,4 +1,4 @@
-function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin)
+function [debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin)
 % This function runs a suite of debugging functions on a set of refined
 % reconstructions produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -17,12 +17,9 @@ function [debuggingFolder,debuggingReport, fixedModels, failedModels]=runDebuggi
 %
 % OPTIONAL INPUTS
 % numWorkers              Number of workers in parallel pool (default: 2)
-% debuggingFolder         Folder where debugged models and results of
-%                         re-test are saved
+% debuggingFolder         Folder where results of re-test are saved
 %
 % OUTPUT
-% debuggingFolder         Folder where debugged models and results of
-%                         re-test are saved
 % debuggingReport         Report of changes that where made to debug the
 %                         models, if any
 % fixedModels             IDs of models that passed tests after additional
@@ -40,7 +37,7 @@ parser.addRequired('testResultsFolder', @ischar);
 parser.addRequired('inputDataFolder', @ischar);
 parser.addRequired('reconVersion', @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
-parser.addParameter('debuggingFolder', [pwd filesep 'DebuggingResults'], @ischar);
+parser.addParameter('debuggingFolder', '', @ischar);
 
 parser.parse(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,varargin{:});
 
@@ -84,9 +81,16 @@ else
     cnt=1;
 end
 
-mkdir(debuggingFolder)
-mkdir([debuggingFolder filesep 'RevisedModels'])
-mkdir([debuggingFolder filesep 'Retest'])
+if isempty(debuggingFolder)
+    debuggedModelsFolder = refinedFolder;
+    debuggedTestFolder = testResultsFolder;
+else
+    mkdir(debuggingFolder)
+    debuggedModelsFolder = [debuggingFolder filesep 'RevisedModels'];
+    mkdir([debuggingFolder filesep 'RevisedModels'])
+    debuggedTestFolder = [debuggingFolder filesep 'Retest'];
+    mkdir([debuggingFolder filesep 'Retest'])
+end
 
 if isfile([testResultsFolder filesep 'notGrowing.mat'])
     load([testResultsFolder filesep 'notGrowing.mat']);
@@ -97,9 +101,9 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     failedModels = union(failedModels,tooHighATP);
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
-    FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
-    FNlist = table2cell(FNlist);
-    failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
+    FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', 'tab');
+    FNlist = [FNlist.Properties.VariableDescriptions;table2cell(FNlist)];
+    failedModels=union(failedModels,FNlist(find(cell2mat(FNlist(:,2))==0),1));
 end
 
 % load all test result files for experimental data
@@ -157,7 +161,7 @@ if length(failedModels)>0
         gapfilledReactionsTmp = {};
         replacedReactionsTmp = {};
         revisedModelTmp = {};
-        parfor j=i:i+endPnt
+        for j=i:i+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             
@@ -205,47 +209,47 @@ if length(failedModels)>0
             end
             % save the revised model for re-testing
             model = revisedModelTmp{j};
-            writeCbModel(model, 'format', 'mat', 'fileName', [debuggingFolder filesep 'RevisedModels' filesep failedModels{j,1}]);
+            writeCbModel(model, 'format', 'mat', 'fileName', [debuggedModelsFolder filesep failedModels{j,1}]);
         end
         % regularly save the results
-        save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
+        save([testResultsFolder filesep 'debuggingReport.mat'],'debuggingReport');
     end
     % run a retest of revised models
-    refinedFolder = [debuggingFolder filesep 'RevisedModels'];
-    testResultsFolder = [debuggingFolder filesep 'Retest'];
+    if strcmp(refinedFolder,debuggedModelsFolder)
+        delete([debuggedTestFolder '\*'])
+    end
+    notGrowing = plotBiomassTestResults(debuggedModelsFolder, reconVersion,'testResultsFolder',debuggedTestFolder, 'numWorkers', numWorkers);
+    tooHighATP = plotATPTestResults(debuggedModelsFolder, reconVersion,'testResultsFolder',debuggedTestFolder, 'numWorkers', numWorkers);
     
-    notGrowing = plotBiomassTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
-    tooHighATP = plotATPTestResults(refinedFolder, reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
-    
-    batchTestAllReconstructionFunctions(refinedFolder,testResultsFolder,inputDataFolder,reconVersion,numWorkers);
-    plotTestSuiteResults(testResultsFolder,reconVersion);
+    batchTestAllReconstructionFunctions(debuggedModelsFolder,debuggedTestFolder,inputDataFolder,reconVersion,numWorkers);
+    plotTestSuiteResults(debuggedTestFolder,reconVersion);
     
     % get all models that still fail at least one test
     stillFailedModels = {};
     
-    if isfile([testResultsFolder filesep 'notGrowing.mat'])
-        load([testResultsFolder filesep 'notGrowing.mat']);
+    if isfile([debuggedTestFolder filesep 'notGrowing.mat'])
+        load([debuggedTestFolder filesep 'notGrowing.mat']);
         stillFailedModels = union(stillFailedModels,notGrowing);
     end
-    if isfile([testResultsFolder filesep 'tooHighATP.mat'])
-        load([testResultsFolder filesep 'tooHighATP.mat']);
+    if isfile([debuggedTestFolder filesep 'tooHighATP.mat'])
+        load([debuggedTestFolder filesep 'tooHighATP.mat']);
         stillFailedModels = union(stillFailedModels,tooHighATP);
     end
-    if isfile([testResultsFolder filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
-        FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
+    if isfile([debuggedTestFolder filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
+        FNlist = readtable([debuggedTestFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
         FNlist = table2cell(FNlist);
         stillFailedModels=union(stillFailedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
     end
     
     % load all test result files for experimental data
-    dInfo = dir(testResultsFolder);
+    dInfo = dir(debuggedTestFolder);
     fileList={dInfo.name};
     fileList=fileList';
     fileList(~(contains(fileList(:,1),{'.txt'})),:)=[];
     fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
     
     for i=1:size(fileList,1)
-        FNlist = readtable([testResultsFolder filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
+        FNlist = readtable([debuggedTestFolder filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
         FNlist = table2cell(FNlist);
         % remove all rows with no cases
         FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
@@ -256,12 +260,12 @@ if length(failedModels)>0
     failedModels = stillFailedModels;
     
     % save the final results of the debugging tools
-    save([debuggingFolder filesep 'debuggingReport.mat'],'debuggingReport');
-    save([debuggingFolder filesep 'fixedModels.mat'],'fixedModels');
-    save([debuggingFolder filesep 'failedModels.mat'],'failedModels');
+    save([debuggedTestFolder filesep 'debuggingReport.mat'],'debuggingReport');
+    save([debuggedTestFolder filesep 'fixedModels.mat'],'fixedModels');
+    save([debuggedTestFolder filesep 'failedModels.mat'],'failedModels');
     
     % write debugging report as text file
-    writetable(cell2table(debuggingReport),[debuggingFolder filesep 'DebuggingReport_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    writetable(cell2table(debuggingReport),[debuggedTestFolder filesep 'DebuggingReport_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     
 else
     fprintf('All models passed all tests. Exiting debugging tools.\n')

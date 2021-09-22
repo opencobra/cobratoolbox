@@ -31,66 +31,72 @@ metaboliteDatabase=table2cell(metaboliteDatabase);
 for i=1:length(analyzedFiles)
     data = readtable([propertiesFolder filesep analyzedFiles{i,2}], 'ReadVariableNames', false);
     data = table2cell(data);
-    dataCounted={};
-    for j=2:size(data,2)
-        dataCounted{j-1,1}=data{1,j};
-        dataCounted{j-1,2}=sum(abs(str2double(data(2:end,j)))>tol);
-    end
-    % sort from most to least common
-    [B,I] = sort(abs(cell2mat(dataCounted(:,2))),'descend');
-    % create a new ranked table with reaction information
-    if i<4
-        dataPrintout={'Feature','Description','Formula','Subsystem','Number of reconstructions','Percentage of reconstructions'};
-        for j=1:length(B)
-            dataPrintout{j+1,1}=dataCounted{I(j),1};
-            if ~strncmp(dataCounted{I(j),1},'bio',3)
-                findRxnInd=find(strcmp(reactionDatabase(:,1),dataCounted{I(j),1}));
-                if ~isempty(findRxnInd)
-                    dataPrintout{j+1,2}=reactionDatabase{findRxnInd,2};
-                    dataPrintout{j+1,3}=reactionDatabase{findRxnInd,3};
-                    dataPrintout{j+1,4}=reactionDatabase{findRxnInd,11};
+    
+    % if there are enough models to compare
+    if size(data,1)>20
+        dataCounted={};
+        for j=2:size(data,2)
+            dataCounted{j-1,1}=data{1,j};
+            dataCounted{j-1,2}=sum(abs(str2double(data(2:end,j)))>tol);
+        end
+        % sort from most to least common
+        [B,I] = sort(abs(cell2mat(dataCounted(:,2))),'descend');
+        % create a new ranked table with reaction information
+        if i<4
+            dataPrintout={'Feature','Description','Formula','Subsystem','Number of reconstructions','Percentage of reconstructions'};
+            for j=1:length(B)
+                dataPrintout{j+1,1}=dataCounted{I(j),1};
+                if ~strncmp(dataCounted{I(j),1},'bio',3)
+                    findRxnInd=find(strcmp(reactionDatabase(:,1),dataCounted{I(j),1}));
+                    if ~isempty(findRxnInd)
+                        dataPrintout{j+1,2}=reactionDatabase{findRxnInd,2};
+                        dataPrintout{j+1,3}=reactionDatabase{findRxnInd,3};
+                        dataPrintout{j+1,4}=reactionDatabase{findRxnInd,11};
+                    end
                 end
+                dataPrintout{j+1,5}=num2str(B(j));
+                dataPrintout{j+1,6}=num2str(B(j)/max(B));
             end
-            dataPrintout{j+1,5}=num2str(B(j));
-            dataPrintout{j+1,6}=num2str(B(j)/max(B));
+            
+            % sort from leat to most common
+            data=flip(str2double(dataPrintout(2:end,6)));
+        else
+            dataPrintout={'Feature','Description','Number of reconstructions','Percentage of reconstructions'};
+            for j=1:length(B)
+                dataPrintout{j+1,1}=dataCounted{I(j),1};
+                if ~strncmp(dataCounted{I(j),1},'bio',3)
+                    findMetInd=find(strcmp(metaboliteDatabase(:,1),dataCounted{I(j),1}));
+                    if ~isempty(findMetInd)
+                        dataPrintout{j+1,2}=metaboliteDatabase{findMetInd,2};
+                    end
+                end
+                dataPrintout{j+1,3}=num2str(B(j));
+                dataPrintout{j+1,4}=num2str(B(j)/max(B));
+            end
+            
+            % sort from leat to most common
+            data=flip(str2double(dataPrintout(2:end,4)));
         end
         
-        % sort from leat to most common
-        data=flip(str2double(dataPrintout(2:end,6)));
-    else
-        dataPrintout={'Feature','Description','Number of reconstructions','Percentage of reconstructions'};
-        for j=1:length(B)
-            dataPrintout{j+1,1}=dataCounted{I(j),1};
-            if ~strncmp(dataCounted{I(j),1},'bio',3)
-                findMetInd=find(strcmp(metaboliteDatabase(:,1),dataCounted{I(j),1}));
-                if ~isempty(findMetInd)
-                    dataPrintout{j+1,2}=metaboliteDatabase{findMetInd,2};
-                end
+        try
+            figure
+            plot(data,'Color', 'k')
+            set(gca, 'FontSize', 12)
+            box on
+            h=title(analyzedFiles{i,1});
+            set(h,'interpreter','none')
+            if i<4
+                xlabel('Reactions')
+            else
+                xlabel('Metabolites')
             end
-            dataPrintout{j+1,3}=num2str(B(j));
-            dataPrintout{j+1,4}=num2str(B(j)/max(B));
+            ylabel('Percentage')
+            print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
+            
+            dataPrintout=cell2table(dataPrintout);
+            writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
         end
-        
-        % sort from leat to most common
-        data=flip(str2double(dataPrintout(2:end,4)));
     end
-    
-    figure
-    plot(data,'Color', 'k')
-    set(gca, 'FontSize', 12)
-    box on
-    h=title(analyzedFiles{i,1});
-    set(h,'interpreter','none')
-    if i<4
-        xlabel('Reactions')
-    else
-        xlabel('Metabolites')
-    end
-    ylabel('Percentage')
-    print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
-    
-    dataPrintout=cell2table(dataPrintout);
-    writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
 end
 
 end

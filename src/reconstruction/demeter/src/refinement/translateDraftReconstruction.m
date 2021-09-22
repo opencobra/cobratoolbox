@@ -19,31 +19,19 @@ function [translatedModel] = translateDraftReconstruction(model)
 tol=0.0000001;
 
 % Load metabolite and reaction translation tables
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-translateRxns = readtable([fileDir filesep 'ReactionTranslationTable.txt'], 'Delimiter', '\t');
-translateRxns=table2cell(translateRxns);
-translateRxns(find(~strncmp(translateRxns(:,1),'EX_',3)),:)=[];
-translateMets = readtable([fileDir filesep 'MetaboliteTranslationTable.txt'], 'Delimiter', '\t');
-translateMets=table2cell(translateMets);
+database=loadVMHDatabase;
 
-% Load reaction and metabolite database
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-    database.metabolites{i,7}=num2str(database.metabolites{i,7});
-    database.metabolites{i,8}=num2str(database.metabolites{i,8});
-end
-reactionDatabase = readtable([fileDir filesep 'ReactionDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
+translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
+translateRxns = [translateRxns.Properties.VariableDescriptions;table2cell(translateRxns)];
+translateRxns(find(~strncmp(translateRxns(:,1),'EX_',3)),:)=[];
+translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', '\t');
+translateMets = [translateMets.Properties.VariableDescriptions;table2cell(translateMets)];
 
 model.mets=strrep(model.mets,'[c0]','[c]');
 model.mets=strrep(model.mets,'[e0]','[e]');
 model.mets=strrep(model.mets,'_c0','[c]');
 model.mets=strrep(model.mets,'_e0','[e]');
+
 for k=1:length(translateMets)
     model.mets = strrep(model.mets,translateMets{k,1}, translateMets{k,2});
 end

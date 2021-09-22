@@ -1,23 +1,23 @@
 function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
 % This functions normalizes the coverage in a given file with organism
-% abundances such that they sum up to 1 for each sample.
+% coverages such that they sum up to 1 for each sample.
 %
 % USAGE
 %   [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
 %
 % INPUT
 % abunFilePath           	Path to table with not yet normalized relative 
-%                           abundances
+%                           coverages
 %
 % OPTIONAL INPUT
-% cutoff                    Cutoff for normalized abundances that are
+% cutoff                    Cutoff for normalized coverages that are
 %                           considered below detection limit, respective
 %                           organisms will be removed from the samples
 %                           (default: 0.0001)
 %
 % OUTPUTS
-% normalizedCoverage        Table with normalized abundances
-% normalizedCoveragePath    Path to csv file with normalized abundances
+% normalizedCoverage        Table with normalized coverages
+% normalizedCoveragePath    Path to csv file with normalized coverages
 %
 % .. Author:
 %       - Almut Heinken, 01/2021
@@ -29,7 +29,8 @@ if nargin == 1
     cutoff=0.0001;
 end
 
-coverage = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
+coverage = readtable(abunFilePath,'ReadVariableNames',false);
+coverage = [coverage.Properties.VariableNames;table2cell(coverage)];
 coverage{1,1}='ID';
 
 % summarize duplicate entries
@@ -60,7 +61,7 @@ if ~isempty(allzero)
     coverage(:,allzero)=[];
 end
 
-abundanceNew = coverage;
+coverageNew = coverage;
 
 for i=2:size(coverage,2)
     % first summarize all
@@ -68,25 +69,25 @@ for i=2:size(coverage,2)
     for j=2:size(coverage,1)
         sumAll=sumAll + str2double(coverage{j,i});
     end
-    % then normalize the abundances
+    % then normalize the coverages
     for j=2:size(coverage,1)
-        abundanceNew{j,i}=str2double(coverage{j,i})/sumAll;
+        coverageNew{j,i}=str2double(coverage{j,i})/sumAll;
     end
 end
 
 % verify that numbers add up to 1
-for i=2:size(abundanceNew,2)
-    summedUp = sum(cell2mat(abundanceNew(2:end,i)));
+for i=2:size(coverageNew,2)
+    summedUp = sum(cell2mat(coverageNew(2:end,i)));
     if summedUp > 1 + tol || summedUp < 1 - tol
-        error('Normalized abundances do not sum up to 1!')
+        error('Normalized coverages do not sum up to 1!')
     end
 end
 
-% cut out organisms with abundances considered below detection limit
-for i=2:size(abundanceNew,1)
-    for j=2:size(abundanceNew,2)
-        if abundanceNew{i,j} < cutoff
-            abundanceNew{i,j} = 0;
+% cut out organisms with coverages considered below detection limit
+for i=2:size(coverageNew,1)
+    for j=2:size(coverageNew,2)
+        if coverageNew{i,j} < cutoff
+            coverageNew{i,j} = 0;
         end
     end
 end
@@ -94,16 +95,16 @@ end
 % remove organisms that are no longer in any sample
 cnt=1;
 delArray=[];
-for i=2:size(abundanceNew,1)
-    if sum(cell2mat(abundanceNew(i,2:end))) < tol
+for i=2:size(coverageNew,1)
+    if sum(cell2mat(coverageNew(i,2:end))) < tol
         delArray(cnt)=i;
         cnt=cnt+1;
     end
 end
-abundanceNew(delArray,:) = [];
+coverageNew(delArray,:) = [];
 
-cell2csv([pwd filesep 'normalizedCoverage.csv'],abundanceNew)
+cell2csv([pwd filesep 'normalizedCoverage.csv'],coverageNew)
 
-normalizedCoverage = abundanceNew;
+normalizedCoverage = coverageNew;
 normalizedCoveragePath = [pwd filesep 'normalizedCoverage.csv'];
 end

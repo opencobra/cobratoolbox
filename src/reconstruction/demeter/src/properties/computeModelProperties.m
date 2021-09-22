@@ -46,6 +46,8 @@ translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 
 mkdir(propertiesFolder)
 
+currentDir=pwd;
+
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
@@ -121,5 +123,7 @@ if length(modelList)>1
         delete([folders{i} filesep files{i}]);
     end
 end
+
+cd(currentDir)
 
 end

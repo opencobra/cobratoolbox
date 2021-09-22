@@ -1,4 +1,4 @@
-function [rebuiltModel] = rebuildModel(model,database)
+function [rebuiltModel] = rebuildModel(model,database,biomassReaction)
 %
 % Rebuilds a genome-scale reconstruction with Virtual Metabolic Human (VMH) 
 % metabolic and reaction nomenclature while ensuring quality control through
@@ -8,9 +8,12 @@ function [rebuiltModel] = rebuildModel(model,database)
 % [rebuiltModel] = rebuildModel(model,database)
 %
 % INPUT
-%    model         COBRA model structure
-%    database      Structure containing rBioNet reaction and metabolite
-%                  database
+%    model            COBRA model structure
+%    database         Structure containing rBioNet reaction and metabolite
+%                     database
+% OPTIONAL INPUT
+%    biomassReaction  Biomass reaction abbreviation (if needs to be 
+%                     specified, otherwise, will be inferred automatically)
 % 
 % OUTPUT
 %    rebuiltModel  Quality-controlled COBRA model structure
@@ -25,6 +28,11 @@ toReplace={'EX_4hpro(e)','EX_4hpro_LT(e)';'EX_indprp(e)','EX_ind3ppa(e)';'INDPRP
 for i=1:size(toReplace,1)
     model.rxns=strrep(model.rxns,toReplace{i,1},toReplace{i,2});
 end
+
+% remove reactions not in database
+notInDB=setdiff(model.rxns,database.reactions(:,1));
+notInDB(find(strncmp(notInDB,'bio',3)),:)=[];
+model=removeRxns(model,notInDB);
 
 model=convertOldStyleModel(model);
 
@@ -104,16 +112,24 @@ rbio.description=cell(7,1);
 
 % build model with rBioNet
 bInd = find(strncmp('bio',rbio.data(:,2),3));
-bAbb = rbio.data{bInd,2};
-bForm = rbio.data{bInd,4};
+if isempty(bInd)
+    error('The model does not have a biomass objective function!')
+end
+
+for i=1:length(bInd)
+    bAbb{i} = rbio.data{bInd(i),2};
+    bForm{i} = rbio.data{bInd(i),4};
+end
 rbio.data(bInd,:) = [];
 model = data2model(rbio.data,rbio.description,database);
-model = addReaction(model,bAbb,'reactionFormula',bForm{1});%add translated biomass reaction
-model.comments{end+1,1} = '';
-model.citations{end+1,1} = '';
-model.rxnECNumbers{end+1,1} = '';
-model.rxnKEGGID{end+1,1} = '';
-model.rxnConfidenceScores{end+1,1} = '';
+for i=1:length(bInd)
+    model = addReaction(model,bAbb{i},'reactionFormula',bForm{i}{1});%add translated biomass reaction
+    model.comments{end+1,1} = '';
+    model.citations{end+1,1} = '';
+    model.rxnECNumbers{end+1,1} = '';
+    model.rxnKEGGID{end+1,1} = '';
+    model.rxnConfidenceScores{end+1,1} = '';
+end
 
 % fix incorrect format of PubChemID, metChEBIID, and metKEGGID
 if isfield(model,'metPubChemID')
@@ -136,7 +152,11 @@ for i=1:length(model.subSystems)
 end
 
 % set biomass reaction as objective function
-model=changeObjective(model,bAbb);
+if nargin >2
+    model=changeObjective(model,biomassReaction);
+else
+    model=changeObjective(model,bAbb{1});
+end
 
 rebuiltModel=convertOldStyleModel(model);
 end

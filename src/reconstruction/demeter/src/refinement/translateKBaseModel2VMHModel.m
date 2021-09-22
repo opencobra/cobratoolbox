@@ -186,7 +186,7 @@ if ~isempty(intersect(model.rxns,translateRxns(:,1)))
     end
     
     % rebuild the model in a quality-controlled manner
-    [translatedModel] = rebuildModel(model,database);
+    [translatedModel] = rebuildModel(model,database,biomassReaction);
 else
     translatedModel = model;
     notInTableRxns = {}; 
