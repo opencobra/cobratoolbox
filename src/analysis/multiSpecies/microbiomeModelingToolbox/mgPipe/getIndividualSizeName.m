@@ -19,9 +19,11 @@ function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,mod
 % .. Author: Federico Baldini 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
 
-[sampNames] = readtable(abunFilePath, 'ReadVariableNames', false);
+[sampNames] = readtable(abunFilePath);
+sampNames = [sampNames.Properties.VariableNames;table2cell(sampNames)];
+
 % Creating array to compare with first column 
-fcol=table2cell(sampNames(2:height(sampNames),1));
+fcol=sampNames(2:height(sampNames),1);
 if size(fcol,1)>1
     if  ~isa(fcol{2,1},'char')
         fcol=cellstr(num2str(cell2mat(fcol)));

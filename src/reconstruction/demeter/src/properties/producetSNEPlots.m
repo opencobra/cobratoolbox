@@ -31,11 +31,21 @@ cd('tSNE_Plots')
 
 tol=0.0000001;
 
-% get taxonomical information
-try
-    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false, 'Delimiter', 'tab'));
-catch
-    infoFile = table2cell(readtable(infoFilePath, 'ReadVariableNames', false));
+% read the file with organism information
+if contains(infoFilePath,'.xlsx')
+    [~,infoFile,~]=xlsread(infoFilePath);
+else
+    gettab=tdfread(infoFilePath);
+    getcols=fieldnames(gettab);
+    infoFile={};
+    for j=1:length(getcols)
+        infoFile{1,j}=getcols{j};
+        if isnumeric(gettab.(getcols{j}))
+            infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(num2str(gettab.(getcols{j})));
+        else
+            infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(gettab.(getcols{j}));
+        end
+    end
 end
 
 % define files to analyze
@@ -48,8 +58,8 @@ analyzedFiles={
 
 for k=1:size(analyzedFiles,1)
     if isfile([propertiesFolder filesep analyzedFiles{k,2} '.txt'])
-        DataToAnalyze = readtable([propertiesFolder filesep analyzedFiles{k,2} '.txt'], 'ReadVariableNames', false);
-        DataToAnalyze = table2cell(DataToAnalyze);
+        DataToAnalyze = readtable([propertiesFolder filesep analyzedFiles{k,2} '.txt'], 'Delimiter','tab','ReadVariableNames', true);
+        DataToAnalyze = [DataToAnalyze.Properties.VariableDescriptions;table2cell(DataToAnalyze)];
         DataToAnalyze=DataToAnalyze';
         
         [C,I]=setdiff(DataToAnalyze(1,:),infoFile(:,1),'stable');
@@ -58,7 +68,7 @@ for k=1:size(analyzedFiles,1)
         % can only be performed if there are enough strains with taxonomical information
         if size(DataToAnalyze,2) >= 10
             
-            rp=str2double(DataToAnalyze(2:end,2:end));
+            rp=cell2mat(DataToAnalyze(2:end,2:end));
             orgs=DataToAnalyze(1,2:end)';
             
             taxonlevels={

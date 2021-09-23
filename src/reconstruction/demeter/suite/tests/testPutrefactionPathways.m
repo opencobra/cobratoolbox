@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction, database)
 % Performs an FVA and reports those putrefaction pathway end reactions (exchange reactions)
 % that can carry flux in the model and should carry flux according to
 % data (true positives) and those putrefaction pathway end reactions that
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testPutrefactionPathways(model, micro
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all putrefaction reactions
@@ -23,9 +25,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-% read metabolite database
-metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read putrefaction product tables
 putrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');
@@ -101,8 +100,8 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        if ~isempty(find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})))
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        if ~isempty(find(strcmp(database.metabolites(:,1),FalseNegatives{i})))
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
         end
     end
 end

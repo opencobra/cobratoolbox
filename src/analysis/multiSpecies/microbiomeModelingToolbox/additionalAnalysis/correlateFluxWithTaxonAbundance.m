@@ -39,31 +39,37 @@ function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbund
 %                                     changed flux input to a csv file.
 
 % read the csv file with the abundance data
-abundance = table2cell(readtable(abundancePath, 'ReadVariableNames', false));
+abundance = readtable(abundancePath);
+abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
 
-fluxes = table2cell(readtable(fluxPath, 'ReadVariableNames', false));
+fluxes = readtable(fluxPath);
+fluxes = [fluxes.Properties.VariableNames;table2cell(fluxes)];
 
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+% check if data is from same samples
+if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
+    error('Sample IDs in abundance and flux files do not agree!')
+end
+
+% load database
+database=loadVMHDatabase;
 
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
 fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
 % for i=2:size(fluxes,1)
-% fluxes{i,1}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),fluxes{i,1})),2};
+% fluxes{i,1}=database.metabolites{find(strcmp(database.metabolites(:,1),fluxes{i,1})),2};
 % end
 
 % Get the taxonomy information
 if exist('infoFilePath','var')
-    taxonomy = readtable(infoFilePath, 'ReadVariableNames', false);
-    taxonomy = table2cell(taxonomy);
+    taxonomy = readtable(infoFilePath);
 else
-    taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-    taxonomy = table2cell(taxonomy);
+    taxonomy = readtable('AGORA_infoFile.xlsx');
 end
+taxonomy = [taxonomy.Properties.VariableNames;table2cell(taxonomy)];
 
 if ~exist('corrMethod', 'var')  % Define correlation coefficient method if not entered
     corrMethod = 'Pearson';
@@ -135,7 +141,7 @@ for i = 2:size(abundance, 2)
                 % variable
                 findinSampleAbun = find(strcmp(findTax{1}, SampleAbundance.(TaxonomyLevels{t})(1, :)));
                 % sum up the relative abundance
-                SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
+                SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
             end
             end
         end
@@ -217,7 +223,7 @@ end
 % translate to metabolite descriptions
 for t = 2:size(TaxonomyLevels, 1)
     for i=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
-        FluxCorrelations.(TaxonomyLevels{t}){1,i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FluxCorrelations.(TaxonomyLevels{t}){1,i})),2};
+        FluxCorrelations.(TaxonomyLevels{t}){1,i}=database.metabolites{find(strcmp(database.metabolites(:,1),FluxCorrelations.(TaxonomyLevels{t}){1,i})),2};
     end
 end
 

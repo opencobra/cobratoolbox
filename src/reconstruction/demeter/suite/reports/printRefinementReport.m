@@ -22,7 +22,7 @@ fprintf('Finished refinement and testing of the project %s.\n',reconVersion)
 curationReport={'Feature','Number','Agreement with experimental data'};
 
 %%
-data = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growthOnKnownCarbonSources_' reconVersion '.txt'], 'Delimiter', '\t');
+data = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', '\t');
 data=table2cell(data);
 
 fprintf('%s draft reconstructions have been refined.\n',num2str(size(data,1)))
@@ -53,6 +53,15 @@ if isfile(([testResultsFolder filesep 'notGrowing.mat']))
     curationReport(size(curationReport,1)+1,:)={'Reconstructions not producing biomass',num2str(size(notGrowing,1)),'N/A'};
     end
 end
+%%
+data = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', '\t');
+data = [data.Properties.VariableDescriptions;table2cell(data)];
+growth=length(find(cell2mat(data(:,2))==1));
+nogrowth=length(find(cell2mat(data(:,2))==0));
+fprintf('Growth requirements were refined for %s reconstructions.\n',num2str(growth+nogrowth))
+curationReport(size(curationReport,1)+1,:)={'Reconstructions with growth medium data',num2str(growth+nogrowth),''};
+fprintf('%0.2f %% of reconstructions agree with all known media.\n',growth/(growth+nogrowth)*100)
+curationReport{size(curationReport,1),3}=num2str(growth);
 %%
 data = readtable([testResultsFolder filesep reconVersion '_refined' filesep reconVersion '_PercentagesAgreement.xls']);
 data=table2cell(data);

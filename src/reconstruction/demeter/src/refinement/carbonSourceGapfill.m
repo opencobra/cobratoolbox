@@ -28,23 +28,18 @@ function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID,
 addedRxns={};
 removedRxns={};
 
-carbonSourcesTable = readtable([inputDataFolder filesep 'CarbonSourcesTable.txt'], 'Delimiter', '\t', 'ReadVariableNames', false);
+carbonSourcesTable = readtable([inputDataFolder filesep 'CarbonSourcesTable.txt'], 'Delimiter', '\t');
 % remove the reference columns
 for i=1:11
     if ismember(['Ref' num2str(i)],carbonSourcesTable.Properties.VariableNames)
 carbonSourcesTable.(['Ref' num2str(i)])=[];
     end
 end
-carbonSourcesTable = table2cell(carbonSourcesTable);
+carbonSourcesTable = [carbonSourcesTable.Properties.VariableDescriptions;table2cell(carbonSourcesTable)];
 
 mInd = find(ismember(carbonSourcesTable(:, 1), microbeID));
 if isempty(mInd)
     warning(['Microbe ID not found in carbon source data table: ', microbeID])
-end
-
-cSources = carbonSourcesTable(1,find(strcmp(carbonSourcesTable(mInd, 1:end),'1')));
-if isempty(cSources)
-    warning(['No carbon sources found for ', microbeID])
 end
 
 % pathway, rxns to add
@@ -327,7 +322,13 @@ carbGapfillRemove = {
     'Stickland reaction', {'PACCOAL'}
 };
 
-%%
+% find the pathways to add
+pathways=carbonSourcesTable(1,2:end);
+cSources = pathways(find(cell2mat(carbonSourcesTable(mInd, 2:end)) == 1));
+if isempty(cSources)
+    warning(['No carbon sources found for ', microbeID])
+end
+
 % go through carbon sources
 for i = 1:length(cSources)
     fprintf('Refining carbon source "%s" for %s.\n', cSources{i}, microbeID)

@@ -30,8 +30,8 @@ cd([propertiesFolder filesep 'ComputedFluxes'])
 
 % start from existing progress if possible
 if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'])
-    InternalProduction = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'], 'ReadVariableNames', false);
-    InternalProduction = table2cell(InternalProduction);
+    InternalProduction = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'], 'ReadVariableNames', true);
+    InternalProduction = [InternalProduction.Properties.VariableDescriptions;table2cell(InternalProduction)];
     
     % use all metabolites in reconstruction resource unless specified
     % otherwise
@@ -44,8 +44,8 @@ else
     if isempty(metList)
         % find the correct file with the metabolite list
         if isfile([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'])
-            metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', false);
-            metabolites = table2cell(metabolites);
+            metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', true);
+            metabolites = [metabolites.Properties.VariableDescriptions;table2cell(metabolites)];
             allMets=metabolites(:,1);
         else
             % load all reconstructions and get the exchange reactions
@@ -171,9 +171,10 @@ if ~isempty(modelList)
             
             for k=1:length(mets)
                 findInd=find(strcmp(InternalProduction(1,:),mets{k}));
-                InternalProduction{plusonerow,findInd}=metFluxes{j}(k);
+                InternalProduction{plusonerow,findInd}=num2str(metFluxes{j}(k));
             end
         end
+        InternalProduction{1,1}='Model_ID';
         writetable(cell2table(InternalProduction),[propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     end
 end
@@ -185,7 +186,7 @@ data = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalPro
 data = table2cell(data);
 for j=2:size(data,1)
     for k=2:size(data,2)
-        if str2double(data{j,k}) > tol
+        if data{j,k} > tol
             data{j,k}=1;
         else
             data{j,k}=0;

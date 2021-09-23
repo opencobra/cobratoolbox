@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder)
+function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those metabolites (exchange reactions)
 % that can be taken up by the model and should be taken up according to
 % data (true positives) and those metabolites that cannot be taken up by
@@ -13,6 +13,8 @@ function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID
 % microbeID         Microbe ID in uptake product data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 % inputDataFolder   Folder with experimental data and database files
 %                   to load
 %
@@ -30,8 +32,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read uptake product tables
 uptakeTable = readtable([inputDataFolder filesep 'uptakeTable.txt'], 'Delimiter', '\t');
@@ -73,6 +73,7 @@ else
     % flux variability analysis on reactions of interest
     rxns = unique(table2cell(rxns));
     rxns = rxns(~cellfun('isempty', rxns));
+    rxnsNotInModel=setdiff(rxns,model.rxns);
     if ~isempty(rxns)
         rxnsInModel=intersect(rxns,model.rxns);
         if isempty(rxnsInModel)
@@ -97,23 +98,21 @@ else
             %     vData = uptakeExchanges(table2array(uptakeTable(mInd, 2:end)) == 1, 2);
             vData = find(table2array(uptakeTable(mInd, 2:end)) == 1);
             % check all exchanges corresponding to each uptake
-            % with multiple exchanges per uptake, at least one should be taken up
-            % so if there is least one true positive per uptake false negatives
-            % are not considered
             for i = 1:size(vData,1)
                 tableData = table2array(uptakeExchanges(vData(i), 2:end));
                 allEx = tableData(~cellfun(@isempty, tableData));
                 % let us also make sure de novo production is predicted by
-                % preventing uptake of these uptakes
+                % preventing uptake of these metabolites
                 if ~isempty(allEx)
                     for j = 1:length(allEx)
                         model = changeRxnBounds(model, allEx{j}, 0, 'l');
                     end
                 end
-                if ~isempty(intersect(allEx, flux))
-                    TruePositives = union(TruePositives, intersect(allEx, flux));
-                else
-                    FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+                TruePositives = union(TruePositives, intersect(allEx, flux));
+                FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+                % add any that are not in model to the false negatives
+                if ~isempty(rxnsNotInModel)
+                    FalseNegatives=union(FalseNegatives,rxnsNotInModel);
                 end
             end
         end
@@ -130,7 +129,7 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
     
     for i=1:length(TruePositives)
-        TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
 end
 
@@ -140,7 +139,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
     end
 end
 

@@ -47,15 +47,15 @@ summary.('uptakeRxnsAdded') = uptakeRxnsAdded;
 
 %% test pathways to make sure they work
 
-model=rebuildModel(model,database);
+model = rebuildModel(model,database,biomassReaction);
 
 FNs = {};
 % Carbon sources
-[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, database, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % Metabolite uptake
-[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 %% gapfill if there are any false negatives
@@ -75,15 +75,15 @@ if ~isempty(FNs)
 end
 
 % Fermentation products
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % Putrefaction pathways
-[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction, database);
 FNs=union(FNs,FalseNegatives);
 
 % Secretion products
-[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 FNs=union(FNs,FalseNegatives);
 
 % gapfill if there are any false negatives

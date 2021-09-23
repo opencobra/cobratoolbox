@@ -61,13 +61,16 @@ for i=1:length(C)
     inputData(rowLength+i,2:end)=cellstr(num2str(zeros));
 end
 
-% remove zeros from the reference columns
+% remove NaNs from the reference columns
 refCols=find(strncmp(inputData(1,:),'Ref',3));
 for i=1:length(refCols)
-    if length(inputData{1,refCols(i)})>6
-        refCols(i)=[];
+    for j=2:size(inputData,1)
+        if isnan(inputData{j,refCols(i)})
+            inputData{j,refCols(i)}='';
+        end
     end
 end
+
 % sort and properly arrange the references
 if ~isempty(refCols)
     for j=2:size(inputData,1)

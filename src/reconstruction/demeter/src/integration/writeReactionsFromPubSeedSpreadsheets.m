@@ -18,20 +18,28 @@ function writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spre
 %       - Almut Heinken, 06/2020
 
 % get PubSEED IDs of new organisms to reconstruct
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+gettab=tdfread(infoFilePath);
+getcols=fieldnames(gettab);
+infoFile={};
+for j=1:length(getcols)
+    infoFile{1,j}=getcols{j};
+    if isnumeric(gettab.(getcols{j}))
+        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(num2str(gettab.(getcols{j})));
+    else
+        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(gettab.(getcols{j}));
+    end
+end
 
 % find folder with annotation versions in the information file
-versionCol = find(strcmp(infoFile(1,:),'Annotation version ID'));
+versionCol = find(strcmp(infoFile(1,:),'Annotation_version_ID'));
 
-% load reactions
-reactions=readtable('InReactions.txt', 'ReadVariableNames', false,'FileType','text','delimiter','tab');
-reactions = table2cell(reactions);
+% load spreadsheet
+reactions=readtable('InReactions.txt', 'FileType','text','delimiter','tab');
+reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
 exchanges=reactions(find(strcmp(reactions(:,1),'Exchange')),2);
 
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
+% load database
+database=loadVMHDatabase;
 for i=1:length(exchanges)
     exchanges{i,2}=database.reactions{ismember(database.reactions(:, 1), exchanges{i,1}), 3};
 end
@@ -48,8 +56,14 @@ cnt=1;
 
 for i=1:length(fileList)
     i
-    spreadsheet=readtable([spreadsheetFolder filesep fileList{i}], 'ReadVariableNames', false,'FileType','text','delimiter','tab');
-    spreadsheet = table2cell(spreadsheet);
+    % need workaround to read in tsv file
+    gettab=tdfread([spreadsheetFolder filesep fileList{i}]);
+    getcols=fieldnames(gettab);
+    spreadsheet={};
+    for j=1:length(getcols)
+        spreadsheet{1,j}=getcols{j};
+        spreadsheet(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
+    end
     for j=2:size(spreadsheet,1)
         % replace PubSeed with AGORA Model IDs
         % some entries in the comparative genomics spreadsheet have no
@@ -100,7 +114,7 @@ for i=1:length(fileList)
     end
 end
 
-% remove duplicate reactions for organisms
+% remove duplicate spreadsheet for organisms
 if size(genomeAnnotation,1)>0
 delArray=[];
 cnt=1;
@@ -124,6 +138,6 @@ end
 genomeAnnotation(delArray,:)=[];
 end
 
-writetable(cell2table(genomeAnnotation),[inputDataFolder filesep 'genomeAnnotation'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writecell(genomeAnnotation,[inputDataFolder filesep 'genomeAnnotation'],'FileType','text','Delimiter','tab');
 
 end

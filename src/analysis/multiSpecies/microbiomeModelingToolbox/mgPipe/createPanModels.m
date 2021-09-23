@@ -67,12 +67,7 @@ else
 end
 
 % get the reaction and metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', '\t', 'ReadVariableNames', false);
-metaboliteDatabase = table2cell(metaboliteDatabase);
-database.metabolites = metaboliteDatabase;
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', '\t', 'ReadVariableNames', false);
-reactionDatabase = table2cell(reactionDatabase);
-database.reactions = reactionDatabase;
+database=loadVMHDatabase;
 
 % List all species in the AGORA resource
 findTaxCol = find(strcmp(infoFile(1, :), taxonLevel));
@@ -117,7 +112,7 @@ for i = 1:steps:size(toCreate,1)
     end
     
     modelsTmp={};
-    parfor j=i:i+endPnt
+    for j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         if strcmp(solver,'ibm_cplex')

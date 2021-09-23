@@ -45,7 +45,7 @@ if nargin <2
 end
 % read the csv file with the abundance data
 metagenome_abundance = readtable(MetagenomeAbundancePath, 'ReadVariableNames', false,'FileType','text');
-metagenome_abundance = table2cell(metagenome_abundance);
+metagenome_abundance = [metagenome_abundance.Properties.VariableNames;table2cell(metagenome_abundance)];
 metagenome_abundance{1,1}='';
 
 % list the taxonomical levels

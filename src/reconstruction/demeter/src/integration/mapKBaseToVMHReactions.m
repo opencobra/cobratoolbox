@@ -29,16 +29,15 @@ sameReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 similarReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 
 % get VMH reaction database
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
+database=loadVMHDatabase;
 
 parsedVMHFormulas={};
 cnt=1;
 
 % parse the VMH reaction database
-for i=1:size(reactionDatabase,1)
+for i=1:size(database.reactions,1)
     % break down the formula
-    [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(reactionDatabase{i,3});
+    [metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(database.reactions{i,3});
     % now put the formula back together, ensuring it is written the same
     % way as translated KBase formulas
     if revFlag==1
@@ -74,14 +73,14 @@ for i=1:size(reactionDatabase,1)
         end
     end
     
-    parsedVMHFormulas{cnt,1}=reactionDatabase{i,1};
+    parsedVMHFormulas{cnt,1}=database.reactions{i,1};
     parsedVMHFormulas{cnt,2}=rxnForm;
     parsedVMHFormulas{cnt,3}=revFlag;
     cnt=cnt+1;
     if revFlag==1
         % also catch the reaction being written the other way around
         rxnForm=strsplit(rxnForm,' <=> ');
-        parsedVMHFormulas{cnt,1}=reactionDatabase{i,1};
+        parsedVMHFormulas{cnt,1}=database.reactions{i,1};
         parsedVMHFormulas{cnt,2}=[rxnForm{2} ' <=> ' rxnForm{1}];
         parsedVMHFormulas{cnt,3}=revFlag;
         cnt=cnt+1;
@@ -159,7 +158,7 @@ end
 % considered).
 
 for i=1:length(C)
-    VMHform=reactionDatabase{find(strcmp(reactionDatabase(:,1),parsedVMHFormulas{IA(i),1})),3};
+    VMHform=database.reactions{find(strcmp(database.reactions(:,1),parsedVMHFormulas{IA(i),1})),3};
     KBaseform=translatedRxns{find(strcmp(translatedRxns(:,1),parsedKBaseFormulas{IB(i),1})),3};
     
     toAdd={parsedKBaseFormulas{IB(i),1},parsedVMHFormulas{IA(i),1},KBaseform,VMHform};

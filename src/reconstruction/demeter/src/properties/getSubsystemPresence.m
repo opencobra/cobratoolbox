@@ -3,7 +3,7 @@ function getSubsystemPresence(propertiesFolder,reconVersion)
 % reconstructions that were refined through the semi-automatic refinement
 % pipeline. Shown is the fraction of total reactions in each subsystem for
 % each reconstruction in the resource. Requires the function 
-% getReactionPresenceOnTaxonLevels to be run first.
+% getreactionPresenceOnTaxonLevels to be run first.
 %
 % USAGE
 %   getSubsystemPresence(propertiesFolder,reconVersion)
@@ -17,27 +17,28 @@ function getSubsystemPresence(propertiesFolder,reconVersion)
 %   Almut Heinken, 11/2020
 
 % Load all reactions in reconstruction resource
-reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-Reactions = table2cell(reactions);
+reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
+reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
 
 % Load the reaction presence data for each reconstruction
-reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion '.txt'], 'ReadVariableNames', false);
-ReactionPresence = table2cell(reactionPresence);
+reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'],'ReadVariableNames',true);
+reactionPresence = [reactionPresence.Properties.VariableDescriptions;table2cell(reactionPresence)];
 
-allSubs = unique(Reactions(:,11));
+allSubs = unique(reactions(:,11));
+allSubs(find(strcmp(allSubs(:,1),'')),:)=[];
 subsystemPresence(1,2:length(allSubs)+1)=allSubs;
 
-subsystemPresence(2:size(ReactionPresence,1),1) = ReactionPresence(2:end,1);
+subsystemPresence(1:size(reactionPresence,1),1) = reactionPresence(:,1);
 
 % go through all subsystems and count the fraction of reactions in each
 % reconstruction
 for i=2:size(subsystemPresence,2)
     % get all reactions
-    findRxns=Reactions(find(strcmp(Reactions(:,11),subsystemPresence{1,i})),1);
+    findRxns=reactions(find(strcmp(reactions(:,11),subsystemPresence{1,i})),1);
     % find all reactions in reaction presence file
-    [~,findRxnInds]=intersect(ReactionPresence(1,:),findRxns);
-    for j=2:size(ReactionPresence,1)
-        subsystemPresence{j,i}=(sum(str2double(ReactionPresence(j,findRxnInds))))/length(findRxns);
+    [~,findRxnInds]=intersect(reactionPresence(1,:),findRxns);
+    for j=2:size(reactionPresence,1)
+        subsystemPresence{j,i}=num2str(sum(cell2mat(reactionPresence(j,findRxnInds))))/length(findRxns);
     end
 end
 

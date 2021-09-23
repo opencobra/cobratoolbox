@@ -42,7 +42,7 @@ function [adaptedDiet, growthOK] = adaptVMHDietToAGORA(VMHDiet, setupUsed, AGORA
 %       - Almut Heinken, 02/2021: added some compounds that may be required
 
 VMHDietConstraints = readtable(strcat(VMHDiet), 'Delimiter', '\t');  % load the text file with the diet
-VMHDietConstraints = table2cell(VMHDietConstraints);
+VMHDietConstraints = [VMHDietConstraints.Properties.VariableNames;table2cell(VMHDietConstraints)];
 % Start modification of the entered diet
 adaptedDietConstraints = VMHDietConstraints;
 for i = 1:length(adaptedDietConstraints)
