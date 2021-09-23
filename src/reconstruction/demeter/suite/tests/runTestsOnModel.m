@@ -58,6 +58,9 @@ for k=1:length(fields)
     testResults.(fields{k}){1, 1} = microbeID;
 end
 
+% Load reaction and metabolite database
+database=loadVMHDatabase;
+
 biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
 %
 %% relax enforced uptake of some vitamins-causes infeasibility problems
@@ -171,7 +174,7 @@ testResults.Incorrect_Compartments(1, 2:length(incorrectMets)+1) = incorrectMets
 % up by the microbe. Therefore, it is not possible to evaluate true negatives
 % and false positives.
 
-[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, database, inputDataFolder);
 testResults.Carbon_sources_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.Carbon_sources_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 %%
@@ -188,7 +191,7 @@ testResults.Carbon_sources_FalseNegatives(1, 2:length(FalseNegatives)+1) = False
 % up by the microbe. Therefore, it is not possible to evaluate true negatives
 % and false positives.
 
-[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testFermentationProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 testResults.Fermentation_products_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.Fermentation_products_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 %%
@@ -217,7 +220,7 @@ testResults.growthOnKnownCarbonSources{1, 2} = growthOnKnownCarbonSources;
 % performed 11/2017, and a compendium of uptake and secretion products
 % (PMID:28585563)
 
-[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder);
 testResults.Metabolite_uptake_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.Metabolite_uptake_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 
@@ -231,7 +234,7 @@ testResults.Metabolite_uptake_FalseNegatives(1, 2:length(FalseNegatives)+1) = Fa
 % performed 11/2017, and a compendium of uptake and secretion products
 % (PMID:28585563)
 
-[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder);
+[TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, database, inputDataFolder);
 testResults.Secretion_products_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.Secretion_products_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 
@@ -242,7 +245,7 @@ testResults.Secretion_products_FalseNegatives(1, 2:length(FalseNegatives)+1) = F
 % the model but should be secreted according to in vitro data (false
 % negatives).
 
-[TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction, database);
 testResults.Bile_acid_biosynthesis_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.Bile_acid_biosynthesis_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 %% Drug biotransformation
@@ -253,7 +256,7 @@ testResults.Bile_acid_biosynthesis_FalseNegatives(1, 2:length(FalseNegatives)+1)
 % negatives).
 
 if exist('drugTable.txt','File')==2
-    [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, biomassReaction);
+    [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, biomassReaction, database);
     testResults.Drug_metabolism_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
     testResults.Drug_metabolism_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 end
@@ -264,7 +267,7 @@ end
 % cannot carry flux in the model but should be secreted according to in
 % vitro data (false negatives).
 
-[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testPutrefactionPathways(model, microbeID, biomassReaction, database);
 testResults.PutrefactionPathways_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 %% Aromatic amino acid degradation
@@ -288,7 +291,7 @@ testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) =
 % degradation products
 % that cannot be secreted by the model but should be secreted according to comparative genomic data.
 
-[TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction);
+[TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database);
 testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
 

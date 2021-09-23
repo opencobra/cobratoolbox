@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, inputDataFolder)
+function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those secretions (exchange reactions)
 % that can be secreted by the model and should be secreted according to
 % data (true positives) and those secretions that cannot be secreted by
@@ -12,6 +12,8 @@ function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeI
 % microbeID         Microbe ID in secretion secretion data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 % inputDataFolder   Folder with experimental data and database files
 %                   to load
 %
@@ -29,8 +31,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read secretion product tables
 secretionTable = readtable([inputDataFolder filesep 'secretionProductTable.txt'], 'Delimiter', '\t');
@@ -74,6 +74,7 @@ else
     rxns = rxns(~cellfun('isempty', rxns));
     if ~isempty(rxns)
         rxnsInModel=intersect(rxns,model.rxns);
+        rxnsNotInModel=setdiff(rxns,model.rxns);
         if isempty(rxnsInModel)
             % all exchange reactions that should be there are not there -> false
             % negatives
@@ -109,10 +110,11 @@ else
                         model = changeRxnBounds(model, allEx{j}, 0, 'l');
                     end
                 end
-                if ~isempty(intersect(allEx, flux))
-                    TruePositives = union(TruePositives, intersect(allEx, flux));
-                else
-                    FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+                TruePositives = union(TruePositives, intersect(allEx, flux));
+                FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+                % add any that are not in model to the false negatives
+                if ~isempty(rxnsNotInModel)
+                    FalseNegatives=union(FalseNegatives,rxnsNotInModel);
                 end
             end
         end
@@ -129,7 +131,7 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
     
     for i=1:length(TruePositives)
-        TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
 end
 
@@ -139,7 +141,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
     end
 end
 

@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, inputDataFolder)
+function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those carbon sources (exchange reactions)
 % that can be taken up by the model and should be taken up according to
 % data (true positives) and those carbon sources that cannot be taken up by
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, b
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 % inputDataFolder   Folder with experimental data and database files
 %                   to load
 %
@@ -29,8 +31,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read carbon source tables
 carbonSourcesTable = readtable([inputDataFolder filesep 'CarbonSourcesTable.txt'], 'Delimiter', '\t');
@@ -120,7 +120,7 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
     
     for i=1:length(TruePositives)
-        TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
 end
 
@@ -130,7 +130,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
     end
 end
 

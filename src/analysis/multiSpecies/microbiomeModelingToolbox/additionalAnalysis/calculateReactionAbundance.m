@@ -1,4 +1,4 @@
-function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, infoFilePath, rxnsList, numWorkers)
+function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, taxonomyPath, rxnsList, numWorkers)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
@@ -8,14 +8,14 @@ function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundance
 %
 % USAGE
 %
-%    [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, infoFilePath, rxnsList, numWorkers)
+%    [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, taxonomyPath, rxnsList, numWorkers)
 %
 % INPUTS:
 %    abundancePath:          Path to the .csv file with the abundance data.
 %                            Example: 'cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv'
 %    modelPath:              Folder containing the strain-specific AGORA models
 % OPTIONAL INPUTS:
-%    infoFilePath:           Path to the spreadsheet with the taxonomy
+%    taxonomyPath:           Path to the spreadsheet with the taxonomy
 %                            information on organisms (default:
 %                            AGORA_infoFile.xlsx)
 %    rxnsList:               List of reactions for which the abundance
@@ -37,8 +37,8 @@ function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundance
 %                           01/2020:    adapted to be suitable for pan-models
 
 % read the csv file with the abundance data
-abundance = readtable(abundancePath, 'ReadVariableNames', false);
-abundance = table2cell(abundance);
+abundance = readtable(abundancePath);
+abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
@@ -62,13 +62,12 @@ if ~exist('rxnsList', 'var') || isempty(rxnsList)  % define reaction list if not
 end
 
 % Get the taxonomy information
-if exist('infoFilePath','var') && ~isempty(infoFilePath)
-    taxonomy = readtable(infoFilePath, 'ReadVariableNames', false);
-    taxonomy = table2cell(taxonomy);
+if exist('taxonomyPath','var') && ~isempty(taxonomyPath)
+    taxonomy = readtable(taxonomyPath);
 else
-    taxonomy = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-    taxonomy = table2cell(taxonomy);
+    taxonomy = readtable('AGORA_infoFile.xlsx');
 end
+taxonomy = [taxonomy.Properties.VariableNames;table2cell(taxonomy)];
 
 % load the models found in the individuals and extract which reactions are
 % in which model
@@ -186,48 +185,48 @@ for i = 2:size(abundance, 2)
             % check if the reaction is present in the strain
             if ReactionPresence{k, j + 1} == 1
                 % calculate total abundance
-                totalAbun(j) = totalAbun(j) + str2double(abundance{k, i});
+                totalAbun(j) = totalAbun(j) + abundance{k, i};
                 % calculate phylum abundance
                 t = 1;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpPhyl(1, taxonCol) = tmpPhyl(1, taxonCol) + str2double(abundance{k, i});
+                    tmpPhyl(1, taxonCol) = tmpPhyl(1, taxonCol) + abundance{k, i};
                 end
                 % calculate class abundance
                 t = 2;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpClass(1, taxonCol) = tmpClass(1, taxonCol) + str2double(abundance{k, i});
+                    tmpClass(1, taxonCol) = tmpClass(1, taxonCol) + abundance{k, i};
                 end
                 % calculate order abundance
                 t = 3;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpOrder(1, taxonCol) = tmpOrder(1, taxonCol) + str2double(abundance{k, i});
+                    tmpOrder(1, taxonCol) = tmpOrder(1, taxonCol) + abundance{k, i};
                 end
                 % calculate family abundance
                 t = 4;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpFamily(1, taxonCol) = tmpFamily(1, taxonCol) + str2double(abundance{k, i});
+                    tmpFamily(1, taxonCol) = tmpFamily(1, taxonCol) + abundance{k, i};
                 end
                 % calculate genus abundance
                 t = 5;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpGenus(1, taxonCol) = tmpGenus(1, taxonCol) + str2double(abundance{k, i});
+                    tmpGenus(1, taxonCol) = tmpGenus(1, taxonCol) + abundance{k, i};
                 end
                 % calculate species abundance
                 t = 6;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpSpecies(1, taxonCol) = tmpSpecies(1, taxonCol) + str2double(abundance{k, i});
+                    tmpSpecies(1, taxonCol) = tmpSpecies(1, taxonCol) + abundance{k, i};
                 end
             end
         end

@@ -26,13 +26,20 @@ mkdir('Metabolite_plots')
 cd('Metabolite_plots')
 
 % load reaction abundances
-abundance = table2cell(readtable(abundancePath, 'ReadVariableNames', false));
+abundance = readtable(abundancePath);
+abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
 
 % load fluxes
-fluxes = table2cell(readtable(fluxPath, 'ReadVariableNames', false));
+fluxes = readtable(fluxPath);
+fluxes = [fluxes.Properties.VariableNames;table2cell(fluxes)];
 
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+% check if data is from same samples
+if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
+    error('Sample IDs in abundance and flux files do not agree!')
+end
+
+% load database
+database=loadVMHDatabase;
 
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
@@ -44,7 +51,7 @@ if nargin>2
 end
 
 for i=2:size(fluxes,1)
-    fluxes{i,1}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),fluxes{i,1})),2};
+    fluxes{i,1}=database.metabolites{find(strcmp(database.metabolites(:,1),fluxes{i,1})),2};
     data=[];
     for j=2:size(fluxes,2)
     data(j-1,1)=str2double(fluxes{i,j});

@@ -104,8 +104,9 @@ uptakeRxns.Ltryptophan = {'EX_trp_L(e)','TRPt2r'};
 uptakeRxns.Ltyrosine = {'EX_tyr_L(e)','TYRt2r'};
 uptakeRxns.Lvaline = {'EX_val_L(e)','VALt2r'};
 
-uptakeTable = readtable([inputDataFolder filesep 'uptakeTable.txt'], 'ReadVariableNames', false, 'Delimiter', '\t');
-uptakeTable = table2cell(uptakeTable);
+uptakeTable = readtable([inputDataFolder filesep 'uptakeTable.txt'], 'Delimiter', '\t');
+uptakeTable = [uptakeTable.Properties.VariableNames;table2cell(uptakeTable)];
+
 % remove the reference columns
 for i=1:11
     if ~isempty(find(strcmp(['Ref' num2str(i)],uptakeTable(1,:))))
@@ -128,7 +129,7 @@ uptMets = regexprep(uptMets, '\W', '');% remove special characters
 orgRow = find(strcmp(microbeID, uptakeTable(:, 1)));
 
 % find the secretion products for this microbe
-uptCols = find(cellfun(@str2num, uptakeTable(orgRow, 2:end)) == 1);
+uptCols = find(cell2mat(uptakeTable(orgRow, 2:end)) == 1);
 
 % added rxns list
 uptakeRxnsAdded = {};

@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction, database)
 % Performs an FVA and reports those bile acid metabolites (exchange reactions)
 % that can be secreted by the model and should be secreted according to
 % data (true positives) and those bile acid metabolites that cannot be secreted by
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, micro
 % microbeID         Microbe ID in data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all bile acid products
@@ -25,10 +27,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-metaboliteDatabase = readtable([fileDir filesep 'MetaboliteDatabase.txt'], 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
 
 % read bile acid product table
 BileAcidTable = readtable('BileAcidTable.txt', 'Delimiter', '\t');
@@ -104,7 +102,7 @@ TruePositives=strrep(TruePositives,'EX_','');
 TruePositives=strrep(TruePositives,'(e)','');
 
 for i=1:length(TruePositives)
-    TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+    TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
 end
 
 % warn about false negatives
@@ -113,7 +111,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
     end
 end
 

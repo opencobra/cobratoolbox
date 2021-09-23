@@ -42,17 +42,7 @@ constraints=table2cell(constraints);
 constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-    database.metabolites{i,7}=num2str(database.metabolites{i,7});
-    database.metabolites{i,8}=num2str(database.metabolites{i,8});
-end
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
+database=loadVMHDatabase;
 
 % create a temporary summary file of the performed refinement
 summary=struct;
@@ -61,7 +51,7 @@ summary.targetGF={};
 summary.relaxGF={};
 
 % rebuild model
-model=rebuildModel(model,database);
+model = rebuildModel(model,database,biomassReaction);
 
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
 if AnaerobicGrowth(1,1) < tol
@@ -283,6 +273,8 @@ end
 
 % rebuild and export the model
 revisedModel = rebuildModel(model,database);
-revisedModel=changeObjective(revisedModel,biomassReaction);
+revisedModel = changeObjective(revisedModel,biomassReaction);
+% limit flux through sink reactions
+revisedModel = changeRxnBounds(revisedModel,revisedModel.rxns(find(strncmp(revisedModel.rxns,'sink_',5)),1),-1,'l');
 
 end

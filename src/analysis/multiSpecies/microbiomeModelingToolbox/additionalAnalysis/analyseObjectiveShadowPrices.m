@@ -22,7 +22,6 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %
 % OPTIONAL INPUTS:
 %   resultsFolder     char with path of directory where results are saved
-%                     (default: current folder)
 %   osenseStr         String indicating whether objective function(s)
 %                     should be maximized or minimized. Allowed inputs:
 %                     'min','max', default:'max'.
@@ -50,7 +49,7 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelFolder', @ischar);
 parser.addRequired('objectiveList', @iscell);
-parser.addParameter('resultsFolder',pwd, @ischar);
+parser.addParameter('resultsFolder',[pwd filesep 'ShadowPrices'], @ischar);
 parser.addParameter('osenseStr','max', @ischar);
 parser.addParameter('SPDef','Nonzero', @ischar);
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
@@ -144,7 +143,7 @@ for i=startPnt:size(modelList,1)
 %     % store computed objective values
     for j=1:length(objectiveList)
         if ~isempty(FBAsolution{j,1})
-            objectives{j+1,3+i} = FBAsolution{j,1}.obj;
+            objectives{j+1,2+i} = FBAsolution{j,1}.obj;
         else
             objectives{j+1,3+i} = 0;
         end

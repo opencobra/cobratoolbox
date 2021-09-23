@@ -136,12 +136,10 @@ else
     violinplot(data(:,1),infoFile(:,2));
     title('Reactions')
     set(gca, 'FontSize', 12)
-    box on
     subplot(1,2,2)
     violinplot(data(:,2),infoFile(:,2));
     title('Metabolites')
     set(gca, 'FontSize', 12)
-    box on
     hold on
     suptitle('Reaction and metabolite numbers in microbiome models')
     print('MicrobiomeModel_Sizes','-dpng','-r300')

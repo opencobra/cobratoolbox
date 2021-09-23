@@ -307,7 +307,8 @@ if computeProfiles
                         [diet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
                     else
                         diet = readtable(dietFilePath, 'Delimiter', '\t');  % load the text file with the diet
-                        diet = table2cell(diet);
+                        diet = [diet.Properties.VariableNames;table2cell(diet)];
+
                         for j = 1:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end

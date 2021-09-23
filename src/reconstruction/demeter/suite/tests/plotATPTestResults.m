@@ -109,18 +109,21 @@ end
 
 if ~isempty(translatedDraftsFolder)
     % draft and refined reconstructions
-    figure;
-    hold on
-    violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
-    set(gca, 'FontSize', 12)
-    box on
-    maxval=max(data,[],'all');
-    ylim([0 maxval + maxval/10])
-    ylabel('mmol *g dry weight-1 * hr-1')
-    h=title(['ATP production on complex medium, ' reconVersion]);
-    set(h,'interpreter','none')
-    set(gca,'TickLabelInterpreter','none')
-    print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
+    try
+        
+        figure;
+        hold on
+        violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
+        set(gca, 'FontSize', 12)
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
+        h=title(['ATP production on complex medium, ' reconVersion]);
+        set(h,'interpreter','none')
+        set(gca,'TickLabelInterpreter','none')
+        print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
+        
+    end
     
     % report draft models that produce too much ATP
     fprintf('Report for draft models:\n')
@@ -168,12 +171,11 @@ if ~isempty(translatedDraftsFolder)
     
 else
     % only refined reconstructions
-    if size(data,1) > 5
+    try
         figure;
         hold on
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
-        box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
         ylabel('mmol *g dry weight-1 * hr-1')

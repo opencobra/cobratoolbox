@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, biomassReaction)
+function [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, biomassReaction, database)
 % Performs an FVA and reports those drug metabolites (exchange reactions)
 % that can be taken up and/or secreted by the model and should be secreted according to
 % data (true positives) and those bile acid metabolites that cannot be secreted by
@@ -10,6 +10,8 @@ function [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, 
 % microbeID         Microbe ID in carbon source data file
 % biomassReaction   Biomass objective functions (low flux through BOF
 %                   required in analysis)
+% database          Structure containing rBioNet reaction and metabolite
+%                   database
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all drug metabolites
@@ -25,8 +27,6 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-
-metaboliteDatabase = table2cell(readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false));
 
 % read drug metabolism table
 drugTable = readtable('drugTable.txt', 'Delimiter', '\t');
@@ -108,7 +108,7 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
     
     for i=1:length(TruePositives)
-        TruePositives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),TruePositives{i})),2};
+        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
 end
 
@@ -118,7 +118,7 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'EX_','');
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
-        FalseNegatives{i}=metaboliteDatabase{find(strcmp(metaboliteDatabase(:,1),FalseNegatives{i})),2};
+        FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
     end
 end
 

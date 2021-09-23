@@ -21,12 +21,21 @@ function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFi
 %       - Almut Heinken, 06/2020
 
 % get PubSEED IDs of new organisms to reconstruct
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+gettab=tdfread(infoFilePath);
+getcols=fieldnames(gettab);
+infoFile={};
+for j=1:length(getcols)
+    infoFile{1,j}=getcols{j};
+    if isnumeric(gettab.(getcols{j}))
+        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(num2str(gettab.(getcols{j})));
+    else
+        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(gettab.(getcols{j}));
+    end
+end
 
 % load reactions
-reactions=readtable('InReactions.txt', 'ReadVariableNames', false,'FileType','text','delimiter','tab');
-reactions = table2cell(reactions);
+reactions = readtable('InReactions.txt', 'ReadVariableNames', false,'FileType','text','delimiter','tab');
+reactions = [reactions.Properties.VariableNames;table2cell(reactions)];
 
 % get all spreadsheets
 dInfo = dir(spreadsheetFolder);
@@ -40,8 +49,14 @@ cnt=1;
 
 for i=1:length(fileList)
     i
-    spreadsheet=readtable([spreadsheetFolder filesep fileList{i}], 'ReadVariableNames', false,'FileType','text','delimiter','tab');
-    spreadsheet = table2cell(spreadsheet);
+    % need workaround to read in tsv file
+    gettab=tdfread([spreadsheetFolder filesep fileList{i}]);
+    getcols=fieldnames(gettab);
+    spreadsheet={};
+    for j=1:length(getcols)
+        spreadsheet{1,j}=getcols{j};
+        spreadsheet(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
+    end
     for j=2:size(spreadsheet,1)
         % replace PubSeed with AGORA Model IDs
         % some entries in the comparative genomics spreadsheet have no
@@ -66,10 +81,10 @@ for i=1:length(fileList)
 end
 
 genomeAnnotation = readtable([inputDataFolder filesep 'gapfilledGenomeAnnotation.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
-genomeAnnotation = table2cell(genomeAnnotation);
+genomeAnnotation = [genomeAnnotation.Properties.VariableNames;table2cell(genomeAnnotation)];
 
 translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
-translateRxns=table2cell(translateRxns);
+translateRxns = [translateRxns.Properties.VariableNames;table2cell(translateRxns)];
 
 % remove duplicate reactions for organisms, gap-filled reactions present in
 % comparative genomics spreadsheets

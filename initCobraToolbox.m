@@ -219,7 +219,8 @@ elseif status_curl == 0
     % Update/initialize submodules
     %By default your submodules repository is in a state called 'detached HEAD'. 
     %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
-    [status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);
+    %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
+    [status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
     
     if status_gitSubmodule ~= 0
         fprintf(strrep(result_gitSubmodule, '\', '\\'));

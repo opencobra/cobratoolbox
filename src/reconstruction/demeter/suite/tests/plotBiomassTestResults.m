@@ -113,46 +113,51 @@ end
 if ~isempty(translatedDraftsFolder)
     % draft and refined reconstructions
     % workaround if growth for drafts on anaerobic is all zeros
-    if sum(data(:,2))< tol
-        data(1,2)=tol;
+    try
+        
+        if sum(data(:,2))< tol
+            data(1,2)=tol;
+        end
+        
+        figure;
+        hold on
+        violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
+        set(gca, 'FontSize', 12)
+        box on
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
+        h=title(['Growth on rich medium, ' reconVersion]);
+        set(h,'interpreter','none')
+        set(gca,'TickLabelInterpreter','none')
+        print([testResultsFolder filesep 'Growth_rates_Rich_medium_' reconVersion],'-dpng','-r300')
+        
+        data=[];
+        for f=1:length(folders)
+            data(:,size(data,2)+1:size(data,2)+2)=growth{f}(:,3:4);
+        end
+        % workaround if growth for drafts is all zeros
+        if sum(data(:,1))< tol
+            data(1,1)=tol;
+        end
+        if sum(data(:,2))< tol
+            data(1,2)=tol;
+        end
+        
+        figure;
+        hold on
+        violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
+        set(gca, 'FontSize', 12)
+        box on
+        maxval=max(data,[],'all');
+        ylim([0 maxval + maxval/10])
+        ylabel('mmol *g dry weight-1 * hr-1')
+        h=title(['Growth on complex medium, ' reconVersion]);
+        set(h,'interpreter','none')
+        set(gca,'TickLabelInterpreter','none')
+        print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
+        
     end
-    figure;
-    hold on
-    violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
-    set(gca, 'FontSize', 12)
-    box on
-    maxval=max(data,[],'all');
-    ylim([0 maxval + maxval/10])
-    ylabel('mmol *g dry weight-1 * hr-1')
-    h=title(['Growth on rich medium, ' reconVersion]);
-    set(h,'interpreter','none')
-    set(gca,'TickLabelInterpreter','none')
-    print([testResultsFolder filesep 'Growth_rates_Rich_medium_' reconVersion],'-dpng','-r300')
-    
-    data=[];
-    for f=1:length(folders)
-        data(:,size(data,2)+1:size(data,2)+2)=growth{f}(:,3:4);
-    end
-    % workaround if growth for drafts is all zeros
-    if sum(data(:,1))< tol
-        data(1,1)=tol;
-    end
-    if sum(data(:,2))< tol
-        data(1,2)=tol;
-    end
-    
-    figure;
-    hold on
-    violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
-    set(gca, 'FontSize', 12)
-    box on
-    maxval=max(data,[],'all');
-    ylim([0 maxval + maxval/10])
-    ylabel('mmol *g dry weight-1 * hr-1')
-    h=title(['Growth on complex medium, ' reconVersion]);
-    set(h,'interpreter','none')
-    set(gca,'TickLabelInterpreter','none')
-    print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
     
     % report draft models that are unable to grow
     fprintf('Report for draft models:\n')
@@ -227,7 +232,7 @@ if ~isempty(translatedDraftsFolder)
     
 else
     % only refined reconstructions
-    if size(data,1)>5
+    try
         figure;
         hold on
         violinplot(data, {'Aerobic,','Anaerobic'});
@@ -252,7 +257,6 @@ else
         hold on
         violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
-        box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
         ylabel('mmol *g dry weight-1 * hr-1')
