@@ -75,7 +75,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Nodes.MoietyIndex - numeric id of the corresponding moiety (arm.MTG.Nodes.MoietyIndex) 
 %          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2A)
 %          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2C)
-%          * .Nodes.IsFirst - boolean, true if atom is within first component of an isomorphism class 
+%          * .Nodes.IsCanonical - boolean, true if atom is within first component of an isomorphism class 
 %
 %          * .Edges — Table of edge information, with `u` rows, one for each atom transition instance.
 %          * .Edges.EndNodes - numeric id of head and tail atoms that defines the graph edges  
@@ -87,7 +87,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Edges.TransIndex - unique numeric id for each atom transition
 %          * .Edges.Component - numeric id of the corresponding connected component (columns of T2C)
 %          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of T2I)
-%          * .Edges.IsFirst - boolean, true if atom transition is within first component of an isomorphism class 
+%          * .Edges.IsCanonical - boolean, true if atom transition is within first component of an isomorphism class 
 %
 % arm.M2A:  `m x a` matrix mapping each metabolite to one or more atoms in the (undirected) atom transition graph
 % arm.A2R:  `u x n` matrix that maps atom transitions to reactions. An atom transition can map to multiple reactions and a reaction can map to multiple atom transitions
@@ -105,9 +105,9 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 % arm.MTG:  (undirected) moitey transition graph, as a MATLAB graph structure with the following tables and variables:
 %
 %          * .Nodes — Table of node information, with `p` rows, one for each moiety instance.
-%          * .Nodes.MoietyIndex - unique numeric id of the moiety 
+%          * .Nodes.MoietyIndex - unique numeric id of the moiety instance 
 %          * .Nodes.Formula - chemical formula of the moiety (Hill notation)
-%          * .Nodes.Met - representative metabolite containing the moiety
+%          * .Nodes.Met - metabolite containing the moiety instance
 %          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2M)
 %          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2M)
 
@@ -117,7 +117,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Edges.Rxn - the reaction from which this moiety transition was derived
 %          * .Edges.Component - numeric id of the corresponding connected component (columns of M2C)
 %          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of M2I)
-%          * .Edges.IsFirst - boolean, true if moiety transition is within first component of an isomorphism class 
+%          * .Edges.IsCanonical - boolean, true if moiety transition is within first component of an isomorphism class 
 %          Note that M = incidence(arm.MTG); gives the p x q incidence matrix of the moitey transition graph
 %
 % arm.I2M Matrix to map each isomorphism class to one or more moiety instances
@@ -134,7 +134,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
 % arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
 %
-% arm.MTG.Nodes.IsFirst - boolean, true if moiety corresponds to the first component of an isomorphism class (should be all true)
+% arm.MTG.Nodes.IsCanonical - boolean, true if moiety corresponds to the first component of an isomorphism class (should be all true)
 % arm.MTG.Nodes.Atom - alphanumeric id of the corresponding atom in the first component of an isomorphism class 
 % arm.MTG.Nodes.AtomIndex - numeric id of the corresponding atom in the first component of an isomorphism class
 % arm.MTG.Edges.orientationATM2dATM - orientation of moiety transition with respect to the reaction from which this moiety transition was derived
@@ -713,31 +713,31 @@ end
 %% Moiety transition graph
 %create the moiety transition graph explicitly as a
 %subgraph of the atom transition graph
-[isFirst, moiety2isomorphismClass] = ismember(atoms2component,firstSubgraphIndices);
-moiety2isomorphismClass = moiety2isomorphismClass(isFirst);
+[isCanonical, moiety2isomorphismClass] = ismember(atoms2component,firstSubgraphIndices);
+moiety2isomorphismClass = moiety2isomorphismClass(isCanonical);
 
 if sanityChecks
-    moiety2isomorphismClass2 = atoms2isomorphismClass(isFirst);
+    moiety2isomorphismClass2 = atoms2isomorphismClass(isCanonical);
     if any(moiety2isomorphismClass~=moiety2isomorphismClass2)
         error('Inconsistent moiety2isomorphismClass vector')
     end
 end
     
-ATG.Nodes = addvars(ATG.Nodes,isFirst,'NewVariableNames','IsFirst');
+ATG.Nodes = addvars(ATG.Nodes,isCanonical,'NewVariableNames','IsCanonical');
 %size of the moiety instance transition graph
-nMoieties=nnz(isFirst);
-isFirstTransition = any(A(isFirst, :), 1)';
-nMoietyTransitions = nnz(isFirstTransition);
+nMoieties=nnz(isCanonical);
+isCanonicalTransition = any(A(isCanonical, :), 1)';
+nMoietyTransitions = nnz(isCanonicalTransition);
 
 if 0
-    ATG.Edges = addvars(ATG.Edges,isFirstTransition,'NewVariableNames','IsFirst');
+    ATG.Edges = addvars(ATG.Edges,isCanonicalTransition,'NewVariableNames','IsCanonical');
 else
-    ATG.Edges.IsFirst = isFirstTransition;
+    ATG.Edges.IsCanonical = isCanonicalTransition;
 end
 
 %draft moiety transition graph, before editing node and
 %edge information
-MTG = subgraph(ATG,isFirst);
+MTG = subgraph(ATG,isCanonical);
 M = incidence(MTG);
 
 MTG.Nodes.MoietyIndex = (1:nMoieties)';
@@ -752,7 +752,7 @@ if sanityChecks
 end
 
 %add moiety specific information
-MTG.Nodes = removevars(MTG.Nodes,{'AtomNumber','Element','IsFirst','Atom','AtomIndex'});
+MTG.Nodes = removevars(MTG.Nodes,{'AtomNumber','Element','IsCanonical','Atom','AtomIndex'});
 MTG.Nodes = addvars(MTG.Nodes,moietyFormulae(moiety2isomorphismClass),'NewVariableNames','Formula','After','MoietyIndex');
 
 %          * .Edges.HeadAtom - head Nodes.Atom
@@ -767,7 +767,7 @@ if ~sanityChecks
     if 1
         %graph.Edges cannot be directly edited in a graph object, so extract,
         %edit and regenerate the graph
-        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsFirst','Rxn'});
+        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'});
         %add variables
         Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
         %reorder the variables 
@@ -796,7 +796,7 @@ if sanityChecks
     % Extract moiety graph directly from atom transition
     % graph incidence matrix
     [isFirstAlso, ~] = ismember(atoms2component,firstSubgraphIndices);
-    if ~all(isFirst == isFirstAlso)
+    if ~all(isCanonical == isFirstAlso)
         error('moiety incidence matrix does not match first component')
     end
     A = incidence(ATG);
@@ -824,7 +824,7 @@ end
 %add the moiety indices for the first atoms in each moiety
 moietyInd=1;
 for i=1:nAtoms
-    if ATG.Nodes.IsFirst(i)
+    if ATG.Nodes.IsCanonical(i)
         ATG.Nodes.MoietyIndex(i)=moietyInd;
         moietyInd = moietyInd + 1;
     end
@@ -880,7 +880,7 @@ end
 
 %% Map between moiety graph and metabolic network
 %map metabolite to moieties
-moieties2mets = atoms2mets(isFirst);
+moieties2mets = atoms2mets(isCanonical);
 
 %matrix to map each metabolite to one or more moieties
 M2M = sparse(moieties2mets,(1:nMoieties)', 1,nMappedMets,nMoieties);
@@ -919,7 +919,7 @@ end
 %matrix to map moiety transitions to reactions. Multiple moiety
 %transitions can map to multiple reactions.
 %A2R = A2Ti*Ti2R;
-M2R = A2R(isFirstTransition,:);
+M2R = A2R(isCanonicalTransition,:);
 
 if 0
     %in general it is not possible to specify the mapping from moiety
