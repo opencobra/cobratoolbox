@@ -16,7 +16,7 @@
 [submodule "binary"]
 	path = binary
 	url = https://github.com/opencobra/COBRA.binary.git
-	ignore = none
+	ignore = dirty
 	branch = master
 [submodule "gaimc"]
 	path = external/analysis/gaimc
