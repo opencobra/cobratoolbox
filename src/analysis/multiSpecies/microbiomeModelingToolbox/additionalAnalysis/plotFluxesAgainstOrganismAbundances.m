@@ -26,12 +26,10 @@ mkdir('Metabolite_plots')
 cd('Metabolite_plots')
 
 % load reaction abundances
-abundance = readtable(abundancePath);
-abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
+abundance = readInputTableForPipeline(abundancePath);
 
 % load fluxes
-fluxes = readtable(fluxPath);
-fluxes = [fluxes.Properties.VariableNames;table2cell(fluxes)];
+fluxes = readInputTableForPipeline(fluxPath);
 
 % check if data is from same samples
 if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
@@ -64,7 +62,6 @@ for i=2:size(fluxes,1)
         f=figure;
         scatter(data(:,1),data(:,2),'b','filled','o','MarkerEdgeColor','black')
         hold on
-        box on
         h=xlabel(fluxes{i,1});
         set(h,'interpreter','none')
         orgLabel=strrep(abundance{j,1},'pan','');

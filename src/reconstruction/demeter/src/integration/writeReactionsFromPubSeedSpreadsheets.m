@@ -18,24 +18,13 @@ function writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spre
 %       - Almut Heinken, 06/2020
 
 % get PubSEED IDs of new organisms to reconstruct
-gettab=tdfread(infoFilePath);
-getcols=fieldnames(gettab);
-infoFile={};
-for j=1:length(getcols)
-    infoFile{1,j}=getcols{j};
-    if isnumeric(gettab.(getcols{j}))
-        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(num2str(gettab.(getcols{j})));
-    else
-        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(gettab.(getcols{j}));
-    end
-end
+infoFile = readInputTableForPipeline(infoFilePath);
 
 % find folder with annotation versions in the information file
-versionCol = find(strcmp(infoFile(1,:),'Annotation_version_ID'));
+versionCol = find(strcmp(infoFile(1,:),'Annotation version ID'));
 
-% load spreadsheet
-reactions=readtable('InReactions.txt', 'FileType','text','delimiter','tab');
-reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
+% load reactions
+reactions = readInputTableForPipeline('InReactions.txt');
 exchanges=reactions(find(strcmp(reactions(:,1),'Exchange')),2);
 
 % load database
@@ -56,14 +45,8 @@ cnt=1;
 
 for i=1:length(fileList)
     i
-    % need workaround to read in tsv file
-    gettab=tdfread([spreadsheetFolder filesep fileList{i}]);
-    getcols=fieldnames(gettab);
-    spreadsheet={};
-    for j=1:length(getcols)
-        spreadsheet{1,j}=getcols{j};
-        spreadsheet(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
-    end
+    spreadsheet = readInputTableForPipeline([spreadsheetFolder filesep fileList{i}]);
+
     for j=2:size(spreadsheet,1)
         % replace PubSeed with AGORA Model IDs
         % some entries in the comparative genomics spreadsheet have no
@@ -78,6 +61,9 @@ for i=1:length(fileList)
                         genomeAnnotation{cnt,2}=getRxns{r};
                         % include GPRs
                         peg=infoFile(find(strcmp(infoFile(:,1),spreadsheet{j,1})),versionCol);
+                        if isnumeric(peg{1})
+                            peg{1}=num2str(peg{1});
+                        end
                         genes=strsplit(spreadsheet{j,k},',');
                         if strcmp(genes,'][')
                             genomeAnnotation{cnt,3}='gap_filled';

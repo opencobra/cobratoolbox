@@ -91,8 +91,13 @@ if isempty(mapP)
     [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
     
     % remove rows of organisms that are not present in any sample
-    microbeNames(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
-    abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        microbeNames(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+        abundance(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
+    else
+        microbeNames(sum(str2double(abundance(:,2:end)),2)<0.0000001,:)=[];
+        abundance(sum(str2double(abundance(:,2:end)),2)<0.0000001,:)=[];
+    end
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
@@ -246,6 +251,7 @@ for j=1:steps:length(sampNames)
             couplingMatrixSample = mappingData.couplingMatrix;
             abunRed=mappingData.abundance(:,i+1);
             abunRed=[mappingData.abundance(:,1),abunRed];
+            
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             couplingMatrixSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];

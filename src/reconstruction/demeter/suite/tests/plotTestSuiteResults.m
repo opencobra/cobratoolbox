@@ -246,8 +246,13 @@ for i=1:length(features)
             end
         end
     else
-        growth=length(find(cell2mat(Results.(features{i})(:,2))==1));
-        nogrowth=length(find(cell2mat(Results.(features{i})(:,2))==0));
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            growth=length(find(cell2mat(Results.(features{i})(:,2))==1));
+            nogrowth=length(find(cell2mat(Results.(features{i})(:,2))==0));
+        else
+            growth=length(find(str2double(Results.(features{i})(:,2))==1));
+            nogrowth=length(find(str2double(Results.(features{i})(:,2))==0));
+        end
         cntData=growth+nogrowth;
         cntAgreeing=growth;
     end

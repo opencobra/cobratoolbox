@@ -29,13 +29,8 @@ addedRxns = {};
 removedRxns = {};
 
 % read in the fermentation pathway data
-fermDataTable = readtable([inputDataFolder filesep 'FermentationTable.txt'], 'Delimiter', '\t');
-for i=1:11
-    if ismember(['Ref' num2str(i)],fermDataTable.Properties.VariableNames)
-fermDataTable.(['Ref' num2str(i)])=[];
-    end
-end
-fermDataTable = [fermDataTable.Properties.VariableDescriptions;table2cell(fermDataTable)];
+fermDataTable = readInputTableForPipeline([inputDataFolder filesep 'FermentationTable.txt']);
+fermDataTable(:,find(strncmp(fermDataTable(1,:),'Ref',3)))=[];
 
 tol = 1e-8;
 
@@ -138,7 +133,12 @@ end
 
 % find the pathways to add
 pathways=fermDataTable(1,2:end);
-fpathways = pathways(find(cell2mat(fermDataTable(mInd, 2:end)) == 1));
+if contains(version,'(R202') % for Matlab R2020a and newer
+    fpathways = pathways(find(cell2mat(fermDataTable(mInd, 2:end)) == 1));
+else
+    fpathways = pathways(find(str2double(fermDataTable(mInd, 2:end)) == 1));
+end
+
 if isempty(fpathways)
     warning(['No fermentation pathways found for ', microbeID])
 end

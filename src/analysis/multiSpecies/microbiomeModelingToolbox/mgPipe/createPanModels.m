@@ -59,11 +59,9 @@ solver = CBT_LP_SOLVER;
 environment = getEnvironment();
 
 if ~exist('taxTable','var')
-    infoFile = readtable('AGORA_infoFile.xlsx', 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
+    infoFile = readInputTableForPipeline('AGORA_infoFile.xlsx');
 else
-    infoFile = readtable(taxTable, 'ReadVariableNames', false);
-    infoFile = table2cell(infoFile);
+    infoFile = readInputTableForPipeline(taxTable);
 end
 
 % get the reaction and metabolite database
@@ -420,8 +418,7 @@ reactionsToReplace = {
 
 % List Western diet constraints to test if the pan-model produces
 % reasonable ATP flux on this diet.
-dietConstraints = readtable('WesternDietAGORA2.txt');
-dietConstraints = table2cell(dietConstraints);
+dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
 
 dInfo = dir(panPath);
@@ -544,8 +541,7 @@ function model=buildPanModel(agoraPath, models, taxonToCreate, infoFile, databas
 tol = 1e-5;
 
 % List Western diet constraints
-dietConstraints = readtable('WesternDietAGORA2.txt');
-dietConstraints = table2cell(dietConstraints);
+dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
 
 if size(models, 1) == 1

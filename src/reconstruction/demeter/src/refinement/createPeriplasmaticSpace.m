@@ -28,7 +28,7 @@ if ~isempty(find(strcmp(infoFile(:,1),microbeID)))
     genCol=find(strcmp(infoFile(1,:),'Genus'));
     genus=infoFile{find(strcmp(infoFile(:,1),microbeID)),genCol};
     
-    gramCol=find(strcmp(infoFile(1,:),'Gram_Staining'));
+    [~,gramCol,~]=intersect(infoFile(1,:),{'Gram Staining','Gram_Staining'});
     gramStatus=infoFile(find(strcmp(infoFile(:,1),microbeID)),gramCol);
     
     if (strcmp(gramStatus,'Gram-') || strcmp(phylum,'Deinococcus-Thermus')) && ~any(strcmp(phylum,{'Euryarchaeota','Crenarchaeota','Thaumarchaeota','Tenericutes'})) && ~any(strcmp(genus,{'Acidaminobacter','Gracilibacter'}))

@@ -29,8 +29,7 @@ if nargin == 1
     cutoff=0.0001;
 end
 
-coverage = readtable(abunFilePath,'ReadVariableNames',false);
-coverage = [coverage.Properties.VariableNames;table2cell(coverage)];
+coverage = readInputTableForPipeline(abunFilePath);
 coverage{1,1}='ID';
 
 % summarize duplicate entries

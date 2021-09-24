@@ -68,17 +68,23 @@ for i=2:size(sampleData,1)
     if ~isempty(find(strcmp(database.metabolites(:,1),varname)))
         varname=database.metabolites{find(strcmp(database.metabolites(:,1),varname)),2};
     end
-    figure;
     % plot the violins
     % if there are nonzero values in each stratification group and the
     % values aren't all the same
     strats=unique(sampleStratification);
-    plotdata=cell2mat(sampleData(i,2:end))';
+    
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        plotdata=cell2mat(sampleData(i,2:end))';
+    else
+        plotdata=str2double(sampleData(i,2:end))';
+    end
+    
     for j=1:length(strats)
         valsinstrat(j)=sum(plotdata(find(strcmp(sampleStratification,strats{j}))));
         uniquevals(j)=numel(unique(plotdata(find(strcmp(sampleStratification,strats{j})))));
     end
     if ~any(valsinstrat<0.0000001) && ~any(uniquevals<2)
+        figure
         hold on
         violinplot(plotdata,sampleStratification);
         if length(strats) > 3
@@ -89,7 +95,13 @@ for i=2:size(sampleData,1)
         if length(strats) > 6
             xtickangle(45)
         end
-        ylim([0 max(max(cell2mat(sampleData(i,2:end))))])
+        
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            ylim([0 max(max(cell2mat(sampleData(i,2:end))))])
+        else
+            ylim([0 max(max(str2double(sampleData(i,2:end))))])
+        end
+        
         if ~isempty(unit)
             h=ylabel(unit);
             set(h,'interpreter','none')
@@ -111,18 +123,34 @@ for i=2:size(sampleData,1)
         filename=strrep(filename,'___','_');
         filename=strrep(filename,'__','_');
         if ~isempty(plottedFeature)
-        featName=[strrep(plottedFeature,' ','_') '_'];
+            featName=[strrep(plottedFeature,' ','_') '_'];
         else
             featName='';
         end
+        
+        if ~exist('use_append_pdfs','var')
+            % check if ghostscript is installed
+            try
+                append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
+                use_append_pdfs=1;
+            catch
+                use_append_pdfs=0;
+                warning('Cannot create PDF containing all violin plots. Consider installing ghostscript.')
+            end
+        end
+        
         if ~isempty(stratification)
             print([featName stratification '_' filename],'-dpng','-r300')
             print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
-            append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
+            if use_append_pdfs
+                append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
+            end
         else
             print([featName filename],'-dpng','-r300')
             print('-bestfit',[featName filename],'-dpdf','-r300')
-            append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
+            if use_append_pdfs
+                append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
+            end
         end
         close all
     end

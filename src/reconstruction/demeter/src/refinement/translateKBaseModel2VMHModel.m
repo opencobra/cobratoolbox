@@ -37,10 +37,8 @@ if ~any(ismember(model.rxns, biomassReaction))
 end
 
 % load the reaction and metabolite translation tables
-translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
-translateRxns=table2cell(translateRxns);
-translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', '\t');
-translateMets=table2cell(translateMets);
+translateRxns = readInputTableForPipeline('ReactionTranslationTable.txt');
+translateMets = readInputTableForPipeline('MetaboliteTranslationTable.txt');
 
 % adapt IDs for translation
 model.mets = strrep(model.mets, '[c0]', '_c0');

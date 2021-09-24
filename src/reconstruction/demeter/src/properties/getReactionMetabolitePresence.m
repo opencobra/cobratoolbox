@@ -32,20 +32,16 @@ modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 % check if output file already exists
 if isfile([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'])
-    reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'],'ReadVariableNames',true);
-    reactionPresence = [reactionPresence.Properties.VariableDescriptions;table2cell(reactionPresence)];
+    reactionPresence = readInputTableForPipeline([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt']);
     allRxns=reactionPresence(1,2:end)';
-    metabolitePresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion '.txt'],'ReadVariableNames',true);
-    metabolitePresence = [metabolitePresence.Properties.VariableDescriptions;table2cell(metabolitePresence)];
+    metabolitePresence = readInputTableForPipeline([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion '.txt']);
     allMets=metabolitePresence(1,2:end)';
 else
     % restart from existing data if possible
     if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
-        reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
+        reactions = readInputTableForPipeline([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
         allRxns=reactions(:,1);
-        metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt']);
-        metabolites = [metabolites.Properties.VariableDescriptions;table2cell(metabolites)];
+        metabolites = readInputTableForPipeline([propertiesFolder filesep 'Metabolites_' reconVersion '.txt']);
         allMets=metabolites(:,1);
     else
         allRxns={};

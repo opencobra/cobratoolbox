@@ -47,17 +47,10 @@ global CBTDIR
 demeterInputFolder = [CBTDIR filesep 'papers' filesep '2021_demeter' filesep 'input'];
 % Get taxonomy information on AGORA2 that will serve to inform new
 % organisms
-agoraInfoFile = readtable([demeterInputFolder filesep 'AGORA2_infoFile.xlsx']);
-agoraInfoFile = [agoraInfoFile.Properties.VariableDescriptions;table2cell(agoraInfoFile)];
+agoraInfoFile = readInputTableForPipeline([demeterInputFolder filesep 'AGORA2_infoFile.xlsx']);
 
 % get taxonomic information of new organisms to reconstruct
-try
-    infoFile = readtable(infoFilePath, 'Delimiter', 'tab');
-catch
-    % if the input file is not a text file
-    infoFile = readtable(infoFilePath);
-end
-infoFile = [infoFile.Properties.VariableDescriptions;table2cell(infoFile)];
+infoFile = readInputTableForPipeline(infoFilePath);
 infoFile{1,1}='MicrobeID';
 
 taxa={'Phylum','Class','Order','Family','Genus','Species'};
@@ -82,8 +75,7 @@ end
 %     };
 % 
 % for i=1:length(inputDataToCheck)
-%     data=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt']);
-%     data = [data.Properties.VariableDescriptions;table2cell(data)];
+%     data=readInputTableForPipeline([demeterInputFolder filesep inputDataToCheck{i,1} '.txt']);
 %     checkedData = checkInputData(data,agoraInfoFile);
 %     writetable(cell2table(checkedData),[demeterInputFolder filesep inputDataToCheck{i}],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 % end
@@ -99,9 +91,7 @@ inputDataToCheck={
     };
 
 for i=1:length(inputDataToCheck)
-    inputData=readtable([demeterInputFolder filesep inputDataToCheck{i} '.txt']);
-    inputData = [inputData.Properties.VariableDescriptions;table2cell(inputData)];
-    
+    inputData = readInputTableForPipeline([demeterInputFolder filesep inputDataToCheck{i,1} '.txt']);
     propagatedData = propagateExperimentalData(inputData, infoFile, agoraInfoFile);
     
     % remove organisms not in the current reconstruction resource
@@ -153,18 +143,13 @@ adaptedInfoFilePath = [inputDataFolder filesep 'adaptedInfoFile.txt'];
 %% Map growth on defined media to in silico constraints
 % Takes the growth on defined media reported by Tramontano et al. 2018 (PMID:29556107) and
 % maps them into input data usable by DEMETER
-inputMedia=readtable([demeterInputFolder filesep 'inputMedia.txt'], 'Delimiter', 'tab');
-inputMedia = [inputMedia.Properties.VariableDescriptions;table2cell(inputMedia)];
-
-strainGrowth=readtable([demeterInputFolder filesep 'strainGrowth.txt'], 'Delimiter', 'tab');
-strainGrowth = [strainGrowth.Properties.VariableDescriptions;table2cell(strainGrowth)];
+inputMedia = readInputTableForPipeline([demeterInputFolder filesep 'inputMedia.txt']);
+strainGrowth = readInputTableForPipeline([demeterInputFolder filesep 'strainGrowth.txt']);
 
 mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia);
 
 % add the data to file with growth requirement data
-data=readtable([inputDataFolder filesep 'GrowthRequirementsTable.txt']);
-data = [data.Properties.VariableDescriptions;table2cell(data)];
-
+data = readInputTableForPipeline([inputDataFolder filesep 'GrowthRequirementsTable.txt']);
 notintable=setdiff(mappedMedia(2:end,1),data(2:end,1));
 data(size(data,1)+1:size(data,1)+length(notintable),1)=notintable;
 for i=2:size(mappedMedia,1)
@@ -190,9 +175,8 @@ writetable(cell2table(data),[inputDataFolder filesep 'GrowthRequirementsTable'],
 
 if ~isempty(spreadsheetFolder)
     writeReactionsFromPubSeedSpreadsheets(adaptedInfoFilePath,inputDataFolder,spreadsheetFolder);
-    genomeAnnotation=readtable([inputDataFolder filesep 'GenomeAnnotation.txt'], 'Delimiter', 'tab');
-    genomeAnnotation = [genomeAnnotation.Properties.VariableDescriptions;table2cell(genomeAnnotation)];
-    
+    genomeAnnotation = readInputTableForPipeline([inputDataFolder filesep 'GenomeAnnotation.txt']);
+
     % remove organisms not in the current reconstruction resource
     [C,IA] = setdiff(genomeAnnotation(:,1),infoFile(:,1));
     genomeAnnotation(IA,:) = [];
