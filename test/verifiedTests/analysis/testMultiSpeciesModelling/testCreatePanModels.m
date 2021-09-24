@@ -21,16 +21,32 @@ try
 end
 modPath = [pwd filesep 'AGORA-master' filesep 'CurrentVersion' filesep 'AGORA_1_03' filesep' 'AGORA_1_03_mat'];
 
-% create the pan-models
-panPath=[pwd filesep 'panSpeciesModels'];
-
 numWorkers=4;
+
+% create the pan-models on species level
+panPath=[pwd filesep 'panSpeciesModels'];
 
 createPanModels(modPath,panPath,'Species',numWorkers);
 
-% test the pan-models
+% test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
 assert(isempty(notGrowing))
 
+% test that ATP production is not too high
 [tooHighATP,ATP_fluxes] = plotATPTestResults(panPath, 'pan-models','numWorkers',numWorkers);
-assert(isempty(tooHighATP))
+assert(max(cell2mat(ATP_fluxes(2:end,2))) < 200)
+assert(max(cell2mat(ATP_fluxes(2:end,3))) < 150)
+
+% create the pan-models on genus level
+panPath=[pwd filesep 'panGenusModels'];
+
+createPanModels(modPath,panPath,'Genus',numWorkers);
+
+% test that pan-models can grow
+[notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
+assert(isempty(notGrowing))
+
+% test that ATP production is not too high
+[tooHighATP,ATP_fluxes] = plotATPTestResults(panPath, 'pan-models','numWorkers',numWorkers);
+assert(max(cell2mat(ATP_fluxes(2:end,2))) < 250)
+assert(max(cell2mat(ATP_fluxes(2:end,3))) < 200)

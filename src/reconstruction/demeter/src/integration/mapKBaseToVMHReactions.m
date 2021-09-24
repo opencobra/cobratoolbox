@@ -3,7 +3,7 @@ function [sameReactions,similarReactions] = mapKBaseToVMHReactions(translatedRxn
 % reactions from KBase to VMH nomenclature. Requires running the function 
 % propagateKBaseMetTranslationToRxns beforehand to translate metabolite
 % IDs, which will then allow matching translated reactions to reactions
-% thjat already exist in the VMH (Virtual Metabolic Human) database.
+% that already exist in the VMH (Virtual Metabolic Human) database.
 %
 % USAGE:
 %

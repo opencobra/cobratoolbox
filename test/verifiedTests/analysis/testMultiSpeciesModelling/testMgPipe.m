@@ -102,9 +102,6 @@ loadUncModels(modPath, organisms);
 assert(~isempty(lastwarn()))
 warning('on', 'all');
 
-% logical tests for outputs
-assert(init && ~isempty(lastwarn()));
-
 % test if the function throws an error when no arguments are provided
 assert(verifyCobraFunctionError('initMgPipe'))
 
@@ -114,9 +111,6 @@ assert(verifyCobraFunctionError('initMgPipe', 'inputs',{modPath}));
 % cleanup
 delete simRes.mat
 delete rDiet_allFlux.csv
-
-% cleanup
-delete simRes.mat
 
 % testing with rich diet
 [init, netSecretionFluxes, netUptakeFluxes, Y] = initMgPipe(modPath, abunFilePath, computeProfiles, 'resPath',resPath,'numWorkers',numWorkers, 'rDiet', true);
@@ -128,7 +122,6 @@ delete simRes.mat
 clear ID fvaCt nsCt presol inFesMat
 cd(resPath)
 delete *.mat
-rmdir([resPath filesep 'modelStorage'],'s')
 
 %% verify that mgPipe also works with a single microbiome model with one strain
 

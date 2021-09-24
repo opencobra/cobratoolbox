@@ -75,15 +75,7 @@ if ~isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt']) && ~isfi
     end
     
     % load VMH database
-    metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-    metaboliteDatabase=table2cell(metaboliteDatabase);
-    database.metabolites=metaboliteDatabase;
-    for i=1:size(database.metabolites,1)
-        database.metabolites{i,5}=num2str(database.metabolites{i,5});
-    end
-    reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-    reactionDatabase=table2cell(reactionDatabase);
-    database.reactions=reactionDatabase;
+    database=loadVMHDatabase;
     
     % print out the unique reactions and metabolites of the resource-only if it
     % used VMH nomenclature

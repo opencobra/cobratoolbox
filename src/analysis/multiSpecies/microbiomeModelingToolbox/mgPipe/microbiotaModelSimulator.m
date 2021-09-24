@@ -274,6 +274,10 @@ if computeProfiles
                     
                     %% computing fluxes on the rich diet
                     if rDiet==1 && computeProfiles
+                        % remove exchanges that cannot carry flux
+                        FecalRxn=intersect(FecalRxn,allFecalExch);
+                        DietRxn=intersect(DietRxn,allDietExch);
+                        
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                         minFluxFecal = minFlux;
                         maxFluxFecal = maxFlux;
@@ -298,7 +302,7 @@ if computeProfiles
                     
                     %% Computing fluxes on the input diet
                     
-                    % remove exchanges that cannot carry flux on the diet
+                    % remove exchanges that cannot carry flux
                     FecalRxn=intersect(FecalRxn,allFecalExch);
                     DietRxn=intersect(DietRxn,allDietExch);
                     
@@ -335,22 +339,19 @@ if computeProfiles
                     else
                         if computeProfiles
                             [minFlux,maxFlux]=guidedSim(model_sd,FecalRxn);
-                            sma=maxFlux;
-                            sma2=minFlux;
+                            minFluxFecal = minFlux;
+                            maxFluxFecal = maxFlux;
                             [minFlux,maxFlux]=guidedSim(model_sd,DietRxn);
-                            smi=minFlux;
-                            smi2=maxFlux;
-                            maxFlux=sma;
-                            minFlux=smi;
-                            
+                            minFluxDiet = minFlux;
+                            maxFluxDiet = maxFlux;
                             netProduction{2,k}=exchanges;
                             netUptake{2,k}=exchanges;
                             for i =1:length(FecalRxn)
                                 [truefalse, index] = ismember(FecalRxn(i), exchanges);
-                                netProduction{2,k}{index,2}=minFlux(i,1);
-                                netProduction{2,k}{index,3}=maxFlux(i,1);
-                                netUptake{2,k}{index,2}=smi2(i,1);
-                                netUptake{2,k}{index,3}=sma2(i,1);
+                                netProduction{2,k}{index,2} = minFluxDiet(i,1);
+                                netProduction{2,k}{index,3} = maxFluxFecal(i,1);
+                                netUptake{2,k}{index,2} = maxFluxDiet(i,1);
+                                netUptake{2,k}{index,3} = minFluxFecal(i,1);
                             end
                         end
                         
@@ -393,16 +394,19 @@ if computeProfiles
                                 
                                 if computeProfiles
                                     [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
-                                    sma=maxFlux;
+                                    minFluxFecal = minFlux;
+                                    maxFluxFecal = maxFlux;
                                     [minFlux,maxFlux]=guidedSim(model_pd,DietRxn);
-                                    smi=minFlux;
-                                    maxFlux=sma;
-                                    minFlux=smi;
-                                    netProduction{3,k}=exchanges;
-                                    for i = 1:length(FecalRxn)
+                                    minFluxDiet = minFlux;
+                                    maxFluxDiet = maxFlux;
+                                    netProduction{1,k}=exchanges;
+                                    netUptake{1,k}=exchanges;
+                                    for i =1:length(FecalRxn)
                                         [truefalse, index] = ismember(FecalRxn(i), exchanges);
-                                        netProduction{3,k}{index,2}=minFlux(i,1);
-                                        netProduction{3,k}{index,3}=maxFlux(i,1);
+                                        netProduction{3,k}{index,2} = minFluxDiet(i,1);
+                                        netProduction{3,k}{index,3} = maxFluxFecal(i,1);
+                                        netUptake{3,k}{index,2} = maxFluxDiet(i,1);
+                                        netUptake{3,k}{index,3} = minFluxFecal(i,1);
                                     end
                                 end
                                 

@@ -28,14 +28,8 @@ function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID,
 addedRxns={};
 removedRxns={};
 
-carbonSourcesTable = readtable([inputDataFolder filesep 'CarbonSourcesTable.txt'], 'Delimiter', '\t');
-% remove the reference columns
-for i=1:11
-    if ismember(['Ref' num2str(i)],carbonSourcesTable.Properties.VariableNames)
-carbonSourcesTable.(['Ref' num2str(i)])=[];
-    end
-end
-carbonSourcesTable = [carbonSourcesTable.Properties.VariableDescriptions;table2cell(carbonSourcesTable)];
+carbonSourcesTable = readInputTableForPipeline([inputDataFolder filesep 'CarbonSourcesTable.txt']);
+carbonSourcesTable(:,find(strncmp(carbonSourcesTable(1,:),'Ref',3)))=[];
 
 mInd = find(ismember(carbonSourcesTable(:, 1), microbeID));
 if isempty(mInd)
@@ -324,7 +318,11 @@ carbGapfillRemove = {
 
 % find the pathways to add
 pathways=carbonSourcesTable(1,2:end);
-cSources = pathways(find(cell2mat(carbonSourcesTable(mInd, 2:end)) == 1));
+if contains(version,'(R202') % for Matlab R2020a and newer
+    cSources = pathways(find(cell2mat(carbonSourcesTable(mInd, 2:end)) == 1));
+else
+    cSources = pathways(find(str2double(carbonSourcesTable(mInd, 2:end)) == 1));
+end
 if isempty(cSources)
     warning(['No carbon sources found for ', microbeID])
 end

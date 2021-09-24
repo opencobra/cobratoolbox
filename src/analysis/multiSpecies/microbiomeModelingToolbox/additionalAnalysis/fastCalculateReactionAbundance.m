@@ -29,8 +29,7 @@ function ReactionAbundance = fastCalculateReactionAbundance(abundancePath, model
 % .. Author: - Almut Heinken, 04/2021
 
 % read the csv file with the abundance data
-abundance = readtable(abundancePath);
-abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
+abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
@@ -91,8 +90,7 @@ totalAbun={};
 parfor i = 2:size(ReactionAbundance, 1)
     i
     % reload the file to avoid running out of memory
-    abundance = readtable(abundancePath, 'ReadVariableNames', false);
-    abundance = table2cell(abundance);
+    abundance = readInputTableForPipeline(abundancePath);
     if isnumeric(abundance{2, 1})
         abundance(:, 1) = [];
     end
@@ -106,7 +104,11 @@ parfor i = 2:size(ReactionAbundance, 1)
         
         for k = 1:length(presentRxns)
             % summarize total abundance
-            totalAbun{i}(presentRxns(k),1) = totalAbun{i}(presentRxns(k),1) + abundance{j,i};
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                totalAbun{i}(presentRxns(k),1) = totalAbun{i}(presentRxns(k),1) + abundance{j,i};
+            else
+                totalAbun{i}(presentRxns(k),1) = totalAbun{i}(presentRxns(k),1) + str2double(abundance{j,i});
+            end
         end
     end
 end

@@ -39,14 +39,12 @@ function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbund
 %                                     changed flux input to a csv file.
 
 % read the csv file with the abundance data
-abundance = readtable(abundancePath);
-abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
+abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
 
-fluxes = readtable(fluxPath);
-fluxes = [fluxes.Properties.VariableNames;table2cell(fluxes)];
+fluxes = readInputTableForPipeline(fluxPath);
 
 % check if data is from same samples
 if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
@@ -65,11 +63,10 @@ fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
 
 % Get the taxonomy information
 if exist('infoFilePath','var')
-    taxonomy = readtable(infoFilePath);
+    taxonomy = readInputTableForPipeline(infoFilePath);
 else
-    taxonomy = readtable('AGORA_infoFile.xlsx');
+    taxonomy = readInputTableForPipeline('AGORA_infoFile.xlsx');
 end
-taxonomy = [taxonomy.Properties.VariableNames;table2cell(taxonomy)];
 
 if ~exist('corrMethod', 'var')  % Define correlation coefficient method if not entered
     corrMethod = 'Pearson';
@@ -141,7 +138,11 @@ for i = 2:size(abundance, 2)
                 % variable
                 findinSampleAbun = find(strcmp(findTax{1}, SampleAbundance.(TaxonomyLevels{t})(1, :)));
                 % sum up the relative abundance
-                SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
+                if contains(version,'(R202') % for Matlab R2020a and newer
+                    SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
+                else
+                    SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
+                end
             end
             end
         end

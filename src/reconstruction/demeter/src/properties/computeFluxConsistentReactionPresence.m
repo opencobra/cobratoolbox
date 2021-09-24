@@ -27,14 +27,12 @@ modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 % check if output file already exists
 if isfile(['ReactionPresence_' reconVersion '.txt'])
-    reactionPresence = readtable(['ReactionPresence_' reconVersion '.txt'], 'ReadVariableNames', false);
-    ReactionPresence = table2cell(reactionPresence);
+    reactionPresence = readInputTableForPipeline(['ReactionPresence_' reconVersion '.txt']);
     allRxns=ReactionPresence(1,2:end)';
 else
     % restart from existing data if possible
     if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-        reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', false);
-        reactions = table2cell(reactions);
+        reactions = readInputTableForPipeline([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
         allRxns=reactions(:,1);
     else
         allRxns={};

@@ -37,8 +37,7 @@ function [ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundance
 %                           01/2020:    adapted to be suitable for pan-models
 
 % read the csv file with the abundance data
-abundance = readtable(abundancePath);
-abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
+abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
@@ -63,11 +62,10 @@ end
 
 % Get the taxonomy information
 if exist('taxonomyPath','var') && ~isempty(taxonomyPath)
-    taxonomy = readtable(taxonomyPath);
+    taxonomy = readInputTableForPipeline(taxonomyPath);
 else
-    taxonomy = readtable('AGORA_infoFile.xlsx');
+    taxonomy = readInputTableForPipeline('AGORA_infoFile.xlsx');
 end
-taxonomy = [taxonomy.Properties.VariableNames;table2cell(taxonomy)];
 
 % load the models found in the individuals and extract which reactions are
 % in which model
@@ -185,48 +183,76 @@ for i = 2:size(abundance, 2)
             % check if the reaction is present in the strain
             if ReactionPresence{k, j + 1} == 1
                 % calculate total abundance
-                totalAbun(j) = totalAbun(j) + abundance{k, i};
+                if contains(version,'(R202') % for Matlab R2020a and newer
+                    totalAbun(j) = totalAbun(j) + abundance{k, i};
+                else
+                    totalAbun(j) = totalAbun(j) + str2double(abundance{k, i});
+                end
                 % calculate phylum abundance
                 t = 1;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpPhyl(1, taxonCol) = tmpPhyl(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpPhyl(1, taxonCol) = tmpPhyl(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpPhyl(1, taxonCol) = tmpPhyl(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
                 % calculate class abundance
                 t = 2;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpClass(1, taxonCol) = tmpClass(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpClass(1, taxonCol) = tmpClass(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpClass(1, taxonCol) = tmpClass(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
                 % calculate order abundance
                 t = 3;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpOrder(1, taxonCol) = tmpOrder(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpOrder(1, taxonCol) = tmpOrder(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpOrder(1, taxonCol) = tmpOrder(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
                 % calculate family abundance
                 t = 4;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpFamily(1, taxonCol) = tmpFamily(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpFamily(1, taxonCol) = tmpFamily(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpFamily(1, taxonCol) = tmpFamily(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
                 % calculate genus abundance
                 t = 5;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpGenus(1, taxonCol) = tmpGenus(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpGenus(1, taxonCol) = tmpGenus(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpGenus(1, taxonCol) = tmpGenus(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
                 % calculate species abundance
                 t = 6;
                 findTax = taxonomy(find(strcmp(abundance{k, 1}, inputTaxa)), TaxonomyLevels{t, 3});
                 if any(strcmp(findTax{1}, TaxonomyLevels{t, 2}))
                     taxonCol = find(strcmp(findTax{1}, TaxonomyLevels{t, 2}));
-                    tmpSpecies(1, taxonCol) = tmpSpecies(1, taxonCol) + abundance{k, i};
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        tmpSpecies(1, taxonCol) = tmpSpecies(1, taxonCol) + abundance{k, i};
+                    else
+                        tmpSpecies(1, taxonCol) = tmpSpecies(1, taxonCol) + str2double(abundance{k, i});
+                    end
                 end
             end
         end

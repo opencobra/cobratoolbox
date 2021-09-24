@@ -17,12 +17,10 @@ function getSubsystemPresence(propertiesFolder,reconVersion)
 %   Almut Heinken, 11/2020
 
 % Load all reactions in reconstruction resource
-reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
-reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
+reactions = readInputTableForPipeline([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
 
 % Load the reaction presence data for each reconstruction
-reactionPresence = readtable([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt'],'ReadVariableNames',true);
-reactionPresence = [reactionPresence.Properties.VariableDescriptions;table2cell(reactionPresence)];
+reactionPresence = readInputTableForPipeline([propertiesFolder filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '.txt']);
 
 allSubs = unique(reactions(:,11));
 allSubs(find(strcmp(allSubs(:,1),'')),:)=[];
@@ -38,7 +36,11 @@ for i=2:size(subsystemPresence,2)
     % find all reactions in reaction presence file
     [~,findRxnInds]=intersect(reactionPresence(1,:),findRxns);
     for j=2:size(reactionPresence,1)
-        subsystemPresence{j,i}=num2str(sum(cell2mat(reactionPresence(j,findRxnInds))))/length(findRxns);
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            subsystemPresence{j,i}=num2str(sum(cell2mat(reactionPresence(j,findRxnInds))))/length(findRxns);
+        else
+            subsystemPresence{j,i}=num2str(sum(str2double(reactionPresence(j,findRxnInds))))/length(findRxns);
+        end
     end
 end
 

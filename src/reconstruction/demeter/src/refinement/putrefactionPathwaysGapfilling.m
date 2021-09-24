@@ -22,15 +22,14 @@ function [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,databa
 % .. Author:
 %       - Almut Heinken, 2019-2020
 
-PutrefactionTable = readtable('PutrefactionTable.txt', 'Delimiter', '\t');
-PutrefactionTable = [PutrefactionTable.Properties.VariableNames;table2cell(PutrefactionTable)];
+PutrefactionTable = readInputTableForPipeline('PutrefactionTable.txt');
 
 rxnsAdded={};
 % model index in data table
 mInd = find(ismember(PutrefactionTable(:, 1), microbeID));
 % if in data table
 if ~isempty(mInd)
-    if PutrefactionTable{mInd, 2}==1
+    if strcmp(PutrefactionTable{mInd, 2},'1') || PutrefactionTable{mInd, 2}==1
         % Histidine degradation (histidine -> glutamate)
         % add reactions that are not already in reconstruction
         pthwRxns = {'HISD', 'URCN', 'IZPN', 'GluForTx', 'GLUFORT'};
@@ -38,7 +37,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 3}==1
+    if strcmp(PutrefactionTable{mInd, 3},'1') || PutrefactionTable{mInd, 3}==1
         % THF production (histidine -> tetrahydrofolate)
         % add reactions that are not already in reconstruction
         pthwRxns = {'HISD', 'URCN', 'IZPN', 'GluForTx', 'FTCD'};
@@ -49,7 +48,7 @@ if ~isempty(mInd)
             model=removeRxns(model, 'FORTHFC');
         end
     end
-    if PutrefactionTable{mInd, 4}==1
+    if strcmp(PutrefactionTable{mInd, 4},'1') || PutrefactionTable{mInd, 4}==1
         % Glutamate degradation (glutamate -> acetate + pyruvate)
         % add reactions that are not already in reconstruction
         pthwRxns = {'GLUM', '3MASPL', 'MESCONH', 'CITMALL'};
@@ -57,7 +56,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 5}==1
+    if strcmp(PutrefactionTable{mInd, 5},'1') || PutrefactionTable{mInd, 5}==1
         % Arginine to putrescine_1 via ornithine decarboxylase (ODC, EC: 4.1.1.17)
         % add reactions that are not already in reconstruction
         pthwRxns = {'ARGN', 'ORNDC', 'EX_ptrc(e)', 'PTRCtex2'};
@@ -65,7 +64,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 6}==1
+    if strcmp(PutrefactionTable{mInd, 6},'1') || PutrefactionTable{mInd, 6}==1
         % Arginine to putrescine_2 via agmatinase (EC: 3.5.3.11)
         % add reactions that are not already in reconstruction
         % exchange and transporter need to be added separately-some
@@ -75,7 +74,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 7}==1
+    if strcmp(PutrefactionTable{mInd, 7},'1') || PutrefactionTable{mInd, 7}==1
         % Arginine to putrescine_3 via carbamoylputrescine hydrolase (EC: 3.5.1.53)
         % add reactions that are not already in reconstruction
         pthwRxns = {'ARGDC', 'AGMD', 'NCPTRCA', 'EX_ptrc(e)', 'PTRCtex2'};
@@ -83,7 +82,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 8}==1
+    if strcmp(PutrefactionTable{mInd, 8},'1') || PutrefactionTable{mInd, 8}==1
         % Spermidine/ Spermine production (methionine -> spermidine)
         % add reactions that are not already in reconstruction
         % exchange and transporter need to be added separately-some
@@ -93,7 +92,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 9}==1
+    if strcmp(PutrefactionTable{mInd, 9},'1') || PutrefactionTable{mInd, 9}==1
         % Cadaverine production (lysine -> cadaverine)
         % add reactions that are not already in reconstruction
         pthwRxns = {'LYSDC', 'EX_15dap(e)', '15DAPt'};
@@ -101,7 +100,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 10}==1
+    if strcmp(PutrefactionTable{mInd, 10},'1') || PutrefactionTable{mInd, 10}==1
         % Cresol production (tyrosine -> cresol)
         % add reactions that are not already in reconstruction
         pthwRxns = {'TYRTA', '34HPPDC', '4HOXPACDOX_NADP_', '4HPHACDC', 'EX_pcresol(e)', 'PCRESOLt2r'};
@@ -109,7 +108,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 11}==1
+    if strcmp(PutrefactionTable{mInd, 11},'1') || PutrefactionTable{mInd, 11}==1
         % Indole production (tryptophan -> indole)
         % add reactions that are not already in reconstruction
         pthwRxns = {'TRPAS2i', 'EX_indole(e)', 'INDOLEt2r'};
@@ -117,7 +116,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 12}==1
+    if strcmp(PutrefactionTable{mInd, 12},'1') || PutrefactionTable{mInd, 12}==1
         % Phenol production (tyrosine -> phenol)
         % add reactions that are not already in reconstruction
         pthwRxns = {'TYRL', 'EX_phenol(e)', 'PHENOLt2r'};
@@ -125,7 +124,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 13}==1
+    if strcmp(PutrefactionTable{mInd, 13},'1') || PutrefactionTable{mInd, 13}==1
         % H2S_1 via gamma lyase (EC: 4.4.1.1)
         % add reactions that are not already in reconstruction
         pthwRxns = {'CYSDS', 'EX_h2s(e)', 'H2St'};
@@ -133,7 +132,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 14}==1
+    if strcmp(PutrefactionTable{mInd, 14},'1') || PutrefactionTable{mInd, 14}==1
         % H2S_2 via  3-mercaptopyruvate sulfurtransferase (EC: 2.8.1.2)
         % add reactions that are not already in reconstruction
         pthwRxns = {'CYSTA', 'MCPST_H2S', 'EX_h2s(e)', 'H2St'};
@@ -141,7 +140,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 15}==1
+    if strcmp(PutrefactionTable{mInd, 15},'1') || PutrefactionTable{mInd, 15}==1
         % H2S_3 via cystathionine beta-synthase (EC: 4.2.1.22)
         % add reactions that are not already in reconstruction
         pthwRxns = {'CYSTS_H2S', 'EX_h2s(e)', 'H2St'};
@@ -152,7 +151,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 16}==1
+    if strcmp(PutrefactionTable{mInd, 16},'1') || PutrefactionTable{mInd, 16}==1
         % H2S_4 via L-cysteine desulfhydrase (EC: 4.4.1.28)
         % add reactions that are not already in reconstruction
         pthwRxns = {'CYSDS', 'EX_h2s(e)', 'H2St'};
@@ -160,7 +159,7 @@ if ~isempty(mInd)
             rxnsAdded = union(rxnsAdded, pthwRxns(~ismember(pthwRxns, model.rxns)));
         end
     end
-    if PutrefactionTable{mInd, 17}==1
+    if strcmp(PutrefactionTable{mInd, 17},'1') || PutrefactionTable{mInd, 17}==1
         % H2S_5 via D-cysteine desulfhydrase (EC: 4.4.1.15)
         % add reactions that are not already in reconstruction
         pthwRxns = {'CYSR', 'DCYSDS', 'EX_h2s(e)', 'H2St'};

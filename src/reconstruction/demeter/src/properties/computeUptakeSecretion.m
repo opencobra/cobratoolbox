@@ -36,11 +36,9 @@ if ~isempty(metList)
 else
     % start from existing progress if possible
     if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt'])
-        uptakeFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt'], 'ReadVariableNames', true);
-        uptakeFluxes = [uptakeFluxes.Properties.VariableDescriptions;table2cell(uptakeFluxes)];
+        uptakeFluxes = readInputTableForPipeline([propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion  '.txt']);
         allExch=uptakeFluxes(1,2:end)';
-        secretionFluxes = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion  '.txt'], 'ReadVariableNames', true);
-        secretionFluxes = [secretionFluxes.Properties.VariableDescriptions;table2cell(secretionFluxes)];
+        secretionFluxes = readInputTableForPipeline([propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion  '.txt']);
         
         % remove models that were already retrieved
         modelsRenamed=strrep(modelList(:,1),'.mat','');
@@ -51,8 +49,7 @@ else
     else
         % restart from existing data if possible
         if isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt'])
-            reactions = readtable([propertiesFolder filesep 'Reactions_' reconVersion '.txt'], 'ReadVariableNames', true);
-            reactions = [reactions.Properties.VariableDescriptions;table2cell(reactions)];
+            reactions = readInputTableForPipeline([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);
             allExch=reactions(find(strncmp(reactions(:,1),'EX_',3)),1);
         else
             % load all reconstructions and get the exchange reactions
@@ -194,8 +191,7 @@ tol=0.0000001;
 
 files={['uptakeFluxes_' reconVersion],['secretionFluxes_' reconVersion],['UptakeSecretion_' reconVersion]};
 for i=1:length(files)
-    data = readtable([propertiesFolder filesep 'ComputedFluxes' filesep files{i}  '.txt'], 'ReadVariableNames', true);
-    data = [data.Properties.VariableDescriptions;table2cell(data)];
+    data = readInputTableForPipeline([propertiesFolder filesep 'ComputedFluxes' filesep files{i}  '.txt']);
     for j=2:size(data,1)
         for k=2:size(data,2)
             if data{j,k} < -tol
