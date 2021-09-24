@@ -1,9 +1,8 @@
-function [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model, rxnDir, printLevel)
-% Calculate the bond enthalpies and the bonds broken and formed for the
-% mass balanced reactions in a metabolic network based on atom mapping
-% data.
+function [enthalpyChange, substrateMass] = findEnthalpyChange(model, rxnDir, printLevel)
+% Calculate the enthalphy change for mass balanced reactions in a 
+% metabolic network based on atom mapping data.
 %
-% The bond enthalphies are based on:
+% The enthalpy change are based on:
 % Huheey, pps. A-21 to A-34; T.L. Cottrell, "The Strengths of Chemical
 % Bonds," 2nd ed., Butterworths, London, 1958;
 % B. deB. Darwent, "National Standard Reference Data Series," National
@@ -12,7 +11,7 @@ function [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model,
 %
 % USAGE:
 %
-%    [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model, rxnDir, printLevel)
+%    [enthalpyChange, substrateMass] = findEnthalpyChange(model, rxnDir, printLevel)
 %
 % INPUTS:
 %    model:     COBRA model with following fields:
@@ -23,14 +22,9 @@ function [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model,
 %    printLevel Print figure with the relation of mass vs bondsBF bondsE
 %
 % OUTPUTS:
-%    bondsBF       An n x 1 vector with the number of bonds broken and
-%                  formed. External or mass balanced reactions are equal to 0.
-%                  Missing atom mapping data is considered as mean(bondsBF)
-%    bondsE        An n x 1 vector with the bond enthalpies in kJ/mol.
-%                  External or mass balanced reactions are equal to 0. Missing
-%                  atom mapping data is considered as mean(bondsE).
-%    meanBBF       Mean of bonds broken and formed in the model
-%    meanBE        Mean of bond enthalpies in the model
+%    enthalpyChange	An n x 1 vector with the bond enthalpies in kJ/mol.
+%                   External or pasive transpor reactions are equal to 0;
+%                   missing and unbalanced reactions are NaN.
 %    substrateMass Total mass of the substrates
 %
 % .. Author: - German A. Preciat Gonzalez 12/06/2017
@@ -108,15 +102,16 @@ assert(~isempty(aRxns), 'RXN files directory is empty or nonexistent.')
 
 % Identify mass inbalanced reactions
 modeltmp = findSExRxnInd(model,[], printLevel);
-exIdx = find(modeltmp.ExchRxnBool);
+exIdx = modeltmp.ExchRxnBool;
+clear modeltmp
 
-[bondsE, bondsBF] = deal(zeros(size(model.rxns)));
+% Calculate enthalpy change
+enthalpyChange = zeros(size(model.rxns));
 unbalancedBool = false(size(model.rxns));
-
 for i = 1:size(model.rxns, 1)
     
-    clearvars -except unbalanced bondsBF bondsE exIdx atomicWeight ...
-        atomicElements printLevel bondsEnergy bondsArray rxnDir model i ...
+    clearvars -except unbalanced enthalpyChange exIdx atomicWeight atomicElements ...
+         printLevel bondsEnergy bondsArray rxnDir model i ...
         unbalancedBool allSubstrateMass unbalancedBool
     
     if printLevel
@@ -124,7 +119,9 @@ for i = 1:size(model.rxns, 1)
     end
     
     rxnFile = [rxnDir model.rxns{i} '.rxn'];
-    if isfile(rxnFile) % Check if the file exists
+    
+    % Check if the file exists
+    if isfile(rxnFile) && ~exIdx(i)
         
         % Read the MDL RXN file
         rxnFileData = regexp( fileread(rxnFile), '\n', 'split')';
@@ -176,7 +173,7 @@ for i = 1:size(model.rxns, 1)
                 end
             end
             
-            % Check if the corresponding molecule es just an atom or not
+            % Check if the corresponding molecule is just an atom or not
             if noOfBonds > 0
                 % Look for the # of bonds, the row atom (the mapping number of
                 % the first atom in the bond), the column atom (the mapping
@@ -214,77 +211,62 @@ for i = 1:size(model.rxns, 1)
             % No bonds in the reaction
             case 0
                 
-                bondsE(i, 1) = 0;
-                bondsBF(i, 1) = 0;
+                enthalpyChange(i, 1) = 0;
                 
-                % No bonds in the product(s)
+            % No bonds in the product(s)
             case 1
                 for j = 1 : length(bondTypeS)
                     
                     % Looks for the avarage energy of a chemical bond based on the literature
-                    matrixS_enthalpy(rowS(j), colS(j)) = findBondEnergy2([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
-                    matrixS_enthalpy(colS(j), rowS(j)) = findBondEnergy2([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
-                    matrixS_BBF(rowS(j), colS(j)) = str2double(bondTypeS{j});
-                    matrixS_BBF(colS(j), rowS(j)) = str2double(bondTypeS{j});
+                    matrixS_enthalpy(rowS(j), colS(j)) = findBondEnergy([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
+                    matrixS_enthalpy(colS(j), rowS(j)) = findBondEnergy([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
                 end
                 matrixP_enthalpy = zeros(length(matrixS_enthalpy));
                 matrixP_BBF = zeros(length(matrixS_BBF));
                 
-                % No bonds in the substrate(s)
+            % No bonds in the substrate(s)
             case 2
                 for j = 1 : length(bondTypeP)
-                    matrixP_enthalpy(rowP(j), colP(j)) = findBondEnergy2([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
-                    matrixP_enthalpy(colP(j), rowP(j)) = findBondEnergy2([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
-                    matrixP_BBF(rowP(j), colP(j)) = str2double(bondTypeP{j});
-                    matrixP_BBF(colP(j), rowP(j)) = str2double(bondTypeP{j});
+                    matrixP_enthalpy(rowP(j), colP(j)) = findBondEnergy([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
+                    matrixP_enthalpy(colP(j), rowP(j)) = findBondEnergy([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
                 end
                 matrixS_enthalpy = zeros(length(matrixP_enthalpy));
-                matrixS_BBF = zeros(length(matrixP_BBF));
                 
-                % Bonds for substrate(s) and product(s)
+            % Bonds for substrate(s) and product(s)
             case 3
                 for j = 1 : length(bondTypeS)
-                    matrixS_enthalpy(rowS(j), colS(j)) = findBondEnergy2([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
-                    matrixS_enthalpy(colS(j), rowS(j)) = findBondEnergy2([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
-                    matrixS_BBF(rowS(j), colS(j)) = str2double(bondTypeS{j});
-                    matrixS_BBF(colS(j), rowS(j)) = str2double(bondTypeS{j});
+                    matrixS_enthalpy(rowS(j), colS(j)) = findBondEnergy([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
+                    matrixS_enthalpy(colS(j), rowS(j)) = findBondEnergy([bondTypeS(j) elementsS(rowS(j)) elementsS(colS(j))], bondsArray, bondsEnergy);
                 end
                 for j = 1 : length(bondTypeP)
-                    matrixP_enthalpy(rowP(j), colP(j)) = findBondEnergy2([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
-                    matrixP_enthalpy(colP(j), rowP(j)) = findBondEnergy2([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
-                    matrixP_BBF(rowP(j), colP(j)) = str2double(bondTypeP{j});
-                    matrixP_BBF(colP(j), rowP(j)) = str2double(bondTypeP{j});
+                    matrixP_enthalpy(rowP(j), colP(j)) = findBondEnergy([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
+                    matrixP_enthalpy(colP(j), rowP(j)) = findBondEnergy([bondTypeP(j) elementsP(rowP(j)) elementsP(colP(j))], bondsArray, bondsEnergy);
                 end
                 if length(matrixS_enthalpy) ~= length(matrixP_enthalpy)
                     if length(matrixS_enthalpy) > length(matrixP_enthalpy)
                         matrixP_enthalpy(length(matrixS_enthalpy),length(matrixS_enthalpy)) = 0;
-                        matrixP_BBF(length(matrixS_BBF),length(matrixS_BBF)) = 0;
                     else
                         matrixS_enthalpy(length(matrixP_enthalpy),length(matrixP_enthalpy)) = 0;
-                        matrixS_BBF(length(matrixP_BBF),length(matrixP_BBF)) = 0;
                     end
                 end
                 
         end
         if exist('matrixS_enthalpy', 'var') && exist('matrixP_enthalpy', 'var')
             
-            bondsBF(i) = sum(sum(abs(matrixS_BBF - matrixP_BBF))') / 2;
             totalMatrix = matrixS_enthalpy - matrixP_enthalpy;
-            bondsE(i) = sum(totalMatrix(find(totalMatrix))) / 2;
+            enthalpyChange(i) = sum(totalMatrix(find(totalMatrix))) / 2;
             
         end
         
-    elseif ismember(i, exIdx)
+    elseif exIdx(i)
         
         % Mass inbalanced reactions equal to zero
-        bondsBF(i, 1) = 0;
-        bondsE(i, 1) = 0;
+        enthalpyChange(i, 1) = 0;
         
     else
         
         % Missing RXN file equal to NaN
-        bondsE(i, 1) = NaN;
-        bondsBF(i, 1) = NaN;
+        enthalpyChange(i, 1) = NaN;
         if printLevel > 0
             allSubstrateMass(i) = NaN;
         end
@@ -298,36 +280,19 @@ for i = 1:size(model.rxns, 1)
 end
 
 % Consider unbalanced as missing
-bondsE(unbalancedBool) = NaN;
-bondsBF(unbalancedBool) = NaN;
-
-meanBE = mean(bondsE, 'omitnan');
-meanBBF = mean(bondsBF, 'omitnan');
+enthalpyChange(unbalancedBool) = NaN;
 
 if printLevel > 0
     [mass, idx] = sort(allSubstrateMass);
     figure
-    subplot(1, 2, 1)
-    scatter(mass, bondsBF(idx), 'filled')
-    bonds = bondsBF(idx);
-    mass1 = mass;
-    mass1(isnan(bonds) | isnan(mass)) = [];
-    bonds(isnan(bonds) | isnan(mass)) = [];
-    title({'Total mass of substrates vs bonds', ...
-        'broken and formed', ...
-        ['Correlation = ' num2str(round(corr(mass1, bonds,'Type','Spearman'), 2))]}, 'FontSize', 20)
-    xlabel('Mass of substrates (amu)', 'FontSize', 18)
-    ylabel('Number of bonds broken and formed', 'FontSize', 18)
-    
-    subplot(1, 2, 2)
-    scatter(mass, bondsE(idx), 'filled')
-    be = bondsE(idx);
+    scatter(mass, enthalpyChange(idx), 'filled')
+    be = enthalpyChange(idx);
     mass1 = mass;
     mass1(isnan(be) | isnan(mass)) = [];
     be(isnan(be) | isnan(mass)) = [];
     title({'Total mass of substrates vs bond', 'enthalpies', ...
         ['Correlation = ' num2str(round(corr(mass1, abs(be),'Type','Spearman'), 2))]}, 'FontSize', 20)
-    ylabel('Bond enthalpies (kJ/mol)', 'FontSize', 18)
+    ylabel('Enthalpy change (kJ/mol)', 'FontSize', 18)
     yline(0)
     xlabel('Mass of substrates (amu)', 'FontSize', 18)
     
@@ -335,7 +300,7 @@ end
 substrateMass = allSubstrateMass;
 end
 
-function bondsEnergy = findBondEnergy2(bondArray, bondsArray, bondsEnergy)
+function bondsEnergy = findBondEnergy(bondArray, bondsArray, bondsEnergy)
 % Looks for the avarage energy of a chemical bond
 
 % Missing: bonds with R groups, '1 C Se', '1 N S', '1 O Se', '2 O Se', '1
