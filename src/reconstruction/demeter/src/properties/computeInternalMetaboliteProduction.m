@@ -30,8 +30,7 @@ cd([propertiesFolder filesep 'ComputedFluxes'])
 
 % start from existing progress if possible
 if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'])
-    InternalProduction = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'], 'ReadVariableNames', true);
-    InternalProduction = [InternalProduction.Properties.VariableDescriptions;table2cell(InternalProduction)];
+    InternalProduction = readInputTableForPipeline([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt']);
     
     % use all metabolites in reconstruction resource unless specified
     % otherwise
@@ -44,8 +43,7 @@ else
     if isempty(metList)
         % find the correct file with the metabolite list
         if isfile([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'])
-            metabolites = readtable([propertiesFolder filesep 'Metabolites_' reconVersion '.txt'], 'ReadVariableNames', true);
-            metabolites = [metabolites.Properties.VariableDescriptions;table2cell(metabolites)];
+            metabolites = readInputTableForPipeline([propertiesFolder filesep 'Metabolites_' reconVersion '.txt']);
             allMets=metabolites(:,1);
         else
             % load all reconstructions and get the exchange reactions
@@ -182,8 +180,7 @@ end
 % convert to qualitative data
 tol=0.0000001;
 
-data = readtable([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'], 'ReadVariableNames', false);
-data = table2cell(data);
+data = readInputTableForPipeline([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt']);
 for j=2:size(data,1)
     for k=2:size(data,2)
         if data{j,k} > tol

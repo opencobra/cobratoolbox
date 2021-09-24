@@ -20,8 +20,7 @@ function subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)
 % load database
 database=loadVMHDatabase;
 
-reactionAbundance = readtable(reactionAbundancePath);
-reactionAbundance = [reactionAbundance.Properties.VariableNames;table2cell(reactionAbundance)];
+reactionAbundance = readInputTableForPipeline(reactionAbundancePath);
 
 % remove biomass reaction
 reactionAbundance(find(strncmp(reactionAbundance(:,1),'bio',3)),:)=[];
@@ -46,7 +45,11 @@ for i=1:length(subs)
     for j=1:length(rxns)
         rxnInd=find(strcmp(reactionAbundance(:,1),rxns{j}));
         for k=2:size(reactionAbundance,2)
-            abunTmp(k)=abunTmp(k) + reactionAbundance{rxnInd,k};
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                abunTmp(k)=abunTmp(k) + reactionAbundance{rxnInd,k};
+            else
+                abunTmp(k)=abunTmp(k) + str2double(reactionAbundance{rxnInd,k});
+            end
         end
     end
     for k=2:size(reactionAbundance,2)

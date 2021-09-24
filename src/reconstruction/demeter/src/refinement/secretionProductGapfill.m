@@ -106,15 +106,8 @@ secretionRxns.Lmalate = {'EX_mal_L(e)','MALt2r'};
 secretionRxns.Sulfide = {'EX_h2s(e)','H2St'};
 
 % read in the secretion product data
-secretionTable = readtable([inputDataFolder filesep 'secretionProductTable.txt'], 'Delimiter', '\t');
-secretionTable = [secretionTable.Properties.VariableNames;table2cell(secretionTable)];
-
-% remove the reference columns
-for i=1:11
-    if ~isempty(find(strcmp(['Ref' num2str(i)],secretionTable(1,:))))
-secretionTable(:,find(strcmp(['Ref' num2str(i)],secretionTable(1,:))))=[];
-    end
-end
+secretionTable = readInputTableForPipeline([inputDataFolder filesep 'secretionProductTable.txt']);
+secretionTable(:,find(strncmp(secretionTable(1,:),'Ref',3)))=[];
 
 secretionGapfillAddConditional = {
     % secretion products, condition, add reaction(s)
@@ -137,7 +130,11 @@ products = regexprep(products, '\W', '');% remove special characters
 orgRow = find(strcmp(microbeID, secretionTable(:, 1)));
 
 % find the secretion products for this microbe
+if contains(version,'(R202') % for Matlab R2020a and newer
 spCols = find(cell2mat(secretionTable(orgRow, 2:end)) == 1);
+else
+    spCols = find(str2double(secretionTable(orgRow, 2:end)) == 1);
+end
 
 % added rxns list
 secretionRxnsAdded = {};

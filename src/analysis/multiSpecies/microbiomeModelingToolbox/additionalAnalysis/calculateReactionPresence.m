@@ -29,8 +29,7 @@ function [ReactionPresence,ReactionPresenceDifferent]=calculateReactionPresence(
 % .. Author: - Almut Heinken, 01/2021
 
 % read the file with the abundance data
-abundance = readtable(abundancePath);
-abundance = [abundance.Properties.VariableNames;table2cell(abundance)];
+abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
@@ -68,7 +67,11 @@ end
 microbes=abundance(2:end,1);
 for i=2:size(abundance,2)
     ReactionPresence{1,i}=abundance{1,i};
-    microbesInModels=microbes(find(cell2mat(abundance(2:end,i))>0),1);
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        microbesInModels=microbes(find(cell2mat(abundance(2:end,i))>0),1);
+    else
+        microbesInModels=microbes(find(str2double(abundance(2:end,i))>0),1);
+    end
     for j=2:size(reactionInModels,1)
         ReactionPresence{j,1}=reactionInModels{j,1};
         microbesWithReaction=microbes(find(cell2mat(reactionInModels(j,2:end))==1),1);

@@ -134,7 +134,7 @@ if exist(dietFilePath)==0
 end
 
 % test if abundances are normalized
-abundance = table2cell(readtable(abunFilePath,'ReadVariableNames',false));
+abundance = readInputTableForPipeline(abunFilePath);
 totalAbun=sum(str2double(abundance(2:end,2:end)),1);
 if any(totalAbun > 1.01)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')

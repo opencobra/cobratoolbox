@@ -50,10 +50,15 @@ for k = 1:length(sampNames)
         % end of trigger
         % parsave(sprintf(strcat(idInfo,'%d.mat')),id)
         % code lines to find which  bacteria has abundance of 0
-        noab=orglist(cell2mat(abunRed(:,1))<0.00000001);
-        couplingMatrixRed(cell2mat(abunRed(:,1))<0.00000001,:)=[];
-        abunRed(cell2mat(abunRed(:,1))<0.00000001,:)=[];
-        
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            noab=orglist(cell2mat(abunRed(:,1))<0.00000001);
+            couplingMatrixRed(cell2mat(abunRed(:,1))<0.00000001,:)=[];
+            abunRed(cell2mat(abunRed(:,1))<0.00000001,:)=[];
+        else
+            noab=orglist(str2double(abunRed(:,1))<0.00000001);
+            couplingMatrixRed(str2double(abunRed(:,1))<0.00000001,:)=[];
+            abunRed(str2double(abunRed(:,1))<0.00000001,:)=[];
+        end
         % Setting to 0 the Exchange reactions of a bacteria whose abundance is 0 in
         % the individual and in the biomass
         for i = 1:length(noab)

@@ -14,8 +14,10 @@ function database=loadVMHDatabase
 
 
 metaboliteDatabase=table2cell(readtable('MetaboliteDatabase.txt'));
+if contains(version,'(R202') % for Matlab R2020a and newer
 metaboliteDatabase((cellfun(@isnan,metaboliteDatabase(:,7))),7) = {[]};
 metaboliteDatabase((cellfun(@isnan,metaboliteDatabase(:,8))),8) = {[]};
+end
 
 database.metabolites=metaboliteDatabase;
 for i=1:size(database.metabolites,1)

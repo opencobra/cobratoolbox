@@ -101,9 +101,12 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     failedModels = union(failedModels,tooHighATP);
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
-    FNlist = readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', 'tab');
-    FNlist = [FNlist.Properties.VariableDescriptions;table2cell(FNlist)];
-    failedModels=union(failedModels,FNlist(find(cell2mat(FNlist(:,2))==0),1));
+    FNlist = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', 'tab'));
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        failedModels=union(failedModels,FNlist(find(cell2mat(FNlist(:,2))==0),1));
+    else
+    failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
+    end
 end
 
 % load all test result files for experimental data
@@ -114,8 +117,7 @@ fileList(~(contains(fileList(:,1),{'.txt'})),:)=[];
 fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
 
 for i=1:size(fileList,1)
-    FNlist = readtable([[testResultsFolder filesep reconVersion '_refined'] filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
-    FNlist = table2cell(FNlist);
+    FNlist = readInputTableForPipeline([[testResultsFolder filesep reconVersion '_refined'] filesep fileList{i,1}]);
     % remove all rows with no cases
     FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
     failedModels=union(failedModels,FNlist(:,1));
@@ -182,8 +184,8 @@ if length(failedModels)>0
             
             for k=1:length(fields)
                 if isfile([testResultsFolder filesep reconVersion '_refined' filesep fields{k} '_' reconVersion '.txt'])
-                    savedResults = readtable([testResultsFolder filesep reconVersion '_refined' filesep fields{k} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false);
-                    Results.(fields{k}) = table2cell(savedResults);
+                    savedResults = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep fields{k} '_' reconVersion '.txt']);
+                    Results.(fields{k}) = savedResults;
                 else
                     Results.(fields{k})={};
                 end
@@ -236,8 +238,7 @@ if length(failedModels)>0
         stillFailedModels = union(stillFailedModels,tooHighATP);
     end
     if isfile([debuggedTestFolder filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'])
-        FNlist = readtable([debuggedTestFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab');
-        FNlist = table2cell(FNlist);
+        FNlist = table2cell(readtable([debuggedTestFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '_refined.txt'], 'ReadVariableNames', false, 'Delimiter', 'tab'));
         stillFailedModels=union(stillFailedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
     end
     
@@ -249,8 +250,7 @@ if length(failedModels)>0
     fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
     
     for i=1:size(fileList,1)
-        FNlist = readtable([debuggedTestFolder filesep fileList{i,1}], 'ReadVariableNames', false, 'Delimiter', 'tab');
-        FNlist = table2cell(FNlist);
+        FNlist = readInputTableForPipeline([debuggedTestFolder filesep fileList{i,1}]);
         % remove all rows with no cases
         FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
         stillFailedModels=union(stillFailedModels,FNlist(:,1));

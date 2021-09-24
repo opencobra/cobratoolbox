@@ -30,8 +30,7 @@ files={
 metabolicDistance={'Microbe_1','Microbe_2','Distance_ReactionPresence','Distance_UptakeSecretion'};
 
 for i=1:length(files)
-    data = readtable(files{i}, 'ReadVariableNames', false);
-    data = table2cell(data);
+    data = readInputTableForPipeline(files{i});
     
     cnt=2;
     for j=2:100:size(data,1)-1

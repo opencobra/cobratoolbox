@@ -96,7 +96,11 @@ end
 %% calculate the statistics
 for i=2:size(sampleData,2)
     Statistics{i,1}=sampleData{1,i};
-    dataAll=cell2mat(sampleData(2:end,i));
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        dataAll=cell2mat(sampleData(2:end,i));
+    else
+        dataAll=str2double(sampleData(2:end,i));
+    end
     
     % separate data by group
     for j=1:length(groups)

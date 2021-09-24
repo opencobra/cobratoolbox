@@ -104,15 +104,8 @@ uptakeRxns.Ltryptophan = {'EX_trp_L(e)','TRPt2r'};
 uptakeRxns.Ltyrosine = {'EX_tyr_L(e)','TYRt2r'};
 uptakeRxns.Lvaline = {'EX_val_L(e)','VALt2r'};
 
-uptakeTable = readtable([inputDataFolder filesep 'uptakeTable.txt'], 'Delimiter', '\t');
-uptakeTable = [uptakeTable.Properties.VariableNames;table2cell(uptakeTable)];
-
-% remove the reference columns
-for i=1:11
-    if ~isempty(find(strcmp(['Ref' num2str(i)],uptakeTable(1,:))))
-uptakeTable(:,find(strcmp(['Ref' num2str(i)],uptakeTable(1,:))))=[];
-    end
-end
+uptakeTable = readInputTableForPipeline([inputDataFolder filesep 'uptakeTable.txt']);
+uptakeTable(:,find(strncmp(uptakeTable(1,:),'Ref',3)))=[];
 
 % uptake metabolite list from input table
 % modify names to agree with structure
@@ -129,7 +122,11 @@ uptMets = regexprep(uptMets, '\W', '');% remove special characters
 orgRow = find(strcmp(microbeID, uptakeTable(:, 1)));
 
 % find the secretion products for this microbe
-uptCols = find(cell2mat(uptakeTable(orgRow, 2:end)) == 1);
+if contains(version,'(R202') % for Matlab R2020a and newer
+    uptCols = find(cell2mat(uptakeTable(orgRow, 2:end)) == 1);
+else
+    uptCols = find(str2double(uptakeTable(orgRow, 2:end)) == 1);
+end
 
 % added rxns list
 uptakeRxnsAdded = {};

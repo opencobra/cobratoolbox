@@ -1,4 +1,4 @@
-function ascendingRxnFile = acsendingAtomMaps(rxnFile)
+function ascendingRxnFile = sortAtomMappingIndexes(rxnFile)
 % Reassign the atom mapping numbers to be ascending in the RXN file V2000  
 %
 % USAGE:

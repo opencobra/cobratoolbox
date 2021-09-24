@@ -172,7 +172,7 @@ if find(strcmp(infoFile(:,1),microbeID))
         %% all other organisms depending on whether they are gram -positive or -negative
         % get from the collected organism data whether organism is
         % gram-positive or -negative
-        gramCol=find(strcmp(infoFile(1,:),'Gram_Staining'));
+        [~,gramCol,~]=intersect(infoFile(1,:),{'Gram Staining','Gram_Staining'});
         gramStatus=infoFile{find(strcmp(infoFile(:,1),microbeID)),gramCol};
         
         if ~isempty(gramStatus) && any(strcmp(gramStatus,{'Gram+','Gram-'}))

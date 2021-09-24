@@ -25,17 +25,8 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 
 % read the file with organism information
-gettab=tdfread(infoFilePath);
-getcols=fieldnames(gettab);
-infoFile={};
-for j=1:length(getcols)
-    infoFile{1,j}=getcols{j};
-    if isnumeric(gettab.(getcols{j}))
-        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(num2str(gettab.(getcols{j})));
-    else
-        infoFile(2:size(gettab.(getcols{j}),1)+1,j)=cellstr(gettab.(getcols{j}));
-    end
-end
+infoFile = readInputTableForPipeline(infoFilePath);
+
 if ~any(strcmp(infoFile(:,1),microbeID))
     warning('No organism information provided. The pipeline will not be able to curate the reconstruction based on gram status.')
 end
@@ -49,6 +40,11 @@ constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
 database=loadVMHDatabase;
+
+% translate model if not specified otherwise
+if nargin < 5
+   translateModels=true;
+end
 
 %% special case: two biomass reactions in model (bug in KBase?)
 if length(intersect(model.rxns,{'bio1','bio2'}))==2
