@@ -163,7 +163,7 @@ if length(failedModels)>0
         gapfilledReactionsTmp = {};
         replacedReactionsTmp = {};
         revisedModelTmp = {};
-        for j=i:i+endPnt
+        parfor j=i:i+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             

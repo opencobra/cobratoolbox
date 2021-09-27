@@ -495,6 +495,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'ORNt AND PTRCORNt7 AND PTRCAT AND ABUTR',[],'PTRCAT','PTRCATi'
     'GUAD AND PUNP3 AND PUNP7 AND r1384 AND GUAt2r',[],'GUAt2r','GUAt2'
     'r0480 AND r0788 AND r0789',[],'r0480','r0480'
+    'G3PD8 AND G3PPHL AND ALCD19',[],'G3PD8','G3PD8i'
+    'G3PD8 AND G3PD1 AND SUCD4',[],'G3PD8','G3PD8i'
     };
 
 
