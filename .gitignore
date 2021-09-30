@@ -16,6 +16,7 @@ octave-workspace
 
 # hidden extensions
 .DS_Store
+.MATLABDriveTag
 
 # specific extensions
 *.pyc
