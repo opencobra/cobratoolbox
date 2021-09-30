@@ -1,7 +1,7 @@
 function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(formulae, isotopeAbundance, generalFormula)
-% Gets mono-isotopic exact molecular mass for a single formula or a cell array of
-% formulae using the atomic weight for each element from NIST
-% http://physics.nist.gov/PhysRefData/Compositions/
+% Gets monoisotopic exact molecular mass for a single formula or a cell array of
+% formulae using the relative atomic mass of the most abundant isotope of each element
+% as specified by NIST http://physics.nist.gov/PhysRefData/Compositions/
 %
 % An atomic weight of an element from a specified source is the ratio of
 % the average mass per atom of the element to 1/12 of the mass of an
