@@ -141,7 +141,7 @@ if ~parser.Results.checkSubFolders
 end
 
 [mlt,nlt]=size(files);
-if mlt == 0 && nlt ==1
+if mlt > nlt
     files=files';
 end
 files = strcat(repmat({absPath}, 1, length(files)), repmat({filesep}, 1, length(files)),files);
