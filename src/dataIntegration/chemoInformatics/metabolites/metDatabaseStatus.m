@@ -11,7 +11,7 @@ function [summary, status] = metDatabaseStatus(model, metDir)
 %           * .mets - An m x 1 array of metabolite identifiers.
 %           * .metFromulas - An m x 1 array of metabolite flormulas.
 %           * .metCharges - An m x 1 vector of metabolite charges.
-%           * .smiles - An m x 1 array of metabolite identifiers.
+%           * .identifiers - An m x 1 array of metabolite identifiers.
 %           * .inchi - An m x 1 array of metabolite identifiers.
 %           * .kegg - An m x 1 array of metabolite identifiers.
 %           * .chebi - An m x 1 array of metabolite identifiers.
