@@ -19,13 +19,11 @@ function [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
 %
 % .. Author: Almut Heinken, 01/2021
 
-% read in the reactions to translate
-toTranslateMets = table2cell(readtable(toTranslatePath));
-toTranslateMets = [toTranslateMets.Properties.VariableNames;table2cell(toTranslateMets)];
+% read in the metabolites to translate
+toTranslateMets = readInputTableForPipeline(toTranslatePath);
 
 % remove already translated metabolites
-translateMets = readtable('MetaboliteTranslationTable.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
-translateMets = [translateMets.Properties.VariableNames;table2cell(translateMets)];
+translateMets = readInputTableForPipeline('MetaboliteTranslationTable.txt');
 [C,IA]=intersect(toTranslateMets,translateMets(:,1));
 if ~isempty(C)
     warning('Already translated metabolites were removed.')
@@ -42,8 +40,7 @@ database=loadVMHDatabase;
 % get the KBase/Model SEED metabolite database on ModelSEED GitHub
 system('curl -LJO https://raw.githubusercontent.com/ModelSEED/ModelSEEDDatabase/master/Biochemistry/compounds.tsv');
 
-KBaseMets = readtable('compounds.tsv', 'ReadVariableNames', false,'FileType','text');
-KBaseMets = [KBaseMets.Properties.VariableNames;table2cell(KBaseMets)];
+KBaseMets = readInputTableForPipeline('compounds.tsv');
 
 % get some columns that can be used to match IDs
 kbaseNameCol=find(strcmp(KBaseMets(1,:),'name'));

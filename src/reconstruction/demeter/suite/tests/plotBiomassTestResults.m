@@ -123,7 +123,6 @@ if ~isempty(translatedDraftsFolder)
         hold on
         violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
         set(gca, 'FontSize', 12)
-        box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
         ylabel('mmol *g dry weight-1 * hr-1')
@@ -148,7 +147,6 @@ if ~isempty(translatedDraftsFolder)
         hold on
         violinplot(data, {'Aerobic, Draft','Anaerobic, Draft','Aerobic, Refined','Anaerobic, Refined'});
         set(gca, 'FontSize', 12)
-        box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
         ylabel('mmol *g dry weight-1 * hr-1')
@@ -237,7 +235,6 @@ else
         hold on
         violinplot(data, {'Aerobic,','Anaerobic'});
         set(gca, 'FontSize', 12)
-        box on
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
         ylabel('mmol *g dry weight-1 * hr-1')

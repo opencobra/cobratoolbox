@@ -131,7 +131,7 @@ end
 else
     % Plot: number of species | number of reactions  disease resolved
     % Patients status: cellarray of same lenght of number of patients 0 means patient with disease 1 means helthy
-infoFile = table2cell(readtable(infoFilePath));
+infoFile = readInputTableForPipeline(infoFilePath);
 
 % remove individuals not in simulations
 [C,IA] = setdiff(infoFile(:,1),sampNames);

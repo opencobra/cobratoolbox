@@ -157,27 +157,31 @@ if ~isempty(host)
 end
 
 %% merge the models
-for i = 2:size(microbeNames, 1)
-    if i==2
-        model1 = readCbModel([modelStoragePath filesep microbeNames{1,1} '.mat']);
-        modelNew = readCbModel([modelStoragePath filesep microbeNames{i,1} '.mat']);
-        model = mergeTwoModels(model1,modelNew,1,false,false);
-    else
-        modelNew = readCbModel([modelStoragePath filesep microbeNames{i,1} '.mat']);
-        model = mergeTwoModels(model,modelNew,1,false,false);
+if size(microbeNames,1)==1
+    % if there is only one microbe
+    model = readCbModel([modelStoragePath filesep microbeNames{1,1} '.mat']);
+else
+    for i = 2:size(microbeNames, 1)
+        if i==2
+            model1 = readCbModel([modelStoragePath filesep microbeNames{1,1} '.mat']);
+            modelNew = readCbModel([modelStoragePath filesep microbeNames{i,1} '.mat']);
+            model = mergeTwoModels(model1,modelNew,1,false,false);
+        else
+            modelNew = readCbModel([modelStoragePath filesep microbeNames{i,1} '.mat']);
+            model = mergeTwoModels(model,modelNew,1,false,false);
+        end
     end
 end
 
 %% Merging with host if present
 
-% temp fix
-if isfield(model,'C')
-    model=rmfield(model,'C');
-end
-%
-
 if ~isempty(host)
     [model] = mergeTwoModels(host,model,1,false,false);
+end
+
+%% Merge with fecal and body fluids compartment
+if isfield(model,'C')
+    model=rmfield(model,'C');
 end
 [model] = mergeTwoModels(dummy,model,2,false,false);
 

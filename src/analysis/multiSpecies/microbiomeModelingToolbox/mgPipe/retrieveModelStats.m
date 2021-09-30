@@ -74,7 +74,7 @@ if nargin <3
     
 else
     % perform statistical analysis if file with stratification is provided
-    infoFile = table2cell(readtable(infoFilePath));
+    infoFile = readInputTableForPipeline(infoFilePath);
     
     % remove individuals not in simulations
     modelList=strrep(modelList,'microbiota_model_samp_','');

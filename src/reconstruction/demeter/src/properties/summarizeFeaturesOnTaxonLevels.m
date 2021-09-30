@@ -31,14 +31,11 @@ modelList(~contains(modelList(:,1),'.mat'),:)=[];
 modelList(:,1)=strrep(modelList(:,1),'.mat','');
 
 % Load reaction database
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-reactionDatabase(:,2:10)=[];
+database=loadVMHDatabase;
 
 
 % get taxonomical information
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+infoFile = readInputTableForPipeline(infoFilePath);
 
 [C,I]=setdiff(infoFile(:,1),modelList(:,1),'stable');
 infoFile(I(2:end),:)=[];
@@ -115,7 +112,7 @@ if size(infoFile,1)>2
                     subs={};
                     if ~isempty(rxns)
                         for k=1:length(rxns)
-                            subs{k,1}=reactionDatabase{find(strcmp(reactionDatabase(:,1),rxns{k})),2};
+                            subs{k,1}=database.reactions{find(strcmp(database.reactions(:,1),rxns{k})),2};
                         end
                     end
                     % remove exchange/demand and transport reactions
@@ -229,7 +226,7 @@ if size(infoFile,1)>2
                         subs={};
                         if ~isempty(rxns)
                             for k=1:length(rxns)
-                                subs{k,1}=reactionDatabase{find(strcmp(reactionDatabase(:,1),rxns{k})),2};
+                                subs{k,1}=database.reactions{find(strcmp(database.reactions(:,1),rxns{k})),2};
                             end
                         end
                         % remove exchange/demand and transport reactions

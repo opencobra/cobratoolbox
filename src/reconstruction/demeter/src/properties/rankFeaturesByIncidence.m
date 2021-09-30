@@ -23,21 +23,22 @@ analyzedFiles={
 
 mkdir([propertiesFolder filesep 'Ranked_features'])
 
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
+% load database
+database=loadVMHDatabase;
 
 for i=1:length(analyzedFiles)
-    data = readtable([propertiesFolder filesep analyzedFiles{i,2}], 'ReadVariableNames', false);
-    data = table2cell(data);
+    data = readInputTableForPipeline([propertiesFolder filesep analyzedFiles{i,2}]);
     
     % if there are enough models to compare
     if size(data,1)>20
         dataCounted={};
         for j=2:size(data,2)
             dataCounted{j-1,1}=data{1,j};
-            dataCounted{j-1,2}=sum(abs(str2double(data(2:end,j)))>tol);
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                dataCounted{j-1,2}=sum(abs(cell2mat(data(2:end,j)))>tol);
+            else
+                dataCounted{j-1,2}=sum(abs(str2double(data(2:end,j)))>tol);
+            end
         end
         % sort from most to least common
         [B,I] = sort(abs(cell2mat(dataCounted(:,2))),'descend');
@@ -47,11 +48,11 @@ for i=1:length(analyzedFiles)
             for j=1:length(B)
                 dataPrintout{j+1,1}=dataCounted{I(j),1};
                 if ~strncmp(dataCounted{I(j),1},'bio',3)
-                    findRxnInd=find(strcmp(reactionDatabase(:,1),dataCounted{I(j),1}));
+                    findRxnInd=find(strcmp(database.reactions(:,1),dataCounted{I(j),1}));
                     if ~isempty(findRxnInd)
-                        dataPrintout{j+1,2}=reactionDatabase{findRxnInd,2};
-                        dataPrintout{j+1,3}=reactionDatabase{findRxnInd,3};
-                        dataPrintout{j+1,4}=reactionDatabase{findRxnInd,11};
+                        dataPrintout{j+1,2}=database.reactions{findRxnInd,2};
+                        dataPrintout{j+1,3}=database.reactions{findRxnInd,3};
+                        dataPrintout{j+1,4}=database.reactions{findRxnInd,11};
                     end
                 end
                 dataPrintout{j+1,5}=num2str(B(j));
@@ -65,9 +66,9 @@ for i=1:length(analyzedFiles)
             for j=1:length(B)
                 dataPrintout{j+1,1}=dataCounted{I(j),1};
                 if ~strncmp(dataCounted{I(j),1},'bio',3)
-                    findMetInd=find(strcmp(metaboliteDatabase(:,1),dataCounted{I(j),1}));
+                    findMetInd=find(strcmp(database.metabolites(:,1),dataCounted{I(j),1}));
                     if ~isempty(findMetInd)
-                        dataPrintout{j+1,2}=metaboliteDatabase{findMetInd,2};
+                        dataPrintout{j+1,2}=database.metabolites{findMetInd,2};
                     end
                 end
                 dataPrintout{j+1,3}=num2str(B(j));

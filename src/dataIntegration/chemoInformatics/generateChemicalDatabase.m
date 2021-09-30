@@ -484,7 +484,7 @@ if options.printlevel > 0
         chargeCounter = chargeCounter + info.sourcesComparison.(fnames{i}).chargeOkBool;
     end
     plot([formula, sterochemicalCounter, chargeCounter], 'LineWidth', 2)
-    legend({'Formula', 'Sterochemestry', 'Charge'}, 'Location', 'best')
+    legend({'Formula', 'Sterochemistry', 'Charge'}, 'Location', 'best')
     title('3. Features comparison', 'FontSize', 16)
     directoriesLabels = regexprep(directories, 'inchi','InChI');
     directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
@@ -858,34 +858,34 @@ if ~options.onlyUnmapped
     
     % Get bond enthalpies and bonds broken and formed
     if options.printlevel  > 0
-        display('Calculating bonds broken and formed, and enthalpy change...')
+        display('Calculating bonds broken and formed and enthalpy change...')
     end
     
-    [bondsBF, bondsE, meanBBF, meanBE, substrateMass] = findBEandBBF(model, [rxnDir ...
+    [enthalpyChange, substrateMass1] = findEnthalpyChange(model, [rxnDir ...
+        filesep 'atomMapped'], options.printlevel);
+    [bondsBrokenAndFormed, ~] = findBondsBrokenAndFormed(model, [rxnDir ...
         filesep 'atomMapped'], options.printlevel);
     
     % Replace NaN values to 'Missing'
-    missingRxns = isnan(bondsBF);
-    bondsBF = cellstr(num2str(bondsBF));
-    bondsBF(missingRxns) = {'Missing'};
-    bondsE = cellstr(num2str(bondsE));
-    bondsE(missingRxns) = {'Missing'};
+    missingRxns = isnan(bondsBrokenAndFormed);
+    bondsBrokenAndFormed = cellstr(num2str(bondsBrokenAndFormed));
+    bondsBrokenAndFormed(missingRxns) = {'Missing or unbalanced'};
+    enthalpyChange = cellstr(num2str(enthalpyChange));
+    enthalpyChange(missingRxns) = {'Missing or unbalanced'};
     
     % Create table & sort values
-    info.bondsData.table = table(model.rxns, model.rxnNames, bondsBF, bondsE, substrateMass, ...
-            'VariableNames', {'rxns', 'rxnNames', 'bondsBF', 'bondsE', 'substrateMass'});
+    info.bondsData.table = table(model.rxns, model.rxnNames, bondsBrokenAndFormed, enthalpyChange, substrateMass, ...
+            'VariableNames', {'rxns', 'rxnNames', 'bondsBrokenAndFormed', 'enthalpyChange', 'substrateMass'});
     info.bondsData.table = [sortrows(info.bondsData.table(~missingRxns, :), ...
-        {'bondsBF'}, {'descend'}); info.bondsData.table(missingRxns, :)];   
+        {'bondsBrokenAndFormed'}, {'descend'}); info.bondsData.table(missingRxns, :)];   
         
     if options.printlevel  > 0
         display(info.bondsData.table)
     end
         
     % Add data in the model
-    model.bondsBF = bondsBF;
-    model.bondsE = bondsE;
-    model.meanBBF = meanBBF;
-    model.meanBE = meanBE;
+    model.bondsBF = bondsBrokenAndFormed;
+    model.bondsE = enthalpyChange;
     
 end
 

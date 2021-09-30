@@ -58,8 +58,7 @@ analyzedFiles={
 
 for k=1:size(analyzedFiles,1)
     if isfile([propertiesFolder filesep analyzedFiles{k,2} '.txt'])
-        DataToAnalyze = readtable([propertiesFolder filesep analyzedFiles{k,2} '.txt'], 'Delimiter','tab','ReadVariableNames', true);
-        DataToAnalyze = [DataToAnalyze.Properties.VariableDescriptions;table2cell(DataToAnalyze)];
+        DataToAnalyze = readInputTableForPipeline([propertiesFolder filesep analyzedFiles{k,2} '.txt']);
         DataToAnalyze=DataToAnalyze';
         
         [C,I]=setdiff(DataToAnalyze(1,:),infoFile(:,1),'stable');
@@ -68,7 +67,11 @@ for k=1:size(analyzedFiles,1)
         % can only be performed if there are enough strains with taxonomical information
         if size(DataToAnalyze,2) >= 10
             
-            rp=cell2mat(DataToAnalyze(2:end,2:end));
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                rp=cell2mat(DataToAnalyze(2:end,2:end));
+            else
+                rp=str2double(DataToAnalyze(2:end,2:end));
+            end
             orgs=DataToAnalyze(1,2:end)';
             
             taxonlevels={

@@ -132,7 +132,7 @@ for i = startPnt:steps:length(modelList)
             % perform flux variability analysis
             currentDir=pwd;
             try
-                [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A');
+                [minFlux,maxFlux,optsol,ret] = fastFVA(model,99.99,'max',{},rxnsInModel,'A',cpxControl);
             catch
                 warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
                 cd(currentDir)

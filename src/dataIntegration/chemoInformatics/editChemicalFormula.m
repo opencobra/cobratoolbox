@@ -1,7 +1,7 @@
 function newFormula = editChemicalFormula(metFormula, addOrRemove)
-% For each instance, removes non-chemical characters from the chemical
-% formula and replaces them with a R group. Removes atoms from the formula 
-% as well. Produces a chemical formula from a string of atoms.
+% Removes non-chemical characters from the chemical formula and replaces 
+% them with a R group. Produces a chemical formula from a string of atoms.
+% Removes or add atoms in the formula.
 %
 % USAGE:
 %
@@ -17,7 +17,7 @@ function newFormula = editChemicalFormula(metFormula, addOrRemove)
 %                                     added (positive)
 %
 % OUTPUTS:
-%    chemicalFormula:	A chemical formula for a metabolite
+%    newFormula:	A chemical formula for a metabolite
 
 if nargin < 2 || isempty(addOrRemove)
     addOrRemove = [];
