@@ -101,7 +101,7 @@ within MATLAB by typing:
 
     >> installDevTools()
 
-|bulb| Check out the `MATLAB.devTools
+|bulb| Check out `MATLAB.devTools
 <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
 way! The **official documentation** is `here <https://opencobra.github.com/MATLAB.devTools>`__.
 
