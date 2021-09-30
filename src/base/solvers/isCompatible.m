@@ -122,7 +122,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % select the compatibility matrix based on the OS
     if isunix && ~ismac % linux
         tableNb = 1;
-        resultVERS = v;
+        resultVERS = system_dependent('getos');
         tmp = strsplit(testedOS{tableNb});
         if ~isempty(strfind(lower(resultVERS), lower(tmp{2})))
             cMatrix = compatMatrix{tableNb};
