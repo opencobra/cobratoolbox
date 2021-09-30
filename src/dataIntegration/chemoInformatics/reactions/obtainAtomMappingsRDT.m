@@ -27,12 +27,12 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
+%    rxnDir:        Path to directory that will contain the RXN files with
+%                   atom mappings (default: current directory).
 %    rxnsToAM:      List of reactions to atom map (default: all in the
 %                   model).
 %    hMapping:      Logic value to select if hydrogen atoms will be atom
 %                   mapped (default: TRUE).
-%    rxnDir:        Path to directory that will contain the RXN files with
-%                   atom mappings (default: current directory).
 %    onlyUnmapped:  Logic value to select create only unmapped MDL RXN
 %                   files (default: FALSE).
 %
@@ -328,7 +328,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         % Sort the atoms in the substrates in ascending order and then map
         % them to the atoms in the products.
         if any(contains(mappedFile, '$MOL'))
-            mappedFile = sortAtomMappingIdx(mappedFile);
+            mappedFile = sortAtomMappingIndexes(mappedFile);
         else
             inconsistentBool(i) = true;
         end
