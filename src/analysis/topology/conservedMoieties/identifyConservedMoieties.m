@@ -107,9 +107,10 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Nodes — Table of node information, with `p` rows, one for each moiety instance.
 %          * .Nodes.MoietyIndex - unique numeric id of the moiety instance 
 %          * .Nodes.Formula - chemical formula of the moiety (Hill notation)
-%          * .Nodes.Met - metabolite containing the moiety instance
+%          * .Nodes.Met - abbreviation for the metabolite containing the moiety instance (arm.MRH.mets)
 %          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2M)
 %          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2M)
+%          * .Nodes.MonoisotopicMass - (Da) monoisotopic exact molecular mass the most abundant isotope of each element as specified by NIST http://physics.nist.gov/PhysRefData/Compositions/
 
 %          * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
 %          * .Edges.EndNodes - numeric id of head and tail moieties that defines the graph edges  
@@ -772,12 +773,18 @@ if ~sanityChecks
         Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
         %reorder the variables 
         Nodes = MTG.Nodes(:,{'MoietyIndex','Formula','Met','Component','IsomorphismClass'}); 
-        Edges = Edges(:,{'EndNodes','Formula','Component','IsomorphismClass'}); 
+        Edges = Edges(:,{'EndNodes','Formula','Component','IsomorphismClass','MoietyTransIndex'}); 
         MTG = graph(Edges,Nodes);
     else
         MTG.Edges.Formula=MTG.Nodes.Formula(MTG.Edges.EndNodes(:,1));
     end
 end
+
+%add the masses of the moieties
+% Gets monoisotopic exact molecular mass for a single formula or a cell array of
+% formulae using the relative atomic mass of the most abundant isotope of each element
+% as specified by NIST http://physics.nist.gov/PhysRefData/Compositions/
+[MTG.Nodes.MonoisotopicMass, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass(MTG.Nodes.Formula);
 
 if sanityChecks
     diffMoietyIndex = diff(MTG.Nodes.MoietyIndex);

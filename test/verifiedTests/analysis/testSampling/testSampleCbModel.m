@@ -76,6 +76,7 @@ for k = 1:length(solverPkgs.LP)
                 [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR', options);
 
                 assert(norm(samples) > 0)
+                
             case 'CHRR_EXP'
                 fprintf('\nTesting the coordinate hit-and-run with rounding (CHRR) sampler, with exponential target distribution.\n.');
 
@@ -88,6 +89,7 @@ for k = 1:length(solverPkgs.LP)
                 [modelSampling, samples, volume] = sampleCbModel(model, 'EcoliModelSamples', 'CHRR_EXP', options);
 
                 assert(norm(samples) > 0)
+                
             case 'RHMC'
                 fprintf('\nTesting the Riemann Hamiltonian Monte Carlo (RHMC) sampler\n.');
 				

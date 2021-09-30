@@ -302,7 +302,7 @@ end
 % print an error message if the solver is not supported
 supportedSolversNames = fieldnames(SOLVERS);
 if ~any(strcmp(supportedSolversNames, solverName))
-    error('changeCobraSolver: The solver %s is not supported. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
+    error('changeCobraSolver: The solver %s is not available to the COBRA Toolbox on your machine. Please run >> initCobraToolbox to obtain a table with available solvers.', solverName);
 else
     %If we don't validate the solver, at which point it could be, that it is not yet set up,
     % we can actually just check whether it
@@ -443,6 +443,11 @@ if compatibleStatus == 1 || compatibleStatus == 2
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         case {'ibm_cplex','cplexlp'}
             try
+               prob.f = 1;
+               prob.Aineq = 1;
+               prob.bineq = 10;
+               prob.ub    = 5;
+               cplex = Cplex(prob);
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
             catch ME
