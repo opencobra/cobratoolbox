@@ -93,8 +93,8 @@ for t=1:size(versions,1)
             end
         end
         
-        dataSConsistTmp=[];
-        dataFConsistTmp=[];
+        dataSConsistTmp={};
+        dataFConsistTmp={};
         parfor j=i:i+endPnt
             if j <= length(models)
                 restoreEnvironment(environment);
@@ -110,19 +110,19 @@ for t=1:size(versions,1)
                 exRxns=vertcat(find(strncmp(model.rxns,'EX_',3)),find(strcmp(model.rxns,'rxn00062')));
                 fluxConsistentRxnBool(exRxns,:)=[];
                 fluxInConsistentRxnBool(exRxns,:)=[];
-                dataFConsistTmp(j,1)=sum(fluxConsistentRxnBool)/(sum(fluxConsistentRxnBool) + sum(fluxInConsistentRxnBool));
+                dataFConsistTmp{j}(1)=sum(fluxConsistentRxnBool)/(sum(fluxConsistentRxnBool) + sum(fluxInConsistentRxnBool));
                 [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool]=...
                     findStoichConsistentSubset(model);
                 % exclude exchange and demand reactions
                 SConsistentRxnBool(exRxns,:)=[];
                 SInConsistentRxnBool(exRxns,:)=[];
-                dataSConsistTmp(j,1)=sum(SConsistentRxnBool)/(sum(SConsistentRxnBool) + sum(SInConsistentRxnBool));
+                dataSConsistTmp{j}(1)=sum(SConsistentRxnBool)/(sum(SConsistentRxnBool) + sum(SInConsistentRxnBool));
             end
         end
         % add to already existing data
         for j=i:i+endPnt
-            dataSConsist(size(dataSConsist,1)+1,1)=dataSConsistTmp(j,1);
-            dataFConsist(size(dataFConsist,1)+1,1)=dataFConsistTmp(j,1);
+            dataSConsist(size(dataSConsist,1)+1,1)=dataSConsistTmp{j}(1);
+            dataFConsist(size(dataFConsist,1)+1,1)=dataFConsistTmp{j}(1);
             modelsAlreadyAnalyzed{size(modelsAlreadyAnalyzed,1)+1,1}=models{j};
         end
         save([propertiesFolder filesep 'Draft_Refined_Comparison' filesep 'modelsAlreadyAnalyzed_' versions{t,1} reconVersion '.mat'],'modelsAlreadyAnalyzed');
