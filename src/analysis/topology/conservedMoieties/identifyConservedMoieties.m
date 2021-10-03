@@ -501,7 +501,13 @@ for i = 1:nComps
 end
 
 %estimate for the number of conserved moieties
-[rankN, ~, ~] = getRankLUSOL(N, 0);
+% try
+     [rankN, ~, ~] = getRankLUSOL(N, 0);
+% catch ME
+%     warning(ME.message)
+%     fprintf('%s\n','Caught the error and proceeding with rank(full(N)) instead.')
+%     rankN = rank(full(N));
+% end
 rowRankDeficiencyN = size(N,1) - rankN;
 
 %map isomorphism classes to components of atom transition graph
