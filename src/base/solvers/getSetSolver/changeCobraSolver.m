@@ -537,6 +537,8 @@ else
         case 'gurobi'
             fprintf('%s\n',['Gurobi installed at this location? ' getenv('GUROBI_HOME')])
             fprintf('%s\n',['Licence file current? ' getenv('GRB_LICENSE_FILE')])
+        otherwise
+            fprintf('%s\n',['Could not find installation of ' solverName ', so it cannot be tested'])
     end
 end
 end

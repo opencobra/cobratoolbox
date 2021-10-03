@@ -20,7 +20,7 @@ function [inputs,outputs] = printFunctionIO(functionName,derivedInputNames,print
 % Author(s): Ronan Fleming
 
 % EXAMPLE:
-%   [inputs,outputs] = printFunctionInputsAndOutputs('solveCobraLP',1);
+%   [inputs,outputs] = printFunctionInputsAndOutputs('solveCobraLP',{},1);
 %
 % Returns the following:
 % INPUTS:
