@@ -1072,6 +1072,8 @@ if solution.stat==1
         if ~isempty(solution.full)
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
+            solution.objLinear = c'*solution.full;
+            solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
             if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
