@@ -40,13 +40,24 @@ else
     toSave = true;
 end
 
+% Check openbabel installation
+[oBabelInstalled, cmdout] = system('obabel');
+if oBabelInstalled == 127
+    error('To use this function, Open Babel must be installed; follow the installation instructions in https://openbabel.org/wiki/Category:Installation')
+end
+
 % Identify the chemoinformatic format of the input
-if isfile(origFormat)
-    ctfFile = regexp(fileread(origFormat), '\n', 'split')';
-    if contains(ctfFile{1}, '$RXN')
+if contains(origFormat, '.mol')
+    if isfile(origFormat)
+        inputType = 'mol';
+    else
+        error(['The file ' origFormat ' is missing'])
+    end
+elseif contains(origFormat, '.rxn')
+    if isfile(origFormat)
         inputType = 'rxn';
     else
-        inputType = 'mol';
+        error(['The file ' origFormat ' is missing'])
     end
 elseif contains(origFormat, 'InChI=')
     inputType = 'inchi';
@@ -61,14 +72,22 @@ if ismember(inputType, {'inchi'; 'smiles'})
     fprintf(fid2, '%s\n', origFormat);
     fclose(fid2);
     [~, cmdout] = system(['obabel -i' inputType ' tmp -o' outputFormat]);
-    delete('tmp')
+    if contains(cmdout, 'No input file or format spec or possibly a misplaced option')
+        [~, cmdout] = system(['obabel -i' inputType ' tmp -o' outputFormat]);
+    end
 
 else
     switch inputType
         case 'mol'
             [~, cmdout] = system(['obabel -imol ' origFormat ' -o' outputFormat]);
+            if contains(cmdout, 'No input file or format spec or possibly a misplaced option')
+                [~, cmdout] = system(['obabel -imol ' origFormat ' -o' outputFormat]);
+            end
         case 'rxn'
             [~, cmdout] = system(['obabel -irxn ' origFormat ' -o' outputFormat]);
+            if contains(cmdout, 'No input file or format spec or possibly a misplaced option')
+                [~, cmdout] = system(['obabel -irxn ' origFormat ' -o' outputFormat]);
+            end
     end
 end
 
@@ -85,7 +104,11 @@ switch outputFormat
         newFormat = cmdout{1};
         
     case 'inchi'
-        newFormat = cmdout{contains(cmdout,'InChI=1S')};
+        if any(contains(cmdout,'InChI=1S'))
+            newFormat = cmdout{contains(cmdout,'InChI=1S')};
+        else
+            error('')
+        end
         
     case 'smiles'
         cmdout = split(cmdout{end - 2});
@@ -96,8 +119,10 @@ switch outputFormat
 end
 
 % Save the file
-if toSave
+if toSave && ~isempty(newFormat)
     fid2 = fopen(saveFileDir, 'w');
     fprintf(fid2, '%s\n', newFormat{:});
     fclose(fid2);
+elseif isempty(newFormat)
+    error(['The format ' origFormat ' couldn''t be converted'])
 end
