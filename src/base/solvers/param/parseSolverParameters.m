@@ -8,7 +8,7 @@ function [problemTypeParams, solverParams] = parseSolverParameters(problemType, 
 %
 % INPUT:
 %    problemType:       The type of the problem to get parameters for
-%                       ('LP','MILP','QP','MIQP','NLP')
+%                       ('LP','MILP','QP','MIQP','NLP','EP')
 %
 % OPTIONAL INPUTS:
 %    varargin:          Additional parameters either as parameter struct, or as
@@ -26,7 +26,9 @@ function [problemTypeParams, solverParams] = parseSolverParameters(problemType, 
 %
 %    solverParams:      Additional parameters provided which are not part
 %                       of the COBRA parameters and are assumed to be part
-%                       of direct solver input structs.
+%                       of direct solver input structs. For some solvers, it
+%                       is essential to not include any extraneous fields that are 
+%                       outside the solver interface specification.
 
 cobraSolverParameters = getCobraSolverParamsOptionsForType(problemType); % build the default Parameter Structure
 
@@ -84,7 +86,7 @@ if nVarargin > 0
         end
     end
 else
-    % no potional parameters.
+    % no optional parameters.
     optParamStruct = struct();
 end
 

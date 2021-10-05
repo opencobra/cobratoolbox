@@ -1,4 +1,4 @@
-function printConstraints(model, minInf, maxInf, rxnBool, modelAfter, printLevel)
+function printConstraints(model, minInf, maxInf, rxnSelection, modelAfter, printLevel)
 % Print all network constraints that are not `-Inf (minInf)` or `+Inf (maxInf)`
 %
 % USAGE:
@@ -11,7 +11,8 @@ function printConstraints(model, minInf, maxInf, rxnBool, modelAfter, printLevel
 %    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
 %
 % OPTIONAL INPUTS:
-%   modelAfter: model after some perturbation to the bounds
+%   rxnSelection: boolean vector or cell array of reaction abbreviations for the reactions to be printed
+%   modelAfter:   model after some perturbation to the bounds
 %   printLevel:
 %
 
@@ -24,8 +25,8 @@ end
 if ~exist('maxInf','var') || isempty(maxInf)
     maxInf=Inf;
 end
-if ~exist('rxnBool','var')
-    rxnBool=true(size(model.S,2),1);
+if ~exist('rxnSelection','var')
+    rxnSelection=true(size(model.S,2),1);
 end
 if ~exist('printLevel','var')
     printLevel=0;
@@ -36,24 +37,35 @@ if exist('modelAfter','var')
     end
 end
 
-if ischar(rxnBool) || iscell(rxnBool)
-    rxnBool = ismember(model.rxns,rxnBool);
+if ischar(rxnSelection) || iscell(rxnSelection)
+    rxnSelection = ismember(model.rxns,rxnSelection);
 end
 
-if ~any(rxnBool)
+if ~any(rxnSelection)
     return
 end
 
-closedRxnBool = model.lb == model.ub & model.lb==0 & rxnBool;
-reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnBool;
-fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool & model.ub~=maxInf;
-revRxnBool = model.lb~=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & ~closedRxnBool & rxnBool;
+closedRxnBool = model.lb == model.ub & model.lb==0 & rxnSelection;
+reversibleRxnBool = model.lb > minInf & model.lb<0 & model.ub < maxInf & model.ub>0 & rxnSelection;
+fwdRxnBool = model.lb > minInf & model.lb>=0 & ~reversibleRxnBool & ~closedRxnBool & rxnSelection & model.ub<=maxInf & rxnSelection;
+revRxnBool = model.lb>=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxnBool & ~closedRxnBool & rxnSelection;
+
+if ~any(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool)
+    boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool);
+    warning('no selection match to bound criteria')
+else
+    boolRemainder=0;
+end
 
 if any(closedRxnBool & reversibleRxnBool) || any(closedRxnBool & fwdRxnBool) || any(closedRxnBool & revRxnBool) || any(fwdRxnBool & revRxnBool)
     warning('inconsistent boolean variables')
 end
 
+if isfield(model,'rxnNames')
 rxnNames=model.rxnNames;
+else
+    rxnNames=cell(size(model.S,2),1);
+end
 for j=1:size(model.S,2)
     rxnNames{j}=rxnNames{j}(1:min(60,length(rxnNames{j})));
 end
@@ -118,6 +130,34 @@ else
         T = table(model.rxns(reversibleRxnBool),rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),modelAfter.lb(reversibleRxnBool),model.ub(reversibleRxnBool),modelAfter.ub(reversibleRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(reversibleRxnBool),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
     else
         T = table(model.rxns(reversibleRxnBool),rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),model.ub(reversibleRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(reversibleRxnBool),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb','ub','equation'});
+    end
+    disp(T);
+end
+
+% if ~any(reversibleRxnBool)
+%     if printLevel>0
+%         fprintf('%s\n','No reversible reactions with non-default constraints.');
+%     end
+% else
+%     if printLevel>0
+%         fprintf('%s\n',['...reversible reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) ']  constraints:']);
+%     end
+%     if exist('modelAfter','var')
+%         T = table(model.rxns(reversibleRxnBool),rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),modelAfter.lb(reversibleRxnBool),model.ub(reversibleRxnBool),modelAfter.ub(reversibleRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(reversibleRxnBool),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
+%     else
+%         T = table(model.rxns(reversibleRxnBool),rxnNames(reversibleRxnBool),model.lb(reversibleRxnBool),model.ub(reversibleRxnBool),printRxnFormula(model, 'rxnAbbrList', model.rxns(reversibleRxnBool),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb','ub','equation'});
+%     end
+%     disp(T);
+% end
+
+if any(boolRemainder)
+    if printLevel>0
+        fprintf('%s\n',['...reversible reactions with non-[' num2str(minInf)  ', ' num2str(maxInf) ']  constraints:']);
+    end
+    if exist('modelAfter','var')
+        T = table(model.rxns(boolRemainder),rxnNames(boolRemainder),model.lb(boolRemainder),modelAfter.lb(boolRemainder),model.ub(boolRemainder),modelAfter.ub(boolRemainder),printRxnFormula(model, 'rxnAbbrList', model.rxns(boolRemainder),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb_before','lb_after','ub_before','ub_after','equation'});
+    else
+        T = table(model.rxns(boolRemainder),rxnNames(boolRemainder),model.lb(boolRemainder),model.ub(boolRemainder),printRxnFormula(model, 'rxnAbbrList', model.rxns(boolRemainder),'printFlag',0),'VariableNames',{'Reversible_Reaction','Name','lb','ub','equation'});
     end
     disp(T);
 end
