@@ -125,9 +125,31 @@ if isfield(model,'E')
     issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
 end
 
+if ~isfield(model,'S')
+    %relax generic LP problem ,e.g.
+%          A: [1663×2942 double]
+%          b: [1663×1 double]
+%     csense: [1663×1 char]
+%          c: [2942×1 double]
+%     osense: 1
+%         lb: [2942×1 double]
+%         ub: [2942×1 double]
+%          d: [2942×1 double]
+    model.S = model.A;
+    if isfield(model,'d')
+        model.SIntRxnBool = model.d~=0;
+        model = rmfield(model,'d');
+    else
+        model.SIntRxnBool = true(size(model.S,2),1);
+    end
+    model = rmfield(model,'A');
+end
 
 [nMets,nRxns] = size(model.S); %Check inputs
 
+if ~exist('param','var')
+    param = struct();
+end
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
 end

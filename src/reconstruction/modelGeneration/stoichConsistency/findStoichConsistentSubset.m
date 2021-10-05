@@ -821,10 +821,14 @@ if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
             warning('inconsistent metabolite removal')
         end
     end
-    try
-        stoichConsistModel = removeUnusedGenes(stoichConsistModel);
-    catch ME
-        disp(ME.message)
+    if isfield(stoichConsistModel,'grRules')
+        try
+            stoichConsistModel = removeUnusedGenes(stoichConsistModel);
+        catch ME
+            disp(ME.message)
+        end
+    else
+        stoichConsistModel=[];
     end
 else
     stoichConsistModel = model;
