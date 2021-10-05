@@ -477,7 +477,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CLt4r AND r2137',[],'r2137','CLti'
     'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
-    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNtpp'
+    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNt'
     'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
     'POR4 AND FDHfdx AND MTHFRfdx AND GLFRDOi',[],'POR4','POR4i'
     'SUCCt2_3r AND CITt7',[],'SUCCt2_3r','SUCCt2_3'

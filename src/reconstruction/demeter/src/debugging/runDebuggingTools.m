@@ -83,7 +83,7 @@ end
 
 if isempty(debuggingFolder)
     debuggedModelsFolder = refinedFolder;
-    debuggedTestFolder = testResultsFolder;
+    debuggedTestFolder = [testResultsFolder filesep reconVersion '_refined'];
 else
     mkdir(debuggingFolder)
     debuggedModelsFolder = [debuggingFolder filesep 'RevisedModels'];
