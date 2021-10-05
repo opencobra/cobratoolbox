@@ -84,6 +84,7 @@ maxTime = 1800;
 [cxcalcInstalled, ~] = system('cxcalc');
 cxcalcInstalled = ~cxcalcInstalled;
 [oBabelInstalled, ~] = system('obabel');
+oBabelInstalled = ~oBabelInstalled;
 [javaInstalled, ~] = system('java');
 
 % Generating new directories
@@ -100,14 +101,6 @@ if javaInstalled && ~onlyUnmapped
     if ~exist([rxnDir filesep 'txtData'],'dir')
         mkdir([rxnDir filesep 'txtData'])
     end
-end
-
-% Download the RDT algorithm, if it is not present in the output directory
-if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
-    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
-    % Previous releases:
-    %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
-    %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
 end
 
 % Delete the protons (hydrogens) for the metabolic network
@@ -178,6 +171,14 @@ if javaInstalled == 1 && ~onlyUnmapped
     % Atom map RXN files
     fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
     
+    % Download the RDT algorithm, if it is not present in the output directory
+    if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
+        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+        % Previous releases:
+        %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+        %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+    end
+    
     % Atom map passive transport reactions; The atoms are mapped for the
     % same molecular structures in the substrates as they are in the
     % products i.e. A[m] + B[c] -> A[c] + B[m].
@@ -201,13 +202,22 @@ if javaInstalled == 1 && ~onlyUnmapped
             command = ['g' command];
         end
         [status, result] = system(command);
+        if ~contains(result, 'ECBLAST')
+            [status, result] = system(command);
+        end
+        
+        % RXN not found
         if contains(result, 'file not found!')
             warning(['The file ' name ' was not found'])
         end
+        
+        % Error
         if ~status
             fprintf(result);
             error('Command %s could not be run.\n', command);
         end
+        
+        % Save files in the corresponding directory
         mNames = dir('ECBLAST_*');
         if length(mNames) == 3
             name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
