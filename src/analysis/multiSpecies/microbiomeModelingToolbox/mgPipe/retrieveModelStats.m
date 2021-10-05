@@ -1,4 +1,4 @@
-function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, infoFilePath)
+function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, infoFilePath)
 % This function retrieves statistics on the number of reactions and
 % metabolites across microbiome models. If a file with stratification
 % information on individuals is provided, it will also determine if
@@ -7,12 +7,13 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 %
 % USAGE:
 %
-%   [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, infoFilePath)
+%   [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, infoFilePath)
 %
 % INPUTS
 % modelPath:        Path to models for which statistics should be retrieved
 % modelList:        Cell array with names of models for which statistics
 %                   should be retrieved
+% numWorkers:       integer indicating the number of cores to use for parallelization
 %
 % OPTIONAL INPUT:
 % infoFilePath:     char with path to stratification criteria if available
@@ -29,11 +30,28 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 % .. Author:
 %       - Almut Heinken, 02/2021
 
+
+% set parallel pool
+if numWorkers > 1
+    poolobj = gcp('nocreate');
+    if isempty(poolobj)
+        parpool(numWorkers)
+    end
+end
+
 % get the number of reactions and metabolites per model
+dataTmp={};
+parfor i=1:length(modelList)
+    modelLoaded=load([modelPath filesep modelList{i} '.mat']);
+    fnames=fieldnames(modelLoaded);
+    model=modelLoaded.(fnames{1});
+    dataTmp{i}(1)=length(model.rxns);
+    dataTmp{i}(2)=length(model.mets);
+end
+
 for i=1:length(modelList)
-    load([modelPath filesep modelList{i} '.mat']);
-    data(i,1)=length(microbiota_model.rxns);
-    data(i,2)=length(microbiota_model.mets);
+    data(i,1)=dataTmp{i}(1);
+    data(i,2)=dataTmp{i}(2);
 end
 
 statistics={};
@@ -61,7 +79,7 @@ modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_diet_','');
 modelStats(2:end,2:3)=num2cell(data);
 
 % create violin plot of model stats
-if nargin <3
+if nargin <4
     % have reactions and metabolites in one plot
     try
         figure

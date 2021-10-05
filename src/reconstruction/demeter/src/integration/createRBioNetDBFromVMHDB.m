@@ -27,7 +27,7 @@ for i=1:size(metaboliteDatabase,1)
 end
 metab=cell(metaboliteDatabase);
 
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
+reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011']);
 reactionDatabase=table2cell(reactionDatabase);
 for i=1:size(reactionDatabase,1)
     if isempty(reactionDatabase{i,9})

@@ -111,6 +111,9 @@ for k=1:size(analyzedFiles,1)
                 data(find(strcmp(taxa,'N/A')),:)=[];
                 red_orgs(strcmp(taxa,'N/A'),:)=[];
                 taxa(find(strcmp(taxa,'N/A')),:)=[];
+                data(find(strcmp(taxa,'NA')),:)=[];
+                red_orgs(strcmp(taxa,'NA'),:)=[];
+                taxa(find(strcmp(taxa,'NA')),:)=[];
                 
                 
                 % remove unclassified organisms

@@ -28,9 +28,12 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * csense - `m x 1` character array with entries in {L,E,G}
 %                           (The code is backward compatible with an m + k x 1 csense vector,
 %                           where k is the number of coupling constraints)
+%                         * mets `m x 1` metabolite abbreviations
 %
 %                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x n` Right hand side of C*v <= d
+%                         * d - `k x 1` Right hand side of C*v <= d
+%                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
+%
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
 %                         * g0 - `n x 1` weights on zero norm
 %                         * g1 - `n x 1` weights on one norm
@@ -274,7 +277,7 @@ if ischar(minNorm)
     end
 end
 
-if isfield(model,'g')
+if isfield(model,'g') && ~isfield(model,'cf')%in case it is a thermodynamic model
     if isfield(model,'g0') || isfield(model,'g1')
         warning('model.g ignored by optimizeCbModel. zero and one norm weights are separately specified in model.g0 and model.g1 respectively')
     else

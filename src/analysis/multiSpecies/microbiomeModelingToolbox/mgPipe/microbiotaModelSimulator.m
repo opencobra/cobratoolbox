@@ -105,14 +105,13 @@ if computeProfiles
         else
             skipSim=1;
             % verify that every simulation result is correct
-            for i=1:size(presol,1)
+            for i=1:size(netProduction,2)
                 % check for all feasible models that simulations were properly
                 % executed
-                if presol{i,2} > lowerBMBound
-                    if isempty(netProduction{2,i}(:,2))
-                        % feasible model was skipped, repeat simulations
-                        skipSim=0;
-                    end
+                if isempty(netProduction{2,i})
+                    % feasible model was skipped, repeat simulations
+                    skipSim=0;
+                else
                     vals=netProduction{2,i}(find(~cellfun(@isempty,(netProduction{2,i}(:,2)))),2);
                     if abs(sum(cell2mat(vals)))<0.000001
                         % feasible model was skipped, repeat simulations
@@ -183,6 +182,7 @@ if computeProfiles
                 end
             end
             if doSim==1
+                k
                 % simulations either not done yet or done incorrectly -> go
                 sampleID = sampNames{k,1};
                 if ~isempty(hostPath)

@@ -22,10 +22,7 @@ toCompare={
     'Refined' curatedFolder
     };
 
-cd(propertiesFolder)
-mkdir([propertiesFolder filesep 'Draft_Refined_Comparison'])
-cd([propertiesFolder filesep 'Draft_Refined_Comparison'])
-currentDir=pwd;
+mkdir([propertiesFolder filesep 'Reconstruction_features_summarized'])
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -33,7 +30,7 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-if numWorkers>0 && ~isempty(ver('distcomp'))
+if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
     if isempty(poolobj)
@@ -162,14 +159,14 @@ for j=1:size(toCompare,1)
         save(['stats_' toCompare{j,1} '.mat'],'stats');
     end
     % print out a table with the features
-    writetable(cell2table(stats),['ReconstructionFeatures_' toCompare{j,1} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    writetable(cell2table(stats),[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{j,1} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
 % print summary table
 
 for i=1:2
     Averages{1,i+1} = toCompare{i,1};
-    stats = readtable(['ReconstructionFeatures_' toCompare{i,1} '_' reconVersion], 'ReadVariableNames', false);
+    stats = readtable([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{i,1} '_' reconVersion], 'ReadVariableNames', false);
     stats = table2cell(stats);
     for j=2:size(stats,2)
         Averages{j,1} = stats{1,j};
@@ -183,8 +180,11 @@ for i=1:2
     end
 end
 Averages=cell2table(Averages);
-writetable(Averages,['ReconstructionFeatures_Overview_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(Averages,[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_Overview_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
-cd(currentDir)
+% delete unneeded files
+for j=1:size(toCompare,1)
+    delete(['stats_' toCompare{j,1} '.mat'])
+end
 
 end

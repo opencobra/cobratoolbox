@@ -35,8 +35,8 @@ function optProblem = buildLPproblemFromModel(model, verify)
 %                  * `.evarc`: the objective coefficients of the variables from E;
 %                  * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
 %                 A QPproblem structure will also have the following field:
-%                  * `.F`: Quadratic part of objective (F*osense must be
-%                  positive semidefinite)
+%                  * `.F`: Quadratic part of objective 
+%                          (F*osense must be positive semidefinite, for all solvers except Gurobi)
 %
 %    verify:     Check the input (default: true);
 %
@@ -116,6 +116,10 @@ end
 
 if isfield(model,'dxdt')
     model.b = model.dxdt; %Overwrite b
+end
+
+if ~isfield(model,'c')
+    model.c = zeros(size(model.S,2),1);
 end
 
 if ~modelC && ~modelE

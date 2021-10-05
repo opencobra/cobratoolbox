@@ -431,6 +431,9 @@ solverOK = false;
 % determine the compatibility status
 compatibleStatus = isCompatible(solverName, printLevel);
 
+% * 0: not compatible with the COBRA Toolbox (tested)
+% * 1: compatible with the COBRA Toolbox (tested)
+% * 2: unverified compatibility with the COBRA Toolbox (not tested)
 if compatibleStatus == 1 || compatibleStatus == 2
     switch solverName
         case {'lindo_old', 'lindo_legacy'}
@@ -451,6 +454,7 @@ if compatibleStatus == 1 || compatibleStatus == 2
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
             catch ME
+                fprintf('%s\n',['changeCobraSolver: problem initialising CPLEX object: ' ME.message ])
                 solverOK = false;
             end
             matver=split(version,'.');

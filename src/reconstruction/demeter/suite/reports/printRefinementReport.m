@@ -22,7 +22,7 @@ fprintf('Finished refinement and testing of the project %s.\n',reconVersion)
 curationReport={'Feature','Number','Agreement with experimental data'};
 
 %%
-data = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
+data = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'ATP_from_O2_' reconVersion '.txt']));
 
 fprintf('%s draft reconstructions have been refined.\n',num2str(size(data,1)))
 
@@ -51,27 +51,8 @@ if isfile(([testResultsFolder filesep 'notGrowing.mat']))
     curationReport(size(curationReport,1)+1,:)={'Reconstructions not producing biomass',num2str(size(notGrowing,1)),'N/A'};
     end
 end
-%%
-data = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']));
-if contains(version,'(R202') % for Matlab R2020a and newer
-    growth=length(find(cell2mat(data(:,2))==1));
-    nogrowth=length(find(cell2mat(data(:,2))==0));
-else
-    growth=length(find(str2double(data(:,2))==1));
-    nogrowth=length(find(str2double(data(:,2))==0));
-end
-fprintf('Growth requirements were refined for %s reconstructions.\n',num2str(growth+nogrowth))
-curationReport(size(curationReport,1)+1,:)={'Reconstructions with growth medium data',num2str(growth+nogrowth),''};
-fprintf('%0.2f %% of reconstructions agree with all known media.\n',growth/(growth+nogrowth)*100)
-curationReport{size(curationReport,1),3}=num2str(growth);
-%%
+%% print a summary of refinement success
 data = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep reconVersion '_PercentagesAgreement.xls']));
-if ~contains(version,'(R202') % for older versions of Matlab
-    for i=1:size(data,1)
-        data{i,2}=str2double(data{i,2});
-        data{i,3}=str2double(data{i,3});
-    end
-end
 if data{1,2}>0
     fprintf('Carbon source pathways were refined for %s reconstructions.\n',num2str(data{1,2}))
     curationReport(size(curationReport,1)+1,:)={'Reconstructions with carbon source experimental data',num2str(data{1,2}),''};
@@ -114,11 +95,11 @@ if data{7,2}>0
     fprintf('%0.2f %% of reconstructions agree with all drug comparative genomic data.\n',data{7,3}*100)
     curationReport{size(curationReport,1),3}=num2str(data{7,3});
 end
-if data{8,2}>0
-    fprintf('Growth requirements were refined for %s reconstructions.\n',num2str(data{8,2}))
-    curationReport(size(curationReport,1)+1,:)={'Reconstructions with data on growth requirements',num2str(data{8,2}),''};
+if data{9,2}>0
+    fprintf('Growth requirements were refined for %s reconstructions.\n',num2str(data{9,2}))
+    curationReport(size(curationReport,1)+1,:)={'Reconstructions with data on growth requirements',num2str(data{9,2}),''};
     fprintf('%0.2f %% of reconstructions can grow on defined medium for the organism.\n',data{9,3}*100)
-    curationReport{size(curationReport,1),3}=num2str(data{8,3});
+    curationReport{size(curationReport,1),3}=num2str(data{9,3});
 end
 curationReport=cell2table(curationReport);
 % writetable(curationReport,[testResultsFolder filesep 'Curation_report_' reconVersion],'FileType','spreadsheet');

@@ -125,6 +125,14 @@ if FBA.stat ==3 || FBA.stat ==0
         
         % exclude irreversible reactions from relaxing lower bounds
         irrRxns=database.reactions(find(strcmp(database.reactions(:,4),'0')),1);
+                
+        if excludeExchanges
+            % exclude exchange reactions from relaxing lower bounds-for
+            % growth medium gap-filling
+            ExR = modelExpanded.rxns(find(contains(modelExpanded.rxns,'EX_')));
+            irrRxns=union(irrRxns,ExR);
+        end
+        
         param.excludedReactionLB = ismember(modelExpanded.rxns,irrRxns);
         
         % exclude DM reactions to have relaxed bounds
@@ -137,12 +145,7 @@ if FBA.stat ==3 || FBA.stat ==0
             SinkR = contains(modelExpanded.rxns,'sink_');
             param.excludedReactions(SinkR)=1;
         end
-        if excludeExchanges
-            % exclude exchange reactions from relaxing lower bounds-for
-            % growth medium gap-filling
-            ExR = contains(modelExpanded.rxns,'EX_');
-            param.excludedReactionLB = ismember(modelExpanded.rxns,ExR);
-        end
+
          if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
         end

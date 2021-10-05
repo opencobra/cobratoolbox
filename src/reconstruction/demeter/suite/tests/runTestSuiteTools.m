@@ -67,7 +67,8 @@ if ~isempty(translatedDraftsFolder)
 
     % Draft reconstructions
     mkdir([testResultsFolder filesep reconVersion '_draft'])
-    batchTestAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],inputDataFolder,reconVersion,numWorkers);   plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
+    batchTestAllReconstructionFunctions(translatedDraftsFolder,[testResultsFolder filesep reconVersion '_draft'],inputDataFolder,reconVersion,numWorkers);   
+    plotTestSuiteResults([testResultsFolder filesep reconVersion '_draft'],reconVersion);
 else
       % plot growth only for refined
     notGrowing = plotBiomassTestResults(refinedFolder,reconVersion,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);

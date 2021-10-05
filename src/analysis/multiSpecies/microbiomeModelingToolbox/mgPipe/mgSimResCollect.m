@@ -135,7 +135,7 @@ for j = init:fl
                 title('PCoA of net secretion profiles');
             end
         else
-            infoFile = table2cell(readtable(infoFilePath));
+            infoFile = readInputTableForPipeline(infoFilePath);
             
             % remove individuals not in simulations
             [C,IA] = setdiff(infoFile(:,1),sampNames);

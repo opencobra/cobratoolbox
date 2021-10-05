@@ -49,8 +49,7 @@ inputDataToCheck={
 
 for i = 1:length(inputDataToCheck)
     curationStatus{1,i+1} = inputDataToCheck{i,2};
-    inputData = readtable([inputDataFolder filesep inputDataToCheck{i,1} '.txt'], 'Delimiter', 'tab');
-    inputData = [inputData.Properties.VariableDescriptions;table2cell(inputData)];
+    inputData = readInputTableForPipeline([inputDataFolder filesep inputDataToCheck{i,1} '.txt']);
 
     % remove NaNs
     for j=2:size(inputData,1)
