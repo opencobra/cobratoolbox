@@ -79,24 +79,21 @@ for i=1:length(analyzedFiles)
             data=flip(str2double(dataPrintout(2:end,4)));
         end
         
-        try
-            figure
-            plot(data,'Color', 'k')
-            set(gca, 'FontSize', 12)
-            box on
-            h=title(analyzedFiles{i,1});
-            set(h,'interpreter','none')
-            if i<4
-                xlabel('Reactions')
-            else
-                xlabel('Metabolites')
-            end
-            ylabel('Percentage')
-            print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
-            
-            dataPrintout=cell2table(dataPrintout);
-            writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
+        figure
+        plot(data,'Color', 'k')
+        set(gca, 'FontSize', 12)
+        h=title(analyzedFiles{i,1});
+        set(h,'interpreter','none')
+        if i<4
+            xlabel('Reactions')
+        else
+            xlabel('Metabolites')
         end
+        ylabel('Percentage')
+        print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
+        
+        dataPrintout=cell2table(dataPrintout);
+        writetable(dataPrintout,[propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'FileType','spreadsheet','WriteVariableNames',false);
     end
 end
 

@@ -38,7 +38,11 @@ else % if the table is not a text file
             formattedTable={};
             for j=1:length(getcols)
                 formattedTable{1,j}=getcols{j};
-                formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
+                if isnumeric(gettab.(getcols{j}))
+                    formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(num2str(gettab.(getcols{j})));
+                else
+                    formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
+                end
             end
         else
             formattedTable = readtable(tablePath, 'ReadVariableNames', true);
