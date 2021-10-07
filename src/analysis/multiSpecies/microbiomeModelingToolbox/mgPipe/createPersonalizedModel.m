@@ -120,7 +120,7 @@ for k = 1:length(sampNames)
         toRemove={'citations';'comments';'grRules';'rxnConfidenceScores';'rxnECNumbers';'rxnKEGGID';'subSystems';'metHMDBID';'metInChIString';'metKEGGID';'metPubChemID';'metSmiles';'genes'};
         microbiota_model = rmfield(microbiota_model,toRemove);
         
-        model = changeObjective(model, 'EX_microbeBiomass[fe]');
+        microbiota_model = changeObjective(microbiota_model, 'EX_microbeBiomass[fe]');
         
         sresPath=resPath(1:(length(resPath)-1));
         cd(sresPath)
