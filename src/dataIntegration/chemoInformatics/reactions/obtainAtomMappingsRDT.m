@@ -338,7 +338,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         % Sort the atoms in the substrates in ascending order and then map
         % them to the atoms in the products.
         if any(contains(mappedFile, '$MOL'))
-            mappedFile = sortAtomMappingIndexes(mappedFile);
+            mappedFile = sortAtomMappingIdx(mappedFile);
         else
             inconsistentBool(i) = true;
         end
