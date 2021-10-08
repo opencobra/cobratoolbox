@@ -1,4 +1,4 @@
-function lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
+function filenameFull = lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 % Outputs a file for lrs to convert an H-representation (half-space) of a
 % polyhedron to a V-representation (vertex / ray) via vertex enumeration
 %

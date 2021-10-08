@@ -27,7 +27,7 @@ echo "" >> $rstFunctionPath
 
 for section in "${sections[@]}" #"${tutorials[@]}"
 do
-
+    echo "The rstFunctionPath is :" $rstFunctionPath
     echo ".. raw:: html" >> $rstFunctionPath
     echo "" >> $rstFunctionPath
     echo "   <div class=\"tutorialSectionBox $section\">" >> $rstFunctionPath
@@ -69,4 +69,3 @@ done
 echo ".. raw:: html" >> $rstFunctionPath
 echo "" >> $rstFunctionPath
 echo "   <br>" >> $rstFunctionPath
-

@@ -61,7 +61,7 @@ nCols = C{2};
 fgetl(fid);
 
 % read rows into a matrix
-P = sparse(nRows, nCols)
+P = sparse(nRows, nCols);
 
 for r = 1:nRows
     line = fgetl(fid);

@@ -1,5 +1,7 @@
 # Makefile for Sphinx documentation
 #
+ARTENOLIS_DATA_PATH = ~/work/sbgCloud/code/
+TUTORIALS_PATH = ~/work/sbgCloud/code/doc-COBRA.tutorials
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
@@ -53,16 +55,24 @@ html:
 	@echo "Creating modules index page."
 	bash createModulesPage.sh
 	@echo "Copying tutorial html files into source/_static/tutorials/."
-	bash prepareTutorials.sh -t=$(ARTENOLIS_DATA_PATH)/repos/COBRA.tutorials -c=$(ARTENOLIS_DATA_PATH)/repos/cobratoolbox -p=$(ARTENOLIS_DATA_PATH)/cobratoolbox -m=rst
+#bash cp $(TUTORIALS_PATH) source/_static/tutorials
+	#-p  path of the output
+	#-c  path of the COBRAToolbox local clone
+	#-t  path of the COBRA.tutorials local clone
+	#-f  name of a folder of a tutorial
+	#-h  show this help text
+	#-m  mode (all,html,md,pdf,png,rst)
+	#-e  matlab executable path"
+	bash prepareTutorials.sh -t=$(ARTENOLIS_DATA_PATH)/fork-COBRA.tutorials -c=$(ARTENOLIS_DATA_PATH)/fork-cobratoolbox -p=$(ARTENOLIS_DATA_PATH)/cobratoolbox -m=rst
 	@echo "Generating list of suggestions for the websearch."
-	python generateJSONList.py
+	python2 generateJSONList.py
 	@echo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-	git checkout -- source/tutorials/index.rst
-	git checkout -- source/modules/index.rst
-	git checkout -- source/list_contributors.rst
+	#git checkout -- source/tutorials/index.rst
+	#git checkout -- source/modules/index.rst
+	#git checkout -- source/list_contributors.rst
 .PHONY: dirhtml
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
