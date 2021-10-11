@@ -27,12 +27,12 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
+%    rxnDir:        Path to directory that will contain the RXN files with
+%                   atom mappings (default: current directory).
 %    rxnsToAM:      List of reactions to atom map (default: all in the
 %                   model).
 %    hMapping:      Logic value to select if hydrogen atoms will be atom
 %                   mapped (default: TRUE).
-%    rxnDir:        Path to directory that will contain the RXN files with
-%                   atom mappings (default: current directory).
 %    onlyUnmapped:  Logic value to select create only unmapped MDL RXN
 %                   files (default: FALSE).
 %
@@ -84,6 +84,7 @@ maxTime = 1800;
 [cxcalcInstalled, ~] = system('cxcalc');
 cxcalcInstalled = ~cxcalcInstalled;
 [oBabelInstalled, ~] = system('obabel');
+oBabelInstalled = ~oBabelInstalled;
 [javaInstalled, ~] = system('java');
 
 % Generating new directories
@@ -180,6 +181,14 @@ if javaInstalled == 1 && ~onlyUnmapped
     % Atom map RXN files
     fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
     
+    % Download the RDT algorithm, if it is not present in the output directory
+    if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
+        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+        % Previous releases:
+        %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+        %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
+    end
+    
     % Atom map passive transport reactions; The atoms are mapped for the
     % same molecular structures in the substrates as they are in the
     % products i.e. A[m] + B[c] -> A[c] + B[m].
@@ -205,6 +214,11 @@ if javaInstalled == 1 && ~onlyUnmapped
             
         end
         [status, result] = system(command);
+        if ~contains(result, 'ECBLAST')
+            [status, result] = system(command);
+        end
+        
+        % RXN not found
         if contains(result, 'file not found!')
             warning(['The file ' name ' was not found'])
         end
@@ -212,6 +226,8 @@ if javaInstalled == 1 && ~onlyUnmapped
             fprintf(result);
             error('Command %s could not be run.\n', command);
         end
+        
+        % Save files in the corresponding directory
         mNames = dir('ECBLAST_*');
         if length(mNames) == 3
             name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');

@@ -128,29 +128,14 @@ for i=2:size(sampleData,1)
             featName='';
         end
         
-        if ~exist('use_append_pdfs','var')
-            % check if ghostscript is installed
-            try
-                append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
-                use_append_pdfs=1;
-            catch
-                use_append_pdfs=0;
-                warning('Cannot create PDF containing all violin plots. Consider installing ghostscript.')
-            end
-        end
-        
         if ~isempty(stratification)
             print([featName stratification '_' filename],'-dpng','-r300')
             print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
-            if use_append_pdfs
-                append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
-            end
+            % append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
         else
             print([featName filename],'-dpng','-r300')
             print('-bestfit',[featName filename],'-dpdf','-r300')
-            if use_append_pdfs
-                append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
-            end
+            % append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
         end
         close all
     end

@@ -62,7 +62,7 @@ if cxcalcInstalled == 0
     cxcalcInstalled = false;
 end
 [oBabelInstalled, ~] = system('obabel');
-if oBabelInstalled ~= 1
+if any(oBabelInstalled == [127 0])
     oBabelInstalled = false;
     standardisationApproach = 'basic';
 end
@@ -189,7 +189,7 @@ for i = 1:size(aMets, 1)
         % Generate images
         if cxcalcInstalled
             fdata = dir([standardisedMolFiles name]);
-            command = ['molconvert jpeg:w' num2str(fdata.bytes / 10) ',h' num2str(fdata.bytes / 10) ' ' standardisedMolFiles name ' -o ' standardisedImages name(1:end-4) '.jpeg'];
+            command = ['molconvert jpeg:w' num2str(fdata.bytes / 2.5) ',h' num2str(fdata.bytes / 2.5) ' ' standardisedMolFiles name ' -o ' standardisedImages name(1:end-4) '.jpeg'];
             [~, ~] = system(command);
         end
         

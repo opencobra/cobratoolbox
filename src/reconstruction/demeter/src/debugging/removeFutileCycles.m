@@ -477,7 +477,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CLt4r AND r2137',[],'r2137','CLti'
     'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
-    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNtpp'
+    'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNt'
     'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
     'POR4 AND FDHfdx AND MTHFRfdx AND GLFRDOi',[],'POR4','POR4i'
     'SUCCt2_3r AND CITt7',[],'SUCCt2_3r','SUCCt2_3'
@@ -495,6 +495,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'ORNt AND PTRCORNt7 AND PTRCAT AND ABUTR',[],'PTRCAT','PTRCATi'
     'GUAD AND PUNP3 AND PUNP7 AND r1384 AND GUAt2r',[],'GUAt2r','GUAt2'
     'r0480 AND r0788 AND r0789',[],'r0480','r0480'
+    'G3PD8 AND G3PPHL AND ALCD19',[],'G3PD8','G3PD8i'
+    'G3PD8 AND G3PD1 AND SUCD4',[],'G3PD8','G3PD8i'
     };
 
 

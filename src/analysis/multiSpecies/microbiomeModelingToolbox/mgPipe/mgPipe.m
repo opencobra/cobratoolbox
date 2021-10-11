@@ -317,9 +317,9 @@ end
 close all
 
 if ~isempty(infoFilePath)
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, infoFilePath);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, numWorkers, infoFilePath);
 else
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, numWorkers);
 end
 writetable(cell2table(modelStats),[resPath filesep 'ModelStatistics.csv'], 'WriteVariableNames', false);
 writetable(cell2table(summary),[resPath filesep 'ModelStatsSummary.csv'], 'WriteVariableNames', false);

@@ -83,7 +83,7 @@ end
 
 if isempty(debuggingFolder)
     debuggedModelsFolder = refinedFolder;
-    debuggedTestFolder = testResultsFolder;
+    debuggedTestFolder = [testResultsFolder filesep reconVersion '_refined'];
 else
     mkdir(debuggingFolder)
     debuggedModelsFolder = [debuggingFolder filesep 'RevisedModels'];
@@ -163,7 +163,7 @@ if length(failedModels)>0
         gapfilledReactionsTmp = {};
         replacedReactionsTmp = {};
         revisedModelTmp = {};
-        for j=i:i+endPnt
+        parfor j=i:i+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             

@@ -136,7 +136,7 @@ if ENV_VARS.printLevel
 end
 
 % check if the directory is a git-tracked folder
-if exist([CBTDIR filesep '.git'], 'dir') ~= 7
+if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
     % initialize the directory
     [status_gitInit, result_gitInit] = system('git init');
     
@@ -177,6 +177,7 @@ if ENV_VARS.printLevel
     fprintf(' Done.\n');
 end
 
+if installedGit
 % temporary disable ssl verification
 [status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
 
@@ -184,11 +185,13 @@ if status_setSSLVerify ~= 0
     fprintf(strrep(result_setSSLVerify, '\', '\\'));
     warning('Your global git configuration could not be changed.');
 end
+end
 
 % check curl
 [status_curl, result_curl] = checkCurlAndRemote(false);
 
 submoduleWarning=0;
+if installedGit
 % check if the URL exists
 if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
     fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
@@ -221,8 +224,9 @@ elseif status_curl == 0
     %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
     %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
     %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
-    [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive');% 23/9/21 RF submodules point to master, don't pull in remote changes
-
+    %[status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive');% 23/9/21 RF submodules point to master, don't pull in remote changes
+    [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+    
     if status_gitSubmodule ~= 0
         fprintf(strrep(result_gitSubmodule, '\', '\\'));
         error('The submodules could not be initialized.');
@@ -243,9 +247,18 @@ elseif status_curl == 0
         fprintf(' Done.\n');
     end
 end
-
+% List all files in the supplied (git tracked) Directory with their absolute path name
+% based on the git ls-file command. If the directory is not git controlled, the
+% type is assumed to be 'all' and all files (except for .git files
+% will be returned).
 %get the current content of the init Folder
 dirContent = getFilesInDir('type','all');
+else
+    %warning('Git is not installed so the submodules could not be populated.%s\n','Some of the dependencies of the cobra toolbox are not satisfied.%s\n','Trying to proceed without submodules!%s\n')
+    fprintf('%s\n','Git not installed, proceeding without initialising submodules.')
+end
+
+
 
 % add the folders of The COBRA Toolbox
 folders = {'tutorials', 'papers', 'binary', 'deprecated', 'src', 'test', '.tmp'};
@@ -614,7 +627,7 @@ changeCobraSolver('gurobi', 'ALL', 0);
 %changeCobraSolver('ibm_cplex', 'QP', 0); %until problem with gurobi QP sorted
 
 % check if a new update exists
-if ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
+if installedGit && ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
     updateCobraToolbox(true); % only check
 else
     if ~updateToolbox && ENV_VARS.printLevel
@@ -622,12 +635,14 @@ else
     end
 end
 
+if installedGit
 % restore global configuration by unsetting http.sslVerify
 [status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
 
 if status_setSSLVerify ~= 0
     fprintf(strrep(result_setSSLVerify, '\', '\\'));
     warning('Your global git configuration could not be restored.');
+end
 end
 
 % set up the COBRA System path
@@ -649,8 +664,10 @@ end
 % change back to the current directory
 cd(currentDir);
 
-% cleanup at the end of the successful run
-removeTempFiles(CBTDIR, dirContent);
+if installedGit
+    % cleanup at the end of the successful run
+    removeTempFiles(CBTDIR, dirContent);
+end
 
 if submoduleWarning
     warning('Local changes have been made to submodules\n%s\n%s\n%s','Local changes have been stashed. See ***Local changes ... above for details.','Such changes should ideally be made to separate forks.', 'See, e.g., https://github.com/opencobra/COBRA.tutorials#contribute-a-new-tutorial-or-modify-an-existing-tutorial')
@@ -673,6 +690,12 @@ function [installed, versionGit] = checkGit()
 %     installed:      boolean to determine whether git is installed or not
 %     versionGit:     version of git installed
 %
+
+if 1 %try to proceed as if there is no git
+    installed = false;
+    versionGit = [];
+    return
+end
 
 global ENV_VARS
 
@@ -712,13 +735,16 @@ if status_gitVersion == 0 && ~isempty(index)
     end
 else
     if ispc
-        fprintf('(not installed).\n');
+        fprintf('(git is not installed, attempting to install GitBash).\n');
         installGitBash();
     else
         fprintf(result_gitVersion);
+        warning(' > git is not installed.');
         fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
-        error(' > git is not installed.');
+        
     end
+    % set the boolean as false (not installed)
+    installed = false;
 end
 end
 

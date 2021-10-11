@@ -96,23 +96,23 @@ if isfield(options, 'dirsToCompare')
     for i = 1:length(options.dirsToCompare)
         options.dirsToCompare{i} = [regexprep(options.dirsToCompare{i},'(/|\\)$',''), filesep];
         if ~isfolder(options.dirsToCompare)
-            display([options.dirsToCompare{i} ' is not a directory'])
+            disp([options.dirsToCompare{i} ' is not a directory'])
             options.dirsToCompare{i} = [];
         end
     end
+    if ~isfield(options, 'dirNames')
+        for i = 1:length(options.dirsToCompare)
+            options.dirNames{i, 1} = ['localDir' num2str(i)];
+        end
+    else
+        if isrow(options.dirNames)
+            options.dirNames = options.dirNames';
+        end
+    end
 else
-    options.dirsToCompare = [];
     dirsToCompare = false;
 end
-if ~isfield(options, 'dirNames')
-    for i = 1:length(options.dirsToCompare)
-        options.dirNames{i, 1} = ['localDir' num2str(i)];
-    end
-else
-    if isrow(options.dirNames)
-        options.dirNames = options.dirNames';
-    end
-end
+
 
 % Check if ChemAxon and openBabel are installed
 [cxcalcInstalled, ~] = system('cxcalc');
@@ -155,7 +155,7 @@ if options.printlevel > 0
     disp('--------------------------------------------------------------')
 end
 
-directories = {'inchi'; 'smiles'; 'kegg'; 'hmdb'; 'pubchem'; 'chebi'};
+directories = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubchem'; 'smiles'};
 if dirsToCompare
     directories = [directories; options.dirNames];
 end
@@ -172,52 +172,42 @@ umets = unique(mets);
 % 4.- HMDB (https://hmdb.ca/)
 % 5.- PubChem (https://pubchem.ncbi.nlm.nih.gov/)
 % 6.- CHEBI (https://www.ebi.ac.uk/)
+% 7.- DrugBank (https://go.drugbank.com/)
+% 8.- LipidMass (https://www.lipidmaps.org/)
 
 if options.printlevel > 0
     fprintf('%s\n\n', 'Obtaining MOL files from chemical databases ...')
 end
 
-for i = 1:length(directories)
-    dirBool(i) = false;
-    if any(~cellfun(@isempty, regexpi(modelFields, directories{i})))
-        dirBool(i) = true;
-        molCollectionReport = obtainMetStructures(model, model.mets, outputDir, directories{i});
-        info.sourcesCoverage.(directories{i}) = molCollectionReport;
-        if options.printlevel > 0
-            disp([directories{i} ':'])
-            display(molCollectionReport)
-        end
-    end
-end
+molCollectionReport = obtainMetStructures(model, model.mets, outputDir);
 comparisonDir = [outputDir 'molComparison'];
 movefile([outputDir 'metabolites'], comparisonDir)
-        
-if ~isempty(dirsToCompare)
+     
+if dirsToCompare
+    molCollectionReport.sources = [molCollectionReport.sources; options.dirNames];
+    newIdx = length(molCollectionReport.sources);
     for i = 1:length(options.dirsToCompare)
-        % Get list of MOL files
-        d = dir(options.dirsToCompare{i});
-        d = d(~[d.isdir]);
-        metList = {d.name}';
-        metList = metList(~cellfun('isempty', regexp(metList,'(\.mol)$')));
-        metList = regexprep(metList, '.mol', '');
-        metList(~ismember(metList, umets)) = [];
-        info.sourcesCoverage.(options.dirNames{i}).mets = umets;
-        info.sourcesCoverage.(options.dirNames{i}).metsWithMol = metList;
-        info.sourcesCoverage.(options.dirNames{i}).metsWithoutMol = setdiff(umets, metList);
-        info.sourcesCoverage.(options.dirNames{i}).coverage = ...
-            (numel(info.sourcesCoverage.(options.dirNames{i}).metsWithMol) * 100) /...
-            numel(molCollectionReport.mets);
-        if options.printlevel > 0
-            disp([options.dirNames{i} ':'])
-            display(info.sourcesCoverage.(options.dirNames{i}))
-        end
+        d = dir([options.dirsToCompare{i} '*.mol']);
+        molCollectionReport.structuresObtainedPerSource.(options.dirNames{i}) = ismember(umets, regexprep({d.name}, '.mol', ''));
+        databaseCoverage = table;
+        databaseCoverage.sources = options.dirNames{i};
+        databaseCoverage.coverage = (sum(ismember(umets, regexprep({d.name}, '.mol', ''))) * 100) / length(umets);
+        databaseCoverage.metsWithStructure = sum(ismember(umets, regexprep({d.name}, '.mol', '')));
+        databaseCoverage.metsWithoutStructure = sum(~ismember(umets, regexprep({d.name}, '.mol', '')));
+        molCollectionReport.databaseCoverage = [molCollectionReport.databaseCoverage; databaseCoverage];
+        molCollectionReport.structuresObtained = max([molCollectionReport.structuresObtained; sum(ismember(umets, regexprep({d.name}, '.mol', '')))]);
     end
+end
+info.molCollectionReport = molCollectionReport;
+
+if options.printlevel > 0
+    display(molCollectionReport.databaseCoverage)
 end
 
 % Remove sources without a single metabolite present the model
 for i = length(directories):-1:1
-    if info.sourcesCoverage.(directories{i}).coverage == 0
-        directories{i} = [];
+    if molCollectionReport.databaseCoverage.coverage(i) == 0
+        directories(i) = [];
     end
 end
 
@@ -475,15 +465,15 @@ if options.printlevel > 0
     subplot(1, 3, 3)
     fnames = fieldnames(info.sourcesComparison);
     fnames = fnames(contains(fnames, 'met_'));
-    sterochemicalCounter = zeros(7, 1);
-    chargeCounter = zeros(7, 1);
-    formula = zeros(7, 1);
+    sterochemicalCounter = zeros(numel(directories), 1);
+    chargeCounter = zeros(numel(directories), 1);
+    formulaOk = zeros(numel(directories), 1);
     for i = 1:length(fnames)
-        formula = formula + info.sourcesComparison.(fnames{i}).formulaOkBool;
+        formulaOk = formulaOk + info.sourcesComparison.(fnames{i}).formulaOkBool;
         sterochemicalCounter = sterochemicalCounter + info.sourcesComparison.(fnames{i}).stereochemicalSubLayers;
         chargeCounter = chargeCounter + info.sourcesComparison.(fnames{i}).chargeOkBool;
     end
-    plot([formula, sterochemicalCounter, chargeCounter], 'LineWidth', 2)
+    plot([formulaOk, sterochemicalCounter, chargeCounter], 'LineWidth', 2)
     legend({'Formula', 'Sterochemistry', 'Charge'}, 'Location', 'best')
     title('3. Features comparison', 'FontSize', 16)
     directoriesLabels = regexprep(directories, 'inchi','InChI');
@@ -589,13 +579,13 @@ if options.adjustToModelpH && cxcalcInstalled
                     fclose(fid2);
                     % Obtain the chemical formula
                     command = ['cxcalc elementalanalysistable -t "formula" ' tmpDir filesep 'tmp.mol'];
-                    [~, formula] = system(command);
-                    formula = split(formula);
-                    formula = formula{end - 1};
+                    [~, formulaOk] = system(command);
+                    formulaOk = split(formulaOk);
+                    formulaOk = formulaOk{end - 1};
                     %  Get number of hydrogens in the adjusted metabolite
-                    [elemetList, ~ , elemetEnd] = regexp(formula, ['[', 'A':'Z', '][', 'a':'z', ']?'], 'match');
+                    [elemetList, ~ , elemetEnd] = regexp(formulaOk, ['[', 'A':'Z', '][', 'a':'z', ']?'], 'match');
                     hBool = contains(elemetList, 'H');
-                    [num, numStart] = regexp(formula, '\d+', 'match');
+                    [num, numStart] = regexp(formulaOk, '\d+', 'match');
                     numList = ones(size(elemetList));
                     idx = ismember(elemetEnd + 1, numStart);
                     numList(idx) = cellfun(@str2num, num);
@@ -609,7 +599,7 @@ if options.adjustToModelpH && cxcalcInstalled
                     
                     if noOfH_model == noOfH_source
                         movefile([tmpDir filesep 'tmp.mol'], [tmpDir filesep name])
-                        info.adjustedpHTable.metFormula(i) = formula;
+                        info.adjustedpHTable.metFormula(i) = formulaOk;
                     end
                 end
             else
@@ -861,9 +851,10 @@ if ~options.onlyUnmapped
         display('Calculating bonds broken and formed and enthalpy change...')
     end
     
-    [enthalpyChange, substrateMass1] = findEnthalpyChange(model, [rxnDir ...
+    tmp = findSExRxnInd(model);
+    [enthalpyChange, substrateMass] = findEnthalpyChange(model, model.rxns(tmp.SIntRxnBool), [rxnDir ...
         filesep 'atomMapped'], options.printlevel);
-    [bondsBrokenAndFormed, ~] = findBondsBrokenAndFormed(model, [rxnDir ...
+    [bondsBrokenAndFormed, ~] = findBondsBrokenAndFormed(model, model.rxns(tmp.SIntRxnBool), [rxnDir ...
         filesep 'atomMapped'], options.printlevel);
     
     % Replace NaN values to 'Missing'
@@ -874,7 +865,10 @@ if ~options.onlyUnmapped
     enthalpyChange(missingRxns) = {'Missing or unbalanced'};
     
     % Create table & sort values
-    info.bondsData.table = table(model.rxns, model.rxnNames, bondsBrokenAndFormed, enthalpyChange, substrateMass, ...
+    if ~isfield(model, 'rxnNames')
+        model.rxnNames = model.rxns;
+    end
+    info.bondsData.table = table(model.rxns(tmp.SIntRxnBool), model.rxnNames(tmp.SIntRxnBool), bondsBrokenAndFormed, enthalpyChange, substrateMass, ...
             'VariableNames', {'rxns', 'rxnNames', 'bondsBrokenAndFormed', 'enthalpyChange', 'substrateMass'});
     info.bondsData.table = [sortrows(info.bondsData.table(~missingRxns, :), ...
         {'bondsBrokenAndFormed'}, {'descend'}); info.bondsData.table(missingRxns, :)];   

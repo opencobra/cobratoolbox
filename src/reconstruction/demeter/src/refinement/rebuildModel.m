@@ -67,10 +67,10 @@ for i=1:length(model.rxns)
         model.grRules{i,1}=model.grRules{i};
         model.rxnNames{i,1}=database.reactions{rInd, 2};
         model.subSystems{i,1}=database.reactions{rInd, 11};
-        if strcmp(database.reactions{rInd, 4},'1')
+        if strcmp(database.reactions{rInd, 4},'1') || database.reactions{rInd, 4}==1
             model.lb(i,1)=-1000;
             model.ub(i,1)=1000;
-        elseif strcmp(database.reactions{rInd, 4},'0')
+        elseif strcmp(database.reactions{rInd, 4},'0') || database.reactions{rInd, 4}==0
             model.lb(i,1)=0;
             model.ub(i,1)=1000;
         end

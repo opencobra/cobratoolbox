@@ -137,20 +137,18 @@ for i=startPnt:size(modelList,1)
             model.lb(k) = 0;
         end
     end
-
-    % compute the flux balance analysis solution
-    [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
-%     % store computed objective values
-    for j=1:length(objectiveList)
-        if ~isempty(FBAsolution{j,1})
-            objectives{j+1,2+i} = FBAsolution{j,1}.obj;
-        else
-            objectives{j+1,3+i} = 0;
-        end
-    end
-    % save one model by one-file would be enourmous otherwise
-    save([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
     
+    % check if stored solution already exists
+    if isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
+        load([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
+    else
+        % compute the flux balance analysis solution
+        [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
+        
+        % save solutions obe by one-file would be enourmous otherwise
+        save([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
+    end
+
     % Extract all shadow prices and save them in a table
     objectives{1,2+i} = strrep(modelList{i,1},'.mat','');
     shadowPrices{1,3+i} = strrep(modelList{i,1},'.mat','');
@@ -159,9 +157,11 @@ for i=startPnt:size(modelList,1)
     for j=1:size(objectiveList,1)
         % get the computed solutions
         solution = FBAsolution{j,1};
-        objectives{j+1,2+i} = solution.obj;
+        
         % verify that a feasible solution was obtained
         if solution.stat==1
+            objectives{j+1,2+i} = solution.obj;
+            
             [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
             for k=1:size(extractedShadowPrices,1)
                 % check if the metabolite relevant for this objective
@@ -186,6 +186,8 @@ for i=startPnt:size(modelList,1)
                     end
                 end
             end
+        else
+            objectives{j+1,2+i} = 0;
         end
     end
     % Regularly save results
