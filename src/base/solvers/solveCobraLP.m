@@ -1201,14 +1201,14 @@ switch solver
         if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
             LPproblem.LPBasis = LPproblem.basis;
         end
-        if ~exist('minNorm','var')
-            minNorm=0;
-        end
+%         if ~exist('minNorm','var')
+%             minNorm=0;
+%         end
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,problemTypeParams.printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
         solution.algorithm = algorithm; % dummy
-        solution.slack = [];
+     %   solution.slack = [];
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
         end
