@@ -162,7 +162,7 @@ if FBA.stat ==3 || FBA.stat ==0
             UBsol = relaxedModel.rxns(abs(relaxedModel.ub)>0);
             UBsol=setdiff(UBsol,model.rxns);
             
-            model=modelOrg;
+            model=modelOrg; 
             
             addedRxns=union(LBsol,UBsol);
             
