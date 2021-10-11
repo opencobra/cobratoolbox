@@ -26,39 +26,26 @@ model = extractSubNetwork(model, rxnsToExtract);
 % initialize the test
 fileDir = fileparts(which('testGenerateChemicalDatabase.m'));
 
-% Load reference data
-load('refData_generateChemicalDatabase.mat')
-
 %% Add external information in the model
 
-inputData = [fileDir filesep 'metaboliteIds.xlsx'];
+inputData = [fileDir filesep 'metaboliteIds.txt'];
 replace = false;
 [model, hasEffect] = addMetInfoInCBmodel(model, inputData, replace);
-
-assert(isequal(model, model1), 'The identifiers are different')
-assert(hasEffect, 'The function addMetInfoInCBmodel din not have effect')
 
 %% Set optional variables according the software installed
 
 options.outputDir = [currentDir filesep 'tmpDB'];
 options.printlevel = 0;
 
-if cxcalcInstalled && oBabelInstalled && javaInstalled
-    options.adjustToModelpH = true;
-    options.onlyUnmapped = false;
-else
-    options.adjustToModelpH = false;
-    options.onlyUnmapped = true;
+if any([~cxcalcInstalled ~oBabelInstalled ~javaInstalled])
+    error('To test the function CXCALC, Open Babel and JAVA must be installed to test the function generateChemicalDatabase')
 end
 
 [info, model] = generateChemicalDatabase(model, options);
 
-if cxcalcInstalled && oBabelInstalled && javaInstalled
-    assert(isequal(model, model2), 'The model ouput is different')
-    assert(isequal(info, info1), 'The database report is different')
-else
-    assert(isequal(model, model3), 'The model ouput is different')
-    assert(isequal(info, info2), 'The database report is different')
-end
-
 rmdir([currentDir filesep 'tmpDB'], 's')
+
+% Load reference data
+load('refData_generateChemicalDatabase.mat')
+assert(isequal(model, modelRef), 'The model ouput is different')
+assert(isequal(info, infoRef), 'The database report is different')
