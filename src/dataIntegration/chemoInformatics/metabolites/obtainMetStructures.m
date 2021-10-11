@@ -164,7 +164,7 @@ for i = 1:length(metList)
     if ~isempty(chebiIDs{idx(1)})  && ismember({'chebi'}, sources)
         saveFileDir = [newMolFilesDir 'chebi' filesep];
         try
-            molFile = webread(['https://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=true&chebiId=' num2str(chebiIDs{idx}) '&imageId=0'], webTimeout);
+            molFile = webread(['https://www.ebi.ac.uk/chebi/saveStructure.do?defaultImage=true&chebiId=' num2str(chebiIDs{idx(1)}) '&imageId=0'], webTimeout);
             if ~isempty(regexp(molFile, 'M  END'))
                 if exist(saveFileDir, 'dir') == 0
                     mkdir(saveFileDir)
@@ -184,10 +184,10 @@ for i = 1:length(metList)
     if ~isempty(drugbankIDs{idx(1)})  && ismember({'drugbank'}, sources)
         saveFileDir = [newMolFilesDir 'drugbank' filesep];
         try
-            if contains(drugbankIDs, 'MET')
-                molFile = webread(['https://go.drugbank.com/structures/metabolites/' num2str(drugbankIDs{idx}) '.mol'], webTimeout);
+            if contains(drugbankIDs{idx(1)}, 'MET')
+                molFile = webread(['https://go.drugbank.com/structures/metabolites/' num2str(drugbankIDs{idx(1)}) '.mol'], webTimeout);
             else
-                molFile = webread(['https://go.drugbank.com/structures/small_molecule_drugs/' num2str(drugbankIDs{idx}) '.mol'], webTimeout);
+                molFile = webread(['https://go.drugbank.com/structures/small_molecule_drugs/' num2str(drugbankIDs{idx(1)}) '.mol'], webTimeout);
             end
             if ~isempty(regexp(molFile, 'M  END'))
                 if exist(saveFileDir, 'dir') == 0
@@ -255,9 +255,9 @@ for i = 1:length(metList)
         try
             switch keggIDs{idx(1)}(1)
                 case 'C'
-                    molFile = webread(['https://www.genome.jp/dbget-bin/www_bget?-f+m+compound+' keggIDs{idx}], webTimeout);
+                    molFile = webread(['https://www.genome.jp/dbget-bin/www_bget?-f+m+compound+' keggIDs{idx(1)}], webTimeout);
                 case 'D'
-                    molFile = webread(['https://www.kegg.jp/dbget-bin/www_bget?-f+m+drug+' keggIDs{idx}], webTimeout);
+                    molFile = webread(['https://www.kegg.jp/dbget-bin/www_bget?-f+m+drug+' keggIDs{idx(1)}], webTimeout);
             end
             if ~isempty(regexp(molFile, 'M  END'))
                 if exist(saveFileDir, 'dir') == 0
@@ -278,7 +278,7 @@ for i = 1:length(metList)
     if ~isempty(lipidmapsIDs{idx(1)})  && ismember({'lipidmaps'}, sources)
         saveFileDir = [newMolFilesDir 'lipidmaps' filesep];
         try
-            molFile = webread(['https://www.lipidmaps.org/databases/lmsd/' num2str(lipidmapsIDs{idx}) '?format=mdlmol'], webTimeout);
+            molFile = webread(['https://www.lipidmaps.org/databases/lmsd/' num2str(lipidmapsIDs{idx(1)}) '?format=mdlmol'], webTimeout);
             if ~isempty(regexp(molFile, 'M  END'))
                 if exist(saveFileDir, 'dir') == 0
                     mkdir(saveFileDir)

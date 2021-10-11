@@ -78,6 +78,7 @@ if nargin < 6 || isempty(onlyUnmapped)
     onlyUnmapped = false;
 end
 
+% Maximum time for atom mapping each reaction in seconds
 maxTime = 1800;
 
 % Check installation
@@ -377,6 +378,7 @@ if javaInstalled == 1 && ~onlyUnmapped
             fid2 = fopen([rxnDir 'atomMapped' filesep 'unbalanced' filesep name], 'w');
             fprintf(fid2, '%s\n', mappedFile{:});
             fclose(fid2);
+            delete([rxnDir 'atomMapped' filesep name])
         end
         
         if oBabelInstalled
