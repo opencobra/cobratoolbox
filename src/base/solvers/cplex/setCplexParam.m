@@ -20,9 +20,9 @@ function LP = setCplexParam(LP, solverParams,verbFlag)
 if nargin < 3
     verbFlag = true;
 end
-if isempty(solverParams)
-    solverParams = struct();
-end
+% if isempty(solverParams)
+%     solverParams = struct();
+% end
 if isempty(fieldnames(solverParams))
     return
 end

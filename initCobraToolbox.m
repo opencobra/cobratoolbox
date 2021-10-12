@@ -664,8 +664,10 @@ end
 % change back to the current directory
 cd(currentDir);
 
-% cleanup at the end of the successful run
-removeTempFiles(CBTDIR, dirContent);
+if installedGit
+    % cleanup at the end of the successful run
+    removeTempFiles(CBTDIR, dirContent);
+end
 
 if submoduleWarning
     warning('Local changes have been made to submodules\n%s\n%s\n%s','Local changes have been stashed. See ***Local changes ... above for details.','Such changes should ideally be made to separate forks.', 'See, e.g., https://github.com/opencobra/COBRA.tutorials#contribute-a-new-tutorial-or-modify-an-existing-tutorial')

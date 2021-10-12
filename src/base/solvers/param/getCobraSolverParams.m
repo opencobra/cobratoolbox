@@ -1,17 +1,17 @@
-function varargout = getCobraSolverParams(solverType, paramNames, parameters)
-% This function gets the specified parameters in `paramNames` from
-% parameters, the global cobra paramters variable or default values set within
+function varargout = getCobraSolverParams(solverType, paramNames, paramStructure)
+% This function gets the specified paramStructure in `paramNames` from
+% paramStructure, the global cobra paramters variable or default values set within
 % this script. 
 %
 % It will use values with the following priority
-% parameters > solver type parameters > default parameters
+% paramStructure > solver type paramStructure > default paramStructure
 %
-% The specified parameters will be delt to the specified output arguements.
+% The specified paramStructure will be delt to the specified output arguements.
 % See examples below.
 %
 % USAGE:
 %
-%    varargout = getCobraSolverParams(solverType, paramNames, parameters)
+%    varargout = getCobraSolverParams(solverType, paramNames, paramStructure)
 %
 % INPUTS:
 %    solverType:    Type of solver used: 'LP', 'MILP', 'QP', 'MIQP'
@@ -19,32 +19,39 @@ function varargout = getCobraSolverParams(solverType, paramNames, parameters)
 %                   parameter name as string
 %
 % OPTIONAL INPUTS:
-%    parameters:    Structure with fields pertaining to parameter values that
-%                   should be used in place of global or default parameters.
-%                   parameters can be set to 'default' to use the default
+%    paramStructure:    Structure with fields pertaining to parameter values that
+%                   should be used in place of global or default paramStructure.
+%                   paramStructure can be set to 'default' to use the default
 %                   values set within this script.
 %
 % OUTPUTS:
 %    varargout:     Variables which each value corresponding to paramNames
 %                   is output to.
+%                   In addition, if paramStructure is passed as an input, then
+%                   the final output argument is paramStructureOut, with fields
+%                   removed corresponding to paramNames
 %
 % EXAMPLE:
-%    parameters.saveInput = 'LPproblem.mat';
-%    parameters.printLevel = 1;
-%    [printLevel, saveInput] = getCobraSolverParams('LP', {'printLevel', 'saveInput'}, parameters);
+%    paramStructure.saveInput = 'LPproblem.mat';
+%    paramStructure.printLevel = 1;
+%    [printLevel, saveInput] = getCobraSolverParams('LP', {'printLevel', 'saveInput'}, paramStructure);
 %
 %    %Example using default values
 %    [printLevel, saveInput] = getCobraSolverParams('LP', {'printLevel','saveInput'}, 'default');
 %
 % .. Authors:
 %       - Richard Que (12/01/2009)
-%       - Ronan (16/07/2013) default MPS parameters are no longer global variables
+%       - Ronan (16/07/2013) default MPS paramStructure are no longer global variables
 
 if nargin < 2
-    error('getCobraSolverParams: No parameters specified')
+    error('getCobraSolverParams: No paramStructure specified')
 end
-if nargin <3
-    parameters = '';
+
+if nargin < 3
+    paramStructure = [];
+end
+if ~isempty(paramStructure)
+    paramStructureOut = paramStructure;
 end
 % Persistence will make names specific to one type of solver.
 % Default Values
@@ -53,7 +60,7 @@ end
 valDef.minNorm = 0;
 
 %These default tolerances are based on the default values for the Gurobi LP solver
-%https://www.gurobi.com/documentation/9.0/refman/parameters.html
+%https://www.gurobi.com/documentation/9.0/refman/paramStructure.html
 valDef.feasTol = 1e-6; % (primal) feasibility tolerance
 valDef.optTol = 1e-6;  % (dual) optimality tolerance
 
@@ -78,7 +85,7 @@ valDef.lifting = 0;
    
 valDef.method = -1; 
 
-% CPLEX parameters
+% CPLEX paramStructure
 valDef.DATACHECK = 1;
 valDef.DEPIND = 1;
 valDef.checkNaN = 0;
@@ -127,14 +134,20 @@ for i=1:length(paramNames)
     if isfield(valDef,paramNames{i})
         varargout{i} = valDef.(paramNames{i});
     end
-    if ~strcmp(parameters,'default') % skip of using default values
+    if ~strcmp(paramStructure,'default') % skip of using default values
         % set values to global values
         if isfield(parametersGlobal,paramNames{i})
            varargout{i} = parametersGlobal.(paramNames{i});
         end
         % set values to specified values
-        if isfield(parameters,paramNames{i})
-           varargout{i} = parameters.(paramNames{i});
+        if isfield(paramStructure,paramNames{i})
+           varargout{i} = paramStructure.(paramNames{i});
+           %remove this field so paramStructureOut can be passed directly to the solver, without extra fields
+           paramStructureOut = rmfield(paramStructureOut,paramNames{i});
         end
     end
 end
+if ~isempty(paramStructure)
+    varargout{length(paramNames)+1}=paramStructureOut;
+end
+

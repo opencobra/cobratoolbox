@@ -24,9 +24,7 @@ modelList={dInfo.name};
 modelList=modelList';
 modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
-currentDir=pwd;
 mkdir([propertiesFolder filesep 'ComputedFluxes'])
-cd([propertiesFolder filesep 'ComputedFluxes'])
 
 % start from existing progress if possible
 if isfile([propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion  '.txt'])
@@ -191,7 +189,5 @@ for j=2:size(data,1)
     end
 end
 writetable(cell2table(data),[propertiesFolder filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion '_qualitative'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-
-cd(currentDir)
 
 end

@@ -93,22 +93,22 @@ stat = -99;
 solStat = -99;
 
 if 0
-F2 = QPproblem.F;
-F2(1:size(QPproblem.F,1):end)=0;
-if all(all(F2)) == 0
-    %nonzeros on diagonal only
-    try
-        %try cholesky decomposition
-        B = chol(QPproblem.F);
-    catch
-        QPproblem.F = QPproblem.F + diag((diag(QPproblem.F)==0)*1e-16);
+    F2 = QPproblem.F;
+    F2(1:size(QPproblem.F,1):end)=0;
+    if all(all(F2)) == 0
+        %nonzeros on diagonal only
+        try
+            %try cholesky decomposition
+            B = chol(QPproblem.F);
+        catch
+            QPproblem.F = QPproblem.F + diag((diag(QPproblem.F)==0)*1e-16);
+        end
+        try
+            B = chol(QPproblem.F);
+        catch
+            error('QPproblem.F only has non-zeros along the main diagnoal and is still not positive semidefinite after adding 1e-16')
+        end
     end
-    try
-        B = chol(QPproblem.F);
-    catch
-        error('QPproblem.F only has non-zeros along the main diagnoal and is still not positive semidefinite after adding 1e-16')
-    end
-end
 end
 
 [A,b,F,c,lb,ub,csense,osense] = ...
@@ -153,7 +153,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-
+        
         %tomlab cplex interface
         %   minimize   0.5 * x'*F*x + c'x     subject to:
         %      x             x_L <=    x   <= x_U
@@ -172,8 +172,8 @@ switch solver
         %x primal variable
         %f objective value
         %f = osense*f;
-        %y dual to the b_L <=   Ax   <= b_U constraints 
-        %w dual to the x_L <=    x   <= x_U constraints 
+        %y dual to the b_L <=   Ax   <= b_U constraints
+        %w dual to the x_L <=    x   <= x_U constraints
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -186,7 +186,7 @@ switch solver
             norm(s(csense == 'E'),inf)
             res1(~isfinite(res1))=0;
             nr1 = norm(res1,inf)
-
+            
             res2 = osense*c + osense*F*x-A'*y -w;
             nr2 = norm(res2,inf)
             if nr1 + nr2 > 1e-6
@@ -194,15 +194,15 @@ switch solver
             end
         end
         
-%       1 (S,B) Optimal solution found
-%       2 (S,B) Model has an unbounded ray
-%       3 (S,B) Model has been proved infeasible
-%       4 (S,B) Model has been proved either infeasible or unbounded
-%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
-%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        %       1 (S,B) Optimal solution found
+        %       2 (S,B) Model has an unbounded ray
+        %       3 (S,B) Model has been proved infeasible
+        %       4 (S,B) Model has been proved either infeasible or unbounded
+        %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+        %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
         if origStat == 1
             stat = 1; % Optimal
-        elseif origStat == 3 
+        elseif origStat == 3
             stat = 0; % Infeasible
         elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
@@ -227,15 +227,15 @@ switch solver
             b_U = b;
         end
         tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
-
+        
         %optional parameters
         tomlabProblem.PriLvl=problemTypeParams.printLevel;
         tomlabProblem.MIP.cpxControl.QPMETHOD = 1;
         tomlabProblem.MIP.cpxControl.THREADS = 1;
-
+        
         %Adapt to given parameters
         tomlabProblem.MIP.cpxControl = updateStructData(tomlabProblem.MIP.cpxControl,solverParams);
-
+        
         Result = tomRun('cplex', tomlabProblem);
         x = Result.x_k;
         f = Result.f_k;%should be 0.5*x'*F*x + osense*c*x;
@@ -244,15 +244,15 @@ switch solver
         w = Result.v_k(1:length(lb));
         y = Result.v_k((length(lb)+1):end);
         
-%       1 (S,B) Optimal solution found
-%       2 (S,B) Model has an unbounded ray
-%       3 (S,B) Model has been proved infeasible
-%       4 (S,B) Model has been proved either infeasible or unbounded
-%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
-%       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
+        %       1 (S,B) Optimal solution found
+        %       2 (S,B) Model has an unbounded ray
+        %       3 (S,B) Model has been proved infeasible
+        %       4 (S,B) Model has been proved either infeasible or unbounded
+        %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+        %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
         if origStat == 1
             stat = 1; % Optimal
-        elseif origStat == 3 
+        elseif origStat == 3
             stat = 0; % Infeasible
         elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
@@ -279,9 +279,9 @@ switch solver
         end
         
         %%
-     case 'ibm_cplex'
-     % Initialize the CPLEX object
-     %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
+    case 'ibm_cplex'
+        % Initialize the CPLEX object
+        %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
         
         [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,problemTypeParams,solverParams,'QP');
         
@@ -290,7 +290,7 @@ switch solver
         if logToFile
             % Close the output file
             fclose(logFile);
-        end        
+        end
         
         if isfield(Result,'x')  % Cplex solution may not have x
             x = Result.x;
@@ -312,7 +312,7 @@ switch solver
         % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
         if origStat == 1
             stat = 1; % Optimal
-        elseif origStat == 3 
+        elseif origStat == 3
             stat = 0; % Infeasible
         elseif origStat == 2 || origStat == 4
             stat = 2; % Unbounded
@@ -334,7 +334,7 @@ switch solver
         %fluxes or not.
         %See solveCobraLPCPLEX.m for more refined control of cplex
         %Ronan Fleming 11/12/2008
-        error('not setup for QP in general')    
+        error('not setup for QP in general')
         solution=solveCobraLPCPLEX(QPproblem,printLevel,[],[],[],minNorm,'tomlab_cplex');
         %%
     case 'qpng'
@@ -351,13 +351,13 @@ switch solver
         ctype(('G'==csense))='L';
         ctype(('E'==csense))='E';
         ctype(('L'==csense))='U';
-
+        
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
         [x, f, y, info] = qpng (osense*QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
-
+        
         w=[];
-
+        
         if (info.status == 0)
             stat = 1;
         elseif (info.status == 1)
@@ -379,13 +379,13 @@ switch solver
             b_L = b;
             b_U = b;
         end
-
+        
         if problemTypeParams.printLevel>0
             cmd='minimize';
         else
             cmd='minimize echo(0)';
         end
-
+        
         %matching bounds and zero diagonal of F at the same time
         bool = lb == ub & diag(F)==0;
         if any(bool)
@@ -397,7 +397,7 @@ switch solver
             %}
             warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
         end
-
+        
         param = struct();
         % Set the printLevel, can be overwritten.
         if ~isfield(param, 'MSK_IPAR_LOG')
@@ -426,28 +426,28 @@ switch solver
         param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = problemTypeParams.optTol;
         param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = problemTypeParams.optTol;
         param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = problemTypeParams.optTol;
-
+        
         %https://docs.mosek.com/8.1/toolbox/solving-geco.html
         param.MSK_DPAR_INTPNT_NL_TOL_PFEAS=problemTypeParams.feasTol;
         param.MSK_DPAR_INTPNT_NL_TOL_DFEAS=problemTypeParams.feasTol;
-
+        
         %Update with solver Specific Parameter struct
         param = updateStructData(param,solverParams);
         problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
-
+        
         % Optimize the problem.
         % min 0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
         [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
-
+        
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
         %           0   Infeasible QP
         %           3   Other problem (time limit etc)
         %%
-
+        
         if isempty(res)
             stat=3;
         else
@@ -459,13 +459,13 @@ switch solver
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
                     f = res.sol.itr.pobjval;
-
+                    
                     %dual to equality
                     y= res.sol.itr.y;
-
+                    
                     %dual to lower and upper bounds
                     w = (res.sol.itr.slx - res.sol.itr.sux);
-
+                    
                     %slack for blc <= A*x <= buc
                     s = zeros(size(csense,1),1);
                     if ~isempty(csense)
@@ -488,7 +488,7 @@ switch solver
                 origStat=[res.rmsg , res.rcodestr];
             end
         end
-
+        
         %debugging
         if problemTypeParams.printLevel>2
             res1=A*x + s -b;
@@ -500,13 +500,13 @@ switch solver
             norm(s(csense == 'E'),inf)
             res1(~isfinite(res1))=0;
             norm(res1,inf)
-
+            
             norm(osense*c + osense*F*x-A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
             norm(osense*c + osense*F*x -A'*y2 -w,inf)
         end
-
-
+        
+        
     case 'pdco'
         %-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
@@ -518,7 +518,7 @@ switch solver
         %      x,r
         %    subject to  A*x + D2*r = b,   bl <= x <= bu,   r unconstrained
         [nMet,nRxn]=size(A);
-       
+        
         %pdco only works with equality constraints and box constraints so
         %any other linear constraints need to be reformulated in terms of
         %slack variables
@@ -545,11 +545,11 @@ switch solver
             ubeq = [ub ; inf*ones(nSlacks,1)];
             ceq  = [c  ; zeros(nSlacks,1)];
             Feq  = [F , sparse(nRxn, nSlacks);
-                   sparse(nSlacks,nRxn), spdiags(ones(nSlacks,1)*0,0,nSlacks,nSlacks)];
+                sparse(nSlacks,nRxn), spdiags(ones(nSlacks,1)*0,0,nSlacks,nSlacks)];
         end
         
- 
-                % generate set of default parameters for this solver
+        
+        % generate set of default parameters for this solver
         options = pdcoSet;
         options.Method = 22;
         
@@ -605,11 +605,11 @@ switch solver
         
         %get handle to helper function for objective
         pdObjHandle = @(x) QPObj(x,ceq,Feq,osense);
-                
+        
         [z,y,w,inform,~,~,~] = pdco(pdObjHandle,Aeq,beq,lbeq,ubeq,d1,d2,options,x0,y0,z0,xsize,zsize);
         [f,~,~] = QPObj(z,ceq,Feq,osense);
-         f = f*osense;
-       
+        f = f*osense;
+        
         % inform = 0 if a solution is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
@@ -639,13 +639,13 @@ switch solver
         %update parameters for testing optimality criterion
         problemTypeParams.feasTol = options.FeaTol;
         problemTypeParams.optTol = options.OptTol;
-
+        
     case 'gurobi'
         %% gurobi
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
         % https://www.gurobi.com/documentation/9.0/refman/matlab_the_model_argument.html#matlab:model
-
+        
         resultgurobi = struct('x',[],'objval',[],'pi',[]);
         %Set up the parameters
         params = struct();
@@ -660,9 +660,9 @@ switch solver
                 params.OutputFlag = 0;
                 params.DisplayInterval = 1;
         end
-
-        if problemTypeParams.method == -1  
-             %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-?flash_digest=3cee39a758f70e26f090b839b1f4c572fbccd778
+        
+        if problemTypeParams.method == -1
+            %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-?flash_digest=3cee39a758f70e26f090b839b1f4c572fbccd778
             params.Method = 1;
         else
             %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
@@ -673,15 +673,15 @@ switch solver
         params.OptimalityTol = problemTypeParams.optTol;
         %Update param struct with Solver Specific parameters
         params = updateStructData(params,solverParams);
-
+        
         %Update feasTol in case it is changed by the solver Parameters
         problemTypeParams.feasTol = params.FeasibilityTol;
-
-
+        
+        
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
         gurobiQP.sense(csense == 'G') = '>';
-
+        
         %modelsense (optional)
         %The optimization sense. Allowed values are 'min' (minimize) or 'max' (maximize). When absent, the default optimization sense is minimization.
         if osense == -1
@@ -689,7 +689,7 @@ switch solver
         else
             gurobiQP.modelsense = 'min';
         end
-
+        
         gurobiQP.A = A;
         gurobiQP.rhs = b;
         gurobiQP.lb = lb;
@@ -701,10 +701,10 @@ switch solver
         gurobiQP.sense(csense == 'L') = '<';
         gurobiQP.sense(csense == 'G') = '>';
         
-        %Until Gurobi 9.0, it was required that the quadratic matrix Q is positive semi-definite, so that the model is convex. 
-        %This is no longer the case for Gurobi 9.0, which supports general non-convex quadratic constraints and objective functions, 
+        %Until Gurobi 9.0, it was required that the quadratic matrix Q is positive semi-definite, so that the model is convex.
+        %This is no longer the case for Gurobi 9.0, which supports general non-convex quadratic constraints and objective functions,
         %including bilinear and quadratic equality constraints.
-        if any(any(F)) %if any(F, 'all') not backward compatible 
+        if any(any(F)) %if any(F, 'all') not backward compatible
             %For gurobi model.Q must be a sparse double matrix
             gurobiQP.Q = sparse(0.5*F);
         end
@@ -726,7 +726,7 @@ switch solver
                 error('solveCobraQP: gurobi reporting OPTIMAL but no solution')
             end
             
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack); 
+            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
             
             if problemTypeParams.printLevel>2 %|| 1
                 res1 = A*x + s - b;
@@ -754,8 +754,8 @@ switch solver
                     end
                 end
             end
-
-          elseif strcmp(resultgurobi.status,'INFEASIBLE')
+            
+        elseif strcmp(resultgurobi.status,'INFEASIBLE')
             stat = 0; % Infeasible
         elseif strcmp(resultgurobi.status,'UNBOUNDED')
             stat = 2; % Unbounded
@@ -775,7 +775,7 @@ switch solver
         end
         %%
     case 'dqqMinos'
-        % find the solution to a QP problem by obtaining a solution to the 
+        % find the solution to a QP problem by obtaining a solution to the
         % optimality conditons using the LP solver 'dqqMinos'
         
         %    QPproblem:       Structure containing the following fields describing the QP
@@ -808,10 +808,10 @@ switch solver
         if ~isunix
             error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
         end
-
+        
         % save the original directory
         originalDirectory = pwd;
-
+        
         % set the temporary path to the DQQ solver
         tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
         cd(tmpPath);
@@ -822,7 +822,7 @@ switch solver
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
         end
-
+        
         % set the name of the MPS file
         if isfield(solverParams, 'MPSfilename')
             MPSfilename = solverParams.MPSfilename;
@@ -833,7 +833,7 @@ switch solver
                 MPSfilename = 'file';
             end
         end
-
+        
         %create an LP problem from the optimality conditions to the QP
         %problem
         
@@ -865,7 +865,7 @@ switch solver
             ubeq = [QPproblem.ub ; inf*ones(nSlacks,1)];
             ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
             Feq  = [osense*QPproblem.F , sparse(m, nSlacks);
-                        sparse(nSlacks,n + nSlacks)];
+                sparse(nSlacks,n + nSlacks)];
         end
         
         %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
@@ -881,11 +881,11 @@ switch solver
         
         [mAeq,nAeq]  = size(Aeq);
         LPproblem.A =  [Aeq, sparse(mAeq,mAeq);
-                        Feq, Aeq'];
+            Feq, Aeq'];
         LPproblem.b = [beq;-1*osense*ceq];
         LPproblem.c = sparse(nAeq+mAeq,1);
         
-
+        
         
         LPproblem.lb = [lbeq;-Inf*ones(mAeq,1)];
         LPproblem.ub = [ubeq; Inf*ones(mAeq,1)];
@@ -899,7 +899,7 @@ switch solver
             writeLPProblem(LPproblem,'fileName',MPSfilename);
             cd(tmpPath);
         end
-
+        
         % run the DQQ procedure
         sysCall = ['./run1DQQ ' MPSfilename ' ' tmpPath];
         [status, cmdout] = system(sysCall);
@@ -908,7 +908,7 @@ switch solver
             disp(cmdout)
             error('Call to dqq failed');
         end
-
+        
         % read the solution
         solfname = [tmpPath filesep 'results' filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
@@ -934,21 +934,21 @@ switch solver
         %        sol.y               m vector: dual variables for Ax - s = 0.
         
         
-%         solution.full = x;
-%         solution.slack = s;
-%         solution.dual = y;
-%         solution.rcost = w;
-
+        %         solution.full = x;
+        %         solution.slack = s;
+        %         solution.dual = y;
+        %         solution.rcost = w;
+        
         x = sol.x(1:n,1);
         y = - sol.x(n+nSlacks+1:n+nSlacks+m,1);
         w = sol.rc(1:n,1);
-       
-%         %don't take the row corresponding to the objective
-%         if sol.objrow == 1
-%             sol.s = sol.s(2:end);
-%         else
-%             sol.s = sol.s(1:end-1);
-%         end
+        
+        %         %don't take the row corresponding to the objective
+        %         if sol.objrow == 1
+        %             sol.s = sol.s(2:end);
+        %         else
+        %             sol.s = sol.s(1:end-1);
+        %         end
         %to allow for any row.
         sol.s(sol.objrow) = [];
         
@@ -961,14 +961,14 @@ switch solver
         if isempty(indl) && isempty(indg)
             %no slack variables
             s = sparse(m,1);
-        else          
+        else
             s = sparse(m,1);
             %slack variables correspoding to A*x <= b
             s(indl)=  sol.x(n+indl);
             %slack variables correspoding to A*x => b
             s(indg)= -sol.x(n+indg);
-        end      
-               
+        end
+        
         % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
         dqqStatMap = {-5, 'UNKNOWNERROR', -1;
             -4, 'DATAIGNORED',  -1;
@@ -1072,6 +1072,8 @@ if solution.stat==1
         if ~isempty(solution.full)
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
+            solution.objLinear = c'*solution.full;
+            solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
             if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2

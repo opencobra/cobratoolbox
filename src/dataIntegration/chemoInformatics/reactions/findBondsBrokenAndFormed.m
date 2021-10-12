@@ -68,8 +68,10 @@ aRxns = regexprep(aRxns, '(\.rxn)$','');
 assert(~isempty(aRxns), 'RXN files directory is empty or nonexistent.')
 
 % Identify mass inbalanced reactions
+rxnsIdx = findRxnIDs(model, rxnList);
 modeltmp = findSExRxnInd(model,[], printLevel);
-exIdx = find(modeltmp.ExchRxnBool);
+exIdx = modeltmp.ExchRxnBool(rxnsIdx);
+clear modeltmp
 
 % Calculate bonds broken and formed
 [allSubstrateMass, bondsBrokenAndFormed] = deal(zeros(size(rxnList)));
