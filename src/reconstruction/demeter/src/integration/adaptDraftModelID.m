@@ -43,4 +43,5 @@ microbeID=strrep(microbeID,'©','_');
 microbeID=strrep(microbeID,'____','_');
 microbeID=strrep(microbeID,'___','_');
 microbeID=strrep(microbeID,'__','_');
+microbeID=strrep(microbeID,',','_');
 end

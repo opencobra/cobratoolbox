@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Initialise and verify The COBRA Toolbox</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: normal; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S9 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S10 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: normal;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span style=' font-weight: bold;'>Initialise and verify The COBRA Toolbox</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Authors: Sylvain Arreckx, Luxembourg Centre for Systems Biomedicine</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Reviewers: </span></div><h2  class = 'S2'><span>MATERIALS - EQUIPMENT SETUP</span></h2><div  class = 'S1'><span>Please ensure that all the required dependencies of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span>here</span></a><span>. In particular, </span><span style=' font-family: monospace;'>git</span><span> and </span><span style=' font-family: monospace;'>curl</span><span> must be installed.</span></div><h2  class = 'S2'><span>PROCEDURE </span></h2><div  class = 'S1'><span>At the start of each MATLAB session, The COBRA Toolbox must be initialised. Navigate to the directory where you installed The COBRA Toolbox and initialise </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span >initCobraToolbox(false) </span><span style="color: rgb(2, 128, 9);">% false, as we don't want to update</span></span></div></div></div><div  class = 'S4'><span>The user who primarily uses the official openCOBRA repository may automatically initialise The COBRA Toolbox. To do so, edit the MATLAB </span><span style=' font-family: monospace;'>startup.m</span><span> file and add a line with </span><span style=' font-family: monospace;'>initCobraToolbox</span><span> </span><span>so that The COBRA Toolbox is initialised each time that MATLAB is started. 					</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >usejava(</span><span style="color: rgb(170, 4, 249);">'desktop'</span><span >)  </span><span style="color: rgb(2, 128, 9);">% This line of code is to avoid execution in non gui-environments    </span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >    edit </span><span style="color: rgb(170, 4, 249);">startup.m</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S8'><span style=' font-weight: bold;'>ANTICIPATED RESULTS</span></h2><div  class = 'S1'><span>The initialisation step automatically checks the configuration of all of the required and some of the optional software dependencies. During initialisation, all git submodules are udpated. The solver paths are set when available and compatible. A system-dependent table with the solver status is returned, together with solver suggestions. The user is also presented with options to update The COBRA Toolbox when necessary.</span></div><h2  class = 'S2'><span>CRITICAL STEP</span></h2><div  class = 'S1'><span>During initialisation, a check for software dependencies is made and reported to the command window. It is not necessary that all possible dependencies are satisfied before beginning to use the toolbox, e.g., satisfaction of a dependency on a multi-scale linear optimisation solver is not necessary for modelling with a mono-scale metabolic model. However, other software dependencies are essential to be satisfied, e.g., dependency on a linear optimisation solver must be satisfied for any method that uses flux balance analysis. </span></div><h2  class = 'S2'><span>TROUBLESHOOTING</span></h2><ol  class = 'S9'><li  class = 'S10'><span>Read the output of the initialisation script in the command window. Any warning or error messages, though often brief, will often point toward the source of the problem during initialisation if read literally. </span></li><li  class = 'S10'><span>Verify that all software versions are supported and have been correctly installed. </span></li><li  class = 'S10'><span>Ensure that you are using the latest version of The COBRA Toolbox by typing </span><span style=' font-family: monospace;'>updateCobraToolbox</span></li><li  class = 'S10'><span>Verify and test The COBRA Toolbox, as described in the "Verify and test The COBRA Toolbox" tutorial. </span></li><li  class = 'S10'><span>Finally, if nothing else works, consult the COBRA Toolbox forum, as described in the "Engaging with The COBRA Toolbox community" tutorial.</span></li></ol><h2  class = 'S2'><span>Check available optimisation solvers 	</span></h2><div  class = 'S1'><span>At initialisation, one from a set of available optimisation solvers will be selected as the default solver. If </span><span style=' font-family: monospace;'>Gurobi</span><span> is installed, it is used as the default solver for LP, QP and MILP problems. Otherwise, the </span><span style=' font-family: monospace;'>GLPK</span><span> solver is selected by for LP and MILP problems. It is important to check if the solvers installed are satisfactory. A table stating the solver compatibility and availability is printed to the user during initialisation. </span></div><div  class = 'S1'><span>2</span><span>| </span><span>Check the currently selected solvers with </span><span style=' font-family: monospace;'>changeCobraSolver</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span >changeCobraSolver</span></span></div></div></div><h2  class = 'S8'><span>ANTICIPATED RESULTS </span></h2><div  class = 'S1'><span>A list of solvers assigned to solve each class of optimisation solver is returned. 				</span></div><h2  class = 'S8'><span>CRITICAL STEP</span></h2><div  class = 'S1'><span>A dependency on at least one linear optimisation solver must be satisfied for flux balance analysis. </span></div><h2  class = 'S2'><span>Verify and test The COBRA Toolbox</span></h2><h2  class = 'S8'><span>TIMING ∼30 min</span></h2><div  class = 'S1'><span>3| Optionally test the functionality of The COBRA Toolbox locally, especially if one encounters an error running a function. The test suite runs tailored tests that verify the output and proper execution of core functions on the locally configured system. The full test suite can be invoked by typing:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span >testAll</span></span></div></div></div><h2  class = 'S2'><span>ANTICIPATED RESULTS</span></h2><div  class = 'S1'><span>The test suite starts by initialising The COBRA Toolbox and thereafter, all of the tests are run. At the end of the test run, a comprehensive summary table is presented in which the respective tests and their test outcome is shown. On a properly configured system that is compatible with the most recent version of The COBRA Toolbox, all tests should pass.</span></div><h2  class = 'S8'><span>TROUBLESHOOTING</span></h2><div  class = 'S1'><span>If some third party dependencies are not properly installed, some tests may fail. The test suite, despite some tests failing, is not interrupted. The tests that fail are listed with a false status in the column Passed. The specific test can then be run individually to determine the exact cause of the error. If the error can be fixed, follow the tutorial on how to contribute to The COBRA Toolbox and contribute a fix.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Initialise and verify The COBRA Toolbox*
+% *Authors: Sylvain Arreckx, Luxembourg Centre for Systems Biomedicine*
+% 
+% *Reviewers:* 
+%% MATERIALS - EQUIPMENT SETUP
+% Please ensure that all the required dependencies of The COBRA Toolbox have 
+% been properly installed by following the installation guide <https://opencobra.github.io/cobratoolbox/stable/installation.html 
+% here>. In particular, |git| and |curl| must be installed.
+%% PROCEDURE 
+% At the start of each MATLAB session, The COBRA Toolbox must be initialised. 
+% Navigate to the directory where you installed The COBRA Toolbox and initialise 
+
+initCobraToolbox(false) % false, as we don't want to update
+%% 
+% The user who primarily uses the official openCOBRA repository may automatically 
+% initialise The COBRA Toolbox. To do so, edit the MATLAB |startup.m| file and 
+% add a line with |initCobraToolbox| so that The COBRA Toolbox is initialised 
+% each time that MATLAB is started. 					
+
+if usejava('desktop')  % This line of code is to avoid execution in non gui-environments    
+    edit startup.m
+end
+%% *ANTICIPATED RESULTS*
+% The initialisation step automatically checks the configuration of all of the 
+% required and some of the optional software dependencies. During initialisation, 
+% all git submodules are udpated. The solver paths are set when available and 
+% compatible. A system-dependent table with the solver status is returned, together 
+% with solver suggestions. The user is also presented with options to update The 
+% COBRA Toolbox when necessary.
+%% CRITICAL STEP
+% During initialisation, a check for software dependencies is made and reported 
+% to the command window. It is not necessary that all possible dependencies are 
+% satisfied before beginning to use the toolbox, e.g., satisfaction of a dependency 
+% on a multi-scale linear optimisation solver is not necessary for modelling with 
+% a mono-scale metabolic model. However, other software dependencies are essential 
+% to be satisfied, e.g., dependency on a linear optimisation solver must be satisfied 
+% for any method that uses flux balance analysis. 
+%% TROUBLESHOOTING
+%% 
+% # Read the output of the initialisation script in the command window. Any 
+% warning or error messages, though often brief, will often point toward the source 
+% of the problem during initialisation if read literally. 
+% # Verify that all software versions are supported and have been correctly 
+% installed. 
+% # Ensure that you are using the latest version of The COBRA Toolbox by typing 
+% |updateCobraToolbox|
+% # Verify and test The COBRA Toolbox, as described in the "Verify and test 
+% The COBRA Toolbox" tutorial. 
+% # Finally, if nothing else works, consult the COBRA Toolbox forum, as described 
+% in the "Engaging with The COBRA Toolbox community" tutorial.
+%% Check available optimisation solvers 	
+% At initialisation, one from a set of available optimisation solvers will be 
+% selected as the default solver. If |Gurobi| is installed, it is used as the 
+% default solver for LP, QP and MILP problems. Otherwise, the |GLPK| solver is 
+% selected by for LP and MILP problems. It is important to check if the solvers 
+% installed are satisfactory. A table stating the solver compatibility and availability 
+% is printed to the user during initialisation. 
+% 
+% 2| Check the currently selected solvers with |changeCobraSolver|
+
+changeCobraSolver
+%% ANTICIPATED RESULTS 
+% A list of solvers assigned to solve each class of optimisation solver is returned. 				
+%% CRITICAL STEP
+% A dependency on at least one linear optimisation solver must be satisfied 
+% for flux balance analysis. 
+%% Verify and test The COBRA Toolbox
+%% TIMING ∼30 min
+% 3| Optionally test the functionality of The COBRA Toolbox locally, especially 
+% if one encounters an error running a function. The test suite runs tailored 
+% tests that verify the output and proper execution of core functions on the locally 
+% configured system. The full test suite can be invoked by typing:
+
+testAll
+%% ANTICIPATED RESULTS
+% The test suite starts by initialising The COBRA Toolbox and thereafter, all 
+% of the tests are run. At the end of the test run, a comprehensive summary table 
+% is presented in which the respective tests and their test outcome is shown. 
+% On a properly configured system that is compatible with the most recent version 
+% of The COBRA Toolbox, all tests should pass.
+%% TROUBLESHOOTING
+% If some third party dependencies are not properly installed, some tests may 
+% fail. The test suite, despite some tests failing, is not interrupted. The tests 
+% that fail are listed with a false status in the column Passed. The specific 
+% test can then be run individually to determine the exact cause of the error. 
+% If the error can be fixed, follow the tutorial on how to contribute to The COBRA 
+% Toolbox and contribute a fix.
+##### SOURCE END #####
+-->
+</div></body></html>

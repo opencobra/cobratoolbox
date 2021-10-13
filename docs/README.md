@@ -1,6 +1,6 @@
-# Building cobtratoolbox documentation
+# Building COBRA Toolbox documentation
 
-This procedure has been tested on Ubuntu 18.04. The documentation build
+This procedure has been tested on Ubuntu 20.04. The documentation build
 uses Python 2.
 
 ```
@@ -48,6 +48,18 @@ You can specify an alternative directory by changing the location of
 the /output mountpoint in the docker run command.
 
 ## Building COBRA.tutorials
+
+Check that wkhtmltopdf is installed
+which wkhtmltopdf
+If not, install with:
+sudo apt-get update
+sudo apt-get install xvfb libfontconfig wkhtmltopdf
+
+Check that imagemagick is installed
+which convert
+If not, install with:
+sudo apt-get update
+sudo apt install imagemagick
 
 Clone the cobratoolbox and COBRA.tutorials repository in an empty directory. Then cd to 
 ./cobratoolbox/docs directory and create and run the following script:
