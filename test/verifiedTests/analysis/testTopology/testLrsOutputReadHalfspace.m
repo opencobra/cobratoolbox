@@ -30,18 +30,26 @@ S = [-1,  0,  0,  0,  0,  0, 1,  0,  0;
 f = [];
 positivity = 0;
 inequality = 0;
-filename = 'test';
+modelName = 'test';
 shellScript = 0;
 
 % INPUTS:
 %    A:             matrix of linear equalities :math:`A x =(a)`
 %    D:             matrix of linear inequalities :math:`D x \geq (d)`
 %    filename:      base name of output file
-%filenameFull = lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
-filenameFull = lrsInputHalfspace(S, [], filename, positivity, inequality);
-runLrs(filename, positivity, inequality, shellScript);
+%filenameFull = lrsWriteHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 
-[A,a,D,d] = lrsOutputReadHalfspace(filenameFull);
+filenameFull = lrsWriteHalfspace(S, [], modelName, positivity, inequality);
+
+%run lrs
+param.positivity = positivity;
+param.inequality = inequality;
+param.shellScript = shellScript;
+fileNameOut = lrsRun(modelName, param);
+
+% [A,b,csense] = lrsReadHalfspace(modelName,param)
+[A,b,csense] = lrsReadHalfspace(modelName,param);
+
 %only every second row required
 [m,n] = size(A);
 assert(all((S - A)==0,'all'))

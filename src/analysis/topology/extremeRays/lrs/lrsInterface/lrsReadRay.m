@@ -1,5 +1,6 @@
-function [R, V] = lrsOutputReadRay(filename)
-% Reads into matlab a vertex representation output from lrs
+function [R, V] = lrsReadRay(filename)
+% Read in a vertex representation (*.ext) of a polytope derived from lrs
+% See http://cgm.cs.mcgill.ca/~avis/C/lrslib/USERGUIDE.html#file
 %
 % USAGE:
 %
@@ -11,6 +12,8 @@ function [R, V] = lrsOutputReadRay(filename)
 % OUTPUT:
 %    R:           `nDim` by `nRay` matrix of extreme rays
 %    V:           `nDim` by `nVertex` matrix of vertices
+%
+% Ronan Fleming 2021
 
 fid = fopen(filename);
 

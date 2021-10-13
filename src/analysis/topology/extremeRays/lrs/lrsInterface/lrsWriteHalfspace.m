@@ -1,4 +1,4 @@
-function filenameFull = lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
+function filenameFull = lrsWriteHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
 % Outputs a file for lrs to convert an H-representation (half-space) of a
 % polyhedron to a V-representation (vertex / ray) via vertex enumeration
 %
@@ -21,6 +21,8 @@ function filenameFull = lrsInputHalfspace(A, D, filename, positivity, inequality
 %                   minimise :math:`f^T x`,
 %                   subject to :math:`A x = (a)`, :math:`D x \geq (d)`
 %    sh:            {(0), 1} if `sh == 1`, output a shell script for submitting qsub job
+
+% Ronan Fleming 2021
 
 if ~isempty(A)
     [rlt, clt] = size(A);
