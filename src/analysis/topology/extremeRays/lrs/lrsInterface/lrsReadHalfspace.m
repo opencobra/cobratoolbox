@@ -56,27 +56,29 @@ function [A,b,csense] = lrsReadHalfspace(modelName,param)
 if ~exist('param','var')
     param = struct();
 end
-% if ~isfield(param,'positivity')
-%     param.positivity  = 0;
-% end
-% if ~isfield(param,'inequality')
-%     param.inequality  = 0;
-% end
-% if ~isfield(param,'shellScript')
-%     param.shellScript  = 0;
-% end
-% if ~isfield(param,'facetEnumeration')
-%     %assume vertex enumeration, unless specified that it is facet enumeration
-%     param.facetEnumeration  = 1;
-% end
 if ~isfield(param,'redund')
     param.redund  = 1;
 end
-if ~param.redund
-    modelName = [modelName '_noR'];
-end
-if contains(modelName,'ine')
-   modelName = strrep(modelName,'.ine','');
+
+if contains(modelName,'.ine') || contains(modelName,'ext')
+    modelName = strrep(modelName,'.ine','');
+else
+    if param.inequality == 0
+%         if param.positivity == 0
+%             modelName = [modelName '_pos_eq'];
+%         else
+%             modelName = [modelName '_neg_eq'];
+%         end
+    else
+        if param.positivity == 1
+            modelName = [modelName '_pos_ineq'];
+        else
+            modelName = [modelName '_neg_ineq'];
+        end
+    end
+    if ~param.redund
+        modelName = [modelName '_noR'];
+    end
 end
 
 fid = fopen([modelName '.ine']);
@@ -84,6 +86,7 @@ if fid<0
     disp([modelName '.ine'])
     error('Could not open lrs output file.');
 end
+
 countRows = 0;
 linearityRows=[];
 while 1
@@ -92,12 +95,12 @@ while 1
         countRows = countRows + 1;
     end
     if countRows==3
-        if isempty(findstr('/', tline))
+        if contains(tline,'/')
             scannedLine = sscanf(tline, '%d')';
             nCols = length(scannedLine);
         else
-            line = strrep(line, '/', '.');
-            scannedLine = sscanf(line, '%f')';
+            tline = strrep(tline, '/', '.');
+            scannedLine = sscanf(tline, '%f')';
             nCols = length(scannedLine);
         end
     end
@@ -134,15 +137,15 @@ while 1
     end
 end
 %skip the next row
-line = fgetl(fid);
+tline = fgetl(fid);
 
 % read rows into a matrix
 A = sparse(nRows, nCols);
 
 for r = 1:nRows
-    line = fgetl(fid);
-    if isempty(findstr('/', line))
-        scannedLine = sscanf(line, '%d')';  % added transpose here for reading in LP solutions
+    tline = fgetl(fid);
+    if isempty(findstr('/', tline))
+        scannedLine = sscanf(tline, '%d')';  % added transpose here for reading in LP solutions
         if length(scannedLine)~=nCols
             %for some reason the second integer is not always the number of columns
             A = sparse(nRows, length(scannedLine));
@@ -150,8 +153,8 @@ for r = 1:nRows
         end
         A(r, :) = scannedLine;
     else
-        line = strrep(line, '/', '.');
-        scannedLine = sscanf(line, '%f')';
+        tline = strrep(tline, '/', '.');
+        scannedLine = sscanf(tline, '%f')';
         for c = 1:nCols
             M = mod(scannedLine(c), 1);
             if M ~= 0
