@@ -40,16 +40,39 @@ if ~isfield(param,'redund')
     param.redund  = 1;
 end
 
-%remove the suffix in case it is present
+if contains(modelName,'.ine')
+    param.facetEnumeration  = 0;
+end
+
+
+
 if contains(modelName,'.ine') || contains(modelName,'.ext')
-    if contains(modelName,'.ext')
-        modelName = strrep(modelName,'.ext','');
+    modelName = strrep(modelName,'.ine','');
+    modelName = strrep(modelName,'.ext','');
+else
+    if param.inequality == 0
+%         if param.positivity == 0
+%             modelName = [modelName '_pos_eq'];
+%         else
+%             modelName = [modelName '_neg_eq'];
+%         end
+    else
+        if param.positivity == 1
+            modelName = [modelName '_pos_ineq'];
+        else
+            modelName = [modelName '_neg_ineq'];
+        end
     end
-    if contains(fileName,'.ine')
-        modelName = strrep(modelName,'.ine','');
+    if ~param.redund
+        modelName = [modelName '_noR'];
     end
 end
 
+if param.facetEnumeration
+    [status, result] = lrsSpecifyRows([modelName '.ext']);
+else
+    [status, result] = lrsSpecifyRows([modelName '.ine']);
+end
 
 if param.redund==0
     %remove all redundant halfspaces
@@ -60,24 +83,12 @@ end
 if isunix
     [status, result] = system('which lrs');
     if ~isempty(result)
-        suffix = '';
-        if param.positivity
-            suffix = [suffix 'pos_'];
-        else
-            suffix = [suffix 'neg_'];
-        end
-        if param.inequality
-            suffix = [suffix 'ineq'];
-        else
-            suffix = [suffix 'eq'];
-        end
-        
         if param.shellScript
             % call lrs through a bash script and wait until extreme pathways have been calculated
-            systemCallText = ['sh ' pwd filesep modelName '_' suffix '.sh'];
+            systemCallText = ['sh ' pwd filesep modelName '.sh'];
             [status, result] = system(systemCallText);
             if status == 0
-                error(['Failure to run Bash script ' pwd filesep modelName '_' suffix '.sh']);
+                error(['Failure to run Bash script ' pwd filesep modelName '.sh']);
             end
         else
             if param.facetEnumeration
@@ -87,15 +98,15 @@ if isunix
                 localCallText = ['lrs ' modelName '.ext > ' fileNameOut];
                 disp(localCallText)
             else
-                fileNameOut = [modelName '_' suffix '.ext'];
+                fileNameOut = [modelName '.ext'];
                 % call lrs to compute vertices
-                systemCallText = ['lrs ' pwd filesep modelName '_' suffix '.ine > ' pwd filesep fileNameOut];
-                localCallText = ['lrs ' modelName '_' suffix '.ine > ' fileNameOut];
+                systemCallText = ['lrs ' pwd filesep modelName '.ine > ' pwd filesep fileNameOut];
+                localCallText = ['lrs ' modelName '.ine > ' fileNameOut];
                 disp(localCallText)
             end
             [status, result] = system(systemCallText);
             if status == 1
-                error(['lsr failed on file ', pwd filesep modelName '_' suffix '.ine']);
+                error(['lsr failed on file ', pwd filesep modelName '.ine']);
             end
             if param.facetEnumeration
                 if param.redund == 0
@@ -103,41 +114,10 @@ if isunix
                     fileNameOut = [modelName '_noR.ine'];
                     uselrsRedundOption =0;
                     
-                    %read the number of rows of the file and replace the ****
-                    fid = fopen([pwd filesep fileNameIn],'r+');
-                    countRows = 0;
-                    while 1
-                        tline = fgetl(fid);
-                        if countRows ~=0
-                            countRows = countRows + 1;
-                        end
-                        if strcmp(tline, 'begin')
-                            countRows = 1;
-                        elseif ~ischar(tline)
-                            error('Could not read lrs output file.');
-                        end
-                        if strcmp(tline,'end')
-                            if uselrsRedundOption
-                            [status, result] =  system(['sed -i ''s/end/end\nredund 0 0/g'' ' pwd filesep fileNameIn]);
-                            end
-                            break
-                        end
-                    end
-                    nRows = countRows -3;
-                    
-                    %open the file and write the number of rows and columns
-                    %The procedure to change the text in files under Linux/Unix using sed:
-                    %Use Stream EDitor (sed) as follows:
-                    %sed -i 's/old-text/new-text/g' input.txt
-                    %The s is the substitute command of sed for find and replace
-                    %It tells sed to find all occurrences of ‘old-text’ and replace with ‘new-text’ in a file named input.txt
-                    [status, result] =  system(['sed -i ''s/\*\*\*\*\*/' int2str(nRows) '/g'' ' pwd filesep fileNameIn]);
-                    if status == 1
-                        disp(result)
-                        error(['sed failed on file ' pwd filesep fileNameIn]);
-                    end
-                                                
+                    [status, result] = lrsSpecifyRows(fileNameIn);
+                                        
                     if uselrsRedundOption
+                        [status, result] =  system(['sed -i ''s/end/end\nredund 0 0/g'' ' fileNameIn]);
                         systemCallText = ['lrs ' pwd filesep fileNameIn ' > ' pwd filesep fileNameOut];
                         localCallText = ['lrs ' fileNameIn ' > ' fileNameOut];
                     else
@@ -148,7 +128,7 @@ if isunix
                     [status, result] = system(systemCallText);
                     if status == 1
                         disp(result)
-                        error(['lsr failed on file ', pwd filesep modelName '_' suffix '.ine']);
+                        error(['lsr failed on file ', pwd filesep modelName '.ine']);
                     end
                 end
             end

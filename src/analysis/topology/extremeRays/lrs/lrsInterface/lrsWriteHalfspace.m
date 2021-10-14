@@ -1,4 +1,4 @@
-function filenameFull = lrsWriteHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
+function fileNameOut = lrsWriteHalfspace(A, b, csense, modelName, param)
 % Outputs a file for lrs to convert an H-representation (half-space) of a
 % polyhedron to a V-representation (vertex / ray) via vertex enumeration
 %
@@ -24,6 +24,50 @@ function filenameFull = lrsWriteHalfspace(A, D, filename, positivity, inequality
 
 % Ronan Fleming 2021
 
+if ~exist('b','var') || isempty(b)
+    b = zeros(size(A,1),1);
+end
+if ~exist('csense','var') || isempty(csense)
+    csense(1:size(A,1),1) = 'E';
+end
+if ~exist('modelName','var')
+    modelName = 'test';
+end
+if ~exist('param','var')
+    param = struct();
+end
+if ~isfield(param,'positivity')
+    param.positivity = 0;
+end
+if ~isfield(param,'inequality')
+    param.positivity = 0;
+end
+if ~isfield(param,'sh')
+    param.sh = 0;
+end
+
+if exist('f') ~= 1
+    f = [];
+end
+
+eqBool = csense == 'E';
+leBool = csense == 'L';
+geBool = csense == 'G';
+if ~all(eqBool | leBool | geBool)
+    error('mis-specified csense')
+end
+A0  = A;
+b0 = b;
+
+A = A(eqBool,:);
+a = b0(eqBool);
+
+A0(leBool,:) = -A0(leBool,:);
+b0(leBool,:) = -b0(leBool,:);
+
+D = A0(leBool | geBool,:);
+d = b0(leBool | geBool);
+
 if ~isempty(A)
     [rlt, clt] = size(A);
 else
@@ -31,49 +75,30 @@ else
     clt = 0;
 end
 
-% OPTION
-% if a does not exist we assume A*x=0;
-if exist('a') ~= 1
-    a = zeros(rlt, 1);
-elseif ~all(size(a) == [rlt, 1])
-    error('Matrix A and vector a should have the same number of rows');
-end
-if ~isempty(D)
-    [Drlt, Dclt] = size(D);
-    % if d does not exist we assume D*x>=0;
-    if exist('d') ~= 1
-        d = zeros(Drlt, 1);
-    end
-else
-    Drlt = 0;
-    Dclt = 0;
+if ~contains(modelName,filesep)
+    modelName = [pwd filesep modelName];
 end
 
-if exist('positivity') ~= 1
-    positivity = 1;
+if param.inequality == 0
+%     if param.positivity == 0
+%         modelName = [modelName '_pos_eq'];
+%     else
+%         modelName = [modelName '_neg_eq'];
+%     end
+else
+    if param.positivity == 1
+        modelName = [modelName '_pos_ineq'];
+    else
+        modelName = [modelName '_neg_ineq'];
+    end
 end
-if exist('inequality') ~= 1
-    inequality = 1;
-end
-if exist('sh') ~= 1
-    sh = 0;
-end
-if exist('f') ~= 1
-    f = [];
-end
+fileNameOut = [modelName '.ine'];
+
 
 % if inequality==1, then use two inequalities rather than a single equaltiy
-if inequality == 0
-    if positivity == 1
-        filenameSuffix = [filename '_pos_eq'];
-        filenameFull = [filenameSuffix '.ine'];
-    else
-        filenameSuffix = [filename '_neg_eq'];
-        filenameFull = [filenameSuffix '.ine'];
-    end
-
-    fid = fopen(filenameFull, 'w');
-    fprintf(fid, '%s\n%s\n', filename, 'H-representation');
+if param.inequality == 0
+    fid = fopen(fileNameOut, 'w');
+    fprintf(fid, '%s\n%s\n', modelName, 'H-representation');
 
     if ~isempty(f)
         fprintf(fid, '%s\n', 'lponly');
@@ -99,7 +124,7 @@ if inequality == 0
     % check if inequalities
     if isempty(D)
         fprintf(fid, '%s\n', 'begin');
-        if positivity == 1
+        if param.positivity == 1
             % number of rows & another set of rows for each inequality if it's
             % to be positive
             fprintf(fid, '%s%s', int2str(rlt + clt), ' ');
@@ -111,7 +136,7 @@ if inequality == 0
         [Drlt, Dclt] = size(D);
         fprintf(fid, '%s\n', 'begin');
         if ~isempty(A)
-            if positivity == 1
+            if param.positivity == 1
                 % number of rows & another set of rows for each inequality if it's
                 % to be positive
                 fprintf(fid, '%s%s', int2str(rlt + Drlt + clt), ' ');
@@ -120,7 +145,7 @@ if inequality == 0
                 fprintf(fid, '%s%s', int2str(rlt + Drlt), ' ');
             end
         else
-            if positivity == 1
+            if param.positivity == 1
                 % number of rows & another set of rows for each inequality if it's
                 % to be positive
                 fprintf(fid, '%s%s', int2str(Drlt + clt), ' ');
@@ -172,7 +197,7 @@ if inequality == 0
 
     if ~isempty(A)
         % non-negative variable inequalities
-        if positivity == 1
+        if param.positivity == 1
             % add non-negative constraints individually
             for c1 = 1:clt
                 fprintf(fid, '%s%s', int2str(0), ' ');
@@ -193,7 +218,7 @@ if inequality == 0
         end
     else
         % non-negative variable inequalities
-        if positivity == 1
+        if param.positivity == 1
             % add non-negative constraints individually
             for c1 = 1:Dclt
                 fprintf(fid, '%s%s', int2str(0), ' ');
@@ -219,15 +244,9 @@ else
     if ~isempty(A)
         fprintf('%s\n', 'We assume that equalities are present.');
     end
-    if positivity == 1
-        filenameSuffix = [filename '_pos_ineq'];
-        filenameFull = [filenameSuffix '.ine'];
-    else
-        filenameSuffix = [filename '_neg_ineq'];
-        filenameFull = [filenameSuffix '.ine'];
-    end
-    fid = fopen(filenameFull, 'w');
-    fprintf(fid, '%s\n%s\n', filename, 'H-representation');
+
+    fid = fopen(fileNameOut, 'w');
+    fprintf(fid, '%s\n%s\n', modelName, 'H-representation');
 
     if ~isempty(f)
         fprintf(fid, '%s\n', 'lponly');
@@ -242,7 +261,7 @@ else
     % For problems where all variables non-negative and all constraints
     % are inequalities it is not necessary to give the non-negative
     % constraints explicitly if the nonnegative option is used. -lrs 4.2
-    if positivity == 1
+    if param.positivity == 1
         fprintf(fid, '%s\n', 'nonnegative ');
     end
 
@@ -295,7 +314,7 @@ end
 fprintf(fid, '%s\n', 'end');
 fclose(fid);
 
-if sh == 1
+if param.sh == 1
     filenameSh = [filenameSuffix '.sh'];
     fid = fopen(filenameSh, 'w');
     fprintf(fid, '%s\n', '#!/bin/bash');
