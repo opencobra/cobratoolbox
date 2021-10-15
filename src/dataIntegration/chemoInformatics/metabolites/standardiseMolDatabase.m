@@ -61,7 +61,12 @@ cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
 end
-[oBabelInstalled, ~] = system('obabel');
+if ~isunix
+    obabelCommand = 'obabel';
+else
+    obabelCommand = 'openbabel.obabel';
+end
+[oBabelInstalled, ~] = system(obabelCommand);
 if any(oBabelInstalled == [127 0])
     oBabelInstalled = false;
     standardisationApproach = 'basic';
@@ -106,7 +111,7 @@ for i = 1:size(aMets, 1)
         if oBabelInstalled
             
             % Obtain SMILES
-            command = ['obabel -imol ' molDir name ' -osmiles'];
+            command = [obabelCommand ' -imol ' molDir name ' -osmiles'];
             [~, cmdout] = system(command);
             cmdout = splitlines(cmdout);
             cmdout = split(cmdout{end - 2});
@@ -115,7 +120,7 @@ for i = 1:size(aMets, 1)
             
             % Obtain inChIKey and InChI
             % inChIKey
-            command = ['obabel -imol ' molDir name ' -oinchikey'];
+            command = [obabelCommand ' -imol ' molDir name ' -oinchikey'];
             [~, cmdout] = system(command);
             cmdout = split(cmdout);
             inchikeyIdx = find(cellfun(@numel, cmdout) == 27);
@@ -127,7 +132,7 @@ for i = 1:size(aMets, 1)
                 InChIKeys{i, 1} = {''};
             end
             % InChI
-            command = ['obabel -imol ' molDir name ' -oinchi'];
+            command = [obabelCommand ' -imol ' molDir name ' -oinchi'];
             [~, cmdout] = system(command);
             cmdout = split(cmdout);
             if any(contains(cmdout,'InChI=1S'))
@@ -137,7 +142,7 @@ for i = 1:size(aMets, 1)
                 fclose(fid2);
                 % Create an InChI based-MOL file
                 if ~ismember(aMets{i}, moleculesNotS)
-                    command = ['obabel -iinchi tmp -O ' standardisedMolFiles name ' --gen2D'];
+                    command = [obabelCommand ' -iinchi tmp -O ' standardisedMolFiles name ' --gen2D'];
                 else
                     copyfile([molDir name], standardisedMolFiles)
                 end
@@ -149,7 +154,7 @@ for i = 1:size(aMets, 1)
                 fprintf(fid2, '%s\n', smiles);
                 fclose(fid2);
                 if ~ismember(aMets{i}, moleculesNotS)
-                    command = ['obabel -ismiles tmp -O ' standardisedMolFiles name ' --gen2D'];
+                    command = [obabelCommand ' -ismiles tmp -O ' standardisedMolFiles name ' --gen2D'];
                 else
                     copyfile([molDir name], standardisedMolFiles)
                 end    
@@ -160,15 +165,15 @@ for i = 1:size(aMets, 1)
             % Adapt database
             switch standardisationApproach
                 case 'explicitH'
-                    command = ['obabel -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' -h'];
+                    command = [obabelCommand ' -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' -h'];
                     [~, ~] = system(command);
                 case 'implicitH'
                     % Delete explicit hydrogens
-                    command = ['obabel -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' -d'];
+                    command = [obabelCommand ' -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' -d'];
                     [~, ~] = system(command);
                 case 'neutral'
                     % Neutralize molecule
-                    command = ['obabel -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' –neutralize'];
+                    command = [obabelCommand ' -imol ' standardisedMolFiles name ' -O ' standardisedMolFiles name ' –neutralize'];
                     [~, ~] = system(command);
             end
         else
