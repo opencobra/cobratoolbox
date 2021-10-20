@@ -194,9 +194,6 @@ for k=1:size(analyzedFiles,1)
                         set(h,'MarkerSize',4)
                         hold on
                         title(analyzedFiles{k,1})
-                        plottitle=strrep(reconVersion,'_refined','');
-                        plottitle=strrep(plottitle,'_draft','');
-                        suptitle(plottitle)
                         
                         h=legend('Location','northeastoutside');
                         if length(uniqueXX) < 12

@@ -111,7 +111,6 @@ if ~isempty(modelList)
         end
         
         parfor j=i:i+endPnt
-            j
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             if strcmp(solver,'ibm_cplex')

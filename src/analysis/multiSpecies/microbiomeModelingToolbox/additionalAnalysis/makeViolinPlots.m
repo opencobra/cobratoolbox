@@ -108,10 +108,6 @@ for i=2:size(sampleData,1)
         end
         h=title(varname,'FontSize',14);
         set(h,'interpreter','none')
-        if ~isempty(plottedFeature)
-            h=suptitle(plottedFeature);
-            set(h,'interpreter','none')
-        end
         set(gca,'TickLabelInterpreter','none')
         filename=strrep(varname,' ','_');
         filename=strrep(filename,'(','_');
