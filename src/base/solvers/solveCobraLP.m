@@ -178,6 +178,20 @@ end
 if ~isfield(LPproblem, 'modelID')
     LPproblem.modelID = 'aModelID';
 end
+
+if any(~isfinite(LPproblem.A),'all')
+    [I,J]=find(~isfinite(EPproblem.A))
+    error('LPproblem.A has infinite entries')
+end
+if any(~isfinite(LPproblem.b))
+    [I,J]=find(~isfinite(EPproblem.b))
+    error('LPproblem.b has infinite entries')
+end
+if any(~isfinite(LPproblem.c))
+    [I,J]=find(~isfinite(EPproblem.c))
+    error('LPproblem.c has infinite entries')
+end
+
             
 % extract the problem from the structure
 [A, b, c, lb, ub, csense, osense, modelID] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID);
@@ -700,114 +714,15 @@ switch solver
 %             pasue(eps)
         end
 
-        % initialise variables
-        x = [];
-        y = [];
-        w = [];
-
-        % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
-        if isfield(res, 'sol')
-            if isfield(res.sol, 'itr')
-                origStat = res.sol.itr.solsta;
-                if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-                        strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-                        strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-                    stat = 1; % optimal solution found
-                    x=res.sol.itr.xx; % primal solution.
-                    y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-
-                    w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-
-                    % TODO  -work this out with Erling
-                    % override if specific solver selected
-                    if isfield(param,'MSK_IPAR_OPTIMIZER')
-                        switch param.MSK_IPAR_OPTIMIZER
-                            case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-                                stat = 1; % optimal solution found
-                                x=res.sol.bas.xx; % primal solution.
-                                y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                                w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                            case 'MSK_OPTIMIZER_INTPNT'
-                                stat = 1; % optimal solution found
-                                x=res.sol.itr.xx; % primal solution.
-                                y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                                w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-                        end
-                    end
-                    if isfield(res.sol,'bas') && 0
-                        % override
-                        stat = 1; % optimal solution found
-                        x=res.sol.bas.xx; % primal solution.
-                        y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                        w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                    end
-                    f=c'*x;
-                    % slack for blc <= A*x <= buc
-                    s = b - A * x; % output the slack variables
-                elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-                        strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-                        strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-                        strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-                    stat=0; % infeasible
-                end
-            end
-            if ( isfield(res.sol,'bas') )
-                if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-                        strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-                        strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-                    stat = 1; % optimal solution found
-                    x=res.sol.bas.xx; % primal solution.
-                    y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                    w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                    % override if specific solver selected
-                    if isfield(param,'MSK_IPAR_OPTIMIZER')
-                        switch param.MSK_IPAR_OPTIMIZER
-                            case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-                                stat = 1; % optimal solution found
-                                x=res.sol.bas.xx; % primal solution.
-                                y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                                w=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                            case 'MSK_OPTIMIZER_INTPNT'
-                                stat = 1; % optimal solution found
-                                x=res.sol.itr.xx; % primal solution.
-                                y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                                w=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-                        end
-                    end
-                    f=c'*x;
-                    % slack for blc <= A*x <= buc
-                    s = b - A * x; % output the slack variables
-                elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-                        strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-                        strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-                        strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-                    stat=0; % infeasible
-                end
-            end
-
-            %debugging
-            % if printLevel>2
-            %     res1=A*x + s -b;
-            %     norm(res1(csense == 'G'),inf)
-            %     norm(s(csense == 'G'),inf)
-            %     norm(res1(csense == 'L'),inf)
-            %     norm(s(csense == 'L'),inf)
-            %     norm(res1(csense == 'E'),inf)
-            %     norm(s(csense == 'E'),inf)
-            %     res1(~isfinite(res1))=0;
-            %     norm(res1,inf)
-
-            %     norm(osense*c -A'*y -w,inf)
-            %     y2=res.sol.itr.slc-res.sol.itr.suc;
-            %     norm(osense*c -A'*y2 -w,inf)
-            % end
+        %parse mosek result structure
+        [stat,origStat,x,y,w,s,~] = parseMosekResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        if stat ==1
+            f=c'*x;
         else
-            disp(res);
-            origStat = [];
-            stat = -1;
+            f = NaN;
+            s = NaN*ones(size(A,1),1);
         end
-
-
+            
         if isfield(param,'MSK_IPAR_OPTIMIZER')
             algorithm=param.MSK_IPAR_OPTIMIZER;
         end
@@ -928,9 +843,15 @@ switch solver
         end
 
         gurobiLP.A = A;
-        gurobiLP.rhs = b;
-        gurobiLP.lb = lb;
-        gurobiLP.ub = ub;
+        if 1
+            gurobiLP.rhs = full(b);
+            gurobiLP.lb = full(lb);
+            gurobiLP.ub = full(ub);
+        else
+            gurobiLP.rhs = b;
+            gurobiLP.lb = lb;
+            gurobiLP.ub = ub;
+        end
         %gurobi wants a dense double vector as an objective
         gurobiLP.obj = double(c)+0;%full
 
