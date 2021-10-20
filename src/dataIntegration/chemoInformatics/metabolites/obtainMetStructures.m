@@ -61,7 +61,11 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 
 % Check openbabel installation
-[oBabelInstalled, ~] = system('obabel');
+if ~isunix
+    [oBabelInstalled, ~] = system('obabel');
+else
+    [oBabelInstalled, ~] = system('openbabel.obabel');
+end
 if oBabelInstalled == 127
     oBabelInstalled = 0;
 end
@@ -368,7 +372,7 @@ databaseCoverage = table('Size', [nRows length(varTypes)], 'VariableTypes', varT
 databaseCoverage.sources = sources;
 databaseCoverage.metsWithStructure = sum(idMatrix)';
 databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
-databaseCoverage.coverage = (databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1);
+databaseCoverage.coverage = round((databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1), 2);
 molCollectionReport.databaseCoverage = databaseCoverage;
 
 molCollectionReport.idsToCheck = idsToCheck;

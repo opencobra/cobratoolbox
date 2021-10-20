@@ -123,7 +123,12 @@ if cxcalcInstalled == 0
     display('1 - jpeg files for molecular structures (obabel required)')
     display('2 - pH adjustment according to model.met Formulas')
 end
-[oBabelInstalled, ~] = system('obabel');
+if ~isunix
+    obabelCommand = 'obabel';
+else
+    obabelCommand = 'openbabel.obabel';
+end
+[oBabelInstalled, ~] = system(obabelCommand);
 if oBabelInstalled ~= 1
     oBabelInstalled = false;
     options.standardisationApproach = 'basic';
@@ -246,7 +251,7 @@ for i = 1:size(directories, 1)
         if oBabelInstalled
             
             % Get inchis of the original metabolites
-            command = ['obabel -imol ' sourceDir name ' -oinchi '];
+            command = [obabelCommand ' -imol ' sourceDir name ' -oinchi '];
             [~, result] = system(command);
             result = split(result);
             
@@ -287,7 +292,7 @@ for i = 1:size(directories, 1)
                     idx = find(ismember(groupedSMILES.mets, regexprep(name, '.mol', '')));
                 end
                 % Get SMILES
-                command = ['obabel -imol ' sourceDir name ' -osmiles '];
+                command = [obabelCommand ' -imol ' sourceDir name ' -osmiles '];
                 [~, result] = system(command);
                 if contains(result, '0 molecules converted')
                     continue
@@ -343,7 +348,7 @@ if exist('groupedSMILES', 'var')
                 fid2 = fopen([outputDir 'tmp'], 'w');
                 fprintf(fid2, '%s\n', groupedSMILES.(sourcesSmiles{j}){i});
                 fclose(fid2);
-                command = 'obabel -ismi tmp -O tmp.mol mol -h';
+                command = [obabelCommand ' -ismi tmp -O tmp.mol mol -h'];
                 [~, ~] = system(command);
                 molFile = regexp(fileread([outputDir 'tmp.mol']), '\n', 'split')';
                 molFile = regexprep(molFile, 'X|Y|*|R|A', 'H');
@@ -351,7 +356,7 @@ if exist('groupedSMILES', 'var')
                 fprintf(fid2, '%s\n', molFile{:});
                 fclose(fid2);
                 % Get inchis of the original metabolites
-                command = ['obabel -imol ' outputDir 'tmp.mol -oinchi'];
+                command = [obabelCommand ' -imol ' outputDir 'tmp.mol -oinchi'];
                 [~, result] = system(command);
                 result = split(result);
                 groupedInChIs2.(sourcesSmiles{j})(i) = result(contains(result, 'InChI=1S'));
@@ -425,61 +430,37 @@ if options.printlevel > 0
     
     display(info.sourcesComparison.comparisonTable)
     
-    % heatMap comparison
-    figure
-    subplot(1, 3, 1)
-    scoreMatrix = info.sourcesComparison.comparisonMatrix;
-    for i = 1:size(scoreMatrix, 2)
-        for j = 1:size(scoreMatrix, 2)
-            boolToCompare = scoreMatrix(:, i) ~= 0 & scoreMatrix(:, j) ~= 0;
-            group1 = scoreMatrix(boolToCompare, i);
-            group2 = scoreMatrix(boolToCompare, j);
-            comparisonMatrix(i, j) = corr(group1,group2,'Type','Spearman');
-        end
-    end
-    h = heatmap(comparisonMatrix);
-    title('1. Spearman correlation')
-    % Labels
-    directoriesLabels = regexprep(directories, 'inchi','InChI');
-    directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
-    h.YDisplayLabels = directoriesLabels;
-    h.XDisplayLabels = directoriesLabels;
-    h.FontSize = 16;
-    
     % Sources comparison
-    subplot(1, 3, 2)
     [db, ~, idx] = unique(split(strjoin(info.sourcesComparison.comparisonTable.source, ' '), ' '));
-    [~, ib1] = ismember(db, directories);
-    [timesMatched, ia] = sort(histcounts(idx, size(db, 1)), 'descend');
-    bar(timesMatched')
-    title({'2. Sources comparison', ...
+    [~, ib1] = ismember(directories, db);
+    timesMatched = histcounts(idx, size(db, 1));
+    bar(timesMatched(ib1)')
+    title({'Sources comparison', ...
         ['Metabolites collected: ' num2str(size(info.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 16)
-    % Labels
-    directoriesLabels = regexprep(db, 'inchi','InChI');
+    directoriesLabels = regexprep(db, 'chebi', 'ChEBI');
+    directoriesLabels = regexprep(directoriesLabels, 'hmdb', 'HMDB');
+    directoriesLabels = regexprep(directoriesLabels, 'inchi', 'InChIs');
+    directoriesLabels = regexprep(directoriesLabels, 'kegg', 'KEGG');
+    directoriesLabels = regexprep(directoriesLabels, 'pubchem', 'PubChem');
     directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
-    set(gca, 'XTick', 1:size(db, 1), 'xticklabel', directoriesLabels(ia), 'FontSize', 16)
-    ylabel('Metabolites')
-    xtickangle(45)
-    
-    % Features comparison
-    subplot(1, 3, 3)
-    fnames = fieldnames(info.sourcesComparison);
-    fnames = fnames(contains(fnames, 'met_'));
-    sterochemicalCounter = zeros(numel(directories), 1);
-    chargeCounter = zeros(numel(directories), 1);
-    formulaOk = zeros(numel(directories), 1);
-    for i = 1:length(fnames)
-        formulaOk = formulaOk + info.sourcesComparison.(fnames{i}).formulaOkBool;
-        sterochemicalCounter = sterochemicalCounter + info.sourcesComparison.(fnames{i}).stereochemicalSubLayers;
-        chargeCounter = chargeCounter + info.sourcesComparison.(fnames{i}).chargeOkBool;
+    set(gca, 'XTick', 1:size(db, 1), 'xticklabel', directoriesLabels(ib1), 'FontSize', 16)
+    metsObtained = fieldnames(info.sourcesComparison);
+    metsObtained = metsObtained(contains(metsObtained, 'met_'));
+    [sterochemicalCounter, chargeCounter, formulaOk, noId] = deal(zeros(numel(directories), 1));
+    for i = 1:length(metsObtained)
+        formulaOk = formulaOk + info.sourcesComparison.(metsObtained{i}).formulaOkBool;
+        chargeCounter = chargeCounter + info.sourcesComparison.(metsObtained{i}).chargeOkBool;
+        sterochemicalCounter = sterochemicalCounter + info.sourcesComparison.(metsObtained{i}).stereochemicalSubLayers;
+        noId = noId + cellfun(@isempty,info.sourcesComparison.(metsObtained{i}).InChI);
     end
-    plot([formulaOk, sterochemicalCounter, chargeCounter], 'LineWidth', 2)
-    legend({'Formula', 'Sterochemistry', 'Charge'}, 'Location', 'best')
-    title('3. Features comparison', 'FontSize', 16)
-    directoriesLabels = regexprep(directories, 'inchi','InChI');
-    directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
-    set(gca, 'XTick', 1:size(directoriesLabels, 1), 'xticklabel', directoriesLabels, 'FontSize', 16)
-    
+    hold on
+    plot(formulaOk, 'r', 'LineWidth', 3)
+    plot(chargeCounter, 'g', 'LineWidth', 3)
+    plot(sterochemicalCounter, 'm', 'LineWidth', 3)
+    plot(noId, 'y', 'LineWidth', 3)
+    hold off
+    legend({'Highest score', 'Formula agree', 'Charge agree', 'Sterochemistry', 'No ids'}, 'Location', 'best')
+
     if options.printlevel > 1
         display(groupedInChIs)
     end
