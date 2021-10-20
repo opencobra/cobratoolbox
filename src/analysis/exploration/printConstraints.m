@@ -7,10 +7,10 @@ function printConstraints(model, minInf, maxInf, rxnSelection, modelAfter, print
 %
 % INPUTS:
 %    model:     COBRA model structure
-%    minInf:    value that is considered as -Inf (or desired minimum cutoff value)
-%    maxInf:    value that is considered as +Inf (or desired maximum cutoff value)
 %
 % OPTIONAL INPUTS:
+%   minInf:       value that is considered as -Inf (or desired minimum cutoff value)
+%   maxInf:       value that is considered as +Inf (or desired maximum cutoff value)
 %   rxnSelection: boolean vector or cell array of reaction abbreviations for the reactions to be printed
 %   modelAfter:   model after some perturbation to the bounds
 %   printLevel:

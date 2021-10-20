@@ -251,7 +251,7 @@ if 0
 end
 %% model has flux through h[c] demand !
 if 1
-   % modelClosed = model;
+    modelClosed = model;
     modelexchanges1 = strmatch('Ex_',modelClosed.rxns);
     modelexchanges4 = strmatch('EX_',modelClosed.rxns);
     modelexchanges2 = strmatch('DM_',modelClosed.rxns);
@@ -410,7 +410,7 @@ end
 cnt = cnt + 1;
 
 TableChecks{cnt,1} = 'Check consistency of model.rev with model.lb';
-if 1
+if 0
     Rev = setdiff(find(model.lb<0), find(model.rev==1));
     if isempty(Rev)
         TableChecks{cnt,2} = 'model.rev and model.lb are consistent.';
@@ -453,9 +453,9 @@ else
 end
 cnt = cnt + 1;
 
-
+if 0
 save([resultsPath 'OrganChecks' filesep resultsFileName,'.mat'],'TableChecks', 'Table_csources', 'CSourcesTestedRxns', 'TestSolutionNameOpenSinks','TestSolutionNameClosedSinks');
-
+end
 if saveDiary
     diary off;
 end

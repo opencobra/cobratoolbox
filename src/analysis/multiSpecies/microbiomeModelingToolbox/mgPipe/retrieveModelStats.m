@@ -159,7 +159,7 @@ else
     title('Metabolites')
     set(gca, 'FontSize', 12)
     hold on
-    suptitle('Reaction and metabolite numbers in microbiome models')
+    sgtitle('Reaction and metabolite numbers in microbiome models')
     print('MicrobiomeModel_Sizes','-dpng','-r300')
 end
 

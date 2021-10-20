@@ -101,7 +101,9 @@ if ~isempty(modelList)
             modelID=strrep(modelID,'.sbml','');
             modelID=strrep(modelID,'.xml','');
             reactionPresence{plusonerow,1}=modelID;
+            reactionPresence(plusonerow,2:end)={'0'};
             metabolitePresence{plusonerow,1}=modelID;
+            metabolitePresence(plusonerow,2:end)={'0'};
             for k=1:length(allRxns)
                 if ~isempty(find(ismember(rxnsTmp{j},allRxns{k})))
                     reactionPresence{plusonerow,k+1}='1';

@@ -84,8 +84,12 @@ maxTime = 1800;
 % Check installation
 [cxcalcInstalled, ~] = system('cxcalc');
 cxcalcInstalled = ~cxcalcInstalled;
-[oBabelInstalled, ~] = system('obabel');
-oBabelInstalled = ~oBabelInstalled;
+if ~isunix
+    obabelCommand = 'obabel';
+else
+    obabelCommand = 'openbabel.obabel';
+end
+[oBabelInstalled, ~] = system(obabelCommand);
 [javaInstalled, ~] = system('java');
 
 % Generating new directories
@@ -242,7 +246,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         
     end
     % I do not think that the algorithm should be downloaded all the time
-    if 0
+    if 1
         delete([rxnDir 'rdtAlgorithm.jar'])
     end
     
@@ -397,7 +401,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         if oBabelInstalled
             
             % Get rinchis
-            command = ['obabel -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -orinchi'];
+            command = [obabelCommand ' -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -orinchi'];
             [~, result] = system(command);
             if ~any(contains(result, '0 molecules converted'))
                 result = split(result);
@@ -406,7 +410,7 @@ if javaInstalled == 1 && ~onlyUnmapped
             end
             
             % Get rsmi
-            command = ['obabel -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -osmi'];
+            command = [obabelCommand ' -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -osmi'];
             [~, result] = system(command);
             if ~any(contains(result, '0 molecules converted'))
                 result = splitlines(result);

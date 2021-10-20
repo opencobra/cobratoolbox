@@ -90,9 +90,9 @@ for j=1:length(fields)
             set(h,'interpreter','none')
             set(gca,'TickLabelInterpreter','none')
             if contains(pwd,'_refined')
-                suptitle('Refined reconstructions')
+                sgtitle('Refined reconstructions')
             elseif contains(pwd,'_draft')
-                suptitle('Draft reconstructions')
+                sgtitle('Draft reconstructions')
             end
             set(gca, 'FontSize', 12)
             print(fields{j},'-dpng','-r300')
@@ -166,20 +166,18 @@ barvalues(h)
 h(1).FaceColor = [1 0 0];
 h(2).FaceColor = [0 0 1];
 set(findall(gcf,'-property','FontSize'),'FontSize',12)
-h=title('Features succesfully and unsuccessfully captured by reconstructions');
 xticklabels(labels);
 set(gca,'XTick',1:numel(plotdata))
 xtickangle(45)
-set(h,'interpreter','none')
 set(gca,'YTickLabel',[])
 ylabel('Total number of model predictions')
 legend('Number of false negatives','Number of true positives')
 set(gca,'TickLabelInterpreter','none')
 set(gca,'FontSize',10)
 if contains(pwd,'_refined')
-    suptitle('Refined reconstructions')
+    title('Features succesfully and unsuccessfully captured by refined reconstructions')
 elseif contains(pwd,'_draft')
-    suptitle('Draft reconstructions')
+    title('Features succesfully and unsuccessfully captured by draft reconstructions')
 end
 print('FN_vs_TPs','-dpng','-r300')
 
