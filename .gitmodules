@@ -1,3 +1,8 @@
+[submodule "GeoCalcLib"]
+	path = external/analysis/GeoCalcLib
+	url = https://github.com/rmtfleming/GeoCalcLib.git
+	ignore = dirty
+	branch = master
 [submodule "lusol"]
 	path = external/base/solvers/lusol
 	url = https://github.com/nwh/lusol.git
