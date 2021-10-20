@@ -42,7 +42,7 @@ for i=1:length(Dupes)
     indexToDupes = find(strcmp(coverage(:,1),Dupes{i}));
     for j=2:length(indexToDupes)
         for k=2:size(coverage,2)
-            coverage{indexToDupes(1),k}=num2str(str2double(coverage{indexToDupes(1),k})+str2double(coverage{indexToDupes(j),k}));
+            coverage{indexToDupes(1),k}=num2str(cell2mat(coverage{indexToDupes(1),k})+cell2mat(coverage{indexToDupes(j),k}));
         end
         delArray(cnt,1)=indexToDupes(j);
         cnt=cnt+1;
@@ -51,7 +51,11 @@ end
 coverage(delArray,:)=[];
 
 % delete samples that are all zeros (if applies)
-totalAbun=sum(str2double(coverage(2:end,2:end)),1);
+if contains(version,'R202') % for Matlab R2020a and newer
+    totalAbun=sum(cell2mat(coverage(2:end,2:end)),1);
+else
+    totalAbun=sum(str2double(coverage(2:end,2:end)),1);
+end
 allzero=find(totalAbun<0.0000001);
 if ~isempty(allzero)
     for i=1:length(allzero)
@@ -66,11 +70,19 @@ for i=2:size(coverage,2)
     % first summarize all
     sumAll=0;
     for j=2:size(coverage,1)
-        sumAll=sumAll + str2double(coverage{j,i});
+        if contains(version,'R202') % for Matlab R2020a and newer
+            sumAll=sumAll + coverage{j,i};
+        else
+            sumAll=sumAll + str2double(coverage{j,i});
+        end
     end
     % then normalize the coverages
     for j=2:size(coverage,1)
-        coverageNew{j,i}=str2double(coverage{j,i})/sumAll;
+        if contains(version,'R202') % for Matlab R2020a and newer
+            coverageNew{j,i}=coverage{j,i}/sumAll;
+        else
+            coverageNew{j,i}=str2double(coverage{j,i})/sumAll;
+        end
     end
 end
 
