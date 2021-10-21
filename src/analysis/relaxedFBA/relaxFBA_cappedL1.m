@@ -217,6 +217,19 @@ while nbIteration < nbMaxIteration && stop ~= true
         q_bar = alpha1*sign(q) + sign(q)*alpha0*theta;
     end
     
+    if any(~isfinite(v_bar))
+        error('v_bar has non-finite entries')
+    end
+    if any(~isfinite(r_bar))
+        error('r_bar has non-finite entries')
+    end
+    if any(~isfinite(p_bar))
+        error('p_bar has non-finite entries')
+    end
+    if any(~isfinite(q_bar))
+        error('q_bar has non-finite entries')
+    end
+    
     %Solve the sub-linear program to obtain new x
     [v,r,p,q,LPsolution] = relaxFBA_cappedL1_solveSubProblem(model,csense,param,v_bar,r_bar,p_bar,q_bar);
     
@@ -404,13 +417,9 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
 
     lb1 = lb;
     ub1 = ub;
-    if 0
-        lb1(~excludedReactions) = minLB;
-        ub1(~excludedReactions) = maxUB;
-    else
-        lb1(~excludedReactionLB) = minLB;
-        ub1(~excludedReactionUB) = maxUB;
-    end
+    lb1(~excludedReactionLB) = minLB;
+    ub1(~excludedReactionUB) = maxUB;
+   
     
     maxRelaxR=param.maxRelaxR;
     
@@ -460,6 +469,19 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     
     if any(l>u)
         error('bounds inconsistent')
+    end
+    
+    if any(~isfinite(A),'all')
+        [I,J]=find(~isfinite(A))
+        error('A has infinite entries')
+    end
+    if any(~isfinite(rhs))
+        [I,~]=find(~isfinite(rhs))
+        error('rhs has infinite entries')
+    end
+    if any(~isfinite(c))
+        [I,~]=find(~isfinite(c))
+        error('c has infinite entries')
     end
     
     %Solve the linear problem

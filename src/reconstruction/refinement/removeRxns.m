@@ -12,7 +12,15 @@ function [modelOut, metRemoveList, ctrsRemoveList] = removeRxns(model, rxnRemove
 % OPTIONAL INPUTS:
 %    varargin:          Parameters in ParameterName, Value pair representation. 
 %                       Available parameters are:
-%
+%                       *  metRemoveMethod
+%                          'exclusive' =  remove metabolites exclusively involved in removed reactions (default)
+%                          'inclusive' =  remove any metabolite involved in one or more removed reactions (can cause stoichiometric inconsistency)
+%                       *  ctrsRemoveMethod
+%                          'exclusive' =  only remove constraints exclusively involved in removed reactions (default)
+%                          'inclusive' =  any constraint involved in a removed reaction is to be removed 
+%                          'infeasible' = if a removed reaction involves any constraint then remove that constraint, unless the constraint is still feasible.
+%                          'legacy' =  remove empty constraints, it seems equivalent to 'exclusive', but kept for completeness 
+%            
 %                       * irrevFlag:   Irreverseble (true) or reversible (false) reaction
 %                         format (Default = false)
 %                       * metFlag:   Remove unused metabolites (Default = true)

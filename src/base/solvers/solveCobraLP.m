@@ -179,18 +179,19 @@ if ~isfield(LPproblem, 'modelID')
     LPproblem.modelID = 'aModelID';
 end
 
-if any(~isfinite(LPproblem.A),'all')
-    [I,J]=find(~isfinite(EPproblem.A))
-    error('LPproblem.A has infinite entries')
-end
-if any(~isfinite(LPproblem.b))
-    [I,J]=find(~isfinite(EPproblem.b))
-    error('LPproblem.b has infinite entries')
-end
-if any(~isfinite(LPproblem.c))
-    [I,J]=find(~isfinite(EPproblem.c))
-    error('LPproblem.c has infinite entries')
-end
+%too time consuming
+% if any(~isfinite(LPproblem.A),'all')
+%     [I,J]=find(~isfinite(LPproblem.A))
+%     error('LPproblem.A has infinite entries')
+% end
+% if any(~isfinite(LPproblem.b))
+%     [I,J]=find(~isfinite(LPproblem.b))
+%     error('LPproblem.b has infinite entries')
+% end
+% if any(~isfinite(LPproblem.c))
+%     [I,J]=find(~isfinite(LPproblem.c))
+%     error('LPproblem.c has infinite entries')
+% end
 
             
 % extract the problem from the structure

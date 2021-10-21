@@ -17,13 +17,10 @@ function rxnID = findRxnIDs(model, rxnList)
 if ~iscell(rxnList)
     rxnList = cellstr(rxnList);
 end
-[~,rxnID] = ismember(rxnList,model.rxns);
-
-%TODO, must be a faster way to do this
-% if length(rxnID)~=1
-%     [bool,LOCB] = ismember(model.rxns,rxnList);
-%     rxnID2 = find(bool);
-%     if length(rxnID2)~=length(rxnList)
-%         [~,rxnID2] = ismember(rxnList,model.rxns(bool));
-%     end
-% end
+try
+    [~,rxnID] = ismember(rxnList,model.rxns);
+catch
+    model.rxns = cellfun(@num2str,model.rxns,'UniformOutput',false);
+    [~,rxnID] = ismember(rxnList,model.rxns);
+    warning('Some model.rxns are double rather than char. Had to convert model.rxns to a cell array of character vectors.')
+end
