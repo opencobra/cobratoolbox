@@ -206,17 +206,28 @@ if isfield(param,'toBeUnblockedReactions') == 0
     param.toBeUnblockedReactions = zeros(nRxns,1);
 end
 
+if any(model.lb==inf)
+    error('Infinite lower bounds causing infeasibility.')
+end
 if isfield(param,'excludedReactionLB') == 0
     param.excludedReactionLB = false(nRxns,1);
 end
+%TODO properly incorporate inf bounds
+%add a large finite lower bound here
+model.lb(model.lb==-inf) = -1e6;
 %use this to override some other assignment
-excludedReactionLBTmp=param.excludedReactionLB;
+excludedReactionLBTmp=param.excludedReactionLB | model.lb==-inf;
 
+if any(model.ub==-inf)
+    error('Negative infinite upper bounds causing infeasibility.')
+end
 if isfield(param,'excludedReactionUB') == 0
     param.excludedReactionUB = false(nRxns,1);
 end
+%add a large finite upper bound here
+model.ub(model.ub==inf) = 1e6;
 %use this to override some other assignment
-excludedReactionUBTmp=param.excludedReactionUB;
+excludedReactionUBTmp=param.excludedReactionUB | model.ub==inf;
 
 if isfield(param,'excludedReactions') == 0
     param.excludedReactions = false(nRxns,1);
@@ -425,6 +436,21 @@ if FBAsolution.stat == 1 && ~any(param.toBeUnblockedReactions)
     relaxedModel=model;
     return
 else
+    
+    %too time consuming
+    if any(~isfinite(model.S),'all')
+        [I,J]=find(~isfinite(model.S))
+        error('model.S has infinite entries')
+    end
+    if any(~isfinite(model.b))
+        [I,J]=find(~isfinite(model.b))
+        error('model.b has infinite entries')
+    end
+    if any(~isfinite(model.c))
+        [I,J]=find(~isfinite(model.c))
+        error('model.c has infinite entries')
+    end
+
     solution = relaxFBA_cappedL1(model,param);
     
     % Attempt to handle numerical issues with small perturbations, less than
