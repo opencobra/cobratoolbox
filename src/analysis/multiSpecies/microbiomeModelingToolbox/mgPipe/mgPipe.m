@@ -102,15 +102,12 @@ if isempty(mapP)
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
     [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers, removeBlockedRxns);
-    
-    % Computing reaction presence
-    ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
-    writetable(cell2table(ReactionPresence),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
 
-    % Computing reaction abundance
-    ReactionAbundance = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
+    % Computing reaction abundance and reaction presence
+    [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
     writetable(cell2table(ReactionAbundance'),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
-    
+    writetable(cell2table(ReactionPresence'),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
+
     % Computing subsystem abundance
     subsystemAbundance = calculateSubsystemAbundance([resPath filesep 'ReactionAbundance.csv']);
     writetable(cell2table(subsystemAbundance),[resPath filesep 'SubsystemAbundance.csv'], 'WriteVariableNames', false);
