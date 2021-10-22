@@ -1,7 +1,7 @@
 function initCobraToolbox(updateToolbox)
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
-%     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox verson 3.1 
+%     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox verson 3.1
 %     | |     | | | | |  _  { |  _  /  |  ___  |   |
 %     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
 %     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
@@ -178,13 +178,13 @@ if ENV_VARS.printLevel
 end
 
 if installedGit
-% temporary disable ssl verification
-[status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
-
-if status_setSSLVerify ~= 0
-    fprintf(strrep(result_setSSLVerify, '\', '\\'));
-    warning('Your global git configuration could not be changed.');
-end
+    % temporary disable ssl verification
+    [status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
+    
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be changed.');
+    end
 end
 
 % check curl
@@ -192,67 +192,67 @@ end
 
 submoduleWarning=0;
 if installedGit
-% check if the URL exists
-if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
-    fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
-elseif status_curl == 0
-    if ENV_VARS.printLevel
-        fprintf(' > Initializing and updating submodules (this may take a while)...');
-    end
-    
-    % Clean the test/models folder
-    [status, result] = system('git submodule status models');
-    if status == 0 && strcmp(result(1), '-')
-        [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
-    end
-    
-    %Check for changes to submodules
-    [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git status');
-    if status_gitSubmodule==0
-        if contains(result_gitSubmodule,'modified') || contains(result_gitSubmodule,'Untracked files')
-            submoduleWarning = 1;
-            [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git stash push -u');
-            if status_gitSubmodule==0
-                fprintf('\n%s\n','***Local changes to submodules have been stashed. See https://git-scm.com/docs/git-stash.')
-                disp(result_gitSubmodule)
+    % check if the URL exists
+    if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
+        fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
+    elseif status_curl == 0
+        if ENV_VARS.printLevel
+            fprintf(' > Initializing and updating submodules (this may take a while)...');
+        end
+        
+        % Clean the test/models folder
+        [status, result] = system('git submodule status models');
+        if status == 0 && strcmp(result(1), '-')
+            [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
+        end
+        
+        %Check for changes to submodules
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git status');
+        if status_gitSubmodule==0
+            if contains(result_gitSubmodule,'modified') || contains(result_gitSubmodule,'Untracked files')
+                submoduleWarning = 1;
+                [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git stash push -u');
+                if status_gitSubmodule==0
+                    fprintf('\n%s\n','***Local changes to submodules have been stashed. See https://git-scm.com/docs/git-stash.')
+                    disp(result_gitSubmodule)
+                end
             end
         end
+        
+        % Update/initialize submodules
+        %By default your submodules repository is in a state called 'detached HEAD'.
+        %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
+        %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
+        %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
+        %[status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive');% 23/9/21 RF submodules point to master, don't pull in remote changes
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+        
+        if status_gitSubmodule ~= 0
+            fprintf(strrep(result_gitSubmodule, '\', '\\'));
+            error('The submodules could not be initialized.');
+        end
+        
+        % reset each submodule
+        %https://github.com/bazelbuild/continuous-integration/issues/727
+        %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
+        %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive "git reset --hard"'); % [opencobra/cobratoolbox] Matlab installation error (#1490)
+        %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
+        
+        %     if status_gitReset ~= 0
+        %         fprintf(strrep(result_gitReset, '\', '\\'));
+        %         warning('The submodules could not be reset.');
+        %     end
+        
+        if ENV_VARS.printLevel
+            fprintf(' Done.\n');
+        end
     end
-    
-    % Update/initialize submodules
-    %By default your submodules repository is in a state called 'detached HEAD'. 
-    %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
-    %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
-    %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
-    %[status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive');% 23/9/21 RF submodules point to master, don't pull in remote changes
-    [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
-    
-    if status_gitSubmodule ~= 0
-        fprintf(strrep(result_gitSubmodule, '\', '\\'));
-        error('The submodules could not be initialized.');
-    end
-    
-    % reset each submodule
-    %https://github.com/bazelbuild/continuous-integration/issues/727
-    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
-    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive "git reset --hard"'); % [opencobra/cobratoolbox] Matlab installation error (#1490)
-    %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
-    
-%     if status_gitReset ~= 0
-%         fprintf(strrep(result_gitReset, '\', '\\'));
-%         warning('The submodules could not be reset.');
-%     end
-    
-    if ENV_VARS.printLevel
-        fprintf(' Done.\n');
-    end
-end
-% List all files in the supplied (git tracked) Directory with their absolute path name
-% based on the git ls-file command. If the directory is not git controlled, the
-% type is assumed to be 'all' and all files (except for .git files
-% will be returned).
-%get the current content of the init Folder
-dirContent = getFilesInDir('type','all');
+    % List all files in the supplied (git tracked) Directory with their absolute path name
+    % based on the git ls-file command. If the directory is not git controlled, the
+    % type is assumed to be 'all' and all files (except for .git files
+    % will be returned).
+    %get the current content of the init Folder
+    dirContent = getFilesInDir('type','all');
 else
     %warning('Git is not installed so the submodules could not be populated.%s\n','Some of the dependencies of the cobra toolbox are not satisfied.%s\n','Trying to proceed without submodules!%s\n')
     fprintf('%s\n','Git not installed, proceeding without initialising submodules.')
@@ -691,7 +691,7 @@ function [installed, versionGit] = checkGit()
 %     versionGit:     version of git installed
 %
 
-if 1 %try to proceed as if there is no git
+if 0 %try to proceed as if there is no git
     installed = false;
     versionGit = [];
     return
