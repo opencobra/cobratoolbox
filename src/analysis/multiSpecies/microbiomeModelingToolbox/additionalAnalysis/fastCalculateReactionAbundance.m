@@ -70,9 +70,6 @@ ReactionPresenceInModels{1,1}='Strains';
 
 % prepare table for the total abundance
 ReactionAbundance = {};
-for i = 1:length(rxnsList)
-    ReactionAbundance{1, i + 1} = rxnsList{i};
-end
 for i = 2:size(abundance, 2)
     ReactionAbundance{i, 1} = abundance{1, i};
 end
@@ -86,10 +83,10 @@ if exist('numWorkers', 'var') && numWorkers > 0
 end
 
 clear abundance
+clear modelsList
 
 totalAbun={};
 parfor i = 2:size(ReactionAbundance, 1)
-    i
     % reload the file to avoid running out of memory
     abundance = readInputTableForPipeline(abundancePath);
     if isnumeric(abundance{2, 1})
@@ -112,6 +109,10 @@ parfor i = 2:size(ReactionAbundance, 1)
             end
         end
     end
+end
+
+for i = 1:length(rxnsList)
+    ReactionAbundance{1, i + 1} = rxnsList{i};
 end
 
 % collect the temporarily stored abundances to put together the table

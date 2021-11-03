@@ -30,6 +30,7 @@ constraints=cellstr(string(constraints));
 
 % apply complex medium
 model = useDiet(model,constraints);
+model=changeRxnBounds(model,'EX_o2(e)',-10,'l');
 model=changeObjective(model,'DM_atp_c_');
 FBAorg=optimizeCbModel(model,'max');
 
