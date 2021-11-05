@@ -100,8 +100,10 @@ end
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
 modelList=modelList';
-modelList(find(strcmp(modelList(:,1),'.')),:)=[];
-modelList(find(strcmp(modelList(:,1),'..')),:)=[];
+% remove everything that is not a model
+modelList(find(strcmp(modelList,'.')),:)=[];
+modelList(find(strcmp(modelList,'..')),:)=[];
+modelList(~any(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if size(modelList,1) ==0
     error('There are no models to load in the model folder!')

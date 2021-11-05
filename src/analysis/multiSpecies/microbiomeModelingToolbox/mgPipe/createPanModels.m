@@ -110,7 +110,7 @@ for i = 1:steps:size(toCreate,1)
     end
     
     modelsTmp={};
-    for j=i:i+endPnt
+    parfor j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         if strcmp(solver,'ibm_cplex')
@@ -246,7 +246,7 @@ reactionsToReplace = {
     'GNOX AND GNOXy AND GNOXuq AND GNOXmq','GNOXmq','GNOXmqi'
     'GNOX AND GNOXy AND GNOXuq AND GNOXmqi','GNOXuq','GNOXuqi'
     'SHSL1r AND SHSL2 AND SHSL4r','SHSL4r','SHSL4'
-    'AHSERL3 AND CYSS3r AND METSOXR1r AND SHSL4r','TRDRr','TRDR'
+    'AHSERL3 AND CYSS3r AND METSOXR1r AND SHSL4r AND TRDRr','TRDRr','TRDR'
     'ACACT1r AND ACACt2 AND ACACCTr AND OCOAT1r','OCOAT1r','OCOAT1'
     'ACONT AND ACONTa AND ACONTb','ACONT',[]
     'ALAt2r AND ALAt4r','ALAt2r','ALAt2'
@@ -414,6 +414,11 @@ reactionsToReplace = {
     'CITt2 AND CITt4_4','CITt4_4','CITt'
     'SUCD1 AND 5MTHFOR','5MTHFOR','5MTHFORi'
     'MLTHFTRU AND AMETRNAMT AND 5MTHCYST AND 5MTHGLUS','AMETRNAMT','AMETRNAMTi'
+    'DESAT16_3 AND FAOp_even AND FAO181Ei','DESAT16_3','DESAT16_3i'
+    'FDNADOX_Hpp AND OXONADPOR AND OOR2r','OOR2r','OOR2'
+    'NDP7 AND ADK11 AND NDPK2 AND UMPK6 AND UMPK AND US7P1PT','NDP7','NDP7i'
+    'RPI AND PNP AND NMNPH AND DRIBI AND NTRK AND RBK_Dr','RBK_Dr','RBK_D'
+    'SERAT AND CYSS3r AND TSULST AND GTHRD AND TRDRr','TRDRr','TRDR'
     };
 
 % List Western diet constraints to test if the pan-model produces

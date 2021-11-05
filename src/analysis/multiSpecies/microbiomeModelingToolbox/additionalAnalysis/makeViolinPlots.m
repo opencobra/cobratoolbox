@@ -118,6 +118,12 @@ for i=2:size(sampleData,1)
         filename=strrep(filename,'/','_');
         filename=strrep(filename,'___','_');
         filename=strrep(filename,'__','_');
+        
+        % some filenames may be too long
+        if length(filename)>25
+            filename=filename(1:25);
+        end
+        
         if ~isempty(plottedFeature)
             featName=[strrep(plottedFeature,' ','_') '_'];
         else
@@ -125,6 +131,7 @@ for i=2:size(sampleData,1)
         end
         
         if ~isempty(stratification)
+
             print([featName stratification '_' filename],'-dpng','-r300')
             print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
             % append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);

@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium,removeBlockedRxns)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -11,7 +11,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % [PART 3] Simulations under different diet regimes.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats,summary, statistics, modelsWithErrors] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, objre, saveConstrModels, figForm, numWorkers, rDiet, pDiet, includeHumanMets, lowerBMBound, repeatSim, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -25,22 +25,16 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux:     double with the desired flux through the host
 %                            biomass reaction (default: zero)
-%    objre:                  char with reaction name of objective function
-%    saveConstrModels:       boolean indicating if models with imposed
-%                            constraints are saved externally
 %    figForm:                format to use for saving figures
 %    numWorkers:             integer indicating the number of cores to use for parallelization
 %    rDiet:                  boolean indicating if to enable also rich diet simulations (default: 'false')
 %    pDiet:                  boolean indicating if to enable also personalized diet simulations (default: 'false')
+%    lowerBMBound:           lower bound on community biomass (default=0.4)
+%    upperBMBound:           upper bound on community biomass (default=1)
 %    includeHumanMets:       boolean indicating if human-derived metabolites
 %                            present in the gut should be provided to the models (default: true)
-%    lowerBMBound:           lower bound on community biomass (default=0.4)
-%    repeatSim:              boolean defining if simulations should be repeated and previous results
-%                            overwritten (default=false)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
-%    removeBlockedRxns:      Remove reactions blocked on the input diet to
-%                            reduce computation time (default=false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -58,7 +52,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % AUTHORS:
 %   - Federico Baldini, 2017-2018
 %   - Almut Heinken, 07/20: converted to function
-%   - Almut Heinken, 01/21: added option for creation of each personalized model separately
+%   - Almut Heinken, 01/21: adapted inputs
 
 %% PIPELINE: [PART 1]
 % If PART1 was already
@@ -101,16 +95,13 @@ if isempty(mapP)
     
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers, removeBlockedRxns);
-    
-    % Computing reaction presence
-    ReactionPresence=calculateReactionPresence(abunFilePath, modPath, {});
-    writetable(cell2table(ReactionPresence),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
+    [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers);
 
-    % Computing reaction abundance
-    ReactionAbundance = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
+    % Computing reaction abundance and reaction presence
+    [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
     writetable(cell2table(ReactionAbundance'),[resPath filesep 'ReactionAbundance.csv'], 'WriteVariableNames', false);
-    
+    writetable(cell2table(ReactionPresence'),[resPath filesep 'ReactionPresence.csv'], 'WriteVariableNames', false);
+
     % Computing subsystem abundance
     subsystemAbundance = calculateSubsystemAbundance([resPath filesep 'ReactionAbundance.csv']);
     writetable(cell2table(subsystemAbundance),[resPath filesep 'SubsystemAbundance.csv'], 'WriteVariableNames', false);
@@ -175,19 +166,6 @@ else
     host = {};
 end
 
-if ~isempty(host)
-    [mapP]=detectOutput(resPath,'Setup_host_allbacs.mat');
-else
-    [mapP]=detectOutput(resPath,'Setup_allbacs.mat');
-end
-
-if isempty(mapP)
-    modbuild = 1;
-else
-    modbuild = 0;
-    s= 'global setup file found: loading from resPath and skipping [PART2.1] analysis';
-    disp(s)
-end
 %end of trigger for Autoload
 
 % A  model joining all the reconstructions contained in the study
@@ -255,7 +233,7 @@ for j=1:steps:length(sampNames)
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             couplingMatrixSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-            setupModel = fastSetupCreator(exMets, modelStoragePath, microbeNamesSample, host, objre);
+            setupModel = fastSetupCreator(exMets, modelStoragePath, microbeNamesSample, host);
             
             % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);
@@ -287,15 +265,13 @@ end
 % also computed and saved in a file called "simRes".
 
 load([resPath filesep 'mapInfo.mat'])
-if computeProfiles || saveConstrModels
-    [exchanges, netProduction, netUptake, presol, inFesMat] = microbiotaModelSimulator(resPath, activeExMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, saveConstrModels, computeProfiles, includeHumanMets, lowerBMBound, repeatSim, adaptMedium);
-    % Finally, NMPCs (net maximal production capability) are computed in a metabolite
-    % resolved manner and saved in a comma delimited file in the results folder. NMPCs
-    % indicate the maximal production of each metabolite and are computing summing
-    % the maximal secretion flux with the maximal uptake flux. Similarity of metabolic
-    % profiles (using the different NMPCs as features) between individuals are also
-    % evaluated with classical multidimensional scaling.
-end
+[exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium);
+% Finally, NMPCs (net maximal production capability) are computed in a metabolite
+% resolved manner and saved in a comma delimited file in the results folder. NMPCs
+% indicate the maximal production of each metabolite and are computing summing
+% the maximal secretion flux with the maximal uptake flux. Similarity of metabolic
+% profiles (using the different NMPCs as features) between individuals are also
+% evaluated with classical multidimensional scaling.
 
 if computeProfiles
     [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sampNames, exchanges, rDiet, pDiet, infoFilePath, netProduction, netUptake, figForm);
@@ -317,9 +293,9 @@ end
 close all
 
 if ~isempty(infoFilePath)
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, numWorkers, infoFilePath);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers, infoFilePath);
 else
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, numWorkers);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers);
 end
 writetable(cell2table(modelStats),[resPath filesep 'ModelStatistics.csv'], 'WriteVariableNames', false);
 writetable(cell2table(summary),[resPath filesep 'ModelStatsSummary.csv'], 'WriteVariableNames', false);

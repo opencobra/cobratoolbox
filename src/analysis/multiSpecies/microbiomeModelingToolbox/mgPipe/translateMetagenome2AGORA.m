@@ -186,7 +186,7 @@ end
 metagenome_abundance(delArray,:)=[];
 
 % match and find overlapping IDs
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),mpsDepth,'');
+% metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),mpsDepth,'');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),' ','_');
 metagenome_abundance(2:end,1)=strcat('pan',metagenome_abundance(2:end,1));
 

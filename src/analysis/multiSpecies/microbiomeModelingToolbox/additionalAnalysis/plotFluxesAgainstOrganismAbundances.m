@@ -52,23 +52,31 @@ for i=2:size(fluxes,1)
     fluxes{i,1}=database.metabolites{find(strcmp(database.metabolites(:,1),fluxes{i,1})),2};
     data=[];
     for j=2:size(fluxes,2)
-    data(j-1,1)=str2double(fluxes{i,j});
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            data(j-1,1)=fluxes{i,j};
+        else
+            data(j-1,1)=str2double(fluxes{i,j});
+        end
     end
     if abs(sum(data(:,1)))>0.000001
-    for j=2:size(abundance,1)
-        for k=2:size(fluxes,2)
-            data(k-1,2)=str2double(abundance{j,find(strcmp(abundance(1,:),fluxes{1,k}))});
-        end
-        f=figure;
-        scatter(data(:,1),data(:,2),'b','filled','o','MarkerEdgeColor','black')
-        hold on
+        for j=2:size(abundance,1)
+            for k=2:size(fluxes,2)
+                if contains(version,'(R202') % for Matlab R2020a and newer
+                    data(k-1,2)=abundance{j,find(strcmp(abundance(1,:),fluxes{1,k}))};
+                else
+                    data(k-1,2)=str2double(abundance{j,find(strcmp(abundance(1,:),fluxes{1,k}))});
+                end
+            end
+            f=figure;
+            scatter(data(:,1),data(:,2),'b','filled','o','MarkerEdgeColor','black')
+            hold on
         h=xlabel(fluxes{i,1});
         set(h,'interpreter','none')
         orgLabel=strrep(abundance{j,1},'pan','');
         orgLabel=strrep(orgLabel,'_',' ');
         h=ylabel(orgLabel);
         set(h,'interpreter','none')
-        set(gca, 'FontSize', 9);
+        set(gca, 'FontSize', 14);
         title('Relative abundances vs. reaction fluxes (mmol*gDW-1*hr-1)')
         f.Renderer='painters';
         print([fluxes{i,1} '_' abundance{j,1}],'-dpng','-r300')

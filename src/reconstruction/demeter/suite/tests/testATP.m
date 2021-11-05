@@ -1,6 +1,8 @@
 function [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
 % Tests flux through the ATP demand reaction (DM_atp_c_) on a complex
 % medium-constrained model, both aerobic and anaerobic.
+% USAGE
+%         [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
 %
 % INPUT
 % model             COBRA model structure
