@@ -141,10 +141,14 @@ if ~parser.Results.checkSubFolders
 end
 
 [mlt,nlt]=size(files);
-if mlt > nlt
+if mlt > nlt || mlt==0
     files=files';
 end
-files = strcat(repmat({absPath}, 1, length(files)), repmat({filesep}, 1, length(files)),files);
+if isempty(files)
+    files = strcat(repmat({absPath}, 1, length(files)), repmat({filesep}, 1, length(files)));
+else
+    files = strcat(repmat({absPath}, 1, length(files)), repmat({filesep}, 1, length(files)),files);
+end
 
 %Filter according to the restriction pattern.
 if ~isempty(parser.Results.restrictToPattern)
