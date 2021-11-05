@@ -48,22 +48,14 @@ catch
         warning('No feasible solution in fluxVariability was found, using FBA instead.');
         cd(currentDir)
 
-        minFluxTmp={};
-        maxFluxTmp={};
-        parfor i=1:length(rl)
+        minFlux=[];
+        maxFlux=[];
+        for i=1:length(rl)
             modelFVA = changeObjective(model,rl{i});
             solution = optimizeCbModel(modelFVA,'min');
-            minFluxTmp{i} = solution;
+            minFlux(i,1) = solution.f;
             solution = optimizeCbModel(modelFVA,'max');
-            maxFluxTmp{i} = solution;
-        end
-        minFlux=zeros(length(rl),1);
-        maxFlux=zeros(length(rl),1);
-        for i=1:length(rl)
-            sol=minFluxTmp{i};
-            minFlux(i,1) = sol.f;
-            sol=maxFluxTmp{i};
-            maxFlux(i,1) = sol.f;
+            maxFlux(i,1) = solution.f;
         end
     end
 end
