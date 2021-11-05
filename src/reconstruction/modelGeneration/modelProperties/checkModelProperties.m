@@ -310,7 +310,7 @@ modelRev.S = model.S(metBool2,rxnBool2);
 % default lower and upper bounds are {-1000, 1000}, with epsilon getCobraSolverParams('LP', 'feasTol')*100,
 % as that is two orders of magnitude higher than the typical feasibility
 % tolerance for volation of mass balance constraints.
-fluxConsistencyBounds='aThousand';
+fluxConsistencyBounds='reconstruction';
 switch fluxConsistencyBounds
     case 'aThousand'
         %use all reactions reversible
@@ -329,14 +329,17 @@ modelRev.mets=model.mets(metBool2);
 modelRev.rxns=model.rxns(rxnBool2);
 
 if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
-    param.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
+    param.epsilon=getCobraSolverParams('LP', 'feasTol')*10;
     param.modeFlag=0;
     param.method='fastcc';
-    [fluxConsistentMetBoolTmp,fluxConsistentRxnBoolTmp,fluxInConsistentMetBoolTmp,fluxInConsistentRxnBoolTmp,modelRev] = findFluxConsistentSubset(modelRev,param,printLevel-1);
+    %[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel] = findFluxConsistentSubset(model, param, printLevel)
+    [fluxConsistentMetBoolTmp,fluxConsistentRxnBoolTmp,fluxInConsistentMetBoolTmp,fluxInConsistentRxnBoolTmp,~,~] = findFluxConsistentSubset(modelRev,param,printLevel-1);
     %build the vector the same size as the original S
     model.fluxConsistentRxnBool=false(nRxn,1);
     model.fluxConsistentRxnBool(rxnBool2,:)=fluxConsistentRxnBoolTmp;
-
+    model.fluxConsistentMetBool=false(nMet,1);
+    model.fluxConsistentRxnBool(metBool2,:)=fluxConsistentMetBoolTmp;
+    
     % %fast consistency check code from Nikos Vlassis et al
     % modeFlag=1;
     % [indFluxConsist,~,V0]=fastcc(modelRev,param.epsilon,printLevel-1,modeFlag);
@@ -359,18 +362,28 @@ if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnB
     % model.P=sparse(nMet,size(V0,2));
     % model.P(metBool2,:)=model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:);
 end
-% model.fluxConsistentRxnBool=true(nRxn,1);
 
-% metabolites exclusively involved in flux inconsistent reactions are deemed flux inconsistent also
-model.fluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),model.fluxConsistentRxnBool,'exclusive');
-
-        
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically
 %inconsistent or flux inconsistent from further consideration, but keep the
 %flux consistent exchange reactions, also eliminate scalar multiples
-metBool3=model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
 rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool;
+if 0
+    metBool3 = model.SConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+else
+    notMetBool3 = getCorrespondingRows(model.S,true(size(model.S,1),1),~rxnBool3,'exclusive');
+    metBool3 = ~notMetBool3;
+end
+
+%thermodynamically flux consistent
+[model.thermoFluxConsistentMetBool,model.thermoFluxConsistentRxnBool,~,~] = findThermoConsistentFluxSubset(model, param, ~metBool3, ~rxnBool3);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%eliminate the metabolites and reactions that are stoichiometrically
+%inconsistent or flux inconsistent or thermodynamically inconsistent from further consideration, but keep the
+%flux consistent exchange reactions, also eliminate scalar multiples
+metBool3= model.SConsistentMetBool & model.thermoFluxConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
 
 %find rows that are not all zero when a subset of reactions omitted
 A3=[F(:,rxnBool3) R(:,rxnBool3)];
@@ -381,7 +394,7 @@ A3=[F(metBool3,:); R(metBool3,:)];
 model.FRnonZeroColBool = any(A3,1)';
 
 %only report for the latest subset of rows
-if any(~model.FRnonZeroRowBool & metBool3) & printLevel>0
+if any(~model.FRnonZeroRowBool & metBool3) && printLevel>0
     fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
     for i=1:nMet
         if ~model.FRnonZeroRowBool(i) && metBool3(i)
@@ -455,6 +468,7 @@ if printLevel>0
     fprintf('\n%s\n','Diagnostics on size of boolean vectors for rows:')
     fprintf('%s%u\n','SConsistentMetBool:         ',nnz(model.SConsistentMetBool))
     fprintf('%s%u\n','fluxConsistentMetBool:      ',nnz(model.fluxConsistentMetBool))
+    fprintf('%s%u\n','thermoFluxConsistentMetBool:      ',nnz(model.thermoFluxConsistentMetBool))
     fprintf('%s%u\n','FRuniqueRowBool:               ',nnz(model.FRuniqueRowBool))
     fprintf('%s%u\n','FRnonZeroRowBool1:              ',nnz(model.FRnonZeroRowBool1))
     fprintf('%s%u\n','FRnonZeroRowBool:              ',nnz(model.FRnonZeroRowBool))
@@ -464,6 +478,7 @@ if printLevel>0
     fprintf('%s%u\n','SIntRxnBool:                 ',nnz(model.SIntRxnBool))
     fprintf('%s%u\n','SConsistentRxnBool:          ',nnz(model.SConsistentRxnBool))
     fprintf('%s%u\n','fluxConsistentRxnBool:       ',nnz(model.fluxConsistentRxnBool))
+    fprintf('%s%u\n','thermoFluxConsistentRxnBool:       ',nnz(model.thermoFluxConsistentRxnBool))
     fprintf('%s%u\n','FRuniqueColBool:               ',nnz(model.FRuniqueColBool))
     fprintf('%s%u\n','FRnonZeroColBool1:              ',nnz(model.FRnonZeroColBool1))
     fprintf('%s%u\n','FRnonZeroColBool:              ',nnz(model.FRnonZeroColBool))
@@ -474,7 +489,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %only use rows that are nonzero, unique upto positive scaling, part of
 %the maximal conservation vector, and part of the largest component
-selection='c';
+selection='e';
 switch selection
     case 'a'
         model.FRrows = model.SConsistentMetBool...
@@ -513,6 +528,18 @@ switch selection
             & model.FRuniqueRowBool;
         model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
             & model.fluxConsistentRxnBool;
+    case 'e'
+        model.FRrows = model.SConsistentMetBool...
+            & model.fluxConsistentMetBool...
+            & model.thermoFluxConsistentMetBool...
+            & model.FRnonZeroRowBool1...
+            & model.FRnonZeroRowBool...
+            & model.FRuniqueRowBool;
+        model.FRVcols = (model.SConsistentRxnBool | ~model.SIntRxnBool)...
+            & model.fluxConsistentRxnBool...
+            & model.thermoFluxConsistentRxnBool...
+            & model.FRuniqueColBool...
+            & model.FRnonZeroColBool;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -541,21 +568,22 @@ Rc = R(model.FRrows,model.FRVcols);
 % toc
 % %pause(eps)
 
-% check rank of bilinear version
-[A,B,C]=bilinearDecomposition(Fr-Rr);
-%forward and reverse half stoichiometric matrices
-Frb        =   -B;
-Frb(Frb<0)  =    0;
-Rrb        =    B;
-Rrb(Rrb<0)  =    0;
-
-%rank of [F R]
-[rankBilinearFrRr,bilinearFrRrp,bilinearFrRrq] = getRankLUSOL([Frb Rrb]);
-model.Frb=Frb;
-model.Rrb=Rrb;
-model.rankBilinearFrRr=rankBilinearFrRr;
-%pause(eps)
-
+if 0
+    % check rank of bilinear version
+    [A,B,C]=bilinearDecomposition(Fr-Rr);
+    %forward and reverse half stoichiometric matrices
+    Frb        =   -B;
+    Frb(Frb<0)  =    0;
+    Rrb        =    B;
+    Rrb(Rrb<0)  =    0;
+    
+    %rank of [F R]
+    [rankBilinearFrRr,bilinearFrRrp,bilinearFrRrq] = getRankLUSOL([Frb Rrb]);
+    model.Frb=Frb;
+    model.Rrb=Rrb;
+    model.rankBilinearFrRr=rankBilinearFrRr;
+    %pause(eps)
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -12,6 +12,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %                                     * .S - `m` x `n` stoichiometric matrix
 %
 % OPTIONAL INPUT:
+%    model.SIntRxnBool              n x 1 boolean of reactions heuristically though to be mass balanced
 %    massBalanceCheck:              {0, (1)} mass and charge balance can be checked by looking at formulas
 %                                     * 0 = heuristic detection of exchange reactions (using
 %                                     `findSExRxnInd`) will be use to warm start algorithmic part
