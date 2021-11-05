@@ -284,14 +284,18 @@ for n=1:nRxn
     if nnz(B(:,n))>3
         error('too many entries in B(:,n)')
     end
-    % disp(n)
-    % disp(size(S))
-    % disp(size(A))
-    % disp(size(B))
-    % disp(size(C))
-
-    %check decomposition of this reaction
-    decompositionCheck=sum(abs(S(:,n)-sparse(A*B*C(:,n))),1);
+    
+    try
+        %check decomposition of this reaction
+        decompositionCheck=sum(abs(S(:,n)-sparse(A*B*C(:,n))),1);
+    catch ME
+        disp(n)
+        disp(size(S))
+        disp(size(A))
+        disp(size(B))
+        disp(size(C))
+        rethrow(ME)
+    end
     if any(decompositionCheck)
         disp(n)
         disp(sparse(B(:,n)))

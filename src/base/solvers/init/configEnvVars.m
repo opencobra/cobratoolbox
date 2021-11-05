@@ -285,7 +285,7 @@ function subDir = generateSolverSubDirectory(solverName)
     subDir = '';
 
     % GUROBI path
-    if ~isempty(strfind(solverName, 'gurobi'))
+    if contains(solverName, 'gurobi')
         if ispc
             osPath = 'win64';
         elseif ismac
@@ -295,13 +295,13 @@ function subDir = generateSolverSubDirectory(solverName)
         end
 
         % check for 64-bit
-        if ~isempty(strfind(computer('arch'), '64'))
+        if contains(computer('arch'), '64')
             subDir = [filesep, osPath, filesep, 'matlab'];
         end
     end
 
     % ILOG CPLEX path
-    if ~isempty(strfind(solverName, 'ibm_cplex')) || ~isempty(strfind(solverName, 'CPLEX_Studio'))
+    if contains(solverName, 'ibm_cplex') || contains(solverName, 'CPLEX_Studio')
         if ispc
             osPath = 'x64_win64';
         elseif ismac
@@ -311,7 +311,7 @@ function subDir = generateSolverSubDirectory(solverName)
         end
 
         % check for 64-bit
-        if ~isempty(strfind(computer('arch'), '64'))
+        if contains(computer('arch'), '64')
             subDir = [filesep, 'cplex', filesep, 'matlab', filesep, osPath];
         end
     end

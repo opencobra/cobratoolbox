@@ -20,8 +20,8 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %    validationLevel:      how much validation to use
 %
 %                           *   `-1`: assign only the global variable. Do not assign any path.
-%                           *   `0`: adjust solver paths but don't validate the solver (default)
-%                           *   `1`: validate but remove outputs
+%                           *   `0`: adjust solver paths but don't validate the solver
+%                           *   `1`: validate but remove outputs  (default)
 %                           *   `2`: validate and keep any outputs
 %
 % OUTPUT:
@@ -198,7 +198,7 @@ if ~exist('unchecked' , 'var')
 end
 
 if ~exist('validationLevel' , 'var')
-    validationLevel = 0;
+    validationLevel = 1;
 end
 
 solverInstalled = true;
@@ -236,7 +236,7 @@ end
 %actually set i.e. initCobraToolbox is called before. This is only
 %necessary, if the solver is being validated.
 if validationLevel == 1
-    origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false);
+    origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false); %TODO sometimes this takes far too long, why?
     finish = onCleanup(@() removeTempFiles(pwd, origFiles,'checkSubFolders',false));
 end
 % configure the environment variables
@@ -355,7 +355,7 @@ end
 
 % check if the given solver is able to solve the given problem type.
 solverOK = false;
-if isempty(strmatch(solverType, OPT_PROB_TYPES))
+if ~contains(solverType, OPT_PROB_TYPES)
     %This is not done during init, so at this point, the solver is already
     %checked for installation
     solverInstalled = SOLVERS.(solverName).installed;
@@ -367,7 +367,7 @@ if isempty(strmatch(solverType, OPT_PROB_TYPES))
 end
 
 % check if the given solver is able to solve the given problem type.
-if isempty(strmatch(solverType, SOLVERS.(solverName).type))
+if ~contains(solverType, SOLVERS.(solverName).type)
     %This is not done during init, so at this point, the solver is already
     %checked for installation
     solverInstalled = SOLVERS.(solverName).installed;
@@ -378,15 +378,17 @@ if isempty(strmatch(solverType, SOLVERS.(solverName).type))
     end
 end
 
+
+
 % add the solver path for GUROBI, MOSEK or CPLEX
-if (contains(solverName, 'tomlab_cplex') || ~isempty(strfind(solverName, 'cplex_direct'))) && ~isempty(TOMLAB_PATH)
+if contains(solverName, 'tomlab_cplex') || contains(solverName, 'cplex_direct') && ~isempty(TOMLAB_PATH)
     TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
     installDir = strrep(TOMLAB_PATH, '\\', '\');
     addSolverDir(installDir, printLevel, 'Tomlab', 'TOMLAB_PATH', TOMLAB_PATH, true);
 end
 
 % add the matlab path (in case someone had the great idea to overwrite the MATLAB path).
-if (~isempty(strfind(solverName, 'matlab')))
+if contains(solverName, 'matlab')
     FMINCON_PATH = [matlabroot filesep 'toolbox' filesep 'shared' filesep 'optimlib'];
     addSolverDir(FMINCON_PATH, printLevel, 'matlab', 'FMINCON_PATH', FMINCON_PATH, true);
     LINPROG_PATH = [matlabroot filesep 'toolbox' filesep 'optim' ];
@@ -394,7 +396,7 @@ if (~isempty(strfind(solverName, 'matlab')))
 end
 
 % add the pdco submodule path (especially important if TOMLAB_PATH is set)
-if ~isempty(strfind(solverName, 'pdco'))
+if contains(solverName, 'pdco')
     PDCO_PATH = [CBTDIR filesep 'external' filesep 'base' filesep 'solvers' filesep 'pdco'];
     addSolverDir(PDCO_PATH, printLevel, 'pdco', 'PDCO_PATH', PDCO_PATH, true);
 end
@@ -410,6 +412,7 @@ if  contains(solverName, 'ibm_cplex') && ~isempty(ILOG_CPLEX_PATH)
     % add the solver path
     ILOG_CPLEX_PATH = strrep(ILOG_CPLEX_PATH, '~', getenv('HOME'));
     installDir = strrep(ILOG_CPLEX_PATH, '\\', '\');
+   %addSolverDir(installDir, printLevel, capsName, varName, globaVarPath, subFolders)
     addSolverDir(installDir, printLevel, 'IBM ILOG CPLEX', 'ILOG_CPLEX_PATH', ILOG_CPLEX_PATH, false);
 end
 
@@ -445,12 +448,16 @@ if compatibleStatus == 1 || compatibleStatus == 2
         case {'tomlab_cplex', 'tomlab_snopt', 'cplex_direct'}
             solverOK = checkSolverInstallationFile(solverName, 'tomRun', printLevel);
         case {'ibm_cplex','cplexlp'}
+            if isempty(which('Cplex'))
+                warning('Cplex is not on the MATLAB path. Complete the installation as specified here: https://opencobra.github.io/cobratoolbox/stable/installation.html#ibm-ilog-cplex')
+                solverOK = false;
+            end
             try
-               prob.f = 1;
-               prob.Aineq = 1;
-               prob.bineq = 10;
-               prob.ub    = 5;
-               cplex = Cplex(prob);
+                prob.f = 1;
+                prob.Aineq = 1;
+                prob.bineq = 10;
+                prob.ub    = 5;
+                cplex = Cplex(prob);
                 ILOGcplex = Cplex('fba');  % Initialize the CPLEX object
                 solverOK = true;
             catch ME
