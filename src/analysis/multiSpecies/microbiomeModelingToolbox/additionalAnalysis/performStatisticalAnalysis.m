@@ -174,7 +174,7 @@ database=loadVMHDatabase;
 
 for i=2:size(Statistics,1)
     feat=Statistics{i,1};
-    if contains(feat,'[fe]')
+    if ~any(~contains(Statistics(:,1),'[fe]'))
         feat=strrep(feat,'EX_','');
         feat=strrep(feat,'[fe]','');
     end

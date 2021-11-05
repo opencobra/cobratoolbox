@@ -110,7 +110,7 @@ for i = 1:steps:size(toCreate,1)
     end
     
     modelsTmp={};
-    for j=i:i+endPnt
+    parfor j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         if strcmp(solver,'ibm_cplex')
