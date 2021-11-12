@@ -1,0 +1,8 @@
+#Rxn;rxnAbbr;imbalance;equation
+350;2DGULRy;196 H, 110 C, 39 O, 2 P, 2 N;2dhguln[c] + h[c] + nadph[c]  -> lipa[c] + idon__L[c] + nadp[c] 
+   23	     2dhguln[c]	-1	C6H9O7
+  882	           h[c]	-1	H
+  952	        lipa[c]	1	C110H196N2O39P2
+ 1032	     idon__L[c]	1	C6H11O7
+ 1281	        nadp[c]	1	C21H25N7O17P3
+ 1282	       nadph[c]	-1	C21H26N7O17P3

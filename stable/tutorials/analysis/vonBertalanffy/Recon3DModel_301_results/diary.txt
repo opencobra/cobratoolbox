@@ -1,0 +1,1441 @@
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Exception in thread "AWT-EventQueue-0": com.jogamp.nativewindow.NativeWindowException: X11Util.Display: Unable to create a display(:0) connection. Thread AWT-EventQueue-0
+	at jogamp.nativewindow.x11.X11Util.openDisplay(X11Util.java:453)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createMutableSurfaceImpl(X11GLXDrawableFactory.java:519)
+	at jogamp.opengl.x11.glx.X11GLXDrawableFactory.createSurfacelessImpl(X11GLXDrawableFactory.java:542)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenDrawable(GLDrawableFactoryImpl.java:417)
+	at jogamp.opengl.GLDrawableFactoryImpl.createOffscreenAutoDrawable(GLDrawableFactoryImpl.java:365)
+	at com.mathworks.hg.peer.GLCanvasPeerFactory.createHGCanvasPeer(GLCanvasPeerFactory.java:65)
+	at com.mathworks.hg.peer.GraphicsPeer.createJOGLCanvas(GraphicsPeer.java:96)
+	at com.mathworks.hg.peer.GraphicsPeer.doCreateCanvas(GraphicsPeer.java:119)
+	at com.mathworks.hg.peer.GraphicsPeer.access$100(GraphicsPeer.java:16)
+	at com.mathworks.hg.peer.GraphicsPeer$1.run(GraphicsPeer.java:174)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+YX = full(Y(xi,:));
+YX = full(Y(xi,:));
+length(dX)
+
+ans =
+
+        3666
+
+s=combinedModel.S(1:5,1:5)
+
+s =
+
+   (1,1)       -1
+   (3,1)       -1
+   (4,1)        1
+   (1,2)       -1
+
+s=full(combinedModel.S(1:5,1:5))
+
+s =
+
+    -1    -1     0     0     0
+     0     0     0     0     0
+    -1     0     0     0     0
+     1     0     0     0     0
+     0     0     0     0     0
+
+s*S'
+{Unrecognized function or variable 'S'.
+} 
+s*s'
+
+ans =
+
+     2     0     1    -1     0
+     0     0     0     0     0
+     1     0     1    -1     0
+    -1     0    -1     1     0
+     0     0     0     0     0
+
+any(dX==0)
+
+ans =
+
+  <a href="matlab:helpPopup sparse" style="font-weight:bold">sparse</a> <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a>
+
+   (1,1)      1
+
+nnz(dX==0)
+
+ans =
+
+        2998
+
+[Warning: Negative limits ignored] 
+[Warning: Negative limits ignored] 
+combinedModel
+
+combinedModel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                        S: [3666×4129 double]
+                     mets: {3666×1 cell}
+                    inchi: [1×1 struct]
+                inchiBool: [3666×1 logical]
+    groupDecomposableBool: [3666×1 logical]
+          trainingMetBool: [3666×1 logical]
+              testMetBool: [3666×1 logical]
+                     rxns: {4129×1 cell}
+                     DrG0: [4129×1 double]
+                        T: [4129×1 double]
+                       pH: [4129×1 double]
+                      pMg: [4129×1 double]
+                        I: [4129×1 double]
+                        G: [3666×5189 double]
+                   groups: {5189×1 cell}
+    test2CombinedModelMap: [5835×1 double]
+
+testS(combinedModel.test2CombinedModelMap,:) = model.S;
+spy(testS)
+clear
+createModels
+Generating test models ...
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+The test models have been generated
+{Unrecognized function or variable 'Model'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('createModels', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m', 288)" style="font-weight:bold">createModels</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',288,0)">line 288</a>)
+    model = Model;
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',288,0)
+createModels
+Generating test models ...
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+cd(workingDirectory)
+if system_dependent('IsDebugMode')==1, dbquit; end
+createModels
+{<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',194,126)">File: createModels.m Line: 194 Column: 126</a>
+Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for mismatched delimiters.
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',194,126)
+createModels
+Generating test models ...
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',115,1)">115 </a>                                        initialDataXomics = [resultsDir 'initialDataXomics_' metabolomicData{secondGruoup} '.mat'];
+if system_dependent('IsDebugMode')==1, dbcont; end
+Diary written to:
+~/work/sbgCloud/programExperimental/projects/xomics/results/iDN1/gurobi_inputData_deleteModelGenes_transcriptomicsT0_mediaBBRelaxed_closedIons_thermoKernel_noBPL_inactiveGenesT_limit10k/20210520T142135_rfleming_diary.txt
+{Unrecognized function or variable 'specificData'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('createModels', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m', 218)" style="font-weight:bold">createModels</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',218,0)">line 218</a>)
+                                        specificData_All = specificData;
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/createModels.m',218,0)
+createModels
+Generating test models ...
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+
+ > changeCobraSolver: Gurobi interface added to MATLAB path.
+ > gurobi (version 911) is compatible and fully tested with MATLAB R2021a on your operating system.
+Diary written to:
+~/work/sbgCloud/programExperimental/projects/xomics/results/iDN1/gurobi_inputData_deleteModelGenes_transcriptomicsT0_mediaBBRelaxed_closedIons_thermoKernel_noBPL_inactiveGenesT_limit10k/20210520T142303_rfleming_diary.txt
+spy(combinedModel.S)
+model
+
+model = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                       S: [5835×10600 double]
+                    mets: {5835×1 cell}
+                       b: [5835×1 double]
+                  csense: [5835×1 char]
+                    rxns: {10600×1 cell}
+                      lb: [10600×1 double]
+                      ub: [10600×1 double]
+                       c: [10600×1 double]
+               osenseStr: 'max'
+                   genes: {2248×1 cell}
+                   rules: {10600×1 cell}
+              metCharges: [5835×1 int64]
+             metFormulas: {5835×1 cell}
+               metSmiles: {5835×1 cell}
+                metNames: {5835×1 cell}
+               metHMDBID: {5835×1 cell}
+          metInChIString: {5835×1 cell}
+               metKEGGID: {5835×1 cell}
+            metPubChemID: {5835×1 cell}
+                 grRules: {10600×1 cell}
+              rxnGeneMat: [10600×2248 double]
+     rxnConfidenceScores: [10600×1 double]
+                rxnNames: {10600×1 cell}
+                rxnNotes: {10600×1 cell}
+            rxnECNumbers: {10600×1 cell}
+           rxnReferences: {10600×1 cell}
+               rxnKEGGID: {10600×1 cell}
+              subSystems: {10600×1 cell}
+             description: 'Recon3DModel_301.mat'
+                 modelID: 'Recon3DModel'
+              PleaseCite: 'Brunk et al, Nat Biotech, 2018; doi:10.1038/nbt.4072'
+              metCHEBIID: {5835×1 cell}
+                metPdMap: {5835×1 cell}
+             metReconMap: {5835×1 cell}
+                  rxnCOG: {10600×1 cell}
+        rxnKeggOrthology: {10600×1 cell}
+             rxnReconMap: {10600×1 cell}
+                 version: 'Recon3D_01'
+                 concMin: [5835×1 double]
+                 concMax: [5835×1 double]
+         metCompartments: {5835×1 cell}
+                       T: 310.1500
+            compartments: {9×1 cell}
+                      ph: [9×1 double]
+                      is: [9×1 double]
+                     chi: [9×1 double]
+         confidenceLevel: -1
+                 molBool: [5835×1 logical]
+                   inchi: [1×1 struct]
+               inchiBool: [5835×1 logical]
+      compositeInchiBool: [5835×1 logical]
+           pseudoisomers: [5835×1 struct]
+          biomassRxnAbbr: 'biomass_maintenance'
+             biomassBool: [10600×1 logical]
+             ExchRxnBool: [10600×1 logical]
+               DMRxnBool: [10600×1 logical]
+             SinkRxnBool: [10600×1 logical]
+             SIntRxnBool: [10600×1 logical]
+             SIntMetBool: [5835×1 logical]
+          SOnlyExMetBool: [5835×1 logical]
+         SOnlyIntMetBool: [5835×1 logical]
+              SExMetBool: [5835×1 logical]
+         balancedRxnBool: [10600×1 logical]
+         balancedMetBool: [5835×1 logical]
+                Elements: {'H'  'C'  'O'  'P'  'S'  'N'  'Mg'  'X'  'Fe'  'Zn'  'Co'  'Ca'  'Y'  'I'  'Na'  'Cl'  'K'  'R'  'FULLR'}
+     missingFormulaeBool: [5835×1 logical]
+                    DfG0: [5835×1 double]
+        DfG0_Uncertainty: [5835×1 double]
+    unconstrainedDfG0_cc: [5835×1 logical]
+                    DrG0: [10600×1 double]
+        transportRxnBool: [10600×1 logical]
+             DfG0_cc_cov: [5835×5835 double]
+             DrG0_cc_cov: [10600×10600 double]
+        DrG0_Uncertainty: [10600×1 double]
+    unconstrainedDrG0_cc: [10600×1 logical]
+
+combinedModel
+
+combinedModel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                        S: [3666×4129 double]
+                     mets: {3666×1 cell}
+                    inchi: [1×1 struct]
+                inchiBool: [3666×1 logical]
+    groupDecomposableBool: [3666×1 logical]
+          trainingMetBool: [3666×1 logical]
+              testMetBool: [3666×1 logical]
+                     rxns: {4129×1 cell}
+                     DrG0: [4129×1 double]
+                        T: [4129×1 double]
+                       pH: [4129×1 double]
+                      pMg: [4129×1 double]
+                        I: [4129×1 double]
+                        G: [3666×5189 double]
+                   groups: {5189×1 cell}
+    test2CombinedModelMap: [5835×1 double]
+
+combinedModel
+
+combinedModel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                        S: [3666×4129 double]
+                     mets: {3666×1 cell}
+                    inchi: [1×1 struct]
+                inchiBool: [3666×1 logical]
+    groupDecomposableBool: [3666×1 logical]
+          trainingMetBool: [3666×1 logical]
+              testMetBool: [3666×1 logical]
+                     rxns: {4129×1 cell}
+                     DrG0: [4129×1 double]
+                        T: [4129×1 double]
+                       pH: [4129×1 double]
+                      pMg: [4129×1 double]
+                        I: [4129×1 double]
+                        G: [3666×5189 double]
+                   groups: {5189×1 cell}
+    test2CombinedModelMap: [5835×1 double]
+
+cd(inputFolder)
+BBFmodel
+
+BBFmodel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                                   S: [5609×10093 double]
+                                mets: {5609×1 cell}
+                                   b: [5609×1 double]
+                              csense: [5609×1 char]
+                                rxns: {10093×1 cell}
+                                  lb: [10093×1 double]
+                                  ub: [10093×1 double]
+                                   c: [10093×1 double]
+                           osenseStr: 'max'
+                               genes: {2248×1 cell}
+                               rules: {10093×1 cell}
+                          metCharges: [5609×1 int64]
+                         metFormulas: {5609×1 cell}
+                           metSmiles: {5609×1 cell}
+                            metNames: {5609×1 cell}
+                           metHMDBID: {5609×1 cell}
+                      metInChIString: {5609×1 cell}
+                           metKEGGID: {5609×1 cell}
+                        metPubChemID: {5609×1 cell}
+                             grRules: {10093×1 cell}
+                          rxnGeneMat: [10093×2248 double]
+                 rxnConfidenceScores: [10093×1 double]
+                            rxnNames: {10093×1 cell}
+                            rxnNotes: {10093×1 cell}
+                        rxnECNumbers: {10093×1 cell}
+                       rxnReferences: {10093×1 cell}
+                           rxnKEGGID: {10093×1 cell}
+                          subSystems: {10093×1 cell}
+                         description: 'Recon3DModel_301_thermoFeas_BBF.mat'
+                             modelID: 'Recon3DModel'
+                           DMRxnBool: [10093×1 logical]
+                                DfG0: [5609×1 double]
+                    DfG0_Uncertainty: [5609×1 double]
+                  DfG0_pseudoisomers: []
+                               DfGt0: [5609×1 double]
+                            DfGt0Max: [5609×1 double]
+                            DfGt0Min: [5609×1 double]
+                             DfGtMax: [5609×1 double]
+                            DfGtMean: [5609×1 double]
+                             DfGtMin: [5609×1 double]
+                               DfHt0: [5609×1 double]
+                                DrG0: [10093×1 double]
+                               DrGt0: [10093×1 double]
+                            DrGt0Max: [10093×1 double]
+                            DrGt0Min: [10093×1 double]
+                   DrGt0_Uncertainty: [10093×1 double]
+                             DrGtMax: [10093×1 double]
+                            DrGtMean: [10093×1 double]
+                             DrGtMin: [10093×1 double]
+                            Elements: {1×20 cell}
+                         ExchRxnBool: [10093×1 logical]
+                          PleaseCite: 'Brunk et al, Nat Biotech, 2018; doi:10.1038/nbt.4072'
+                  SConsistentMetBool: [5609×1 logical]
+                  SConsistentRxnBool: [10093×1 logical]
+                          SExMetBool: [5609×1 logical]
+                SInConsistentMetBool: [5609×1 logical]
+                SInConsistentRxnBool: [10093×1 logical]
+                         SIntMetBool: [5609×1 logical]
+                         SIntRxnBool: [10093×1 logical]
+                      SOnlyExMetBool: [5609×1 logical]
+                     SOnlyIntMetBool: [5609×1 logical]
+                         SinkRxnBool: [10093×1 logical]
+                                   T: 310.1500
+                              alpha1: 0
+                           aveHbound: [5609×1 double]
+                               aveZi: [5609×1 double]
+                     balancedMetBool: [5609×1 logical]
+                     balancedRxnBool: [10093×1 logical]
+                                beta: 1
+                         biomassBool: [10093×1 logical]
+                      biomassRxnAbbr: 'biomass_maintenance'
+                                 chi: [9×1 double]
+                        compartments: {9×1 cell}
+                             concMax: [5609×1 double]
+                             concMin: [5609×1 double]
+                     confidenceLevel: 0.9500
+                                covf: [5609×5609 double]
+                              delta0: 1
+                              delta1: 0
+                      expressionRxns: [10093×1 double]
+                    expressionRxnsEZ: [10093×1 double]
+                    expressionRxnsOZ: [10093×1 double]
+               fluxConsistentMetBool: [5609×1 logical]
+               fluxConsistentRxnBool: [10093×1 logical]
+             fluxInConsistentMetBool: [5609×1 logical]
+             fluxInConsistentRxnBool: [10093×1 logical]
+                                  g0: [10093×1 double]
+                         gasConstant: 0.0083
+                               inchi: [1×1 struct]
+                                  is: [9×1 double]
+                  lbpreSinkDemandOff: [10093×1 double]
+                  meanExpressionRxns: 2.7367
+                          metCHEBIID: {5609×1 cell}
+                     metCompartments: {5609×1 cell}
+                            metPdMap: {5609×1 cell}
+                         metReconMap: {5609×1 cell}
+    metUnknownInconsistentRemoveBool: [5609×1 logical]
+                 missingFormulaeBool: [5609×1 logical]
+                                  ph: [9×1 double]
+                       pseudoisomers: [5609×1 struct]
+                              rxnCOG: {10093×1 cell}
+                    rxnKeggOrthology: {10093×1 cell}
+                         rxnReconMap: {10093×1 cell}
+    rxnUnknownInconsistentRemoveBool: [10093×1 logical]
+         thermoFluxConsistentMetBool: [5609×1 logical]
+         thermoFluxConsistentRxnBool: [10093×1 logical]
+                    transportRxnBool: [10093×1 logical]
+                  ubpreSinkDemandOff: [10093×1 double]
+          unknownSConsistencyMetBool: [5609×1 logical]
+          unknownSConsistencyRxnBool: [10093×1 logical]
+                             version: 'Recon3D_01'
+                             bondsBF: [10093×1 double]
+                              bondsE: [10093×1 double]
+                             meanBBF: 3.4886
+                              meanBE: 24.6568
+
+clear
+cd ~/work/sbgCloud/programReconstruction/projects/exoMetDN/results/codeResults/iDN1/iDopaNeuro1Core/
+load('iDopaNeuro1.mat')
+load('accuracy.mat')
+driver_plotExperimentalvsPredictedUptakeSecretion
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('driver_plotExperimentalvsPredictedUptakeSecretion', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m', 191)" style="font-weight:bold">driver_plotExperimentalvsPredictedUptakeSecretion</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',191,0)">line 191</a>)
+Unrecognized table variable name 'data'.
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',191,0)
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',191,0)
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',191,0)
+driver_plotExperimentalvsPredictedUptakeSecretion
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('driver_plotExperimentalvsPredictedUptakeSecretion', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m', 236)" style="font-weight:bold">driver_plotExperimentalvsPredictedUptakeSecretion</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',236,0)">line 236</a>)
+Unrecognized table variable name 'data'.
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',236,0)
+driver_plotExperimentalvsPredictedUptakeSecretion
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('xlim', '/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m', 31)" style="font-weight:bold">xlim</a> (<a href="matlab: opentoline('/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m',31,0)">line 31</a>)
+Limits must be a 2-element vector of increasing numeric values.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('driver_plotExperimentalvsPredictedUptakeSecretion', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m', 252)" style="font-weight:bold">driver_plotExperimentalvsPredictedUptakeSecretion</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',252,0)">line 252</a>)
+            xlim([min([v;v2]) max([v;v2])])
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',252,0)
+clear
+load('accuracy_gurobi.mat')
+modelMultipleObjectives
+{Not enough input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('modelMultipleObjectives', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/functions/modelMultipleObjectives.m', 133)" style="font-weight:bold">modelMultipleObjectives</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/functions/modelMultipleObjectives.m',133,0)">line 133</a>)
+if isfield(model, 'g0')
+} 
+driver_plotExperimentalvsPredictedUptakeSecretion
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('xlim', '/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m', 31)" style="font-weight:bold">xlim</a> (<a href="matlab: opentoline('/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m',31,0)">line 31</a>)
+Limits must be a 2-element vector of increasing numeric values.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('driver_plotExperimentalvsPredictedUptakeSecretion', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m', 252)" style="font-weight:bold">driver_plotExperimentalvsPredictedUptakeSecretion</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',252,0)">line 252</a>)
+            xlim([min([v;v2]) max([v;v2])])
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',252,0)
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',252,1)">252 </a>            xlim([min([v;v2]) max([v;v2])])
+if system_dependent('IsDebugMode')==1, dbquit; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbcont; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbcont; end
+comparisonData.comparisonStats = sortrows(comparisonData.comparisonStats,'wEuclidNorm','ascend');
+comparisonData.comparisonStats = sortrows(comparisonData.comparisonStats,'accuracy','descend');
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+K = table(v,v2,exoMet.labels,x);
+logmod(0.2218,10)
+
+ans =
+
+    0.0870
+
+logmod(0.1743,10)
+
+ans =
+
+    0.0698
+
+log10(1+abs(0.1743))
+
+ans =
+
+    0.0698
+
+
+[LIA,LOCB] = ismember(predictedExchange.rxnID,exoMet.rxnID);
+        exoMet.v=ones(length(exoMet.x,1))*NaN;
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('length')" style="font-weight:bold">length</a>
+Too many input arguments.
+} 
+exoMet.v=ones(length(exoMet.x),1))*NaN;
+ exoMet.v=ones(length(exoMet.x),1))*NaN;
+                                  ↑
+{Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for mismatched delimiters.
+} 
+exoMet.v=ones(length(exoMet.x),1)*NaN;
+        exoMet.v(LOCB(LIA)) = predictedExchange.v(LIA);
+K = table(v,v2,exoMet.labels,x,exoMet.v);
+[LIA,LOCB] = ismember(predictedExchange.rxnID,exoMet.rxnID);
+        exoMet.rxnID2(LOCB(LIA)) =  predictedExchange.rxnID(LIA);
+fullReportBool = strcmp(fullReport.objective,objective) & (strcmp(fullReport.model,'modelSec') | strcmp(fullReport.model,'modelUpt'));
+        predictedExchange.rxnID = fullReport.rxnID(fullReportBool);
+        predictedExchange.v = fullReport.v(fullReportBool);
+        
+        [LIA,LOCB] = ismember(predictedExchange.rxnID,exoMet.rxnID);
+        exoMet.rxnID2(LOCB(LIA)) =  predictedExchange.rxnID(LIA);
+        exoMet.v=ones(length(exoMet.x),1)*NaN;
+        exoMet.v(LOCB(LIA)) = predictedExchange.v(LIA);
+fullReportBool = strcmp(fullReport.objective,objective) & (strcmp(fullReport.model,'modelSec') | strcmp(fullReport.model,'modelUpt'));
+        predictedExchange.rxnID = fullReport.rxnID(fullReportBool);
+        predictedExchange.vPredict = fullReport.v(fullReportBool);
+[LIA,LOCB] = ismember(predictedExchange.rxnID,exoMet.rxnID);
+        exoMet.rxnID2(LOCB(LIA)) =  predictedExchange.rxnID(LIA);
+        exoMet.vPredict=ones(length(exoMet.x),1)*NaN;
+        exoMet.vPredict(LOCB(LIA)) = logmod(predictedExchange.v(LIA),10);
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',207,1)">207 </a>        [~,predictedExLOCB] = ismember(exoMet.rxnID,predictedExchange.rxnID);
+if system_dependent('IsDebugMode')==1, dbcont; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',245,1)">245 </a>        hold on
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',260,1)">260 </a>            plot(v2,1:nnz(predictedExLOCB2),'pk')
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',261,1)">261 </a>            title(['Comparison of \color{blue}measured \color{black}and \color{red}predicted \color{black}net exchange reaction rates. \color{red}(Objective ' objective ') \color{green}(Objective ' comparisonObjective ')'])
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit all; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('xlim', '/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m', 31)" style="font-weight:bold">xlim</a> (<a href="matlab: opentoline('/usr/local/bin/MATLAB/R2021a/toolbox/matlab/graph3d/xlim.m',31,0)">line 31</a>)
+Limits must be a 2-element vector of increasing numeric values.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('driver_plotExperimentalvsPredictedUptakeSecretion', '/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m', 264)" style="font-weight:bold">driver_plotExperimentalvsPredictedUptakeSecretion</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',264,0)">line 264</a>)
+            xlim([min_v max_v])
+} 
+opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',264,0)
+max_v
+
+max_v =
+
+   -0.3835
+
+min_v
+
+min_v =
+
+   -0.3835
+
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',260,1)">260 </a>        if ~isempty(comparisonObjective)                   
+if system_dependent('IsDebugMode')==1, dbcont; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',260,1)">260 </a>        if ~isempty(comparisonObjective)                   
+if system_dependent('IsDebugMode')==1, dbcont; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+driver_plotExperimentalvsPredictedUptakeSecretion
+spearman = corr(x(isfinite(v)),v(isfinite(v),'Type','Spearman')
+ spearman = corr(x(isfinite(v)),v(isfinite(v),'Type','Spearman')
+                                                                ↑
+{Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for mismatched delimiters.
+} 
+spearman = corr(x(isfinite(v)),v(isfinite(v),'Type','Spearman'))
+{Index in position 2 exceeds array bounds (must not exceed 1).
+} 
+size(x)
+
+ans =
+
+    78     1
+
+size(v)
+
+ans =
+
+    78     1
+
+isfinite(v)
+
+ans =
+
+  78×1 <a href="matlab:helpPopup logical" style="font-weight:bold">logical</a> array
+
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   0
+   0
+   1
+   1
+   1
+   0
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   0
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+   1
+
+spearman = corr(x(isfinite(v)),v(isfinite(v),'Type','Spearman'))
+{Index in position 2 exceeds array bounds (must not exceed 1).
+} 
+spearman = corr(x(isfinite(v)),v(isfinite(v)),'Type','Spearman')
+
+spearman =
+
+    0.7080
+
+fprintf('%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+Objective weightedTCBM, Spearman correlation = 0.710951
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+ logmod(0.1743,10)
+
+ans =
+
+    0.0698
+
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+predictedExchange.vlogmod = logmod(predictedExchange.v,10);
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+nnz(fullReportBool)
+
+ans =
+
+    75
+
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConcNorm, Spearman correlation = 0.536395
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective weightedTCBMt, Spearman correlation = 0.534632
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective weightedTCBM, Spearman correlation = 0.710951
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+if system_dependent('IsDebugMode')==1, dbcont; end
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+x(bool)
+
+ans =
+
+   -2.4422
+   -1.2517
+   -1.2293
+   -1.2266
+   -1.1334
+   -1.0939
+   -1.0330
+   -1.0103
+   -0.9307
+   -0.7663
+   -0.5173
+   -0.4873
+   -0.4137
+   -0.4064
+   -0.2655
+   -0.1923
+   -0.1486
+   -0.1106
+   -0.0404
+   -0.0357
+   -0.0010
+   -0.0010
+   -0.1188
+   -0.0354
+    0.0001
+    0.0004
+    0.0009
+    0.0009
+    0.0012
+    0.0017
+    0.0021
+    0.0028
+    0.0037
+    0.0043
+    0.0047
+    0.0049
+    0.0054
+    0.0058
+    0.0095
+    0.0100
+    0.0110
+    0.0112
+    0.0180
+    0.0283
+    0.0304
+    0.0357
+    0.0458
+    0.0458
+    0.0551
+    0.0575
+    0.0650
+    0.0680
+    0.0733
+    0.0784
+    0.0870
+    0.1001
+    0.1014
+    0.1197
+    0.1271
+    0.1689
+    0.1698
+    0.1896
+    0.2236
+    0.2455
+    0.2660
+    0.2730
+    0.5248
+    0.6728
+    0.9984
+    1.2448
+    1.3344
+    1.3638
+    1.4259
+    1.7472
+
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',255,1)">255 </a>        errorbar(x(bool),1:length(exoMet.mean(bool)),xl(bool),xu(bool),'horizontal','*','LineWidth',2)
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+driver_plotExperimentalvsPredictedUptakeSecretion
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/programExperimental/projects/xomics/code/scripts/driver_plotExperimentalvsPredictedUptakeSecretion.m',255,1)">255 </a>        errorbar(x(bool),1:length(exoMet.mean(bool)),xl(bool),xu(bool),'horizontal','*','LineWidth',2)
+if system_dependent('IsDebugMode')==1, dbcont; end
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+spearman = corr(x(isfinite(v)),v(isfinite(v)),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+        spearman = corr(x(isfinite(v) & negbool),v(isfinite(v) & negbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' uptakes, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = 0.747368
+                spearman = corr(x(isfinite(v) & posbool),v(isfinite(v) & posbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' secretions, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = 0.315256
+spearman = corr(exoMet.uptakeProbability(isfinite(v)),v(isfinite(v)),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc, Spearman correlation = -0.628443
+        spearman = corr(exoMet.uptakeProbability(isfinite(v) & negbool),v(isfinite(v) & negbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' uptakes, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = -0.0504927
+        spearman = corr(exoMet.uptakeProbability(isfinite(v) & posbool),v(isfinite(v) & posbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' secretions, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = -0.206148
+spearman = corr(-exoMet.uptakeProbability(isfinite(v)),v(isfinite(v)),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.628443
+        spearman = corr(-exoMet.uptakeProbability(isfinite(v) & negbool),v(isfinite(v) & negbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' uptakes, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = 0.0504927
+        spearman = corr(-exoMet.uptakeProbability(isfinite(v) & posbool),v(isfinite(v) & posbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' secretions, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = 0.206148
+spearman = corr(x(isfinite(v)),v(isfinite(v)),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+        spearman = corr(x(isfinite(v) & negbool),v(isfinite(v) & negbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' uptakes, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = 0.747368
+        spearman = corr(x(isfinite(v) & posbool),v(isfinite(v) & posbool),'Type','Spearman');
+        fprintf('%s%g\n',['Objective ' objective ' secretions, Spearman correlation = '],spearman);
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = 0.315256
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = 0.747368
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = 0.315256
+driver_plotExperimentalvsPredictedUptakeSecretion
+Objective unWeightedTCBMfluxConc, Spearman correlation = 0.707981
+Objective unWeightedTCBMfluxConc uptakes, Spearman correlation = 0.747368
+Objective unWeightedTCBMfluxConc secretions, Spearman correlation = 0.315256
+plot(logmod(exomet.mean,10),log10(exomet.SD),'.')
+{Unable to resolve the name exomet.mean.
+} 
+plot(logmod(exoMet.mean,10),log10(exoMet.SD),'.')
+plot(logmod(exoMet.mean,10),log10(1+exoMet.SD),'.')
+exoMet.SD(30) = .3;
+edit retrieveModelStats.m
+edit getTopKNorms_adaptive
+model
+
+model = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+                                   S: [738×1092 double]
+                                mets: {738×1 cell}
+                                   b: [738×1 double]
+                              csense: [738×1 char]
+                                rxns: {1092×1 cell}
+                                  lb: [1092×1 double]
+                                  ub: [1092×1 double]
+                                   c: [1092×1 double]
+                           osenseStr: 'max'
+                               genes: {678×1 cell}
+                               rules: {1092×1 cell}
+                          metCharges: [738×1 int64]
+                         metFormulas: {738×1 cell}
+                           metSmiles: {738×1 cell}
+                            metNames: {738×1 cell}
+                           metHMDBID: {738×1 cell}
+                      metInChIString: {738×1 cell}
+                           metKEGGID: {738×1 cell}
+                        metPubChemID: {738×1 cell}
+                             grRules: {1092×1 cell}
+                          rxnGeneMat: [1092×678 double]
+                 rxnConfidenceScores: [1092×1 double]
+                            rxnNames: {1092×1 cell}
+                            rxnNotes: {1092×1 cell}
+                        rxnECNumbers: {1092×1 cell}
+                       rxnReferences: {1092×1 cell}
+                           rxnKEGGID: {1092×1 cell}
+                          subSystems: {1092×1 cell}
+                         description: 'Recon3DModel_301.mat'
+                             modelID: 'Recon3DModel'
+                                   C: [11×1092 double]
+                                ctrs: {11×1 cell}
+                                   d: [11×1 double]
+                              dsense: [11×1 char]
+                           DMRxnBool: [1092×1 logical]
+                                DfG0: [738×1 double]
+                    DfG0_Uncertainty: [738×1 double]
+                               DfGt0: [738×1 double]
+                            DfGt0Max: [738×1 double]
+                            DfGt0Min: [738×1 double]
+                             DfGtMax: [738×1 double]
+                            DfGtMean: [738×1 double]
+                             DfGtMin: [738×1 double]
+                               DfHt0: [738×1 double]
+                                DrG0: [1092×1 double]
+                    DrG0_Uncertainty: [1092×1 double]
+                               DrGt0: [1092×1 double]
+                            DrGt0Max: [1092×1 double]
+                            DrGt0Min: [1092×1 double]
+                             DrGtMax: [1092×1 double]
+                            DrGtMean: [1092×1 double]
+                             DrGtMin: [1092×1 double]
+                            Elements: {'H'  'C'  'O'  'P'  'S'  'N'  'Mg'  'X'  'Fe'  'Zn'  'Co'  'Ca'  'Y'  'I'  'Na'  'Cl'  'K'  'R'  'FULLR'}
+                         ExchRxnBool: [1092×1 logical]
+                                   G: [738×5189 double]
+                          PleaseCite: 'Brunk et al, Nat Biotech, 2018; doi:10.1038/nbt.4072'
+                  SConsistentMetBool: [738×1 logical]
+                  SConsistentRxnBool: [1092×1 logical]
+                          SExMetBool: [738×1 logical]
+                SInConsistentMetBool: [738×1 logical]
+                SInConsistentRxnBool: [1092×1 logical]
+                         SIntMetBool: [738×1 logical]
+                         SIntRxnBool: [1092×1 logical]
+                      SOnlyExMetBool: [738×1 logical]
+                     SOnlyIntMetBool: [738×1 logical]
+                         SinkRxnBool: [1092×1 logical]
+                             Sthermo: [738×1092 double]
+                                   T: 310.1500
+                  XomicsToModelParam: [1×1 struct]
+           XomicsToModelSpecificData: [1×1 struct]
+                   activeInactiveRxn: [1092×1 double]
+                              alpha1: 0
+                           aveHbound: [738×1 double]
+                               aveZi: [738×1 double]
+                     balancedMetBool: [738×1 logical]
+                     balancedRxnBool: [1092×1 logical]
+                                beta: 1
+                         biomassBool: [1092×1 logical]
+                      biomassRxnAbbr: 'biomass_maintenance'
+                             bondsBF: [1092×1 double]
+                              bondsE: [1092×1 double]
+                                 chi: [11×1 double]
+                        compartments: {11×1 cell}
+                  compositeInchiBool: [738×1 logical]
+                             concMax: [738×1 double]
+                             concMin: [738×1 double]
+                     confidenceLevel: -1
+               constraintDescription: {1092×1 cell}
+                      coupledRxnInds: [32×1 double]
+                         coupledRxns: {32×1 cell}
+                              delta0: 1
+                              delta1: 0
+                    exometRelaxation: [1×1 struct]
+                 exometRelaxationObj: NaN
+                      expressionRxns: [1092×1 double]
+               fluxConsistentMetBool: [738×1 logical]
+               fluxConsistentRxnBool: [1092×1 logical]
+             fluxInConsistentMetBool: [738×1 logical]
+             fluxInConsistentRxnBool: [1092×1 logical]
+               forcedInternalRxnBool: [1092×1 logical]
+                         gasConstant: 0.0083
+                          geneExpVal: [678×1 double]
+                               inchi: [1×1 struct]
+                           inchiBool: [738×1 logical]
+                                  is: [11×1 double]
+                             lambda0: 1
+                             lambda1: 0
+                   lb_preconditioned: [1092×1 double]
+                      lb_reconThermo: [1092×1 double]
+                  lbpreSinkDemandOff: [1092×1 double]
+                             meanBBF: 3.5523
+                              meanBE: 24.7841
+                          metCHEBIID: {738×1 cell}
+                     metCompartments: {738×1 cell}
+                            metPdMap: {738×1 cell}
+                         metReconMap: {738×1 cell}
+                       metRemoveBool: [738×1 logical]
+    metUnknownInconsistentRemoveBool: [738×1 logical]
+                 missingFormulaeBool: [738×1 logical]
+                             molBool: [738×1 logical]
+                                  ph: [11×1 double]
+                    presentAbsentMet: [738×1 double]
+                              rxnCOG: {1092×1 cell}
+                         rxnFormulas: {1092×1 cell}
+                    rxnKeggOrthology: {1092×1 cell}
+                         rxnReconMap: {1092×1 cell}
+                       rxnRemoveBool: [1092×1 logical]
+    rxnUnknownInconsistentRemoveBool: [1092×1 logical]
+         thermoFluxConsistentMetBool: [738×1 logical]
+         thermoFluxConsistentRxnBool: [1092×1 logical]
+                    transportRxnBool: [1092×1 logical]
+                   ub_preconditioned: [1092×1 double]
+                      ub_reconThermo: [1092×1 double]
+                  ubpreSinkDemandOff: [1092×1 double]
+                unconstrainedDfG0_cc: [738×1 logical]
+                unconstrainedDrG0_cc: [1092×1 logical]
+          unknownSConsistencyMetBool: [738×1 logical]
+          unknownSConsistencyRxnBool: [1092×1 logical]
+                             version: 'Recon3D_01 '
+
+exoMet = sortrows(exoMet,'rxnID','ascend');
+ 0.000190143000000000/0.00386086500000000
+
+ans =
+
+    0.0492
+
+edit updateCobraToolbox
+which entropicFluxBalanceAnalysis
+/home/rfleming/work/sbgCloud/programModelling/projects/thermoModel/code/entropicFBA/entropicFluxBalanceAnalysis.m
+cd /home/rfleming/work/sbgCloud/programModelling/projects/thermoModel/code/entropicFBA/
+which driver_optCardThermo
+/home/rfleming/work/sbgCloud/programModelling/projects/thermoModel/code/optCardThermo/driver_optCardThermo.mlx

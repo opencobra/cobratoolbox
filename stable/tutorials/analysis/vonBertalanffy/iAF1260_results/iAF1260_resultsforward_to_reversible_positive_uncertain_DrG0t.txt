@@ -1,0 +1,12 @@
+PPA	h2o[c] + ppi[c]  -> h[c] + 2 pi[c] 	14.4	33.3	-34.9	42.8
+TRDR	h[c] + nadph[c] + trdox[c]  -> nadp[c] + trdrd[c] 	32.1	53.4	-7.1	92.6
+
+Cytoplasmic metabolites only:
+1	h2o	h2o[c]	-144.4	1.5	
+2	h	h[c]	45.7	0.0	
+2	pi	pi[c]	-1049.2	1.4	
+1	nadp	nadp[c]	727.6	50000.0	
+1	nadph	nadph[c]	789.3	50000.0	
+1	ppi	ppi[c]	-1932.2	2.0	
+1	trdox	trdox[c]	-28.6	70710.7	
+1	trdrd	trdrd[c]	121.7	70710.7	

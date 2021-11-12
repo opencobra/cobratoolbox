@@ -1,0 +1,153 @@
+--------------------------------------------------------------
+CHEMICAL DATABASE
+--------------------------------------------------------------
+ 
+Generating a chemical database with the following options:
+ 
+                  outputDir: '/Users/gpreciat/work/code/COBRA.tutorials/analysis/atomicallyResolveReconstruction/results/DAS_chemoinformatics/database'
+                 printlevel: 1
+                      debug: 1
+    standardisationApproach: 'implicitH'
+            adjustToModelpH: 1
+          keepMolComparison: 0
+               onlyUnmapped: 0
+
+--------------------------------------------------------------
+Obtaining MOL files from chemical databases ...
+
+  8×4 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+       <strong>sources</strong>       <strong>coverage</strong>    <strong>metsWithStructure</strong>    <strong>metsWithoutStructure</strong>
+    <strong>_____________</strong>    <strong>________</strong>    <strong>_________________</strong>    <strong>____________________</strong>
+
+    {'chebi'    }       90               9                      1         
+    {'drugbank' }        0               0                     10         
+    {'hmdb'     }      100              10                      0         
+    {'inchi'    }      100              10                      0         
+    {'kegg'     }      100              10                      0         
+    {'lipidmaps'}        0               0                     10         
+    {'pubchem'  }      100              10                      0         
+    {'smiles'   }      100              10                      0         
+
+Comparing information from sources ...
+  10×6 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+       <strong>mets</strong>                         <strong>source</strong>                     <strong>score</strong>                                                                   <strong>inchi</strong>                                                                   <strong>chargeOkBool</strong>    <strong>metFormula</strong> 
+    <strong>___________</strong>    <strong>________________________________________</strong>    <strong>______</strong>    <strong>__________________________________________________________________________________________________________________________________</strong>    <strong>____________</strong>    <strong>___________</strong>
+
+    {'34dhphe'}    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO4/c10-6(9(13)14)3-5-1-2-7(11)8(12)4-5/h1-2,4,6,11-12H,3,10H2,(H,13,14)/t6-/m0/s1'                              }       true         "C9H11NO4" 
+    {'co2'    }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/CO2/c2-1-3'                                                                                                           }       true         "CO2"      
+    {'dopa'   }    {'inchi smiles'                        }    14.333    {'InChI=1S/C8H11NO2/c9-4-3-6-1-2-7(10)8(11)5-6/h1-2,5,10-11H,3-4,9H2/p+1'                                                        }       true         "C8H11NO2" 
+    {'for'    }    {'inchi smiles'                        }    14.333    {'InChI=1S/CH2O2/c2-1-3/h1H,(H,2,3)/p-1'                                                                                         }       true         "CH2O2"    
+    {'h2o'    }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/H2O/h1H2'                                                                                                             }       true         "H2O"      
+    {'o2'     }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/O2/c1-2'                                                                                                              }       true         "O2"       
+    {'phe_L'  }    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO2/c10-8(9(11)12)6-7-4-2-1-3-5-7/h1-5,8H,6,10H2,(H,11,12)/t8-/m0/s1'                                            }       true         "C9H11NO2" 
+    {'thbpt'  }    {'hmdb kegg'                           }    15.333    {'InChI=1S/C9H15N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,12,15-16H,2H2,1H3,(H4,10,11,13,14,17)/t3-,4+,6-/m0/s1'}       true         "C9H15N5O3"
+    {'tyr_L'  }    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO3/c10-8(9(12)13)5-6-1-3-7(11)4-2-6/h1-4,8,11H,5,10H2,(H,12,13)/t8-/m0/s1'                                      }       true         "C9H11NO3" 
+    {'dhbpt'  }    {'hmdb kegg pubchem'                   }      15.6    {'InChI=1S/C9H13N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,15-16H,2H2,1H3,(H3,10,11,13,14,17)/t3-,4+,6-/m0/s1'   }       true         "C9H13N5O3"
+
+Adjusting pH based on the model's chemical formula ...
+ 
+adjustedpH:
+  10×11 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+       <strong>mets</strong>                         <strong>source</strong>                     <strong>score</strong>                                                                   <strong>inchi</strong>                                                                   <strong>chargeOkBool</strong>    <strong>metFormula</strong>     <strong>needAdjustmentBool</strong>    <strong>notPossible2AdjustBool</strong>    <strong>differentFormula</strong>    <strong>loopError</strong>    <strong>pHRangePassed</strong>
+    <strong>___________</strong>    <strong>________________________________________</strong>    <strong>______</strong>    <strong>__________________________________________________________________________________________________________________________________</strong>    <strong>____________</strong>    <strong>___________</strong>    <strong>__________________</strong>    <strong>______________________</strong>    <strong>________________</strong>    <strong>_________</strong>    <strong>_____________</strong>
+
+    {'34dhphe'}    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO4/c10-6(9(13)14)3-5-1-2-7(11)8(12)4-5/h1-2,4,6,11-12H,3,10H2,(H,13,14)/t6-/m0/s1'                              }       true         "C9H11NO4"           false                   true                   true             false          false    
+    {'co2'    }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/CO2/c2-1-3'                                                                                                           }       true         "CO2"                false                   true                   true             false          false    
+    {'dopa'   }    {'inchi smiles'                        }    14.333    {'InChI=1S/C8H11NO2/c9-4-3-6-1-2-7(10)8(11)5-6/h1-2,5,10-11H,3-4,9H2/p+1'                                                        }       true         "C8H11NO2"           false                   false                  false            false          false    
+    {'for'    }    {'inchi smiles'                        }    14.333    {'InChI=1S/CH2O2/c2-1-3/h1H,(H,2,3)/p-1'                                                                                         }       true         "CH2O2"              false                   false                  false            false          false    
+    {'h2o'    }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/H2O/h1H2'                                                                                                             }       true         "H2O"                false                   true                   true             false          false    
+    {'o2'     }    {'chebi hmdb inchi kegg pubchem smiles'}        15    {'InChI=1S/O2/c1-2'                                                                                                              }       true         "O2"                 false                   true                   true             false          false    
+    {'phe_L'  }    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO2/c10-8(9(11)12)6-7-4-2-1-3-5-7/h1-5,8H,6,10H2,(H,11,12)/t8-/m0/s1'                                            }       true         "C9H11NO2"           false                   true                   true             false          false    
+    {'thbpt'  }    {'hmdb kegg'                           }    15.333    {'InChI=1S/C9H15N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,12,15-16H,2H2,1H3,(H4,10,11,13,14,17)/t3-,4+,6-/m0/s1'}       true         "C9H15N5O3"          false                   true                   true             false          false    
+    {'tyr_L'  }    {'chebi hmdb kegg pubchem'             }    15.667    {'InChI=1S/C9H11NO3/c10-8(9(12)13)5-6-1-3-7(11)4-2-6/h1-4,8,11H,5,10H2,(H,12,13)/t8-/m0/s1'                                      }       true         "C9H11NO3"           false                   true                   true             false          false    
+    {'dhbpt'  }    {'hmdb kegg pubchem'                   }      15.6    {'InChI=1S/C9H13N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,15-16H,2H2,1H3,(H3,10,11,13,14,17)/t3-,4+,6-/m0/s1'   }       true         "C9H13N5O3"          false                   true                   true             false          false    
+
+
+ Standardizing 10 MOL files ... 
+  10×4 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+      <strong>mets</strong>                     <strong>InChIKeys</strong>                                                                                <strong>InChIs</strong>                                                                                       <strong>SMILES</strong>                      
+    <strong>_________</strong>    <strong>______________________________________</strong>    <strong>________________________________________________________________________________________________________________________________</strong>    <strong>__________________________________________________</strong>
+
+    "34dhphe"    "InChIKey=WTDRDQBEARUVNC-LURJTMIESA-N"    "InChI=1S/C9H11NO4/c10-6(9(13)14)3-5-1-2-7(11)8(12)4-5/h1-2,4,6,11-12H,3,10H2,(H,13,14)/t6-/m0/s1"                                  "c1c(O)c(cc(c1)C[C@@H](C(=O)O)N)O"                
+    "co2"        "InChIKey=CURLTUGMZLYLDI-UHFFFAOYSA-N"    "InChI=1S/CO2/c2-1-3"                                                                                                               "O=C=O"                                           
+    "dhbpt"      "InChIKey=ZHQJVZLJDXWFFX-RPDRRWSUSA-N"    "InChI=1S/C9H13N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,15-16H,2H2,1H3,(H3,10,11,13,14,17)/t3-,4+,6-/m0/s1"       "O[C@H]([C@H](O)[C@@H]1N=c2c(=NC1)[nH]c(N)nc2=O)C"
+    "dopa"       "InChIKey=VYFYYTLLBUKUHU-UHFFFAOYSA-O"    "InChI=1S/C8H11NO2/c9-4-3-6-1-2-7(10)8(11)5-6/h1-2,5,10-11H,3-4,9H2/p+1"                                                            "c1cc(c(cc1CC[NH3+])O)O"                          
+    "for"        "InChIKey=BDAGIHXWWSANSR-UHFFFAOYSA-M"    "InChI=1S/CH2O2/c2-1-3/h1H,(H,2,3)/p-1"                                                                                             "C(=O)[O-]"                                       
+    "h2o"        "InChIKey=XLYOFNOQVPJJNP-UHFFFAOYSA-N"    "InChI=1S/H2O/h1H2"                                                                                                                 "O"                                               
+    "o2"         "InChIKey=MYMOFIZGZYHOMD-UHFFFAOYSA-N"    "InChI=1S/O2/c1-2"                                                                                                                  "O=O"                                             
+    "phe_L"      "InChIKey=COLNVLDHVKWLRT-QMMMGPOBSA-N"    "InChI=1S/C9H11NO2/c10-8(9(11)12)6-7-4-2-1-3-5-7/h1-5,8H,6,10H2,(H,11,12)/t8-/m0/s1"                                                "C([C@H](N)C(=O)O)c1ccccc1"                       
+    "thbpt"      "InChIKey=FNKQXYHWGSIFBK-RPDRRWSUSA-N"    "InChI=1S/C9H15N5O3/c1-3(15)6(16)4-2-11-7-5(12-4)8(17)14-9(10)13-7/h3-4,6,12,15-16H,2H2,1H3,(H4,10,11,13,14,17)/t3-,4+,6-/m0/s1"    "O=c1nc(N)[nH]c2c1N[C@@H]([C@H]([C@H](C)O)O)CN2"  
+    "tyr_L"      "InChIKey=OUYCCCASQSFEME-QMMMGPOBSA-N"    "InChI=1S/C9H11NO3/c10-8(9(12)13)5-6-1-3-7(11)4-2-6/h1-4,8,11H,5,10H2,(H,12,13)/t8-/m0/s1"                                          "O=C(O)[C@@H](N)Cc1ccc(cc1)O"                     
+
+
+
+Generating RXN files.
+Computing atom mappings for 4 reactions.
+
+  11×1 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+                                                        <strong>Var</strong>
+                                                        <strong>___</strong>
+
+    <strong>Metabolites in the database                     </strong>    10 
+    <strong>Metabolites in balanced reactions               </strong>    10 
+    <strong>Metabolites ocassionally in unbalanced reactions</strong>     0 
+    <strong>Metabolites allways in unbalanced reactions     </strong>     0 
+    <strong>Metabolites not used                            </strong>     0 
+    <strong>Mising metabolites                              </strong>     0 
+    <strong>Reactions in the database                       </strong>     4 
+    <strong>Atom mapped reactions                           </strong>     4 
+    <strong>Balanced reactions                              </strong>     4 
+    <strong>Unalanced reactions                             </strong>     0 
+    <strong>Missing reactions                               </strong>     0 
+
+  11×1 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+                                                        <strong>Var</strong>
+                                                        <strong>___</strong>
+
+    <strong>Metabolites in the database                     </strong>    10 
+    <strong>Metabolites in balanced reactions               </strong>    10 
+    <strong>Metabolites ocassionally in unbalanced reactions</strong>     0 
+    <strong>Metabolites allways in unbalanced reactions     </strong>     0 
+    <strong>Metabolites not used                            </strong>     0 
+    <strong>Mising metabolites                              </strong>     0 
+    <strong>Reactions in the database                       </strong>     4 
+    <strong>Atom mapped reactions                           </strong>     4 
+    <strong>Balanced reactions                              </strong>     4 
+    <strong>Unalanced reactions                             </strong>     0 
+    <strong>Missing reactions                               </strong>     0 
+
+Calculating bonds broken and formed and enthalpy change...
+No model.biomassRxnAbbr? Give abbreviation of biomass reaction if there is one.
+Exchanges that would otherwise have been missed without abbreviation prefix search:
+Coefficient	Metabolite	#		Reaction		#
+-1			phe_L[c]	1	E1		5
+-1			o2[c]		3	E2		6
+-1			h2o[c]		6	E3		7
+-1			dopa[c]		8	E4		8
+-1			co2[c]		9	E5		9
+-1			for[c]		10	E6		10
+No model.biomassRxnAbbr? Give abbreviation of biomass reaction if there is one.
+Exchanges that would otherwise have been missed without abbreviation prefix search:
+Coefficient	Metabolite	#		Reaction		#
+-1			phe_L[c]	1	E1		5
+-1			o2[c]		3	E2		6
+-1			h2o[c]		6	E3		7
+-1			dopa[c]		8	E4		8
+-1			co2[c]		9	E5		9
+-1			for[c]		10	E6		10
+  4×5 <a href="matlab:helpPopup table" style="font-weight:bold">table</a>
+
+     <strong>rxns</strong>     <strong>rxnNames</strong>    <strong>bondsBrokenAndFormed</strong>    <strong>enthalpyChange</strong>    <strong>substrateMass</strong>
+    <strong>______</strong>    <strong>________</strong>    <strong>____________________</strong>    <strong>______________</strong>    <strong>_____________</strong>
+
+    {'R1'}     {'R1'}            {'6'}               {'-228'}          412.23    
+    {'R2'}     {'R2'}            {'6'}               {'-228'}          428.23    
+    {'R4'}     {'R4'}            {'4'}               {' -77'}          270.14    
+    {'R3'}     {'R3'}            {'2'}               {' -95'}           186.1    
+

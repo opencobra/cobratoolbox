@@ -1,0 +1,28 @@
+Metabolites which force 2 qualitatively  forward -> quantiatively reversible by concentration (positive uncertain DrGt0)
+882:	2	h[c]H+
+867:	1	h2o[c]H2O H2O
+1246:	1	pi[c]Phosphate
+1281:	1	nadp[c]Nicotinamide adenine dinucleotide phosphate
+1282:	1	nadph[c]Nicotinamide adenine dinucleotide phosphate - reduced
+1307:	1	ppi[c]Diphosphate
+1490:	1	trdox[c]Oxidized thioredoxin
+1494:	1	trdrd[c]Reduced thioredoxin
+
+
+1970	Inorganic diphosphatase	PPA	-34.87	 42.83
+substrates:
+867	      -1	 -144.37	  0.00	  0.00	              h2o[c]	H2O H2O
+1307	      -1	-1932.23	-29.69	-10.09	              ppi[c]	Diphosphate
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1246	       2	-1049.22	-29.69	-10.09	               pi[c]	Phosphate
+
+2245	Thioredoxin reductase (NADPH)	TRDR	 -7.06	 92.63
+substrates:
+882	      -1	   45.72	-45.72	-45.72	                h[c]	H+
+1282	      -1	  789.35	-29.69	-10.09	            nadph[c]	Nicotinamide adenine dinucleotide phosphate - reduced
+1490	      -1	  -28.56	-29.69	-10.09	            trdox[c]	Oxidized thioredoxin
+products:
+1281	       1	  727.57	-29.69	-10.09	             nadp[c]	Nicotinamide adenine dinucleotide phosphate
+1494	       1	  121.72	-29.69	-10.09	            trdrd[c]	Reduced thioredoxin
+

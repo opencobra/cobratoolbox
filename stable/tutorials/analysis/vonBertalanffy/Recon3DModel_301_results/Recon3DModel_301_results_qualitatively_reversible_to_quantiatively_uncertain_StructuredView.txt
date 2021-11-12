@@ -1,0 +1,1324 @@
+Metabolites which force 120 qualitatively reversible -> quantiatively uncertain
+35:	65	h[c]Proton
+20:	28	h2o[c]Water
+28:	18	h[m]Proton
+729:	15	h[r]Proton
+60:	14	nadph[c]Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+61:	14	nadp[c]Nicotinamide Adenine Dinucleotide Phosphate
+126:	13	coa[c]Coenzyme A
+75:	10	h[e]Proton
+191:	10	h2o[e]Water
+590:	10	arg_L[c]L-Arginine
+41:	8	h[x]Proton
+71:	8	nadh[c]Nicotinamide Adenine Dinucleotide - Reduced
+72:	8	nad[c]Nicotinamide Adenine Dinucleotide
+559:	8	lys_L[c]L-Lysine
+83:	7	nadh[m]Nicotinamide Adenine Dinucleotide - Reduced
+84:	7	nad[m]Nicotinamide Adenine Dinucleotide
+425:	7	crn[c]L-Carnitine
+2176:	7	pro_L[c]L-Proline
+749:	6	nadph[r]Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+750:	6	nadp[r]Nicotinamide Adenine Dinucleotide Phosphate
+86:	5	coa[m]Coenzyme A
+777:	5	nadh[r]Nicotinamide Adenine Dinucleotide - Reduced
+778:	5	nad[r]Nicotinamide Adenine Dinucleotide
+25:	4	h2o[m]Water
+29:	4	nadph[m]Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+31:	4	nadp[m]Nicotinamide Adenine Dinucleotide Phosphate
+271:	4	coa[x]Coenzyme A
+428:	4	crn[m]L-Carnitine
+2480:	4	xol7ah2al[c]3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+2841:	4	CE4872[c]3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+500:	3	gly[c]Glycine
+541:	3	glc_D[e]D-Glucose
+947:	3	gthrd[c]Reduced Glutathione
+948:	3	gthox[c]Glutathione Disulfide (Oxidized Glutathione)
+1852:	3	xol7aone[r]7Alpha-Hydroxycholest-4-En-3-One
+1862:	3	taur[c]Taurine
+1907:	3	leu_L[e]L-Leucine
+2746:	3	xol7aone[m]7Alpha-Hydroxycholest-4-En-3-One
+2799:	3	CE5786[e]Kinetensin
+2842:	3	CE4872[m]3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+184:	2	5adtststerone[c]17Beta-Hydroxy-5Alpha-Androstan-3-One
+384:	2	h2o[x]Water
+494:	2	cys_L[c]L-Cysteine
+527:	2	h2o[r]Water
+550:	2	andrstrn[r]Androsterone
+796:	2	ppi[r]Diphosphate
+895:	2	crn[x]L-Carnitine
+906:	2	crtsl[r]Cortisol
+1553:	2	so4[c]Sulfate
+1837:	2	cortsn[r]Cortisone
+1844:	2	andrstandn[r]5Alpha-Androstane-3,17-Dione
+1880:	2	ile_L[e]L-Isoleucine
+1908:	2	leu_L[c]L-Leucine
+2079:	2	xol7ah2al[m]3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+2137:	2	phe_L[e]L-Phenylalanine
+2138:	2	phe_L[c]L-Phenylalanine
+2387:	2	HC01118[r]Presqualene Diphosphate
+2454:	2	thcholstoic[c]3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestanoate
+2455:	2	cholcoa[c]Choloyl Coenzyme A
+2469:	2	dcholcoa[c]Chenodeoxycholoyl Coenzyme A
+2479:	2	dhcholestanate[c]3Alpha,7Alpha-Dihydroxy-5Beta-Cholestanate
+2681:	2	malthx[e]Maltohexaose
+2697:	2	andrstndn[c]Androst-4-Ene-3,17-Dione
+2792:	2	C03681[c]5Alpha-Pregnane-3,20-Dione
+2808:	2	CE5021[c]Alpha-Tocopheryl Hydroquinone
+2809:	2	CE5022[c]Alpha-Tocopheryl Quinone
+2818:	2	C05109[c]24,25-Dihydrolanosterol
+2858:	2	CE7047[c]Gama-Tocopheroxyl Radical
+2863:	2	CE5126[x](2R)-Pristanoyl Coenzyme A
+2894:	2	CE2053[r]20-Oxo-Leukotriene B4
+2914:	2	CE5934[x]3(R)-Hydroxy-Pristanoyl Coenzyme A
+2932:	2	CE2313[c]4,4-Dimethylcholesta-8(9),14-Dien-3Beta-Ol
+3037:	2	CE5947[c]20-COOH-10,11-Dihydro-Leukotriene B4
+21:	1	o2[c]Oxygen
+43:	1	nadh[x]Nicotinamide Adenine Dinucleotide - Reduced
+45:	1	nad[x]Nicotinamide Adenine Dinucleotide
+103:	1	co2[c]Carbon Dioxide
+122:	1	glu_L[c]L-Glutamate
+143:	1	asp_L[c]L-Aspartate
+182:	1	5adtststerones[c]5Alpha-Dihydrotestosterone Sulfate
+392:	1	ppi[c]Diphosphate
+482:	1	prgstrn[c]Progesterone
+484:	1	xol7ah[c]7Alpha-Hydroxy-5Beta-Cholestan-3-One
+485:	1	xol7ah2[c]5Beta-Cholestane-3Alpha,7Alpha-Diol
+486:	1	xoldioloneh[c]7Alpha,12Alpha-Dihydroxy-5Beta-Cholestan-3-One
+487:	1	xoltriol[c]5Beta-Cholestane-3Alpha,7Alpha,12Alpha-Triol
+498:	1	gln_L[c]L-Glutamine
+530:	1	cholcoar[x](25R)-3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+609:	1	tmndnccoa[c]Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+611:	1	clpndcoa[c]Docosa-7,10,13,16,19-All-Cis-Pentaenoyl Coenzyme A
+612:	1	dcsptn1coa[c](4Z,7Z,10Z,13Z,16Z)-Docosapentaenoyl Coenzyme A
+613:	1	c226coa[c]Cervonyl Coenzyme A
+690:	1	cholcoa[x]Choloyl Coenzyme A
+692:	1	taur[x]Taurine
+696:	1	dcholcoa[x]Chenodeoxycholoyl Coenzyme A
+714:	1	hcys_L[c]L-Homocysteine
+717:	1	met_L[c]L-Methionine
+771:	1	c226crn[c]Docosahexaenoylcarnitine
+772:	1	c226coa[m]Cervonyl Coenzyme A
+773:	1	c226crn[m]Docosahexaenoylcarnitine
+776:	1	4mzym_int2[r]3-Keto-4-Methylzymosterol
+817:	1	chsterol[r]Cholesterol
+818:	1	xol25oh[r]25-Hydroxycholesterol
+830:	1	chsterol[c]Cholesterol
+831:	1	chsterols[c]Cholesterol Sulfate
+856:	1	clpndcrn[c]7Z,10Z,13Z,16Z,19Z-Docosapentaenoylcarnitine
+857:	1	clpndcoa[m]Docosa-7,10,13,16,19-All-Cis-Pentaenoyl Coenzyme A
+858:	1	clpndcrn[m]7Z,10Z,13Z,16Z,19Z-Docosapentaenoylcarnitine
+873:	1	coa[r]Coenzyme A
+877:	1	q10[m]Ubiquinone-10
+927:	1	crn[r]L-Carnitine
+945:	1	q10h2[m]Ubiquinol-10
+946:	1	Lcystin[c]L-Cystine
+1007:	1	dcsptn1crn[c]4Z,7Z,10Z,13Z,16Z-Docosapentaenoylcarnitine
+1008:	1	dcsptn1coa[m](4Z,7Z,10Z,13Z,16Z)-Docosapentaenoyl Coenzyme A
+1009:	1	dcsptn1crn[m]4Z,7Z,10Z,13Z,16Z-Docosapentaenoylcarnitine
+1030:	1	dgchol[c]Glycochenodeoxycholate
+1041:	1	dhcholestanate[m]3Alpha,7Alpha-Dihydroxy-5Beta-Cholestanate
+1046:	1	chlstol[r]5Alpha-Cholesta-7,24-Dien-3Beta-Ol
+1047:	1	lthstrl[r]5Alpha-Cholest-7-En-3Beta-Ol
+1110:	1	yvite[c](+)-Gama-Tocopherol
+1160:	1	frdp[c]Farnesyl Diphosphate
+1480:	1	tmndnccoa[m]Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+1515:	1	frdp[r]Farnesyl Diphosphate
+1517:	1	fru[c]D-Fructose
+1672:	1	gchola[c]Glycocholate
+1765:	1	gthrd[m]Reduced Glutathione
+1787:	1	gthox[m]Glutathione Disulfide (Oxidized Glutathione)
+1816:	1	hmgcoa[c]Hydroxymethylglutaryl Coenzyme A
+1840:	1	nadph[x]Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1841:	1	nadp[x]Nicotinamide Adenine Dinucleotide Phosphate
+1853:	1	xol7a[r]20-Hydroxycholesterol
+1927:	1	lanost[c]Lanosterol
+1942:	1	trp_L[c]L-Tryptophan
+2074:	1	xoltetrol[m]5Beta-Cholestane-3Alpha,7Alpha,12Alpha,26-Tetrol
+2076:	1	thcholstoic[m]3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestanoate
+2077:	1	xol7ah2[m]5Beta-Cholestane-3Alpha,7Alpha-Diol
+2078:	1	xol7ah3[m]5Beta-Cholestane-3Alpha,7Alpha,26-Triol
+2080:	1	xol27oh[m]27-Hydroxycholesterol
+2090:	1	leuktrB4woh[r]W-Hydroxyl Leukotriene B4
+2094:	1	xol27oh[r]27-Hydroxycholesterol
+2097:	1	20ahchsterol[m]20-Hydroxycholesterol
+2126:	1	pristcoa[x]Pristanoyl Coenzyme A
+2250:	1	sql[r]Squalene
+2258:	1	so4[r]Sulfate
+2264:	1	tchola[c]Taurocholic acid
+2266:	1	tdchola[c]Taurochenodeoxycholate
+2267:	1	tdchola[x]Taurochenodeoxycholate
+2289:	1	tmndnccrn[c]5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+2290:	1	tmndnccrn[m]5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+2293:	1	q10[c]Ubiquinone-10
+2294:	1	q10h2[c]Ubiquinol-10
+2303:	1	tststerone[c]Testosterone
+2431:	1	mev_R[c](R)-Mevalonate
+2497:	1	xol7ah3[c]5Beta-Cholestane-3Alpha,7Alpha,26-Triol
+2498:	1	xoltetrol[c]5Beta-Cholestane-3Alpha,7Alpha,12Alpha,26-Tetrol
+2533:	1	HC02110[r]4Alpha-Methylzymosterol
+2680:	1	maltpt[e]Maltopentaose
+2682:	1	CE2915[e]Beta-Casomorphin
+2683:	1	CE4722[e]Beta-Casomorphin (1-6)
+2684:	1	CE2916[e]Neocasomorphin
+2685:	1	CE4723[e]Neocasomorphin (1-5)
+2686:	1	CE2917[e]Apelin-13
+2687:	1	CE4724[e]Apelin (1-12)
+2688:	1	malthp[e]Maltoheptaose
+2689:	1	CE2839[c]Maltodecaose
+2690:	1	CE2838[c]Maltononaose
+2691:	1	CE2839[e]Maltodecaose
+2692:	1	CE2838[e]Maltononaose
+2699:	1	chsterols[r]Cholesterol Sulfate
+2748:	1	CE0233[c]5Beta-Cholestane-3Alpha,7Alpha,27-Triol
+2752:	1	cholcoa[m]Choloyl Coenzyme A
+2753:	1	cholate[m]Cholate
+2754:	1	cholate[x]Cholate
+2756:	1	CE1589[c]Deoxycholoyl Coenzyme A
+2757:	1	tdechola[c]Taurodeoxycholic Acid
+2778:	1	no2[c]Nitrite
+2786:	1	dchac[c]Deoxycholate
+2793:	1	CE2211[c]Allopregnanolone
+2800:	1	CE5788[e]Kinetensin 1-7
+2801:	1	CE5789[e]Kinetensin 1-8
+2806:	1	CE5787[e]Kinetensin 1-3
+2807:	1	CE5791[e]Kinetensin 4-8
+2819:	1	dsmsterol[c]Desmosterol
+2820:	1	ddsmsterol[c]Cholesta-5,7,24-Trien-3Beta-Ol
+2824:	1	CE5867[e]N-Acetyl-Seryl-Aspartyl-Lysyl-Proline
+2825:	1	CE5868[e]N-Acetyl-Seryl-Aspartate
+2826:	1	CE5869[e]Lysyl-Proline
+2838:	1	cholcoar[m](25R)-3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+2839:	1	CE5166[m]25(S)-Trihydroxycoprostanoyl Coenzyme A
+2840:	1	CE5166[x]25(S)-Trihydroxycoprostanoyl Coenzyme A
+2859:	1	CE5986[c]5-Nitro-Gama-Tocopherol
+2862:	1	CE5125[x](2S)-Pristanoyl Coenzyme A
+2892:	1	leuktrB4woh[m]W-Hydroxyl Leukotriene B4
+2893:	1	CE2053[m]20-Oxo-Leukotriene B4
+2895:	1	leuktrB4wcooh[c]W-Carboxy Leukotriene B4
+2896:	1	CE2053[c]20-Oxo-Leukotriene B4
+2897:	1	leuktrB4wcooh[m]W-Carboxy Leukotriene B4
+2898:	1	leuktrB4woh[c]W-Hydroxyl Leukotriene B4
+2899:	1	CE2056[r]20-Dihydroxyleukotriene B4
+2913:	1	CE2038[x]Trans-2,3-Dehydropristanoyl Coenzyme A
+2915:	1	C07297[x]3-Oxopristanoyl Coenzyme A
+2921:	1	CE2209[c]5Alpha-Androstane-3Alpha,17Beta-Diol
+2929:	1	tmndnccoa[r]Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+2933:	1	CE2314[c]4,4-Dimethylcholesta-8(9)-En-3Beta-Ol
+2934:	1	zymstnl[c]Cholesta-8(9)-En-3Beta-Ol
+2935:	1	lthstrl[c]5Alpha-Cholest-7-En-3Beta-Ol
+2971:	1	CE5049[c]One Carbon Unit
+3000:	1	CE4874[c]5Beta-Cholestane-3Alpha,7Alpha,12Alpha,27,27-Pentaol
+3001:	1	CE4874[m]5Beta-Cholestane-3Alpha,7Alpha,12Alpha,27,27-Pentaol
+3013:	1	CE5178[c]5-Oxo-6-Trans-Leukotriene B4
+3036:	1	CE5946[c]10,11-Dihydro-20-Trihydroxy-Leukotriene B4
+3043:	1	CE2084[c]5-Oxo-(6E,8Z,11Z,14Z)-Eicosatetraenoic Acid
+3061:	1	leuktrB4wcooh[x]W-Carboxy Leukotriene B4
+3066:	1	CE5947[m]20-COOH-10,11-Dihydro-Leukotriene B4
+3067:	1	CE5947[x]20-COOH-10,11-Dihydro-Leukotriene B4
+3090:	1	c10dc[x]Sebacoyl Carnitine
+3091:	1	c10dc[c]Sebacoyl Carnitine
+3092:	1	sebcoa[c]Sebacoyl Coenzyme A
+3099:	1	c12dccoa[x]Dodecanedioyl Coenzyme A
+3101:	1	c12dccoa[c]Dodecanedioyl Coenzyme A
+3103:	1	c12dc[c]Dodecanedioyl Carnitine
+3127:	1	hexdicoa[c]Hexadecanedioyl Coenzyme A
+3128:	1	c16dc[c]Hexadecanedioic Acid Mono-L-Carnitine Ester
+3201:	1	sebcoa[x]Sebacoyl Coenzyme A
+3216:	1	c12dc[x]Dodecanedioyl Carnitine
+4010:	1	argarg[c]Arginyl-Arginine
+4011:	1	argarglys[c]Arginyl-Arginyl-Lysine
+4012:	1	argargmet[c]Arginyl-Arginyl-Metheonine
+4020:	1	arglysasp[c]Arginyl-Lysyl-Aspartate
+4021:	1	argphearg[c]Arginyl-Phenylalanine-Arginine
+4060:	1	glnlyslys[c]Glutaminyl-Lysyl-Lysine
+4113:	1	leuproarg[c]Leucyl-Prolyl-Arginine
+4122:	1	lysgluglu[c]Lysyl-Glutamyl-Glutamate
+4123:	1	lyslyslys[c]Lysyl-Lysyl-Lysine
+4125:	1	lystrparg[c]Lysyl-Tryptophanyl-Arginine
+4144:	1	phelyspro[c]Phenylalanyl-Lysyl-Proline
+4156:	1	proargcys[c]Prolyl-Arginyl-Cysteine
+4163:	1	proleuarg[c]Prolyl-Leucyl-Arginine
+4164:	1	prolyspro[c]Prolyl-Lysyl-Proline
+4166:	1	proproarg[c]Prolyl-Prolyl-Arginine
+4167:	1	propropro[c]Prolyl-Prolyl-Proline
+4255:	1	Lhcystin[c]L-Homocystine
+4302:	1	hmbil[c]Hydroxymethylbilane
+4444:	1	andrstandn[c]5Alpha-Androstane-3,17-Dione
+4782:	1	HC01118[c]Presqualene Diphosphate
+4790:	1	4mzym_int2[c]3-Keto-4-Methylzymosterol
+4791:	1	HC02110[c]4Alpha-Methylzymosterol
+4812:	1	cholcoaone[m]3A,7A,12A-Trihydroxy-5B-24-Oxocholestanoyl Coenzyme A
+4813:	1	HC01459[m](24R,25R)-3Alpha,7Alpha,12Alpha,24-Tetrahydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+4841:	1	M01989[c]Glycodeoxycholic Acid
+4995:	1	tmndnccrn[r]5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+5207:	1	HC01609[c]Uroporphyrinogeni
+
+
+479	Carnitine C22:6 Transferase	C226CPT1	-49.96	  7.06
+substrates:
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+613	      -1	  824.01	-29.69	-11.88	          c226coa[c]	Cervonyl Coenzyme A
+products:
+35	0.0591716	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+771	       1	 1639.31	-29.69	-11.88	          c226crn[c]	Docosahexaenoylcarnitine
+
+480	C226 Transport into the Mitochondria	C226CPT2	-15.95	 38.97
+substrates:
+28	-0.0233937	   47.50	-47.50	-47.50	                h[m]	Proton
+86	      -1	 -502.12	-15.78	-14.30	              coa[m]	Coenzyme A
+773	      -1	 1853.07	-29.69	-11.88	          c226crn[m]	Docosahexaenoylcarnitine
+products:
+428	       1	  249.33	-29.69	-11.88	              crn[m]	L-Carnitine
+772	       1	 1118.88	-29.69	-11.88	          c226coa[m]	Cervonyl Coenzyme A
+
+552	Carnitine O-Palmitoyltransferase	CLPNDCPT1	-27.00	 30.01
+substrates:
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+611	      -1	  842.75	-29.69	-11.88	         clpndcoa[c]	Docosa-7,10,13,16,19-All-Cis-Pentaenoyl Coenzyme A
+products:
+35	0.0627735	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+856	       1	 1681.01	-29.69	-11.88	         clpndcrn[c]	7Z,10Z,13Z,16Z,19Z-Docosapentaenoylcarnitine
+
+553	Carnitine Transferase	CLPNDCPT2	-38.89	 16.02
+substrates:
+28	-0.0240122	   47.50	-47.50	-47.50	                h[m]	Proton
+86	      -1	 -502.12	-15.78	-14.30	              coa[m]	Coenzyme A
+858	      -1	 1904.27	-29.69	-11.88	         clpndcrn[m]	7Z,10Z,13Z,16Z,19Z-Docosapentaenoylcarnitine
+products:
+428	       1	  249.33	-29.69	-11.88	              crn[m]	L-Carnitine
+857	       1	 1147.13	-29.69	-11.88	         clpndcoa[m]	Docosa-7,10,13,16,19-All-Cis-Pentaenoyl Coenzyme A
+
+633	Glutathione:Cystine Oxidoreductase	CYSGLTH	-53.34	 53.54
+substrates:
+35	-0.00581744	   42.75	-42.75	-42.75	                h[c]	Proton
+946	      -1	  -33.45	-29.69	-11.88	          Lcystin[c]	L-Cystine
+947	      -2	 -129.07	-29.69	-11.88	            gthrd[c]	Reduced Glutathione
+products:
+494	       2	   12.13	-29.69	-11.88	            cys_L[c]	L-Cysteine
+948	       1	 -315.73	-29.69	-11.88	            gthox[c]	Glutathione Disulfide (Oxidized Glutathione)
+
+703	Carnitine O-Palmitoyltransferase	DCSPTN1CPT1	-38.73	 18.29
+substrates:
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+612	      -1	  877.69	-29.69	-11.88	       dcsptn1coa[c]	(4Z,7Z,10Z,13Z,16Z)-Docosapentaenoyl Coenzyme A
+products:
+35	0.0591716	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+1007	       1	 1704.22	-29.69	-11.88	       dcsptn1crn[c]	4Z,7Z,10Z,13Z,16Z-Docosapentaenoylcarnitine
+
+704	Carnitine Transferase	DCSPTN1CPT2	-27.17	 27.74
+substrates:
+28	-0.0233937	   47.50	-47.50	-47.50	                h[m]	Proton
+86	      -1	 -502.12	-15.78	-14.30	              coa[m]	Coenzyme A
+1009	      -1	 1927.48	-29.69	-11.88	       dcsptn1crn[m]	4Z,7Z,10Z,13Z,16Z-Docosapentaenoylcarnitine
+products:
+428	       1	  249.33	-29.69	-11.88	              crn[m]	L-Carnitine
+1008	       1	 1182.06	-29.69	-11.88	       dcsptn1coa[m]	(4Z,7Z,10Z,13Z,16Z)-Docosapentaenoyl Coenzyme A
+
+1823	11-Beta-Hydroxysteroid Dehydrogenase Type 1	HSD11B1r	-116.26	-45.01
+substrates:
+729	 -1.1398	   42.75	-42.75	-42.75	                h[r]	Proton
+749	      -1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1837	      -1	  754.34	-29.69	-11.88	           cortsn[r]	Cortisone
+products:
+750	       1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+906	       1	  771.81	-29.69	-11.88	            crtsl[r]	Cortisol
+
+1824	11-Beta-Hydroxysteroid Dehydrogenase Type 2	HSD11B2r	-185.56	-114.31
+substrates:
+729	 -1.1326	   42.75	-42.75	-42.75	                h[r]	Proton
+777	      -1	 -578.41	-29.69	-11.88	             nadh[r]	Nicotinamide Adenine Dinucleotide - Reduced
+1837	      -1	  754.34	-29.69	-11.88	           cortsn[r]	Cortisone
+products:
+778	       1	 -703.05	-29.69	-11.88	              nad[r]	Nicotinamide Adenine Dinucleotide
+906	       1	  771.81	-29.69	-11.88	            crtsl[r]	Cortisol
+
+1832	3 Alpha-Hydroxysteroid Dehydrogenase (Type 3)	HSD3A1r	-121.74	-50.49
+substrates:
+729	 -1.1326	   42.75	-42.75	-42.75	                h[r]	Proton
+777	      -1	 -578.41	-29.69	-11.88	             nadh[r]	Nicotinamide Adenine Dinucleotide - Reduced
+1844	      -1	 1094.56	-29.69	-11.88	       andrstandn[r]	5Alpha-Androstane-3,17-Dione
+products:
+550	       1	 1175.84	-29.69	-11.88	         andrstrn[r]	Androsterone
+778	       1	 -703.05	-29.69	-11.88	              nad[r]	Nicotinamide Adenine Dinucleotide
+
+1833	3 Alpha-Hydroxysteroid Dehydrogenase (Type 3)	HSD3A2r	-52.44	 18.81
+substrates:
+729	 -1.1398	   42.75	-42.75	-42.75	                h[r]	Proton
+749	      -1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1844	      -1	 1094.56	-29.69	-11.88	       andrstandn[r]	5Alpha-Androstane-3,17-Dione
+products:
+550	       1	 1175.84	-29.69	-11.88	         andrstrn[r]	Androsterone
+750	       1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+
+2800	Carnitine O-Palmitoyltransferase	TMNDNCCPT1	-10.28	 46.74
+substrates:
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+609	      -1	  656.10	-29.69	-11.88	        tmndnccoa[c]	Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+products:
+35	0.0558649	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+2289	       1	 1511.09	-29.69	-11.88	        tmndnccrn[c]	5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+
+2801	Carnitine Transferase	TMNDNCCPT2	-55.63	 -0.72
+substrates:
+28	-0.022775	   47.50	-47.50	-47.50	                h[m]	Proton
+86	      -1	 -502.12	-15.78	-14.30	              coa[m]	Coenzyme A
+2290	      -1	 1715.35	-29.69	-11.88	        tmndnccrn[m]	5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+products:
+428	       1	  249.33	-29.69	-11.88	              crn[m]	L-Carnitine
+1480	       1	  941.47	-29.69	-11.88	        tmndnccoa[m]	Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+
+2979	Glutathione:NAD+ Oxidoreductase	r0021	 86.56	160.62
+substrates:
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+947	      -2	 -129.07	-29.69	-11.88	            gthrd[c]	Reduced Glutathione
+products:
+35	 1.12843	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+948	       1	 -315.73	-29.69	-11.88	            gthox[c]	Glutathione Disulfide (Oxidized Glutathione)
+
+2980	Glutathione:NAD+ Oxidoreductase	r0022	 74.85	159.27
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+1765	      -2	  -53.13	-29.69	-11.88	            gthrd[m]	Reduced Glutathione
+products:
+28	0.897504	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+1787	       1	 -173.12	-29.69	-11.88	            gthox[m]	Glutathione Disulfide (Oxidized Glutathione)
+
+3015	Farnesyl-Diphosphate:Farnesyl-Diphosphate Farnesyltransferase	r0170	-125.33	-54.07
+substrates:
+729	-0.746867	   42.75	-42.75	-42.75	                h[r]	Proton
+1515	      -2	 -772.32	-29.69	-11.88	             frdp[r]	Farnesyl Diphosphate
+products:
+796	       1	-1939.79	-29.69	-11.88	              ppi[r]	Diphosphate
+2387	       1	  305.45	-29.69	-11.88	          HC01118[r]	Presqualene Diphosphate
+
+3109	(R)-Mevalonate:NADP+ Oxidoreductase (Coa Acylating)	r0488	 29.88	132.50
+substrates:
+61	      -2	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+126	      -1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+2431	      -1	 -159.76	-29.69	-11.88	            mev_R[c]	(R)-Mevalonate
+products:
+35	 2.30035	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       2	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1816	       1	 -964.96	-29.69	-11.88	           hmgcoa[c]	Hydroxymethylglutaryl Coenzyme A
+
+3142	Presqualene Diphosphate:Farnesyl-Diphosphate Farnesyltransferase	r0575	-106.61	-17.55
+substrates:
+729	-1.88666	   42.75	-42.75	-42.75	                h[r]	Proton
+749	      -1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2387	      -1	  305.45	-29.69	-11.88	          HC01118[r]	Presqualene Diphosphate
+products:
+750	       1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+796	       1	-1939.79	-29.69	-11.88	              ppi[r]	Diphosphate
+2250	       1	 2302.04	-29.69	-11.88	              sql[r]	Squalene
+
+3161	Choloyl Coenzyme A:Glycine N-Choloyltransferase Bile Acid Biosynthesis 	r0629	-108.54	-51.53
+substrates:
+500	      -1	  -64.22	-29.69	-11.88	              gly[c]	Glycine
+2455	      -1	  584.07	-29.69	-11.88	          cholcoa[c]	Choloyl Coenzyme A
+products:
+35	0.915107	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+1672	       1	 1098.49	-29.69	-11.88	           gchola[c]	Glycocholate
+
+3162	Choloyl Coenzyme A:Glycine N-Choloyltransferase Bile Acid Biosynthesis 	r0630	-116.66	-59.65
+substrates:
+1862	      -1	    3.84	-29.69	-11.88	             taur[c]	Taurine
+2455	      -1	  584.07	-29.69	-11.88	          cholcoa[c]	Choloyl Coenzyme A
+products:
+35	0.897822	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+2264	       1	 1158.43	-29.69	-11.88	           tchola[c]	Taurocholic acid
+
+3187	Cholest-5-Ene-3Beta, 7Alpha-Diol:NAD+ 3-Oxidoreductase Bile Acid Biosynthesis	r0672	 63.32	134.57
+substrates:
+750	      -1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+818	      -1	 1809.29	-29.69	-11.88	          xol25oh[r]	25-Hydroxycholesterol
+products:
+729	  1.1398	   42.75	-42.75	-42.75	                h[r]	Proton
+749	       1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1852	       1	 1810.14	-29.69	-11.88	         xol7aone[r]	7Alpha-Hydroxycholest-4-En-3-One
+
+3190	3Alpha, 7Alpha-Dihydroxy-5Beta-Cholestan-26-Al:NAD+ Oxidoreductase Bile Acid Biosynthesis	r0688	 28.91	 85.16
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2480	      -1	 1794.40	-29.69	-11.88	        xol7ah2al[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+products:
+35	 2.12836	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2479	       1	 1496.59	-29.69	-11.88	   dhcholestanate[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestanate
+
+3216	Alcohol Dehydrogenase Bile Acid Biosynthesis	r0739	 83.23	139.48
+substrates:
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2497	      -1	 1843.46	-29.69	-11.88	          xol7ah3[c]	5Beta-Cholestane-3Alpha,7Alpha,26-Triol
+products:
+35	  1.1326	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2480	       1	 1794.40	-29.69	-11.88	        xol7ah2al[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+
+3220	3Alpha, 7Alpha-Dihydroxy-5Beta-Cholestane:NADP+ Oxidoreductase (B-Specific)	r0747	 -1.71	 65.62
+substrates:
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+485	      -1	 1957.44	-29.69	-11.88	          xol7ah2[c]	5Beta-Cholestane-3Alpha,7Alpha-Diol
+products:
+35	  1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+484	       1	 1885.93	-29.69	-11.88	           xol7ah[c]	7Alpha-Hydroxy-5Beta-Cholestan-3-One
+
+3221	3Alpha, 7Alpha, 12Alpha-Trihydroxy-5Beta-Cholestane:NADP+ Oxidoreductase (B-Specific)	r0750	 -1.71	 65.62
+substrates:
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+487	      -1	 1814.37	-29.69	-11.88	         xoltriol[c]	5Beta-Cholestane-3Alpha,7Alpha,12Alpha-Triol
+products:
+35	  1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+486	       1	 1742.86	-29.69	-11.88	      xoldioloneh[c]	7Alpha,12Alpha-Dihydroxy-5Beta-Cholestan-3-One
+
+3233	Lanosterol D24-Reductase	r0783	-72.21	 -0.96
+substrates:
+750	      -1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+1047	      -1	 1978.91	-29.69	-11.88	          lthstrl[r]	5Alpha-Cholest-7-En-3Beta-Ol
+products:
+729	  1.1398	   42.75	-42.75	-42.75	                h[r]	Proton
+749	       1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1046	       1	 1844.23	-29.69	-11.88	          chlstol[r]	5Alpha-Cholesta-7,24-Dien-3Beta-Ol
+
+3242	Glycine N-Choloyltransferase	r0797	-108.57	-51.55
+substrates:
+500	      -1	  -64.22	-29.69	-11.88	              gly[c]	Glycine
+2469	      -1	  727.14	-29.69	-11.88	         dcholcoa[c]	Chenodeoxycholoyl Coenzyme A
+products:
+35	0.906357	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+1030	       1	 1241.54	-29.69	-11.88	           dgchol[c]	Glycochenodeoxycholate
+
+3354	Hydroxysteroid (17-Beta) Dehydrogenase 7	r1135	-118.46	-47.21
+substrates:
+729	 -2.8602	   42.75	-42.75	-42.75	                h[r]	Proton
+750	      -1	-1593.06	-29.69	-11.88	             nadp[r]	Nicotinamide Adenine Dinucleotide Phosphate
+776	      -1	 1860.87	-29.69	-11.88	       4mzym_int2[r]	3-Keto-4-Methylzymosterol
+products:
+749	       1	-1537.71	-29.69	-11.88	            nadph[r]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2533	       1	 1850.94	-29.69	-11.88	          HC02110[r]	4Alpha-Methylzymosterol
+
+4394	Alpha-Amylase	RE0935E	-114.71	-61.27
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2681	      -1	-1182.17	-29.69	-11.88	           malthx[e]	Maltohexaose
+products:
+75	0.000209332	   43.94	-43.94	-43.94	                h[e]	Proton
+541	       1	 -380.47	-29.69	-11.88	            glc_D[e]	D-Glucose
+2680	       1	-1018.20	-29.69	-11.88	           maltpt[e]	Maltopentaose
+
+4395	RE0936E	RE0936E	 98.33	151.77
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2682	      -1	 1671.54	-29.69	-11.88	           CE2915[e]	Beta-Casomorphin
+products:
+75	0.0124775	   43.94	-43.94	-43.94	                h[e]	Proton
+1880	       1	  265.57	-29.69	-11.88	            ile_L[e]	L-Isoleucine
+2683	       1	 1402.50	-29.69	-11.88	           CE4722[e]	Beta-Casomorphin (1-6)
+
+4396	RE0937E	RE0937E	132.28	185.72
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2684	      -1	 1236.71	-29.69	-11.88	           CE2916[e]	Neocasomorphin
+products:
+75	0.0125252	   43.94	-43.94	-43.94	                h[e]	Proton
+1880	       1	  265.57	-29.69	-11.88	            ile_L[e]	L-Isoleucine
+2685	       1	 1001.62	-29.69	-11.88	           CE4723[e]	Neocasomorphin (1-5)
+
+4397	RE0938E	RE0938E	136.71	190.15
+substrates:
+75	-2.98345	   43.94	-43.94	-43.94	                h[e]	Proton
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2686	      -1	 3587.13	-29.69	-11.88	           CE2917[e]	Apelin-13
+products:
+2137	       1	  319.65	-29.69	-11.88	            phe_L[e]	L-Phenylalanine
+2687	       1	 3302.39	-29.69	-11.88	           CE4724[e]	Apelin (1-12)
+
+4398	Alpha-Amylase	RE0944E	-114.71	-61.27
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2688	      -1	-1346.13	-29.69	-11.88	           malthp[e]	Maltoheptaose
+products:
+75	0.000208662	   43.94	-43.94	-43.94	                h[e]	Proton
+541	       1	 -380.47	-29.69	-11.88	            glc_D[e]	D-Glucose
+2681	       1	-1182.17	-29.69	-11.88	           malthx[e]	Maltohexaose
+
+4399	Alpha-Amylase	RE0958C	-73.03	-19.59
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+2689	      -1	-2214.16	-29.69	-11.88	           CE2839[c]	Maltodecaose
+products:
+35	0.00147511	   42.75	-42.75	-42.75	                h[c]	Proton
+1517	       1	 -402.09	-29.69	-11.88	              fru[c]	D-Fructose
+2690	       1	-1989.28	-29.69	-11.88	           CE2838[c]	Maltononaose
+
+4400	Alpha-Amylase	RE0958E	-65.66	-12.23
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2691	      -1	-2093.03	-29.69	-11.88	           CE2839[e]	Maltodecaose
+products:
+75	0.000223553	   43.94	-43.94	-43.94	                h[e]	Proton
+541	       1	 -380.47	-29.69	-11.88	            glc_D[e]	D-Glucose
+2692	       1	-1880.03	-29.69	-11.88	           CE2838[e]	Maltononaose
+
+4405	Steryl-Sulfatase	RE1100C	-87.75	-34.31
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+831	      -1	 1492.34	-29.69	-11.88	        chsterols[c]	Cholesterol Sulfate
+products:
+35	0.999995	   42.75	-42.75	-42.75	                h[c]	Proton
+830	       1	 2005.89	-29.69	-11.88	         chsterol[c]	Cholesterol
+1553	       1	 -748.24	-29.69	-11.88	              so4[c]	Sulfate
+
+4406	Steryl-Sulfatase	RE1100R	-87.75	-34.31
+substrates:
+527	      -1	 -151.68	  0.00	  0.00	              h2o[r]	Water
+2699	      -1	 1492.34	-29.69	-11.88	        chsterols[r]	Cholesterol Sulfate
+products:
+729	0.999995	   42.75	-42.75	-42.75	                h[r]	Proton
+817	       1	 2005.89	-29.69	-11.88	         chsterol[r]	Cholesterol
+2258	       1	 -748.24	-29.69	-11.88	              so4[r]	Sulfate
+
+4462	Steroid Delta-Isomerase	RE1796M	 56.75	123.36
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+2097	      -1	 2092.23	-29.69	-11.88	     20ahchsterol[m]	20-Hydroxycholesterol
+products:
+28	 1.02324	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+2746	       1	 2019.15	-29.69	-11.88	         xol7aone[m]	7Alpha-Hydroxycholest-4-En-3-One
+
+4463	Steroid Delta-Isomerase	RE1796R	 94.62	165.88
+substrates:
+778	      -1	 -703.05	-29.69	-11.88	              nad[r]	Nicotinamide Adenine Dinucleotide
+1853	      -1	 1847.29	-29.69	-11.88	            xol7a[r]	20-Hydroxycholesterol
+products:
+729	  1.1326	   42.75	-42.75	-42.75	                h[r]	Proton
+777	       1	 -578.41	-29.69	-11.88	             nadh[r]	Nicotinamide Adenine Dinucleotide - Reduced
+1852	       1	 1810.14	-29.69	-11.88	         xol7aone[r]	7Alpha-Hydroxycholest-4-En-3-One
+
+4465	RE1804C	RE1804C	197.99	254.24
+substrates:
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2748	      -1	 1728.70	-29.69	-11.88	           CE0233[c]	5Beta-Cholestane-3Alpha,7Alpha,27-Triol
+products:
+35	  1.1326	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2480	       1	 1794.40	-29.69	-11.88	        xol7ah2al[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+
+4466	RE1804M	RE1804M	 71.28	137.88
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+2078	      -1	 2071.47	-29.69	-11.88	          xol7ah3[m]	5Beta-Cholestane-3Alpha,7Alpha,26-Triol
+products:
+28	 1.02324	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+2079	       1	 2012.91	-29.69	-11.88	        xol7ah2al[m]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+
+4467	RE1807C	RE1807C	-33.58	 33.76
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2480	      -1	 1794.40	-29.69	-11.88	        xol7ah2al[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+products:
+35	 2.13556	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2479	       1	 1496.59	-29.69	-11.88	   dhcholestanate[c]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestanate
+
+4468	RE1807M	RE1807M	-48.19	 39.68
+substrates:
+25	      -1	 -142.18	  0.00	  0.00	              h2o[m]	Water
+31	      -1	-1473.91	-41.56	-16.77	             nadp[m]	Nicotinamide Adenine Dinucleotide Phosphate
+2079	      -1	 2012.91	-29.69	-11.88	        xol7ah2al[m]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestan-26-Al
+products:
+28	 2.02325	   47.50	-47.50	-47.50	                h[m]	Proton
+29	       1	-1414.13	-41.56	-14.11	            nadph[m]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1041	       1	 1710.36	-29.69	-11.88	   dhcholestanate[m]	3Alpha,7Alpha-Dihydroxy-5Beta-Cholestanate
+
+4469	3Alpha-Hydroxysteroid 3-Dehydrogenase (Si-Specific)	RE1810M	-19.14	120.98
+substrates:
+31	      -2	-1473.91	-41.56	-16.77	             nadp[m]	Nicotinamide Adenine Dinucleotide Phosphate
+2077	      -1	 2185.45	-29.69	-11.88	          xol7ah2[m]	5Beta-Cholestane-3Alpha,7Alpha-Diol
+products:
+28	 2.04786	   47.50	-47.50	-47.50	                h[m]	Proton
+29	       2	-1414.13	-41.56	-14.11	            nadph[m]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2746	       1	 2019.15	-29.69	-11.88	         xol7aone[m]	7Alpha-Hydroxycholest-4-En-3-One
+
+4472	Palmitoyl Coenzyme A Hydrolase	RE1834M	 -4.45	 32.65
+substrates:
+25	      -1	 -142.18	  0.00	  0.00	              h2o[m]	Water
+2752	      -1	  916.76	-29.69	-11.88	          cholcoa[m]	Choloyl Coenzyme A
+products:
+28	 1.00921	   47.50	-47.50	-47.50	                h[m]	Proton
+86	       1	 -502.12	-15.78	-14.30	              coa[m]	Coenzyme A
+2753	       1	 1258.34	-29.69	-11.88	          cholate[m]	Cholate
+
+4473	Palmitoyl Coenzyme A Hydrolase	RE1834X	-18.43	 35.01
+substrates:
+384	      -1	 -154.06	  0.00	  0.00	              h2o[x]	Water
+690	      -1	  500.82	-29.69	-11.88	          cholcoa[x]	Choloyl Coenzyme A
+products:
+41	 0.95879	   41.56	-41.56	-41.56	                h[x]	Proton
+271	       1	 -692.48	-29.69	-11.88	              coa[x]	Coenzyme A
+2754	       1	 1026.76	-29.69	-11.88	          cholate[x]	Cholate
+
+4477	Bile Acid-CoA:Amino Acid N-Acyltransferase	RE1845C	-116.69	-59.68
+substrates:
+1862	      -1	    3.84	-29.69	-11.88	             taur[c]	Taurine
+2469	      -1	  727.14	-29.69	-11.88	         dcholcoa[c]	Chenodeoxycholoyl Coenzyme A
+products:
+35	0.887098	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+2266	       1	 1301.47	-29.69	-11.88	          tdchola[c]	Taurochenodeoxycholate
+
+4478	Bile Acid-CoA:Amino Acid N-Acyltransferase	RE1845X	-118.43	-47.18
+substrates:
+692	      -1	   -4.46	-29.69	-11.88	             taur[x]	Taurine
+696	      -1	  643.89	-29.69	-11.88	         dcholcoa[x]	Chenodeoxycholoyl Coenzyme A
+products:
+41	0.836838	   41.56	-41.56	-41.56	                h[x]	Proton
+271	       1	 -692.48	-29.69	-11.88	              coa[x]	Coenzyme A
+2267	       1	 1249.11	-29.69	-11.88	          tdchola[x]	Taurochenodeoxycholate
+
+4479	Bile Acid-CoA:Amino Acid N-Acyltransferase	RE1846C	-88.13	-31.11
+substrates:
+1862	      -1	    3.84	-29.69	-11.88	             taur[c]	Taurine
+2756	      -1	  710.03	-29.69	-11.88	           CE1589[c]	Deoxycholoyl Coenzyme A
+products:
+35	0.882029	   42.75	-42.75	-42.75	                h[c]	Proton
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+2757	       1	 1270.17	-29.69	-11.88	         tdechola[c]	Taurodeoxycholic Acid
+
+4508	3Alpha-Hydroxysteroid 3-Dehydrogenase (Si-Specific)	RE2154C	-107.26	-51.01
+substrates:
+35	 -1.1326	   42.75	-42.75	-42.75	                h[c]	Proton
+71	      -1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2792	      -1	 1258.00	-29.69	-11.88	           C03681[c]	5Alpha-Pregnane-3,20-Dione
+products:
+72	       1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2793	       1	 1339.29	-29.69	-11.88	           CE2211[c]	Allopregnanolone
+
+4514	Chymase	RE2269E	 34.85	106.10
+substrates:
+191	      -2	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2799	      -1	 2615.32	-29.69	-11.88	           CE5786[e]	Kinetensin
+products:
+75	0.025139	   43.94	-43.94	-43.94	                h[e]	Proton
+1907	       1	  301.45	-29.69	-11.88	            leu_L[e]	L-Leucine
+2137	       1	  319.65	-29.69	-11.88	            phe_L[e]	L-Phenylalanine
+2800	       1	 1807.65	-29.69	-11.88	           CE5788[e]	Kinetensin 1-7
+
+4515	Carboxypeptidase A	RE2270E	 10.28	 63.72
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2799	      -1	 2615.32	-29.69	-11.88	           CE5786[e]	Kinetensin
+products:
+75	0.0128602	   43.94	-43.94	-43.94	                h[e]	Proton
+1907	       1	  301.45	-29.69	-11.88	            leu_L[e]	L-Leucine
+2801	       1	 2222.35	-29.69	-11.88	           CE5789[e]	Kinetensin 1-8
+
+4518	Tryptase	RE2304E	174.93	246.18
+substrates:
+75	-1.02924	   43.94	-43.94	-43.94	                h[e]	Proton
+191	      -2	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2799	      -1	 2615.32	-29.69	-11.88	           CE5786[e]	Kinetensin
+products:
+1907	       1	  301.45	-29.69	-11.88	            leu_L[e]	L-Leucine
+2806	       1	  814.62	-29.69	-11.88	           CE5787[e]	Kinetensin 1-3
+2807	       1	 1452.77	-29.69	-11.88	           CE5791[e]	Kinetensin 4-8
+
+4519	RE2327C	RE2327C	-152.38	-81.13
+substrates:
+2293	      -1	 3705.59	-29.69	-11.88	              q10[c]	Ubiquinone-10
+2808	      -1	 2078.17	-29.69	-11.88	           CE5021[c]	Alpha-Tocopheryl Hydroquinone
+products:
+35	0.00067942	   42.75	-42.75	-42.75	                h[c]	Proton
+2294	       1	 3690.85	-29.69	-11.88	            q10h2[c]	Ubiquinol-10
+2809	       1	 1976.15	-29.69	-11.88	           CE5022[c]	Alpha-Tocopheryl Quinone
+
+4525	RE2407C	RE2407C	  2.35	 69.68
+substrates:
+35	 -1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	      -1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+1927	      -1	 1996.52	-29.69	-11.88	           lanost[c]	Lanosterol
+products:
+61	       1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2818	       1	 2136.00	-29.69	-11.88	           C05109[c]	24,25-Dihydrolanosterol
+
+4526	7-Dehydrocholesterol Reductase	RE2410C	-10.30	 57.04
+substrates:
+35	 -1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	      -1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2820	      -1	 1739.58	-29.69	-11.88	       ddsmsterol[c]	Cholesta-5,7,24-Trien-3Beta-Ol
+products:
+61	       1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2819	       1	 1866.41	-29.69	-11.88	        dsmsterol[c]	Desmosterol
+
+4532	Peptidyl-Dipeptidase A	RE2445E	-96.71	-43.27
+substrates:
+191	      -1	 -149.31	  0.00	  0.00	              h2o[e]	Water
+2824	      -1	  375.10	-29.69	-11.88	           CE5867[e]	N-Acetyl-Seryl-Aspartyl-Lysyl-Proline
+products:
+75	0.131822	   43.94	-43.94	-43.94	                h[e]	Proton
+2825	       1	 -512.00	-29.69	-11.88	           CE5868[e]	N-Acetyl-Seryl-Aspartate
+2826	       1	  688.58	-29.69	-11.88	           CE5869[e]	Lysyl-Proline
+
+4540	Alpha-Methylacyl Coenzyme A Racemase	RE2624M	-18.34	 17.29
+substrates:
+2839	      -1	 1236.90	-29.69	-11.88	           CE5166[m]	25(S)-Trihydroxycoprostanoyl Coenzyme A
+products:
+2838	       1	 1236.37	-29.69	-11.88	         cholcoar[m]	(25R)-3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+
+4541	Alpha-Methylacyl Coenzyme A Racemase	RE2624X	-18.34	 17.29
+substrates:
+2840	      -1	  785.03	-29.69	-11.88	           CE5166[x]	25(S)-Trihydroxycoprostanoyl Coenzyme A
+products:
+41	3.35376e-12	   41.56	-41.56	-41.56	                h[x]	Proton
+530	       1	  784.51	-29.69	-11.88	         cholcoar[x]	(25R)-3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+
+4542	RE2625C	RE2625C	 83.23	139.48
+substrates:
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2498	      -1	 1700.38	-29.69	-11.88	        xoltetrol[c]	5Beta-Cholestane-3Alpha,7Alpha,12Alpha,26-Tetrol
+products:
+35	  1.1326	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2841	       1	 1651.32	-29.69	-11.88	           CE4872[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+
+4543	RE2625M	RE2625M	 71.28	137.88
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+2074	      -1	 1928.40	-29.69	-11.88	        xoltetrol[m]	5Beta-Cholestane-3Alpha,7Alpha,12Alpha,26-Tetrol
+products:
+28	 1.02324	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+2842	       1	 1869.84	-29.69	-11.88	           CE4872[m]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+
+4544	RE2626C	RE2626C	-16.30	 51.03
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2841	      -1	 1651.32	-29.69	-11.88	           CE4872[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+products:
+35	 2.13718	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2454	       1	 1370.79	-29.69	-11.88	      thcholstoic[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestanoate
+
+4545	RE2626M	RE2626M	-30.92	 56.95
+substrates:
+25	      -1	 -142.18	  0.00	  0.00	              h2o[m]	Water
+31	      -1	-1473.91	-41.56	-16.77	             nadp[m]	Nicotinamide Adenine Dinucleotide Phosphate
+2842	      -1	 1869.84	-29.69	-11.88	           CE4872[m]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+products:
+28	 2.02351	   47.50	-47.50	-47.50	                h[m]	Proton
+29	       1	-1414.13	-41.56	-14.11	            nadph[m]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2076	       1	 1584.56	-29.69	-11.88	      thcholstoic[m]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestanoate
+
+4572	RE2705C	RE2705C	-10.62	 42.82
+substrates:
+2778	      -1	  -12.29	-29.69	-11.88	              no2[c]	Nitrite
+2858	      -1	 2057.35	-29.69	-11.88	           CE7047[c]	Gama-Tocopheroxyl Radical
+products:
+35	 0.51119	   42.75	-42.75	-42.75	                h[c]	Proton
+2859	       1	 2040.37	-29.69	-11.88	           CE5986[c]	5-Nitro-Gama-Tocopherol
+
+4574	Alpha-Methylacyl Coenzyme A Racemase	RE2759X	 -7.91	 27.71
+substrates:
+2862	      -1	  849.21	-29.69	-11.88	           CE5125[x]	(2S)-Pristanoyl Coenzyme A
+products:
+2863	       1	  859.11	-29.69	-11.88	           CE5126[x]	(2R)-Pristanoyl Coenzyme A
+
+4575	17Beta-Estradiol 17-Dehydrogenase	RE2766C	  3.21	 70.54
+substrates:
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2303	      -1	 1096.49	-29.69	-11.88	       tststerone[c]	Testosterone
+products:
+35	  1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2697	       1	 1029.90	-29.69	-11.88	        andrstndn[c]	Androst-4-Ene-3,17-Dione
+
+4577	RE2814M	RE2814M	 59.40	126.01
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+2080	      -1	 2089.58	-29.69	-11.88	          xol27oh[m]	27-Hydroxycholesterol
+products:
+28	 1.02324	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+2746	       1	 2019.15	-29.69	-11.88	         xol7aone[m]	7Alpha-Hydroxycholest-4-En-3-One
+
+4578	RE2814R	RE2814R	 70.84	142.09
+substrates:
+778	      -1	 -703.05	-29.69	-11.88	              nad[r]	Nicotinamide Adenine Dinucleotide
+2094	      -1	 1871.07	-29.69	-11.88	          xol27oh[r]	27-Hydroxycholesterol
+products:
+729	  1.1326	   42.75	-42.75	-42.75	                h[r]	Proton
+777	       1	 -578.41	-29.69	-11.88	             nadh[r]	Nicotinamide Adenine Dinucleotide - Reduced
+1852	       1	 1810.14	-29.69	-11.88	         xol7aone[r]	7Alpha-Hydroxycholest-4-En-3-One
+
+4615	Alcohol Dehydrogenase	RE3011M	-12.64	 53.96
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+2892	      -1	 1051.40	-29.69	-11.88	      leuktrB4woh[m]	W-Hydroxyl Leukotriene B4
+products:
+28	 1.02324	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+2893	       1	  908.92	-29.69	-11.88	           CE2053[m]	20-Oxo-Leukotriene B4
+
+4616	Alcohol Dehydrogenase	RE3011R	 -1.21	 70.05
+substrates:
+778	      -1	 -703.05	-29.69	-11.88	              nad[r]	Nicotinamide Adenine Dinucleotide
+2090	      -1	  904.14	-29.69	-11.88	      leuktrB4woh[r]	W-Hydroxyl Leukotriene B4
+products:
+729	  1.1326	   42.75	-42.75	-42.75	                h[r]	Proton
+777	       1	 -578.41	-29.69	-11.88	             nadh[r]	Nicotinamide Adenine Dinucleotide - Reduced
+2894	       1	  771.16	-29.69	-11.88	           CE2053[r]	20-Oxo-Leukotriene B4
+
+4624	RE3017R	RE3017R	101.33	136.96
+substrates:
+527	      -1	 -151.68	  0.00	  0.00	              h2o[r]	Water
+2894	      -1	  771.16	-29.69	-11.88	           CE2053[r]	20-Oxo-Leukotriene B4
+products:
+729	7.75291e-06	   42.75	-42.75	-42.75	                h[r]	Proton
+2899	       1	  738.62	-29.69	-11.88	           CE2056[r]	20-Dihydroxyleukotriene B4
+
+4637	Enoyl Coenzyme A Hydratase	RE3081X	 71.97	107.60
+substrates:
+384	      -1	 -154.06	  0.00	  0.00	              h2o[x]	Water
+2913	      -1	  772.25	-29.69	-11.88	           CE2038[x]	Trans-2,3-Dehydropristanoyl Coenzyme A
+products:
+41	0.00592054	   41.56	-41.56	-41.56	                h[x]	Proton
+2914	       1	  707.98	-29.69	-11.88	           CE5934[x]	3(R)-Hydroxy-Pristanoyl Coenzyme A
+
+4638	3-Hydroxyacyl Coenzyme A Dehydrogenase	RE3082X	 76.75	148.00
+substrates:
+45	      -1	 -734.12	-29.69	-11.88	              nad[x]	Nicotinamide Adenine Dinucleotide
+2914	      -1	  707.98	-29.69	-11.88	           CE5934[x]	3(R)-Hydroxy-Pristanoyl Coenzyme A
+products:
+41	 1.20272	   41.56	-41.56	-41.56	                h[x]	Proton
+43	       1	 -610.47	-29.69	-11.88	             nadh[x]	Nicotinamide Adenine Dinucleotide - Reduced
+2915	       1	  655.14	-29.69	-11.88	           C07297[x]	3-Oxopristanoyl Coenzyme A
+
+4644	3Alpha-Hydroxysteroid 3-Dehydrogenase (Si-Specific)	RE3108C	-11.48	 55.85
+substrates:
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2921	      -1	 1246.88	-29.69	-11.88	           CE2209[c]	5Alpha-Androstane-3Alpha,17Beta-Diol
+products:
+35	  1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+184	       1	 1165.60	-29.69	-11.88	    5adtststerone[c]	17Beta-Hydroxy-5Alpha-Androstan-3-One
+
+4654	Delta14-Sterol Reductase	RE3134C	-76.90	 -9.57
+substrates:
+35	 -1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	      -1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2932	      -1	 2023.42	-29.69	-11.88	           CE2313[c]	4,4-Dimethylcholesta-8(9),14-Dien-3Beta-Ol
+products:
+61	       1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2933	       1	 2083.66	-29.69	-11.88	           CE2314[c]	4,4-Dimethylcholesta-8(9)-En-3Beta-Ol
+
+4655	Cholestenol Delta-Isomerase	RE3136C	-15.80	 19.82
+substrates:
+2934	      -1	 1976.90	-29.69	-11.88	          zymstnl[c]	Cholesta-8(9)-En-3Beta-Ol
+products:
+2935	       1	 1978.91	-29.69	-11.88	          lthstrl[c]	5Alpha-Cholest-7-En-3Beta-Ol
+
+4685	RE3180C	RE3180C	-67.13	128.82
+substrates:
+103	      -1	 -386.35	-29.69	-11.88	              co2[c]	Carbon Dioxide
+2818	      -3	 2136.00	-29.69	-11.88	           C05109[c]	24,25-Dihydrolanosterol
+products:
+20	       2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+2932	       3	 2023.42	-29.69	-11.88	           CE2313[c]	4,4-Dimethylcholesta-8(9),14-Dien-3Beta-Ol
+2971	       4	   86.98	-29.69	-11.88	           CE5049[c]	One Carbon Unit
+
+4698	Steryl-Sulfatase	RE3218C	 38.65	 92.09
+substrates:
+35	-0.999995	   42.75	-42.75	-42.75	                h[c]	Proton
+184	      -1	 1165.60	-29.69	-11.88	    5adtststerone[c]	17Beta-Hydroxy-5Alpha-Androstan-3-One
+1553	      -1	 -748.24	-29.69	-11.88	              so4[c]	Sulfate
+products:
+20	       1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+182	       1	  656.39	-29.69	-11.88	   5adtststerones[c]	5Alpha-Dihydrotestosterone Sulfate
+
+4724	RE3252C	RE3252C	 38.76	 74.38
+substrates:
+35	-1.73565e-05	   42.75	-42.75	-42.75	                h[c]	Proton
+3000	      -1	 1443.08	-29.69	-11.88	           CE4874[c]	5Beta-Cholestane-3Alpha,7Alpha,12Alpha,27,27-Pentaol
+products:
+20	       1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+2841	       1	 1651.32	-29.69	-11.88	           CE4872[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+
+4740	Aldehyde Dehydrogenase (NAD+)	RE3346C	-102.44	-46.19
+substrates:
+35	-2.12998	   42.75	-42.75	-42.75	                h[c]	Proton
+71	      -1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2454	      -1	 1370.79	-29.69	-11.88	      thcholstoic[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestanoate
+products:
+20	       1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+72	       1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2841	       1	 1651.32	-29.69	-11.88	           CE4872[c]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+
+4764	RE3437C	RE3437C	-267.61	-231.98
+substrates:
+3036	      -1	  776.27	-29.69	-11.88	           CE5946[c]	10,11-Dihydro-20-Trihydroxy-Leukotriene B4
+products:
+20	       1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	0.997611	   42.75	-42.75	-42.75	                h[c]	Proton
+3037	       1	  635.41	-29.69	-11.88	           CE5947[c]	20-COOH-10,11-Dihydro-Leukotriene B4
+
+4794	Carbonyl Reductase (NADPH)	RE3597C	-104.36	-37.03
+substrates:
+35	-1.13911	   42.75	-42.75	-42.75	                h[c]	Proton
+60	      -1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2895	      -1	  602.63	-29.69	-11.88	    leuktrB4wcooh[c]	W-Carboxy Leukotriene B4
+products:
+61	       1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+3037	       1	  635.41	-29.69	-11.88	           CE5947[c]	20-COOH-10,11-Dihydro-Leukotriene B4
+
+4795	Carbonyl Reductase (NADPH)	RE3597M	-110.28	-22.40
+substrates:
+28	-1.02382	   47.50	-47.50	-47.50	                h[m]	Proton
+29	      -1	-1414.13	-41.56	-14.11	            nadph[m]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2897	      -1	  735.65	-29.69	-11.88	    leuktrB4wcooh[m]	W-Carboxy Leukotriene B4
+products:
+31	       1	-1473.91	-41.56	-16.77	             nadp[m]	Nicotinamide Adenine Dinucleotide Phosphate
+3066	       1	  777.92	-29.69	-11.88	           CE5947[m]	20-COOH-10,11-Dihydro-Leukotriene B4
+
+4796	Carbonyl Reductase (NADPH)	RE3597X	-101.16	-29.90
+substrates:
+41	-1.21027	   41.56	-41.56	-41.56	                h[x]	Proton
+1840	      -1	-1568.64	-29.69	-11.88	            nadph[x]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+3061	      -1	  569.37	-29.69	-11.88	    leuktrB4wcooh[x]	W-Carboxy Leukotriene B4
+products:
+1841	       1	-1623.00	-29.69	-11.88	             nadp[x]	Nicotinamide Adenine Dinucleotide Phosphate
+3067	       1	  599.77	-29.69	-11.88	           CE5947[x]	20-COOH-10,11-Dihydro-Leukotriene B4
+
+4901	Production of Sebacoylcarnitine	C10DCc	-22.38	 34.64
+substrates:
+35	-0.016799	   42.75	-42.75	-42.75	                h[c]	Proton
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+3092	      -1	 -309.95	-29.69	-11.88	           sebcoa[c]	Sebacoyl Coenzyme A
+products:
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+3091	       1	  532.93	-29.69	-11.88	            c10dc[c]	Sebacoyl Carnitine
+
+4925	Production of Hexadecanedioylcarnitine	C16DCc	 -7.42	 49.59
+substrates:
+35	-0.0182792	   42.75	-42.75	-42.75	                h[c]	Proton
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+3127	      -1	  352.08	-29.69	-11.88	         hexdicoa[c]	Hexadecanedioyl Coenzyme A
+products:
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+3128	       1	 1209.92	-29.69	-11.88	            c16dc[c]	Hexadecanedioic Acid Mono-L-Carnitine Ester
+
+5054	Formation of Dodecanedioyl Carnitine	FAOXC12DCc	 17.26	 74.27
+substrates:
+35	-0.0181256	   42.75	-42.75	-42.75	                h[c]	Proton
+425	      -1	  178.07	-29.69	-11.88	              crn[c]	L-Carnitine
+3101	      -1	  -99.24	-29.69	-11.88	         c12dccoa[c]	Dodecanedioyl Coenzyme A
+products:
+126	       1	 -654.32	-26.93	-23.35	              coa[c]	Coenzyme A
+3103	       1	  783.28	-29.69	-11.88	            c12dc[c]	Dodecanedioyl Carnitine
+
+5055	Production of Dodecanedioyl Carnitine	FAOXC12DCx	 14.47	 85.72
+substrates:
+41	-0.0294301	   41.56	-41.56	-41.56	                h[x]	Proton
+895	      -1	  160.26	-29.69	-11.88	              crn[x]	L-Carnitine
+3099	      -1	 -159.95	-29.69	-11.88	         c12dccoa[x]	Dodecanedioyl Coenzyme A
+products:
+271	       1	 -692.48	-29.69	-11.88	              coa[x]	Coenzyme A
+3216	       1	  742.89	-29.69	-11.88	            c12dc[x]	Dodecanedioyl Carnitine
+
+5218	Production of Sebacoyl Carnitine	SEBCOACROT	-25.17	 46.09
+substrates:
+41	-0.0271847	   41.56	-41.56	-41.56	                h[x]	Proton
+895	      -1	  160.26	-29.69	-11.88	              crn[x]	L-Carnitine
+3201	      -1	 -365.91	-29.69	-11.88	           sebcoa[x]	Sebacoyl Coenzyme A
+products:
+271	       1	 -692.48	-29.69	-11.88	              coa[x]	Coenzyme A
+3090	       1	  497.29	-29.69	-11.88	            c10dc[x]	Sebacoyl Carnitine
+
+6714	Metabolism (Formation/Degradation) of ArgArg	ARGARGr	-25.89	 27.55
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.000192095	   42.75	-42.75	-42.75	                h[c]	Proton
+4010	      -1	  885.43	-29.69	-11.88	           argarg[c]	Arginyl-Arginine
+products:
+590	       2	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+
+6715	Metabolism (Formation/Degradation) of ArgArgLys	ARGARGLYSr	  6.91	 78.16
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4011	      -1	 1363.14	-29.69	-11.88	        argarglys[c]	Arginyl-Arginyl-Lysine
+products:
+35	0.00980983	   42.75	-42.75	-42.75	                h[c]	Proton
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+590	       2	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+
+6716	Metabolism (Formation/Degradation) of ArgArgMet	ARGARGMETr	266.61	337.87
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4012	      -1	 1193.33	-29.69	-11.88	        argargmet[c]	Arginyl-Arginyl-Metheonine
+products:
+35	0.00154403	   42.75	-42.75	-42.75	                h[c]	Proton
+590	       2	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+717	       1	  478.42	-29.69	-11.88	            met_L[c]	L-Methionine
+
+6724	Metabolism (Formation/Degradation) of ArgLysAsp	ARGLYSASPr	-23.70	 47.56
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.00470247	   42.75	-42.75	-42.75	                h[c]	Proton
+4020	      -1	  675.54	-29.69	-11.88	        arglysasp[c]	Arginyl-Lysyl-Aspartate
+products:
+143	       1	 -340.52	-29.69	-11.88	            asp_L[c]	L-Aspartate
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+
+6725	Metabolism (Formation/Degradation) of ArgPheArg	ARGPHEARGr	  2.57	 73.82
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4021	      -1	 1285.57	-29.69	-11.88	        argphearg[c]	Arginyl-Phenylalanine-Arginine
+products:
+35	0.0145404	   42.75	-42.75	-42.75	                h[c]	Proton
+590	       2	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+2138	       1	  306.60	-29.69	-11.88	            phe_L[c]	L-Phenylalanine
+
+6764	Metabolism (Formation/Degradation) of GlnLysLys	GLNLYSLYSr	 40.04	111.30
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4060	      -1	 1046.74	-29.69	-11.88	        glnlyslys[c]	Glutaminyl-Lysyl-Lysine
+products:
+35	0.0208552	   42.75	-42.75	-42.75	                h[c]	Proton
+498	       1	   83.59	-29.69	-11.88	            gln_L[c]	L-Glutamine
+559	       2	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+
+6817	Metabolism (Formation/Degradation) of LeuProArg	LEUPROARGr	-17.02	 54.24
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.0611609	   42.75	-42.75	-42.75	                h[c]	Proton
+4113	      -1	 1052.15	-29.69	-11.88	        leuproarg[c]	Leucyl-Prolyl-Arginine
+products:
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+1908	       1	  286.02	-29.69	-11.88	            leu_L[c]	L-Leucine
+2176	       1	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6826	Metabolism (Formation/Degradation) of LysGluGlu	LYSGLUGLUr	-431.04	-359.79
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4122	      -1	  526.23	-29.69	-11.88	        lysgluglu[c]	Lysyl-Glutamyl-Glutamate
+products:
+35	 18.0075	   42.75	-42.75	-42.75	                h[c]	Proton
+122	       2	 -259.75	-29.69	-11.88	            glu_L[c]	L-Glutamate
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+
+6827	Metabolism (Formation/Degradation) of LysLysLys	LYSLYSLYSr	 43.39	114.64
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4123	      -1	 1348.32	-29.69	-11.88	        lyslyslys[c]	Lysyl-Lysyl-Lysine
+products:
+35	0.0207766	   42.75	-42.75	-42.75	                h[c]	Proton
+559	       3	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+
+6829	Metabolism (Formation/Degradation) of LysTrpArg	LYSTRPARGr	 34.65	105.90
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4125	      -1	 1401.82	-29.69	-11.88	        lystrparg[c]	Lysyl-Tryptophanyl-Arginine
+products:
+35	0.0350768	   42.75	-42.75	-42.75	                h[c]	Proton
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+1942	       1	  444.10	-29.69	-11.88	            trp_L[c]	L-Tryptophan
+
+6848	Metabolism (Formation/Degradation) of PheLysPro	PHELYSPROr	 -3.62	 67.63
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4144	      -1	 1070.17	-29.69	-11.88	        phelyspro[c]	Phenylalanyl-Lysyl-Proline
+products:
+35	0.00274279	   42.75	-42.75	-42.75	                h[c]	Proton
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+2138	       1	  306.60	-29.69	-11.88	            phe_L[c]	L-Phenylalanine
+2176	       1	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6860	Metabolism (Formation/Degradation) of ProArgCys	PROARGCYSr	 -3.25	 68.01
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4156	      -1	  764.49	-29.69	-11.88	        proargcys[c]	Prolyl-Arginyl-Cysteine
+products:
+35	0.0391309	   42.75	-42.75	-42.75	                h[c]	Proton
+494	       1	   12.13	-29.69	-11.88	            cys_L[c]	L-Cysteine
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+2176	       1	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6867	Metabolism (Formation/Degradation) of ProLeuArg	PROLEUARGr	  2.24	 73.49
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4163	      -1	 1032.89	-29.69	-11.88	        proleuarg[c]	Prolyl-Leucyl-Arginine
+products:
+35	0.0260079	   42.75	-42.75	-42.75	                h[c]	Proton
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+1908	       1	  286.02	-29.69	-11.88	            leu_L[c]	L-Leucine
+2176	       1	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6868	Metabolism (Formation/Degradation) of ProLysPro	PROLYSPROr	 -5.60	 65.65
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.000874678	   42.75	-42.75	-42.75	                h[c]	Proton
+4164	      -1	  910.81	-29.69	-11.88	        prolyspro[c]	Prolyl-Lysyl-Proline
+products:
+559	       1	  388.52	-29.69	-11.88	            lys_L[c]	L-Lysine
+2176	       2	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6870	Metabolism (Formation/Degradation) of ProProArg	PROPROARGr	-27.42	 43.83
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4166	      -1	  921.79	-29.69	-11.88	        proproarg[c]	Prolyl-Prolyl-Arginine
+products:
+35	0.0201042	   42.75	-42.75	-42.75	                h[c]	Proton
+590	       1	  377.68	-29.69	-11.88	            arg_L[c]	L-Arginine
+2176	       2	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6871	Metabolism (Formation/Degradation) of ProProPro	PROPROPROr	-39.60	 31.65
+substrates:
+20	      -2	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.00787685	   42.75	-42.75	-42.75	                h[c]	Proton
+4167	      -1	  701.55	-29.69	-11.88	        propropro[c]	Prolyl-Prolyl-Proline
+products:
+2176	       3	  145.26	-29.69	-11.88	            pro_L[c]	L-Proline
+
+6986	Formation of Homocystine	LHCYSTIN	-48.62	 58.26
+substrates:
+35	-0.000146006	   42.75	-42.75	-42.75	                h[c]	Proton
+947	      -2	 -129.07	-29.69	-11.88	            gthrd[c]	Reduced Glutathione
+4255	      -1	  179.66	-29.69	-11.88	         Lhcystin[c]	L-Homocystine
+products:
+714	       2	  121.04	-29.69	-11.88	           hcys_L[c]	L-Homocysteine
+948	       1	 -315.73	-29.69	-11.88	            gthox[c]	Glutathione Disulfide (Oxidized Glutathione)
+
+8552	HMR_0979	HMR_0979	-164.10	-75.03
+substrates:
+21	      -1	   16.40	-29.69	-11.88	               o2[c]	Oxygen
+35	-0.000501339	   42.75	-42.75	-42.75	                h[c]	Proton
+3043	      -2	  949.08	-29.69	-11.88	           CE2084[c]	5-Oxo-(6E,8Z,11Z,14Z)-Eicosatetraenoic Acid
+products:
+3013	       2	  887.11	-29.69	-11.88	           CE5178[c]	5-Oxo-6-Trans-Leukotriene B4
+
+8571	Alcohol Dehydrogenase	HMR_1129	 -0.69	 55.56
+substrates:
+72	      -1	 -703.05	-23.61	-18.53	              nad[c]	Nicotinamide Adenine Dinucleotide
+2898	      -1	  904.14	-29.69	-11.88	      leuktrB4woh[c]	W-Hydroxyl Leukotriene B4
+products:
+35	  1.1326	   42.75	-42.75	-42.75	                h[c]	Proton
+71	       1	 -578.41	-35.83	-20.29	             nadh[c]	Nicotinamide Adenine Dinucleotide - Reduced
+2896	       1	  771.16	-29.69	-11.88	           CE2053[c]	20-Oxo-Leukotriene B4
+
+8596	Farnesyl-Diphosphate:Farnesyl-Diphosphate Farnesyltransferase	HMR_1465	 54.78	111.54
+substrates:
+392	      -1	-1939.79	-15.90	-12.58	              ppi[c]	Diphosphate
+4782	      -1	  305.45	-29.69	-11.88	          HC01118[c]	Presqualene Diphosphate
+products:
+35	0.746867	   42.75	-42.75	-42.75	                h[c]	Proton
+1160	       2	 -772.32	-29.69	-11.88	             frdp[c]	Farnesyl Diphosphate
+
+8640	3-Hydroxyacyl Coenzyme A Dehydrogenase	HMR_1651	 65.73	132.33
+substrates:
+84	      -1	 -579.24	-19.60	-12.62	              nad[m]	Nicotinamide Adenine Dinucleotide
+4813	      -1	 1083.62	-29.69	-11.88	          HC01459[m]	(24R,25R)-3Alpha,7Alpha,12Alpha,24-Tetrahydroxy-5Beta-Cholestan-26-Oyl Coenzyme A
+products:
+28	 1.02383	   47.50	-47.50	-47.50	                h[m]	Proton
+83	       1	 -450.15	-41.56	-17.57	             nadh[m]	Nicotinamide Adenine Dinucleotide - Reduced
+4812	       1	 1019.51	-29.69	-11.88	       cholcoaone[m]	3A,7A,12A-Trihydroxy-5B-24-Oxocholestanoyl Coenzyme A
+
+8685	Cholestanetriol 26-Monooxygenase	HMR_1807	-74.38	-38.76
+substrates:
+25	      -1	 -142.18	  0.00	  0.00	              h2o[m]	Water
+2842	      -1	 1869.84	-29.69	-11.88	           CE4872[m]	3Alpha,7Alpha,12Alpha-Trihydroxy-5Beta-Cholestan-27-Al
+products:
+28	0.000109502	   47.50	-47.50	-47.50	                h[m]	Proton
+3001	       1	 1671.09	-29.69	-11.88	           CE4874[m]	5Beta-Cholestane-3Alpha,7Alpha,12Alpha,27,27-Pentaol
+
+8686	Glycodeoxycholate Amidohydrolase	HMR_1834	 30.53	 83.97
+substrates:
+35	-1.07128	   42.75	-42.75	-42.75	                h[c]	Proton
+500	      -1	  -64.22	-29.69	-11.88	              gly[c]	Glycine
+2786	      -1	 1184.86	-29.69	-11.88	            dchac[c]	Deoxycholate
+products:
+20	       1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+4841	       1	 1351.55	-29.69	-11.88	           M01989[c]	Glycodeoxycholic Acid
+
+8718	Transferred to 1.3.1.30 And 1.3.1.22	HMR_2002	 16.79	 84.12
+substrates:
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+2792	      -1	 1258.00	-29.69	-11.88	           C03681[c]	5Alpha-Pregnane-3,20-Dione
+products:
+35	  1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+482	       1	 1204.99	-29.69	-11.88	          prgstrn[c]	Progesterone
+
+8722	Delta4-3-Oxosteroid 5Beta-Reductase	HMR_2014	-72.47	 -5.14
+substrates:
+35	 -1.1398	   42.75	-42.75	-42.75	                h[c]	Proton
+60	      -1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+2697	      -1	 1029.90	-29.69	-11.88	        andrstndn[c]	Androst-4-Ene-3,17-Dione
+products:
+61	       1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+4444	       1	 1094.56	-29.69	-11.88	       andrstandn[c]	5Alpha-Androstane-3,17-Dione
+
+8928	Carnitine O-Acetyltransferase	HMR_2866	-13.04	 58.21
+substrates:
+927	      -1	  178.07	-29.69	-11.88	              crn[r]	L-Carnitine
+2929	      -1	  656.10	-29.69	-11.88	        tmndnccoa[r]	Eicosa-5,8,11,14,17-All-Cis-Pentaenoyl Coenzyme A
+products:
+729	0.0558649	   42.75	-42.75	-42.75	                h[r]	Proton
+873	       1	 -654.32	-29.69	-11.88	              coa[r]	Coenzyme A
+4995	       1	 1511.09	-29.69	-11.88	        tmndnccrn[r]	5Z,8Z,11Z,14Z,17Z-Eicosapentaenoylcarnitine
+
+9159	Alpha-Methylacyl Coenzyme A Racemase	HMR_3491	-10.76	 24.87
+substrates:
+2863	      -1	  859.11	-29.69	-11.88	           CE5126[x]	(2R)-Pristanoyl Coenzyme A
+products:
+2126	       1	  866.17	-29.69	-11.88	         pristcoa[x]	Pristanoyl Coenzyme A
+
+9292	HMR_4771	HMR_4771	 95.46	131.09
+substrates:
+20	      -1	 -151.68	  0.00	  0.00	              h2o[c]	Water
+35	-0.000206674	   42.75	-42.75	-42.75	                h[c]	Proton
+5207	      -1	-1345.04	-29.69	-11.88	          HC01609[c]	Uroporphyrinogeni
+products:
+4302	       1	-1383.44	-29.69	-11.88	            hmbil[c]	Hydroxymethylbilane
+
+9320	HMR_6456	HMR_6456	-73.24	-37.61
+substrates:
+35	-0.999047	   42.75	-42.75	-42.75	                h[c]	Proton
+2858	      -1	 2057.35	-29.69	-11.88	           CE7047[c]	Gama-Tocopheroxyl Radical
+products:
+1110	       1	 2044.68	-29.69	-11.88	            yvite[c]	(+)-Gama-Tocopherol
+
+9321	HMR_6500	HMR_6500	-152.40	-81.15
+substrates:
+35	-0.00083008	   42.75	-42.75	-42.75	                h[c]	Proton
+877	      -1	 4133.11	-29.69	-11.88	              q10[m]	Ubiquinone-10
+2808	      -1	 2078.17	-29.69	-11.88	           CE5021[c]	Alpha-Tocopheryl Hydroquinone
+products:
+28	0.00945211	   47.50	-47.50	-47.50	                h[m]	Proton
+945	       1	 4127.85	-29.69	-11.88	            q10h2[m]	Ubiquinol-10
+2809	       1	 1976.15	-29.69	-11.88	           CE5022[c]	Alpha-Tocopheryl Quinone
+
+9553	3Beta-Hydroxysteroid 3-Dehydrogenase	HMR_1500	-111.13	-43.80
+substrates:
+35	 -2.8602	   42.75	-42.75	-42.75	                h[c]	Proton
+61	      -1	-1593.06	-41.56	-31.08	             nadp[c]	Nicotinamide Adenine Dinucleotide Phosphate
+4790	      -1	 1860.87	-29.69	-11.88	       4mzym_int2[c]	3-Keto-4-Methylzymosterol
+products:
+60	       1	-1537.71	-41.56	-20.34	            nadph[c]	Nicotinamide Adenine Dinucleotide Phosphate - Reduced
+4791	       1	 1850.94	-29.69	-11.88	          HC02110[c]	4Alpha-Methylzymosterol
+
