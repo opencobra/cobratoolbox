@@ -1,0 +1,7 @@
+NADTRHD	nad[c] + nadph[c]  -> nadh[c] + nadp[c] 	-2.2	2.8	-41.4	42.0
+
+Cytoplasmic metabolites only:
+1	nad	nad[c]	1619.8	50000.0	
+1	nadh	nadh[c]	1681.9	50000.0	
+1	nadp	nadp[c]	727.6	50000.0	
+1	nadph	nadph[c]	789.3	50000.0	

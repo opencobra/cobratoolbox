@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4"
+      xmlns:celldesigner="http://www.sbml.org/2001/ns/celldesigner"
+      level="2"
+      version="4">
+   <model id="Mito_center_corrected_0108FM" metaid="Mito_center_corrected_0108FM">
+      <annotation>
+         <celldesigner:extension>
+            <celldesigner:modelVersion>4.0</celldesigner:modelVersion>
+            <celldesigner:modelDisplay sizeX="75030" sizeY="75030"/>
+            <celldesigner:listOfCompartmentAliases/>
+            <celldesigner:listOfComplexSpeciesAliases/>
+            <celldesigner:listOfSpeciesAliases/>
+            <celldesigner:listOfGroups/>
+            <celldesigner:listOfProteins/>
+            <celldesigner:listOfGenes>
+               <celldesigner:gene id="gn2" name="s9392" type="GENE"/>
+               <celldesigner:gene id="gn6" name="s9396" type="GENE"/>
+               <celldesigner:gene id="gn7" name="s9397" type="GENE"/>
+               <celldesigner:gene id="gn5" name="s9395" type="GENE"/>
+            </celldesigner:listOfGenes>
+            <celldesigner:listOfRNAs/>
+            <celldesigner:listOfAntisenseRNAs/>
+            <celldesigner:listOfLayers/>
+            <celldesigner:listOfBlockDiagrams/>
+         </celldesigner:extension>
+      </annotation>
+      <listOfUnitDefinitions>
+         <unitDefinition id="substance" metaid="substance" name="substance">
+            <listOfUnits>
+               <unit kind="mole" metaid="CDMT36548"/>
+            </listOfUnits>
+         </unitDefinition>
+         <unitDefinition id="volume" metaid="volume" name="volume">
+            <listOfUnits>
+               <unit kind="litre" metaid="CDMT36549"/>
+            </listOfUnits>
+         </unitDefinition>
+         <unitDefinition id="area" metaid="area" name="area">
+            <listOfUnits>
+               <unit exponent="2" kind="metre" metaid="CDMT36550"/>
+            </listOfUnits>
+         </unitDefinition>
+         <unitDefinition id="length" metaid="length" name="length">
+            <listOfUnits>
+               <unit kind="metre" metaid="CDMT36551"/>
+            </listOfUnits>
+         </unitDefinition>
+         <unitDefinition id="time" metaid="time" name="time">
+            <listOfUnits>
+               <unit kind="second" metaid="CDMT36552"/>
+            </listOfUnits>
+         </unitDefinition>
+      </listOfUnitDefinitions>
+      <listOfCompartments>
+         <compartment id="default" metaid="default" size="1" units="volume"/>
+      </listOfCompartments>
+      <listOfSpecies/>
+      <listOfReactions/>
+   </model>
+</sbml>

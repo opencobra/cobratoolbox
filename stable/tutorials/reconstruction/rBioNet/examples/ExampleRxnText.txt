@@ -1,0 +1,27 @@
+********************************************************************************************************
+********************************************************************************************************
+*This is an example of a reaction text file. 1 reaction per line and 12 columns divided with tabs, the column order is
+*stated under the broken line. If you create your reactions in a program like Excel and copy/paste the
+*gene information to notepad the taps are automatically generated.								       
+*												       
+*You may notice that not all columns are aligned. This happens because specific columns have more 
+*characters then the next. It is normal and will not have any affect on the column order.	
+*
+*All lines that start with a star are regarded as comments. Please avoid from having empty lines,      
+*unnecessary information and etc in your text files.
+*
+*This information is strictly explanatory and not necessary accurate. 
+*------------------------------------------------------------------------------------------------------
+* Abbreviation | Description | Formula | Reversible | Mechanism Confidence Score | Notes | References | EC number | KeggID 
+********************************************************************************************************
+********************************************************************************************************      					       
+BVITEt	beta-Tocopherol (Vit. E) transport	bvite[e] -> bvite[c] 	0	2	IT	Vitamins	
+BZt	benzoate transport (diffusion)	bz[e] <=> bz[c] 	1	1	NJ	
+BZtr	Benzene transporter, endoplasmic reticulum	bz[c] <=> bz[r] 	1	1	diffusion NJ	
+B_MANNASEly	beta-mannosidase, lysosomal	h2o[l] + mn[l] -> acgam[l] + man[l] 	0	0	NCD	PMID:9384606	3.2.1.25	[]
+C110CPT2m	C110 transport into the mitochondria	coa[m] + dmnoncrn[m] -> crn[m] + dmnoncoa[m] 	0	2	NJ	PMID:9819701	[]	
+C14STRr	C-14 sterol reductase	44mctr[r] + h[r] + nadph[r] -> 44mzym[r] + nadp[r] 	0	4	NCD ER version NJ	PMID:16784888,	1.3.1.70	[]
+C160CPT1	carnitine O-palmitoyltransferase	crn[c] + pmtcoa[c] -> coa[c] + pmtcrn[c] 	0	4	""	PMID:1988962	2.3.1.21	[]
+C160CPT2	C160 transport 	coa[m] + pmtcrn[m] -> crn[m] + pmtcoa[m] 	0	4	TV	PMID:1528846,PMID:1988962	2.3.1.21	[]
+C160CRNt	C160 transport into the mitochondria	pmtcrn[c] -> pmtcrn[m] 	0	4	TV	PMID:14598172,	[]	[]
+

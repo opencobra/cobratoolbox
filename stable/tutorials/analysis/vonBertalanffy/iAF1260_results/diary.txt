@@ -1,0 +1,2073 @@
+model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel);
+
+Field metCompartments is missing from model structure. Attempting to create it.
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('configureSetupThermoModelInputs', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m', 85)" style="font-weight:bold">configureSetupThermoModelInputs</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m',85,0)">line 85</a>)
+Could not create field metCompartments. Please do so manually.\n
+} 
+opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m',85,0)
+model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel);
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m',79,1)">79  </a>if isempty(model.metCompartments)
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+
+Field metCompartments is missing from model structure. Attempting to create it.
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+cd /home/rfleming/work/sbgCloud/code/fork-cobratoolbox/test/models/mat/
+model = readCbModel('Ec_iAF1260_flux1.xml')
+
+model = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+               S: [1668×2382 double]
+            mets: {1668×1 cell}
+               b: [1668×1 double]
+          csense: [1668×1 char]
+            rxns: {2382×1 cell}
+              lb: [2382×1 double]
+              ub: [2382×1 double]
+               c: [2382×1 double]
+       osenseStr: 'max'
+           genes: {1261×1 cell}
+           rules: {2382×1 cell}
+       geneNames: {1261×1 cell}
+       compNames: {3×1 cell}
+           comps: {3×1 cell}
+        proteins: {1261×1 cell}
+      metCharges: [1668×1 double]
+        metNames: {1668×1 cell}
+        rxnNames: {2382×1 cell}
+        rxnNotes: {2382×1 cell}
+      subSystems: {2382×1 cell}
+     description: 'Ec_iAF1260_flux1.xml'
+    modelVersion: [1×1 struct]
+       modelName: 'Ec_iAF1260'
+         modelID: 'Ec_iAF1260'
+
+edit writeCbModel.m
+outmodel = writeCbModel(model)
+Each model.subSystems{x} is a changed to a character array.
+
+outmodel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+               S: [1668×2382 double]
+               b: [1668×1 double]
+               c: [2382×1 double]
+       compNames: {3×1 cell}
+           comps: {3×1 cell}
+          csense: [1668×1 char]
+     description: 'Ec_iAF1260_flux1.xml'
+       geneNames: {1261×1 cell}
+           genes: {1261×1 cell}
+              lb: [2382×1 double]
+      metCharges: [1668×1 double]
+        metNames: {1668×1 cell}
+            mets: {1668×1 cell}
+         modelID: 'Ec_iAF1260'
+       modelName: 'Ec_iAF1260'
+    modelVersion: [1×1 struct]
+       osenseStr: 'max'
+        proteins: {1261×1 cell}
+           rules: {2382×1 cell}
+        rxnNames: {2382×1 cell}
+        rxnNotes: {2382×1 cell}
+            rxns: {2382×1 cell}
+      subSystems: {2382×1 cell}
+              ub: [2382×1 double]
+
+outmodel = writeCbModel(model,'fileName','Ec_iAF1260_flux1.xml')
+Each model.subSystems{x} is a changed to a character array.
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cell/unique', '/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/ops/@cell/unique.p', 101)" style="font-weight:bold">cell/unique</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/ops/@cell/unique.p',101,0)">line 101</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('cell/ismember', '/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/ops/@cell/ismember.p', 64)" style="font-weight:bold">cell/ismember</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/ops/@cell/ismember.p',64,0)">line 64</a>)
+            uB = unique(b(:),'sorted');
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('makeSBMLAnnotationString', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/utilities/SBML/makeSBMLAnnotationString.m', 68)" style="font-weight:bold">makeSBMLAnnotationString</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/utilities/SBML/makeSBMLAnnotationString.m',68,0)">line 68</a>)
+        knownExistentFields = knownFields(ismember(knownFields(:,3),modelFields),:);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('writeSBML', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/utilities/writeSBML.m', 474)" style="font-weight:bold">writeSBML</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/utilities/writeSBML.m',474,0)">line 474</a>)
+    [tmp_Rxn.annotation,rxn_notes] = makeSBMLAnnotationString(model,tmp_Rxn.metaid,'rxn',i);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('writeCbModel', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/writeCbModel.m', 220)" style="font-weight:bold">writeCbModel</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/base/io/writeCbModel.m',220,0)">line 220</a>)
+        outmodel = writeSBML(model, fileName, input.compSymbols, input.compNames);
+} 
+outmodel = writeCbModel(model,'fileName','Ec_iAF1260_flux1.mat')
+Each model.subSystems{x} is a changed to a character array.
+
+outmodel = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+               S: [1668×2382 double]
+               b: [1668×1 double]
+               c: [2382×1 double]
+       compNames: {3×1 cell}
+           comps: {3×1 cell}
+          csense: [1668×1 char]
+     description: 'Ec_iAF1260_flux1.xml'
+       geneNames: {1261×1 cell}
+           genes: {1261×1 cell}
+              lb: [2382×1 double]
+      metCharges: [1668×1 double]
+        metNames: {1668×1 cell}
+            mets: {1668×1 cell}
+         modelID: 'Ec_iAF1260'
+       modelName: 'Ec_iAF1260'
+    modelVersion: [1×1 struct]
+       osenseStr: 'max'
+        proteins: {1261×1 cell}
+           rules: {2382×1 cell}
+        rxnNames: {2382×1 cell}
+        rxnNotes: {2382×1 cell}
+            rxns: {2382×1 cell}
+      subSystems: {2382×1 cell}
+              ub: [2382×1 double]
+
+clear
+load('Ec_iAF1260_flux1.mat')
+clear
+if system_dependent('IsDebugMode')==1, dbquit; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+groupsTemp
+
+groupsTemp =
+
+    'python2: can't open file '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/groupContribution/inchi2gv.py': [Errno 2] No such file or directory
+     '
+
+if system_dependent('IsDebugMode')==1, dbquit all; end
+training_data = prepareTrainingData(model,printLevel);
+Successfully added 3914 values from TECRDB
+Successfully added 223 formation energies
+Successfully added 13 redox potentials
+Loading the InChIs for the training data from: /home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/componentContribution/cache/kegg_inchies.mat
+Successfully created balanced training-data structure: 672 compounds and 3061 reactions
+Loading the pKa values for the training data from: cache/kegg_pkas.mat
+Mapping model metabolites to nist compounds
+Creating group incidence matrix
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m',24,1)">24  </a>if status~=0
+if system_dependent('IsDebugMode')==1, dbquit; end
+training_data = prepareTrainingData(model,printLevel);
+Successfully added 3914 values from TECRDB
+Successfully added 223 formation energies
+Successfully added 13 redox potentials
+Loading the InChIs for the training data from: /home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/componentContribution/cache/kegg_inchies.mat
+Successfully created balanced training-data structure: 672 compounds and 3061 reactions
+Loading the pKa values for the training data from: cache/kegg_pkas.mat
+Mapping model metabolites to nist compounds
+Creating group incidence matrix
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/componentContribution/createGroupIncidenceMatrix.m',24,1)">24  </a>if status~=0
+['python2 ' fullpath 'inchi2gv.py -l']
+
+ans =
+
+    'python2 /home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/componentContribution/inchi2gv.py -l'
+
+if system_dependent('IsDebugMode')==1, dbquit all; end
+model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
+[Warning: vonBertalanffy:pHbalanceProtons 'Hydrogen unbalanced reconstruction reactions exist!] 
+[> In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('pHbalanceProtons', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m', 143)" style="font-weight:bold">pHbalanceProtons</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',143,0)">line 143</a>)] 
+{Matrix dimensions must agree.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('pHbalanceProtons', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m', 291)" style="font-weight:bold">pHbalanceProtons</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',291,0)">line 291</a>)
+                            metCompartBool1 = model.S(:,n)~=0 & compartBool1 & ~boolH;
+} 
+opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',143,0)
+opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',143,0)
+opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',291,0)
+model=pHbalanceProtons(model,massImbalance,printLevel_pHbalanceProtons,resultsBaseFileName);
+[Warning: vonBertalanffy:pHbalanceProtons 'Hydrogen unbalanced reconstruction reactions exist!] 
+[> In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('pHbalanceProtons', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m', 143)" style="font-weight:bold">pHbalanceProtons</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',143,0)">line 143</a>)] 
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m',291,1)">291 </a>                            metCompartBool1 = model.S(:,n)~=0 & compartBool1 & ~boolH;
+if system_dependent('IsDebugMode')==1, dbquit; end
+edit vonBertalanffy/configureSetupThermoModelInputs.m
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+model.mets
+
+ans =
+
+  1668×1 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {'2agpg161[c]'        }
+    {'2agpg161[p]'        }
+    {'2agpg180[c]'        }
+    {'2agpg180[p]'        }
+    {'2agpg181[c]'        }
+    {'2agpg181[p]'        }
+    {'2ahbut[c]'          }
+    {'2amsa[c]'           }
+    {'2aobut[c]'          }
+    {'2cpr5p[c]'          }
+    {'2dda7p[c]'          }
+    {'2ddecg3p[c]'        }
+    {'2ddecg3p[p]'        }
+    {'2ddg6p[c]'          }
+    {'2ddglcn[c]'         }
+    {'2ddglcn[e]'         }
+    {'2ddglcn[p]'         }
+    {'2dh3dgal6p[c]'      }
+    {'2dh3dgal[c]'        }
+    {'2dhglcn[c]'         }
+    {'12dgr181[c]'        }
+    {'10fthf[c]'          }
+    {'2dhguln[c]'         }
+    {'12dgr120[c]'        }
+    {'2dhp[c]'            }
+    {'12dgr181[p]'        }
+    {'2dmmq8[c]'          }
+    {'12ppd__R[c]'        }
+    {'2dmmql8[c]'         }
+    {'12dgr120[p]'        }
+    {'2dr1p[c]'           }
+    {'12dgr140[c]'        }
+    {'12dgr140[p]'        }
+    {'12ppd__R[e]'        }
+    {'2dr5p[c]'           }
+    {'12ppd__R[p]'        }
+    {'12dgr141[c]'        }
+    {'2h3oppan[c]'        }
+    {'12dgr141[p]'        }
+    {'12ppd__S[c]'        }
+    {'2hdec9eg3p[c]'      }
+    {'12ppd__S[e]'        }
+    {'12dgr160[c]'        }
+    {'2hdec9eg3p[p]'      }
+    {'12dgr160[p]'        }
+    {'12ppd__S[p]'        }
+    {'2hdecg3p[c]'        }
+    {'13dpg[c]'           }
+    {'12dgr161[c]'        }
+    {'2hdecg3p[p]'        }
+    {'12dgr161[p]'        }
+    {'14glucan[c]'        }
+    {'2ippm[c]'           }
+    {'14glucan[e]'        }
+    {'12dgr180[c]'        }
+    {'2kmb[c]'            }
+    {'12dgr180[p]'        }
+    {'14glucan[p]'        }
+    {'2mahmp[c]'          }
+    {'15dap[c]'           }
+    {'2mcacn[c]'          }
+    {'15dap[e]'           }
+    {'15dap[p]'           }
+    {'2mcit[c]'           }
+    {'2me4p[c]'           }
+    {'2mecdp[c]'          }
+    {'1agpe120[p]'        }
+    {'2obut[c]'           }
+    {'1agpe140[p]'        }
+    {'1agpe141[p]'        }
+    {'2odec11eg3p[c]'     }
+    {'1agpe160[p]'        }
+    {'2odec11eg3p[p]'     }
+    {'1agpe161[p]'        }
+    {'3hoctaACP[c]'       }
+    {'2odecg3p[c]'        }
+    {'3hodcoa[c]'         }
+    {'1agpe180[p]'        }
+    {'2odecg3p[p]'        }
+    {'1agpe181[p]'        }
+    {'1agpg120[p]'        }
+    {'3hpalmACP[c]'       }
+    {'2ohph[c]'           }
+    {'3hpppn[c]'          }
+    {'3hpppn[e]'          }
+    {'1agpg140[p]'        }
+    {'1agpg141[p]'        }
+    {'1agpg160[p]'        }
+    {'1agpg161[p]'        }
+    {'3hpppn[p]'          }
+    {'2ombzl[c]'          }
+    {'3htdcoa[c]'         }
+    {'1agpg180[p]'        }
+    {'1agpg181[p]'        }
+    {'2omhmbl[c]'         }
+    {'1ddecg3p[c]'        }
+    {'3ig3p[c]'           }
+    {'3mob[c]'            }
+    {'2ommbl[c]'          }
+    {'3mop[c]'            }
+    {'1ddecg3p[p]'        }
+    {'2omph[c]'           }
+    {'1hdec9eg3p[c]'      }
+    {'1hdec9eg3p[p]'      }
+    {'3ocddec5eACP[c]'    }
+    {'2oph[c]'            }
+    {'1hdecg3p[c]'        }
+    {'2p4c2me[c]'         }
+    {'1hdecg3p[p]'        }
+    {'1odec11eg3p[c]'     }
+    {'1odec11eg3p[p]'     }
+    {'2pg[c]'             }
+    {'1odecg3p[c]'        }
+    {'1odecg3p[p]'        }
+    {'3ocmrs7eACP[c]'     }
+    {'3ocpalm9eACP[c]'    }
+    {'1pyr5c[c]'          }
+    {'2pglyc[c]'          }
+    {'1tdec7eg3p[c]'      }
+    {'3ocvac11eACP[c]'    }
+    {'3odcoa[c]'          }
+    {'2shchc[c]'          }
+    {'3oddcoa[c]'         }
+    {'1tdec7eg3p[p]'      }
+    {'2tdec7eg3p[c]'      }
+    {'1tdecg3p[c]'        }
+    {'3oddecACP[c]'       }
+    {'2tdec7eg3p[p]'      }
+    {'3odecACP[c]'        }
+    {'1tdecg3p[p]'        }
+    {'2tdecg3p[c]'        }
+    {'3ohcoa[c]'          }
+    {'3ohdcoa[c]'         }
+    {'2tdecg3p[p]'        }
+    {'3ohexACP[c]'        }
+    {'23camp[e]'          }
+    {'2tpr3dpcoa[c]'      }
+    {'23camp[p]'          }
+    {'3omrsACP[c]'        }
+    {'34dhpac[e]'         }
+    {'3oocoa[c]'          }
+    {'23ccmp[e]'          }
+    {'3ooctACP[c]'        }
+    {'34dhpac[p]'         }
+    {'3ooctdACP[c]'       }
+    {'23ccmp[p]'          }
+    {'23cgmp[e]'          }
+    {'34hpp[c]'           }
+    {'23cgmp[p]'          }
+    {'3ohodcoa[c]'        }
+    {'3amp[e]'            }
+    {'3opalmACP[c]'       }
+    {'23cump[e]'          }
+    {'3ophb[c]'           }
+    {'3amp[p]'            }
+    {'3otdcoa[c]'         }
+    {'23cump[p]'          }
+    {'3c2hmp[c]'          }
+    {'23dappa[c]'         }
+    {'23dappa[e]'         }
+    {'3pg[c]'             }
+    {'3c3hmp[c]'          }
+    {'3php[c]'            }
+    {'3psme[c]'           }
+    {'23dappa[p]'         }
+    {'3c4mop[c]'          }
+    {'23ddhb[c]'          }
+    {'3sala[c]'           }
+    {'3cmp[e]'            }
+    {'23dhb[c]'           }
+    {'3cmp[p]'            }
+    {'23dhba[c]'          }
+    {'3ump[e]'            }
+    {'3ump[p]'            }
+    {'4abut[c]'           }
+    {'4abut[e]'           }
+    {'23dhbzs[c]'         }
+    {'23dhdp[c]'          }
+    {'23dhmb[c]'          }
+    {'3dhguln[c]'         }
+    {'23dhmp[c]'          }
+    {'4abut[p]'           }
+    {'4abutn[c]'          }
+    {'3dhgulnp[c]'        }
+    {'4abz[c]'            }
+    {'3dhq[c]'            }
+    {'4adcho[c]'          }
+    {'23doguln[c]'        }
+    {'3dhsk[c]'           }
+    {'25aics[c]'          }
+    {'4ahmmp[c]'          }
+    {'4ampm[c]'           }
+    {'3gmp[e]'            }
+    {'4c2me[c]'           }
+    {'3gmp[p]'            }
+    {'4h2opntn[c]'        }
+    {'25dkglcn[c]'        }
+    {'25drapp[c]'         }
+    {'3haACP[c]'          }
+    {'26dap_LL[c]'        }
+    {'3hbcoa[c]'          }
+    {'26dap__M[c]'        }
+    {'3hcddec5eACP[c]'    }
+    {'26dap__M[e]'        }
+    {'4hba[c]'            }
+    {'3hcinnm[c]'         }
+    {'4hbz[c]'            }
+    {'26dap__M[p]'        }
+    {'3hcinnm[e]'         }
+    {'2agpe120[c]'        }
+    {'4hoxpacd[e]'        }
+    {'3hcinnm[p]'         }
+    {'4hoxpacd[p]'        }
+    {'2agpe120[p]'        }
+    {'4hthr[c]'           }
+    {'3hcmrs7eACP[c]'     }
+    {'4mhetz[c]'          }
+    {'2agpe140[c]'        }
+    {'3hcpalm9eACP[c]'    }
+    {'2agpe140[p]'        }
+    {'4mop[c]'            }
+    {'3hcvac11eACP[c]'    }
+    {'4mpetz[c]'          }
+    {'2agpe141[c]'        }
+    {'2agpe141[p]'        }
+    {'3hdcoa[c]'          }
+    {'2agpe160[c]'        }
+    {'4pasp[c]'           }
+    {'3hddcoa[c]'         }
+    {'4per[c]'            }
+    {'4ppan[c]'           }
+    {'2agpe160[p]'        }
+    {'3hddecACP[c]'       }
+    {'2agpe161[c]'        }
+    {'4ppcys[c]'          }
+    {'3hdecACP[c]'        }
+    {'4r5au[c]'           }
+    {'2agpe161[p]'        }
+    {'2agpe180[c]'        }
+    {'3hhcoa[c]'          }
+    {'2agpe180[p]'        }
+    {'5aizc[c]'           }
+    {'3hhdcoa[c]'         }
+    {'5aop[c]'            }
+    {'5aprbu[c]'          }
+    {'2agpe181[c]'        }
+    {'3hhexACP[c]'        }
+    {'2agpe181[p]'        }
+    {'5apru[c]'           }
+    {'3hmrsACP[c]'        }
+    {'2agpg120[c]'        }
+    {'3hocoa[c]'          }
+    {'2agpg120[p]'        }
+    {'5caiz[c]'           }
+    {'3hoctACP[c]'        }
+    {'5dglcn[c]'          }
+    {'2agpg140[c]'        }
+    {'2agpg140[p]'        }
+    {'5dglcn[e]'          }
+    {'aacoa[c]'           }
+    {'5dglcn[p]'          }
+    {'5dh4dglc[c]'        }
+    {'5drib[c]'           }
+    {'2agpg141[c]'        }
+    {'2agpg141[p]'        }
+    {'2agpg160[c]'        }
+    {'2agpg160[p]'        }
+    {'aact[c]'            }
+    {'5mdr1p[c]'          }
+    {'5mdru1p[c]'         }
+    {'acACP[c]'           }
+    {'5mta[c]'            }
+    {'ac[c]'              }
+    {'5mthf[c]'           }
+    {'ac[e]'              }
+    {'5mtr[c]'            }
+    {'5prdmbz[c]'         }
+    {'ac[p]'              }
+    {'6hmhpt[c]'          }
+    {'acac[c]'            }
+    {'6hmhptpp[c]'        }
+    {'alac__S[c]'         }
+    {'acac[e]'            }
+    {'alatrna[c]'         }
+    {'6pgc[c]'            }
+    {'acac[p]'            }
+    {'6pgl[c]'            }
+    {'all6p[c]'           }
+    {'acald[c]'           }
+    {'all__D[c]'          }
+    {'8aonn[c]'           }
+    {'acald[e]'           }
+    {'ACP[c]'             }
+    {'all__D[e]'          }
+    {'acald[p]'           }
+    {'all__D[p]'          }
+    {'LalaDgluMdapDala[c]'}
+    {'acanth[c]'          }
+    {'LalaDgluMdapDala[e]'}
+    {'alltn[c]'           }
+    {'accoa[c]'           }
+    {'alltn[e]'           }
+    {'LalaDgluMdapDala[p]'}
+    {'acetol[c]'          }
+    {'LalaDgluMdap[c]'    }
+    {'alltn[p]'           }
+    {'LalaDgluMdap[e]'    }
+    {'acg5p[c]'           }
+    {'LalaDgluMdap[p]'    }
+    {'alltt[c]'           }
+    {'allul6p[c]'         }
+    {'acg5sa[c]'          }
+    {'alpp[p]'            }
+    {'LalaDglu[c]'        }
+    {'acgal1p[e]'         }
+    {'LalaLglu[c]'        }
+    {'N1aspmd[c]'         }
+    {'altrn[c]'           }
+    {'acgal1p[p]'         }
+    {'amet[c]'            }
+    {'Nmtrp[c]'           }
+    {'acgal[e]'           }
+    {'Sfglutth[c]'        }
+    {'ametam[c]'          }
+    {'acgal[p]'           }
+    {'amob[c]'            }
+    {'aacald[c]'          }
+    {'amp[c]'             }
+    {'acgam1p[c]'         }
+    {'amp[e]'             }
+    {'acgam1p[e]'         }
+    {'amp[p]'             }
+    {'acgam1p[p]'         }
+    {'anhgm3p[c]'         }
+    {'ca2[c]'             }
+    {'acgam6p[c]'         }
+    {'ca2[e]'             }
+    {'anhgm3p[p]'         }
+    {'acgam[c]'           }
+    {'anhgm4p[c]'         }
+    {'ca2[p]'             }
+    {'acgam[e]'           }
+    {'camp[c]'            }
+    {'anhgm4p[p]'         }
+    {'acgam[p]'           }
+    {'anhgm[c]'           }
+    {'cbasp[c]'           }
+    {'cbi[c]'             }
+    {'acglc__D[c]'        }
+    {'cbi[e]'             }
+    {'anhgm[e]'           }
+    {'acglu[c]'           }
+    {'anhgm[p]'           }
+    {'cbi[p]'             }
+    {'acmalt[c]'          }
+    {'cbl1[c]'            }
+    {'anhm3p[c]'          }
+    {'anhm4p[c]'          }
+    {'acmana[c]'          }
+    {'anhm[c]'            }
+    {'cbl1[e]'            }
+    {'cbl1[p]'            }
+    {'cbp[c]'             }
+    {'anth[c]'            }
+    {'acmana[e]'          }
+    {'cd2[c]'             }
+    {'acmana[p]'          }
+    {'cd2[e]'             }
+    {'cd2[p]'             }
+    {'ap4a[c]'            }
+    {'acmanap[c]'         }
+    {'cddec5eACP[c]'      }
+    {'acmum6p[c]'         }
+    {'cdec3eACP[c]'       }
+    {'ap5a[c]'            }
+    {'acmum[e]'           }
+    {'apg120[c]'          }
+    {'cdp[c]'             }
+    {'acmum[p]'           }
+    {'cdpdddecg[c]'       }
+    {'cdpdhdec9eg[c]'     }
+    {'apg140[c]'          }
+    {'acnam[c]'           }
+    {'apg141[c]'          }
+    {'cdpdhdecg[c]'       }
+    {'acnam[e]'           }
+    {'cdpdodec11eg[c]'    }
+    {'apg160[c]'          }
+    {'acnam[p]'           }
+    {'apg161[c]'          }
+    {'cdpdodecg[c]'       }
+    {'acolipa[e]'         }
+    {'cdpdtdec7eg[c]'     }
+    {'apg180[c]'          }
+    {'acolipa[p]'         }
+    {'apg181[c]'          }
+    {'cdpdtdecg[c]'       }
+    {'acon_C[c]'          }
+    {'cechddd[c]'         }
+    {'apoACP[c]'          }
+    {'acon_T[c]'          }
+    {'aps[c]'             }
+    {'cenchddd[c]'        }
+    {'aconm[c]'           }
+    {'cgly[c]'            }
+    {'ara5p[c]'           }
+    {'acorn[c]'           }
+    {'arab__L[c]'         }
+    {'cgly[e]'            }
+    {'acser[c]'           }
+    {'cgly[p]'            }
+    {'arab__L[e]'         }
+    {'acser[e]'           }
+    {'arab__L[p]'         }
+    {'chol[c]'            }
+    {'acser[p]'           }
+    {'chol[e]'            }
+    {'chol[p]'            }
+    {'aragund[c]'         }
+    {'actACP[c]'          }
+    {'arbt6p[c]'          }
+    {'chor[c]'            }
+    {'actp[c]'            }
+    {'cinnm[c]'           }
+    {'arbtn_fe3[c]'       }
+    {'ade[c]'             }
+    {'arbtn_fe3[e]'       }
+    {'cit[c]'             }
+    {'ade[e]'             }
+    {'cit[e]'             }
+    {'arbtn_fe3[p]'       }
+    {'ade[p]'             }
+    {'arbtn[c]'           }
+    {'cit[p]'             }
+    {'adn[c]'             }
+    {'citr__L[c]'         }
+    {'arbtn[e]'           }
+    {'arbtn[p]'           }
+    {'adn[e]'             }
+    {'arg__L[c]'          }
+    {'ckdo[c]'            }
+    {'cl[c]'              }
+    {'adn[p]'             }
+    {'cl[e]'              }
+    {'arg__L[e]'          }
+    {'adocbi[c]'          }
+    {'arg__L[p]'          }
+    {'cl[p]'              }
+    {'adocbip[c]'         }
+    {'clpn120[p]'         }
+    {'argsuc[c]'          }
+    {'adocbl[c]'          }
+    {'argtrna[c]'         }
+    {'clpn140[p]'         }
+    {'adocbl[e]'          }
+    {'clpn141[p]'         }
+    {'ascb6p[c]'          }
+    {'adocbl[p]'          }
+    {'ascb__L[e]'         }
+    {'ascb__L[p]'         }
+    {'clpn160[p]'         }
+    {'adp[c]'             }
+    {'clpn161[p]'         }
+    {'asn__L[c]'          }
+    {'asn__L[e]'          }
+    {'clpn180[p]'         }
+    {'clpn181[p]'         }
+    {'adpglc[c]'          }
+    {'cmp[c]'             }
+    {'asn__L[p]'          }
+    {'asntrna[c]'         }
+    {'cmp[e]'             }
+    {'adphep_DD[c]'       }
+    {'cmp[p]'             }
+    {'aso3[c]'            }
+    {'adphep_LD[c]'       }
+    {'aso3[e]'            }
+    {'co2[c]'             }
+    {'adprib[c]'          }
+    {'co2[e]'             }
+    {'aso3[p]'            }
+    {'ag[c]'              }
+    {'aso4[c]'            }
+    {'co2[p]'             }
+    {'ag[e]'              }
+    {'coa[c]'             }
+    {'asp__L[c]'          }
+    {'asp__L[e]'          }
+    {'agdpcbi[c]'         }
+    {'asp__L[p]'          }
+    {'cobalt2[c]'         }
+    {'cobalt2[e]'         }
+    {'agm[c]'             }
+    {'cobalt2[p]'         }
+    {'aspsa[c]'           }
+    {'agm[e]'             }
+    {'asptrna[c]'         }
+    {'colipa[c]'          }
+    {'agm[p]'             }
+    {'colipa[e]'          }
+    {'athr__L[c]'         }
+    {'ahcys[c]'           }
+    {'atp[c]'             }
+    {'colipa[p]'          }
+    {'ahdt[c]'            }
+    {'cpe160[c]'          }
+    {'b2coa[c]'           }
+    {'aicar[c]'           }
+    {'bbtcoa[c]'          }
+    {'cpe180[c]'          }
+    {'cpg160[c]'          }
+    {'air[c]'             }
+    {'cpg180[c]'          }
+    {'betald[c]'          }
+    {'akg[c]'             }
+    {'bglycogen[c]'       }
+    {'cpgn_un[c]'         }
+    {'akg[e]'             }
+    {'cpgn_un[e]'         }
+    {'btal[c]'            }
+    {'akg[p]'             }
+    {'btcoa[c]'           }
+    {'cpgn_un[p]'         }
+    {'ala_B[c]'           }
+    {'cpgn[c]'            }
+    {'btn[c]'             }
+    {'ala_B[e]'           }
+    {'btnso[c]'           }
+    {'cpgn[e]'            }
+    {'ala_B[p]'           }
+    {'cpgn[p]'            }
+    {'but2eACP[c]'        }
+    {'ala__D[c]'          }
+    {'butACP[c]'          }
+    {'cpppg3[c]'          }
+    {'ala__D[e]'          }
+    {'but[c]'             }
+    {'ala__D[p]'          }
+    {'but[e]'             }
+    {'crnDcoa[c]'         }
+    {'crn__D[c]'          }
+    {'ala__L[c]'          }
+    {'crn__D[p]'          }
+    {'but[p]'             }
+    {'butso3[c]'          }
+    {'ala__L[e]'          }
+    {'butso3[e]'          }
+    {'crn[c]'             }
+    {'ala__L[p]'          }
+    {'crn[e]'             }
+    {'butso3[p]'          }
+    {'crn[p]'             }
+    {'alaala[c]'          }
+    {'crncoa[c]'          }
+    {'alaala[e]'          }
+    {'csn[c]'             }
+    {'alaala[p]'          }
+    {'csn[e]'             }
+    {'dopa[p]'            }
+    {'csn[p]'             }
+    {'ctbt[c]'            }
+    {'cu[p]'              }
+    {'dpcoa[c]'           }
+    {'ctbt[p]'            }
+    {'dsbaox[p]'          }
+    {'ctbtcoa[c]'         }
+    {'cyan[c]'            }
+    {'dsbard[p]'          }
+    {'cyan[e]'            }
+    {'ctp[c]'             }
+    {'dsbcox[p]'          }
+    {'cyan[p]'            }
+    {'dsbcrd[p]'          }
+    {'cynt[c]'            }
+    {'cynt[e]'            }
+    {'cu2[c]'             }
+    {'cu2[e]'             }
+    {'dsbdox[c]'          }
+    {'cu2[p]'             }
+    {'cu[c]'              }
+    {'cynt[p]'            }
+    {'cys__D[c]'          }
+    {'dsbdrd[c]'          }
+    {'cys__D[e]'          }
+    {'cu[e]'              }
+    {'dsbgox[p]'          }
+    {'cys__D[p]'          }
+    {'dsbgrd[p]'          }
+    {'cys__L[c]'          }
+    {'dscl[c]'            }
+    {'cys__L[e]'          }
+    {'feoxam_un[e]'       }
+    {'dtbt[c]'            }
+    {'cys__L[p]'          }
+    {'dtdp4aaddg[c]'      }
+    {'cyst__L[c]'         }
+    {'feoxam_un[p]'       }
+    {'dtdp4addg[c]'       }
+    {'feoxam[c]'          }
+    {'cystrna[c]'         }
+    {'cytd[c]'            }
+    {'dtdp4d6dg[c]'       }
+    {'cytd[e]'            }
+    {'feoxam[e]'          }
+    {'dtdp4d6dm[c]'       }
+    {'feoxam[p]'          }
+    {'fgam[c]'            }
+    {'cytd[p]'            }
+    {'dtdp[c]'            }
+    {'dad_2[c]'           }
+    {'fldox[c]'           }
+    {'dtdpglu[c]'         }
+    {'fldrd[c]'           }
+    {'dad_2[e]'           }
+    {'dtdprmn[c]'         }
+    {'dad_2[p]'           }
+    {'dad_5[c]'           }
+    {'fmettrna[c]'        }
+    {'dtmp[c]'            }
+    {'fmn[c]'             }
+    {'dadp[c]'            }
+    {'dtmp[e]'            }
+    {'damp[c]'            }
+    {'fmnh2[c]'           }
+    {'for[c]'             }
+    {'dtmp[p]'            }
+    {'for[e]'             }
+    {'damp[e]'            }
+    {'dttp[c]'            }
+    {'damp[p]'            }
+    {'for[p]'             }
+    {'dudp[c]'            }
+    {'fpram[c]'           }
+    {'dann[c]'            }
+    {'dump[c]'            }
+    {'datp[c]'            }
+    {'fprica[c]'          }
+    {'dump[e]'            }
+    {'frdp[c]'            }
+    {'db4p[c]'            }
+    {'dump[p]'            }
+    {'dc2coa[c]'          }
+    {'fru[c]'             }
+    {'duri[c]'            }
+    {'fru[e]'             }
+    {'dcaACP[c]'          }
+    {'duri[e]'            }
+    {'dca[c]'             }
+    {'fru[p]'             }
+    {'duri[p]'            }
+    {'frulys[c]'          }
+    {'dca[e]'             }
+    {'dca[p]'             }
+    {'dutp[c]'            }
+    {'frulys[e]'          }
+    {'dxyl5p[c]'          }
+    {'frulys[p]'          }
+    {'frulysp[c]'         }
+    {'dcacoa[c]'          }
+    {'dxyl[c]'            }
+    {'dcamp[c]'           }
+    {'fruur[c]'           }
+    {'e4p[c]'             }
+    {'fruur[e]'           }
+    {'dcdp[c]'            }
+    {'eca2und[p]'         }
+    {'dcmp[c]'            }
+    {'fruur[p]'           }
+    {'eca3und[p]'         }
+    {'fuc__L[c]'          }
+    {'dcmp[e]'            }
+    {'eca4colipa[e]'      }
+    {'dcmp[p]'            }
+    {'fuc__L[e]'          }
+    {'eca4colipa[p]'      }
+    {'fuc__L[p]'          }
+    {'dctp[c]'            }
+    {'eca4und[p]'         }
+    {'dcyt[c]'            }
+    {'fum[c]'             }
+    {'dcyt[e]'            }
+    {'dcyt[p]'            }
+    {'fum[e]'             }
+    {'fum[p]'             }
+    {'eig3p[c]'           }
+    {'g1p[c]'             }
+    {'dd2coa[c]'          }
+    {'enlipa[e]'          }
+    {'ddcaACP[c]'         }
+    {'ddca[c]'            }
+    {'g1p[e]'             }
+    {'enlipa[p]'          }
+    {'g1p[p]'             }
+    {'g3p[c]'             }
+    {'ddca[e]'            }
+    {'enter[c]'           }
+    {'ddca[p]'            }
+    {'g3pc[c]'            }
+    {'enter[e]'           }
+    {'g3pc[e]'            }
+    {'ddcacoa[c]'         }
+    {'enter[p]'           }
+    {'dgdp[c]'            }
+    {'g3pc[p]'            }
+    {'etha[c]'            }
+    {'g3pe[c]'            }
+    {'dgmp[c]'            }
+    {'etha[e]'            }
+    {'dgmp[e]'            }
+    {'g3pe[e]'            }
+    {'g3pe[p]'            }
+    {'etha[p]'            }
+    {'g3pg[c]'            }
+    {'dgmp[p]'            }
+    {'ethso3[c]'          }
+    {'dgsn[c]'            }
+    {'g3pg[e]'            }
+    {'ethso3[e]'          }
+    {'g3pg[p]'            }
+    {'dgsn[e]'            }
+    {'ethso3[p]'          }
+    {'dgsn[p]'            }
+    {'dgtp[c]'            }
+    {'g3pi[c]'            }
+    {'etoh[c]'            }
+    {'g3pi[e]'            }
+    {'g3pi[p]'            }
+    {'dha[c]'             }
+    {'etoh[e]'            }
+    {'dha[e]'             }
+    {'g3ps[c]'            }
+    {'etoh[p]'            }
+    {'g3ps[e]'            }
+    {'dha[p]'             }
+    {'f1p[c]'             }
+    {'dhap[c]'            }
+    {'g3ps[p]'            }
+    {'f6p[c]'             }
+    {'g6p[c]'             }
+    {'dhcinnm[c]'         }
+    {'dhf[c]'             }
+    {'f6p[e]'             }
+    {'g6p[e]'             }
+    {'f6p[p]'             }
+    {'g6p[p]'             }
+    {'dhmptp[c]'          }
+    {'fad[c]'             }
+    {'dhna[c]'            }
+    {'gagicolipa[c]'      }
+    {'fadh2[c]'           }
+    {'gal1p[c]'           }
+    {'dhnpt[c]'           }
+    {'fald[c]'            }
+    {'dhor__S[c]'         }
+    {'gal1p[e]'           }
+    {'fald[e]'            }
+    {'gal1p[p]'           }
+    {'dhpmp[c]'           }
+    {'fald[p]'            }
+    {'dhpppn[c]'          }
+    {'gal_bD[e]'          }
+    {'gal_bD[p]'          }
+    {'dhpt[c]'            }
+    {'fc1p[c]'            }
+    {'dhptd[c]'           }
+    {'gal[c]'             }
+    {'fcl__L[c]'          }
+    {'gal[e]'             }
+    {'didp[c]'            }
+    {'fdp[c]'             }
+    {'dimp[c]'            }
+    {'gal[p]'             }
+    {'galct__D[c]'        }
+    {'fe2[c]'             }
+    {'galct__D[e]'        }
+    {'dimp[e]'            }
+    {'fe2[e]'             }
+    {'dimp[p]'            }
+    {'galct__D[p]'        }
+    {'fe2[p]'             }
+    {'galctn__D[c]'       }
+    {'galctn__D[e]'       }
+    {'din[c]'             }
+    {'fe3[c]'             }
+    {'din[e]'             }
+    {'galctn__D[p]'       }
+    {'fe3[e]'             }
+    {'galctn__L[c]'       }
+    {'din[p]'             }
+    {'fe3[p]'             }
+    {'ditp[c]'            }
+    {'galctn__L[e]'       }
+    {'fe3dcit[e]'         }
+    {'galctn__L[p]'       }
+    {'galt1p[c]'          }
+    {'galt[e]'            }
+    {'dkmpp[c]'           }
+    {'fe3dcit[p]'         }
+    {'dmbzid[c]'          }
+    {'galt[p]'            }
+    {'galur[c]'           }
+    {'fe3dhbzs[c]'        }
+    {'galur[e]'           }
+    {'dmlz[c]'            }
+    {'fe3dhbzs[e]'        }
+    {'dmpp[c]'            }
+    {'galur[p]'           }
+    {'dms[c]'             }
+    {'fe3dhbzs[p]'        }
+    {'dms[e]'             }
+    {'gam1p[c]'           }
+    {'fe3hox_un[c]'       }
+    {'gam6p[c]'           }
+    {'gam6p[e]'           }
+    {'dms[p]'             }
+    {'fe3hox_un[e]'       }
+    {'dmso[c]'            }
+    {'gam6p[p]'           }
+    {'fe3hox_un[p]'       }
+    {'gam[e]'             }
+    {'dmso[e]'            }
+    {'fe3hox[c]'          }
+    {'dmso[p]'            }
+    {'gam[p]'             }
+    {'fe3hox[e]'          }
+    {'gar[c]'             }
+    {'dnad[c]'            }
+    {'fe3hox[p]'          }
+    {'dopa[e]'            }
+    {'garagund[c]'        }
+    {'fecrm_un[c]'        }
+    {'gbbtn[c]'           }
+    {'gbbtn[e]'           }
+    {'fecrm_un[e]'        }
+    {'gbbtn[p]'           }
+    {'fecrm_un[p]'        }
+    {'gcald[c]'           }
+    {'gdp[e]'             }
+    {'fecrm[c]'           }
+    {'gdp[p]'             }
+    {'gdp[c]'             }
+    {'fecrm[e]'           }
+    {'fecrm[p]'           }
+    {'gdpddman[c]'        }
+    {'feenter[c]'         }
+    {'gdpfuc[c]'          }
+    {'feenter[e]'         }
+    {'gdpmann[c]'         }
+    {'gdpofuc[c]'         }
+    {'h2[c]'              }
+    {'feenter[p]'         }
+    {'h2[e]'              }
+    {'h2[p]'              }
+    {'gdptp[c]'           }
+    {'feoxam_un[c]'       }
+    {'gfgaragund[c]'      }
+    {'h2mb4p[c]'          }
+    {'k[e]'               }
+    {'h2o2[c]'            }
+    {'h2o2[e]'            }
+    {'gg4abut[c]'         }
+    {'ggagicolipa[c]'     }
+    {'k[p]'               }
+    {'ggbutal[c]'         }
+    {'h2o2[p]'            }
+    {'gggagicolipa[c]'    }
+    {'h2o[c]'             }
+    {'kdo2lipid4L[c]'     }
+    {'h2o[e]'             }
+    {'ggptrc[c]'          }
+    {'kdo2lipid4[c]'      }
+    {'gicolipa[c]'        }
+    {'h2o[p]'             }
+    {'kdo2lipid4[e]'      }
+    {'h2s[c]'             }
+    {'glc__D[c]'          }
+    {'kdo2lipid4[p]'      }
+    {'glc__D[e]'          }
+    {'h2s[e]'             }
+    {'kdo2lipid4p[c]'     }
+    {'h2s[p]'             }
+    {'h[c]'               }
+    {'glc__D[p]'          }
+    {'kdo8p[c]'           }
+    {'glcn[c]'            }
+    {'h[e]'               }
+    {'kdo[c]'             }
+    {'h[p]'               }
+    {'glcn[e]'            }
+    {'glcn[p]'            }
+    {'kdolipid4[c]'       }
+    {'glcr[c]'            }
+    {'hacolipa[e]'        }
+    {'kphphhlipa[c]'      }
+    {'halipa[e]'          }
+    {'hco3[c]'            }
+    {'glcr[e]'            }
+    {'lac__D[c]'          }
+    {'glcr[p]'            }
+    {'glcur1p[e]'         }
+    {'glcur1p[p]'         }
+    {'hcys__L[c]'         }
+    {'hdca[c]'            }
+    {'lac__D[e]'          }
+    {'hdca[e]'            }
+    {'glcur[c]'           }
+    {'lac__D[p]'          }
+    {'glcur[e]'           }
+    {'hdca[p]'            }
+    {'lac__L[c]'          }
+    {'hdcea[c]'           }
+    {'glcur[p]'           }
+    {'gln__L[c]'          }
+    {'lac__L[e]'          }
+    {'gln__L[e]'          }
+    {'hdcea[e]'           }
+    {'hdcea[p]'           }
+    {'lac__L[p]'          }
+    {'gln__L[p]'          }
+    {'lald__D[c]'         }
+    {'glntrna[c]'         }
+    {'hdcoa[c]'           }
+    {'lald__L[c]'         }
+    {'hdd2coa[c]'         }
+    {'glu1sa[c]'          }
+    {'lcts[c]'            }
+    {'glu5p[c]'           }
+    {'hdeACP[c]'          }
+    {'lcts[e]'            }
+    {'hemeO[c]'           }
+    {'glu5sa[c]'          }
+    {'lcts[p]'            }
+    {'glu__D[c]'          }
+    {'glu__L[c]'          }
+    {'hexACP[c]'          }
+    {'hg2[c]'             }
+    {'leu__L[c]'          }
+    {'hg2[e]'             }
+    {'glu__L[e]'          }
+    {'leu__L[e]'          }
+    {'glu__L[p]'          }
+    {'hg2[p]'             }
+    {'leu__L[p]'          }
+    {'hhlipa[c]'          }
+    {'glucys[c]'          }
+    {'leutrna[c]'         }
+    {'glutrna[c]'         }
+    {'his__L[c]'          }
+    {'lgt__S[c]'          }
+    {'his__L[e]'          }
+    {'glx[c]'             }
+    {'lipa[c]'            }
+    {'gly[c]'             }
+    {'his__L[p]'          }
+    {'lipa[c]old[c]'      }
+    {'hisp[c]'            }
+    {'gly[e]'             }
+    {'lipa[c]old[e]'      }
+    {'gly[p]'             }
+    {'glyald[c]'          }
+    {'histd[c]'           }
+    {'histrna[c]'         }
+    {'lipa[c]old[p]'      }
+    {'hkndd[c]'           }
+    {'glyald[e]'          }
+    {'lipa[e]'            }
+    {'glyald[p]'          }
+    {'hkntd[c]'           }
+    {'lipa[p]'            }
+    {'hlipa[c]'           }
+    {'glyb[c]'            }
+    {'lipidA[c]'          }
+    {'glyb[e]'            }
+    {'hmbil[c]'           }
+    {'lipidAds[c]'        }
+    {'hmfurn[c]'          }
+    {'glyb[p]'            }
+    {'lipidX[c]'          }
+    {'glyc2p[e]'          }
+    {'hmgth[c]'           }
+    {'lpp[p]'             }
+    {'hom__L[c]'          }
+    {'glyc2p[p]'          }
+    {'lys__L[c]'          }
+    {'glyc3p[c]'          }
+    {'hom__L[e]'          }
+    {'hom__L[p]'          }
+    {'glyc3p[e]'          }
+    {'lys__L[e]'          }
+    {'glyc3p[p]'          }
+    {'hphhlipa[c]'        }
+    {'lys__L[p]'          }
+    {'hpyr[c]'            }
+    {'glyc__R[c]'         }
+    {'lystrna[c]'         }
+    {'glyc__R[e]'         }
+    {'hqn[c]'             }
+    {'hx2coa[c]'          }
+    {'lyx__L[c]'          }
+    {'hxa[c]'             }
+    {'glyc__R[p]'         }
+    {'lyx__L[e]'          }
+    {'glyc[c]'            }
+    {'glyc[e]'            }
+    {'hxa[e]'             }
+    {'lyx__L[p]'          }
+    {'hxa[p]'             }
+    {'glyc[p]'            }
+    {'malACP[c]'          }
+    {'glyclt[c]'          }
+    {'glyclt[e]'          }
+    {'hxan[c]'            }
+    {'hxan[e]'            }
+    {'hxan[p]'            }
+    {'glyclt[p]'          }
+    {'mal__D[c]'          }
+    {'glycogen[c]'        }
+    {'hxcoa[c]'           }
+    {'iasp[c]'            }
+    {'mal__D[e]'          }
+    {'ichor[c]'           }
+    {'glytrna[c]'         }
+    {'mal__D[p]'          }
+    {'gmhep17bp[c]'       }
+    {'gmhep1p[c]'         }
+    {'icit[c]'            }
+    {'mal__L[c]'          }
+    {'icolipa[c]'         }
+    {'gmhep7p[c]'         }
+    {'mal__L[e]'          }
+    {'gmp[c]'             }
+    {'idon__L[c]'         }
+    {'mal__L[p]'          }
+    {'idon__L[e]'         }
+    {'gmp[e]'             }
+    {'malcoa[c]'          }
+    {'gmp[p]'             }
+    {'idon__L[p]'         }
+    {'malt6p[c]'          }
+    {'idp[c]'             }
+    {'gp4g[c]'            }
+    {'ile__L[c]'          }
+    {'grdp[c]'            }
+    {'malt[c]'            }
+    {'grxox[c]'           }
+    {'ile__L[e]'          }
+    {'malt[e]'            }
+    {'ile__L[p]'          }
+    {'grxrd[c]'           }
+    {'malt[p]'            }
+    {'gsn[c]'             }
+    {'iletrna[c]'         }
+    {'malthp[c]'          }
+    {'imacp[c]'           }
+    {'gsn[e]'             }
+    {'imp[c]'             }
+    {'malthx[c]'          }
+    {'imp[e]'             }
+    {'gsn[p]'             }
+    {'malthx[e]'          }
+    {'gthox[c]'           }
+    {'imp[p]'             }
+    {'malthx[p]'          }
+    {'indole[c]'          }
+    {'gthox[e]'           }
+    {'maltpt[c]'          }
+    {'gthox[p]'           }
+    {'indole[e]'          }
+    {'maltpt[e]'          }
+    {'indole[p]'          }
+    {'gthrd[c]'           }
+    {'maltpt[p]'          }
+    {'gthrd[e]'           }
+    {'inost[c]'           }
+    {'malttr[c]'          }
+    {'inost[e]'           }
+    {'gthrd[p]'           }
+    {'gtp[c]'             }
+    {'inost[p]'           }
+    {'malttr[e]'          }
+    {'ins[c]'             }
+    {'gtp[e]'             }
+    {'malttr[p]'          }
+    {'gtp[p]'             }
+    {'ins[e]'             }
+    {'maltttr[c]'         }
+    {'ins[p]'             }
+    {'gtspmd[c]'          }
+    {'maltttr[e]'         }
+    {'ipdp[c]'            }
+    {'maltttr[p]'         }
+    {'isetac[c]'          }
+    {'gua[c]'             }
+    {'man1p[c]'           }
+    {'gua[e]'             }
+    {'isetac[e]'          }
+    {'man6p[c]'           }
+    {'isetac[p]'          }
+    {'gua[p]'             }
+    {'man6p[e]'           }
+    {'itp[c]'             }
+    {'man6p[p]'           }
+    {'k[c]'               }
+    {'man6pglyc[c]'       }
+    {'man[c]'             }
+    {'metsox_R__L[p]'     }
+    {'man[e]'             }
+    {'metsox_S__L[c]'     }
+    {'o2[p]'              }
+    {'man[p]'             }
+    {'metsox_S__L[e]'     }
+    {'mana[c]'            }
+    {'metsox_S__L[p]'     }
+    {'o2s[c]'             }
+    {'manglyc[e]'         }
+    {'o2s[e]'             }
+    {'mettrna[c]'         }
+    {'manglyc[p]'         }
+    {'mg2[c]'             }
+    {'o2s[p]'             }
+    {'melib[c]'           }
+    {'oaa[c]'             }
+    {'mg2[e]'             }
+    {'melib[e]'           }
+    {'mg2[p]'             }
+    {'mi1p__D[c]'         }
+    {'micit[c]'           }
+    {'oc2coa[c]'          }
+    {'ocACP[c]'           }
+    {'melib[p]'           }
+    {'occoa[c]'           }
+    {'ocdcaACP[c]'        }
+    {'minohp[e]'          }
+    {'mercppyr[c]'        }
+    {'minohp[p]'          }
+    {'ocdca[c]'           }
+    {'met__D[c]'          }
+    {'ocdca[e]'           }
+    {'mlthf[c]'           }
+    {'ocdca[p]'           }
+    {'met__D[e]'          }
+    {'ocdcea[c]'          }
+    {'mmcoa__R[c]'        }
+    {'met__D[p]'          }
+    {'mmcoa__S[c]'        }
+    {'ocdcea[e]'          }
+    {'mmet[c]'            }
+    {'met__L[c]'          }
+    {'mmet[e]'            }
+    {'ocdcea[p]'          }
+    {'octa[c]'            }
+    {'met__L[e]'          }
+    {'octa[e]'            }
+    {'mmet[p]'            }
+    {'met__L[p]'          }
+    {'mn2[c]'             }
+    {'octa[p]'            }
+    {'methf[c]'           }
+    {'octdp[c]'           }
+    {'mn2[e]'             }
+    {'metsox_R__L[c]'     }
+    {'mn2[p]'             }
+    {'octeACP[c]'         }
+    {'metsox_R__L[e]'     }
+    {'od2coa[c]'          }
+    {'mnl1p[c]'           }
+    {'pgp141[p]'          }
+    {'mnl[e]'             }
+    {'mnl[p]'             }
+    {'mobd[c]'            }
+    {'odecoa[c]'          }
+    {'ohpb[c]'            }
+    {'op4en[c]'           }
+    {'pgp160[c]'          }
+    {'orn[c]'             }
+    {'mobd[e]'            }
+    {'pgp160[p]'          }
+    {'mobd[p]'            }
+    {'orn[e]'             }
+    {'pgp161[c]'          }
+    {'orn[p]'             }
+    {'mql8[c]'            }
+    {'pgp161[p]'          }
+    {'mqn8[c]'            }
+    {'orot5p[c]'          }
+    {'pgp180[c]'          }
+    {'orot[c]'            }
+    {'orot[e]'            }
+    {'mso3[c]'            }
+    {'mso3[e]'            }
+    {'pgp180[p]'          }
+    {'mso3[p]'            }
+    {'orot[p]'            }
+    {'pgp181[c]'          }
+    {'oxam[c]'            }
+    {'mthgxl[c]'          }
+    {'pgp181[p]'          }
+    {'murein3p3p[p]'      }
+    {'oxur[c]'            }
+    {'phaccoa[c]'         }
+    {'pa120[c]'           }
+    {'murein3px3p[p]'     }
+    {'phe__L[c]'          }
+    {'murein3px4p[p]'     }
+    {'pa120[p]'           }
+    {'phe__L[e]'          }
+    {'pa140[c]'           }
+    {'murein4p3p[p]'      }
+    {'phe__L[p]'          }
+    {'murein4p4p[p]'      }
+    {'pa140[p]'           }
+    {'pa141[c]'           }
+    {'pheme[c]'           }
+    {'pa141[p]'           }
+    {'murein4px4p4p[p]'   }
+    {'pheme[e]'           }
+    {'murein4px4p[p]'     }
+    {'pa160[c]'           }
+    {'pa160[p]'           }
+    {'murein4px4px4p[p]'  }
+    {'pheme[p]'           }
+    {'murein5p3p[p]'      }
+    {'pa161[c]'           }
+    {'pa161[p]'           }
+    {'phetrna[c]'         }
+    {'pa180[c]'           }
+    {'murein5p4p[p]'      }
+    {'murein5p5p5p[p]'    }
+    {'phhlipa[c]'         }
+    {'pa180[p]'           }
+    {'murein5p5p[p]'      }
+    {'pa181[c]'           }
+    {'phom[c]'            }
+    {'pa181[p]'           }
+    {'murein5px3p[p]'     }
+    {'phphhlipa[c]'       }
+    {'murein5px4p[p]'     }
+    {'pac[c]'             }
+    {'phpyr[c]'           }
+    {'pacald[c]'          }
+    {'murein5px4px4p[p]'  }
+    {'phthr[c]'           }
+    {'myrsACP[c]'         }
+    {'n2o[c]'             }
+    {'pacald[e]'          }
+    {'pi[c]'              }
+    {'pacald[p]'          }
+    {'n2o[e]'             }
+    {'pi[e]'              }
+    {'n2o[p]'             }
+    {'palmACP[c]'         }
+    {'pi[p]'              }
+    {'pan4p[c]'           }
+    {'pant__R[c]'         }
+    {'n8aspmd[c]'         }
+    {'pmcoa[c]'           }
+    {'na1[c]'             }
+    {'pap[c]'             }
+    {'pmtcoa[c]'          }
+    {'paps[c]'            }
+    {'na1[e]'             }
+    {'pnto__R[c]'         }
+    {'na1[p]'             }
+    {'pdx5p[c]'           }
+    {'pnto__R[e]'         }
+    {'pe120[c]'           }
+    {'nac[c]'             }
+    {'pnto__R[p]'         }
+    {'nac[e]'             }
+    {'pe120[p]'           }
+    {'ppa[c]'             }
+    {'pe140[c]'           }
+    {'nac[p]'             }
+    {'ppa[e]'             }
+    {'nad[c]'             }
+    {'pe140[p]'           }
+    {'ppa[p]'             }
+    {'pe141[c]'           }
+    {'nadh[c]'            }
+    {'ppal[c]'            }
+    {'nadp[c]'            }
+    {'nadph[c]'           }
+    {'pe141[p]'           }
+    {'pe160[c]'           }
+    {'ppal[e]'            }
+    {'pe160[p]'           }
+    {'ncam[c]'            }
+    {'ppal[p]'            }
+    {'nh4[c]'             }
+    {'ppap[c]'            }
+    {'nh4[e]'             }
+    {'pe161[c]'           }
+    {'ppbng[c]'           }
+    {'pe161[p]'           }
+    {'pe180[c]'           }
+    {'nh4[p]'             }
+    {'ppcoa[c]'           }
+    {'ni2[c]'             }
+    {'pe180[p]'           }
+    {'ppgpp[c]'           }
+    {'pe181[c]'           }
+    {'ni2[e]'             }
+    {'pphn[c]'            }
+    {'ni2[p]'             }
+    {'pe181[p]'           }
+    {'nicrnt[c]'          }
+    {'ppi[c]'             }
+    {'peamn[e]'           }
+    {'ppp9[c]'            }
+    {'peamn[p]'           }
+    {'nmn[c]'             }
+    {'nmn[e]'             }
+    {'nmn[p]'             }
+    {'pep[c]'             }
+    {'pg120[c]'           }
+    {'pppg9[c]'           }
+    {'pg120[p]'           }
+    {'no2[c]'             }
+    {'pppi[c]'            }
+    {'no2[e]'             }
+    {'pg140[c]'           }
+    {'pppn[c]'            }
+    {'pg140[p]'           }
+    {'pg141[c]'           }
+    {'no2[p]'             }
+    {'pppn[e]'            }
+    {'no3[c]'             }
+    {'pg141[p]'           }
+    {'pppn[p]'            }
+    {'pg160[c]'           }
+    {'no3[e]'             }
+    {'ppt[e]'             }
+    {'no3[p]'             }
+    {'pg160[p]'           }
+    {'ppt[p]'             }
+    {'pg161[c]'           }
+    {'no[c]'              }
+    {'pram[c]'            }
+    {'no[e]'              }
+    {'pg161[p]'           }
+    {'pran[c]'            }
+    {'pg180[c]'           }
+    {'pg180[p]'           }
+    {'no[p]'              }
+    {'prbamp[c]'          }
+    {'o16a2und[p]'        }
+    {'prbatp[c]'          }
+    {'o16a3und[p]'        }
+    {'pg181[c]'           }
+    {'pg181[p]'           }
+    {'prfp[c]'            }
+    {'pgp120[c]'          }
+    {'o16a4colipa[e]'     }
+    {'prlp[c]'            }
+    {'o16a4colipa[p]'     }
+    {'pgp120[p]'          }
+    {'pro__L[c]'          }
+    {'pgp140[c]'          }
+    {'o16a4und[p]'        }
+    {'pro__L[e]'          }
+    {'o16aund[c]'         }
+    {'pgp140[p]'          }
+    {'pro__L[p]'          }
+    {'pgp141[c]'          }
+    {'o16aund[p]'         }
+    {'progly[c]'          }
+    {'o2[c]'              }
+    {'progly[e]'          }
+    {'o2[e]'              }
+    {'r1p[c]'             }
+    {'progly[p]'          }
+    {'r5p[c]'             }
+    {'protrna[c]'         }
+    {'r5p[e]'             }
+    {'prpp[c]'            }
+    {'r5p[p]'             }
+    {'ps120[c]'           }
+    {'ragund[c]'          }
+    {'tcynt[p]'           }
+    {'ps140[c]'           }
+    {'td2coa[c]'          }
+    {'rbflvrd[c]'         }
+    {'rbl__L[c]'          }
+    {'ps141[c]'           }
+    {'rdmbzi[c]'          }
+    {'tdcoa[c]'           }
+    {'ps160[c]'           }
+    {'tddec2eACP[c]'      }
+    {'rhcys[c]'           }
+    {'ps161[c]'           }
+    {'rib__D[c]'          }
+    {'tdeACP[c]'          }
+    {'ps180[c]'           }
+    {'tdec2eACP[c]'       }
+    {'rib__D[e]'          }
+    {'ps181[c]'           }
+    {'rib__D[p]'          }
+    {'tdecoa[c]'          }
+    {'psclys[c]'          }
+    {'thdp[c]'            }
+    {'ribflv[c]'          }
+    {'psclys[e]'          }
+    {'rml1p[c]'           }
+    {'thex2eACP[c]'       }
+    {'psclys[p]'          }
+    {'thf[c]'             }
+    {'thm[c]'             }
+    {'rml[c]'             }
+    {'rmn[c]'             }
+    {'rmn[e]'             }
+    {'pser__L[c]'         }
+    {'rmn[p]'             }
+    {'thm[e]'             }
+    {'thm[p]'             }
+    {'ru5p__D[c]'         }
+    {'pser__L[e]'         }
+    {'ru5p__L[c]'         }
+    {'thmmp[c]'           }
+    {'pser__L[p]'         }
+    {'thmpp[c]'           }
+    {'s7p[c]'             }
+    {'ptrc[c]'            }
+    {'s[c]'               }
+    {'ptrc[e]'            }
+    {'sarcs[c]'           }
+    {'thr__L[c]'          }
+    {'ptrc[p]'            }
+    {'thr__L[e]'          }
+    {'sbt6p[c]'           }
+    {'pyam5p[c]'          }
+    {'sbt__D[e]'          }
+    {'thr__L[p]'          }
+    {'pydam[c]'           }
+    {'thrp[e]'            }
+    {'sbt__D[p]'          }
+    {'pydx5p[c]'          }
+    {'sbzcoa[c]'          }
+    {'thrp[p]'            }
+    {'pydx[c]'            }
+    {'thrtrna[c]'         }
+    {'scl[c]'             }
+    {'pydxn[c]'           }
+    {'sectrna[c]'         }
+    {'seln[c]'            }
+    {'pyr[c]'             }
+    {'selnp[c]'           }
+    {'thym[c]'            }
+    {'pyr[e]'             }
+    {'thym[e]'            }
+    {'thym[p]'            }
+    {'ser__D[c]'          }
+    {'pyr[p]'             }
+    {'ser__D[e]'          }
+    {'thymd[c]'           }
+    {'q8[c]'              }
+    {'thymd[e]'           }
+    {'ser__D[p]'          }
+    {'q8h2[c]'            }
+    {'ser__L[c]'          }
+    {'thymd[p]'           }
+    {'quln[c]'            }
+    {'tma[c]'             }
+    {'ser__L[e]'          }
+    {'ser__L[p]'          }
+    {'r15bp[c]'           }
+    {'seramp[c]'          }
+    {'tma[e]'             }
+    {'uLa4n[c]'           }
+    {'tma[p]'             }
+    {'tmao[c]'            }
+    {'tmao[e]'            }
+    {'sertrna_sec[c]'     }
+    {'sertrna[c]'         }
+    {'uLa4n[p]'           }
+    {'sheme[c]'           }
+    {'skm5p[c]'           }
+    {'tmao[p]'            }
+    {'uaagmda[c]'         }
+    {'tmrs2eACP[c]'       }
+    {'skm[c]'             }
+    {'toct2eACP[c]'       }
+    {'uaccg[c]'           }
+    {'toctd2eACP[c]'      }
+    {'skm[e]'             }
+    {'uacgam[c]'          }
+    {'skm[p]'             }
+    {'sl26da[c]'          }
+    {'tpalm2eACP[c]'      }
+    {'uacgam[e]'          }
+    {'trdox[c]'           }
+    {'sl2a6o[c]'          }
+    {'uacgam[p]'          }
+    {'so2[c]'             }
+    {'trdrd[c]'           }
+    {'uacmam[c]'          }
+    {'tre6p[c]'           }
+    {'so2[e]'             }
+    {'uacmamu[c]'         }
+    {'so2[p]'             }
+    {'tre[c]'             }
+    {'uagmda[c]'          }
+    {'tre[e]'             }
+    {'so3[c]'             }
+    {'so3[e]'             }
+    {'uama[c]'            }
+    {'so3[p]'             }
+    {'tre[p]'             }
+    {'uamag[c]'           }
+    {'trnaala[c]'         }
+    {'so4[c]'             }
+    {'uamr[c]'            }
+    {'so4[e]'             }
+    {'trnaarg[c]'         }
+    {'udcpdp[c]'          }
+    {'trnaasn[c]'         }
+    {'so4[p]'             }
+    {'spmd[c]'            }
+    {'spmd[e]'            }
+    {'trnaasp[c]'         }
+    {'trnacys[c]'         }
+    {'udcpdp[p]'          }
+    {'trnagln[c]'         }
+    {'spmd[p]'            }
+    {'ssaltpp[c]'         }
+    {'udcpp[c]'           }
+    {'stcoa[c]'           }
+    {'trnaglu[c]'         }
+    {'udcpp[p]'           }
+    {'trnagly[c]'         }
+    {'suc6p[c]'           }
+    {'udpLa4fn[c]'        }
+    {'sucarg[c]'          }
+    {'trnahis[c]'         }
+    {'udpLa4n[c]'         }
+    {'trnaile[c]'         }
+    {'sucbz[c]'           }
+    {'udpLa4o[c]'         }
+    {'succ[c]'            }
+    {'succ[e]'            }
+    {'trnaleu[c]'         }
+    {'udp[c]'             }
+    {'trnalys[c]'         }
+    {'succ[p]'            }
+    {'udpacgal[e]'        }
+    {'succoa[c]'          }
+    {'trnamet[c]'         }
+    {'trnaphe[c]'         }
+    {'udpacgal[p]'        }
+    {'trnapro[c]'         }
+    {'sucglu[c]'          }
+    {'udpg[c]'            }
+    {'sucgsa[c]'          }
+    {'suchms[c]'          }
+    {'trnasecys[c]'       }
+    {'udpg[e]'            }
+    {'trnaser[c]'         }
+    {'sucorn[c]'          }
+    {'udpg[p]'            }
+    {'sucr[e]'            }
+    {'trnathr[c]'         }
+    {'udpgal[c]'          }
+    {'trnatrp[c]'         }
+    {'udpgal[e]'          }
+    {'trnatyr[c]'         }
+    {'sucr[p]'            }
+    {'sucsal[c]'          }
+    {'udpgal[p]'          }
+    {'sulfac[c]'          }
+    {'trnaval[c]'         }
+    {'trp__L[c]'          }
+    {'udpgalfur[c]'       }
+    {'trp__L[e]'          }
+    {'sulfac[e]'          }
+    {'udpglcur[c]'        }
+    {'sulfac[p]'          }
+    {'t3c11vaceACP[c]'    }
+    {'udpglcur[e]'        }
+    {'t3c5ddeceACP[c]'    }
+    {'trp__L[p]'          }
+    {'trptrna[c]'         }
+    {'udpglcur[p]'        }
+    {'tsul[c]'            }
+    {'t3c7mrseACP[c]'     }
+    {'ugmd[c]'            }
+    {'t3c9palmeACP[c]'    }
+    {'tsul[e]'            }
+    {'tag6p__D[c]'        }
+    {'ugmda[c]'           }
+    {'tagdp__D[c]'        }
+    {'tsul[p]'            }
+    {'um4p[c]'            }
+    {'ttdca[c]'           }
+    {'tagur[c]'           }
+    {'ump[c]'             }
+    {'ttdca[e]'           }
+    {'tartr__L[c]'        }
+    {'ttdca[p]'           }
+    {'ump[e]'             }
+    {'ttdcea[c]'          }
+    {'tartr__L[e]'        }
+    {'ump[p]'             }
+    {'tartr__L[p]'        }
+    {'ttdcea[e]'          }
+    {'unaga[c]'           }
+    {'ttdcea[p]'          }
+    {'taur[c]'            }
+    {'unagamu[c]'         }
+    {'taur[e]'            }
+    {'tungs[c]'           }
+    {'unagamuf[c]'        }
+    {'tungs[e]'           }
+    {'taur[p]'            }
+    {'unagamuf[p]'        }
+    {'tcynt[c]'           }
+    {'tungs[p]'           }
+    {'uppg3[c]'           }
+    {'tym[e]'             }
+    {'tcynt[e]'           }
+    {'ura[c]'             }
+    {'tym[p]'             }
+    {'ura[e]'             }
+    {'tyr__L[c]'          }
+    {'ura[p]'             }
+    {'tyr__L[e]'          }
+    {'tyr__L[p]'          }
+    {'tyrp[e]'            }
+    {'tyrp[p]'            }
+    {'urate[c]'           }
+    {'tyrtrna[c]'         }
+    {'urdglyc[c]'         }
+    {'u23ga[c]'           }
+    {'urea[c]'            }
+    {'u3aga[c]'           }
+    {'urea[e]'            }
+    {'u3hga[c]'           }
+    {'urea[p]'            }
+    {'uLa4fn[c]'          }
+    {'uri[c]'             }
+    {'uri[e]'             }
+    {'uri[p]'             }
+    {'utp[c]'             }
+    {'val__L[c]'          }
+    {'val__L[e]'          }
+    {'val__L[p]'          }
+    {'valtrna[c]'         }
+    {'xan[c]'             }
+    {'xan[e]'             }
+    {'xan[p]'             }
+    {'xdp[c]'             }
+    {'xmp[c]'             }
+    {'xmp[e]'             }
+    {'xmp[p]'             }
+    {'xtp[c]'             }
+    {'xtsn[c]'            }
+    {'xtsn[e]'            }
+    {'xtsn[p]'            }
+    {'xu5p__D[c]'         }
+    {'xu5p__L[c]'         }
+    {'xyl__D[c]'          }
+    {'xyl__D[e]'          }
+    {'xyl__D[p]'          }
+    {'xylu__D[c]'         }
+    {'xylu__L[c]'         }
+    {'xylu__L[e]'         }
+    {'xylu__L[p]'         }
+    {'zn2[c]'             }
+    {'zn2[e]'             }
+    {'zn2[p]'             }
+
+if system_dependent('IsDebugMode')==1, dbcont; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+model = configureSetupThermoModelInputs(model,T,compartments,ph,is,chi,concMinDefault,concMaxDefault,confidenceLevel)
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m',79,1)">79  </a>if isempty(model.metCompartments)
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+clear
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep in; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+metStructOld=metStruct;
+if system_dependent('IsDebugMode')==1, dbstep; end
+bool = cellfun(@isempty(x),metStructOld.compartment);
+ bool = cellfun(@isempty(x),metStructOld.compartment);
+                        ↑
+{Error: Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for mismatched delimiters.
+} 
+bool = cellfun(@isempty,metStructOld.compartment);
+{Dot indexing is not supported for variables of this type.
+} 
+bool = cellfun(@isempty,compartment,metStructOld.compartment);
+{Index exceeds the number of array elements (0).
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('compartment>compartment_OpeningFcn', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/rBioNet/compartment.m', 73)" style="font-weight:bold">compartment>compartment_OpeningFcn</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/rBioNet/compartment.m',73,0)">line 73</a>)
+handles.data = varargin{1};
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('gui_mainfcn', '/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/guide/gui_mainfcn.m', 220)" style="font-weight:bold">gui_mainfcn</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/matlab/R2019a/toolbox/matlab/guide/gui_mainfcn.m',220,0)">line 220</a>)
+    feval(gui_State.gui_OpeningFcn, gui_hFigure, [], guidata(gui_hFigure), varargin{:});
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('compartment', '/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/rBioNet/compartment.m', 56)" style="font-weight:bold">compartment</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/src/reconstruction/rBioNet/compartment.m',56,0)">line 56</a>)
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+} 
+if system_dependent('IsDebugMode')==1, dbquit; end
+clear
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+which('Recon3DModel_301.mat')
+/home/rfleming/work/sbgCloud/code/fork-cobratoolbox/test/models/mat/Recon3DModel_301.mat
+contribute('COBRA.models')
+{Error using <a href="matlab:matlab.internal.language.introspective.errorDocCallback('confDevTools', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/confDevTools.m', 71)" style="font-weight:bold">confDevTools</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/confDevTools.m',71,0)">line 71</a>)
+ [confDevTools] The URL (https://github.com/COBRA.models.git) is not reachable or does not exist.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('checkSystem', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkSystem.m', 40)" style="font-weight:bold">checkSystem</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkSystem.m',40,0)">line 40</a>)
+        confDevTools(repoName, 'printLevel', printLevel);
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('contribute', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m', 56)" style="font-weight:bold">contribute</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m',56,0)">line 56</a>)
+        checkSystem(mfilename, repoName);
+} 
+contribute('opencobra/COBRA.models')
+
+
+      ~~~ opencobra/COBRA.models ~~~
+
+
+      (You can abort any process using CTRL+C)
+
+      [1] Start a new branch.
+      [2] Select an existing branch to work on.
+      [3] Publish a branch.
+      [4] Delete a branch.
+      [5] Update the fork.
+
+   -> Please select what you want to do (enter the number): 1
+   -> Please enter a name of the new branch that you want to work on (example: add-constraints): ec
+dev>  Your Github username is: rmtfleming.  (Success) 
+dev>  Your Github email is: ronan.mt.fleming@gmail.com.  (Success) 
+ [resetDevTools] The development tools have been reset (soft reset).
+{Not enough input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initDevTools', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m', 111)" style="font-weight:bold">initDevTools</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m',111,0)">line 111</a>)
+            reply = input([gitCmd.lead, originCall, ' -> Please define the location of your fork\n       current: ', strrep(currentDir, '\','\\'),'\n       Enter the path(press ENTER to use the current path): '], 's');
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initContribution', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m', 18)" style="font-weight:bold">initContribution</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m',18,0)">line 18</a>)
+    initDevTools();
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('contribute', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m', 153)" style="font-weight:bold">contribute</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m',153,0)">line 153</a>)
+                        initContribution(strtrim(reply));
+} 
+contribute('opencobra/COBRA.models')
+
+
+      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2020
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
+                                                  | 
+
+
+      (You can abort any process using CTRL+C)
+
+      [1] Start a new branch.
+      [2] Select an existing branch to work on.
+      [3] Publish a branch.
+      [4] Delete a branch.
+      [5] Update the fork.
+
+   -> Please select what you want to do (enter the number): 1
+   -> Please enter a name of the new branch that you want to work on (example: add-constraints): ec
+dev>  Your Github username is: rmtfleming.  (Success) 
+dev>  Your Github email is: ronan.mt.fleming@gmail.com.  (Success) 
+dev>  Your fork directory has been set to: /home/rfleming/work/sbgCloud/code/fork-cobratoolbox.  (Success) 
+dev>   -- Configuration -------- 
+dev>      GitHub username:       rmtfleming
+dev>      GitHub email:          ronan.mt.fleming@gmail.com
+dev>      Local directory :      /home/rfleming/work/sbgCloud/code/fork-cobratoolbox
+dev>      Remote fork URL:       https://github.com/rmtfleming/cobratoolbox.git
+dev>      Remote repository URL: https://github.com/opencobra/cobratoolbox.git
+dev>   -> Your <ec> branch exists locally, but not remotely. Do you want to have your local <ec> published? Y/N [Y]: [resetDevTools] The development tools have been reset (soft reset).
+{Operation terminated by user during <a href="matlab:matlab.internal.language.introspective.errorDocCallback('checkoutBranch', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkoutBranch.m', 235)" style="font-weight:bold">checkoutBranch</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkoutBranch.m',235,0)">line 235</a>)
+
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('checkoutBranch', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkoutBranch.m', 215)" style="font-weight:bold">checkoutBranch</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/checkoutBranch.m',215,0)">line 215</a>)
+                checkoutBranch(branchName, false);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initContribution', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m', 69)" style="font-weight:bold">initContribution</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m',69,0)">line 69</a>)
+        checkoutBranch(branchName);
+
+In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('contribute', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m', 153)" style="font-weight:bold">contribute</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m',153,0)">line 153</a>)
+                        initContribution(strtrim(reply));
+} 
+contribute('opencobra/COBRA.models')
+
+
+      ~~~ opencobra/COBRA.models ~~~
+
+
+      (You can abort any process using CTRL+C)
+
+      [1] Start a new branch.
+      [2] Select an existing branch to work on.
+      [3] Publish a branch.
+      [4] Delete a branch.
+      [5] Update the fork.
+
+   -> Please select what you want to do (enter the number): 1
+   -> Please enter a name of the new branch that you want to work on (example: add-constraints): modelsNov20
+dev>  Your Github username is: rmtfleming.  (Success) 
+dev>  Your Github email is: ronan.mt.fleming@gmail.com.  (Success) 
+ [resetDevTools] The development tools have been reset (soft reset).
+{Not enough input arguments.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initDevTools', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m', 111)" style="font-weight:bold">initDevTools</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m',111,0)">line 111</a>)
+            reply = input([gitCmd.lead, originCall, ' -> Please define the location of your fork\n       current: ', strrep(currentDir, '\','\\'),'\n       Enter the path(press ENTER to use the current path): '], 's');
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('initContribution', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m', 18)" style="font-weight:bold">initContribution</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initContribution.m',18,0)">line 18</a>)
+    initDevTools();
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('contribute', '/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m', 153)" style="font-weight:bold">contribute</a> (<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/contribute.m',153,0)">line 153</a>)
+                        initContribution(strtrim(reply));
+} 
+opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m',111,0)
+contribute('opencobra/COBRA.models')
+
+
+      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2020
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   http://opencobra.github.io/cobratoolbox
+                                                  | 
+
+
+      (You can abort any process using CTRL+C)
+
+      [1] Start a new branch.
+      [2] Select an existing branch to work on.
+      [3] Publish a branch.
+      [4] Delete a branch.
+      [5] Update the fork.
+
+   -> Please select what you want to do (enter the number): 1
+   -> Please enter a name of the new branch that you want to work on (example: add-constraints): modelsNov20
+dev>  Your Github username is: rmtfleming.  (Success) 
+dev>  Your Github email is: ronan.mt.fleming@gmail.com.  (Success) 
+<a href="matlab: opentoline('/home/rfleming/work/sbgCloud/code/MATLAB.devTools/src/initDevTools.m',106,1)">106 </a>    if isempty(gitConf.localDir) && isempty(gitConf.fullForkDir)
+if system_dependent('IsDebugMode')==1, dbquit; end
+ [resetDevTools] The development tools have been reset (soft reset).
+model.metFormulas{strcmp(model.mets,'h[i]')}
+
+ans =
+
+    'H'
+
+model.metFormulas(cellfun('isempty',model.metFormulas))
+
+ans =
+
+  1×1 <a href="matlab:helpPopup cell" style="font-weight:bold">cell</a> array
+
+    {0×0 char}
+
+clear
