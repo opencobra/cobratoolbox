@@ -1,4 +1,4 @@
-function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host, objre)
+function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -24,7 +24,6 @@ function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host, ob
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
 %                         there is no host model
-%    objre:               char with reaction name of objective function of microbeNames
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined
@@ -40,9 +39,7 @@ end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
-rmBio=strrep(objre, 'EX_', '');
-rmBio=strrep(rmBio, '(e)', '[c]');
-exch = setdiff(exch, rmBio);
+exch = setdiff(exch, 'biomass[c]');
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns

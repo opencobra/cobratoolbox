@@ -40,9 +40,24 @@ try
     %      [minFlux,maxFlux] = fastFVA(model,99.99,'max',{},rl,'A',cpxControl)
 
 catch
+    try
     warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
     cd(currentDir)
     [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rl);
+    catch
+        warning('No feasible solution in fluxVariability was found, using FBA instead.');
+        cd(currentDir)
+
+        minFlux=[];
+        maxFlux=[];
+        for i=1:length(rl)
+            modelFVA = changeObjective(model,rl{i});
+            solution = optimizeCbModel(modelFVA,'min');
+            minFlux(i,1) = solution.f;
+            solution = optimizeCbModel(modelFVA,'max');
+            maxFlux(i,1) = solution.f;
+        end
+    end
 end
 
 end

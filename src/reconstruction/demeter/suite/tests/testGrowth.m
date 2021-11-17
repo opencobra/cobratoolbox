@@ -3,6 +3,9 @@ function [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
 % anaerobic conditions. In anaerobic conditions, both oxygen uptake
 % (exchange reaction) and cytosolic oxygen-utilizing reactions are blocked.
 %
+% USAGE
+%           [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
+%
 % INPUT
 % model             COBRA model structure
 % biomassReaction   String listing the biomass reaction

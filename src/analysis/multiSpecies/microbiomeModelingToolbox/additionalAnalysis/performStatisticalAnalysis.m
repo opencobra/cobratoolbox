@@ -172,12 +172,9 @@ significantFeatures(:,ia)=[];
 %% add reaction/metabolite annotations if possible
 database=loadVMHDatabase;
 
-significantFeatures(1,:)=strrep(significantFeatures(1,:),'EX_','');
-significantFeatures(1,:)=strrep(significantFeatures(1,:),'(e)','');
-significantFeatures(1,:)=strrep(significantFeatures(1,:),'[fe]','');
 for i=2:size(Statistics,1)
     feat=Statistics{i,1};
-    if contains(feat,'[fe]')
+    if ~any(~contains(Statistics(:,1),'[fe]'))
         feat=strrep(feat,'EX_','');
         feat=strrep(feat,'[fe]','');
     end

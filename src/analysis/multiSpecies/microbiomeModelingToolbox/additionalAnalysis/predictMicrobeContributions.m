@@ -8,16 +8,16 @@ function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, 
 %    modPath              char with path of directory where models are stored
 %
 % OPTIONAL INPUTS:
-%    metList              List of VMH IDs for metabolites to analyze 
-%                         (default: all exchanged metabolites)  
+%    metList              List of VMH IDs for metabolites to analyze
+%                         (default: all exchanged metabolites)
 %    resultsFolder        Path where results will be saved
-%    numWorkers           integer indicating the number of cores to use 
+%    numWorkers           integer indicating the number of cores to use
 %                         for parallelization
 %
 % OUTPUTS:
 %    minFluxes:           Minimal fluxes through analyzed exchange reactions
 %    maxFluxes:           Maximal fluxes through analyzed exchange reactions
-%    fluxSpans:           Range between min and max fluxes for analyzed 
+%    fluxSpans:           Range between min and max fluxes for analyzed
 %                         exchange reactions
 %
 % .. Author: Almut Heinken, 12/20
@@ -71,8 +71,10 @@ environment = getEnvironment();
 dInfo = dir(modPath);
 modelList={dInfo.name};
 modelList=modelList';
-modelList(find(strcmp(modelList(:,1),'.')),:)=[];
-modelList(find(strcmp(modelList(:,1),'..')),:)=[];
+% remove everything that is not a model
+modelList(find(strcmp(modelList,'.')),:)=[];
+modelList(find(strcmp(modelList,'..')),:)=[];
+modelList(~any(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if size(modelList,1) ==0
     error('There are no models to load in the model folder!')
@@ -121,7 +123,7 @@ for i = startPnt:steps:length(modelList)
                 modelF=fieldnames(modelStr);
                 model=modelStr.(modelF{1});
             end
-
+            
             % get reactions for metabolites to analyze
             if isempty(metList)
                 rxnsInModel=model.rxns(find(contains(model.rxns,'IEX_')));
@@ -141,8 +143,24 @@ for i = startPnt:steps:length(modelList)
                     warning('Model infeasible. Could not perform FVA.')
                     ret=NaN;
                 else
-                [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
-                ret=0;
+                    try
+                        [minFlux,maxFlux] = fluxVariability(model,99.999,'max',rxnsInModel);
+                        ret=0;
+                    catch
+                        warning('No feasible solution in fluxVariability was found, using FBA instead.');
+                        cd(currentDir)
+                        minFlux=zeros(length(rxnsInModel),1);
+                        maxFlux=zeros(length(rxnsInModel),1);
+                        
+                        for k=1:length(rxnsInModel)
+                            modelFVA = changeObjective(model,rxnsInModel{k});
+                            solution = optimizeCbModel(modelFVA,'min');
+                            minFlux(k,1) = solution.f;
+                            solution = optimizeCbModel(modelFVA,'max');
+                            maxFlux(k,1) = solution.f;
+                        end
+                        ret=0;
+                    end
                 end
             end
             

@@ -4,7 +4,7 @@ function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metLis
 % resource.
 %
 % USAGE
-%   computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,numWorkers)
+%   computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)
 %
 % INPUTS
 % modelFolder           Folder with reconstructions to be analyzed

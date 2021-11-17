@@ -1,4 +1,4 @@
-function ReactionAbundance = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
+function [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
@@ -25,6 +25,8 @@ function ReactionAbundance = fastCalculateReactionAbundance(abundancePath, model
 % OUTPUT:
 %    ReactionAbundance       Table with total abundance for each microbiome
 %                            and reaction
+%    ReactionPresence:       Table with absolute reaction presence for
+%                            all reactions in all microbiome samples
 %
 % .. Author: - Almut Heinken, 04/2021
 
@@ -54,24 +56,20 @@ end
 % in which model
 for i = 2:size(abundance, 1)
     model = modelsList{i, 1};
-    ReactionPresence{i, 1} = abundance{i, 1};
+    ReactionPresenceInModels{i, 1} = abundance{i, 1};
     for j = 1:length(rxnsList)
-        ReactionPresence{1, j + 1} = rxnsList{j};
+        ReactionPresenceInModels{1, j + 1} = rxnsList{j};
         if ~isempty(find(ismember(model.rxns, rxnsList{j})))
-            ReactionPresence{i, j + 1} = '1';
+            ReactionPresenceInModels{i, j + 1} = '1';
         else
-            ReactionPresence{i, j + 1} = '0';
+            ReactionPresenceInModels{i, j + 1} = '0';
         end
     end
 end
-ReactionPresence{1,1}='Strains';
-
+ReactionPresenceInModels{1,1}='Strains';
 
 % prepare table for the total abundance
 ReactionAbundance = {};
-for i = 1:length(rxnsList)
-    ReactionAbundance{1, i + 1} = rxnsList{i};
-end
 for i = 2:size(abundance, 2)
     ReactionAbundance{i, 1} = abundance{1, i};
 end
@@ -85,10 +83,10 @@ if exist('numWorkers', 'var') && numWorkers > 0
 end
 
 clear abundance
+clear modelsList
 
 totalAbun={};
 parfor i = 2:size(ReactionAbundance, 1)
-    i
     % reload the file to avoid running out of memory
     abundance = readInputTableForPipeline(abundancePath);
     if isnumeric(abundance{2, 1})
@@ -100,7 +98,7 @@ parfor i = 2:size(ReactionAbundance, 1)
     
     for j = 2:size(abundance, 1)
         % find all reactions present in the strain
-        presentRxns = find(strcmp(ReactionPresence(j,2:end),'1'));
+        presentRxns = find(strcmp(ReactionPresenceInModels(j,2:end),'1'));
         
         for k = 1:length(presentRxns)
             % summarize total abundance
@@ -113,9 +111,32 @@ parfor i = 2:size(ReactionAbundance, 1)
     end
 end
 
+for i = 1:length(rxnsList)
+    ReactionAbundance{1, i + 1} = rxnsList{i};
+end
+
 % collect the temporarily stored abundances to put together the table
 for i = 2:size(ReactionAbundance, 1)
     ReactionAbundance(i,2:end) = num2cell(totalAbun{i});
+end
+
+% export the absolute reaction presence
+tol=0.0000001;
+
+ReactionPresence = ReactionAbundance;
+for i=2:size(ReactionPresence,1)
+    for j=2:size(ReactionPresence,2)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            val = ReactionPresence{i,j};
+        else
+            val = str2double(ReactionPresence{i,j});
+        end
+        if val > tol
+            ReactionPresence{i,j} = 1;
+        else
+            ReactionPresence{i,j} = 0;
+        end
+    end
 end
 
 end

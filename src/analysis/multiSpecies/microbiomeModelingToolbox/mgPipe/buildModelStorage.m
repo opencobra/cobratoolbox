@@ -1,4 +1,4 @@
-function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers,removeBlockedRxns)
+function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
@@ -11,8 +11,6 @@ function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(micr
 %    microbeNames:           list of microbe models included in the microbiome models
 %    modPath:                char with path of directory where models are stored
 %    numWorkers:             integer indicating the number of cores to use for parallelization
-%    removeBlockedRxns:      Remove reactions blocked on the input diet to
-%                            reduce computation time (default=false)
 %
 % OUTPUTS
 %    activeExMets:           list of exchanged metabolites present in at
@@ -89,15 +87,11 @@ for i = 1:size(microbeNames, 1)
     model = changeRxnBounds(model, finrex, -1000, 'l');
     model = changeRxnBounds(model, finrex, 1000, 'u');
     
-    if removeBlockedRxns
-        % remove blocked reactions from the models
-        tic
-        BlockedRxns = identifyFastBlockedRxns(model,model.rxns, 1,1e-8);
-        toc
-        model= removeRxns(model, BlockedRxns);
-        BlockedReaction = findBlockedReaction(model,'L2');
-        model=removeRxns(model,BlockedReaction);
-    end
+    %         % remove blocked reactions from the models
+    %         BlockedRxns = identifyFastBlockedRxns(model,model.rxns, 1,1e-8);
+    %         model= removeRxns(model, BlockedRxns);
+    %         BlockedReaction = findBlockedReaction(model,'L2');
+    %         model=removeRxns(model,BlockedReaction);
     
     model = convertOldStyleModel(model);
     exmod = model.rxns(strncmp('EX_', model.rxns, 3));  % find exchange reactions

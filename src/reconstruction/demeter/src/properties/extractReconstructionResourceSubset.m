@@ -33,8 +33,7 @@ function [extractedSubset,subsetFolder] = extractReconstructionResourceSubset(mo
 %       - Almut Heinken, 01/2021
 
 % load the file with reconstruction resource information
-infoFile = readtable(infoFilePath, 'ReadVariableNames', false);
-infoFile = table2cell(infoFile);
+infoFile = readInputTableForPipeline(infoFilePath);
 
 % get the subset of reconstruction IDs
 featCol=find(strcmp(infoFile(1,:),subHeader));

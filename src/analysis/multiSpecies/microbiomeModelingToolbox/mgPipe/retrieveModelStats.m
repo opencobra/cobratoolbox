@@ -1,4 +1,4 @@
-function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, infoFilePath)
+function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, abunFilePath, numWorkers, infoFilePath)
 % This function retrieves statistics on the number of reactions and
 % metabolites across microbiome models. If a file with stratification
 % information on individuals is provided, it will also determine if
@@ -13,6 +13,8 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 % modelPath:        Path to models for which statistics should be retrieved
 % modelList:        Cell array with names of models for which statistics
 %                   should be retrieved
+% abunFilePath:     char with path and name of file from which to retrieve 
+%                   abundance information
 % numWorkers:       integer indicating the number of cores to use for parallelization
 %
 % OPTIONAL INPUT:
@@ -54,17 +56,33 @@ for i=1:length(modelList)
     data(i,2)=dataTmp{i}(2);
 end
 
+% add the number of microbes per sample
+tol=0.0000001;
+
+abundance = readInputTableForPipeline(abunFilePath);
+for i=1:length(modelList)
+    samp=strrep(modelList{i},'.mat','');
+    samp=strrep(samp,'microbiota_model_samp_','');
+    ind=find(strcmp(abundance(1,:),samp));
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        abun=cell2mat(abundance(2:end,ind));
+    else
+        abun=str2double(abundance(2:end,ind));
+    end
+    data(i,3)=length(find(abun(:,1) > tol));
+end
+
 statistics={};
 
 % save the summary as a summary
-summary={'','Reactions','Metabolites'
-    'Mean','',''
-    'Median','',''
-    'Min','',''
-    'Max','',''
+summary={'','Reactions','Metabolites','Microbes'
+    'Mean','','',''
+    'Median','','',''
+    'Min','','',''
+    'Max','','',''
     };
 
-for i=1:2
+for i=1:3
     summary{2,i+1}=num2str(mean(data(:,i)));
     summary{3,i+1}=num2str(median(data(:,i)));
     summary{4,i+1}=num2str(min(data(:,i)));
@@ -72,23 +90,24 @@ for i=1:2
 end
 
 % print a table with model IDs and stats
-modelStats={'ModelIDs','Reactions','Metabolites'};
+modelStats={'ModelIDs','Reactions','Metabolites','Microbes'};
 modelStats(2:length(modelList)+1,1)=modelList;
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_samp_','');
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_diet_','');
-modelStats(2:end,2:3)=num2cell(data);
+modelStats(2:end,2:4)=num2cell(data);
 
 % create violin plot of model stats
-if nargin <4
+if nargin <5
     % have reactions and metabolites in one plot
-    try
-        figure
-        violinplot(data,{'Reactions','Metabolites'});
-        set(gca, 'FontSize', 12)
-        box on
-        title('Reaction and metabolite numbers in microbiome models')
-        print('MicrobiomeModel_Sizes','-dpng','-r300')
-    end
+    figure
+    subplot(1,2,1)
+    violinplot(data(:,1:2),{'Reactions','Metabolites'});
+    set(gca, 'FontSize', 12)
+    subplot(1,2,2)
+    violinplot(data(:,3),{'Microbes'});
+    set(gca, 'FontSize', 12)
+    sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
+    print('MicrobiomeModel_Sizes','-dpng','-r300')
     
 else
     % perform statistical analysis if file with stratification is provided
@@ -111,8 +130,9 @@ else
     end
     statistics{2,1}='Reactions';
     statistics{3,1}='Metabolites';
+    statistics{4,1}='Microbes';
     
-    for i=1:2
+    for i=1:3
         % separate data by group
         dataAll=data(:,i);
         for j=1:length(groups)
@@ -150,16 +170,20 @@ else
     
     % plot reactions and metabolites separately with group classification
     figure
-    subplot(1,2,1)
+    subplot(1,3,1)
     violinplot(data(:,1),infoFile(:,2));
     title('Reactions')
     set(gca, 'FontSize', 12)
-    subplot(1,2,2)
+    subplot(1,3,2)
     violinplot(data(:,2),infoFile(:,2));
     title('Metabolites')
     set(gca, 'FontSize', 12)
+    subplot(1,3,3)
+    violinplot(data(:,3),infoFile(:,2));
+    title('Microbes')
+    set(gca, 'FontSize', 12)
     hold on
-    sgtitle('Reaction and metabolite numbers in microbiome models')
+    sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
     print('MicrobiomeModel_Sizes','-dpng','-r300')
 end
 
