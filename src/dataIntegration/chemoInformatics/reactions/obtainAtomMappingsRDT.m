@@ -84,7 +84,7 @@ maxTime = 1800;
 % Check installation
 [cxcalcInstalled, ~] = system('cxcalc');
 cxcalcInstalled = ~cxcalcInstalled;
-if ~isunix
+if ismac || ispc 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
