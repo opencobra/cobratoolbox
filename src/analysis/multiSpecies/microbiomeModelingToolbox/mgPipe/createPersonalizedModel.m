@@ -116,7 +116,7 @@ if isempty(mapP)
     microbiota_model.name=sampNames{1,1};
     
     % remove unnecessary fields
-    toRemove={'citations';'comments';'grRules';'rxnConfidenceScores';'rxnECNumbers';'rxnKEGGID';'subSystems';'metHMDBID';'metInChIString';'metKEGGID';'metPubChemID';'metSmiles';'genes'};
+    toRemove={'citations';'comments';'grRules';'rxnConfidenceScores';'rxnECNumbers';'rxnKEGGID';'metHMDBID';'metInChIString';'metKEGGID';'metPubChemID';'metSmiles';'genes'};
     microbiota_model = rmfield(microbiota_model,toRemove);
     
     microbiota_model = changeObjective(microbiota_model, 'EX_microbeBiomass[fe]');

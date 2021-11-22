@@ -269,6 +269,13 @@ if growsOnDefinedMedium==0
     end
 end
 
+%% perform refinement against BacDive data if available
+[model, addedRxns, removedRxns] = curateAgainstBacDiveData(model, microbeID, database, inputDataFolder);
+if ~isempty(addedRxns) || ~isempty(removedRxns)
+    summary.('BacDiveDataRefinement').('addedRxns') = addedRxns;
+    summary.('BacDiveDataRefinement').('removedRxns') = removedRxns;
+end
+
 %% debug models that cannot grow if coupling constraints are implemented (rare cases)
 [model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database);
 summary.('addedCouplingRxns') = addedCouplingRxns;
