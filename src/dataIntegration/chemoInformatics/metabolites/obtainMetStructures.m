@@ -375,13 +375,18 @@ end
 molCollectionReport.structuresObtainedPerSource = structuresObtainedPerSource;
 
 % Database coverage table
-nRows = size(idMatrix, 2);
+[nCols nRows] = size(idMatrix);
 varTypes = {'string', 'double', 'double', 'double'};
 varNames = {'sources', 'coverage', 'metsWithStructure', 'metsWithoutStructure'};
 databaseCoverage = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
 databaseCoverage.sources = sources;
-databaseCoverage.metsWithStructure = sum(idMatrix)';
-databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
+if nCols > 1
+    databaseCoverage.metsWithStructure = sum(idMatrix)';
+    databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
+else
+    databaseCoverage.metsWithStructure = double(idMatrix)';
+    databaseCoverage.metsWithoutStructure = double(~idMatrix)';
+end
 databaseCoverage.coverage = round((databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1), 2);
 molCollectionReport.databaseCoverage = databaseCoverage;
 
