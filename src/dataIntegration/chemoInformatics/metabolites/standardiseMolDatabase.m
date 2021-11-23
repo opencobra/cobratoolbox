@@ -10,32 +10,35 @@ function standardisationReport = standardiseMolDatabase(molDir, metList, standar
 % [standardised, nonStandardised, InChIs, SMILES] = standardiseMolDatabase(molDir, standardisedDir, standardiseMolFiles)
 %
 % INPUTS:
-%    molDir:               Path to directory that contain the MDL MOL files
+%    molDir:	Path to directory that contain the MDL MOL files
 %                          to be standardised.
 %
 % OPTIONAL INPUTS:
-%    metList:              1 x n lest of metabolites to standardise
-%    standardisedDir       Path to directory that will contain the
-%                          standardised MDL MOL files (default: current
-%                          directory).
-%    standardisationApproach:  String contianing the type of standarization for
-%                              the moldecules (default: 'explicitH' if
-%                              openBabel is installed, otherwise 'basic')
-%                              * explicitH - Normal chemical graphs.
-%                              * implicitH - Hydrogen suppressed chemical
-%                                            graphs.
-%                              * neutral   - Chemical graphs with protonated
-%                                            molecules.
-%                              * basic     - Updating the header.
+%    metList: 1 x n lest of metabolites to standardise
+%    standardisedDir: Path to directory that will contain the standardised 
+%           MDL MOL files (default: current directory).
+%    standardisationApproach: String contianing the type of standarization 
+%           for the moldecules (default: 'explicitH' if openBabel is 
+%           installed, otherwise 'basic')
+%
+%           'explicitH' - Normal chemical graphs.
+%           'implicitH' - Hydrogen suppressed chemical graphs.
+%           'basic' - Updating the header.
 %
 % OUTPUTS:
+%    standardisationReport: Struct array with the standarization report:
+%
+%           * .standardised: list of standardised metabolite structures
+%           * .nonStandardised: list of metabolite structures that were not
+%                   standardised.
+%           * .InChIs: list of InChIs from the obtained metabolite
+%                   structures
+%           * .SMILES: list of SMILES from the obtained metabolite
+%                   structures
+%           * .InChIKeys: list of InChIKeys from the obtained metabolite
+%                   structures
+%
 %    A standardised molecular structures database
-%    standardisationReport:    Struct array with the standarization report
-%                                * standardised
-%                                * nonStandardised
-%                                * InChIs
-%                                * SMILES
-%                                * InChIKeys
 %
 % .. Author: - German Preciat 25/06/2020
 
@@ -61,7 +64,7 @@ cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
 end
-if ~isunix
+if ismac || ispc
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
