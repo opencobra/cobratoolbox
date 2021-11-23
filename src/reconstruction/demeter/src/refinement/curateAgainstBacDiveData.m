@@ -29,21 +29,17 @@ removedRxns={};
 % check if files with BacDive data can be found, do not perform the
 % refinement otherwise
 if exist([inputDataFolder filesep 'BacDive_Uptake_Data.txt'])==2 && exist([inputDataFolder filesep 'BacDive_Secretion_Data.txt'])==2
-uptakeTable = readInputTableForPipeline([inputDataFolder filesep 'BacDive_Uptake_Data.txt']);
-secretionTable = readInputTableForPipeline([inputDataFolder filesep 'BacDive_Secretion_Data.txt']);
-
-tol=0.0000001;
-
-gfRxns = model.rxns(find(strcmp(model.grRules,'')));
-gfRxns = union(gfRxns, model.rxns(strncmp('Unknown', model.grRules, length('Unknown'))));
-gfRxns = union(gfRxns, model.rxns(strncmp('0000000.0.peg', model.grRules, length('0000000.0.peg'))));
-gfRxns = union(gfRxns, model.rxns(strncmp('AUTOCOMPLETION', model.grRules, length('AUTOCOMPLETION'))));
-gfRxns = union(gfRxns, model.rxns(strncmp('INITIALGAPFILLING', model.grRules, length('INITIALGAPFILLING'))));
-
-mInd = find(ismember(uptakeTable(:, 1), microbeID));
-if isempty(mInd)
-    warning(['Microbe ID not found in BacDive data table: ', microbeID])
-else
+    uptakeTable = readInputTableForPipeline([inputDataFolder filesep 'BacDive_Uptake_Data.txt']);
+    secretionTable = readInputTableForPipeline([inputDataFolder filesep 'BacDive_Secretion_Data.txt']);
+    
+    tol=0.0000001;
+    
+    gfRxns = model.rxns(find(strcmp(model.grRules,'')));
+    gfRxns = union(gfRxns, model.rxns(strncmp('Unknown', model.grRules, length('Unknown'))));
+    gfRxns = union(gfRxns, model.rxns(strncmp('0000000.0.peg', model.grRules, length('0000000.0.peg'))));
+    gfRxns = union(gfRxns, model.rxns(strncmp('AUTOCOMPLETION', model.grRules, length('AUTOCOMPLETION'))));
+    gfRxns = union(gfRxns, model.rxns(strncmp('INITIALGAPFILLING', model.grRules, length('INITIALGAPFILLING'))));
+    
     % open all exchanges
     exRxns = model.rxns(find(strncmp(model.rxns,'EX_',3)));
     model = changeRxnBounds(model, exRxns, -1000, 'l');
@@ -326,182 +322,206 @@ else
         'ac', 'any(ismember(model.rxns, ''MDH'')) && any(ismember(model.rxns, ''POR4'')) && any(ismember(model.rxns, ''FUM''))', {'ACONTa','ACONTb','ICDHx','ICDHyr','OAASr'}
         'succ', '~any(ismember(model.rxns, ''PPA''))', {'PPA','PPA2'}
         };
-   
+    
     % find the pathways to add
     uptakePathways=uptakeTable(1,2:end);
     secretionPathways=secretionTable(1,2:end);
-    if contains(version,'(R202') % for Matlab R2020a and newer
-        uptakeMets = uptakePathways(find(cell2mat(uptakeTable(mInd, 2:end)) == 1));
-        noUptakeMets = uptakePathways(find(cell2mat(uptakeTable(mInd, 2:end)) == -1));
-        secretionMets = secretionPathways(find(cell2mat(secretionTable(mInd, 2:end)) == 1));
-        noSecretionMets = secretionPathways(find(cell2mat(secretionTable(mInd, 2:end)) == -1));
-    else
-        uptakeMets = uptakePathways(find(str2double(uptakeTable(mInd, 2:end)) == 1));
-        noUptakeMets = uptakePathways(find(str2double(uptakeTable(mInd, 2:end)) == -1));
-        secretionMets = secretionPathways(find(str2double(secretionTable(mInd, 2:end)) == 1));
-        noSecretionMets = secretionPathways(find(str2double(secretionTable(mInd, 2:end)) == -1));
-    end
-    if ~any(~isempty({uptakeMets,noUptakeMets,secretionMets,noSecretionMets}))
-        warning(['No BacDive data found for ', microbeID])
-    end
     
+    uInd = find(ismember(uptakeTable(:, 1), microbeID));
+    sInd = find(ismember(secretionTable(:, 1), microbeID));
+    
+    if ~isempty(uInd)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            uptakeMets = uptakePathways(find(cell2mat(uptakeTable(uInd, 2:end)) == 1));
+            noUptakeMets = uptakePathways(find(cell2mat(uptakeTable(uInd, 2:end)) == -1));
+        else
+            uptakeMets = uptakePathways(find(str2double(uptakeTable(uInd, 2:end)) == 1));
+            noUptakeMets = uptakePathways(find(str2double(uptakeTable(uInd, 2:end)) == -1));
+        end
+    else
+        uptakeMets = {};
+        noUptakeMets = {};
+    end
+    if ~isempty(sInd)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            secretionMets = secretionPathways(find(cell2mat(secretionTable(sInd, 2:end)) == 1));
+            noSecretionMets = secretionPathways(find(cell2mat(secretionTable(sInd, 2:end)) == -1));
+        else
+            secretionMets = secretionPathways(find(str2double(secretionTable(sInd, 2:end)) == 1));
+            noSecretionMets = secretionPathways(find(str2double(secretionTable(sInd, 2:end)) == -1));
+        end
+    else
+        secretionMets = {};
+        noSecretionMets = {};
+    end
+    if length(uptakeMets)==0 && length(noUptakeMets)==0 && length(secretionMets)==0 && length(noSecretionMets)==0
+        warning(['No BacDive data found for ', microbeID])
+    else
+        
         %% refine based on metabolite uptake data
         
-    % go through consumed metabolites
-    % curate metabolites that should be consumed
-    for i = 1:length(uptakeMets)
-        % find pathway reactions to add
-        addRxns = uptakePathwayAdd{find(ismember(uptakePathwayAdd(:, 1), uptakeMets{i})), 2};
-        
-        % first check if the model can already consume the metabolite
-        refine=1;
-        if ~isempty(intersect(model.rxns,addRxns{1}))
-            modelTest=changeObjective(model,addRxns{1});
-            FBA=optimizeCbModel(modelTest,'min');
-            if FBA.f <-tol
-                refine=0;
-            end
-        end
-        
-        if refine==1
-            % if the model cannot consume the metabolite (but should)
-            for j = 1:length(addRxns)
-                if ~any(ismember(model.rxns, addRxns{j}))
-                    formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
-                    model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
-                    addedRxns{length(addedRxns)+1,1} = addRxns{j};
+        % go through consumed metabolites
+        % curate metabolites that should be consumed
+        for i = 1:length(uptakeMets)
+            % find pathway reactions to add
+            if ~isempty(find(ismember(uptakePathwayAdd(:, 1), uptakeMets{i})))
+                addRxns = uptakePathwayAdd{find(ismember(uptakePathwayAdd(:, 1), uptakeMets{i})), 2};
+                
+                % first check if the model can already consume the metabolite
+                refine=1;
+                if ~isempty(intersect(model.rxns,addRxns{1}))
+                    modelTest=changeObjective(model,addRxns{1});
+                    FBA=optimizeCbModel(modelTest,'min');
+                    if FBA.f <-tol
+                        refine=0;
+                    end
                 end
-            end
-        
-            % add conditional reactions
-            if any(ismember(uptakePathwayAddConditional(:, 1), uptakeMets{i}))
-                conditions = find(ismember(uptakePathwayAddConditional(:, 1), uptakeMets{i}));
-                for k = 1:length(conditions)
-                    if eval(uptakePathwayAddConditional{conditions(k), 2})
-                        addRxns = uptakePathwayAddConditional{conditions(k), 3};
-                        for j = 1:length(addRxns)
-                            if ~any(ismember(model.rxns, addRxns{j}))
-                                formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
-                                model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
-                                addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                
+                if refine==1
+                    % if the model cannot consume the metabolite (but should)
+                    for j = 1:length(addRxns)
+                        if ~any(ismember(model.rxns, addRxns{j}))
+                            formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                            model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
+                            addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                        end
+                    end
+                    
+                    % add conditional reactions
+                    if any(ismember(uptakePathwayAddConditional(:, 1), uptakeMets{i}))
+                        conditions = find(ismember(uptakePathwayAddConditional(:, 1), uptakeMets{i}));
+                        for k = 1:length(conditions)
+                            if eval(uptakePathwayAddConditional{conditions(k), 2})
+                                addRxns = uptakePathwayAddConditional{conditions(k), 3};
+                                for j = 1:length(addRxns)
+                                    if ~any(ismember(model.rxns, addRxns{j}))
+                                        formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                                        model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
+                                        addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                                    end
+                                end
                             end
                         end
                     end
                 end
             end
         end
-    end
-    % curate metabolites that should not be consumed
-    for i = 1:length(noUptakeMets)
-        % find pathway reactions to add
-        addRxns = uptakePathwayAdd{find(ismember(uptakePathwayAdd(:, 1), noUptakeMets{i})), 2};
-        
-        % first check if the model can consume the metabolite
-        refine=0;
-        if ~isempty(intersect(model.rxns,addRxns{1}))
-            modelTest=changeObjective(model,addRxns{1});
-            FBA=optimizeCbModel(modelTest,'min');
-            if FBA.f <-tol
-                refine=1;
-            end
-        end
-        
-        if refine==1
-            % if the model can consume the metabolite (but should not)
-            % remove reactions without GPRs
-            rxnsInModel=intersect(gfRxns,addedRxns);
-            for j = 1:length(rxnsInModel)
-                % check if the model can produce biomass without the
-                % reaction
-                modelTest=removeRxns(model,rxnsInModel{j});
-                FBA=optimizeCbModel(modelTest,'max');
-                if FBA.f >tol
-                    removedRxns{length(removedRxns)+1,1} = rxnsInModel{j};
-                end
-            end
-        end
-    end
-    model=removeRxns(model,removedRxns);
-    
-    %% refine based on metabolite secretion data
-
-    % go through secreted metabolites
-    % curate metabolites that should be consumed
-    for i = 1:length(secretionMets)
-        % find pathway reactions to add
-        addRxns = secretionPathwayAdd{find(ismember(secretionPathwayAdd(:, 1), secretionMets{i})), 2};
-        
-        % first check if the model can already consume the metabolite
-        refine=1;
-        if ~isempty(intersect(model.rxns,addRxns{1}))
-            modelTest=changeObjective(model,addRxns{1});
-            FBA=optimizeCbModel(modelTest,'max');
-            if FBA.f > tol
+        % curate metabolites that should not be consumed
+        for i = 1:length(noUptakeMets)
+            if ~isempty(find(ismember(uptakePathwayAdd(:, 1), noUptakeMets{i})))
+                % find pathway reactions to add
+                addRxns = uptakePathwayAdd{find(ismember(uptakePathwayAdd(:, 1), noUptakeMets{i})), 2};
+                
+                % first check if the model can consume the metabolite
                 refine=0;
-            end
-        end
-        
-        if refine==1
-            % if the model cannot secrete the metabolite (but should)
-            for j = 1:length(addRxns)
-                if ~any(ismember(model.rxns, addRxns{j}))
-                    formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
-                    model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
-                    addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                if ~isempty(intersect(model.rxns,addRxns{1}))
+                    modelTest=changeObjective(model,addRxns{1});
+                    FBA=optimizeCbModel(modelTest,'min');
+                    if FBA.f <-tol
+                        refine=1;
+                    end
+                end
+                
+                if refine==1
+                    % if the model can consume the metabolite (but should not)
+                    % remove reactions without GPRs
+                    rxnsInModel=intersect(gfRxns,addedRxns);
+                    for j = 1:length(rxnsInModel)
+                        % check if the model can produce biomass without the
+                        % reaction
+                        modelTest=removeRxns(model,rxnsInModel{j});
+                        FBA=optimizeCbModel(modelTest,'max');
+                        if FBA.f >tol
+                            removedRxns{length(removedRxns)+1,1} = rxnsInModel{j};
+                        end
+                    end
                 end
             end
+        end
+        model=removeRxns(model,removedRxns);
         
-            % add conditional reactions
-            if any(ismember(secretionPathwayAddConditional(:, 1), secretionMets{i}))
-                conditions = find(ismember(secretionPathwayAddConditional(:, 1), uptakeMets{i}));
-                for k = 1:length(conditions)
-                    if eval(secretionPathwayAddConditional{conditions(k), 2})
-                        addRxns = secretionPathwayAddConditional{conditions(k), 3};
-                        for j = 1:length(addRxns)
-                            if ~any(ismember(model.rxns, addRxns{j}))
-                                formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
-                                model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
-                                addedRxns{length(addedRxns)+1,1} = addRxns{j};
+        %% refine based on metabolite secretion data
+        
+        % go through secreted metabolites
+        % curate metabolites that should be consumed
+        for i = 1:length(secretionMets)
+            if ~isempty(find(ismember(secretionPathwayAdd(:, 1), secretionMets{i})))
+                % find pathway reactions to add
+                addRxns = secretionPathwayAdd{find(ismember(secretionPathwayAdd(:, 1), secretionMets{i})), 2};
+                
+                % first check if the model can already consume the metabolite
+                refine=1;
+                if ~isempty(intersect(model.rxns,addRxns{1}))
+                    modelTest=changeObjective(model,addRxns{1});
+                    FBA=optimizeCbModel(modelTest,'max');
+                    if FBA.f > tol
+                        refine=0;
+                    end
+                end
+                
+                if refine==1
+                    % if the model cannot secrete the metabolite (but should)
+                    for j = 1:length(addRxns)
+                        if ~any(ismember(model.rxns, addRxns{j}))
+                            formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                            model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
+                            addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                        end
+                    end
+                    
+                    % add conditional reactions
+                    if any(ismember(secretionPathwayAddConditional(:, 1), secretionMets{i}))
+                        conditions = find(ismember(secretionPathwayAddConditional(:, 1), uptakeMets{i}));
+                        for k = 1:length(conditions)
+                            if eval(secretionPathwayAddConditional{conditions(k), 2})
+                                addRxns = secretionPathwayAddConditional{conditions(k), 3};
+                                for j = 1:length(addRxns)
+                                    if ~any(ismember(model.rxns, addRxns{j}))
+                                        formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                                        model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'BacDiveDataRefinement');
+                                        addedRxns{length(addedRxns)+1,1} = addRxns{j};
+                                    end
+                                end
                             end
                         end
                     end
                 end
             end
         end
-    end
-    % curate metabolites that should not be secreted
-    for i = 1:length(noSecretionMets)
-        % find pathway reactions to add
-        addRxns = secretionPathwayAdd{find(ismember(secretionPathwayAdd(:, 1), noSecretionMets{i})), 2};
-        
-        % first check if the model can consume the metabolite
-        refine=0;
-        if ~isempty(intersect(model.rxns,addRxns{1}))
-            modelTest=changeObjective(model,addRxns{1});
-            FBA=optimizeCbModel(modelTest,'max');
-            if FBA.f > tol
-                refine=1;
-            end
-        end
-        
-        if refine==1
-            % if the model can consume the metabolite (but should not)
-            % remove reactions without GPRs
-            rxnsInModel=intersect(gfRxns,addedRxns);
-            for j = 1:length(rxnsInModel)
-                % check if the model can produce biomass without the
-                % reaction
-                modelTest=removeRxns(model,rxnsInModel{j});
-                FBA=optimizeCbModel(modelTest,'max');
-                if FBA.f >tol
-                    removedRxns{length(removedRxns)+1,1} = rxnsInModel{j};
+        % curate metabolites that should not be secreted
+        for i = 1:length(noSecretionMets)
+            if ~isempty(find(ismember(secretionPathwayAdd(:, 1), noSecretionMets{i})))
+                % find pathway reactions to add
+                addRxns = secretionPathwayAdd{find(ismember(secretionPathwayAdd(:, 1), noSecretionMets{i})), 2};
+                
+                % first check if the model can consume the metabolite
+                refine=0;
+                if ~isempty(intersect(model.rxns,addRxns{1}))
+                    modelTest=changeObjective(model,addRxns{1});
+                    FBA=optimizeCbModel(modelTest,'max');
+                    if FBA.f > tol
+                        refine=1;
+                    end
+                end
+                
+                if refine==1
+                    % if the model can consume the metabolite (but should not)
+                    % remove reactions without GPRs
+                    rxnsInModel=intersect(gfRxns,addedRxns);
+                    for j = 1:length(rxnsInModel)
+                        % check if the model can produce biomass without the
+                        % reaction
+                        modelTest=removeRxns(model,rxnsInModel{j});
+                        FBA=optimizeCbModel(modelTest,'max');
+                        if FBA.f >tol
+                            removedRxns{length(removedRxns)+1,1} = rxnsInModel{j};
+                        end
+                    end
                 end
             end
         end
+        model=removeRxns(model,removedRxns);
     end
-    model=removeRxns(model,removedRxns);
-end
-
 else
     warning('No BacDive data found in folder with input data.')
 end
