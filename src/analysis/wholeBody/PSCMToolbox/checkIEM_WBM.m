@@ -96,7 +96,7 @@ if ~exist('LPSolver','var')
     LPSolver = 'ILOGcomplex';
     LPSolver = 'tomlab_cplex';
 end
-[solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP',0,1);
+[solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP');
 
 global useSolveCobraLPCPLEX
 %
@@ -250,110 +250,116 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                     disp(BiomarkerRxns{i,1})
                     % Healthy
                     model.ub(strmatch(BiomarkerRxns{i,1},model.rxns)) = 100000;
-                    model = changeObjective(model,BiomarkerRxns{i,1});
-                    % max of biomarker
-                    model.osenseStr = 'max';
-                    model.osense = -1;
-                    tic;
-                    if useSolveCobraLPCPLEX
-                        [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
-                        solution.v=solution.full;
-                    else
-                        solution = optimizeWBModel(model);
-                        if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                            model.lb(c+1)=fix(model.lb(c+1)*10000)/10000;
-                            solution = optimizeWBModel(model);
-                        end
-                        
-                    end
-                    timeTaken=toc;
-                    IEMSol{cnt,1} = strcat('Healthy:',BiomarkerRxns{i,1});
-                    if solution.stat == 1 || solution.stat == 3
-                        f = solution.v(model.c~=0);
-                        if abs(f) <= tol
-                            f = 0;
-                        end
-                        IEMSol{cnt,2} = num2str(f);
-                    else
-                        IEMSol{cnt,2} = 'NaN';
-                    end
-                    IEMSol{cnt,3} = strcat('Disease - Reported:',BiomarkerRxns{i,2});
-                    % minimization of biomarker
-                    if minBiomarker == 1
-                        % min of biomarker
-                        model.osense = 1;
-                        model.osenseStr = 'min';
+                    if ~isempty(find(strcmp(model.rxns,BiomarkerRxns{i,1})))
+                        model = changeObjective(model,BiomarkerRxns{i,1});
+                        % max of biomarker
+                        model.osenseStr = 'max';
+                        model.osense = -1;
                         tic;
                         if useSolveCobraLPCPLEX
                             [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
                             solution.v=solution.full;
                         else
                             solution = optimizeWBModel(model);
+                            if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                                model.lb(c+1)=fix(model.lb(c+1)*10000)/10000;
+                                solution = optimizeWBModel(model);
+                            end
+                            
                         end
                         timeTaken=toc;
+                        IEMSol{cnt,1} = strcat('Healthy:',BiomarkerRxns{i,1});
                         if solution.stat == 1 || solution.stat == 3
                             f = solution.v(model.c~=0);
                             if abs(f) <= tol
                                 f = 0;
                             end
-                            IEMSol{cnt,4} = num2str(solution.v(model.c~=0));
+                            IEMSol{cnt,2} = num2str(f);
                         else
-                            IEMSol{cnt,4} = 'NaN';
+                            IEMSol{cnt,2} = 'NaN';
                         end
-                    end
-                    cnt = cnt + 1;
-                    %KO
-                    modelIEM = modelIEMO;
-                    modelIEM.ub(strmatch(BiomarkerRxns{i,1},modelIEM.rxns)) = 100000;
-                    modelIEM = changeObjective(modelIEM,BiomarkerRxns{i,1});
-                    modelIEM.osense = -1;
-                    tic;
-                    if useSolveCobraLPCPLEX
-                        [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
-                        solution.v=solution.full;
-                    else
-                        solution = optimizeWBModel(modelIEM);
-                        if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                            modelIEM.lb(c+1)=fix(modelIEM.lb(c+1)*10000)/10000;
-                            solution = optimizeWBModel(modelIEM);
+                        IEMSol{cnt,3} = strcat('Disease - Reported:',BiomarkerRxns{i,2});
+                        % minimization of biomarker
+                        if minBiomarker == 1
+                            % min of biomarker
+                            model.osense = 1;
+                            model.osenseStr = 'min';
+                            tic;
+                            if useSolveCobraLPCPLEX
+                                [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
+                                solution.v=solution.full;
+                            else
+                                solution = optimizeWBModel(model);
+                            end
+                            timeTaken=toc;
+                            if solution.stat == 1 || solution.stat == 3
+                                f = solution.v(model.c~=0);
+                                if abs(f) <= tol
+                                    f = 0;
+                                end
+                                IEMSol{cnt,4} = num2str(solution.v(model.c~=0));
+                            else
+                                IEMSol{cnt,4} = 'NaN';
+                            end
                         end
-                    end
-                    timeTaken=toc;
-                    IEMSol{cnt,1} = strcat('Disease:',BiomarkerRxns{i,1});
-                    if solution.stat == 1 || solution.stat == 3
-                        f = solution.v(modelIEM.c~=0);
-                        if abs(f) <= tol
-                            f = 0;
-                        end
-                        IEMSol{cnt,2} = num2str(solution.v(modelIEM.c~=0));
-                    else
-                        IEMSol{cnt,2} = 'NaN';
-                    end
-                    IEMSol{cnt,3} =strcat('Disease - Reported:',BiomarkerRxns{i,2});
-                    % minimization of biomarker
-                    if minBiomarker == 1
-                        % min of biomarker
-                        modelIEM.osense = 1;
+                        cnt = cnt + 1;
+                        %KO
+                        modelIEM = modelIEMO;
+                        modelIEM.ub(strmatch(BiomarkerRxns{i,1},modelIEM.rxns)) = 100000;
+                        modelIEM = changeObjective(modelIEM,BiomarkerRxns{i,1});
+                        modelIEM.osense = -1;
                         tic;
                         if useSolveCobraLPCPLEX
                             [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
                             solution.v=solution.full;
                         else
                             solution = optimizeWBModel(modelIEM);
+                            if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                                modelIEM.lb(c+1)=fix(modelIEM.lb(c+1)*10000)/10000;
+                                solution = optimizeWBModel(modelIEM);
+                            end
                         end
                         timeTaken=toc;
+                        IEMSol{cnt,1} = strcat('Disease:',BiomarkerRxns{i,1});
                         if solution.stat == 1 || solution.stat == 3
                             f = solution.v(modelIEM.c~=0);
                             if abs(f) <= tol
                                 f = 0;
                             end
-                            IEMSol{cnt,4} = num2str(f);
+                            IEMSol{cnt,2} = num2str(solution.v(modelIEM.c~=0));
                         else
-                            IEMSol{cnt,4} = 'NaN';
+                            IEMSol{cnt,2} = 'NaN';
                         end
+                        IEMSol{cnt,3} =strcat('Disease - Reported:',BiomarkerRxns{i,2});
+                        % minimization of biomarker
+                        if minBiomarker == 1
+                            % min of biomarker
+                            modelIEM.osense = 1;
+                            tic;
+                            if useSolveCobraLPCPLEX
+                                [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
+                                solution.v=solution.full;
+                            else
+                                solution = optimizeWBModel(modelIEM);
+                            end
+                            timeTaken=toc;
+                            if solution.stat == 1 || solution.stat == 3
+                                f = solution.v(modelIEM.c~=0);
+                                if abs(f) <= tol
+                                    f = 0;
+                                end
+                                IEMSol{cnt,4} = num2str(f);
+                            else
+                                IEMSol{cnt,4} = 'NaN';
+                            end
+                        end
+                        cnt = cnt + 1;
                     end
-                    cnt = cnt + 1;
                 end
+            else
+                % if biomarker reaction does not exist
+                                            IEMSol{cnt,2} = 'NA';
+                                            IEMSol{cnt,3} =strcat('Disease - Reported:',BiomarkerRxns{i,2});
             end
         end
     end
