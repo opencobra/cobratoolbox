@@ -1039,7 +1039,7 @@ if ~isempty(warningMessage) & 0
         LPsolution
     end
 end
-if solution.stat == 1
+if solution.stat == 1 % || solution.stat == 3
     if param.printLevel>0
         if nbIteration < nbMaxIteration
             fprintf('%s\n','     Optimise cardinality reached the stopping criterion. Finished.')

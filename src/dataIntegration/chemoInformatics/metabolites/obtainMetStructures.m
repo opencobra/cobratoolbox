@@ -380,6 +380,7 @@ varTypes = {'string', 'double', 'double', 'double'};
 varNames = {'sources', 'coverage', 'metsWithStructure', 'metsWithoutStructure'};
 databaseCoverage = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
 databaseCoverage.sources = sources;
+
 if nCols > 1
     databaseCoverage.metsWithStructure = sum(idMatrix)';
     databaseCoverage.metsWithoutStructure = sum(~idMatrix)';

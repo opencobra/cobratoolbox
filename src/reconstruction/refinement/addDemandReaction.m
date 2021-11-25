@@ -9,6 +9,8 @@ function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, printLev
 % INPUTS:
 %    model:                 COBRA model structure
 %    metaboliteNameList:    List of metabolite names (cell array)
+%    addMissingMetabolites  adds missing metabolites to model (default:
+%                           true)
 %
 % OPTIONAL INPUT:
 %    printLevel:            If > 0 will print out the reaction formulas (Default: 1).
@@ -20,7 +22,7 @@ function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, printLev
 % .. Authors:
 %       - Markus Herrgard 5/8/07
 %       - Ines Thiele 03/09 - Corrected reaction coefficient for demand reaction
-%       - Thomas Pfau, June 2018 - Change to use addMultipleReactions and adding printLevel 
+%       - Thomas Pfau, June 2018 - Change to use addMultipleReactions and adding printLevel
 
 if (~iscell(metaboliteNameList))
     metaboliteNameList = {metaboliteNameList};
@@ -35,14 +37,13 @@ if ~isempty(missingMets)
     warning('The following Metabolites have been added to the model, as they were not in the model before:\n%s', strjoin(missingMets,'\n'));
     model = addMultipleMetabolites(model,missingMets);
 end
-
-rxnNames = rowvector(strcat('DM_',metaboliteNameList));    
+rxnNames = rowvector(strcat('DM_',metaboliteNameList));
 nMets = length(metaboliteNameList);
 stoich = -1 * speye(nMets);
 subSystems = repmat({'Demand'},nMets,1);
 ubs = repmat(1000,nMets,1);
 lbs = zeros(nMets,1);
 model = addMultipleReactions(model,rxnNames,metaboliteNameList,stoich,...
-                             'lb',lbs,'ub',ubs,'subSystems',subSystems,...
-                             'printLevel',printLevel);        
+    'lb',lbs,'ub',ubs,'subSystems',subSystems,...
+    'printLevel',printLevel);
 end
