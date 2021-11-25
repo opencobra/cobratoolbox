@@ -652,7 +652,7 @@ addCOBRABinaryPathToSystemPath();
 %remove /new thermo folders from path
 %TODO resolve issues with new file versions
 aPath = which('initVonBertalanffy');
-basePath = strrep(aPath,'vonBertalanffy/initVonBertalanffy.m','');
+basePath = strrep(aPath,['vonBertalanffy' filesep 'initVonBertalanffy.m'],'');
 addpath(genpath(basePath))
 folderPattern=[filesep 'new'];
 method = 'remove';
