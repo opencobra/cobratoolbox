@@ -10,17 +10,17 @@ function molCollectionReport = obtainMetStructures(model, metList, outputDir, so
 % INPUTS:
 %    model: COBRA model with following fields:
 %
-%               * .S - The m x n stoichiometric matrix for the metabolic network.
-%               * .mets - An m x 1 array of metabolite identifiers.
-%               * .metInChIString - An m x 1 array of metabolite identifiers.
-%               * .metSmiles - An m x 1 array of metabolite identifiers.
-%               * .metVMHID - An m x 1 array of metabolite identifiers.
-%               * .metCHEBIID - An m x 1 array of metabolite identifiers.
-%               * .metKEGGID - An m x 1 array of metabolite identifiers.
-%               * .metPubChemID - An m x 1 array of metabolite identifiers.
-%               * .metHMDBID - An m x 1 array of metabolite identifiers.
-%               * .metDrugbankID - An m x 1 array of metabolite identifiers.
-%               * .metLipidmassID - An m x 1 array of metabolite identifiers.
+%        * .S - The m x n stoichiometric matrix for the metabolic network.
+%        * .mets - An m x 1 array of metabolite identifiers.
+%        * .metInChIString - An m x 1 array of metabolite identifiers.
+%        * .metSmiles - An m x 1 array of metabolite identifiers.
+%        * .metVMHID - An m x 1 array of metabolite identifiers.
+%        * .metCHEBIID - An m x 1 array of metabolite identifiers.
+%        * .metKEGGID - An m x 1 array of metabolite identifiers.
+%        * .metPubChemID - An m x 1 array of metabolite identifiers.
+%        * .metHMDBID - An m x 1 array of metabolite identifiers.
+%        * .metDrugbankID - An m x 1 array of metabolite identifiers.
+%        * .metLipidmassID - An m x 1 array of metabolite identifiers.
 %
 % OPTIONAL INPUTS:
 %    mets: List of metabolites to be download (Default: All)
@@ -28,18 +28,28 @@ function molCollectionReport = obtainMetStructures(model, metList, outputDir, so
 %    sources: Sources where the MOL files will be obtained (Default: all).
 %             The sources supported are:
 %
-%               1.- 'inchi' (requires openBabel)
-%               2.- 'smiles' (requires openBabel)
-%               3.- 'kegg' (https://www.genome.jp/)
-%               4.- 'hmdb' (https://hmdb.ca/)
-%               5.- 'pubchem' (https://pubchem.ncbi.nlm.nih.gov/)
-%               6.- 'chebi' (https://www.ebi.ac.uk/)
-%               7.- 'drugbank' (https://go.drugbank.com/)
-%               8.- 'lipidmass' (https://www.lipidmaps.org/)
+%        1.- 'inchi' (requires openBabel)
+%        2.- 'smiles' (requires openBabel)
+%        3.- 'kegg' (https://www.genome.jp/)
+%        4.- 'hmdb' (https://hmdb.ca/)
+%        5.- 'pubchem' (https://pubchem.ncbi.nlm.nih.gov/)
+%        6.- 'chebi' (https://www.ebi.ac.uk/)
+%        7.- 'drugbank' (https://go.drugbank.com/)
+%        8.- 'lipidmass' (https://www.lipidmaps.org/)
 %
 % OUTPUTS:
 %    molCollectionReport: Report of the obtained MDL MOL files
-%
+% 
+%        * .metList - List of metabolites to be download
+%        * .sources -﻿list of sources of metabolite structures
+%        * .structuresObtained -﻿Total of metabolite structures obtained.
+%        * .structuresObtainedPerSource -﻿Boolean table with the metabolite 
+%               structures obtained by source.
+%        * .databaseCoverage -﻿Table indicating the coverage of metabolites 
+%               obtained by each of the sources.
+%        * .idsToCheck -﻿Id source from which no molecular structures could 
+%               be obtained due to a webTimeout, conversion error, or 
+%               inconsistent id.
 
 if nargin < 2 || isempty(metList)
     metList = unique(regexprep(model.mets, '(\[\w\])', ''));
@@ -61,7 +71,7 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 
 % Check openbabel installation
-if ~isunix
+if ismac || ispc
     [oBabelInstalled, ~] = system('obabel');
 else
     [oBabelInstalled, ~] = system('openbabel.obabel');
@@ -365,17 +375,22 @@ end
 molCollectionReport.structuresObtainedPerSource = structuresObtainedPerSource;
 
 % Database coverage table
-nRows = size(idMatrix, 2);
+[nCols nRows] = size(idMatrix);
 varTypes = {'string', 'double', 'double', 'double'};
 varNames = {'sources', 'coverage', 'metsWithStructure', 'metsWithoutStructure'};
 databaseCoverage = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
 databaseCoverage.sources = sources;
-if size(idMatrix, 2)> 0
+
+if nCols > 1
     databaseCoverage.metsWithStructure = sum(idMatrix)';
     databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
-    databaseCoverage.coverage = round((databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1), 2);
-    molCollectionReport.databaseCoverage = databaseCoverage;
+else
+    databaseCoverage.metsWithStructure = double(idMatrix)';
+    databaseCoverage.metsWithoutStructure = double(~idMatrix)';
 end
+databaseCoverage.coverage = round((databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1), 2);
+molCollectionReport.databaseCoverage = databaseCoverage;
+
 molCollectionReport.idsToCheck = idsToCheck;
 if ~isempty(idsToCheck)
     disp('The following structures could not be obtained')

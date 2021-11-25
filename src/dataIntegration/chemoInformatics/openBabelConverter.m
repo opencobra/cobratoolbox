@@ -41,7 +41,7 @@ else
 end
 
 % Check openbabel installation
-if ~isunix
+if ismac || ispc
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';

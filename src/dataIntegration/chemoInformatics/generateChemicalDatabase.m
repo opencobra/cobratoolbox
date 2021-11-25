@@ -13,50 +13,49 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %    [info, newModel] = generateChemicalDatabase(model, options)
 %
 % INPUTS:
-%    model:    COBRA model with following fields:
+%    model:	COBRA model with following fields:
 %
-%               * .S - The m x n stoichiometric matrix for the metabolic network.
-%               * .rxns - An n x 1 array of reaction identifiers.
-%               * .mets - An m x 1 array of metabolite identifiers.
-%               * .metFormulas - An m x 1 array of metabolite chemical formulas.
-%               * .metinchi - An m x 1 array of metabolite identifiers.
-%               * .metsmiles - An m x 1 array of metabolite identifiers.
-%               * .metKEGG - An m x 1 array of metabolite identifiers.
-%               * .metHMDB - An m x 1 array of metabolite identifiers.
-%               * .metPubChem - An m x 1 array of metabolite identifiers.
-%               * .metCHEBI - An m x 1 array of metabolite identifiers.
+%           * .S - The m x n stoichiometric matrix for the metabolic network.
+%           * .rxns - An n x 1 array of reaction identifiers.
+%           * .mets - An m x 1 array of metabolite identifiers.
+%           * .metFormulas - An m x 1 array of metabolite chemical formulas.
+%           * .metinchi - An m x 1 array of metabolite identifiers.
+%           * .metsmiles - An m x 1 array of metabolite identifiers.
+%           * .metKEGG - An m x 1 array of metabolite identifiers.
+%           * .metHMDB - An m x 1 array of metabolite identifiers.
+%           * .metPubChem - An m x 1 array of metabolite identifiers.
+%           * .metCHEBI - An m x 1 array of metabolite identifiers.
 %
 %    options:  A structure containing all the arguments for the function:
 %
-%               * .outputDir: The path to the directory containing the RXN
-%                  files with atom mappings (default: current directory)
-%               * .printlevel: Verbose level
-%               * .standardisationApproach: String containing the type of
-%                  standardisation for the molecules (default: 'explicitH'
-%                  if openBabel is installed, otherwise default: 'basic'):
-%                    - explicitH: Normal chemical graphs;
-%                    - implicitH: Hydrogen suppressed chemical graph;
-%                    - basic: Update the header.
-%               * .keepMolComparison: Logic value for comparing MDL MOL
-%                  files from various sources (default: FALSE)
-%               * .onlyUnmapped: Logic value to select create only unmapped
-%                  MDL RXN files (default: FALSE).
-%               * .adjustToModelpH: Logic value used to determine whether a
-%                  molecule's pH must be adjusted in accordance with the
-%                  COBRA model. (default: TRUE, requires MarvinSuite).
-%               * .addDirsToCompare: Cell(s) with the path to directory to
-%                  an existing database (default: empty).
-%               * .dirNames: Cell(s) with the name of the directory(ies)
-%                  (default: empty).
-%               * .debug: Logical value used to determine whether or not
-%                  the results of different points in the function will be
-%                  saved for debugging (default: empty).
+%           * .outputDir: The path to the directory containing the RXN files
+%                   with atom mappings (default: current directory)
+%           * .printlevel: Verbose level
+%           * .standardisationApproach: String containing the type of standardisation
+%                   for the molecules (default: 'explicitH' if openBabel is 
+%                   installed, otherwise default: 'basic'):
+%                    'explicitH' Normal chemical graphs;
+%                    'implicitH' Hydrogen suppressed chemical graph;
+%                    'basic' Update the header.
+%           * .keepMolComparison: Logic value for comparing MDL MOL files
+%                   from various sources (default: FALSE)
+%           * .onlyUnmapped: Logic value to select create only unmapped MDL
+%                   RXN files (default: FALSE).
+%           * .adjustToModelpH: Logic value used to determine whether a molecule's
+%                   pH must be adjusted in accordance with the COBRA model.  
+%                   TRUE, requires MarvinSuite).
+%           * .addDirsToCompare: Cell(s) with the path to directory to an 
+%                   existing database (default: empty).
+%           * .dirNames: Cell(s) with the name of the directory(ies) (default: empty).
+%           * .debug: Logical value used to determine whether or not the results 
+%                   of different points in the function will be saved for 
+%                   debugging (default: empty).
 %
 % OUTPUTS:
 %
-%    newModel:  A new model with the comparison and if onlyUnmapped = false, 
-%               the informaton about the bonds broken and formed as well as 
-%               the bond enthalpies for each metabolic reaction.
+%    newModel: A new model with the comparison and if onlyUnmapped = false, 
+%           the informaton about the bonds broken and formed as well as the
+%           bond enthalpies for each metabolic reaction.
 %    info:      A diary of the database generation process
 
 if ~isfield(options, 'outputDir')
@@ -123,7 +122,7 @@ if cxcalcInstalled == 0
     display('1 - jpeg files for molecular structures (obabel required)')
     display('2 - pH adjustment according to model.met Formulas')
 end
-if ~isunix
+if ismac || ispc 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
@@ -770,15 +769,15 @@ if options.printlevel > 0
     ax = gca();
     pieChart = pie(ax, X(find(X)));
     newColors = [...
-        0.7765,    0.9686,    0.9569;
+        0.9608,    0.8353,    0.8353;
         0.9804,    0.9216,    1.0000;
-        0.9137,    1.0000,    0.8392;
-        1.0000,    0.8706,    0.7216];
+        0.7961,    0.8824,    0.9608;
+        0.9137,    1.0000,    0.8392];
     ax.Colormap = newColors;
     lh = legend(labelsToAdd(find(X)), 'FontSize', 16);
     lh.Position(1) = 0.5 - lh.Position(3)/2;
     lh.Position(2) = 0.5 - lh.Position(4)/2;
-    legend(labelsToAdd(find(X)), 'FontSize', 16)
+    legend(labelsToAdd(find(X)), 'FontSize', 16, 'Location', 'southoutside');
     title({'1. Metabolite percentage coverage', [num2str(size(umets, 1)) ' unique metabolites in the model']}, 'FontSize', 20)
     set(findobj(pieChart,'type','text'),'fontsize',18)
     
@@ -796,7 +795,7 @@ if options.printlevel > 0
         0.9137,    1.0000,    0.8392];
     ax.Colormap = newColors;
     title({'2. Reaction coverage', [num2str(sum(X)) ' internal reactions in the model']}, 'FontSize', 20)
-    lh = legend(labelsToAdd(find(X)), 'FontSize', 16);
+    lh = legend(labelsToAdd(find(X)), 'FontSize', 16, 'Location', 'southoutside');
     set(findobj(pieChart,'type','text'),'fontsize',18)
     
 end
