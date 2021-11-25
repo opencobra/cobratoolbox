@@ -380,14 +380,14 @@ varTypes = {'string', 'double', 'double', 'double'};
 varNames = {'sources', 'coverage', 'metsWithStructure', 'metsWithoutStructure'};
 databaseCoverage = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
 databaseCoverage.sources = sources;
-%<<<<<<< it_22_11_2021b
+
 %if size(idMatrix, 2)> 0
 %    databaseCoverage.metsWithStructure = sum(idMatrix)';
 %    databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
 %    databaseCoverage.coverage = round((databaseCoverage.metsWithStructure * 100) / size(idMatrix, 1), 2);
 %    molCollectionReport.databaseCoverage = databaseCoverage;
 %end
-%=======
+
 if nCols > 1
     databaseCoverage.metsWithStructure = sum(idMatrix)';
     databaseCoverage.metsWithoutStructure = sum(~idMatrix)';
