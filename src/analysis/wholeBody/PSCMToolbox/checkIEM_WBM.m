@@ -73,6 +73,7 @@ function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy
 %
 % 2018 - Ines Thiele
 % 2019 - Ines Thiele, included more options (minBiomarker,fixIEMlb,LPSolver)
+% 2021 - Ines Thiele, Tests only for biomarker if the reaction exists in the WBM model
 
 if ~exist('minRxnsFluxHealthy','var')
     minRxnsFluxHealthy = 0.75;
@@ -250,7 +251,8 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                     disp(BiomarkerRxns{i,1})
                     % Healthy
                     model.ub(strmatch(BiomarkerRxns{i,1},model.rxns)) = 100000;
-                    if ~isempty(find(strcmp(model.rxns,BiomarkerRxns{i,1})))
+                    % check that queried objective (and metabolite) exist
+                    if ~isempty(find(strcmp(model.rxns,BiomarkerRxns{i,1}))) 
                         model = changeObjective(model,BiomarkerRxns{i,1});
                         % max of biomarker
                         model.osenseStr = 'max';
@@ -353,13 +355,22 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                                 IEMSol{cnt,4} = 'NaN';
                             end
                         end
+                    cnt = cnt + 1;
+                    else
+                        % if biomarker reaction does not exist
+                        IEMSol{cnt,1} = strcat('Healthy:',BiomarkerRxns{i,1});
+                        
+                        IEMSol{cnt,2} = 'NA';
+                        IEMSol{cnt,3} =strcat('Healthy - Reported:',BiomarkerRxns{i,2});
+                        cnt = cnt + 1;
+                        % if biomarker reaction does not exist
+                        IEMSol{cnt,1} = strcat('Disease:',BiomarkerRxns{i,1});
+                        IEMSol{cnt,2} = 'NA';
+                        IEMSol{cnt,3} =strcat('Disease - Reported:',BiomarkerRxns{i,2});
                         cnt = cnt + 1;
                     end
+                    
                 end
-            else
-                % if biomarker reaction does not exist
-                                            IEMSol{cnt,2} = 'NA';
-                                            IEMSol{cnt,3} =strcat('Disease - Reported:',BiomarkerRxns{i,2});
             end
         end
     end
