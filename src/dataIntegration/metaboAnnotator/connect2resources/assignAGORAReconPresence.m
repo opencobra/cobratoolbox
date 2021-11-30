@@ -38,7 +38,12 @@ for i = 1 : size(AGORA,1)
 end
 
 % use the published Recon 3D
-load('Recon3D_Dec2017.mat');
+metaboAnnotatorPath =  fileparts(which('tutorial_MetabAnnotator'));
+if exist([metaboAnnotatorPath filesep 'data' filesep 'Recon3D_Dec2017.mat'],'file')
+    load([metaboAnnotatorPath filesep 'data' filesep 'Recon3D_Dec2017.mat']);
+else
+    load('Recon3D_Dec2017.mat');
+end
 annotationSource = 'Recon3D_Dec2017.mat';
 
 if reaction == 0

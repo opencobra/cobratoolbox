@@ -1053,7 +1053,7 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek'}))%todo, debug gurobi QP
+        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek','ibm_cplex'}))%todo, debug gurobi QP
             % determine the residual 2
             res2 = osense*c  + osense*F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
