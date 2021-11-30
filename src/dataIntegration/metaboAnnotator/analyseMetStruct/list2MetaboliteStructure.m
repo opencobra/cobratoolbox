@@ -25,6 +25,7 @@ function [metabolite_structure,rBioNet_existance,VMH_existance] = list2Metabolit
 %
 %
 % Ines Thiele, 09/2021
+
 if ~exist('fileNameOutput','var')
     fileNameOutput = ['collectedMetStruct' '.mat'];
 end
@@ -35,8 +36,17 @@ end
 
 %load rbionet data
 rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
-load([rBioNetPath filesep 'data' filesep 'metab.mat']);
-load([rBioNetPath filesep 'data' filesep 'rxn.mat']);
+if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
+else
+    %TODO
+end
+
+if exist([rBioNetPath filesep 'cache' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'rxn.mat']);
+else
+    %TODO
+end
 
 if exist('fileName','var') && ~isempty(fileName)
     if ispc || 1
@@ -53,6 +63,17 @@ elseif exist('metList','var') && ~isempty(metList)
     fileName = 'metabolite_input';
     xlsProvided = 0;
 end
+
+%remove non finite entries, e.g., NaN
+bool = false(size(RAW,1),1);
+for i=1:size(RAW,1)
+    bool(i)=isfinite(RAW{i,1}(1));
+end
+
+if any(~bool)
+    RAW = RAW(bool,:);
+end
+
 retrievePotHMDB1 = 1;
 retrievePotHMDB2 = 0;
 inchiKey = 1;
@@ -98,7 +119,8 @@ else
     for i = 2 : size(RAW,1)
         progress = i/size(RAW,1);
         fprintf([num2str(progress) '% ...Creating abbreviations ... \n']);
-        RAW{i,name_col}
+        fprintf('\t')
+        disp(RAW{i,name_col})
         clear  VMHId
         if ~exist('customMetAbbrList','var')
            %[VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rxnDB,customMetAbbrList)
@@ -182,6 +204,9 @@ match = find(contains(rBioNet_existance(:,3),'1'));
 % the results from here (or better replacements should be manually checked
 if ~isempty(match)
     for i = 1 : length(match)
+        if size(rBioNet_existance,2)==3
+            pause(0.01)
+        end
         if ~isempty(rBioNet_existance{match(i),4})
             % remove field from metabolite structure and add field to
             % metabolite structure from metabolite_structure_rBioNet

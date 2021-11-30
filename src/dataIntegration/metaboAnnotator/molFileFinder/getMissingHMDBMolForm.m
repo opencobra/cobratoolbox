@@ -41,6 +41,12 @@ for i = startSearch : endSearch
         if isempty(metabolite_structure.(F{i}).hmdb) || ~isempty(find(isnan(metabolite_structure.(F{i}).hmdb)))
             % try to find the hmdb entry based on name
             met = metabolite_structure.(F{i}).metNames;
+            % remove parenthesis from metabolite names
+            met = regexprep(met,'\(','');
+            met = regexprep(met,'\)','');
+            met = regexprep(met,'\[','');
+            met = regexprep(met,'\]','');
+            % retrieve potential hits
             hmdb =retrievePotHitsHMDB(met);
             if ~isempty(hmdb)
                 metabolite_structure.(F{i}).hmdb = hmdb;
