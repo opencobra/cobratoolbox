@@ -183,6 +183,7 @@ VMHId = regexprep(VMHId,'+','_');
 VMHId = regexprep(VMHId,'{','');
 VMHId = regexprep(VMHId,'}','_');
 VMHId = regexprep(VMHId,'__','_');
+VMHId = regexprep(VMHId,'^_','');
 % check that this abbr does not exist yet
 [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
 % if the abbr already exists, try the version with the internal numbers

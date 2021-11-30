@@ -122,9 +122,10 @@ for i = 1 : size(list,1)
     else
         rBioNet{i,3} =  num2str(0);
     end
-    % checck against extended rBioNet structure
+    % check against rBioNet structure
     if ~isempty(find(ismember(FR(:,1),list{i})))
         rBioNet{i,3} =  num2str(1);
+        rBioNet{i,4} =  list{i};
     end
     % check using database ID's
     % against extended rBioNet structure
