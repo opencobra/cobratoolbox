@@ -1,4 +1,4 @@
-function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth)
+function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth,reconstructionResource)
 % Translates organism identifiers in a published metagenomic or 16S rRNA
 % data file with organism abundances (retrieved e.g., from  MetaPhlAn) to
 % AGORA pan-model IDs. This will not catch every case since the format of
@@ -12,7 +12,7 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 %
 % USAGE:
 %
-%   [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth)
+%   [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth,reconstructionResource)
 %
 % INPUT:
 %   MetagenomeAbundancePath   String containing the path to csv file with
@@ -20,12 +20,15 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 %                             16S rRNA or metagenomic samples (example:
 %                             'SRP065497_taxonomy_abundances_v3.0.tsv').
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
 %   sequencingDepth           Sequencing depth on the taxonomical level
 %                             in the input data (e.g., genus, species).
 %                             Allowed inputs are 'Species','Genus',
 %                             'Family','Order', 'Class', 'Phylum'. 
 %                             Default: 'Species'.
+%  reconstructionResource     Name of the reconstruction resource to map
+%                             the abundances to. Allowed inputs are 'AGORA', 
+%                             'AGORA2'. Default: 'AGORA'
 %
 % OUTPUTS:
 %   translatedAbundances      Abundances with organism names from the
@@ -39,10 +42,17 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 %                           10/2019: edited mapping based on an output file
 %                           of the NG-Tax pipeline (Ramiro-Garcia et al.,
 %                           F1000Res 2016). Made input more intuitive.
+%                           11/2021: adapted based on updated taxonomy,
+%                           added option to map to either AGORA or AGORA2
 
 if nargin <2
-    sequencingDepth='Species';
+    sequencingDepth = 'Species';
 end
+
+if nargin <3
+    reconstructionResource = 'AGORA';
+end
+
 % read the csv file with the abundance data
 metagenome_abundance = readInputTableForPipeline(MetagenomeAbundancePath);
 metagenome_abundance{1,1}='';
@@ -57,7 +67,13 @@ taxLevels={
     'Species'
     };
 
-[~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');  % create the pan-models
+if strcmp(reconstructionResource,'AGORA')
+    [~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');
+elseif strcmp(reconstructionResource,'AGORA2')
+    [~, infoFile, ~] = xlsread('AGORA2_infoFile.xlsx');
+else
+    error('Incorrect input for reconstruction resource!')
+end
 
 % List all taxa in the AGORA resource
 agoraTaxa={};
@@ -112,6 +128,24 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'.','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'-','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'__','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'___','_');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_cardiffensis','g_Schaalia|s_Actinomyces_cardiffensis');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_georgiae','g_Schaalia|s_Actinomyces_georgiae');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_meyeri','g_Schaalia|s_Actinomyces_meyeri');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_odontolyticus','g_Schaalia|s_Actinomyces_odontolytica');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_odontolyticus','g_Schaalia|s_Actinomyces_odontolytica');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_odontolyticus','g_Schaalia|s_Actinomyces_odontolytica');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Absiella|s_Absiella_dolichum','g_Amedibacillus|s_Absiella_dolichus');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Eubacterium|s_Eubacterium_hallii','g_Anaerobutyricum|s_Eubacterium_hallii');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Clostridium|s_citroniae','g_Lachnoclostridium|s_citroniae');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Clostridium|s_difficile','g_Clostridioides|s_difficile');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Clostridium|s_sordellii','g_Paeniclostridium|s_sordellii');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Clostridium|s_hathewayi','g_Hungatella|s_hathewayi');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Eubacterium|s_biforme','g_Holdemanella|s_biformis');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Eubacterium|s_dolichum','g_Amedibacillus|s_dolichus');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Propionibacterium|s_acnes','g_Cutibacterium|s_acnes');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Propionibacterium|s_granulosum','g_Cutibacterium|s_granulosum');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_gnavus','g_Blautia|s_gnavus');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_torques','g_Blautia|s_torques');
 
 % remove all rows that are not of the desired sequencing depth and edit the
 % taxon descriptions to enable mapping to AGORA
@@ -144,9 +178,14 @@ for i=2:size(metagenome_abundance,1)
             if strncmp(findSDepth{1,end},mpsDepth,2) && length(findSDepth{1,end})>2
                 % if the genus information is missing on the species level
                 if strncmp(findSDepth{1,end},'s_',2)
-                    sname=strrep(findSDepth{1,end},mpsDepth,'');
-                    gname=strrep(findSDepth{1,end-1},'g_','');
-                    if ~strncmp(gname,sname,length(gname)) && isempty(strfind(sname,'_'))
+                    sname=regexprep(findSDepth{1,end},mpsDepth,'','once');
+                    % if species name also contains genus
+                    if contains(sname,'_')
+                        sname=strsplit(sname,'_');
+                        sname=sname{1,2};
+                    end
+                    gname=regexprep(findSDepth{1,end-1},'g_','','once');
+                    if ~strncmp(gname,sname,length(gname))
                         metagenome_abundance{i,1}=strcat(gname,'_',sname);
                     end
                 else
