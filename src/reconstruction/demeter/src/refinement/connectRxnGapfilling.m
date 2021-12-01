@@ -26,7 +26,6 @@ solver = CBT_LP_SOLVER;
 resolveBlocked={};
 cnt=1;
 previousObj=model.rxns(model.c==1);
-tol=0.0000001;
 
 % some reconstructions cannot take up ammonia
 if ~isempty(find(ismember(model.rxns,'EX_nh4(e)')))

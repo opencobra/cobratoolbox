@@ -5,7 +5,7 @@ function [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,da
 %
 % USAGE:
 %
-%   [model,secretionRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
+%   [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,database,inputDataFolder)
 %
 % INPUTS
 % model:                COBRA model structure
@@ -59,7 +59,7 @@ secretionRxns.Putrescine = {'EX_ptrc(e)','PTRCtex2'};
 % secretionRxns.pCresol = {'EX_pcresol(e)','PCRESOLt2r'};
 secretionRxns.pCresol = {'EX_pcresol(e)','PCRESOLt2r','4HPHACDC'};
 secretionRxns.Ammonia = {'EX_nh4(e)','NH4tb'};
-secretionRxns.Nitrogen = {'EX_n2(e)','N2t'};
+secretionRxns.Nitrogen = {'EX_n2(e)','N2t','N2OFO','EX_n2o(e)','N2Ot'};
 secretionRxns.Methylamine = {'EX_mma(e)','MMAt2e'};
 secretionRxns.Methanol = {'EX_meoh(e)','MEOHt2'};
 secretionRxns.Lthreonine = {'EX_thr_L(e)','THRt2r'};
