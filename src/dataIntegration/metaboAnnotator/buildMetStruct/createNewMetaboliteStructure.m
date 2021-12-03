@@ -56,8 +56,19 @@ for i = 2 : size(RAW,1)
     % adjust the abbreviations to the requirements of Matlab field
     % names
     % the original designated VMH ids listed in the field VMHId
-    metabolite_structure.(strcat('VMH_',VMHId)) = struct();
     
+    %make a temporary VMHId name in case the existing one is an invalid field name
+    if ~isvarname(VMHId)
+        fieldname = strcat('VMH_',VMHId);
+        metabolite_structure.(fieldname) = struct();
+    else
+        VMHId_suggestion = VMHId;
+        VMHId = datestr(now,'yyyymmddTHHMMSS');
+        fieldname = strcat('VMH_',VMHId);
+        metabolite_structure.(fieldname) = struct();
+        metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
+    end
+
     for j = 1:size(RAW,2)
         if j~=vmh_col
             % check whether a columnn header is part of the field2Add
