@@ -171,10 +171,19 @@ for i=1:2
     for j=2:size(stats,2)
         Averages{j,1} = stats{1,j};
         if any(strncmp(stats{1,j},'Biomass',7))
-            Averages{j,i+1} = num2str(sum(str2double(stats(2:end,j))> 0.000001));
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                Averages{j,i+1} = num2str(sum(cell2mat(stats(2:end,j))> 0.000001));
+            else
+                Averages{j,i+1} = num2str(sum(str2double(stats(2:end,j))> 0.000001));
+            end
         else
-            av = mean(str2double(stats(2:end,j)));
-            s = std(str2double(stats(2:end,j)));
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                av = mean(cell2mat(stats(2:end,j)));
+                s = std(cell2mat(stats(2:end,j)));
+            else
+                av = mean(str2double(stats(2:end,j)));
+                s = std(str2double(stats(2:end,j)));
+            end
             Averages{j,i+1} = [num2str(round(av,2)) ' +/- ' num2str(round(s,2))];
         end
     end
