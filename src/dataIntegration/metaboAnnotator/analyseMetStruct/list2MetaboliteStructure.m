@@ -204,9 +204,6 @@ match = find(contains(rBioNet_existance(:,3),'1'));
 % the results from here (or better replacements should be manually checked
 if ~isempty(match)
     for i = 1 : length(match)
-        if size(rBioNet_existance,2)==3
-            pause(0.01)
-        end
         if ~isempty(rBioNet_existance{match(i),4})
             % remove field from metabolite structure and add field to
             % metabolite structure from metabolite_structure_rBioNet
