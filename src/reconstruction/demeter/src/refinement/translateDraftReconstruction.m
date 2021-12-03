@@ -45,7 +45,7 @@ end
 essentialRxns={'DM_atp_c_','sink_PGPm1[c]'};
 
 for i=1:length(essentialRxns)
-    model = addReaction(model, essentialRxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), essentialRxns{i})), 3}, 'geneRule', 'essentialGapfill');
+    model = addReaction(model, essentialRxns{i}, 'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), essentialRxns{i})), 3});
 end
 
 % translate while keeping track of original reaction

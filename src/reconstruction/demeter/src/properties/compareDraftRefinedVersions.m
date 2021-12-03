@@ -55,7 +55,7 @@ for j=1:size(toCompare,1)
     stats{1,9}='Metabolites';
     stats{1,10}='Genes';
     stats{1,11}='Gene_associated_reactions';
-    stats{1,12}='Reactions_supported_by_experimental_data';
+    stats{1,12}='Reactions_supported_only_by_experimental_data';
     
     dInfo = dir(toCompare{j,2});
     models={dInfo.name};
@@ -166,8 +166,7 @@ end
 
 for i=1:2
     Averages{1,i+1} = toCompare{i,1};
-    stats = readtable([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{i,1} '_' reconVersion], 'ReadVariableNames', false);
-    stats = table2cell(stats);
+    stats = readInputTableForPipeline([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{i,1} '_' reconVersion]);
     for j=2:size(stats,2)
         Averages{j,1} = stats{1,j};
         if any(strncmp(stats{1,j},'Biomass',7))
@@ -188,8 +187,7 @@ for i=1:2
         end
     end
 end
-Averages=cell2table(Averages);
-writetable(Averages,[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_Overview_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(Averages),[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_Overview_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 
 % delete unneeded files
 for j=1:size(toCompare,1)
