@@ -89,6 +89,7 @@ end
 
 % Prepare the output
 cmdout = splitlines(cmdout);
+newFormat = [];
 switch outputFormat
     case 'mol'
         startIdx = find(cellfun(@isempty, cmdout));
@@ -119,6 +120,6 @@ if toSave && ~isempty(newFormat)
     fid2 = fopen(saveFileDir, 'w');
     fprintf(fid2, '%s\n', newFormat{:});
     fclose(fid2);
-elseif isempty(newFormat)
-    error(['The format ' origFormat ' couldn''t be converted'])
+% elseif isempty(newFormat)
+%     error(['The format ' origFormat ' couldn''t be converted'])
 end
