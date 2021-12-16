@@ -58,8 +58,12 @@ if ~isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt']) && ~isfi
             % prevent creation of log files
             changeCobraSolverParams('LP', 'logFile', 0);
         end
-        model = readCbModel(modelsToLoad{i});
-        
+        try
+            model = readCbModel(modelsToLoad{i});
+        catch
+            model=  load(modelsToLoad{i});
+            model = model.model;
+        end
         % collect unique metabolites and reactions resource content for refined reconstructions
         rxnsTmp{i}=model.rxns;
         mets=strrep(model.mets,'[c]','');

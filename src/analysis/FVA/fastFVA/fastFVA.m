@@ -231,7 +231,6 @@ elseif strcmp('ibm_cplex', solverName)
 else
     error(['Solver ', solverName, ' not supported.']);
 end
-
 % define the CPLEX parameter set and the associated values - split the struct
 namesCPLEXparams = fieldnames(cpxControl);
 nCPLEXparams = length(namesCPLEXparams);
@@ -746,10 +745,10 @@ for p = 1:length(d)
     end
 end
 
-%compare the binary version of cplexFVA with the version of cplex
+%compare the binary version of cplexFVA with the version of cplex    
+throwBinGenerationError = false;
 for k = 1:length(binVersion)
-    throwBinGenerationError = false;
-    if ~strcmpi(cplexVersion, binVersion)
+    if ~strcmpi(cplexVersion, binVersion{k})
         throwBinGenerationError = true;
         kp = k;
     end

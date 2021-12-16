@@ -87,8 +87,12 @@ for f=1:length(folders)
     parfor i=1:length(modelList)
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
-        
-        model=readCbModel([folders{f} filesep modelList{i}]);
+        try
+            model=readCbModel([folders{f} filesep modelList{i}]);
+        catch
+            model=  load([folders{f} filesep modelList{i}]);
+            model = model.model;
+        end
         biomassID=find(strncmp(model.rxns,'bio',3));
         [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
         aerRes{i,f}=atpFluxAerobic;
