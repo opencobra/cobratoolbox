@@ -35,11 +35,12 @@ for i=2:size(subsystemPresence,2)
     findRxns=reactions(find(strcmp(reactions(:,11),subsystemPresence{1,i})),1);
     % find all reactions in reaction presence file
     [~,findRxnInds]=intersect(reactionPresence(1,:),findRxns);
+    %% 
     for j=2:size(reactionPresence,1)
         if contains(version,'(R202') % for Matlab R2020a and newer
-            subsystemPresence{j,i}=num2str(sum(cell2mat(reactionPresence(j,findRxnInds))))/length(findRxns);
+            subsystemPresence{j,i}=num2str(sum(cell2mat(reactionPresence(j,findRxnInds)))/length(findRxns));
         else
-            subsystemPresence{j,i}=num2str(sum(str2double(reactionPresence(j,findRxnInds))))/length(findRxns);
+            subsystemPresence{j,i}=num2str(sum(str2double(reactionPresence(j,findRxnInds)))/length(findRxns));
         end
     end
 end

@@ -345,7 +345,7 @@ else
                         end
                         
                         microbiota_model=model_sd;
-                        parsave([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],'microbiota_model')
+                        parsave([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],microbiota_model)
                         
                         %% Using personalized diet not documented in MgPipe and bug checked yet!!!!
                         
@@ -398,7 +398,7 @@ else
                                 if saveConstrModels
                                     microbiota_model=model_pd;
                                     mkdir(strcat(resPath,'Personalized'))
-                                    parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],'microbiota_model')
+                                    parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],microbiota_model)
                                 end  
                             end
                         end

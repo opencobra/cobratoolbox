@@ -85,15 +85,14 @@ for j=1:length(fields)
         try
             violinplot(plotdata, {reconVersion});
             ylabel(label)
-            h=title(fields{j});
+            if contains(pwd,'_refined')
+                h=title([strrep(fields{j},'_',' ') ', refined reconstructions']);
+            elseif contains(pwd,'_draft')
+                h=title([strrep(fields{j},'_',' ') ', draft reconstructions']);
+            end
             ylim([0 max(plotdata)+1])
             set(h,'interpreter','none')
             set(gca,'TickLabelInterpreter','none')
-            if contains(pwd,'_refined')
-                sgtitle('Refined reconstructions')
-            elseif contains(pwd,'_draft')
-                sgtitle('Draft reconstructions')
-            end
             set(gca, 'FontSize', 12)
             print(fields{j},'-dpng','-r300')
         end

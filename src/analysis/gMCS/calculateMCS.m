@@ -94,7 +94,7 @@ addParameter(p, 'printLevel', 1, @(x)isnumeric(x)&&isscalar(x));
 parse(p, model_struct, n_mcs, max_len_mcs, varargin{:});
 model_struct = p.Results.model_struct;
 n_mcs = p.Results.n_mcs;
-max_len_mcs = p.Results.max_len_gmcs;
+max_len_mcs = p.Results.max_len_mcs;
 KO = p.Results.KO;
 rxn_set = p.Results.rxn_set;
 target_b = p.Results.target_b;
