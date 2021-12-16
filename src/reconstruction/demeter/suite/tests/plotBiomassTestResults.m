@@ -86,11 +86,16 @@ for f=1:length(folders)
     modelList=modelList';
     modelList(~contains(modelList(:,1),'.mat'),:)=[];
     
-    parfor i=1:length(modelList)
+   parfor i=1:length(modelList)
+     %    for i=1:length(modelList)
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
-        
+        try 
         model=readCbModel([folders{f} filesep modelList{i}]);
+        catch % circumvent the verifyModel for the moment
+                 model=  load([folders{f} filesep modelList{i}]);
+                 model = model.model;
+        end
         biomassID=find(strncmp(model.rxns,'bio',3));
         [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, model.rxns(biomassID));
         aerRes{i,f}=AerobicGrowth;
