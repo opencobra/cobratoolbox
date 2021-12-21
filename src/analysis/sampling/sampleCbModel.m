@@ -9,11 +9,13 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %    model:           COBRA model structure with fields
 %                        * .S - Stoichiometric matrix
 %                        * .b - Right hand side vector
-%                        * .lb - Lower bounds
-%                        * .ub - Upper bounds
+%                        * .lb - 'n x 1' vector: Lower bounds
+%                        * .ub - 'n x 1' vector: Upper bounds
 %                        * .C - 'k x n' matrix of additional inequality constraints
 %                        * .d - 'k x 1' rhs of the above constraints
 %                        * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G')
+%                        * .vMean - 'n x 1' vector: the mean for Gaussian sampling
+%                        * .vCov - 'n x 1' vector: the diagonal for the covariance for Gaussian sampling
 %
 % OPTIONAL INPUTS:
 %    sampleFile:    File names for sampling output files (only implemented for ACHR)
@@ -259,6 +261,27 @@ switch samplerName
             flip = 1-2*(model.dsense(~I) == 'G');
             P.Aineq = flip.*P.Aineq;
             P.bineq = flip.*P.bineq;
+        end
+        
+        if isfield(model,'vMean') || isfield(model,'vCov')
+           n = size(P.Aeq, 2);
+           if isfield(model,'vMean')
+              vMean = model.vMean;
+              assert(all(size(vMean) == [n, 1]));
+           else
+              vMean = zeros(n,1);
+           end
+           
+           if isfield(model,'vCov')
+              vCov = model.vCov;
+              assert(all(size(vCov) == [n, 1]));
+           else
+              vCov = ones(n,1);
+           end
+           
+           P.f = @(x) (vCov'*((x-vMean).*(x-vMean)))/2;
+           P.df = @(x) vCov.*(x-vMean);
+           P.ddf = @(x) vCov;
         end
 
         opts = default_options();
