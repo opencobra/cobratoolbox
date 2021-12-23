@@ -90,7 +90,14 @@ if ~isempty(modelList)
         
         rxnsTmp={};
         parfor j=i:i+endPnt
-            model=readCbModel(modelsToLoad{j});
+            try
+                model=readCbModel(modelsToLoad{j});
+            
+            catch
+                model=  load(modelsToLoad{j});
+                model = model.model;
+            end
+            
             rxnsTmp{j}=model.rxns;
             metsTmp{j}=model.mets;
         end
