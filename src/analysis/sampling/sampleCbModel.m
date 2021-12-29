@@ -267,21 +267,30 @@ switch samplerName
            n = size(P.Aeq, 2);
            if isfield(model,'vMean')
               vMean = model.vMean;
-              assert(all(size(vMean) == [n, 1]));
+              assert(all(size(vMean) == [n, 1]), 'incorrect size for model.vMean');
            else
               vMean = zeros(n,1);
            end
            
            if isfield(model,'vCov')
-              vCov = model.vCov;
-              assert(all(size(vCov) == [n, 1]));
+              assert(all(size(model.vCov) == [n, 1]), 'incorrect size for model.vCov');
+              assert(all(model.vCov >= 0), 'model.vCov must be non-negative');
+              vInvCov = 1./model.vCov;
+              
+              idx = find(model.vCov < 1e-15);
+              if ~isempty(idx)
+                 vInvCov(idx) = 1;
+                 spOne = speye(size(P.lb,1));
+                 P.Aeq = [P.Aeq; spOne(idx, :)];
+                 P.beq = [P.beq; vMean(idx)];
+              end
            else
-              vCov = ones(n,1);
+              vInvCov = ones(n,1);
            end
            
-           P.f = @(x) (vCov'*((x-vMean).*(x-vMean)))/2;
-           P.df = @(x) vCov.*(x-vMean);
-           P.ddf = @(x) vCov;
+           P.f = @(x) (vInvCov'*((x-vMean).*(x-vMean)))/2;
+           P.df = @(x) vInvCov.*(x-vMean);
+           P.ddf = @(x) vInvCov;
         end
 
         opts = default_options();
