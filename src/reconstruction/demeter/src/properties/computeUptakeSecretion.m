@@ -56,7 +56,12 @@ else
             allExch={};
             for i=1:length(modelList)
                 i
-                model=readCbModel([modelFolder filesep modelList{i}]);
+                try
+                    model=readCbModel([modelFolder filesep modelList{i}]);
+                catch
+                    model=load([modelFolder filesep modelList{i}]);
+                    model = model.model;
+                end
                 exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));
                 allExch=unique(vertcat(allExch,exRxns));
             end
@@ -118,7 +123,12 @@ if ~isempty(modelList)
                 % prevent creation of log files
                 changeCobraSolverParams('LP', 'logFile', 0);
             end
-            model=readCbModel(modelsToLoad{j});
+            try
+                model=readCbModel(modelsToLoad{j});
+            catch
+                model=load(modelsToLoad{j});
+                model = model.model;
+            end
             exRxns=model.rxns(find(strncmp(model.rxns,'EX_',3)));
             % open all exchanges
             model = changeRxnBounds(model, exRxns, -1000, 'l');
@@ -149,7 +159,12 @@ if ~isempty(modelList)
         end
         
         for j=i:i+endPnt
-            model=readCbModel(modelsToLoad{j});
+            try
+                model=readCbModel(modelsToLoad{j});
+            catch
+                model=load(modelsToLoad{j});
+                model = model.model;
+            end
             plusonerow=size(uptakeFluxes,1)+1;
             modelID=strrep(modelList{j},'.mat','');
             modelID=strrep(modelID,'.sbml','');
