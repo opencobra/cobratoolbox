@@ -64,7 +64,9 @@ if length(modelList)>1
         getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
         computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
         computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
+        try
         producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
+        end
         rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
         
         % get basic statistics on draft and refined reconstructions and metabolite
