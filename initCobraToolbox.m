@@ -359,6 +359,7 @@ else
     end
 end
 
+%configuration of solver environment variables
 if ENV_VARS.printLevel
     fprintf(' > Configuring solver environment variables ...\n');
     configEnvVars(1);
