@@ -123,8 +123,8 @@ if nargin > 2
     modelList = cellstr(ls([AGORAPath, '*.mat']));
     for i = 1:length(modelList)
         load([AGORAPath, modelList{i}])
-        model = useDiet(model, TestAdaptedDietConstraints);
-        bioID = model.rxns(find(strncmp(model.rxns, 'biomass', 7)));
+        model = useDiet(model, adaptedDietConstraints);
+        bioID = model.rxns(find(strncmp(model.rxns, 'bio', 3)));
         model = changeObjective(model, bioID);
         FBA = optimizeCbModel(model, 'max');
         if FBA.f > 0.00001
