@@ -235,8 +235,8 @@ end
 %Clean up, after changing the solver, this happens only if CBTDIR is
 %actually set i.e. initCobraToolbox is called before. This is only
 %necessary, if the solver is being validated.
-if validationLevel == 1
-    origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false); %TODO sometimes this takes far too long, why?
+if validationLevel == 2 %TODO sometimes this takes far too long, why?
+    origFiles = getFilesInDir('type','ignoredByCOBRA','checkSubFolders',false); 
     finish = onCleanup(@() removeTempFiles(pwd, origFiles,'checkSubFolders',false));
 end
 % configure the environment variables

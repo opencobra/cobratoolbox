@@ -1,11 +1,10 @@
-function objectiveAbbr = checkObjective(model)
-warning('checkObjective will be depreciated because the function name is a misnomer, please use printObjective instead')
+function objectiveAbbr = printObjective(model)
 % Prints out the Stoichiometric Coefficients for each
 % Metabolite, with the name of the objective
 %
 % USAGE:
 %
-%    objectiveAbbr = checkObjective(model)
+%    objectiveAbbr = printObjective(model)
 %
 % INPUT:
 %    model:            COBRA model structure

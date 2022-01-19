@@ -103,7 +103,12 @@ for t=1:size(versions,1)
                     % prevent creation of log files
                     changeCobraSolverParams('LP', 'logFile', 0);
                 end
-                model=readCbModel(modelToLoad{j});
+                try
+                    model=readCbModel(modelToLoad{j});
+                catch
+                    model=load(modelToLoad{j});
+                    model=model.model;
+                end
                 
                 [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool] = findFluxConsistentSubset(model,param);
                 % exclude exchange and demand reactions
