@@ -1,4 +1,4 @@
-function [stat,origStat,x,y,z,s,doty] = parseMosekResult(res,A,blc,buc,printLevel,param)
+function [stat,origStat,x,y,z,s,doty] = parseMskResult(res,A,blc,buc,printLevel,param)
 %parse the res structure returned from mosek
 
 % initialise variables
