@@ -4,8 +4,10 @@ function [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rx
 %
 % INPUT
 % met                           Metabolite name
-% metabolite_structure_rBioNet  To save time provide rBioNet (as
-%                               metabolite_structure_rBioNet)
+% metabolite_structure_rBioNet  To save time provide rBioNet either as
+%                               1) string to mat file to load, e.g.,: /path/to/metabolite_structure_rBioNet.mat
+%                               2) structure already in memory: metabolite_structure_rBioNet 
+%                                
 % metab                         To save time provide rBioNet (as
 %                               metab.mat file)
 % rxnDB                         To save time provide rBioNet (as
@@ -33,7 +35,11 @@ else
     rxn = rxnDB;
 end
 % load extended rBioNet
-if ~exist('metabolite_structure_rBioNet','var');
+if exist('metabolite_structure_rBioNet','var')
+    if ~isstruct(metabolite_structure_rBioNet)
+       load(metabolite_structure_rBioNet)
+    end
+else
     load met_strc_rBioNet;
 end
 
@@ -183,6 +189,7 @@ VMHId = regexprep(VMHId,'+','_');
 VMHId = regexprep(VMHId,'{','');
 VMHId = regexprep(VMHId,'}','_');
 VMHId = regexprep(VMHId,'__','_');
+VMHId = regexprep(VMHId,'^_','');
 % check that this abbr does not exist yet
 [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
 % if the abbr already exists, try the version with the internal numbers

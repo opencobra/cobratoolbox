@@ -783,7 +783,10 @@ if solution.stat == 1 || solution.stat == 3
     % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
     % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan
     if (~primalOnlyFlag && allowLoops)
-        solution.y = solution.dual;
+        solution.y = solution.dual(1:nMets,1);
+        if modelC
+            solution.ctrs_y = solution.dual(nMets+1:nMets+nCtrs,1);
+        end
         solution.w = solution.rcost;
         solution.s = solution.slack;
     end
