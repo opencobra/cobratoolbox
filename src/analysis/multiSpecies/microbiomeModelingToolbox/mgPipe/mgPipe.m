@@ -77,13 +77,13 @@ if isempty(mapP)
             error(['modPath (' modPath ') does not exist.']);
         end
     end
-    
+
     abundance = table2cell(readtable(abunFilePath));
-    
+
     % The number of microbeNames, their names, the number of samples and their identifiers
     % are automatically detected from the input file.
     [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
-    
+
     % remove rows of organisms that are not present in any sample
     if contains(version,'(R202') % for Matlab R2020a and newer
         microbeNames(sum(cell2mat(abundance(:,2:end)),2)<0.0000001,:)=[];
@@ -92,10 +92,10 @@ if isempty(mapP)
         microbeNames(sum(str2double(abundance(:,2:end)),2)<0.0000001,:)=[];
         abundance(sum(str2double(abundance(:,2:end)),2)<0.0000001,:)=[];
     end
-    
+
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [activeExMets,modelStoragePath,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers);
+    [activeExMets,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers);
 
     % Computing reaction abundance and reaction presence
     [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
@@ -119,7 +119,7 @@ if isempty(mapP)
         xticklabels(xlabels);
         xtickangle(90)
     end
-    
+
     if length(xlabels)<30
         set(gca,'xtick',1:length(xlabels));
         xticklabels(xlabels);
@@ -128,19 +128,19 @@ if isempty(mapP)
     set(gca,'ytick',1:length(ylabels));
     yticklabels(ylabels);
     ax=gca;
-    
+
     if length(ylabels)<50
         ax.YAxis.FontSize = 8;
     else
         ax.YAxis.FontSize = 6;
     end
-    
+
     set(gca,'TickLabelInterpreter', 'none');
     title('Relative reaction abundances summarized by subsystem')
     print(strcat(resPath, 'Subsystem_abundances'), figForm)
-    
+
     % save mapping info
-    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'activeExMets', 'sampNames', 'microbeNames', 'couplingMatrix', 'modelStoragePath','abundance','-v7.3')
+    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'activeExMets', 'sampNames', 'microbeNames', 'couplingMatrix', 'abundance','-v7.3')
 end
 
 %end of trigger for Autoload
@@ -210,12 +210,12 @@ for j=1:steps:length(sampNames)
         endPnt=length(sampNames)-j;
     end
     getErrors={};
-    
+
     parfor i=j:j+endPnt
         % Each personalized model will be created separately.
         % get the list of models for each sample and remove the ones not in
         % this sample
-        
+
         % check if model already exists
         if ~isempty(host)
             mId = strcat('host_microbiota_model_samp_', sampNames{i,1}, '.mat');
@@ -223,18 +223,17 @@ for j=1:steps:length(sampNames)
             mId = strcat('microbiota_model_samp_', sampNames{i,1}, '.mat');
         end
         if ~isfile(mId)
-            
             mappingData=load([resPath filesep 'mapInfo.mat'])
             microbeNamesSample = mappingData.microbeNames;
             couplingMatrixSample = mappingData.couplingMatrix;
             abunRed=mappingData.abundance(:,i+1);
             abunRed=[mappingData.abundance(:,1),abunRed];
-            
+
             microbeNamesSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             couplingMatrixSample(cell2mat(abunRed(:,2)) < tol,:)=[];
             abunRed(cell2mat(abunRed(:,2)) < tol,:)=[];
-            setupModel = fastSetupCreator(exMets, modelStoragePath, microbeNamesSample, host);
-            
+            setupModel = fastSetupCreator(exMets, microbeNamesSample, host);
+
             % create personalized models for the batch
             createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);
             results=verifyModel(createdModel{1});
@@ -279,10 +278,7 @@ else
     netSecretionFluxes={};
     netUptakeFluxes={};
     Y=[];
-    delete('simRes.mat','intRes.mat')  
-end
-if isdir([resPath filesep 'modelStorage'])
-    rmdir([resPath filesep 'modelStorage'],'s')
+    delete('simRes.mat','intRes.mat')
 end
 
 % get stats on microbiome models-number of reactions and metabolites
