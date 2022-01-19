@@ -1,11 +1,11 @@
-function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
+function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
 % given diet are removed to reduce computation time.
 %
 % USAGE
-%    [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
+%    [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers)
 %
 % INPUTS
 %    microbeNames:           list of microbe models included in the microbiome models
@@ -15,16 +15,12 @@ function [activeExMets,modelStoragePath,couplingMatrix] = buildModelStorage(micr
 % OUTPUTS
 %    activeExMets:           list of exchanged metabolites present in at
 %                            least one microbe model that can carry flux
-%    modelStoragePath:       path to the modified models to join afterwards
 %    couplingMatrix:         matrix containing coupling constraints for each model to join
 %
 % AUTHOR:
 %   - Almut Heinken, 05/2021
 
-currentDir=pwd;
 mkdir('modelStorage')
-cd('modelStorage')
-modelStoragePath = pwd;
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
@@ -66,7 +62,10 @@ for i = 1:size(microbeNames, 1)
 end
 
 %% create a new extracellular space [u] for microbes
-for i = 1:size(microbeNames, 1)
+couplingMatrixTmp = {};
+modelsTmp{i} = {};
+
+parfor i = 1:size(microbeNames, 1)
     model = readCbModel([modPath filesep microbeNames{i,1} '.mat']);
     % temp fix
     if isfield(model,'C')
@@ -114,19 +113,25 @@ for i = 1:size(microbeNames, 1)
     %finish up by A: removing duplicate reactions
     %We will lose information here, but we will just remove the duplicates.
     [model,rxnToRemove,rxnToKeep]= checkDuplicateRxn(model,'S',1,0,1);
-    
-    writeCbModel(model,'format','mat','fileName',[modelStoragePath filesep microbeNames{i,1} '.mat']);  % store model
-    
+
+    modelsTmp{i} = model;
     % add coupling constraints and store them
     IndRxns=find(strncmp(model.rxns,[microbeNames{i,1} '_'],length(microbeNames{i,1})+1));%finding indixes of specific reactions
     % find the name of biomass reaction in the microbe model
     bioRxn=model.rxns{find(strncmp(model.rxns,strcat(microbeNames{i,1},'_bio'),length(char(strcat(microbeNames{i,1},'_bio')))))};
     model=coupleRxnList2Rxn(model,model.rxns(IndRxns(1:length(model.rxns(IndRxns(:,1)))-1,1)),bioRxn,400,0); %couple the specific reactions
-    couplingMatrix{i,1}=model.C;
-    couplingMatrix{i,2}=model.d;
-    couplingMatrix{i,3}=model.dsense;
-    couplingMatrix{i,4}=model.ctrs;
+    couplingMatrixTmp{i}{1}=model.C;
+    couplingMatrixTmp{i}{2}=model.d;
+    couplingMatrixTmp{i}{3}=model.dsense;
+    couplingMatrixTmp{i}{4}=model.ctrs;
+end
+for i = 1:size(microbeNames, 1)
+    couplingMatrix{i,1}=couplingMatrixTmp{i}{1};
+    couplingMatrix{i,2}=couplingMatrixTmp{i}{2};
+    couplingMatrix{i,3}=couplingMatrixTmp{i}{3};
+    couplingMatrix{i,4}=couplingMatrixTmp{i}{4};
+    model = modelsTmp{i};
+    writeCbModel(model,'format','mat','fileName',[pwd filesep 'modelStorage' filesep microbeNames{i,1} '.mat']);  % store model
 end
 
-cd(currentDir)
 end
