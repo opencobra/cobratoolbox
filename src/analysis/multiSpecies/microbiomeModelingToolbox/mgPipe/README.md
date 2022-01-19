@@ -16,21 +16,12 @@ function.  [PART 3] Simulations under different diet regimesand analysis of the
 predicted metabolic profile (PCoA of computed MNPCs of
 individuals).
 
-**WARNING:** Please take into consideration only the files listed in this
-document. Everything present in the folder but not listed and explained in this
-document is to be considered not relevant or obsolete.
-
 ## Requirements
 
-mgPipe requires `Matrix Laboratory`, the `Parallel Computing Toolbox`, as well
-as, the COBRA Toolbox to be installed. Please refer to
+mgPipe requires the Statistics and Machine Learning Toolbox, the Bioinformatics Toolbox, the Parallel Computing Toolbox, as well as the COBRA Toolbox to be installed. Please refer to
 the [installation instructions](https://opencobra.github.io/cobratoolbox/stable/installation.html).
-The usage of `ILOG CPLEX` solver is strongly advised to obtain the best speed performance
+The usage of `IBM CPLEX` solver is strongly advised to obtain the best speed performance
 (required for the fastFVA.m function).
-
-MgPipe was created (and tested) for AGORA 1.0 please first download AGORA
-version 1.0 from https://www.vmh.life/#downloadview and place the mat files into
-a dedicated folder.
 
 ## Main Folder Structure and Files
 
@@ -65,8 +56,7 @@ supplied in the current folder and in `papers/2018_microbiomeModelingToolbox`
 
 Once installed the necessary dependencies the pipeline is ready to be used at
 the condition that some input variables are inserted or changed from the
-default input file `startMgPipe.m` or directly in the input function
-`initMgPipe.m`.
+default input file `startMgPipe.m`.
 
 Running the script called `startMgPipe.m` (after having changed the necessary
 inputs) is the only action required from the user to start the
@@ -101,22 +91,8 @@ variables which need to be created or changed from default are
 | dietFilePath    | path to and name of the file with dietary information|
 | abunFilePath    | path to and name of the file with abundance information|
 | indInfoFilePath | path to csv file for stratification criteria (if empty or not existent no criteria is used)|
-| objre           | name of the objective function of microbes|
-| figForm         | the output is a vectorized picture ('-depsc'), change to '-dpng' for .png|
-| numWorkers      | number of cores dedicated for parallelization|
-| autoFix         | option to automatically solve possible issues (true means on)   |
-| compMod         | if outputs in open format should be produced for some sections |
-| rDiet           | if to simulate also a rich diet (rdiet=true)|
-| extSolve        | option to save microbiota models with diet to simulate with a different language (true means yes)          |
-| fvaType         | which FVA function to use (fastFVA =true for fastFVA) |
-
-The `autorun` variable controls the behavior of the pipeline. The autorun
-functionality is automatically off.  This functionality enables the pipeline to
-automatically run and detect outputs. By changing `autorun` variable to false, it is
-possible to enter in manual / debug mode.
-
-**WARNING**: concerning the `autorun` variable value: manual mode is
-strongly discouraged and should be used only for debugging purposes.
+| | numWorkers      | number of cores dedicated for parallelization|
+| | rDiet           | if to simulate also a rich diet (rdiet=true)|
 
 ## Outputs
 
@@ -145,8 +121,7 @@ objective function and coupling constraints.  [PART 3] runs simulations
 outputs are:
 
 | File                       | Description                                                                                  |
-| ---------------------------|----------------------------------------------------------------------------------------------|
-| Setup_allbacs.mat          | setup object containing all the models joined                                                |
+| ---------------------------|-------------------------------------------------------------------------
 | microbiota_model_XXX.mat   | .mat file containing the personalized model                                                   |
 | simRes.mat                 | .mat file containing NMPCs (FVAct), the complementary FVAs results (NSct), values of the objective function (Presol), names of infeasible models (InFesMat)|
 
@@ -172,26 +147,11 @@ to use different FVA functions in part 3.  The user should be carefully
 calculating the number of cores to allocate.  Priority should be given in
 assigning cores for each personalized model simulation (one core for each
 individual), then, if more cores are available (ex. user running the
-pipeline on the HPC) the use of fastFVA is suggested.  Please take
-note that if the specific option is enabled in the input file some of
-the outputs are also saved in open format (csv) in the dedicated
-folder.  By setting `autorun`=0 autorun function will be disabled. You
-are now running in manual / debug mode. Please note that the usage in
-manual mode is strongly discouraged and should be used only for
-debugging purposes.
+pipeline on the HPC) the use of fastFVA is suggested.
 
 **WARNING**: mgPipe was created (and tested) for AGORA 1.0. The use of models
 from any different source was not tested and it is not guaranteed to work.
 
-# Status of implementation
-
-[Part 1, 2, 3] are implemented structured and tested.
-
-A tutorial showing how to use the pipeline was created.
-
-Data and result export in open formats (.csv) has to be better tested and
-further developed, the final aim is to make the pipeline more flexible and
-connected with software other than MATLAB
 
 Please report any problem opening threads in the issue section. Also, any
 suggestion with the pipeline implementation is welcome.
@@ -221,16 +181,13 @@ A livescript tutorial `mgPipeTutorial.mlx` and its correspondent version `mgPipe
 
 ## Funding
 
-This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN
-grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union?s Horizon 2020 research and innovation
-programme (grant agreement No 757922).
+This study received funding from the Luxembourg National Research Fund(FNR), through the ATTRACT programme (FNR/A12/01), and the OPEN grant (FNR/O16/11402054), as well as the European Research Council(ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No 757922), and from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 757922), and by the National Institute on Aging grants (1RF1AG058942-01 and 1U19AG063744-01).
 
 ## Author & Documentation Date
+
+* Almut Heinken, 12.01.22 - updated the documentation. *
 
 *Federico Baldini, 26.07.18*
 
 *Luxembourg Centre for Systems Biomedicine, University of Luxembourg, Campus Belval, Esch-sur-Alzette, Luxembourg*
-
-*[federico.baldini@uni.lu](federico.baldini@uni.lu)*
-
 

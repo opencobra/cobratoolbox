@@ -636,7 +636,7 @@ if oBabelInstalled
     info.standardisationReport.InChIs(1:size(standardisationReport.InChIs, 1)) = standardisationReport.InChIs;
     info.standardisationReport.SMILES(1:size(standardisationReport.SMILES, 1)) = standardisationReport.SMILES;
     % Write table
-    writetable(info.standardisationReport, [metDir filesep 'standardisationReport'])
+    writetable(info.standardisationReport, [metDir filesep 'metaboliteStructures'])
 end
 
 if options.printlevel > 0

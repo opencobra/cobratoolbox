@@ -394,10 +394,9 @@ nSparse=nnz(activeRxnBool);
 
 %% check which reactions are essential
 essentialRxnBool = false(nRxns,1);
+%assume all active reactions are in the minimal set unless tested
+essentialTightRxnsBool = true(nSparse,1);
 if checkEssentialSet == true
-    %assume all active reactions are in the minimal set unless tested
-    essentialTightRxnsBool = true(nSparse,1);
-
     if ~isempty(activeRxnBool) && printLevel > 1
         disp(['sparseFBA solution: zero norm before heuristic rxn removal = ', num2str(nnz(activeRxnBool))])
     end

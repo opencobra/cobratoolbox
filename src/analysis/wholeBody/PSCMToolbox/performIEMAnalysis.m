@@ -1,4 +1,4 @@
-function [IEMSolutions,IEMTable,missingMetAll] = performIEMAnalysis(model,geneMarkerList,compartment,urine,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
+function [IEMSolutions,IEMTable,missingMetAll] = performIEMAnalysis(model,geneMarkerList,compartment,urine,minRxnsFluxHealthy, causal, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
 % This function performs the IEMAnalysis from a list of genes, testing for
 % the defined biomarker metabolites in one or more biofluid compartments.
 %
@@ -28,7 +28,9 @@ function [IEMSolutions,IEMTable,missingMetAll] = performIEMAnalysis(model,geneMa
 %                       while ub = (1-fractionKO)*solution.v(find(model.c))
 % LPSolver              Define LPSolver ('ILOGcomplex' - default;
 %                       'tomlab_cplex')
-% 
+% causal                if causal == 1 get only genes that would lead to loss of function of the
+%                       associated reactions, otw get all associated reactions
+%                       (default)
 %
 % OUTPUT
 % IEMSolutions      Structure containing the predictions for each gene.
@@ -70,6 +72,10 @@ if ~exist('LPSolver','var')
     LPSolver = 'tomlab_cplex';
 end
 
+
+if  ~exist('causal','var')
+    causal = 0;
+end
 modelO = model;
 missingMetAll = [];
 for k = 1 : size(geneMarkerList,1)
@@ -104,7 +110,7 @@ for k = 1 : size(geneMarkerList,1)
     for i = 1 : length(BiomarkerRxns)
         BiomarkerRxns{i,2} = 'non reported';
     end
-    [IEMRxns, grRules] = getRxnsFromGene(model,geneMarkerList{k},1);
+    [IEMRxns, grRules] = getRxnsFromGene(model,geneMarkerList{k},causal);
     [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     % remove 0's for those metabolites that do not occur in a specific
     % biolfuid to be able to distinguish results from being 0 in flux due
@@ -137,17 +143,25 @@ missingMetAll = unique(missingMetAll);
 F = fieldnames(IEMSolutions);
 cnt = 1;
 clear IEMTable
+
 for i = 1 : length(F)
-    for j = 5 : size(IEMSolutions.(F{i}).solution,1)
-        tmp = regexprep(F{i},'G_','');
-        IEMTable{cnt,1} = regexprep(tmp,'_(\d)','');
-        if (contains(IEMSolutions.(F{i}).solution(j,1),'Healthy'))
-            value = regexprep(IEMSolutions.(F{i}).solution(j,1),'Healthy:','');
-            IEMTable(cnt,2) = value;
-            IEMTable(cnt,3) =IEMSolutions.(F{i}).solution(j,2);
-        elseif contains(IEMSolutions.(F{i}).solution(j,1),'Disease')
-            IEMTable(cnt,4) = IEMSolutions.(F{i}).solution(j,2);
-            cnt = cnt + 1;
+    tmp = regexprep(F{i},'G_','');
+    
+    if  size(IEMSolutions.(F{i}).solution,1)>=5
+        for j = 5 : size(IEMSolutions.(F{i}).solution,1)
+            IEMTable{cnt,1} = regexprep(tmp,'_(\d)','');
+            if (contains(IEMSolutions.(F{i}).solution(j,1),'Healthy'))
+                value = regexprep(IEMSolutions.(F{i}).solution(j,1),'Healthy:','');
+                IEMTable(cnt,2) = value;
+                IEMTable(cnt,3) =IEMSolutions.(F{i}).solution(j,2);
+            elseif contains(IEMSolutions.(F{i}).solution(j,1),'Disease')
+                IEMTable(cnt,4) = IEMSolutions.(F{i}).solution(j,2);
+                cnt = cnt + 1;
+            end
         end
+    else
+        IEMTable{cnt,1} = regexprep(tmp,'_(\d)','');
+        IEMTable{cnt,2} = 'No Rxn Assoc';
+        cnt = cnt + 1;
     end
 end

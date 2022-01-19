@@ -47,7 +47,12 @@ else
         allRxns={};
         allMets={};
         for i=1:length(modelList)
-            model=readCbModel([modelFolder filesep modelList{i}]);
+            try
+                model=readCbModel([modelFolder filesep modelList{i}]);
+            catch
+                model=load([modelFolder filesep modelList{i}]);
+                model = model.model;
+            end
             allRxns=unique(vertcat(allRxns,model.rxns));
             allMets=unique(vertcat(allMets,model.mets));
         end
@@ -90,7 +95,14 @@ if ~isempty(modelList)
         
         rxnsTmp={};
         parfor j=i:i+endPnt
-            model=readCbModel(modelsToLoad{j});
+            try
+                model=readCbModel(modelsToLoad{j});
+            
+            catch
+                model=  load(modelsToLoad{j});
+                model = model.model;
+            end
+            
             rxnsTmp{j}=model.rxns;
             metsTmp{j}=model.mets;
         end
