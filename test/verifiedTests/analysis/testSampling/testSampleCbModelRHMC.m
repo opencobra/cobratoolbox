@@ -6,7 +6,7 @@
 
 % initialize the test
 fileDir = fileparts(which('testSampleCbModelRHMC'));
-models = {'ecoli_core_model.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat'};
+models = {};
 models{1} = getDistributedModel('ecoli_core_model.mat');
 models{2} = getDistributedModel('Acidaminococcus_sp_D21.mat');
 load('Recon1.0model.mat', 'Recon1')
