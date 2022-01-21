@@ -230,7 +230,7 @@ if installedGit
         
         if status_gitSubmodule ~= 0
             fprintf(strrep(result_gitSubmodule, '\', '\\'));
-            warning('The submodules could not be initialized.');
+            error('The submodules could not be initialized.');
         end
         
         % reset each submodule
