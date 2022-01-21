@@ -201,13 +201,14 @@ else
         case 'thermoKernel'
             if ~isfield(options,'rxnWeights')
                 if isfield(options,'core')
-                    options.rxnWeights = ones(length(model.lb),1)*0.01;
-                    options.rxnWeights(options.core) = -1; %note the negative sign
+                    options.rxnWeights = ones(length(model.lb),1)*0.01; %penalty for non-core reactions
+                    options.rxnWeights(options.core) = -1; %incentive for core reactions
                 else
                     options.rxnWeights=[];
                     warning('The required option field "rxnWeights" is not defined for thermoKernel method')
                 end
             end
+                        
             if ~isfield(options,'activeInactiveRxn')
                 options.activeInactiveRxn = [];
             end
@@ -250,6 +251,8 @@ switch options.solver
     case 'swiftcore'
         tissueModel = swiftcore(model, options.core, options.weights, options.tol, options.reduction, options.LPsolver);
     case 'thermoKernel'
+        %save('debug_thermoKernel','model','options')
+        %return
         [tissueModel, ~, ~] = thermoKernel(model, options.activeInactiveRxn, options.rxnWeights, options.presentAbsentMet, options.metWeights, options);
         funcModel = 0; %already done in thermoKernel
 end

@@ -103,7 +103,12 @@ for j=1:size(toCompare,1)
                 % prevent creation of log files
                 changeCobraSolverParams('LP', 'logFile', 0);
             end
-            model = readCbModel(modelsToLoad{i});
+            try
+                model = readCbModel(modelsToLoad{i});
+            catch
+                    model = load(modelsToLoad{i});
+                    model=model.model;
+            end
             
             % start collecting features of each reconstruction
             biomassID=find(strncmp(model.rxns,'bio',3));
