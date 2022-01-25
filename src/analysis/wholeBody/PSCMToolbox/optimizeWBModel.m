@@ -137,7 +137,7 @@ end
 
 allowLoops =1;
 
-if isempty(param.minNorm) %Linear optimisation
+if isempty(param.minNorm)  %Linear optimisation
     
     [solverName, solverOK] = getCobraSolver('LP');
     if ~any(strcmp(solverName,validatedSolvers))
