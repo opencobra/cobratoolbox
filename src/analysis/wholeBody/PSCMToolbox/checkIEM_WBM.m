@@ -97,7 +97,7 @@ if ~exist('LPSolver','var')
     LPSolver = 'ILOGcomplex';
     LPSolver = 'tomlab_cplex';
 end
-[solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP');
+%[solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP');
 
 global useSolveCobraLPCPLEX
 %
@@ -180,9 +180,13 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
         else
             modelIEM.lb(c+1) = 0;
         end
-        modelIEM.ub(c+1) = (1-fractionKO)*solution.v(model.c~=0);
-        modelIEM.ub(c+1)=fix(modelIEM.lb(c+1)*1000000)/1000000;% remove the last few digits from the 16 digits allowed by matlab
-        
+        if 0 % original way how I did it
+            modelIEM.ub(c+1) = (1-fractionKO)*solution.v(model.c~=0);
+            modelIEM.ub(c+1)=fix(modelIEM.lb(c+1)*1000000)/1000000;% remove the last few digits from the 16 digits allowed by matlab
+        else
+            modelIEM.ub(contains(modelIEM.rxns,IEMRxns))=0;
+            modelIEM.lb(contains(modelIEM.rxns,IEMRxns))=0;
+        end
         tic;
         if useSolveCobraLPCPLEX
             [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
