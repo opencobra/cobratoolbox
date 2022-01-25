@@ -1,9 +1,0 @@
-Here are the list of tests
-
-1) polytope_test
-Run through all the polytopes.
-Compare the LP solution of the polytope with and without presolve.
-
-2) sampling_test
-Run through all the polytopes.
-Check the correctness by p-value and also the mixing time.
