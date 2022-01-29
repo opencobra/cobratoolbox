@@ -123,7 +123,7 @@ for j = 1 : length(location)
         cd(dirN)
         filenames=dir;
         for i=3:length(filenames)
-            copyfile(filenames(i).name,[currentPath filesep molFileDirectory] )
+            copyfile(filenames(i).name,[molFileDirectory])
         end
         
     end
