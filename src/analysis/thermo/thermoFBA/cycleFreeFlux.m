@@ -80,7 +80,7 @@ end
 
 if ~isfield(param,'eta')
     feasTol = getCobraSolverParams('LP', 'feasTol');
-    param.eta = feasTol*10;
+    param.eta = feasTol*100;
 end
 
 if ~isfield(param,'debug')
