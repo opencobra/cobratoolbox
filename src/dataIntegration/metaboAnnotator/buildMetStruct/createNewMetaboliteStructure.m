@@ -30,7 +30,14 @@ metaboliteStructureFieldNames;
 vmh_col = find(contains(lower(RAW(1,:)),'vmh'));
 % clean up some known issues:
 name_col = find(contains(lower(RAW(1,:)),'name'));
-RAW(1,name_col) = regexprep(RAW(1,name_col),RAW(1,name_col),'metNames');
+
+% test if metabolite name column exists
+if isempty(name_col)
+    RAW{1} = 'metNames';
+    RAW = cat(1, RAW, metList);
+else
+    RAW(1,name_col) = regexprep(RAW(1,name_col),RAW(1,name_col),'metNames');
+end
 
 if isempty(vmh_col) || vmh_col ==0
     if ~exist('metabolite_structure_rBioNet','var')
@@ -40,7 +47,7 @@ end
 
 % populate metabolite structure
 for i = 2 : size(RAW,1)
-    name = RAW(i,find(contains(lower(RAW(1,:)),'name'))) ;
+    name = RAW(i,find(contains(lower(RAW(1,:)),'name')));
     if ~isempty(vmh_col) && vmh_col ~=0 % VMH ID exists
         Ori = RAW{i,vmh_col};
         
@@ -58,17 +65,17 @@ for i = 2 : size(RAW,1)
     % the original designated VMH ids listed in the field VMHId
     
     %make a temporary VMHId name in case the existing one is an invalid field name
-    if ~isvarname(VMHId)
+    VMHId_suggestion = VMHId;
+    if  isvarname(strcat('VMHId_', VMHId))
         fieldname = strcat('VMH_',VMHId);
-        metabolite_structure.(fieldname) = struct();
     else
-        VMHId_suggestion = VMHId;
-        VMHId = datestr(now,'yyyymmddTHHMMSS');
+        VMHId = append(datestr(now,'yyyymmddTHHMMSS'), num2str(i)); % Added i, because it can happen that it goes through soo fast that it creates two equal VMHIds
         fieldname = strcat('VMH_',VMHId);
-        metabolite_structure.(fieldname) = struct();
-        metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
     end
-
+    
+    metabolite_structure.(fieldname) = struct();
+    metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
+    
     for j = 1:size(RAW,2)
         if j~=vmh_col
             % check whether a columnn header is part of the field2Add
@@ -104,4 +111,3 @@ metabolite_structure= addField2MetStructure(metabolite_structure);
 % any errors will be removed.
 removeErrors = 1;
 [metabolite_structure,errorFlag] = sanityCheckMetIds(metabolite_structure,removeErrors);
-

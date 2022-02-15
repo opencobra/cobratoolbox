@@ -102,11 +102,14 @@ for i = 1 :length(files)
                     tokr = split(result,'==');
                     result = tokr{1};
                 end
-                
-                inchiString = strcat('InChI',result);
+                if ~isempty(result)
+                     inchiString = strcat('InChI',result);
+                else
+                    inchiString = {};
+                end
                 % find metabolite in metabolite_structure
-                
                 if ~isempty(inchiString)
+                    inchiString = strcat('InChI',result);
                     metabolite_structure.(match{1}).inchiString = inchiString;
                     metabolite_structure.(match{1}).inchiString_source = [annotationSource,':',annotationType,':',datestr(now)];
                     IDsAdded{a,1} = match{1};
