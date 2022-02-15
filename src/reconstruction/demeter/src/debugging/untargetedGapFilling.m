@@ -32,7 +32,7 @@ function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,exclu
 addedRxns = {};
 
 % remove human reactions from database
-humanComp = {'[m]','[l]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};
+humanComp = {'[m]','[l]','[n]','[x]','[r]','[g]','[u]','[ev]','[eb]','[ep]'};
 database.reactions(contains(database.reactions(:,3),humanComp),:)=[];
 
 % remove periplasm compartment from database

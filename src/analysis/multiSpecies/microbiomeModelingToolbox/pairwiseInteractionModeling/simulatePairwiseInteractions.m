@@ -175,12 +175,25 @@ parfor i = 1:size(info, 1)
     pairedModel = changeRxnBounds(pairedModel, pairedModel.rxns(strmatch(strcat(info{i, 2}, '_'), pairedModel.rxns)), 0, 'b');
     % calculate single biomass
     solutionSingle2 = solveCobraLP(buildLPproblemFromModel(pairedModel,false));
-    
+
     % save results temporarily
-    growthRates{i}{1,1} = solutionPaired.full(model1biomass);
-    growthRates{i}{1,2} = solutionPaired.full(model2biomass);
-    growthRates{i}{1,3} = solutionSingle1.full(model1biomass);
-    growthRates{i}{1,4} = solutionSingle2.full(model2biomass);
+    if solutionPaired.stat==1
+        growthRates{i}{1,1} = solutionPaired.full(model1biomass);
+        growthRates{i}{1,2} = solutionPaired.full(model2biomass);
+    else
+        growthRates{i}{1,1} = 0;
+        growthRates{i}{1,2} = 0;
+    end
+    if solutionSingle1.stat==1
+        growthRates{i}{1,3} = solutionSingle1.full(model1biomass);
+    else
+        growthRates{i}{1,3} = 0;
+    end
+    if solutionSingle2.stat==1
+        growthRates{i}{1,4} = solutionSingle2.full(model2biomass);
+    else
+        growthRates{i}{1,4} = 0;
+    end
     
     solutionsTmp{i}{1,1} = solutionPaired;
     solutionsTmp{i}{1,2} = solutionSingle1;

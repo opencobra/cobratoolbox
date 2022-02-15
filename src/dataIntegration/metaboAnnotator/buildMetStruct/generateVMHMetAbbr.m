@@ -231,7 +231,7 @@ if exist('customMetAbbrList','var')
         VMHId = [VMHId '1'];
         num = 2;
         [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-        while ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))&&  find(ismember(customMetAbbrList,VMHId))>0
+        while ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
             VMHId = VMHIdO;
             % add 1 to the end
             VMHId = [VMHId num2str(num)];
@@ -248,9 +248,16 @@ if exist('customMetAbbrList','var')
         VMHId = regexprep(VMHId,'+','_');
         VMHId = regexprep(VMHId,'{','');
         VMHId = regexprep(VMHId,'}','_');
-
+        VMHId = regexprep(VMHId,'/','_');
+        
+        % Check here again if it is in customMetAbbrList (needs first
+        % converted with regexprep)
+         while ~isempty(find(ismember(customMetAbbrList,VMHId))>0) 
+            VMHId = [VMHId '1'];
+         end
     end
 end
+
 
 function [name] = removeJunk(name)
 % remove parts of the metabolite name (in input as well as in rBioNet) that

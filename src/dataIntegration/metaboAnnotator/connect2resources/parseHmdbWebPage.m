@@ -136,7 +136,7 @@ try
         [tok2,rem2] = strtok(rem2,'<');
         idNew = tok2;
     elseif (strcmp(map{1,1},'inchiString'))
-        [tok,rem] = strtok(string,'<');
+        [tok,rem] = strtok(string,'&gt');
         idNew = tok;
     elseif (strcmp(map{1,1},'smile'))
         if ~contains(string,'word-break-all') % generally SMILES appears twice in the file and we want the second entry
