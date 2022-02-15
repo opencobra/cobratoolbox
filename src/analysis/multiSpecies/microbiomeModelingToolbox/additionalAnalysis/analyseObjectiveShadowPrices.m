@@ -118,33 +118,23 @@ for j=1:length(objectiveList)
     end
 end
 
-% now save the results in batches
-steps=50;
-
-for s=startPnt:steps:length(modelList)
-    if length(modelList)-s>=steps-1
-        endPnt=steps-1;
-    else
-        endPnt=length(modelList)-1;
-    end
-    modelsTmp = cell(50,1);
-    solutionsTmp = cell(50,1);
-    parfor i=s:s+endPnt
-        i
+% first perform the computations
+parfor i=1:length(modelList)
+    i
     restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
-        % load model
-        % workaround for models that give an error in readCbModel
-        %         try
-        %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
-        %         catch
-        %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
-        modelStr = load([modelFolder filesep modelList{i,1}]);
-        modelF = fieldnames(modelStr);
-        model = modelStr.(modelF{1});
-        modelsTmp{i} = model;
+    % load model
+    % workaround for models that give an error in readCbModel
+    %         try
+    %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
+    %         catch
+    %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
+    modelStr = load([modelFolder filesep modelList{i,1}]);
+    modelF = fieldnames(modelStr);
+    model = modelStr.(modelF{1});
+    modelsTmp{i} = model;
 
-        % implement constraints on the model
+    % implement constraints on the model
     for k = 1:length(model.rxns)
         if strfind(model.rxns{k}, 'biomass')
             model.lb(k) = 0;
@@ -157,13 +147,46 @@ for s=startPnt:steps:length(modelList)
         FBAsolution = computeSolForObj(model, objectiveList);
         % save solutions one by one-complete file would be enormous
         parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
+    end
+end
+
+% now save the results
+if length(modelList) > 1000
+    steps = 500;
+elseif length(modelList) > 500
+    steps = 200;
+else
+    steps = 50;
+end
+
+for s=startPnt:steps:length(modelList)
+    if length(modelList)-s>=steps-1
+        endPnt=steps-1;
+        modelsTmp = cell(steps,1);
+        solutionsTmp = cell(steps,1);
     else
+        endPnt=length(modelList)-1;
+        modelsTmp = cell(length(modelList),1);
+        solutionsTmp = cell(length(modelList),1);
+    end
+
+    parfor i=s:s+endPnt
+        % load model
+        % workaround for models that give an error in readCbModel
+        %         try
+        %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
+        %         catch
+        %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
+        modelStr = load([modelFolder filesep modelList{i,1}]);
+        modelF = fieldnames(modelStr);
+        model = modelStr.(modelF{1});
+        modelsTmp{i} = model;
+
         % load solution
         solutionStr = load([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat']);
         solutionSF = fieldnames(solutionStr);
-        FBAsolution = solutionStr.(solutionSF{1});     
-    end
-    solutionsTmp{i} = FBAsolution;
+        FBAsolution = solutionStr.(solutionSF{1});
+        solutionsTmp{i} = FBAsolution;
     end
 
     for i=s:s+endPnt
@@ -217,13 +240,10 @@ for s=startPnt:steps:length(modelList)
             end
         end
     end
-    % save the results regularly
-    save([resultsFolder filesep 'objectives'],'objectives');
+    % save the results regularly for very large datasets
     if length(modelList) > 500
-        % for very large datasets
+        save([resultsFolder filesep 'objectives'],'objectives');
         save([resultsFolder filesep 'shadowPrices'],'shadowPrices','-v7.3');
-    else
-        save([resultsFolder filesep 'shadowPrices'],'shadowPrices');
     end
 end
 
