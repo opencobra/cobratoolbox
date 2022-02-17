@@ -153,7 +153,7 @@ assert(abs(min(all_obj)) < tol + 1.0 & abs(max(all_obj)) < tol + 1.0)
 % only test the solvers for which the optimality conditions have been implemented
 solverPkgs = {'glpk', 'matlab', 'tomlab_cplex', 'gurobi', 'mosek', 'ibm_cplex','pdco'};
 
-% change the COBRA solver (LP)
+%% change the COBRA solver (LP)
 for k = 1:length(solverPkgs)
     solverOK = changeCobraSolver(solverPkgs{k}, 'LP', 0);
 
@@ -165,5 +165,13 @@ for k = 1:length(solverPkgs)
     end
 end
 
+%%
+osenseStr = 'max';
+minNorm = 'zero';
+allowLoops = 1;
+zeroNormApprox = 'all';
+solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, zeroNormApprox);
+assert(solution.f0==1)
+%%
 % change the directory
 cd(currentDir)

@@ -25,9 +25,9 @@ tol = 1e-4;
 
 if 1
     % test solver packages
-    useIfAvailable = {'tomlab_cplex','ibm_cplex','gurobi'};
+    useIfAvailable = {'tomlab_cplex','ibm_cplex','gurobi','mosek'};
     %useIfAvailable = {'pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek','pdco'});
+    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','pdco'});
 else
     % test solver packages
     useIfAvailable = {'pdco'};
@@ -147,6 +147,9 @@ for k = 1:length(solverPkgs.QP)
         %QPsolution5.full
         assert(abs(QPsolution5.obj - 2.3065e-09)< tol);
         
+    else
+        fprintf('   Could not run testSolveCobraQP using %s ... ', solverPkgs.QP{k});
+        fprintf('\n')
     end
 end
 fprintf('...Done.\n\n');

@@ -1489,20 +1489,20 @@ switch solver
                 s = zeros(nMet,1);
             else
                 s = zeros(nMet,1);
-                s(csense == 'L' | csense == 'G') = z(nRxn+1:end);
+                s(csense == 'L' | csense == 'G') = x(nRxn+1:end);
                 s(csense == 'G') = -s(csense == 'G');
                 %switch the sign of the dual to the constraint that was
                 %switched
                 y(csense == 'G') = -y(csense == 'G');
             end
+            x =   x(1:nRxn);
+            w =   w(1:nRxn);
+            
             if 0
                 norm(A*x + s - b + (d2^2)*y,inf)
                 norm(c - A'*y - w,inf)
                 norm(osense*c - A'*y - w,inf)
             end
-            x =   x(1:nRxn);
-            w =   w(1:nRxn);
-
             f = c'*x;
         elseif (inform == 1 || inform == 2 || inform == 3)
             stat = 0;

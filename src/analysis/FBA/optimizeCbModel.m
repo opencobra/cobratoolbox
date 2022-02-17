@@ -715,30 +715,41 @@ if solution.stat == 1 || solution.stat == 3
     solution.f = objective;
     
     %dummy parts of the solution
-    solution.f0 = 0;
-    solution.f1 = 0;
-    solution.f2 = 0;
+    solution.f0 = NaN;
+    solution.f1 = NaN;
+    solution.f2 = NaN;
     
+    if isempty(minNorm)
+        minNorm = 'empty';
+    end
+    if isnumeric(minNorm)
+        minNorm = 'two';
+    end
     %the value of the second part of the objective depends on the norm
-    if strcmp(minNorm, 'zero')
-        %zero norm
-        zeroNormTol = 0; %TODO set based on sparseLP tolerance
-        solution.f0 = sum(solution.full(1:nTotalVars,1) > zeroNormTol);
-    elseif strcmp(minNorm, 'one')
-        %one norm
-        solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
-    else
-        if exist('LPproblem2','var')
-            if isfield(optProblem2,'F')
-                %two norm
-                solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
+    switch minNorm
+        case 'empty'
+            solution.f1 = solution.f;
+        case 'zero'
+            %zero norm
+            feasTol = getCobraSolverParams('LP', 'feasTol');
+            solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
+        case 'one'
+            %one norm
+            solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
+        case 'two'
+            solution.f1 = solution.objLinear;
+            solution.f2 = solution.objQuadratic;
+            solution = rmfield(solution,'objLinear');
+            solution = rmfield(solution,'objQuadratic');
+        otherwise
+            if exist('LPproblem2','var')
+                if isfield(optProblem2,'F')
+                    %two norm
+                    solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
+                end
             end
-        end
     end
     
-    if ~isfield(solution,'full')
-        pause(0.1);
-    end
     %primal optimal variables
     solution.v = solution.full(1:nRxns);
     if modelE
@@ -783,7 +794,9 @@ if solution.stat == 1 || solution.stat == 3
     % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
     % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan
     if (~primalOnlyFlag && allowLoops)
-        solution.y = solution.dual(1:nMets,1);
+        if ~isempty(solution.dual)
+            solution.y = solution.dual(1:nMets,1);
+        end
         if modelC
             solution.ctrs_y = solution.dual(nMets+1:nMets+nCtrs,1);
         end
