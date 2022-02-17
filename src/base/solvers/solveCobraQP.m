@@ -421,22 +421,15 @@ switch solver
             end
         end
         %remove parameter fields that mosek does not recognise
-        param.MSK_DPAR_BASIS_TOL_S = problemTypeParams.optTol;
-        param.MSK_DPAR_BASIS_REL_TOL_S = problemTypeParams.optTol;
-        param.MSK_DPAR_INTPNT_NL_TOL_DFEAS = problemTypeParams.optTol;
         param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = problemTypeParams.optTol;
-        param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = problemTypeParams.optTol;
-        
-        %https://docs.mosek.com/8.1/toolbox/solving-geco.html
-        param.MSK_DPAR_INTPNT_NL_TOL_PFEAS=problemTypeParams.feasTol;
-        param.MSK_DPAR_INTPNT_NL_TOL_DFEAS=problemTypeParams.feasTol;
+        param.MSK_DPAR_INTPNT_QO_TOL_PFEAS = problemTypeParams.feasTol;
         
         %Update with solver Specific Parameter struct
         param = updateStructData(param,solverParams);
-        problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
+        %problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
         
         % Optimize the problem.
-        % min 0.5*x'*F*x + osense*c'*x
+        % min osense*0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc
         %     bux <= x   <= bux
         [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
@@ -458,7 +451,7 @@ switch solver
                     % x solution.
                     x = res.sol.itr.xx;
                     %f = 0.5*x'*F*x + c'*x;
-                    f = res.sol.itr.pobjval;
+                    f = osense*res.sol.itr.pobjval;
                     
                     %dual to equality
                     y= res.sol.itr.y;
@@ -501,7 +494,7 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            norm(osense*c + osense*F*x-A'*y -w,inf)
+            norm(osense*c + osense*F*x -A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
             norm(osense*c + osense*F*x -A'*y2 -w,inf)
         end
@@ -1073,12 +1066,12 @@ if solution.stat==1
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
             solution.objLinear = c'*solution.full;
-            solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
+            solution.objQuadratic = osense*(1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
             if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
-                warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
-                fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
+                error('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
+                fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from osense*c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
             end
         else
             solution.obj = NaN;
