@@ -115,7 +115,8 @@ if param.debug
         v0 = V0(:, i);
         
         %check if the solution provided is an accurate steady state
-        res = norm(model.S(SConsistentMetBool,:)*v0 - model.b(SConsistentMetBool),inf);
+        bool = SConsistentMetBool & model.csense == 'E';
+        res = norm(model.S(bool,:)*v0 - model.b(bool),inf);
         if res>param.eta
             error('Solution provided is not a steady state')
         end
@@ -325,17 +326,42 @@ end
 
 % bounds % fixed exchange fluxes
 lb = [v0; zeros(p, 1)];
-ub = [v0; abs(v0(SConsistentRxnBool))+feasTol*10]; %allow x to be slightly greater
+ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow x to be slightly greater
 
+if param.debug
+    bool =ub-lb<feasTol & ub~=lb;
+    if any(bool)
+        if param.debug>1
+            figure;
+            hist(ub(bool)-lb(bool))
+        end
+        title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        fprintf('%s\n',['cycleFreeFlux: #1 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+    end
+end
+
+%this is useful on some models but on others is causing instability
 if 1
     % slightly relax bounds on exchange reactions with non-zero net flux
-    % because fixing them can lead to infeasibility due to numerical issues 
+    % because fixing them can lead to infeasibility due to numerical issues
     isExF = [~SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
     isExR = [~SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
     lb(isExF) = (1-feasTol)*v0(isExF);
     ub(isExF) = (1+feasTol)*v0(isExF);
     lb(isExR) = (1+feasTol)*v0(isExR);
     ub(isExR) = (1-feasTol)*v0(isExR);
+end
+
+if param.debug
+    bool =ub-lb<feasTol & ub~=lb;
+    if any(bool)
+        if param.debug>1
+            figure;
+            hist(ub(bool)-lb(bool))
+            title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        end
+        fprintf('%s\n',['cycleFreeFlux: #2 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+    end
 end
 
 if param.relaxBounds
@@ -347,10 +373,12 @@ end
 if param.debug
     bool =ub-lb<feasTol & ub~=lb;
     if any(bool)
-        figure;
-        hist(ub(bool)-lb(bool))
-        title('Perturbed lower, and upper bounds closer than feasibility tolerance')
-        fprintf('%s\n',['cycleFreeFlux: Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+        if param.debug>1
+            figure;
+            hist(ub(bool)-lb(bool))
+            title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        end
+        fprintf('%s\n',['cycleFreeFlux: #3 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
     end
 end
 
@@ -362,7 +390,7 @@ end
 
 if param.debug
     if any(ub-lb<feasTol & ub~=lb)
-        fprintf('%s\n','cycleFreeFlux: Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+        fprintf('%s\n','cycleFreeFlux: #4 Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
     end
 end
 
@@ -374,7 +402,7 @@ if any(lb(1:n)>ub(1:n))
     if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<feasTol
         lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
         if param.printLevel>0
-            fprintf('%s\n','cycleFreeFlux: Lower bounds slightly greater than upper bounds, set to the same.')
+            fprintf('%s\n','cycleFreeFlux: #5 Lower bounds slightly greater than upper bounds, set to the same.')
         end
     else
         error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
