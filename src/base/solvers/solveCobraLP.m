@@ -223,6 +223,10 @@ origStatText = [];
 algorithm = 'default';
 
 t_start = clock;
+if isempty(solver)
+    error('Default LP solver not selected. Initialise the COBRA Toolbox with: initCobraToolbox')
+end
+
 switch solver
     case 'opti'
         if verLessThan('matlab', '8.4')
@@ -882,6 +886,7 @@ switch solver
                 stat = 1; % optimal solution found
                 
                 if stat ==1 && isempty(resultgurobi.x)
+                    gurobiLP
                     error('solveCobraLP: gurobi reporting OPTIMAL but no solution')
                 end
                 [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
