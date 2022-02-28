@@ -32,7 +32,7 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 %    % Remove cycles from a single flux vector
 %    solution = optimizeCbModel(model);
 %    v1 = cycleFreeFlux(solution.v, model.c, model);
-% 
+%
 %    % Remove cycles from multiple flux vectors
 %    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 0, 'max', model.rxns, 0, 1, 'FBA');
 %    V0 = [Vmin, Vmax];
@@ -100,7 +100,7 @@ if param.debug
     if any(model.lb>model.ub)
         error('Model Lower bounds cannot be greater than upper bounds')
     end
-
+    
     %double check to see if the model admits a steady state flux
     solution = optimizeCbModel(model);
     if solution.stat~=1
@@ -110,7 +110,7 @@ if param.debug
     %check if the bounds are ok.
     for i=1:k
         if k>1
-        disp(i)
+            disp(i)
         end
         v0 = V0(:, i);
         
@@ -118,6 +118,7 @@ if param.debug
         bool = SConsistentMetBool & model.csense == 'E';
         res = norm(model.S(bool,:)*v0 - model.b(bool),inf);
         if res>param.eta
+            disp(res)
             error('Solution provided is not a steady state')
         end
         
@@ -148,7 +149,7 @@ if param.debug
                 V0(bool_lb,i) = model.lb(bool_lb);
             end
         end
-
+        
     end
 end
 
@@ -188,7 +189,7 @@ if parallelize
         try
             v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
             V1(:, i) = v1;
-        catch 
+        catch
             v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
             V1(:, i) = v2;
             fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
@@ -226,6 +227,11 @@ if ~isfield(param,'removeFixedBool')
     param.removeFixedBool = 0;
 end
 
+if ~isfield(param,'approach')
+    %by default, use the regularised approach, even though it is slower, it is less numerically sensitive
+    param.approach = 'regularised';
+end
+
 if any(model_lb>model_ub)
     error('Model lower bounds cannot be greater than upper bounds')
 end
@@ -235,234 +241,544 @@ if any(model_ub-model_lb<feasTol & model_ub~=model_lb)
     warning('cycleFreeFlux: Unperturbed lower and upper bounds closer than feasibility tolerance. May cause numerical issues.')
 end
 
-%numerical instability may arise due to small flux magnitudes, so deal with
-%that, in one way or another
-if 1
-    %zeroing out very small fluxes seems to work reliably for recon3
-    isSmall = abs(v0)<feasTol & v0~=0;
-    if any(isSmall)
-        if param.debug
-            fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(isSmall)) ' reactions is less than ' num2str(feasTol) ', so they are bound between [-' num2str(feasTol) ', ' num2str(feasTol) '].'])
-        end
-        v0(isSmall)=0;
-    end
-else
-    %relax bounds on non fixed variables
-    if 1
-        isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
-        model_lb(isSmall)=model_lb(isSmall)-epsilon/2;
-        model_ub(isSmall)=model_ub(isSmall)+epsilon/2;
-    else
-        %adaption to deal with infeasibility due to numerical imprecision
-        %https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
-        model_lb = model_lb -epsilon/2;
-        model_ub = model_ub + epsilon/2;
-    end
-end
-
-if 0
-    %adaption to deal with infeasibility due to numerical imprecision
-    isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
-    model_lb(isSmall)=model_lb(isSmall)-feasTol/2;
-    model_ub(isSmall)=model_ub(isSmall)+feasTol/2;
-end
-
 [m,n] = size(model_S);
 p = sum(SConsistentRxnBool);
 
 D = sparse(p, n);
 D(:, SConsistentRxnBool) = speye(p);
 
-
-isF = [SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
-isR = [SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
-
-if param.debug
-    %internal reactions in larger problem size structure
-    isInternal = [SConsistentRxnBool; false(p,1)];
-    isExternal = [~SConsistentRxnBool; false(p,1)];
-    isAuxiliary = [false(size(model_S,2),1);true(p,1)];
-end
-
-% objective: minimize one-norm
-c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
-
-% constraints
-%       v            x
-if any(c0)
-    A = [...
-        model_S   sparse(m, p); % Sv = b (steady state)
-        c0'       sparse(1, p); % c0'v = c0'v0
-        D        -speye(p)    ; %   v - x <= 0
-        -D        -speye(p)   ]; % - v - x <= 0
-    
-    
-    b = [model_b;  c0' * v0; zeros(2*p, 1)];
-    
-    csense = repmat('E', size(A, 1), 1);
-    csense(1:m) = model_csense;
-    csense(m+2:end) = 'L';
-    
-    %this approach is more numerically robust than forcing the new objective to equal the
-    %previous objective
-    if osense == 1
-        csense(m+1) = 'L';
-    else
-        csense(m+1) = 'G';
-    end
-    
-else
-    A = [...
-        model_S   sparse(m, p); % Sv = b (steady state)
-        D        -speye(p)    ; %   v - x <= 0
-        -D        -speye(p)   ]; % - v - x <= 0
-    
-    b = [model_b; zeros(2*p, 1)];
-    
-    csense = repmat('E', size(A, 1), 1);
-    csense(1:m) = model_csense;
-    csense(m+1:end) = 'L';
-end
-
-% bounds % fixed exchange fluxes
-lb = [v0; zeros(p, 1)];
-ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow x to be slightly greater
-
-if param.debug
-    bool =ub-lb<feasTol & ub~=lb;
-    if any(bool)
-        if param.debug>1
-            figure;
-            hist(ub(bool)-lb(bool))
+switch param.approach
+    case 'regularised'
+        % constraints
+        %       v            x
+        if any(c0)
+            A = [...
+                model_S   sparse(m, p)   speye(m, m)  sparse(m, p)  sparse(m, p); % Sv = b (steady state)
+                c0'       sparse(1, p)  sparse(1, m)  sparse(1, p)  sparse(1, p); % c0'v = c0'v0
+                D        -speye(p)     sparse(p, m)   speye(p, p)  sparse(p, p); %   v - x <= 0
+                -D        -speye(p)     sparse(p, m)  sparse(p, p)   speye(p, p)]; % - v - x <= 0
+            
+            b = [model_b;  (1-feasTol)*c0'*v0; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            
+            %this approach is more numerically robust than forcing the new objective to equal the
+            %previous objective
+            if osense == 1
+                csense(m+1) = 'L';
+            else
+                csense(m+1) = 'G';
+            end
+            
+            csense(m+2:end) = 'L';
+        else
+            A = [...
+                model_S   sparse(m, p)   speye(m, m)  sparse(m, p)  sparse(m, p); % Sv = b (steady state)
+                D        -speye(p)     sparse(p, m)   speye(p, p)  sparse(p, p); %   v - x <= 0
+                -D        -speye(p)     sparse(p, m)  sparse(p, p)   speye(p, p)]; % - v - x <= 0
+            
+            b = [model_b; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            csense(m+1:end) = 'L';
         end
-        title('Perturbed lower, and upper bounds closer than feasibility tolerance')
-        fprintf('%s\n',['cycleFreeFlux: #1 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
-    end
-end
-
-%this is useful on some models but on others is causing instability
-if 1
-    % slightly relax bounds on exchange reactions with non-zero net flux
-    % because fixing them can lead to infeasibility due to numerical issues
-    isExF = [~SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
-    isExR = [~SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
-    lb(isExF) = (1-feasTol)*v0(isExF);
-    ub(isExF) = (1+feasTol)*v0(isExF);
-    lb(isExR) = (1+feasTol)*v0(isExR);
-    ub(isExR) = (1-feasTol)*v0(isExR);
-end
-
-if param.debug
-    bool =ub-lb<feasTol & ub~=lb;
-    if any(bool)
-        if param.debug>1
-            figure;
-            hist(ub(bool)-lb(bool))
-            title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        
+        isF = [SConsistentRxnBool & v0 > 0; false(3*p+m,1)]; % net forward internal flux
+        isR = [SConsistentRxnBool & v0 < 0; false(3*p+m,1)]; % net reverse internal flux
+        
+        % lower and upper bounds - fixed exchange and zero fluxes
+        lb = [v0; zeros(p, 1); -inf*ones(m+2*p,1)];
+        ub = [v0; abs(v0(SConsistentRxnBool)); inf*ones(m+2*p,1)];
+        
+        if param.relaxBounds
+            lb(isF) = 0; % internal reaction directionality same as in input flux
+            ub(isR) = 0;
+        else
+            lb(isF) = max(0,model_lb(isF)); % Keep lower bound if it is > 0 (forced positive flux)
+            ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
         end
-        fprintf('%s\n',['cycleFreeFlux: #2 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
-    end
-end
-
-if param.relaxBounds
-    lb(isF) = 0; % internal reaction directionality same as in input flux
-else
-    lb(isF) = max(0,model_lb(isF)); % Keep lower bound if it is > 0 (forced positive flux)
-end
-
-if param.debug
-    bool =ub-lb<feasTol & ub~=lb;
-    if any(bool)
-        if param.debug>1
-            figure;
-            hist(ub(bool)-lb(bool))
-            title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+        
+        % objective: minimize one-norm of auxilliary variable
+        c = [zeros(n, 1); ones(p, 1); zeros(m+2*p, 1)]; % variables: [v; x; r; p; q]
+        % objective: minimise two-norm of regularisation variables
+        F = spdiags([sparse(n+p,1);ones(m+2*p,1)],0,n+3*p+m,n+3*p+m);
+        
+        qp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub,'F',F);
+        
+        solution = solveCobraQP(qp);
+        
+        if solution.stat==1
+            v1 = solution.full(1:n);
+        else
+            fprintf('%s','cycleFreeFlux: No QP solution found.');
         end
-        fprintf('%s\n',['cycleFreeFlux: #3 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
-    end
-end
-
-if param.relaxBounds
-    ub(isR) = 0;
-else
-    ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
-end
-
-if param.debug
-    if any(ub-lb<feasTol & ub~=lb)
-        fprintf('%s\n','cycleFreeFlux: #4 Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
-    end
-end
-
-%allow reactions with small flux to have small flux with a change in sign
-lb(isSmall) = -feasTol;
-ub(isSmall) =  feasTol;
-
-if any(lb(1:n)>ub(1:n))
-    if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<feasTol
-        lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
-        if param.printLevel>0
-            fprintf('%s\n','cycleFreeFlux: #5 Lower bounds slightly greater than upper bounds, set to the same.')
+    case 'lp'
+        %numerical instability may arise due to small flux magnitudes, so deal with
+        %that, in one way or another
+        if 1
+            %zeroing out very small fluxes seems to work reliably for recon3
+            isSmall = abs(v0)<feasTol & v0~=0;
+            if any(isSmall)
+                if param.debug
+                    fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(isSmall)) ' reactions is less than ' num2str(feasTol) ', so they are bound between [-' num2str(feasTol) ', ' num2str(feasTol) '].'])
+                end
+                v0(isSmall)=0;
+            end
+        else
+            %relax bounds on non fixed variables
+            if 1
+                isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+                model_lb(isSmall)=model_lb(isSmall)-epsilon/2;
+                model_ub(isSmall)=model_ub(isSmall)+epsilon/2;
+            else
+                %adaption to deal with infeasibility due to numerical imprecision
+                %https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
+                model_lb = model_lb -epsilon/2;
+                model_ub = model_ub + epsilon/2;
+            end
         end
-    else
-        error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
-    end
+        
+        if 0
+            %adaption to deal with infeasibility due to numerical imprecision
+            isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+            model_lb(isSmall)=model_lb(isSmall)-feasTol/2;
+            model_ub(isSmall)=model_ub(isSmall)+feasTol/2;
+        end
+        
+        [m,n] = size(model_S);
+        p = sum(SConsistentRxnBool);
+        
+        D = sparse(p, n);
+        D(:, SConsistentRxnBool) = speye(p);
+        
+        
+        isF = [SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+        isR = [SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
+        
+        if param.debug
+            %internal reactions in larger problem size structure
+            isInternal = [SConsistentRxnBool; false(p,1)];
+            isExternal = [~SConsistentRxnBool; false(p,1)];
+            isAuxiliary = [false(size(model_S,2),1);true(p,1)];
+        end
+        
+        % objective: minimize one-norm
+        c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
+        
+        % constraints
+        %       v            x
+        if any(c0)
+            A = [...
+                model_S   sparse(m, p); % Sv = b (steady state)
+                c0'       sparse(1, p); % c0'v = c0'v0
+                D        -speye(p)    ; %   v - x <= 0
+                -D        -speye(p)   ]; % - v - x <= 0
+            
+            
+            b = [model_b;  c0' * v0; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            csense(m+2:end) = 'L';
+            
+            %this approach is more numerically robust than forcing the new objective to equal the
+            %previous objective
+            if osense == 1
+                csense(m+1) = 'L';
+            else
+                csense(m+1) = 'G';
+            end
+            
+        else
+            A = [...
+                model_S   sparse(m, p); % Sv = b (steady state)
+                D        -speye(p)    ; %   v - x <= 0
+                -D        -speye(p)   ]; % - v - x <= 0
+            
+            b = [model_b; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            csense(m+1:end) = 'L';
+        end
+        
+        % bounds % fixed exchange fluxes
+        lb = [v0; zeros(p, 1)];
+        ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow x to be slightly greater
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                end
+                title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                fprintf('%s\n',['cycleFreeFlux: #1 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        %this is useful on some models but on others is causing instability
+        if 1
+            % slightly relax bounds on exchange reactions with non-zero net flux
+            % because fixing them can lead to infeasibility due to numerical issues
+            isExF = [~SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+            isExR = [~SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
+            lb(isExF) = (1-feasTol)*v0(isExF);
+            ub(isExF) = (1+feasTol)*v0(isExF);
+            lb(isExR) = (1+feasTol)*v0(isExR);
+            ub(isExR) = (1-feasTol)*v0(isExR);
+        end
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                    title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                end
+                fprintf('%s\n',['cycleFreeFlux: #2 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        if param.relaxBounds
+            lb(isF) = 0; % internal reaction directionality same as in input flux
+        else
+            lb(isF) = max(0,model_lb(isF)); % Keep lower bound if it is > 0 (forced positive flux)
+        end
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                    title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                end
+                fprintf('%s\n',['cycleFreeFlux: #3 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        if param.relaxBounds
+            ub(isR) = 0;
+        else
+            ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
+        end
+        
+        if param.debug
+            if any(ub-lb<feasTol & ub~=lb)
+                fprintf('%s\n','cycleFreeFlux: #4 Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+            end
+        end
+        
+        %allow reactions with small flux to have small flux with a change in sign
+        lb(isSmall) = -feasTol;
+        ub(isSmall) =  feasTol;
+        
+        if any(lb(1:n)>ub(1:n))
+            if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<feasTol
+                lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
+                if param.printLevel>0
+                    fprintf('%s\n','cycleFreeFlux: #5 Lower bounds slightly greater than upper bounds, set to the same.')
+                end
+            else
+                error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+            end
+        end
+        
+        if any(lb(n+1:n+p)>ub(n+1:n+p))
+            error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+        end
+        
+        
+        if param.debug
+            if any(ub-lb<feasTol & ub~=lb)
+                fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+            end
+        end
+        
+        if any(lb>ub)
+            error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+        end
+        
+        lp = struct('osense', 1, 'c', c, 'A', A, ...
+            'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
+        
+        if param.removeFixedBool
+            % net zero flux
+            isZero = SConsistentRxnBool & v0 == 0;
+            %remove the fixed variables from the problem
+            zeroBool = [isZero; false(p,1)];
+            if 0
+                fixedBool = lp.lb == lp.ub | zeroBool;
+            else
+                %assume the external reactions are also fixed
+                fixedBool = lp.lb == lp.ub | zeroBool | [~SConsistentRxnBool;false(p,1)];
+            end
+        end
+        
+        if param.removeFixedBool==1
+            lp.b = lp.b - lp.A(:,fixedBool)*lp.lb(fixedBool);
+            lp.A = lp.A(:,~fixedBool);
+            lp.lb = lp.lb(~fixedBool);
+            lp.ub = lp.ub(~fixedBool);
+            lp.c = lp.c(~fixedBool);
+        end
+        
+        % solve LP
+        solution = solveCobraLP(lp);
+        
+        if solution.stat == 1
+            
+            if param.removeFixedBool==1
+                %rebuild optimal flux vector
+                full = zeros(n+p,1);
+                full(fixedBool)=lb(fixedBool);
+                full(~fixedBool)=solution.full;
+                solution.full = full;
+            end
+            
+            v1 = solution.full(1:n);
+        end
+        
+    case 'lp2'
+        %numerical instability may arise due to small flux magnitudes
+        isSmall = abs(v0)<feasTol & v0~=0;
+        if any(isSmall)
+            if param.debug
+                fprintf('%s\n',['cycleFreeFlux: Flux magnitude in ' int2str(nnz(isSmall)) ' reactions is between [' num2str(feasTol/100) ', ' num2str(feasTol) '] in magnitude.'])
+            end
+        end
+        
+        if 0
+            %zeroing out very small fluxes seems to work reliably for recon3
+            v0(isSmall)=0;
+        end
+        
+        if 0
+            %relax bounds on non fixed variables
+            if 1
+                isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+                model_lb(isSmall)=model_lb(isSmall)-epsilon/2;
+                model_ub(isSmall)=model_ub(isSmall)+epsilon/2;
+            else
+                %adaption to deal with infeasibility due to numerical imprecision
+                %https://cran.r-project.org/web/packages/sybilcycleFreeFlux/index.html
+                model_lb = model_lb -epsilon/2;
+                model_ub = model_ub + epsilon/2;
+            end
+        end
+        
+        if 0
+            %adaption to deal with infeasibility due to numerical imprecision
+            isSmall = model_ub-model_lb>feasTol & model_ub~=model_lb;
+            model_lb(isSmall)=model_lb(isSmall)-feasTol/2;
+            model_ub(isSmall)=model_ub(isSmall)+feasTol/2;
+        end
+        
+        isF = [SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+        isR = [SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
+        
+        
+        % objective: minimize one-norm
+        c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
+        
+        % constraints
+        %       v            x
+        if any(c0)
+            A = [...
+                model_S   sparse(m, p); % Sv = b (steady state)
+                c0'       sparse(1, p); % c0'v = c0'v0
+                D        -speye(p)    ; %   v - x <= 0
+                -D        -speye(p)   ]; % - v - x <= 0
+            
+            
+            b = [model_b;  (1-feasTol)*c0'*v0; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            
+            %this approach is more numerically robust than forcing the new objective to equal the
+            %previous objective
+            if osense == 1
+                csense(m+1) = 'L';
+            else
+                csense(m+1) = 'G';
+            end
+            
+            csense(m+2:end) = 'L';
+        else
+            A = [...
+                model_S   sparse(m, p); % Sv = b (steady state)
+                D        -speye(p)    ; %   v - x <= 0
+                -D        -speye(p)   ]; % - v - x <= 0
+            
+            b = [model_b; zeros(2*p, 1)];
+            
+            csense = repmat('E', size(A, 1), 1);
+            csense(1:m) = model_csense;
+            csense(m+1:end) = 'L';
+        end
+        
+        % lower and upper bounds - fixed exchange and zero fluxes
+        lb = [v0; zeros(p, 1)];
+        ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow auxiliary variable to be slightly greater
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                end
+                title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                fprintf('%s\n',['cycleFreeFlux: #1 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        %this is useful on some models but on others it is causing instability
+        if 0
+            % slightly relax bounds on exchange reactions with non-zero net flux
+            % because fixing them can lead to infeasibility due to numerical issues
+            isExF = [~SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+            isExR = [~SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
+            lb(isExF) = (1-feasTol)*v0(isExF);
+            ub(isExF) = (1+feasTol)*v0(isExF);
+            lb(isExR) = (1+feasTol)*v0(isExR);
+            ub(isExR) = (1-feasTol)*v0(isExR);
+        end
+        
+        if 0
+            %dont fix both bounds on objective reaction
+            objBool = c0~=0;
+            if nnz(objBool)==1
+                if osense==1
+                    lb(objBool) = -inf;
+                else
+                    ub(objBool) =  inf;
+                end
+            end
+        end
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                    title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                end
+                fprintf('%s\n',['cycleFreeFlux: #2 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        ub(isF) = v0(isF) + 10*feasTol;
+        if param.relaxBounds
+            lb(isF) = 0; % internal reaction directionality same as in input flux
+        else
+            lb(isF) = max(0,model_lb(isF)); % Keep lower bound if it is > 0 (forced positive flux)
+        end
+        
+        if param.debug
+            bool =ub-lb<feasTol & ub~=lb;
+            if any(bool)
+                if param.debug>1
+                    figure;
+                    hist(ub(bool)-lb(bool))
+                    title('Perturbed lower, and upper bounds closer than feasibility tolerance')
+                end
+                fprintf('%s\n',['cycleFreeFlux: #3 Perturbed lower and upper bounds closer than ' num2str(feasTol) ', this may cause numerical issues.'])
+            end
+        end
+        
+        lb(isR) = v0(isR) - 10*feasTol;
+        if param.relaxBounds
+            ub(isR) = 0;
+        else
+            ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
+        end
+        
+        if param.debug
+            if any(ub-lb<feasTol & ub~=lb)
+                fprintf('%s\n','cycleFreeFlux: #4 Perturbed lower and perturbed upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+            end
+        end
+        
+        if 1
+            %allow reactions with small flux to have small flux with a change in sign
+            lb(isSmall) = -100*feasTol;
+            ub(isSmall) =  100*feasTol;
+        end
+        
+        if any(lb(1:n)>ub(1:n))
+            if norm(lb(lb(1:n)>ub(1:n))-ub(lb(1:n)>ub(1:n)),inf)<feasTol
+                lb(lb(1:n)>ub(1:n))=ub(lb(1:n)>ub(1:n));
+                if param.printLevel>0
+                    fprintf('%s\n','cycleFreeFlux: #5 Lower bounds slightly greater than upper bounds, set to the same.')
+                end
+            else
+                error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+            end
+        end
+        
+        if any(lb(n+1:n+p)>ub(n+1:n+p))
+            error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+        end
+        
+        
+        if param.debug
+            if any(ub-lb<feasTol & ub~=lb)
+                fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
+            end
+        end
+        
+        if any(lb>ub)
+            error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
+        end
+        
+        lp = struct('osense', 1, 'c', c, 'A', A, ...
+            'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
+        
+        if param.removeFixedBool
+            % net zero flux
+            isZero = SConsistentRxnBool & v0 == 0;
+            %remove the fixed variables from the problem
+            zeroBool = [isZero; false(p,1)];
+            if 0
+                fixedBool = lp.lb == lp.ub | zeroBool;
+            else
+                %assume the external reactions are also fixed
+                fixedBool = lp.lb == lp.ub | zeroBool | [~SConsistentRxnBool;false(p,1)];
+            end
+            
+            lp.b = lp.b - lp.A(:,fixedBool)*lp.lb(fixedBool);
+            lp.A = lp.A(:,~fixedBool);
+            lp.lb = lp.lb(~fixedBool);
+            lp.ub = lp.ub(~fixedBool);
+            lp.c = lp.c(~fixedBool);
+        end
+        
+        % solve LP
+        solution = solveCobraLP(lp);
+        
+        if solution.stat == 1
+            
+            if param.removeFixedBool==1
+                %rebuild optimal flux vector
+                full = zeros(n+p,1);
+                full(fixedBool)=lb(fixedBool);
+                full(~fixedBool)=solution.full;
+                solution.full = full;
+            end
+            
+            v1 = solution.full(1:n);
+        end
 end
 
-if any(lb(n+1:n+p)>ub(n+1:n+p))
-    error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
-end
-
-
-if param.debug
-    if any(ub-lb<feasTol & ub~=lb)
-        fprintf('%s\n','cycleFreeFlux: Perturbed lower and upper bounds closer than feasibility tolerance, this could cause numerical issues.')
-    end
-end
-
-if any(lb>ub)
-    error('cycleFreeFlux: Lower bounds cannot be greater than upper bounds')
-end
-
-lp = struct('osense', 1, 'c', c, 'A', A, ...
-    'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
-
-if param.removeFixedBool
-    % net zero flux
-    isZero = SConsistentRxnBool & v0 == 0; 
-    %remove the fixed variables from the problem
-    zeroBool = [isZero; false(p,1)];
-    if 0
-        fixedBool = lp.lb == lp.ub | zeroBool;
-    else
-        %assume the external reactions are also fixed
-        fixedBool = lp.lb == lp.ub | zeroBool | [~SConsistentRxnBool;false(p,1)];
-    end
-end
-
-if param.removeFixedBool==1
-      lp.b = lp.b - lp.A(:,fixedBool)*lp.lb(fixedBool);
-      lp.A = lp.A(:,~fixedBool);
-      lp.lb = lp.lb(~fixedBool);
-      lp.ub = lp.ub(~fixedBool);
-      lp.c = lp.c(~fixedBool);
-end
-
-% solve LP
-solution = solveCobraLP(lp);
-
-if solution.stat == 1
-    
-    if param.removeFixedBool==1
-        %rebuild optimal flux vector
-        full = zeros(n+p,1);
-        full(fixedBool)=lb(fixedBool);
-        full(~fixedBool)=solution.full;
-        solution.full = full;
-    end
-
-    v1 = solution.full(1:n);
-else
+if solution.stat ~= 1
     if param.debug
         fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
     end
@@ -489,9 +805,23 @@ else
         infeasModel.SIntRxnBool=true(size(lp.A,2),1);
         
         param.printLevel = 1;
-        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
-        
+        param.steadyStateRelax = 1; %try to make it feasible with bound relaxation only
+        param.internalRelax  = 0;
+        param.exchangeRelax = 0;
         [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+        
+        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+        param.internalRelax  = 0;
+        param.exchangeRelax = 2;
+        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+        
+        
+        param.printLevel = 1;
+        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+        param.internalRelax  = 1;
+        param.exchangeRelax = 0;
+        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+        
         P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
         Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
         %%
@@ -525,4 +855,3 @@ else
 end
 
 end
-
