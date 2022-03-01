@@ -44,16 +44,15 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
 % model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
 
-% Code based on that repored in...
-%'Conditions for duality between fluxes and concentrations in biochemical networks
-%by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com, Nikos Vlassis^{2}, Ines Thiele^{1}, Michael A. Saunders^{3}
-%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg, 7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
-%{2} Adobe Research, 345 Park Ave, San Jose, CA, USA.
-%{3} Dept of Management Science and Engineering, Stanford University, Stanford, CA, USA.
+% Author Ronan M.T. Fleming
+
+% Citation
+
 
 if ~exist('printLevel','var')
     printLevel=1;
 end
+fprintf('\n');
 
 %check for duplicates or empty vectors in [F,R] and [F+R] or 
 checkTrivial=0;
@@ -123,8 +122,9 @@ model.SIntRxnBool_findSExRxnInd=model.SIntRxnBool;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Find leakage or siphons in heuristically internal part using the bounds given with the model
-leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
-leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
+fprintf('%s\n',' -- findMassLeaksAndSiphons START ---');
+leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*10;
+leakParams.eta = getCobraSolverParams('LP', 'feasTol')*10;
 leakParams.method='dc';
 modelBoundsFlag=1;
 [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]...
@@ -137,7 +137,7 @@ model.siphonRxnBool=siphonRxnBool;
 % model.siphonY=siphonY;
 % model.statp=statp;
 % model.statn=statn;
-
+fprintf('%s\n\n',' -- findMassLeaksAndSiphons END ---');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %this is the version for the subsequent cardinality optimisation paper
@@ -335,32 +335,11 @@ if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnB
     %[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel] = findFluxConsistentSubset(model, param, printLevel)
     [fluxConsistentMetBoolTmp,fluxConsistentRxnBoolTmp,fluxInConsistentMetBoolTmp,fluxInConsistentRxnBoolTmp,~,~] = findFluxConsistentSubset(modelRev,param,printLevel-1);
     %build the vector the same size as the original S
+    model.fluxConsistentMetBool=false(nMet,1);
+    model.fluxConsistentMetBool(metBool2,:)=fluxConsistentMetBoolTmp;
+    
     model.fluxConsistentRxnBool=false(nRxn,1);
     model.fluxConsistentRxnBool(rxnBool2,:)=fluxConsistentRxnBoolTmp;
-    model.fluxConsistentMetBool=false(nMet,1);
-    model.fluxConsistentRxnBool(metBool2,:)=fluxConsistentMetBoolTmp;
-    
-    % %fast consistency check code from Nikos Vlassis et al
-    % modeFlag=1;
-    % [indFluxConsist,~,V0]=fastcc(modelRev,param.epsilon,printLevel-1,modeFlag);
-    % modelRev.fluxConsistentRxnBool=false(size(modelRev.S,2),1);
-    % modelRev.fluxConsistentRxnBool(indFluxConsist)=1;
-    % %pad out V0 to correspond to the original size of S
-    % model.V=sparse(nRxn,size(V0,2));
-    % model.V(rxnBool2,:)=V0;
-    %
-    % %check to make sure that V in nullspace of S.
-    % tmp=norm(full(model.S(metBool2,model.SConsistentRxnBool & model.SIntRxnBool)*model.V(model.SConsistentRxnBool & model.SIntRxnBool,:)...
-    %     + model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:)));
-    % %two extra digits spare
-    % if tmp>100*epsilon
-    %     disp(tmp)
-    %     error('Not flux consistent')
-    % end
-    % %create a stoichiometric matrix of perpetireactions only for
-    % %stoichiometrically and flux consistent part
-    % model.P=sparse(nMet,size(V0,2));
-    % model.P(metBool2,:)=model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -375,8 +354,21 @@ else
     metBool3 = ~notMetBool3;
 end
 
-%thermodynamically flux consistent
-[model.thermoFluxConsistentMetBool,model.thermoFluxConsistentRxnBool,~,~] = findThermoConsistentFluxSubset(model, param, ~metBool3, ~rxnBool3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%thermodynamic flux consistency
+paramThermoFluxConsistency.formulation = 'pqzw';
+paramThermoFluxConsistency.epsilon = getCobraSolverParams('LP', 'feasTol')*10;
+paramThermoFluxConsistency.printLevel = 1;
+paramThermoFluxConsistency.nMax = 40;
+paramThermoFluxConsistency.relaxBounds=0;
+paramThermoFluxConsistency.debug =1;
+
+if 0
+    save('pre_findThermoConsistentFluxSubset_model','model','paramThermoFluxConsistency','metBool3', 'rxnBool3')
+    return
+end
+
+[model.thermoFluxConsistentMetBool,model.thermoFluxConsistentRxnBool,~,~] = findThermoConsistentFluxSubset(model, paramThermoFluxConsistency, ~metBool3, ~rxnBool3);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically

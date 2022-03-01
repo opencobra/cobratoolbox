@@ -80,7 +80,7 @@ while k<=nResults
     end
 
     if firstColumn
-        modelResultsTable{i,1}='Species';
+        modelResultsTable{i,1}='Molecules';
     else
         if exist('modelMetaData','var')
             modelResultsTable{i,n+1}=modelMetaData{bool,1};
@@ -200,6 +200,18 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
+        modelResultsTable{i,1}='Stoich. and thermo flux consistent reactions';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool & modelResults(k).model.thermoFluxConsistentRxnBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Internal reactions minus stoich. and thermo flux consistent reactions';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool & modelResults(k).model.thermoFluxConsistentRxnBool);
+    end
+    i=i+1;
+    if firstColumn
         modelResultsTable{i,1}='Reactions exclusive to leaks';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.leakRxnBool);
@@ -222,6 +234,7 @@ while k<=nResults
     else
         modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntRxnBool & modelResults(k).model.fluxConsistentRxnBool);
     end
+    
     if 0
         i=i+1;
         if firstColumn
@@ -367,6 +380,18 @@ while k<=nResults
         modelResultsTable{i,1}='Internal species minus stoich. and flux consistent rows';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Stoich. and thermo flux consistent rows';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool & modelResults(k).model.thermoFluxConsistentMetBool);
+    end
+    i=i+1;
+    if firstColumn
+        modelResultsTable{i,1}='Internal species minus stoich. and flux consistent rows';
+    else
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool & modelResults(k).model.thermoFluxConsistentMetBool);
     end
     i=i+1;
     if firstColumn
