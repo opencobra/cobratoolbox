@@ -1,4 +1,4 @@
-function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
+function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 % Removes stoichiometrically balanced cycles from FBA solutions when
 % possible.
 %
@@ -8,7 +8,7 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 %
 % USAGE:
 %
-%    V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, relaxBounds);
+%    Vthermo = cycleFreeFlux(V0, C, model, SConsistentRxnBool, relaxBounds);
 %
 % INPUTS:
 %    V0:       `n x k` matrix of `k` FBA solutions
@@ -22,23 +22,24 @@ function V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 %
 % OPTIONAL INPUTS:
 %    SConsistentRxnBool:    `n x 1` logical array. True for internal reactions.
+%    param.eta               Minimum change in flux considered nonzero. Default feasTol*10
 %    param.relaxBounds:      Relax bounds that don't include zero. Default is false.
 %    param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
 %
 % OUTPUT:
-%    V1:    `n x k` matrix of cycle free flux vectors
+%    Vthermo:    `n x k` matrix of cycle free flux vectors
 %
 % EXAMPLE:
 %    % Remove cycles from a single flux vector
 %    solution = optimizeCbModel(model);
-%    v1 = cycleFreeFlux(solution.v, model.c, model);
+%    Vthermo = cycleFreeFlux(solution.v, model.c, model);
 %
 %    % Remove cycles from multiple flux vectors
 %    [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 0, 'max', model.rxns, 0, 1, 'FBA');
 %    V0 = [Vmin, Vmax];
 %    n = size(model.S, 2);
 %    C = [eye(n), eye(n)];
-%    V1 = cycleFreeFlux(V0, C, model);
+%    Vthermo = cycleFreeFlux(V0, C, model);
 %
 % .. Author: - Hulda S. Haraldsdottir, 25/5/2018
 
@@ -72,15 +73,23 @@ if ~isfield(param,'relaxBounds')
     param.relaxBounds = false;
 end
 
-if isfield(param,'parallelize')
-    parallelize=param.parallelize;
-else
-    parallelize = false;
+if ~isfield(param,'parallelize')
+    param.parallelize = false;
 end
 
+if ~isfield(param,'enforceCoupling')
+    param.enforceCoupling = false;
+    %param.enforceCoupling = true; %TODO need to debug this further
+end
+
+if ~isfield(param,'approach')
+    param.approach = 'lp'; %try lp first, then regularised if that fails
+    %param.approach = 'regularised';
+end
+
+feasTol = getCobraSolverParams('LP', 'feasTol');
 if ~isfield(param,'eta')
-    feasTol = getCobraSolverParams('LP', 'feasTol');
-    param.eta = feasTol*100;
+    param.eta = feasTol*10;
 end
 
 if ~isfield(param,'debug')
@@ -93,7 +102,7 @@ else
     printLevel = 0;
 end
 
-k = size(V0, 2);
+[n,k] = size(V0);
 
 if param.debug
     %check the bounds on the model
@@ -117,14 +126,14 @@ if param.debug
         %check if the solution provided is an accurate steady state
         bool = SConsistentMetBool & model.csense == 'E';
         res = norm(model.S(bool,:)*v0 - model.b(bool),inf);
-        if res>param.eta
+        if res>feasTol
             disp(res)
             error('Solution provided is not a steady state')
         end
         
         bool_ub = v0 > model.ub;
         if any(bool_ub)
-            bool_ub2 = v0 > model.ub + param.eta;
+            bool_ub2 = v0 > model.ub + feasTol;
             if any(bool_ub2)
                 model.rxns(bool_ub)
                 error(['Input flux vector majorly violated upper bounds, in ' int2str(i) 'th flux vector'])
@@ -138,7 +147,7 @@ if param.debug
         bool_lb = model.lb > V0;
         if any(bool_ub)
             
-            bool_lb2 = model.lb - param.eta > V0;
+            bool_lb2 = model.lb - feasTol > V0;
             if any(bool_lb2)
                 model.rxns(bool_lb)
                 error(['Input flux vector  solution majorly violated lower bounds, in ' int2str(i) 'th flux vector'])
@@ -161,24 +170,37 @@ catch
     hasPCT = false;
 end
 
-if ~exist('parallelize', 'var') || isempty(parallelize)
+if param.parallelize
     if hasPCT && k > 12
-        parallelize = true;
+        param.parallelize = true;
     else
-        parallelize = false;
+        param.parallelize = false;
     end
 end
 
 % parameters
 [model_S, model_b, model_csense, model_lb, model_ub, ] = deal(model.S(SConsistentMetBool,:), model.b(SConsistentMetBool), model.csense(SConsistentMetBool), model.lb, model.ub);
 
+if isfield(model,'C') && param.enforceCoupling
+    [model_C,model_d,model_dsense] = deal(model.C, model.d, model.dsense);
+else
+    model_C = [];
+    model_d = [];
+    model_dsense = [];
+end
 [~,osense] = getObjectiveSense(model);
 
-% loop through input flux vectors
-V1 = zeros(size(V0));
+%preallocate output
+Vthermo = zeros(n,k);
+thermoConsistentFluxBool = false(n,k);
 
 param.printLevel=printLevel-1;
-if parallelize
+
+% loop through input flux vectors
+if param.parallelize
+    error('param.parallelize = true not fully supported, set param.parallelize = false')
+    
+    eta = param.eta;
     environment = getEnvironment();
     parfor i = 1:k
         restoreEnvironment(environment,0);
@@ -187,12 +209,15 @@ if parallelize
         c0 = C(:, i);
         
         try
-            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
-            V1(:, i) = v1;
+            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool); % see subfunction below
+            Vthermo(:, i) = v1;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v1) < eta;
         catch
-            v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
-            V1(:, i) = v2;
-            fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
+            disp(ME.message)
+            v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool); % see subfunction below
+            Vthermo(:, i) = v2;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v2) < eta;
+            %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
         end
     end
     
@@ -202,25 +227,27 @@ else
         c0 = C(:, i);
         
         try
-            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
+            v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
+            Vthermo(:, i) = v1;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v1) < param.eta;
         catch ME
-            if param.relaxBounds==0
-                disp(ME.message)
-                param.relaxBounds=1;
-                v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param); % see subfunction below
-                fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
-            else
-                rethrow(ME)
-            end
+            disp(ME.message)
+            rethrow(ME)
+            fprintf('%s\n','computeCycleFreeFlux: lp error, switching to regularised approach.')
+            param.approach = 'regularised';
+            %param.relaxBounds=1;
+            v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
+            Vthermo(:, i) = v2;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v2) < param.eta;
+            %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
         end
-        V1(:, i) = v1;
-        
+
     end
 end
 
 end
 
-function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, SConsistentRxnBool, param)
+function v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param)
 
 if ~isfield(param,'removeFixedBool')
     %by default, do not remove fixed variables, let the solver deal with them
@@ -229,7 +256,7 @@ end
 
 if ~isfield(param,'approach')
     %by default, use the regularised approach, even though it is slower, it is less numerically sensitive
-    param.approach = 'regularised';
+    param.approach = 'lp';
 end
 
 if any(model_lb>model_ub)
@@ -247,51 +274,68 @@ p = sum(SConsistentRxnBool);
 D = sparse(p, n);
 D(:, SConsistentRxnBool) = speye(p);
 
+clt1 = ~isempty(model_C)*1;
+clt = size(model_C,1);
+
 switch param.approach
     case 'regularised'
         % constraints
         %       v            x
         if any(c0)
             A = [...
-                model_S   sparse(m, p)   speye(m, m)  sparse(m, p)  sparse(m, p); % Sv = b (steady state)
-                c0'       sparse(1, p)  sparse(1, m)  sparse(1, p)  sparse(1, p); % c0'v = c0'v0
-                D        -speye(p)     sparse(p, m)   speye(p, p)  sparse(p, p); %   v - x <= 0
-                -D        -speye(p)     sparse(p, m)  sparse(p, p)   speye(p, p)]; % - v - x <= 0
+                %     v              x                r               s               t               u
+                model_S    sparse(m, p)     speye(m, m)    sparse(m, p)    sparse(m, p)   sparse(m,clt); % Sv + r = b (steady state)
+                model_C   sparse(clt,p)  sparse(clt, m)  sparse(clt, p)  sparse(clt, p)  speye(clt,clt); %Cv + u <= d (coupling, if present)
+                c0'        sparse(1, p)    sparse(1, m)    sparse(1, p)    sparse(1, p)   sparse(1,clt); % c0'v = c0'v0
+                D             -speye(p)    sparse(p, m)     speye(p, p)    sparse(p, p)   sparse(p,clt); %   v - x + s <= 0
+                -D            -speye(p)    sparse(p, m)    sparse(p, p)     speye(p, p)   sparse(p,clt)]; % - v - x + t <= 0
             
-            b = [model_b;  (1-feasTol)*c0'*v0; zeros(2*p, 1)];
+            b = [model_b;  model_d; (1-feasTol)*c0'*v0; zeros(2*p, 1)];
             
             csense = repmat('E', size(A, 1), 1);
             csense(1:m) = model_csense;
+            if ~isempty(model_dsense)
+                csense(m+clt1:m+clt) = model_dsense;
+            end
             
             %this approach is more numerically robust than forcing the new objective to equal the
             %previous objective
             if osense == 1
-                csense(m+1) = 'L';
+                csense(m+clt1+1) = 'L';
             else
-                csense(m+1) = 'G';
+                csense(m+clt1+1) = 'G';
             end
             
-            csense(m+2:end) = 'L';
+            csense(m+clt1+2:end) = 'L';
+            
         else
             A = [...
-                model_S   sparse(m, p)   speye(m, m)  sparse(m, p)  sparse(m, p); % Sv = b (steady state)
-                D        -speye(p)     sparse(p, m)   speye(p, p)  sparse(p, p); %   v - x <= 0
-                -D        -speye(p)     sparse(p, m)  sparse(p, p)   speye(p, p)]; % - v - x <= 0
+                %     v              x                r               s               t               u
+                model_S    sparse(m, p)      speye(m, m)    sparse(m, p)    sparse(m, p)  sparse(m,clt); % Sv + r = b (steady state)
+                model_C   sparse(clt,p)   sparse(clt, m)  sparse(clt, p)  sparse(clt, p) speye(clt,clt); %Cv + u <= d (coupling, if present)
+                D             -speye(p)     sparse(p, m)     speye(p, p)    sparse(p, p)  sparse(p,clt); %   v - x + s <= 0
+                -D            -speye(p)     sparse(p, m)    sparse(p, p)     speye(p, p) sparse(p,clt)]; % - v - x + t <= 0
             
-            b = [model_b; zeros(2*p, 1)];
+            b = [model_b; model_d; zeros(2*p, 1)];
             
             csense = repmat('E', size(A, 1), 1);
             csense(1:m) = model_csense;
-            csense(m+1:end) = 'L';
+            if ~isempty(model_dsense)
+                csense(m+clt1:m+clt) = model_dsense;
+            end
+            csense(m+clt1+1:end) = 'L';
         end
         
         isF = [SConsistentRxnBool & v0 > 0; false(3*p+m,1)]; % net forward internal flux
         isR = [SConsistentRxnBool & v0 < 0; false(3*p+m,1)]; % net reverse internal flux
         
         % lower and upper bounds - fixed exchange and zero fluxes
-        lb = [v0; zeros(p, 1); -inf*ones(m+2*p,1)];
-        ub = [v0; abs(v0(SConsistentRxnBool)); inf*ones(m+2*p,1)];
-        
+        lb = [v0; zeros(p, 1); zeros(m, 1); -inf*ones(2*p + clt,1)];
+        if 0
+            ub = [v0; abs(v0(SConsistentRxnBool))+10*feasTol; zeros(m, 1); inf*ones(2*p + clt,1)];
+        else
+            ub = [v0; inf*ones(p,1); zeros(m, 1); inf*ones(2*p + clt,1)];
+        end
         if param.relaxBounds
             lb(isF) = 0; % internal reaction directionality same as in input flux
             ub(isR) = 0;
@@ -301,20 +345,78 @@ switch param.approach
         end
         
         % objective: minimize one-norm of auxilliary variable
-        c = [zeros(n, 1); ones(p, 1); zeros(m+2*p, 1)]; % variables: [v; x; r; p; q]
+        c = [zeros(n, 1); 0.01*ones(p, 1); zeros(m+2*p+clt, 1)]; % variables: [v; x; r; s; t; u]
         % objective: minimise two-norm of regularisation variables
-        F = spdiags([sparse(n+p,1);ones(m+2*p,1)],0,n+3*p+m,n+3*p+m);
+        F = spdiags([sparse(n+p,1);1000*ones(m+2*p + clt,1)],0,n+3*p+m+clt,n+3*p+m+clt);
         
         qp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub,'F',F);
         
         solution = solveCobraQP(qp);
         
         if solution.stat==1
-            v1 = solution.full(1:n);
+            
+            if param.debug && param.printLevel>1
+                z0 = v0(SConsistentRxnBool);
+                z = solution.full(1:n);
+                z = z(SConsistentRxnBool);
+                x = solution.full(n+1:n+p);
+                r = solution.full(n+p+1:n+p+m);
+                s = solution.full(n+p+m+1:n+2*p+m);
+                t = solution.full(n+2*p+m+1:n+3*p+m);
+                u = solution.full(n+3*p+m+clt1:n+3*p+m+clt);
+                
+                figure
+                subplot(3,3,1)
+                plot(z,z0,'.')
+                title('z vs z0')
+                xlabel('z')
+                ylabel('z0')
+                
+                subplot(3,3,2)
+                histogram(z0-z)
+                title('z0 - z')
+                
+                subplot(3,3,3)
+                histogram(z)
+                title('z')
+                
+                subplot(3,3,4)
+                bool=abs(s)>1e-6;
+                plot(z0(bool),s(bool),'.')
+                xlabel('z0')
+                ylabel('s')
+                
+                subplot(3,3,5)
+                histogram(x)
+                title('x')
+              
+                subplot(3,3,6)
+                bool=abs(t)>1e-6;
+                plot(z0(bool),t(bool),'.')
+                xlabel('z0')
+                ylabel('t')
+                
+                subplot(3,3,7)
+                if 0
+                    histogram(r)
+                    title('r')
+                else
+                    histogram(u)
+                    title('u')
+                end
+                
+                subplot(3,3,8)
+                histogram(s)
+                title('s')
+                
+                subplot(3,3,9)
+                histogram(t)
+                title('t')
+            end
         else
             fprintf('%s','cycleFreeFlux: No QP solution found.');
         end
-    case 'lp'
+    case 'lp0'
         %numerical instability may arise due to small flux magnitudes, so deal with
         %that, in one way or another
         if 1
@@ -531,20 +633,7 @@ switch param.approach
         % solve LP
         solution = solveCobraLP(lp);
         
-        if solution.stat == 1
-            
-            if param.removeFixedBool==1
-                %rebuild optimal flux vector
-                full = zeros(n+p,1);
-                full(fixedBool)=lb(fixedBool);
-                full(~fixedBool)=solution.full;
-                solution.full = full;
-            end
-            
-            v1 = solution.full(1:n);
-        end
-        
-    case 'lp2'
+    case 'lp'
         %numerical instability may arise due to small flux magnitudes
         isSmall = abs(v0)<feasTol & v0~=0;
         if any(isSmall)
@@ -579,7 +668,7 @@ switch param.approach
             model_ub(isSmall)=model_ub(isSmall)+feasTol/2;
         end
         
-        isF = [SConsistentRxnBool & v0 > 0; false(p,1)]; % net forward flux
+        isF = [SConsistentRxnBool & v0 >= 0; false(p,1)]; % zero or net forward flux
         isR = [SConsistentRxnBool & v0 < 0; false(p,1)]; % net reverse flux
         
         
@@ -591,41 +680,53 @@ switch param.approach
         if any(c0)
             A = [...
                 model_S   sparse(m, p); % Sv = b (steady state)
+                model_C   sparse(clt,p); %Cv <= d (coupling, if present)
                 c0'       sparse(1, p); % c0'v = c0'v0
-                D        -speye(p)    ; %   v - x <= 0
+                 D        -speye(p)   ; %   v - x <= 0
                 -D        -speye(p)   ]; % - v - x <= 0
             
             
-            b = [model_b;  (1-feasTol)*c0'*v0; zeros(2*p, 1)];
+            b = [model_b;  model_d; (1-feasTol)*c0'*v0; zeros(2*p, 1)];
             
             csense = repmat('E', size(A, 1), 1);
             csense(1:m) = model_csense;
+            if ~isempty(model_dsense)
+                csense(m+clt1:m+clt) = model_dsense;
+            end
             
             %this approach is more numerically robust than forcing the new objective to equal the
             %previous objective
             if osense == 1
-                csense(m+1) = 'L';
+                csense(m+clt1+1) = 'L';
             else
-                csense(m+1) = 'G';
+                csense(m+clt1+1) = 'G';
             end
             
-            csense(m+2:end) = 'L';
+            csense(m+clt1+2:end) = 'L';
         else
             A = [...
                 model_S   sparse(m, p); % Sv = b (steady state)
+                model_C   sparse(clt,p); %Cv <= d (coupling, if present)
                 D        -speye(p)    ; %   v - x <= 0
                 -D        -speye(p)   ]; % - v - x <= 0
             
-            b = [model_b; zeros(2*p, 1)];
+            b = [model_b; model_d; zeros(2*p, 1)];
             
             csense = repmat('E', size(A, 1), 1);
             csense(1:m) = model_csense;
-            csense(m+1:end) = 'L';
+            if ~isempty(model_dsense)
+                csense(m+clt1:m+clt) = model_dsense;
+            end
+            csense(m+clt1+1:end) = 'L';
         end
         
-        % lower and upper bounds - fixed exchange and zero fluxes
+        % lower and upper bounds - fixed exchange fluxes
         lb = [v0; zeros(p, 1)];
-        ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow auxiliary variable to be slightly greater
+        if 0
+            ub = [v0; abs(v0(SConsistentRxnBool))+10]; %allow auxiliary variable to be slightly greater
+        else
+            ub = [v0; inf*ones(p,1)]; 
+        end
         
         if param.debug
             bool =ub-lb<feasTol & ub~=lb;
@@ -675,7 +776,9 @@ switch param.approach
             end
         end
         
-        ub(isF) = v0(isF) + 10*feasTol;
+        if 0
+            ub(isF) = v0(isF) + 10*feasTol;
+        end
         if param.relaxBounds
             lb(isF) = 0; % internal reaction directionality same as in input flux
         else
@@ -694,7 +797,10 @@ switch param.approach
             end
         end
         
-        lb(isR) = v0(isR) - 10*feasTol;
+        if 0
+            lb(isR) = v0(isR) - 10*feasTol;
+        end
+        
         if param.relaxBounds
             ub(isR) = 0;
         else
@@ -707,7 +813,7 @@ switch param.approach
             end
         end
         
-        if 1
+        if 0
             %allow reactions with small flux to have small flux with a change in sign
             lb(isSmall) = -100*feasTol;
             ub(isSmall) =  100*feasTol;
@@ -763,22 +869,19 @@ switch param.approach
         
         % solve LP
         solution = solveCobraLP(lp);
-        
-        if solution.stat == 1
-            
-            if param.removeFixedBool==1
-                %rebuild optimal flux vector
-                full = zeros(n+p,1);
-                full(fixedBool)=lb(fixedBool);
-                full(~fixedBool)=solution.full;
-                solution.full = full;
-            end
-            
-            v1 = solution.full(1:n);
-        end
 end
 
-if solution.stat ~= 1
+if solution.stat ==1
+    if param.removeFixedBool==1
+        %rebuild optimal flux vector
+        full = zeros(n+p,1);
+        full(fixedBool)=lb(fixedBool);
+        full(~fixedBool)=solution.full;
+        solution.full = full;
+    end
+    
+    v1 = solution.full(1:n);
+else
     if param.debug
         fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
     end
