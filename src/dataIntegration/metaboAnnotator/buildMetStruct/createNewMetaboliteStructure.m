@@ -1,4 +1,4 @@
-function [metabolite_structure] =createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet)
+function [metabolite_structure] =createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)
 % This function creates a metabolite structure using the provided input. If
 % no VMHId is provided in the header of the input, then VMHId are
 % generated.
@@ -20,6 +20,23 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 %
 % Ines Thiele, 09/2021
 
+%load rbionet data
+rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
+if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
+elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'metab.mat']);
+else
+    %TODO
+end
+
+if exist([rBioNetPath filesep 'cache' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'rxn.mat']);
+elseif  exist([rBioNetPath filesep 'data' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'rxn.mat']);
+else
+    %TODO
+end
 
 
 RAW = input;
@@ -69,7 +86,10 @@ for i = 2 : size(RAW,1)
     if  isvarname(strcat('VMHId_', VMHId))
         fieldname = strcat('VMH_',VMHId);
     else
-        VMHId = append(datestr(now,'yyyymmddTHHMMSS'), num2str(i)); % Added i, because it can happen that it goes through soo fast that it creates two equal VMHIds
+
+        VMHId_suggestion = VMHId;
+        %VMHId = datestr(now,'yyyymmddTHHMMSS');
+
         fieldname = strcat('VMH_',VMHId);
     end
     
