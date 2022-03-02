@@ -43,7 +43,11 @@ if exist('syst','var')
                 [tok2,rem] = split(H{i},'>');
                 % potential HMDB ID
                 potHMDB = regexprep(tok2{1},'"','');
-                if ~strcmp(potHMDB,'HMDB0247409')% there seems to be a problem with this website
+                
+                % there seems to be a problem those entries of the HMDB website
+                failedhmdbids = {'HMDB0247409, HMDB0004062', 'HMDB0040446', 'HMDB0033968', 'HMDB0004231', 'HMDB004231', 'HMDB0011737', 'HMDB0004062', 'HMDB0012252'};
+
+                if ~any(strcmp(failedhmdbids, potHMDB))
                     % now check whether it is a perfect match
                     clear syst
                     

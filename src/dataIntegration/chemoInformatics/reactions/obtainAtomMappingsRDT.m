@@ -364,15 +364,19 @@ if javaInstalled == 1 && ~onlyUnmapped
         % Check if the reaction is atomically balanced
         if ~inconsistentBool(i)
             begmol = strmatch('$MOL', mappedFile);
-            atomsSubstrates = 0;
+            atomsSubstrates = [];
             for j = 1:noOfsubstrates
-                atomsSubstrates = atomsSubstrates + str2double(mappedFile{begmol(j) + 4}(1:3));
+                for k = 1:str2double(mappedFile{begmol(j) + 4}(1:3))
+                    atomsSubstrates = [atomsSubstrates strtrim(mappedFile{begmol(j) + 4 + k}(32:33))];
+                end
             end
-            atomsProducts = 0;
+            atomsProducts = [];
             for j = noOfsubstrates + 1:noOfsubstrates + noOfproducts
-                atomsProducts = atomsProducts + str2double(mappedFile{begmol(j) + 4}(1:3));
+                for k = 1:str2double(mappedFile{begmol(j) + 4}(1:3))
+                    atomsProducts = [atomsProducts strtrim(mappedFile{begmol(j) + 4 + k}(32:33))];
+                end
             end
-            if atomsSubstrates ~= atomsProducts
+            if ~isequal(sort(atomsSubstrates), sort(atomsProducts))
                 unbalancedBool(i) = true;
             end
         end

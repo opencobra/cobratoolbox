@@ -23,7 +23,8 @@ function [expressionRxns, parsedGPR, gene_used, signifRxns] = mapExpressionToRea
 %                    for OR (default: false, i.e. use min)
 %
 % OUTPUTS:
-%   expressionRxns:         reaction expression, corresponding to model.rxns.
+%   expressionRxns:         n x 1 non-negative value for reaction expression, corresponding to model.rxns.
+%                           expressionRxns(j) is NaN when there is no expression data for the genes corresponding to reaction j.
 %   parsedGPR:              cell matrix containing parsed GPR rule
 %   gene_used:              gene identifier, corresponding to model.rxns, from GPRs
 %                           whose value (expression and/or significance) was chosen for that

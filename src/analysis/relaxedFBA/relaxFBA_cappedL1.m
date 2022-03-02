@@ -440,7 +440,7 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
     u = [ub1;  maxRelaxR*ones(m,1);         ub3;           ub4;  max(abs(lb1),abs(ub1)); maxRelaxR*ones(m,1)];
     %%%%%%%
     
-    %Exlude metabolites from relaxation (set the upper and lower bound of the relaxation to 0)
+    %Exclude metabolites from relaxation (set the upper and lower bound of the relaxation to 0)
     indexExcludedMet = find(excludedMetabolites);
 
     l(n+indexExcludedMet) = 0;
@@ -471,8 +471,10 @@ function [v,r,p,q,solution] = relaxFBA_cappedL1_solveSubProblem(model,csense,par
         error('bounds inconsistent')
     end
     
-    if any(~isfinite(A),'all')
-        [I,J]=find(~isfinite(A))
+    [I]=find(A);
+    bool = ~isfinite(A(I));
+    if any(bool,'all')
+        [I,J] = ind2sub(size(A),I(bool))
         error('A has infinite entries')
     end
     if any(~isfinite(rhs))

@@ -118,7 +118,7 @@ else
     k=1;
 end
 
-if nReconstructions~=size(modelMetaData,1)
+if nReconstructions>size(modelMetaData,1)
     error('Metadata must be provided for each model')
 end
 
@@ -201,7 +201,24 @@ for n=1:nReconstructions
         X=[size(model.S,2)-nnz(rxnBool)-1,size(model.S,2)-nnz(rxnBool)-1,size(model.S,2),size(model.S,2)];
         Y=[0,nnz(metBool),nnz(metBool),0];
         %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
+        %fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+        fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+        
+        % distinguish thermodynamically flux consistent internal and exchange reactions
+        rxnBool=model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
+        metBool=model.SConsistentMetBool & model.fluxConsistentMetBool & model.thermoFluxConsistentMetBool;
+        X=[0,0,nnz(rxnBool),nnz(rxnBool)];
+        Y=[0,nnz(metBool),nnz(metBool),0];
         fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+        % exchange reactions
+        rxnBool=~model.SIntRxnBool & model.thermoFluxConsistentRxnBool;
+        X=[0,0,nnz(rxnBool),nnz(rxnBool)];
+        X=[size(model.S,2)-nnz(rxnBool)-1,size(model.S,2)-nnz(rxnBool)-1,size(model.S,2),size(model.S,2)];
+        Y=[0,nnz(metBool),nnz(metBool),0];
+        %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
+        %fill(X,Y,[230 115 0]/255,'EdgeColor','none')
+        fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+               
         
 %         % distinguish flux consistent internal and exchange reactions
 %         X=[0,0,nnz(model.FRVcols & model.SIntRxnBool),nnz(model.FRVcols & model.SIntRxnBool)];

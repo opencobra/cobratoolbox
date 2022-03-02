@@ -755,8 +755,6 @@ if options.printlevel > 0
         display(info.reactionsReport.table)
     end
     
-    display(info.reactionsReport.table)
-    
     % Metabolites
     figure
     subplot(1, 2, 1)
@@ -874,7 +872,7 @@ end
 
 diary off
 if options.printlevel > 0 
-    fprintf('%s\n', ['Diary written to: ' options.outputDir])
+    fprintf('%s\n', ['Diary written to: ' outputDir])
     fprintf('%s\n', 'generateChemicalDatabase run is complete.')
 end
 

@@ -129,15 +129,15 @@ for i=2:size(sampleData,1)
         else
             featName='';
         end
-        
+
         if ~isempty(stratification)
 
             print([featName stratification '_' filename],'-dpng','-r300')
-            print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
+            % print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
             % append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
         else
             print([featName filename],'-dpng','-r300')
-            print('-bestfit',[featName filename],'-dpdf','-r300')
+            % print('-bestfit',[featName filename],'-dpdf','-r300')
             % append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
         end
         close all

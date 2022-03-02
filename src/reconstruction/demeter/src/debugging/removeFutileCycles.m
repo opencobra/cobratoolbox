@@ -734,16 +734,18 @@ end
 % make sure gene rule and notes are kept while replacing
 if ~isempty(addedRxns)
     for j = 1:size(addedRxns,1)
-        model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
-        % if a reaction from the old version is replaced, keep the GPR
-        if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))
-            rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
-            rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
-            model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
-            model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+        if ~isempty(addedRxns{j,1})
+            model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
+            % if a reaction from the old version is replaced, keep the GPR
+            if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))
+                rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
+                rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
+                model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
+                model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+            end
+            model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
+            model.rxnConfidenceScores(end,1)=1;
         end
-        model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
-        model.rxnConfidenceScores(end,1)=1;
         % if more than one reaction is added
         if size(addedRxns,2)>2
             if ~isempty(addedRxns{j,3})

@@ -83,14 +83,38 @@ existingModels(find(strcmp(existingModels(:,1),'.')),:)=[];
 existingModels(find(strcmp(existingModels(:,1),'..')),:)=[];
 
 % then join all models in modelList
+dInfo = dir(modelFolder);
+models={dInfo.name};
+models=models';
+
 inputModels={};
 for i = 1:size(modelList, 1)
     
     % Load the reconstructions to be joined
-    model=readCbModel([modelFolder filesep modelList{i,1} '.mat']);
+    % workaround to also allow SBML files
+    findModID = find(strncmp(models,modelList{i,1},length(modelList{i,1})));
+    if ~isempty(findModID)
+        if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
+            model=readCbModel([modelFolder filesep models{findModID,1}]);
+        else
+            error('No model in correct format found in folder!')
+        end
+    else
+        error('Model to load not found in folder!')
+    end
+
     inputModels{i}=model;
     for k = i + 1:size(modelList, 1)
-        model=readCbModel([modelFolder filesep modelList{k,1} '.mat']);
+        findModID = find(strncmp(models,modelList{k,1},length(modelList{k,1})));
+        if ~isempty(findModID)
+            if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
+                model=readCbModel([modelFolder filesep models{findModID,1}]);
+            else
+                error('No model in correct format found in folder!')
+            end
+        else
+            error('Model to load not found in folder!')
+        end
         inputModels{k}=model;
     end
     
