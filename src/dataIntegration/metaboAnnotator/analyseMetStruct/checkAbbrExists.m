@@ -24,9 +24,9 @@ function [VMH_existance,rBioNet_existance,metab_rBioNet_online,rxn_rBioNet_onlin
 mkdir('data');
 
 check4 = {
-%     'keggId'
+    'keggId'
 %     'biocyc'
- %    'hmdb'
+     'hmdb'
 %     'cheBIId'
 %     'chembl'
 %    % 'chemspider'

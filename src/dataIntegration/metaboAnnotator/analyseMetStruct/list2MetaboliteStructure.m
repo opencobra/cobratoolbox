@@ -38,12 +38,16 @@ end
 rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
 if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
+elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'metab.mat']);
 else
     %TODO
 end
 
 if exist([rBioNetPath filesep 'cache' filesep 'rxn.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'rxn.mat']);
+elseif  exist([rBioNetPath filesep 'data' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'rxn.mat']);
 else
     %TODO
 end
@@ -133,7 +137,7 @@ else
         RAW{i,vmh_col} = VMHId;
         save tmp
     end
-    [metabolite_structure] =createNewMetaboliteStructure(RAW,fileName,metabolite_structure_rBioNet);
+    [metabolite_structure] =createNewMetaboliteStructure(RAW,fileName,metabolite_structure_rBioNet,metab,rxn);
     VMH_existance =[];
     rBioNet_existance = [];
     listDuplicates =[];
@@ -187,8 +191,8 @@ fprintf('Collecting information from CTD \n')
 [metabolite_structure,IDsAddedCTD] = getCas2CTD(metabolite_structure);
 try % does not work on linux due to the xlsx file that is loaded
     fprintf('Collecting information from GNPS \n')
-    [NUM,TXT,RAW]=xlsread('GNPSMetabolites.xlsx','Extract');
-    [metabolite_structure] = map2GNPS(metabolite_structure,Table,RAW);
+    [NUM,TXT,RAW2]=xlsread('GNPSMetabolites.xlsx','Extract');
+    [metabolite_structure] = map2GNPS(metabolite_structure,Table,RAW2);
 end
 
 % check again whether the VMHId's are novel and also whether the metabolite
