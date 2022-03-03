@@ -18,11 +18,12 @@ hmdb = '';
 met = regexprep(met,'"','');
 metInt = ['%22' regexprep(met,' ','+') '%22'];
 
+try
+    % avoid that the script fails when the connection is down or times out
     url=strcat(['https://hmdb.ca/unearth/q?utf8=%E2%9C%93&query=' metInt '&searcher=metabolites&button=']);
     syst = urlread(url);
+end
 
-
-hmdb = '';
 multipleHits = 0;
 
 if exist('syst','var')

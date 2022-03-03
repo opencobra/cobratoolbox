@@ -153,7 +153,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %       - Markus Herrgard       9/16/03
 %       - Ronan Fleming         4/25/09  Option to minimises the Euclidean Norm of internal
 %                                        fluxes using 'cplex_direct' solver
-%       - Ronan Fleming         7/27/09  Return an error if any imputs are NaN
+%       - Ronan Fleming         7/27/09  Return an error if any imputs are NaNp
 %       - Ronan Fleming         10/24/09 Fixed 'E' for all equality constraints
 %       - Jan Schellenberger             MILP option to remove flux around loops
 %       - Ronan Fleming         12/07/09 Reworked minNorm parameter option to allow
@@ -705,6 +705,10 @@ switch solution.stat
     otherwise
         solution.stat
         error('solution.stat must be in {-1, 0 , 1, 2, 3}')
+end
+
+if isempty(solution.dual)
+    primalOnlyFlag=1;
 end
 
 % Return a solution or an almost optimal solution
