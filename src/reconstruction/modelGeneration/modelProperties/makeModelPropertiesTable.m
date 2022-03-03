@@ -66,6 +66,16 @@ while k<=nResults
     if ~firstColumn
         %search against the modelID specific to each model
         if exist('modelMetaData','var')
+            %TODO get rid of this hack
+            if strcmp(modelResults(k).model.modelID,'Recon3D')
+                modelResults(k).model.modelID='Recon3.01';
+            end
+            if strcmp(modelResults(k).model.modelID,'humanGEM1')
+                modelResults(k).model.modelID='Human1.0';
+            end
+            if strcmp(modelResults(k).model.modelID,'humanGEM1p10')
+                modelResults(k).model.modelID='Human1.10';
+            end
             bool=strcmp(modelResults(k).model.modelID,modelMetaData(:,2));
             if any(bool)
                 n=find(bool);
