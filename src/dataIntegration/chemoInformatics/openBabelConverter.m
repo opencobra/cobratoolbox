@@ -39,9 +39,8 @@ if nargin < 3 || isempty(saveFileDir)
 else
     toSave = true;
 end
-
 % Check openbabel installation
-if ismac || ispc
+if ismac || ispc || isunix
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
