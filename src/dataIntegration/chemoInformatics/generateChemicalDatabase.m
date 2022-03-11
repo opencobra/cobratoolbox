@@ -122,7 +122,7 @@ if cxcalcInstalled == 0
     display('1 - jpeg files for molecular structures (obabel required)')
     display('2 - pH adjustment according to model.met Formulas')
 end
-if ismac || ispc 
+if isunix || ispc 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
