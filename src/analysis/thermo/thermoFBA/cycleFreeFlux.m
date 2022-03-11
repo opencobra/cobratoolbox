@@ -179,7 +179,7 @@ if param.parallelize
 end
 
 % parameters
-[model_S, model_b, model_csense, model_lb, model_ub, ] = deal(model.S(SConsistentMetBool,:), model.b(SConsistentMetBool), model.csense(SConsistentMetBool), model.lb, model.ub);
+[model_S, model_b, model_csense, model_lb, model_ub] = deal(model.S(SConsistentMetBool,:), model.b(SConsistentMetBool), model.csense(SConsistentMetBool), model.lb, model.ub);
 
 if isfield(model,'C') && param.enforceCoupling
     [model_C,model_d,model_dsense] = deal(model.C, model.d, model.dsense);
@@ -196,11 +196,11 @@ thermoConsistentFluxBool = false(n,k);
 
 param.printLevel=printLevel-1;
 
+eta = param.eta;
+
 % loop through input flux vectors
 if param.parallelize
     error('param.parallelize = true not fully supported, set param.parallelize = false')
-    
-    eta = param.eta;
     environment = getEnvironment();
     parfor i = 1:k
         restoreEnvironment(environment,0);
@@ -220,7 +220,6 @@ if param.parallelize
             %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
         end
     end
-    
 else
     for i = 1:k
         v0 = V0(:, i);
@@ -229,19 +228,34 @@ else
         try
             v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
             Vthermo(:, i) = v1;
-            thermoConsistentFluxBool(:,i) = abs(v0 - v1) < param.eta;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v1) < eta;
+            if ~param.relaxBounds
+                %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
+                forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v1 - model_lb) < eta;
+                forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v1 - model_ub) < eta;
+                thermoConsistentFluxBool(forcedFwdRxnBool)=0;
+                thermoConsistentFluxBool(forcedRevRxnBool)=0;
+            end
         catch ME
             disp(ME.message)
-            rethrow(ME)
+            if 0
+                rethrow(ME)
+            end
             fprintf('%s\n','computeCycleFreeFlux: lp error, switching to regularised approach.')
             param.approach = 'regularised';
             %param.relaxBounds=1;
             v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
             Vthermo(:, i) = v2;
-            thermoConsistentFluxBool(:,i) = abs(v0 - v2) < param.eta;
+            thermoConsistentFluxBool(:,i) = abs(v0 - v2) < eta;
             %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
+            if ~param.relaxBounds
+                %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
+                forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v2 - model_lb) < eta;
+                forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v2 - model_ub) < eta;
+                thermoConsistentFluxBool(forcedFwdRxnBool)=0;
+                thermoConsistentFluxBool(forcedRevRxnBool)=0;
+            end
         end
-
     end
 end
 

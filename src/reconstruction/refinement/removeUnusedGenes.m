@@ -31,7 +31,7 @@ if ~isfield(model,'genes')
 end
 
 
-if ~isfield(modelNew,'rules')
+if ~isfield(modelNew,'rules') && isfield(model, 'grRules')
     modelNew = generateRules(modelNew);
 end
 
