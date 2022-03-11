@@ -82,6 +82,9 @@ close all
 % hist(stochConsistentFraction,100)
 % fprintf('\n')
 
+%colours
+colors = crameri('roma',8);
+
 fontSizeTitle=14;
 fontSizeLabel=16;
 if schematicFlag %top left plot is a schematic
@@ -89,29 +92,54 @@ if schematicFlag %top left plot is a schematic
     k=1;%first plot is for legend
     subplot(nRows,nCols,k)
     hold on;
-    ylabel('# Molecular species','FontSize',fontSizeLabel)
-    title('Network','FontWeight','normal','FontSize',fontSizeTitle)
+    ylabel('# Metabolites','FontSize',fontSizeLabel)
+    title('Schematic stoichiometric matrix','FontWeight','normal','FontSize',fontSizeTitle)
     %Reconstruction
     X=[0,0,100,100];
-    Y=[0,100,100,0];
-    fill(X,Y,[55 55 55]/255,'EdgeColor',[55 55 55]/255)
-    xlim([0 100])
-    ylim([0 100-1])
-    %Stoichiometrically consistent
-    X=[0,0,66,66];
     Y=[0,80,80,0];
-    fill(X,Y,[204 102 102]/255,'EdgeColor','none')
+    fill(X,Y,colors(1,:),'EdgeColor',[55 55 55]/255)
+    xlim([0 100])
+    ylim([0 80-1])
+    
+    %Stoichiometrically consistent
+    X=[0,0,70,70];
+    Y=[0,75,75,0];
+    fill(X,Y,colors(2,:),'EdgeColor','none')
+    
     %Stoichiometrically consistent & flux consistent (non-exchange reactions,
     %unique & nonzero)
-    X=[0,0,50,50];
-    Y=[0,45,45,0];
-    fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+    X=[0,0,60,60];
+    Y=[0,60,60,0];
+    fill(X,Y,colors(3,:),'EdgeColor','none')
 
     %Stoichiometrically consistent & flux consistent (exchange reactions, unique & nonzero)
     X=[80,80,100,100];
-    Y=[0,45,45,0];
-    fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+    Y=[0,60,60,0];
+    fill(X,Y,colors(4,:),'EdgeColor','none')
+    
+    %Stoichiometrically, flux  thermodynamically flux consistent (internal, both directions)
+    X=[0,0,20,20];
+    Y=[0,40,40,0];
+    fill(X,Y,colors(5,:),'EdgeColor','none')
+    
+    %Stoichiometrically, flux  thermodynamically flux consistent (internal, forward only)
+    X=[20,20,40,40];
+    Y=[0,40,40,0];
+    fill(X,Y,colors(6,:),'EdgeColor','none')
+    
+    %Stoichiometrically, flux  thermodynamically flux consistent (internal, reverse only)
+    X=[40,40,50,50];
+    Y=[0,40,40,0];
+    fill(X,Y,colors(7,:),'EdgeColor','none')
+    
+    %Stoichiometrically, flux  thermodynamically flux consistent (external)
+    X=[85,85,100,100];
+    Y=[0,40,40,0];
+    fill(X,Y,colors(8,:),'EdgeColor','none')
 
+    
+    xline(75,'--w','LineWidth',2)
+    
     k=k+1;
 else
     h=figure('units','normalized','outerposition',[0 0 1 1]);
@@ -121,6 +149,7 @@ end
 if nReconstructions>size(modelMetaData,1)
     error('Metadata must be provided for each model')
 end
+
 
 %start at the second subplot as the first is for the example
 for n=1:nReconstructions
@@ -161,7 +190,7 @@ for n=1:nReconstructions
 
         %lable first column in each row
         if mod(k,nCols)==1
-            ylabel('# Molecular species','FontSize',fontSizeLabel)
+            ylabel('# Metabolites','FontSize',fontSizeLabel)
         end
         if k>(nRows-1)*nCols
             xlabel('# Reactions','FontSize',fontSizeLabel)
@@ -176,14 +205,14 @@ for n=1:nReconstructions
         Y=[0,size(model.S,1),size(model.S,1),0];
         %fill(X,Y,[153 153 153]/255,'EdgeColor',[153 153 153]/255)
         %fill(X,Y,[55 55 55]/255,'EdgeColor',[55 55 55]/255)
-        fill(X,Y,[55 55 55]/255,'EdgeColor','none')
+        fill(X,Y,colors(1,:),'EdgeColor','none')
         xlim([0 size(model.S,2)])
         ylim([0 size(model.S,1)-1])
 
         %Stoichiometrically consistent
         X=[0,0,nnz(model.SConsistentRxnBool),nnz(model.SConsistentRxnBool)];
         Y=[0,nnz(model.SConsistentMetBool),nnz(model.SConsistentMetBool),0];
-        fill(X,Y,[204 102 102]/255,'EdgeColor','none')
+        fill(X,Y,colors(2,:),'EdgeColor','none')
 
         %Stoichiometrically consistent & flux consistent (non-exchange and exchange reactions, unique & nonzero
         %model.FRnonZeroRowBool & model.FRuniqueRowBool & (model.SConsistentMetBool | ~model.SIntMetBool) & model.fluxConsistentMetBool
@@ -194,7 +223,8 @@ for n=1:nReconstructions
         metBool=model.SConsistentMetBool & model.fluxConsistentMetBool;
         X=[0,0,nnz(rxnBool),nnz(rxnBool)];
         Y=[0,nnz(metBool),nnz(metBool),0];
-        fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+        fill(X,Y,colors(3,:),'EdgeColor','none')
+        
         % exchange reactions
         rxnBool=~model.SIntRxnBool & model.fluxConsistentRxnBool;
         X=[0,0,nnz(rxnBool),nnz(rxnBool)];
@@ -202,22 +232,36 @@ for n=1:nReconstructions
         Y=[0,nnz(metBool),nnz(metBool),0];
         %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
         %fill(X,Y,[192 192 192]/255,'EdgeColor','none')
-        fill(X,Y,[153 153 255]/255,'EdgeColor','none')
+        fill(X,Y,colors(4,:),'EdgeColor','none')
+        
         
         % distinguish thermodynamically flux consistent internal and exchange reactions
-        rxnBool=model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
+        rxnBoolBoth=model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.thermoFwdFluxConsistentRxnBool & model.thermoRevFluxConsistentRxnBool;
         metBool=model.SConsistentMetBool & model.fluxConsistentMetBool & model.thermoFluxConsistentMetBool;
-        X=[0,0,nnz(rxnBool),nnz(rxnBool)];
+        X=[0,0,nnz(rxnBoolBoth),nnz(rxnBoolBoth)];
         Y=[0,nnz(metBool),nnz(metBool),0];
-        fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+        fill(X,Y,colors(5,:),'EdgeColor','none')
+        
+        rxnBoolFwd=model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.thermoFwdFluxConsistentRxnBool & ~rxnBoolBoth;
+        metBool=model.SConsistentMetBool & model.fluxConsistentMetBool & model.thermoFluxConsistentMetBool;
+        X=[nnz(rxnBoolBoth),nnz(rxnBoolBoth),nnz(rxnBoolBoth)+nnz(rxnBoolFwd),nnz(rxnBoolBoth)+nnz(rxnBoolFwd)];
+        Y=[0,nnz(metBool),nnz(metBool),0];
+        fill(X,Y,colors(6,:),'EdgeColor','none')
+        
+        rxnBoolRev=model.SConsistentRxnBool & model.fluxConsistentRxnBool & model.thermoRevFluxConsistentRxnBool & ~rxnBoolBoth;
+        metBool=model.SConsistentMetBool & model.fluxConsistentMetBool & model.thermoFluxConsistentMetBool;
+        X=[nnz(rxnBoolBoth)+nnz(rxnBoolFwd),nnz(rxnBoolBoth)+nnz(rxnBoolFwd),nnz(rxnBoolBoth)+nnz(rxnBoolFwd)+nnz(rxnBoolRev),nnz(rxnBoolBoth)+nnz(rxnBoolFwd)+nnz(rxnBoolRev)];
+        Y=[0,nnz(metBool),nnz(metBool),0];
+        fill(X,Y,colors(7,:),'EdgeColor','none')
+        
         % exchange reactions
         rxnBool=~model.SIntRxnBool & model.thermoFluxConsistentRxnBool;
-        X=[0,0,nnz(rxnBool),nnz(rxnBool)];
+        %X=[0,0,nnz(rxnBool),nnz(rxnBool)];
         X=[size(model.S,2)-nnz(rxnBool)-1,size(model.S,2)-nnz(rxnBool)-1,size(model.S,2),size(model.S,2)];
         Y=[0,nnz(metBool),nnz(metBool),0];
         %fill(X,Y,[54 149 60]/255,'EdgeColor','none')
         %fill(X,Y,[230 115 0]/255,'EdgeColor','none')
-        fill(X,Y,[192 192 192]/255,'EdgeColor','none')
+        fill(X,Y,colors(8,:),'EdgeColor','none')
                
         
 %         % distinguish flux consistent internal and exchange reactions
@@ -251,10 +295,13 @@ for n=1:nReconstructions
         % Y=[0,nnz(model.FRrows),nnz(model.FRrows),0];
         % fill(X,Y,[153 153 255]/255,'EdgeColor','none')
 
+        xline(nnz(model.SIntRxnBool),'--w','LineWidth',2)
         %move to next subplot
          k=k+1;
     end
 end
+
+
 if nRows*nCols<nReconstructions
     warning('not all results could be plotted with the nRows and nCols given')
 end

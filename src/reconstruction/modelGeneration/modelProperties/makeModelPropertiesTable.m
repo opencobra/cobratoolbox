@@ -90,7 +90,7 @@ while k<=nResults
     end
 
     if firstColumn
-        modelResultsTable{i,1}='Molecules';
+        modelResultsTable{i,1}='Metabolites';
     else
         if exist('modelMetaData','var')
             modelResultsTable{i,n+1}=modelMetaData{bool,1};
@@ -204,9 +204,9 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Internal reactions minus stoich. and flux consistent reactions';
+        modelResultsTable{i,1}='Stoich. not flux consistent reactions';
     else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool);
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool);
     end
     i=i+1;
     if firstColumn
@@ -216,9 +216,9 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Internal reactions minus stoich. and thermo flux consistent reactions';
+        modelResultsTable{i,1}='Stoich. not thermo. flux consistent reactions';
     else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool & modelResults(k).model.thermoFluxConsistentRxnBool);
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentRxnBool) - nnz(modelResults(k).model.SConsistentRxnBool & modelResults(k).model.fluxConsistentRxnBool & modelResults(k).model.thermoFluxConsistentRxnBool);
     end
     i=i+1;
     if firstColumn
@@ -298,7 +298,7 @@ while k<=nResults
     %% separate rows from columns
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Species = Rows of [N B]';
+        modelResultsTable{i,1}='Metabolites = Rows of [N B]';
     else
         modelResultsTable{i,n+1}=size(modelResults(k).model.S,1);
     end
@@ -361,7 +361,7 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Species minus stoich. consistent rows';
+        modelResultsTable{i,1}='Metabolites not stoich. consistent rows';
     else
         modelResultsTable{i,n+1}=size(modelResults(k).model.S,1)-nnz(modelResults(k).model.SConsistentMetBool);
     end
@@ -369,7 +369,7 @@ while k<=nResults
     if firstColumn
         modelResultsTable{i,1}='Omitted rows';
     else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.rxnUnknownInconsistentRemoveBool);
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.metUnknownInconsistentRemoveBool);
     end
     if 0
         i=i+1;
@@ -387,9 +387,9 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Internal species minus stoich. and flux consistent rows';
+        modelResultsTable{i,1}='Stoich. not flux consistent rows';
     else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool);
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool);
     end
     i=i+1;
     if firstColumn
@@ -399,32 +399,32 @@ while k<=nResults
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Internal species minus stoich. and flux consistent rows';
+        modelResultsTable{i,1}='Stoich. not thermo flux consistent rows';
     else
-        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SIntMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool & modelResults(k).model.thermoFluxConsistentMetBool);
+        modelResultsTable{i,n+1}=nnz(modelResults(k).model.SConsistentMetBool)- nnz(modelResults(k).model.SConsistentMetBool & modelResults(k).model.fluxConsistentMetBool & modelResults(k).model.thermoFluxConsistentMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Leak species';
+        modelResultsTable{i,1}='Leak metabolites';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.leakMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='Siphon species';
+        modelResultsTable{i,1}='Siphon metabolites';
     else
         modelResultsTable{i,n+1}=nnz(modelResults(k).model.siphonMetBool);
     end
     i=i+1;
     if firstColumn
-        modelResultsTable{i,1}='External species = Rows exclusive to B';
+        modelResultsTable{i,1}='External metabolites = Rows exclusive to B';
     else
         modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntMetBool);
     end
       if 0
           i=i+1;
           if firstColumn
-              modelResultsTable{i,1}='External flux consistent species';
+              modelResultsTable{i,1}='External flux consistent metabolites';
           else
               modelResultsTable{i,n+1}=nnz(~modelResults(k).model.SIntMetBool & modelResults(k).model.fluxConsistentMetBool);
           end

@@ -23,7 +23,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    printLevel:                    verbose level
 %    fileName:                      char, used when writing inconsistent metabolites and
 %                                   reactions to a file
-%    epsilon:                       (`feasTol*100`) min nonzero mass, 1/epsilon = max mass
+%    epsilon:                       (`feasTol*10`) min nonzero mass, 1/epsilon = max mass
 %
 % OUTPUT:
 % SConsistentMetBool            m x 1 boolean vector indicating stoichiometrically consistent mets
@@ -49,7 +49,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 % stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.    
 %
 
-% .. Author: - Ronan Fleming 2017-2020
+% .. Author: - Ronan Fleming 2017-2022
 
 if ~exist('printLevel','var')
     printLevel=1;
@@ -57,9 +57,11 @@ end
 if printLevel>0
     fprintf('%s\n','--- findStoichConsistentSubset START ----')
 end
-
+if ~exist('fileName','var')
+    fileName=[];
+end
 if ~exist('massBalanceCheck','var')
-    if isfield(model,'metFormulas')
+    if isfield(model,'metFormulas') && ~isfield(model,'dummyMetBool')
         massBalanceCheck=1;
     else
         massBalanceCheck=0;
