@@ -34,6 +34,7 @@ if ~exist(filename,'file')
     warning(['Could not locate file ' filename])
     return
 end
+
 %Open file
 web(filename,'-browser')
 end

@@ -41,7 +41,7 @@ else % if the table is not a text file
                 if isnumeric(gettab.(getcols{j}))
                     formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(num2str(gettab.(getcols{j})));
                 else
-                    formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(gettab.(getcols{j}));
+                    formattedTable(2:length(cellstr(gettab.(getcols{j})))+1,j)=cellstr(gettab.(getcols{j}));
                 end
             end
         else
