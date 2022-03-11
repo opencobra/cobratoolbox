@@ -68,6 +68,12 @@ else
     modelE = 0;
 end
 
+if isfield(model,'csense')
+    if size(model.csense,1)<size(model.csense,2)
+        model.csense=model.csense';
+    end
+end
+
 %backward compatibility with old formulation of coupling constraints
 
 %Build some fields, if they don't exist

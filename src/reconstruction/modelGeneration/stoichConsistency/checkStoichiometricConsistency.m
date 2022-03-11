@@ -41,7 +41,7 @@ function [isConsistent, m, model] = checkStoichiometricConsistency(model, printL
 %    printLevel:    {(0), 1}
 %    method:        structure with fields:
 %
-%                     * method.interface - {('solveCobraLP'), 'cvx', 'nonconvex'} interface called to do the consistency check
+%                     * method.interface - {('SDCCO'),'LP', 'MILP', 'DCCO'} interface called to do the consistency check
 %                     * method.solver - {(default solver),'gurobi','mosek'}
 %                     * method.param - solver specific parameter structure
 %
@@ -59,14 +59,13 @@ function [isConsistent, m, model] = checkStoichiometricConsistency(model, printL
 %
 %                     * .SConsistentMetBool - m x 1 boolean vector indicating metabolites involved
 %                       in the maximal consistent vector
-%                     * model.SConsistentRxnBool - `n` x 1 boolean vector non-exchange reaction involving
+%                     * .SConsistentRxnBool - `n` x 1 boolean vector non-exchange reaction involving
 %                       a stoichiometrically consistent metabolite
 %
 % .. Author: - Ronan Fleming   2012 initial coding
-%                              2013 update with detection of conserved metabolites based
-%                              on algorithm by Nikos Vlassis.
-%                              2014 update to omit trivial rows corresponding to S row
-%                              that is all zero
+%                              2013 update with detection of conserved metabolites based on an algorithm by Nikos Vlassis.
+%                              2014 update to omit trivial rows corresponding to S row that are all zero
+%                              2022 interface with findStoichConsistentSubset
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -76,6 +75,10 @@ if ~exist('method','var')
     global CBT_LP_SOLVER
     method.solver=CBT_LP_SOLVER;
 end
+
+%set parameters according to feastol
+feasTol = getCobraSolverParams('LP', 'feasTol');
+epsilon = feasTol*10;
 
 [nMet,nRxn]=size(model.S);
 if ~isfield(model,'mets')
@@ -92,14 +95,16 @@ else
     end
 end
 
+
+
 % Check the stoichiometric consistency of the network by
 % solving the following linear problem
 %       min sum(m_i)
 %           s.t     S'*m = 0
 %                   m >= 1
 % where l  is is a  mx1 vector of the molecular mass of m molecular species
-SInt=model.S(:,model.SIntRxnBool);
-LPproblem.A=SInt';
+N=model.S(:,model.SIntRxnBool);
+LPproblem.A=N';
 LPproblem.b=zeros(size(LPproblem.A,1),1);
 LPproblem.lb=ones(size(LPproblem.A,2),1);
 LPproblem.ub=inf*ones(size(LPproblem.A,2),1);
@@ -125,18 +130,30 @@ solution = solveCobraLP(LPproblem,'printLevel',printLevel);
 %            0   Infeasible
 %           -1   No solution reported (timelimit, numerical problem etc)
 
+
 isConsistent=solution.stat;
-epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+
 % If the network is not stoichiometrically consistent then one maximizes
 % the number of  positive component of the molecular masses vector
 if isConsistent~=1
     switch method.interface
         case 'none'
             warning(['Stoichiometrically INconsistent ' intR 'stoichiometry.']);
+        case 'SDCCO'
+            tic
+            massBalanceCheck=1;
+            fileName=[];
+%             [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model, stoichConsistModel] =...
+%                 findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
+             [~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, massBalanceCheck, printLevel,fileName, epsilon);
+            %TODO
+            m = 1*model.SConsistentMetBool;
+            solution = [];
+            timetaken=toc;
         case 'cvx'
             cvx_solver(method.solver)
 
-            [nMet,~]=size(SInt);
+            [nMet,~]=size(N);
             %maximal conservation vector
             %cvx code from Nikos Vlassis
             tic
@@ -151,7 +168,7 @@ if isConsistent~=1
 
             m>=z; m<=(1/epsilon);
 
-            SInt'*m==0;
+            N'*m==0;
 
             cvx_end
             timetaken=toc;
@@ -160,13 +177,13 @@ if isConsistent~=1
             end
             %boolean indicating metabolites involved in the maximal consistent vector
             model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
-        case 'solveCobraLP'
+        case 'LP'
             %set the solver and solver parameters
             global CBT_LP_SOLVER
             oldSolver=CBT_LP_SOLVER;
             solverOK = changeCobraSolver(method.solver,'LP');
 
-            [nMet,~]=size(SInt);
+            [nMet,~]=size(N);
 
             % Solve the linear problem
             %   max sum(z_i)
@@ -175,7 +192,7 @@ if isConsistent~=1
             %           0 <= m <= 1/epsilon
             %           0 <= z <= epsilon
             nInt=nnz(model.SIntRxnBool);
-            LPproblem.A=[SInt'      , sparse(nInt,nMet);
+            LPproblem.A=[N'      , sparse(nInt,nMet);
                          speye(nMet),      -speye(nMet)];
 
             LPproblem.b=zeros(nInt+nMet,1);
@@ -208,7 +225,6 @@ if isConsistent~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
@@ -218,12 +234,12 @@ if isConsistent~=1
             algorithm=solution.algorithm;
             %change back the solver
             solverOK = changeCobraSolver(oldSolver,'LP');
-        case 'nonconvex'
+        case 'DCCO'
             %set the solver and solver parameters
             global CBT_LP_SOLVER
             method.solver=CBT_LP_SOLVER;
             tic
-            [~, ~, solution] = maxCardinalityConservationVector(SInt);
+            [~, ~, solution] = maxCardinalityConservationVector(N);
             timetaken=toc;
             method.solver='cappedL1';
             if solution.stat==1
@@ -237,13 +253,12 @@ if isConsistent~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
             end
         case 'MILP'
-            [nMet,~]=size(SInt);
+            [nMet,~]=size(N);
 
             % Solve the MILP problem
             %   max sum(z_i)
@@ -251,7 +266,7 @@ if isConsistent~=1
             %           z <= m
             %           z binary
             nInt=nnz(model.SIntRxnBool);
-            MILPproblem.A=[SInt'      , sparse(nInt,nMet);
+            MILPproblem.A=[N'      , sparse(nInt,nMet);
                          speye(nMet),      -speye(nMet)];
 
             MILPproblem.b=zeros(nInt+nMet,1);
@@ -288,7 +303,6 @@ if isConsistent~=1
                     %boolean indicating metabolites involved in the maximal consistent vector
                     model.SConsistentMetBool=m>epsilon;
                 end
-                isConsistent=1;
             else
                 disp(solution)
                 error('solve for maximal conservation vector failed')
@@ -296,7 +310,7 @@ if isConsistent~=1
         case 'maxEnt'
             %does not work very well
             tic
-            m=maxEntConsVector(SInt,printLevel);
+            m=maxEntConsVector(N,printLevel);
             timetaken=toc;
             if isfield(model,'SIntMetBool')  && 0
                 %boolean indicating metabolites involved in the maximal consistent vector
@@ -306,8 +320,10 @@ if isConsistent~=1
                 model.SConsistentMetBool=m>epsilon;
             end
             z=zeros(nMet,1);
+        otherwise
+            error(['unregognised method.interface = ' method.interface]);
     end
-    if any(m<-1e-6)
+    if any(m < -feasTol)
         error('m should be greater than or equal to zero')
     end
     m(m<0)=0;
@@ -317,9 +333,9 @@ if isConsistent~=1
         else
             fprintf('%s%s%s%s%s%g%s\n','Maximal conservation vector, using ', method.interface, ' ', method.solver,', in time ',timetaken,' sec.')
         end
-        fprintf('%10f%s\n',ones(1,nMet) * z,' = Optimal objective (i.e. 1''*z)')
+        fprintf('%10f%s\n',ones(1,nMet) * m,' = Optimal objective (i.e. 1''*m)')
         fprintf('%10d%s\n', nnz(model.SConsistentMetBool),' = Number of stoichiometrically consistent rows')
-        fprintf('%10g%s\n',norm(m'*SInt),' = || S''*m ||_inf for non-exchange reactions of S')
+        fprintf('%10g%s\n',norm(m'*N),' = || S''*m ||_inf for non-exchange reactions of S')
     end
 else
     m=solution.full;
@@ -335,10 +351,19 @@ else
     end
 end
 
-%OLD - incorrect way July 14th 2016 - Ronan.
-% %find every non-exchange reaction involving a stoichiometrically consistent metabolite
-% model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
-% model.SConsistentRxnBool(~model.SIntRxnBool)=0;
+isConsistent = all(model.SConsistentMetBool==1);
 
-%corresponding reactions exclusively involving consistent metabolites
-model.SConsistentRxnBool = ~any(model.S(~model.SConsistentMetBool, :), 1)' & model.SIntRxnBool;
+
+if ~isfield(model,'SConsistentRxnBool')
+    
+    %OLD - incorrect way July 14th 2016 - Ronan.
+    % %find every non-exchange reaction involving a stoichiometrically consistent metabolite
+    % model.SConsistentRxnBool =(sum(model.S(model.SConsistentMetBool,:)~=0,1)~=0)';
+    % model.SConsistentRxnBool(~model.SIntRxnBool)=0;
+    
+    %corresponding reactions exclusively involving consistent metabolites
+    model.SConsistentRxnBool = ~any(model.S(~model.SConsistentMetBool, :), 1)' & model.SIntRxnBool;
+    
+    model.SConsistentRxnBool = getCorrespondingCols(model.S,model.SConsistentMetBool,model.SIntRxnBool,'inclusive');
+
+end

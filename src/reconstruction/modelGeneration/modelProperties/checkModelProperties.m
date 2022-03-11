@@ -39,7 +39,7 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
 % model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
 % model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
-% model.leakRxnBool         m x 1 boolean of metabolites in a positive leakage mode
+% model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
 % model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
 % model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
 % model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
@@ -362,34 +362,63 @@ paramThermoFluxConsistency.printLevel = 1;
 paramThermoFluxConsistency.nMax = 40;
 paramThermoFluxConsistency.relaxBounds=0;
 paramThermoFluxConsistency.debug =1;
+paramThermoFluxConsistency.secondaryRemoval=0;%dont remove additional metabolites and reactions
 
 if 0
     save('pre_findThermoConsistentFluxSubset_model','model','paramThermoFluxConsistency','metBool3', 'rxnBool3')
     return
 end
 
-[model.thermoFluxConsistentMetBool,model.thermoFluxConsistentRxnBool,~,~] = findThermoConsistentFluxSubset(model, paramThermoFluxConsistency, ~metBool3, ~rxnBool3);
+% [thermoFluxConsistentMetBool,thermoFluxConsistentRxnBool,model,thermoConsistModel] = findThermoConsistentFluxSubset(model, param, removeMetBool, removeRxnBool)
+[~,~,~,thermoConsistModel] = findThermoConsistentFluxSubset(model, paramThermoFluxConsistency, ~metBool3, ~rxnBool3);
+
+% findThermoConsistentFluxSubset may remove other metabolites and reactions
+boolMet = ismember(model.mets,thermoConsistModel.mets);
+boolRxn = ismember(model.rxns,thermoConsistModel.rxns);
+
+%build the vectors the same size as the original S
+model.thermoFluxConsistentMetBool=false(nMet,1);
+model.thermoFluxConsistentMetBool(boolMet,:)=thermoConsistModel.thermoFluxConsistentMetBool;
+%bidirectional
+model.thermoFluxConsistentRxnBool=false(nRxn,1);
+model.thermoFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoFluxConsistentRxnBool;
+%forward
+model.thermoFwdFluxConsistentRxnBool=false(nRxn,1);
+model.thermoFwdFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoFwdFluxConsistentRxnBool;
+%reverse
+model.thermoRevFluxConsistentRxnBool=false(nRxn,1);
+model.thermoRevFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoRevFluxConsistentRxnBool;
+clear model2
+
+% Unable to perform assignment because the size of the left side is 5548-by-1 and the size of the right side is 8438-by-1.
+% 
+% Error in checkModelProperties (line 378)
+% model.fluxConsistentMetBool(metBool3,:)=model2.fluxConsistentMetBool;
+% 
+% Error in driver_humanModelComparison (line 93)
+%         model = checkModelProperties(model,printLevel);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically
 %inconsistent or flux inconsistent or thermodynamically inconsistent from further consideration, but keep the
 %flux consistent exchange reactions, also eliminate scalar multiples
-metBool3= model.SConsistentMetBool & model.thermoFluxConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
-rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
+metBool4= model.SConsistentMetBool & model.thermoFluxConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+rxnBool4=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
 
 %find rows that are not all zero when a subset of reactions omitted
-A3=[F(:,rxnBool3) R(:,rxnBool3)];
+A3=[F(:,rxnBool4) R(:,rxnBool4)];
 model.FRnonZeroRowBool = any(A3,2);
 
 %find cols that are not all zero when a subset of metabolites omitted
-A3=[F(metBool3,:); R(metBool3,:)];
+A3=[F(metBool4,:); R(metBool4,:)];
 model.FRnonZeroColBool = any(A3,1)';
 
 %only report for the latest subset of rows
-if any(~model.FRnonZeroRowBool & metBool3) && printLevel>0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
+if any(~model.FRnonZeroRowBool & metBool4) && printLevel>0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool4),' zero rows of [F,R]')
     for i=1:nMet
-        if ~model.FRnonZeroRowBool(i) && metBool3(i)
+        if ~model.FRnonZeroRowBool(i) && metBool4(i)
             fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
         end
     end
@@ -397,10 +426,10 @@ if any(~model.FRnonZeroRowBool & metBool3) && printLevel>0
 end
 
 %only report for the latest subset of cols
-if any(~model.FRnonZeroColBool & rxnBool3) && 0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool3),' zero cols of consistent [F;R]')
+if any(~model.FRnonZeroColBool & rxnBool4) && 0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool4),' zero cols of consistent [F;R]')
     for i=1:nRxn
-        if ~model.FRnonZeroColBool(i) && rxnBool3(i)
+        if ~model.FRnonZeroColBool(i) && rxnBool4(i)
             fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
         end
     end

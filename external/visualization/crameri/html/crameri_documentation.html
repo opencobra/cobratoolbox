@@ -1,0 +1,216 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>crameri documentation</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-02-04"><meta name="DC.source" content="crameri_documentation.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1><tt>crameri</tt> documentation</h1><!--introduction--><p><tt>crameri</tt> returns perceptually-uniform scientific colormaps created by <a href="http://www.fabiocrameri.ch/colourmaps.php">Fabio Crameri</a>.</p><p><img vspace="5" hspace="5" src="crameri7.0_reduced.png" alt=""> </p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Examples</a></li><li><a href="#11">Citing this colormap:</a></li><li><a href="#12">Author Info</a></li></ul></div><h2 id="1">Syntax</h2><pre>crameri
+cmap = crameri('ColormapName')
+cmap = crameri('-ColormapName')
+cmap = crameri(...,NLevels)
+cmap = crameri(...,'pivot',PivotValue)
+crameri(...)</pre><h2 id="2">Description</h2><p><tt>crameri</tt> without any inputs displays the options for colormaps.</p><p><tt>cmap = crameri('ColormapName')</tt> returns a 256x3 colormap. For a visual depiction of valid colormap names, type <tt>crameri</tt>.</p><p><tt>cmap = crameri('-ColormapName')</tt> a minus sign preceeding any <tt>ColormapName</tt> flips the order of the colormap.</p><p><tt>cmap = crameri(...,NLevels)</tt> specifies a number of levels in the colormap. Default value is <tt>256</tt>.</p><p><tt>cmap = crameri(...,'pivot',PivotValue)</tt> centers a diverging colormap such that white corresponds to a given value and maximum extents are set using current caxis limits. If no <tt>PivotValue</tt> is set, <tt>0</tt> is assumed.</p><p><tt>crameri(...)</tt> without any outputs sets the current colormap to the current axes.</p><h2 id="3">Examples</h2><p>Using this sample plot:</p><pre class="codeinput">imagesc(peaks(1000)+1)
+colorbar
+</pre><img vspace="5" hspace="5" src="crameri_documentation_01.png" alt=""> <p>Set the colormap to 'devon':</p><pre class="codeinput">crameri <span class="string">devon</span>
+</pre><img vspace="5" hspace="5" src="crameri_documentation_02.png" alt=""> <p>Same as above, but with an inverted devon colormap:</p><pre class="codeinput">crameri <span class="string">-devon</span>
+</pre><img vspace="5" hspace="5" src="crameri_documentation_03.png" alt=""> <p>Set the colormap to a 12-level 'hawaii':</p><pre class="codeinput">crameri(<span class="string">'hawaii'</span>,12)
+</pre><img vspace="5" hspace="5" src="crameri_documentation_04.png" alt=""> <p>Get the RGB values of a 5-level buda colormap:</p><pre class="codeinput">RGB = crameri(<span class="string">'buda'</span>,5)
+</pre><pre class="codeoutput">RGB =
+    0.7002    0.0027    0.7006
+    0.7353    0.3060    0.5652
+    0.8050    0.5211    0.4955
+    0.8605    0.7409    0.4401
+    1.0000    1.0000    0.4002
+</pre><p>Some of the values in the image are below zero and others are above. If this dataset represents anomalies, perhaps a diverging colormap is more appropriate:</p><pre class="codeinput">crameri(<span class="string">'cork'</span>)
+</pre><img vspace="5" hspace="5" src="crameri_documentation_05.png" alt=""> <p>It's unlikely that 1.7776 is an interesting value about which the data values diverge.  If you want to center the colormap on zero you can either change the color axis limits using <tt>caxis</tt>, or you can keep the current color axis limits by simply including the <tt>'pivot'</tt> option when you call <tt>crameri</tt>:</p><pre class="codeinput">crameri(<span class="string">'cork'</span>,<span class="string">'pivot'</span>,0)
+</pre><img vspace="5" hspace="5" src="crameri_documentation_06.png" alt=""> <p>For a final example, topography. Topography is a special case because it's usually important to clearly distinguish between land and ocean, but we still want a linear relationship between the perceived color and elevation. A typical divergent colormap like <tt>cork</tt> or <tt>vik</tt> might draw the eye toward the general direction of coastlines, but would not provide a clear definition between land and ocean, so the <tt>crameri</tt> colormaps include <tt>'oleron'</tt>, which is designed specifically for topography. Below I'm using my <a href="https://www.mathworks.com/matlabcentral/fileexchange/49065-shadem"><tt>shadem</tt></a> function to apply relief shading.</p><pre class="codeinput">load <span class="string">topo</span>
+
+figure
+imagesc(topolonlim,topolatlim,topo)
+axis <span class="string">xy</span>
+cb = colorbar;
+ylabel(cb,<span class="string">'elevation'</span>)
+
+shadem(-11,[225 83])
+crameri(<span class="string">'oleron'</span>,<span class="string">'pivot'</span>)
+</pre><img vspace="5" hspace="5" src="crameri_documentation_07.png" alt=""> <h2 id="11">Citing this colormap:</h2><p>Please acknowledge the free use of these colormaps by citing</p><p>Crameri, F. (2018). Scientific colour-maps. Zenodo. <a href="http://doi.org/10.5281/zenodo.1243862">http://doi.org/10.5281/zenodo.1243862</a></p><p>Crameri, F. (2018), Geodynamic diagnostics, scientific visualisation and StagLab 3.0, Geosci. Model Dev., 11, 2541-2562, doi:10.5194/gmd-11-2541-2018.</p><p>For more on choosing effective and accurate colormaps for science, be sure to enjoy this fine beach reading:</p><p>Thyng, K.M., C.A. Greene, R.D. Hetland, H.M. Zimmerle, and S.F. DiMarco. 2016. True colors of oceanography: Guidelines for effective and accurate colormap selection. Oceanography 29(3):9-13, <a href="http://dx.doi.org/10.5670/oceanog.2016.66">http://dx.doi.org/10.5670/oceanog.2016.66</a>.</p><h2 id="12">Author Info</h2><p>This function and supportind documentation were written by Chad A. Greene of the University of Texas Institute for Geophysics (UTIG), August 2018, using Fabio Crameri's scientific colormaps, version 7.0. <a href="http://www.fabiocrameri.ch/colourmaps.php">http://www.fabiocrameri.ch/colourmaps.php</a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% |crameri| documentation
+% |crameri| returns perceptually-uniform scientific colormaps created
+% by <http://www.fabiocrameri.ch/colourmaps.php Fabio Crameri>. 
+% 
+% <<crameri7.0_reduced.png>> 
+%
+%% Syntax 
+% 
+%  crameri 
+%  cmap = crameri('ColormapName') 
+%  cmap = crameri('-ColormapName') 
+%  cmap = crameri(...,NLevels)
+%  cmap = crameri(...,'pivot',PivotValue) 
+%  crameri(...)
+% 
+%% Description 
+% 
+% |crameri| without any inputs displays the options for colormaps. 
+% 
+% |cmap = crameri('ColormapName')| returns a 256x3 colormap. For a visual
+% depiction of valid colormap names, type |crameri|. 
+%
+% |cmap = crameri('-ColormapName')| a minus sign preceeding any |ColormapName| flips the
+% order of the colormap. 
+%
+% |cmap = crameri(...,NLevels)| specifies a number of levels in the colormap. Default
+% value is |256|. 
+%
+% |cmap = crameri(...,'pivot',PivotValue)| centers a diverging colormap such that white 
+% corresponds to a given value and maximum extents are set using current caxis limits. 
+% If no |PivotValue| is set, |0| is assumed. 
+%
+% |crameri(...)| without any outputs sets the current colormap to the current axes.  
+% 
+%% Examples 
+% Using this sample plot: 
+
+imagesc(peaks(1000)+1)
+colorbar
+
+%% 
+% Set the colormap to 'devon': 
+
+crameri devon
+
+%% 
+% Same as above, but with an inverted devon colormap: 
+
+crameri -devon
+
+%%
+% Set the colormap to a 12-level 'hawaii': 
+
+crameri('hawaii',12)
+
+%% 
+% Get the RGB values of a 5-level buda colormap: 
+
+RGB = crameri('buda',5)
+
+%%
+% Some of the values in the image are below zero and others are above. If this dataset represents
+% anomalies, perhaps a diverging colormap is more appropriate: 
+
+crameri('cork') 
+
+%%
+% It's unlikely that 1.7776 is an interesting value about which the data values 
+% diverge.  If you want to center the colormap on zero you can either change 
+% the color axis limits using |caxis|, or you can keep the current color axis
+% limits by simply including the |'pivot'| option when you call |crameri|:  
+
+crameri('cork','pivot',0) 
+
+%% 
+% For a final example, topography. Topography is a special case because it's usually
+% important to clearly distinguish between land and ocean, but we still want a linear
+% relationship between the perceived color and elevation. A typical divergent colormap
+% like |cork| or |vik| might draw the eye toward the general direction of coastlines, but
+% would not provide a clear definition between land and ocean, so the |crameri| colormaps
+% include |'oleron'|, which is designed specifically for topography. Below I'm using
+% my <https://www.mathworks.com/matlabcentral/fileexchange/49065-shadem |shadem|> 
+% function to apply relief shading. 
+
+load topo
+
+figure
+imagesc(topolonlim,topolatlim,topo) 
+axis xy 
+cb = colorbar; 
+ylabel(cb,'elevation') 
+
+shadem(-11,[225 83]) 
+crameri('oleron','pivot') 
+
+%% Citing this colormap: 
+% Please acknowledge the free use of these colormaps by citing
+% 
+% Crameri, F. (2018). Scientific colour-maps. Zenodo. <http://doi.org/10.5281/zenodo.1243862>
+% 
+% Crameri, F. (2018), Geodynamic diagnostics, scientific visualisation and 
+% StagLab 3.0, Geosci. Model Dev., 11, 2541-2562, doi:10.5194/gmd-11-2541-2018.
+% 
+% For more on choosing effective and accurate colormaps for science, be sure
+% to enjoy this fine beach reading: 
+% 
+% Thyng, K.M., C.A. Greene, R.D. Hetland, H.M. Zimmerle, and S.F. DiMarco. 2016. True 
+% colors of oceanography: Guidelines for effective and accurate colormap selection. 
+% Oceanography 29(3):9-13, <http://dx.doi.org/10.5670/oceanog.2016.66>.
+% 
+%% Author Info 
+% This function and supportind documentation were written by Chad A. Greene of the University of Texas
+% Institute for Geophysics (UTIG), August 2018, using Fabio Crameri's 
+% scientific colormaps, version 7.0. <http://www.fabiocrameri.ch/colourmaps.php>
+##### SOURCE END #####
+--></body></html>
