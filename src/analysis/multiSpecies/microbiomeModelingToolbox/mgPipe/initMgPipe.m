@@ -123,7 +123,12 @@ end
 
 % test if abundances are normalized
 abundance = readInputTableForPipeline(abunFilePath);
-totalAbun=sum(str2double(abundance(2:end,2:end)),1);
+if contains(version,'(R202') % for Matlab R2020a and newer
+	totalAbun=sum(cell2mat(abundance(2:end,2:end)),1);
+else
+	totalAbun=sum(str2double(abundance(2:end,2:end)),1);
+end
+
 if any(totalAbun > 1.01)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
