@@ -41,6 +41,11 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %       - Ronan Fleming, 2017
 %       - Mojtaba Tefagh, March 2019 - integration of swiftcc
 
+% .. Author: - Ronan Fleming 2022
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
+
 if ~exist('param','var') || isempty(param)
     param = struct();
 end

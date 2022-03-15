@@ -49,7 +49,10 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 % stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.    
 %
 
-% .. Author: - Ronan Fleming 2017-2022
+% .. Author: - Ronan Fleming 2022
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 if ~exist('printLevel','var')
     printLevel=1;
