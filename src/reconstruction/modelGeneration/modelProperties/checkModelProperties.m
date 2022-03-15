@@ -3,10 +3,33 @@ function  [model] = checkModelProperties(model,printLevel)
 % biochemistry
 %
 %INPUT
-% model.S
+% model
 % printLevel
 %
 %OUTPUT
+% model.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+% model.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
+% model.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
+% model.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
+% model.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
+% model.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
+% model.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
+% model.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
+% model.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+% model.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+% model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
+% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
+% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
+% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
+% model.fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
+% model.fluxConsistentRxnBool:      `n` x 1 boolean vector indicating flux consistent `rxns`
+% model.fluxInConsistentMetBool:    `m` x 1 boolean vector indicating flux inconsistent `mets`
+% model.fluxInConsistentRxnBool:    `n` x 1 boolean vector indicating flux inconsistent `rxns`
+% model.thermoFluxConsistentMetBool m x 1 boolean vector indicating thermodynamically flux consistent mets
+% model.thermoFluxConsistentRxnBool n x 1 boolean vector indicating thermodynamically flux consistent rxns
+% model.thermoFwdFluxConsistentRxnBool n x 1 boolean vector indicating forward thermodynamically flux consistent rxns
+% model.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns
+%
 % model.rankFR                    rank of [F R], when using only FRrows
 % model.rankFRV                   rank of [F;R], when using only FRVcols
 % model.rankFRvanilla             rank of [F R], when using all rows
@@ -22,10 +45,6 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.FRwrows             m x 1 boolean of independent rows of [F R] that
 %                           have dependent rows amongst model.FRdrows
 % model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent
-% model.SConsistentMetBool  m x 1 boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
-% model.SConsistentRxnBool  n x 1 boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
 % model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved
 %                           in at least one internal reaction
 % model.FRuniqueBool        m x 1 boolean vector indicating metabolites with
@@ -39,14 +58,17 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
 % model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
 % model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
-% model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
-% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
-% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
-% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
 
 % Author Ronan M.T. Fleming
 
-% Citation
+% .. Author: - Ronan Fleming 2015 - 2022
+% .. Please cite:
+% Fleming RMT, Vlassis N, Thiele I, Saunders MA. 
+% Conditions for duality between fluxes and concentrations in biochemical networks. 
+% Journal of Theoretical Biology. 2016 Nov 21;409:1–10. 
+% AND
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 
 if ~exist('printLevel','var')

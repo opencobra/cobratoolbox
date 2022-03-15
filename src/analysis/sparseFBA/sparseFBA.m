@@ -58,8 +58,11 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %    sparseRxnBool:       Returns a vector with 1 and 0's, where 1 means sparse
 %    essentialRxnBool:    Returns a vector with 1 and 0's, where 1 means essential
 %
-% Authors: - Hoai Minh Le, Ronan Fleming
 
+% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 if exist('osenseStr', 'var')
     if isempty(osenseStr)
@@ -236,12 +239,17 @@ end
 
 if isfield(model,'C')
     %pad out matrices with a new slack variable (s)
-    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <= s
-    e(model.csense == 'E',1) = 0;
-    e(model.csense == 'G',1) = -1;
-    e(model.csense == 'L',1) = 1;
-    Ie=spdiags(e,0,nMets+nIneq,nMets+nIneq);
-    eBool=e~=0;
+    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <=
+    e1 = zeros(nMets,1);
+    e1(model.csense == 'E',1) = 0;
+    e1(model.csense == 'G',1) = -1;
+    e1(model.csense == 'L',1) = 1;
+    e2 = zeros(nIneq,1);
+    e2(model.dsense == 'E',1) = 0;
+    e2(model.dsense == 'G',1) = -1;
+    e2(model.dsense == 'L',1) = 1;
+    Ie=spdiags([e1;e2],0,nMets+nIneq,nMets+nIneq);
+    eBool=[e1;e2]~=0;
     Ie=Ie(:,eBool);
 end
 

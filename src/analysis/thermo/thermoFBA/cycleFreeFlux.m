@@ -229,12 +229,24 @@ else
             v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
             Vthermo(:, i) = v1;
             thermoConsistentFluxBool(:,i) = abs(v0 - v1) < eta;
-            if ~param.relaxBounds
+            forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 ;
+            forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 ;
+            if param.relaxBounds
+                %if bounds can be relaxed, forced internal reaction assumed to be thermodynamically consistent if reparied flux in the same direction and greater as the forcing
+                bool = forcedFwdRxnBool & thermoConsistentFluxBool & v1 < model_lb;
+                if any(bool)
+                    disp(bool)
+                end
+                thermoConsistentFluxBool(bool) = 0;
+                bool = forcedRevRxnBool & thermoConsistentFluxBool & v1 > model_ub;
+                if any(bool)
+                    disp(bool)
+                end
+                thermoConsistentFluxBool(bool) = 0;
+            else
                 %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
-                forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v1 - model_lb) < eta;
-                forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v1 - model_ub) < eta;
-                thermoConsistentFluxBool(forcedFwdRxnBool)=0;
-                thermoConsistentFluxBool(forcedRevRxnBool)=0;
+                thermoConsistentFluxBool(forcedFwdRxnBool & abs(v1 - model_lb) < eta)=0;
+                thermoConsistentFluxBool(forcedRevRxnBool & abs(v1 - model_ub) < eta)=0;
             end
         catch ME
             disp(ME.message)

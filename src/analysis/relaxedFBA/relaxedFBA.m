@@ -118,8 +118,10 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %
 % relaxedModel       model structure that admits a flux balance solution
 %
-% .. Authors: - Hoai Minh Le, Ronan Fleming
-%              
+% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).  
 
 if isfield(model,'E')
     issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
