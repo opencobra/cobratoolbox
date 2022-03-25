@@ -169,15 +169,26 @@ if isfield(model,'C')
         if printLevel>1
             fprintf('%s\n','No defined csense.')
             fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
         end
         model.csense(1:nMets,1) = 'E';
-        model.csense(nMets+1:nMets+nIneq,1) = 'L';
     else
-        if length(model.csense)~=nMets+nIneq
+        if length(model.csense)~=nMets
             error('Length of csense is invalid! Defaulting to equality constraints.')
         else
             model.csense = columnVector(model.csense);
+        end
+    end
+    if ~isfield(model,'dsense')
+        if printLevel>1
+            fprintf('%s\n','No defined dsense.')
+            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+        end
+        model.dsense(1:nIneq,1) = 'L';
+    else
+        if length(model.dsense)~=nIneq
+            error('Length of csense is invalid! Defaulting to equality constraints.')
+        else
+            model.dsense = columnVector(model.dsense);
         end
     end
 else

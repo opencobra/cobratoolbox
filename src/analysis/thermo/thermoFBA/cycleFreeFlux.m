@@ -234,12 +234,12 @@ else
             if param.relaxBounds
                 %if bounds can be relaxed, forced internal reaction assumed to be thermodynamically consistent if reparied flux in the same direction and greater as the forcing
                 bool = forcedFwdRxnBool & thermoConsistentFluxBool & v1 < model_lb;
-                if any(bool)
+                if any(bool) && length(bool)<10
                     disp(bool)
                 end
                 thermoConsistentFluxBool(bool) = 0;
                 bool = forcedRevRxnBool & thermoConsistentFluxBool & v1 > model_ub;
-                if any(bool)
+                if any(bool) && length(bool)<10
                     disp(bool)
                 end
                 thermoConsistentFluxBool(bool) = 0;
@@ -907,6 +907,9 @@ if solution.stat ==1
     end
     
     v1 = solution.full(1:n);
+    
+    %zero out small values 
+    v1(abs(v1)<feasTol/100)=0;
 else
     if param.debug
         fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
