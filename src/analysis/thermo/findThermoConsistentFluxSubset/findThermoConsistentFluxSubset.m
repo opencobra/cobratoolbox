@@ -42,6 +42,10 @@ function [thermoFluxConsistentMetBool,thermoFluxConsistentRxnBool,model,thermoCo
 %                                *.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns
 %
 % thermoConsistModel            subset of the input model that is thermodynamically consistent
+%
+% EXAMPLES:
+% See COBRA.papers/2022_cardOpt/driver_testFindThermoFluxConsistency.mlx
+%     COBRA.tutorials/analysis/vonBertalanffy/findThermoConsistentFluxSubset/tutorial_findThermoConsistentFluxSubset.mlx
 
 % .. Author: - Ronan Fleming 2022
 % .. Please cite:
@@ -96,7 +100,7 @@ if param.printLevel > 0
     end
 end
 if ~isfield(param,'relaxBounds')
-    param.relaxBounds=1; %relax internal bounds to admit forced reactions
+    param.relaxBounds=0; %relax internal bounds to admit forced reactions
 end
 if ~isfield(param,'acceptRepairedFlux')
     if param.relaxBounds==0 && any(model.forcedIntRxnBool)
@@ -389,6 +393,8 @@ totalFractThermoModelRxn = 0;
 thermo2FluxConsistentBool0 = false(nRxn,2);
 thermoExFluxConsistentBool0 = false(nRxn,1);
 thermoFluxConsistentBool0 = false(nRxn,1);
+thermoFluxConsistentBool00 = false(nRxn,1);
+thermoExFluxConsistentBool00 = false(nRxn,1);
 
 fractNonZeroFwdRxnThermoConsistent = 0.5;
 n=1;
@@ -404,7 +410,10 @@ while go
         optCardThermoParam.printLevel = param.printLevel -1;
     end
 
-    while ~any(model.g0(~model.SConsistentRxnBool))
+    %reset incentives
+    model.g0(:)=1;
+    setIncentives = 1;
+    while setIncentives
         %keep trying until at least one exchange reaction is being optimised
         switch param.iterationMethod
             case 'internal'
@@ -448,7 +457,9 @@ while go
                 model.g0(thermoFluxConsistentBool0)=0;
                 
         end
-        if ~any(model.g0(~model.SConsistentRxnBool))
+        if any(model.g0(~model.SConsistentRxnBool))
+            setIncentives = 0;
+        else
             fprintf('%s\n','No exchange reaction is being optimised, making another random selection.')
         end
     end
@@ -500,10 +511,6 @@ while go
     thermo2FluxConsistentBool0(model.SConsistentRxnBool,2) = thermo2FluxConsistentBool0(model.SConsistentRxnBool,2) | nonZeroRevThermoFluxBool(model.SConsistentRxnBool);
     thermoExFluxConsistentBool0(~model.SConsistentRxnBool) = thermoExFluxConsistentBool0(~model.SConsistentRxnBool) | nonZeroExternalFluxBool(~model.SConsistentRxnBool);
     
-    if n==1
-        thermoExFluxConsistentBool00 = thermoExFluxConsistentBool0;
-    end
-    
     if all(thermoExFluxConsistentBool0(~model.SConsistentRxnBool))
         RR = 'R';
         if param.printLevel>1
@@ -518,22 +525,23 @@ while go
     
     %amalgamate all three into one vector
     thermoFluxConsistentBool0 = thermo2FluxConsistentBool0(:,1) | thermo2FluxConsistentBool0(:,2) | thermoExFluxConsistentBool0;
+    thermoFluxConsistentBool00 = thermo2FluxConsistentBool0(:,1) | thermo2FluxConsistentBool0(:,2) | thermoExFluxConsistentBool00;
     
     %total fraction of reactions that admit a non-zero thermodynamically consistent flux in all iterations
     %forward, reverse, external
     totalFractThermoFeasFwdRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,1))/nIntRxn;
     totalFractThermoFeasRevRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,2))/nIntRxn;
     totalFractExternalRxn = nnz(thermoExFluxConsistentBool00(~model.SConsistentRxnBool))/nExRxn;
-    totalFractThermoFeasRxn = nnz(thermoFluxConsistentBool0 | thermoExFluxConsistentBool00)/nRxn;
+    totalFractThermoFeasRxn = nnz(thermoFluxConsistentBool00 | thermoExFluxConsistentBool00)/nRxn;
     
     %total fraction of internal reactions that admit a non-zero thermodynamically
     %consistent flux and external reactions that admit a non-zero flux
     totalFractThermoModelRxnOld = totalFractThermoModelRxn;
-    totalFractThermoModelRxn = nnz(thermoFluxConsistentBool0)/(2*nRxn+nExRxn);
+    totalFractThermoModelRxn = nnz(thermoFluxConsistentBool00)/(2*nRxn+nExRxn);
     
-    if param.debug && length(solution.v)<10 && 0
+    if param.debug && length(solution.v)<10
         if isfield(solution,'vUnrepaired')
-            table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'therm' 'forced'})
+            table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'it.therm' 'forced' 't.therm'})
         else
             table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'forced'})
         end
@@ -556,9 +564,7 @@ while go
     if totalFractThermoModelRxnOld==totalFractThermoModelRxn
         noProgress=noProgress+1;
     end
-    
 
-        
     if (totalFractExternalRxn==1 && totalFractThermoFeasFwdRxn ==1 && totalFractThermoFeasRevRxn ==1) || n==param.nMax || noProgress==5
         if param.printLevel>0
         fprintf('%6%8s%8s%8s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s\n','Reset','iter','nnz(g0<0)','nnz','  feas.f', '   rep.feas.f', 't.feas.f.','  feas.r', '   rep.feas.r', 't.feas.r', 't.feas.int', 't.feas.ext','iteration', 'formulation')
@@ -587,20 +593,18 @@ end
 
 if param.debug && length(solution.v)<10
     if isfield(solution,'vUnrepaired')
-        table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool0,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'therm' 'forced' 'final'})
+        table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'therm' 'forced' 'final'})
     else
-        table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool0,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'forced' 'final'})
+        table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'forced' 't.therm'})
     end
 end
     
-model.thermoFluxConsistentRxnBool=thermoFluxConsistentBool0; 
-
-%metabolites inclusively involved in thermodynamically consistent reactions are deemed thermodynamically consistent also
-thermoFluxConsistentMetBool0 = getCorrespondingRows(model.S,true(size(model.S,1),1),model.thermoFluxConsistentRxnBool,'inclusive');
-
-model.thermoFluxConsistentMetBool = thermoFluxConsistentMetBool0;
+model.thermoFluxConsistentRxnBool=thermoFluxConsistentBool00; 
 model.thermoFwdFluxConsistentRxnBool = thermo2FluxConsistentBool0(:,1);
 model.thermoRevFluxConsistentRxnBool = thermo2FluxConsistentBool0(:,2);
+
+%metabolites inclusively involved in thermodynamically consistent reactions are deemed thermodynamically consistent also
+model.thermoFluxConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),model.thermoFluxConsistentRxnBool,'inclusive');
     
 if any(model.thermoFluxConsistentRxnBool)
     rxnRemoveList = model.rxns(~model.thermoFluxConsistentRxnBool);

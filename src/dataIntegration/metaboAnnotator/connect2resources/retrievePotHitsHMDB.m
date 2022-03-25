@@ -46,7 +46,7 @@ if exist('syst','var')
                 
                 % there seems to be a problem those entries of the HMDB website
                 failedhmdbids = {'HMDB0247409, HMDB0004062', 'HMDB0040446', 'HMDB0033968', 'HMDB0004231', 'HMDB004231', 'HMDB0011737', 'HMDB0004062', 'HMDB0012252'};
-
+                
                 if ~any(strcmp(failedhmdbids, potHMDB))
                     % now check whether it is a perfect match
                     clear syst
@@ -61,56 +61,67 @@ if exist('syst','var')
                         if contains(lower(syst),lower(met))
                             % check that it is in name or synonym
                             % common name:
-                            clear tok*
-                            [tok,rem] = split(syst,'Common Name</th>');
-                            % sometimes the ping did not work, just move on
-                            % instead of dying
-                            if length(tok)>1
-                                [tok2,rem] = split(tok{2},'</td>');
-                                commonName = regexprep(tok2{1},'<td><strong>','');
-                                commonName = regexprep(commonName,'</strong>','');
-                                commonName = regexprep(commonName,'&#39','');
-                                % IUPAC Name
-                                clear tok*
-                                [tok,rem] = split(syst,'IUPAC Name</th><td>');
-                                [tok2,rem] = split(tok{2},'</td>');
-                                IUPAC =tok2{1};
-                                IUPAC = regexprep(IUPAC,'&#39','');
-                                % Synonyms
-                                clear tok*
-                                [tok,rem] = split(syst,'Synonyms</th>');
-                                [tok2,rem]= split(tok{2},'</table>');
-                                tmp = regexprep(tok2{1},'<td class="data-table-container"><table class="table-inner"><thead><tr><th class="head-large">Value','');
-                                tmp = regexprep(tmp,'<\/th><th>Source<\/th><\/tr><\/thead><tbody><tr><td>','');
-                                tmp2 = split(tmp,'</td>');
-                                syn = tmp2(1:2:end-1);
-                                % remove '
-                                syn = regexprep(syn,'\;','');
-                                syn = regexprep(syn,'&#39','');
-                                syn = regexprep(syn,'<\/tr><tr><td>','');
-                                % Traditional Name
-                                clear tok*
-                                [tok,rem] = split(syst,'Traditional Name</th><td>');
-                                [tok2,rem]= split(tok{2},'</td>');
-                                tradName = tok2{1};
-                                if strcmp(lower(met),lower(commonName))||...
-                                        strcmp(lower(met),lower(IUPAC))||...
-                                        strcmp(lower(met),lower(tradName))||...
-                                        length(find(ismember(lower(syn),lower(met))))
-                                    
-                                    % check now that synomyms is a full hit
-                                    if isempty(hmdb)
-                                        hmdb = potHMDB;
-                                    else
-                                        hmdb = [hmdb ';' potHMDB];
-                                        multipleHits = 1;
-                                    end
-                                end
-                            end
+                          [hmdb, multipleHits] = getHMDBID(met,potHMDB, syst,hmdb,multipleHits);
+                        else
+                            % met has every parenthesis removed.
+                            % Try to find matches when removing
+                            % parenthesis from HMDB entries
+                            syst = regexprep(syst,'\(','');
+                            syst = regexprep(syst,'\)','');
+                            syst = regexprep(syst,'\[','');
+                            syst = regexprep(syst,'\]','');
+                            [hmdb, multipleHits] = getHMDBID(met,potHMDB, syst,hmdb,multipleHits);
                         end
                     end
                 end
             end
+        end
+    end
+end
+function [hmdb, multipleHits] = getHMDBID(met,potHMDB, syst,hmdb,multipleHits)
+clear tok*
+[tok,rem] = split(syst,'Common Name</th>');
+% sometimes the ping did not work, just move on
+% instead of dying
+if length(tok)>1
+    [tok2,rem] = split(tok{2},'</td>');
+    commonName = regexprep(tok2{1},'<td><strong>','');
+    commonName = regexprep(commonName,'</strong>','');
+    commonName = regexprep(commonName,'&#39','');
+    % IUPAC Name
+    clear tok*
+    [tok,rem] = split(syst,'IUPAC Name</th><td>');
+    [tok2,rem] = split(tok{2},'</td>');
+    IUPAC =tok2{1};
+    IUPAC = regexprep(IUPAC,'&#39','');
+    % Synonyms
+    clear tok*
+    [tok,rem] = split(syst,'Synonyms</th>');
+    [tok2,rem]= split(tok{2},'</table>');
+    tmp = regexprep(tok2{1},'<td class="data-table-container"><table class="table-inner"><thead><tr><th class="head-large">Value','');
+    tmp = regexprep(tmp,'<\/th><th>Source<\/th><\/tr><\/thead><tbody><tr><td>','');
+    tmp2 = split(tmp,'</td>');
+    syn = tmp2(1:2:end-1);
+    % remove '
+    syn = regexprep(syn,'\;','');
+    syn = regexprep(syn,'&#39','');
+    syn = regexprep(syn,'<\/tr><tr><td>','');
+    % Traditional Name
+    clear tok*
+    [tok,rem] = split(syst,'Traditional Name</th><td>');
+    [tok2,rem]= split(tok{2},'</td>');
+    tradName = tok2{1};
+    if strcmp(lower(met),lower(commonName))||...
+            strcmp(lower(met),lower(IUPAC))||...
+            strcmp(lower(met),lower(tradName))||...
+            length(find(ismember(lower(syn),lower(met))))
+        
+        % check now that synomyms is a full hit
+        if isempty(hmdb)
+            hmdb = potHMDB;
+        else
+            hmdb = [hmdb ';' potHMDB];
+            multipleHits = 1;
         end
     end
 end
