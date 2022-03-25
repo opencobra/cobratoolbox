@@ -122,7 +122,7 @@ else
     vmh_col = b;
     
     for i = 2 : size(RAW,1)
-        progress = i/size(RAW,1);
+        progress = i/(size(RAW,1)-1);
         fprintf([num2str(progress) '% ...Creating abbreviations ... \n']);
         fprintf('\t')
         disp(RAW{i,name_col})

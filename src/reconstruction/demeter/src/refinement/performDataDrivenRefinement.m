@@ -66,8 +66,16 @@ if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
+        % seems to try to fix exchanges that are not part of the model,
+        % leading it to crash:
+        %         Objective reactions not found in model!
+        %
+        % Error in runGapfillingFunctions (line 41)
+        % model = changeObjective(model, objectiveFunction);
+        try
         [model,gapfilledRxns] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
         dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+        end
     end
     if ~isempty(dataDrivenGapfill)
         summary.('DataDrivenGapfill')=dataDrivenGapfill;
