@@ -331,4 +331,6 @@ else
     Biomass_fluxes(2:end,2:5) = num2cell(data);
 end
 
+writetable(cell2table(Biomass_fluxes),[testResultsFolder filesep 'Biomass_fluxes.csv'],'WriteVariableNames',false)
+
 end

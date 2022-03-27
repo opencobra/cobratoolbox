@@ -236,4 +236,6 @@ else
     ATP_fluxes(2:end,2:3) = num2cell(data);
 end
 
+writetable(cell2table(ATP_fluxes),[testResultsFolder filesep 'ATP_fluxes.csv'],'WriteVariableNames',false)
+
 end

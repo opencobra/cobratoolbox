@@ -6,7 +6,7 @@ function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,v
 % propagated data manually afterwards.
 %
 % USAGE:
-%   prepareInputData(infoFilePath,inputDataFolder,spreadsheetFolder)
+%   [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,varargin)
 %
 % REQUIRED INPUT
 % infoFilePath          File with information on reconstructions to refine

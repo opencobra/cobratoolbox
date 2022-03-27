@@ -103,7 +103,7 @@ for k=1:size(analyzedFiles,1)
                 toDel=sum(data,1)<tol;
                 data(:,toDel)=[];
                 
-                % remove entries that are NaNs
+                % remove entries that are NaNs or empty
                 findnans=any(isnan(data));
                 data(:,findnans==1)=[];
                 
@@ -114,8 +114,12 @@ for k=1:size(analyzedFiles,1)
                 data(find(strcmp(taxa,'NA')),:)=[];
                 red_orgs(strcmp(taxa,'NA'),:)=[];
                 taxa(find(strcmp(taxa,'NA')),:)=[];
-                
-                
+
+                % remove empty cells
+                data(find(strcmp(taxa,'')),:)=[];
+                red_orgs(strcmp(taxa,''),:)=[];
+                taxa(find(strcmp(taxa,'')),:)=[];
+
                 % remove unclassified organisms
                 data(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
                 red_orgs(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
@@ -160,6 +164,12 @@ for k=1:size(analyzedFiles,1)
                     red_orgs(ismember(taxa,C),:)=[];
                     taxa(find(ismember(taxa,C)),:)=[];
                 end
+
+                % sort alphabetically
+                [B,I]=sortrows(taxa,'ascend');
+                data = data(I,:);
+                red_orgs = red_orgs(I,:);
+                taxa = taxa(I,:);
                 
                 if size(data,1)>10
                     

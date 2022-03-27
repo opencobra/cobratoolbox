@@ -92,6 +92,9 @@ if FBA.f < tol
             'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'}  % some can only produce PYDX5P aerobically
             'SUCDi', {'EX_succ(e)','SUCCt','EX_q8(e)','Q8abc'}
             'DHFOR2', {'EX_fol(e)','FOLabc'}
+            'FAS141ACP', {'MALACPS'}
+            'ALCD2x', {'EX_etoh(e)','ETOHt2r'}
+            'H2CO3D', {'EX_hco3(e)','HCO3abc'}
             };
         for i = 1:size(testFix, 1)
             if any(ismember(model.rxns, testFix{i, 1}))

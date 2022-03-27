@@ -213,7 +213,7 @@ if find(strcmp(infoFile(:,1),microbeID))
             
             % get the gram status from the collected data. Include bacteria here
             % that stain gram negative but have gram positive cell wall structure
-            if strcmp(gramStatus,'Gram+') || any(strcmp(genus,{'Acidaminobacter','Gracilibacter','Mageeibacillus'})) || strcmp(phylum,'Deinococcus-Thermus')
+            if strcmp(gramStatus,'Gram+') || any(strcmp(genus,{'Acidaminobacter','Gracilibacter','Intestinibacillus','Mageeibacillus','Massiliomicrobiota','Flavonifractor','Pseudoflavonifractor'})) || strcmp(phylum,'Deinococcus-Thermus')
                 %% fix and gapfill gram-positive organisms
                 [C,IA] = intersect(bioSub,gramnegComp);
                 removedBioComp=union(removedBioComp,C);
