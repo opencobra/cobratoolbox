@@ -227,7 +227,9 @@ if ~isempty(mRow)
             {'EX_ptrc(e)'},{'-1'},{'1'},{''},{''},{'EX_ptrc(e)'},{'EX_urea(e)','UREAt','AGMT','ORNDC','ARGN'},{''},{''}
             {'EX_ptrc(e)','EX_orn(e)'},{'-1'},{'1'},{''},{''},{'EX_ptrc(e)','EX_orn(e)'},{'EX_urea(e)','UREAt','AGMT','ORNDC','ARGN'},{''},{''}
             %             {'EX_ptrc(e)','EX_orn(e)'},{'0'},{''},{''},{''},{'EX_ptrc(e)','EX_orn(e)'},{'EX_urea(e)','UREAt','AGMT','ORNDC','ARGN'},{''},{''}
-            {'EX_spmd(e)'},{'-1'},{'1'},{''},{''},{'EX_spmd(e)'},{'SPMS','ADMDCr','MTAN','DM_5MTR','ORNDC','EX_ade(e)','ADEt2r'},{''},{''}
+            % {'EX_spmd(e)'},{'-1'},{'1'},{''},{''},{'EX_spmd(e)'},{'SPMS','ADMDCr','MTAN','DM_5MTR','ORNDC','EX_ade(e)','ADEt2r'},{''},{''}
+            % % IT 03/2022 AMDCr is not in rBioNet anymore
+            {'EX_spmd(e)'},{'-1'},{'1'},{''},{''},{'EX_spmd(e)'},{'SPMS','ADMDC','MTAN','DM_5MTR','ORNDC','EX_ade(e)','ADEt2r'},{''},{''}
             {'EX_anth(e)'},{'-1'},{'1'},{''},{''},{'EX_anth(e)'},{'EX_trp_L(e)','TRPt2r'},{'EX_anth(e)','ANTHte'},{''}
             {'EX_4hbz(e)'},{'-1'},{'1'},{''},{''},{'EX_4hbz(e)'},{'EX_trp_L(e)','TRPt2r','EX_phe_L(e)','PHEt2r','EX_tyr_L(e)','TYRt2r','EX_q8(e)','Q8abc'},{'EX_4hbz(e)','4HBZt2'},{''}
             {'EX_chor(e)'},{'-1'},{'1'},{''},{''},{'EX_chor(e)'},{'EX_trp_L(e)','TRPt2r','EX_phe_L(e)','PHEt2r','EX_tyr_L(e)','TYRt2r','EX_mqn7(e)','MK7t','EX_mqn8(e)','MK8t','DDPA','DHQS','DHQTi','SHK3Dr','SHKK','PSCVT','CHORS'},{'EX_chor(e)','CHORt'},{''}
@@ -469,10 +471,14 @@ if ~isempty(mRow)
                     [rxnsToAdd,IA]=setdiff(conditions{i,7},model.rxns);
                     if ~isempty(rxnsToAdd)
                         for j=1:length(rxnsToAdd)
+                            try
                             formula = database.reactions{find(strcmp(database.reactions(:, 1), rxnsToAdd{j})), 3};
                             model = addReaction(model, rxnsToAdd{j}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
                             % for the ones that are essential in vitro
-                        end
+                            catch
+                            x
+                            end
+                            end
                         FBA=optimizeCbModel(model,'max');
                         if FBA.f>tol
                             % test if all reactions are needed
