@@ -99,7 +99,7 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                     the algorithm is useful when trying different values
 %                     of theta to start with the appropriate parameter
 %                     giving the lowest cardinality solution.
-%
+%                     * .relaxedPrintLevel (Default = 0) Printing information on relaxed reactions
 %                     * .maxRelaxR (Default = 1e4), maximum relaxation
 %                     of any bound or equality constraint permitted
 %
@@ -118,8 +118,10 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %
 % relaxedModel       model structure that admits a flux balance solution
 %
-% .. Authors: - Hoai Minh Le, Ronan Fleming
-%              
+% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).  
 
 if isfield(model,'E')
     issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
@@ -161,8 +163,9 @@ if ~isfield(param,'maxRelaxR')
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models
-else
-    printLevel=param.printLevel;
+end
+if ~isfield(param,'relaxedPrintLevel')
+    param.relaxedPrintLevel = 0;
 end
 if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
     SIntRxnBool = model.SIntRxnBool;
@@ -279,7 +282,7 @@ end
 %check the csense and dsense and make sure it is consistent
 if isfield(model,'C')
     if ~isfield(model,'csense')
-        if printLevel>1
+        if param.printLevel>1
             fprintf('%s\nRxns','No defined csense.')
             fprintf('%s\nRxns','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
         end
@@ -299,7 +302,7 @@ if isfield(model,'C')
     end
     
     if ~isfield(model,'dsense')
-        if printLevel>1
+        if param.printLevel>1
             fprintf('%s\nRxns','No defined dsense.')
             fprintf('%s\nRxns','We assume that all constraints C & d constraints are C*v <= d')
         end
@@ -314,7 +317,7 @@ if isfield(model,'C')
 else
     if ~isfield(model,'csense')
         % If csense is not declared in the model, assume that all constraints are equalities.
-        if printLevel>1
+        if param.printLevel>1
             fprintf('%s\nRxns','We assume that all mass balance constraints are equalities, i.e., S*v = dxdt = 0')
         end
         model.csense(1:nMets,1) = 'E';
@@ -483,15 +486,15 @@ else
                 fprintf('%u%s\n', nnz(abs(solution.r)>=feasTol), ' steady state relaxation(s)');
                 
                 if isfield(relaxedModel,'rxns')
-                    if param.printLevel>0 && any(solution.p>=feasTol)
+                    if param.relaxedPrintLevel>0 && any(solution.p>=feasTol)
                         fprintf('%s\n','The lower bound of these reactions had to be relaxed:')
                         printConstraints(model,-inf,inf, solution.p>=feasTol,relaxedModel,0);
                     end
-                    if param.printLevel>0 && any(solution.q>=feasTol)
+                    if param.relaxedPrintLevel>0 && any(solution.q>=feasTol)
                         fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
                         printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
                     end
-                    if param.printLevel>0 && any(abs(solution.r)>=feasTol)
+                    if param.relaxedPrintLevel>0 && any(abs(solution.r)>=feasTol)
                         fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
                         disp(model.mets(abs(solution.r)>=feasTol));
                     end

@@ -39,6 +39,13 @@ if ~exist('printLevel','var')
     printLevel=0;
 end
 
+if isempty(A)
+    rankA=0;
+    p=[];
+    q=[];
+    return
+end
+
 %Bug in LUSOL: it gives incorrect rank for a matrix with zero columns
 bool=(sum(A~=0,1)==0);
 if any(bool)

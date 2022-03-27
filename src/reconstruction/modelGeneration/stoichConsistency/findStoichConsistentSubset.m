@@ -23,7 +23,7 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    printLevel:                    verbose level
 %    fileName:                      char, used when writing inconsistent metabolites and
 %                                   reactions to a file
-%    epsilon:                       (`feasTol*100`) min nonzero mass, 1/epsilon = max mass
+%    epsilon:                       (`feasTol*10`) min nonzero mass, 1/epsilon = max mass
 %
 % OUTPUT:
 % SConsistentMetBool            m x 1 boolean vector indicating stoichiometrically consistent mets
@@ -49,7 +49,10 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 % stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.    
 %
 
-% .. Author: - Ronan Fleming 2017-2020
+% .. Author: - Ronan Fleming 2022
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 if ~exist('printLevel','var')
     printLevel=1;
@@ -57,9 +60,11 @@ end
 if printLevel>0
     fprintf('%s\n','--- findStoichConsistentSubset START ----')
 end
-
+if ~exist('fileName','var')
+    fileName=[];
+end
 if ~exist('massBalanceCheck','var')
-    if isfield(model,'metFormulas')
+    if isfield(model,'metFormulas') && ~isfield(model,'dummyMetBool')
         massBalanceCheck=1;
     else
         massBalanceCheck=0;
@@ -70,7 +75,7 @@ end
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~exist('epsilon','var')
-    epsilon=1e-6;
+    epsilon = feasTol;
 end
 
 %final double check of stoichiometric consistent subset
@@ -83,10 +88,9 @@ removalStrategy='imBalanced';
 
 %minCardinalityConservationRelaxationVector params
 %minCardRelaxParams.epsilon=epsilon;
-minCardRelaxParams.eta=feasTol*100;
-minCardRelaxParams.epsilon=feasTol*100;
-feasTol = getCobraSolverParams('LP', 'feasTol');
-minCardRelaxParams.eta=feasTol*100;
+minCardRelaxParams.eta=feasTol*10; %was 100
+minCardRelaxParams.epsilon=feasTol*10; %was 100
+minCardRelaxParams.eta=feasTol*10; %was 100
 minCardRelaxParams.checkConsistency=0;
     
 maxCardinalityConsParams.epsilon=epsilon;%1/epsilon is the largest mass considered, needed for numerical stability
@@ -94,13 +98,12 @@ maxCardinalityConsParams.epsilon=epsilon;%1/epsilon is the largest mass consider
 maxCardinalityConsParams.method = 'dc';%seems to work, but not always the best
 maxCardinalityConsParams.method = 'optimizeCardinality';
 maxCardinalityConsParams.theta = 0.5;
-maxCardinalityConsParams.eta=feasTol*100;
+maxCardinalityConsParams.eta=feasTol*10; %was 100
 
 leakParams.epsilon=epsilon;
 %leakParams.method='quasiConcave'; %seems to have problems need to debug
 leakParams.method='dc';
-%leakParams.eta=feasTol*100;
-leakParams.eta=feasTol*100;
+leakParams.eta=feasTol*10; %was 100
 leakParams.theta = 0.5;
 % if 0
 %     leakParams.method='dc';

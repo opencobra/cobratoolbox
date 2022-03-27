@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those metabolites (exchange reactions)
 % that can be taken up by the model and should be taken up according to

@@ -65,7 +65,10 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %                          * 0 =  Infeasible
 %                          * -1 =  Invalid input
 %
-% .. Author: - Ronan Fleming, Jan 2017
+% .. Author: - Ronan Fleming 2022
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 [nMet,nRxn]=size(model.S);
 

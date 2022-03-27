@@ -29,15 +29,17 @@ for i = 1 : length(metList)
     % functions to work, which require model structure
     model = createModel({'R1'},{'fake rxn'},{['1 ' metList{i,1} ' -->']});
     % add neutral formula
-    [model.metFormulas{1}, nH, model.metCharges] = getFormulaAndChargeFromInChI(inchiStringList{i});
-    inchiFormula = model.metFormulas{1};
-    if model.metCharges == 0
-        metFormulaNeutral = model.metFormulas{1};
-    else
-        metFormulaNeutral = NaN;
+    try
+        [model.metFormulas{1}, nH, model.metCharges] = getFormulaAndChargeFromInChI(inchiStringList{i});
+        inchiFormula = model.metFormulas{1};
+        if model.metCharges == 0
+            metFormulaNeutral = model.metFormulas{1};
+        else
+            metFormulaNeutral = NaN;
+        end
+    catch 
+                    metFormulaNeutral = NaN;
     end
-    
-    
     % define inchis
     model.inchi.standard{1} = [];
     model.inchi.standardWithStereo{1} = [];

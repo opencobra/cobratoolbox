@@ -54,7 +54,6 @@ if isempty(CBT_LP_SOLVER)
 end
 solver = CBT_LP_SOLVER;
 
-
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
     poolobj = gcp('nocreate');
@@ -109,7 +108,7 @@ if isfile(strcat(resPath, 'simRes.mat'))
                 end
             end
         end
-    end
+     end
 end
 
 if skipSim==1
@@ -125,19 +124,10 @@ else
     % Auto load for crashed simulations if desired
     mapP = detectOutput(resPath, 'intRes.mat');
     if isempty(mapP)
-        startIter = 1;
     else
         s = 'simulation checkpoint file found: recovering crashed simulation';
         disp(s)
         load(strcat(resPath, 'intRes.mat'))
-
-        % Detecting when execution halted
-        for o = 1:length(netProduction(2, :))
-            if isempty(netProduction{2, o}) == 0
-                t = o;
-            end
-        end
-        startIter = t + 2;
     end
 
     % if simRes file already exists: some simulations may have been
@@ -161,7 +151,7 @@ else
     netProductionTmp={};
     netUptakeTmp={};
 
-    if length(sampNames)-startIter > 50
+    if length(sampNames)-1 > 50
         steps=50;
     else
         steps=length(sampNames);
@@ -169,7 +159,7 @@ else
 
     % Starting personalized simulations
     % proceed in batches for improved effiency
-    for s=startIter:steps:length(sampNames)
+    for s=1:steps:length(sampNames)
         if length(sampNames)-s>=steps-1
             endPnt=steps-1;
         else
@@ -179,6 +169,14 @@ else
         parfor k=s:s+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
+
+            % prepare the variables temporarily storing the simulation results
+            netProductionTmp{k}{2} = {};
+            netProductionTmp{k}{1} = {};
+            netUptakeTmp{k}{1} = {};
+            netUptakeTmp{k}{2} = {};
+            presolveTmp{k}{1} = {};
+            presolveTmp{k}{2} = {};
 
             doSim=1;
             % check first if simulations already exist and were done properly
@@ -261,12 +259,6 @@ else
                 if solution_allOpen.stat==0
                     warning('presolve detected one or more infeasible models. Please check infeasModels object !')
                     infeasModelsTmp{k} = model.name;
-                    netProductionTmp{k}{2} = {};
-                    netProductionTmp{k}{1} = {};
-                    netUptakeTmp{k}{1} = {};
-                    netUptakeTmp{k}{2} = {};
-                    presolveTmp{k}{1} = {};
-                    presolveTmp{k}{2} = {};
                 else
                     presolveTmp{k}{1} = solution_allOpen.f;
                     AllRxn = model.rxns;

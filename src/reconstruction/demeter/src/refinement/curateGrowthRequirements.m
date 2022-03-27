@@ -469,10 +469,14 @@ if ~isempty(mRow)
                     [rxnsToAdd,IA]=setdiff(conditions{i,7},model.rxns);
                     if ~isempty(rxnsToAdd)
                         for j=1:length(rxnsToAdd)
+                            try
                             formula = database.reactions{find(strcmp(database.reactions(:, 1), rxnsToAdd{j})), 3};
                             model = addReaction(model, rxnsToAdd{j}, 'reactionFormula', formula, 'geneRule', 'GrowthRequirementsGapfill');
                             % for the ones that are essential in vitro
-                        end
+                            catch
+                            x
+                            end
+                            end
                         FBA=optimizeCbModel(model,'max');
                         if FBA.f>tol
                             % test if all reactions are needed

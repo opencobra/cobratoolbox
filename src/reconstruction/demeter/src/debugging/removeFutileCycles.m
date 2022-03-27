@@ -465,6 +465,8 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'POR4 AND FDHfdx AND MTHFRfdx AND GLFRDOi',[],'POR4','POR4i'
     'SUCCt2_3r AND CITt7',[],'SUCCt2_3r','SUCCt2_3'
     '3HPCOAHL AND 3HPCOAS AND ACOAR',[],'3HPCOAHL','3HPCOAHLi'
+%        'LYSOR AND SACCD2 AND SACCRPOR',[],'LYSOR','LYSORi'
+    'LYSOR AND SACCD2 AND SACCRPOR',[],'LYSOR','LYSOR' % LYSORi does not exist in rBioNet anymore
     'AKGMAL AND MALt2r AND AKGte',[],'MALt2r','MALt2'
     'AKGDa AND 3CARLPDH AND r0163c',[],'AKGDa','AKGDai'
     'L_LACNa1t AND AKGMAL AND L_LACt',[],'L_LACt',[]
@@ -604,6 +606,7 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
+                    rxns{j}
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
                     
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))

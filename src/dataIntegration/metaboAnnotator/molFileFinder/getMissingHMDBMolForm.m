@@ -47,7 +47,11 @@ for i = startSearch : endSearch
             met = regexprep(met,'\[','');
             met = regexprep(met,'\]','');
             % retrieve potential hits
-            hmdb =retrievePotHitsHMDB(met);
+            try
+                hmdb =retrievePotHitsHMDB(met); % the catching should avoid that script fails when connection to HMDB fails
+            catch
+                hmdb = [];
+            end
             if ~isempty(hmdb)
                 metabolite_structure.(F{i}).hmdb = hmdb;
                 metabolite_structure.(F{i}).hmdb_source = ['Metabolite searched in HMDB by name',':',annotationType,':',datestr(now)];

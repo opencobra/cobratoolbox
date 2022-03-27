@@ -39,8 +39,8 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %    param:   structure with:
 %
 %              * .nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
-%              * .eta - Smallest value considered non-zero (Default value feasTol*1000)
-%              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value getCobraSolverParams('LP', 'feasTol')*100)
+%              * .eta - Smallest value considered non-zero (Default value feasTol*10)
+%              * .epsilon - `1/epsilon` is the largest molecular mass considered (Default value getCobraSolverParams('LP', 'feasTol')*10)
 %              * .zeta - Stopping criteria - threshold (Default value 1e-6)
 %              * .theta - Parameter of capped `l1` approximation (Default value 0.5)
 %              * .method - {'quasiConcave', ('optimizeCardinality')}
@@ -65,10 +65,10 @@ feasTol = getCobraSolverParams('LP', 'feasTol');
 % Format inputs
 if ~exist('param','var')
     param.nbMaxIteration = 1000;
-    param.eta = feasTol*1000;%changed to 1000
+    param.eta = feasTol*10;%changed to 10
     param.zeta = 1e-6;
     param.theta   = 0.5;    %parameter of capped l1 approximation
-    param.epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+    param.epsilon = feasTol*10;
     param.method = 'optimizeCardinality';
     param.printLevel = 0;
 else
@@ -77,11 +77,11 @@ else
     end
 
     if isfield(param,'eta') == 0
-        param.eta = feasTol*1000;
+        param.eta = feasTol*10;
     end
 
     if isfield(param,'epsilon') == 0
-        param.epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+        param.epsilon = feasTol*10;
     end
 
     if isfield(param,'zeta') == 0
