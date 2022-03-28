@@ -114,6 +114,7 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
     'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNCL','PTPAT'}
     'PGPm1[c]','',{'sink_PGPm1[c]'}
+    'fad[c]','',{'FMNAT'}
     };
 
 % First find out which biomass precursors cannot be synthesized

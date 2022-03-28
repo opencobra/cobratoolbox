@@ -28,6 +28,7 @@ function [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, data
 % non-alphanumeric characters are removed from uptake metabolite names in
 % the structure; the script accounts for this when matching with the
 % experimental data input
+
 uptakeRxns = struct();
 uptakeRxns.Ammonia = {'EX_nh4(e)', 'NH4tb'};
 uptakeRxns.Hydrogen = {'EX_h2(e)', 'H2td'};
@@ -37,6 +38,7 @@ uptakeRxns.Methanol = {'EX_meoh(e)', 'MEOHt2','PRDX','ALDD1'};
 uptakeRxns.Methylamine = {'EX_mma(e)', 'MMAt2e'};
 uptakeRxns.Niacin = {'EX_nac(e)', 'EX_ncam(e)','NACt2r','NCAMt2r'};
 uptakeRxns.NitrogenN2 = {'EX_n2(e)', 'N2t'};
+uptakeRxns.Nitrite = {'NO2OR', 'ATPS4', 'EX_no2(e)', 'EX_no3(e)'};
 uptakeRxns.Nitrate = {'EX_no3(e)', 'NO3abc', 'NO3R1', 'NO3R2', 'EX_no2(e)', 'NO2t2r'};
 uptakeRxns.Pantothenate = {'EX_pnto_R(e)', 'PNTOabc'};
 uptakeRxns.Phenol = {'EX_phenol(e)', 'PHENOLt2r'};

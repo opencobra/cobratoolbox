@@ -59,6 +59,9 @@ if nargin < 6
     excludeExchanges=0;
 end
 
+if isfield(model,'A')
+    model=rmfield(model,'A');
+end
 
 tol=0.1;
 
@@ -124,8 +127,13 @@ if FBA.stat ==3 || FBA.stat ==0
         param.excludedReactions = ismember(modelExpanded.rxns,model.rxns);
         
         % exclude irreversible reactions from relaxing lower bounds
-        irrRxns=database.reactions(find(strcmp(database.reactions(:,4),'0')),1);
-                
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            db=database.reactions(2:end,:);
+            irrRxns=db(find(cell2mat(db(:,4))==0),1);
+        else
+            irrRxns=database.reactions(find(strcmp(database.reactions(:,4),'0')),1);
+        end
+
         if excludeExchanges
             % exclude exchange reactions from relaxing lower bounds-for
             % growth medium gap-filling
@@ -146,7 +154,7 @@ if FBA.stat ==3 || FBA.stat ==0
             param.excludedReactions(SinkR)=1;
         end
 
-         if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
+        if exist('ExcludeRxns','var') && ~isempty(ExcludeRxns)
             param.excludedReactions(ismember(modelExpanded.rxns,ExcludeRxns)) = 1;
         end
         % run relaxed FBA
@@ -158,22 +166,40 @@ if FBA.stat ==3 || FBA.stat ==0
             %             [solution, relaxedModel] = relaxedFBA(relaxedModel, param);
             %             FBA2 = optimizeCbModel(relaxedModel);
             %         end
-            
+
             %% get solutions for relaxation
             LBsol = relaxedModel.rxns(abs(relaxedModel.lb)>0);
             LBsol=setdiff(LBsol,model.rxns);
             UBsol = relaxedModel.rxns(abs(relaxedModel.ub)>0);
             UBsol=setdiff(UBsol,model.rxns);
-            
-            model=modelOrg; 
-            
+
+            model=modelOrg;
+
             addedRxns=union(LBsol,UBsol);
-            
+
+            % may result in transporters being added without the exchange
+            % reaction-need to add the exchange reaction in this case
+            exMets={};
+            for j=1:length(addedRxns)
+                mets=findMetsFromRxns(relaxedModel,addedRxns{j});
+                exMets=union(exMets,mets(find(contains(mets,'[e]'))));
+            end
+            exRxns={};
+            for j=1:length(exMets)
+                exInd=find(strncmp(database.reactions(:,1),['EX_' strrep(exMets{j},'[e]','(e)')],length(['EX_' strrep(exMets{j},'[e]','(e)')])));
+                if isempty(exInd)
+                    exInd=find(strncmp(database.reactions(:,1),['EX_' exMets{j}],length(['EX_' exMets{j}])));
+                end
+                exRxns=union(exRxns,database.reactions(exInd,1));
+            end
+             addedRxns=union(addedRxns,exRxns);
+             addedRxns = setdiff(addedRxns,model.rxns);
+
             for j=1:length(addedRxns)
                 rxnInd=find(strcmp(database.reactions(:,1),addedRxns{j}));
                 model = addReaction(model, [database.reactions{rxnInd,1} '_untGF'], database.reactions{rxnInd,3});
             end
-            
+
         catch
             warning('relaxFBA could not find a solution!')
         end

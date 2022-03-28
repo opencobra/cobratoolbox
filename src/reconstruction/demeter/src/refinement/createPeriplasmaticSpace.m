@@ -31,7 +31,7 @@ if ~isempty(find(strcmp(infoFile(:,1),microbeID)))
     [~,gramCol,~]=intersect(infoFile(1,:),{'Gram Staining','Gram_Staining'});
     gramStatus=infoFile(find(strcmp(infoFile(:,1),microbeID)),gramCol);
     
-    if (strcmp(gramStatus,'Gram-') || strcmp(phylum,'Deinococcus-Thermus')) && ~any(strcmp(phylum,{'Euryarchaeota','Crenarchaeota','Thaumarchaeota','Tenericutes'})) && ~any(strcmp(genus,{'Acidaminobacter','Gracilibacter'}))
+    if (strcmp(gramStatus,'Gram-') || strcmp(phylum,'Deinococcus-Thermus')) && ~any(strcmp(phylum,{'Euryarchaeota','Crenarchaeota','Thaumarchaeota','Tenericutes','Chloroflexi','Chloroflexota'})) && ~any(strcmp(genus,{'Acidaminobacter','Gracilibacter','Intestinibacillus','Mageeibacillus','Massiliomicrobiota','Flavonifractor','Pseudoflavonifractor'}))
         
         % get all extracellular metabolites
         exMets=model.mets(find(contains(model.mets,'[e]')));

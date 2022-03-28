@@ -158,6 +158,11 @@ delInd=find(sum(plotdata,2)==0);
 labels(delInd)=[];
 plotdata(delInd,:)=[];
 
+% worksround if there is only one row in plotdata
+if size(plotdata,1) == 1
+    plotdata(2,:) = NaN;
+end
+
 figure;
 hold on
 h=bar(plotdata);
