@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those metabolites (exchange reactions)
 % that can be taken up by the model and should be taken up according to
@@ -67,7 +66,14 @@ else
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
 
+    
+    TruePositives = {};  % true positives (uptake in vitro and in silico)
+    FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
+    
+
+
     rxns = uptakeExchanges(table2array(uptakeTable(mInd, 2:end)) == 1, 2:end);
+
 
     % flux variability analysis on reactions of interest
     rxns = unique(table2cell(rxns));
