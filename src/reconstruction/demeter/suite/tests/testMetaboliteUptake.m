@@ -64,11 +64,9 @@ else
     % open all exchanges
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
-    try
+    
     rxns = uptakeExchanges(table2array(uptakeTable(mInd, 2:end)) == 1, 2:end);
-    catch
-        x
-    end
+    
     TruePositives = {};  % true positives (uptake in vitro and in silico)
     FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
     
