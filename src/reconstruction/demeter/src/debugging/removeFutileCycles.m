@@ -59,7 +59,6 @@ addCnt = 1;
 reactionsToReplace = {'if present','if not present','removed','added'
     'LYSt2r AND LYSt3r',[],'LYSt3r','LYSt3'
     'FDHr',[],'FDHr','FDH'
-    'GLYO1',[],'GLYO1','GLYO1i'
     'EAR40xr',[],'EAR40xr','EAR40x'
     'PROt2r AND PROt4r',[],'PROt4r','PROt4'
     'FOROXAtex AND FORt',[],'FORt',[]
@@ -112,7 +111,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'L_LACNa1t AND L_LACt2r',[],'L_LACt2r','L_LACt'
     'ACOAD1 AND ACOAD1f AND SUCD4',[],'ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR',[],'D_GLY3PR','D_GLY3PRi'
-    'H2O2D',[],'H2O2D','NPR'
     'ACCOACL AND BTNCL',[],'BTNCL','BTNCLi'
     'r0220 AND r0318',[],'r0318','r0318i'
     'MTHFRfdx AND FDNADOX_H',[],'FDNADOX_H',[]
@@ -356,20 +354,10 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'H2O2D AND CYTBD AND EX_h2o2(e) AND L_LACD2',[],'H2O2D','NPR'
     'AKGt2r AND AKGte',[],'AKGte',[]
     'PHEt2r AND PHEtec',[],'PHEt2r','PHEt2'
-    'CHOLOX',[],'CHOLOX','CHOLOXi'
-    '34DCCBR',[],'34DCCBR','34DCCBRi'
     'r0389',[],'r0389','r0389i'
-    'URAOX',[],'URAOX','URAOXi'
-    'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-    'SQLE',[],'SQLE','SQLEi'
-    '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
-    'HSNOOX',[],'HSNOOX','HSNOOXi'
-    'SALCACD',[],'SALCACD','SALCACDi'
-    '34HPPORdc',[],'34HPPORdc','34HPPORdci'
     'SULR AND SULRi',[],'SULR',[]
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
-    'ADMDCr',[],'ADMDCr','ADMDC'
     % 'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
     'OOR2r AND POR4 AND FRD2 AND FUM AND ACONTb AND ACONTa AND SUCCt AND SUCCt2r',[],'SUCCt','FDNADOX_H'
     'ACKr AND NNAM AND NAPRT AND NACt AND NACt2r',[],'NACt','EX_asp_L(e) AND ASPt2r'
@@ -379,10 +367,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','PTAr','FORt2r AND SUCCt','PTAr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','ACtr','FORt2r AND SUCCt','EX_ac(e) AND ACtr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'PIt7 AND EX_na1(e) AND ACKr AND OAASr AND FORt AND FORt2r','PIabc','FORt2r','DM_NA1'
-    %  'PPHISNPPT',[],'PPHISNPPT','PPHISNPPTi'
-    % 'PPHISPT',[],'PPHISPT','PPHISPTi'
-    %  'PPHNPPT',[],'PPHNPPT','PPHNPPTi'
-    'PPHPT',[],'PPHPT','PPHPTi'
     'ICDHyr AND SUCOAS AND PYK AND FDNADOX_H AND POR4',[],'ICDHyr','ICDHy'
     'ASPt2_2 AND ASPt2r',[],'ASPt2r','ASPte'
     'SUCCt AND SUCCt2r',[],'SUCCt',[]
@@ -475,7 +459,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'CDPDPH AND CYTK1',[],'CDPDPH','CDPDPHi'
     'UMPK AND NDP7',[],'NDP7','NDP7i'
     'CLt4r AND r2137',[],'r2137','CLti'
-    'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
     'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNt'
     'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
@@ -507,6 +490,15 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'GLUTACCOACL AND GLUTACCOADC AND ACOAD1 AND ACOAD1fi AND r1144',[],'GLUTACCOACL','GLUTACCOACLi'
     'GLUTACCOACL AND GLUTACCOADC AND ACOAD1 AND ACOAD1fi AND MALNAt',[],'GLUTACCOACL','GLUTACCOACLi'
     'GLUTACCOACL AND GLUTACCOADC AND NAt3_1 AND ACOAD1',[],'NAt3_1','NAt3'
+    'FXXRDO AND G3PFDXOR AND GAPD AND H2Ot AND H2St AND NADH8 AND PGK AND SO3rDdmq AND SO3t',[],'SO3t','SO3ti'
+    'FRD7 AND FRD6 AND NADH6pp','EX_succ(e)','FRD7','SUCDi'
+    'FRD3 AND FRD6 AND NADH8','EX_succ(e)','FRD3','SUCDi'
+    'FRD7 AND FRD6 AND NADH8','EX_succ(e)','FRD7','SUCDi'
+    'FXXRDO AND H2St AND SO3t AND H2Ot AND NADH8 AND SO3rDdmq',[],'FXXRDO','FXXRDOi'
+    'CLt4r AND SO4CLtex2 AND SO4t2',[],'SO4t2','SO4t2i'
+    'NACSMCTte AND NACUP AND PIt6b AND r2136',[],'PIt6b','PIt6bi'
+    'URIt2r AND URIt',[],'URIt',[]
+    'H202D',[],'H202D','NPR'
     };
 
 
@@ -521,6 +513,7 @@ growthGapfills={
     'EX_for(e) AND FORt2r'
     'EX_ac(e) AND ACt2r'
     'EX_etoh(e) AND ETOHt2r'
+    'EX_pyr(e) AND PYRt2r'
     'EX_hco3(e) AND HCO3abc AND H2CO3D'
     % consider adding glycolysis
     'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK'
@@ -538,6 +531,9 @@ growthGapfills={
     'EX_ser_L(e) AND SERt2r'
     'PPA'
     'EX_glyald[e] AND GLYALDt'
+    'ATPS4'
+    'ADK1'
+    'EX_ac(e) AND ACtr'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -614,7 +610,7 @@ for i = 2:size(reactionsToReplace, 1)
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
                     
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                        newName=[rxns{j} 'ipp'];
+                        newName=[rxns{j} 'pp'];
                         % make sure we get the correct reaction
                         newForm=strrep(RxForm,'[e]','[p]');
                         rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -665,7 +661,7 @@ for i = 2:size(reactionsToReplace, 1)
                     % create a new formula
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), ggrxns{j})), 3};
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                        newName=[ggrxns{j} 'ipp'];
+                        newName=[ggrxns{j} 'pp'];
                         % make sure we get the correct reaction
                         newForm=strrep(RxForm,'[e]','[p]');
                         rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -704,7 +700,7 @@ for i = 2:size(reactionsToReplace, 1)
                             if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                                 addedRxns{addCnt, 1} = toRemove{1};
                             end
-                            if exist('newForm','var')
+                            if contains(RxForm,'[e]')  && exist('newForm','var')
                                 addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                             else
                                 addedRxns{addCnt, j+1} = rxns{j};

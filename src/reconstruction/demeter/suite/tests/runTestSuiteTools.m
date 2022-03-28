@@ -4,7 +4,7 @@ function [testResultsFolder,curationReport] = runTestSuiteTools(refinedFolder, i
 %
 % USAGE:
 %
-%    testResultsFolder = runTestSuiteTools(refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin)
+%    [testResultsFolder,curationReport] = runTestSuiteTools(refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin)
 %
 %
 % REQUIRED INPUTS

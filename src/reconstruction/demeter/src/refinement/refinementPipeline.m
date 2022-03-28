@@ -161,11 +161,9 @@ summary.('deletedSEEDRxns')=deletedSEEDRxns;
 %% Delete unused reactions that are leftovers from KBase pipeline
 % Delete transporters without exchanges
 [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model);
-summary.('transportersWithoutExchanges') = transportersWithoutExchanges;
 
 % Delete unused exchange reactions
 [model, unusedExchanges] = findUnusedExchangeReactions(model);
-summary.('unusedExchanges') = unusedExchanges;
 
 %% Perform any gapfilling still needed
 % in rare cases: gapfilling for anaerobic growth or growth on complex medium still needed
@@ -184,7 +182,6 @@ for i=1:2
     if AnaerobicGrowth(1,1) < tol
         [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
         summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
-        summary.('anaerobicGrowthOK') = anaerGrowthOK;
     end
 end
 
@@ -203,7 +200,6 @@ for i = 1:6
         break
     end
 end
-summary.('definedMediumGrowth')=growsOnDefinedMedium;
 
 %% remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
@@ -213,7 +209,6 @@ modelTest = useDiet(model,constraints);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
 if FBA.f > tol
-    summary.('deletedDuplicateRxns') = model.rxns(removedRxnInd);
     model=modelRD;
 else
     modelTest=model;
@@ -230,7 +225,6 @@ else
             toRM{j}=model.rxns{keptRxnInd(j)};
         end
     end
-    summary.('deletedDuplicateRxns') = toRM;
     model=removeRxns(model,toRM);
 end
 
@@ -327,7 +321,6 @@ end
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
 if FBA.f > tol
-    summary.('deletedDuplicateRxns') = model.rxns(removedRxnInd);
     model=modelRD;
 else
     modelTest=model;
@@ -344,7 +337,6 @@ else
             toRM{j}=model.rxns{keptRxnInd(j)};
         end
     end
-    summary.('deletedDuplicateRxns') =union(summary.('deletedDuplicateRxns'),toRM);
     model=removeRxns(model,toRM);
 end
 

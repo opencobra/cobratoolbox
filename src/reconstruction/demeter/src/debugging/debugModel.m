@@ -1,4 +1,4 @@
-function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, inputDataFolder,microbeID,biomassReaction)
+function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -7,13 +7,14 @@ function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,te
 %
 % USAGE:
 %
-%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults, infoFilePath, inputDataFolder,microbeID,biomassReaction)
+%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction)
 %
 % INPUTS
 % model:                 COBRA model structure
 % testResults:           Structure with results of test run
 % inputDataFolder:       Folder with input tables with experimental data
 %                        and databases that inform the refinement process
+% infoFilePath           File with information on reconstructions to refine
 % microbeID:             ID of the reconstructed microbe that serves as
 %                        the reconstruction name and to identify it in
 %                        input tables
@@ -69,7 +70,9 @@ if AnaerobicGrowth(1,1) < tol
         cntGF=cntGF+1;
     end
     % then less targeted gapfilling
-    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database);
+    model=changeRxnBounds(model,'EX_o2(e)',0,'l');
+    [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction,biomassReaction,'max',database,1);
+    model=changeRxnBounds(model,'EX_o2(e)',-10,'l');
     % export the gapfilled reactions
     if ~isempty(condGF)
         summary.condGF=union(summary.condGF,condGF);
@@ -234,6 +237,10 @@ for i=1:length(fields)
         end
     end
 end
+
+% rebuild periplasmatic space if applies
+infoFile = readInputTableForPipeline(infoFilePath);
+[model] = createPeriplasmaticSpace(model,microbeID,infoFile);
 
 % remove futile cycles if any exist
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);

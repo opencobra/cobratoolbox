@@ -28,7 +28,7 @@ function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiv
 % model:               COBRA model structure
 % condGF               Reactions added based on conditions (recognizing
 %                      certain patterns of reactions)
-% targetGF             Reactions added based on tagrted gapfilling 
+% targetGF             Reactions added based on targeted gapfilling 
 %                      (specific metabolites that could not be produced)
 % relaxGF              Reactions added based on relaxFBA (lowest level of
 %                      confidence)
