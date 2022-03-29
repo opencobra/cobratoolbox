@@ -191,6 +191,8 @@ VMHId = regexprep(VMHId,'}','_');
 VMHId = regexprep(VMHId,'__','_');
 VMHId = regexprep(VMHId,'^_','');
 VMHId = regexprep(VMHId,'!','');
+VMHId = regexprep(VMHId,'‐','');
+
 % check that this abbr does not exist yet
 [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
 % if the abbr already exists, try the version with the internal numbers
@@ -219,6 +221,7 @@ if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(r
         VMHId = regexprep(VMHId,'+','_');
         VMHId = regexprep(VMHId,'{','');
         VMHId = regexprep(VMHId,'}','_');
+VMHId = regexprep(VMHId,'‐','');
 
     end
 end
@@ -250,7 +253,8 @@ if exist('customMetAbbrList','var')
         VMHId = regexprep(VMHId,'{','');
         VMHId = regexprep(VMHId,'}','_');
         VMHId = regexprep(VMHId,'/','_');
-        
+        VMHId = regexprep(VMHId,'‐','');
+
         % Check here again if it is in customMetAbbrList (needs first
         % converted with regexprep)
          while ~isempty(find(ismember(customMetAbbrList,VMHId))>0) 
@@ -298,3 +302,4 @@ name = regexprep(name,'\[','');
 name = regexprep(name,'\]','');
 name = regexprep(name,';','_');
 name = regexprep(name,'!','');
+name = regexprep(name,'‐','');
