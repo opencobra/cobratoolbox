@@ -73,43 +73,47 @@ else
         end
     end
 
-        % flux variability analysis on reactions of interest
-        rxns = unique(rxns);
-        rxns = rxns(~cellfun('isempty', rxns));
-        rxnsInModel=intersect(rxns,model.rxns);
-        if ~isempty(rxnsInModel)
-            currentDir=pwd;
-             try
-                [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                    rxnsInModel, 'S');
-            catch
-                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                cd(currentDir)
-                [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+    % flux variability analysis on reactions of interest
+    rxns = unique(rxns);
+    rxns = rxns(~cellfun('isempty', rxns));
+    rxnsInModel=intersect(rxns,model.rxns);
+    if ~isempty(rxnsInModel)
+        currentDir=pwd;
+        try
+            [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                rxnsInModel, 'S');
+        catch
+            warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+            cd(currentDir)
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        end
+
+        % active flux
+        flux = rxnsInModel(minFlux < -1e-6);
+        flux = union(flux,rxnsInModel(maxFlux > -1e-6));
+    else
+        flux = {};
+    end
+
+    % check all exchanges corresponding to drug uptake/secretion
+    % in this case, all of them should be carrying flux
+    for i=2:size(dataTable,2)
+        findCorrRxns = [];
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
             end
-
-            % active flux
-            flux = rxnsInModel(minFlux < -1e-6);
-            flux = union(flux,rxnsInModel(maxFlux > -1e-6));
-
-        % check all exchanges corresponding to drug uptake/secretion
-        % in this case, all of them should be carrying flux
-
-        for i=2:size(dataTable,2)
-            if contains(version,'(R202') % for Matlab R2020a and newer
-                if dataTable{mInd,i}==1
-                    findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                else
-                    if strcmp(dataTable{mInd,i},'1')
-                        findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                    end
-                end
-                allEx = corrRxns(findCorrRxns,2:end);
-                allEx = allEx(~cellfun(@isempty, allEx));
-
-                TruePositives = union(TruePositives, intersect(allEx, flux));
-                FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
             end
+        end
+        if ~isempty(findCorrRxns)
+            allEx = corrRxns(findCorrRxns,2:end);
+            allEx = allEx(~cellfun(@isempty, allEx));
+
+            TruePositives = union(TruePositives, intersect(allEx, flux));
+            FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
         end
     end
 end

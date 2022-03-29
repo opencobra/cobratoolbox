@@ -52,7 +52,7 @@ if isempty(mInd)
     warning(['Microbe "', microbeID, '" not found in metabolite uptake data file.'])
 else
     % perform FVA to identify uptake metabolites
-    % set BOF
+    % set BOF6
     if ~any(ismember(model.rxns, biomassReaction)) || nargin < 3
         error(['Biomass reaction "', biomassReaction, '" not found in model.'])
     end
@@ -98,25 +98,30 @@ else
 
         % active flux
         flux = rxnsInModel(minFlux < -1e-6);
+    else
+        flux = {};
+    end
 
         % check all exchanges corresponding to in vitro data
         % in this case, all of them should be carrying flux
         for i=2:size(dataTable,2)
+            findCorrRxns = [];
             if contains(version,'(R202') % for Matlab R2020a and newer
                 if dataTable{mInd,i}==1
                     findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                else
-                    if strcmp(dataTable{mInd,i},'1')
-                        findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                    end
                 end
+            else
+                if strcmp(dataTable{mInd,i},'1')
+                    findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                end
+            end
+            if ~isempty(findCorrRxns)
                 allEx = corrRxns(findCorrRxns,2:end);
                 allEx = allEx(~cellfun(@isempty, allEx));
 
                 TruePositives = union(TruePositives, intersect(allEx, flux));
                 FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
             end
-        end
     end
 end
 

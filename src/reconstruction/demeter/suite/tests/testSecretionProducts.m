@@ -98,6 +98,8 @@ else
 
         % active flux
         flux = rxnsInModel(maxFlux > -1e-6);
+    else
+        flux = {};
     end
     % check all exchanges corresponding to each uptake
     % with multiple exchanges per uptake, at least one should be
@@ -106,14 +108,17 @@ else
     % are not considered
 
     for i=2:size(dataTable,2)
+        findCorrRxns = [];
         if contains(version,'(R202') % for Matlab R2020a and newer
             if dataTable{mInd,i}==1
                 findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-            else
-                if strcmp(dataTable{mInd,i},'1')
-                    findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                end
             end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+            end
+        end
+        if ~isempty(findCorrRxns)
             allEx = corrRxns(findCorrRxns,2:end);
             allEx = allEx(~cellfun(@isempty, allEx));
             if ~isempty(intersect(allEx, rxnsInModel))
@@ -137,7 +142,7 @@ if ~isempty(TruePositives)
     TruePositives = TruePositives(~cellfun(@isempty, TruePositives));
     TruePositives=strrep(TruePositives,'EX_','');
     TruePositives=strrep(TruePositives,'(e)','');
-    
+
     for i=1:length(TruePositives)
         TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
