@@ -34,12 +34,13 @@ growthExchanges = {'Nutrient','ExchangeReaction';'4-aminobenzoic acid','EX_4abz(
 growthRequirements = readInputTableForPipeline([inputDataFolder filesep 'GrowthRequirementsTable.txt']);
 growthRequirements(:,find(strncmp(growthRequirements(1,:),'Ref',3)))=[];
 
-% Define the list of metabolites required by at least one AGORA model for
-% growth
+% Define the list of metabolites required in silico not captured by
+% experimental media
+essentialMetabolites = {'EX_ca2(e)'; 'EX_cl(e)'; 'EX_cobalt2(e)'; 'EX_cu2(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_k(e)'; 'EX_mg2(e)'; 'EX_mn2(e)'; 'EX_zn2(e)'};
 % essentialMetabolites = {'EX_12dgr180(e)'; 'EX_26dap_M(e)'; 'EX_2dmmq8(e)'; 'EX_2obut(e)'; 'EX_3mop(e)'; 'EX_4abz(e)'; 'EX_4hbz(e)'; 'EX_ac(e)'; 'EX_acgam(e)'; 'EX_acmana(e)'; 'EX_acnam(e)'; 'EX_ade(e)'; 'EX_adn(e)'; 'EX_adocbl(e)'; 'EX_ala_D(e)'; 'EX_ala_L(e)'; 'EX_amet(e)'; 'EX_amp(e)'; 'EX_arab_D(e)'; 'EX_arab_L(e)'; 'EX_arg_L(e)'; 'EX_asn_L(e)'; 'EX_btn(e)'; 'EX_ca2(e)'; 'EX_cbl1(e)'; 'EX_cgly(e)'; 'EX_chor(e)'; 'EX_chsterol(e)'; 'EX_cit(e)'; 'EX_cl(e)'; 'EX_cobalt2(e)'; 'EX_csn(e)'; 'EX_cu2(e)'; 'EX_cys_L(e)'; 'EX_cytd(e)'; 'EX_dad_2(e)'; 'EX_dcyt(e)'; 'EX_ddca(e)'; 'EX_dgsn(e)'; 'EX_fald(e)'; 'EX_fe2(e)'; 'EX_fe3(e)'; 'EX_fol(e)'; 'EX_for(e)'; 'EX_gal(e)'; 'EX_glc_D(e)'; 'EX_gln_L(e)'; 'EX_glu_L(e)'; 'EX_gly(e)'; 'EX_glyc(e)'; 'EX_glyc3p(e)'; 'EX_gsn(e)'; 'EX_gthox(e)'; 'EX_gthrd(e)'; 'EX_gua(e)'; 'EX_h(e)'; 'EX_h2o(e)'; 'EX_h2s(e)'; 'EX_his_L(e)'; 'EX_hxan(e)'; 'EX_ile_L(e)'; 'EX_k(e)'; 'EX_lanost(e)'; 'EX_leu_L(e)'; 'EX_lys_L(e)'; 'EX_malt(e)'; 'EX_met_L(e)'; 'EX_mg2(e)'; 'EX_mn2(e)'; 'EX_mqn7(e)'; 'EX_mqn8(e)'; 'EX_nac(e)'; 'EX_ncam(e)'; 'EX_nmn(e)'; 'EX_no2(e)'; 'EX_ocdca(e)'; 'EX_ocdcea(e)'; 'EX_orn(e)'; 'EX_phe_L(e)'; 'EX_pheme(e)'; 'EX_pi(e)'; 'EX_pnto_R(e)'; 'EX_pro_L(e)'; 'EX_ptrc(e)'; 'EX_pydx(e)'; 'EX_pydxn(e)'; 'EX_q8(e)'; 'EX_rib_D(e)'; 'EX_ribflv(e)'; 'EX_ser_L(e)'; 'EX_sheme(e)'; 'EX_so4(e)'; 'EX_spmd(e)'; 'EX_thm(e)'; 'EX_thr_L(e)'; 'EX_thymd(e)'; 'EX_trp_L(e)'; 'EX_ttdca(e)'; 'EX_tyr_L(e)'; 'EX_ura(e)'; 'EX_val_L(e)'; 'EX_xan(e)'; 'EX_xyl_D(e)'; 'EX_zn2(e)'};
 
 % Get essential metabolites that are not in the growth requirements table
-% MissingUptakes = setdiff(essentialMetabolites, growthExchanges(2:end,2));
+MissingUptakes = setdiff(essentialMetabolites, growthExchanges(2:end,2));
 
 % find microbe index in nutrient requirement table
 mInd = find(strcmp(growthRequirements(:,1), microbeID));
@@ -77,11 +78,11 @@ if experimentalDataExists
     diet(:,2)= {'-1'};
     % Add compounds that are essential but not in the growth requirements table
     % to the simulated defined medium
-    %     CLength = size(diet, 1);
-    %     for i = 1:length(MissingUptakes)
-    %         diet{CLength + i, 1} = MissingUptakes{i};
-    %         diet{CLength + i, 2} = {'-1'};
-    %     end
+        CLength = size(diet, 1);
+        for i = 1:length(MissingUptakes)
+            diet{CLength + i, 1} = MissingUptakes{i};
+            diet{CLength + i, 2} = {'-1'};
+        end
     % remove the ones not in the model
     [notInModel,IA] = setdiff(diet(:,1),model.rxns,'stable');
     diet(IA,:)=[];
