@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database, inputDataFolder)
+function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database)
 % Performs an FVA and reports those AromaticAA pathway end reactions (exchange reactions)
 % that can carry flux in the model and should carry flux according to
 % data (true positives) and those AromaticAA pathway end reactions that
@@ -12,8 +12,6 @@ function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, micr
 %                   required in analysis)
 % database          Structure containing rBioNet reaction and metabolite
 %                   database
-% inputDataFolder   Folder with experimental data and database files
-%                   to load
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all aromatic amino acid
@@ -34,7 +32,7 @@ if isempty(CBT_LP_SOLVER)
 end
 
 % read aromatic amino acid degradation product table
-dataTable = readInputTableForPipeline([inputDataFolder filesep 'AromaticAATable.txt']);
+dataTable = readInputTableForPipeline('AromaticAATable.txt');
 
 corrRxns = {'Phenylpropanoate','EX_pppn(e)';'4-Hydroxyphenylpropanoate','EX_r34hpp(e)';'Indolepropionate','EX_ind3ppa(e)';'Isocaproate','EX_isocapr(e)'};
 
@@ -93,26 +91,28 @@ else
 
         % active flux
         flux = rxnsInModel(maxFlux > -1e-6);
+    else
+        flux = {};
+    end
 
-        % which reaction should carry flux according to in vitro data
-        for i=2:size(dataTable,2)
-            rxn={};
-            if contains(version,'(R202') % for Matlab R2020a and newer
-                if dataTable{mInd,i}==1
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
-            else
-                if strcmp(dataTable{mInd,i},'1')
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
+    % which reaction should carry flux according to in vitro data
+    for i=2:size(dataTable,2)
+        rxn={};
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
             end
-            if ~isempty(rxn)
-                % add any that are not in model/not carrying flux to the false negatives
-                if ~isempty(intersect(rxn,flux))
-                    TruePositives = union(TruePositives,rxn);
-                else
-                    FalseNegatives=union(FalseNegatives,rxn);
-                end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        end
+        if ~isempty(rxn)
+            % add any that are not in model/not carrying flux to the false negatives
+            if ~isempty(intersect(rxn,flux))
+                TruePositives = union(TruePositives,rxn);
+            else
+                FalseNegatives=union(FalseNegatives,rxn);
             end
         end
     end

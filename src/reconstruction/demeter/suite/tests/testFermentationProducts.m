@@ -41,7 +41,7 @@ dataTable = readInputTableForPipeline([inputDataFolder filesep 'FermentationTabl
 % remove the reference columns
 dataTable(:,find(strncmp(dataTable(1,:),'Ref',3))) = [];
 
-corrRxns = {'Acetate kinase (acetate producer or consumer)','EX_ac(e)';'Bifid shunt','EX_ac(e)';'Acetogen pathway','EX_ac(e)';'Formate producer','EX_for(e)';'D-lactate producer or consumer','EX_lac_D(e)';'L-lactate producer or consumer','EX_lac_L(e)';'Ethanol producer or consumer','EX_etoh(e)';'Succinate producer','EX_succ(e)';'Propionate from succinate','EX_ppa(e)';'Propionate from propane-1,2-diol','EX_ppa(e)';'Propionate from lactate (acrylate pathway)','EX_ppa(e)';'Propionate from threonine','EX_ppa(e)';'Wood-Werkman cycle','EX_ppa(e)';'Butyrate via butyryl-CoA: acetate CoA transferase','EX_but(e)';'Butyrate via butyrate kinase','EX_but(e)';'Butyrate from lysine via butyrate-acetoacetate CoA-transferase','EX_but(e)';'Butyrate from glutarate or glutamate','EX_but(e)';'Butyrate from 4-hydroxybutyrate or succinate','EX_but(e)';'Hydrogen from ferredoxin oxidoreductase','EX_h2(e)';'Hydrogen from formate hydrogen lyase','EX_h2(e)';'Methanogenesis','EX_ch4(e)';'Sulfate reducer','EX_h2s(e)';'Isobutyrate producer','EX_isobut(e)';'Isovalerate producer','EX_isoval(e)';'Acetoin producer','EX_actn_R(e)';'2,3-butanediol producer','EX_btd_RR(e)';'Indole producer','EX_indole(e)';'Phenylacetate producer','EX_pac(e)';'Butanol producer','EX_btoh(e)';'Valerate producer','EX_M03134(e)'};
+corrRxns = {'Acetate kinase (acetate producer or consumer)','EX_ac(e)';'Bifid shunt','EX_ac(e)';'Acetogen pathway','EX_ac(e)';'Formate producer','EX_for(e)';'D-lactate producer','EX_lac_D(e)';'L-lactate producer','EX_lac_L(e)';'Ethanol producer or consumer','EX_etoh(e)';'Succinate producer','EX_succ(e)';'Propionate from succinate','EX_ppa(e)';'Propionate from propane-1,2-diol','EX_ppa(e)';'Propionate from lactate (acrylate pathway)','EX_ppa(e)';'Propionate from threonine','EX_ppa(e)';'Wood-Werkman cycle','EX_ppa(e)';'Butyrate via butyryl-CoA: acetate CoA transferase','EX_but(e)';'Butyrate via butyrate kinase','EX_but(e)';'Butyrate from lysine via butyrate-acetoacetate CoA-transferase','EX_but(e)';'Butyrate from glutarate or glutamate','EX_but(e)';'Butyrate from 4-hydroxybutyrate or succinate','EX_but(e)';'Hydrogen from ferredoxin oxidoreductase','EX_h2(e)';'Hydrogen from formate hydrogen lyase','EX_h2(e)';'Methanogenesis','EX_ch4(e)';'Sulfate reducer','EX_h2s(e)';'Isobutyrate producer','EX_isobut(e)';'Isovalerate producer','EX_isoval(e)';'Acetoin producer','EX_actn_R(e)';'2,3-butanediol producer','EX_btd_RR(e)';'Indole producer','EX_indole(e)';'Phenylacetate producer','EX_pac(e)';'Butanol producer','EX_btoh(e)';'Valerate producer','EX_M03134(e)'};
 
 TruePositives = {};  % true positives (uptake in vitro and in silico)
 FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
@@ -98,26 +98,28 @@ else
 
         % active flux
         flux = rxnsInModel(maxFlux > -1e-6);
+    else
+        flux = {};
+    end
 
-        % which reaction should carry flux according to in vitro data
-        for i=2:size(dataTable,2)
-            rxn={};
-            if contains(version,'(R202') % for Matlab R2020a and newer
-                if dataTable{mInd,i}==1
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
-            else
-                if strcmp(dataTable{mInd,i},'1')
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
+    % which reaction should carry flux according to in vitro data
+    for i=2:size(dataTable,2)
+        rxn={};
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
             end
-            if ~isempty(rxn)
-                % add any that are not in model/not carrying flux to the false negatives
-                if ~isempty(intersect(rxn,flux))
-                    TruePositives = union(TruePositives,rxn);
-                else
-                    FalseNegatives=union(FalseNegatives,rxn);
-                end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        end
+        if ~isempty(rxn)
+            % add any that are not in model/not carrying flux to the false negatives
+            if ~isempty(intersect(rxn,flux))
+                TruePositives = union(TruePositives,rxn);
+            else
+                FalseNegatives=union(FalseNegatives,rxn);
             end
         end
     end

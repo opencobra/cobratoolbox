@@ -90,26 +90,28 @@ else
 
         % active flux
         flux = rxnsInModel(maxFlux > -1e-6);
+    else
+        flux = {};
+    end
 
-        % which reaction should carry flux according to in vitro data
-        for i=2:size(dataTable,2)
-            rxn={};
-            if contains(version,'(R202') % for Matlab R2020a and newer
-                if dataTable{mInd,i}==1
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
-            else
-                if strcmp(dataTable{mInd,i},'1')
-                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
-                end
+    % which reaction should carry flux according to in vitro data
+    for i=2:size(dataTable,2)
+        rxn={};
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
             end
-            if ~isempty(rxn)
-                % add any that are not in model/not carrying flux to the false negatives
-                if ~isempty(intersect(rxn,flux))
-                    TruePositives = union(TruePositives,rxn);
-                else
-                    FalseNegatives=union(FalseNegatives,rxn);
-                end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        end
+        if ~isempty(rxn)
+            % add any that are not in model/not carrying flux to the false negatives
+            if ~isempty(intersect(rxn,flux))
+                TruePositives = union(TruePositives,rxn);
+            else
+                FalseNegatives=union(FalseNegatives,rxn);
             end
         end
     end
