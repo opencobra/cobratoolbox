@@ -126,7 +126,7 @@ modelList=modelList';
 if size(modelList,1)>0
     modelList(~contains(modelList(:,1),'.mat'),:)=[];
     modelList(:,1)=strrep(modelList(:,1),'.mat','');
-
+    
     % remove models that were already created
     [C,IA]=intersect(outputNamesToTest(:,1),modelList(:,1));
     if ~isempty(C)
@@ -175,19 +175,18 @@ for i=1:steps:length(models)
     else
         endPnt=length(models)-i;
     end
-
+    
     modelsTmp = {};
     draftModelsTmp = {};
     summariesTmp = {};
-
+    
     parfor j=i:i+endPnt
-%for j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
-
+        
         % create an appropriate ID for the model
         microbeID=adaptDraftModelID(models{j});
-
+        
         % load the model
         try
             draftModel = readCbModel([folders{j} filesep models{j}]);
@@ -202,7 +201,7 @@ for i=1:steps:length(models)
         summariesTmp{j}=summary;
 
         outputFileNamesTmp{j,1}=microbeID;
-
+        
         %% save translated version of the draft model as a mat file
         if contains(models{j},'sbml') && translateModels
             draftModel = translateDraftReconstruction(draftModel);
@@ -256,14 +255,11 @@ for i=1:length(pipelineFields)
         end
         spreadsheet=unique(cases)';
         spreadsheet=cell2table(spreadsheet);
-        if size(spreadsheet,1)>0
-            writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-        end
     else
         spreadsheet=cell2table(pipelineSummary.(pipelineFields{i}));
-        if size(spreadsheet,2)>1
-            writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
-        end
+    end
+    if size(spreadsheet,2)>1
+        writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     end
 end
 

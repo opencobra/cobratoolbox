@@ -1,4 +1,4 @@
-function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database)
+function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database, inputDataFolder)
 % Performs an FVA and reports those AromaticAA pathway end reactions (exchange reactions)
 % that can carry flux in the model and should carry flux according to
 % data (true positives) and those AromaticAA pathway end reactions that
@@ -12,6 +12,8 @@ function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, micr
 %                   required in analysis)
 % database          Structure containing rBioNet reaction and metabolite
 %                   database
+% inputDataFolder   Folder with experimental data and database files
+%                   to load
 %
 % OUTPUT
 % TruePositives     Cell array of strings listing all aromatic amino acid
@@ -20,24 +22,29 @@ function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, micr
 % FalseNegatives    Cell array of strings listing all aromatic amino acid
 % degradation products
 % that cannot be secreted by the model but should be secreted according to comparative genomic data.
-% Almut Heinken, Dec 2017
+%
+% .. Author:
+%      Almut Heinken, Dec 2017
+%                     March  2022 - changed code to string-matching to make
+%                     it more robust
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 
-% read aromatic amino acid degradation product tables
-AromaticAATable = readtable('AromaticAATable.txt', 'Delimiter', '\t');
-AromaticAAExchanges = {'Phenylpropanoate','EX_pppn(e)';'4-Hydroxyphenylpropanoate','EX_r34hpp(e)';'Indolepropionate','EX_ind3ppa(e)';'Isocaproate','EX_isocapr(e)'};
-AromaticAAExchanges=cell2table(AromaticAAExchanges);
+% read aromatic amino acid degradation product table
+dataTable = readInputTableForPipeline([inputDataFolder filesep 'AromaticAATable.txt']);
 
-% find microbe index in AromaticAA table
-mInd = find(ismember(AromaticAATable.MicrobeID, microbeID));
+corrRxns = {'Phenylpropanoate','EX_pppn(e)';'4-Hydroxyphenylpropanoate','EX_r34hpp(e)';'Indolepropionate','EX_ind3ppa(e)';'Isocaproate','EX_isocapr(e)'};
+
+TruePositives = {};  % true positives (uptake in vitro and in silico)
+FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
+
+% find microbe index in data table
+mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in aromatic amino acid degradation data file.'])
-    TruePositives = {};
-    FalseNegatives = {};
+    warning(['Microbe "', microbeID, '" not found in fermentation product data file.'])
 else
     % perform FVA to identify uptake metabolites
     % set BOF
@@ -46,52 +53,68 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-    model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+    %     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
-    rxns = AromaticAAExchanges(table2array(AromaticAATable(mInd, 2:end)) == 1, 2:end);
-    % flux variability analysis on reactions of interest
-    rxns = table2cell(rxns);
-    rxns = unique(rxns);
-    rxns = rxns(~cellfun('isempty', rxns));
-    if ~isempty(rxns)
-        rxnsInModel=intersect(rxns,model.rxns);
-        rxnsNotInModel=setdiff(rxns,model.rxns);
-        if isempty(rxnsInModel)
-            % all exchange reactions that should be there are not there -> false
-            % negatives
-            FalseNegatives = rxns;
-            TruePositives= {};
-        else
-             currentDir=pwd;
-            try
-                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                    rxnsInModel, 'S');
-            catch
-                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                cd(currentDir)
-                [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+
+    % get the reactions to test
+    rxns = {};
+    for i=2:size(dataTable,2)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end
-            % active flux
-            flux = rxnsInModel(maxFlux > 1e-6);
-            % which aromatic amino acid degradation product should be secreted according to in vitro data
-            %     fData = find(table2array(AromaticAATable(mInd, 2:end)) == 1);
-            fData = AromaticAAExchanges(table2array(AromaticAATable(mInd, 2:end)) == 1, 2:end);
-            
-            % check all exchanges corresponding to each aromatic amino acid degradation product
-            TruePositives = intersect(table2cell(fData), flux);
-            FalseNegatives = setdiff(table2cell(fData), flux);
-            % add any that are not in model to the false negatives
-            if ~isempty(rxnsNotInModel)
-                FalseNegatives=union(FalseNegatives,rxnsNotInModel);
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end
         end
-    else
-        TruePositives = {};
-        FalseNegatives = {};
+    end
+
+    % flux variability analysis on reactions of interest
+    rxns = unique(rxns);
+    rxns = rxns(~cellfun('isempty', rxns));
+    rxnsInModel=intersect(rxns,model.rxns);
+    if ~isempty(rxnsInModel)
+        currentDir=pwd;
+        try
+            [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                rxnsInModel, 'S');
+        catch
+            warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+            cd(currentDir)
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        end
+
+        % active flux
+        flux = rxnsInModel(maxFlux > -1e-6);
+
+        % which reaction should carry flux according to in vitro data
+        for i=2:size(dataTable,2)
+            rxn={};
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                if dataTable{mInd,i}==1
+                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+                end
+            else
+                if strcmp(dataTable{mInd,i},'1')
+                    rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+                end
+            end
+            if ~isempty(rxn)
+                % add any that are not in model/not carrying flux to the false negatives
+                if ~isempty(intersect(rxn,flux))
+                    TruePositives = union(TruePositives,rxn);
+                else
+                    FalseNegatives=union(FalseNegatives,rxn);
+                end
+            end
+        end
     end
 end
 
@@ -100,7 +123,7 @@ if ~isempty(TruePositives)
     TruePositives = TruePositives(~cellfun(@isempty, TruePositives));
     TruePositives=strrep(TruePositives,'EX_','');
     TruePositives=strrep(TruePositives,'(e)','');
-    
+
     for i=1:length(TruePositives)
         TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end
@@ -113,7 +136,6 @@ if ~isempty(FalseNegatives)
     FalseNegatives=strrep(FalseNegatives,'(e)','');
     for i = 1:length(FalseNegatives)
         FalseNegatives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),FalseNegatives{i})),2};
-        warning(['Microbe "' microbeID, '" cannot produce aromatic amino acid degradation product"', FalseNegatives{i}, '".'])
     end
 end
 

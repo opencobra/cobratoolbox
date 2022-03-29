@@ -109,22 +109,10 @@ if ~isempty(FNs)
             metExch = FNs{j};
         end
         % find reactions that could be gap-filled to enable flux
-        % seems to try to fix exchanges that are not part of the model,
-        % leading it to crash:
-        %         Objective reactions not found in model!
-        %
-        % Error in runGapfillingFunctions (line 41)
-        % model = changeObjective(model, objectiveFunction);
-      %  try
-           if isempty(find(strcmp(model.rxns,metExch)))
-         met = [database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j}))} '(e)'];
-         model = addExchangeRxn(model,met,-1,1000);
-     end
-            [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
-            summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
-            summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
-            summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
-      %  end
+        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+        summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+        summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+        summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
     end
 end
 
