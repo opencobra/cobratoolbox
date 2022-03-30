@@ -494,6 +494,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'FRD7 AND FRD6 AND NADH8','EX_succ(e)','FRD7','SUCDi'
     'FXXRDO AND H2St AND SO3t AND H2Ot AND NADH8 AND SO3rDdmq',[],'FXXRDO','FXXRDOi'
     'CLt4r AND SO4CLtex2 AND SO4t2',[],'SO4t2','SO4t2i'
+    'FXXRDO AND PIt6b AND AND NADH8 AND SO3rDdmq',[],'PIt6b','PIt6bi'
     'NACSMCTte AND NACUP AND PIt6b AND r2136',[],'PIt6b','PIt6bi'
     'URIt2r AND URIt',[],'URIt',[]
     'H202D',[],'H202D','NPR'
