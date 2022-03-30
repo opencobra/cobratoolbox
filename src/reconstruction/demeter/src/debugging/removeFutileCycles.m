@@ -497,6 +497,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'NACSMCTte AND NACUP AND PIt6b AND r2136',[],'PIt6b','PIt6bi'
     'URIt2r AND URIt',[],'URIt',[]
     'H202D',[],'H202D','NPR'
+    'NACSMCTte AND NACUP AND r2136',[],'NACUP',[]
     };
 
 
