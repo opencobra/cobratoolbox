@@ -71,12 +71,8 @@ if length(modelList)>1
 
     % get basic statistics on draft and refined reconstructions and metabolite
     % and reaction content of all refined reconstructions
-    compareDraftRefinedVersions(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
-
-    % get stochiometric and flux consistency for both draft and refined
-    % reconstructions
-    computeStochiometricFluxConsistency(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion, numWorkers)
-
+    computeReconstructionFeatures(translatedDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
+    
     mkdir([propertiesFolder filesep 'Refined'])
     
     % analyze and cluster refined reconstructions
@@ -97,10 +93,6 @@ if length(modelList)>1
     folders=folders';
     % remove any files that are not matfiles
     delInd=find(~contains(files(:,1),'mat'));
-    files(delInd,:)=[];
-    folders(delInd,:)=[];
-    % remove files that should be kept
-    delInd=find(contains(files(:,1),'Consistency'));
     files(delInd,:)=[];
     folders(delInd,:)=[];
     
