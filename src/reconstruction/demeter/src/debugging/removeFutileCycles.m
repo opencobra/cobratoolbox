@@ -499,8 +499,27 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'NACSMCTte AND NACUP AND PIt6b AND r2136',[],'PIt6b','PIt6bi'
     'URIt2r AND URIt',[],'URIt',[]
     'H202D',[],'H202D','NPR'
+    % IT 03/2022
+    'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
+    'LACL',[],'LACL','LACLi'
+    'METFR AND r0792',[],'r0792',[],
+    'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
+        'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
+    'L_LACDr AND D_LACD',[],'L_LACD',[]
+    'ALCD19 AND FDNADOX_Hipp AND FXXRDO AND GLUOX AND GLUSx AND SULRi AND r0245',[],'FDNADOX_Hipp',[]
+    'LACOAAOR AND MDH AND LDH_L2',[],'LACOAAOR',[]
+    'G3PFDXORi AND GAPD AND HYDFDN2rfdx AND PGK',[],'GAPD',[]
+    'FDNADOX_Hpp AND HYDFDN2rfdx',[],'FDNADOX_Hpp',[] % or irreversible version
+    %'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4i',[] % L_LACD4i needs to be added to rBioNet
+    'CITt10i AND CITt4_4 AND LEUt2r AND LEUt4 AND MGt5',[],'CITt10i',[] % not an ideal solution but I cannot see another one
+    'BTCOADH',[],'BTCOADH','BTCOADHi'
+    'FTMAOR',[],'FTMAOR','FTMAORi'
+    'NTMAOR',[],'NTMAOR','NTMAORi'
+    'LDH_L2 AND L_LACDr AND METFR AND MTHFRfdx',[],'L_LACDr','L_LACD'
+    'LDH_D AND LDH_L2 AND LacR',[],'LDH_D','LDH_Di' % not ideal but I don't see another possibilty
+   % 'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4','L_LACD4i' % somehow this L_LACD4i become reversible in the pipeline
+    'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
     };
-
 
 % growth-restoring gapfills: needed if the futile cycle was the model's
 % only way to produce ATP and growth rate without it is zero. Enables ATP
