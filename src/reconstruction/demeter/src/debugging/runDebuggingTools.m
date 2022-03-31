@@ -44,7 +44,6 @@ parser.addParameter('numWorkers', 2, @isnumeric);
 parser.addParameter('translatedDraftsFolder', '', @ischar);
 
 parser.parse(refinedFolder,testResultsFolder,inputDataFolder,infoFilePath,reconVersion,varargin{:});
-
 refinedFolder = parser.Results.refinedFolder;
 testResultsFolder = parser.Results.testResultsFolder;
 inputDataFolder = parser.Results.inputDataFolder;
@@ -213,7 +212,9 @@ if length(failedModels)>0
     % run a retest of revised models
     delete([testResultsFolder filesep 'notGrowing.mat'])
     delete([testResultsFolder filesep 'tooHighATP.mat'])
+    try
     rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
+    end
     if ~isempty(translatedDraftsFolder)
         % plot growth for both draft and refined
         notGrowing = plotBiomassTestResults(refinedFolder,reconVersion,'translatedDraftsFolder',translatedDraftsFolder,'testResultsFolder',testResultsFolder, 'numWorkers', numWorkers);
