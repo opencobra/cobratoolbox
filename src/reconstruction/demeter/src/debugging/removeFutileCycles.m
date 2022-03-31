@@ -500,25 +500,24 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'H202D',[],'H202D','NPR'
     'NACSMCTte AND NACUP AND r2136',[],'NACUP',[]
     % IT 03/2022
-    'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
-    'LACL',[],'LACL','LACLi'
+%     'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
     'METFR AND r0792',[],'r0792',[]
-    'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
-    'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
+%     'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
+%     'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
     'L_LACDr AND D_LACD',[],'L_LACD',[]
-    'ALCD19 AND FDNADOX_Hipp AND FXXRDO AND GLUOX AND GLUSx AND SULRi AND r0245',[],'FDNADOX_Hipp',[]
-    'LACOAAOR AND MDH AND LDH_L2',[],'LACOAAOR',[]
-    'G3PFDXORi AND GAPD AND HYDFDN2rfdx AND PGK',[],'GAPD',[]
-    'FDNADOX_Hpp AND HYDFDN2rfdx',[],'FDNADOX_Hpp',[] % or irreversible version
+%     'ALCD19 AND FDNADOX_Hi AND FXXRDO AND GLUOX AND GLUSx AND SULRi AND r0245',[],'FDNADOX_Hi',[]
+%     'LACOAAOR AND MDH AND LDH_L2',[],'LACOAAOR',[]
+%     'G3PFDXORi AND GAPD AND HYDFDN2rfdx AND PGK',[],'GAPD',[]
+    'FDNADOX_H AND HYDFDN2rfdx',[],'FDNADOX_Hi',[] % or irreversible version
     %'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4i',[] % L_LACD4i needs to be added to rBioNet
     'CITt10i AND CITt4_4 AND LEUt2r AND LEUt4 AND MGt5',[],'CITt10i',[] % not an ideal solution but I cannot see another one
-    'BTCOADH',[],'BTCOADH','BTCOADHi'
-    'FTMAOR',[],'FTMAOR','FTMAORi'
-    'NTMAOR',[],'NTMAOR','NTMAORi'
+%     'BTCOADH',[],'BTCOADH','BTCOADHi'
+%     'FTMAOR',[],'FTMAOR','FTMAORi'
+%     'NTMAOR',[],'NTMAOR','NTMAORi'
     'LDH_L2 AND L_LACDr AND METFR AND MTHFRfdx',[],'L_LACDr','L_LACD'
     'LDH_D AND LDH_L2 AND LacR',[],'LDH_D','LDH_Di' % not ideal but I don't see another possibilty
    % 'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4','L_LACD4i' % somehow this L_LACD4i become reversible in the pipeline
-    'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
+%     'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
     };
 
 
@@ -742,11 +741,9 @@ end
 
 %% Make the proposed changes
 model = model_old;
-if ~isempty(deletedRxns)
-    for j = 1:length(deletedRxns)
-        model = removeRxns(model, deletedRxns{j, 1});
-    end
-end
+
+% remove reactions to delete
+model = removeRxns(model, deletedRxns);
 
 % make sure gene rule and notes are kept while replacing
 if ~isempty(addedRxns)
@@ -778,7 +775,7 @@ if ~isempty(addedRxns)
     end
 end
 
-% add any gapf-filled reactions
+% add any gap-filled reactions
 if ~isempty(gfRxns)
     for i=1:length(gfRxns)
         model = addReaction(model, gfRxns{i,1}, database.reactions{find(ismember(database.reactions(:, 1), gfRxns{i,1})), 3});

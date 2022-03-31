@@ -124,7 +124,9 @@ if ~isempty(TruePositives)
     TruePositives=strrep(TruePositives,'(e)','');
 
     for i=1:length(TruePositives)
-        TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
+        if ~isempty(find(strcmp(database.metabolites(:,1),TruePositives{i})))
+            TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
+        end
     end
 end
 
