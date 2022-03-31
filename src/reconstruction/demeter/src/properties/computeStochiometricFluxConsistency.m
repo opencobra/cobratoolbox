@@ -17,10 +17,16 @@ function computeStochiometricFluxConsistency(translDraftsFolder,refinedFolder,pr
 %   - AUTHOR
 %   Almut Heinken, 07/2020
 
-versions={
-    'Draft_'    translDraftsFolder
-    'Refined_'  refinedFolder
-    };
+if ~isempty(translDraftsFolder)
+    versions={
+        'Draft_'    translDraftsFolder
+        'Refined_'  refinedFolder
+        };
+else
+    versions={
+        'Refined_'  refinedFolder
+        };
+end
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -145,18 +151,33 @@ for t=1:size(versions,1)
     dataFConsistPlotted(:,t)=dataFConsist(:,1);
 end
 
-figure;
-subplot(2,1,1)
-hold on
-violinplot(dataSConsistPlotted, {'Draft models','Curated models'});
-set(gca, 'FontSize', 16)
-title('Stochiometric consistency');
-subplot(2,1,2)
-hold on
-violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
-set(gca, 'FontSize', 16)
-title('Flux consistency');
-print([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'Consistency_' reconVersion],'-dpng','-r300')
+if ~isempty(translDraftsFolder)
+    figure;
+    subplot(2,1,1)
+    hold on
+    violinplot(dataSConsistPlotted, {'Draft models','Curated models'});
+    set(gca, 'FontSize', 16)
+    title('Stochiometric consistency');
+    subplot(2,1,2)
+    hold on
+    violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
+    set(gca, 'FontSize', 16)
+    title('Flux consistency');
+    print([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'Consistency_' reconVersion],'-dpng','-r300')
+else
+    figure;
+    subplot(2,1,1)
+    hold on
+    violinplot(dataSConsistPlotted, 'Curated models');
+    set(gca, 'FontSize', 16)
+    title('Stochiometric consistency');
+    subplot(2,1,2)
+    hold on
+    violinplot(dataFConsistPlotted, 'Curated models');
+    set(gca, 'FontSize', 16)
+    title('Flux consistency');
+    print([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'Consistency_' reconVersion],'-dpng','-r300')
+end
 
 close all
 

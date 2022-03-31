@@ -1,21 +1,21 @@
-function propertiesFolder = computeModelProperties(refinedFolder, translatedDraftsFolder, infoFilePath, reconVersion, varargin)
+function propertiesFolder = computeModelProperties(refinedFolder, infoFilePath, reconVersion, varargin)
 % Part of the DEMETER pipeline. This function analyzes and plots various  
 % properties of the refined and optionally the draft reconstructions. Note 
 % that this may be time-consuming.
 %
 % USAGE:
 %
-%    propertiesFolder = computeModelProperties(refinedFolder, translatedDraftsFolder, infoFilePath, reconVersion, varargin)
+%    propertiesFolder = computeModelProperties(refinedFolder, infoFilePath, reconVersion, varargin)
 %
 % REQUIRED INPUTS
 % refinedFolder            Folder with refined COBRA models to analyze
-% translatedDraftsFolder   Folder with draft COBRA models with translated
-%                          nomenclature and stored as mat files
 % infoFilePath             File with information on reconstructions to refine
 % reconVersion             Name of the refined reconstruction resource
 %                          (default: "Reconstructions")
 % OPTIONAL INPUTS
 % numWorkers               Number of workers in parallel pool (default: 2)
+% translatedDraftsFolder   Folder with draft COBRA models with translated
+%                          nomenclature and stored as mat files
 % customFeatures           Features other than taxonomy to cluster microbes
 %                          by. Need to be a table header in the file with 
 %                          information on reconstructions.
@@ -26,21 +26,20 @@ function propertiesFolder = computeModelProperties(refinedFolder, translatedDraf
 % Define default input parameters if not specified
 parser = inputParser();
 parser.addRequired('refinedFolder', @ischar);
-parser.addRequired('translatedDraftsFolder', @ischar);
 parser.addRequired('infoFilePath', @ischar);
 parser.addRequired('reconVersion', @ischar);
 parser.addParameter('propertiesFolder', [pwd filesep 'modelProperties'], @ischar);
 parser.addParameter('numWorkers', 2, @isnumeric);
+parser.addParameter('translatedDraftsFolder', '', @ischar);
 parser.addParameter('customFeatures', '', @iscellstr);
 
-
-parser.parse(refinedFolder, translatedDraftsFolder, infoFilePath, reconVersion, varargin{:});
+parser.parse(refinedFolder, infoFilePath, reconVersion, varargin{:});
 
 refinedFolder = parser.Results.refinedFolder;
-translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 infoFilePath = parser.Results.infoFilePath;
 propertiesFolder = parser.Results.propertiesFolder;
 numWorkers = parser.Results.numWorkers;
+translatedDraftsFolder = parser.Results.translatedDraftsFolder;
 reconVersion = parser.Results.reconVersion;
 customFeatures = parser.Results.customFeatures;
 
@@ -55,18 +54,20 @@ modelList(~(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if length(modelList)>1
 
-    % save results for refined and draft in two different folders
-    mkdir([propertiesFolder filesep 'Draft'])
+    if ~isempty(translatedDraftsFolder)
+        % save results for refined and draft in two different folders
+        mkdir([propertiesFolder filesep 'Draft'])
 
-    % analyze and cluster draft reconstructions for comparison
-    printReconstructionContent(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
-    getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
-    computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
-    computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
-    try
-        producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
+        % analyze and cluster draft reconstructions for comparison
+        printReconstructionContent(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
+        getReactionMetabolitePresence(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],numWorkers)
+        computeUptakeSecretion(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
+        computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
+        try
+            producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
+        end
+        rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
     end
-    rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
 
     % get basic statistics on draft and refined reconstructions and metabolite
     % and reaction content of all refined reconstructions

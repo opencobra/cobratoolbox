@@ -1,13 +1,13 @@
-function compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
+function compareDraftRefinedVersions(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
 % This function prints a comparison of the draft and refined
 % reconstructions for the refined reconstruction resource.
 %
 % USAGE
-%   compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
+%   compareDraftRefinedVersions(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
 %
 % INPUTS
-% draftFolder           Folder with translated draft reconstructions
-% curatedFolder         Folder with refined reconstructions to be analyzed
+% translDraftsFolder    Folder with translated draft reconstructions
+% refinedFolder         Folder with refined reconstructions to be analyzed
 % propertiesFolder      Folder where the computed stochiometric and flux
 %                       consistencies will be stored
 % reconVersion          Name assigned to the reconstruction resource
@@ -16,11 +16,16 @@ function compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,
 %   - AUTHOR
 %   Almut Heinken, 07/2020
 
-
+if ~isempty(translDraftsFolder)
 toCompare={
-    'Draft' draftFolder
-    'Refined' curatedFolder
+    'Draft' translDraftsFolder
+    'Refined' refinedFolder
     };
+else
+    toCompare={
+    'Refined' refinedFolder
+    };
+end
 
 mkdir([propertiesFolder filesep 'Reconstruction_features_summarized'])
 
@@ -169,7 +174,7 @@ end
 
 % print summary table
 
-for i=1:2
+for i=1:size(toCompare,1)
     Averages{1,i+1} = toCompare{i,1};
     stats = readInputTableForPipeline([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{i,1} '_' reconVersion]);
     for j=2:size(stats,2)
