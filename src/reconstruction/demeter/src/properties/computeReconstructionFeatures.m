@@ -69,9 +69,8 @@ for j=1:size(toCompare,1)
     stats{1,9}='Metabolites';
     stats{1,10}='Genes';
     stats{1,11}='Gene_associated_reactions';
-    stats{1,12}='Reactions_supported_only_by_experimental_data';
-    stats{1,13}='Stoichiometrically_consistent_reactions';
-    stats{1,14}='Flux_consistent_reactions';
+    stats{1,12}='Stoichiometrically_consistent_reactions';
+    stats{1,13}='Flux_consistent_reactions';
     
     dInfo = dir(toCompare{j,2});
     models={dInfo.name};
@@ -152,35 +151,11 @@ for j=1:size(toCompare,1)
             % exclude exchange and demand reactions
             SConsistentRxnBool(exRxns,:)=[];
             SInConsistentRxnBool(exRxns,:)=[];
-            statsTmp{i+1}(13)=sum(SConsistentRxnBool)/(sum(SConsistentRxnBool) + sum(SInConsistentRxnBool));
+            statsTmp{i+1}(12)=sum(SConsistentRxnBool)/(sum(SConsistentRxnBool) + sum(SInConsistentRxnBool));
             [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool] = findFluxConsistentSubset(model,param);
             fluxConsistentRxnBool(exRxns,:)=[];
             fluxInConsistentRxnBool(exRxns,:)=[];
-            statsTmp{i+1}(14)=sum(fluxConsistentRxnBool)/(sum(fluxConsistentRxnBool) + sum(fluxInConsistentRxnBool));
-
-            % fraction of gene-associated reactions and reactions supported by
-            % experimental evidence
-            model=removeRxns(model,model.rxns(find(strncmp(model.rxns,'EX_',3))));
-            model=removeRxns(model,model.rxns(find(strncmp(model.rxns,'sink_',5))));
-            model=removeRxns(model,model.rxns(strncmp(model.rxns,'DM_',3)));
-            gpr_cnt=0;
-            for k=1:length(model.rxns)
-                if ~isempty(model.grRules{k}) && ~strcmp(model.grRules{k},'Unknown')
-                    gpr_cnt=gpr_cnt+1;
-                end
-            end
-            statsTmp{i+1}(11)=gpr_cnt/length(model.rxns);
-            exp_cnt=0;
-            if isfield(model,'comments')
-                for k=1:length(model.comments)
-                    if ~isempty(model.comments{k})
-                        if contains(model.comments{k},'experimental')
-                            exp_cnt=exp_cnt+1;
-                        end
-                    end
-                end
-            end
-            statsTmp{i+1}(12)=exp_cnt/length(model.rxns);
+            statsTmp{i+1}(13)=sum(fluxConsistentRxnBool)/(sum(fluxConsistentRxnBool) + sum(fluxInConsistentRxnBool));
         end
         for i=l:l+endPnt
             % grab all statistics
@@ -188,7 +163,7 @@ for j=1:size(toCompare,1)
             modelID=strrep(models{i},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             stats{onerowmore,1}=modelID;
-            for k=2:14
+            for k=2:13
                 stats{onerowmore,k}=statsTmp{i+1}(k);
             end
         end
@@ -204,7 +179,7 @@ end
 
 for i=1:size(toCompare,1)
     Averages{1,i+1} = toCompare{i,1};
-    load(['stats_' toCompare{j,1} '.mat']);
+    load(['stats_' toCompare{i,1} '.mat']);
     for j=2:size(stats,2)
         Averages{j,1} = stats{1,j};
         if any(strncmp(stats{1,j},'Biomass',7))
@@ -259,7 +234,7 @@ else
     violinplot(dataFConsistPlotted, 'Curated models');
     set(gca, 'FontSize', 16)
     title('Flux consistency');
-    print([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'Consistency_' reconVersion],'-dpng','-r300')
+    print([propertiesFolder filesep 'Consistency_' reconVersion],'-dpng','-r300')
 end
 
 % delete unneeded files

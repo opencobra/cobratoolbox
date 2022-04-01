@@ -213,6 +213,7 @@ for k=1:size(analyzedFiles,1)
                         else
                             set(h,'FontSize',8)
                         end
+                        set(h, 'Interpreter', 'none')
                         grid off
                         f.Renderer='painters';
                         print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
@@ -264,8 +265,6 @@ for k=1:size(analyzedFiles,1)
                             f=figure;
                             hold on
                             gscatter3(Y(:,1),Y(:,2),Y(:,3),feats);
-                            set(gca,'TickLabelInterpreter','none')
-                            set(h,'MarkerSize',6)
                             title(analyzedFiles{k,1})
                             h=legend('Location','northeastoutside');
                             if length(uniqueXX) < 12
@@ -276,6 +275,7 @@ for k=1:size(analyzedFiles,1)
                                 set(h,'FontSize',6)
                             end
                             grid off
+                            set(h, 'Interpreter', 'none')
                             f.Renderer='painters';
                             print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                         else
