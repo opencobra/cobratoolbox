@@ -205,8 +205,8 @@ writetable(cell2table(Averages),[propertiesFolder filesep 'Reconstruction_Featur
 % create figure
 for t=1:size(toCompare,1)
     load(['stats_' toCompare{t,1} '.mat']);
-    dataSConsistPlotted(:,t)=cell2mat(stats(2:end,13));
-    dataFConsistPlotted(:,t)=cell2mat(stats(2:end,14));
+    dataSConsistPlotted(:,t)=cell2mat(stats(2:end,12));
+    dataFConsistPlotted(:,t)=cell2mat(stats(2:end,13));
 end
 
 if ~isempty(translDraftsFolder)
