@@ -502,9 +502,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     % IT 03/2022
     'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
     'LACL',[],'LACL','LACLi'
-    'METFR AND r0792',[],'r0792',[],
+    'METFR AND r0792',[],'r0792',[]
     'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
-        'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
+     'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
     'L_LACDr AND D_LACD',[],'L_LACD',[]
     'ALCD19 AND FDNADOX_Hipp AND FXXRDO AND GLUOX AND GLUSx AND SULRi AND r0245',[],'FDNADOX_Hipp',[]
     'LACOAAOR AND MDH AND LDH_L2',[],'LACOAAOR',[]
