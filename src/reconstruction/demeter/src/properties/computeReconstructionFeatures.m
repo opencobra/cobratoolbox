@@ -28,8 +28,6 @@ else
     };
 end
 
-mkdir([propertiesFolder filesep 'Reconstruction_features_summarized'])
-
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
@@ -221,7 +219,7 @@ if ~isempty(translDraftsFolder)
     violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
     set(gca, 'FontSize', 16)
     title('Flux consistency');
-    print([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'Consistency_' reconVersion],'-dpng','-r300')
+    print([propertiesFolder filesep 'Consistency_' reconVersion],'-dpng','-r300')
 else
     figure;
     subplot(2,1,1)

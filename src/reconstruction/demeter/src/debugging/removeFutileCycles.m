@@ -492,6 +492,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'URIt2r AND URIt',[],'URIt',[]
     'H202D',[],'H202D','NPR'
     'NACSMCTte AND NACUP AND r2136',[],'NACUP',[]
+    'NACSMCTte AND NACUP AND URIt2r',[],'NACUP',[]
     % IT 03/2022
     %     'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
     'METFR AND r0792',[],'r0792',[]

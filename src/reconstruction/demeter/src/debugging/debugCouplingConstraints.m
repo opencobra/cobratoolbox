@@ -46,7 +46,7 @@ if solution.f < tol
     growthFixes2Add(IA,:)=[];
     [C,IA]=intersect(growthFixes2Add(:,2),model.rxns);
     growthFixes2Add(IA,:)=[];
-    
+
     for j=1:size(growthFixes2Add,1)
         formula = database.reactions{ismember(database.reactions(:, 1), growthFixes2Add{j,1}), 3};
         model = addReaction(model, growthFixes2Add{j,1}, 'reactionFormula', formula);
@@ -66,7 +66,7 @@ if solution.f < tol
                 model=modelTest;
             end
         end
-        
+
         % save the enabled model
         model=modelPrevious;
         for j=1:length(addedCouplingRxns)
@@ -75,6 +75,17 @@ if solution.f < tol
             model.comments{end,1}='Added to enable growth with coupling constraints in place during DEMETER pipeline.';
             model.rxnConfidenceScores(end,1)=1;
         end
+    else
+        % try untargeted gapfilling
+        [model,addedCouplingRxns] = untargetedGapFilling(model,'max',database);
+    end
+    % save the enabled model
+    model=modelPrevious;
+    for j=1:length(addedCouplingRxns)
+        formula = database.reactions{ismember(database.reactions(:, 1), addedCouplingRxns{j}), 3};
+        model = addReaction(model, addedCouplingRxns{j}, 'reactionFormula', formula);
+        model.comments{end,1}='Added to enable growth with coupling constraints in place during DEMETER pipeline.';
+        model.rxnConfidenceScores(end,1)=1;
     end
 else
     model=modelPrevious;
