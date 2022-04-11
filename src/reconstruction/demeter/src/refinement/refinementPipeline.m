@@ -73,6 +73,9 @@ if translateModels
     end
 end
 
+%% check and remove duplicate reactions
+[model] = checkDuplicateRxn(model,'S',1,0,1);
+
 %% add some reactions that need to be in every reconstruction
 essentialRxns={'DM_atp_c_','sink_PGPm1[c]','EX_nh4(e)','NH4tb','Kt1r'};
 if ~find(strcmp(model.mets,'pi[e]'))
@@ -100,6 +103,7 @@ summary.('relaxFBAGapfill') = {};
 
 %% Rebuild biomass objective function for organisms that do not have cell wall
 [model,removedBioComp,addedReactionsBiomass]=rebuildBiomassReaction(model,microbeID,biomassReaction,database,infoFile);
+
 summary.('removedBioComp') = removedBioComp;
 summary.('addedReactionsBiomass') = addedReactionsBiomass;
 
@@ -359,7 +363,9 @@ model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 %% add periplasmatic space
 if ~isempty(infoFilePath)
     if any(strcmp(infoFile(:,1),microbeID))
+
         model = createPeriplasmaticSpace(model,microbeID,infoFile);
+
     end
 end
 
