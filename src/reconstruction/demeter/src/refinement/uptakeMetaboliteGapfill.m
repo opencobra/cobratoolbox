@@ -48,7 +48,7 @@ uptakeRxns.Cobalamin = {'EX_cbl1(e)', 'CBL1abc', 'EX_adocbl(e)', 'ADOCBLabc'};
 uptakeRxns.Linoleicacid = {'EX_lnlc(e)', 'LNLCt'};
 uptakeRxns.alphaLinolenicacid = {'EX_lnlnca(e)', 'LNLNCAt'};
 uptakeRxns.Benzoate = {'EX_bz(e)', 'BZt'};
-uptakeRxns.Betaine = {'EX_glyb(e)', 'GLYBt2r'};
+uptakeRxns.Betaine = {'EX_glyb(e)', 'GLYBt2r', 'DM_glyb_c_'};
 uptakeRxns.Bicarbonate = {'EX_hco3(e)', 'HCO3abc'};
 uptakeRxns.Biotin = {'EX_btn(e)', 'BTNabc', 'DM_btn'};
 uptakeRxns.Chenodeoxycholate = {'EX_C02528(e)', 'BIACt2'};
@@ -130,6 +130,11 @@ else
     uptCols = find(str2double(uptakeTable(orgRow, 2:end)) == 1);
 end
 
+gapfillAddConditional = {
+    'Methylamine', 'any(ismember(model.rxns, ''MOGMAH''))', {'DM_nmth2ogltmt_c_'}
+    'Benzoate', 'find(ismember(model.rxns, {''BZ12DOX'', ''BZDIOLDH'', ''CATDOX'', ''MUCCYCI''}))', {'EX_mucl(e)','MUCLt2r'}
+    };
+
 % added rxns list
 uptakeRxnsAdded = {};
 
@@ -144,6 +149,21 @@ if ~isempty(uptCols)
                 model = addReaction(model, rxns2Add{j}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','uptakeMetaboliteGapfill');
             end
             uptakeRxnsAdded = union(uptakeRxnsAdded, rxns2Add);
+        end
+        % add conditional reactions
+        if any(ismember(gapfillAddConditional(:, 1), takenUp{i}))
+            conditions = find(ismember(gapfillAddConditional(:, 1), takenUp{i}));
+            for k = 1:length(conditions)
+                if eval(gapfillAddConditional{conditions(k), 2})
+                    addRxns = gapfillAddConditional{conditions(k), 3};
+                    addRxns = setdiff(addRxns,model.rxns);
+                    for j = 1:length(addRxns)
+                        formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                        model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'uptakeMetaboliteGapfill');
+                        uptakeRxnsAdded = union(uptakeRxnsAdded,addRxns{j});
+                    end
+                end
+            end
         end
     end
 end

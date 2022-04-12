@@ -155,8 +155,12 @@ if length(failedModels)>0
         parfor j=i:i+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
-
-            model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
+            try
+                model=readCbModel([refinedFolder filesep failedModels{j,1} '.mat']);
+            catch
+                L=load([refinedFolder filesep failedModels{j,1} '.mat']);
+                model = L.model;
+            end
             biomassReaction=model.rxns{find(strncmp(model.rxns(:,1),'bio',3)),1};
 
             % load the relevant test results
@@ -200,7 +204,11 @@ if length(failedModels)>0
             end
             % save the revised model
             model = revisedModelTmp{j};
-            writeCbModel(model, 'format', 'mat', 'fileName', [refinedFolder filesep failedModels{j,1}]);
+            try
+                writeCbModel(model, 'format', 'mat', 'fileName', [refinedFolder filesep failedModels{j,1}]);
+            catch
+                save([refinedFolder filesep failedModels{j,1} '.mat'],'model');
+            end
         end
         % regularly save the results
         save([testResultsFolder filesep reconVersion '_refined' filesep 'debuggingReport.mat'],'debuggingReport');
@@ -209,7 +217,7 @@ if length(failedModels)>0
     delete([testResultsFolder filesep 'notGrowing.mat'])
     delete([testResultsFolder filesep 'tooHighATP.mat'])
     try
-    rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
+        rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
     end
     if ~isempty(translatedDraftsFolder)
         % plot growth for both draft and refined

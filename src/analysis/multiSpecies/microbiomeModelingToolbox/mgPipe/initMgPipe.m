@@ -106,8 +106,6 @@ if numWorkers > 1
         parpool(numWorkers)
     end
 end
-
-global CBTDIR
     
 % set optional variables
 mkdir(resPath);
@@ -149,7 +147,7 @@ figForm = '-depsc';
 
 % Check for installation of parallel Toolbox
 try
-   version = ver('parallel');
+   ver('parallel')
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
 end

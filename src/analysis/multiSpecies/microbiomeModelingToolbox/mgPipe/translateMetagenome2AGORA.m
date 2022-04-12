@@ -9,6 +9,9 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 % output to identify these cases and modify the function accordingly.
 % Pan-models that can be used to create microbiome models in mgPipe can be
 % created with the function createPanModels.
+% Consider running the function updateTaxonomyInfoAGORA to retrieve the
+% most recent taxonomic assignment for the taxa to map. You might need to
+% update your input file based on updated taxonomic classifications.
 %
 % USAGE:
 %
@@ -68,9 +71,9 @@ taxLevels={
     };
 
 if strcmp(reconstructionResource,'AGORA')
-    [~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');
+    infoFile = readInputTableForPipeline('AGORA_infoFile.xlsx');
 elseif strcmp(reconstructionResource,'AGORA2')
-    [~, infoFile, ~] = xlsread('AGORA2_infoFile.xlsx');
+    infoFile = readInputTableForPipeline('AGORA2_infoFile.xlsx');
 else
     error('Incorrect input for reconstruction resource!')
 end
@@ -109,18 +112,6 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_8','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_9','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),' family','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),' order','');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_gauvreauii_group','Ruminococcus');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_gnavus_group','Blautia');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_torques_group','Blautia');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_coprostanoligenes_group','Eubacterium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_eligens_group','Eubacterium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_hallii_group','Anaerobutyricum');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_ruminantium_group','Eubacterium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_ventriosum_group','Eubacterium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_xylanophilum_group','Eubacterium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Clostridium_innocuum_group','Erysipelatoclostridium');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'[','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),']','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),' ','_');
@@ -128,6 +119,19 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'.','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'-','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'__','_');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'___','_');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_gauvreauii_group','Ruminococcus');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_torques_group','Mediterraneibacter');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Ruminococcus_gnavus_group','Mediterraneibacter');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_coprostanoligenes_group','Eubacterium');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_eligens_group','Lachnospira');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_hallii_group','Anaerobutyricum');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_ruminantium_group','Eubacterium');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_ventriosum_group','Eubacterium');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Eubacterium_xylanophilum_group','Eubacterium');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'Clostridium_innocuum_group','Erysipelatoclostridium');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto_1','');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'_sensu_stricto','');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_cardiffensis','g_Schaalia|s_Actinomyces_cardiffensis');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_georgiae','g_Schaalia|s_Actinomyces_georgiae');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Actinomyces|s_Actinomyces_meyeri','g_Schaalia|s_Actinomyces_meyeri');
@@ -144,9 +148,8 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Eubacterium|s_bifo
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Eubacterium|s_dolichum','g_Amedibacillus|s_dolichus');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Propionibacterium|s_acnes','g_Cutibacterium|s_acnes');
 metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Propionibacterium|s_granulosum','g_Cutibacterium|s_granulosum');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_gnavus','g_Blautia|s_gnavus');
-metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_torques','g_Blautia|s_torques');
-
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_gnavus','g_Mediterraneibacter|s_gnavus');
+metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_torques','g_Mediterraneibacter|s_torques');
 % remove all rows that are not of the desired sequencing depth and edit the
 % taxon descriptions to enable mapping to AGORA
 % specific for MetaPhlAn input files
@@ -190,6 +193,7 @@ for i=2:size(metagenome_abundance,1)
                     end
                 else
                     metagenome_abundance{i,1}=findSDepth{1,end};
+                    metagenome_abundance{i,1}=regexprep(metagenome_abundance{i,1},mpsDepth,'','once');
                 end
             else
                 delRows(cnt,1)=i;
@@ -216,7 +220,11 @@ for i=1:length(Dupes)
     indexToDupes = find(strcmp(metagenome_abundance(:,1),Dupes{i}));
     for j=2:length(indexToDupes)
         for k=2:size(metagenome_abundance,2)
-            metagenome_abundance{indexToDupes(1),k}=num2str(str2double(metagenome_abundance{indexToDupes(1),k})+str2double(metagenome_abundance{indexToDupes(j),k}));
+            if contains(version,'(R202') % for Matlab R2020a and newer
+                metagenome_abundance{indexToDupes(1),k}=metagenome_abundance{indexToDupes(1),k}+metagenome_abundance{indexToDupes(j),k};
+            else
+                metagenome_abundance{indexToDupes(1),k}=num2str(str2double(metagenome_abundance{indexToDupes(1),k})+str2double(metagenome_abundance{indexToDupes(j),k}));
+            end
         end
         delArray(cnt,1)=indexToDupes(j);
         cnt=cnt+1;
@@ -244,6 +252,17 @@ translatedAbundances=metagenome_abundance;
 % normalize the abundances so that sum for each individual is 1
 normalizedAbundances=translatedAbundances;
 for i=2:size(translatedAbundances,2)
+    if contains(version,'(R202') % for Matlab R2020a and newer
+        if sum(cell2mat(translatedAbundances(2:end,i)))>0
+            for j=2:size(translatedAbundances,1)
+                normalizedAbundances{j,i}=cell2mat(translatedAbundances(j,i))/sum(cell2mat(translatedAbundances(2:end,i)));
+            end
+        else
+            for j=2:size(translatedAbundances,1)
+                normalizedAbundances{j,i}=translatedAbundances{j,i};
+            end
+        end
+    else
     if sum(str2double(translatedAbundances(2:end,i)))>0
         for j=2:size(translatedAbundances,1)
             normalizedAbundances{j,i}=num2str(str2double(translatedAbundances(j,i))/sum(str2double(translatedAbundances(2:end,i))));
@@ -252,6 +271,7 @@ for i=2:size(translatedAbundances,2)
         for j=2:size(translatedAbundances,1)
             normalizedAbundances{j,i}=translatedAbundances{j,i};
         end
+    end
     end
 end
 
