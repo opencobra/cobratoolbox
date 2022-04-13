@@ -21,7 +21,10 @@ function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, micro
 %                   (exchange reactions) that cannot be secreted by the model
 %                   but should be secreted according to in vitro data.
 %
-% Almut Heinken, Dec 2017
+% .. Author:
+%      Almut Heinken, Dec 2017
+%                     March 2022 - changed code to string-matching to make
+%                     it more robust
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -29,16 +32,17 @@ if isempty(CBT_LP_SOLVER)
 end
 
 % read bile acid product table
-BileAcidTable = readtable('BileAcidTable.txt', 'Delimiter', '\t');
-BileAcidExchanges = {'Chenodeoxycholate','EX_C02528(e)';'Cholate','EX_cholate(e)';'7-Dehydrochenodeoxycholate','EX_7dhcdchol(e)';'7-Dehydrocholate','EX_7ocholate(e)';'Ursocholate','EX_uchol(e)';'Ursodiol','EX_HC02194(e)';'3-Dehydrochenodeoxycholate','EX_3dhcdchol(e)';'3-Dehydrocholate','EX_3dhchol(e)';'Isochenodeoxycholate','EX_icdchol(e)';'Isocholate','EX_isochol(e)';'12-Dehydrocholate','EX_12dhchol(e)';'Allodeoxycholate','EX_adchac(e)';'Allolithocholate','EX_alchac(e)';'Deoxycholate','EX_dchac(e)';'Lithocholate','EX_HC02191(e)'};
-BileAcidExchanges=cell2table(BileAcidExchanges);
+dataTable = readInputTableForPipeline('BileAcidTable.txt');
+
+corrRxns = {'Chenodeoxycholate','EX_C02528(e)';'Cholate','EX_cholate(e)';'7-Dehydrochenodeoxycholate','EX_7dhcdchol(e)';'7-Dehydrocholate','EX_7ocholate(e)';'Ursocholate','EX_uchol(e)';'Ursodiol','EX_HC02194(e)';'3-Dehydrochenodeoxycholate','EX_3dhcdchol(e)';'3-Dehydrocholate','EX_3dhchol(e)';'Isochenodeoxycholate','EX_icdchol(e)';'Isocholate','EX_isochol(e)';'12-Dehydrocholate','EX_12dhchol(e)';'Allodeoxycholate','EX_adchac(e)';'Allolithocholate','EX_alchac(e)';'Deoxycholate','EX_dchac(e)';'Lithocholate','EX_HC02191(e)'};
+
+TruePositives = {};  % true positives (uptake in vitro and in silico)
+FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
 
 % find microbe index in bile acid table
-mInd = find(ismember(BileAcidTable.MicrobeID, microbeID));
+mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in bile acid product data file.'])
-    TruePositives = {};
-    FalseNegatives = {};
+    warning(['Microbe "', microbeID, '" not found in bile acid metabolism data file.'])
 else
     % perform FVA to identify uptake metabolites
     % set BOF
@@ -47,51 +51,68 @@ else
     end
     model = changeObjective(model, biomassReaction);
     % set a low lower bound for biomass
-%     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
+    %     model = changeRxnBounds(model, biomassReaction, 1e-3, 'l');
     % list exchange reactions
     exchanges = model.rxns(strncmp('EX_', model.rxns, 3));
     % open all exchanges
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
-    rxns = BileAcidExchanges(table2array(BileAcidTable(mInd, 2:end)) == 1, 2:end);
-    
-    TruePositives = {};  % true positives (flux in vitro and in silico)
-    FalseNegatives = {};  % false negatives (flux in vitro not in silico)
-    
+
+    % get the reactions to test
+    rxns = {};
+    for i=2:size(dataTable,2)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
+            end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
+            end
+        end
+    end
+
     % flux variability analysis on reactions of interest
-    rxns = table2cell(rxns);
     rxns = unique(rxns);
     rxns = rxns(~cellfun('isempty', rxns));
-    if ~isempty(rxns)
-        rxnsInModel=intersect(rxns,model.rxns);
-        rxnsNotInModel=setdiff(rxns,model.rxns);
-        if isempty(rxnsInModel)
-            % all exchange reactions that should be there are not there -> false
-            % negatives
-            FalseNegatives = rxns;
-            TruePositives= {};
-        else
-            currentDir=pwd;
-            try
-                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                    rxnsInModel, 'S');
-            catch
-                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                cd(currentDir)
-                [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+    rxnsInModel=intersect(rxns,model.rxns);
+    if ~isempty(rxnsInModel)
+        currentDir=pwd;
+        try
+            [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                rxnsInModel, 'S');
+        catch
+            warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+            cd(currentDir)
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        end
+
+        % active flux
+        flux = rxnsInModel(maxFlux > -1e-6);
+    else
+        flux = {};
+    end
+
+    % which reaction should carry flux according to comparative genomics data
+    for i=2:size(dataTable,2)
+        rxn={};
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
             end
-            
-            % active flux
-            flux = rxnsInModel(maxFlux > 1e-6);
-            % which bile acid should be secreted according to in vitro data
-            fData = BileAcidExchanges(table2array(BileAcidTable(mInd, 2:end)) == 1, 2:end);
-            %         fData = find(table2array(BileAcidTable(mInd, 2:end)) == 1);
-            % check all exchanges corresponding to each bile acid
-            TruePositives = intersect(table2cell(fData), flux);
-            FalseNegatives = setdiff(table2cell(fData), flux);
-            % add any that are not in model to the false negatives
-            if ~isempty(rxnsNotInModel)
-                FalseNegatives=union(FalseNegatives,rxnsNotInModel);
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        end
+        if ~isempty(rxn)
+            % add any that are not in model/not carrying flux to the false negatives
+            if ~isempty(intersect(rxn,flux))
+                TruePositives = union(TruePositives,rxn);
+            else
+                FalseNegatives=union(FalseNegatives,rxn);
             end
         end
     end

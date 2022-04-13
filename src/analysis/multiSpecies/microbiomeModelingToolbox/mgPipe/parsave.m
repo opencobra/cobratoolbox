@@ -13,10 +13,11 @@ function parsave(fname, data)
 % need to use v7.3 switch for very large variables
 if isstruct(data)
     if isfield(data,'rxns')
-        if length(data.rxns) < 300000
-            save(fname, 'data')
+        model = data;
+        if length(model.rxns) < 300000
+            save(fname, 'model')
         else
-            save(fname, 'data','-v7.3')
+            save(fname, 'model','-v7.3')
         end
     end
 else

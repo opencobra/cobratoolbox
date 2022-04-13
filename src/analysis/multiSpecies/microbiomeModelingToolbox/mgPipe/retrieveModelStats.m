@@ -60,6 +60,8 @@ end
 tol=0.0000001;
 
 abundance = readInputTableForPipeline(abunFilePath);
+abundance(1,:) = strrep(abundance(1,:),'-','_');
+abundance(1,:) = strrep(abundance(1,:),'.','_');
 for i=1:length(modelList)
     samp=strrep(modelList{i},'.mat','');
     samp=strrep(samp,'microbiota_model_samp_','');

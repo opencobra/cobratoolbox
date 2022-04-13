@@ -211,7 +211,11 @@ for i=1:steps:length(models)
     % save the data
     for j=i:i+endPnt
         model=modelsTmp{j};
+        try
         writeCbModel(model, 'format', 'mat', 'fileName', [refinedFolder filesep outputFileNamesTmp{j,1}]);
+        catch 
+            save([refinedFolder filesep outputFileNamesTmp{j,1} '.mat'],'model');
+        end
         if contains(models{j},'sbml') || contains(models{j},'xml')
             % save translated version of the draft model as a mat file, otherwise keep the orinal mat file
             model=draftModelsTmp{j};
@@ -254,12 +258,12 @@ for i=1:length(pipelineFields)
             end
         end
         spreadsheet=unique(cases)';
-        spreadsheet=cell2table(spreadsheet);
+        writetable(cell2table(spreadsheet),[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
     else
         spreadsheet=cell2table(pipelineSummary.(pipelineFields{i}));
-    end
-    if size(spreadsheet,2)>1
-        writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        if size(spreadsheet,2)>1
+            writetable(spreadsheet,[summaryFolder filesep pipelineFields{i,1}],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        end
     end
 end
 

@@ -4,7 +4,7 @@ function [testResultsFolder,curationReport] = runTestSuiteTools(refinedFolder, i
 %
 % USAGE:
 %
-%    testResultsFolder = runTestSuiteTools(refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin)
+%    [testResultsFolder,curationReport] = runTestSuiteTools(refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin)
 %
 %
 % REQUIRED INPUTS
@@ -123,7 +123,12 @@ if createReports
         end
         
         for i = 1:length(modelList)
-            model=readCbModel([refinedFolder filesep modelList{i}]);
+            try
+                model=readCbModel([refinedFolder filesep modelList{i}]);
+            catch
+                L = load([refinedFolder filesep modelList{i}]);
+                model = L.model;
+            end
             biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
             if ~isempty(ncbiCol)
                 ncbiID = infoFile(find(strcmp(infoFile(:,1),strrep(modelList{i},'.mat',''))),ncbiCol);

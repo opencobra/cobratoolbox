@@ -42,7 +42,11 @@ for i=1:length(Dupes)
     indexToDupes = find(strcmp(coverage(:,1),Dupes{i}));
     for j=2:length(indexToDupes)
         for k=2:size(coverage,2)
-            coverage{indexToDupes(1),k}=num2str(cell2mat(coverage{indexToDupes(1),k})+cell2mat(coverage{indexToDupes(j),k}));
+            if contains(version,'R202') % for Matlab R2020a and newer
+                coverage{indexToDupes(1),k}=coverage{indexToDupes(1),k}+coverage{indexToDupes(j),k};
+            else
+                coverage{indexToDupes(1),k}=num2str(cell2mat(coverage{indexToDupes(1),k})+cell2mat(coverage{indexToDupes(j),k}));
+            end
         end
         delArray(cnt,1)=indexToDupes(j);
         cnt=cnt+1;

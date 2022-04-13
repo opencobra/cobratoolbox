@@ -103,7 +103,7 @@ for k=1:size(analyzedFiles,1)
                 toDel=sum(data,1)<tol;
                 data(:,toDel)=[];
                 
-                % remove entries that are NaNs
+                % remove entries that are NaNs or empty
                 findnans=any(isnan(data));
                 data(:,findnans==1)=[];
                 
@@ -114,8 +114,12 @@ for k=1:size(analyzedFiles,1)
                 data(find(strcmp(taxa,'NA')),:)=[];
                 red_orgs(strcmp(taxa,'NA'),:)=[];
                 taxa(find(strcmp(taxa,'NA')),:)=[];
-                
-                
+
+                % remove empty cells
+                data(find(strcmp(taxa,'')),:)=[];
+                red_orgs(strcmp(taxa,''),:)=[];
+                taxa(find(strcmp(taxa,'')),:)=[];
+
                 % remove unclassified organisms
                 data(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
                 red_orgs(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
@@ -160,6 +164,12 @@ for k=1:size(analyzedFiles,1)
                     red_orgs(ismember(taxa,C),:)=[];
                     taxa(find(ismember(taxa,C)),:)=[];
                 end
+
+                % sort alphabetically
+                [B,I]=sortrows(taxa,'ascend');
+                data = data(I,:);
+                red_orgs = red_orgs(I,:);
+                taxa = taxa(I,:);
                 
                 if size(data,1)>10
                     
@@ -203,6 +213,7 @@ for k=1:size(analyzedFiles,1)
                         else
                             set(h,'FontSize',8)
                         end
+                        set(h, 'Interpreter', 'none')
                         grid off
                         f.Renderer='painters';
                         print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
@@ -254,7 +265,6 @@ for k=1:size(analyzedFiles,1)
                             f=figure;
                             hold on
                             gscatter3(Y(:,1),Y(:,2),Y(:,3),feats);
-                            set(h,'MarkerSize',6)
                             title(analyzedFiles{k,1})
                             h=legend('Location','northeastoutside');
                             if length(uniqueXX) < 12
@@ -265,6 +275,7 @@ for k=1:size(analyzedFiles,1)
                                 set(h,'FontSize',6)
                             end
                             grid off
+                            set(h, 'Interpreter', 'none')
                             f.Renderer='painters';
                             print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                         else

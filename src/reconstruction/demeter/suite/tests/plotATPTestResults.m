@@ -25,7 +25,7 @@ function [tooHighATP,ATP_fluxes] = plotATPTestResults(refinedFolder, reconVersio
 %                           produce too much ATP on complex medium
 % ATP_fluxes                 Computed ATP production fluxes for each model
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 09/2020
 
 % Define default input parameters if not specified
@@ -235,5 +235,7 @@ else
     ATP_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
     ATP_fluxes(2:end,2:3) = num2cell(data);
 end
+
+writetable(cell2table(ATP_fluxes),[testResultsFolder filesep 'ATP_fluxes.csv'],'WriteVariableNames',false)
 
 end

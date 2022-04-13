@@ -80,8 +80,8 @@ alreadyAnalyzedStrains={};
 
 for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
-        savedResults = readtable([testResultsFolder filesep fields{i} '_' reconVersion '.txt'], 'Delimiter', 'tab', 'ReadVariableNames', false, 'format', 'auto');
-        Results.(fields{i}) = table2cell(savedResults);
+        savedResults = readInputTableForPipeline([testResultsFolder filesep fields{i} '_' reconVersion '.txt']);
+        Results.(fields{i}) = savedResults;
         alreadyAnalyzedStrains = Results.(fields{i})(:,1);
     else
         Results.(fields{i})={};
