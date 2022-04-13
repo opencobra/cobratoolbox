@@ -94,14 +94,27 @@ FBA = optimizeCbModel(model);
 % check if the model cannot produce biomass
 
 if FBA.stat ==3 || FBA.stat ==0
-    
+ 
+    % try if adding rBioNetDB would fix the problem of not being able to
+    % produce biomass
     % remove reactions already in model
     [C]=intersect(rBioNetDB.rxns,model.rxns);
     rBioNetDB=removeRxns(rBioNetDB,C);
-    
-    % try if adding rBioNetDB would fix the problem of not being able to
-    % produce biomass
+
+    % account for coupling constraints
+    if isfield(model,'C')
+        rxns2Couple=model.rxns;
+        rxns2Couple(find(strncmp(rxns2Couple,targetRxn,length(targetRxn))),:)=[];
+        model = rmfield(model,{'C','d'});
+        coupleRxns = 1;
+    end
+
     [modelExpanded] = mergeTwoModels(rBioNetDB,model,1,0);
+    
+    if exist('coupleRxns','var')
+        rxns2Couple = intersect(rxns2Couple,modelExpanded.rxns);
+        modelExpanded=coupleRxnList2Rxn(modelExpanded,rxns2Couple,targetRxn,400,0); %couple the specific reactions
+    end
     modelExpanded = changeObjective(modelExpanded,targetRxn);
     FBA2 = optimizeCbModel(modelExpanded);
     

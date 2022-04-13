@@ -94,12 +94,8 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     failedModels = union(failedModels,tooHighATP);
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
-    FNlist = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'], 'Delimiter', 'tab'));
-    if contains(version,'(R202') % for Matlab R2020a and newer
-        failedModels=union(failedModels,FNlist(find(cell2mat(FNlist(:,2))==0),1));
-    else
+    FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
     failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
-    end
 end
 
 % load all test result files for experimental data
@@ -156,8 +152,7 @@ if length(failedModels)>0
         gapfilledReactionsTmp = {};
         replacedReactionsTmp = {};
         revisedModelTmp = {};
-       parfor j=i:i+endPnt
-      % for j=i:i+endPnt
+        parfor j=i:i+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
             try
@@ -222,7 +217,7 @@ if length(failedModels)>0
     delete([testResultsFolder filesep 'notGrowing.mat'])
     delete([testResultsFolder filesep 'tooHighATP.mat'])
     try
-    rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
+        rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
     end
     if ~isempty(translatedDraftsFolder)
         % plot growth for both draft and refined
