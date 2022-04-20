@@ -25,7 +25,7 @@ function [notGrowing,Biomass_fluxes] = plotBiomassTestResults(refinedFolder, rec
 %                           cannot produce biomass on at least one condition
 % Biomass_fluxes             Computed biomass production fluxes for each model
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 09/2020
 
 % Define default input parameters if not specified

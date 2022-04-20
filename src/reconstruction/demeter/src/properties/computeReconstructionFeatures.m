@@ -1,13 +1,14 @@
-function compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
-% This function prints a comparison of the draft and refined
-% reconstructions for the refined reconstruction resource.
+function computeReconstructionFeatures(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
+% This function prints a comparison of basic reconstruction features of 
+% the draft and refined reconstructions for the refined reconstruction 
+% resource.
 %
 % USAGE
-%   compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,reconVersion,numWorkers)
+%   computeReconstructionFeatures(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
 %
 % INPUTS
-% draftFolder           Folder with translated draft reconstructions
-% curatedFolder         Folder with refined reconstructions to be analyzed
+% translDraftsFolder    Folder with translated draft reconstructions
+% refinedFolder         Folder with refined reconstructions to be analyzed
 % propertiesFolder      Folder where the computed stochiometric and flux
 %                       consistencies will be stored
 % reconVersion          Name assigned to the reconstruction resource
@@ -16,13 +17,16 @@ function compareDraftRefinedVersions(draftFolder,curatedFolder,propertiesFolder,
 %   - AUTHOR
 %   Almut Heinken, 07/2020
 
-
+if ~isempty(translDraftsFolder)
 toCompare={
-    'Draft' draftFolder
-    'Refined' curatedFolder
+    'Draft' translDraftsFolder
+    'Refined' refinedFolder
     };
-
-mkdir([propertiesFolder filesep 'Reconstruction_features_summarized'])
+else
+    toCompare={
+    'Refined' refinedFolder
+    };
+end
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -38,6 +42,14 @@ if numWorkers>0 && ~isempty(ver('parallel'))
     end
 end
 environment = getEnvironment();
+
+% define input parameters for findFluxConsistentSubset
+param=struct;
+feasTol = getCobraSolverParams('LP', 'feasTol');
+param.('feasTol')= feasTol;
+param.('epsilon')=feasTol*100;
+param.('modeFlag')=0;
+param.('method')='fastcc';
 
 for j=1:size(toCompare,1)
     % get reconstruction statistics: stats, stats, production, number of
@@ -55,7 +67,8 @@ for j=1:size(toCompare,1)
     stats{1,9}='Metabolites';
     stats{1,10}='Genes';
     stats{1,11}='Gene_associated_reactions';
-    stats{1,12}='Reactions_supported_only_by_experimental_data';
+    stats{1,12}='Stoichiometrically_consistent_reactions';
+    stats{1,13}='Flux_consistent_reactions';
     
     dInfo = dir(toCompare{j,2});
     models={dInfo.name};
@@ -117,37 +130,30 @@ for j=1:size(toCompare,1)
             statsTmp{i+1}(3)=AnaerobicGrowth(1,1);
             statsTmp{i+1}(4)=AerobicGrowth(1,2);
             statsTmp{i+1}(5)=AnaerobicGrowth(1,2);
+            
             % stats
             [ATPFluxAerobic, ATPFluxAnaerobic] = testATP(model);
             statsTmp{i+1}(6)=ATPFluxAerobic(1,1);
             statsTmp{i+1}(7)=ATPFluxAnaerobic(1,1);
+
             % Number of reactions, metabolites, and genes
             statsTmp{i+1}(8)=length(model.rxns);
             statsTmp{i+1}(9)=length(model.mets);
             statsTmp{i+1}(10)=length(model.genes);
-            % fraction of gene-associated reactions and reactions supported by
-            % experimental evidence
-            model=removeRxns(model,model.rxns(find(strncmp(model.rxns,'EX_',3))));
-            model=removeRxns(model,model.rxns(find(strncmp(model.rxns,'sink_',5))));
-            model=removeRxns(model,model.rxns(strncmp(model.rxns,'DM_',3)));
-            gpr_cnt=0;
-            for k=1:length(model.rxns)
-                if ~isempty(model.grRules{k}) && ~strcmp(model.grRules{k},'Unknown')
-                    gpr_cnt=gpr_cnt+1;
-                end
-            end
-            statsTmp{i+1}(11)=gpr_cnt/length(model.rxns);
-            exp_cnt=0;
-            if isfield(model,'comments')
-                for k=1:length(model.comments)
-                    if ~isempty(model.comments{k})
-                        if contains(model.comments{k},'experimental')
-                            exp_cnt=exp_cnt+1;
-                        end
-                    end
-                end
-            end
-            statsTmp{i+1}(12)=exp_cnt/length(model.rxns);
+
+            % Stoichiometrically and flux consistent reactions
+            % exclude exchange and demand reactions
+            exRxns=vertcat(find(strncmp(model.rxns,'EX_',3)),find(strcmp(model.rxns,'rxn00062')));
+            [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool]=...
+                findStoichConsistentSubset(model);
+            % exclude exchange and demand reactions
+            SConsistentRxnBool(exRxns,:)=[];
+            SInConsistentRxnBool(exRxns,:)=[];
+            statsTmp{i+1}(12)=sum(SConsistentRxnBool)/(sum(SConsistentRxnBool) + sum(SInConsistentRxnBool));
+            [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool] = findFluxConsistentSubset(model,param);
+            fluxConsistentRxnBool(exRxns,:)=[];
+            fluxInConsistentRxnBool(exRxns,:)=[];
+            statsTmp{i+1}(13)=sum(fluxConsistentRxnBool)/(sum(fluxConsistentRxnBool) + sum(fluxInConsistentRxnBool));
         end
         for i=l:l+endPnt
             % grab all statistics
@@ -155,23 +161,23 @@ for j=1:size(toCompare,1)
             modelID=strrep(models{i},'.mat','');
             modelID=strrep(modelID,'.sbml','');
             stats{onerowmore,1}=modelID;
-            for k=2:12
+            for k=2:13
                 stats{onerowmore,k}=statsTmp{i+1}(k);
             end
         end
-        
+
         % save results
         save(['stats_' toCompare{j,1} '.mat'],'stats');
     end
     % print out a table with the features
-    writetable(cell2table(stats),[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{j,1} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+    writetable(cell2table(stats),[propertiesFolder filesep 'Reconstruction_Features_' toCompare{j,1} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
 end
 
 % print summary table
 
-for i=1:2
+for i=1:size(toCompare,1)
     Averages{1,i+1} = toCompare{i,1};
-    stats = readInputTableForPipeline([propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_' toCompare{i,1} '_' reconVersion]);
+    load(['stats_' toCompare{i,1} '.mat']);
     for j=2:size(stats,2)
         Averages{j,1} = stats{1,j};
         if any(strncmp(stats{1,j},'Biomass',7))
@@ -192,7 +198,42 @@ for i=1:2
         end
     end
 end
-writetable(cell2table(Averages),[propertiesFolder filesep 'Reconstruction_features_summarized' filesep 'ReconstructionFeatures_Overview_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+writetable(cell2table(Averages),[propertiesFolder filesep 'Reconstruction_Features_Summary_Table_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+
+% create figure
+for t=1:size(toCompare,1)
+    load(['stats_' toCompare{t,1} '.mat']);
+    dataSConsistPlotted(:,t)=cell2mat(stats(2:end,12));
+    dataFConsistPlotted(:,t)=cell2mat(stats(2:end,13));
+end
+
+if ~isempty(translDraftsFolder)
+    figure;
+    subplot(2,1,1)
+    hold on
+    violinplot(dataSConsistPlotted, {'Draft models','Curated models'});
+    set(gca, 'FontSize', 16)
+    title('Stochiometric consistency');
+    subplot(2,1,2)
+    hold on
+    violinplot(dataFConsistPlotted, {'Draft models','Curated models'});
+    set(gca, 'FontSize', 16)
+    title('Flux consistency');
+    print([propertiesFolder filesep 'Consistency_' reconVersion],'-dpng','-r300')
+else
+    figure;
+    subplot(2,1,1)
+    hold on
+    violinplot(dataSConsistPlotted, 'Curated models');
+    set(gca, 'FontSize', 16)
+    title('Stochiometric consistency');
+    subplot(2,1,2)
+    hold on
+    violinplot(dataFConsistPlotted, 'Curated models');
+    set(gca, 'FontSize', 16)
+    title('Flux consistency');
+    print([propertiesFolder filesep 'Consistency_' reconVersion],'-dpng','-r300')
+end
 
 % delete unneeded files
 for j=1:size(toCompare,1)

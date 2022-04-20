@@ -139,16 +139,7 @@ basicCompounds={
     };
 modelTest = useDiet(model,basicCompounds);
 modelTest.lb(find(strncmp(modelTest.rxns,'sink_',5)))=0;
-
-if ~isempty(find(strcmp(modelTest.rxns,'DM_atp_c_')))
-    modelTest=changeObjective(modelTest,'DM_atp_c_');
-else
-    % somehow this reaction is missing even though it should have been
-    % added in the refinement function - IT 03/2022
-    modelTest = addReaction(modelTest, 'DM_atp_c_','metaboliteList',{'atp[c]','h2o[c]','adp[c]','pi[c]','h[c]'},'stoichCoeffList',[-1 -1 1 1 1], 'reversible',false);
-    modelTest=changeObjective(modelTest,'DM_atp_c_');
-end
-
+modelTest=changeObjective(modelTest,'DM_atp_c_');
 FBA=optimizeCbModel(modelTest);
 testResults.ATP_from_O2{1, 2} = FBA.f;
 

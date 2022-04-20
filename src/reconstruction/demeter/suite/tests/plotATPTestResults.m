@@ -25,7 +25,7 @@ function [tooHighATP,ATP_fluxes] = plotATPTestResults(refinedFolder, reconVersio
 %                           produce too much ATP on complex medium
 % ATP_fluxes                 Computed ATP production fluxes for each model
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 09/2020
 
 % Define default input parameters if not specified
