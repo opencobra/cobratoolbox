@@ -626,7 +626,11 @@ for i = 2:size(reactionsToReplace, 1)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
                     rxns{j}
+                    try
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
+                    catch
+                        x
+                    end
                     
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                         newName=[rxns{j} 'pp'];
