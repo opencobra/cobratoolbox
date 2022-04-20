@@ -621,6 +621,7 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
+
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
                     
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
