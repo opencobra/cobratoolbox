@@ -16,7 +16,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    dietFilePath:           char with path of directory where the diet is saved.
 %                            Can also be a character array with a separate diet for
 %                            each individual, in that case, size(dietFilePath,1) 
-%                            needs to equal the length of samples.
+%                            needs to equal the length of samples, and the first 
+%                            row needs to be sample names and the second row needs to 
+%                            be the respective files with diet information.
 %    infoFilePath:           char with path to stratification criteria if available
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)

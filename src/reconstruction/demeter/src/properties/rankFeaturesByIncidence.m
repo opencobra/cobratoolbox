@@ -84,12 +84,12 @@ for i=1:length(analyzedFiles)
         set(gca, 'FontSize', 12)
         h=title(analyzedFiles{i,1});
         set(h,'interpreter','none')
-        if i<4
-            xlabel('Reactions')
+        if i==1
+            xlabel('Reactions in tested reconstructions')
         else
-            xlabel('Metabolites')
+            xlabel('Metabolites in tested reconstructions')
         end
-        ylabel('Percentage')
+        ylabel('Fraction of presence in tested reconstructions')
         print([propertiesFolder filesep 'Ranked_features' filesep strrep(analyzedFiles{i,1},' ','_') '_ranked_' reconVersion],'-dpng','-r300')
         
         dataPrintout=cell2table(dataPrintout);

@@ -82,7 +82,9 @@ for i=1:length(fields)
     if isfile([testResultsFolder filesep fields{i} '_' reconVersion '.txt'])
         savedResults = readInputTableForPipeline([testResultsFolder filesep fields{i} '_' reconVersion '.txt']);
         Results.(fields{i}) = savedResults;
-        alreadyAnalyzedStrains = Results.(fields{i})(:,1);
+        if size(savedResults,2)>0
+            alreadyAnalyzedStrains = Results.(fields{i})(:,1);
+        end
     else
         Results.(fields{i})={};
     end

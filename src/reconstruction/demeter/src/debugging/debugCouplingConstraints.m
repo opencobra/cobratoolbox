@@ -34,7 +34,7 @@ rxns2Couple(find(strncmp(rxns2Couple,biomassReaction,length(biomassReaction))),:
 model=coupleRxnList2Rxn(model,rxns2Couple,biomassReaction,400,0); %couple the specific reactions
 
 % define gap-fills that could enable growth with coupling constraints
-growthFixes={'EX_hco3(e)','';'HCO3abc','';'H2CO3D','';'EX_ac(e)','ACt';'ACt2r','ACt';'ATPS4','';'EX_for(e)','FORt';'FORt2r','FORt';'EX_lac_L(e)','';'L_LACt2r','';'EX_lac_D(e)','';'D_LACt2','';'EX_etoh(e)','ETOHt';'ETOHt2r','ETOHt';'EX_succ(e)','SUCCt';'SUCCt2r','SUCCt';'EX_fum(e)','FUMt';'FUMt2r','FUMt'};
+growthFixes={'EX_hco3(e)','';'HCO3abc','';'H2CO3D','';'EX_ac(e)','ACt';'ACt2r','ACt';'ATPS4','';'EX_for(e)','FORt';'FORt2r','FORt';'EX_lac_L(e)','';'L_LACt2r','';'EX_lac_D(e)','';'D_LACt2','';'EX_etoh(e)','ETOHt';'ETOHt2r','ETOHt';'EX_succ(e)','SUCCt';'SUCCt2r','SUCCt';'EX_fum(e)','FUMt';'FUMt2r','FUMt';'EX_pi(e)','';'PIabc','';'EX_acald(e)','';'ACALDt','';'EX_akg(e)','';'AKGt2r',''};
 
 tol = 0.000001;
 

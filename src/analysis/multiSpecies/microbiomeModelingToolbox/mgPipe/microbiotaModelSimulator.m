@@ -16,6 +16,8 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %                        one microbe model that can carry flux
 %    sampNames:          cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
+%                        Can also be a list of the sample names with
+%                        individual diet files.
 %    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux: double with the desired upper bound on flux through the host
@@ -189,6 +191,15 @@ else
             if doSim==1
                 % simulations either not done yet or done incorrectly -> go
                 sampleID = sampNames{k,1};
+
+                % get diet(s) to load
+                diet = readInputTableForPipeline(dietFilePath);
+                if length(intersect(sampNames,diet(:,1)))==length(sampNames)
+                    loadDiet = diet{find(strcmp(diet(:,1),sampleID)),2};
+                else
+                    loadDiet = dietFilePath;
+                end
+
                 if ~isempty(hostPath)
                     % microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
                     modelStr=load(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
@@ -299,11 +310,10 @@ else
 
                     model_sd=model;
                     if adaptMedium
-                        [diet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
+                        [diet] = adaptVMHDietToAGORA(loadDiet,'Microbiota');
                     else
-                        diet = readtable(dietFilePath, 'Delimiter', '\t');  % load the text file with the diet
-                        diet = [diet.Properties.VariableNames;table2cell(diet)];
-
+                        diet = readInputTableForPipeline(loadDiet);  % load the text file with the diet
+ 
                         for j = 1:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end
