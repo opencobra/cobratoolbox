@@ -51,6 +51,7 @@ secretionRxns.Deoxycholate = {'EX_dchac(e)','DCAT'};
 % secretionRxns.Tryptamine = {'EX_trypta(e)', 'TRYPTAte'};
 secretionRxns.Tyramine = {'EX_tym(e)','TYMt2r','TYRCBOX'};
 secretionRxns.Tryptamine = {'EX_trypta(e)','TRYPTAte','LTDCL'};
+secretionRxns.Dimethylamine = {'EX_dma(e)', 'DMAt2r'};
 secretionRxns.TrimethylamineNoxide = {'EX_tmao(e)'};
 secretionRxns.Trimethylamine = {'EX_tmao(e)', 'EX_tma(e)'};
 secretionRxns.Spermine = {'EX_sprm(e)','SPRMTDe'};

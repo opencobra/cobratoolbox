@@ -62,6 +62,12 @@ for i=1:length(taxa)
     end
 end
 
+% adapt organism IDs in input table to refined model IDs
+for i=2:size(infoFile,1)
+    infoFile{i,1} = adaptDraftModelID(infoFile{i,1});
+end
+
+
 %% Check for duplicate and removed strains in the input files
 
 % % get list of files to check

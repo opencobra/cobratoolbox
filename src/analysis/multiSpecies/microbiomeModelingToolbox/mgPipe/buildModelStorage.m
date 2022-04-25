@@ -46,9 +46,11 @@ for i = 1:size(microbeNames, 1)
     ex_rxns=intersect(ex_rxns,model.rxns);
 
         % compute which exchanges can carry flux
+        currentDir = pwd;
         try
             [minFlux,maxFlux]=fastFVA(model,0,'max','ibm_cplex',ex_rxns);
         catch
+            cd(currentDir)
             [minFlux,maxFlux]=fluxVariability(model,0,'max',ex_rxns);
         end
         minflux=find(abs(minFlux) > 0.00000001);
