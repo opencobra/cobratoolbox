@@ -514,6 +514,9 @@ reactionsToReplace = {'if present','if not present','removed','added'
     %     'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
     'LACLi',[],'LACLi','LACL'
     'ILEt3 AND ILEt2r',[],'ILEt2r','ILEt2'
+    % IT 04/2022
+    'SUCCt2_2 AND SUCCt2_3r',[],'SUCCt2_2',[]
+    'GNOX AND GNOXmq AND GNOXy AND SUCDimq',[],'GNOXmq','GNOXmqi'
     };
 
 
@@ -752,7 +755,9 @@ if ~isempty(addedRxns)
                 rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
                 rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
                 model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
-                model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+                if isfield(model_old,'rxnConfidenceScores')
+                    model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+                end
             end
             model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
             model.rxnConfidenceScores(end,1)=1;

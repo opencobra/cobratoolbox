@@ -8,10 +8,10 @@ function [OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM,runTests
 % with the organ test results.
 %
 % [OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM, runTestsOnly, OrganCompendium)
-% 
+%
 % INPUT
 % modelWBM                  model structure of whole-body metabolic model
-% runTestsOnly              
+% runTestsOnly
 %
 % OUTPUT
 % OrganCompendium           Structure containing the individal organs as
@@ -19,7 +19,7 @@ function [OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM,runTests
 % TableCSources             Overview table of ATP yield per carbon source
 %                           under aerobic and anaerobic conditions for each organ in the model
 %                           structrure
-% 
+%
 % The organ compendium for each sex will be saved as
 % OrganAtlas_Harvetta.mat and OrganAtlas_Harvey.mat along with the test
 % results.
@@ -43,7 +43,7 @@ warning('off','all')
 
 sex = modelWBM.sex;
 OrganLists;
-if runTestsOnly ~= 1 
+if runTestsOnly ~= 1
     if isfield(modelWBM,'A')
         % remove all slack variables
         modelWBM.S = modelWBM.A;
@@ -57,8 +57,12 @@ if runTestsOnly ~= 1
     sex = modelWBM.sex;
     clear OrganCompendium
     for i = 1 : length(OrgansListShort)
+        
         % metabolic reactions
         modelTmp = modelWBM;
+        
+        progress = i/length(OrgansListShort);
+        fprintf([num2str(progress*100) ' percent ... Extracting organs from WBM ... \n']);
         
         R1 = strmatch(OrgansListShort{i},modelTmp.rxns);
         if ~isempty(R1)
@@ -135,7 +139,7 @@ if runTestsOnly ~= 1
             modelAllComp.rxns(strmatch('biomass_reactionIEC01b',modelAllComp.rxns)) ={ 'biomass_maintenance'};
             OrganCompendium.(OrgansListShort{i}).modelAllComp = modelAllComp;
         end
-
+        
     end
     % annotate organ compendium with Recon 3D data
     annotateRxns = 1;
@@ -149,9 +153,11 @@ if runTestsOnly ~= 1
     if strcmp(sex,'female')
         OrganCompendium.sex = 'female';
         %save OrganAtlas_Harvetta OrganCompendium  modelWBM
+        mkdir(resultsPath);
         save([resultsPath 'OrganAtlas_Harvetta'],'OrganCompendium','modelWBM')
     else
         OrganCompendium.sex = 'male';
+        mkdir(resultsPath);
         save([resultsPath 'OrganAtlas_Harvey'],'OrganCompendium','modelWBM')
     end
 end
@@ -160,7 +166,10 @@ end
 organ = fieldnames(OrganCompendium);
 clear TestSolutionName TestSolution OR FBA_OR R
 for i =1 :length(organ)
-    if ~strcmp('sex',organ{i}) &&  ~strcmp('Recon3DHarvey',organ{i}) 
+    progress = i/length(organ);
+    fprintf([num2str(progress) ' ... Running metabolic functional tests on each organ ... \n']);
+    
+    if ~strcmp('sex',organ{i}) &&  ~strcmp('Recon3DHarvey',organ{i})
         model = OrganCompendium.(organ{i}).modelAllComp;
         model.lb(find(model.lb<0))=-1000;
         model.ub(find(model.ub<0))=0;
@@ -247,7 +256,11 @@ end
 
 load('Recon3D_Harvey_Used_in_Script_120502.mat')
 %load('Y:\SemiAutomated_Organ_Models\_InesProteomeMapData\Recon2.1\Recon3_and_alike\2017_05_18_Recon3d_consistencyCheckHarvey.mat');
+annotateRxns = 1;
+annotateMets = 1;
+modelConsistent = annotateModel(modelConsistent, annotateRxns,annotateMets);
 OrganCompendium.Recon3DHarvey.model = modelConsistent;
+
 [OrganCompendium.Recon3DHarvey.Sanity.TableChecks, OrganCompendium.Recon3DHarvey.Sanity.Table_csources,OrganCompendium.Recon3DHarvey.Sanity.CSourcesTestedRxns,  OrganCompendium.Recon3DHarvey.Sanity.TestSolutionNameOpenSinks,OrganCompendium.Recon3DHarvey.Sanity.TestSolutionNameClosedSinks] = performSanityChecksonRecon(modelConsistent,'Recon3DHarvey');
 
 % get results from all Csources
