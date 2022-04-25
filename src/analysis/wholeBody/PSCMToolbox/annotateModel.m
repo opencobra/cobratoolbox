@@ -177,16 +177,16 @@ if annotateMets == 1
     
     % note that there are a few metabolites that are not present
     [a,rem] = strtok(model.mets,'_');
-    [rem,rem2] = strtok(rem,'[');
+    [rem,rem2] = strtok(a,'[');
     
     % add _ to Recon3D.mets
     VMH_mets2 = VMH_mets;
-    VMH_mets2.abbreviation = strcat('_',VMH_mets.abbreviation);
+    % VMH_mets2.abbreviation = strcat('_',VMH_mets.abbreviation);
     % match both metabolite lists
     [LIA,LOCB] = ismember(rem,VMH_mets2.abbreviation);
     for i = 1 : length(LOCB)
         if LOCB(i) >0 && ~strcmp(a(i),'slack')
-            model.metCharges(i,1) = VMH_mets2.charge(LOCB(i),:);
+            model.metCharges(i,1) = str2num(VMH_mets2.charge(LOCB(i),:));
             model.metFormulas(i,1) = cellstr(VMH_mets2.chargedFormula(LOCB(i),:));
             model.metNames(i,1) =  cellstr(VMH_mets2.fullName(LOCB(i),:));
             if ~isempty(regexprep(VMH_mets2.cheBlId(LOCB(i),:),' ',''))% remove space in string
@@ -202,7 +202,7 @@ if annotateMets == 1
             model.metBioCycID(i,1) =  cellstr(VMH_mets2.biocyc(LOCB(i),:));
             model.metSEEDID(i,1) =  cellstr(VMH_mets2.seed(LOCB(i),:));
             model.metSBOTerms(i,1) =  cellstr('SBO:0000247'); % simple molecule
-            if ~isempty(VMH_mets2.chemspider(LOCB(i),:)) && ~isnan(VMH_mets2.chemspider(LOCB(i),:))
+            if ~isempty(VMH_mets2.chemspider(LOCB(i),:)) %&& ~isnan(VMH_mets2.chemspider(LOCB(i),:))
                 model.metChemSpider(i,1) =  cellstr(num2str(VMH_mets2.chemspider(LOCB(i),:)));
             end
             model.metInchiKey(i,1) =  cellstr(VMH_mets2.inchiKey(LOCB(i),:));
@@ -214,7 +214,7 @@ if annotateMets == 1
     [LIA,LOCBa] = ismember(rem,VMH_mets.abbreviation);
     for i = 1 : length(LOCBa)
         if LOCBa(i) >0 && ~strcmp(a(i),'slack')
-            model.metCharges(i,1) = VMH_mets2.charge(LOCBa(i),:);
+            model.metCharges(i,1) = str2num(VMH_mets2.charge(LOCBa(i),:));
             model.metFormulas(i,1) = cellstr(VMH_mets2.chargedFormula(LOCBa(i),:));
             model.metNames(i,1) =  cellstr(VMH_mets2.fullName(LOCBa(i),:));
             if ~isempty(regexprep(VMH_mets2.cheBlId(LOCBa(i),:),' ',''))% remove space in string
@@ -230,7 +230,7 @@ if annotateMets == 1
             model.metBioCycID(i,1) =  cellstr(VMH_mets2.biocyc(LOCBa(i),:));
             model.metSEEDID(i,1) =  cellstr(VMH_mets2.seed(LOCBa(i),:));
             model.metSBOTerms(i,1) =  cellstr('SBO:0000247'); % simple molecule
-            if ~isempty(VMH_mets2.chemspider(LOCBa(i),:)) && ~isnan(VMH_mets2.chemspider(LOCBa(i),:))
+            if ~isempty(VMH_mets2.chemspider(LOCBa(i),:))% && ~isnan(VMH_mets2.chemspider(LOCBa(i),:))
                 model.metChemSpider(i,1) =  cellstr(num2str(VMH_mets2.chemspider(LOCBa(i),:)));
             end
             model.metInchiKey(i,1) =  cellstr(VMH_mets2.inchiKey(LOCBa(i),:));
