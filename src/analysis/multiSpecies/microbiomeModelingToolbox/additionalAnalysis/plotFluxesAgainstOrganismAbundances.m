@@ -41,6 +41,10 @@ end
 % load database
 database=loadVMHDatabase;
 
+fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
+fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
+fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
+
 if nargin>2
     [~,IA]=setdiff(fluxes(:,1),metabolites,'stable');
     fluxes(IA(2:end),:)=[];
@@ -68,18 +72,18 @@ for i=2:size(fluxes,1)
             f=figure;
             scatter(data(:,1),data(:,2),'b','filled','o','MarkerEdgeColor','black')
             hold on
-        h=xlabel(fluxes{i,1});
-        set(h,'interpreter','none')
-        orgLabel=strrep(abundance{j,1},'pan','');
-        orgLabel=strrep(orgLabel,'_',' ');
-        h=ylabel(orgLabel);
-        set(h,'interpreter','none')
-        set(gca, 'FontSize', 14);
-        title('Relative abundances vs. reaction fluxes (mmol*gDW-1*hr-1)')
-        f.Renderer='painters';
-        print([fluxes{i,1} '_' abundance{j,1}],'-dpng','-r300')
-    end
-    close all
+            h=xlabel(fluxes{i,1});
+            set(h,'interpreter','none')
+            orgLabel=strrep(abundance{j,1},'pan','');
+            orgLabel=strrep(orgLabel,'_',' ');
+            h=ylabel(orgLabel);
+            set(h,'interpreter','none')
+            set(gca, 'FontSize', 14);
+            title('Relative abundances vs. reaction fluxes (mmol*gDW-1*hr-1)')
+            f.Renderer='painters';
+            print([fluxes{i,1} '_' abundance{j,1}],'-dpng','-r300')
+        end
+        close all
     end
 end
 
