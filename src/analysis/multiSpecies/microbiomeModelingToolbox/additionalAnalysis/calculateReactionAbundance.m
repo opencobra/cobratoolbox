@@ -41,6 +41,8 @@ abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
+% adapt IDs if neccessary
+abundance(1,2:end) = strrep(abundance(1,2:end),'-','_');
 
 %
 

@@ -43,6 +43,8 @@ abundance = readInputTableForPipeline(abundancePath);
 if isnumeric(abundance{2, 1})
     abundance(:, 1) = [];
 end
+% adapt IDs if neccessary
+abundance(1,2:end) = strrep(abundance(1,2:end),'-','_');
 
 fluxes = readInputTableForPipeline(fluxPath);
 
@@ -198,12 +200,12 @@ for i = 2:size(fluxes, 1)
     end
 end
 
-% remove entries that are only weak correlations
+% remove entries that are only weak correlations and empty taxonomy entries
 for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.2)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.6)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
@@ -213,12 +215,14 @@ for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),1)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.2)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.6)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
     end
     FluxCorrelations.(TaxonomyLevels{t})(delArray,:)=[];
+
+    FluxCorrelations.(TaxonomyLevels{t})(find(strcmp(FluxCorrelations.(TaxonomyLevels{t})(:,1),'')),:)=[];
 end
 
 % translate to metabolite descriptions
@@ -234,7 +238,6 @@ taxonCol = 'Phylum';
 taxonomy(:,taxonCol+1:end)=[];
 
 for t = 2:size(TaxonomyLevels, 1)
-    taxa=FluxCorrelations.(TaxonomyLevels{t})(2:end,1);
     TaxonomyReduced=taxonomy;
     taxonCol = find(strcmp(taxonomy(1, :), TaxonomyLevels{t}));
     TaxonomyReduced(:,1:taxonCol-1)=[];
@@ -246,27 +249,35 @@ for t = 2:size(TaxonomyLevels, 1)
     TaxonomyInfo.(TaxonomyLevels{t})=TaxonomyReduced(IA,:);
 end
 
+set(0, 'DefaultTextInterpreter', 'none')
+
 % Plot the calculated correlations.
 for t = 1:length(TaxonomyLevels)
-    xlabels = FluxCorrelations.(TaxonomyLevels{t})(1, 2:end);
-    ylabels = FluxCorrelations.(TaxonomyLevels{t})(2:end, 1);
     data = string(FluxCorrelations.(TaxonomyLevels{t})(2:end, 2:end));
     data = str2double(data);
-    figure;
-    imagesc(data)
-    colormap('cool')
-    colorbar
-    if length(xlabels) < 50
-    set(gca, 'xtick', 1:length(xlabels));
-    xticklabels(xlabels);
-    xtickangle(90)
+
+    if size(FluxCorrelations.(TaxonomyLevels{t}),2) < 50
+        cgo = clustergram(data,...
+            'RowLabels', FluxCorrelations.(TaxonomyLevels{t})(2:end,1),...
+            'ColumnLabels', FluxCorrelations.(TaxonomyLevels{t})(1,2:end),...
+            'ColumnLabelsRotate', 45, ...
+            'Cluster', 'all', ...
+            'ShowDendrogram','True', ...
+            'symmetric','False', ...
+            'colormap', 'turbo' ...
+            );
+    else
+        cgo = clustergram(data,...
+            'RowLabels', FluxCorrelations.(TaxonomyLevels{t})(2:end,1),...
+            'Cluster', 'all', ...
+            'ShowDendrogram','True', ...
+            'symmetric','False', ...
+            'colormap', 'turbo' ...
+            );
     end
-        if length(ylabels) < 50
-    set(gca, 'ytick', 1:length(ylabels));
-    yticklabels(ylabels);
-        end
-    set(gca, 'TickLabelInterpreter', 'none');
-    title(TaxonomyLevels{t})
+    h = plot(cgo);
+    set(h,'TickLabelInterpreter','none');
+    colorbar(h)
 end
 
 end

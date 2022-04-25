@@ -30,6 +30,8 @@ abundance = readInputTableForPipeline(abundancePath);
 
 % load fluxes
 fluxes = readInputTableForPipeline(fluxPath);
+% adapt IDs if neccessary
+abundance(1,2:end) = strrep(abundance(1,2:end),'-','_');
 
 % check if data is from same samples
 if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
@@ -38,10 +40,6 @@ end
 
 % load database
 database=loadVMHDatabase;
-
-fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
-fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
-fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
 
 if nargin>2
     [~,IA]=setdiff(fluxes(:,1),metabolites,'stable');
