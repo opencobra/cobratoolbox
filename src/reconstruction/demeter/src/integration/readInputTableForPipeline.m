@@ -40,6 +40,8 @@ else % if the table is not a text file
                 formattedTable{1,j}=getcols{j};
                 if isnumeric(gettab.(getcols{j}))
                     formattedTable(2:length(gettab.(getcols{j}))+1,j)=cellstr(num2str(gettab.(getcols{j})));
+                    formattedTable(2:end,j) = strrep(formattedTable(2:end,j),' NaN','');
+                    formattedTable(2:end,j) = strrep(formattedTable(2:end,j),'NaN','');
                 else
                     formattedTable(2:length(cellstr(gettab.(getcols{j})))+1,j)=cellstr(gettab.(getcols{j}));
                 end

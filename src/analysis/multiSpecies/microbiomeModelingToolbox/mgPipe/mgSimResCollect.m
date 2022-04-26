@@ -173,9 +173,10 @@ for j = init:fl
                     set(h, 'Interpreter', 'none')
                     hold on
                 end
-                
+
                 if length(sampNames)<30
-                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    h=text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    set(h, 'Interpreter', 'none')
                 else
                     warning('Plot annotation with individuals names disabled because of their big number');
                 end
