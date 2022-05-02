@@ -1,7 +1,7 @@
 function T = findFutileCycle(model, cut,closedModel)
 % This function attempts to find reactions involved in the atp-driving
 % futile cycle
-% 
+%
 % INPUT
 % model         model structure
 % cut           cutoff value for reactions to be displayed
@@ -38,9 +38,9 @@ fba.v(find(abs(fba.v)<=1e-6))=0;
 tab = [modelClosed.lb modelClosed.ub fba.v];
 a = printRxnFormula(model);
 
-R = model.rxns(find(abs(fba.v)>cut));
-L = model.lb(find(abs(fba.v)>cut));
-U = model.ub(find(abs(fba.v)>cut));
+R = modelClosed.rxns(find(abs(fba.v)>cut));
+L = modelClosed.lb(find(abs(fba.v)>cut));
+U = modelClosed.ub(find(abs(fba.v)>cut));
 F = fba.v(find(abs(fba.v)>cut));
 A = a(find(abs(fba.v)>cut));
 if ~isempty(A)

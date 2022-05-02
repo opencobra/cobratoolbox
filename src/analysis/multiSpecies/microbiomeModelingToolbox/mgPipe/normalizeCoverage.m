@@ -32,6 +32,9 @@ end
 coverage = readInputTableForPipeline(abunFilePath);
 coverage{1,1}='ID';
 
+% adapt IDs if neccessary
+coverage(1,2:end) = strrep(coverage(1,2:end),'-','_');
+
 % summarize duplicate entries
 [uniqueA,i,j] = unique(coverage(:,1));
 n  = accumarray(j(:),1);

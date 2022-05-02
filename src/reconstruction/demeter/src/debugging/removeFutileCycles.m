@@ -778,7 +778,9 @@ if ~isempty(addedRxns)
                 rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
                 rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
                 model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
-                model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+                if isfield(model_old,'rxnConfidenceScores')
+                    model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+                end
             end
             model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
             model.rxnConfidenceScores(end,1)=1;

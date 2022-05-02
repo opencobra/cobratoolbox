@@ -110,6 +110,9 @@ if isempty(mapP)
     data=cell2mat(subsystemAbundance(2:end,2:end));
     xlabels=subsystemAbundance(1,2:end);
     ylabels=subsystemAbundance(2:end,1);
+    % remove low abundance subsystems
+    ylabels(find(sum(data,2)<1),:)=[];
+    data(find(sum(data,2)<1),:)=[];
     figure;
     imagesc(data)
     colormap('hot')
