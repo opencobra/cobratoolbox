@@ -127,9 +127,6 @@ if size(modelList,1)>0
     end
 end
 
-currentDir=pwd;
-cd(inputDataFolder)
-
 % perform debugging tools for each model for which additional curation is
 % needed
 if length(failedModels)>0
@@ -280,7 +277,5 @@ if length(failedModels)>0
 else
     fprintf('All models passed all tests. Exiting debugging tools.\n')
 end
-
-cd(currentDir)
 
 end

@@ -7,6 +7,8 @@ function [inputs,outputs] = printFunctionIO(functionName,derivedInputNames,print
 %
 % INPUTS:
 %  functionName:        name of the function to print io for
+%
+% OPTIONAL INPUTS:
 %  derivedInputNames:   name of a variable derived from an input variable
 %                       or a cell array of variable names
 %  printLevel:          if >0 then print to terminal (default 1)
