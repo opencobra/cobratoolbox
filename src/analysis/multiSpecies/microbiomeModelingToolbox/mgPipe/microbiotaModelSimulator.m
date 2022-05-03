@@ -165,7 +165,7 @@ else
         if length(sampNames)-s>=steps-1
             endPnt=steps-1;
         else
-            endPnt=length(sampNames)-1;
+            endPnt=length(sampNames)-s;
         end
 
         parfor k=s:s+endPnt
