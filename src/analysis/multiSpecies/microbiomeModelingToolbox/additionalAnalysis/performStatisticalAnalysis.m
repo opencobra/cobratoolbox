@@ -63,6 +63,9 @@ sampleData(:,delArray)=[];
 [C,IA]=setdiff(sampleInformation(:,1),sampleData(:,1),'stable');
 sampleInformation(IA(2:end),:)=[];
 
+if size(sampleInformation,1) < 2
+    error('It seems the first column of the metadata did not match the first column in the sample data. You may need to transpose the sample data.')
+end
 groups=unique(sampleInformation(2:end,stratCol));
 
 if length(groups) > 1
