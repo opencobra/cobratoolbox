@@ -124,7 +124,7 @@ else
     presolve = {'','Rich medium','Diet'};
     presolve(2:length(sampNames)+1,1) = sampNames;
 
-    % Auto load for crashed simulations if desired
+    % Auto load for crashed simulations
     mapP = detectOutput(resPath, 'intRes.mat');
     if isempty(mapP)
     else
@@ -445,18 +445,17 @@ else
             end
         end
         if ~computeProfiles
-            save([resPath filesep 'GrowthRates.mat'],'presolve')
+            save([resPath filesep 'presolve.mat'],'presolve')
             save([resPath filesep 'infeasModels.mat'],'infeasModels')
         else
             save(strcat(resPath,'intRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
         end
     end
     % Saving all output of simulations
-    if ~computeProfiles
-        save([resPath filesep 'presolve.mat'],'presolve')
-        save([resPath filesep 'infeasModels.mat'],'infeasModels')
-    else
-        save(strcat(resPath,'simRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
+    cell2csv([resPath filesep 'GrowthRates.csv'],presolve)
+    save([resPath filesep 'infeasModels.mat'],'infeasModels')
+    if computeProfiles
+        save(strcat(resPath,'simRes.mat'),'netProduction','netUptake')
     end
 end
 

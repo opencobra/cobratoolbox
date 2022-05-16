@@ -71,9 +71,9 @@ database=loadVMHDatabase;
 findTaxCol = find(strcmp(infoFile(1, :), taxonLevel));
 allTaxa = unique(infoFile(2:end, findTaxCol));
 
-% Remove unclassified organisms
-allTaxa(strncmp('unclassified', allTaxa, 12)) = [];
-allTaxa(~cellfun(@isempty, strfind(allTaxa, 'bacteri')))
+% Remove unclassified and unnamed organisms
+allTaxa(strncmp(allTaxa, 'unclassified',  12)) = [];
+allTaxa(strcmp(allTaxa, '')) = [];
 
 % Remove models that have already been assembled from the list of models to create
 dInfo = dir(panPath);
