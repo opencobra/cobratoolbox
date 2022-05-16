@@ -60,21 +60,18 @@ end
 sampleData(:,delArray)=[];
 
 % delete metadata entries not in the sample data
-[C,IA]=setdiff(sampleInformation(:,1),sampleData(:,1),'stable');
+[C,IA]=setdiff(sampleInformation(:,1),sampleData(1,:),'stable');
 sampleInformation(IA(2:end),:)=[];
 
-if size(sampleInformation,1) < 2
-    error('It seems the first column of the metadata did not match the first column in the sample data. You may need to transpose the sample data.')
-end
 groups=unique(sampleInformation(2:end,stratCol));
 
 if length(groups) > 1
 
 % Fill out table header
 if length(groups)==2
-    Statistics={'Feature','Description','p_value','Decision','Rank sum statistic','Z-statistics'};
+    Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Rank sum statistic','Z-statistics'};
 elseif length(groups)>2
-    Statistics={'Feature','Description','p_value','Decision','Degrees of freedom','Chi-sq'};
+    Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Degrees of freedom','Chi-sq'};
 end
 cnt=size(Statistics,2)+1;
 for i=1:length(groups)
@@ -85,29 +82,29 @@ for i=1:length(groups)
 end
 
 % test if sample information and sample names match
-C=intersect(sampleInformation(:,1),sampleData(:,1));
+C=intersect(sampleInformation(:,1),sampleData(1,:));
 if isempty(C)
-    error('Sample IDs are not present first column of sample data table. Consider transposing sample data table.')
+    error('Sample IDs are not present as column headers of the sample data table. Consider transposing sample data table.')
 end
 
-for j=2:size(sampleData,1)
-    if ~isempty(find(strcmp(sampleInformation(:,1),sampleData{j,1})))
-        group{j-1,1}=sampleInformation{find(strcmp(sampleInformation(:,1),sampleData{j,1})),stratCol};
+for j=2:size(sampleData,2)
+    if ~isempty(find(strcmp(sampleInformation(:,1),sampleData{1,j})))
+        group{j-1,1}=sampleInformation{find(strcmp(sampleInformation(:,1),sampleData{1,j})),stratCol};
     end
 end
 
 %% calculate the statistics
-for i=2:size(sampleData,2)
-    Statistics{i,1}=sampleData{1,i};
+for i=2:size(sampleData,1)
+    Statistics{i,1}=sampleData{i,1};
     if contains(version,'(R202') % for Matlab R2020a and newer
-        dataAll=cell2mat(sampleData(2:end,i));
+        dataAll=cell2mat(sampleData(i,2:end));
     else
-        dataAll=str2double(sampleData(2:end,i));
+        dataAll=str2double(sampleData(i,2:end));
     end
     
     % separate data by group
     for j=1:length(groups)
-        dataGrouped{j}=dataAll;
+        dataGrouped{j}=dataAll';
         delInd=find(~strcmp(group,groups{j}));
         dataGrouped{j}(delInd,:)=[];
     end
@@ -120,22 +117,21 @@ for i=2:size(sampleData,2)
             p=1;
         end
         Statistics{i,3}=p;
-        Statistics{i,4}=h;
-        Statistics{i,5}=stats.ranksum;
-        Statistics{i,6}=stats.zval;
+        Statistics{i,5}=h;
+        Statistics{i,6}=stats.ranksum;
+        Statistics{i,7}=stats.zval;
         
     elseif length(groups)>2
         % use Kruskal Wallis test
-        [p,ANOVATAB] = kruskalwallis(dataAll,group);
-        close all
+        [p,ANOVATAB] = kruskalwallis(dataAll,group,'off');
         Statistics{i,3}=p;
         if ANOVATAB{2,6} ==0
-            Statistics{i,4}='0';
+            Statistics{i,5}='0';
         else
-            Statistics{i,4}='1';
+            Statistics{i,5}='1';
         end
-        Statistics{i,5}=ANOVATAB{2,3};
-        Statistics{i,6}=ANOVATAB{2,5};
+        Statistics{i,6}=ANOVATAB{2,3};
+        Statistics{i,7}=ANOVATAB{2,5};
     end
     
     for j=1:length(groups)
@@ -149,13 +145,13 @@ end
 %% correct for false discovery (FDR) rate
 pAverages=cell2mat(Statistics(2:end,3));
 fdr = mafdr(pAverages,'BHFDR', true);
-Statistics(2:end,3)=num2cell(fdr);
+Statistics(2:end,4)=num2cell(fdr);
 
 for i=2:size(Statistics,1)
-    if Statistics{i,3} <0.05
-        Statistics{i,4} = 1;
+    if Statistics{i,4} <0.05
+        Statistics{i,5} = 1;
     else
-        Statistics{i,4} = 0;
+        Statistics{i,5} = 0;
     end
 end
 

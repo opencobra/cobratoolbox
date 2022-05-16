@@ -115,6 +115,10 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNCL','PTPAT'}
     'PGPm1[c]','',{'sink_PGPm1[c]'}
     'fad[c]','',{'FMNAT'}
+    % assuming the most common cholate conversion reaction here-almost all
+    % false negatives were E. coli which has this pathway
+    'cholate[c]','',{'7AHSDH', '7AHSDHe', 'BIACt4', 'EX_7ocholate(e)'}
+    'C02528[c]','',{'CDCA7aHSDHe', 'EX_7dhcdchol(e)'}
     };
 
 % First find out which biomass precursors cannot be synthesized

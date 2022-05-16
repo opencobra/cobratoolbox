@@ -97,7 +97,7 @@ for i=1:length(fileList)
     % perform statistical analysis
     if ~isempty(sampleGroupHeaders)
         for j=1:length(sampleGroupHeaders)
-            [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData',infoFile,'stratification',sampleGroupHeaders{j});
+            [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,infoFile,'stratification',sampleGroupHeaders{j});
             
             % Print the results as a text file
             filename = strrep(fileList{i},'.csv','');
@@ -118,7 +118,7 @@ for i=1:length(fileList)
             cd(currentDir)
         end
     else
-        [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData',infoFile);
+        [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,infoFile);
         
         % Print the results as a text file
         filename = strrep(fileList{i},'.csv','');

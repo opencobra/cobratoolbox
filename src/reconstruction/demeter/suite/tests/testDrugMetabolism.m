@@ -41,7 +41,7 @@ FalseNegatives = {};
 % find microbe index in drug metabolism table
 mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in metabolite uptake data file.'])
+    warning(['Microbe "', microbeID, '" not found in drug data file.'])
 else
     % perform FVA
     % set BOF

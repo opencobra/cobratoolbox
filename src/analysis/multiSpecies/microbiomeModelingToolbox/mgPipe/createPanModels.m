@@ -376,8 +376,6 @@ reactionsToReplace = {
     'ARGSL AND ARGSSr AND ARGDr AND ACS AND ACKr AND PTAr','ARGSSr','ARGSS'
     'METt2r AND METt3r','METt2r','METt2'
     'GLUOOR AND GLUR AND H2O2D','H2O2D','NPR'
-    'KAS17rev AND RE3245C AND FAO181O','FAO181O','FAO181Oi'
-    'KAS17rev AND FACOAL181 AND FAO181O','FAO181O','FAO181Oi'
     'TMAt2r AND TMAOR2e AND TMAOt2r','TMAOR2e','TMAOR2ei'
     'ORNt2r AND PROPAT4te AND r2018 AND r1667','ORNt2r','ORNt2'
     'G1PP AND PGMT AND XYLI2 AND MAN6PI AND PNPHPT','G1PP','G1PPi'
@@ -396,7 +394,6 @@ reactionsToReplace = {
     'AGOR AND SBTPD AND SBTpts AND SBTt6','SBTt6','SBTt6i'
     'PGM AND PGMT AND G16BPS AND G1PPT','G16BPS','G16BPSi'
     'EX_HC00319(e) AND MALNt AND C180SNrev AND ACACPT','C180SNrev','C180SN'
-    'LYS6OR AND L2AADIPADOR AND LYSOR','LYSOR','LYSORi'
     'TRPt2r AND TRPt','TRPt2r','TRPt2'
     '2S6HCC AND SHCHCS AND SSALxr AND OOR2r AND SUCOAS','SSALxr','SSALx'
     'ADK8 AND NDPK7 AND NTP13','NTP13','NTP13i'
@@ -412,14 +409,20 @@ reactionsToReplace = {
     'SUCD1 AND 5MTHFOR','5MTHFOR','5MTHFORi'
     'MLTHFTRU AND AMETRNAMT AND 5MTHCYST AND 5MTHGLUS','AMETRNAMT','AMETRNAMTi'
     'FDNADOX_Hpp AND OXONADPOR AND OOR2r','OOR2r','OOR2'
-    'NDP7 AND ADK11 AND NDPK2 AND UMPK6 AND UMPK AND US7P1PT','NDP7','NDP7i'
+    'NDP7 AND UMPK','NDP7','NDP7i'
     'RPI AND PNP AND NMNPH AND DRIBI AND NTRK AND RBK_Dr','RBK_Dr','RBK_D'
     'SERAT AND CYSS3r AND TSULST AND GTHRD AND TRDRr','TRDRr','TRDR'
+    '3CARLPDH AND r0163c AND r0556c','r0556c','r0556ci'
+    'PPCr AND NDPK1 AND PEPCK_re','PEPCK_re','PEPCK'
+    'COBALTt AND COBALTt5','COBALTt',[]
+    'CLt4r AND r2137','r2137',[]
+    'NACSMCTte AND NAt3_1 AND NACUP','NAt3_1','NAt3'
+    'DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271','GDPGALP','GDPGALPi'
     };
 
-% List Western diet constraints to test if the pan-model produces
+% List complex medium constraints to test if the pan-model produces
 % reasonable ATP flux on this diet.
-dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
+dietConstraints = table2cell(readtable('ComplexMedium.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
 
 dInfo = dir(panPath);
@@ -444,7 +447,7 @@ for i = 1:length(panModels)
     FBA = optimizeCbModel(model, 'max');
     % Ensure that pan-models can still produce biomass
     model = changeObjective(model, 'biomassPan');
-    if FBA.f > 50
+    if FBA.f > 100
         for j = 2:size(reactionsToReplace, 1)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
@@ -491,7 +494,7 @@ for i = 1:length(panModels)
                         % create a new formula
                         RxForm = database.reactions{find(ismember(database.reactions(:, 1), reactionsToReplace{j, 3})), 3};
                         if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                            newName=[reactionsToReplace{j, 3} 'ipp'];
+                            newName=[reactionsToReplace{j, 3} 'pp'];
                             % make sure we get the correct reaction
                             newForm=strrep(RxForm,'[e]','[p]');
                             rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -503,7 +506,7 @@ for i = 1:length(panModels)
                             else
                                 % if not present already, add to database
                                 RxForm=newForm;
-                                database.reactions(size(database.reactions,1)+1,:)={reactionsToReplace{j, 3},newName,RxForm,'0','','','','','','',''};
+                                database.reactions(size(database.reactions,1)+1,:)={newName,newName,RxForm,'0','','','','','','','',''};
                             end
                         end
                         modelTest = addReaction(modelTest, newName, RxForm);
@@ -514,14 +517,6 @@ for i = 1:length(panModels)
                 FBA = optimizeCbModel(modelTest, 'max');
                 if FBA.f > tol
                     model = modelTest;
-                    % account for periplasmatic versions
-                    % fix some special cases
-                    if ~isempty(intersect(model.rxns,'CITt2ipp'))
-                        model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');      
-                    end
-                    if ~isempty(intersect(model.rxns,'CITCAtiipp'))
-                        model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');
-                    end
                 end
             end
         end
@@ -541,49 +536,41 @@ function model=buildPanModel(agoraPath, models, taxonToCreate, infoFile, databas
 
 tol = 1e-5;
 
-% List Western diet constraints
-dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
+% List complex medium constraints
+dietConstraints = table2cell(readtable('ComplexMedium.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
+
+% temporary fix-for adaptation of AGORA to recent database changes
+tempFixes={'EX_indprp(e)','EX_ind3ppa(e)';'INDPRPt2r','IND3PPAt2r';'GDOCAH','';'1H2NPTHi','1H2NPTH';'HSNOOXi','HSNOOX';'SALCACDi','SALCACD';'34DCCBRi','34DCCBR';'URAOXi','URAOX';'SQLEi','SQLE';'34HPPORdci','34HPPORdc';'L_TRPCOOi','L_TRPCOO';'PPHPTi','PPHPT';'CHOLOXi','CHOLOX'};
 
 if size(models, 1) == 1
     model = readCbModel([agoraPath filesep infoFile{models, 1} '.mat']);
-    % temporary fix
-    if find(strcmp(model.rxns,'EX_indprp(e)'))
-        model=removeRxns(model,'EX_indprp(e)');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
-        model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
+    % make adaptations to recent database changes
+    for i=1:size(tempFixes,1)
+        if find(strcmp(model.rxns,tempFixes{i,1}))
+            model=removeRxns(model,tempFixes{i,1});
+            if ~isempty(tempFixes{i,2})
+                RxnForm = database.reactions(find(ismember(database.reactions(:, 1), tempFixes{i,2})), 3);
+                model = addReaction(model, tempFixes{i,2}, 'reactionFormula', RxnForm{1, 1});
+            end
+        end
     end
-    if find(strcmp(model.rxns,'INDPRPt2r'))
-        model=removeRxns(model,'INDPRPt2r');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
-        model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
-    end
-    if find(strcmp(model.rxns,'GDOCAH'))
-        model=removeRxns(model,'GDOCAH');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
-        model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
-    end
+    
     % rename biomass reaction to agree with other pan-models
     bio = find(strncmp(model.rxns, 'bio', 3));
     model.rxns{bio, 1} = 'biomassPan';
 elseif size(models, 1) > 1
     for k = 1:size(models, 1)
         model = readCbModel([agoraPath filesep infoFile{models(k), 1} '.mat']);
-        % temporary fix
-        if find(strcmp(model.rxns,'EX_indprp(e)'))
-            model=removeRxns(model,'EX_indprp(e)');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
-            model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
-        end
-        if find(strcmp(model.rxns,'INDPRPt2r'))
-            model=removeRxns(model,'INDPRPt2r');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
-            model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
-        end
-        if find(strcmp(model.rxns,'GDOCAH'))
-            model=removeRxns(model,'GDOCAH');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
-            model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
+        % make adaptations to recent database changes
+        for i=1:size(tempFixes,1)
+            if find(strcmp(model.rxns,tempFixes{i,1}))
+                model=removeRxns(model,tempFixes{i,1});
+                if ~isempty(tempFixes{i,2})
+                    RxnForm = database.reactions(find(ismember(database.reactions(:, 1), tempFixes{i,2})), 3);
+                    model = addReaction(model, tempFixes{i,2}, 'reactionFormula', RxnForm{1, 1});
+                end
+            end
         end
         bio = find(strncmp(model.rxns, 'bio', 3));
         if k == 1
@@ -714,6 +701,7 @@ model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 % remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
+model = useDiet(model,dietConstraints);
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
@@ -736,5 +724,8 @@ else
     end
     model=removeRxns(model,toRM);
 end
+% remove diet constraints
+exch=find(strncmp(model.rxns,'EX_',3));
+model=changeRxnBounds(model,model.rxns(exch),-1000,'l');
 
 end

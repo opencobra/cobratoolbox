@@ -121,7 +121,8 @@ else
     netProduction = cell(3, length(sampNames));
     netUptake = cell(3, length(sampNames));
     infeasModels = {};
-    presolve = {};
+    presolve = {'','Rich medium','Diet'};
+    presolve(2:length(sampNames)+1,1) = sampNames;
 
     % Auto load for crashed simulations if desired
     mapP = detectOutput(resPath, 'intRes.mat');
@@ -388,7 +389,6 @@ else
                                 netProductionTmp{k}{3} = {};
                                 netUptakeTmp{k}{3} = {};
                             else
-
                                 if computeProfiles
                                     [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
                                     minFluxFecal = minFlux;
@@ -433,10 +433,11 @@ else
                 end
             end
             if ~isempty(presolveTmp{k})
-                presolve{k,1} = presolveTmp{k}{1};
-                presolve{k,2} = presolveTmp{k}{2};
+                presolve{k+1,2} = presolveTmp{k}{1};
+                presolve{k+1,3} = presolveTmp{k}{2};
                 if length(presolveTmp{k})>2
-                    presolve{k,3} = presolveTmp{k}{3};
+                    presolve{1,4} = 'Personalized diet';
+                    presolve{k+1,4} = presolveTmp{k}{3};
                 end
             end
             if ~isempty(infeasModelsTmp) && k <= length(infeasModelsTmp)
@@ -444,7 +445,7 @@ else
             end
         end
         if ~computeProfiles
-            save([resPath filesep 'presolve.mat'],'presolve')
+            save([resPath filesep 'GrowthRates.mat'],'presolve')
             save([resPath filesep 'infeasModels.mat'],'infeasModels')
         else
             save(strcat(resPath,'intRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
