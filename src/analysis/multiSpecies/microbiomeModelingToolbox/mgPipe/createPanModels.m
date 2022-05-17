@@ -188,6 +188,7 @@ reactionsToReplace = {
     'MALNAt AND L_LACNa1t AND L_LACt2r','L_LACt2r','L_LACt2'
     'G3PD8 AND SUCD4 AND G3PD1','G3PD8','G3PD8i'
     'ACOAD1 AND ACOAD1f AND SUCD4','ACOAD1f','ACOAD1fi'
+    'BTCOADH AND ACOAD1f AND NADH6','ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR','D_GLY3PR','D_GLY3PRi'
     'r0010 AND H2O2D','H2O2D','NPR'
     'ACCOACL AND BTNCL','BTNCL','BTNCLi'
@@ -418,6 +419,13 @@ reactionsToReplace = {
     'CLt4r AND r2137','r2137',[]
     'NACSMCTte AND NAt3_1 AND NACUP','NAt3_1','NAt3'
     'DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271','GDPGALP','GDPGALPi'
+    '2S6HCC AND SHCHCS AND SSALyr','SSALyr','SSALy'
+    'ACONTa AND ACONTb AND ICDHyr AND OAASr','ICDHyr','ICDHy'
+    'ACONTa AND ACONTb AND ICDHyr AND OAASr','ICDHx','ICDHxi'
+    'ACOAD1f AND BTCOADH AND FDNADOX_H','FDNADOX_H','FDNADOX_Hi'
+    'r1617 AND ILEtec AND TYRt2r AND r1634','ILEtec',[]
+    'TRPt2r AND r1626 AND PHEtec','PHEtec',[]
+    'THRt2r AND r1645 AND r2534','r2534',[]
     };
 
 % List complex medium constraints to test if the pan-model produces
