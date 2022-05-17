@@ -494,7 +494,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'NACSMCTte AND NACUP AND r2136',[],'NACUP',[]
     'NACSMCTte AND NACUP AND URIt2r',[],'NACUP',[]
     % IT 03/2022
-    %     'AC5ASAc AND AC5ASAe',[],'AC5ASAe',[]
     'METFR AND r0792',[],'r0792',[]
     %     'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
     %     'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
@@ -514,9 +513,33 @@ reactionsToReplace = {'if present','if not present','removed','added'
     %     'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
     'LACLi',[],'LACLi','LACL'
     'ILEt3 AND ILEt2r',[],'ILEt2r','ILEt2'
-    % IT 04/2022
-    'SUCCt2_2 AND SUCCt2_3r',[],'SUCCt2_2',[]
-    'GNOX AND GNOXmq AND GNOXy AND SUCDimq',[],'GNOXmq','GNOXmqi'
+    'GNOXuq',[],'GNOXuq','GNOXuqi'
+   % 'GNOXy',[],'GNOXy','GNOXyi'
+   'ATPS4 AND CINNMR AND FDNADOX_H AND PPPNDOR' ,[], 'CINNMR','CINNMRi'
+   'ACOAD1 AND ATPS3 AND BTCOADH AND FDNADOX_Hi',[], 'ACOAD1','ACOAD1i'
+   'AC5ASAc',[],'AC5ASAc','AC5ASAci'
+      'AC5ASAe',[],'AC5ASAe','AC5ASAei'
+    'AKGS AND FDNADOX_Hi AND OOR2r',[],'OOR2r','OOR2'
+     'D_LACt2pp AND GLUTACCOACL AND GLUTACCOADCpp AND MALLACDtpp AND MALt4pp',[],'GLUTACCOACL','GLUTACCOACLi' 
+       'ATPS3pp AND GALM1r AND GLUOR AND HYD1pp' ,[],'GLUOR','GLUORi'
+'NEOPRONT_AR_NAD',[],'NEOPRONT_AR_NAD','NEOPRONT_AR_NADi'
+'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
+'PRONT_AR_NAD',[],'PRONT_AR_NAD','PRONT_AR_NADi'
+'PRONT_AR_NADP',[],'PRONT_AR_NADP','PRONT_AR_NADPi'
+'OLSA_AR_NAD',[],'OLSA_AR_NAD','OLSA_AR_NADi'
+'OLSA_AR_NADP',[],'OLSA_AR_NADP','OLSA_AR_NADPi'
+'BZD_AR_NAD',[],'BZD_AR_NAD','BZD_AR_NADi'
+'BZD_AR_NADP',[],'BZD_AR_NADP','BZD_AR_NADPi'
+'SSZ_AR_NAD',[],'SSZ_AR_NAD','SSZ_AR_NADi'
+'SSZ_AR_NADP',[],'SSZ_AR_NADP','SSZ_AR_NADPi'
+'CINNMR',[],'CINNMR','CINNMRi'
+    'FDNADOX_Hi AND HSDx AND HSDy AND METFR AND MTHFRfdx',[],'HSDy','HSDyi2'
+  'ACOAD1fi AND BTCOADH AND FDNADOX_H AND FTMAOR AND NTMAOR' , [],'FTMAOR','FTMAORi'
+  'ACOAD1fi AND BTCOADH AND FDNADOX_H AND FTMAOR AND NTMAOR' , [],'NTMAOR','NTMAORi'
+  'COF420_NADP_OX',[],'COF420_NADP_OX','COF420_NADP_OXi'
+  'FTMAOR' , [],'FTMAOR','FTMAORi'
+  'NTMAOR' , [],'NTMAOR','NTMAORi'
+  'D4DGCD',[],'D4DGCD','D4DGCDi'
     };
 
 
