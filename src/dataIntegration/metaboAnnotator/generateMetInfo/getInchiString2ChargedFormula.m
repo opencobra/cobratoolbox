@@ -27,6 +27,9 @@ for i = 1 : length(metList)
     
     % create model structure with new metabolite to allow the other
     % functions to work, which require model structure
+    if metList{i,1}=='i'
+        metList{i,1}= 'I'
+    end
     model = createModel({'R1'},{'fake rxn'},{['1 ' metList{i,1} ' -->']});
     % add neutral formula
     try
