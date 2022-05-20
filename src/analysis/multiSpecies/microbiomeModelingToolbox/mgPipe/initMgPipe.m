@@ -129,7 +129,7 @@ else
 	totalAbun=sum(str2double(abundance(2:end,2:end)),1);
 end
 
-if any(totalAbun > 1.01)
+if any(totalAbun > 1.05)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
 

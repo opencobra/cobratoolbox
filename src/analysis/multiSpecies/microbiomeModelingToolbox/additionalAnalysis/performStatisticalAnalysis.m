@@ -17,6 +17,10 @@ function [Statistics,significantFeatures] = performStatisticalAnalysis(sampleDat
 % stratification       Column header containing the desired group
 %                      classification in sampleInformation table. If not
 %                      provided, the second column will be used.
+% groupTest            Decides whether Kruskal-Wallis test(default) or
+%                      ANOVA should be used for group comparisons.
+%                      Allowed inputs: "Kruskal-Wallis","ANOVA"
+%
 % OUTPUTS
 % Statistics           Table with results of statistical tests for each
 %                      computed feature
@@ -30,12 +34,18 @@ parser = inputParser();
 parser.addRequired('sampleData', @iscell);
 parser.addRequired('sampleInformation', @iscell);
 parser.addParameter('stratification', '', @ischar);
+parser.addParameter('groupTest', 'Kruskal-Wallis', @ischar);
 
 parser.parse(sampleData, sampleInformation, varargin{:});
 
 sampleData = parser.Results.sampleData;
 sampleInformation = parser.Results.sampleInformation;
 stratification = parser.Results.stratification;
+groupTest = parser.Results.groupTest;
+
+if ~any(strcmp(groupTest,{'Kruskal-Wallis','ANOVA'}))
+    error('Wrong input for group test!')
+end
 
 % find the column with the sample information to analyze the samples by
 if ~isempty(stratification)
@@ -71,7 +81,11 @@ if length(groups) > 1
 if length(groups)==2
     Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Rank sum statistic','Z-statistics'};
 elseif length(groups)>2
-    Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Degrees of freedom','Chi-sq'};
+    if strcmp(groupTest,'Kruskal-Wallis')
+        Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Degrees of freedom','Chi-sq'};
+    elseif strcmp(groupTest,'ANOVA')
+        Statistics={'Feature','Description','p_value_before_FDR_Corr','p_value_after_FDR_Corr','Decision','Degrees of freedom','Sum of squares'};
+    end
 end
 cnt=size(Statistics,2)+1;
 for i=1:length(groups)
@@ -122,16 +136,28 @@ for i=2:size(sampleData,1)
         Statistics{i,7}=stats.zval;
         
     elseif length(groups)>2
-        % use Kruskal Wallis test
-        [p,ANOVATAB] = kruskalwallis(dataAll,group,'off');
-        Statistics{i,3}=p;
-        if ANOVATAB{2,6} ==0
-            Statistics{i,5}='0';
-        else
-            Statistics{i,5}='1';
+        if strcmp(groupTest,'Kruskal-Wallis')
+            % use Kruskal Wallis test
+            [p,ANOVATAB] = kruskalwallis(dataAll,group,'off');
+            Statistics{i,3}=p;
+            if ANOVATAB{2,6} ==0
+                Statistics{i,5}='0';
+            else
+                Statistics{i,5}='1';
+            end
+            Statistics{i,6}=ANOVATAB{2,3};
+            Statistics{i,7}=ANOVATAB{2,5};
+        elseif strcmp(groupTest,'ANOVA')
+            [p,tbl,stats] = anova1(dataAll,group,'off');
+            Statistics{i,3}=p;
+            if p<0.05
+                Statistics{i,5}='1';
+            else
+                Statistics{i,5}='0';
+            end
+            Statistics{i,6}=tbl{2,3};
+            Statistics{i,7}=tbl{2,2};
         end
-        Statistics{i,6}=ANOVATAB{2,3};
-        Statistics{i,7}=ANOVATAB{2,5};
     end
     
     for j=1:length(groups)
@@ -159,14 +185,14 @@ end
 nsMets={};
 cnt=1;
 for i=2:size(Statistics,1)
-    if Statistics{i,4}==0
+    if Statistics{i,5}==0
         nsMets{cnt,1}=Statistics{i,1};
         cnt=cnt+1;
     end
 end
-[C,ia,ib] = intersect(sampleData(1,:),nsMets);
+[C,ia,ib] = intersect(sampleData(:,1),nsMets);
 significantFeatures=sampleData;
-significantFeatures(:,ia)=[];
+significantFeatures(ia,:)=[];
 
 %% add reaction/metabolite annotations if possible
 database=loadVMHDatabase;
