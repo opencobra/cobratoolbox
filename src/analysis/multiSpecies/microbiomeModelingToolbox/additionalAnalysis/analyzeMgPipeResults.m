@@ -89,7 +89,7 @@ for i=1:length(fileList)
     sampleData(1,2:end)=strrep(sampleData(1,2:end),'host_microbiota_model_samp_','');
     
     % remove entries not in data
-    [C,IA]=intersect(infoFile,sampleData(1,2:end));
+    [C,IA]=intersect(infoFile(2:end,1),sampleData(1,2:end));
     if length(C)<length(sampleData(1,2:end))
         error('Some sample IDs are not found in the file with sample information!')
     end

@@ -95,12 +95,12 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
     FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
-    if contains(version,'(R202') % for Matlab R2020a and newer
-        FNlist(find(~isnumeric(FNlist(:,2))),:)=[];
-        failedModels=union(failedModels,FNlist(find(cell2mat(FNlist(:,2))==0),1));
-    else
-    failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
+    for i=1:size(FNlist,1)
+        if isnumeric(FNlist{i,2})
+            FNlist{i,2}=num2str(FNlist{i,2});
+        end
     end
+    failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
 end
 
 % load all test result files for experimental data
