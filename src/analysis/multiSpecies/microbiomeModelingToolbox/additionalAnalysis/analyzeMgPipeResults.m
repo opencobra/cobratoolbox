@@ -57,6 +57,7 @@ fileList={dInfo.name};
 fileList=fileList';
 fileList(~contains(fileList(:,1),{'.csv','.txt'}))=[];
 fileList(contains(fileList(:,1),{'ModelStat'}))=[];
+fileList(contains(fileList(:,1),{'GrowthRates'}))=[];
 
 % analyze data in spreadsheets
 for i=1:length(fileList)
