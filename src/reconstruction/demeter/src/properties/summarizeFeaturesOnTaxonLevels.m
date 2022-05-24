@@ -81,7 +81,11 @@ for f=1:size(files,1)
                     featureSummary=[];
                     for k=1:length(getStrains)
                         findModel=find(strcmp(data(:,1),getStrains{k}));
-                        featureSummary(k,1:size(data,2)-1)=str2double(data(findModel,2:end));
+                        if contains(version,'(R202') % for Matlab R2020a and newer
+                            featureSummary(k,1:size(data,2)-1)=cell2mat(data(findModel,2:end));
+                        else
+                            featureSummary(k,1:size(data,2)-1)=str2double(data(findModel,2:end));
+                        end
                     end
                     for l=2:size(dataByFeature,2)
                         if sum(featureSummary(:,l-1))>0
