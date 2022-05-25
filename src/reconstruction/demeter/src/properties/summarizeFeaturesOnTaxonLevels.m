@@ -1,7 +1,7 @@
 function summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersion,customFeatures)
 % This function summarizes calculated features of the reconstruction
 % resource, if taxonomical information is provided, on the species, genus,
-% family, order, class, and phylum level. A custom feature 
+% family, order, class, and phylum level. A custom feature
 % (.e.g, gram status, source of the strains) can also be used to summarize
 % the data. In this case, the spreadsheet with strain information needs to
 % contain a column with this information.
@@ -60,14 +60,33 @@ for f=1:size(files,1)
             % delete empty columns
             cSums = [NaN,max(cell2mat(dataByTaxon(2:end,2:end)))];
             dataByTaxon(:,find(cSums<0.00000001))=[];
-            % normalize the data to the highest abundance value for any
-            % subsystem
-            maxAll=max(max(cell2mat(dataByTaxon(2:end,2:end))));
-            for j=2:size(dataByTaxon,2)
-                for k=2:size(dataByTaxon,1)
-                    dataByTaxon{k,j}=dataByTaxon{k,j}/maxAll;
+            % normalize the data to the highest abundance value for each
+            % taxon
+            for j=2:size(dataByTaxon,1)
+                maxAll=max(cell2mat(dataByTaxon(j,2:end)));
+                for k=2:size(dataByTaxon,2)
+                    dataByTaxon{j,k}=dataByTaxon{j,k}/maxAll;
                 end
             end
+            for j=2:size(dataByTaxon,1)
+                for k=2:size(dataByTaxon,2)
+                    if isnan(dataByTaxon{j,k})
+                        dataByTaxon{j,k}=0;
+                    end
+                end
+            end
+            % plot the data
+            cgo = clustergram(cell2mat(dataByTaxon(2:end,2:end)),...
+                'RowLabels', dataByTaxon(2:end,1),...
+                'Cluster', 'all', ...
+                'symmetric','False', ...
+                'colormap', 'jet' ...
+                );
+            h = plot(cgo);
+            set(h,'TickLabelInterpreter','none');
+            colorbar(h)
+            title(taxLevels{i})
+            
             writetable(cell2table(dataByTaxon),[files{i,1} taxLevels{i} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
         end
     end
@@ -101,14 +120,33 @@ for f=1:size(files,1)
                 % delete empty columns
                 cSums = [NaN,max(cell2mat(dataByFeature(2:end,2:end)))];
                 dataByFeature(:,find(cSums<0.00000001))=[];
-                % normalize the data to the highest abundance value for any
-                % subsystem
-                maxAll=max(max(cell2mat(dataByFeature(2:end,2:end))));
-                for j=2:size(dataByFeature,2)
-                    for k=2:size(dataByFeature,1)
-                        dataByFeature{k,j}=dataByFeature{k,j}/maxAll;
+                % normalize the data to the highest abundance value for each
+                % taxon
+                for j=2:size(ddataByFeature,1)
+                    maxAll=max(cell2mat(dataByFeature(j,2:end)));
+                    for k=2:size(dataByFeature,2)
+                        dataByFeature{j,k}=dataByFeature{j,k}/maxAll;
                     end
                 end
+                for j=2:size(dataByFeature,1)
+                    for k=2:size(dataByFeature,2)
+                        if isnan(dataByFeature{j,k})
+                            dataByFeature{j,k}=0;
+                        end
+                    end
+                end
+                % plot the data
+                cgo = clustergram(cell2mat(dataByFeature(2:end,2:end)),...
+                    'RowLabels', dataByFeature(2:end,1),...
+                    'Cluster', 'all', ...
+                    'symmetric','False', ...
+                    'colormap', 'jet' ...
+                    );
+                h = plot(cgo);
+                set(h,'TickLabelInterpreter','none');
+                colorbar(h)
+                title(customFeatures{i})
+
                 writetable(cell2table(dataByFeature),[files{i,1} customFeatures{i} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
             end
         end
