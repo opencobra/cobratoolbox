@@ -57,9 +57,13 @@ for f=1:size(files,1)
                     dataByTaxon{j+1,l}=sum(taxonSummary(:,l-1));
                 end
             end
-            % normalize the data to the highest value for each subsystem
+            % delete empty columns
+            cSums = [NaN,max(cell2mat(dataByTaxon(2:end,2:end)))];
+            dataByTaxon(:,find(cSums<0.00000001))=[];
+            % normalize the data to the highest abundance value for any
+            % subsystem
+            maxAll=max(max(cell2mat(dataByTaxon(2:end,2:end))));
             for j=2:size(dataByTaxon,2)
-                maxAll=max(cell2mat(dataByTaxon(2:end,j)));
                 for k=2:size(dataByTaxon,1)
                     dataByTaxon{k,j}=dataByTaxon{k,j}/maxAll;
                 end
@@ -91,11 +95,18 @@ for f=1:size(files,1)
                         end
                     end
                     for l=2:size(dataByFeature,2)
-                        if sum(featureSummary(:,l-1))>0
-                            dataByFeature{j+1,l}='1';
-                        else
-                            dataByFeature{j+1,l}='0';
-                        end
+                        dataByFeature{j+1,l}=sum(featureSummary(:,l-1));
+                    end
+                end
+                % delete empty columns
+                cSums = [NaN,max(cell2mat(dataByFeature(2:end,2:end)))];
+                dataByFeature(:,find(cSums<0.00000001))=[];
+                % normalize the data to the highest abundance value for any
+                % subsystem
+                maxAll=max(max(cell2mat(dataByFeature(2:end,2:end))));
+                for j=2:size(dataByFeature,2)
+                    for k=2:size(dataByFeature,1)
+                        dataByFeature{k,j}=dataByFeature{k,j}/maxAll;
                     end
                 end
                 writetable(cell2table(dataByFeature),[files{i,1} customFeatures{i} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
