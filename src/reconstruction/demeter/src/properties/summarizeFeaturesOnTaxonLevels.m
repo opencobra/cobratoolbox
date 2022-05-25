@@ -54,11 +54,14 @@ for f=1:size(files,1)
                     taxonSummary(k,1:size(data,2)-1)=str2double(data(findModel,2:end));
                 end
                 for l=2:size(dataByTaxon,2)
-                    if sum(taxonSummary(:,l-1))>0
-                        dataByTaxon{j+1,l}='1';
-                    else
-                        dataByTaxon{j+1,l}='0';
-                    end
+                    dataByTaxon{j+1,l}=sum(taxonSummary(:,l-1));
+                end
+            end
+            % normalize the data to the highest value for each subsystem
+            for j=2:size(dataByTaxon,2)
+                maxAll=max(cell2mat(dataByTaxon(2:end,j)));
+                for k=2:size(dataByTaxon,1)
+                    dataByTaxon{k,j}=dataByTaxon{k,j}/maxAll;
                 end
             end
             writetable(cell2table(dataByTaxon),[files{i,1} taxLevels{i} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
