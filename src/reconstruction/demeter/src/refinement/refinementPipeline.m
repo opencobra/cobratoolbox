@@ -354,12 +354,6 @@ end
 %% addd refinement descriptions to model.comments field
 model = addRefinementComments(model,summary);
 
-%% rebuild model
-model = rebuildModel(model,database,biomassReaction);
-
-%% constrain sink reactions
-model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
-
 %% add periplasmatic space
 if ~isempty(infoFilePath)
     if any(strcmp(infoFile(:,1),microbeID))
@@ -368,6 +362,12 @@ if ~isempty(infoFilePath)
 
     end
 end
+
+%% rebuild model
+model = rebuildModel(model,database,biomassReaction);
+
+%% constrain sink reactions
+model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 
 %% end the pipeline
 refinedModel = model;

@@ -49,7 +49,7 @@ FalseNegatives = {};  % false negatives (secretion in vitro not in silico)
 % find microbe index in secretion table
 mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in uptake product data file.'])
+    warning(['Microbe "', microbeID, '" not found in secretion product data file.'])
 else
     % perform FVA to identify uptake metabolites
     % set BOF
