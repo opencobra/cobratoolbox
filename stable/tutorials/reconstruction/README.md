@@ -1,4 +1,4 @@
-# <img src="https://king.nuigalway.ie/cobratoolbox/img/icon_reconstruction.png" height="22px">&nbsp;&nbsp;Tutorials - reconstruction
+# <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_reconstruction.png" height="22px">&nbsp;&nbsp;Tutorials - reconstruction
 
 - [Adding biological constraints to a flux balance model (constrainingModels)](constrainingModels)
 - [Computation and analysis of microbe-microbe metabolic interactions (microbeMicrobeInteractions)](microbeMicrobeInteractions)

@@ -1,4 +1,4 @@
-# <img src="https://king.nuigalway.ie/cobratoolbox/img/icon_visualization.png" height="22px">&nbsp;&nbsp;Tutorials - visualization
+# <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_visualization.png" height="22px">&nbsp;&nbsp;Tutorials - visualization
 
 - [Introduction to Cell Designer (cellDesigner)](cellDesigner)
 - [Metabolic visualisation in ReconMap (Minerva) (remoteVisualisation)](remoteVisualisation)

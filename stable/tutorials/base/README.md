@@ -1,4 +1,4 @@
-# <img src="https://king.nuigalway.ie/cobratoolbox/img/icon_base.png" height="22px">&nbsp;&nbsp;Tutorials - base
+# <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_base.png" height="22px">&nbsp;&nbsp;Tutorials - base
 
 - [Engaging with the COBRA Toolbox Forum (engagingWithTheCommunity)](engagingWithTheCommunity)
 - [Initialise and verify The COBRA Toolbox (initializeAndVerify)](initializeAndVerify)

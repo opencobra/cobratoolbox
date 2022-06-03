@@ -1,4 +1,4 @@
-# <img src="https://king.nuigalway.ie/cobratoolbox/img/icon_analysis.png" height="22px">&nbsp;&nbsp;Tutorials - analysis
+# <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_analysis.png" height="22px">&nbsp;&nbsp;Tutorials - analysis
 
 - [Analyze Steady-State Community COBRA Models (steadyCom)](steadyCom)
 - [A step-by-step guide to parsimoneous enzyme usage Flux Balance Analysis (pFBA)](pFBA)
