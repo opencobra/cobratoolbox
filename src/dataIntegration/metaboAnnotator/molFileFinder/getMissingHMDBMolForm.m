@@ -46,6 +46,8 @@ for i = startSearch : endSearch
             met = regexprep(met,'\)','');
             met = regexprep(met,'\[','');
             met = regexprep(met,'\]','');
+            % replace ono-breaking space to
+            met=regexprep(met,'\s',' ');
             % retrieve potential hits
             try
                 hmdb =retrievePotHitsHMDB(met); % the catching should avoid that script fails when connection to HMDB fails
