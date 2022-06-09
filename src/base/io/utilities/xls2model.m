@@ -88,7 +88,7 @@ try
     %h.WorkBooks.Item(fileName).Close;
     fprintf(' > Excel is installed.\n\n');
 catch ME
-    fprintf(' > Excel is not installed; limit of 10000 reactions.\n\n');
+    fprintf(' > Excel is not installed; Using xlread.\n\n');
 end
 
 if exist(fileName,'file') == 2
@@ -119,18 +119,8 @@ end
 
 %assumes that one has an xls file with two tabs
 if isunix || ~excelInstalled
-    [~, Strings, rxnInfo] = xlsread(fileName,'Reaction List', '1:10000');
-    [~, MetStrings, metInfo] = xlsread(fileName,'Metabolite List', '1:10000');
-    warning on
-    if size(Strings, 1) >= 10000 % limit set to 10,000 to prevent out-of-memory issues
-        warning('The XLS format is not recommended for large models.')
-        warning('Maximum number of reactions reached. Model reaction list truncated at 9,999 reactions.')
-    end
-    if size(MetStrings, 1) >= 10000 % limit set to 10,000 to prevent out-of-memory issues
-        warning('The XLS format is not recommended for large models.')
-        warning('Maximum number of metabolites reached. Model metabolite list truncated at 9,999 metabolites.')
-    end
-    warning off
+    [~, Strings, rxnInfo] = xlread(fileName,'Reaction List');
+    [~, MetStrings, metInfo] = xlread(fileName,'Metabolite List');
 else
     [~, Strings, rxnInfo] = xlsread(fileName, 'Reaction List');
     [~, MetStrings, metInfo] = xlsread(fileName, 'Metabolite List');
@@ -194,18 +184,6 @@ if ~isempty(strmatch('Subsystem',rxnHeaders,'exact'))
 else
     subSystemList = cell(size(rxnList,1),1);
     subSystemList(:) = {{''}};
-end
-
-if isunix
-    for n=1:length(rxnList)
-        if length(rxnList{n})==255
-            if exist('biomassRxnEquation','var')
-                rxnList{n}=biomassRxnEquation;
-            else
-                error('biomassRxnEquation .xls may have a 255 character limit on each cell, so pass the biomass reaction separately if it hits this maximum.')
-            end
-        end
-    end
 end
 
 % initialization with default values
