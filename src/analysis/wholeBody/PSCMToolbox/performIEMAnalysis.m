@@ -135,8 +135,9 @@ for k = 1 : size(geneMarkerList,1)
     end
     % keep track of metabolites that are missing from a biofluid
     if exist('missingMet','var')
-    missingMetAll = [missingMetAll;missingMet];
+        missingMetAll = [missingMetAll;missingMet];
     end
+    save tmp
 end
 missingMetAll = unique(missingMetAll);
 % get results into a table format
