@@ -284,9 +284,14 @@ for j=2:size(fluxSpans,1)
 end
 fluxSpans(delArray,:)=[];
 
-writetable(cell2table(minFluxes),[resultsFolder filesep 'Contributions_minFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(maxFluxes),[resultsFolder filesep 'Contributions_maxFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(fluxSpans),[resultsFolder filesep 'Contributions_fluxSpans.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+% minFluxes = secretion
+cell2csv(['Contributions' filesep 'Microbe_Secretion.csv'],minFluxes)
+
+% maxFluxes = uptake
+cell2csv(['Contributions' filesep 'Microbe_Uptake.csv'],maxFluxes)
+
+% fluxSpans = span between minimal and maximal flux
+cell2csv(['Contributions' filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
 
 delete('minFluxes.mat')
 delete('maxFluxes.mat')

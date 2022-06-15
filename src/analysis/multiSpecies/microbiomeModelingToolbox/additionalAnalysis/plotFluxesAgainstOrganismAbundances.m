@@ -41,10 +41,6 @@ end
 % load database
 database=loadVMHDatabase;
 
-fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
-fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
-fluxes(:,1)=strrep(fluxes(:,1),'[fe]','');
-
 if nargin>2
     [~,IA]=setdiff(fluxes(:,1),metabolites,'stable');
     fluxes(IA(2:end),:)=[];

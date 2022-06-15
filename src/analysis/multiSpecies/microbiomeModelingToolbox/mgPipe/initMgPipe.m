@@ -33,6 +33,10 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            present in the gut should be provided to the models (default: true)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
+%    pruneModels:            boolean indicating whether reactions that do not carry flux on the
+%                            input diet should be removed from the microbe models. 
+%                            Recommended for large datasets (default: false)
+%
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -76,6 +80,7 @@ parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('upperBMBound', 1, @isnumeric);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
+parser.addParameter('pruneModels', false, @islogical);
 
 parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
@@ -95,6 +100,7 @@ lowerBMBound = parser.Results.lowerBMBound;
 upperBMBound = parser.Results.upperBMBound;
 includeHumanMets = parser.Results.includeHumanMets;
 adaptMedium = parser.Results.adaptMedium;
+pruneModels = parser.Results.pruneModels;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -174,7 +180,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels);
 
 cd(currentDir)
 

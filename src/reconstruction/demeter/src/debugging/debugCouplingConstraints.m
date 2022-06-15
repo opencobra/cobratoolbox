@@ -38,6 +38,15 @@ growthFixes={'EX_hco3(e)','';'HCO3abc','';'H2CO3D','';'EX_ac(e)','ACt';'ACt2r','
 
 tol = 0.000001;
 
+% first check if sink for petidoglycan can be deleted
+modelTest = removeRxns(model, 'sink_PGPm1[c]');
+FBA = optimizeCbModel(modelTest, 'max');
+if FBA.f>tol
+    rmFlag=true;
+else
+    rmFlag=false;
+end
+
 % check if coupling constraints disable growth
 solution=optimizeCbModel(model);
 if solution.f < tol
@@ -89,6 +98,10 @@ if solution.f < tol
     end
 else
     model=modelPrevious;
+end
+
+if rmFlag
+    model = removeRxns(model, 'sink_PGPm1[c]');
 end
 
 end
