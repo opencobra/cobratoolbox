@@ -49,7 +49,7 @@ FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
 % find microbe index in carbon sources table
 mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in metabolite uptake data file.'])
+    warning(['Microbe "', microbeID, '" not found in carbon source data file.'])
 else
     % perform FVA to identify uptake metabolites
     % set BOF6

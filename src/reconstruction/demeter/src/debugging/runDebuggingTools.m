@@ -95,6 +95,11 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
 end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
     FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
+    for i=1:size(FNlist,1)
+        if isnumeric(FNlist{i,2})
+            FNlist{i,2}=num2str(FNlist{i,2});
+        end
+    end
     failedModels=union(failedModels,FNlist(find(strcmp(FNlist(:,2),'0')),1));
 end
 
