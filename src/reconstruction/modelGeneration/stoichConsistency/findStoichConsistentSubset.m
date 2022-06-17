@@ -442,7 +442,7 @@ while iterateCardinalityOpt>0
                 %number of metabolites
                 maxMetsPerRxn=full(max(nMetsPerRxnTmp(model.unknownSConsistencyRxnBool)));
 
-                if maxMetsPerRxn>=8
+                if maxMetsPerRxn>=4
                     %check in case any(model.unknownSConsistencyRxnBool)==0
                     if isempty(maxMetsPerRxn)
                         maxMetsPerRxn=0;
@@ -461,8 +461,8 @@ while iterateCardinalityOpt>0
                         end
                     end
                 else
-                    %stop the loop when the number of metabolites in external
-                    %reactions is too small
+                    %stop the loop when the number of metabolites in
+                    %reactions of unknown consistency is too small
                     break
                 end
             end
