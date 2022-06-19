@@ -196,7 +196,7 @@ end
 
 condRxns={
     {'ACKr','PTAr'},{'EX_ac(e)','ACtr'}
-    {'PFL'},{'EX_for(e)','FORt2r'}
+    {'PFL'},{'EX_for(e)','FORt'}
     {'LDH_D'},{'EX_lac_D(e)','D_LACt2'}
     {'ACALD','ALCD2x'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
     {'ACALD','ALCD2y'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
