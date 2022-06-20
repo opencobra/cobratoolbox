@@ -163,12 +163,6 @@ for i = 1:length(fpathways)
             addedRxns{length(addedRxns)+1,1} = addRxns{j};
         end
     end
-    
-    % remove transport reactions if alternative was already present
-    if length(intersect(model.rxns,{'FORt','FORt2r'}))==2
-        model=removeRxns(model,'FORt');
-        addedRxns(find(strcmp(addedRxns,'FORt')),:)=[];
-    end
 end
 
 % add conditional reactions-only if necessary
@@ -214,7 +208,7 @@ gfRxns = union(gfRxns, model.rxns(strncmp('AUTOCOMPLETION', model.grRules, lengt
 gfRxns = union(gfRxns, model.rxns(strncmp('INITIALGAPFILLING', model.grRules, length('INITIALGAPFILLING'))));
 gfRxns = union(gfRxns, model.rxns(strncmp('FermentationGapfill', model.grRules, length('FermentationGapfill'))));
 
-for i=size(condRxns,1)
+for i=1:size(condRxns,1)
     % make sure reactions are present and annotated
     rxnsInModel = intersect(model.rxns, condRxns{i,1});
     rxnsInModel = setdiff(rxnsInModel,gfRxns);
@@ -225,6 +219,12 @@ for i=size(condRxns,1)
             addedRxns{length(addedRxns)+1,1} = condRxns{i,2}{j};
         end
     end
+end
+
+% remove transport reactions if alternative was already present
+if length(intersect(model.rxns,{'FORt','FORt2r'}))==2
+    model=removeRxns(model,'FORt');
+    addedRxns(find(strcmp(addedRxns,'FORt')),:)=[];
 end
 
 end
