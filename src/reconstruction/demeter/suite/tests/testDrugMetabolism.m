@@ -90,7 +90,7 @@ else
         
         % active flux
         flux = rxnsInModel(minFlux < -1e-6);
-        flux = union(flux,rxnsInModel(maxFlux > -1e-6));
+        flux = union(flux,rxnsInModel(maxFlux > 1e-6));
     else
         flux = {};
     end

@@ -89,7 +89,7 @@ else
         end
 
         % active flux
-        flux = rxnsInModel(maxFlux > -1e-6);
+        flux = rxnsInModel(maxFlux > 1e-6);
     else
         flux = {};
     end
