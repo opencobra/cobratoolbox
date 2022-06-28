@@ -180,7 +180,7 @@ for i=1:steps:length(models)
     draftModelsTmp = {};
     summariesTmp = {};
     
-    parfor j=i:i+endPnt
+    parfor j=i:i+endPnt %par
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         

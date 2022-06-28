@@ -31,7 +31,7 @@ function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID
 %                     March  2022 - changed code to string-matching to make
 %                     it more robust
 
-global CBT_LP_SOLVER
+global CBT_LP_SOLVER additionalUptakeRxns
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
@@ -44,6 +44,13 @@ dataTable(:,find(strncmp(dataTable(1,:),'Ref',3))) = [];
 
 % list reactions corresponding to each data point
 corrRxns = {'Ammonia','EX_nh4(e)','','';'Hydrogen','EX_h2(e)','','';'Isethionate','EX_isetac(e)','','';'Menaquinone','EX_mqn7(e)','EX_mqn8(e)','';'Methanol','EX_meoh(e)','','';'Methylamine','EX_mma(e)','','';'Niacin','EX_nac(e)','EX_ncam(e)','';'Nitrogen (N2)','EX_n2(e)','','';'Nitrite','EX_no2(e)','','';'Nitrate','EX_no3(e)','','';'Pantothenate','EX_pnto_R(e)','','';'Phenol','EX_phenol(e)','','';'2-methylbutyrate','EX_2mbut(e)','','';'1,2-propanediol','EX_12ppd_S(e)','','';'Cobalamin','EX_cbl1(e)','EX_adocbl(e)','';'Linoleic acid','EX_lnlc(e)','','';'alpha-Linolenic acid','EX_lnlnca(e)','','';'Benzoate','EX_bz(e)','','';'Betaine','EX_glyb(e)','','';'Bicarbonate','EX_hco3(e)','','';'Biotin','EX_btn(e)','','';'Chenodeoxycholate','EX_C02528(e)','','';'Cholate','EX_cholate(e)','','';'Dimethylamine','EX_dma(e)','','';'Folate','EX_fol(e)','','';'Formate','EX_for(e)','','';'Glycochenodeoxycholate','EX_dgchol(e)','','';'Pyridoxal','EX_pydx(e)','EX_pydxn(e)','EX_pydam(e)';'Propanol','EX_ppoh(e)','','';'Uridine','EX_uri(e)','','';'Urea','EX_urea(e)','','';'Riboflavin','EX_ribflv(e)','','';'Shikimate','EX_skm(e)','','';'Spermidine','EX_spmd(e)','','';'Sulfate','EX_so4(e)','','';'Valerate','EX_M03134(e)','','';'Tryptamine','EX_trypta(e)','','';'Tyramine','EX_tym(e)','','';'Trimethylamine','EX_tma(e)','','';'Taurine','EX_taur(e)','','';'Taurochenodeoxycholate','EX_tdchola(e)','','';'Taurocholate','EX_tchola(e)','','';'Thiamine','EX_thm(e)','','';'Thymidine','EX_thymd(e)','','';'Thiosulfate','EX_tsul(e)','','';'Glycocholate','EX_gchola(e)','','';'4-Aminobenzoate','EX_4abz(e)','','';'4-Aminobutyrate','EX_4abut(e)','','';'2,3-Butanediol ','EX_btd_RR(e)','','';'Glycodeoxycholate','EX_M01989(e)','','';'Glycolithocholate','EX_HC02193(e)','','';'Taurodeoxycholate','EX_tdechola(e)','','';'Taurolithocholate','EX_HC02192(e)','','';'1,2-Ethanediol','EX_12ethd(e)','','';'L-alanine','EX_ala_L(e)','','';'L-arginine','EX_arg_L(e)','','';'L-asparagine','EX_asn_L(e)','','';'L-aspartate','EX_asp_L(e)','','';'L-cysteine','EX_cys_L(e)','','';'L-glutamate','EX_glu_L(e)','','';'L-glutamine','EX_gln_L(e)','','';'Glycine','EX_gly(e)','','';'L-histidine','EX_his_L(e)','','';'L-isoleucine','EX_ile_L(e)','','';'L-leucine','EX_leu_L(e)','','';'L-lysine','EX_lys_L(e)','','';'L-methionine','EX_met_L(e)','','';'L-phenylalanine','EX_phe_L(e)','','';'L-proline','EX_pro_L(e)','','';'L-serine','EX_ser_L(e)','','';'L-threonine','EX_thr_L(e)','','';'L-tryptophan','EX_trp_L(e)','','';'L-tyrosine','EX_tyr_L(e)','','';'L-valine','EX_val_L(e)','',''};
+
+if ~isempty(additionalUptakeRxns)
+    fNames=fields(additionalUptakeRxns);
+    for i=1:length(fNames)
+        corrRxns(end+1,:)={fNames{i},additionalUptakeRxns.(fNames{i}){1},'',''};
+    end
+end
 
 TruePositives = {};  % true positives (uptake in vitro and in silico)
 FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
@@ -76,7 +83,7 @@ else
                 rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end
         else
-            if strcmp(dataTable{mInd,i},'1')
+            if strcmp(dataTable{mInd,i},'1') 
                 findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
                 rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end

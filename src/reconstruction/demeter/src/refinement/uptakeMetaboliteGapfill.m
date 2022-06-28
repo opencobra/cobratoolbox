@@ -23,11 +23,14 @@ function [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, data
 %
 % .. Author:
 %       - Almut Heinken, 2019-2020
+%       - Bronson R. Weston, 2022
+
 
 % structure of lists of reactions to add per uptake metabolite
 % non-alphanumeric characters are removed from uptake metabolite names in
 % the structure; the script accounts for this when matching with the
 % experimental data input
+global additionalUptakeRxns
 
 uptakeRxns = struct();
 uptakeRxns.Ammonia = {'EX_nh4(e)', 'NH4tb'};
@@ -105,6 +108,14 @@ uptakeRxns.Lthreonine = {'EX_thr_L(e)','THRt2r'};
 uptakeRxns.Ltryptophan = {'EX_trp_L(e)','TRPt2r'};
 uptakeRxns.Ltyrosine = {'EX_tyr_L(e)','TYRt2r'};
 uptakeRxns.Lvaline = {'EX_val_L(e)','VALt2r'};
+
+%Add any additional uptake rxns if specified
+if ~isempty(additionalUptakeRxns)
+    addFields=fields(additionalUptakeRxns);
+    for f=1:length(addFields)
+        uptakeRxns.(addFields{f})=additionalUptakeRxns.(addFields{f});
+    end
+end
 
 uptakeTable = readInputTableForPipeline([inputDataFolder filesep 'uptakeTable.txt']);
 uptakeTable(:,find(strncmp(uptakeTable(1,:),'Ref',3)))=[];
