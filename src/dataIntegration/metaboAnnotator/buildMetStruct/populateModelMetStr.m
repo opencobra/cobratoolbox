@@ -16,6 +16,11 @@ if ~exist('replaceAllHits','var')
     replaceAllHits = 0;
 end
 
+if ~exist('replaceAllHits','var')
+    replaceAllHits = 0;
+end
+
+
 F = fieldnames(metabolite_structure);
 fields =fieldnames( metabolite_structure.(F{1}));
 % load translation table between metabolite structure and COBRA model
