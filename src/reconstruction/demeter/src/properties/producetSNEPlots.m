@@ -27,7 +27,6 @@ alg='barneshut';
 currentDir=pwd;
 cd(propertiesFolder)
 mkdir('tSNE_Plots')
-cd('tSNE_Plots')
 
 tol=0.0000001;
 
@@ -216,13 +215,13 @@ for k=1:size(analyzedFiles,1)
                         set(h, 'Interpreter', 'none')
                         grid off
                         f.Renderer='painters';
-                        print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
+                        print(['tSNE_Plots' filesep taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                     else
                         warning('Not enough strains with available organism information. Cannot cluster based on taxonomy.')
                     end
                 end
             end
-            save(['Summary_' reconVersion],'Summary');
+            save(['tSNE_Plots' filesep 'Summary_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'Summary');
             
             % if the data should be clustered by any custom features from the info file
             if nargin > 3
@@ -277,13 +276,13 @@ for k=1:size(analyzedFiles,1)
                             grid off
                             set(h, 'Interpreter', 'none')
                             f.Renderer='painters';
-                            print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
+                            print(['tSNE_Plots' filesep customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                         else
                             warning('Not enough strains with available organism information. Cannot cluster based on features.')
                         end
                     end
                 end
-                save(['Summary_' reconVersion],'Summary');
+                save(['tSNE_Plots' filesep 'Summary_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'Summary');
             end
         end
     end
