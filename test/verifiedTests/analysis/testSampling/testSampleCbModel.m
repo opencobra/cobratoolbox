@@ -16,7 +16,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testSampleCbModel'));
 cd(fileDir);
 % define the samplers
-samplers = {'CHRR','CHRR_EXP','ACHR','RHMC'}; %'MFE'
+samplers = {'CHRR','CHRR_EXP','ACHR'}; %'MFE'
 
 % create a parallel pool (if possible)
 try

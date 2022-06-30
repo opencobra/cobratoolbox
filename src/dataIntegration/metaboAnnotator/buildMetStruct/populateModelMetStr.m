@@ -12,10 +12,14 @@ function [model] = populateModelMetStr(model, metabolite_structure,replaceAllHit
 %
 %
 % Ines Thiele 10/2021
+if ~exist('replaceAllHits','var')
+    replaceAllHits = 0;
+end
 
 if ~exist('replaceAllHits','var')
     replaceAllHits = 0;
 end
+
 
 F = fieldnames(metabolite_structure);
 fields =fieldnames( metabolite_structure.(F{1}));
