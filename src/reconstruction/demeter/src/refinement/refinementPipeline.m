@@ -344,12 +344,9 @@ else
     model=removeRxns(model,toRM);
 end
 
-%% Delete sink for petidoglycan if not needed
-modelTest = removeRxns(model, 'sink_PGPm1[c]');
-FBA = optimizeCbModel(modelTest, 'max');
-if FBA.f>tol
-    model= modelTest;
-end
+%% repeat debugging models that cannot grow if coupling constraints are implemented (very rarely needed)
+[model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database);
+summary.('addedCouplingRxns') = addedCouplingRxns;
 
 %% addd refinement descriptions to model.comments field
 model = addRefinementComments(model,summary);
@@ -357,9 +354,7 @@ model = addRefinementComments(model,summary);
 %% add periplasmatic space
 if ~isempty(infoFilePath)
     if any(strcmp(infoFile(:,1),microbeID))
-
         model = createPeriplasmaticSpace(model,microbeID,infoFile);
-
     end
 end
 

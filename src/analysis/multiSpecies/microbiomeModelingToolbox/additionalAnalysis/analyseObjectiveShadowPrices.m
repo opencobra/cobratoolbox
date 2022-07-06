@@ -93,21 +93,13 @@ if size(modelList,1) ==0
     error('There are no models to load in the model folder!')
 end
 
-% reload existing results if applies
-if isfile([resultsFolder filesep 'objectives.mat'])
-    load([resultsFolder filesep 'objectives.mat']);
-    load([resultsFolder filesep 'shadowPrices.mat']);
-    startPnt=size(objectives,2)-1;
-else
-    startPnt=1;
-    objectives=cell(length(objectiveList)+1,length(modelList)+2);
-    objectives{1,1}='Objective';
-    shadowPrices{1,1}='Metabolite';
-    shadowPrices{1,2}='Objective';
-    if size(objectiveList,2)>1
-        objectives{1,2}='Source';
-        shadowPrices{1,3}='Source';
-    end
+objectives=cell(length(objectiveList)+1,length(modelList)+2);
+objectives{1,1}='Objective';
+shadowPrices{1,1}='Metabolite';
+shadowPrices{1,2}='Objective';
+if size(objectiveList,2)>1
+    objectives{1,2}='Source';
+    shadowPrices{1,3}='Source';
 end
 
 % Compute the solutions for all entered models and objective functions
@@ -120,7 +112,6 @@ end
 
 % first perform the computations
 parfor i=1:length(modelList)
-    i
     restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
     % load model
@@ -151,21 +142,15 @@ parfor i=1:length(modelList)
 end
 
 % now save the results
-if length(modelList) > 1000
-    steps = 500;
-elseif length(modelList) > 500
-    steps = 200;
-else
-    steps = 50;
-end
+steps = 50;
 
-for s=startPnt:steps:length(modelList)
+for s=1:steps:length(modelList)
     if length(modelList)-s>=steps-1
         endPnt=steps-1;
         modelsTmp = cell(steps,1);
         solutionsTmp = cell(steps,1);
     else
-        endPnt=length(modelList)-1;
+        endPnt=length(modelList)-s;
         modelsTmp = cell(length(modelList),1);
         solutionsTmp = cell(length(modelList),1);
     end
@@ -239,11 +224,6 @@ for s=startPnt:steps:length(modelList)
                 objectives{j+1,2+i} = 0;
             end
         end
-    end
-    % save the results regularly for very large datasets
-    if length(modelList) > 500
-        save([resultsFolder filesep 'objectives'],'objectives');
-        save([resultsFolder filesep 'shadowPrices'],'shadowPrices','-v7.3');
     end
 end
 

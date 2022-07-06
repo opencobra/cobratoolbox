@@ -1,4 +1,4 @@
-function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels)
 % mgPipe is a MATLAB based pipeline to integrate microbial abundances
 % (coming from metagenomic data) with constraint based modeling, creating
 % individuals' personalized models.
@@ -11,7 +11,7 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 % [PART 3] Simulations under different diet regimes.
 %
 % USAGE:
-%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+%       [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels)
 %
 % INPUTS:
 %    modPath:                char with path of directory where models are stored
@@ -35,6 +35,9 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %                            present in the gut should be provided to the models (default: true)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
+%    pruneModels:            boolean indicating whether reactions that do not carry flux on the
+%                            input diet should be removed from the microbe models. 
+%                            Recommended for large datasets (default: false)
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -95,7 +98,7 @@ if isempty(mapP)
 
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [activeExMets,couplingMatrix]=buildModelStorage(microbeNames,modPath, numWorkers);
+    [activeExMets,couplingMatrix]=buildModelStorage(microbeNames, modPath, dietFilePath, adaptMedium, includeHumanMets, numWorkers, pruneModels);
 
     % Computing reaction abundance and reaction presence
     [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
