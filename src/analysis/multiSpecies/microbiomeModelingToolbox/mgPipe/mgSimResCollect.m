@@ -128,11 +128,11 @@ for j = init:fl
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
                 if length(sampNames)<30
                     h=text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    set(h, 'Interpreter', 'none')
                 else
                     warning('Plot annotation with individuals names disabled because of their big number');
                 end
                 print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
-                set(h, 'Interpreter', 'none')
                 title('PCoA of net secretion profiles');
             end
         else
