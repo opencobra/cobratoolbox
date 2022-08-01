@@ -113,8 +113,10 @@ fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
 for i=1:size(fileList,1)
     FNlist = readInputTableForPipeline([[testResultsFolder filesep reconVersion '_refined'] filesep fileList{i,1}]);
     % remove all rows with no cases
-    FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
-    failedModels=union(failedModels,FNlist(:,1));
+    if size(FNlist,2)>1
+        FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
+        failedModels=union(failedModels,FNlist(:,1));
+    end
 end
 
 % get already debugged reconstructions
@@ -264,8 +266,10 @@ if length(failedModels)>0
     for i=1:size(fileList,1)
         FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep fileList{i,1}]);
         % remove all rows with no cases
-        FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
-        stillFailedModels=union(stillFailedModels,FNlist(:,1));
+        if size(FNlist,2)>1
+            FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
+            stillFailedModels=union(stillFailedModels,FNlist(:,1));
+        end
     end
 
     fixedModels = setdiff(failedModels,stillFailedModels);
