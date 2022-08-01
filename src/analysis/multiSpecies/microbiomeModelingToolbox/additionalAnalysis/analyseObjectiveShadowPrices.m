@@ -111,22 +111,23 @@ for j=1:length(objectiveList)
 end
 
 % first perform the computations
-steps = 10;
+steps = 50;
 
 for s=1:steps:length(modelList)
     if length(modelList)-s>=steps-1
         endPnt=steps-1;
-        modelsTmp = cell(steps,1);
-        solutionsTmp = cell(steps,1);
     else
         endPnt=length(modelList)-s;
-        modelsTmp = cell(length(modelList),1);
-        solutionsTmp = cell(length(modelList),1);
     end
+    modelsTmp = {};
 
     parfor i=s:s+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
+
+        % check if stored solution already exists
+        if ~isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
+
         % load model
         % workaround for models that give an error in readCbModel
         %         try
@@ -145,18 +146,15 @@ for s=1:steps:length(modelList)
             end
         end
 
-        % check if stored solution already exists
-        if ~isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
-            % compute the flux balance analysis solution
-            FBAsolution = computeSolForObj(model, objectiveList);
-            % save solutions one by one-complete file would be enormous
-            parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
+        % compute the flux balance analysis solution
+        FBAsolution = computeSolForObj(model, objectiveList);
+        % save solutions one by one-complete file would be enormous
+        parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
         end
     end
 end
 
 % now save the results
-steps = 50;
 
 for s=1:steps:length(modelList)
     if length(modelList)-s>=steps-1
