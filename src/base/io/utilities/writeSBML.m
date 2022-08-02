@@ -352,7 +352,8 @@ if isfield(model,'genes')
         end
         
         tmp_fbc_geneProduct.sboTerm = 243;
-        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
+        % merge protein/gene annotations.
+        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i,true);
         if i==1
             sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;
         else
