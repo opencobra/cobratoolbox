@@ -36,6 +36,7 @@ modelFields = fieldnames(model);
 tmp_note = '';
 notes = cell(0,2);
 bagindentlevel = '      ';
+
 for pos = 1:size(fieldentries,1)        
     field = fieldentries{pos,1};
     if isempty(fieldentries{pos,2})
@@ -57,7 +58,7 @@ for pos = 1:size(fieldentries,1)
             if isempty(model.(annotationsFields{fieldid}){position})
                 continue
             end
-            ids = strsplit(model.(annotationsFields{fieldid}){position},';');
+            ids = strsplit(model.(annotationsFields{fieldid}){position},'; ');
             
             
             dbname = convertSBMLID(regexprep(annotationsFields{fieldid},[field allowedQualifiers{i} '(.*)' 'ID$'],'$1'),false);
