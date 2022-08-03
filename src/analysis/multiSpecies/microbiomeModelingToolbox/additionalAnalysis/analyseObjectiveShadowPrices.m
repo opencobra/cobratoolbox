@@ -202,7 +202,8 @@ for s=1:steps:length(modelList)
 
             % verify that a feasible solution was obtained
             if ~isempty(solution)
-                if solution.stat==1
+                % 3 = "Optimal solution is available, but with infeasibilities after unscaling"
+                if solution.stat==1 || solution.stat==3
                     objectives{j+1,2+i} = solution.obj;
 
                     [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
