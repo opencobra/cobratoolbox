@@ -219,7 +219,7 @@ for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.2)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.3)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
@@ -229,7 +229,7 @@ for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),1)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.2)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.3)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
