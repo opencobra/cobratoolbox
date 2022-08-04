@@ -47,10 +47,18 @@ end
 abundance(1,2:end) = strrep(abundance(1,2:end),'-','_');
 
 fluxes = readInputTableForPipeline(fluxPath);
+fluxes(1,:) = strrep(fluxes(1,:),'microbiota_model_diet_','');
+fluxes(1,:) = strrep(fluxes(1,:),'microbiota_model_samp_','');
+fluxes(:,1) = strrep(fluxes(:,1),'microbiota_model_diet_','');
+fluxes(:,1) = strrep(fluxes(:,1),'microbiota_model_samp_','');
 
 % check if data is from same samples
 if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
-    error('Sample IDs in abundance and flux files do not agree!')
+    fluxes=fluxes';
+    % if it still does not match
+    if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
+        error('Sample IDs in abundance and flux files do not agree!')
+    end
 end
 
 % load database
@@ -211,7 +219,7 @@ for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.6)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(2:end,j))) > 0.2)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
@@ -221,7 +229,7 @@ for t = 1:size(TaxonomyLevels, 1)
     cnt=1;
     delArray=[];
     for j=2:size(FluxCorrelations.(TaxonomyLevels{t}),1)
-        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.6)
+        if ~any(abs(cell2mat(FluxCorrelations.(TaxonomyLevels{t})(j,2:end))) > 0.2)
             delArray(cnt,1)=j;
             cnt=cnt+1;
         end
@@ -234,7 +242,11 @@ end
 % translate to metabolite descriptions
 for t = 2:size(TaxonomyLevels, 1)
     for i=2:size(FluxCorrelations.(TaxonomyLevels{t}),2)
-        FluxCorrelations.(TaxonomyLevels{t}){1,i}=database.metabolites{find(strcmp(database.metabolites(:,1),FluxCorrelations.(TaxonomyLevels{t}){1,i})),2};
+        try
+            FluxCorrelations.(TaxonomyLevels{t}){1,i}=database.metabolites{find(strcmp(database.metabolites(:,1),FluxCorrelations.(TaxonomyLevels{t}){1,i})),2};
+        catch
+            warning('Flux label could not be translated to metabolite name.')
+        end
     end
 end
 
