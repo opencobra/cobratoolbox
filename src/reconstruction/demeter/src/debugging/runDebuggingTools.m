@@ -93,6 +93,11 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     load([testResultsFolder filesep 'tooHighATP.mat']);
     failedModels = union(failedModels,tooHighATP);
 end
+if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'ATP_from_O2_' reconVersion '.txt'])
+    atpFromO2 = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'ATP_from_O2_' reconVersion '.txt']));
+    atpModels = atpFromO2(find(cell2mat(atpFromO2(:,2)) > 0.00001),1);
+    failedModels = union(failedModels,atpModels);
+end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
     FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
     for i=1:size(FNlist,1)
