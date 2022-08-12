@@ -148,18 +148,18 @@ for i = 2:size(abundance, 2)
             % find the taxon for the current strain
             taxonCol = find(strcmp(taxonomy(1, :), TaxonomyLevels{t}));
             if taxonCol >= inputCol
-            findTax = taxonomy(find(strcmp(abundance{j, 1}, inputTaxa)), taxonCol);
-            if isempty(strfind(findTax{1}, 'unclassified'))
-                % find the taxon for the current strain in the sample abundance
-                % variable
-                findinSampleAbun = find(strcmp(findTax{1}, SampleAbundance.(TaxonomyLevels{t})(1, :)));
-                % sum up the relative abundance
-                if contains(version,'(R202') % for Matlab R2020a and newer
-                    SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
-                else
-                    SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
+                findTax = taxonomy(find(strcmp(abundance{j, 1}, inputTaxa)), taxonCol);
+                if isempty(strfind(findTax{1}, 'unclassified'))
+                    % find the taxon for the current strain in the sample abundance
+                    % variable
+                    findinSampleAbun = find(strcmp(findTax{1}, SampleAbundance.(TaxonomyLevels{t})(1, :)));
+                    % sum up the relative abundance
+                    if contains(version,'(R202') % for Matlab R2020a and newer
+                        SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + abundance{j, i};
+                    else
+                        SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} = SampleAbundance.(TaxonomyLevels{t}){i, findinSampleAbun} + str2double(abundance{j, i});
+                    end
                 end
-            end
             end
         end
     end
@@ -200,6 +200,9 @@ for i = 2:size(fluxes, 1)
                 sampleInFluxes = find(strcmp(fluxes(1, :), SampleAbundance.(TaxonomyLevels{t}){k, 1}));
                 dataTaxa(sampleInFluxes - 1, 2) = SampleAbundance.(TaxonomyLevels{t}){k, j};
             end
+            % exclude NaNs
+            dataTaxa(find(isnan(dataTaxa(:,1))),:)=[];
+            dataTaxa(find(isnan(dataTaxa(:,2))),:)=[];
             % calculate the correlation with the given correlation coefficient method
             [RHO, PVAL] = corr(dataTaxa(:, 1), dataTaxa(:, 2), 'type', corrMethod);
             if isnan(RHO)
