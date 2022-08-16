@@ -1,4 +1,4 @@
-function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user's input) to the microbiota models
@@ -8,7 +8,7 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %
 % USAGE:
 %
-%   [exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -42,9 +42,9 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %                        and secretion for setup lumen / diet exchanges
 %    netUptake:          cell array containing FVA values for minimal uptake
 %                        and secretion for setup lumen / diet exchanges
-%    presolve            array containing values of microbiota models
+%    growthRates:        array containing values of microbiota models
 %                        objective function
-%    infeasModels        cell array with names of infeasible microbiota models
+%    infeasModels:       cell array with names of infeasible microbiota models
 %
 % .. Author: Federico Baldini, 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
@@ -121,8 +121,8 @@ else
     netProduction = cell(3, length(sampNames));
     netUptake = cell(3, length(sampNames));
     infeasModels = {};
-    presolve = {'','Rich medium','Diet'};
-    presolve(2:length(sampNames)+1,1) = sampNames;
+    growthRates = {'','Rich medium','Diet'};
+    growthRates(2:length(sampNames)+1,1) = sampNames;
 
     % Auto load for crashed simulations
     mapP = detectOutput(resPath, 'intRes.mat');
@@ -149,13 +149,13 @@ else
         end
     end
 
-    presolveTmp={};
+    growthRatesTmp={};
     infeasModelsTmp={};
     netProductionTmp={};
     netUptakeTmp={};
 
-    if length(sampNames)-1 > 50
-        steps=50;
+    if length(sampNames)-1 > 20
+        steps=20;
     else
         steps=length(sampNames);
     end
@@ -178,8 +178,8 @@ else
             netProductionTmp{k}{1} = {};
             netUptakeTmp{k}{1} = {};
             netUptakeTmp{k}{2} = {};
-            presolveTmp{k}{1} = {};
-            presolveTmp{k}{2} = {};
+            growthRatesTmp{k}{1} = {};
+            growthRatesTmp{k}{2} = {};
 
             doSim=1;
             % check first if simulations already exist and were done properly
@@ -195,8 +195,12 @@ else
 
                 % get diet(s) to load
                 diet = readInputTableForPipeline(dietFilePath);
-                if length(intersect(sampNames,diet(:,1)))==length(sampNames)
-                    loadDiet = diet{find(strcmp(diet(:,1),sampleID)),2};
+                if ~isempty(intersect(sampNames,diet(:,1)))
+                    if length(intersect(sampNames,diet(:,1)))~=length(sampNames)
+                        error('The number of inoput diets and samples does not agree!')
+                    else
+                        loadDiet = diet{find(strcmp(diet(:,1),sampleID)),2};
+                    end
                 else
                     loadDiet = dietFilePath;
                 end
@@ -269,10 +273,10 @@ else
                 solution_allOpen = optimizeCbModel(model);
                 % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
                 if solution_allOpen.stat==0
-                    warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                    warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                     infeasModelsTmp{k} = model.name;
                 else
-                    presolveTmp{k}{1} = solution_allOpen.f;
+                    growthRatesTmp{k}{1} = solution_allOpen.f;
                     AllRxn = model.rxns;
                     FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
                     DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
@@ -330,9 +334,9 @@ else
 
                     solution_sDiet=optimizeCbModel(model_sd);
                     % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
-                    presolveTmp{k}{2}=solution_sDiet.f;
+                    growthRatesTmp{k}{2}=solution_sDiet.f;
                     if solution_sDiet.stat==0
-                        warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                        warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                         infeasModelsTmp{k}= model.name;
                         netProductionTmp{k}{2} = {};
                         netUptakeTmp{k}{2} = {};
@@ -382,9 +386,9 @@ else
 
                             solution_pdiet=optimizeCbModel(model_pd);
                             %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
-                            presolveTmp{k}{3}=solution_pdiet.f;
+                            growthRatesTmp{k}{3}=solution_pdiet.f;
                             if solution_pdiet.stat==0
-                                warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                                warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                                 infeasModelsTmp{k} = model.name;
                                 netProductionTmp{k}{3} = {};
                                 netUptakeTmp{k}{3} = {};
@@ -432,30 +436,32 @@ else
                     netUptake{3,k} = netUptakeTmp{k}{3};
                 end
             end
-            if ~isempty(presolveTmp{k})
-                presolve{k+1,2} = presolveTmp{k}{1};
-                presolve{k+1,3} = presolveTmp{k}{2};
-                if length(presolveTmp{k})>2
-                    presolve{1,4} = 'Personalized diet';
-                    presolve{k+1,4} = presolveTmp{k}{3};
-                end
+            if ~isempty(growthRatesTmp{k})
+                 if ~isempty(growthRatesTmp{k}{1})
+                    growthRates{k+1,2} = growthRatesTmp{k}{1};
+                    growthRates{k+1,3} = growthRatesTmp{k}{2};
+                    if length(growthRatesTmp{k})>2
+                        growthRates{1,4} = 'Personalized diet';
+                        growthRates{k+1,4} = growthRatesTmp{k}{3};
+                    end
+                 end
             end
             if ~isempty(infeasModelsTmp) && k <= length(infeasModelsTmp)
                 infeasModels{k,1} = infeasModelsTmp{k};
             end
         end
         if ~computeProfiles
-            save([resPath filesep 'presolve.mat'],'presolve')
+            save([resPath filesep 'GrowthRates.mat'],'growthRates')
             save([resPath filesep 'infeasModels.mat'],'infeasModels')
         else
-            save(strcat(resPath,'intRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
+            save(strcat(resPath,'intRes.mat'),'netProduction','netUptake','growthRates','infeasModels')
         end
     end
     % Saving all output of simulations
-    cell2csv([resPath filesep 'GrowthRates.csv'],presolve)
+    cell2csv([resPath filesep 'GrowthRates.csv'],growthRates)
     save([resPath filesep 'infeasModels.mat'],'infeasModels')
     if computeProfiles
-        save(strcat(resPath,'simRes.mat'),'netProduction','netUptake')
+        save(strcat(resPath,'simRes.mat'),'netProduction','netUptake','growthRates','infeasModels')
     end
 end
 

@@ -53,10 +53,13 @@ else
                 model=load([modelFolder filesep modelList{i}]);
                 model = model.model;
             end
-            allRxns=unique(vertcat(allRxns,model.rxns));
-            allMets=unique(vertcat(allMets,model.mets));
+            allRxns=union(allRxns,model.rxns);
+            allMets=union(allMets,model.mets);
         end
     end
+    allMets=strrep(allMets,'[c]','');
+    allMets=strrep(allMets,'[e]','');
+    allMets=unique(allMets);
     metabolitePresence(1,2:length(allMets)+1)=allMets';
     reactionPresence(1,2:length(allRxns)+1)=allRxns';
 end

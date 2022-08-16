@@ -15,6 +15,11 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % creation.  If merging of genes is desired, please set the input
 % parameter mergeGenes to true.
 %
+% Please note: the function takes a cell array with the names of the 
+% COBRA models to join as well as the name of the folder where they are 
+% located at as the inputs, e.g.:
+% joinModelsPairwiseFromList(modelList,'/Users/almut.heinken/Documents/AGORA');
+%
 % USAGE:
 %     joinModelsPairwiseFromList(modelList,  modelFolder, varargin)
 %

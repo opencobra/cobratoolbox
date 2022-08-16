@@ -46,6 +46,7 @@ if FBA.f < tol
         'AHMMPS', {'AMPMS2'}
         % reaction with low confidence
         'UNKENZ',{'ACCOAC','H2CO3D'}
+        'FERO', {'EX_fe3(e)','FE3MTP1'}
         };
     
     % add anaerobic reactions to model (if contains O2-using reaction)

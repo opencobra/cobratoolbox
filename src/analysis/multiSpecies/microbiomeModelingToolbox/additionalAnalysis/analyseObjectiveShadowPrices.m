@@ -93,21 +93,13 @@ if size(modelList,1) ==0
     error('There are no models to load in the model folder!')
 end
 
-% reload existing results if applies
-if isfile([resultsFolder filesep 'objectives.mat'])
-    load([resultsFolder filesep 'objectives.mat']);
-    load([resultsFolder filesep 'shadowPrices.mat']);
-    startPnt=size(objectives,2)-1;
-else
-    startPnt=1;
-    objectives=cell(length(objectiveList)+1,length(modelList)+2);
-    objectives{1,1}='Objective';
-    shadowPrices{1,1}='Metabolite';
-    shadowPrices{1,2}='Objective';
-    if size(objectiveList,2)>1
-        objectives{1,2}='Source';
-        shadowPrices{1,3}='Source';
-    end
+objectives=cell(length(objectiveList)+1,length(modelList)+2);
+objectives{1,1}='Objective';
+shadowPrices{1,1}='Metabolite';
+shadowPrices{1,2}='Objective';
+if size(objectiveList,2)>1
+    objectives{1,2}='Source';
+    shadowPrices{1,3}='Source';
 end
 
 % Compute the solutions for all entered models and objective functions
@@ -119,53 +111,58 @@ for j=1:length(objectiveList)
 end
 
 % first perform the computations
-parfor i=1:length(modelList)
-    i
-    restoreEnvironment(environment);
-    changeCobraSolver(solver, 'LP', 0, -1);
-    % load model
-    % workaround for models that give an error in readCbModel
-    %         try
-    %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
-    %         catch
-    %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
-    modelStr = load([modelFolder filesep modelList{i,1}]);
-    modelF = fieldnames(modelStr);
-    model = modelStr.(modelF{1});
-    modelsTmp{i} = model;
+steps = 50;
 
-    % implement constraints on the model
-    for k = 1:length(model.rxns)
-        if strfind(model.rxns{k}, 'biomass')
-            model.lb(k) = 0;
-        end
+for s=1:steps:length(modelList)
+    if length(modelList)-s>=steps-1
+        endPnt=steps-1;
+    else
+        endPnt=length(modelList)-s;
     end
+    modelsTmp = {};
 
-    % check if stored solution already exists
-    if ~isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
+    parfor i=s:s+endPnt
+        restoreEnvironment(environment);
+        changeCobraSolver(solver, 'LP', 0, -1);
+
+        % check if stored solution already exists
+        if ~isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
+
+        % load model
+        % workaround for models that give an error in readCbModel
+        %         try
+        %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
+        %         catch
+        %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
+        modelStr = load([modelFolder filesep modelList{i,1}]);
+        modelF = fieldnames(modelStr);
+        model = modelStr.(modelF{1});
+        modelsTmp{i} = model;
+
+        % implement constraints on the model
+        for k = 1:length(model.rxns)
+            if strfind(model.rxns{k}, 'biomass')
+                model.lb(k) = 0;
+            end
+        end
+
         % compute the flux balance analysis solution
         FBAsolution = computeSolForObj(model, objectiveList);
         % save solutions one by one-complete file would be enormous
         parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
+        end
     end
 end
 
 % now save the results
-if length(modelList) > 1000
-    steps = 500;
-elseif length(modelList) > 500
-    steps = 200;
-else
-    steps = 50;
-end
 
-for s=startPnt:steps:length(modelList)
+for s=1:steps:length(modelList)
     if length(modelList)-s>=steps-1
         endPnt=steps-1;
         modelsTmp = cell(steps,1);
         solutionsTmp = cell(steps,1);
     else
-        endPnt=length(modelList)-1;
+        endPnt=length(modelList)-s;
         modelsTmp = cell(length(modelList),1);
         solutionsTmp = cell(length(modelList),1);
     end
@@ -205,7 +202,8 @@ for s=startPnt:steps:length(modelList)
 
             % verify that a feasible solution was obtained
             if ~isempty(solution)
-                if solution.stat==1
+                % 3 = "Optimal solution is available, but with infeasibilities after unscaling"
+                if solution.stat==1 || solution.stat==3
                     objectives{j+1,2+i} = solution.obj;
 
                     [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
@@ -239,11 +237,6 @@ for s=startPnt:steps:length(modelList)
                 objectives{j+1,2+i} = 0;
             end
         end
-    end
-    % save the results regularly for very large datasets
-    if length(modelList) > 500
-        save([resultsFolder filesep 'objectives'],'objectives');
-        save([resultsFolder filesep 'shadowPrices'],'shadowPrices','-v7.3');
     end
 end
 

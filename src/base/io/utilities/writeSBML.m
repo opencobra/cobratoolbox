@@ -335,7 +335,7 @@ tmp_fbc_geneProduct=getSBMLDefaultStruct('GeneProduct',sbmlLevel, sbmlVersion,sb
 
 sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct; % generate an default empty fbc_geneProduct field for the libSBML matlab structure
 
-GeneProductAnnotations = {'gene',{'isEncodedBy','encoder'},'protein',{}};
+GeneProductAnnotations = {'gene',{'isEncodedBy','encoder','is'};'protein',{'is'}};
 
 if isfield(model,'genes')
     for i=1:length(model.genes)
@@ -352,7 +352,8 @@ if isfield(model,'genes')
         end
         
         tmp_fbc_geneProduct.sboTerm = 243;
-        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i);
+        % merge protein/gene annotations.
+        tmp_fbc_geneProduct.annotation = makeSBMLAnnotationString(model,tmp_fbc_geneProduct.fbc_id,GeneProductAnnotations,i,true);
         if i==1
             sbmlModel.fbc_geneProduct=tmp_fbc_geneProduct;
         else
