@@ -449,7 +449,11 @@ if  regexp(tline,tag)
 else
     tlineOut = tline;
 <<<<<<< HEAD
+<<<<<<< HEAD
 end
 =======
 end
 >>>>>>> ithiele-ithiele-it_30_06_22
+=======
+end
+>>>>>>> develop

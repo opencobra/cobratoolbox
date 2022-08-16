@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 function [modelProp,ScoresOverall] = generateMemoteLikeScore(model)
 
 % Ines Thiele June 2022
 
+=======
+function [modelProp,ScoresOverall] = generateMemoteLikeScore(model,nworkers)
+
+% Ines Thiele June 2022
+
+if ~exist('nworkers','var')
+    nworkers = 4;
+end
+>>>>>>> develop
 %% Basic model properties
 % number of reactions
 modelProp.n = size(model.S,2);
@@ -158,6 +168,10 @@ minBound = min(model.lb);
 modelOpen = model;
 modelOpen.lb(find(ismember(model.rxns,modelProp.Details.ExchangeRxns))) = minBound;
 modelOpen.ub(find(ismember(model.rxns,modelProp.Details.ExchangeRxns))) = maxBound;
+<<<<<<< HEAD
+=======
+ setWorkerCount(nworkers);
+>>>>>>> develop
 [minFlux, maxFlux, optsol, ret, fbasol, fvamin, fvamax, statussolmin, statussolmax] = fastFVA(modelOpen, 0,'max');
 
 % find blocked reactions
@@ -361,10 +375,14 @@ for i = 1 : size(fields)
             modelProp.Details.(strcat('AnnoRxnNonConf', fields{i})) = NonConf;
         else
 <<<<<<< HEAD
+<<<<<<< HEAD
             
 =======
             i
 >>>>>>> ithiele-ithiele-it_30_06_22
+=======
+            i
+>>>>>>> develop
             confFormat = model.(fields{i,1})(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), fields(i,2)))));
             modelProp.(strcat('AnnoRxnConf', fields{i}))= (length(confFormat))*100/(modelProp.n - length(missingRxn)); % how many have it
             p =  setdiff(model.rxns, missingRxn);
