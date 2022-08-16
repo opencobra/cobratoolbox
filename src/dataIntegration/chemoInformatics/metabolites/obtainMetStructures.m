@@ -72,7 +72,10 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 % Check openbabel installation
 if ismac || ispc
-    [oBabelInstalled, ~] = system('obabel');
+    [oBabelInstalled, results] = system('obabel');
+    if find(contains(results,'Usage:')) % it is actually installed but input file is missing
+        oBabelInstalled = 1;
+    end
 else
     [oBabelInstalled, ~] = system('openbabel.obabel');
 end
@@ -259,7 +262,7 @@ for i = 1:length(metList)
             end
         elseif inchiMsg && ~oBabelInstalled
             inchiMsg = false;
-            display('OpenBabel is not isntalled to convert InChIs')
+            display('OpenBabel is not installed to convert InChIs')
         end
     end
     

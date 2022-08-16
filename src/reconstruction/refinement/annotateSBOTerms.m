@@ -35,11 +35,11 @@ for i = 1 : length(model.rxns)
         model.rxnSBOTerms{i} = 'SBO:0000629';
     else
         % get compartments in reactions
-a = printRxnFormula(model,'rxnAbbrList',model.rxns{i},'printFlag',0);
+        a = printRxnFormula(model,'rxnAbbrList',model.rxns{i},'printFlag',0);
         c = regexp(a,'\[\w]');
         c = c{1};
-                clear comp;
-
+        clear comp;
+        
         for k = 1 : length(c)
             comp{k} = a{1}(c(k):c(k)+2);
         end
@@ -56,6 +56,10 @@ a = printRxnFormula(model,'rxnAbbrList',model.rxns{i},'printFlag',0);
             else
                 model.rxnSBOTerms{i} = '';
             end
+        else
+              model.rxnSBOTerms{i} = '';
         end
     end
 end
+
+model.rxnSBOTerms = columnVector(model.rxnSBOTerms);

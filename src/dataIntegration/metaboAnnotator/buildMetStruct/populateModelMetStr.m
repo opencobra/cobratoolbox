@@ -97,9 +97,9 @@ for i = 1 : length(F)
         end
     end
 end
-% add SBO term to all metabolites SBO:0000247 represents the term 'simple chemical'. 
+% add SBO term to all metabolites SBO:0000247 represents the term 'simple chemical'.
 for i = 1 : length(model.mets)
-model.metSBOTerms{i} = 'SBO:0000247';
+    model.metSBOTerms{i} = 'SBO:0000247';
 end
 for k = 1 : size(translation,1)
     if isfield(model,translation{k,2})
@@ -113,6 +113,8 @@ for i = 1 : length(model.mets)
         model.metChEBIID{i} = strcat('CHEBI:',model.metChEBIID{i});
     end
 end
+
+
 
 % ensure uniform output
 if isfield(model,'metPubChemID')
@@ -151,3 +153,12 @@ if isfield(model,'metInchiString')
     model.metInchiString = cellfun(@num2str, model.metInchiString,'UniformOutput',false);
 end
 
+if isfield(model,'metLIPIDMAPSID')
+    model.metLIPIDMAPSID = cellfun(@num2str, model.metLIPIDMAPSID,'UniformOutput',false);
+    model.metLIPIDMAPSID  =  model.metLIPIDMAPSID (cellfun('isclass',  model.metLIPIDMAPSID , 'char'));
+end
+
+if isfield(model,'metSmile')
+    model.metSmile = cellfun(@num2str, model.metSmile,'UniformOutput',false);
+    model.metSmile  =  model.metSmile (cellfun('isclass',  model.metSmile , 'char'));
+end
