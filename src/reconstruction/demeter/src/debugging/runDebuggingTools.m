@@ -93,6 +93,11 @@ if isfile([testResultsFolder filesep 'tooHighATP.mat'])
     load([testResultsFolder filesep 'tooHighATP.mat']);
     failedModels = union(failedModels,tooHighATP);
 end
+if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'ATP_from_O2_' reconVersion '.txt'])
+    atpFromO2 = table2cell(readtable([testResultsFolder filesep reconVersion '_refined' filesep 'ATP_from_O2_' reconVersion '.txt']));
+    atpModels = atpFromO2(find(cell2mat(atpFromO2(:,2)) > 0.00001),1);
+    failedModels = union(failedModels,atpModels);
+end
 if isfile([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt'])
     FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep 'growsOnDefinedMedium_' reconVersion '.txt']);
     for i=1:size(FNlist,1)
@@ -113,8 +118,10 @@ fileList(~(contains(fileList(:,1),{'FalseNegatives'})),:)=[];
 for i=1:size(fileList,1)
     FNlist = readInputTableForPipeline([[testResultsFolder filesep reconVersion '_refined'] filesep fileList{i,1}]);
     % remove all rows with no cases
-    FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
-    failedModels=union(failedModels,FNlist(:,1));
+    if size(FNlist,2)>1
+        FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
+        failedModels=union(failedModels,FNlist(:,1));
+    end
 end
 
 % get already debugged reconstructions
@@ -264,8 +271,10 @@ if length(failedModels)>0
     for i=1:size(fileList,1)
         FNlist = readInputTableForPipeline([testResultsFolder filesep reconVersion '_refined' filesep fileList{i,1}]);
         % remove all rows with no cases
-        FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
-        stillFailedModels=union(stillFailedModels,FNlist(:,1));
+        if size(FNlist,2)>1
+            FNlist(cellfun(@isempty, FNlist(:,2)),:)=[];
+            stillFailedModels=union(stillFailedModels,FNlist(:,1));
+        end
     end
 
     fixedModels = setdiff(failedModels,stillFailedModels);

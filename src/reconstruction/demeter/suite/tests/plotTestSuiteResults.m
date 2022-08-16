@@ -228,13 +228,21 @@ for i=1:length(features)
     cntAgreeing=0;
     if i < length(features)
         for j=1:size(Results.(strcat(features{i},'_TruePositives')),1)
-            if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
-                if ~isempty(Results.(strcat(features{i},'_TruePositives')){j,2}) || ~isempty(Results.(strcat(features{i},'_FalseNegatives')){j,2})
-                    cntData=cntData+1;
-                end
-            else
+            if size(Results.(strcat(features{i},'_TruePositives')),2) > 1
                 if ~isempty(Results.(strcat(features{i},'_TruePositives')){j,2})
                     cntData=cntData+1;
+                else
+                    if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
+                        if ~isempty(Results.(strcat(features{i},'_FalseNegatives')){j,2})
+                            cntData=cntData+1;
+                        end
+                    end
+                end
+            else
+                if size(Results.(strcat(features{i},'_FalseNegatives')),2) > 1
+                    if ~isempty(Results.(strcat(features{i},'_FalseNegatives')){j,2})
+                        cntData=cntData+1;
+                    end
                 end
             end
             TP=length(find(~cellfun(@isempty,Results.(strcat(features{i},'_TruePositives'))(j,2:end))));

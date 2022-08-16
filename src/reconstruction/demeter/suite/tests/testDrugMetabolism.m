@@ -56,7 +56,7 @@ else
     % open all exchanges
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
-    
+
     % get the reactions to test
     rxns = {};
     for i=2:size(dataTable,2)
@@ -72,7 +72,7 @@ else
             end
         end
     end
-    
+
     % flux variability analysis on reactions of interest
     rxns = unique(rxns);
     rxns = rxns(~cellfun('isempty', rxns));
@@ -87,38 +87,33 @@ else
             cd(currentDir)
             [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
         end
-        
+
         % active flux
         flux = rxnsInModel(minFlux < -1e-6);
         flux = union(flux,rxnsInModel(maxFlux > 1e-6));
     else
         flux = {};
     end
-    if ~isempty(flux)
-        % check all exchanges corresponding to drug uptake/secretion
-        % in this case, all of them should be carrying flux
-        for i=2:size(dataTable,2)
-            findCorrRxns = [];
-            if contains(version,'(R202') % for Matlab R2020a and newer
-                if dataTable{mInd,i}==1
-                    findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                end
-            else
-                if strcmp(dataTable{mInd,i},'1')
-                    findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
-                end
+    % check all exchanges corresponding to drug uptake/secretion
+    % in this case, all of them should be carrying flux
+    for i=2:size(dataTable,2)
+        findCorrRxns = [];
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
             end
-            if ~isempty(findCorrRxns)
-                allEx = corrRxns(findCorrRxns,2:end);
-                allEx = allEx(~cellfun(@isempty, allEx));
-                
-                TruePositives = union(TruePositives, intersect(allEx, flux));
-                FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
             end
         end
-    else
-        TruePositives ={};
-        FalseNegatives = {};
+        if ~isempty(findCorrRxns)
+            allEx = corrRxns(findCorrRxns,2:end);
+            allEx = allEx(~cellfun(@isempty, allEx));
+
+            TruePositives = union(TruePositives, intersect(allEx, flux));
+            FalseNegatives = union(FalseNegatives, setdiff(allEx, flux));
+        end
     end
 end
 
