@@ -4,17 +4,17 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 % optimized in one or more COBRA model structures. The objective functions
 % entered are optimized one by one. By default, all metabolites with
 % nonzero shadow prices are extracted from the computed flux solutions. The
-% function was written for the Microbiome Modeling Toolbox, with the aim of 
+% function was written for the Microbiome Modeling Toolbox, with the aim of
 % allowing the computation of metabolic dependencies for metabolites of
 % interest secreted by the personalzied models, though it can also be used
-% for any other COBRA model. 
+% for any other COBRA model.
 %
 % USAGE:
 %
 %   [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,objectiveList,varargin)
 %
 % INPUTS:
-%   modelFolder       Folder containing one or more COBRA model structures  
+%   modelFolder       Folder containing one or more COBRA model structures
 %   objectiveList     Cell array containing the names of one or more
 %                     objective functions of interest in vertical order
 %                     Optional: second column with exchange reaction IDs
@@ -79,23 +79,7 @@ if numWorkers > 0
         parpool(numWorkers)
     end
 end
-
-% reload existing results if applies
-if isfile([resultsFolder filesep 'objectives.mat'])
-    load([resultsFolder filesep 'objectives.mat']);
-    load([resultsFolder filesep 'shadowPrices.mat']);
-    startPnt=size(objectives,2)-1;
-else
-    startPnt=1;
-end
-
-objectives{1,1}='Objective';
-shadowPrices{1,1}='Metabolite';
-shadowPrices{1,2}='Objective';
-if size(objectiveList,2)>1
-    objectives{1,2}='Source';
-    shadowPrices{1,3}='Source';
-end
+environment = getEnvironment();
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};
@@ -109,8 +93,16 @@ if size(modelList,1) ==0
     error('There are no models to load in the model folder!')
 end
 
+objectives=cell(length(objectiveList)+1,length(modelList)+2);
+objectives{1,1}='Objective';
+shadowPrices{1,1}='Metabolite';
+shadowPrices{1,2}='Objective';
+if size(objectiveList,2)>1
+    objectives{1,2}='Source';
+    shadowPrices{1,3}='Source';
+end
+
 % Compute the solutions for all entered models and objective functions
-solutions={};
 for j=1:length(objectiveList)
     objectives{j+1,1} = objectiveList{j,1};
     if size(objectiveList,2)>1
@@ -118,84 +110,120 @@ for j=1:length(objectiveList)
     end
 end
 
-for i=startPnt:size(modelList,1)
-    i
-    objectives{1,2+i}=strrep(modelList{i,1},'.mat','');
-    shadowPrices{1,3+i}=strrep(modelList{i,1},'.mat','');
-    
+% first perform the computations
+parfor i=1:length(modelList)
+    restoreEnvironment(environment);
+    changeCobraSolver(solver, 'LP', 0, -1);
+    % load model
     % workaround for models that give an error in readCbModel
-    try
-        model=readCbModel([modelFolder filesep modelList{i,1}]);
-    catch
-        warning('Model could not be read through readCbModel. Consider running verifyModel.')
-        modelStr=load([modelFolder filesep modelList{i,1}]);
-        modelF=fieldnames(modelStr);
-        model=modelStr.(modelF{1});
-    end
-    
+    %         try
+    %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
+    %         catch
+    %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
+    modelStr = load([modelFolder filesep modelList{i,1}]);
+    modelF = fieldnames(modelStr);
+    model = modelStr.(modelF{1});
+    modelsTmp{i} = model;
+
     % implement constraints on the model
     for k = 1:length(model.rxns)
         if strfind(model.rxns{k}, 'biomass')
             model.lb(k) = 0;
         end
     end
-    
+
     % check if stored solution already exists
-    if isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
-        load([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
-    else
+    if ~isfile([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'])
         % compute the flux balance analysis solution
-        [model, FBAsolution] = computeSolForObj(model, objectiveList, solver);
-        
-        % save solutions obe by one-file would be enourmous otherwise
-        save([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution'],'FBAsolution');
+        FBAsolution = computeSolForObj(model, objectiveList);
+        % save solutions one by one-complete file would be enormous
+        parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
+    end
+end
+
+% now save the results
+steps = 50;
+
+for s=1:steps:length(modelList)
+    if length(modelList)-s>=steps-1
+        endPnt=steps-1;
+        modelsTmp = cell(steps,1);
+        solutionsTmp = cell(steps,1);
+    else
+        endPnt=length(modelList)-s;
+        modelsTmp = cell(length(modelList),1);
+        solutionsTmp = cell(length(modelList),1);
     end
 
-    % Extract all shadow prices and save them in a table
-    objectives{1,2+i} = strrep(modelList{i,1},'.mat','');
-    shadowPrices{1,3+i} = strrep(modelList{i,1},'.mat','');
-    solutions(:,i)=FBAsolution;
+    parfor i=s:s+endPnt
+        % load model
+        % workaround for models that give an error in readCbModel
+        %         try
+        %             modelLoaded=readCbModel([modelFolder filesep modelList{i,1}]);
+        %         catch
+        %         warning('Model could not be read through readCbModel. Consider running verifyModel.')
+        modelStr = load([modelFolder filesep modelList{i,1}]);
+        modelF = fieldnames(modelStr);
+        model = modelStr.(modelF{1});
+        modelsTmp{i} = model;
 
-    for j=1:size(objectiveList,1)
-        % get the computed solutions
-        solution = FBAsolution{j,1};
-        
-        % verify that a feasible solution was obtained
-        if solution.stat==1
-            objectives{j+1,2+i} = solution.obj;
-            
-            [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
-            for k=1:size(extractedShadowPrices,1)
-                % check if the metabolite relevant for this objective
-                % function is already in the table
-                % only certain SPs
-                if contains(extractedShadowPrices{k,1},'biomass') || contains(extractedShadowPrices{k,1},'[d]') || contains(extractedShadowPrices{k,1},'[fe]')
-                    findMet=find(strcmp(shadowPrices(:,1),extractedShadowPrices{k,1}));
-                    findObj=find(strcmp(shadowPrices(:,2),objectiveList{j,1}));
-                    if ~isempty(intersect(findMet,findObj))
-                        % Add the shadow price for this model
-                        shadowPrices{intersect(findMet,findObj),3+i}=extractedShadowPrices{k,2};
-                    else
-                        % Add a new row for this metabolite and objective function with the shadow price for this model
-                        newRow=size(shadowPrices,1)+1;
-                        shadowPrices{newRow,1}=extractedShadowPrices{k,1};
-                        shadowPrices{newRow,2}=objectiveList{j,1};
-                        if size(objectiveList,2)>1
-                            shadowPrices{newRow,3}=objectiveList{j,2};
+        % load solution
+        solutionStr = load([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat']);
+        solutionSF = fieldnames(solutionStr);
+        FBAsolution = solutionStr.(solutionSF{1});
+        solutionsTmp{i} = FBAsolution;
+    end
+
+    for i=s:s+endPnt
+        objectives{1,2+i}=strrep(modelList{i,1},'.mat','');
+        shadowPrices{1,3+i}=strrep(modelList{i,1},'.mat','');
+        model = modelsTmp{i};
+
+        % Extract all shadow prices and save them in a table
+        objectives{1,2+i} = strrep(modelList{i,1},'.mat','');
+        shadowPrices{1,3+i} = strrep(modelList{i,1},'.mat','');
+        FBAsolution = solutionsTmp{i};
+
+        for j=1:size(objectiveList,1)
+            % get the computed solutions
+            solution = FBAsolution{j,1};
+
+            % verify that a feasible solution was obtained
+            if ~isempty(solution)
+                if solution.stat==1
+                    objectives{j+1,2+i} = solution.obj;
+
+                    [extractedShadowPrices]=extractShadowPrices(model,solution,SPDef);
+                    for k=1:size(extractedShadowPrices,1)
+                        % check if the metabolite relevant for this objective
+                        % function is already in the table
+                        % only certain SPs
+                        if contains(extractedShadowPrices{k,1},'biomass') || contains(extractedShadowPrices{k,1},'[d]') || contains(extractedShadowPrices{k,1},'[fe]')
+                            findMet=find(strcmp(shadowPrices(:,1),extractedShadowPrices{k,1}));
+                            findObj=find(strcmp(shadowPrices(:,2),objectiveList{j,1}));
+                            if ~isempty(intersect(findMet,findObj))
+                                % Add the shadow price for this model
+                                shadowPrices{intersect(findMet,findObj),3+i}=extractedShadowPrices{k,2};
+                            else
+                                % Add a new row for this metabolite and objective function with the shadow price for this model
+                                newRow=size(shadowPrices,1)+1;
+                                shadowPrices{newRow,1}=extractedShadowPrices{k,1};
+                                shadowPrices{newRow,2}=objectiveList{j,1};
+                                if size(objectiveList,2)>1
+                                    shadowPrices{newRow,3}=objectiveList{j,2};
+                                end
+                                shadowPrices(newRow,4:size(modelList,1)+3)={'0'};
+                                shadowPrices{newRow,3+i}=extractedShadowPrices{k,2};
+                            end
                         end
-                        shadowPrices(newRow,4:size(modelList,1)+3)={'0'};
-                        shadowPrices{newRow,3+i}=extractedShadowPrices{k,2};
                     end
+                else
+                    objectives{j+1,2+i} = 0;
                 end
+            else
+                objectives{j+1,2+i} = 0;
             end
-        else
-            objectives{j+1,2+i} = 0;
         end
-    end
-    % Regularly save results
-    if floor(i/10) == i/10
-        save([resultsFolder filesep 'objectives'],'objectives');
-        save([resultsFolder filesep 'shadowPrices'],'shadowPrices');
     end
 end
 
@@ -209,15 +237,11 @@ writetable(cell2table(shadowPrices),[resultsFolder filesep 'ShadowPrices'],'File
 
 end
 
-function [model, FBAsolution] = computeSolForObj(model, objectiveList,solver)
+function FBAsolution = computeSolForObj(model, objectiveList)
 % Compute the solutions for all objectives
-environment = getEnvironment();
 
-parfor j = 1:size(objectiveList, 1)
-    restoreEnvironment(environment);
-    changeCobraSolver(solver, 'LP', 0, -1);
-    % prevent creation of log files
-    changeCobraSolverParams('LP', 'logFile', 0);
+FBAsolution = cell(size(objectiveList,1),1);
+for j = 1:size(objectiveList, 1)
     modelTemp=model;
     % optimize for the objective if it is present in the model
     if ~isempty(find(ismember(modelTemp.rxns,objectiveList{j,1})))

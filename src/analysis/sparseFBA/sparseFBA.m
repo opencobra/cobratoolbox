@@ -58,8 +58,11 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %    sparseRxnBool:       Returns a vector with 1 and 0's, where 1 means sparse
 %    essentialRxnBool:    Returns a vector with 1 and 0's, where 1 means essential
 %
-% Authors: - Hoai Minh Le, Ronan Fleming
 
+% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Please cite:
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
 
 if exist('osenseStr', 'var')
     if isempty(osenseStr)
@@ -166,15 +169,26 @@ if isfield(model,'C')
         if printLevel>1
             fprintf('%s\n','No defined csense.')
             fprintf('%s\n','We assume that all mass balance constraints are equalities, i.e., S*v = 0')
-            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
         end
         model.csense(1:nMets,1) = 'E';
-        model.csense(nMets+1:nMets+nIneq,1) = 'L';
     else
-        if length(model.csense)~=nMets+nIneq
+        if length(model.csense)~=nMets
             error('Length of csense is invalid! Defaulting to equality constraints.')
         else
             model.csense = columnVector(model.csense);
+        end
+    end
+    if ~isfield(model,'dsense')
+        if printLevel>1
+            fprintf('%s\n','No defined dsense.')
+            fprintf('%s\n','We assume that all constraints C & d constraints are C*v <= d')
+        end
+        model.dsense(1:nIneq,1) = 'L';
+    else
+        if length(model.dsense)~=nIneq
+            error('Length of csense is invalid! Defaulting to equality constraints.')
+        else
+            model.dsense = columnVector(model.dsense);
         end
     end
 else
@@ -236,12 +250,17 @@ end
 
 if isfield(model,'C')
     %pad out matrices with a new slack variable (s)
-    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <= s
-    e(model.csense == 'E',1) = 0;
-    e(model.csense == 'G',1) = -1;
-    e(model.csense == 'L',1) = 1;
-    Ie=spdiags(e,0,nMets+nIneq,nMets+nIneq);
-    eBool=e~=0;
+    % A*x <= rhs is the same as [A I]*[x;s] = rhs with 0 <=
+    e1 = zeros(nMets,1);
+    e1(model.csense == 'E',1) = 0;
+    e1(model.csense == 'G',1) = -1;
+    e1(model.csense == 'L',1) = 1;
+    e2 = zeros(nIneq,1);
+    e2(model.dsense == 'E',1) = 0;
+    e2(model.dsense == 'G',1) = -1;
+    e2(model.dsense == 'L',1) = 1;
+    Ie=spdiags([e1;e2],0,nMets+nIneq,nMets+nIneq);
+    eBool=[e1;e2]~=0;
     Ie=Ie(:,eBool);
 end
 

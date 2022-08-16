@@ -1,4 +1,4 @@
-function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host)
+function model = fastSetupCreator(exMets, microbeNames, host)
 % creates a microbiota model (min 1 microbe) that can be coupled with a host
 % model. Microbes and host are connected with a lumen compartment [u], host
 % can secrete metabolites into body fluids [b]. Diet is simulated as uptake
@@ -15,7 +15,8 @@ function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host)
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
 % INPUTS:
-%    modPath:             char with path of directory where models are stored
+%   exMets:               cell array with all unique extracellular 
+%                         metabolites contained in the models
 %    microbeNames:        nx1 cell array of n unique strings that represent
 %                         each microbe model. Reactions and metabolites of
 %                         each microbe will get the corresponding
@@ -34,18 +35,18 @@ function model = fastSetupCreator(exch, modelStoragePath, microbeNames, host)
 if ~isempty(host)  % Get list of all exchanged metabolites
     %exch = host.mets(find(sum(host.S(:, strncmp('EX_', host.rxns, 3)), 2) ~= 0));
     exStruct = findSExRxnInd(host);
-    exch = union(exch,findMetsFromRxns(host,host.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool)));
+    exMets = union(exMets,findMetsFromRxns(host,host.rxns(exStruct.ExchRxnBool & ~exStruct.biomassBool)));
 end
 
 % The biomass 'biomass[c]' should not be inserted in the list of exchanges.
 % Hence it will be removed.
-exch = setdiff(exch, 'biomass[c]');
+exMets = setdiff(exMets, 'biomass[c]');
 %% Create additional compartments for dietary compartment and fecal secretion.
 
 % Create dummy model with [d], [u], and [fe] rxns
 dummy = createModel();
-umets = unique(exch);
-orderedMets = unique([strrep(exch, '[e]', '[d]'); strrep(exch, '[e]', '[u]'); strrep(exch, '[e]', '[fe]')]);
+umets = unique(exMets);
+orderedMets = unique([strrep(exMets, '[e]', '[d]'); strrep(exMets, '[e]', '[u]'); strrep(exMets, '[e]', '[fe]')]);
 mets = [strrep(umets, '[e]', '[d]'); strrep(umets, '[e]', '[u]'); strrep(umets, '[e]', '[fe]')];
 dummy = addMultipleMetabolites(dummy,orderedMets);
 
@@ -54,7 +55,7 @@ stoich = [-speye(nMets),-speye(nMets),sparse(nMets,nMets),sparse(nMets,nMets);..
     sparse(nMets,nMets),speye(nMets),-speye(nMets),sparse(nMets,nMets);...
     sparse(nMets,nMets),sparse(nMets,nMets),speye(nMets),-speye(nMets)];
 lbs = [repmat(-1000,nMets,1);zeros(nMets,1);zeros(nMets,1);repmat(-1000,nMets,1)];
-ubs = repmat(1000,4*nMets,1);
+ubs = repmat(10000,4*nMets,1);
 rxnNames = [strcat('EX_',mets(1:nMets));...
     strcat('DUt_',strrep(umets,'[e]',''));...
     strcat('UFEt_',strrep(umets,'[e]',''));...
@@ -154,6 +155,7 @@ if ~isempty(host)
 end
 
 %% merge the models
+modelStoragePath = [pwd filesep 'modelStorage'];
 if size(microbeNames,1)==1
     % if there is only one microbe
     model = readCbModel([modelStoragePath filesep microbeNames{1,1} '.mat']);

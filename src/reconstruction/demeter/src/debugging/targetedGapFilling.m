@@ -114,6 +114,11 @@ gapfillSolutions={'Metabolite','Present','ToAdd'
     'thymd[c]', '',{'EX_thymd(e)','THMDt2r'}
     'pnto_R[c]', '',{'DPCOAK','EX_pnto_R(e)','PNTK','PNTOabc','PPCDC','PPNCL','PTPAT'}
     'PGPm1[c]','',{'sink_PGPm1[c]'}
+    'fad[c]','',{'FMNAT'}
+    % assuming the most common cholate conversion reaction here-almost all
+    % false negatives were E. coli which has this pathway
+    'cholate[c]','',{'7AHSDH', '7AHSDHe', 'BIACt4', 'EX_7ocholate(e)'}
+    'C02528[c]','',{'CDCA7aHSDHe', 'EX_7dhcdchol(e)'}
     };
 
 % First find out which biomass precursors cannot be synthesized
@@ -163,8 +168,7 @@ if abs(FBA.f) < tol || FBA.stat==0
             };
         for i=1:length(rxns)
             if isempty(find(ismember(model.rxns, rxns{i})))
-                model = addReaction(model, rxns{i}, database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3});
-                addReaction(model, [rxns{i} '_tGF'], ...
+                model = addReaction(model, [rxns{i} '_tGF'], ...
                     'reactionName', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 2}, ...
                     'reactionFormula', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 3}, ...
                     'subSystem', database.reactions{find(ismember(database.reactions(:, 1), rxns{i})), 11}, ...

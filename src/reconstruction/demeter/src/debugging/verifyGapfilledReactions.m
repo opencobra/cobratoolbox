@@ -405,7 +405,10 @@ for n = 1:length(model.rxns)
     if ~isempty(strfind(model.rxns{n, 1}, '_untGF'))
         removeGF = strsplit(model.rxns{n, 1}, '_untGF');
         model.rxns{n, 1} = removeGF{1, 1};
-        model.grRules{n, 1} = 'demeterGapfill';
+        % added this label to exchange reactions may cause issues
+        if ~strncmp(model.rxns{n, 1},'EX_',3)
+            model.grRules{n, 1} = 'demeterGapfill';
+        end
     end
 end
 

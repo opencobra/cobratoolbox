@@ -16,7 +16,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    dietFilePath:           char with path of directory where the diet is saved.
 %                            Can also be a character array with a separate diet for
 %                            each individual, in that case, size(dietFilePath,1) 
-%                            needs to equal the length of samples.
+%                            needs to equal the length of samples, and the first 
+%                            row needs to be sample names and the second row needs to 
+%                            be the respective files with diet information.
 %    infoFilePath:           char with path to stratification criteria if available
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
@@ -31,6 +33,10 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            present in the gut should be provided to the models (default: true)
 %    adaptMedium:            boolean indicating if the medium should be adapted through the
 %                            adaptVMHDietToAGORA function or used as is (default=true)
+%    pruneModels:            boolean indicating whether reactions that do not carry flux on the
+%                            input diet should be removed from the microbe models. 
+%                            Recommended for large datasets (default: false)
+%
 %
 % OUTPUTS:
 %    init:                   status of initialization
@@ -74,6 +80,7 @@ parser.addParameter('lowerBMBound', 0.4, @isnumeric);
 parser.addParameter('upperBMBound', 1, @isnumeric);
 parser.addParameter('includeHumanMets', true, @islogical);
 parser.addParameter('adaptMedium', true, @islogical);
+parser.addParameter('pruneModels', false, @islogical);
 
 parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 
@@ -93,6 +100,7 @@ lowerBMBound = parser.Results.lowerBMBound;
 upperBMBound = parser.Results.upperBMBound;
 includeHumanMets = parser.Results.includeHumanMets;
 adaptMedium = parser.Results.adaptMedium;
+pruneModels = parser.Results.pruneModels;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -106,8 +114,6 @@ if numWorkers > 1
         parpool(numWorkers)
     end
 end
-
-global CBTDIR
     
 % set optional variables
 mkdir(resPath);
@@ -123,8 +129,13 @@ end
 
 % test if abundances are normalized
 abundance = readInputTableForPipeline(abunFilePath);
-totalAbun=sum(str2double(abundance(2:end,2:end)),1);
-if any(totalAbun > 1.01)
+if contains(version,'(R202') % for Matlab R2020a and newer
+	totalAbun=sum(cell2mat(abundance(2:end,2:end)),1);
+else
+	totalAbun=sum(str2double(abundance(2:end,2:end)),1);
+end
+
+if any(totalAbun > 1.05)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
 
@@ -144,7 +155,7 @@ figForm = '-depsc';
 
 % Check for installation of parallel Toolbox
 try
-   version = ver('parallel');
+   ver('parallel')
 catch
    error('Sequential mode not available for this application. Please install Parallel Computing Toolbox');
 end
@@ -169,7 +180,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels);
 
 cd(currentDir)
 

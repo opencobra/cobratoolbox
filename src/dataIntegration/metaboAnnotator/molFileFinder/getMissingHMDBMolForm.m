@@ -41,13 +41,22 @@ for i = startSearch : endSearch
         if isempty(metabolite_structure.(F{i}).hmdb) || ~isempty(find(isnan(metabolite_structure.(F{i}).hmdb)))
             % try to find the hmdb entry based on name
             met = metabolite_structure.(F{i}).metNames;
+             % remove abbr with non-breaking space
+             if any(ismember(met,char(160)))
+                 met=strsplit(met,char(160));
+                 met= met{1};
+             end           
             % remove parenthesis from metabolite names
             met = regexprep(met,'\(','');
             met = regexprep(met,'\)','');
             met = regexprep(met,'\[','');
             met = regexprep(met,'\]','');
             % retrieve potential hits
-            hmdb =retrievePotHitsHMDB(met);
+            try
+                hmdb =retrievePotHitsHMDB(met); % the catching should avoid that script fails when connection to HMDB fails
+            catch
+                hmdb = [];
+            end
             if ~isempty(hmdb)
                 metabolite_structure.(F{i}).hmdb = hmdb;
                 metabolite_structure.(F{i}).hmdb_source = ['Metabolite searched in HMDB by name',':',annotationType,':',datestr(now)];

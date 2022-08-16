@@ -127,11 +127,12 @@ for j = init:fl
                 xlabel(strcat('PCoA1: ',num2str(round(expr(1)*100,2)),'% of explained variance'));
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
                 if length(sampNames)<30
-                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    h=text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
                 else
                     warning('Plot annotation with individuals names disabled because of their big number');
                 end
                 print(strcat(resPath, 'PCoA_individuals_fluxes_', names{1, j}), figForm)
+                set(h, 'Interpreter', 'none')
                 title('PCoA of net secretion profiles');
             end
         else
@@ -168,12 +169,14 @@ for j = init:fl
                 ylabel(strcat('PCoA2: ',num2str(round(expr(2)*100,2)),'% of explained variance'));
                 
                 for i=1:length(cond)
-                    text(max(Y(:, 1)),max(Y(:, 2)-20*i),cond{i},'HorizontalAlignment','left','Color', cols(i,:));
+                    h=text(max(Y(:, 1)),max(Y(:, 2)-20*i),cond{i},'HorizontalAlignment','left','Color', cols(i,:));
+                    set(h, 'Interpreter', 'none')
                     hold on
                 end
-                
+
                 if length(sampNames)<30
-                    text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    h=text(Y(:,1),Y(:,2),sampNames,'HorizontalAlignment','left');%to insert numbers
+                    set(h, 'Interpreter', 'none')
                 else
                     warning('Plot annotation with individuals names disabled because of their big number');
                 end

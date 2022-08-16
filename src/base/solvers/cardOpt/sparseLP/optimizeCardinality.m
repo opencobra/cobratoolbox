@@ -387,8 +387,8 @@ if isfield(problem,'o')
                 solution.stat = -1;
                 return;
             else
-                if any(problem.o <=0) %& 0
-                    warning('Error: the weight vector o should be strictly positive.');
+                if any(problem.o <0) %& 0
+                    warning('Error: the one norm weight vector o should be non-negative.');
                     solution.stat = -1;
                     return;
                 end
@@ -400,23 +400,23 @@ if isfield(problem,'o')
                 return;
             else
                 if problem.lambda1~=0
-                    if any(problem.o(problem.p)<=0)
+                    if any(problem.o(problem.p)<0)
                         solution.stat = -1;
-                        warning('Error: the weight vector o(problem.p) should be strictly positive.');
+                        warning('Error: the one norm weight vector o(problem.p) should be non-negative.');
                         return;
                     end
                 end
                 if problem.delta1~=0
-                    if any(problem.o(problem.q) <=0)
+                    if any(problem.o(problem.q) <0)
                         solution.stat = -1;
-                        warning('Error: the weight vector o(problem.q) should be strictly positive.');
+                        warning('Error: the one norm weight vector o(problem.q) should be non-negative.');
                         return;
                     end
                 end
                 if problem.alpha1~=0
-                    if any(problem.o(problem.r) <=0)
+                    if any(problem.o(problem.r) <0)
                         solution.stat = -1;
-                        warning('Error: the weight vector o(problem.r) should be strictly positive.');
+                        warning('Error: the one norm weight vector o(problem.r) should be non-negative.');
                         return;
                     end
                 end

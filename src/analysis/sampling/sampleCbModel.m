@@ -238,50 +238,67 @@ switch samplerName
         modelSampling=[];
         samples=[];
     
-    case 'RHMC' 
-        P = struct;        
-        if (~isfield(model,'S') || ~isfield(model,'b'))
-            error('You need to define both model.S and model.b');
+    case 'RHMC'
+        if ~isempty(modelSampling) && isfield(modelSampling, 'problem')
+           P = modelSampling.problem;
         else
-            P.Aeq = model.S;
-            P.beq = model.b;
-        end
-        if isfield(model,'lb')
-            P.lb = model.lb;
-        end
-        if isfield(model,'ub')
-            P.ub = model.ub;
-        end
-        if isfield(model,'dsense')
-            I = (model.dsense == 'E');
-            P.Aeq = [P.Aeq; model.C(I,:)];
-            P.beq = [P.beq; model.d(I)];
-            P.Aineq = model.C(~I,:);
-            P.bineq = model.d(~I,:);
-            flip = 1-2*(model.dsense(~I) == 'G');
-            P.Aineq = flip.*P.Aineq;
-            P.bineq = flip.*P.bineq;
+           P = struct;        
+           if (~isfield(model,'S') || ~isfield(model,'b'))
+               error('You need to define both model.S and model.b');
+           else
+               P.Aeq = model.S;
+               P.beq = model.b;
+           end
+           if isfield(model,'lb')
+               P.lb = model.lb;
+           end
+           if isfield(model,'ub')
+               P.ub = model.ub;
+           end
+           if isfield(model,'dsense')
+               I = (model.dsense == 'E');
+               P.Aeq = [P.Aeq; model.C(I,:)];
+               P.beq = [P.beq; model.d(I)];
+               P.Aineq = model.C(~I,:);
+               P.bineq = model.d(~I,:);
+               flip = 1-2*(model.dsense(~I) == 'G');
+               P.Aineq = flip.*P.Aineq;
+               P.bineq = flip.*P.bineq;
+           end
         end
         
         if isfield(model,'vMean') || isfield(model,'vCov')
-           n = size(P.Aeq, 2);
-           if isfield(model,'vMean')
-              vMean = model.vMean;
-              assert(all(size(vMean) == [n, 1]));
+           if (isa(P,'Polytope'))
+              warning('vMean and vCov options are ignored. We will use the same vMean and vCov last time.');
            else
-              vMean = zeros(n,1);
+              n = size(P.Aeq, 2);
+              if isfield(model,'vMean')
+                 vMean = model.vMean;
+                 assert(all(size(vMean) == [n, 1]), 'incorrect size for model.vMean');
+              else
+                 vMean = zeros(n,1);
+              end
+
+              if isfield(model,'vCov')
+                 assert(all(size(model.vCov) == [n, 1]), 'incorrect size for model.vCov');
+                 assert(all(model.vCov >= 0), 'model.vCov must be non-negative');
+                 vInvCov = 1./model.vCov;
+
+                 idx = find(model.vCov < 1e-15);
+                 if ~isempty(idx)
+                    vInvCov(idx) = 1;
+                    spOne = speye(size(P.lb,1));
+                    P.Aeq = [P.Aeq; spOne(idx, :)];
+                    P.beq = [P.beq; vMean(idx)];
+                 end
+              else
+                 vInvCov = ones(n,1);
+              end
+
+              P.f = @(x) (vInvCov'*((x-vMean).*(x-vMean)))/2;
+              P.df = @(x) vInvCov.*(x-vMean);
+              P.ddf = @(x) vInvCov;
            end
-           
-           if isfield(model,'vCov')
-              vCov = model.vCov;
-              assert(all(size(vCov) == [n, 1]));
-           else
-              vCov = ones(n,1);
-           end
-           
-           P.f = @(x) (vCov'*((x-vMean).*(x-vMean)))/2;
-           P.df = @(x) vCov.*(x-vMean);
-           P.ddf = @(x) vCov;
         end
 
         opts = default_options();
@@ -294,7 +311,8 @@ switch samplerName
         if size(samples,2) > nPointsReturned
             samples = samples(:, ((size(samples,2)-nPointsReturned):end));
         end
-        
+        modelSampling = o;
+        modelSampling.samples = [];
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
     otherwise
         error(['Unknown sampler: ' samplerName]);

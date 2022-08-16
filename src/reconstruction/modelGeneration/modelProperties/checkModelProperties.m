@@ -3,10 +3,33 @@ function  [model] = checkModelProperties(model,printLevel)
 % biochemistry
 %
 %INPUT
-% model.S
+% model
 % printLevel
 %
 %OUTPUT
+% model.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+% model.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
+% model.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
+% model.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
+% model.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
+% model.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
+% model.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
+% model.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
+% model.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+% model.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+% model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
+% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
+% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
+% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
+% model.fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
+% model.fluxConsistentRxnBool:      `n` x 1 boolean vector indicating flux consistent `rxns`
+% model.fluxInConsistentMetBool:    `m` x 1 boolean vector indicating flux inconsistent `mets`
+% model.fluxInConsistentRxnBool:    `n` x 1 boolean vector indicating flux inconsistent `rxns`
+% model.thermoFluxConsistentMetBool m x 1 boolean vector indicating thermodynamically flux consistent mets
+% model.thermoFluxConsistentRxnBool n x 1 boolean vector indicating thermodynamically flux consistent rxns
+% model.thermoFwdFluxConsistentRxnBool n x 1 boolean vector indicating forward thermodynamically flux consistent rxns
+% model.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns
+%
 % model.rankFR                    rank of [F R], when using only FRrows
 % model.rankFRV                   rank of [F;R], when using only FRVcols
 % model.rankFRvanilla             rank of [F R], when using all rows
@@ -22,10 +45,6 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.FRwrows             m x 1 boolean of independent rows of [F R] that
 %                           have dependent rows amongst model.FRdrows
 % model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent
-% model.SConsistentMetBool  m x 1 boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
-% model.SConsistentRxnBool  n x 1 boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
 % model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved
 %                           in at least one internal reaction
 % model.FRuniqueBool        m x 1 boolean vector indicating metabolites with
@@ -39,21 +58,23 @@ function  [model] = checkModelProperties(model,printLevel)
 % model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
 % model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
 % model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
-% model.leakRxnBool         m x 1 boolean of metabolites in a positive leakage mode
-% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
-% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
-% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
 
-% Code based on that repored in...
-%'Conditions for duality between fluxes and concentrations in biochemical networks
-%by Ronan M.T. Fleming^{1}ronan.mt.fleming@gmail.com, Nikos Vlassis^{2}, Ines Thiele^{1}, Michael A. Saunders^{3}
-%{1} Luxembourg Centre for Systems Biomedicine, University of Luxembourg, 7 avenue des Hauts-Fourneaux, Esch-sur-Alzette, Luxembourg.
-%{2} Adobe Research, 345 Park Ave, San Jose, CA, USA.
-%{3} Dept of Management Science and Engineering, Stanford University, Stanford, CA, USA.
+% Author Ronan M.T. Fleming
+
+% .. Author: - Ronan Fleming 2015 - 2022
+% .. Please cite:
+% Fleming RMT, Vlassis N, Thiele I, Saunders MA. 
+% Conditions for duality between fluxes and concentrations in biochemical networks. 
+% Journal of Theoretical Biology. 2016 Nov 21;409:1–10. 
+% AND
+% Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
+% Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).
+
 
 if ~exist('printLevel','var')
     printLevel=1;
 end
+fprintf('\n');
 
 %check for duplicates or empty vectors in [F,R] and [F+R] or 
 checkTrivial=0;
@@ -123,8 +144,9 @@ model.SIntRxnBool_findSExRxnInd=model.SIntRxnBool;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Find leakage or siphons in heuristically internal part using the bounds given with the model
-leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*100;
-leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
+fprintf('%s\n',' -- findMassLeaksAndSiphons START ---');
+leakParams.epsilon=getCobraSolverParams('LP', 'feasTol')*10;
+leakParams.eta = getCobraSolverParams('LP', 'feasTol')*10;
 leakParams.method='dc';
 modelBoundsFlag=1;
 [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]...
@@ -137,7 +159,7 @@ model.siphonRxnBool=siphonRxnBool;
 % model.siphonY=siphonY;
 % model.statp=statp;
 % model.statn=statn;
-
+fprintf('%s\n\n',' -- findMassLeaksAndSiphons END ---');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %this is the version for the subsequent cardinality optimisation paper
@@ -335,32 +357,11 @@ if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnB
     %[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel] = findFluxConsistentSubset(model, param, printLevel)
     [fluxConsistentMetBoolTmp,fluxConsistentRxnBoolTmp,fluxInConsistentMetBoolTmp,fluxInConsistentRxnBoolTmp,~,~] = findFluxConsistentSubset(modelRev,param,printLevel-1);
     %build the vector the same size as the original S
+    model.fluxConsistentMetBool=false(nMet,1);
+    model.fluxConsistentMetBool(metBool2,:)=fluxConsistentMetBoolTmp;
+    
     model.fluxConsistentRxnBool=false(nRxn,1);
     model.fluxConsistentRxnBool(rxnBool2,:)=fluxConsistentRxnBoolTmp;
-    model.fluxConsistentMetBool=false(nMet,1);
-    model.fluxConsistentRxnBool(metBool2,:)=fluxConsistentMetBoolTmp;
-    
-    % %fast consistency check code from Nikos Vlassis et al
-    % modeFlag=1;
-    % [indFluxConsist,~,V0]=fastcc(modelRev,param.epsilon,printLevel-1,modeFlag);
-    % modelRev.fluxConsistentRxnBool=false(size(modelRev.S,2),1);
-    % modelRev.fluxConsistentRxnBool(indFluxConsist)=1;
-    % %pad out V0 to correspond to the original size of S
-    % model.V=sparse(nRxn,size(V0,2));
-    % model.V(rxnBool2,:)=V0;
-    %
-    % %check to make sure that V in nullspace of S.
-    % tmp=norm(full(model.S(metBool2,model.SConsistentRxnBool & model.SIntRxnBool)*model.V(model.SConsistentRxnBool & model.SIntRxnBool,:)...
-    %     + model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:)));
-    % %two extra digits spare
-    % if tmp>100*epsilon
-    %     disp(tmp)
-    %     error('Not flux consistent')
-    % end
-    % %create a stoichiometric matrix of perpetireactions only for
-    % %stoichiometrically and flux consistent part
-    % model.P=sparse(nMet,size(V0,2));
-    % model.P(metBool2,:)=model.S(metBool2,~model.SIntRxnBool)*model.V(~model.SIntRxnBool,:);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -375,29 +376,71 @@ else
     metBool3 = ~notMetBool3;
 end
 
-%thermodynamically flux consistent
-[model.thermoFluxConsistentMetBool,model.thermoFluxConsistentRxnBool,~,~] = findThermoConsistentFluxSubset(model, param, ~metBool3, ~rxnBool3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%thermodynamic flux consistency
+paramThermoFluxConsistency.formulation = 'pqzw';
+paramThermoFluxConsistency.epsilon = getCobraSolverParams('LP', 'feasTol')*10;
+paramThermoFluxConsistency.printLevel = 1;
+paramThermoFluxConsistency.nMax = 40;
+paramThermoFluxConsistency.relaxBounds=0;
+paramThermoFluxConsistency.debug =1;
+paramThermoFluxConsistency.secondaryRemoval=0;%dont remove additional metabolites and reactions
+
+if 0
+    save('pre_findThermoConsistentFluxSubset_model','model','paramThermoFluxConsistency','metBool3', 'rxnBool3')
+    return
+end
+
+% [thermoFluxConsistentMetBool,thermoFluxConsistentRxnBool,model,thermoConsistModel] = findThermoConsistentFluxSubset(model, param, removeMetBool, removeRxnBool)
+[~,~,~,thermoConsistModel] = findThermoConsistentFluxSubset(model, paramThermoFluxConsistency, ~metBool3, ~rxnBool3);
+
+% findThermoConsistentFluxSubset may remove other metabolites and reactions
+boolMet = ismember(model.mets,thermoConsistModel.mets);
+boolRxn = ismember(model.rxns,thermoConsistModel.rxns);
+
+%build the vectors the same size as the original S
+model.thermoFluxConsistentMetBool=false(nMet,1);
+model.thermoFluxConsistentMetBool(boolMet,:)=thermoConsistModel.thermoFluxConsistentMetBool;
+%bidirectional
+model.thermoFluxConsistentRxnBool=false(nRxn,1);
+model.thermoFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoFluxConsistentRxnBool;
+%forward
+model.thermoFwdFluxConsistentRxnBool=false(nRxn,1);
+model.thermoFwdFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoFwdFluxConsistentRxnBool;
+%reverse
+model.thermoRevFluxConsistentRxnBool=false(nRxn,1);
+model.thermoRevFluxConsistentRxnBool(boolRxn,:)=thermoConsistModel.thermoRevFluxConsistentRxnBool;
+clear model2
+
+% Unable to perform assignment because the size of the left side is 5548-by-1 and the size of the right side is 8438-by-1.
+% 
+% Error in checkModelProperties (line 378)
+% model.fluxConsistentMetBool(metBool3,:)=model2.fluxConsistentMetBool;
+% 
+% Error in driver_humanModelComparison (line 93)
+%         model = checkModelProperties(model,printLevel);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %eliminate the metabolites and reactions that are stoichiometrically
 %inconsistent or flux inconsistent or thermodynamically inconsistent from further consideration, but keep the
 %flux consistent exchange reactions, also eliminate scalar multiples
-metBool3= model.SConsistentMetBool & model.thermoFluxConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
-rxnBool3=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
+metBool4= model.SConsistentMetBool & model.thermoFluxConsistentMetBool & model.fluxConsistentMetBool & model.FRuniqueRowBool & model.FRnonZeroRowBool1;
+rxnBool4=(model.SConsistentRxnBool | ~model.SIntRxnBool)  & model.FRuniqueColBool & model.fluxConsistentRxnBool & model.thermoFluxConsistentRxnBool;
 
 %find rows that are not all zero when a subset of reactions omitted
-A3=[F(:,rxnBool3) R(:,rxnBool3)];
+A3=[F(:,rxnBool4) R(:,rxnBool4)];
 model.FRnonZeroRowBool = any(A3,2);
 
 %find cols that are not all zero when a subset of metabolites omitted
-A3=[F(metBool3,:); R(metBool3,:)];
+A3=[F(metBool4,:); R(metBool4,:)];
 model.FRnonZeroColBool = any(A3,1)';
 
 %only report for the latest subset of rows
-if any(~model.FRnonZeroRowBool & metBool3) && printLevel>0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool3),' zero rows of [F,R]')
+if any(~model.FRnonZeroRowBool & metBool4) && printLevel>0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroRowBool & metBool4),' zero rows of [F,R]')
     for i=1:nMet
-        if ~model.FRnonZeroRowBool(i) && metBool3(i)
+        if ~model.FRnonZeroRowBool(i) && metBool4(i)
             fprintf('%s%s\n',model.mets{i},': is a zero row of [F,R]')
         end
     end
@@ -405,10 +448,10 @@ if any(~model.FRnonZeroRowBool & metBool3) && printLevel>0
 end
 
 %only report for the latest subset of cols
-if any(~model.FRnonZeroColBool & rxnBool3) && 0
-    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool3),' zero cols of consistent [F;R]')
+if any(~model.FRnonZeroColBool & rxnBool4) && 0
+    fprintf('%u%s\n',nnz(~model.FRnonZeroColBool & rxnBool4),' zero cols of consistent [F;R]')
     for i=1:nRxn
-        if ~model.FRnonZeroColBool(i) && rxnBool3(i)
+        if ~model.FRnonZeroColBool(i) && rxnBool4(i)
             fprintf('%s%s\n',model.rxns{i},': is a zero col of consistent [F;R]')
         end
     end

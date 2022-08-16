@@ -38,12 +38,16 @@ end
 rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
 if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
+elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'metab.mat']);
 else
     %TODO
 end
 
 if exist([rBioNetPath filesep 'cache' filesep 'rxn.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'rxn.mat']);
+elseif  exist([rBioNetPath filesep 'data' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'rxn.mat']);
 else
     %TODO
 end
@@ -106,18 +110,19 @@ else
     % we will now generate de novo VMH Id's based on defined
     % rules
     name_col = find(contains(lower(RAW(1,:)),'name'));
+    load('data/rxn.mat')
     % this adaptation is needed for metabolon input file
     if length(name_col)>1
         name_col1 = name_col(1);
         clear name_col
         name_col = name_col1;
     end
-    
     RAW(1,end+1) = {'VMHId'};
     [a,b] = size(RAW);
     vmh_col = b;
+    
     for i = 2 : size(RAW,1)
-        progress = i/size(RAW,1);
+        progress = i/(size(RAW,1)-1);
         fprintf([num2str(progress) '% ...Creating abbreviations ... \n']);
         fprintf('\t')
         disp(RAW{i,name_col})
@@ -133,7 +138,9 @@ else
         RAW{i,vmh_col} = VMHId;
         save tmp
     end
-    [metabolite_structure] =createNewMetaboliteStructure(RAW,fileName,metabolite_structure_rBioNet);
+
+    [metabolite_structure] =createNewMetaboliteStructure(RAW,fileName,metabolite_structure_rBioNet,metab,rxn);
+
     VMH_existance =[];
     rBioNet_existance = [];
     listDuplicates =[];
@@ -145,9 +152,9 @@ end
 F = fieldnames(metabolite_structure);
 % loop for each metabolite instead of each search for all metabolites at
 % once to avoid too quick repinging of a single database
-for i = 1: length(F)
+for i = 1:length(F)
     progress = i/length(F);
-    fprintf([num2str(progress) '% ... Annotating metabolites from different resources ... \n']);
+    fprintf([num2str(progress*100) ' percent ... Annotating metabolites from different resources ... \n']);
     
     startSearch =i;
     endSearch = i;
@@ -187,8 +194,8 @@ fprintf('Collecting information from CTD \n')
 [metabolite_structure,IDsAddedCTD] = getCas2CTD(metabolite_structure);
 try % does not work on linux due to the xlsx file that is loaded
     fprintf('Collecting information from GNPS \n')
-    [NUM,TXT,RAW]=xlsread('GNPSMetabolites.xlsx','Extract');
-    [metabolite_structure] = map2GNPS(metabolite_structure,Table,RAW);
+    [NUM,TXT,RAW2]=xlsread('GNPSMetabolites.xlsx','Extract');
+    [metabolite_structure] = map2GNPS(metabolite_structure,Table,RAW2);
 end
 
 % check again whether the VMHId's are novel and also whether the metabolite
@@ -201,18 +208,32 @@ else
 end
 % if a hit was found, replace the VMHId of the
 match = find(contains(rBioNet_existance(:,3),'1'));
+
+% new valid field names
+F = fieldnames(metabolite_structure);
+
 % the results from here (or better replacements should be manually checked
 if ~isempty(match)
     for i = 1 : length(match)
         if ~isempty(rBioNet_existance{match(i),4})
             % remove field from metabolite structure and add field to
             % metabolite structure from metabolite_structure_rBioNet
-            metabolite_structure = rmfield(metabolite_structure,['VMH_' rBioNet_existance{match(i),1}]);
+            % rBioNet IDs contain ';' that might be not valid for matlab
+            % fields. The new Fields are found in metabolite_structure
+            field=fieldnames(metabolite_structure.(F{match(i)}));
+            field_rBioNet=fieldnames(metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]));
+            [missingfields,map] = setdiff(field,field_rBioNet);
+            %remove
+            metabolite_structure = rmfield(metabolite_structure,[F(match(i))]);
             % add field from metabolite_structure_rBioNet
             metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]) = metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]);
+            for j = 1 : length(missingfields)
+                metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]).(missingfields{j}) = NaN;
+            end
+            metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]).VMHId_suggestion= 'existedID';
             % update info in RAW
             r = find(ismember(RAW(:,vmh_col),rBioNet_existance{match(i),1}));
-            RAW{r,vmh_col} = rBioNet_existance{match(i),4};
+            RAW(r,vmh_col) = repmat({rBioNet_existance{match(i),4}}, 1, length(r));
         end
     end
 end

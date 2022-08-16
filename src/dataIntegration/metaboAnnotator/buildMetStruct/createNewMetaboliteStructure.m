@@ -1,4 +1,4 @@
-function [metabolite_structure] =createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet)
+function [metabolite_structure] =createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)
 % This function creates a metabolite structure using the provided input. If
 % no VMHId is provided in the header of the input, then VMHId are
 % generated.
@@ -20,6 +20,23 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 %
 % Ines Thiele, 09/2021
 
+%load rbionet data
+rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
+if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
+elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'metab.mat']);
+else
+    %TODO
+end
+
+if exist([rBioNetPath filesep 'cache' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'cache' filesep 'rxn.mat']);
+elseif  exist([rBioNetPath filesep 'data' filesep 'rxn.mat'],'file')
+    load([rBioNetPath filesep 'data' filesep 'rxn.mat']);
+else
+    %TODO
+end
 
 
 RAW = input;
@@ -30,7 +47,14 @@ metaboliteStructureFieldNames;
 vmh_col = find(contains(lower(RAW(1,:)),'vmh'));
 % clean up some known issues:
 name_col = find(contains(lower(RAW(1,:)),'name'));
-RAW(1,name_col) = regexprep(RAW(1,name_col),RAW(1,name_col),'metNames');
+
+% test if metabolite name column exists
+if isempty(name_col)
+    RAW{1} = 'metNames';
+    RAW = cat(1, RAW, metList);
+else
+    RAW(1,name_col) = regexprep(RAW(1,name_col),RAW(1,name_col),'metNames');
+end
 
 if isempty(vmh_col) || vmh_col ==0
     if ~exist('metabolite_structure_rBioNet','var')
@@ -40,7 +64,7 @@ end
 
 % populate metabolite structure
 for i = 2 : size(RAW,1)
-    name = RAW(i,find(contains(lower(RAW(1,:)),'name'))) ;
+    name = RAW(i,find(contains(lower(RAW(1,:)),'name')));
     if ~isempty(vmh_col) && vmh_col ~=0 % VMH ID exists
         Ori = RAW{i,vmh_col};
         
@@ -58,17 +82,20 @@ for i = 2 : size(RAW,1)
     % the original designated VMH ids listed in the field VMHId
     
     %make a temporary VMHId name in case the existing one is an invalid field name
-    if ~isvarname(VMHId)
+    VMHId_suggestion = VMHId;
+    if  isvarname(strcat('VMHId_', VMHId))
         fieldname = strcat('VMH_',VMHId);
-        metabolite_structure.(fieldname) = struct();
     else
-        VMHId_suggestion = VMHId;
-        VMHId = datestr(now,'yyyymmddTHHMMSS');
-        fieldname = strcat('VMH_',VMHId);
-        metabolite_structure.(fieldname) = struct();
-        metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
-    end
 
+        VMHId_suggestion = VMHId;
+        %VMHId = datestr(now,'yyyymmddTHHMMSS');
+
+        fieldname = strcat('VMH_',VMHId);
+    end
+    
+    metabolite_structure.(fieldname) = struct();
+    metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
+    
     for j = 1:size(RAW,2)
         if j~=vmh_col
             % check whether a columnn header is part of the field2Add
@@ -104,4 +131,3 @@ metabolite_structure= addField2MetStructure(metabolite_structure);
 % any errors will be removed.
 removeErrors = 1;
 [metabolite_structure,errorFlag] = sanityCheckMetIds(metabolite_structure,removeErrors);
-

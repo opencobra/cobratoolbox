@@ -27,7 +27,8 @@ alg='barneshut';
 currentDir=pwd;
 cd(propertiesFolder)
 mkdir('tSNE_Plots')
-cd('tSNE_Plots')
+
+Summary=struct;
 
 tol=0.0000001;
 
@@ -83,7 +84,6 @@ for k=1:size(analyzedFiles,1)
                 'Species'
                 };
             
-            Summary=struct;
             for i=1:length(taxonlevels)
                 % plot on different taxon levels
                 taxa={};
@@ -103,7 +103,7 @@ for k=1:size(analyzedFiles,1)
                 toDel=sum(data,1)<tol;
                 data(:,toDel)=[];
                 
-                % remove entries that are NaNs
+                % remove entries that are NaNs or empty
                 findnans=any(isnan(data));
                 data(:,findnans==1)=[];
                 
@@ -114,8 +114,12 @@ for k=1:size(analyzedFiles,1)
                 data(find(strcmp(taxa,'NA')),:)=[];
                 red_orgs(strcmp(taxa,'NA'),:)=[];
                 taxa(find(strcmp(taxa,'NA')),:)=[];
-                
-                
+
+                % remove empty cells
+                data(find(strcmp(taxa,'')),:)=[];
+                red_orgs(strcmp(taxa,''),:)=[];
+                taxa(find(strcmp(taxa,'')),:)=[];
+
                 % remove unclassified organisms
                 data(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
                 red_orgs(find(strncmp(taxa,'unclassified',length('unclassified'))),:)=[];
@@ -160,6 +164,12 @@ for k=1:size(analyzedFiles,1)
                     red_orgs(ismember(taxa,C),:)=[];
                     taxa(find(ismember(taxa,C)),:)=[];
                 end
+
+                % sort alphabetically
+                [B,I]=sortrows(taxa,'ascend');
+                data = data(I,:);
+                red_orgs = red_orgs(I,:);
+                taxa = taxa(I,:);
                 
                 if size(data,1)>10
                     
@@ -176,9 +186,9 @@ for k=1:size(analyzedFiles,1)
                     
                     Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',2);
                     %                 Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
-                    Summary.(taxonlevels{i})(:,1)=red_orgs;
-                    Summary.(taxonlevels{i})(:,2)=taxa;
-                    Summary.(taxonlevels{i})(:,3:size(Y,2)+2)=cellstr(string(Y));
+                    Summary.([strrep(analyzedFiles{k,1},' ','_') '_' taxonlevels{i}])(:,1)=red_orgs;
+                    Summary.([strrep(analyzedFiles{k,1},' ','_') '_' taxonlevels{i}])(:,2)=taxa;
+                    Summary.([strrep(analyzedFiles{k,1},' ','_') '_' taxonlevels{i}])(:,3:size(Y,2)+2)=cellstr(string(Y));
                     
                     if size(data,1) == size(Y,1) && size(Y,2) > 1
                         f=figure;
@@ -203,15 +213,15 @@ for k=1:size(analyzedFiles,1)
                         else
                             set(h,'FontSize',8)
                         end
+                        set(h, 'Interpreter', 'none')
                         grid off
                         f.Renderer='painters';
-                        print([taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
+                        print(['tSNE_Plots' filesep taxonlevels{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                     else
                         warning('Not enough strains with available organism information. Cannot cluster based on taxonomy.')
                     end
                 end
             end
-            save(['Summary_' reconVersion],'Summary');
             
             % if the data should be clustered by any custom features from the info file
             if nargin > 3
@@ -247,14 +257,13 @@ for k=1:size(analyzedFiles,1)
                             feats(find(ismember(feats,toofew)),:)=[];
                             
                             Y = tsne(data,'Distance',distance,'Algorithm',alg,'Perplexity',perpl,'NumDimensions',3);
-                            Summary.(strrep(customFeatures{i},' ','_'))(:,1)=red_orgs;
-                            Summary.(strrep(customFeatures{i},' ','_'))(:,2)=feats;
-                            Summary.(strrep(customFeatures{i},' ','_'))(:,3:4)=cellstr(string(Y));
+                            Summary.([strrep(analyzedFiles{k,1},' ','_') '_' strrep(customFeatures{i},' ','_')])(:,1)=red_orgs;
+                            Summary.([strrep(analyzedFiles{k,1},' ','_') '_' strrep(customFeatures{i},' ','_')])(:,2)=feats;
+                            Summary.([strrep(analyzedFiles{k,1},' ','_') '_' strrep(customFeatures{i},' ','_')])(:,3:4)=cellstr(string(Y));
                             
                             f=figure;
                             hold on
                             gscatter3(Y(:,1),Y(:,2),Y(:,3),feats);
-                            set(h,'MarkerSize',6)
                             title(analyzedFiles{k,1})
                             h=legend('Location','northeastoutside');
                             if length(uniqueXX) < 12
@@ -265,18 +274,29 @@ for k=1:size(analyzedFiles,1)
                                 set(h,'FontSize',6)
                             end
                             grid off
+                            set(h, 'Interpreter', 'none')
                             f.Renderer='painters';
-                            print([customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
+                            print(['tSNE_Plots' filesep customFeatures{i} '_' strrep(analyzedFiles{k,1},' ','_') '_' reconVersion],'-dpng','-r300')
                         else
                             warning('Not enough strains with available organism information. Cannot cluster based on features.')
                         end
                     end
                 end
-                save(['Summary_' reconVersion],'Summary');
             end
         end
     end
 end
+
+% export computed distance underlying the plots
+datasets=fieldnames(Summary);
+if length(datasets)>0
+    mkdir(['tSNE_Plots' filesep 'ComputedDistances'])
+    for i=1:length(datasets)
+        data = vertcat({'Data point','Stratifying feature','x-axis value','y-axis value'},Summary.(datasets{i}));
+        cell2csv(['tSNE_Plots' filesep 'ComputedDistances' filesep datasets{i} '.csv'],data)
+    end
+end
+
 cd(currentDir)
 
 end

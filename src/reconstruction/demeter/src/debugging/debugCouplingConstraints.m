@@ -34,9 +34,18 @@ rxns2Couple(find(strncmp(rxns2Couple,biomassReaction,length(biomassReaction))),:
 model=coupleRxnList2Rxn(model,rxns2Couple,biomassReaction,400,0); %couple the specific reactions
 
 % define gap-fills that could enable growth with coupling constraints
-growthFixes={'EX_hco3(e)','';'HCO3abc','';'H2CO3D','';'EX_ac(e)','ACt';'ACt2r','ACt';'ATPS4','';'EX_for(e)','FORt';'FORt2r','FORt';'EX_lac_L(e)','';'L_LACt2r','';'EX_lac_D(e)','';'D_LACt2','';'EX_etoh(e)','ETOHt';'ETOHt2r','ETOHt';'EX_succ(e)','SUCCt';'SUCCt2r','SUCCt';'EX_fum(e)','FUMt';'FUMt2r','FUMt'};
+growthFixes={'EX_hco3(e)','';'HCO3abc','';'H2CO3D','';'EX_ac(e)','ACt';'ACt2r','ACt';'ATPS4','';'EX_for(e)','FORt';'FORt2r','FORt';'EX_lac_L(e)','';'L_LACt2r','';'EX_lac_D(e)','';'D_LACt2','';'EX_etoh(e)','ETOHt';'ETOHt2r','ETOHt';'EX_succ(e)','SUCCt';'SUCCt2r','SUCCt';'EX_fum(e)','FUMt';'FUMt2r','FUMt';'EX_pi(e)','';'PIabc','';'EX_acald(e)','';'ACALDt','';'EX_akg(e)','';'AKGt2r',''};
 
 tol = 0.000001;
+
+% first check if sink for petidoglycan can be deleted
+modelTest = removeRxns(model, 'sink_PGPm1[c]');
+FBA = optimizeCbModel(modelTest, 'max');
+if FBA.f>tol
+    rmFlag=true;
+else
+    rmFlag=false;
+end
 
 % check if coupling constraints disable growth
 solution=optimizeCbModel(model);
@@ -46,7 +55,7 @@ if solution.f < tol
     growthFixes2Add(IA,:)=[];
     [C,IA]=intersect(growthFixes2Add(:,2),model.rxns);
     growthFixes2Add(IA,:)=[];
-    
+
     for j=1:size(growthFixes2Add,1)
         formula = database.reactions{ismember(database.reactions(:, 1), growthFixes2Add{j,1}), 3};
         model = addReaction(model, growthFixes2Add{j,1}, 'reactionFormula', formula);
@@ -66,7 +75,7 @@ if solution.f < tol
                 model=modelTest;
             end
         end
-        
+
         % save the enabled model
         model=modelPrevious;
         for j=1:length(addedCouplingRxns)
@@ -75,9 +84,24 @@ if solution.f < tol
             model.comments{end,1}='Added to enable growth with coupling constraints in place during DEMETER pipeline.';
             model.rxnConfidenceScores(end,1)=1;
         end
+    else
+        % try untargeted gapfilling
+        [model,addedCouplingRxns] = untargetedGapFilling(model,'max',database);
+    end
+    % save the enabled model
+    model=modelPrevious;
+    for j=1:length(addedCouplingRxns)
+        formula = database.reactions{ismember(database.reactions(:, 1), addedCouplingRxns{j}), 3};
+        model = addReaction(model, addedCouplingRxns{j}, 'reactionFormula', formula);
+        model.comments{end,1}='Added to enable growth with coupling constraints in place during DEMETER pipeline.';
+        model.rxnConfidenceScores(end,1)=1;
     end
 else
     model=modelPrevious;
+end
+
+if rmFlag
+    model = removeRxns(model, 'sink_PGPm1[c]');
 end
 
 end

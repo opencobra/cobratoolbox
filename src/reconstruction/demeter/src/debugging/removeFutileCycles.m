@@ -59,7 +59,6 @@ addCnt = 1;
 reactionsToReplace = {'if present','if not present','removed','added'
     'LYSt2r AND LYSt3r',[],'LYSt3r','LYSt3'
     'FDHr',[],'FDHr','FDH'
-    'GLYO1',[],'GLYO1','GLYO1i'
     'EAR40xr',[],'EAR40xr','EAR40x'
     'PROt2r AND PROt4r',[],'PROt4r','PROt4'
     'FOROXAtex AND FORt',[],'FORt',[]
@@ -112,7 +111,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'L_LACNa1t AND L_LACt2r',[],'L_LACt2r','L_LACt'
     'ACOAD1 AND ACOAD1f AND SUCD4',[],'ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR',[],'D_GLY3PR','D_GLY3PRi'
-    'H2O2D',[],'H2O2D','NPR'
     'ACCOACL AND BTNCL',[],'BTNCL','BTNCLi'
     'r0220 AND r0318',[],'r0318','r0318i'
     'MTHFRfdx AND FDNADOX_H',[],'FDNADOX_H',[]
@@ -278,15 +276,10 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'ETOHt2r AND ETOHt3',[],'ETOHt3',[]
     'DTTPti',[],'DTTPti',[]
     'UCO2L AND BUAMDH AND BURTADH',[],'UCO2L','UCO2Li'
-    'NADH6 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
-    'NADH8 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
-    'NADH6 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
-    'NADH8 AND SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
-    'NADH6 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
-    'NADH8 AND SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
-    'FDH2 AND SNG3POR AND FDNADOX_H',[],'SNG3POR','G3PD5'
-    'HYD1 AND HYD4 AND SNG3POR AND FDNADOX_H',[],'SNG3POR','G3PD5'
-    'SUCD4 AND SUCD1 AND SNG3POR AND EX_succ(e)',[],'SNG3POR','G3PD5'
+    'SNG3POR',[],'SNG3POR','G3PD5'
+    'SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND EX_succ(e) AND SUCCt'
+    'SNG3POR',[],'SNG3POR','G3PD5 AND EX_q8(e) AND Q8abc AND EX_2dmmq8(e) AND 2DMMQ8abc'
+    'SNG3POR','SUCCt2r','SNG3POR','G3PD5 AND GLYK'
     'NADH6 AND FTMAOR AND NTMAOR',[],'FTMAOR','FTMAORi'
     'NADH6 AND FTMAOR AND NTMAOR',[],'NTMAOR','NTMAORi'
     'NADH6 AND TMAOR1 AND NTMAOR',[],'NTMAOR','NTMAORi'
@@ -356,20 +349,10 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'H2O2D AND CYTBD AND EX_h2o2(e) AND L_LACD2',[],'H2O2D','NPR'
     'AKGt2r AND AKGte',[],'AKGte',[]
     'PHEt2r AND PHEtec',[],'PHEt2r','PHEt2'
-    'CHOLOX',[],'CHOLOX','CHOLOXi'
-    '34DCCBR',[],'34DCCBR','34DCCBRi'
     'r0389',[],'r0389','r0389i'
-    'URAOX',[],'URAOX','URAOXi'
-    'L_TRPCOO',[],'L_TRPCOO','L_TRPCOOi'
-    'SQLE',[],'SQLE','SQLEi'
-    '1H2NPTH',[],'1H2NPTH','1H2NPTHi'
-    'HSNOOX',[],'HSNOOX','HSNOOXi'
-    'SALCACD',[],'SALCACD','SALCACDi'
-    '34HPPORdc',[],'34HPPORdc','34HPPORdci'
     'SULR AND SULRi',[],'SULR',[]
     'FUCt2_1 AND FUCt',[],'FUCt2_1',[]
     'G6PDH2r AND G6PBDH AND G6PDA AND G6PI',[],'G6PDH2r','G6PDH2'
-    'ADMDCr',[],'ADMDCr','ADMDC'
     % 'CD2t6r AND CD2abc1',[],'CD2t6r','CD2t6'
     'OOR2r AND POR4 AND FRD2 AND FUM AND ACONTb AND ACONTa AND SUCCt AND SUCCt2r',[],'SUCCt','FDNADOX_H'
     'ACKr AND NNAM AND NAPRT AND NACt AND NACt2r',[],'NACt','EX_asp_L(e) AND ASPt2r'
@@ -379,10 +362,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','PTAr','FORt2r AND SUCCt','PTAr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'OOR2r AND FRD2 AND ACONTb AND ACONTa AND FORt AND FORt2r AND SUCCt AND NTRIR2x','ACtr','FORt2r AND SUCCt','EX_ac(e) AND ACtr AND SUCCt2r AND EX_no2(e) AND NO2t2'
     'PIt7 AND EX_na1(e) AND ACKr AND OAASr AND FORt AND FORt2r','PIabc','FORt2r','DM_NA1'
-    %  'PPHISNPPT',[],'PPHISNPPT','PPHISNPPTi'
-    % 'PPHISPT',[],'PPHISPT','PPHISPTi'
-    %  'PPHNPPT',[],'PPHNPPT','PPHNPPTi'
-    'PPHPT',[],'PPHPT','PPHPTi'
     'ICDHyr AND SUCOAS AND PYK AND FDNADOX_H AND POR4',[],'ICDHyr','ICDHy'
     'ASPt2_2 AND ASPt2r',[],'ASPt2r','ASPte'
     'SUCCt AND SUCCt2r',[],'SUCCt',[]
@@ -401,7 +380,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'LDH_L AND L_LACDr',[],'L_LACDr','L_LACD'
     'UCO2L AND BUAMDH AND BURTADH AND H2CO3D',[],'UCO2L','UCO2Li'
     'FDOXR AND NADH7 AND NTRIR4',[],'FDOXR','FDOXRi'
-    'NADH6 AND SNG3POR AND G3PD2',[],'SNG3POR','G3PD5'
     'PPCOAOc AND NADH6 AND ACOAR',[],'PPCOAOc','PPCOAOci'
     'PGK AND G1PP AND G16BPS AND G1PPTi',[],'G16BPS','G16BPSi'
     'FACOAL140 AND FA140ACPH',[],'FACOAL140','FACOAL140i'
@@ -412,7 +390,6 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'PGMT AND G16BPS AND G1PPTi',[],'G16BPS','G16BPSi'
     'ILEt2r AND ILEtec',[],'ILEt2r','ILEt2'
     'VALt2r AND VALtec',[],'VALt2r','VALt2'
-    'SNG3POR AND OOR2r AND FUM AND POR4 AND HPYRI',[],'SNG3POR','G3PD5'
     'NTMAOR AND SUCDimq AND FRD7 AND NADH6',[],'NTMAOR','NTMAORi'
     'PIt6bi AND PIt7',[],'PIt7','PIt7ir'
     'PIt6b AND PIt7',[],'PIt7','PIt7ir'
@@ -470,19 +447,18 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'HYD2 AND HYD4 AND NTRIR4 AND FDOXR',[],'FDOXR','FDOXRi'
     'FACOAL181',[],'FACOAL181','FACOAL181i'
     'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271',[],'GDPGALP','GDPGALPi'
+    'MAN6PI AND DCLMPDOH AND GDPGALP AND GDPMANNE2 AND HMR_7271',[],'GDPGALP','GDPGALPi'
     'FE2DH AND FE3Ri AND NADH6 AND SUCD1 AND FRD7',[],'FE2DH','FE2DHi'
     'GLBRAN AND GLDBRAN AND GLGNS1 AND GLPASE1 AND GPDDA1',[],'GLDBRAN',[]
     'CDPDPH AND CYTK1',[],'CDPDPH','CDPDPHi'
     'UMPK AND NDP7',[],'NDP7','NDP7i'
     'CLt4r AND r2137',[],'r2137','CLti'
-    'DESAT16_3 AND FAOp_even AND FAO181E',[],'DESAT16_3','DESAT16_3i'
     'LDH_L2 AND LDH_L',[],'LDH_L',[]
     'HXANtex AND HYXNtipp AND HXANt2r',[],'HXANt2r','HYXNt'
     'SUCCt2rpp AND SUCCtex AND SUCCt',[],'SUCCt',[]
     'POR4 AND FDHfdx AND MTHFRfdx AND GLFRDOi',[],'POR4','POR4i'
     'SUCCt2_3r AND CITt7',[],'SUCCt2_3r','SUCCt2_3'
     '3HPCOAHL AND 3HPCOAS AND ACOAR',[],'3HPCOAHL','3HPCOAHLi'
-    'LYSOR AND SACCD2 AND SACCRPOR',[],'LYSOR','LYSORi'
     'AKGMAL AND MALt2r AND AKGte',[],'MALt2r','MALt2'
     'AKGDa AND 3CARLPDH AND r0163c',[],'AKGDa','AKGDai'
     'L_LACNa1t AND AKGMAL AND L_LACt',[],'L_LACt',[]
@@ -506,6 +482,62 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'GLUTACCOACL AND GLUTACCOADC AND ACOAD1 AND ACOAD1fi AND r1144',[],'GLUTACCOACL','GLUTACCOACLi'
     'GLUTACCOACL AND GLUTACCOADC AND ACOAD1 AND ACOAD1fi AND MALNAt',[],'GLUTACCOACL','GLUTACCOACLi'
     'GLUTACCOACL AND GLUTACCOADC AND NAt3_1 AND ACOAD1',[],'NAt3_1','NAt3'
+    'FXXRDO AND G3PFDXOR AND GAPD AND H2Ot AND H2St AND NADH8 AND PGK AND SO3rDdmq AND SO3t',[],'SO3t','SO3ti'
+    'FRD7 AND FRD6 AND NADH6pp','EX_succ(e)','FRD7','SUCDi'
+    'FRD3 AND FRD6 AND NADH8','EX_succ(e)','FRD3','SUCDi'
+    'FRD7 AND FRD6 AND NADH8','EX_succ(e)','FRD7','SUCDi'
+    'FXXRDO AND H2St AND SO3t AND H2Ot AND NADH8 AND SO3rDdmq',[],'FXXRDO','FXXRDOi'
+    'CLt4r AND SO4CLtex2 AND SO4t2',[],'SO4t2','SO4t2i'
+    'FXXRDO AND PIt6b AND AND NADH8 AND SO3rDdmq',[],'PIt6b','PIt6bi'
+    'NACSMCTte AND NACUP AND PIt6b AND r2136',[],'PIt6b','PIt6bi'
+    'URIt2r AND URIt',[],'URIt',[]
+    'H202D',[],'H202D','NPR'
+    'NACSMCTte AND NACUP AND r2136',[],'NACUP',[]
+    'NACSMCTte AND NACUP AND URIt2r',[],'NACUP',[]
+    % IT 03/2022
+    'METFR AND r0792',[],'r0792',[]
+    %     'FDNADOX_Hipp AND METFR AND MTHFRfdx',[],'METFR',[]
+    %     'FDNADOX_Hi AND METFR AND MTHFRfdx',[],'METFR',[]
+    'L_LACDr AND D_LACD',[],'L_LACD',[]
+    %     'ALCD19 AND FDNADOX_Hi AND FXXRDO AND GLUOX AND GLUSx AND SULRi AND r0245',[],'FDNADOX_Hi',[]
+    %     'LACOAAOR AND MDH AND LDH_L2',[],'LACOAAOR',[]
+    %     'G3PFDXORi AND GAPD AND HYDFDN2rfdx AND PGK',[],'GAPD',[]
+    'FDNADOX_H AND HYDFDN2rfdx',[],'FDNADOX_Hi',[] % or irreversible version
+    %'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4i',[] % L_LACD4i needs to be added to rBioNet
+    'CITt10i AND CITt4_4 AND LEUt2r AND LEUt4 AND MGt5',[],'CITt10i',[] % not an ideal solution but I cannot see another one
+    %     'BTCOADH',[],'BTCOADH','BTCOADHi'
+    %     'FTMAOR',[],'FTMAOR','FTMAORi'
+    %     'NTMAOR',[],'NTMAOR','NTMAORi'
+    'LDH_L2 AND L_LACDr AND METFR AND MTHFRfdx',[],'L_LACDr','L_LACD'
+    'LDH_D AND LDH_L2 AND LacR',[],'LDH_D','LDH_Di' % not ideal but I don't see another possibilty
+    % 'FMNRx AND LDH_L2 AND L_LACD4',[],'L_LACD4','L_LACD4i' % somehow this L_LACD4i become reversible in the pipeline
+    %     'FMNRx AND LDH_L2 AND L_LACD4',[],'LDH_L2',[] % not ideal but should fix this issue % somehow this L_LACD4i become reversible in the pipeline
+    'LACLi',[],'LACLi','LACL'
+    'ILEt3 AND ILEt2r',[],'ILEt2r','ILEt2'
+    'GNOXuq',[],'GNOXuq','GNOXuqi'
+    % 'GNOXy',[],'GNOXy','GNOXyi'
+    'ATPS4 AND CINNMR AND FDNADOX_H AND PPPNDOR' ,[], 'CINNMR','CINNMRi'
+    'ACOAD1 AND ATPS3 AND BTCOADH AND FDNADOX_Hi',[], 'ACOAD1','ACOAD1i'
+    'AKGS AND FDNADOX_Hi AND OOR2r',[],'OOR2r','OOR2'
+    'D_LACt2pp AND GLUTACCOACL AND GLUTACCOADCpp AND MALLACDtpp AND MALt4pp',[],'GLUTACCOACL','GLUTACCOACLi'
+    'ATPS3pp AND GALM1r AND GLUOR AND HYD1pp' ,[],'GLUOR','GLUORi'
+    'NEOPRONT_AR_NAD',[],'NEOPRONT_AR_NAD','NEOPRONT_AR_NADi'
+    'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
+    'PRONT_AR_NAD',[],'PRONT_AR_NAD','PRONT_AR_NADi'
+    'PRONT_AR_NADP',[],'PRONT_AR_NADP','PRONT_AR_NADPi'
+    'OLSA_AR_NAD',[],'OLSA_AR_NAD','OLSA_AR_NADi'
+    'OLSA_AR_NADP',[],'OLSA_AR_NADP','OLSA_AR_NADPi'
+    'BZD_AR_NAD',[],'BZD_AR_NAD','BZD_AR_NADi'
+    'BZD_AR_NADP',[],'BZD_AR_NADP','BZD_AR_NADPi'
+    'SSZ_AR_NAD',[],'SSZ_AR_NAD','SSZ_AR_NADi'
+    'SSZ_AR_NADP',[],'SSZ_AR_NADP','SSZ_AR_NADPi'
+    'CINNMR',[],'CINNMR','CINNMRi'
+    'FDNADOX_Hi AND HSDx AND HSDy AND METFR AND MTHFRfdx',[],'HSDy','HSDyi2'
+    'ACOAD1fi AND BTCOADH AND FDNADOX_H AND FTMAOR AND NTMAOR' , [],'FTMAOR','FTMAORi'
+    'ACOAD1fi AND BTCOADH AND FDNADOX_H AND FTMAOR AND NTMAOR' , [],'NTMAOR','NTMAORi'
+    'FTMAOR' , [],'FTMAOR','FTMAORi'
+    'NTMAOR' , [],'NTMAOR','NTMAORi'
+    'D4DGCD',[],'D4DGCD','D4DGCDi'
     };
 
 
@@ -520,6 +552,7 @@ growthGapfills={
     'EX_for(e) AND FORt2r'
     'EX_ac(e) AND ACt2r'
     'EX_etoh(e) AND ETOHt2r'
+    'EX_pyr(e) AND PYRt2r'
     'EX_hco3(e) AND HCO3abc AND H2CO3D'
     % consider adding glycolysis
     'HEX1 AND PFK AND FBA AND TPI AND GAPD AND PGK AND PGM AND ENO AND PYK'
@@ -537,6 +570,9 @@ growthGapfills={
     'EX_ser_L(e) AND SERt2r'
     'PPA'
     'EX_glyald[e] AND GLYALDt'
+    'ATPS4'
+    'ADK1'
+    'EX_ac(e) AND ACtr'
     };
 
 for i = 2:size(reactionsToReplace, 1)
@@ -609,10 +645,11 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
+
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
                     
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                        newName=[rxns{j} 'ipp'];
+                        newName=[rxns{j} 'pp'];
                         % make sure we get the correct reaction
                         newForm=strrep(RxForm,'[e]','[p]');
                         rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -663,7 +700,7 @@ for i = 2:size(reactionsToReplace, 1)
                     % create a new formula
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), ggrxns{j})), 3};
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                        newName=[ggrxns{j} 'ipp'];
+                        newName=[ggrxns{j} 'pp'];
                         % make sure we get the correct reaction
                         newForm=strrep(RxForm,'[e]','[p]');
                         rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -702,7 +739,7 @@ for i = 2:size(reactionsToReplace, 1)
                             if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                                 addedRxns{addCnt, 1} = toRemove{1};
                             end
-                            if exist('newForm','var')
+                            if contains(RxForm,'[e]')  && exist('newForm','var')
                                 addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                             else
                                 addedRxns{addCnt, j+1} = rxns{j};
@@ -725,25 +762,27 @@ end
 
 %% Make the proposed changes
 model = model_old;
-if ~isempty(deletedRxns)
-    for j = 1:length(deletedRxns)
-        model = removeRxns(model, deletedRxns{j, 1});
-    end
-end
+
+% remove reactions to delete
+model = removeRxns(model, deletedRxns);
 
 % make sure gene rule and notes are kept while replacing
 if ~isempty(addedRxns)
     for j = 1:size(addedRxns,1)
-        model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
-        % if a reaction from the old version is replaced, keep the GPR
-        if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))
-            rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
-            rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
-            model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
-            model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+        if ~isempty(addedRxns{j,1})
+            model = addReaction(model, addedRxns{j, 2}, database.reactions{find(ismember(database.reactions(:, 1), addedRxns{j, 2})), 3});
+            % if a reaction from the old version is replaced, keep the GPR
+            if ~isempty(addedRxns{j, 1}) && ~isempty(find(ismember(model_old.rxns,addedRxns{j, 1})))
+                rxnIDNew=find(ismember(model.rxns,addedRxns{j, 2}));
+                rxnIDOld=find(ismember(model_old.rxns,addedRxns{j, 1}));
+                model.grRules{rxnIDNew,1}=model_old.grRules{rxnIDOld,1};
+                if isfield(model_old,'rxnConfidenceScores')
+                    model.rxnConfidenceScores(rxnIDNew,1)=model_old.rxnConfidenceScores(rxnIDOld,1);
+                end
+            end
+            model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
+            model.rxnConfidenceScores(end,1)=1;
         end
-        model.comments{end,1}='Added to eliminate futile cycles during DEMETER pipeline.';
-        model.rxnConfidenceScores(end,1)=1;
         % if more than one reaction is added
         if size(addedRxns,2)>2
             if ~isempty(addedRxns{j,3})
@@ -759,7 +798,7 @@ if ~isempty(addedRxns)
     end
 end
 
-% add any gapf-filled reactions
+% add any gap-filled reactions
 if ~isempty(gfRxns)
     for i=1:length(gfRxns)
         model = addReaction(model, gfRxns{i,1}, database.reactions{find(ismember(database.reactions(:, 1), gfRxns{i,1})), 3});

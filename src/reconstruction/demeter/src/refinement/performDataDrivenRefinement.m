@@ -8,7 +8,7 @@ function [refinedModel,summary] = performDataDrivenRefinement(model, microbeID, 
 %
 % INPUTS
 % model             COBRA model structure to refine
-% microbeID         ID of the reconstructed microbe that serves as the 
+% microbeID         ID of the reconstructed microbe that serves as the
 %                   reconstruction name and to identify it in input tables
 % inputDataFolder   Folder with input tables with experimental data and
 %                   databases that inform the refinement process
@@ -66,8 +66,20 @@ if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
-        [model,gapfilledRxns] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
-        dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+        % seems to try to fix exchanges that are not part of the model,
+        % leading it to crash:
+        %         Objective reactions not found in model!
+        %
+        % Error in runGapfillingFunctions (line 41)
+        % model = changeObjective(model, objectiveFunction);
+     %   add exchange reaction
+     if isempty(find(strcmp(model.rxns,metExch)))
+         met = [database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j}))} '(e)'];
+         model = addExchangeRxn(model,met,-1,1000);
+     end
+     [model,gapfilledRxns] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
+     dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
+     %  end
     end
     if ~isempty(dataDrivenGapfill)
         summary.('DataDrivenGapfill')=dataDrivenGapfill;

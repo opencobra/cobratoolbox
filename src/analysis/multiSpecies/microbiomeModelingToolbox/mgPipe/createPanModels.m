@@ -71,9 +71,9 @@ database=loadVMHDatabase;
 findTaxCol = find(strcmp(infoFile(1, :), taxonLevel));
 allTaxa = unique(infoFile(2:end, findTaxCol));
 
-% Remove unclassified organisms
-allTaxa(strncmp('unclassified', allTaxa, 12)) = [];
-allTaxa(~cellfun(@isempty, strfind(allTaxa, 'bacteri')))
+% Remove unclassified and unnamed organisms
+allTaxa(strncmp(allTaxa, 'unclassified',  12)) = [];
+allTaxa(strcmp(allTaxa, '')) = [];
 
 % Remove models that have already been assembled from the list of models to create
 dInfo = dir(panPath);
@@ -188,6 +188,7 @@ reactionsToReplace = {
     'MALNAt AND L_LACNa1t AND L_LACt2r','L_LACt2r','L_LACt2'
     'G3PD8 AND SUCD4 AND G3PD1','G3PD8','G3PD8i'
     'ACOAD1 AND ACOAD1f AND SUCD4','ACOAD1f','ACOAD1fi'
+    'BTCOADH AND ACOAD1f AND NADH6','ACOAD1f','ACOAD1fi'
     'PGK AND D_GLY3PR','D_GLY3PR','D_GLY3PRi'
     'r0010 AND H2O2D','H2O2D','NPR'
     'ACCOACL AND BTNCL','BTNCL','BTNCLi'
@@ -272,6 +273,7 @@ reactionsToReplace = {
     'PPIt2e AND GUAPRT AND AACPS6 AND GALT','PPIt2e','PPIte'
     'PPIt2e AND GLGC AND NADS2 AND SADT','PPIt2e','PPIte'
     'MCOATA AND MALCOAPYRCT AND C180SNrev','MCOATA','MACPMT'
+    'MCOATA AND MALCOAPYRCT AND FAS140ACPrev','MCOATA','MACPMT'
     'PPCr AND MALCOAPYRCT AND MMSAD5 AND MSAS','PPCr','PPC'
     'PPCr AND PYK AND ACTLDCCL AND HEDCHL AND OAAKEISO','PPCr','PPC'
     'PPCr AND NDPK9 AND OAACL','PPCr','PPC'
@@ -352,8 +354,6 @@ reactionsToReplace = {
     'DGORi AND SBTD_D2 AND GALM1r AND GNOXuq','GNOXuq','GNOXuqi'
     'LPCDH AND LPCOX AND NADH6pp AND ATPS4pp','LPCDH','LPCDHi'
     'CITt2pp AND CITCAtpp AND CAt4ipp','CITCAt','CITCAti'
-    'KAS17rev AND FACOAE181 AND FAO181E','FAO181E','FAO181Ei'
-    'KAS17rev AND RE3245C AND FAO181E','FAO181E','FAO181Ei'
     'G1PGTi AND PGMT2 AND G1PPT AND G16BPS','G16BPS','G16BPSi'
     'HISSNAT5tc AND HISt2r','HISt2r','HISt2'
     'TDCOATA AND ACPACT AND FAS140ACPrev','FAS140ACPrev','FAS140ACP'
@@ -363,6 +363,7 @@ reactionsToReplace = {
     'LDH_L AND LDH_L2','LDH_L',[]
     '25DOPOX AND GLCRAL AND D4DGCD','D4DGCD','D4DGCDi'
     'CITt7 AND SUCCt AND CAt4i AND CITCAt','CITCAt','CITCAti'
+    'CITt7 AND SUCCt2r AND CAt4i AND CITCAt','CITCAt','CITCAti'
     'HEDCHL AND OAAKEISO AND ACTLDCCL','ACTLDCCL','ACTLDCCLi'
     'ADNt AND ADNCNT3tc','ADNCNT3tc','ADNt2'
     'PGMT AND G1PP AND GK_adp_','G1PP','G1PPi'
@@ -378,8 +379,6 @@ reactionsToReplace = {
     'ARGSL AND ARGSSr AND ARGDr AND ACS AND ACKr AND PTAr','ARGSSr','ARGSS'
     'METt2r AND METt3r','METt2r','METt2'
     'GLUOOR AND GLUR AND H2O2D','H2O2D','NPR'
-    'KAS17rev AND RE3245C AND FAO181O','FAO181O','FAO181Oi'
-    'KAS17rev AND FACOAL181 AND FAO181O','FAO181O','FAO181Oi'
     'TMAt2r AND TMAOR2e AND TMAOt2r','TMAOR2e','TMAOR2ei'
     'ORNt2r AND PROPAT4te AND r2018 AND r1667','ORNt2r','ORNt2'
     'G1PP AND PGMT AND XYLI2 AND MAN6PI AND PNPHPT','G1PP','G1PPi'
@@ -390,7 +389,6 @@ reactionsToReplace = {
     'LEUt2r AND r1642 AND PROPAT4te','PROPAT4te','PROte'
     'AGPAT120 AND PLIPA2A120 AND FA120ACPH','FA120ACPH','FA120ACPHi'
     'AGPAT160 AND PLIPA2A160 AND FA160ACPH','FA160ACPH','FA160ACPHi'
-    'FAO181E AND DESAT18_3 AND FACOAL181','FAO181E','FAO181Ei'
     'GLUt2r AND GLUDy AND GLUt4r','GLUt2r','GLUt2'
     'ACOATA AND KAS14 AND C180SNrev AND 3HAD100','C180SNrev','C180SN'
     'ECOAH5 AND HACD2 AND HACD5 AND ACACT1r','ACACT1r','ACACT1'
@@ -399,9 +397,10 @@ reactionsToReplace = {
     'AGOR AND SBTPD AND SBTpts AND SBTt6','SBTt6','SBTt6i'
     'PGM AND PGMT AND G16BPS AND G1PPT','G16BPS','G16BPSi'
     'EX_HC00319(e) AND MALNt AND C180SNrev AND ACACPT','C180SNrev','C180SN'
-    'LYS6OR AND L2AADIPADOR AND LYSOR','LYSOR','LYSORi'
     'TRPt2r AND TRPt','TRPt2r','TRPt2'
     '2S6HCC AND SHCHCS AND SSALxr AND OOR2r AND SUCOAS','SSALxr','SSALx'
+    'ADK1 AND NDPK7 AND NTP13','NTP13','NTP13i'
+    'ADK8 AND NDPK1 AND NTP13','NTP13','NTP13i'
     'ADK8 AND NDPK7 AND NTP13','NTP13','NTP13i'
     'ADK10 AND NDPK4 AND NTP9','NTP9','NTP9i'
     'ADK1 AND NDPK4 AND NTP9','NTP9','NTP9i'
@@ -414,16 +413,51 @@ reactionsToReplace = {
     'CITt2 AND CITt4_4','CITt4_4','CITt'
     'SUCD1 AND 5MTHFOR','5MTHFOR','5MTHFORi'
     'MLTHFTRU AND AMETRNAMT AND 5MTHCYST AND 5MTHGLUS','AMETRNAMT','AMETRNAMTi'
-    'DESAT16_3 AND FAOp_even AND FAO181Ei','DESAT16_3','DESAT16_3i'
     'FDNADOX_Hpp AND OXONADPOR AND OOR2r','OOR2r','OOR2'
-    'NDP7 AND ADK11 AND NDPK2 AND UMPK6 AND UMPK AND US7P1PT','NDP7','NDP7i'
+    'NDP7 AND UMPK','NDP7','NDP7i'
     'RPI AND PNP AND NMNPH AND DRIBI AND NTRK AND RBK_Dr','RBK_Dr','RBK_D'
     'SERAT AND CYSS3r AND TSULST AND GTHRD AND TRDRr','TRDRr','TRDR'
+    '3CARLPDH AND r0163c AND r0556c','r0556c','r0556ci'
+    'PPCr AND NDPK1 AND PEPCK_re','PEPCK_re','PEPCK'
+    'COBALTt AND COBALTt5','COBALTt',[]
+    'CLt4r AND r2137','r2137',[]
+    'NACSMCTte AND NAt3_1 AND NACUP','NAt3_1','NAt3'
+    'DCLMPDOH AND GDPGALP AND GDPMANNE AND HMR_7271','GDPGALP','GDPGALPi'
+    '2S6HCC AND SHCHCS AND SSALyr','SSALyr','SSALy'
+    'ACONTa AND ACONTb AND ICDHyr AND OAASr','ICDHyr','ICDHy'
+    'ACONTa AND ACONTb AND ICDHx AND OAASr','ICDHx','ICDHxi'
+    'ACOAD1f AND BTCOADH AND FDNADOX_H','FDNADOX_H','FDNADOX_Hi'
+    'r1617 AND ILEtec AND TYRt2r AND r1634','ILEtec',[]
+    'TRPt2r AND r1626 AND PHEtec','PHEtec',[]
+    'THRt2r AND r1645 AND r2534','r2534',[]
+    'FE3Ri AND FE2DH AND SUCD1','SUCD1','FRD'
+    'FDNADOX_H AND BTCOADH AND OOR2 AND FXXRDO','FXXRDO','FXXRDOi'
+    'FDNADOX_H AND BTCOADH AND OOR2 AND GLFRDO','GLFRDO','GLFRDOi'
+    'IMPPH AND r0394 AND PRPPS AND IMPD AND XPPTr','XPPTr','XPPT'
+    'GNOXmq AND NADH6 AND SUCDimq AND FRD7','GNOXmq','GNOXmqi'
+    'TSULt4_3 AND TSULt2','TSULt4_3','TSULt4_3i'
+    'H2St AND TSULt4_3 AND SUCDimq AND FRD7','TSULt4_3','TSULt4_3i'
+    'HISt2r AND LYSt3r AND r1665','HISt2r','HISt2'
+    'TYRt2r AND r1576 AND r1634 AND r1628','TYRt2r','TYRt2'
+    'LEUt2r AND LEUPHELAT2tc AND r1611 AND r1628','LEUt2r','LEUt2'
+    'r2534 AND THRt2r','THRt2r','THRt2'
+    'FOLt AND r0963','r0963',[]
+    'NADH6 AND FE2DH AND FE3Ri','FE2DH','FE2DHi'
+    'NADH6 AND FE2DH AND FE3MTP1 AND FE2abc','FE2DH','FE2DHi'
+    'GLYBt2r AND GLYBt4_2_r','GLYBt4_2_r','GLYBt4_2'
+    'MALCOAPYRCT AND FACOAL240rev AND FAO240 AND FAS240_Lrev AND STCOATA AND FA180ACPHrev','FAS240_Lrev',[]
+    'HISCAT1 AND HIStN1 AND NAt3_1 AND FDNADOX_H','HISCAT1',[]
+    'LEUPHELAT2tc AND PHEtec AND LEUt2r','PHEtec',[]
+    'FOLt2 AND FOLOAT2tc AND SO4t2','SO4t2','SO4t2i'
+    'SO3rDdmq AND TMAOR1e AND TMAOR2e AND SUCDimq','TMAOR2e','TMAOR2ei'
+    'GLNt2r AND r1576 AND r1574','GLNt2r','GLNt2'
+    'FDNADOX_H AND 5MTHFOX AND r0792','5MTHFOX','5MTHFOXi'
+    'CDPDPH AND CYTK1','CDPDPH','CDPDPHi'
     };
 
-% List Western diet constraints to test if the pan-model produces
+% List complex medium constraints to test if the pan-model produces
 % reasonable ATP flux on this diet.
-dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
+dietConstraints = table2cell(readtable('ComplexMedium.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
 
 dInfo = dir(panPath);
@@ -448,7 +482,7 @@ for i = 1:length(panModels)
     FBA = optimizeCbModel(model, 'max');
     % Ensure that pan-models can still produce biomass
     model = changeObjective(model, 'biomassPan');
-    if FBA.f > 50
+    if FBA.f > 100
         for j = 2:size(reactionsToReplace, 1)
             rxns = strsplit(reactionsToReplace{j, 1}, ' AND ');
             go = true;
@@ -495,7 +529,7 @@ for i = 1:length(panModels)
                         % create a new formula
                         RxForm = database.reactions{find(ismember(database.reactions(:, 1), reactionsToReplace{j, 3})), 3};
                         if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
-                            newName=[reactionsToReplace{j, 3} 'ipp'];
+                            newName=[reactionsToReplace{j, 3} 'pp'];
                             % make sure we get the correct reaction
                             newForm=strrep(RxForm,'[e]','[p]');
                             rxnInd=find(ismember(database.reactions(:, 1), {newName}));
@@ -507,7 +541,7 @@ for i = 1:length(panModels)
                             else
                                 % if not present already, add to database
                                 RxForm=newForm;
-                                database.reactions(size(database.reactions,1)+1,:)={reactionsToReplace{j, 3},newName,RxForm,'0','','','','','','',''};
+                                database.reactions(size(database.reactions,1)+1,:)={newName,newName,RxForm,'0','','','','','','','',''};
                             end
                         end
                         modelTest = addReaction(modelTest, newName, RxForm);
@@ -518,14 +552,6 @@ for i = 1:length(panModels)
                 FBA = optimizeCbModel(modelTest, 'max');
                 if FBA.f > tol
                     model = modelTest;
-                    % account for periplasmatic versions
-                    % fix some special cases
-                    if ~isempty(intersect(model.rxns,'CITt2ipp'))
-                        model.rxns=strrep(model.rxns,'CITt2ipp','CITt2pp');      
-                    end
-                    if ~isempty(intersect(model.rxns,'CITCAtiipp'))
-                        model.rxns=strrep(model.rxns,'CITCAtiipp','CITCAtipp');
-                    end
                 end
             end
         end
@@ -545,49 +571,41 @@ function model=buildPanModel(agoraPath, models, taxonToCreate, infoFile, databas
 
 tol = 1e-5;
 
-% List Western diet constraints
-dietConstraints = table2cell(readtable('WesternDietAGORA2.txt'));
+% List complex medium constraints
+dietConstraints = table2cell(readtable('ComplexMedium.txt'));
 dietConstraints(:, 2) = cellstr(num2str(cell2mat(dietConstraints(:, 2))));
+
+% temporary fix-for adaptation of AGORA to recent database changes
+tempFixes={'EX_indprp(e)','EX_ind3ppa(e)';'INDPRPt2r','IND3PPAt2r';'GDOCAH','';'1H2NPTHi','1H2NPTH';'HSNOOXi','HSNOOX';'SALCACDi','SALCACD';'34DCCBRi','34DCCBR';'URAOXi','URAOX';'SQLEi','SQLE';'34HPPORdci','34HPPORdc';'L_TRPCOOi','L_TRPCOO';'PPHPTi','PPHPT';'CHOLOXi','CHOLOX'};
 
 if size(models, 1) == 1
     model = readCbModel([agoraPath filesep infoFile{models, 1} '.mat']);
-    % temporary fix
-    if find(strcmp(model.rxns,'EX_indprp(e)'))
-        model=removeRxns(model,'EX_indprp(e)');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
-        model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
+    % make adaptations to recent database changes
+    for i=1:size(tempFixes,1)
+        if find(strcmp(model.rxns,tempFixes{i,1}))
+            model=removeRxns(model,tempFixes{i,1});
+            if ~isempty(tempFixes{i,2})
+                RxnForm = database.reactions(find(ismember(database.reactions(:, 1), tempFixes{i,2})), 3);
+                model = addReaction(model, tempFixes{i,2}, 'reactionFormula', RxnForm{1, 1});
+            end
+        end
     end
-    if find(strcmp(model.rxns,'INDPRPt2r'))
-        model=removeRxns(model,'INDPRPt2r');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
-        model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
-    end
-    if find(strcmp(model.rxns,'GDOCAH'))
-        model=removeRxns(model,'GDOCAH');
-        RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
-        model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
-    end
+    
     % rename biomass reaction to agree with other pan-models
     bio = find(strncmp(model.rxns, 'bio', 3));
     model.rxns{bio, 1} = 'biomassPan';
 elseif size(models, 1) > 1
     for k = 1:size(models, 1)
         model = readCbModel([agoraPath filesep infoFile{models(k), 1} '.mat']);
-        % temporary fix
-        if find(strcmp(model.rxns,'EX_indprp(e)'))
-            model=removeRxns(model,'EX_indprp(e)');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'EX_ind3ppa(e)')), 3);
-            model = addReaction(model, 'EX_ind3ppa(e)', 'reactionFormula', RxnForm{1, 1});
-        end
-        if find(strcmp(model.rxns,'INDPRPt2r'))
-            model=removeRxns(model,'INDPRPt2r');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'IND3PPAt2r')), 3);
-            model = addReaction(model, 'IND3PPAt2r', 'reactionFormula', RxnForm{1, 1});
-        end
-        if find(strcmp(model.rxns,'GDOCAH'))
-            model=removeRxns(model,'GDOCAH');
-            RxnForm = database.reactions(find(ismember(database.reactions(:, 1), 'GDOCAH')), 3);
-            model = addReaction(model, 'GDOCAH', 'reactionFormula', RxnForm{1, 1});
+        % make adaptations to recent database changes
+        for i=1:size(tempFixes,1)
+            if find(strcmp(model.rxns,tempFixes{i,1}))
+                model=removeRxns(model,tempFixes{i,1});
+                if ~isempty(tempFixes{i,2})
+                    RxnForm = database.reactions(find(ismember(database.reactions(:, 1), tempFixes{i,2})), 3);
+                    model = addReaction(model, tempFixes{i,2}, 'reactionFormula', RxnForm{1, 1});
+                end
+            end
         end
         bio = find(strncmp(model.rxns, 'bio', 3));
         if k == 1
@@ -718,6 +736,7 @@ model.lb(find(strncmp(model.rxns,'sink_',5)))=-1;
 % remove duplicate reactions
 % Will remove reversible reactions of which an irreversible version is also
 % there but keep the irreversible version.
+model = useDiet(model,dietConstraints);
 [modelRD, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model);
 % test if the model can still grow
 FBA=optimizeCbModel(modelRD,'max');
@@ -740,5 +759,8 @@ else
     end
     model=removeRxns(model,toRM);
 end
+% remove diet constraints
+exch=find(strncmp(model.rxns,'EX_',3));
+model=changeRxnBounds(model,model.rxns(exch),-1000,'l');
 
 end

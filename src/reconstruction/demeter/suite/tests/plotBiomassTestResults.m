@@ -25,7 +25,7 @@ function [notGrowing,Biomass_fluxes] = plotBiomassTestResults(refinedFolder, rec
 %                           cannot produce biomass on at least one condition
 % Biomass_fluxes             Computed biomass production fluxes for each model
 %
-% .. Authors:
+% .. Author:
 %       - Almut Heinken, 09/2020
 
 % Define default input parameters if not specified
@@ -90,11 +90,11 @@ for f=1:length(folders)
      %    for i=1:length(modelList)
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
-        try 
-        model=readCbModel([folders{f} filesep modelList{i}]);
+        try
+            model=readCbModel([folders{f} filesep modelList{i}]);
         catch % circumvent the verifyModel for the moment
-                 model=  load([folders{f} filesep modelList{i}]);
-                 model = model.model;
+            model=  load([folders{f} filesep modelList{i}]);
+            model = model.model;
         end
         biomassID=find(strncmp(model.rxns,'bio',3));
         [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, model.rxns(biomassID));
@@ -238,7 +238,7 @@ else
     try
         figure;
         hold on
-        violinplot(data, {'Aerobic,','Anaerobic'});
+        violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
@@ -330,5 +330,7 @@ else
     Biomass_fluxes(2:length(modelList)+1,1) = strrep(modelList,'.mat','');
     Biomass_fluxes(2:end,2:5) = num2cell(data);
 end
+
+writetable(cell2table(Biomass_fluxes),[testResultsFolder filesep 'Biomass_fluxes.csv'],'WriteVariableNames',false)
 
 end

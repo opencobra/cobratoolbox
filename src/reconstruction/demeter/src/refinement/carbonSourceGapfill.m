@@ -354,12 +354,11 @@ for i = 1:length(cSources)
         for k = 1:length(conditions)
             if eval(carbGapfillAddConditional{conditions(k), 2})
                 addRxns = carbGapfillAddConditional{conditions(k), 3};
+                addRxns = setdiff(addRxns,model.rxns);
                 for j = 1:length(addRxns)
-                    if ~any(ismember(model.rxns, addRxns{j}))
-                        formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
-                        model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'CarbonSourceGapfill');
-                        addedRxns{length(addedRxns)+1,1} = addRxns{j};
-                    end
+                    formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                    model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'CarbonSourceGapfill');
+                    addedRxns{length(addedRxns)+1,1} = addRxns{j};
                 end
             end
         end

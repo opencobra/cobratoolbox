@@ -57,6 +57,7 @@ fileList={dInfo.name};
 fileList=fileList';
 fileList(~contains(fileList(:,1),{'.csv','.txt'}))=[];
 fileList(contains(fileList(:,1),{'ModelStat'}))=[];
+fileList(contains(fileList(:,1),{'GrowthRates'}))=[];
 
 % analyze data in spreadsheets
 for i=1:length(fileList)
@@ -89,7 +90,7 @@ for i=1:length(fileList)
     sampleData(1,2:end)=strrep(sampleData(1,2:end),'host_microbiota_model_samp_','');
     
     % remove entries not in data
-    [C,IA]=intersect(infoFile,sampleData(1,2:end));
+    [C,IA]=intersect(infoFile(2:end,1),sampleData(1,2:end));
     if length(C)<length(sampleData(1,2:end))
         error('Some sample IDs are not found in the file with sample information!')
     end
@@ -97,7 +98,7 @@ for i=1:length(fileList)
     % perform statistical analysis
     if ~isempty(sampleGroupHeaders)
         for j=1:length(sampleGroupHeaders)
-            [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData',infoFile,'stratification',sampleGroupHeaders{j});
+            [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,infoFile,'stratification',sampleGroupHeaders{j});
             
             % Print the results as a text file
             filename = strrep(fileList{i},'.csv','');
@@ -118,7 +119,7 @@ for i=1:length(fileList)
             cd(currentDir)
         end
     else
-        [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData',infoFile);
+        [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,infoFile);
         
         % Print the results as a text file
         filename = strrep(fileList{i},'.csv','');
@@ -133,7 +134,7 @@ for i=1:length(fileList)
         cd(violinPath)
         
         % create violin plots for net uptake and secretion files
-        if any(strcmp(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
+        if any(strcmp(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv','Objectives.txt'}))
             makeViolinPlots(sampleData, infoFile, 'plottedFeature', filename, 'unit', 'mmol/person/day')
         end
         cd(currentDir)

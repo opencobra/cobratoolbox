@@ -19,17 +19,19 @@ function [modelNew, unusedGenes] = removeUnusedGenes(model)
 
 modelNew=model;
 if ~isfield(model,'genes')
-    %This is VERY odd and should not happen, but lets see            
-    modelNew.genes = {};
-    warning('Model did not contain a genes field. Building it along with the rules field');
-    res = warning();
-    warning('off','all')
-    modelNew = generateRules(modelNew);   
-    warning(res)
+    if isfield(model, 'grRules')
+        %This is VERY odd and should not happen, but lets see
+        modelNew.genes = {};
+        warning('Model did not contain a genes field. Building it along with the rules field');
+        res = warning();
+        warning('off','all')
+        modelNew = generateRules(modelNew);
+        warning(res)
+    end
 end
 
 
-if ~isfield(modelNew,'rules')
+if ~isfield(modelNew,'rules') && isfield(model, 'grRules')
     modelNew = generateRules(modelNew);
 end
 

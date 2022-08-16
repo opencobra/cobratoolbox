@@ -31,9 +31,14 @@ reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAs
 reactionDatabase=table2cell(reactionDatabase);
 for i=1:size(reactionDatabase,1)
     if isempty(reactionDatabase{i,9})
-    reactionDatabase{i,9}=cell2mat(reactionDatabase{i,9});
+        reactionDatabase{i,9}=cell2mat(reactionDatabase{i,9});
     end
-    reactionDatabase{i,10}=datestr(reactionDatabase{i,10});
+    % treat differently when time stamp is missing
+    if ~isnat(reactionDatabase{i,10})
+      reactionDatabase{i,10}=datestr(reactionDatabase{i,10});
+    else
+         reactionDatabase{i,10}=reactionDatabase{i,10};
+    end
 end
 % remove the subsystem column since rBioNet does not account for that
 reactionDatabase(:,end)=[];

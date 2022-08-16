@@ -10,6 +10,16 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
 %
+% Optionally, it also solves a second problem
+%
+%    max/min  ~& g0.*|v|_0 + g1.*|v|_1 + g2.*|v|_2 + 0.5 v^T*F*v\\
+%    s.t.     ~& S v = b ~~~~~~~~~~~:y \\
+%             ~& C v \leq d~~~~~~~~:y \\
+%             ~& lb \leq v \leq ub~~~~:w
+%             ~& c^T*v == c^T*vStar
+%
+% where vStar is the optimal solution to the first LP problem.
+%
 % USAGE:
 %
 %    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
@@ -50,7 +60,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %
 %                       .. math::
 %
-%                          min  ~& d.*|v| \\
+%                          min  ~& g0.*|v| \\
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
@@ -121,10 +131,10 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 % OUTPUT:
 %    solution:       solution object:
 %
-%                          * f - Linear objective value
-%                          * f0 - Zero-norm objective value (optional)
-%                          * f1 - One-norm objective value  (optional)
-%                          * f2 - Two-norm objective value  (optional)
+%                          * f - Linear objective value (from LP problem)
+%                          * f0 - Zero-norm objective value (optional, from second optimisation problem)
+%                          * f1 - One-norm objective value  (optional, from second optimisation problem)
+%                          * f2 - Two-norm objective value  (optional, from second optimisation problem)
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
 %                          * y - Dual to the matrix inequality constraints (Shadow prices)
 %                          * w - Dual to the box constraints (Reduced costs)
@@ -153,7 +163,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %       - Markus Herrgard       9/16/03
 %       - Ronan Fleming         4/25/09  Option to minimises the Euclidean Norm of internal
 %                                        fluxes using 'cplex_direct' solver
-%       - Ronan Fleming         7/27/09  Return an error if any imputs are NaN
+%       - Ronan Fleming         7/27/09  Return an error if any imputs are NaNp
 %       - Ronan Fleming         10/24/09 Fixed 'E' for all equality constraints
 %       - Jan Schellenberger             MILP option to remove flux around loops
 %       - Ronan Fleming         12/07/09 Reworked minNorm parameter option to allow
@@ -350,7 +360,7 @@ t1 = clock;
 
 if noLinearObjective && ~isempty(minNorm)
     %no need to solve an LP first
-    objective = 0;
+    objectiveLP = 0;
 else
     if 0
         %debug
@@ -368,7 +378,7 @@ else
     end
     
     %save objective from LP
-    objective = solution.obj;
+    objectiveLP = solution.obj;
     
     if strcmp(solution.solver,'mps')
         return;
@@ -467,7 +477,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         else
             optProblem2 = optProblem;
             optProblem2.A = [optProblem.A ; optProblem.c'];
-            optProblem2.b = [optProblem.b ; objective];
+            optProblem2.b = [optProblem.b ; objectiveLP];
             optProblem2.csense = [optProblem.csense;'E'];
             optProblem2.lb = optProblem.lb;
             optProblem2.ub = optProblem.ub;
@@ -493,7 +503,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
             solutionL0 = sparseLP(optProblem, zeroNormApprox);
         else
             optProblem2.A = [optProblem.A ; optProblem.c'];
-            optProblem2.b = [optProblem.b ; objective];
+            optProblem2.b = [optProblem.b ; objectiveLP];
             optProblem2.csense = [optProblem.csense;'E'];
             optProblem2.lb = optProblem.lb;
             optProblem2.ub = optProblem.ub;
@@ -517,7 +527,7 @@ elseif strcmp(minNorm, 'one')
         % 1: S*vf -S*vr = b
         % 3: vf >= -v
         % 4: vr >= v
-        % 5: c'v >= f or c'v <= f (optimal value of objective)
+        % 5: c'v >= f or c'v <= f (optimal value of objectiveLP)
         %
         % vf,vr >= 0
         
@@ -534,7 +544,7 @@ elseif strcmp(minNorm, 'one')
         end
         optProblem2.lb = [optProblem.lb;zeros(2*nRxns,1)];
         optProblem2.ub = [optProblem.ub;Inf*ones(2*nRxns,1)];
-        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objective];
+        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
         
         %csense for 3 & 4 above
         optProblem2.csense = [optProblem.csense; repmat('G',2*nRxns,1)];
@@ -566,7 +576,7 @@ elseif strcmp(minNorm, 'one')
         % min model.g1'*(p + q)
         % 1: S*v1 = b
         % 3: v1 - p + q = 0
-        % 4: c'v1 >= f or c'v1 <= f (optimal value of objective)
+        % 4: c'v1 >= f or c'v1 <= f (optimal value of objectiveLP)
         % 5: p,q >= 0
         
         nIntRxns=nnz(SConsistentRxnBool);
@@ -592,7 +602,7 @@ elseif strcmp(minNorm, 'one')
         end
         optProblem2.lb = [optProblem.lb;zeros(2*nIntRxns,1)];
         optProblem2.ub = [optProblem.ub;Inf*ones(2*nIntRxns,1)];
-        optProblem2.b  = [optProblem.b;zeros(nIntRxns,1);objective];
+        optProblem2.b  = [optProblem.b;zeros(nIntRxns,1);objectiveLP];
         
         %csense for 3 above
         optProblem2.csense = [optProblem.csense; repmat('E',nIntRxns,1)];
@@ -615,7 +625,7 @@ elseif strcmp(minNorm, 'one')
         %THE CASE WHEN THE OPTIMAL OBJECIVE WAS ZERO - RONAN June 13th 2017
         %     if nnz(optProblem.c)>1
         %         error('Code assumes only one non-negative coefficient in linear
-        %         part of objective');
+        %         part of objectiveLP');
         %     end
         %     % quadratic minimization of the norm.
         %     % set previous optimum as constraint.
@@ -661,7 +671,7 @@ elseif strcmp(minNorm, 'one')
             % set previous optimum as constraint.
             optProblem2 = optProblem;
             optProblem2.A = [optProblem.A;optProblem.c'];
-            optProblem2.b = [optProblem.b;objective];
+            optProblem2.b = [optProblem.b;objectiveLP];
             optProblem2.csense = [optProblem.csense; 'E'];
             optProblem2.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
             optProblem2.osense=1;
@@ -707,38 +717,53 @@ switch solution.stat
         error('solution.stat must be in {-1, 0 , 1, 2, 3}')
 end
 
+if isempty(solution.dual)
+    primalOnlyFlag=1;
+end
+
 % Return a solution or an almost optimal solution
 if solution.stat == 1 || solution.stat == 3
     % solution found. Set corresponding values
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
-    solution.f = objective;
+    solution.f = objectiveLP;
     
     %dummy parts of the solution
-    solution.f0 = 0;
-    solution.f1 = 0;
-    solution.f2 = 0;
+    solution.f0 = NaN;
+    solution.f1 = NaN;
+    solution.f2 = NaN;
     
+    if isempty(minNorm)
+        minNorm = 'empty';
+    end
+    if isnumeric(minNorm)
+        minNorm = 'two';
+    end
     %the value of the second part of the objective depends on the norm
-    if strcmp(minNorm, 'zero')
-        %zero norm
-        zeroNormTol = 0; %TODO set based on sparseLP tolerance
-        solution.f0 = sum(solution.full(1:nTotalVars,1) > zeroNormTol);
-    elseif strcmp(minNorm, 'one')
-        %one norm
-        solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
-    else
-        if exist('LPproblem2','var')
-            if isfield(optProblem2,'F')
-                %two norm
-                solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
+    switch minNorm
+        case 'empty'
+            solution.f1 = solution.f;
+        case 'zero'
+            %zero norm
+            feasTol = getCobraSolverParams('LP', 'feasTol');
+            solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
+        case 'one'
+            %one norm
+            solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
+        case 'two'
+            solution.f1 = solution.objLinear;
+            solution.f2 = solution.objQuadratic;
+            solution = rmfield(solution,'objLinear');
+            solution = rmfield(solution,'objQuadratic');
+        otherwise
+            if exist('LPproblem2','var')
+                if isfield(optProblem2,'F')
+                    %two norm
+                    solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
+                end
             end
-        end
     end
     
-    if ~isfield(solution,'full')
-        pause(0.1);
-    end
     %primal optimal variables
     solution.v = solution.full(1:nRxns);
     if modelE
@@ -783,7 +808,9 @@ if solution.stat == 1 || solution.stat == 3
     % LP rcost/dual are still meaninful if doing, one simply has to be aware that there is a
     % perturbation to them the magnitude of which depends on norm(minNorm) - Ronan
     if (~primalOnlyFlag && allowLoops)
-        solution.y = solution.dual(1:nMets,1);
+        if ~isempty(solution.dual)
+            solution.y = solution.dual(1:nMets,1);
+        end
         if modelC
             solution.ctrs_y = solution.dual(nMets+1:nMets+nCtrs,1);
         end

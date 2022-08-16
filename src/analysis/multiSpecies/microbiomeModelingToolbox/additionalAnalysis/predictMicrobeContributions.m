@@ -1,24 +1,29 @@
 function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, varargin)
-% Predicts the minimal and maximal fluxes in a list of models for a list of
-% reactions.
+% Predicts the minimal and maximal fluxes through internal exchange
+% reactions in microbes in a list of microbiome community models for a list
+% of metabolites. This allows for the prediction of the individual
+% contribution of each microbe to total metabolite uptake and secretion by
+% the community.
 %
 % [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, varargin)
 %
 % INPUTS:
-%    modPath              char with path of directory where models are stored
+%    modPath            char with path of directory where models are stored
 %
 % OPTIONAL INPUTS:
-%    metList              List of VMH IDs for metabolites to analyze
-%                         (default: all exchanged metabolites)
-%    resultsFolder        Path where results will be saved
-%    numWorkers           integer indicating the number of cores to use
-%                         for parallelization
+%    metList            List of VMH IDs for metabolites to analyze
+%                       (default: all exchanged metabolites)
+%    resultsFolder      Path where results will be saved
+%    numWorkers         integer indicating the number of cores to use
+%                       for parallelization
 %
 % OUTPUTS:
-%    minFluxes:           Minimal fluxes through analyzed exchange reactions
-%    maxFluxes:           Maximal fluxes through analyzed exchange reactions
-%    fluxSpans:           Range between min and max fluxes for analyzed
-%                         exchange reactions
+%    minFluxes:         Minimal fluxes through analyzed exchange reactions,
+%                       corresponding to secretion fluxes for each microbe
+%    maxFluxes:         Maximal fluxes through analyzed exchange reactions,
+%                       corresponding to uptake fluxes for each microbe
+%    fluxSpans:         Range between min and max fluxes for analyzed
+%                       exchange reactions
 %
 % .. Author: Almut Heinken, 12/20
 %
@@ -279,9 +284,14 @@ for j=2:size(fluxSpans,1)
 end
 fluxSpans(delArray,:)=[];
 
-writetable(cell2table(minFluxes),[resultsFolder filesep 'Contributions_minFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(maxFluxes),[resultsFolder filesep 'Contributions_maxFluxes.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
-writetable(cell2table(fluxSpans),[resultsFolder filesep 'Contributions_fluxSpans.txt'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
+% minFluxes = secretion
+cell2csv(['Contributions' filesep 'Microbe_Secretion.csv'],minFluxes)
+
+% maxFluxes = uptake
+cell2csv(['Contributions' filesep 'Microbe_Uptake.csv'],maxFluxes)
+
+% fluxSpans = span between minimal and maximal flux
+cell2csv(['Contributions' filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
 
 delete('minFluxes.mat')
 delete('maxFluxes.mat')

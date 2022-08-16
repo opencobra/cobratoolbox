@@ -223,6 +223,10 @@ origStatText = [];
 algorithm = 'default';
 
 t_start = clock;
+if isempty(solver)
+    error('Default LP solver not selected. Initialise the COBRA Toolbox with: initCobraToolbox')
+end
+
 switch solver
     case 'opti'
         if verLessThan('matlab', '8.4')
@@ -882,6 +886,7 @@ switch solver
                 stat = 1; % optimal solution found
                 
                 if stat ==1 && isempty(resultgurobi.x)
+                    gurobiLP
                     error('solveCobraLP: gurobi reporting OPTIMAL but no solution')
                 end
                 [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
@@ -1489,20 +1494,20 @@ switch solver
                 s = zeros(nMet,1);
             else
                 s = zeros(nMet,1);
-                s(csense == 'L' | csense == 'G') = z(nRxn+1:end);
+                s(csense == 'L' | csense == 'G') = x(nRxn+1:end);
                 s(csense == 'G') = -s(csense == 'G');
                 %switch the sign of the dual to the constraint that was
                 %switched
                 y(csense == 'G') = -y(csense == 'G');
             end
+            x =   x(1:nRxn);
+            w =   w(1:nRxn);
+            
             if 0
                 norm(A*x + s - b + (d2^2)*y,inf)
                 norm(c - A'*y - w,inf)
                 norm(osense*c - A'*y - w,inf)
             end
-            x =   x(1:nRxn);
-            w =   w(1:nRxn);
-
             f = c'*x;
         elseif (inform == 1 || inform == 2 || inform == 3)
             stat = 0;

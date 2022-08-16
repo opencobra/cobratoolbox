@@ -28,6 +28,7 @@ function [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, data
 % non-alphanumeric characters are removed from uptake metabolite names in
 % the structure; the script accounts for this when matching with the
 % experimental data input
+
 uptakeRxns = struct();
 uptakeRxns.Ammonia = {'EX_nh4(e)', 'NH4tb'};
 uptakeRxns.Hydrogen = {'EX_h2(e)', 'H2td'};
@@ -37,6 +38,7 @@ uptakeRxns.Methanol = {'EX_meoh(e)', 'MEOHt2','PRDX','ALDD1'};
 uptakeRxns.Methylamine = {'EX_mma(e)', 'MMAt2e'};
 uptakeRxns.Niacin = {'EX_nac(e)', 'EX_ncam(e)','NACt2r','NCAMt2r'};
 uptakeRxns.NitrogenN2 = {'EX_n2(e)', 'N2t'};
+uptakeRxns.Nitrite = {'NO2OR', 'ATPS4', 'EX_no2(e)', 'EX_no3(e)'};
 uptakeRxns.Nitrate = {'EX_no3(e)', 'NO3abc', 'NO3R1', 'NO3R2', 'EX_no2(e)', 'NO2t2r'};
 uptakeRxns.Pantothenate = {'EX_pnto_R(e)', 'PNTOabc'};
 uptakeRxns.Phenol = {'EX_phenol(e)', 'PHENOLt2r'};
@@ -46,7 +48,7 @@ uptakeRxns.Cobalamin = {'EX_cbl1(e)', 'CBL1abc', 'EX_adocbl(e)', 'ADOCBLabc'};
 uptakeRxns.Linoleicacid = {'EX_lnlc(e)', 'LNLCt'};
 uptakeRxns.alphaLinolenicacid = {'EX_lnlnca(e)', 'LNLNCAt'};
 uptakeRxns.Benzoate = {'EX_bz(e)', 'BZt'};
-uptakeRxns.Betaine = {'EX_glyb(e)', 'GLYBt2r'};
+uptakeRxns.Betaine = {'EX_glyb(e)', 'GLYBt2r', 'DM_glyb_c_'};
 uptakeRxns.Bicarbonate = {'EX_hco3(e)', 'HCO3abc'};
 uptakeRxns.Biotin = {'EX_btn(e)', 'BTNabc', 'DM_btn'};
 uptakeRxns.Chenodeoxycholate = {'EX_C02528(e)', 'BIACt2'};
@@ -128,6 +130,11 @@ else
     uptCols = find(str2double(uptakeTable(orgRow, 2:end)) == 1);
 end
 
+gapfillAddConditional = {
+    'Methylamine', 'any(ismember(model.rxns, ''MOGMAH''))', {'DM_nmth2ogltmt_c_'}
+    'Benzoate', 'find(ismember(model.rxns, {''BZ12DOX'', ''BZDIOLDH'', ''CATDOX'', ''MUCCYCI''}))', {'EX_mucl(e)','MUCLt2r'}
+    };
+
 % added rxns list
 uptakeRxnsAdded = {};
 
@@ -142,6 +149,21 @@ if ~isempty(uptCols)
                 model = addReaction(model, rxns2Add{j}, 'reactionFormula', RxnForm{1, 1}, 'geneRule','uptakeMetaboliteGapfill');
             end
             uptakeRxnsAdded = union(uptakeRxnsAdded, rxns2Add);
+        end
+        % add conditional reactions
+        if any(ismember(gapfillAddConditional(:, 1), takenUp{i}))
+            conditions = find(ismember(gapfillAddConditional(:, 1), takenUp{i}));
+            for k = 1:length(conditions)
+                if eval(gapfillAddConditional{conditions(k), 2})
+                    addRxns = gapfillAddConditional{conditions(k), 3};
+                    addRxns = setdiff(addRxns,model.rxns);
+                    for j = 1:length(addRxns)
+                        formula = database.reactions{ismember(database.reactions(:, 1), addRxns{j}), 3};
+                        model = addReaction(model, addRxns{j}, 'reactionFormula', formula, 'geneRule', 'uptakeMetaboliteGapfill');
+                        uptakeRxnsAdded = union(uptakeRxnsAdded,addRxns{j});
+                    end
+                end
+            end
         end
     end
 end

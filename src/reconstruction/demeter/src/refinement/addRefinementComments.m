@@ -35,6 +35,11 @@ for i=1:length(model.grRules)
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on fermentation products.';
         model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
     end
+    if strcmp(model.grRules{i,1},'condFermentationGapfill')
+        model.grRules{i,1}=strrep(model.grRules{i,1},'condFermentationGapfill','');
+        model.comments{i,1}='Reaction added by DEMETER as annotated fermentation reactions were already present.';
+        model.rxnConfidenceScores(i,1)=model.rxnConfidenceScores(i,1)+2;
+    end
     if strcmp(model.grRules{i,1},'uptakeMetaboliteGapfill')
         model.grRules{i,1}=strrep(model.grRules{i,1},'uptakeMetaboliteGapfill','');
         model.comments{i,1}='Reaction added by DEMETER based on experimental data on consumed metabolites.';

@@ -70,8 +70,8 @@ model.rxns(find(ismember(model.rxns,'ATPhyd')))={'DM_atp_c_'};
 % adds DM_atp to model if not exist
 
 if isempty(strmatch('DM_atp_c_',model.rxns,'exact'))
-   % [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
-    [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', '1 atp[c] ->');
+    [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', 'h2o[c] + atp[c]  -> adp[c] + h[c] + pi[c] ');
+   % [model, rxnIDexists] = addReaction(model,'DM_atp_c_', 'reactionFormula', '1 atp[c] ->');
 end
 
 model.rxns(find(ismember(model.rxns,'EX_biomass_reaction')))={'biomass_reaction'};

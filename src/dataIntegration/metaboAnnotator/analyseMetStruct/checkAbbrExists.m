@@ -10,7 +10,7 @@ function [VMH_existance,rBioNet_existance,metab_rBioNet_online,rxn_rBioNet_onlin
 % metab_rBioNet_online
 % rxn_rBioNet_online
 % metabolite_structure_rBioNet
-% 
+%
 % OUTPUT
 % VMH_existance                 Lists whether the abbreviation exists in VMH (online),
 %                               as a reaction (2nd entry) or as a metabolite (3rd entry)
@@ -24,16 +24,16 @@ function [VMH_existance,rBioNet_existance,metab_rBioNet_online,rxn_rBioNet_onlin
 mkdir('data');
 
 check4 = {
-%     'keggId'
-%     'biocyc'
- %    'hmdb'
-%     'cheBIId'
-%     'chembl'
-%    % 'chemspider'
-%     'drugbank'
-%     'lipidmaps'
-% %    'pubChemId'
-%     'seed'
+    'keggId'
+    %     'biocyc'
+    'hmdb'
+    %     'cheBIId'
+    %     'chembl'
+    %    % 'chemspider'
+    %     'drugbank'
+    %     'lipidmaps'
+    % %    'pubChemId'
+    %     'seed'
     'inchiString'
     'inchiKey'
     };
@@ -52,6 +52,9 @@ if isstruct(list)
         for k = 1 : length(check4)
             if isnumeric(metabolite_structure.(F{i}).(check4{k}))
                 fieldList{i,k+2} = num2str(metabolite_structure.(F{i}).(check4{k}));
+                %if inchikey is incorrect
+            elseif string(metabolite_structure.(F{i}).(check4{k}))=='InChI'
+                fieldList{i,k+2}='NaN';
             else
                 fieldList{i,k+2} = metabolite_structure.(F{i}).(check4{k});
             end
@@ -85,7 +88,12 @@ for i = 1 : length(F)
         if isnumeric(metabolite_structure_rBioNet.(F{i}).(check4{k}))
             FR{i,k+2} = num2str(metabolite_structure_rBioNet.(F{i}).(check4{k}));
         else
-            FR{i,k+2} = metabolite_structure_rBioNet.(F{i}).(check4{k});
+            if strcmp(check4{k},'hmdb')
+                % preplace old style abbr with new style
+                FR{i,k+2} = convertOld2NewHMDB(metabolite_structure_rBioNet.(F{i}).(check4{k}));
+            else
+                FR{i,k+2} = metabolite_structure_rBioNet.(F{i}).(check4{k});
+            end
         end
     end
 end
@@ -137,6 +145,23 @@ for i = 1 : size(list,1)
                     rBioNet{i,3}  =  num2str(1);
                     rBioNet{i,4}  = FR{match,1};
                     rBioNet{i,5}  = fieldList(i,2+k);
+                else
+                    % if there are multiple IDs possible per entry (happens a
+                    % lot for HMDB). Prioritise 1. one
+                    if strcmp(check4{k},'hmdb') && contains(fieldList(i,2+k),';')
+                        [tok] = split(fieldList(i,2+k),';');
+                        for r = 1 : length(tok)
+                            if ~isempty(find(ismember(FR(:,2+k),tok{r})))
+                                match = find(ismember(FR(:,2+k),tok{r}));
+                                rBioNet{i,3}  =  num2str(1);
+                                rBioNet{i,4}  = FR{match,1};
+                                rBioNet{i,5}  = fieldList(i,2+k);
+                                % once a hit is found, the others are not
+                                % recorded anymore!
+                                r = length(tok) + 1;
+                            end
+                        end
+                    end
                 end
             end
         end

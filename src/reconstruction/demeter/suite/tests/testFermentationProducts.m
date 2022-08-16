@@ -23,32 +23,33 @@ function [TruePositives, FalseNegatives] = testFermentationProducts(model, micro
 %                   (exchange reactions) that cannot be secreted by the model
 %                   but should be secreted according to in vitro data.
 %
-% Stefania Magnusdottir, Nov 2017
-% Almut Heinken, Jan 2018-reduced number of reactions minimized and
-% maximized to speed up the computation
+% .. Author:
+%       Stefania Magnusdottir, Nov 2017
+%       Almut Heinken, Jan 2018-reduced number of reactions minimized and
+%                      maximized to speed up the computation
+%                      March 2022 - changed code to string-matching to make it
+%                      more robust
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 
-% read fermentation product tables
-fermentationTable = readtable([inputDataFolder filesep 'FermentationTable.txt'], 'Delimiter', '\t');
+% read fermentation product table
+dataTable = readInputTableForPipeline([inputDataFolder filesep 'FermentationTable.txt']);
+
 % remove the reference columns
-for i=1:11
-    if ismember(['Ref' num2str(i)],fermentationTable.Properties.VariableNames)
-        fermentationTable.(['Ref' num2str(i)])=[];
-    end
-end
-fermentationExchanges = {'Acetate kinase (acetate producer or consumer)','EX_ac(e)';'Bifid shunt','EX_ac(e)';'Acetogen pathway','EX_ac(e)';'Formate producer','EX_for(e)';'D-lactate producer or consumer','EX_lac_D(e)';'L-lactate producer or consumer','EX_lac_L(e)';'Ethanol producer or consumer','EX_etoh(e)';'Succinate producer','EX_succ(e)';'Propionate from succinate','EX_ppa(e)';'Propionate from propane-1,2-diol','EX_ppa(e)';'Propionate from lactate (acrylate pathway)','EX_ppa(e)';'Propionate from threonine','EX_ppa(e)';'Wood-Werkman cycle','EX_ppa(e)';'Butyrate via butyryl-CoA: acetate CoA transferase','EX_but(e)';'Butyrate via butyrate kinase','EX_but(e)';'Butyrate from lysine via butyrate-acetoacetate CoA-transferase','EX_but(e)';'Butyrate from glutarate or glutamate','EX_but(e)';'Butyrate from 4-hydroxybutyrate or succinate','EX_but(e)';'Hydrogen from ferredoxin oxidoreductase','EX_h2(e)';'Hydrogen from formate hydrogen lyase','EX_h2(e)';'Methanogenesis','EX_ch4(e)';'Sulfate reducer','EX_h2s(e)';'Isobutyrate producer','EX_isobut(e)';'Isovalerate producer','EX_isoval(e)';'Acetoin producer','EX_actn_R(e)';'2,3-butanediol producer','EX_btd_RR(e)';'Indole producer','EX_indole(e)';'Phenylacetate producer','EX_pac(e)';'Butanol producer','EX_btoh(e)';'Valerate producer','EX_M03134(e)'};
-fermentationExchanges=cell2table(fermentationExchanges);
+dataTable(:,find(strncmp(dataTable(1,:),'Ref',3))) = [];
+
+corrRxns = {'Acetate kinase (acetate producer or consumer)','EX_ac(e)';'Bifid shunt','EX_ac(e)';'Acetogen pathway','EX_ac(e)';'Formate producer','EX_for(e)';'D-lactate producer','EX_lac_D(e)';'L-lactate producer','EX_lac_L(e)';'Ethanol producer or consumer','EX_etoh(e)';'Succinate producer','EX_succ(e)';'Propionate from succinate','EX_ppa(e)';'Propionate from propane-1,2-diol','EX_ppa(e)';'Propionate from lactate (acrylate pathway)','EX_ppa(e)';'Propionate from threonine','EX_ppa(e)';'Wood-Werkman cycle','EX_ppa(e)';'Butyrate via butyryl-CoA: acetate CoA transferase','EX_but(e)';'Butyrate via butyrate kinase','EX_but(e)';'Butyrate from lysine via butyrate-acetoacetate CoA-transferase','EX_but(e)';'Butyrate from glutarate or glutamate','EX_but(e)';'Butyrate from 4-hydroxybutyrate or succinate','EX_but(e)';'Hydrogen from ferredoxin oxidoreductase','EX_h2(e)';'Hydrogen from formate hydrogen lyase','EX_h2(e)';'Methanogenesis','EX_ch4(e)';'Sulfate reducer','EX_h2s(e)';'Isobutyrate producer','EX_isobut(e)';'Isovalerate producer','EX_isoval(e)';'Acetoin producer','EX_actn_R(e)';'2,3-butanediol producer','EX_btd_RR(e)';'Indole producer','EX_indole(e)';'Phenylacetate producer','EX_pac(e)';'Butanol producer','EX_btoh(e)';'Valerate producer','EX_M03134(e)'};
+
+TruePositives = {};  % true positives (uptake in vitro and in silico)
+FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
 
 % find microbe index in fermentation table
-mInd = find(ismember(fermentationTable.MicrobeID, microbeID));
+mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
     warning(['Microbe "', microbeID, '" not found in fermentation product data file.'])
-    TruePositives = {};
-    FalseNegatives = {};
 else
     % perform FVA to identify uptake metabolites
     % set BOF
@@ -63,44 +64,62 @@ else
     % open all exchanges
     model = changeRxnBounds(model, exchanges, -1000, 'l');
     model = changeRxnBounds(model, exchanges, 1000, 'u');
-    
-    rxns = fermentationExchanges(table2array(fermentationTable(mInd, 2:end)) == 1, 2:end);
-    
-    TruePositives = {};  % true positives (flux in vitro and in silico)
-    FalseNegatives = {};  % false negatives (flux in vitro not in silico)
-    % flux variability analysis on reactions of interest
-    rxns = unique(table2cell(rxns));
-    rxns = rxns(~cellfun('isempty', rxns));
-    if ~isempty(rxns)
-        rxnsInModel=intersect(rxns,model.rxns);
-        rxnsNotInModel=setdiff(rxns,model.rxns);
-        if isempty(rxnsInModel)
-            % all exchange reactions that should be there are not there -> false
-            % negatives
-            FalseNegatives = rxns;
-            TruePositives= {};
-        else
-            currentDir=pwd;
-            try
-                [~, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
-                    rxnsInModel, 'S');
-            catch
-                warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
-                cd(currentDir)
-                [~, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+
+    % get the reactions to test
+    rxns = {};
+    for i=2:size(dataTable,2)
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end
-            
-            % active flux
-            flux = rxnsInModel(maxFlux > 1e-6);
-            % which fermentation product should be secreted according to in vitro data
-            fData = fermentationExchanges(table2array(fermentationTable(mInd, 2:end)) == 1, 2);
-            
-            % check all exchanges corresponding to each fermentation product
-            TruePositives = intersect(table2cell(fData), flux);
-            FalseNegatives = setdiff(table2cell(fData), flux);
-            % add any that are not in model to the false negatives
-            if ~isempty(rxnsNotInModel)
-                FalseNegatives=union(FalseNegatives,rxnsNotInModel);
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                rxns = union(rxns,corrRxns(findCorrRxns,2:end));
+            end
+        end
+    end
+
+    % flux variability analysis on reactions of interest
+    rxns = unique(rxns);
+    rxns = rxns(~cellfun('isempty', rxns));
+    rxnsInModel=intersect(rxns,model.rxns);
+    if ~isempty(rxnsInModel)
+        currentDir=pwd;
+        try
+            [minFlux, maxFlux, ~, ~] = fastFVA(model, 0, 'max', 'ibm_cplex', ...
+                rxnsInModel, 'S');
+        catch
+            warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
+            cd(currentDir)
+            [minFlux, maxFlux] = fluxVariability(model, 0, 'max', rxnsInModel);
+        end
+
+        % active flux
+        flux = rxnsInModel(maxFlux > 1e-6);
+    else
+        flux = {};
+    end
+
+    % which reaction should carry flux according to in vitro data
+    for i=2:size(dataTable,2)
+        rxn={};
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            if dataTable{mInd,i}==1
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        else
+            if strcmp(dataTable{mInd,i},'1')
+                rxn = corrRxns{find(strcmp(corrRxns(:,1),dataTable{1,i})),2};
+            end
+        end
+        if ~isempty(rxn)
+            % add any that are not in model/not carrying flux to the false negatives
+            if ~isempty(intersect(rxn,flux))
+                TruePositives = union(TruePositives,rxn);
+            else
+                FalseNegatives=union(FalseNegatives,rxn);
             end
         end
     end
@@ -111,7 +130,7 @@ if ~isempty(TruePositives)
     TruePositives = TruePositives(~cellfun(@isempty, TruePositives));
     TruePositives=strrep(TruePositives,'EX_','');
     TruePositives=strrep(TruePositives,'(e)','');
-    
+
     for i=1:length(TruePositives)
         TruePositives{i}=database.metabolites{find(strcmp(database.metabolites(:,1),TruePositives{i})),2};
     end

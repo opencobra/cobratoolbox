@@ -6,7 +6,7 @@ function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,v
 % propagated data manually afterwards.
 %
 % USAGE:
-%   prepareInputData(infoFilePath,inputDataFolder,spreadsheetFolder)
+%   [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,varargin)
 %
 % REQUIRED INPUT
 % infoFilePath          File with information on reconstructions to refine
@@ -61,6 +61,12 @@ for i=1:length(taxa)
         infoFile{1,size(infoFile,2)+1}=taxa{i};
     end
 end
+
+% adapt organism IDs in input table to refined model IDs
+for i=2:size(infoFile,1)
+    infoFile{i,1} = adaptDraftModelID(infoFile{i,1});
+end
+
 
 %% Check for duplicate and removed strains in the input files
 

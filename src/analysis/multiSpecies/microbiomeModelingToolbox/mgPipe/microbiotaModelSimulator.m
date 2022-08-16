@@ -1,4 +1,4 @@
-function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user's input) to the microbiota models
@@ -8,7 +8,7 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %
 % USAGE:
 %
-%   [exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -16,6 +16,8 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %                        one microbe model that can carry flux
 %    sampNames:          cell array with names of individuals in the study
 %    dietFilePath:       path to and name of the text file with dietary information
+%                        Can also be a list of the sample names with
+%                        individual diet files.
 %    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux: double with the desired upper bound on flux through the host
@@ -40,9 +42,9 @@ function [exchanges, netProduction, netUptake, presolve, infeasModels] = microbi
 %                        and secretion for setup lumen / diet exchanges
 %    netUptake:          cell array containing FVA values for minimal uptake
 %                        and secretion for setup lumen / diet exchanges
-%    presolve            array containing values of microbiota models
+%    growthRates:        array containing values of microbiota models
 %                        objective function
-%    infeasModels        cell array with names of infeasible microbiota models
+%    infeasModels:       cell array with names of infeasible microbiota models
 %
 % .. Author: Federico Baldini, 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
@@ -53,7 +55,6 @@ if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
 solver = CBT_LP_SOLVER;
-
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
@@ -88,7 +89,7 @@ end
 skipSim=0;
 if isfile(strcat(resPath, 'simRes.mat'))
     load(strcat(resPath, 'simRes.mat'))
-    
+
     % if any simulations were infeasible, repeat simulations
     if length(infeasModels)>0
         skipSim=0;
@@ -109,7 +110,7 @@ if isfile(strcat(resPath, 'simRes.mat'))
                 end
             end
         end
-    end
+     end
 end
 
 if skipSim==1
@@ -120,34 +121,26 @@ else
     netProduction = cell(3, length(sampNames));
     netUptake = cell(3, length(sampNames));
     infeasModels = {};
-    presolve = {};
-    
-    % Auto load for crashed simulations if desired
+    growthRates = {'','Rich medium','Diet'};
+    growthRates(2:length(sampNames)+1,1) = sampNames;
+
+    % Auto load for crashed simulations
     mapP = detectOutput(resPath, 'intRes.mat');
     if isempty(mapP)
-        startIter = 1;
     else
         s = 'simulation checkpoint file found: recovering crashed simulation';
         disp(s)
         load(strcat(resPath, 'intRes.mat'))
-        
-        % Detecting when execution halted
-        for o = 1:length(netProduction(2, :))
-            if isempty(netProduction{2, o}) == 0
-                t = o;
-            end
-        end
-        startIter = t + 2;
     end
-    
+
     % if simRes file already exists: some simulations may have been
     % incorrectly executed and need to repeat
     if isfile(strcat(resPath, 'simRes.mat'))
         load(strcat(resPath, 'simRes.mat'))
     end
-    
+
     % End of Auto load for crashed simulations
-    
+
     % set parallel pool if no longer active
     if numWorkers > 1
         poolobj = gcp('nocreate');
@@ -155,31 +148,39 @@ else
             parpool(numWorkers)
         end
     end
-    
-    presolveTmp={};
+
+    growthRatesTmp={};
     infeasModelsTmp={};
     netProductionTmp={};
     netUptakeTmp={};
-    
-    if length(sampNames)-startIter > 50
-        steps=50;
+
+    if length(sampNames)-1 > 20
+        steps=20;
     else
-        steps=length(sampNames)-startIter;
+        steps=length(sampNames);
     end
-    
+
     % Starting personalized simulations
     % proceed in batches for improved effiency
-    for s=startIter:steps:length(sampNames)
+    for s=1:steps:length(sampNames)
         if length(sampNames)-s>=steps-1
             endPnt=steps-1;
         else
             endPnt=length(sampNames)-s;
         end
-        
+
         parfor k=s:s+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
-            
+
+            % prepare the variables temporarily storing the simulation results
+            netProductionTmp{k}{2} = {};
+            netProductionTmp{k}{1} = {};
+            netUptakeTmp{k}{1} = {};
+            netUptakeTmp{k}{2} = {};
+            growthRatesTmp{k}{1} = {};
+            growthRatesTmp{k}{2} = {};
+
             doSim=1;
             % check first if simulations already exist and were done properly
             if ~isempty(netProduction{2,k})
@@ -191,6 +192,19 @@ else
             if doSim==1
                 % simulations either not done yet or done incorrectly -> go
                 sampleID = sampNames{k,1};
+
+                % get diet(s) to load
+                diet = readInputTableForPipeline(dietFilePath);
+                if ~isempty(intersect(sampNames,diet(:,1)))
+                    if length(intersect(sampNames,diet(:,1)))~=length(sampNames)
+                        error('The number of inoput diets and samples does not agree!')
+                    else
+                        loadDiet = diet{find(strcmp(diet(:,1),sampleID)),2};
+                    end
+                else
+                    loadDiet = dietFilePath;
+                end
+
                 if ~isempty(hostPath)
                     % microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
                     modelStr=load(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
@@ -208,7 +222,7 @@ else
                         model.lb(j) = 0;
                     end
                 end
-                
+
                 % adapt constraints
                 BiomassNumber=find(strcmp(model.rxns,'communityBiomass'));
                 Components = model.mets(find(model.S(:, BiomassNumber)));
@@ -221,7 +235,7 @@ else
                     findSink= model.rxns(find(strncmp(model.rxns,[Components{j} '_sink_'],length([Components{j} '_sink_']))));
                     model = changeRxnBounds(model, findSink, -1, 'l');
                 end
-                
+
                 model = changeObjective(model, 'EX_microbeBiomass[fe]');
                 AllRxn = model.rxns;
                 RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));
@@ -233,7 +247,7 @@ else
                 model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
                 model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');
                 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
-                
+
                 % set constraints on host exchanges if present
                 if ~isempty(hostBiomassRxn)
                     hostEXrxns=find(strncmp(model.rxns,'Host_EX_',8));
@@ -255,27 +269,27 @@ else
                     model=changeRxnBounds(model,['Host_' hostBiomassRxn],0.001,'l');
                     model=changeRxnBounds(model,['Host_' hostBiomassRxn],hostBiomassRxnFlux,'u');
                 end
-                
+
                 solution_allOpen = optimizeCbModel(model);
                 % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
                 if solution_allOpen.stat==0
-                    warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                    warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                     infeasModelsTmp{k} = model.name;
                 else
-                    presolveTmp{k}{1} = solution_allOpen.f;
+                    growthRatesTmp{k}{1} = solution_allOpen.f;
                     AllRxn = model.rxns;
                     FecalInd  = find(cellfun(@(x) ~isempty(strfind(x,'[fe]')),AllRxn));
                     DietInd  = find(cellfun(@(x) ~isempty(strfind(x,'[d]')),AllRxn));
                     FecalRxn = AllRxn(FecalInd);
                     FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
                     DietRxn = AllRxn(DietInd);
-                    
+
                     %% computing fluxes on the rich diet
                     if rDiet==1 && computeProfiles
                         % remove exchanges that cannot carry flux
                         FecalRxn=intersect(FecalRxn,allFecalExch);
                         DietRxn=intersect(DietRxn,allDietExch);
-                        
+
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                         minFluxFecal = minFlux;
                         maxFluxFecal = maxFlux;
@@ -292,39 +306,40 @@ else
                             netUptakeTmp{k}{1}{index,3} = minFluxFecal(i,1);
                         end
                     end
-                    
+
                     %% Computing fluxes on the input diet
-                    
+
                     % remove exchanges that cannot carry flux
                     FecalRxn=intersect(FecalRxn,allFecalExch);
                     DietRxn=intersect(DietRxn,allDietExch);
-                    
+
                     model_sd=model;
                     if adaptMedium
-                        [diet] = adaptVMHDietToAGORA(dietFilePath,'Microbiota');
+                        [diet] = adaptVMHDietToAGORA(loadDiet,'Microbiota');
                     else
-                        diet = readtable(dietFilePath, 'Delimiter', '\t');  % load the text file with the diet
-                        diet = [diet.Properties.VariableNames;table2cell(diet)];
-                        
+                        diet = readInputTableForPipeline(loadDiet);  % load the text file with the diet
+ 
                         for j = 1:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end
                     end
                     [model_sd] = useDiet(model_sd, diet,0);
-                    
+
                     if includeHumanMets
                         % add the human metabolites
                         for l=1:length(HumanMets)
                             model_sd=changeRxnBounds(model_sd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
                         end
                     end
-                    
+
                     solution_sDiet=optimizeCbModel(model_sd);
                     % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
-                    presolveTmp{k}{2}=solution_sDiet.f;
+                    growthRatesTmp{k}{2}=solution_sDiet.f;
                     if solution_sDiet.stat==0
-                        warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                        warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                         infeasModelsTmp{k}= model.name;
+                        netProductionTmp{k}{2} = {};
+                        netUptakeTmp{k}{2} = {};
                     else
                         if computeProfiles
                             [minFlux,maxFlux]=guidedSim(model_sd,FecalRxn);
@@ -343,12 +358,12 @@ else
                                 netUptakeTmp{k}{2}{index,3} = minFluxFecal(i,1);
                             end
                         end
-                        
+
                         microbiota_model=model_sd;
                         parsave([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],microbiota_model)
-                        
+
                         %% Using personalized diet not documented in MgPipe and bug checked yet!!!!
-                        
+
                         if pDiet==1
                             model_pd=model;
                             [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
@@ -359,24 +374,25 @@ else
                             Dietexchanges = {DietNames{:,1} ; Diets{:,k}}';
                             Dietexchanges = regexprep(Dietexchanges,'EX_','Diet_EX_');
                             Dietexchanges = regexprep(Dietexchanges,'\(e\)','\[d\]');
-                            
+
                             model_pd = setDietConstraints(model_pd,Dietexchanges);
-                            
+
                             if includeHumanMets
                                 % add the human metabolites
                                 for l=1:length(HumanMets)
                                     model_pd=changeRxnBounds(model_pd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
                                 end
                             end
-                            
+
                             solution_pdiet=optimizeCbModel(model_pd);
                             %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
-                            presolveTmp{k}{3}=solution_pdiet.f;
+                            growthRatesTmp{k}{3}=solution_pdiet.f;
                             if solution_pdiet.stat==0
-                                warning('presolve detected one or more infeasible models. Please check infeasModels object !')
+                                warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
                                 infeasModelsTmp{k} = model.name;
+                                netProductionTmp{k}{3} = {};
+                                netUptakeTmp{k}{3} = {};
                             else
-                                
                                 if computeProfiles
                                     [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
                                     minFluxFecal = minFlux;
@@ -394,12 +410,11 @@ else
                                         netUptakeTmp{k}{3}{index,3} = minFluxFecal(i,1);
                                     end
                                 end
-                                
-                                if saveConstrModels
-                                    microbiota_model=model_pd;
-                                    mkdir(strcat(resPath,'Personalized'))
-                                    parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],microbiota_model)
-                                end  
+
+                                % save the model with personalized diet
+                                microbiota_model=model_pd;
+                                mkdir(strcat(resPath,'Personalized'))
+                                parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],microbiota_model)
                             end
                         end
                     end
@@ -407,7 +422,7 @@ else
             end
         end
         for k=s:s+endPnt
-            if ~isempty(netProductionTmp)
+            if ~isempty(netProductionTmp{k})
                 if ~isempty(netProductionTmp{k}{1})
                     netProduction{1,k} = netProductionTmp{k}{1};
                     netUptake{1,k} = netUptakeTmp{k}{1};
@@ -421,30 +436,30 @@ else
                     netUptake{3,k} = netUptakeTmp{k}{3};
                 end
             end
-            if ~isempty(presolveTmp)
-                presolve{k,1} = presolveTmp{k}{1};
-                presolve{k,2} = presolveTmp{k}{2};
-                if length(presolveTmp{k})>2
-                    presolve{k,3} = presolveTmp{k}{3};
+            if ~isempty(growthRatesTmp{k})
+                growthRates{k+1,2} = growthRatesTmp{k}{1};
+                growthRates{k+1,3} = growthRatesTmp{k}{2};
+                if length(growthRatesTmp{k})>2
+                    growthRates{1,4} = 'Personalized diet';
+                    growthRates{k+1,4} = growthRatesTmp{k}{3};
                 end
             end
-            if ~isempty(infeasModelsTmp)
+            if ~isempty(infeasModelsTmp) && k <= length(infeasModelsTmp)
                 infeasModels{k,1} = infeasModelsTmp{k};
             end
         end
         if ~computeProfiles
-            save([resPath filesep 'presolve.mat'],'presolve')
+            save([resPath filesep 'GrowthRates.mat'],'growthRates')
             save([resPath filesep 'infeasModels.mat'],'infeasModels')
         else
-            save(strcat(resPath,'intRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
+            save(strcat(resPath,'intRes.mat'),'netProduction','netUptake','growthRates','infeasModels')
         end
     end
     % Saving all output of simulations
-    if ~computeProfiles
-        save([resPath filesep 'presolve.mat'],'presolve')
-        save([resPath filesep 'infeasModels.mat'],'infeasModels')
-    else
-        save(strcat(resPath,'simRes.mat'),'netProduction','presolve','infeasModels', 'netUptake')
+    cell2csv([resPath filesep 'GrowthRates.csv'],growthRates)
+    save([resPath filesep 'infeasModels.mat'],'infeasModels')
+    if computeProfiles
+        save(strcat(resPath,'simRes.mat'),'netProduction','netUptake','growthRates','infeasModels')
     end
 end
 

@@ -41,6 +41,11 @@ if ~exist('fileName','var')
     fileName='';
 end
 nMet=size(model.S, 1);
+
+if length(model.metFormulas)~=nMet
+    error('length(model.metFormulas) ~= size(model.S,1)')
+end
+
 if ~exist('missingFormulaeBool','var')
     missingFormulaeBool=cellfun(@isempty, model.metFormulas);
 end
