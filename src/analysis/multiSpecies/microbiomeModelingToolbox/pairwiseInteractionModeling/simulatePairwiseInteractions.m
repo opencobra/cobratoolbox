@@ -5,6 +5,7 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 % This script requires the COBRA Toolbox function solveCobraLP. Due to the
 % coupling constraints on the pairwise models, the simulations cannot
 % currently be run with optimizeCbModel.
+%
 % Below is a description of all possible consequences for the two joined
 % organisms. Please note that the outcomes depend on the two genome-scale
 % reconstructions joined and are highly dependent on the applied
@@ -33,6 +34,11 @@ function [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteraction
 %
 % * Mutualism: both organisms growth faster in co-growth than separately
 %   (same outcome for both)
+%
+% Please note: the function takes the name of the folder containing
+% previously created pairwise models as the input, e.g.:
+% pairwiseInteractions, pairwiseSolutions] =
+% simulatePairwiseInteractions('/Users/almut.heinken/Documents/PairwiseModels');
 %
 % USAGE:
 %     [pairwiseInteractions, pairwiseSolutions] = simulatePairwiseInteractions(pairwiseModelFolder, varargin)
