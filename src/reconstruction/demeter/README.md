@@ -2,7 +2,7 @@
 
 ## A COBRA Toolbox extension for efficient simultaneous curation and data-driven refinement of automated draft reconstructions
 
-### Authors: Almut Heinken, Stefanía Magnúsdóttir, and Ines Thiele
+### Authors: Almut Heinken, Stefanía Magnúsdóttir, Ronan M.T. Fleming, and Ines Thiele
 
 The COBRA Toolbox extension DEMETER enables the simultaneous refinement of many reconstructions at once based on comparative genomics and experimental data. DEMETER was previously used to reconstruct 818 human gut microbial reconstructions, AGORA (Magnúsdóttir, Heinken et al, Nat Biotech 2017), and its expansion, AGORA2, accounting for 7,206 strains (Heinken et al, preprint on bioRxiv). The starting point is a draft reconstruction generated through the KBase framework (kbase.us/). A template Narrative (https://narrative.kbase.us/narrative/81207) illustrates the process to retrieve draft reconstructions for your organisms. The prerequisite is a sequenced genome for each strain to reconstruct.
 

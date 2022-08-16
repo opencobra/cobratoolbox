@@ -6,8 +6,8 @@ function T = findFutileCycle(model, cut,closedModel)
 % model         model structure
 % cut           cutoff value for reactions to be displayed
 % closedModel   if 1 the model will be closed otw the applied medium
-%               constraints count
-% OUTPUT
+%               constraints count (DEFAULT:1);
+% OUTPUT 
 % T         Table of reactions potentially involved
 %
 % Ines Thiele 03/2022
@@ -16,9 +16,12 @@ if ~exist('cut','var')
     cut = 250;
 end
 
+if ~exist('closedModel','var')
+    closedModel = 1;
+end
 
 modelClosed = model;
-if 1
+if closedModel
     modelexchanges1 = strmatch('Ex_',modelClosed.rxns);
     modelexchanges4 = strmatch('EX_',modelClosed.rxns);
     modelexchanges2 = strmatch('DM_',modelClosed.rxns);
@@ -30,7 +33,7 @@ if 1
 end
 modelClosed = changeObjective(modelClosed,'DM_atp_c_');
 
-fba = optimizeCbModel(modelClosed,'max',1e-6)
+fba = optimizeCbModel(modelClosed,'max','zero')
 fba.v(find(abs(fba.v)<=1e-6))=0;
 tab = [modelClosed.lb modelClosed.ub fba.v];
 a = printRxnFormula(model);
@@ -41,7 +44,7 @@ U = modelClosed.ub(find(abs(fba.v)>cut));
 F = fba.v(find(abs(fba.v)>cut));
 A = a(find(abs(fba.v)>cut));
 if ~isempty(A)
-    T = table(R, num2str(L),num2str(U), num2str(F),A);
+T = table(R, num2str(L),num2str(U), num2str(F),A);
 else
-    T = [];
+    T = {};
 end

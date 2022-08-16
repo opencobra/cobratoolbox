@@ -41,7 +41,7 @@ FalseNegatives = {};  % false negatives (uptake in vitro not in silico)
 % find microbe index in putrefaction table
 mInd = find(strcmp(dataTable(:,1), microbeID));
 if isempty(mInd)
-    warning(['Microbe "', microbeID, '" not found in fermentation product data file.'])
+    warning(['Microbe "', microbeID, '" not found in putrefaction product data file.'])
 else
     % perform FVA to identify uptake metabolites
     % set BOF

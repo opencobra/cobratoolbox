@@ -238,7 +238,7 @@ else
     try
         figure;
         hold on
-        violinplot(data, {'Aerobic,','Anaerobic'});
+        violinplot(data, {'Aerobic','Anaerobic'});
         set(gca, 'FontSize', 12)
         maxval=max(data,[],'all');
         ylim([0 maxval + maxval/10])
