@@ -16,6 +16,16 @@ function [hmdb,multipleHits]  = retrievePotHitsHMDB(met)
 hmdb = '';
 % make name fit for internet
 met = regexprep(met,'"','');
+% GreekAlphabet
+met = regexprep(met,'α','alpha');
+met = regexprep(met,'β','beta');
+met = regexprep(met,'γ','gamma');
+met = regexprep(met,'δ','delta');
+met = regexprep(met,'ε','epsilon');
+met = regexprep(met,'η','eta');
+met = regexprep(met,'θ','theta');
+met = regexprep(met,'ω','omega');
+
 metInt = ['%22' regexprep(met,' ','+') '%22'];
 
 try
