@@ -107,7 +107,7 @@ location = {'chebi'
     'pubchem'
     };
 for j = 1 : length(location)
-    dirN = [molFileDirectory filesep 'metabolites' filesep location{j} filesep];
+    dirN = [currentPath filesep 'metabolites' filesep location{j} filesep];
     if isdir(dirN)
         files = dir(dirN);
         for i = 1 : size(files,1)
@@ -122,14 +122,15 @@ for j = 1 : length(location)
         % copy files to molFileDirectory and remove the temporary folder
         cd(dirN)
         filenames=dir;
-        for i=3:length(filenames)
-            copyfile(filenames(i).name,[currentPath filesep molFileDirectory] )
-        end
+%         for i=3:length(filenames)
+%            % copyfile(filenames(i).name,[currentPath filesep molFileDirectory] )
+%             copyfile(filenames(i).name,[molFileDirectory] );
+%         end
         
     end
 end
 
-cd(currentPath)
-try
-    rmdir([molFileDirectory filesep 'metabolites'],'s');
-end
+ cd(currentPath)
+% try
+%     rmdir([molFileDirectory filesep 'metabolites'],'s');
+% end
