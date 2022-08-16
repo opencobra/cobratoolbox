@@ -139,6 +139,10 @@ if any(totalAbun > 1.05)
     error('Abundances are not normalized. Please run the function normalizeCoverage!')
 end
 
+if any(~isnan(str2double(abundance(1,2:end))))
+    error('Some samples names are numeric. Please change to characters to avoid problems in the pipeline.')
+end
+
 if strcmp(infoFilePath, '')
     patStat = false;
 else
