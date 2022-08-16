@@ -243,6 +243,13 @@ infoFile = readInputTableForPipeline(infoFilePath);
 [model] = createPeriplasmaticSpace(model,microbeID,infoFile);
 
 % remove futile cycles if any exist
+[model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
+replacedReactions{1,1}=microbeID;
+replacedReactions{1,2}='Futile cycle correction';
+replacedReactions{1,3}='To replace';
+replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
+
+% if any futile cycles remain
 [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
 if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
     % let us try if running removeFutileCycles again will work
@@ -251,17 +258,6 @@ if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
     replacedReactions{1,2}='Futile cycle correction';
     replacedReactions{1,3}='To replace';
     replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
-    
-    % if any futile cycles remain
-    [atpFluxAerobic, atpFluxAnaerobic] = testATP(model);
-    if atpFluxAerobic > 200 || atpFluxAnaerobic > 150
-        % let us try if running removeFutileCycles again will work
-        [model, deletedRxns, addedRxns] = removeFutileCycles(model, biomassReaction, database);
-        replacedReactions{1,1}=microbeID;
-        replacedReactions{1,2}='Futile cycle correction';
-        replacedReactions{1,3}='To replace';
-        replacedReactions(1,4:length(deletedRxns)+3)=deletedRxns;
-    end
 end
 
 % add the gap-filling to model.comments field

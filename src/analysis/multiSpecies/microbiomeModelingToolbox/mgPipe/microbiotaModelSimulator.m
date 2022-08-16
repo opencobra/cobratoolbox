@@ -437,12 +437,14 @@ else
                 end
             end
             if ~isempty(growthRatesTmp{k})
-                growthRates{k+1,2} = growthRatesTmp{k}{1};
-                growthRates{k+1,3} = growthRatesTmp{k}{2};
-                if length(growthRatesTmp{k})>2
-                    growthRates{1,4} = 'Personalized diet';
-                    growthRates{k+1,4} = growthRatesTmp{k}{3};
-                end
+                 if ~isempty(growthRatesTmp{k}{1})
+                    growthRates{k+1,2} = growthRatesTmp{k}{1};
+                    growthRates{k+1,3} = growthRatesTmp{k}{2};
+                    if length(growthRatesTmp{k})>2
+                        growthRates{1,4} = 'Personalized diet';
+                        growthRates{k+1,4} = growthRatesTmp{k}{3};
+                    end
+                 end
             end
             if ~isempty(infeasModelsTmp) && k <= length(infeasModelsTmp)
                 infeasModels{k,1} = infeasModelsTmp{k};
