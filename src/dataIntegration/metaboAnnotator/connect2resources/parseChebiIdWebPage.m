@@ -30,6 +30,10 @@ for i = startSearch : endSearch
     if ~isempty(metabolite_structure.(Mets{i}).cheBIId) && isempty(find(isnan(metabolite_structure.(Mets{i}).cheBIId),1))
         % check that smile or inchiKey does not exist
         % go to chebi and parse website for smile
+        if isnumeric(metabolite_structure.(Mets{i}).cheBIId)
+metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.(Mets{i}).cheBIId));
+        end
+
         metabolite_structure.(Mets{i}).cheBIId = regexprep(metabolite_structure.(Mets{i}).cheBIId,',',';');
         if contains(metabolite_structure.(Mets{i}).cheBIId,';')
             list = split(metabolite_structure.(Mets{i}).cheBIId,';');
