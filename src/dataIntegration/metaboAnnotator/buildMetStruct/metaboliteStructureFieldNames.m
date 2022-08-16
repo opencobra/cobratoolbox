@@ -77,4 +77,5 @@ field2Add={
     'classyFire_Level5'
     'metabolon' % as provided in their input file, currently metabolon_crossmatch_IT_withUpdatedInchiKey
     'exposomeExplorer'%http://exposome-explorer.iarc.fr/search?utf8=%E2%9C%93&query=2-aminophenol+sulfate&button=
+    'VMHId_suggestion'
     };

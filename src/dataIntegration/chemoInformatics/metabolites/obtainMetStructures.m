@@ -72,9 +72,12 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 % Check openbabel installation
 if ismac || ispc
-    [oBabelInstalled, ~] = system('obabel');
+    [oBabelInstalled, results] = system('obabel');
+    if find(contains(results,'Usage:')) % it is actually installed but input file is missing
+        oBabelInstalled = 1;
+    end
 else
-    [oBabelInstalled, ~] = system('openbabel.obabel');
+    [oBabelInstalled] = system('openbabel.obabel');
 end
 if oBabelInstalled == 127
     oBabelInstalled = 0;
@@ -85,7 +88,11 @@ webTimeout = weboptions('Timeout', 60);
 % Set directory
 newMolFilesDir  = [outputDir 'metabolites' filesep];
 if exist(newMolFilesDir, 'dir') == 0
-    mkdir(newMolFilesDir)
+    try
+        mkdir(newMolFilesDir);
+    catch
+        newMolFilesDir = regexprep(newMolFilesDir,'^/','');
+    end
 end
 
 %% Obtain met data
@@ -259,7 +266,7 @@ for i = 1:length(metList)
             end
         elseif inchiMsg && ~oBabelInstalled
             inchiMsg = false;
-            display('OpenBabel is not isntalled to convert InChIs')
+            display('OpenBabel is not installed to convert InChIs')
         end
     end
     

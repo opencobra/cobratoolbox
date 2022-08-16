@@ -72,7 +72,18 @@ for i = startSearch : endSearch
             modelFake.metKEGGID{cnt,1} = '';
         end
         if length(find(isnan(metabolite_structure.(F{i}).hmdb)))==0 && ~isempty(metabolite_structure.(F{i}).hmdb)
-            modelFake.metHMDBID{cnt,1} = metabolite_structure.(F{i}).hmdb;
+            % if multiple HMDB ID's are given use only the first entry
+            % (this assumes that the hmdb id's point to the same
+            % metabolite, e.g., as in the case of HMDB01311; HMDB00171
+            if strfind(metabolite_structure.(F{i}).hmdb,';')
+                tmp = split(metabolite_structure.(F{i}).hmdb,';');
+                modelFake.metHMDBID{cnt,1} = tmp{1};
+            elseif strfind(metabolite_structure.(F{i}).hmdb,',')
+                tmp = split(metabolite_structure.(F{i}).hmdb,',');
+                modelFake.metHMDBID{cnt,1} = tmp{1};
+            else
+                modelFake.metHMDBID{cnt,1} = metabolite_structure.(F{i}).hmdb;
+            end
         else
             modelFake.metHMDBID{cnt,1} = '';
             
@@ -107,7 +118,7 @@ location = {'chebi'
     'pubchem'
     };
 for j = 1 : length(location)
-    dirN = [molFileDirectory filesep 'metabolites' filesep location{j} filesep];
+    dirN = [currentPath filesep 'metabolites' filesep location{j} filesep];
     if isdir(dirN)
         files = dir(dirN);
         for i = 1 : size(files,1)
@@ -122,14 +133,15 @@ for j = 1 : length(location)
         % copy files to molFileDirectory and remove the temporary folder
         cd(dirN)
         filenames=dir;
-        for i=3:length(filenames)
-            copyfile(filenames(i).name,[currentPath filesep molFileDirectory] )
-        end
+%         for i=3:length(filenames)
+%            % copyfile(filenames(i).name,[currentPath filesep molFileDirectory] )
+%             copyfile(filenames(i).name,[molFileDirectory] );
+%         end
         
     end
 end
 
-cd(currentPath)
-try
-    rmdir([molFileDirectory filesep 'metabolites'],'s');
-end
+ cd(currentPath)
+% try
+%     rmdir([molFileDirectory filesep 'metabolites'],'s');
+% end

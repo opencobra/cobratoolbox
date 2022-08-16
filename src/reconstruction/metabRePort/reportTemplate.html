@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>MetaboRePort</title>
+  </head>
+  <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg py-0 fixed-top navbar-light"  style="background-color:#3c85c9;">
+            <div class="container"> 
+              <a href="#" class="navbar-brand" style="color: #FFFFFF">
+                   <!-- <img src="../img/COBRAToolboxlogo_matlab.svg" width="30" height="30" alt="">-->
+                <b>###ModelName</b></a>
+      
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navmenu"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+      
+              <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                  <li class="nav-item">
+                    <a href="#reconstruction" class="nav-link"  style="color: #FFFFFF"><b>Reconstruction Details</b></a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#score" class="nav-link"  style="color: #FFFFFF"><b>Score Details</b></a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="../index.html" class="nav-link"  style="color: #FFFFFF"><b>Home</b></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+    <!-- QuickView -->
+    <section
+      class="bg-light text-dark p-5 p-lg-0 pt-lg-5 text-center text-sm-start"
+    >
+      <div class="container">
+        <div class="d-sm-flex align-items-center justify-content-between">
+          <div>
+            <h1 class="text-center">QuickView<span style="color: #3c85c9"> Scores </span></h1>
+            <p class="lead my-4">
+              Quick overview of the ###ModelName reconstruction scores, as generated with the 'generateMemoteLikeScore.m' in the COBRA Toolbox v3.
+            </p>
+          </div>
+          <img
+            class="img-fluid w-15 d-none d-sm-block"
+            src="img/COBRAToolboxlogo_matlab.svg"
+            alt=""
+          />
+        </div>  
+        <div class="container">
+            <div class="row text-center g-4">
+              <div class="col-md">
+                <div class="card" style="color: #FFFFFF;background-color:#063e72;">
+                  <div class="card-body text-center">
+                    <h1 class="card-text ">
+                        ###OverallScore &#x25;
+                    </h1>
+                    <h4 class="card-title mb-3">Overall <br>Score</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="card "  style="color: #FFFFFF;background-color:#2766a0;">
+                  <div class="card-body text-center">
+                    <h1 class="card-text">
+                     ###ScoreConsistency &#x25;
+                    </h1>
+                    <h4 class="card-title mb-3">Consistency <br>Score</h3>
+                  </div>
+                </div>
+              </div>              
+              <div class="col-md">
+                <div class="card " style="color: #FFFFFF;background-color:#3d7cb8;">
+                  <div class="card-body text-center">
+                    <h1 class="card-text">
+                     ###ScoreAnnotationMetabolites &#x25;
+                    </h1>
+                    <h4 class="card-title mb-3">Metabolite <br>Score</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="card "  style="color: #FFFFFF;background-color:#4f91cf;">
+                  <div class="card-body text-center">
+                    <h1 class="card-text">
+                     ###ScoreAnnotationReactions &#x25;
+                    </h1>
+                    <h4 class="card-title mb-3">Reaction <br>Score</h3>
+                  </div>
+                </div>
+                </div>
+                
+              <div class="col-md">
+                <div class="card "  style="color: #FFFFFF;background-color:#6aabe9;">
+                  <div class="card-body text-center">
+                    <h1 class="card-text">
+                     ###ScoreAnnotationGenes &#x25;
+                    </h1>
+                    <h4 class="card-title mb-3">Gene <br>Score</h3>
+                  </div>
+                </div>
+                </div>
+                <div class="col-md">
+                    <div class="card " style="color: #FFFFFF;background-color:#8ac5fc;">
+                      <div class="card-body text-center">
+                        <h1 class="card-text">
+                         ###ScoreAnnotationSBO &#x25;
+                        </h1>
+                        <h4 class="card-title mb-3">SBO Term Score</h3>
+                      </div>
+                    </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- Reconstruction details -->
+    <section id="reconstruction" class="p-5" >
+        <div class="container">
+          <h2 class="text-center mb-4">Reconstruction details</h2>
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                <!--Basic Information-->
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" 
+                    aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="color: #3c85c9" >
+                        <h4>Basic Information</h4>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne" >
+                    <div class="accordion-body">
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Total Metabolites:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMets" role="button" aria-controls="offcanvasExample">
+                                ###NumMets
+                            </a>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMets" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">List of all metabolites in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMets</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Total Reactions:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumRxns" role="button" aria-controls="offcanvasExample">
+                                ###NumRxns
+                            </a>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRxns" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">List of all metabolites in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumRxns</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Total Genes:</b> </a> ###NumGenes</p>
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b>Total Compartments:</b> </a>###NumComp</p>          
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="The degree of metabolic coverage indicates the modeling detail of a given reconstruction calculated by dividing the total amount of reactions by the amount of genes. Models with a 'high level of modeling detail have ratios greater 1, and models with a low level of detail have ratios less than 1. This difference arises as models with basic or intermediate levels of detail are assumed to include many reactions in which several gene products and their enzymatic transformations are ‘lumped’. Implementation: Divides the amount reactions by the amount of genes. Raises an error if the model does not contain either reactions or genes.">
+                            <b>Metabolic Coverage:</b>  </a>###MetCov
+                        </p>
+                    </div>
+                </div>
+                </div>
+
+                <!--Metabolite Information-->
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseTwo">
+                    <h4>Metabolite Information</h4>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Unique Metabolites:</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListMetUnique" role="button" aria-controls="offcanvasExample">
+                            ###NumMUnique
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListMetUnique" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Unique Metabolites in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListMetUnique</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Metabolites without Charge:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMetNoCharge" role="button" aria-controls="offcanvasExample">
+                                ###NumMetNoCharge
+                            </a>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetNoCharge" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without charge in ###ModelName</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMetNoCharge</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Metabolites without Formula:</b> </a> 
+                        <a data-bs-toggle="offcanvas" href="#ListNumMetNoForm" role="button" aria-controls="offcanvasExample">
+                            ###NumMetNoForm
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetNoForm" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without formulae in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumMetNoForm</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                            <b>Medium Components:</b>  </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListMedComp" role="button" aria-controls="offcanvasExample">
+                                ###MedComp
+                            </a>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListMedComp" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Medium Compoments in ###ModelName</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListMedComp</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+                    </div>
+                </div>
+                </div>          
+
+                <!--Reaction Information-->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseThree">
+                    <h4>Reaction Information</h4>
+                    </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                            <b>Metabolic Reactions:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMetRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumMetRxns
+                            </a>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolic transformation reactions in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <ul class="list-group">
+                                <li class="list-group-item">###ListNumMetRxns</li>
+                                </ul>
+                            </div>
+                            </div>
+                            <!--- canvas - end-->
+                            </p>
+                            
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Transport Reactions:</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumTransRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumTransRxns
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumTransRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Transport reactions in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumTransRxns</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Exchange Reactions:</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumExRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumExRxns
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumExRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Exchange reactions in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumExRxns</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Demand Reactions:</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumDmRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumDmRxns
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumDmRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Demand reactions in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumDmRxns</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Sink Reactions:</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumSinkRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumSinkRxns
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumSinkRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Sink reactions in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumSinkRxns</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Biomass Reaction(s):</b> </a>
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumBmRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumBmRxns
+                        </a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumBmRxns" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Biomass reaction(s) in ###ModelName:</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumBmRxns</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--GPR Information-->
+            <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse4" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseThree">
+                    <h4>Gene-Protein-Reaction (GPR) Associations</h4>
+                    </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse4" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading4">
+                        <div class="accordion-body">
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                                <b>Reactions without GPRs:</b> </a>
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRxnWoGpr" role="button" aria-controls="offcanvasExample">
+                                ###NumRxnWoGpr
+                                </a> &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRxnWoGpr" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without GPRs in ###ModelName:</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRxnWoGpr</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                                    <b>Transport reactions without GPRs:</b> </a>
+                                    <!--- canvas - beginning-->
+                                    <a data-bs-toggle="offcanvas" href="#ListNumTRxnWoGpr" role="button" aria-controls="offcanvasExample">
+                                    ###NumTRxnWoGpr
+                                    </a> &#x25;
+                                    <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumTRxnWoGpr" aria-labelledby="offcanvasExampleLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Transport reactions without GPRs in ###ModelName:</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                        <div class="offcanvas-body">
+                                            <ul class="list-group">
+                                            <li class="list-group-item">###ListNumTRxnWoGpr</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--- canvas - end-->
+                                </p>
+                        </div>
+                    </div>
+            </div>
+            
+            <!--Network Topology-->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-heading5">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse5" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseThree">
+                <h4>Network Topology</h4>
+                </button>
+                </h2>
+                <div id="panelsStayOpen-collapse5" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading5">
+                    <div class="accordion-body">
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="Universally blocked reactions have been determined by removing all constraints on the exchange reactions. Flux variability analysis has been carried out. Biomass flux was not enforced. These reactions represent knowledge gaps.">
+                            <b>Universally blocked reactions:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumBlockedR" role="button" aria-controls="offcanvasExample">
+                            ###NumBlockedR
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumBlockedR" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Universally blocked reactions in ###ModelName:</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                    <li class="list-group-item">###ListNumBlockedR</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="Deadend metabolites are those metabolites that cannot be produced or consumed in the reconstruction. They have be determined based on the S matrix. They represent knowledge gaps.">
+                            <b>Deadend metabolites:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumDeadM" role="button" aria-controls="offcanvasExample">
+                            ###NumDeadM
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumDeadM" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Deadend metabolites in ###ModelName:</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                    <li class="list-group-item">###ListNumDeadM</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="stoichiometrically balanced cycles are thermodynamically infeasible and represent artifacts in metabolic reconstructions. The reactions participating in those cycles have been determined by closing all external reactions and performing flux variability analysis (without enforcing flux through the biomass reaction).">
+                            <b>Reaction in stoichiometrically balanced cycles:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumStoichCycleRxns" role="button" aria-controls="offcanvasExample">
+                            ###NumStoichCycleRxns
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumStoichCycleRxns" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reaction in stoichiometrically balanced cycles in ###ModelName:</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                    <li class="list-group-item">###ListNumStoichCycleRxns</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--end-->
+
+            <!--Matrix conditioning-->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-heading6">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse6" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseThree">
+                <h4>Matrix Conditioning</h4>
+                </button>
+                </h2>
+                <div id="panelsStayOpen-collapse6" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading6">
+                    <div class="accordion-body">
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="This test will return the absolute largest and smallest, non-zero coefficients of the stoichiometric matrix. A large ratio of these values may point to potential numerical issues when trying to solve different mathematical optimization problems such as flux-balance analysis. To pass this test the ratio should not exceed 10^9. This threshold has been selected based on experience, and is likely to be adapted when more data on solver performance becomes available. Implementation: Compose the stoichiometric matrix, then calculate absolute coefficients and lastly use the maximal value and minimal non-zero value to calculate the ratio.">
+                            <b>Ratio Min/Max Non-Zero Coefficients:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMinMaxCoeff" role="button" aria-controls="offcanvasExample">
+                            ###NumMinMaxCoeff
+                            </a>  
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMinMaxCoeff" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Ratio Min/Max Non-Zero Coefficients in ###ModelName:</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMinMaxCoeff</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="stoichiometrically balanced cycles are thermodynamically infeasible and represent artifacts in metabolic reconstructions. The reactions participating in those cycles have been determined by closing all external reactions and performing flux variability analysis (without enforcing flux through the biomass reaction).">
+                            <b>Rank of the stoichiometric matrix:</b> </a>
+                            ###NumRank
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+                <!--end-->
+            </div>
+        
+        </div>
+        </div>
+    </section>
+
+
+     <!-- Scoring details -->
+     <section id="score" class="p-5">
+        <div class="container">
+          <h2 class="text-center mb-4">Scored annotation properties</h2>
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                <!--Consistency-->
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-heading7">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse7" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="color: #3c85c9">
+                        <h4>Consistency</h4>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapse7" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-heading7">
+                    <div class="accordion-body">
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="The stoichiometric consistency has been determined as described in Fleming et al. Note that the algorithm determines the largest stoichiometrically consistent subnetwork.">
+                        <b>Stoichiometric Consistency:</b> </a>
+                                <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumConsRxns" role="button" aria-controls="offcanvasExample">
+                                ###NumConsRxns
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumConsRxns" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Stoichiometrically inconsistent reactions in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumConsRxns</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Mass balanced reactions:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumBalRxns" role="button" aria-controls="offcanvasExample">
+                                ###NumBalRxns
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumBalRxns" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Mass unbalanced reactions in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumBalRxns</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Charge balanced reactions:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumChargeRxns" role="button" aria-controls="offcanvasExample">
+                                ###NumChargeRxns
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumChargeRxns" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Charge unbalanced reactions in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumChargeRxns</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+                        
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="Any metabolites that are not part of any reaction.">
+                        <b>Metabolite Connectivity:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMetConnec" role="button" aria-controls="offcanvasExample">
+                                ###NumMetConnec
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetConnec" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites that do not appear in any reaction in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMetConnec</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="">
+                        <b>Unbounded flux in unconstraint medium:</b></a> 
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumUnboundR" role="button" aria-controls="offcanvasExample">
+                                ###NumUnboundR
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumUnboundR" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites that do not appear in any reaction in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumUnboundR</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                        </p>
+                        <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                            title="The score for this section counts 3 times towards the total score. Each individual score was weighted equally.">
+                        <b>Score sub total: </b></a> 
+                                <strong>###ScoreConsistency  &#x25;</strong>
+                        </p>
+                    </div>
+                </div>  
+                </div>
+                <!--Annotation Metabolite -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-heading8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse8" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseTwo">
+                        <h4>Annotation - Metabolites</h4>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse8" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading8">
+                        <div class="accordion-body">
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="It is counted how many metabolites have at least one database dependent or independent annotation. The individual considered annotations are listed below.">
+                            <b>Presence of Metabolite Annotation:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMAnnoAny" role="button" aria-controls="offcanvasExample">
+                                ###NumMAnnoAny
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMAnnoAny" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites that have no annotation in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMAnnoAny</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b>Metabolite Annotation per database:</b>
+                            </a>
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Pubchem compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetPubCh" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetPubCh
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetPubCh" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without Pubchem ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetPubCh</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Kegg compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetKegg" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetKegg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetKegg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without Kegg ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetKegg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> SEED compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetSeed" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetSeed
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetSeed" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without SEED ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetSeed</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Inchi key:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetIKey" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetIKey
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetIKey" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without inchi key in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetIKey</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Inchi string:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetIString" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetIString
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetIString" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without inchi string in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetIString</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> CheBi ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetChebi" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetChebi
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetChebi" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without CheBi ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetChebi</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> HMDB ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetHmdb" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetHmdb
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetHmdb" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without HMDB ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetHmdb</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Reactome ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetReac" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetReac
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetReac" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform Reactome ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetReac</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> MetaNetX Chemical ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetMetNetX" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetMetNetX
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetMetNetX" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without MetaNetX Chemical ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetMetNetX</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BiGG Metabolite ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetBigg" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetBigg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetBigg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without BiGG Metabolite ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetBigg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BioCyc ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetBioc" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetBioc
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetBioc" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without BioCyc Metabolite ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetBioc</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="Each metabolite annotation entry is checked against a pre-defined set of regular expressions typical for the respective database (updated from Memote).">
+                            <b>Metabolite Annotation Conformity per database:</b>
+                            </a>
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Pubchem compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetPubChC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCPubCh
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetPubChC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform Pubchem ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCPubCh</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Kegg compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetKeggC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCKegg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetKeggC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform Kegg ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCKegg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> SEED compound ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetSeedC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCSeed
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetSeedC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform SEED ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCSeed</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Inchi key:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetIKeyC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCIKey
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetIKeyC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform inchi key in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCIKey</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Inchi string:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetIStringC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCIString
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetIStringC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform inchi string in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCIString</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> CheBi ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetChebiC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCChebi
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetChebiC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform CheBi ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCChebi</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> HMDB ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetHmdbC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCHmdb
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetHmdbC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform HMDB ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCHmdb</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Reactome ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetReacC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCReac
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetReacC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform Reactome ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCReac</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> MetaNetX Chemical ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetMetNetXC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCMetNetX
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetMetNetXC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform MetaNetX Chemical ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCMetNetX</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BiGG Metabolite ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetBiggC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCBigg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetBiggC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform BiGG Metabolite ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCBigg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BioCyc ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumMetBiocC" role="button" aria-controls="offcanvasExample">
+                                    ###NumMetCBioc
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMetBiocC" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without conform BioCyc Metabolite ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumMetCBioc</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="The score for this section counts once towards the total score. Each individual score was weighted equally.">
+                            <b>Score sub total: </b></a> 
+                                    <strong>###ScoreAnnotationMetabolites  &#x25;</strong>
+                            </p>
+                        </div>
+                    </div>
+                    </div>          
+         
+
+                <!--Annotation Reaction -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-heading9">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse9" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseTwo">
+                        <h4>Annotation - Reactions</h4>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse9" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading9">
+                        <div class="accordion-body">
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="It is counted how many reactions have at least one database dependent annotation. The individual considered annotations are listed below.">
+                            <b>Presence of Reaction Annotation:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumRAnnoAny" role="button" aria-controls="offcanvasExample">
+                                ###NumRAnnoAny
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRAnnoAny" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without any annotation in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumRAnnoAny</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b>Reaction Annotation per database:</b>
+                            </a>
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Rhea ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRRhea" role="button" aria-controls="offcanvasExample">
+                                    ###NumRRhea
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRRhea" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without Rhea ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRRhea</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Kegg Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRKegg" role="button" aria-controls="offcanvasExample">
+                                    ###NumRKegg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRKegg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without Kegg ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRKegg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> SEED Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRSeed" role="button" aria-controls="offcanvasExample">
+                                    ###NumRSeed
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRSeed" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without SEED ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRSeed</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> MetaNetX Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRMetX" role="button" aria-controls="offcanvasExample">
+                                    ###NumRMetX
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRMetX" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without MetaNetX ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRMetX</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BiGG Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRBigg" role="button" aria-controls="offcanvasExample">
+                                    ###NumRBigg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRBigg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without BiGG ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRBigg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Reactome Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRReac" role="button" aria-controls="offcanvasExample">
+                                    ###NumRReac
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRReac" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without Reactome ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRReac</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BRENDA ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRBren" role="button" aria-controls="offcanvasExample">
+                                    ###NumRBren
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRBren" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without BRENDA ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRBren</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BioCyc Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRBioc" role="button" aria-controls="offcanvasExample">
+                                    ###NumRBioc
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRBioc" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without BioCyc Reaction ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRBioc</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> EC number:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumREcn" role="button" aria-controls="offcanvasExample">
+                                    ###NumREcn
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumREcn" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without EC number in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumREcn</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b>Reaction Annotation Conformity per database:</b>
+                            </a>
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Rhea ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRRhea" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRRhea
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRRhea" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform Rhea ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRRhea</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Kegg Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRKegg" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRKegg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRKegg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform Kegg ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRKegg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> SEED Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRSeed" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRSeed
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRSeed" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform SEED ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRSeed</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> MetaNetX Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRMetX" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRMetX
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRMetX" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform MetaNetX ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRMetX</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BiGG Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRBigg" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRBigg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRBigg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform BiGG ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRBigg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Reactome Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRReac" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRReac
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRReac" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform Reactome ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRReac</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BRENDA ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRBren" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRBren
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRBren" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform BRENDA ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRBren</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> BioCyc Reaction ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCRBioc" role="button" aria-controls="offcanvasExample">
+                                    ###NumCRBioc
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCRBioc" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform BioCyc Reaction ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCRBioc</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> EC number:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumCREcn" role="button" aria-controls="offcanvasExample">
+                                    ###NumCREcn
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCREcn" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions with non-conform EC number in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumCREcn</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="The score for this section counts once towards the total score. Each individual score was weighted equally.">
+                            <b>Score sub total: </b></a> 
+                                    <strong>###ScoreAnnotationReactions  &#x25;</strong>
+                            </p>
+
+                        </div>
+                    </div>
+                    </div>          
+
+
+                <!--Annotation Reaction -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-heading10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse10" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseTwo">
+                        <h4>Annotation - Genes</h4>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse10" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading10">
+                        <div class="accordion-body">
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="It is counted how many genes have at least one database dependent annotation. The individual considered annotations are listed below.">
+                            <b>Presence of Gene Annotation:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumGAnnoAny" role="button" aria-controls="offcanvasExample">
+                                ###NumGAnnoAny
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGAnnoAny" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without any annotation in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumGAnnoAny</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b>Gene Annotation per database:</b>
+                            </a>
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> RefSeq ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGRefSeq" role="button" aria-controls="offcanvasExample">
+                                    ###NumGRefSeq
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGRefSeq" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without RefSeq ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGRefSeq</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> UniProt ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGUniProt" role="button" aria-controls="offcanvasExample">
+                                    ###NumGUniProt
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGUniProt" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without UniProt ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGUniProt</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="Note that EcoGene IDs are only expected for E. coli metabolic reconstructions.">
+                            <b> EcoGene ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGEcoGene" role="button" aria-controls="offcanvasExample">
+                                    ###NumGEcoGene
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGEcoGene" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without EcoGene ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGEcoGene</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> KEGG Gene ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGKegg" role="button" aria-controls="offcanvasExample">
+                                    ###NumGKegg
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGKegg" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without Kegg ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGKegg</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> NCBI Gene ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGNCBIG" role="button" aria-controls="offcanvasExample">
+                                    ###NumGNCBIG
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGNCBIG" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without NCBI Gene ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGNCBIG</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> NCBI Protein ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGNCBIP" role="button" aria-controls="offcanvasExample">
+                                    ###NumGNCBIP
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGNCBIP" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without NCBI Protein ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGNCBIP</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> CCDS ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGCCDS" role="button" aria-controls="offcanvasExample">
+                                    ###NumGCCDS
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGCCDS" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without CCDS ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGCCDS</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="Note that only human metabolic reconstructions are expected to have Human Protein reference database (HPRD) IDs.">
+                            <b> HPRD ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGHPRD" role="button" aria-controls="offcanvasExample">
+                                    ###NumGHPRD
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGHPRD" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without HPRD ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGHPRD</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> ASAP ID:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGASAP" role="button" aria-controls="offcanvasExample">
+                                    ###NumGASAP
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGASAP" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without ASAP ID in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGASAP</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                    </div>        
+
+                            
+                    <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b>Gene Annotation Conformity per database:</b>
+                    </a>
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> RefSeq ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGRefSeq" role="button" aria-controls="offcanvasExample">
+                            ###NumCGRefSeq
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGRefSeq" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform RefSeq ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGRefSeq</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> UniProt ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGUniProt" role="button" aria-controls="offcanvasExample">
+                            ###NumCGUniProt
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGUniProt" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform UniProt ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGUniProt</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="Note that EcoGene IDs are only expected for E. coli metabolic reconstructions.">
+                    <b> EcoGene ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGEcoGene" role="button" aria-controls="offcanvasExample">
+                            ###NumCGEcoGene
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGEcoGene" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform EcoGene ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGEcoGene</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> KEGG Gene ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGKegg" role="button" aria-controls="offcanvasExample">
+                            ###NumCGKegg
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGKegg" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform Kegg ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGKegg</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> NCBI Gene ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGNCBIG" role="button" aria-controls="offcanvasExample">
+                            ###NumCGNCBIG
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGNCBIG" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform NCBI Gene ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGNCBIG</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> NCBI Protein ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGNCBIP" role="button" aria-controls="offcanvasExample">
+                            ###NumCGNCBIP
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGNCBIP" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform NCBI Protein ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGNCBIP</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> CCDS ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGCCDS" role="button" aria-controls="offcanvasExample">
+                            ###NumCGCCDS
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGCCDS" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform CCDS ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGCCDS</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="Note that only human metabolic reconstructions are expected to have Human Protein reference database (HPRD) IDs.">
+                    <b> HPRD ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGHPRD" role="button" aria-controls="offcanvasExample">
+                            ###NumCGHPRD
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGHPRD" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform HPRD ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGHPRD</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="">
+                    <b> ASAP ID:</b></a> 
+                        <!--- canvas - beginning-->
+                        <a data-bs-toggle="offcanvas" href="#ListNumCGASAP" role="button" aria-controls="offcanvasExample">
+                            ###NumCGASAP
+                        </a>  &#x25;
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumCGASAP" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without conform ASAP ID in ###ModelName</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">###ListNumCGASAP</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <!--- canvas - end-->
+                    </p>
+
+                    <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                        title="The score for this section counts once towards the total score. Each individual score was weighted equally.">
+                    <b>Score sub total: </b></a> 
+                            <strong>###ScoreAnnotationGenes  &#x25;</strong>
+                    </p>
+
+                </div>
+            </div>
+                <!--Annotation SBO -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-heading11">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse11" aria-expanded="false" style="color: #3c85c9" aria-controls="panelsStayOpen-collapseTwo">
+                        <h4>Annotation - SBO Terms</h4>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse11" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading11">
+                        <div class="accordion-body">
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="It is counted how many metabolites have at least one SBO Term.">
+                            <b>Metabolite General SBO Terms:</b> </a>
+                            <!--- canvas - beginning-->
+                            <a data-bs-toggle="offcanvas" href="#ListNumMSBOAny" role="button" aria-controls="offcanvasExample">
+                                ###NumMSBOAny
+                            </a>  &#x25;
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumMSBOAny" aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Metabolites without any SBO Term in ###ModelName:</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">###ListNumMSBOAny</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="SBO:0000247 represents the term 'simple chemical'.">
+                            <b> Metabolite SBO:0000247 Presence:</b></a> 
+                                    ###NumMetSBO247  &#x25;
+                            </p>
+
+                            <p class="muted" ><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Reaction General SBO Terms:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumRSBOAny" role="button" aria-controls="offcanvasExample">
+                                    ###NumRSBOAny
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumRSBOAny" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reactions without any SBO Term in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumRSBOAny</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+                            
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Metabolic reaction SBO:0000176 Presence:</b></a> 
+                                    ###NumRSBO176  &#x25;
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Transport reaction SBO:0000185 Presence:</b></a> 
+                                    ###NumRSBO185  &#x25;
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Exchange reaction SBO:0000627 Presence:</b></a> 
+                                    ###NumRSBO627  &#x25;
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Demand reaction SBO:0000628 Presence:</b></a> 
+                                    ###NumRSBO628  &#x25;
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Sink reaction SBO:0000632 Presence:</b></a> 
+                                    ###NumRSBO632  &#x25;
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Biomass reaction SBO:0000629 Presence:</b></a> 
+                                    ###NumRSBO629  &#x25;
+                            </p>
+
+                            <p class="muted" ><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="">
+                            <b> Gene General SBO Terms:</b></a> 
+                                <!--- canvas - beginning-->
+                                <a data-bs-toggle="offcanvas" href="#ListNumGSBOAny" role="button" aria-controls="offcanvasExample">
+                                    ###NumGSBOAny
+                                </a>  &#x25;
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="ListNumGSBOAny" aria-labelledby="offcanvasExampleLabel">
+                                    <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Genes without any SBO Term in ###ModelName</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">###ListNumGSBOAny</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <!--- canvas - end-->
+                            </p>
+
+                            <p class="muted" style="margin-left: 40px"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="SBO:0000243 represents the term 'gene'.">
+                            <b> GeneSBO:0000243 Presence:</b></a> 
+                                    ###NumGSBO243  &#x25;
+                            </p>
+                            
+                            <p class="muted"><a href="#" data-bs-toggle="tooltip" style="text-decoration: none ;color: #3c85c9"
+                                title="The score for this section counts double towards the total score. Each individual score was weighted equally.">
+                            <b>Score sub total: </b></a> 
+                                    <strong>###ScoreAnnotationSBO  &#x25;</strong>
+                            </p>
+                        </div>
+                    </div>
+            </div>
+         </div>
+    </section>
+  
+  
+    <!-- Footer -->
+    <footer class="p-2 text-center " style="color: #FFFFFF;background-color:#3c85c9;">
+        <div class="row align-items-end">
+            <div class="col">
+             <p><img src="../img/Banner.jpg" height="80">           
+             <img src="../img/COBRAToolboxlogo_matlab.svg" height="80"></p>
+  
+            </div>
+            <div class="col">
+              <p class="lead">Powered by the <a href="https://vmh.life" target="_blank" style="color: #FFFFFF">VMH</a> and the
+                <a href="https://opencobra.github.io/cobratoolbox/stable/" target="_blank" style="color: #FFFFFF"> COBRA Toolbox</a>  </p>
+      
+              <p class="lead">Copyright &copy; 2022 <a href="https://thielelab.eu" target="_blank" style="color: #FFFFFF">ThieleLab@NUI Galway, Ireland. </a></p>
+            </div>
+            <div class="col">
+              <p>          
+                <img src="../img/apc.jfif" height="80">
+                <img src="../img/nuig.jfif" height="80"> </p>
+            </div>         
+        </div>
+      </footer>
+      
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous">
+    </script>
+  
+  </body>
