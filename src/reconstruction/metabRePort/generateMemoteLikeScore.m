@@ -360,7 +360,11 @@ for i = 1 : size(fields)
             NonConf = setdiff(p,confFormat);
             modelProp.Details.(strcat('AnnoRxnNonConf', fields{i})) = NonConf;
         else
+<<<<<<< HEAD
             
+=======
+            i
+>>>>>>> ithiele-ithiele-it_30_06_22
             confFormat = model.(fields{i,1})(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), fields(i,2)))));
             modelProp.(strcat('AnnoRxnConf', fields{i}))= (length(confFormat))*100/(modelProp.n - length(missingRxn)); % how many have it
             p =  setdiff(model.rxns, missingRxn);

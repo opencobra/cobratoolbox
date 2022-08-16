@@ -15,7 +15,6 @@ IDs = fieldnames(metabolite_structure.(Mets{1}));
 IDcount = zeros(length(IDs),1);
 for i = 1 : length(Mets)
     Table{i+1,1} = Mets{i,1};
-    i
     for j = 1 : length(IDs)
         Table{1,j+1} = IDs{j,1};
         if ~isempty(metabolite_structure.(Mets{i,1}).(IDs{j}))

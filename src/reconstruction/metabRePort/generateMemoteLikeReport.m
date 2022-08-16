@@ -448,4 +448,8 @@ if  regexp(tline,tag)
     end
 else
     tlineOut = tline;
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> ithiele-ithiele-it_30_06_22

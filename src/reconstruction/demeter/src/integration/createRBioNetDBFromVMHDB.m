@@ -45,12 +45,12 @@ reactionDatabase(:,end)=[];
 rxn=cell(reactionDatabase);
 
 % load the file with compartment definition
-
-load('compartments.mat');
-
+try
+    load('compartments.mat');
+    save([rBioNetDBFolder filesep 'compartments.mat'],'compartments');
+end
 save([rBioNetDBFolder filesep 'rxn.mat'],'rxn');
 save([rBioNetDBFolder filesep 'metab.mat'],'metab');
-save([rBioNetDBFolder filesep 'compartments.mat'],'compartments');
 
 met_path=[rBioNetDBFolder filesep 'metab.mat'];
 rxn_path=[rBioNetDBFolder filesep 'rxn.mat'];
