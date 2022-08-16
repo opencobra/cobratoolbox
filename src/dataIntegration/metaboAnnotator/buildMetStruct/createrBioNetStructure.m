@@ -4,12 +4,12 @@ function [metabolite_structure_rBioNet] = createrBioNetStructure(metabolite_stru
 warning off;
 mkdir('data/');
 
-if 0
+if ~exist('metabolite_structure_rBioNet','var')
     websave('data/MetaboliteDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/MetaboliteDatabase.txt');
     websave('data/ReactionDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/ReactionDatabase.txt');
     createRBioNetDBFromVMHDB('rBioNetDBFolder','data/');
+    load('data/metab.mat');
 end
-load('data/metab.mat');
 
 molFileDirectory = 'ctf-main\mets\molFiles';
 
