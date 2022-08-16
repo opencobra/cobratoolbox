@@ -220,11 +220,17 @@ if ~isempty(match)
             % metabolite structure from metabolite_structure_rBioNet
             % rBioNet IDs contain ';' that might be not valid for matlab
             % fields. The new Fields are found in metabolite_structure
-
+            field=fieldnames(metabolite_structure.(F{match(i)}));
+            field_rBioNet=fieldnames(metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]));
+            [missingfields,map] = setdiff(field,field_rBioNet);
+            %remove
             metabolite_structure = rmfield(metabolite_structure,[F(match(i))]);
-            
             % add field from metabolite_structure_rBioNet
             metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]) = metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]);
+            for j = 1 : length(missingfields)
+                metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]).(missingfields{j}) = NaN;
+            end
+            metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]).VMHId_suggestion= 'existedID';
             % update info in RAW
             r = find(ismember(RAW(:,vmh_col),rBioNet_existance{match(i),1}));
             RAW(r,vmh_col) = repmat({rBioNet_existance{match(i),4}}, 1, length(r));
