@@ -82,8 +82,8 @@ for i=2:size(fluxes,1)
             title('Relative abundances vs. reaction fluxes (mmol*gDW-1*hr-1)')
             f.Renderer='painters';
             print([fluxes{i,1} '_' abundance{j,1}],'-dpng','-r300')
+            close all
         end
-        close all
     end
 end
 

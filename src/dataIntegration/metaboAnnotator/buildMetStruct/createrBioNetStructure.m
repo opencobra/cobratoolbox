@@ -3,23 +3,28 @@ function [metabolite_structure_rBioNet] = createrBioNetStructure(metabolite_stru
 % update this
 warning off;
 mkdir('data/');
+currentPath = pwd;
 
-if 0
+if ~exist('metabolite_structure_rBioNet','var')
     websave('data/MetaboliteDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/MetaboliteDatabase.txt');
     websave('data/ReactionDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/ReactionDatabase.txt');
-    createRBioNetDBFromVMHDB('rBioNetDBFolder','data/');
+   % websave('data/compartments.mat','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/compartments.mat');
+cd data;
+    createRBioNetDBFromVMHDB('rBioNetDBFolder','data');
+    load('data/metab.mat');
+    cd(currentPath);
 end
-load('data/metab.mat');
 
-molFileDirectory = 'ctf-main\mets\molFiles';
+molFileDirectory = 'C:\Users\0123322S\Documents\GitHub\chemTableFiles\ctf\mets\molFiles';
 
 annotationType = 'automatic';
 
 if ~exist('metabolite_structure_rBioNet','var')
     fprintf('Create metabolite structure \n');
     % create metabolite structure out of metab
-    metab2={'VMHId' 'metNames' 'neutralFormula' 'chargedFormula' 'charge' 'keggId' 'X' 'Y' 'inchiKey' 'smiles' 'hmdb'};
-    metab2 = [metab2;metab(:,1:end-1)];
+    metab2={'VMHId' 'metNames' 'neutralFormula' 'chargedFormula' 'charge' 'keggId' 'pubChemID' 'cheBIId' 'inchiKey' 'smiles' 'hmdb','subsystem'};
+    metab(:,end-2)=[];%remove date
+    metab2 = [metab2;metab];
     [metabolite_structure_rBioNet] =createNewMetaboliteStructure(metab2,'rBioNet');
     
     
@@ -31,6 +36,15 @@ if ~exist('metabolite_structure_rBioNet','var')
     [IDsStart,IDcountStart,TableStart] = getStatsMetStruct(metabolite_structure_rBioNet);
 end
 
+F = fieldnames(metabolite_structure_rBioNet);
+if ~exist('start','var')
+    start = 1;
+end
+if ~exist('stop','var')
+    stop = length(F);
+end
+
+if start == 1
 % apparently rBioNet does not contain all recon metabolites, so I will add
 % them here.
 % However, I will retrieve VMH information on the metabolites at the next
@@ -48,8 +62,8 @@ fprintf('Assign Seed IDs \n');
 % offline file provided by seed/kbase
 fprintf('Add Kegg IDs using Seed  \n');
 [metabolite_structure_rBioNet] = getSeed2Kegg(metabolite_structure_rBioNet);
-save met_strc_rBioNet_new_07_10_2021
-
+save met_strc_rBioNet_new_30_06_2022
+end
 inchiKey = 1;
 smiles = 1;
 formula = 1;
@@ -58,18 +72,11 @@ formula = 1;
 retrievePotHMDB = 0;
 retrievePotHMDB2 = 0;
 
-F = fieldnames(metabolite_structure_rBioNet);
-if ~exist('start','var')
-    start = 1;
-end
-if ~exist('stop','var')
-    stop = length(F);
-end
 
 for i = start:stop
     startSearch = i;
     endSearch = i;
-    
+    i
     progress = i/stop;
     fprintf([num2str(progress) '  ... Annotating metabolites from different resources ... \n']);
     
@@ -81,7 +88,7 @@ for i = start:stop
     
     
     fprintf('Add information from mol files \n');
-    [metabolite_structure_rBioNet] = addInfoFromMolFiles(metabolite_structure_rBioNet,startSearch,endSearch);
+    [metabolite_structure_rBioNet] = addInfoFromMolFiles(metabolite_structure_rBioNet,molFileDirectory,startSearch,endSearch);
     
     
     fprintf('Find HMDB Ids \n');
@@ -116,7 +123,7 @@ for i = start:stop
     % too much time
     % [metabolite_structure_rBioNet] = checkLinkValidity(metabolite_structure_rBioNet,startSearch,endSearch);
     if mod(i,10)==1
-        save met_strc_rBioNet_new_07_10_2021
+        save met_strc_rBioNet_new_30_06_2022
     end
 end
 

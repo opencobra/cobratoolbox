@@ -52,6 +52,9 @@ if isstruct(list)
         for k = 1 : length(check4)
             if isnumeric(metabolite_structure.(F{i}).(check4{k}))
                 fieldList{i,k+2} = num2str(metabolite_structure.(F{i}).(check4{k}));
+                %if inchikey is incorrect
+            elseif string(metabolite_structure.(F{i}).(check4{k}))=='InChI'
+                fieldList{i,k+2}='NaN';
             else
                 fieldList{i,k+2} = metabolite_structure.(F{i}).(check4{k});
             end

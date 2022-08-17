@@ -11,6 +11,11 @@ models{1} = getDistributedModel('ecoli_core_model.mat');
 models{2} = getDistributedModel('Acidaminococcus_sp_D21.mat');
 load('Recon1.0model.mat', 'Recon1')
 models{3} = Recon1;
+try 
+   S = load('iDopaNeuro1.mat');
+   names = fieldnames(S);
+   models{4} = S.(names{1});
+end
 
 fprintf('   Testing sampleCbModel with RHMC ... \n' );
 

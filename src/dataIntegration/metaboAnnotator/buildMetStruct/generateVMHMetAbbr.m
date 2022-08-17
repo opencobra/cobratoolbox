@@ -179,7 +179,7 @@ if length(find(strfind(VMHId,'/')))==0
 else
     VMHId = regexprep(VMHId,'\/','_');
 end
-VMHId = regexprep(VMHId,' ','');
+VMHId = regexprep(VMHId,'\s','');
 VMHId = regexprep(VMHId,'-','');
 VMHId = regexprep(VMHId,'\(','');
 VMHId = regexprep(VMHId,'\)','');
@@ -212,7 +212,7 @@ if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(r
             [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
         end
         
-        VMHId = regexprep(VMHId,' ','');
+        VMHId = regexprep(VMHId,'\s','');
         VMHId = regexprep(VMHId,'-','');
         VMHId = regexprep(VMHId,'\(','');
         VMHId = regexprep(VMHId,'\)','');
@@ -243,7 +243,7 @@ if exist('customMetAbbrList','var')
             [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
         end
         
-        VMHId = regexprep(VMHId,' ','');
+        VMHId = regexprep(VMHId,'\s','');
         VMHId = regexprep(VMHId,'-','');
         VMHId = regexprep(VMHId,'\(','');
         VMHId = regexprep(VMHId,'\)','');
@@ -291,6 +291,7 @@ name = regexprep(name,'α','a');
 name = regexprep(name,'Δ','d');
 name = regexprep(name,'δ','d');
 name = regexprep(name,'γ','g');
+name = regexprep(name,'ω','o');
 name = regexprep(name,'\.','_');
 % these edits are specific to the metabolon input file
 name = regexprep(name,'\[1\]','');

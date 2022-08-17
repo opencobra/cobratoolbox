@@ -16,7 +16,7 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %    fileName:       Name of output file (Default = [])
 %    headerRow:      Header (Default = [])
 %    formulaFlag:    Print reaction formulas (Default = false)
-%    gprFlag:      Print reaction GPR (Default = false)
+%    gprFlag:        Print reaction GPR (Default = false)
 %
 
 % .. Authors:

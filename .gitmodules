@@ -72,3 +72,6 @@
 	url = https://github.com/ConstrainedSampler/PolytopeSamplerMatlab
         ignore = dirty
 	branch = master
+[submodule "external/base/io/xlread"]
+	path = external/base/io/xlread
+	url = git@github.com:tpfau/xlread.git

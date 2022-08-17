@@ -34,8 +34,5 @@ model2 = xls2model('cobra_import_toy_model_2.xlsx');
 
 assert(isequal(printRxnFormula(model2,model2.rxns),printRxnFormula(model,model2.rxns)));
 
-
-model2 = xls2model('ExcelExample.xlsx');
-
 % change the directory
 cd(currentDir)

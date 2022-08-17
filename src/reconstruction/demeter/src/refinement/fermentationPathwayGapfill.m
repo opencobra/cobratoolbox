@@ -163,12 +163,6 @@ for i = 1:length(fpathways)
             addedRxns{length(addedRxns)+1,1} = addRxns{j};
         end
     end
-    
-    % remove transport reactions if alternative was already present
-    if length(intersect(model.rxns,{'FORt','FORt2r'}))==2
-        model=removeRxns(model,'FORt');
-        addedRxns(find(strcmp(addedRxns,'FORt')),:)=[];
-    end
 end
 
 % add conditional reactions-only if necessary
@@ -195,23 +189,42 @@ end
 % conditions:
 
 condRxns={
-%     {'ACKr','PTAr'},{'EX_ac(e)','ACtr'}
-%     {'LDH_D'},{'EX_lac_D(e)','D_LACt2'}
-%     {'ACALD','ALCD2x'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
-%     {'ACALD','ALCD2y'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
-%     {'SUCD1'},{'EX_succ(e)','SUCCt2r'}
-%     {'FRD2'},{'EX_succ(e)','SUCCt2r'}
+    {'ACKr','PTAr'},{'EX_ac(e)','ACtr'}
+    {'PFL'},{'EX_for(e)','FORt'}
+    {'LDH_D'},{'EX_lac_D(e)','D_LACt2'}
+    {'ACALD','ALCD2x'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
+    {'ACALD','ALCD2y'},{'EX_etoh(e)','ETOHt2r','EX_acald(e)','ACALDt'}
+    {'SUCD1'},{'EX_succ(e)','SUCCt2r'}
+    {'FRD2'},{'EX_succ(e)','SUCCt2r'}
     {'TRPAS2'},{'EX_indole(e)','INDOLEt2r'}
     {'ACTD'},{'EX_diact(e)','DACTt3'}
     };
-for i=size(condRxns,1)
-    if length(intersect(model.rxns, condRxns{i,1})) == length(condRxns{i,1})
+
+% we do not want to gapfill transporters for gapfilled reactions
+gfRxns = model.rxns(find(strcmp(model.grRules,'')));
+gfRxns = union(gfRxns, model.rxns(strncmp('Unknown', model.grRules, length('Unknown'))));
+gfRxns = union(gfRxns, model.rxns(strncmp('0000000.0.peg', model.grRules, length('0000000.0.peg'))));
+gfRxns = union(gfRxns, model.rxns(strncmp('AUTOCOMPLETION', model.grRules, length('AUTOCOMPLETION'))));
+gfRxns = union(gfRxns, model.rxns(strncmp('INITIALGAPFILLING', model.grRules, length('INITIALGAPFILLING'))));
+gfRxns = union(gfRxns, model.rxns(strncmp('FermentationGapfill', model.grRules, length('FermentationGapfill'))));
+
+for i=1:size(condRxns,1)
+    % make sure reactions are present and annotated
+    rxnsInModel = intersect(model.rxns, condRxns{i,1});
+    rxnsInModel = setdiff(rxnsInModel,gfRxns);
+    if length(intersect(rxnsInModel, condRxns{i,1})) == length(condRxns{i,1})
         for j=1:length(condRxns{i,2})
-        formula = database.reactions{ismember(database.reactions(:, 1), condRxns{i,2}{j}), 3};
-        model = addReaction(model, condRxns{i,2}{j}, 'reactionFormula', formula, 'geneRule', 'FermentationGapfill');
-        addedRxns{length(addedRxns)+1,1} = condRxns{i,2}{j};
+            formula = database.reactions{ismember(database.reactions(:, 1), condRxns{i,2}{j}), 3};
+            model = addReaction(model, condRxns{i,2}{j}, 'reactionFormula', formula, 'geneRule', 'condFermentationGapfill');
+            addedRxns{length(addedRxns)+1,1} = condRxns{i,2}{j};
         end
     end
+end
+
+% remove transport reactions if alternative was already present
+if length(intersect(model.rxns,{'FORt','FORt2r'}))==2
+    model=removeRxns(model,'FORt');
+    addedRxns(find(strcmp(addedRxns,'FORt')),:)=[];
 end
 
 end

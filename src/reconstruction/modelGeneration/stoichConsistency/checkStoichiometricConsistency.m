@@ -42,7 +42,7 @@ function [isConsistent, m, model] = checkStoichiometricConsistency(model, printL
 %    method:        structure with fields:
 %
 %                     * method.interface - {('SDCCO'),'LP', 'MILP', 'DCCO'} interface called to do the consistency check
-%                     * method.solver - {(default solver),'gurobi','mosek'}
+%                     * method.solver - {(default solver as specified by CBT_LP_SOLVER), or any other CBT compatible LP solver}
 %                     * method.param - solver specific parameter structure
 %
 % OUTPUTS:
@@ -70,11 +70,29 @@ function [isConsistent, m, model] = checkStoichiometricConsistency(model, printL
 if ~exist('printLevel','var')
     printLevel=0;
 end
-if ~exist('method','var')
-    method.interface='solveCobraLP';
+
+resetSolver = 0;
+if exist('method','var')
+    if ~isfield(method,'interface')
+        method.interface = 'SDCCO';
+    end
+    if isfield(method,'solver')
+        global CBT_LP_SOLVER
+        oldLPSolver = CBT_LP_SOLVER;
+        resetSolver = 1;
+        %set the solver and solver parameters
+        solverOK = changeCobraSolver(method.solver,'LP');
+    else
+        global CBT_LP_SOLVER
+        method.solver=CBT_LP_SOLVER;
+    end
+else
+    method.interface='SDCCO';
     global CBT_LP_SOLVER
     method.solver=CBT_LP_SOLVER;
 end
+
+
 
 %set parameters according to feastol
 feasTol = getCobraSolverParams('LP', 'feasTol');
@@ -141,7 +159,7 @@ if isConsistent~=1
             warning(['Stoichiometrically INconsistent ' intR 'stoichiometry.']);
         case 'SDCCO'
             tic
-            massBalanceCheck=1;
+            massBalanceCheck=0;
             fileName=[];
 %             [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model, stoichConsistModel] =...
 %                 findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)
@@ -178,10 +196,7 @@ if isConsistent~=1
             %boolean indicating metabolites involved in the maximal consistent vector
             model.SConsistentMetBool=m>epsilon & model.SIntMetBool;
         case 'LP'
-            %set the solver and solver parameters
-            global CBT_LP_SOLVER
-            oldSolver=CBT_LP_SOLVER;
-            solverOK = changeCobraSolver(method.solver,'LP');
+
 
             [nMet,~]=size(N);
 
@@ -233,11 +248,9 @@ if isConsistent~=1
             %mosek
             algorithm=solution.algorithm;
             %change back the solver
-            solverOK = changeCobraSolver(oldSolver,'LP');
+%            solverOK = changeCobraSolver(oldSolver,'LP');
         case 'DCCO'
-            %set the solver and solver parameters
-            global CBT_LP_SOLVER
-            method.solver=CBT_LP_SOLVER;
+
             tic
             [~, ~, solution] = maxCardinalityConservationVector(N);
             timetaken=toc;
@@ -353,7 +366,6 @@ end
 
 isConsistent = all(model.SConsistentMetBool==1);
 
-
 if ~isfield(model,'SConsistentRxnBool')
     
     %OLD - incorrect way July 14th 2016 - Ronan.
@@ -367,3 +379,9 @@ if ~isfield(model,'SConsistentRxnBool')
     model.SConsistentRxnBool = getCorrespondingCols(model.S,model.SConsistentMetBool,model.SIntRxnBool,'inclusive');
 
 end
+
+if resetSolver
+    %reset the solver
+    solverOK = changeCobraSolver(oldLPSolver,'LP');
+end
+

@@ -172,7 +172,7 @@ for i = 1:steps:length(modelList)
     %% print the results regularly to avoid having to repeat simulations
     % only if there were any findings that need to be reported
     for j=1:length(fields)
-        if size(Results.(fields{j}),2)>1
+        if size(Results.(fields{j}),2)>1 || any(contains(fields{j},{'TruePositives','FalseNegatives','growsOnDefinedMedium'}))
             table2print=cell2table(Results.(fields{j}));
             writetable(table2print,[testResultsFolder filesep fields{j} '_' reconVersion],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
         end
