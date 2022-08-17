@@ -172,11 +172,13 @@ else
     toolboxDir = fileparts(which('initCobraToolbox'));
     codeBaseDir = fileparts(toolboxDir);
     %add forks not prefixed with fork-
-    forkNames={'fork-COBRA.tutorials','fork-COBRA.models','fork-COBRA.papers','COBRA.tutorials','COBRA.models','COBRA.papers'};
-    dirNames={'tutorials',['test' filesep 'models'],'papers','tutorials',['test' filesep 'models'],'papers'};
+    forkNames={'fork-COBRA.tutorials','fork-COBRA.models','fork-COBRA.papers','fork-COBRA.binary','COBRA.tutorials','COBRA.models','COBRA.papers','COBRA.binary'};
+    dirNames={'tutorials',['test' filesep 'models'],'papers','binary','tutorials',['test' filesep 'models'],'papers','binary'};
     for j=1:length(forkNames)
         if exist([codeBaseDir filesep forkNames{j}],'dir')
-            fprintf(['> Adding path to ', [codeBaseDir filesep forkNames{j}], ' and removing path to ', [toolboxDir filesep dirNames{j}, '\n']]);
+            %disp([codeBaseDir filesep forkNames{j}])
+            %disp([toolboxDir filesep dirNames{j}])
+            fprintf('%s\n',['> Adding path to ' codeBaseDir filesep forkNames{j} ', and removing path to ' toolboxDir filesep dirNames{j}]);
             rmpath([toolboxDir filesep dirNames{j}])
             addpath([codeBaseDir filesep forkNames{j}])
         end
