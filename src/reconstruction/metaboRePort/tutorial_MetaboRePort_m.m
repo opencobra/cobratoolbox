@@ -21,6 +21,7 @@ modelListUpdated={dInfoUpdated.name};
 modelListUpdated=modelListUpdated';
 
 tic;
+cnt = 1
 for i = s : e%length(modelList)
     i
     if isempty(find(ismember(modelListUpdated,modelList{i})))
@@ -32,7 +33,7 @@ for i = s : e%length(modelList)
         
         [modelUpdated] = populateModelwithRxnIDs(modelUpdated);
         try
-            [modelProp2,ScoresOverall2] = generateMemoteLikeScore(modelUpdated);
+            [modelProp2,ScoresOverall2] = generateMetaboScore(modelUpdated);
             
             modelProperties.(regexprep(modelList{i},'.mat','')).ScoresOverall = ScoresOverall2;
             modelProperties.(regexprep(modelList{i},'.mat','')).modelUpdated = modelUpdated;
@@ -44,9 +45,13 @@ for i = s : e%length(modelList)
             clear modelProperties
             %  end
             %% save updated mat file
+        catch
+            modelList{i}
+            missing{cnt,1} = modelList{i};
+            cnt = cnt + 1;
         end
-        %     model =modelUpdated;
-        %     save(strcat(folderUpdated,modelList{i}),'model');
+            model =modelUpdated;
+            save(strcat(folderUpdated,modelList{i}),'model');
         %     %%generate sbml file
         %     %remove description from model structure as this causes issues
         %

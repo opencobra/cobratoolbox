@@ -21,7 +21,7 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 % Ines Thiele, 09/2021
 
 %load rbionet data
-rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
+rBioNetPath =  fileparts(which('tutorial_MetaboAnnotator'));
 if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
 elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')

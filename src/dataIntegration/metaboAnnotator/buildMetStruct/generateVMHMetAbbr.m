@@ -37,7 +37,7 @@ end
 % load extended rBioNet
 if exist('metabolite_structure_rBioNet','var')
     if ~isstruct(metabolite_structure_rBioNet)
-       load(metabolite_structure_rBioNet)
+        load(metabolite_structure_rBioNet);
     end
 else
     load met_strc_rBioNet;
