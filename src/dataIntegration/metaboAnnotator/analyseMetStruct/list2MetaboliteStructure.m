@@ -26,16 +26,16 @@ function [metabolite_structure,rBioNet_existance,VMH_existance] = list2Metabolit
 %
 % Ines Thiele, 09/2021
 
-if ~exist('fileNameOutput','var')
+if ~exist('fileNameOutput','var') || isempty(fileNameOutput)
     fileNameOutput = ['collectedMetStruct' '.mat'];
 end
 warning off;
-if ~exist('metabolite_structure_rBioNet','var')
+if ~exist('metabolite_structure_rBioNet','var') || isempty(metabolite_structure_rBioNet)
     load met_strc_rBioNet_new;
 end
 
 %load rbionet data
-rBioNetPath =  fileparts(which('tutorial_MetabAnnotator'));
+rBioNetPath =  fileparts(which('tutorial_MetaboAnnotator'));
 if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'metab.mat']);
 elseif exist([rBioNetPath filesep 'data' filesep 'metab.mat'],'file')
@@ -133,7 +133,12 @@ else
             customMetAbbrList = convertCharsToStrings(VMHId);
         else
             [VMHId] = generateVMHMetAbbr(RAW{i,name_col},metabolite_structure_rBioNet,metab,rxn,customMetAbbrList);
-            customMetAbbrList = [customMetAbbrList ; convertCharsToStrings(VMHId)];
+            try
+                customMetAbbrList = [customMetAbbrList ; convertCharsToStrings(VMHId)];
+            catch
+                customMetAbbrList{end+1} = VMHId;
+            end
+
         end
         RAW{i,vmh_col} = VMHId;
         save tmp
