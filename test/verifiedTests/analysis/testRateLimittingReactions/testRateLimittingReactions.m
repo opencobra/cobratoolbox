@@ -6,8 +6,8 @@
 %     where FVA max equals reacrion upper bound
 %
 % Authors:
-%     - Created: 17/01/2022
-%     - COBRAToolbox style applied: 05/05/2022
+%     - Kristina Grausa 05/16/2022 - created 
+%     - Kristina Grausa 08/22/2022 - standard header and formatting
 %
 
 global CBTDIR
@@ -38,7 +38,7 @@ for k = 1:length(solvers.LP)
  
        fprintf(' -- Running testRateLimittingReactions.m using the solver interface: %s ... ', solvers.LP{k});
        
-       assert(numel(dir('Results post-optimization\Rate limitting reactions')) > 2)
+       assert(numel(dir('resultsPostOptimization\rateLimittingReactions')) > 2)
        
        % output a success message
        fprintf('Done.\n');

@@ -6,8 +6,8 @@
 %     parameters for thresholding approach GT1 (Global)
 %
 % Authors:
-%     - Created: 07/01/2022
-%     - COBRAToolbox style applied: 05/05/2022
+%     - Kristina Grausa 05/16/2022 - created 
+%     - Kristina Grausa 08/22/2022 - standard header and formatting
 %
 
 global CBTDIR

@@ -1,4 +1,35 @@
 function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPath, growthNotAffectingGeneDel, meetMinimumReq, thApproach, lowerTh, upperTh, objective, gmAndOperation, gmOrOperation, constrAll, excludeBiomassEq, biomassId, percentile)
+% Returns a tissue specific model with parameters provided via graphical
+% intergace of IgemRNA 
+%
+% USAGE:
+%
+%   model = deleteInactiveGenes(model, trData, trDataPath, thApproach, lowerTh, upperTh, sheetIndex, growthNotAffectingGeneDel, percentile)
+%
+% INPUTS:
+%   modelPath:                     char full model filename                      
+%   trDataPath:                    char full transcriptomics data filename                      
+%   mediumDataPath:                char full medium data filename                        
+%   growthNotAffectingGeneDel:     double (1 or 0) check if grRatio equals 1
+%                                  after gene deletion compared to wildtype 
+%   thApproach:                    double thresholding approach index (1-GT1, 2-LT1, 3-LT2) 
+%   lowerTh:                       double lower global threshold value
+%   upperTh:                       double upper global threshold value (required for LT2) 
+%   objective:                     char 
+%   gmAndOperation:                char (MIN, GM)
+%   gmOrOperation:                 char (MAX, SUM)
+%   constrAll:                     double (1 or 0)
+%   excludeBiomassEq:              double (1 or 0) 
+%   biomassId:                     char 
+%   percentile:                    double (1 or 0) bool option to convert
+%                                  thresholds to percentile value 
+%
+% OUTPUTS:
+%	model:                      extracted model
+%
+% .. Authors:
+%       - Kristina Grausa 05/16/2022
+%       - Kristina Grausa 08/22/2022 - standard header and formatting
     
     trSheets = sheetnames(trDataPath);
     modelOriginal=readCbModel(modelPath);
@@ -13,16 +44,8 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
     for s=1:1:height(trSheets) 
         model = modelOriginal;
         trData=readtable(trDataPath,'Sheet',trSheets{s}); 
-        minRequirements = {};
-        if meetMinimumReq == 1
-            try
-                minRequirements = readtable(strcat('Results post-optimization/Minimum requirements/',trSheets{s},'.xls')).FBAMin; 
-            catch e
-                minRequirements = {};
-            end
-        end
 
-        % Gene Mapping
+        % Gene Mapping       
         for i=1:1:length(model.rxns)
 
             log{i,1} = model.rxns{i};
@@ -129,11 +152,6 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
             if ~isempty(log{i,5})
                 try
                     constrainRxn = true;
-                    if ~isempty(minRequirements)
-                        if log{i,5} < str2double(minRequirements{i})
-                            constrainRxn = false;
-                        end
-                    end
                     
                     if constrainRxn
                         if constrAll == 1 && model.lb(i) < 0
@@ -172,11 +190,11 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
         end
 
         % Save context-specific model
-        folderName = 'Results post-optimization/Context-specific models';
+        folderName = 'resultsPostOptimization/contextSpecificModels';
         if ~exist(folderName, 'dir')
            mkdir(folderName)
         end
-        excelFileName = convertStringsToChars(strcat('Results post-optimization/Context-specific models/', trSheets{s}, '.xls'));
+        excelFileName = convertStringsToChars(strcat('resultsPostOptimization/contextSpecificModels/', trSheets{s}, '.xls'));
         writeCbModel(model, excelFileName);
 
         % Perform optimization

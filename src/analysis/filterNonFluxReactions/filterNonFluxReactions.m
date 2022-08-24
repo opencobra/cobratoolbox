@@ -1,11 +1,29 @@
 function filterNonFluxReactions(phenotype)
-    dest = string(strcat('Results post-optimization\Context-specific models\*', phenotype, '*.*'));
+% Filters and saves in an excel file reactions which do not carry a flux
+% in context specific models of the same phenotype from folder resultsPostOptimization\contextSpecificModels
+% and filters non-flux reactions which are present in all the models of the
+% same phanotype
+% 
+%
+% USAGE:
+%
+%   filterNonFluxReactions(phenotype)
+%
+% INPUTS:
+%   phenotype:              char representing the phenotype name provided
+%                           in each model name of the same phanotype
+%
+% .. Authors:
+%       - Kristina Grausa 05/16/2022
+%       - Kristina Grausa 08/22/2022 - standard header and formatting
+
+    dest = string(strcat('resultsPostOptimization\contextSpecificModels\*', phenotype, '*.*'));
     S = dir(dest);
     count = length(S);
 
     result = {};
-    resultAll = {}; % zero reaction for each dataset
-    commonZeroReactions = {}; % common
+    resultAll = {};
+    commonZeroReactions = {};
 
     for i=1:1:count
         sheetName = 'Reaction List';
@@ -57,12 +75,12 @@ function filterNonFluxReactions(phenotype)
     end
     
     % Save results
-    folderName = 'Results post-optimization\Non-flux reactions\';
+    folderName = 'resultsPostOptimization\nonFluxReactions\';
     if ~exist(folderName, 'dir')
        mkdir(folderName)
     end
 
-    excelFileName = string(strcat(folderName,'non-flux_reactions_', phenotype, '.xls'));
+    excelFileName = string(strcat(folderName,'nonFluxReactions', phenotype, '.xls'));
     for n=1:1:length(resultAll)
         sheet1Name = strrep(S(n).name,'.xls','');
         writecell(resultAll{n},excelFileName,'Sheet',sheet1Name,'AutoFitWidth',false);

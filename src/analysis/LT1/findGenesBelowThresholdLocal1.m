@@ -1,4 +1,28 @@
 function genes = findGenesBelowThresholdLocal1(threshold, trDataPath, sheetIndex)
+% Filters transcriptomics dataset and returns lowly expressed gene 
+% cell array (columns: geneId, expressionValue, expression classification - 'Low',
+% applied threshold type - 'Global'/'Local') containing genes with expression value below 
+% the given global threshold value or above the local gene specific
+% threshold when multiple transcriptomics datasets available
+%
+% USAGE:
+%
+%   genes = findGenesBelowThresholdLocal1(threshold, trDataPath, sheetIndex)
+%
+% INPUTS:
+%   threshold:              double
+%   trDataPath:             char full transcriptomics data filename
+%   sheetIndex:             double target transcriptomics dataset sheet index 
+%
+% OUTPUTS:
+%	genes:                  cell array ix4 where columns include geneId, 
+%                           expressionValue, expression classification -
+%                           'Low' and applied threshold type - 'Global'/'Local'
+%
+% .. Authors:
+%       - Kristina Grausa 05/16/2022
+%       - Kristina Grausa 08/22/2022 - standard header and formatting
+
     try
         trDataAll = {};
         cnt = 1;
@@ -11,7 +35,7 @@ function genes = findGenesBelowThresholdLocal1(threshold, trDataPath, sheetIndex
         % Get target trancriptomics sheet data
         trTarget=readtable(trDataPath,'Sheet',trSheets{sheetIndex}); 
 
-        % Get all data sets of the same phemotype (GENES MUST BE IN THE SAME ORDER)  
+        % Get all data sets of the same phemotype
         for i=1:1:height(trSheets) 
             if contains(trSheets{i}, phenotype)
                 data=readtable(trDataPath,'Sheet',trSheets{i}); 
