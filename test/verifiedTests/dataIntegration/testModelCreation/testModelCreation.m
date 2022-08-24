@@ -51,7 +51,7 @@ for k = 1:length(solvers.LP)
 
        fprintf(' -- Running testModelCreation.m using the solver interface: %s ... ', solvers.LP{k});
 
-       assert(numel(dir('Results post-optimization/Context-specific models')) > 2)
+       assert(numel(dir('resultsPostOptimization/contextSpecificModels')) > 2)
        
        % output a success message
        fprintf('Done.\n');

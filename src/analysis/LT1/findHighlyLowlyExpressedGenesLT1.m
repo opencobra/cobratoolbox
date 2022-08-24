@@ -19,7 +19,7 @@ function genes = findHighlyLowlyExpressedGenesLT1(threshold, trDataPath, sheetIn
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022
-%       - Kristina Grausa 08/22/2022 - standard header and formatting
+%       - Kristina Grausa 08/23/2022 - standard header and formatting
 
     lowlyExpressedGenes = findGenesBelowThresholdLocal1(threshold, trDataPath, sheetIndex);
     highlyExpressedGenes = findGenesAboveThresholdLocal1(threshold, trDataPath, sheetIndex);
