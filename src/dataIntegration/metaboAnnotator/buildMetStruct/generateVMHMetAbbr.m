@@ -304,3 +304,4 @@ name = regexprep(name,'\]','');
 name = regexprep(name,';','_');
 name = regexprep(name,'!','');
 name = regexprep(name,'‐','');
+name = regexprep(name,'â','a');

@@ -57,7 +57,7 @@ if exist('fileName','var') && ~isempty(fileName)
         % read in xlsx file 
         [NUM,TXT,RAW]=xlsread(fileName);
     else
-        [NUM,TXT,RAW] = xlsreadXLSX(fileName);
+        [NUM,TXT,RAW] = xlsread(fileName);
     end
     xlsProvided = 1;
 elseif exist('metList','var') && ~isempty(metList)
