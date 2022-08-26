@@ -1,5 +1,5 @@
-function [] = generateMemoteLikeReport(modelProperties,reportDir)
-% This function generates 
+function [] = generateMetaboReport(modelProperties,reportDir,orgNames)
+% This function generates
 F = fieldnames(modelProperties);
 
 for i = 1 : length(F)
@@ -13,7 +13,15 @@ for i = 1 : length(F)
         disp(tline)
         % replace space holders in template html file
         if ~isnumeric(tline)
-            ModelName = regexprep(F{i},'_', ' ');
+            if ~exist('orgNames','var')
+                ModelName = regexprep(F{i},'_', ' ');
+            else
+                if strcmp(F{i},orgNames{i})
+                    ModelName = regexprep(F{i},'_', ' ');
+                else
+                    ModelName = regexprep(orgNames{i},'_', ' ');
+                end
+            end
             tline= regexprep(tline,'###ModelName',ModelName);
             % Basic information
             tline= regexprep(tline,'###OverallScore',num2str(round(modelProperties.(F{i}).modelProp2.Scores.Overall,2)));
@@ -215,19 +223,19 @@ for i = 1 : length(F)
             
             tline= regexprep(tline,'###ScoreAnnotationMetabolites',num2str(round(modelProperties.(F{i}).modelProp2.Scores.AnnotationMetabolites,2)));
             
-            % Reaction Annotation            
+            % Reaction Annotation
             tline= regexprep(tline,'###NumRAnnoAny',num2str(round(modelProperties.(F{i}).modelProp2.rxnWAnno,2)));
             tag = '###ListNumRAnnoAny'; list = modelProperties.(F{i}).modelProp2.Details.rxnWOAnno; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
             
-             tline= regexprep(tline,'###NumRRhea',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnRheaID,2)));
+            tline= regexprep(tline,'###NumRRhea',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnRheaID,2)));
             tag = '###ListNumRRhea'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnRheaID; type = 'rxn';
-            tline = writeListItem(tline,tag,list,type);           
+            tline = writeListItem(tline,tag,list,type);
             
             tline= regexprep(tline,'###NumCRRhea',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnRheaID,2)));
             tag = '###ListNumCRRhea'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnRheaID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-
+            
             tline= regexprep(tline,'###NumRKegg',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnKEGGID,2)));
             tag = '###ListNumRKegg'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnKEGGID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
@@ -243,7 +251,7 @@ for i = 1 : length(F)
             tline= regexprep(tline,'###NumCRSeed',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnSEEDID,2)));
             tag = '###ListNumCRSeed'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnSEEDID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-                       
+            
             tline= regexprep(tline,'###NumRMetX',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnMetaNetXID,2)));
             tag = '###ListNumRMetX'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnMetaNetXID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
@@ -251,16 +259,16 @@ for i = 1 : length(F)
             tline= regexprep(tline,'###NumCRMetX',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnMetaNetXID,2)));
             tag = '###ListNumCRMetX'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnMetaNetXID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-                                   
-               tline= regexprep(tline,'###NumRBigg',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnBiGGID,2)));
+            
+            tline= regexprep(tline,'###NumRBigg',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnBiGGID,2)));
             tag = '###ListNumRBigg'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnBiGGID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
             
             tline= regexprep(tline,'###NumCRBigg',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnBiGGID,2)));
             tag = '###ListNumCRBigg'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnBiGGID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-  
-                           tline= regexprep(tline,'###NumRReac',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnReactomeID,2)));
+            
+            tline= regexprep(tline,'###NumRReac',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnReactomeID,2)));
             tag = '###ListNumRReac'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnReactomeID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
             
@@ -275,17 +283,17 @@ for i = 1 : length(F)
             tline= regexprep(tline,'###NumCRBren',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnBRENDAID,2)));
             tag = '###ListNumCRBren'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnBRENDAID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-  
-                        tline= regexprep(tline,'###NumRBioc',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnBioCycID,2)));
+            
+            tline= regexprep(tline,'###NumRBioc',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnBioCycID,2)));
             tag = '###ListNumRBioc'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnBioCycID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
             
             tline= regexprep(tline,'###NumCRBioc',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnConfrxnBioCycID,2)));
             tag = '###ListNumCRBioc'; list = modelProperties.(F{i}).modelProp2.Details.AnnoRxnNonConfrxnBioCycID; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
-  
-              
-                        tline= regexprep(tline,'###NumREcn',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnECNumbers,2)));
+            
+            
+            tline= regexprep(tline,'###NumREcn',num2str(round(modelProperties.(F{i}).modelProp2.AnnoRxnrxnECNumbers,2)));
             tag = '###ListNumREcn'; list = modelProperties.(F{i}).modelProp2.Details.missingrxnECNumbers; type = 'rxn';
             tline = writeListItem(tline,tag,list,type);
             
@@ -294,7 +302,7 @@ for i = 1 : length(F)
             tline = writeListItem(tline,tag,list,type);
             
             tline= regexprep(tline,'###ScoreAnnotationReactions',num2str(round(modelProperties.(F{i}).modelProp2.Scores.AnnotationReactions,2)));
-           
+            
             % Gene Annotation
             
             tline= regexprep(tline,'###NumGAnnoAny',num2str(round(modelProperties.(F{i}).modelProp2.geneWAnno,2)));
@@ -308,10 +316,10 @@ for i = 1 : length(F)
             tline= regexprep(tline,'###NumGUniProt',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneUniprotID,2)));
             tag = '###ListNumGUniProt'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneUniprotID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
-         
+            
             tline= regexprep(tline,'###NumGEcoGene',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneEcoGeneID,2)));
             tag = '###ListNumGEcoGene'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneEcoGeneID; type = 'none';
-            tline = writeListItem(tline,tag,list,type);  
+            tline = writeListItem(tline,tag,list,type);
             
             tline= regexprep(tline,'###NumGKegg',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneKEGGID,2)));
             tag = '###ListNumGKegg'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneKEGGID; type = 'none';
@@ -320,20 +328,20 @@ for i = 1 : length(F)
             tline= regexprep(tline,'###NumGNCBIG',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneEntrezID,2)));
             tag = '###ListNumGNCBIG'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneEntrezID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
-   
-       tline= regexprep(tline,'###NumGNCBIP',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneNCBIProteinID,2)));
+            
+            tline= regexprep(tline,'###NumGNCBIP',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneNCBIProteinID,2)));
             tag = '###ListNumGNCBIP'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneNCBIProteinID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
-               
-       tline= regexprep(tline,'###NumGCCDS',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneCCDSID,2)));
+            
+            tline= regexprep(tline,'###NumGCCDS',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneCCDSID,2)));
             tag = '###ListNumGCCDS'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneCCDSID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
-                
-       tline= regexprep(tline,'###NumGHPRD',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneHPRDID,2)));
+            
+            tline= regexprep(tline,'###NumGHPRD',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneHPRDID,2)));
             tag = '###ListNumGHPRD'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneHPRDID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
             
-          tline= regexprep(tline,'###NumGASAP',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneASAPID,2)));
+            tline= regexprep(tline,'###NumGASAP',num2str(round(modelProperties.(F{i}).modelProp2.AnnoGenegeneASAPID,2)));
             tag = '###ListNumGASAP'; list = modelProperties.(F{i}).modelProp2.Details.missinggeneASAPID; type = 'none';
             tline = writeListItem(tline,tag,list,type);
             
@@ -381,7 +389,7 @@ for i = 1 : length(F)
             
             
             
-                     
+            
             tline= regexprep(tline,'###ScoreAnnotationGenes',num2str(round(modelProperties.(F{i}).modelProp2.Scores.AnnotationGenes,2)));
             
             % SBO Annotation
@@ -417,11 +425,14 @@ for i = 1 : length(F)
     end
     fclose(fid);
     html = html';
+    ModelName = regexprep(ModelName,' ','_');
+    fid =fopen([reportDir filesep 'modelreport_' ModelName '.html'], 'w');
     
-    fid =fopen([reportDir filesep 'modelreport_' F{i} '.html'], 'w');
     for j = 1 : length(html)-1
         fprintf(fid,strcat(html{j},'\n'));
     end
+    
+    fclose(fid);
 end
 
 function tlineOut = writeListItem(tline,tag,list,type)
@@ -436,8 +447,8 @@ if  regexp(tline,tag)
             tlineOut = strcat(tlineOut,'<li class="list-group-item"> <a href = https://vmh.life/#reaction/',m,' target = "_blank">',m,'</a>','</li>','\n');
         elseif strcmp(type,'met')
             if contains(m,'[')
-            mpart = split(m,'[');
-            mpart = mpart{1};
+                mpart = split(m,'[');
+                mpart = mpart{1};
             else
                 mpart = m;
             end
@@ -448,8 +459,4 @@ if  regexp(tline,tag)
     end
 else
     tlineOut = tline;
-<<<<<<< HEAD
 end
-=======
-end
->>>>>>> ithiele-ithiele-it_30_06_22
