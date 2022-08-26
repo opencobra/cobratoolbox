@@ -132,7 +132,7 @@ modelProp.Details.InconsRxns = inconR;
 % mass and charge balanced
 % remove all reactions that are not internal (i.e, ex, biomass, sink, dm)
 modelInt = removeRxns(model, model.rxns(~model.SIntRxnBool));
-
+modelInt=findSExRxnInd(modelInt);
 [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance(modelInt, 0);
 %modelProp.imBalancedMass = nnz(imBalancedRxnBool);
 % modelProp.imBalancedCharge = nnz(imBalancedCharge);

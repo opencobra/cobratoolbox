@@ -9,7 +9,7 @@ if ~exist('metabolite_structure_rBioNet','var')
     websave('data/MetaboliteDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/MetaboliteDatabase.txt');
     websave('data/ReactionDatabase.txt','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/ReactionDatabase.txt');
    % websave('data/compartments.mat','https://raw.githubusercontent.com/opencobra/COBRA.papers/master/2021_demeter/input/compartments.mat');
-cd data;
+   % cd data;
     createRBioNetDBFromVMHDB('rBioNetDBFolder','data');
     load('data/metab.mat');
     cd(currentPath);
@@ -23,7 +23,7 @@ if ~exist('metabolite_structure_rBioNet','var')
     fprintf('Create metabolite structure \n');
     % create metabolite structure out of metab
     metab2={'VMHId' 'metNames' 'neutralFormula' 'chargedFormula' 'charge' 'keggId' 'pubChemID' 'cheBIId' 'inchiKey' 'smiles' 'hmdb','subsystem'};
-    metab(:,end-2)=[];%remove date
+    metab(:,end-1)=[];%remove date
     metab2 = [metab2;metab];
     [metabolite_structure_rBioNet] =createNewMetaboliteStructure(metab2,'rBioNet');
     
