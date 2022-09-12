@@ -98,7 +98,7 @@ if 0
     MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUX);
 else
     [BlockedRxnsSUX] = identifyFastBlockedRxns(MatricesSUX);
-    MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,BlockedRxnsSUX)) = [];
+ %   MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,BlockedRxnsSUX)) = [];
     MatricesSUX = removeRxns(MatricesSUX,BlockedRxnsSUX);
 end
 
@@ -172,7 +172,7 @@ A = fastcc(MatricesSUX, epsilon);
 
 consistRxnsModel = MatricesSUX.rxns(A);
 inconsistRxnsSUXprime = setdiff(MatricesSUX.rxns,consistRxnsModel);
-MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,inconsistRxnsSUXprime)) = [];
+%MatricesSUX.MatrixPart(ismember(MatricesSUX.rxns,inconsistRxnsSUXprime)) = [];
 MatricesSUX = removeRxns(MatricesSUX,inconsistRxnsSUXprime);
 
 % define Core reaction set

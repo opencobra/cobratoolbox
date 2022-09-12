@@ -43,7 +43,7 @@ end
 
 % create KEGG Matrix - U
 if ~exist('KEGGMatrixLoad', 'var')
-    KEGGMatrixLoad = 1;
+    KEGGMatrixLoad = 0;
 end
 if KEGGMatrixLoad
     load KEGGMatrix
