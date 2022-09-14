@@ -67,20 +67,20 @@ end
 for i=1:length(compounds)
     if ~isempty(compounds(i))
         if transport == 0
-            R = ['sink_' compounds(i) '[c]'];
+            R = ['sink_' compounds{i} '[c]'];
             sub = cellstr([compounds{i} '[c]']);
             [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000,'upperBound',10000);
             
         elseif transport == 1 %currently only this branch is taken.
             
             if (strcmp(compartment,'[c]')==1)
-                R = ['EX_' compounds(i) '[e]'];
+                R = ['EX_' compounds{i} '[e]'];
                
                 sub = cellstr([compounds{i} '[e]']);
                 [ExchangeRxnMatrix] = addReaction(ExchangeRxnMatrix,R,'metaboliteList',sub(1),'stoichCoeffList',[-1],'lowerBound',-10000,'upperBound',10000);
             
                 % creates transport reaction from [c] to [e]
-                R = [compounds(i) 'tr'];
+                R = [compounds{i} 'tr'];
                 sub = cellstr([compounds{i} '[e]']);
                 prod = cellstr([compounds{i} '[c]']);
                 
@@ -115,25 +115,25 @@ for i=1:length(compounds)
                         met = strmatch(strcat(compounds(i), '[e]'),model.mets,'exact');
                         if ~isempty(met) && isempty(find(model.S(met,:)==-1))
                             % add exchange reaction
-                            tmp = ['Ex_' compounds(i) '[e]'];
+                            tmp = ['Ex_' compounds{i} '[e]'];
                             ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
                             tmp = ['Exchange of ' compounds(i)];
                             ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                            tmp = ['1 ' compounds(i) '[e] <==>'];
+                            tmp = ['1 ' compounds{i} '[e] <==>'];
                             ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
-                            tmp = [compounds(i) '[e]'];
+                            tmp = [compounds{i} '[e]'];
                             [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
                             cnt = cnt + 1;
                         end
                     else
                         % add exchange reaction
-                        tmp = ['Ex_' compounds(i) '[e]'];
+                        tmp = ['Ex_' compounds{i} '[e]'];
                         ExchangeRxnMatrix.rxns(cnt,1) = strcat(tmp(1),tmp(2),tmp(3));
                         tmp = ['Exchange of ' compounds(i)];
                         ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat(tmp(1),tmp(2));
-                        tmp = ['1 ' compounds(i) '[e] <==>'];
+                        tmp = ['1 ' compounds{i} '[e] <==>'];
                         ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3));
-                        tmp = [compounds(i) '[e]'];
+                        tmp = [compounds{i} '[e]'];
                         [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000,[],[],[],[],[]);
                         cnt = cnt + 1;
                     end
@@ -146,7 +146,7 @@ for i=1:length(compounds)
                     else
                         ExchangeRxnMatrix.rxns(cnt,1) = strcat(compounds(i),'t','[e]','r');
                         ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat('Transport of','- ', compounds(i),' ([c] to ', '[e]',')');
-                        tmp = ['1 ' compounds(i) '[e]' ' <==> 1 ' compounds(i) '[c]'];
+                        tmp = ['1 ' compounds{i} '[e]' ' <==> 1 ' compounds{i} '[c]'];
                         ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5),tmp(6));
                         [ExchangeRxnMatrix] = addReactionGEM(ExchangeRxnMatrix,ExchangeRxnMatrix.rxns(cnt,1),ExchangeRxnMatrix.rxnsNames(cnt,1),ExchangeRxnMatrix.rxnFormulas(cnt,1),1,-10000,10000);
                         cnt = cnt + 1;
@@ -157,7 +157,7 @@ for i=1:length(compounds)
                             % creates transport reaction from [c] to the compartment
                             ExchangeRxnMatrix.rxns(cnt,1) = strcat(compounds(i),'t',remain(j),'r');
                             ExchangeRxnMatrix.rxnsNames(cnt,1) =   strcat('Transport of','- ', compounds(i),' ([c] to ', remain(j),')');
-                            tmp = ['1 ' compounds(i) remain(j) ' <==> 1 ' compounds(i) '[c]'];
+                            tmp = ['1 ' compounds{i} remain{j} ' <==> 1 ' compounds{i} '[c]'];
                             ExchangeRxnMatrix.rxnFormulas(cnt,1) =  strcat(tmp(1),tmp(2),tmp(3),tmp(4),tmp(5),tmp(6));
                             %tmp = [compounds(i) '[c]'];
                             %ExchangeRxnMatrix.mets(length(ExchangeRxnMatrix.mets)+1,1) = strcat(tmp(1),tmp(2));
