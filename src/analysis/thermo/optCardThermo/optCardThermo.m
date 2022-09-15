@@ -140,7 +140,8 @@ if ~isfield(param, 'theta')
     param.theta = 0.1;%smaller than default 
 end
 if ~isfield(param, 'rpos')
-    param.rpos = 1;
+    %param.rpos = 1;%was default before summer 22
+    param.rpos = 0;
 end
 
 [nMet, nRxn] = size(model.S);
@@ -314,37 +315,37 @@ end
 
 % * .lambda0 - trade-off parameter on minimise `||x||_0`
 if isfield(model,'lambda0')
-    cardProb.lambda0=model.lambda0;
+    cardProb.lambda0 = model.lambda0;
 else
     cardProb.lambda0 = 1;
 end
 
 % * .lambda1 - trade-off parameter on minimise `||x||_1`
 if isfield(model,'lambda1')
-    cardProb.lambda1=model.lambda1;
+    cardProb.lambda1 = model.lambda1;
 else
-    cardProb.lambda1 = 1;
+    cardProb.lambda1 = feasTol;
 end
 
 %  * .delta0 - trade-off parameter on maximise `||y||_0`
 if isfield(model,'delta0')
-    cardProb.delta0=model.delta0;
+    cardProb.delta0 = model.delta0;
 else
     cardProb.delta0 = 1;
 end
 
 %  * .delta1 - trade-off parameter on minimise `||y||_1
 if isfield(model,'delta1')
-    cardProb.delta1=model.delta1;
+    cardProb.delta1 = model.delta1;
 else
-    cardProb.delta1 = 1;
+    cardProb.delta1 = feasTol;
 end
 
 %global weight on one-norm minimisation for cardinality free variables
 if isfield(model,'alpha1')
     cardProb.alpha1 = model.alpha1;
 else
-    cardProb.alpha1 = 1;
+    cardProb.alpha1 = feasTol;
 end
 
 if ~isfield(model,'beta')
@@ -1028,211 +1029,7 @@ switch param.formulation
             sol
             error('optimizeCardinality did not solve')
         end
-    case 'pqzwrs'
-        N = model.S(model.SConsistentMetBool,model.SConsistentRxnBool);
-        F = -min(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
-        R =  max(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
-        B = model.S(model.SConsistentMetBool,~model.SConsistentRxnBool);
-      
-        m = nnz(model.SConsistentMetBool);
-        Omn=sparse(m,nIntRxn);
-        Onm=sparse(nIntRxn,m);
-        Om =sparse(m,m);
-        Onk=sparse(nIntRxn,nExRxn);
-        Omk=sparse(m,nExRxn);
-        In=speye(nIntRxn,nIntRxn);
-        Im=speye(m,m);
-       
-        %debugging
-        %model = rmfield(model,'dummyMetBool');
-        %model = rmfield(model,'C');
-
-        if isfield(model,'dummyMetBool')
-            % dummyModel.dummyMetBool:  m x 1 boolean vector indicating dummy metabolites i.e. contains(model.mets,'dummy_Met_');
-            % dummyModel.dummyRxnBool:  n x 1 boolean vector indicating dummy reactions  i.e. contains(model.rxns,'dummy_Rxn_');
-            g = nnz(model.dummyMetBool); %number of dummy metabolites
-            G = model.S(model.dummyMetBool, model.SConsistentRxnBool);
-            H = model.S(model.dummyMetBool,~model.SConsistentRxnBool);
-        else
-            g = 0; %number of dummy metabolites
-            G = sparse(0,nIntRxn);
-            H = sparse(0,nExRxn);
-        end
-        Ogn = sparse(g,nIntRxn);
-        Ogm = sparse(g,m);
-            
-        if isfield(model,'C')
-            %coupling constraints
-            C = model.C(:,model.SConsistentRxnBool);
-            nConstr = size(model.C,1);
-            Ocn = sparse(nConstr,nIntRxn);
-            Ocm = sparse(nConstr,m);
-            D = model.C(:,~model.SConsistentRxnBool);
-        else
-            nConstr = 0;
-            C   = sparse(nConstr,nIntRxn);
-            Ocn = sparse(nConstr,nIntRxn);
-            Ocm = sparse(nConstr,m);
-            D   = sparse(nConstr,nExRxn);
-        end
-        
-        if param.rpos
-            cardProb.A = [...
-                % p       q      z     w     r    s
-                Omn,     Omn,     N,    B,   Om,  Om;
-                In,      -In,   -In,  Onk,  Onm, Onm;
-                F,         R,   Omn,  Omk,  -Im,  Om; % sum of consumption plus production is positive
-                (F+R), (F+R),   Omn,  Omk,   Om, -Im; 
-                Ocn,     Ocn,     C,    D,  Ocm, Ocm;
-                Ogn,     Ogn,     G,    H,  Ogm, Ogm];
-            
-        else
-            cardProb.A = [...
-                % p         q     z     w     r    s
-                Omn,     Omn,     N,    B,   Om,  Om;
-                In,      -In,   -In,  Onk,  Onm, Onm;
-                Omn,     Omn, (F+R),  Omk,  -Im,  Om;% approximate to net consumption plus production is not restricted in sign
-                (F+R), (F+R),   Omn,  Omk,   Om, -Im;
-                Ocn,     Ocn,     C,    D,  Ocm, Ocm;
-                Ogn,     Ogn,     G,    H,  Ogm, Ogm];
-        end
-        
-        cardProb.b = [model.b(model.SConsistentMetBool);zeros(nIntRxn,1);zeros(2*m,1)];
-        cardProb.csense(1:m,1) = model.csense(model.SConsistentMetBool);
-        cardProb.csense(m+1:3*m+nIntRxn,1) = 'E';
-        
-        if isfield(model,'C')
-            cardProb.b = [cardProb.b;model.d];
-            cardProb.csense = [cardProb.csense;model.dsense];
-        end
-        
-        if isfield(model,'dummyMetBool')
-            cardProb.b =  [cardProb.b;model.b(model.dummyMetBool)];
-            %(3*m+nIntRxn+nConstr+1:3*m+nIntRxn+nConstr+g,1)
-            cardProb.csense = [cardProb.csense; model.csense(model.dummyMetBool)];
-        end
-                          
-        reversibleRxnBool = model.lb<-param.epsilon & model.ub>param.epsilon;
-        fwdRxnBool = model.lb==0 & model.ub>param.epsilon;
-        revRxnBool = model.lb<-param.epsilon & model.ub==0;
-        allRxnBool = reversibleRxnBool | fwdRxnBool | revRxnBool;
-        if ~any(allRxnBool)
-            error('misspecified directionality')
-        end
-        
-        %lower bounds on net flux
-        lb = model.lb;
-        lb(model.inactiveRxn)=0; %no flux of reactions that must be inactive
-        lbz = lb(model.SConsistentRxnBool);
-        lbw = lb(~model.SConsistentRxnBool);
-        
-        %lower bound on consumption/production approximation
-        if param.rpos
-            lbr = zeros(m,1); 
-        else
-            lbr = -param.bigNum*ones(m,1); 
-        end
-        
-        cardProb.lb = [zeros(2*nIntRxn,1);lbz; lbw; lbr; zeros(m,1)];
-        
-        %upper bounds
-        ubp = param.bigNum*ones(nnz(model.SConsistentRxnBool),1);
-        ubq = param.bigNum*ones(nnz(model.SConsistentRxnBool),1);
-
-        %upper bounds on net flux
-        ub = model.ub;
-        ub(model.inactiveRxn)=0; %no flux of reactions that must be inactive
-        ubz = ub(model.SConsistentRxnBool);
-        ubw = ub(~model.SConsistentRxnBool);
-        
-        %upper bound on consumption/production approximation
-        ubr = param.bigNum*ones(m,1);
-        
-        %upper bound on sum of rate of consumption + production
-        ubs = param.bigNum*ones(m,1);
-        ubs(model.absentMet)=0;
-        
-        cardProb.ub = [ubp;ubq;ubz;ubw;ubr;ubs];
-        
-        cardProb.c = [...
-            zeros(nIntRxn,1);...%one norm weights implemented below
-            zeros(nIntRxn,1);...%one norm weights implemented below
-            osense*model.c( model.SConsistentRxnBool);...
-            osense*model.c(~model.SConsistentRxnBool);...
-            zeros(2*m,1)];
-        
-        cardProb.osense = 1;%minimise by default
-        
-        %maximisation of cardinality via net rate of consumption + production
-        if any(model.h0(~model.SConsistentMetBool)~=0)
-            error('No optimisation of cardinality of dummy metabolites')
-        end
-        h0neg  = model.h0(model.SConsistentMetBool);
-        h0neg(h0neg>0) = 0;
-        
-        %minimisation of cardinality via sum of rate of consumption + production
-        h0pos  = model.h0(model.SConsistentMetBool);
-        h0pos(h0pos<0) = 0;
-        
-        wSign = [zeros(2*nIntRxn,1);sign(model.g0(model.SConsistentRxnBool));sign(model.g0(~model.SConsistentRxnBool)); sign(h0neg); sign(model.h0(model.SConsistentMetBool))];
-        w     = [zeros(2*nIntRxn,1);     model.g0(model.SConsistentRxnBool) ;     model.g0(~model.SConsistentRxnBool) ;       h0neg;      model.h0(model.SConsistentMetBool)];
-        
-        cardProb.p = wSign ==   1;%minimisation
-        cardProb.q = wSign ==  -1;%maximisation
-        cardProb.r = wSign ==   0;
-        
-        bool = cardProb.p | cardProb.q  | cardProb.r;
-        if ~all(bool)
-            error('cardProb.p | cardProb.q  | cardProb.r must be all true')
-        end
-        
-        cardProb.k = zeros(3*nIntRxn+nExRxn+2*m,1);
-        cardProb.k(cardProb.p,1) =  w(cardProb.p);
-        cardProb.d = zeros(3*nIntRxn+nExRxn+2*m,1);
-        cardProb.d(cardProb.q,1) = -w(cardProb.q);
-        
-        %one norm weight on individual variables
-        %no one-norm regularisation of net rate of consumption + production, or sum of rate of consumption + production
-        oneNormWeight = [...
-            model.beta*model.g1(model.SConsistentRxnBool);... % p
-            model.beta*model.g1(model.SConsistentRxnBool);... % q
-            zeros(nIntRxn,1);...                   % z  
-            zeros(nExRxn,1);...                    % w
-            zeros(m,1);...                         % r no one-norm regularisation of sum of rate of consumption + production
-            zeros(m,1)];                           % s no one-norm regularisation of net rate of consumption + production
-        
-        %problem.o `size(A,2) x 1` strictly positive weight vector on minimise `||[x;y;z]||_1`
-        cardProb.o = zeros(3*nIntRxn+nExRxn+2*m,1);
-        cardProb.o(cardProb.p,1) =  oneNormWeight(cardProb.p);
-        cardProb.o(cardProb.q,1) =  oneNormWeight(cardProb.q);
-        cardProb.o(cardProb.r,1) =  oneNormWeight(cardProb.r);
-        
-        if any(cardProb.lb>cardProb.ub)
-            error('cardProb.lb>cardProb.ub')
-        end
-        sol = optimizeCardinality(cardProb, param);
-        
-        solution.stat = sol.stat;
-        
-        if solution.stat==1 || solution.stat==3
-            %zeroing out small magnitudes below feasTol
-            sol.xyz(abs(sol.xyz)<feasTol)=0;
-            
-            solution.p = NaN*ones(nRxn,1);
-            solution.p(model.SConsistentRxnBool) = sol.xyz(1:nIntRxn,1);
-            solution.q = NaN*ones(nRxn,1);
-            solution.q(model.SConsistentRxnBool) = sol.xyz(nIntRxn+1:2*nIntRxn,1);
-            solution.v = NaN*ones(nRxn,1);
-            solution.v(model.SConsistentRxnBool)  = sol.xyz(2*nIntRxn+1:3*nIntRxn,1);
-            solution.v(~model.SConsistentRxnBool) = sol.xyz(3*nIntRxn+1:3*nIntRxn+nExRxn,1);
-            solution.v(abs(solution.v)<feasTol) = 0;
-            solution.r = sol.xyz(3*nIntRxn+nExRxn+1:3*nIntRxn+nExRxn+m,1);
-            solution.s = sol.xyz(3*nIntRxn+nExRxn+m+1:3*nIntRxn+nExRxn+2*m,1);
-        else
-            sol
-            error('optimizeCardinality did not solve')
-        end
-    case 'pqzw'
+       case 'pqzw'
         N = model.S(model.SConsistentMetBool,model.SConsistentRxnBool);
         F = -min(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
         R =  max(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
@@ -1378,6 +1175,18 @@ switch param.formulation
                     disp(res)
                     error('optimizeCardinality solution is not a steady state after zeroing out small net fluxes with absolute magnitude less than feasTol/100.')
                 end
+                
+                %zero out small values in the solution here
+                solution.p(abs(solution.p)<(feasTol/100)) = 0;
+                solution.q(abs(solution.q)<(feasTol/100)) = 0;
+                
+                %check if the solution is an accurate steady state
+                bool = model.SConsistentMetBool & model.csense == 'E';
+                res = norm(model.S(bool,:)*(solution.p - solution.q) - model.b(bool),inf);
+                if res>feasTol
+                    disp(res)
+                    error('optimizeCardinality solution is not a steady state after zeroing out small fluxes with absolute magnitude less than feasTol/100.')
+                end
             end
 
         else
@@ -1385,7 +1194,231 @@ switch param.formulation
             norm(model.S(model.SConsistentMetBool,:)*solution.v - model.b(model.SConsistentMetBool),inf)
             norm(cardProb.A*sol.xyz - cardProb.b,inf)
             error('optimizeCardinality did not solve')
+        end    
+    case 'pqzwrs'
+        N = model.S(model.SConsistentMetBool,model.SConsistentRxnBool);
+        F = -min(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
+        R =  max(0,model.S(model.SConsistentMetBool,model.SConsistentRxnBool));
+        B = model.S(model.SConsistentMetBool,~model.SConsistentRxnBool);
+      
+        m = nnz(model.SConsistentMetBool);
+        Omn=sparse(m,nIntRxn);
+        Onm=sparse(nIntRxn,m);
+        Om =sparse(m,m);
+        Onk=sparse(nIntRxn,nExRxn);
+        Omk=sparse(m,nExRxn);
+        In=speye(nIntRxn,nIntRxn);
+        Im=speye(m,m);
+       
+        %debugging
+        %model = rmfield(model,'dummyMetBool');
+        %model = rmfield(model,'C');
+
+        if isfield(model,'dummyMetBool')
+            % dummyModel.dummyMetBool:  m x 1 boolean vector indicating dummy metabolites i.e. contains(model.mets,'dummy_Met_');
+            % dummyModel.dummyRxnBool:  n x 1 boolean vector indicating dummy reactions  i.e. contains(model.rxns,'dummy_Rxn_');
+            g = nnz(model.dummyMetBool); %number of dummy metabolites
+            G = model.S(model.dummyMetBool, model.SConsistentRxnBool);
+            H = model.S(model.dummyMetBool,~model.SConsistentRxnBool);
+        else
+            g = 0; %number of dummy metabolites
+            G = sparse(0,nIntRxn);
+            H = sparse(0,nExRxn);
         end
+        Ogn = sparse(g,nIntRxn);
+        Ogm = sparse(g,m);
+            
+        if isfield(model,'C')
+            %coupling constraints
+            C = model.C(:,model.SConsistentRxnBool);
+            nConstr = size(model.C,1);
+            Ocn = sparse(nConstr,nIntRxn);
+            Ocm = sparse(nConstr,m);
+            D = model.C(:,~model.SConsistentRxnBool);
+        else
+            nConstr = 0;
+            C   = sparse(nConstr,nIntRxn);
+            Ocn = sparse(nConstr,nIntRxn);
+            Ocm = sparse(nConstr,m);
+            D   = sparse(nConstr,nExRxn);
+        end
+        
+        if param.rpos
+            cardProb.A = [...
+                % p       q      z     w     r    s
+                Omn,     Omn,     N,    B,   Om,  Om;
+                In,      -In,   -In,  Onk,  Onm, Onm;
+                F,         R,   Omn,  Omk,  -Im,  Om; % sum of consumption plus production is positive
+                (F+R), (F+R),   Omn,  Omk,   Om, -Im; 
+                Ocn,     Ocn,     C,    D,  Ocm, Ocm;
+                Ogn,     Ogn,     G,    H,  Ogm, Ogm];
+            
+        else
+            cardProb.A = [...
+                % p         q     z     w     r    s
+                Omn,     Omn,     N,    B,   Om,  Om;
+                In,      -In,   -In,  Onk,  Onm, Onm;
+                Omn,     Omn, (F+R),  Omk,  -Im,  Om;% approximation to net consumption plus production is not restricted in sign
+%                 F,       R,    Omn,  Omk,  -Im,  Om;
+                (F+R), (F+R),   Omn,  Omk,   Om, -Im;
+                Ocn,     Ocn,     C,    D,  Ocm, Ocm;
+                Ogn,     Ogn,     G,    H,  Ogm, Ogm];
+        end
+        
+        cardProb.b = [model.b(model.SConsistentMetBool);zeros(nIntRxn,1);zeros(2*m,1)];
+        cardProb.csense(1:m,1) = model.csense(model.SConsistentMetBool);
+        cardProb.csense(m+1:3*m+nIntRxn,1) = 'E';
+        
+        if isfield(model,'C')
+            cardProb.b = [cardProb.b;model.d];
+            cardProb.csense = [cardProb.csense;model.dsense];
+        end
+        
+        if isfield(model,'dummyMetBool')
+            cardProb.b =  [cardProb.b;model.b(model.dummyMetBool)];
+            %(3*m+nIntRxn+nConstr+1:3*m+nIntRxn+nConstr+g,1)
+            cardProb.csense = [cardProb.csense; model.csense(model.dummyMetBool)];
+        end
+                          
+        reversibleRxnBool = model.lb<-param.epsilon & model.ub>param.epsilon;
+        fwdRxnBool = model.lb==0 & model.ub>param.epsilon;
+        revRxnBool = model.lb<-param.epsilon & model.ub==0;
+        allRxnBool = reversibleRxnBool | fwdRxnBool | revRxnBool;
+        if ~any(allRxnBool)
+            error('misspecified directionality')
+        end
+        
+        %lower bounds on net flux
+        lb = model.lb;
+        lb(model.inactiveRxn)=0; %no flux of reactions that must be inactive
+        lbz = lb(model.SConsistentRxnBool);
+        lbw = lb(~model.SConsistentRxnBool);
+        
+        %lower bound on consumption/production approximation
+        if param.rpos
+            lbr = zeros(m,1); 
+        else
+            lbr = -param.bigNum*ones(m,1); 
+        end
+        
+        cardProb.lb = [zeros(2*nIntRxn,1);lbz; lbw; lbr; zeros(m,1)];
+        
+        %upper bounds
+        ubp = param.bigNum*ones(nnz(model.SConsistentRxnBool),1);
+        ubq = param.bigNum*ones(nnz(model.SConsistentRxnBool),1);
+
+        %upper bounds on net flux
+        ub = model.ub;
+        ub(model.inactiveRxn)=0; %no flux of reactions that must be inactive
+        ubz = ub(model.SConsistentRxnBool);
+        ubw = ub(~model.SConsistentRxnBool);
+        
+        %upper bound on consumption/production approximation
+        ubr = param.bigNum*ones(m,1);
+        
+        %upper bound on sum of rate of consumption + production
+        ubs = param.bigNum*ones(m,1);
+        ubs(model.absentMet)=0;
+        
+        cardProb.ub = [ubp;ubq;ubz;ubw;ubr;ubs];
+        
+        cardProb.c = [...
+            zeros(nIntRxn,1);...%one norm weights implemented below
+            zeros(nIntRxn,1);...%one norm weights implemented below
+            osense*model.c( model.SConsistentRxnBool);...
+            osense*model.c(~model.SConsistentRxnBool);...
+            zeros(2*m,1)];
+        
+        cardProb.osense = 1;%minimise by default
+        
+        %maximisation of cardinality via net rate of consumption + production
+        if any(model.h0(~model.SConsistentMetBool)~=0)
+            error('No optimisation of cardinality of dummy metabolites')
+        end
+        h0neg  = model.h0(model.SConsistentMetBool);
+        h0neg(h0neg>0) = 0;
+        
+        %minimisation of cardinality via sum of rate of consumption + production
+        h0pos  = model.h0(model.SConsistentMetBool);
+        h0pos(h0pos<0) = 0;
+        
+        if 1
+            %                       p,q                                        z                                          w            r           s
+            wSign = [zeros(2*nIntRxn,1);sign(model.g0(model.SConsistentRxnBool));sign(model.g0(~model.SConsistentRxnBool)); sign(h0neg); sign(h0pos)];
+            w     = [zeros(2*nIntRxn,1);     model.g0(model.SConsistentRxnBool) ;     model.g0(~model.SConsistentRxnBool) ;       h0neg;      h0pos];
+        else
+            %                       p,q                                        z                                          w            r                                        s
+            wSign = [zeros(2*nIntRxn,1);sign(model.g0(model.SConsistentRxnBool));sign(model.g0(~model.SConsistentRxnBool)); sign(h0neg); sign(model.h0(model.SConsistentMetBool))];
+            w     = [zeros(2*nIntRxn,1);     model.g0(model.SConsistentRxnBool) ;     model.g0(~model.SConsistentRxnBool) ;       h0neg;      model.h0(model.SConsistentMetBool)];
+        end
+        
+        cardProb.p = wSign ==   1;%minimisation
+        cardProb.q = wSign ==  -1;%maximisation
+        cardProb.r = wSign ==   0;
+        
+        bool = cardProb.p | cardProb.q  | cardProb.r;
+        if ~all(bool)
+            error('cardProb.p | cardProb.q  | cardProb.r must be all true')
+        end
+        
+        cardProb.k = zeros(3*nIntRxn+nExRxn+2*m,1);
+        cardProb.k(cardProb.p,1) =  w(cardProb.p);
+        cardProb.d = zeros(3*nIntRxn+nExRxn+2*m,1);
+        cardProb.d(cardProb.q,1) = -w(cardProb.q);
+        
+        %one norm weight on individual variables
+        %no one-norm regularisation of net rate of consumption + production, or sum of rate of consumption + production
+        oneNormWeight = [...
+            model.beta*model.g1(model.SConsistentRxnBool);... % p
+            model.beta*model.g1(model.SConsistentRxnBool);... % q
+            zeros(nIntRxn,1);...                   % z  
+            zeros(nExRxn,1);...                    % w
+            zeros(m,1);...                         % r no one-norm regularisation of sum of rate of consumption + production
+            zeros(m,1)];                           % s no one-norm regularisation of net rate of consumption + production
+        
+        %problem.o `size(A,2) x 1` strictly positive weight vector on minimise `||[x;y;z]||_1`
+        cardProb.o = zeros(3*nIntRxn+nExRxn+2*m,1);
+        cardProb.o(cardProb.p,1) =  oneNormWeight(cardProb.p);
+        cardProb.o(cardProb.q,1) =  oneNormWeight(cardProb.q);
+        cardProb.o(cardProb.r,1) =  oneNormWeight(cardProb.r);
+        
+        if any(cardProb.lb>cardProb.ub)
+            error('cardProb.lb>cardProb.ub')
+        end
+        sol = optimizeCardinality(cardProb, param);
+        
+        solution.stat = sol.stat;
+        
+        %check if the solution is an accurate steady state
+        bool = model.SConsistentMetBool & model.csense == 'E';
+        v = NaN*ones(nRxn,1);
+        v(model.SConsistentRxnBool)  = sol.xyz(2*nIntRxn+1:3*nIntRxn,1);
+        v(~model.SConsistentRxnBool) = sol.xyz(3*nIntRxn+1:3*nIntRxn+nExRxn,1);
+        res = norm(model.S(bool,:)*v - model.b(bool),inf);
+        if res>feasTol
+            disp(res)
+            error('optimizeCardinality solution is not a steady state')
+        end
+                
+        if solution.stat==1 || solution.stat==3
+            %zeroing out small magnitudes below feasTol
+            sol.xyz(abs(sol.xyz)<feasTol/10)=0;
+            
+            solution.p = NaN*ones(nRxn,1);
+            solution.p(model.SConsistentRxnBool) = sol.xyz(1:nIntRxn,1);
+            solution.q = NaN*ones(nRxn,1);
+            solution.q(model.SConsistentRxnBool) = sol.xyz(nIntRxn+1:2*nIntRxn,1);
+            solution.v = NaN*ones(nRxn,1);
+            solution.v(model.SConsistentRxnBool)  = sol.xyz(2*nIntRxn+1:3*nIntRxn,1);
+            solution.v(~model.SConsistentRxnBool) = sol.xyz(3*nIntRxn+1:3*nIntRxn+nExRxn,1);
+            solution.v(abs(solution.v)<feasTol) = 0;
+            solution.r = sol.xyz(3*nIntRxn+nExRxn+1:3*nIntRxn+nExRxn+m,1);
+            solution.s = sol.xyz(3*nIntRxn+nExRxn+m+1:3*nIntRxn+nExRxn+2*m,1);
+        else
+            sol
+            error('optimizeCardinality did not solve')
+        end
+ 
 end
 
 cycleFreeFluxParam.debug=param.debug;
@@ -1395,20 +1428,12 @@ cycleFreeFluxParam.epsilon = param.epsilon;
 
 if solution.stat==1
     if any(strcmp(param.thermoConsistencyMethod,{'cycleFreeFlux','signProduct','cardOpt','v2QNty'}))
-        
-        %check if the solution provided is an accurate steady state
-        bool = model.SConsistentMetBool & model.csense == 'E';
-        res = norm(model.S(bool,:)*solution.v - model.b(bool),inf);
-        if res>feasTol
-            disp(res)
-            error('Solution provided is not a steady state')
-        end
-        
+               
         if strcmp(param.thermoConsistencyMethod,'cycleFreeFlux')
             
             %sometimes the cycle free flux test is infeasible
             try
-                
+                %calls cycleFreeFlux
                 [thermoConsistentFluxBool,solutionConsistency] = checkThermoFeasibility(model,solution,param.thermoConsistencyMethod,cycleFreeFluxParam);
                 
                 %small non-zeros already eliminated above
@@ -1441,9 +1466,13 @@ if solution.stat==1
                     %accept the repaired thermodynamically feasible flux
                     solution.v = solutionConsistency.vThermo;
                     solution.dvThermo = solutionConsistency.dvThermo;
+                    %identify the fluxes that were non-zero then add 1 to forward and reverse
+                    bool = solutionConsistency.vThermo~=0;
                     solution.p = max(0,solutionConsistency.vThermo);
+                    solution.p(bool)=solution.p(bool)+1;
                     solution.p(~model.SConsistentRxnBool) = NaN;
                     solution.q = -min(0,solutionConsistency.vThermo);
+                    solution.q(bool)=solution.q(bool)+1;
                     solution.q(~model.SConsistentRxnBool) = NaN;
                     
                     switch param.formulation
@@ -1457,7 +1486,8 @@ if solution.stat==1
                             if param.rpos
                                 solution.r = F*solution.p(model.SConsistentRxnBool) + R*solution.q(model.SConsistentRxnBool);
                             else
-                                solution.r = (F+R)*solution.v(model.SConsistentRxnBool);
+                                solution.r = (F+R)*solution.v(model.SConsistentRxnBool);  %pre summer 22
+                                %solution.r = (F-R)*(solution.p(model.SConsistentRxnBool) - solution.q(model.SConsistentRxnBool));
                             end
                             solution.s = (F+R)*(solution.p(model.SConsistentRxnBool) + solution.q(model.SConsistentRxnBool));
                     end

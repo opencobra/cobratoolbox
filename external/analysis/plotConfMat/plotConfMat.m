@@ -35,6 +35,7 @@ confpercent = 100*confmat./repmat(sum(confmat, 1),numlabels,1);
 % plotting the colors
 imagesc(confpercent);
 title(sprintf('Accuracy: %.2f%%', 100*trace(confmat)/sum(confmat(:))));
+%ylabel('Predicted Class'); xlabel('Target Class');
 ylabel('Predicted Class'); xlabel('Target Class');
 
 % set the colormap

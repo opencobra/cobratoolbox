@@ -253,7 +253,7 @@ switch options.solver
     case 'thermoKernel'
         %save('debug_thermoKernel','model','options')
         %return
-        [tissueModel, ~, ~] = thermoKernel(model, options.activeInactiveRxn, options.rxnWeights, options.presentAbsentMet, options.metWeights, options);
+        [tissueModel, tissueModel.thermoModelMetBool, tissueModel.thermoModelRxnBool] = thermoKernel(model, options.activeInactiveRxn, options.rxnWeights, options.presentAbsentMet, options.metWeights, options);
         funcModel = 0; %already done in thermoKernel
 end
 

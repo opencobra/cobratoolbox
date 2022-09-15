@@ -41,7 +41,7 @@ function solution = optimizeCardinality(problem, param)
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
 %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
-%                   * .epsilon - stopping criteria - (Default value = 1e-6)
+%                   * .epsilon - stopping criteria - (Default value = feasTol)
 %                   * .theta - starting parameter of the approximation (Default value = 0.5) 
 %                              For a sufficiently large parameter, the Capped-L1 approximate problem
 %                              and the original cardinality optimisation
@@ -87,10 +87,12 @@ solution.y = [];
 solution.z = [];
 solution.stat = 1;
 
+feasTol = getCobraSolverParams('LP', 'feasTol');
+
 %% Check inputs
 if ~exist('param','var') || isempty(param)
     param.nbMaxIteration = 100;
-    param.epsilon = getCobraSolverParams('LP', 'feasTol');
+    param.epsilon = feasTol;
     param.theta   = 0.5;%can be volatile, if so try 0.1
     param.thetaMultiplier   = 1.5;
     param.warmStartMethod = 'random';
@@ -108,7 +110,7 @@ if ~isfield(param,'nbMaxIteration')
     param.nbMaxIteration = 100;
 end
 if ~isfield(param,'epsilon')
-    param.epsilon = getCobraSolverParams('LP', 'feasTol');
+    param.epsilon = feasTol;
 end
 if ~isfield(param,'theta')
     param.theta   = 0.5;
@@ -119,7 +121,7 @@ end
 if ~isfield(param,'thetaMax')
     param.thetaMax   = 250;%needs to be resonable size esp for large models
 end
-feasTol = getCobraSolverParams('LP', 'feasTol');
+
 if isfield(param,'eta') == 0
     param.eta = feasTol;
 end
@@ -161,19 +163,19 @@ end
 
 if isfield(problem,'lambda')
     problem.lambda0 = problem.lambda;
-    problem.lambda1 = problem.lambda0/10;
+    problem.lambda1 = feasTol;
 end
 if isfield(problem,'delta')
     problem.delta0 = problem.delta;
-    problem.delta1 = problem.delta0/10;
+    problem.delta1 = feasTol;
 end
 
 %set local parameters on zero norm for capped L1
 if isfield(problem,'lambda0') && ~isfield(problem,'lambda1')
-    problem.lambda1 = problem.lambda0/10;   
+    problem.lambda1 = feasTol;   
 end
 if isfield(problem,'delta0') && ~isfield(problem,'delta1')
-    problem.delta1 = problem.delta0/10;   
+    problem.delta1 = feasTol;   
 end
 
 %global paramter on one-norm of variables not cardinality optimised
@@ -735,18 +737,23 @@ switch param.warmStartMethod
 end
 %Compute (x_bar,y_bar,z_bar), i.e. subgradient of second DC component  (z_bar = 0)
 
-% subgradient of -lambda1*abs(x) + lambda0*diag(k)*(max{1,theta*abs(x)} -1)
+
+% :math:`min c'(x, y, z) + lambda_0*k.||*x||_0 + lambda_1*o.*||x||_1
+% .                      -  delta_0*d.||*y||_0 +  delta_1*o.*||y||_1` 
+% .                                            +  alpha_1*o.*||z||_1` 
+
+% subgradient of lambda0*diag(k)*(max{1,theta*abs(x)} -1) - lambda1*abs(x) 
 if 0
     x(abs(x) <= 1/theta) = 0;
-    x_bar = -lambda1*o(1:p).*sign(x) +  theta*lambda0*k.*sign(x);
+    x_bar = theta*lambda0*k.*sign(x) -lambda1*o(1:p).*sign(x);
 else
     x_bar = -lambda1*o(1:p).*sign(x);
     x(abs(x) <= 1/theta) = 0;
     x_bar = x_bar +  theta*lambda0*k.*sign(x);
 end
-
-% subgradient of -delta1*abs(y) + theta*delta0*diag(d)*abs(y)
-y_bar = -delta1*o(p+1:p+q).*sign(y)  +  theta*delta0*d.*sign(y);
+ 
+% subgradient of theta*delta0*diag(d)*abs(y) - delta1*abs(y)
+y_bar = theta*delta0*d.*sign(y) - delta1*o(p+1:p+q).*sign(y);
 
 % Create the linear sub-program that one needs to solve at each iteration, only its
 % objective function changes, the constraint set remains.
