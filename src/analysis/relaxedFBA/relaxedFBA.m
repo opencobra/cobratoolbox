@@ -39,48 +39,40 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %    param:    Structure optionally containing the relaxation parameters:
 %
 %                      * .internalRelax:
-%
 %                        * 0 = do not allow to relax bounds on internal reactions
 %                        * 1 = do not allow to relax bounds on internal reactions with finite bounds
 %                        * {2} = allow to relax bounds on all internal reactions
 %
 %                      * .exchangeRelax:
-%
 %                        * 0 = do not allow to relax bounds on exchange reactions
 %                        * 1 = do not allow to relax bounds on exchange reactions of the type [0,0]
 %                        * {2} = allow to relax bounds on all exchange reactions
 %
 %                      * .steadyStateRelax:
-%
 %                        *    0 = do not allow to relax the steady state constraint S*v = b
 %                        *  {1} = allow to relax the steady state constraint S*v = b
 %
 %                      * .toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked
-%
 %                        * toBeUnblockedReactions(i) = 1 : impose v(i) to be positive
 %                        * toBeUnblockedReactions(i) = -1 : impose v(i) to be negative
 %                        * toBeUnblockedReactions(i) = 0 : do not add any constraint (default)
 %
 %                      * .excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation
-%
 %                        * excludedReactions(i) = false : allow to relax bounds on reaction i (default)
 %                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i 
 %
 %                      * .excludedReactionLB - nRxns x 1 bool vector indicating
 %                      the reactions with lower bounds to be excluded from
 %                      relaxation (overridden by excludedReactions)
-%
 %                        * excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)
 %                        * excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i 
 %
 %                      * .excludedReactionUB - nRxns x 1 bool vector indicating
 %                      the reactions with upper bounds to be excluded from relaxation (overridden by excludedReactions)
-%
 %                        * excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)
 %                        * excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i 
 %
 %                      * .excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation
-%
 %                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i (default)
 %                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
 %
@@ -99,9 +91,8 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                     the algorithm is useful when trying different values
 %                     of theta to start with the appropriate parameter
 %                     giving the lowest cardinality solution.
-%                     * .relaxedPrintLevel (Default = 0) Printing information on relaxed reactions
-%                     * .maxRelaxR (Default = 1e4), maximum relaxation
-%                     of any bound or equality constraint permitted
+%                     * .relaxedPrintLevel (Default = 0) Printing information on relaxed reaction bounds and steady state constraints
+%                     * .maxRelaxR (Default = 1e4), maximum relaxation of any bound or equality constraint permitted
 %
 % OUTPUT:
 %    solution:       Structure containing the following fields:
@@ -126,6 +117,8 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 if isfield(model,'E')
     issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
 end
+
+feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~isfield(model,'S')
     %relax generic LP problem ,e.g.
@@ -159,7 +152,7 @@ if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
 if ~isfield(param,'maxRelaxR')
-    param.maxRelaxR = 1e4; %TODO - check this for multiscale models
+    param.maxRelaxR = 1/feasTol; %TODO - check this for multiscale models
 end
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models
@@ -217,7 +210,7 @@ if isfield(param,'excludedReactionLB') == 0
 end
 %TODO properly incorporate inf bounds
 %add a large finite lower bound here
-model.lb(model.lb==-inf) = -1e6;
+model.lb(model.lb==-inf) = -1/feasTol;
 %use this to override some other assignment
 excludedReactionLBTmp=param.excludedReactionLB | model.lb==-inf;
 
@@ -228,7 +221,7 @@ if isfield(param,'excludedReactionUB') == 0
     param.excludedReactionUB = false(nRxns,1);
 end
 %add a large finite upper bound here
-model.ub(model.ub==inf) = 1e6;
+model.ub(model.ub==inf) = 1/feasTol;
 %use this to override some other assignment
 excludedReactionUBTmp=param.excludedReactionUB | model.ub==inf;
 
@@ -250,8 +243,7 @@ if isfield(param,'nbMaxIteration') == 0
 end
 
 if isfield(param,'epsilon') == 0
-    feasTol = getCobraSolverParams('LP', 'feasTol');
-    param.epsilon=feasTol*100;
+    param.epsilon=feasTol;
 end
 
 if isfield(param,'theta') == 0
@@ -353,10 +345,10 @@ end
 
 %set global parameters on zero norm if they do not exist
 if ~isfield(param,'alpha') && ~isfield(param,'alpha0')
-    param.alpha = 10; %weight on relaxation of bounds of reactions
+    param.alpha = 1; %weight on relaxation of bounds of reactions
 end
 if ~isfield(param,'lambda') && ~isfield(param,'lambda0')
-    param.lambda = 10;  %weight on relaxation of steady state constraints
+    param.lambda = 1;  %weight on relaxation of steady state constraints
 end
 if ~isfield(param,'gamma') && ~isfield(param,'gamma0')
     %default should not be to aim for zero norm flux vector if the problem is infeasible at the begining 
@@ -376,15 +368,14 @@ end
 
 %set local paramters on one norm for capped L1
 if ~isfield(param,'alpha1')
-    param.alpha1 = param.alpha0/10; 
+    param.alpha1 = feasTol; 
 end
 if ~isfield(param,'lambda1')
-    param.lambda1 = param.lambda0/10;    
+    param.lambda1 = feasTol;    
 end
 if ~isfield(param,'gamma1')
-    %always include some regularisation on the flux rates to keep it well
-    %behaved
-    param.gamma1 = 1e-6 + param.gamma0/10;   
+    %some regularisation on the flux rates to keep it well behaved
+    param.gamma1 = feasTol;   
 end
 
 %Combine excludedReactions with internalRelax and exchangeRelax
@@ -426,6 +417,9 @@ end
 %override
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
+if param.printLevel>0
+    disp(param)
+end
 
 %test if the problem is feasible or not
 FBAsolution = optimizeCbModel(model);
@@ -441,17 +435,34 @@ if FBAsolution.stat == 1 && ~any(param.toBeUnblockedReactions)
 else
     
     %too time consuming
-    if any(~isfinite(model.S),'all')
-        [I,J]=find(~isfinite(model.S))
-        error('model.S has infinite entries')
-    end
-    if any(~isfinite(model.b))
-        [I,J]=find(~isfinite(model.b))
-        error('model.b has infinite entries')
-    end
-    if any(~isfinite(model.c))
-        [I,J]=find(~isfinite(model.c))
-        error('model.c has infinite entries')
+    if isMATLABReleaseOlderThan('R2022a')
+        if size(model.S,1)*size(model.S,2)<=1e4
+            if any(~isfinite(model.S),'all')
+                [I,J]=find(~isfinite(model.S))
+                error('model.S has non-finite entries')
+            end
+            if any(~isfinite(model.b))
+                [I,J]=find(~isfinite(model.b))
+                error('model.b has non-finite entries')
+            end
+            if any(~isfinite(model.c))
+                [I,J]=find(~isfinite(model.c))
+                error('model.c has non-finite entries')
+            end
+        end
+    else
+        if ~allfinite(model.S)
+            [I,J]=find(~isfinite(model.S))
+            error('model.S has non-finite entries')
+        end
+        if ~allfinite(model.b)
+            [I,J]=find(~isfinite(model.b))
+            error('model.b has non-finite entries')
+        end
+        if ~allfinite(model.c)
+            [I,J]=find(~isfinite(model.c))
+            error('model.c has non-finite entries')
+        end
     end
 
     solution = relaxFBA_cappedL1(model,param);
@@ -495,7 +506,7 @@ else
                         printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
                     end
                     if param.relaxedPrintLevel>0 && any(abs(solution.r)>=feasTol)
-                        fprintf('%s\n','The  steady state constraint on this metabolite had to be relaxed:')
+                        fprintf('%s\n','The  steady state constraints on these metabolites had to be relaxed:')
                         disp(model.mets(abs(solution.r)>=feasTol));
                     end
                 end

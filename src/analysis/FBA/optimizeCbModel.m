@@ -45,8 +45,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
 %
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
-%                         * g0 - `n x 1` weights on zero norm
-%                         * g1 - `n x 1` weights on one norm
+%                         * g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
+%                         * g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g2 - `n x 1` weights on two norm
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
@@ -54,7 +54,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                       parts of the objective are always assumed to be
 %                       minimised.
 %
-%    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector}, where `[m,n]=size(S)`;
+%    minNorm:           {(0), 'one', 'zero', > 0 , n x 1 vector, 'optimizeCardinality'}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP
 %                       'one'  Minimise the Taxicab Norm using LP.
 %
@@ -66,6 +66,7 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                               ~& lb \leq v \leq ub
 %
 %                       A LP solver is required.
+
 %                       'zero' Minimize the cardinality (zero-norm) of v
 %
 %                       .. math::
@@ -85,6 +86,9 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                          European Journal of Operational Research, 2014"
 %                          http://dx.doi.org/10.1016/j.ejor.2014.11.031
 %                          A LP solver is required.
+%
+%                       'optimizeCardinality' as for 'zero' option but uses
+%                       model.g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
 %
 %                       The remaining options work only with a valid QP solver:
 %
@@ -107,6 +111,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                          s.t. ~& S v = b \\
 %                               ~& c^T v = f \\
 %                               ~& lb \leq v \leq ub
+%
+
 %
 %    allowLoops:        {0,(1)} If false, then instead of a conventional FBA,
 %                       the solver will run an MILP version which does not allow
