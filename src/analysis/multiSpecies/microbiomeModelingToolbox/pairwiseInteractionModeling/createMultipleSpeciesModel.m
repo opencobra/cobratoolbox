@@ -16,7 +16,7 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %
 % USAGE:
 %
-%    [modelJoint] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels, 'modelHost', modelHost, 'nameTagHost', nameTagHost)
+%    [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %
 % INPUTS:
 %    models:            cell array of COBRA models(at least one).
@@ -37,6 +37,8 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %                       included in the joined model. If false, empty fields are created
 %                       instead (default:false). Note: merging genes is time-consuming
 %                       and may crash certain models.
+%    remCyclesFlag:     If true, the function will attempt to remove futile
+%                       cycles that appear after merging the models (default: false).
 %
 % OUTPUT:
 %    modelJoint:        model structure for joint model
@@ -53,6 +55,7 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %         from KBase database that have [e0] instead of [e] as compartment IDs
 %       - Almut Heinken, 01/2020-remove futile cycles in multi-species
 %       AGORA models
+%       - Almut Heinken, 07/2022-made futile cycles removal optional
 %
 % NOTE:
 %    This function assumes, that exchange reactions are identified by
@@ -79,6 +82,7 @@ parser.addParameter('nameTagsModels', {}, @iscell);
 parser.addParameter('modelHost', {}, @isstruct);
 parser.addParameter('nameTagHost', '', @(x) ischar(x) || iscell(x))
 parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
+parser.addParameter('remCyclesFlag', false, @(x) isnumeric(x) || islogical(x))
 
 parser.parse(models, varargin{:});
 
@@ -87,6 +91,7 @@ nameTagsModels = parser.Results.nameTagsModels;
 modelHost = parser.Results.modelHost;
 nameTagHost = parser.Results.nameTagHost;
 mergeGenesFlag = parser.Results.mergeGenesFlag;
+remCyclesFlag = parser.Results.remCyclesFlag;
 
 if isempty(models)
    error('Please enter at least one model!')
@@ -138,32 +143,23 @@ if ~isempty(modelHost)
 metIndices =~cellfun(@isempty, regexp(modelHost.mets, '\[e0\]$'));
 modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '[e0]', '[e]');
 end
-%% Remove futile cycles that may appear after joining
-currentDir=pwd;
-fileDir = fileparts(which('ReactionTranslationTable.txt'));
-cd(fileDir);
-metaboliteDatabase = readtable('MetaboliteDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-metaboliteDatabase=table2cell(metaboliteDatabase);
-database.metabolites=metaboliteDatabase;
-for i=1:size(database.metabolites,1)
-    database.metabolites{i,5}=num2str(database.metabolites{i,5});
-end
-reactionDatabase = readtable('ReactionDatabase.txt', 'Delimiter', 'tab','TreatAsEmpty',['UND. -60001','UND. -2011','UND. -62011'], 'ReadVariableNames', false);
-reactionDatabase=table2cell(reactionDatabase);
-database.reactions=reactionDatabase;
-cd(currentDir);
+%% Remove futile cycles that may appear after joining (optional)
 
-unionRxns={};
-for i = 1:modelNumber
-    model=models{i, 1};
-    unionRxns=vertcat(unionRxns,model.rxns);
-end
-unionRxns=unique(unionRxns);
-for i = 1:modelNumber
-    model=models{i, 1};
-    biomassReaction=model.rxns(find(strncmp(model.rxns, 'bio', 3)));
-    model = removeFutileCycles(model, biomassReaction, database,unionRxns);
-    models{i, 1} = model;
+if remCyclesFlag
+    database = loadVMHDatabase;
+
+    unionRxns={};
+    for i = 1:modelNumber
+        model=models{i, 1};
+        unionRxns=vertcat(unionRxns,model.rxns);
+    end
+    unionRxns=unique(unionRxns);
+    for i = 1:modelNumber
+        model=models{i, 1};
+        biomassReaction=model.rxns(find(strncmp(model.rxns, 'bio', 3)));
+        model = removeFutileCycles(model, biomassReaction, database,unionRxns);
+        models{i, 1} = model;
+    end
 end
 %% define some variables
 eTag = 'u';

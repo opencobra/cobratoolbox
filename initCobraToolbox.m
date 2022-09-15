@@ -224,7 +224,7 @@ if installedGit
         %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
         %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
         %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive');% 23/9/21 RF submodules point to master, don't pull in remote changes
+        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
         %[status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
         

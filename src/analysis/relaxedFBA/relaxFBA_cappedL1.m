@@ -76,6 +76,7 @@ end
 stop = false;
 solution.stat = 1;
 
+feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if exist('param','var')
     if isfield(param,'excludedReactions') == 0
@@ -95,11 +96,6 @@ if exist('param','var')
         param.nbMaxIteration = 1000;
     end
 
-    if isfield(param,'epsilon') == 0
-        feasTol = getCobraSolverParams('LP', 'feasTol');
-        param.epsilon = feasTol*100;
-    end
-
     if isfield(param,'gamma0') == 0
         param.gamma0 = 0;    %trade-off parameter of l0 part v
     end
@@ -108,27 +104,29 @@ if exist('param','var')
         %Small positive penalty seems to be important to ensure algorithm
         %is numerically stable for small networks.
         %TODO: why?
-        param.gamma1 = 1e-6;     %trade-off parameter of l1 part v
+        param.gamma1 = feasTol*100;     %trade-off parameter of l1 part v
+        
     end
 
     if isfield(param,'lambda0') == 0
-        param.lambda0 = 10;   %trade-off parameter of l0 part of r
+        param.lambda0 = 1;   %trade-off parameter of l0 part of r
     end
 
     if isfield(param,'lambda1') == 0
-        param.lambda1 = 1;    %trade-off parameter of l1 part of r
+        param.lambda1 = feasTol*100;    %trade-off parameter of l1 part of r
     end
 
     if isfield(param,'alpha0') == 0
-        param.alpha0 = 10;   %trade-off parameter of l0 part of p and q
+        param.alpha0 = 1;   %trade-off parameter of l0 part of p and q
     end
 
     if isfield(param,'alpha1') == 0
-        param.alpha1 = 1;    %trade-off parameter of l1 part of p and q
+        param.alpha1 = feasTol*100;    %trade-off parameter of l1 part of p and q
+   
     end
-
-    if isfield(param,'epsilon') == 0
-        param.epsilon = 10e-6; %stopping criterion
+  
+    if isfield(param,'epsilon') == 0  %stopping criterion
+        param.epsilon = feasTol*100;
     end
 
     if isfield(param,'theta') == 0
@@ -137,7 +135,13 @@ if exist('param','var')
 end
 
 if 0
-    param
+    param.gamma1 = 0; % caffeine
+    param.lambda1 = 0; % caffeine
+    param.alpha1 = 0; % caffeine
+end
+
+if param.printLevel>1
+    disp(param)
 end
 
 [nbMaxIteration,epsilon,theta]      = deal(param.nbMaxIteration,param.epsilon,param.theta);
@@ -208,7 +212,7 @@ while nbIteration < nbMaxIteration && stop ~= true
         v_bar = -gamma1*sign(v) + sign(v)*gamma0*theta;
         
         r(abs(r) < one_over_theta) = 0;
-        r_bar = -lamda1*sign(r) + sign(r)*lambda0*theta;
+        r_bar = -lambda1*sign(r) + sign(r)*lambda0*theta;
         
         p(p < one_over_theta) = 0;
         p_bar = alpha1*sign(p) + sign(p)*alpha0*theta;
@@ -253,7 +257,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                 if nbIteration==0
                     fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
                 end
-                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(v),nnz(r),nnz(p),nnz(q));
+                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(abs(v)>feasTol),nnz(abs(r)>feasTol),nnz(p>feasTol),nnz(q>feasTol));
             end
             
             if (error_x < epsilon) || (error_obj < epsilon)
@@ -283,7 +287,7 @@ while nbIteration < nbMaxIteration && stop ~= true
                 if nbIteration==0
                     fprintf('%5s%12s%12s%12s%12s%10s%10s%10s%10s\n','itn','obj','obj_old','err(obj)','err(x)','card(v)','card(r)','card(p)','card(q)');
                 end
-                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(v),nnz(r),nnz(p),nnz(q));
+                fprintf('%5u%12.5g%12.5g%12.5g%12.5g%10u%10u%10u%10u\n',nbIteration,obj_new,obj_old,error_obj,error_x,nnz(abs(v)>feasTol),nnz(abs(r)>feasTol),nnz(p>feasTol),nnz(q>feasTol));
             end
             stop = true;
     end

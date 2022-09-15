@@ -65,7 +65,7 @@ for i = 1:size(microbeNames, 1)
 
     % get diet(s) to load
     diet = readInputTableForPipeline(dietFilePath);
-    if isnumeric(cell2mat(diet(2:end,2)))
+    if isnumeric(diet{2,2})
         loadDiet = dietFilePath;
         if adaptMedium
             [diet] = adaptVMHDietToAGORA(loadDiet,'AGORA');
