@@ -45,7 +45,7 @@ end
 if ~exist('KEGGMatrixLoad', 'var')
     KEGGMatrixLoad = 1;
 end
-if KEGGMatrixLoad
+if KEGGMatrixLoad && exist('KEGGMatrix','file')
     load KEGGMatrix
 else
     KEGG = createUniversalReactionModel2(KEGGFilename, KEGGBlackList);
@@ -64,7 +64,7 @@ end
 
 % merge model with KEGG reaction list for each defined compartment
 modelExpanded = model;
-if KEGGMatrixLoad
+if KEGGMatrixLoad && exist('KeggExchangeRxnM','file')
     load KeggExchangeRxnM
 else
     KEGGOri = KEGG;

@@ -129,8 +129,10 @@ for jTest = 1:2
     % read in the model
     model2 = readCbModel('test_sbml_obj.xml');    
     %We are creating a few default fields in readCbModel. 
-    DefaultFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules'};
+    DefaultFields = {'S','b','csense','lb','ub','c','osense','rxns','mets','genes','rules','subSystems'};
 
+    model2 = convertOldStyleModel(model2);
+    
     modelFields = fieldnames(model);    
     modelFields = setdiff(modelFields,'rxnGeneMat'); %rxnGeneMat did not contain any information and is not created by readCbModel.
     for i = 1:numel(modelFields)
