@@ -31,6 +31,9 @@ function [fragmentedMol,decomposableBool,inchiExistBool] = autoFragment(inchi,ra
 %
 % dGPredictor
 % https://github.com/maranasgroup/dGPredictor
+% Wang L, Upadhyay V, Maranas CD (2021) dGPredictor: Automated fragmentation method for metabolic reaction free 
+% energy prediction and de novo pathway design. PLOS Computational Biology 17(9): e1009448. https://doi.org/10.1371/journal.pcbi.1009448
+%
 
 % Author Ronan M.T. Fleming 2021
 

@@ -46,8 +46,6 @@ if reset
     catch
         warning('pyenv not initialised, no need to reset')
     end
-
-
 end
 
 switch environmentName

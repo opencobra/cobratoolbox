@@ -911,79 +911,82 @@ if solution.stat ==1
     %zero out small values 
     v1(abs(v1)<feasTol/100)=0;
 else
+
     if param.debug
         fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
     end
-    bool = lp.lb~=lp.ub & lp.lb~=0;
-    lpRelaxed = lp;
-    lpRelaxed.ub(bool) = lp.ub(bool) + feasTol*10;
-    lpRelaxed.lb(bool) = lp.lb(bool) - feasTol*10;
-    solution = solveCobraLP(lpRelaxed);
-    if solution.stat==1
-        v1 = solution.full(1:n);
-        if param.debug
-            fprintf('%s\n','...solution found.')
-        end
-    else
-        fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
-        disp(solution)
-        save('debug_cycleFreeFlux_infeasibility.mat')
-        
-        %%
-        %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
-        infeasModel=lp;
-        infeasModel.S = lp.A;
-        infeasModel = rmfield(infeasModel,'A');
-        infeasModel.SIntRxnBool=true(size(lp.A,2),1);
-        
-        param.printLevel = 1;
-        param.steadyStateRelax = 1; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 0;
-        param.exchangeRelax = 0;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 0;
-        param.exchangeRelax = 2;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        
-        param.printLevel = 1;
-        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 1;
-        param.exchangeRelax = 0;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
-        Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
-        %%
-        norm(model_S*v0-model_b,'inf')
-        
-        belowLowerBound = v0-model_lb;
-        belowLowerBound(belowLowerBound>0)=0;
-        min(belowLowerBound)
-        
-        aboveUpperBound = model_ub-v0;
-        aboveUpperBound(aboveUpperBound>0)=0;
-        min(aboveUpperBound)
-        
-        solution
-        
+    if param.debug && exist('lp','var')
+        bool = lp.lb~=lp.ub & lp.lb~=0;
         lpRelaxed = lp;
-        lpRelaxed.ub = lp.ub + feasTol*10;
-        lpRelaxed.lb = lp.lb - feasTol*10;
-        solutionRelaxed1 = solveCobraLP(lpRelaxed)
-        
-        lpRelaxed.lb(:) = -10;
-        lpRelaxed.ub(:) =  10;
-        solutionRelaxed2 = solveCobraLP(lpRelaxed)
-        
-        lpRelaxed.lb(:) = -inf;
-        lpRelaxed.ub(:) =  inf;
-        solutionRelaxed3 = solveCobraLP(lpRelaxed)
-        
-        error('cycleFreeFlux: No solution found, try using a different solver.');
+        lpRelaxed.ub(bool) = lp.ub(bool) + feasTol*10;
+        lpRelaxed.lb(bool) = lp.lb(bool) - feasTol*10;
+        solution = solveCobraLP(lpRelaxed);
+        if solution.stat==1
+            v1 = solution.full(1:n);
+            if param.debug
+                fprintf('%s\n','...solution found.')
+            end
+        else
+            fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
+            disp(solution)
+            save('debug_cycleFreeFlux_infeasibility.mat')
+            
+            %%
+            %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
+            infeasModel=lp;
+            infeasModel.S = lp.A;
+            infeasModel = rmfield(infeasModel,'A');
+            infeasModel.SIntRxnBool=true(size(lp.A,2),1);
+            
+            param.printLevel = 1;
+            param.steadyStateRelax = 1; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 0;
+            param.exchangeRelax = 0;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 0;
+            param.exchangeRelax = 2;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            
+            param.printLevel = 1;
+            param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 1;
+            param.exchangeRelax = 0;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
+            Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
+            %%
+            norm(model_S*v0-model_b,'inf')
+            
+            belowLowerBound = v0-model_lb;
+            belowLowerBound(belowLowerBound>0)=0;
+            min(belowLowerBound)
+            
+            aboveUpperBound = model_ub-v0;
+            aboveUpperBound(aboveUpperBound>0)=0;
+            min(aboveUpperBound)
+            
+            solution
+            
+            lpRelaxed = lp;
+            lpRelaxed.ub = lp.ub + feasTol*10;
+            lpRelaxed.lb = lp.lb - feasTol*10;
+            solutionRelaxed1 = solveCobraLP(lpRelaxed)
+            
+            lpRelaxed.lb(:) = -10;
+            lpRelaxed.ub(:) =  10;
+            solutionRelaxed2 = solveCobraLP(lpRelaxed)
+            
+            lpRelaxed.lb(:) = -inf;
+            lpRelaxed.ub(:) =  inf;
+            solutionRelaxed3 = solveCobraLP(lpRelaxed)
+            
+        end
     end
+    warning('cycleFreeFlux: No solution found.');
 end
 
 end

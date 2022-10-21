@@ -64,7 +64,11 @@ if ~isfield(param,'method')
     param.method='fastcc';
 end
 if ~exist('printLevel','var')
-    printLevel=0;
+    if ~isfield(param,'printLevel')
+        printLevel=0;
+    else
+        printLevel=param.printLevel;
+    end
 end
 if printLevel>0
     fprintf('%s\n','--- findFluxConsistentSubset START ----')
@@ -117,6 +121,9 @@ if (sol.stat == 1)
             if ~isfield(param,'LPsolver')
                 solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
                 param.LPsolver = solvers.LP{1};
+            end
+            if ~isfield(model,'rev')
+                model.rev = model.lb<0 & model.ub>0;
             end
             indFluxConsist = swiftcc(model.S, model.rev, param.LPsolver);
             fluxConsistentRxnBoolTemp(indFluxConsist) = 1;

@@ -56,6 +56,9 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %    options: 
 %                   *.directed - transition split into two oppositely
 %                                directed edges for reversible reactions
+%                                default: false
+%                   *.decompartmentalised - model without compartments
+%                                           default: false
 % OUTPUT:
 %    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
 %
@@ -92,7 +95,9 @@ end
 if ~isfield(options,'directed')
     options.directed=0;
 end
-
+if ~isfield(options,'decompartmentalised')
+    options.decompartmentalised=0;
+end
 if ~isfield(options,'sanityChecks')
     sanityChecks=0;
 else
@@ -101,10 +106,17 @@ end
 
 S = model.S; % Format inputs
 mets = model.mets;
+if length(unique(mets))~=length(mets)
+    error('duplicate metabolites')
+end
 rxns = model.rxns;
+if length(unique(rxns))~=length(rxns)
+    error('duplicate reactions')
+end
+
 lb = model.lb;
 ub = model.ub;
-clear model
+%clear model
 
 rxnfileDir = [regexprep(rxnfileDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
 
@@ -112,6 +124,9 @@ rxnfileDir = [regexprep(rxnfileDir,'(/|\\)$',''), filesep]; % Make sure input pa
 d = dir(rxnfileDir);
 d = d(~[d.isdir]);
 aRxns = {d.name}';
+if length(aRxns)~= length(unique(aRxns))
+    warning('duplicate atom mappings')
+end
 aRxns = aRxns(~cellfun('isempty',regexp(aRxns,'(\.rxn)$')));
 aRxns = regexprep(aRxns,'(\.rxn)$',''); % Identifiers for atom mapped reactions
 assert(~isempty(aRxns), 'Rxnfile directory is empty or nonexistent.');
@@ -124,6 +139,10 @@ end
 rbool = (ismember(rxns,aRxns)); % True for atom mapped reactions
 
 assert(any(rbool), 'No atom mappings found for model reactions.\nCheck that rxnfile names match reaction identifiers in rxns.');
+if any(~rbool)
+    fprintf('\nAtom mappings not found for %d model reactions:\n', sum(~rbool));
+    disp(rxns(~rbool))
+end
 fprintf('\nAtom mappings found for %d model reactions.\n', sum(rbool));
 fprintf('Generating atom transition network for reactions with atom mappings.\n\n');
 
@@ -149,11 +168,9 @@ for i = 1:length(rxns)
     rxn = rxns{i};
     
     if strcmp(rxn,'10FTHF7GLUtl')
-        pause(0.1)
     end
     
     if strcmp(rxn,'GGH_10FTHF7GLUl')
-        pause(0.1)
     end
     
     if options.directed
@@ -165,6 +182,12 @@ for i = 1:length(rxns)
     try
         % Read atom mapping from rxnfile
         [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnfileDir);
+        if options.decompartmentalised
+            for k=1:length(atomMets)
+                atomMets{k,1}=atomMets{k,1}(1:end-3);
+            end
+        end
+        
     catch ME
         disp(rxn)
         if bad ==0
@@ -190,6 +213,7 @@ for i = 1:length(rxns)
         if reactantBool(strcmp(atomMets,rxnMet))
             as(strcmp(mets,rxnMet)) = -max(instances(strcmp(atomMets,rxnMet)));
         else
+            
             as(strcmp(mets,rxnMet)) = max(instances(strcmp(atomMets,rxnMet)));
         end
     end
@@ -313,7 +337,10 @@ dATM.Edges.TransInstIndex= (1:nTransInstances)';
 rxnAtomMappedBool = ismember(rxns,dATM.Edges.Rxn); % True for reactions included in dATM
 metAtomMappedBool = ismember(mets,dATM.Nodes.Met); % True for reactions included in dATM
 
+%need to extract again because there may be problems reading an individual atom mapping
 N = sparse(S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
+mets = mets(metAtomMappedBool);
+rxns = rxns(rxnAtomMappedBool);
 
 [nMappedMets,nMappedRxns] = size(N);
 
@@ -334,21 +361,15 @@ if sanityChecks
 end
 
 %matrix to map each metabolite to one or more atoms
-[~,atoms2mets] = ismember(dATM.Nodes.Met,mets(metAtomMappedBool));
+[~,atoms2mets] = ismember(dATM.Nodes.Met,mets);
 M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
-[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,rxns(rxnAtomMappedBool));
+[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,rxns);
 Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
 %incidence matrix of directed atom transition multigraph
 Ti = incidence(dATM);
-
-%atomic decomposition
-res=M2Ai*M2Ai'*N - M2Ai*Ti*Ti2R;
-if max(max(abs(res)))~=0
-    error('Inconsistent directed atom transition multigraph')
-end
 
 if sanityChecks
     A = incidence(dATM);
@@ -448,6 +469,27 @@ if sanityChecks
         
         clear G D La;
     end
+end
+
+%atomic decomposition
+res=(M2Ai*M2Ai')*N - M2Ai*Ti*Ti2R;
+if max(max(abs(res)))~=0
+    N2  = (M2Ai*M2Ai')*M2Ai*Ti*Ti2R;
+    fprintf('%s\n','Inconsistency between reaction stoichiometry and atom mapped reactions (inconsistent stoichiometry?):')
+    for j=1:nMappedRxns
+        if any(res(:,j)~=0)
+            %fprintf('%s\n',rxns{j})
+            printRxnFormula(model,rxns{j});
+            fprintf('%s\t\t%s\t\t%s\n','res','N','N2')
+            for i=1:nMappedMets
+                if res(i,j)~=0
+                    fprintf('%i\t%s\t%i\t%s\t%i\t%s\n',full(res(i,j)),mets{i},full(N(i,j)),mets{i},full(N2(i,j)),mets{i})
+                end
+            end
+            fprintf('\n')
+        end
+    end
+    error('Inconsistent directed atom transition multigraph')
 end
 
 
