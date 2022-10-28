@@ -83,10 +83,12 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 % rxnAtomMappedBool `n x 1` boolean vector indicating atom mapped reactions
 % M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
 % Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
+%
+% The internal stoichiometric matrix may be decomposition into
+% N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;
+% where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
 
-
-% .. Authors: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015
-%               Ronan M. T. Fleming, 2020, 2021 revision.
+% .. Authors: - Hulda Haraldsdottir, Ronan M. T. Fleming, 2022.
 
 if ~exist('options','var')
     options=[];
@@ -114,39 +116,15 @@ if length(unique(rxns))~=length(rxns)
     error('duplicate reactions')
 end
 
+pat = '[' + lettersPattern(1) + ']';
+hBool = strcmp(model.mets,'h') | matches(model.mets,pat);
+
 lb = model.lb;
 ub = model.ub;
+[mbool,rbool] = findAtomMappedSubset(model,rxnfileDir);
 %clear model
 
-rxnfileDir = [regexprep(rxnfileDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
-
-% Get list of atom mapped reactions
-d = dir(rxnfileDir);
-d = d(~[d.isdir]);
-aRxns = {d.name}';
-if length(aRxns)~= length(unique(aRxns))
-    warning('duplicate atom mappings')
-end
-aRxns = aRxns(~cellfun('isempty',regexp(aRxns,'(\.rxn)$')));
-aRxns = regexprep(aRxns,'(\.rxn)$',''); % Identifiers for atom mapped reactions
-assert(~isempty(aRxns), 'Rxnfile directory is empty or nonexistent.');
-
-if any(strcmp(aRxns,'3AIBtm (Case Conflict)'))
-    aRxns{strcmp(aRxns,'3AIBtm (Case Conflict)')} = '3AIBTm'; % Debug: Ubuntu file manager "Files" renames file '3AIBTm.rxn' if the file '3AIBtm.rxn' is located in the same directory (issue for Recon 2)
-end
-
-% Extract atom mapped reactions
-rbool = (ismember(rxns,aRxns)); % True for atom mapped reactions
-
-assert(any(rbool), 'No atom mappings found for model reactions.\nCheck that rxnfile names match reaction identifiers in rxns.');
-if any(~rbool)
-    fprintf('\nAtom mappings not found for %d model reactions:\n', sum(~rbool));
-    disp(rxns(~rbool))
-end
-fprintf('\nAtom mappings found for %d model reactions.\n', sum(rbool));
 fprintf('Generating atom transition network for reactions with atom mappings.\n\n');
-
-mbool = any(S(:,rbool),2); % True for metabolites in atom mapped reactions
 
 S = S(mbool,rbool);
 mets = mets(mbool);
@@ -161,7 +139,7 @@ tMetNrs = [];
 tRxns = {};
 elements = {};
 
-bad = 0;
+model2=model;
 % Build atom transition network
 for i = 1:length(rxns)
     
@@ -190,12 +168,12 @@ for i = 1:length(rxns)
         
     catch ME
         disp(rxn)
-        if bad ==0
-            mkdir([pwd filesep 'not_parsed'])
+        if ~exist([rxnfileDir filesep 'not_parsed'],'dir')
+            mkdir([rxnfileDir filesep 'not_parsed'])
         end
         disp(ME.message)
         %mv FPGS7m.rxn bad/FPGS7m.rxn
-        [SUCCESS,~,~] = movefile([pwd filesep ME.message],[pwd filesep 'not_parsed' filesep ME.message]);
+        [SUCCESS,~,~] = movefile([rxnfileDir filesep ME.message],[rxnfileDir filesep 'not_parsed' filesep ME.message]);
         if SUCCESS
             fprintf('%s\n','Reaction file %s could not be parsed for atom mappings, so moved to pwd/not_parsed.',ME.message)
         else
@@ -218,9 +196,21 @@ for i = 1:length(rxns)
         end
     end
     if ~all(as == ss)
-        fprintf('\n');
-        warning(['The stoichiometry of reaction %s in the rxnfile does not match that in S.\n'...
-            'The stoichiometry in the rxnfile will be used for the atom transition network.'],rxn);
+        if all(as == ss  | hBool)
+            fprintf('%s%s\n',rxn, ' stoichiometry matches upto protons.')
+        else
+            fprintf('%s%s\n',rxn, ' stoichiometry in model and rxnfile do not match:')
+            fprintf('%s\t,', 'In model:')
+            printRxnFormula(model,'rxnAbbrList',rxn)
+            fprintf('%s\t,', 'In rxnfile:')
+            model2.S(:,ismember(model.rxns,rxn))=as;
+            printRxnFormula(model2,'rxnAbbrList',rxn)
+            fprintf('\n');
+        end
+        
+        
+%         warning(['The stoichiometry of reaction %s in the rxnfile does not match that in S.\n'...
+%             'The stoichiometry in the rxnfile will be used for the atom transition network.'],rxn);
     end
     
     % Allocate size of variables
@@ -393,6 +383,27 @@ if sanityChecks
         error('Atom transition matrix must have two entries per column, -1 and 1.')
     end
     
+    %These atoms must be exchanged by reactions across the boundary of the system otherwise they cannot be produced or consumed.
+    rowNonZeroCount=(A~=0)*ones(size(A,2),1);
+    rowsWithOnlyOneEntryBool = rowNonZeroCount==1;
+    rowsWithoutPositiveEntryBool = sum(A>0,2)==0;
+    rowsWithoutNegativeEntryBool = sum(A<0,2)==0;
+     
+    if any(rowsWithOnlyOneEntryBool)
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool), 'rows of A = incidence(dATM), with only one entry.')
+        atomsOnlyCosumed = dATM.Nodes(rowsWithoutPositiveEntryBool,:);
+    end
+    
+    if any(rowsWithoutPositiveEntryBool)
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutPositiveEntryBool), 'rows of A = incidence(dATM), with only one negative entry and no positive entry.')
+        atomsOnlyCosumed = dATM.Nodes(rowsWithOnlyOneEntryBool & rowsWithoutPositiveEntryBool,:);
+    end
+    
+    if any(rowsWithoutNegativeEntryBool)
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutNegativeEntryBool), 'rows of A = incidence(dATM), with only one positive entry and no negative entry.')
+        atomsOnlyProduced = dATM.Nodes(rowsWithOnlyOneEntryBool & rowsWithoutNegativeEntryBool,:);
+    end
+    
     if 1
         [ah,~] = find(A == -1); % head nodes
         [at,~] = find(A == 1); % tail nodes
@@ -444,6 +455,9 @@ if sanityChecks
         end
     end
     
+    
+
+
     if 0
         %Graph Laplacian
         La = A*A';

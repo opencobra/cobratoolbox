@@ -12,14 +12,15 @@ function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %                       * .S - The m x n stoichiometric matrix for the
 %                              metabolic network.
 %                       * .mets - An m x 1 array of metabolite identifiers.
-%    inputData:     COBRA model with following fields:
+%    inputData: 
 %
 % OPTIONAL INPUTS:
 %    replace:       If the new ID should replace an existing ID, this 
 %                   logical value indicates so (default: false).
 %
-% OUTPUTS:          COBRA model with updated identifiersCOBRA model with 
-%                   the identifiers updated.
+% OUTPUTS:   
+%  newModel:      COBRA model with updated identifiersCOBRA model with the identifiers updated.
+%  hasEffect: 
 
 if nargin < 3 || isempty(replace)
     replace = false;

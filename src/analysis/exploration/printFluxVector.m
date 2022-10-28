@@ -69,6 +69,16 @@ if formulaFlag
         formulas = printRxnFormula(model, labels, false, false);
         labels = [labels, formulas];
     end
+    
+    labels(:,2) = pad(labels(:,2));
+%     lth=zeros(size(labels,1),1);
+%     for i=1:size(labels,1)
+%         lth(i) = length(labels{i,2});
+%     end
+%     maxlth = max(lth);
+%     for i=1:size(labels,1)
+%         labels{i,2} = pad(labels{i,2},maxlth-lth(i));
+%     end
 end
 
 % Add GPR

@@ -25,6 +25,16 @@ end
 if ~exist('maxInf','var') || isempty(maxInf)
     maxInf=Inf;
 end
+if ~isfield(model,'S')
+    if isfield(model,'A')
+        model.S = model.A(ismember(model.csense,'E'),:);
+        model.dsense = model.csense(~ismember(model.csense,'E'));
+        model.csense = model.csense(ismember(model.csense,'E'));
+        model.C = model.A(~ismember(model.csense,'E'),:);
+    else
+        error('model.S missing')
+    end
+end
 if ~exist('rxnSelection','var')
     rxnSelection=true(size(model.S,2),1);
 end

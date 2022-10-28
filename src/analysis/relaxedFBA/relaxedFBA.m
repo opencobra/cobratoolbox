@@ -121,21 +121,15 @@ end
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~isfield(model,'S')
-    %relax generic LP problem ,e.g.
-%          A: [1663×2942 double]
-%          b: [1663×1 double]
-%     csense: [1663×1 char]
-%          c: [2942×1 double]
-%     osense: 1
-%         lb: [2942×1 double]
-%         ub: [2942×1 double]
-%          d: [2942×1 double]
+    %relax generic LP problem
     model.S = model.A;
-    if isfield(model,'d')
-        model.SIntRxnBool = model.d~=0;
-        model = rmfield(model,'d');
-    else
-        model.SIntRxnBool = true(size(model.S,2),1);
+    if ~isfield(model,'SIntRxnBool')
+        if isfield(model,'d')
+            model.SIntRxnBool = model.d~=0;
+            model = rmfield(model,'d');
+        else
+            model.SIntRxnBool = true(size(model.S,2),1);
+        end
     end
     model = rmfield(model,'A');
 end
@@ -163,12 +157,22 @@ end
 if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
     SIntRxnBool = model.SIntRxnBool;
 else
-    model_Ex = findSExRxnInd(model,size(model.S,1));
-    SIntRxnBool = model_Ex.SIntRxnBool;
+    if isfield(model,'SConsistentRxnBool') && length(model.SConsistentRxnBool)==size(model.S,2)
+        SIntRxnBool = model.SConsistentRxnBool;
+    else
+        if param.printLevel>0
+            fprintf('%s\n','Computing model.SIntRxnBool heuristically from stoichiometric matrix')
+        end
+        model_Ex = findSExRxnInd(model,size(model.S,1));
+        SIntRxnBool = model_Ex.SIntRxnBool;
+    end
 end
-
-maxUB = max(model.ub); % maxUB is considered as +inf
-minLB = min(model.lb); % minLB is considered as -inf
+%it is possible to define external reactions separately, in case this is different from ~SIntRxnBool
+if isfield(model,'SExtRxnBool') && length(model.SExtRxnBool)==size(model.S,2)
+    SExtRxnBool = model.SExtRxnBool;
+else
+    SExtRxnBool = ~SIntRxnBool; 
+end
 
 if isfield(param,'internalRelax') == 0
     param.internalRelax = 2; %allow all internal reaction bounds to be relaxed
@@ -251,7 +255,7 @@ if isfield(param,'theta') == 0
 end
 
 %make sure C is present if d is present
-if ~isfield(model,'C') && isfield(model,'d')
+if isfield(model,'C') && ~isfield(model,'d')
     error('For the constraints C*v <= d, both must be present')
 end
 
@@ -382,14 +386,14 @@ end
 if param.internalRelax == 0 %Exclude all internal reactions
     param.excludedReactions(SIntRxnBool) = true;
 elseif param.internalRelax == 1 % Exclude internal reactions with finite bounds
-    index_IntRxnFiniteBound_Bool = ((model.ub < maxUB) & (model.lb > minLB)) & SIntRxnBool;
+    index_IntRxnFiniteBound_Bool = ((model.ub < param.maxUB) & (model.lb > param.minLB)) & SIntRxnBool;
     param.excludedReactions(index_IntRxnFiniteBound_Bool) = true;
 end
 
 if param.exchangeRelax == 0 %Exclude all exchange reactions
-    param.excludedReactions(~SIntRxnBool) = true;
+    param.excludedReactions(SExtRxnBool) = true;
 elseif param.exchangeRelax == 1 % Exclude exchange reactions of the type [0,0]
-    index_ExRxn00_Bool = ((model.ub == 0) & (model.lb == 0)) & ~SIntRxnBool;
+    index_ExRxn00_Bool = ((model.ub == 0) & (model.lb == 0)) & SExtRxnBool;
     param.excludedReactions(index_ExRxn00_Bool) = true;
 end
 
@@ -417,7 +421,7 @@ end
 %override
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
 
-if param.printLevel>0
+if param.printLevel>1
     disp(param)
 end
 
@@ -490,7 +494,7 @@ else
         
         LPsol = solveCobraLP(relaxedModel, 'printLevel',0);%,'feasTol', 1e-5,'optTol', 1e-5);
         if LPsol.stat==1 || solution.stat==3
-            if param.printLevel>0
+            if param.relaxedPrintLevel>0
                 fprintf('%s\n%s\n','Relaxed model is feasible.','Statistics:')
                 fprintf('%u%s\n', nnz(solution.p>=feasTol), ' lower bound relaxation(s)');
                 fprintf('%u%s\n', nnz(solution.q>=feasTol), ' upper bound relaxation(s)');
@@ -505,9 +509,12 @@ else
                         fprintf('%s\n','The upper bound of these reactions had to be relaxed:')
                         printConstraints(model,-inf,inf, solution.q>=feasTol,relaxedModel, 0);
                     end
+                end
+                if isfield(relaxedModel,'mets')
                     if param.relaxedPrintLevel>0 && any(abs(solution.r)>=feasTol)
                         fprintf('%s\n','The  steady state constraints on these metabolites had to be relaxed:')
-                        disp(model.mets(abs(solution.r)>=feasTol));
+                        T = table(model.mets(abs(solution.r)>=feasTol),solution.r(abs(solution.r)>=feasTol),'VariableNames',{'rxns','r'});
+                        disp(T);
                     end
                 end
                 fprintf('%s\n','... done.')

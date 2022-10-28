@@ -17,7 +17,7 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * param.epsilon -  minimum nonzero flux, default feasTol*10
 %                                                     Note that fastcc is very sensitive to the value of parm.epsilon                    
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
-%                                  * param.method - {'swiftcc', 'fastcc', 'dc'}
+%                                  * param.method - {'swiftcc', ('fastcc'), 'dc'}
 %                                  * param.reduce - {(0),1} 1 = return fluxConsistModel
 %
 %    printLevel:                 verbose level
@@ -89,9 +89,15 @@ end
 sol = optimizeCbModel(model);
 
 if (sol.stat == 1)
+    if ~isfield(model,'b')
+        model.b=zeros(size(model.S,1),1);
+    end
+        
     %speeds up fast cc if one can remove the reactions that have no support in
     %the right nullspace of S
     if strcmp(param.method,'null_fastcc')
+
+        
         %Find the reactions that are flux inconsistent (upto orientation, without bounds)
         %compute the nullspace of the stoichiometric matrix and identify the
         %reactions without support in the nullspace basis
@@ -103,6 +109,7 @@ if (sol.stat == 1)
             nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');
             model.S=model.S(~nullFluxInConsistentMetBool,~nullFluxInConsistentRxnBool);
             model.mets=model.mets(~nullFluxInConsistentMetBool);
+
             model.b=model.b(~nullFluxInConsistentMetBool);
             if isfield(model,'csense')
                 model.csense=model.csense(~nullFluxInConsistentMetBool);

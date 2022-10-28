@@ -68,6 +68,10 @@ else
     % Make sure input path ends with directory separator
     rxnDir = [regexprep(rxnDir,'(/|\\)$',''), filesep];
 end
+if contains(rxnDir,'~')
+    rxnDir = strrep(rxnDir,'~',char(java.lang.System.getProperty('user.home')));
+end
+
 if nargin < 4 || isempty(rxnsToAM)
     rxnsToAM = model.rxns;
 end
@@ -109,7 +113,7 @@ if javaInstalled && ~onlyUnmapped
 end
 
 % Download the RDT algorithm, if it is not present in the output directory
-if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
+if exist([rxnDir 'rdtAlgorithm.jar'],'file') ~= 2 && javaInstalled && ~onlyUnmapped
     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
     % Previous releases:
     if ispc % go with an older version due to java version issues
@@ -187,8 +191,9 @@ if javaInstalled == 1 && ~onlyUnmapped
     fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
     
     % Download the RDT algorithm, if it is not present in the output directory
-    if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
-        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+    if exist([rxnDir 'rdtAlgorithm.jar'],'file') ~= 2 && javaInstalled && ~onlyUnmapped
+        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.5.0/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+        %urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
         % Previous releases:
         %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
         %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
@@ -219,6 +224,11 @@ if javaInstalled == 1 && ~onlyUnmapped
             
         end
         [status, result] = system(command);
+        if status~=0
+            disp(command)
+            
+            disp(result)
+        end
         if ~contains(result, 'ECBLAST')
             [status, result] = system(command);
         end
@@ -245,8 +255,8 @@ if javaInstalled == 1 && ~onlyUnmapped
         end
         
     end
-    % I do not think that the algorithm should be downloaded all the time
-    if 1
+    
+    if 0 % 1 = algorithm should be downloaded each time
         delete([rxnDir 'rdtAlgorithm.jar'])
     end
     
@@ -261,7 +271,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         mappedFile = regexp(fileread([rxnDir 'atomMapped' filesep name]), '\n', 'split')';
         standardFile = regexp(fileread([rxnDir 'unMapped' filesep name]), '\n', 'split')';
         mappedFile{2} = standardFile{2};
-        mappedFile{3} = ['COBRA Toolbox v3.0 - Atom mapped - ' datestr(datetime)];
+        mappedFile{3} = ['Atom mapped with COBRA Toolbox wrap ReactionDecoder rdt-2.5.0-SNAPSHOT - ' datestr(datetime)];
         mappedFile{4} = standardFile{4};
         
         formula = strsplit(mappedFile{4}, {'->', '<=>'});
@@ -344,7 +354,9 @@ if javaInstalled == 1 && ~onlyUnmapped
                 [~, ~] = system(command);
                 command = ['molconvert rxn ' pwd filesep 'tmp.smiles -o ' pwd filesep 'tmp.mol'];
                 [~, ~] = system(command);
-                delete([pwd filesep 'tmp.smiles'])
+                if exist([pwd filesep 'tmp.smiles'],'file')
+                    delete([pwd filesep 'tmp.smiles'])
+                end
                 molFile = regexp(fileread([pwd filesep 'tmp.mol']), '\n', 'split')';
                 newMappedFile(length(newMappedFile) + 1: length(newMappedFile) + 4) = standardFile(begmolStd(j): begmolStd(j) + 3);
                 newMappedFile(length(newMappedFile) + 1: length(newMappedFile)  + length(molFile) - 4) = molFile(4:end - 1);

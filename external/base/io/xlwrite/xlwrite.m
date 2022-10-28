@@ -172,7 +172,7 @@ if ~isempty(sheet)
 
     % Create a new sheet if it is empty
     if isempty(xlsSheet)
-        warning('xlwrite:AddSheet', 'Added specified worksheet.');
+        %warning('xlwrite:AddSheet', 'Added specified worksheet.');
 
         % Add the sheet
         if isnumeric(sheet)

@@ -71,17 +71,30 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 
 % Check openbabel installation
-if ismac || ispc
-    [oBabelInstalled, results] = system('obabel');
-    if find(contains(results,'Usage:')) % it is actually installed but input file is missing
-        oBabelInstalled = 1;
-    end
+if isunix || ispc 
+    obabelCommand = 'obabel';
 else
-    [oBabelInstalled, ~] = system('openbabel.obabel');
+    obabelCommand = 'openbabel.obabel';
 end
-if oBabelInstalled == 127
-    oBabelInstalled = 0;
+[oBabelInstalled, ~] = system(obabelCommand);
+if oBabelInstalled ~= 1
+    oBabelInstalled = false;
+    disp('obabel is not installed, two features cannot be used: ')
+    disp('1 - Generation of SMILES, InChI and InChIkey')
+    disp('2 - MOL file standardisation')
 end
+
+% if ismac || ispc
+%     [oBabelInstalled, results] = system('obabel');
+%     if find(contains(results,'Usage:')) % it is actually installed but input file is missing
+%         oBabelInstalled = 1;
+%     end
+% else
+%     [oBabelInstalled, ~] = system('openbabel.obabel');
+% end
+% if oBabelInstalled == 127
+%     oBabelInstalled = 0;
+% end
 
 webTimeout = weboptions('Timeout', 60);
 
