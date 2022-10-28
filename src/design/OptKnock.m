@@ -18,7 +18,7 @@ function [optKnockSol, bilevelMILPproblem] = OptKnock(model, selectedRxnList, op
 %                               *  `ub` - Upper bounds for fluxes
 %                               *  `rev` - Reversibility of fluxes
 %
-%    selectedRxnList:         List of reactions that can be knocked-out in OptKnock
+%    selectedRxnList:         n x 1 cell array where each cell is a reaction in model.rxns that can be knocked-out in OptKnock
 %
 % OPTIONAL INPUTS:
 %    options:                `OptKnock` options

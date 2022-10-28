@@ -23,7 +23,11 @@ else
 end
 
 if ~strcmpi(osenseStr,'max') && ~strcmpi(osenseStr,'min')
-    error('Objective Sense must be either ''min'' or ''max'' ');
+    if all(model.c==0)
+        osense = 1;
+    else
+        error('Objective Sense must be either ''min'' or ''max'' ');
+    end
 else
     if strcmpi(osenseStr,'max')
         osense = -1;

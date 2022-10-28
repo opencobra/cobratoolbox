@@ -20,8 +20,13 @@ function [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)
 %     field.
 %    [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,'Glycolysis')
 %
-% .. Author: - Thomas Pfau Nov 2017
+% .. Author: - Thomas Pfau Nov 2017, Ronan MT. Fleming, 2022
 
-present = cellfun(@(x) any(ismember(x,subSystem)),model.subSystems);
+charBool = cellfun(@(x) ischar(x), model.subSystems);
+if all(charBool)
+    present = strcmp(model.subSystems,subSystem);
+else
+    present = cellfun(@(x) any(ismember(x,subSystem)),model.subSystems);
+end
 reactionNames = model.rxns(present);
 rxnPos = find(present);

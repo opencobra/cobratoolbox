@@ -636,6 +636,9 @@ switch solver
         % http://docs.mosek.com/7.0/toolbox/MSK_IPAR_OPTIMIZER.html
 
         %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
+        
+        % Remove outer function specific parameters to avoid crashing solver interfaces
+        solverParams = mosekParamStrip(solverParams);
 
         param = solverParams;
         % only set the print level if not already set via solverParams structure

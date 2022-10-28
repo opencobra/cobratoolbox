@@ -89,14 +89,17 @@ else
     inputNames = [inputNames;derivedInputNames];
 end
 
+for i=1:length(inputNames)
+    inputNames{i} = strtrim(inputNames{i});
+end
 
 n=1;
 for i=1:length(inputNames)
     %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    pat = pattern([' ' sprintf(inputNames{i})]) + '.' + alphanumericsPattern;
+    pat = pattern([sprintf(inputNames{i})]) + '.' + alphanumericsPattern;
     inputInds = find(contains(C,pat));
     if isempty(inputInds)
-        inputs{n,1}=strtrim(inputNames{i});
+        inputs{n,1}=inputNames{i};
         n=n+1;
     else
         for j=1:length(inputInds)

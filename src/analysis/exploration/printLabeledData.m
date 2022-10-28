@@ -66,21 +66,22 @@ else
 end
 
 if (printHeaderFlag)
-    fprintf(fid,stringHeaderFormat,''); %print the header
+    %fprintf(fid,stringHeaderFormat,''); %print the header
     for i = 1:length(headerRow)
         fprintf(fid, stringRowFormat, headerRow{i});
     end
     fprintf(fid, '\n');
 end
 
-if (sortCol == 0)
-    [tmp, sortInd] = sort(labels(:,1));
-    labels = labels(sortInd, :);
-    data = data(sortInd, :);
-elseif(sortCol > 0)
-    [tmp, sortInd] = sort(data(:, sortCol), 1, sortMode);
-    data = data(sortInd, :);
-    labels = labels(sortInd, :);
+switch sortCol
+    case 0
+        [tmp, sortInd] = sort(labels(:,1));
+        labels = labels(sortInd, :);
+        data = data(sortInd, :);
+    case sortCol > 0
+        [tmp, sortInd] = sort(data(:, sortCol), 1, sortMode);
+        data = data(sortInd, :);
+        labels = labels(sortInd, :);
 end
 
 data=full(data); %so it will print
