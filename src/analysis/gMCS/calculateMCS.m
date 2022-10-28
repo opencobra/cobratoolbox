@@ -15,26 +15,25 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, vararg
 %    max_len_mcs:     Number of reactions in the largest MCS to be calculated.
 %
 % OPTIONAL INPUT:
-%    options:         Structure with fields:
-%
-%                       * .KO - Selected reaction knockout. Default: [].
-%                       * .rxn_set - Cell array containing the set of
-%                         reactions ('rxns') among which the MCSs are
-%                         wanted to be calculated. Default: [] (all reactions
-%                         are included).
-%                       * .timelimit - Time limit for the calculation of MCSs
-%                         each time the solver is called. Default: 1e75.
-%                       * .target_b - Desired activity level of the metabolic
-%                         task to be disrupted. Default: 1e-3;
-%                       * .forceLength - 1 if the constraint limiting the
-%                         length of the MCSs is to be active (recommended for
-%                         enumerating low order MCSs), 0 otherwise.
-%                         Default: 1.
-%                       * .numWorkers  - is the maximun number of workers
-%                       used by Cplex and GPR2models. 0 = automatic, 1 =
-%                       sequential, >1 = parallel. Default = 0;
-%                       * .printLevel - 1 if the process is wanted to be
-%                         shown on the screen, 0 otherwise. Default: 1.
+% OPTIONAL INPUTS:
+%    KO:                 Selected reaction knockout. (default = [])
+%    rxn_set:            Cell array containing the set of reactions among which
+%                        the MCSs are wanted to be calculated.
+%                        taken from model.rxns
+%                        (default = [], all reactions)
+%    target_b:           Desired activity level of the metabolic task to be
+%                        disrupted. (default = 1e-3)
+%    forceLength:        1 if the constraint limiting the length of the 
+%                        MCSs is to be active (recommended for
+%                        enumerating low order MCSs), 0 otherwise 
+%                        (default = 1)
+%    timelimit:          Time limit for the calculation of MCSs each time 
+%                        the solver is called. (default = 1e75)
+%    numWorkers:         Integer: is the maximun number of workers used 
+%                        by Cplex and GPR2models. 0 = automatic, 
+%                        1 = sequential, > 1 = parallel. (default = 0)
+%    printLevel:         Integer. 1 if the process is wanted to be shown
+%                        on the screen, 0 otherwise. (default = 1)
 %
 % OUTPUTS:
 %    mcs:         Cell array containing the calculated MCSs.
@@ -43,14 +42,13 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, vararg
 %
 % EXAMPLE:
 %    %With optional values
-%    [mcs, mcs_time] = calculateMCS(modelR204, 100, 10, options)
-%    %Being:
-%    %options.KO = 'r1651'
-%    %options.rxn_set = {'r1652'; 'r1653'; 'r1654'}
-%    %options.timelimit = 300
-%    %options.target_b = 1e-4
-%    %options.forceLength = 0
-%    %options.printLevel = 0
+%    [mcs, mcs_time] = calculateMCS(modelR204, 100, 10, ...
+%                                    'KO', 'r1651', ...
+%                                    'rxn_set', {'r1652'; 'r1653'; 'r1654'}, ...
+%                                    'timelimit', 300, ...
+%                                    'target_b', 1e-4, ...
+%                                    'forceLength', 0, ...
+%                                    'printLevel', 0, ...
 %
 %    %Without optional values
 %    [mcs, mcs_time] = calculateMCS(model, 100, 10)
@@ -63,6 +61,7 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, vararg
 %       - Inigo Apaolaza, 10/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 17/04/2018, University of Navarra, TECNUN School of Engineering.
 %       - Luis V. Valcarcel, 30/06/2021, University of Navarra, TECNUN School of Engineering.
+%       - Luis V. Valcarcel, 16/09/2022, University of Navarra, TECNUN School of Engineering.
 
 % Check the installation of cplex
 global SOLVERS;
