@@ -76,6 +76,10 @@ if exist('osenseStr', 'var') % Process arguments and set up problem
     end
 else
     if isfield(model, 'osenseStr')
+        if strcmp(model.osenseStr,'max')
+            warning('minimizeModelFlux: model.osenseStr is max, setting to min')
+            model.osenseStr='min';
+        end
         osenseStr = model.osenseStr;
     else
         osenseStr = 'min';

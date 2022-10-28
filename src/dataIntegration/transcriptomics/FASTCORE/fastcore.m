@@ -15,7 +15,7 @@ function [tissueModel,coreRxnBool,coreMetBool,coreCtrsBool] = fastcore(model, co
 %                         * ub - `n x 1` Upper bounds
 %                         * rxns   - `n x 1` cell array of reaction abbreviations
 %
-%   coreRxnInd:                indices of reactions in cobra model that are part of the
+%   coreRxnInd:          indices of reactions in cobra model that are part of the
 %                        core set of reactions (called 'C' in 'Vlassis et al,
 %                        2014')
 %
@@ -89,8 +89,10 @@ P = setdiff(nbRxns, coreRxnInd);
 [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsilon);
 
 if ~isempty(setdiff(J, Supp))
+    warning('fastcore.m Error: Global network is not flux consistent, ignoring the following irreversible core reactions:\n');
     model.rxns(setdiff(J, Supp))
-    error ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
+    coreRxnInd = setdiff(coreRxnInd,setdiff(J, Supp));
+    %error ('fastcore.m Error: Inconsistent irreversible core reactions.\n');
 end
 
 A = Supp;
@@ -98,7 +100,7 @@ if printLevel > 0
     fprintf('|A|=%d\n', length(A));
 end
 
-% J is the set of irreversible reactions
+% J is the set of core reactions not already in the extracted model
 J = setdiff(coreRxnInd, A);
 if printLevel > 0
     fprintf('|J|=%d  ', length(J));
@@ -132,7 +134,10 @@ while ~isempty(J)
         end
         if flipped || isempty(JiRev)
             if singleton
-                error('\n fastcore.m Error: Global network is not consistent.\n');
+                warning('\n fastcore.m: Global network is not flux consistent, ignoring corresponding core reaction:\n');
+                model.rxns(J)
+                J = [];
+                %error('\n fastcore.m Error: Global network is not consistent.\n');
             else
                 flipped = false;
                 singleton = true;

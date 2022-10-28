@@ -121,11 +121,11 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Edges.IsCanonical - boolean, true if moiety transition is within first component of an isomorphism class 
 %          Note that M = incidence(arm.MTG); gives the p x q incidence matrix of the moitey transition graph
 %
-% arm.I2M Matrix to map each isomorphism class to one or more moiety instances
-% arm.M2I Matrix to map one or more moiety transitions to each isomorphism class
+% arm.I2M  `i x p` matrix to map each isomorphism class to one or more moiety instances
+% arm.M2I  `q x i`  to map one or more moiety transitions to each isomorphism class
 %
-% arm.M2M Matrix to map each metabolite to one or more moiety instances
-% arm.M2R Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
+% arm.M2M  `m x p` matrix to map each metabolite to one or more moiety instances
+% arm.M2R  `q x n` matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
 %
 % arm.L Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes may map to multiple metabolites.
 %

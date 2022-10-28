@@ -723,7 +723,7 @@ switch solution.stat
         error('solution.stat must be in {-1, 0 , 1, 2, 3}')
 end
 
-if isempty(solution.dual)
+if ~isfield(solution,'dual') || isempty(solution.dual)
     primalOnlyFlag=1;
 end
 

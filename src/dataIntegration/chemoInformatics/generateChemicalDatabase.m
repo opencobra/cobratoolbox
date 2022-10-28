@@ -1,4 +1,4 @@
-function [info, newModel] = generateChemicalDatabase(model, options)
+function [info, modelOut, arm] = generateChemicalDatabase(model, options)
 % This function uses the metabolite identifiers in the model to compare
 % them and save the identifiers with the best score in MDL MOL format
 % and/or inchi and simles and jpeg if it's installed cxcalc and openBabel.
@@ -10,7 +10,7 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %
 % USAGE:
 %
-%    [info, newModel] = generateChemicalDatabase(model, options)
+%    [info, modelOut] = generateChemicalDatabase(model, options)
 %
 % INPUTS:
 %    model:	COBRA model with following fields:
@@ -44,7 +44,7 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %           * .adjustToModelpH: Logic value used to determine whether a molecule's
 %                   pH must be adjusted in accordance with the COBRA model.  
 %                   TRUE, requires MarvinSuite).
-%           * .addDirsToCompare: Cell(s) with the path to directory to an 
+%           * .dirsToCompare: Cell(s) with the path to directory to an 
 %                   existing database (default: empty).
 %           * .dirNames: Cell(s) with the name of the directory(ies) (default: empty).
 %           * .debug: Logical value used to determine whether or not the results 
@@ -52,11 +52,46 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %                   debugging (default: empty).
 %
 % OUTPUTS:
+% modelOut: A new model with the comparison and if onlyUnmapped = false, the informaton about the bonds broken and formed as well as the
+%           bond enthalpies for each metabolic reaction. 
 %
-%    newModel: A new model with the comparison and if onlyUnmapped = false, 
-%           the informaton about the bonds broken and formed as well as the
-%           bond enthalpies for each metabolic reaction.
-%    info:      A diary of the database generation process
+% info:     A diary of the database generation process
+%
+% arm:      An atomically resolved model as a matlab structure with the following fields:
+%
+% arm.MRH:         (same as modelOut) A directed metabolic reaction hypergraph, i.e. COBRA model, with additional fields:
+% arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
+% arm.MRH.rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
+% 
+% arm.dATM:      Directed atom transition multigraph (dATM) obtained from buildAtomTransitionMultigraph.m
+%
+%    dATM:       Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
+%
+%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
+%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
+%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
+%                   * .Nodes.Element - atomic element of each atom
+%                       
+%                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
+%                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
+%                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
+%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
+%                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
+%                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
+%
+% arm.M2Ai:              `m` x `a` matrix mapping each mapped metabolite to one or more atoms in the directed atom transition multigraph
+% arm.Ti2R:              `t` x `n` matrix mapping one or more directed atom transition instances to each mapped reaction
+%
+% The internal stoichiometric matrix may be decomposition into
+%
+% N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;
+%
+% where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
+
+% .. Authors: - German Preciat, Ronan M. T. Fleming, 2022.
 
 if ~isfield(options, 'outputDir')
     outputDir = [pwd filesep];
@@ -90,8 +125,16 @@ end
 if ~isfield(options, 'adjustToModelpH')
     options.adjustToModelpH = true;
 end
+if ~isfield(options, 'buildAtomTransitionMultigraph')
+    options.buildAtomTransitionMultigraph = true;
+end
+
+    
 if isfield(options, 'dirsToCompare')
     dirsToCompare = true;
+    if ischar(options.dirsToCompare)
+        options.dirsToCompare={options.dirsToCompare};
+    end
     for i = 1:length(options.dirsToCompare)
         options.dirsToCompare{i} = [regexprep(options.dirsToCompare{i},'(/|\\)$',''), filesep];
         if ~isfolder(options.dirsToCompare)
@@ -118,10 +161,12 @@ end
 cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
-    display('cxcalc is not installed, two features cannot be used: ')
-    display('1 - jpeg files for molecular structures (obabel required)')
-    display('2 - pH adjustment according to model.met Formulas')
+    disp('cxcalc is not installed, two features cannot be used: ')
+    disp('1 - jpeg files for molecular structures (obabel required)')
+    disp('2 - pH adjustment according to model.met Formulas')
 end
+
+
 if isunix || ispc 
     obabelCommand = 'obabel';
 else
@@ -131,13 +176,14 @@ end
 if oBabelInstalled ~= 1
     oBabelInstalled = false;
     options.standardisationApproach = 'basic';
-    display('obabel is not installed, two features cannot be used: ')
-    display('1 - Generation of SMILES, InChI and InChIkey')
-    display('2 - MOL file standardisation')
+    disp('obabel is not installed, two features cannot be used: ')
+    disp('1 - Generation of SMILES, InChI and InChIkey')
+    disp('2 - MOL file standardisation')
 end
+
 [javaInstalled, ~] = system('java');
 if javaInstalled ~= 1 && ~options.onlyUnmapped
-    display('java is not installed, atom mappings cannot be computed')
+    disp('java is not installed, atom mappings cannot be computed')
     options.onlyUnmapped = true;
 end
 
@@ -182,11 +228,49 @@ umets = unique(mets);
 if options.printlevel > 0
     fprintf('%s\n\n', 'Obtaining MOL files from chemical databases ...')
 end
-
+%    model: COBRA model
+%    mets: List of metabolites to be download (Default: All)
+%    outputDir: Directory that will contain the obtained metabolite structures.
 molCollectionReport = obtainMetStructures(model, model.mets, outputDir);
+
 comparisonDir = [outputDir 'molComparison'];
-movefile([outputDir 'metabolites'], comparisonDir)
-     
+if isfolder(comparisonDir)
+    try
+        rmdir(comparisonDir);
+    catch
+         disp('rmdir(comparisonDir) did not remove a directory');
+    end
+end
+if 1
+    movefile([outputDir 'metabolites'], comparisonDir)
+else
+    if ~exist(comparisonDir,'dir')
+        mkdir(comparisonDir);
+    end
+    if ~exist([outputDir 'metabolites'],'dir')
+        mkdir([outputDir 'metabolites']);
+    end
+    try
+        movefile([outputDir 'metabolites'], comparisonDir)
+    catch
+        fprintf('%s\n','Could not movefile([outputDir ''metabolites''], comparisonDir)')
+        comparisonDir = [outputDir 'metabolites'];
+    end
+    
+    %hack to try to get comparison going
+    if isempty(options.dirNames) && 0
+        vars=molCollectionReport.structuresObtainedPerSource.Properties.VariableNames';
+        bool=false(length(vars),1);
+        for i=2:length(vars) %skip the mets variable
+            tmp=molCollectionReport.structuresObtainedPerSource.(vars{i});
+            if nnz(tmp)>0
+                bool(i)=1;
+            end
+        end
+        options.dirNames=vars(bool);
+    end
+end
+
 if dirsToCompare
     molCollectionReport.sources = [molCollectionReport.sources; options.dirNames];
     newIdx = length(molCollectionReport.sources);
@@ -205,7 +289,7 @@ end
 info.molCollectionReport = molCollectionReport;
 
 if options.printlevel > 0
-    display(molCollectionReport.databaseCoverage)
+    disp(molCollectionReport.databaseCoverage)
 end
 
 % Remove sources without a single metabolite present the model
@@ -427,7 +511,7 @@ warning('on')
 % Print data
 if options.printlevel > 0
     
-    display(info.sourcesComparison.comparisonTable)
+    disp(info.sourcesComparison.comparisonTable)
     
     % Sources comparison
     [db, ~, idx] = unique(split(strjoin(info.sourcesComparison.comparisonTable.source, ' '), ' '));
@@ -461,7 +545,7 @@ if options.printlevel > 0
     legend({'Highest score', 'Formula agree', 'Charge agree', 'Sterochemistry', 'No ids'}, 'Location', 'best')
 
     if options.printlevel > 1
-        display(groupedInChIs)
+        disp(groupedInChIs)
     end
     
 end
@@ -474,7 +558,7 @@ end
 for i = 1:length(info.sourcesComparison.comparisonTable.mets)
     metName = info.sourcesComparison.comparisonTable.mets{i};
     dirToCopy = split(info.sourcesComparison.comparisonTable.source{i});
-    if isfield(options, 'dirNames') && ismember(dirToCopy{1}, options.dirNames)
+    if isfield(options, 'dirNames') && any(ismember(dirToCopy{1}, options.dirNames))
         copyfile([options.dirsToCompare{ismember(options.dirNames, dirToCopy{1})} metName '.mol'], tmpDir)
     else
         copyfile([comparisonDir filesep dirToCopy{1} filesep metName '.mol'], tmpDir)
@@ -498,7 +582,7 @@ if options.adjustToModelpH && cxcalcInstalled
     
     if options.printlevel > 0
         fprintf('%s\n', 'Adjusting pH based on the model''s chemical formula ...')
-        display(' ')
+        disp(' ')
     end
     
     [needAdjustmentBool, differentFormula, loopError, pHRangePassed] = ...
@@ -601,8 +685,8 @@ if options.adjustToModelpH && cxcalcInstalled
     info.adjustedpHTable.pHRangePassed = pHRangePassed;
     
     if options.printlevel > 0
-        display('adjustedpH:')
-        display(info.adjustedpHTable)
+        disp('adjustedpH:')
+        disp(info.adjustedpHTable)
     end
     
     model.comparison = info.adjustedpHTable;
@@ -621,11 +705,11 @@ metList = metList(~cellfun('isempty', regexp(metList,'(\.mol)$')));
 metList = regexprep(metList, '.mol', '');
 metList(~ismember(metList, regexprep(model.mets, '(\[\w\])', ''))) = [];
 
-% Standardise MOL files the most consitent MOL files
+% Standardise MOL files the most consistent MOL files
 standardisationReport = standardiseMolDatabase(tmpDir, metList, metDir, standardisationApproach);
 info.standardisationReport = standardisationReport;
 
-if oBabelInstalled
+if oBabelInstalled && isfield(standardisationReport,'SMILES')
     % Create table
     nRows = size(standardisationReport.SMILES, 1);
     varTypes = {'string', 'string', 'string', 'string'};
@@ -640,7 +724,7 @@ if oBabelInstalled
 end
 
 if options.printlevel > 0
-    display(info.standardisationReport)
+    disp(info.standardisationReport)
 end
 rmdir(tmpDir, 's')
 model.standardisation = info.standardisationReport;
@@ -675,11 +759,41 @@ switch options.standardisationApproach
         hMapping = true;
 end
 
-% Atom map metabolic reactions
+%% Atom map metabolic reactions
 reactionsReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, options.onlyUnmapped);
 
-rxnsFilesDir = [rxnDir filesep 'unMapped'];
-% Final database table
+rxnfileDir = [rxnDir filesep 'atomMapped'];
+
+if options.debug
+    save([outputDir '6.debug_afterObtainAtomMappingsRDT.mat'])
+end
+%%
+
+%% Build atom transition graph
+if options.buildAtomTransitionMultigraph
+    try
+        buildAtomTransitionMultigraph_options.directed=0;
+        buildAtomTransitionMultigraph_options.sanityChecks=1;
+        [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, buildAtomTransitionMultigraph_options);
+        arm.dATM=dATM;
+        model.metAtomMappedBool=metAtomMappedBool;
+        model.rxnAtomMappedBool=rxnAtomMappedBool;
+        arm.model=model;
+        arm.M2Ai=M2Ai;
+        arm.Ti2R=Ti2R;
+    catch ME
+        disp(ME.message)
+        arm.dATM=[];
+    end
+else
+    arm.dATM=[];
+end
+
+if options.debug
+    save([outputDir '7.debug_afterbuildAtomTransitionMultigraph.mat'])
+end
+
+%% Final database table
 
 % Reactions in the database
 info.reactionsReport.rxnInDatabase = reactionsReport.rxnFilesWritten;
@@ -752,7 +866,7 @@ info.reactionsReport.table = table([ ...
 if options.printlevel > 0
     
     if ~options.onlyUnmapped
-        display(info.reactionsReport.table)
+        disp(info.reactionsReport.table)
     end
     
     % Metabolites
@@ -799,25 +913,25 @@ if options.printlevel > 0
 end
 if options.printlevel > 1
     disp('RXN files written')
-    display(info.reactionsReport.rxnFilesWritten)
+    disp(info.reactionsReport.rxnFilesWritten)
     disp('Atom mapped reactions')
-    display(info.reactionsReport.mappedRxns)
+    disp(info.reactionsReport.mappedRxns)
     disp('Balanced reactions')
-    display(info.reactionsReport.balancedReactions)
+    disp(info.reactionsReport.balancedReactions)
     disp('Unbalanced reactions')
-    display(info.reactionsReport.unbalancedReactions)
+    disp(info.reactionsReport.unbalancedReactions)
     disp('Metabolites allways in balanced rxns')
-    display(info.reactionsReport.metsAllwaysInBalancedRxns)
+    disp(info.reactionsReport.metsAllwaysInBalancedRxns)
     disp('Metabolites ocasional in unbalanced rxns')
-    display(info.reactionsReport.metsSometimesInUnbalancedRxns)
+    disp(info.reactionsReport.metsSometimesInUnbalancedRxns)
     disp('Metabolites allways in unbalanced rxns')
-    display(info.reactionsReport.metsAllwaysInUnbalancedRxns)
+    disp(info.reactionsReport.metsAllwaysInUnbalancedRxns)
     disp('Missing metabolites')
-    display(info.reactionsReport.missingMets)
+    disp(info.reactionsReport.missingMets)
 end
 
 if options.debug
-    save([outputDir '6.debug_endOfReactionDatabase.mat'])
+    save([outputDir '8.debug_endOfReactionDatabase.mat'])
 end
 
 %% 7. Bond enthalpies and bonds broken and formed
@@ -826,7 +940,7 @@ if ~options.onlyUnmapped
     
     % Get bond enthalpies and bonds broken and formed
     if options.printlevel  > 0
-        display('Calculating bonds broken and formed and enthalpy change...')
+        disp('Calculating bonds broken and formed and enthalpy change...')
     end
     
     tmp = findSExRxnInd(model);
@@ -852,7 +966,7 @@ if ~options.onlyUnmapped
         {'bondsBrokenAndFormed'}, {'descend'}); info.bondsData.table(missingRxns, :)];   
         
     if options.printlevel  > 0
-        display(info.bondsData.table)
+        disp(info.bondsData.table)
     end
         
     % Add data in the model
@@ -861,13 +975,15 @@ if ~options.onlyUnmapped
     
 end
 
+
+
 if isfile([outputDir 'tmp.mol'])
     delete([outputDir 'tmp.mol'])
 end
 
-newModel = model;
+modelOut = model;
 if options.debug
-    save([outputDir '7.debug_endOfGenerateChemicalDatabase.mat'])
+    save([outputDir '9.debug_endOfGenerateChemicalDatabase.mat'])
 end
 
 diary off

@@ -11,23 +11,38 @@ function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsi
 %    Vthermo = cycleFreeFlux(V0, C, model, SConsistentRxnBool, relaxBounds);
 %
 % INPUTS:
-%    V0:       `n x k` matrix of `k` FBA solutions
-%    C:        `n x k` matrix of `k` FBA objectives
-%    model:    COBRA model structure with required fields:
-%
+%  V0:       `n x k` matrix of `k` FBA solutions
+%  C:        `n x k` matrix of `k` FBA objectives
+%  model:    COBRA model structure with required fields:
 %                * .S  - `m x n` stoichiometric matrix
-%                * .b  - `m x 1` RHS vector
+
 %                * .lb - `n x 1` lower bound vector
 %                * .ub - `n x 1` lower bound vector
+%  model.SIntRxnBool:
 %
 % OPTIONAL INPUTS:
-%    SConsistentRxnBool:    `n x 1` logical array. True for internal reactions.
-%    param.eta               Minimum change in flux considered nonzero. Default feasTol*10
-%    param.relaxBounds:      Relax bounds that don't include zero. Default is false.
-%    param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
+%  model.b:  - `m x 1` RHS vector (default 0's)   
+%  model.csense: - 'm x 1' character vector of constraint sense (default 'E')
+%  model.C:  - Coupling constraints         
+%  model.d:  - RHS of coupling constraints         
+%  model.dsense: - Coupling constraint sense
+%  model.SConsistentMetBool: `m x 1` logical array, true for stoichioemtrically consistent metabolites
+%  model.SConsistentRxnBool: `n x 1` logical array, true for stoichiometrically consistent reactions
+%
+%  param.printLevel:       print Level
+%  param.eta               Minimum change in flux considered nonzero. Default feasTol*10
+%  param.relaxBounds:      Relax bounds that don't include zero. Default is false.
+%  param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
+%  param.enforceCoupling:  {(0),1} where 1 = enforce coupling constraint
+%  param.approach:         {'lp',('regularised')} formulation of cycleFreeFlux problem.
+%                          'lp' is a linear optimisation based formulation, which is prone to infeasibility due to numerical issues.
+%                          'regularised' a quadratically regularised version, which is less sensitive to numerical issues but slower.
+%  param.debug:            {(0),1} where 1 = extra debugging steps
+%  param.removeFixedBool:  {(0),1} where 1 = moves variables with equal upper and lower bounds to rhs
 %
 % OUTPUT:
-%    Vthermo:    `n x k` matrix of cycle free flux vectors
+%  Vthermo:    `n x k` matrix of cycle free flux vectors
+%  thermoConsistentFluxBool: `n x 1` logical array, true for thermodynamically consistent flux 
 %
 % EXAMPLE:
 %    % Remove cycles from a single flux vector
@@ -41,7 +56,7 @@ function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsi
 %    C = [eye(n), eye(n)];
 %    Vthermo = cycleFreeFlux(V0, C, model);
 %
-% .. Author: - Hulda S. Haraldsdottir, 25/5/2018
+% .. Author: - Hulda S. Haraldsdottir, 25/5/2018, Ronan M.T. Fleming 2019 - 2022, regularisation, debug, relaxation etc.
 
 if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defaults
     if isfield(model, 'SIntRxnBool')
@@ -83,8 +98,8 @@ if ~isfield(param,'enforceCoupling')
 end
 
 if ~isfield(param,'approach')
-    param.approach = 'lp'; %try lp first, then regularised if that fails
-    %param.approach = 'regularised';
+    %param.approach = 'lp'; %faster
+    param.approach = 'regularised';%slower but more robust
 end
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
@@ -100,6 +115,13 @@ if isfield(param,'printLevel')
     printLevel=param.printLevel;
 else
     printLevel = 0;
+end
+
+if ~isfield(model,'b')
+    model.b=zeros(size(model.S,1),1);
+end
+if ~isfield(model,'csense')
+    model.csense(1:size(model.S,1),1)='E';
 end
 
 [n,k] = size(V0);
@@ -177,6 +199,8 @@ if param.parallelize
         param.parallelize = false;
     end
 end
+
+
 
 % parameters
 [model_S, model_b, model_csense, model_lb, model_ub] = deal(model.S(SConsistentMetBool,:), model.b(SConsistentMetBool), model.csense(SConsistentMetBool), model.lb, model.ub);
@@ -305,16 +329,18 @@ clt = size(model_C,1);
 
 switch param.approach
     case 'regularised'
-        % constraints
+        % variables
         %       v            x
+        % regularisation variables
+        %      r, s, t, u
         if any(c0)
             A = [...
                 %     v              x                r               s               t               u
-                model_S    sparse(m, p)     speye(m, m)    sparse(m, p)    sparse(m, p)   sparse(m,clt); % Sv + r = b (steady state)
-                model_C   sparse(clt,p)  sparse(clt, m)  sparse(clt, p)  sparse(clt, p)  speye(clt,clt); %Cv + u <= d (coupling, if present)
+                model_S    sparse(m, p)     speye(m, m)    sparse(m, p)    sparse(m, p)   sparse(m,clt); % Sv + r  = b (steady state)
+                model_C   sparse(clt,p)  sparse(clt, m)  sparse(clt, p)  sparse(clt, p)  speye(clt,clt); % Cv + u <= d (coupling, if present)
                 c0'        sparse(1, p)    sparse(1, m)    sparse(1, p)    sparse(1, p)   sparse(1,clt); % c0'v = c0'v0
                 D             -speye(p)    sparse(p, m)     speye(p, p)    sparse(p, p)   sparse(p,clt); %   v - x + s <= 0
-                -D            -speye(p)    sparse(p, m)    sparse(p, p)     speye(p, p)   sparse(p,clt)]; % - v - x + t <= 0
+                -D            -speye(p)    sparse(p, m)    sparse(p, p)     speye(p, p)   sparse(p,clt)];% - v - x + t <= 0
             
             b = [model_b;  model_d; (1-feasTol)*c0'*v0; zeros(2*p, 1)];
             
@@ -337,8 +363,8 @@ switch param.approach
         else
             A = [...
                 %     v              x                r               s               t               u
-                model_S    sparse(m, p)      speye(m, m)    sparse(m, p)    sparse(m, p)  sparse(m,clt); % Sv + r = b (steady state)
-                model_C   sparse(clt,p)   sparse(clt, m)  sparse(clt, p)  sparse(clt, p) speye(clt,clt); %Cv + u <= d (coupling, if present)
+                model_S    sparse(m, p)      speye(m, m)    sparse(m, p)    sparse(m, p)  sparse(m,clt); % Sv + r  = b (steady state)
+                model_C   sparse(clt,p)   sparse(clt, m)  sparse(clt, p)  sparse(clt, p) speye(clt,clt); % Cv + u <= d (coupling, if present)
                 D             -speye(p)     sparse(p, m)     speye(p, p)    sparse(p, p)  sparse(p,clt); %   v - x + s <= 0
                 -D            -speye(p)     sparse(p, m)    sparse(p, p)     speye(p, p) sparse(p,clt)]; % - v - x + t <= 0
             
@@ -356,11 +382,13 @@ switch param.approach
         isR = [SConsistentRxnBool & v0 < 0; false(3*p+m,1)]; % net reverse internal flux
         
         % lower and upper bounds - fixed exchange and zero fluxes
-        lb = [v0; zeros(p, 1); zeros(m, 1); -inf*ones(2*p + clt,1)];
         if 0
-            ub = [v0; abs(v0(SConsistentRxnBool))+10*feasTol; zeros(m, 1); inf*ones(2*p + clt,1)];
+            lb = [v0; zeros(p, 1); zeros(m, 1); -inf*ones(2*p + clt,1)];
+            ub = [v0; inf*ones(p,1); inf*ones(m, 1); inf*ones(2*p + clt,1)];
         else
-            ub = [v0; inf*ones(p,1); zeros(m, 1); inf*ones(2*p + clt,1)];
+            maxUB = 100/feasTol;
+            lb = [v0; zeros(p, 1); zeros(m, 1); -maxUB*ones(2*p + clt,1)];
+            ub = [v0; maxUB*ones(p,1); maxUB*ones(m, 1); maxUB*ones(2*p + clt,1)];
         end
         if param.relaxBounds
             lb(isF) = 0; % internal reaction directionality same as in input flux
@@ -370,16 +398,19 @@ switch param.approach
             ub(isR) = min(0,model_ub(isR)); % Keep upper bound if it is < 0 (forced negative flux)
         end
         
-        % objective: minimize one-norm of auxilliary variable
-        c = [zeros(n, 1); 0.01*ones(p, 1); zeros(m+2*p+clt, 1)]; % variables: [v; x; r; s; t; u]
-        % objective: minimise two-norm of regularisation variables
-        F = spdiags([sparse(n+p,1);1000*ones(m+2*p + clt,1)],0,n+3*p+m+clt,n+3*p+m+clt);
+        % objective: minimize one-norm of auxilliary variable x
+        c = [zeros(n, 1); 0.1*ones(p, 1); zeros(m+2*p+clt, 1)]; % variables: [v; x; r; s; t; u]
+        % objective: minimise two-norm of regularisation variables: r, s, t, u
+        F = spdiags([sparse(n+p,1);100*ones(m+2*p + clt,1)],0,n+3*p+m+clt,n+3*p+m+clt); % variables: [v; x; r; s; t; u]
         
         qp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub,'F',F);
         
         solution = solveCobraQP(qp);
         
-        if solution.stat==1
+        if solution.stat==1 || solution.stat==3
+            if solution.stat==3
+                disp(['cycleFreeFlux, regularised: ' solution.origStatText])
+            end
             
             if param.debug && param.printLevel>1
                 z0 = v0(SConsistentRxnBool);
@@ -440,7 +471,11 @@ switch param.approach
                 title('t')
             end
         else
-            fprintf('%s','cycleFreeFlux: No QP solution found.');
+            fprintf('%s','cycleFreeFlux: No quadratically regularised solution found. Relaxing LP version...');
+            qp = rmfield(qp,'F');
+            paramRelax.relaxedPrintLevel=1;
+            [solution, relaxedqp] = relaxedFBA(qp,paramRelax);
+            
         end
     case 'lp0'
         %numerical instability may arise due to small flux magnitudes, so deal with
@@ -496,9 +531,10 @@ switch param.approach
         c = [zeros(n, 1); ones(p, 1)]; % variables: [v; x]
         
         % constraints
-        %       v            x
+
         if any(c0)
             A = [...
+              %       v            x
                 model_S   sparse(m, p); % Sv = b (steady state)
                 c0'       sparse(1, p); % c0'v = c0'v0
                 D        -speye(p)    ; %   v - x <= 0
@@ -897,7 +933,7 @@ switch param.approach
         solution = solveCobraLP(lp);
 end
 
-if solution.stat ==1
+if solution.stat ==1 || solution.stat ==3
     if param.removeFixedBool==1
         %rebuild optimal flux vector
         full = zeros(n+p,1);
@@ -911,79 +947,82 @@ if solution.stat ==1
     %zero out small values 
     v1(abs(v1)<feasTol/100)=0;
 else
+
     if param.debug
-        fprintf('%s','cycleFreeFlux: No solution found, so relaxing bounds by feasTol*10 ...');
+        fprintf('%s',['cycleFreeFlux: No solution found with approach: ' param.approach ' , so relaxing bounds by feasTol*10 ...']);
     end
-    bool = lp.lb~=lp.ub & lp.lb~=0;
-    lpRelaxed = lp;
-    lpRelaxed.ub(bool) = lp.ub(bool) + feasTol*10;
-    lpRelaxed.lb(bool) = lp.lb(bool) - feasTol*10;
-    solution = solveCobraLP(lpRelaxed);
-    if solution.stat==1
-        v1 = solution.full(1:n);
-        if param.debug
-            fprintf('%s\n','...solution found.')
-        end
-    else
-        fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
-        disp(solution)
-        save('debug_cycleFreeFlux_infeasibility.mat')
-        
-        %%
-        %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
-        infeasModel=lp;
-        infeasModel.S = lp.A;
-        infeasModel = rmfield(infeasModel,'A');
-        infeasModel.SIntRxnBool=true(size(lp.A,2),1);
-        
-        param.printLevel = 1;
-        param.steadyStateRelax = 1; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 0;
-        param.exchangeRelax = 0;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 0;
-        param.exchangeRelax = 2;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        
-        param.printLevel = 1;
-        param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
-        param.internalRelax  = 1;
-        param.exchangeRelax = 0;
-        [solution, relaxedModel] = relaxedFBA(infeasModel, param);
-        
-        P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
-        Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
-        %%
-        norm(model_S*v0-model_b,'inf')
-        
-        belowLowerBound = v0-model_lb;
-        belowLowerBound(belowLowerBound>0)=0;
-        min(belowLowerBound)
-        
-        aboveUpperBound = model_ub-v0;
-        aboveUpperBound(aboveUpperBound>0)=0;
-        min(aboveUpperBound)
-        
-        solution
-        
+    if param.debug && exist('lp','var')
+        bool = lp.lb~=lp.ub & lp.lb~=0;
         lpRelaxed = lp;
-        lpRelaxed.ub = lp.ub + feasTol*10;
-        lpRelaxed.lb = lp.lb - feasTol*10;
-        solutionRelaxed1 = solveCobraLP(lpRelaxed)
-        
-        lpRelaxed.lb(:) = -10;
-        lpRelaxed.ub(:) =  10;
-        solutionRelaxed2 = solveCobraLP(lpRelaxed)
-        
-        lpRelaxed.lb(:) = -inf;
-        lpRelaxed.ub(:) =  inf;
-        solutionRelaxed3 = solveCobraLP(lpRelaxed)
-        
-        error('cycleFreeFlux: No solution found, try using a different solver.');
+        lpRelaxed.ub(bool) = lp.ub(bool) + feasTol*10;
+        lpRelaxed.lb(bool) = lp.lb(bool) - feasTol*10;
+        solution = solveCobraLP(lpRelaxed);
+        if solution.stat==1
+            v1 = solution.full(1:n);
+            if param.debug
+                fprintf('%s\n','...solution found.')
+            end
+        else
+            fprintf('\n%s\n%s\n','cycleFreeFlux: No solution found.','Debugging relaxation etc...');
+            disp(solution)
+            save('debug_cycleFreeFlux_infeasibility.mat')
+            
+            %%
+            %lp = struct('osense', 1, 'c', c, 'A', A, 'csense', csense, 'b', b, 'lb', lb, 'ub', ub);
+            infeasModel=lp;
+            infeasModel.S = lp.A;
+            infeasModel = rmfield(infeasModel,'A');
+            infeasModel.SIntRxnBool=true(size(lp.A,2),1);
+            
+            param.printLevel = 1;
+            param.steadyStateRelax = 1; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 0;
+            param.exchangeRelax = 0;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 0;
+            param.exchangeRelax = 2;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            
+            param.printLevel = 1;
+            param.steadyStateRelax = 0; %try to make it feasible with bound relaxation only
+            param.internalRelax  = 1;
+            param.exchangeRelax = 0;
+            [solution, relaxedModel] = relaxedFBA(infeasModel, param);
+            
+            P=table(find(solution.p>0),solution.p(find(solution.p>0)),find(solution.p>0)<size(model_S,2));
+            Q=table(find(solution.q>0),solution.q(find(solution.q>0)),find(solution.q>0)<size(model_S,2));
+            %%
+            norm(model_S*v0-model_b,'inf')
+            
+            belowLowerBound = v0-model_lb;
+            belowLowerBound(belowLowerBound>0)=0;
+            min(belowLowerBound)
+            
+            aboveUpperBound = model_ub-v0;
+            aboveUpperBound(aboveUpperBound>0)=0;
+            min(aboveUpperBound)
+            
+            solution
+            
+            lpRelaxed = lp;
+            lpRelaxed.ub = lp.ub + feasTol*10;
+            lpRelaxed.lb = lp.lb - feasTol*10;
+            solutionRelaxed1 = solveCobraLP(lpRelaxed)
+            
+            lpRelaxed.lb(:) = -10;
+            lpRelaxed.ub(:) =  10;
+            solutionRelaxed2 = solveCobraLP(lpRelaxed)
+            
+            lpRelaxed.lb(:) = -inf;
+            lpRelaxed.ub(:) =  inf;
+            solutionRelaxed3 = solveCobraLP(lpRelaxed)
+            
+        end
     end
+    warning('cycleFreeFlux: No solution found.');
 end
 
 end
