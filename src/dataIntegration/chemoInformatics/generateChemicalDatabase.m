@@ -52,42 +52,116 @@ function [info, modelOut, arm] = generateChemicalDatabase(model, options)
 %                   debugging (default: empty).
 %
 % OUTPUTS:
+%
+% A directory with a standardised metabolite structure database.
+% A directory with an atom mapped metabolic reaction database.
+%
 % modelOut: A new model with the comparison and if onlyUnmapped = false, the informaton about the bonds broken and formed as well as the
 %           bond enthalpies for each metabolic reaction. 
 %
-% info:     A diary of the database generation process
+% info:     Struct array containing a diary of the database generation process
+%
+%           *.molCollectionReport: Struct array containing information on the 
+%               metabolite structures each of the model's sources.
+%                   -.metList: List of the metabolites in the model.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.structuresObtained: Number of metabolites with a structure.
+%                   -.structuresObtainedPerSource: A Boolean matrix (mets x sources) 
+%                       indicating whether or not a structure was obtained.
+%                   -.databaseCoverage: Table showing the coverage per source.
+%                   -.idsToCheck: Id's from which the metabolic structure wasn't
+%                       obtained.
+%        	*.sourcesComparison: Struct array containing information on the 
+%               metabolite structures comparison.
+%                   -.mets: List of the metabolites in the model with structure.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.comparisonMatrix: Matrix (mets x sources) with the
+%                       comparison score.
+%                   -.chargeOkBool: Boolean vector indicating whether the 
+%                       metabolite's formula matches the formula of the source 
+%                       with the highest score.
+%                   -.metFormula: String array with the formulas of the
+%                       metabolites.
+%                   -.met_"metID": Comparison tables for each metabolite.
+%                   -.comparisonTable: Table summarising the highest score 
+%                       sources per metabolite.
+%           *.adjustedpHTable: table indicating whether or not the highest 
+%                   scoring metabolite required pH adjustment and identifying 
+%                   metabolites for which the pH could not be adjusted.
+%           *.standardisationReport: Table with InChIKeys, InChIs and
+%                   SMILES for the highest scoring metabolites.
+%           *.reactionsReport: Struct array containing information about the 
+%                   atom-mapped reactions.
+%               -.rxnInDatabase: Cell array containing the rxns IDs of the
+%                   MDL RXN files written.
+%               -.mappedRxns: Cell array containing the rxns IDs of the
+%                   atom-mapped reactions.
+%               -.balancedReactions: Cell array containing the rxns IDs of the
+%                   balanced atom-mapped reactions.
+%               -.unbalancedReactions: Cell array containing the rxns IDs of the
+%                   unbalanced atom-mapped reactions.
+%               -.rxnMissing: Cell array containing the rxns IDs of the reactions
+%                   could not be written due to missing metabolites structures 
+%                   in the reactions.
+%               -.metInDatabase: Cell array containing the metabolite IDs
+%                   in the metabolite database.
+%               -.metsAllwaysInBalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites in balanced reactions at all times.
+%               -.metsSometimesInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites ocassionally in unbalanced reactions.
+%               -.metsAllwaysInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites always in unbalanced reactions.
+%               -.metsNotUsed: Cell array containing the metabolite IDs of
+%                   the metabolites could not be integrated in reactions 
+%                   since another structure was missing.
+%               -.missingMets: Cell array containing the metabolite IDs of
+%                   the missing metabolites
+%               -.table: Table containing information about the 
+%                   atom-mapped reactions.
+%           *.bondsData: A table containing the bonds broken and formed, the 
+%               enthalpy change, and the substrate mass per atom-mapped reaction.
 %
 % arm:      An atomically resolved model as a matlab structure with the following fields:
 %
-% arm.MRH:         (same as modelOut) A directed metabolic reaction hypergraph, i.e. COBRA model, with additional fields:
+% arm.MRH:  (same as modelOut) A directed metabolic reaction hypergraph, i.e. 
+%           COBRA model, with additional fields:
 % arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
 % arm.MRH.rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
 % 
-% arm.dATM:      Directed atom transition multigraph (dATM) obtained from buildAtomTransitionMultigraph.m
+% arm.dATM:	Directed atom transition multigraph (dATM) obtained from buildAtomTransitionMultigraph.m
 %
-%    dATM:       Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
+%    dATM:	Directed atom transition multigraph as a MATLAB digraph structure 
+%           with the following tables:
 %
-%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
-%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%                   * .Nodes.Met - metabolite containing each atom
-%                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
-%                   * .Nodes.Element - atomic element of each atom
+%         	* .Nodes — Table of node information, with `p` rows, one for each atom.
+%         	* .Nodes.Atom - unique alphanumeric id for each atom by concatenation 
+%                   of the metabolite, atom and element
+%          	* .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
+%          	* .Nodes.Met - metabolite containing each atom
+%        	* .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
+%       	* .Nodes.Element - atomic element of each atom
 %                       
-%                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
-%                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
-%                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
-%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
-%                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
-%                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
+%           * .EdgeTable — Table of edge information, with `q` rows, one for 
+%                   each atom transition instance.
+%        	* .EdgeTable.EndNodes - two-column cell array of character vectors 
+%                   that defines the graph edges.
+%        	* .EdgeTable.Trans - unique alphanumeric id for each atom transition 
+%                   instance by concatenation of the reaction, head and tail atoms
+%         	* .EdgeTable.TansIndex - unique numeric id for each atom transition instance
+%         	* .EdgeTable.Rxn - reaction corresponding to each atom transition
+%         	* .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
+%       	* .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
-% arm.M2Ai:              `m` x `a` matrix mapping each mapped metabolite to one or more atoms in the directed atom transition multigraph
-% arm.Ti2R:              `t` x `n` matrix mapping one or more directed atom transition instances to each mapped reaction
+% arm.M2Ai:	`m` x `a` matrix mapping each mapped metabolite to one or more atoms 
+%           in the directed atom transition multigraph.
+% arm.Ti2R:	`t` x `n` matrix mapping one or more directed atom transition instances to 
+%           each mapped reaction
 %
 % The internal stoichiometric matrix may be decomposition into
 %
-% N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;
+% N = (M2Ai * M2Ai)^(-1) * M2Ai * Ti * Ti2R;
 %
 % where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
 
