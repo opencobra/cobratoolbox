@@ -90,7 +90,7 @@ for i = 1:length(rxns)
     rev = (lb(i) < 0 & ub(i) > 0); % True if rxn is reversible
 
     % Read atom mapping from rxnfile
-    [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnfileDir);
+    [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readRXNFile(rxn,rxnfileDir);
 
     % Check that stoichiometry in rxnfile matches the one in S
     rxnMets = unique(atomMets);

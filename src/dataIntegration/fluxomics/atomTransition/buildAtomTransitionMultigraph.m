@@ -1,4 +1,4 @@
-function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, rxnfileDir, options)
+function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, RXNFileDir, options)
 % Builds a matlab digraph object representing an atom transition multigraph
 % corresponding to a metabolic network from reaction stoichiometry and atom
 % mappings.
@@ -33,7 +33,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %
 % USAGE:
 %
-%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork(model, rxnfileDir, options)
+%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork(model, RXNFileDir, options)
 %
 % INPUTS:
 %    model:         Directed stoichiometric hypergraph
@@ -47,40 +47,35 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                     * .lb -  An `n` x 1 vector of lower bounds on fluxes.
 %                     * .ub - An `n` x 1 vector of upper bounds on fluxes.
 %
-%    rxnfileDir:    Path to directory containing `rxnfiles` with atom mappings
+%    RXNFileDir:    Path to directory containing `rxnfiles` with atom mappings
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
 %                   e.g. git clone https://github.com/opencobra/ctf ~/fork-ctf
-%                        then rxnfileDir = ~/fork-ctf/rxns/atomMapped        
+%                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped        
 % 
-%    options: 
-%                   *.directed - transition split into two oppositely
-%                                directed edges for reversible reactions
-%                                default: false
-%                   *.decompartmentalised - model without compartments
-%                                           default: false
+%
 % OUTPUT:
 %    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
 %
 %                   * .Nodes — Table of node information, with `p` rows, one for each atom.
+%                   * .Nodes.Atom - unique index for each atom
 %                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .Nodes.AtomIndex - unique numeric id for each atom in
-%                                 atom transition multigraph
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
 %                   * .Nodes.Met - metabolite containing each atom
-%                   * .Nodes.AtomNumber - unique numeric id for each atom in an 
-%                                             atom mapping
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
 %                   * .Nodes.Element - atomic element of each atom
 %                       
 %                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
 %                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
 %                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.TansInstIndex - unique numeric id for each atom transition instance
+%                   * .EdgeTable.dirTransInstIndex - unique numeric id for each directed atom transition instance
 %                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
 %                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
-% metAtomMappedBool `m x 1` boolean vector indicating atom mapped metabolites
-% rxnAtomMappedBool `n x 1` boolean vector indicating atom mapped reactions
+% metRXNBool:       `m x 1` boolean vector indicating atom mapped metabolites
+% rxnRXNBool:       `n x 1` boolean vector indicating atom mapped reactions
 % M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
 % Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
 %
@@ -88,222 +83,69 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 % N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;
 % where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
 
-% .. Authors: - Hulda Haraldsdottir, Ronan M. T. Fleming, 2022.
+% .. Authors: - Ronan M. T. Fleming, 2022.
 
 if ~exist('options','var')
     options=[];
 end
 
-if ~isfield(options,'directed')
-    options.directed=0;
-end
-if ~isfield(options,'decompartmentalised')
-    options.decompartmentalised=0;
-end
 if ~isfield(options,'sanityChecks')
-    sanityChecks=0;
-else
-    sanityChecks=options.sanityChecks;
+    options.sanityChecks=1;
 end
 
-S = model.S; % Format inputs
-mets = model.mets;
-if length(unique(mets))~=length(mets)
+[nMets,nRxns]=size(model.S);
+
+if length(unique(model.mets))~=length(model.mets)
     error('duplicate metabolites')
 end
-rxns = model.rxns;
-if length(unique(rxns))~=length(rxns)
+
+if length(unique(model.rxns))~=length(model.rxns)
     error('duplicate reactions')
 end
 
+
+[modelOut, nTotalAtomTransitions] = checkRXNFiles(model, RXNFileDir);
+mbool = modelOut.metRXNBool; % `m` x 1 vector, true if metabolite identified in at least one RXN file
+rbool = modelOut.RXNBool; % `n` x 1 boolean vector, true if RXN file exists
+
+%identify the protons in the atom mapped subset
 pat = '[' + lettersPattern(1) + ']';
 hBool = strcmp(model.mets,'h') | matches(model.mets,pat);
 
-lb = model.lb;
-ub = model.ub;
-[mbool,rbool] = findAtomMappedSubset(model,rxnfileDir);
-%clear model
-
-fprintf('Generating atom transition network for reactions with atom mappings.\n\n');
-
-S = S(mbool,rbool);
-mets = mets(mbool);
-rxns = rxns(rbool);
-lb = lb(rbool);
-ub = ub(rbool);
-
-% Initialize fields of output structure
-A = sparse([]);
-tMets = {};
-tMetNrs = [];
-tRxns = {};
-elements = {};
-
-model2=model;
-% Build atom transition network
-for i = 1:length(rxns)
-    
-    rxn = rxns{i};
-    
-    if strcmp(rxn,'10FTHF7GLUtl')
+if 0
+    if ~all(mbool) && all(mbool & hBool)
+        disp('hack to ingnore imbalanced protons')
+        mbool(hBool)=1;
     end
-    
-    if strcmp(rxn,'GGH_10FTHF7GLUl')
-    end
-    
-    if options.directed
-        rev = (lb(i) < 0 & ub(i) > 0); % True if rxn is reversible
-    else
-        rev = 0;
-    end
-    
-    try
-        % Read atom mapping from rxnfile
-        [atomMets,metEls,metNrs,rxnNrs,reactantBool,instances] = readAtomMappingFromRxnFile(rxn,rxnfileDir);
-        if options.decompartmentalised
-            for k=1:length(atomMets)
-                atomMets{k,1}=atomMets{k,1}(1:end-3);
-            end
-        end
-        
-    catch ME
-        disp(rxn)
-        if ~exist([rxnfileDir filesep 'not_parsed'],'dir')
-            mkdir([rxnfileDir filesep 'not_parsed'])
-        end
-        disp(ME.message)
-        %mv FPGS7m.rxn bad/FPGS7m.rxn
-        [SUCCESS,~,~] = movefile([rxnfileDir filesep ME.message],[rxnfileDir filesep 'not_parsed' filesep ME.message]);
-        if SUCCESS
-            fprintf('%s\n','Reaction file %s could not be parsed for atom mappings, so moved to pwd/not_parsed.',ME.message)
-        else
-            fprintf(['Reaction file ' ME.message ' could not be parsed for atom mappings and not moved to pwd/not_parsed either.'])
-            rethrow(ME)
-        end
-    end
-    % Check that stoichiometry in rxnfile matches the one in S
-    rxnMets = unique(atomMets);
-    ss = S(:,strcmp(rxns,rxn));
-    as = zeros(size(ss));
-    for j = 1:length(rxnMets)
-        rxnMet = rxnMets{j};
-        
-        if reactantBool(strcmp(atomMets,rxnMet))
-            as(strcmp(mets,rxnMet)) = -max(instances(strcmp(atomMets,rxnMet)));
-        else
-            
-            as(strcmp(mets,rxnMet)) = max(instances(strcmp(atomMets,rxnMet)));
-        end
-    end
-    if ~all(as == ss)
-        if all(as == ss  | hBool)
-            fprintf('%s%s\n',rxn, ' stoichiometry matches upto protons.')
-        else
-            fprintf('%s%s\n',rxn, ' stoichiometry in model and rxnfile do not match:')
-            fprintf('%s\t,', 'In model:')
-            printRxnFormula(model,'rxnAbbrList',rxn)
-            fprintf('%s\t,', 'In rxnfile:')
-            model2.S(:,ismember(model.rxns,rxn))=as;
-            printRxnFormula(model2,'rxnAbbrList',rxn)
-            fprintf('\n');
-        end
-        
-        
-%         warning(['The stoichiometry of reaction %s in the rxnfile does not match that in S.\n'...
-%             'The stoichiometry in the rxnfile will be used for the atom transition network.'],rxn);
-    end
-    
-    % Allocate size of variables
-    newMets = rxnMets(~ismember(rxnMets,tMets));
-    if ~isempty(newMets)
-        pBool = ismember(atomMets,newMets) & instances == 1;
-        pMets = atomMets(pBool);
-        pMetNrs = metNrs(pBool);
-        pElements = metEls(pBool);
-        
-        tMets = [tMets; pMets];
-        tMetNrs = [tMetNrs; pMetNrs];
-        elements = [elements; pElements];
-    end
-    
-    
-    nRxnTransitions = (rev + 1)*max(rxnNrs); % Nr of atom transitions in current reaction
-    tRxns = [tRxns; repmat({rxn},nRxnTransitions,1)];
-    
-    [m1,n1] = size(A);
-    m2 = length(tMets);
-    n2 = length(tRxns);
-    
-    newA = spalloc(m2,n2,2*n2);
-    newA(1:m1,1:n1) = A;
-    A = newA;
-    
-    % Add atom transitions to A
-    tIdxs = n1+1:n2;
-    for j = 1:(1 + rev):nRxnTransitions
-        tIdx = tIdxs(j);
-        
-        headBool = ismember(tMets,atomMets(rxnNrs == (j + rev*1)/(1 + rev) & reactantBool)) & (tMetNrs == metNrs(rxnNrs == (j + rev*1)/(1 + rev) & reactantBool)); % Row in A corresponding to the reactant atom
-        tailBool = ismember(tMets,atomMets(rxnNrs == (j + rev*1)/(1 + rev) & ~reactantBool)) & (tMetNrs == metNrs(rxnNrs == (j + rev*1)/(1 + rev) & ~reactantBool)); % Row in A corresponding to the product atom
-        
-        headEl = elements{headBool};
-        tailEl = elements{tailBool};
-        assert(strcmp(headEl,tailEl),'Transition %d in reaction %d maps between atoms of different elements',j,i);
-        
-        A(headBool,tIdx) = -1;
-        A(tailBool,tIdx) = 1;
-        
-        if rev % Transition split into two oppositely directed edges
-            A(headBool,tIdx + 1) = 1;
-            A(tailBool,tIdx + 1) = -1;
-        end
-    end
-    
 end
 
-% Generate output structure
-ATN.A = A;
-[nAtoms, nAtransInstances] = size(ATN.A);
-ATN.atomIndex = (1:nAtoms)';
-ATN.aTransInstanceIndex = (1:nAtransInstances)';
-ATN.mets = tMets;
-ATN.atns = tMetNrs; %also include the unique identity of that atom in the set of atoms
-ATN.rxns = tRxns;
-ATN.elements = elements;
+fprintf('Generating atom transition network for reactions with atom mappings...\n');
 
-%generate a unique id for each atom by concatenation of the metabolite,
-%atom and element
-ATN.atoms=cell(nAtoms,1);
-for i=1:nAtoms
-    ATN.atoms{i}=[ATN.mets{i}  '#' num2str(ATN.atns(i)) '#' ATN.elements{i}];
+% Read atom mapping from rxnfile to test if it is decompartmentalised
+tmp = model.rxns(rbool);
+[atomMets,~,~,~,~,~] = readRXNFile(tmp{1},RXNFileDir);
+
+decompartmentaliseRXN=0;
+atomMetAbbr  = atomMets{1};
+metAbbr = model.mets{1};
+if ~strcmp(atomMetAbbr(end),metAbbr(end))
+    if strcmp(atomMetAbbr(end),']')
+        decompartmentaliseRXN=1;
+    elseif strcmp(metAbbr(end),']')
+        for i=1:length(model.mets)
+            model.mets{i} = model.mets{i}(1:end-2);
+        end
+    end
 end
 
-%create a matlab graph object representing an atom transition multigraph
-[ah,~] = find(A == -1); % head node indices
-[at,~] = find(A == 1); % tail node indices
-
-%generate a unique id for each atom transition incidence by concatenation
-%of the reaction, head and tail atoms
-ATN.atrans=cell(nAtransInstances,1);
-for i=1:nAtransInstances
-    ATN.atrans{i,1}=[ATN.rxns{i}  '#' ATN.atoms{ah(i)} '#' ATN.atoms{at(i)}];
-end
-
-% G = graph(EdgeTable) specifies graph edges (s,t) in node pairs. s and t can specify node indices or node names.
-% The EdgeTable input must be a table with a row for each corresponding pair of elements in s and t.
-
-%
 %                   * .Nodes — Table of node information, with `p` rows, one for each atom.
 %                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .Nodes.AtomIndex - unique numeric id for each atom in
-%                                 atom transition multigraph
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
 %                   * .Nodes.Met - metabolite containing each atom
-%                   * .Nodes.AtomNumber - unique numeric id for each atom in an 
-%                                             atom mapping
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
 %                   * .Nodes.Element - atomic element of each atom
-%                       
 %                   * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
-%                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges     
+%                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges
 %                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .Edges.TransIstIndex - unique numeric id for each directed atom transition instance
 %                   * .Edges.OrigTransIstIndex - unique numeric id for each atom transition instance, with original ordering of data
@@ -311,156 +153,258 @@ end
 %                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 
-EdgeTable = table([ah,at],ATN.atrans,ATN.aTransInstanceIndex,ATN.aTransInstanceIndex,ATN.rxns,ah,at,ATN.atoms(ah),ATN.atoms(at),...
-    'VariableNames',{'EndNodes','Trans','TransInstIndex','OrigTransInstIndex','Rxn','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom'});
+EdgeTable = table(...
+    cell(nTotalAtomTransitions,2),...
+    cell(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    zeros(nTotalAtomTransitions,1),...
+    cell(nTotalAtomTransitions,1),...
+    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','Rxn','HeadAtomIndex','TailAtomIndex',...
+    'HeadAtom','TailAtom','HeadMet','TailMet','HeadMetAtomNumber','TailMetAtomNumber','Element'});
 
-NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.mets,ATN.atns,ATN.elements,...
-    'VariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
+% NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.model.mets,ATN.atns,ATN.elements,...
+%     'VariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
+
+
+k=1;
+% Build atom transition network
+for i = 1:nRxns
+    if rbool(i)       
+        try
+            % Read atom mapping from rxnfile
+            
+            %    atomMets:                A `p` x 1 cell array of metabolite identifiers for atoms.
+            %    atomElements:            A `p` x 1 cell array of element symbols for atoms.
+            %    atomNumbers:             A `p` x 1 vector containing the numbering of atoms within each metabolite molfile.
+            %    atomTransitionNumbers:   A `p` x 1 vector of atom transition indices.
+            %    isSubstrate:             A `p` x 1 logical array. True for substrates, false for products in the reaction.
+            %    instances:               A `p` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to.
+            [atomMets,atomElements,atomNumbers,atomTransitionNumbers,isSubstrate,instances] = ...
+                readRXNFile(model.rxns{i},RXNFileDir);
+            
+            if decompartmentaliseRXN
+                for n=1:length(atomMets)
+                    atomMets{n,1}=atomMets{n,1}(1:end-3);
+                end
+            end
+            
+%             if any(matches(atomMets,'h'))
+%                 disp(model.rxns{i})
+%                 disp(atomMets)
+%             end
+            
+            % Check that stoichiometry in rxnfile matches the one in S
+            uniqueAtomMets = unique(atomMets);
+            ss = model.S(mbool,i);
+            as = sparse(length(ss),1);
+            for j = 1:length(uniqueAtomMets)
+                uniqueAtomMet = uniqueAtomMets{j};
+                
+                if isSubstrate(strcmp(atomMets,uniqueAtomMet))
+                    as(strcmp(model.mets,uniqueAtomMet)) = -max(instances(strcmp(atomMets,uniqueAtomMet)));
+                else
+                    
+                    as(strcmp(model.mets,uniqueAtomMet)) = max(instances(strcmp(atomMets,uniqueAtomMet)));
+                end
+            end
+            if ~all(as == ss)
+                if all(as == ss  | hBool)
+                    fprintf('%s%s\n',model.rxns{i}, ' stoichiometry matches upto protons.')
+                else
+                    fprintf('%s%s\n',model.rxns{i}, ' stoichiometry in model and rxnfile do not match:')
+                    fprintf('%s\t,', 'In model:')
+                    printRxnFormula(model,'rxnAbbrList',model.rxns{i});
+                    fprintf('%s\t,', 'In rxnfile:')
+                    model2.S(:,ismember(model.rxns,model.rxns{i}))=as;
+                    printRxnFormula(model2,'rxnAbbrList',model.rxns{i});
+                    fprintf('\n');
+                end
+            end
+            
+            nAtomTransitions = length(isSubstrate)/2;
+            for j=1:nAtomTransitions
+                substrateAtomNumber = find(atomTransitionNumbers==j & isSubstrate);
+                productAtomNumber = find(atomTransitionNumbers==j & ~isSubstrate);
+                
+                substrateID =[atomMets{substrateAtomNumber}...
+                    '#' num2str(atomNumbers(substrateAtomNumber))...
+                    '#' atomElements{substrateAtomNumber}];
+                productID   = [atomMets{productAtomNumber}...
+                    '#' num2str(atomNumbers(productAtomNumber))...
+                    '#' atomElements{productAtomNumber}];
+                
+                if ~strcmp(atomElements{substrateAtomNumber},atomElements{productAtomNumber})
+                    error('elemental mismatch')
+                end
+                
+                %                 if any(matches(atomMets{productAtomNumber},'nadph'))
+                %                     disp(model.rxns{i})
+                %                 end
+                
+                %atom transition
+                EdgeTable.EndNodes{k,1} = substrateID;
+                EdgeTable.EndNodes{k,2} = productID;
+                EdgeTable.Trans{k} = [model.rxns{i}  '#' substrateID '#' productID];
+                EdgeTable.TransInstIndex(k) = k;
+                EdgeTable.dirTransInstIndex(k) = k;
+                EdgeTable.Rxn{k} = model.rxns{i};
+                EdgeTable.HeadAtomIndex(k) = NaN;
+                EdgeTable.TailAtomIndex(k) = NaN;
+                EdgeTable.HeadAtom{k} = substrateID;
+                EdgeTable.TailAtom{k} = productID;
+                EdgeTable.HeadMet{k} = atomMets{substrateAtomNumber};
+                EdgeTable.TailMet{k} = atomMets{productAtomNumber};
+                EdgeTable.HeadMetAtomNumber(k) = atomNumbers(substrateAtomNumber);
+                EdgeTable.TailMetAtomNumber(k) = atomNumbers(productAtomNumber);
+                EdgeTable.Element{k} = atomElements{substrateAtomNumber};
+                k=k+1;
+            end
+        catch ME
+            
+            if ~exist([RXNFileDir filesep 'not_parsed'],'dir')
+                mkdir([RXNFileDir filesep 'not_parsed'])
+            end
+            %[SUCCESS,~,~] = movefile([RXNFileDir filesep model.rxns{i} '.rxn'],[RXNFileDir filesep 'not_parsed' filesep model.rxns{i} '.rxn']);
+            if SUCCESS
+                fprintf('%s%s%s%s%s\n','Reaction file ', model.rxns{i},'.rxn could not be parsed for atom mappings, so moved to pwd/not_parsed/',model.rxns{i}, '.rxn')
+            else
+                fprintf(['Reaction file ' rnx '.rxn could not be parsed for atom mappings and not moved to pwd/not_parsed either.'])
+                disp(getReport(ME))
+            end
+        end
+    end
+end
+if nTotalAtomTransitions ~= k-1
+    warning('Missing atom transitions')
+end
 
 %% Directed atom transition multigraph as a matlab directed multigraph object
-dATM = digraph(EdgeTable,NodeTable);
-nAtoms = size(dATM.Nodes,1);
-nTransInstances = size(dATM.Edges,1);
+dATM = digraph(EdgeTable);
 
-dATM.Edges.TransInstIndex= (1:nTransInstances)';
+% 'Atom'
+%Bout = mapAontoB(Akey,Bkey,Ain,Bin)
+Atom =  mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadAtom; dATM.Edges.TailAtom]);
+% 'AtomIndex'
+AtomIndex = (1:size(dATM.Nodes,1))';
+% 'Met'
+Met = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMet; dATM.Edges.TailMet]);
+% 'AtomNumber'
+AtomNumber = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMetAtomNumber; dATM.Edges.TailMetAtomNumber]);
+% 'Element'
+Element = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.Element; dATM.Edges.Element]);
 
-rxnAtomMappedBool = ismember(rxns,dATM.Edges.Rxn); % True for reactions included in dATM
-metAtomMappedBool = ismember(mets,dATM.Nodes.Met); % True for reactions included in dATM
+dATM.Nodes = addvars(dATM.Nodes,Atom,AtomIndex,Met,AtomNumber,Element,'NewVariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
+
+dATM.Edges.HeadAtomIndex = mapAontoB(dATM.Nodes.Name,dATM.Edges.EndNodes(:,1),dATM.Nodes.AtomIndex);
+dATM.Edges.TailAtomIndex = mapAontoB(dATM.Nodes.Name,dATM.Edges.EndNodes(:,2),dATM.Nodes.AtomIndex);
+
+%Create a numeric version, where the alphanumeric EndNodes are replaced by Atom indices
+Nodes = dATM.Nodes;
+Nodes = removevars(Nodes,'Name');
+Edges = dATM.Edges;
+Edges.EndNodes = [Edges.HeadAtomIndex, Edges.TailAtomIndex];
+dATM = digraph(Edges,Nodes);
+dATM.Edges.TransInstIndex = (1:size(dATM.Edges,1))';
+dATM.Edges.dirTransInstIndex = (1:size(dATM.Edges,1))';
+
+rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
+metAtomMappedBool = ismember(model.mets,dATM.Nodes.Met); % True for metabolites included in dATM
+
+if any(mbool & ~metAtomMappedBool)
+    fprintf('%u%s%u%s\n',nnz(mbool), ' metabolites should be atom mapped, but only ' ,nnz(metAtomMappedBool), ' in the dATM:')
+    disp(model.mets(mbool & ~metAtomMappedBool))    
+end
+if any(rbool & ~rxnAtomMappedBool)
+    fprintf('%u%s%u%s\n',nnz(rbool), ' reactions should be atom mapped, but only ' ,nnz(rxnAtomMappedBool), ' in the dATM:')
+    disp(model.rxns(rbool & ~rxnAtomMappedBool))
+end
 
 %need to extract again because there may be problems reading an individual atom mapping
-N = sparse(S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
-mets = mets(metAtomMappedBool);
-rxns = rxns(rxnAtomMappedBool);
-
+N = sparse(model.S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
 [nMappedMets,nMappedRxns] = size(N);
 
-if sanityChecks
-    %double check that there is no reordering of edges
+if options.sanityChecks
+    %double check that there is no reordering of nodes
     diffIndex = diff(dATM.Nodes.AtomIndex);
     if any(diffIndex~=1)
-        error('reordering of edges of moiety transition graph')
+        fprintf('%s\n','reordering of nodes of moiety transition graph')
     end
 end
 
-if sanityChecks
+if options.sanityChecks
     %double check that there is no reordering of edges
     diffIndex = diff(dATM.Edges.TransInstIndex);
     if any(diffIndex~=1)
-        error('reordering of edges of moiety transition graph')
+        fprintf('%s\n','reordering of edges of moiety transition graph')
     end
 end
 
 %matrix to map each metabolite to one or more atoms
-[~,atoms2mets] = ismember(dATM.Nodes.Met,mets);
+nAtoms = size(dATM.Nodes,1);
+[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMappedBool));
 M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
-[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,rxns);
+nTransInstances = size(dATM.Edges,1);
+[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMappedBool));
 Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
 %incidence matrix of directed atom transition multigraph
 Ti = incidence(dATM);
 
-if sanityChecks
-    A = incidence(dATM);
-    
-    bool=~any(A,1);
+if options.sanityChecks   
+    bool=~any(Ti,1);
     if any(bool)
         error('Atom transition matrix must not have any zero columns.')
     end
-    bool=~any(A,2);
+    bool=~any(Ti,2);
     if any(bool)
         error('Atom transition matrix must not have any zero rows.')
     end
     
-    colNonZeroCount=(A~=0)'*ones(size(A,1),1);
+    colNonZeroCount=(Ti~=0)'*ones(size(Ti,1),1);
     if any(colNonZeroCount~=2)
         error('Atom transition matrix must have two entries per column.')
     end
     
-    colCount=A'*ones(size(A,1),1);
+    colCount=Ti'*ones(size(Ti,1),1);
     if any(colCount~=0)
         error('Atom transition matrix must have two entries per column, -1 and 1.')
     end
     
     %These atoms must be exchanged by reactions across the boundary of the system otherwise they cannot be produced or consumed.
-    rowNonZeroCount=(A~=0)*ones(size(A,2),1);
+    rowNonZeroCount=(Ti~=0)*ones(size(Ti,2),1);
     rowsWithOnlyOneEntryBool = rowNonZeroCount==1;
-    rowsWithoutPositiveEntryBool = sum(A>0,2)==0;
-    rowsWithoutNegativeEntryBool = sum(A<0,2)==0;
+    rowsWithoutPositiveEntryBool = sum(Ti>0,2)==0;
+    rowsWithoutNegativeEntryBool = sum(Ti<0,2)==0;
      
     if any(rowsWithOnlyOneEntryBool)
-        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool), 'rows of A = incidence(dATM), with only one entry.')
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool), 'rows of Ti = incidence(dATM), with only one entry.')
         atomsOnlyCosumed = dATM.Nodes(rowsWithoutPositiveEntryBool,:);
     end
     
     if any(rowsWithoutPositiveEntryBool)
-        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutPositiveEntryBool), 'rows of A = incidence(dATM), with only one negative entry and no positive entry.')
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutPositiveEntryBool), 'rows of Ti = incidence(dATM), with only one negative entry and no positive entry.')
         atomsOnlyCosumed = dATM.Nodes(rowsWithOnlyOneEntryBool & rowsWithoutPositiveEntryBool,:);
     end
     
     if any(rowsWithoutNegativeEntryBool)
-        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutNegativeEntryBool), 'rows of A = incidence(dATM), with only one positive entry and no negative entry.')
+        fprintf('%u\t%s\n',nnz(rowsWithOnlyOneEntryBool & rowsWithoutNegativeEntryBool), 'rows of Ti = incidence(dATM), with only one positive entry and no negative entry.')
         atomsOnlyProduced = dATM.Nodes(rowsWithOnlyOneEntryBool & rowsWithoutNegativeEntryBool,:);
     end
-    
-    if 1
-        [ah,~] = find(A == -1); % head nodes
-        [at,~] = find(A == 1); % tail nodes
-        
-        headTail = [ah,at];
-        EdgeTable = table(headTail,ATN.atrans,'VariableNames',{'EndNodes','Trans'});
-        NodeTable = table(ATN.atoms,ATN.mets,ATN.atns,ATN.elements,ATN.atomIndex,'VariableNames',{'Atoms','Mets','AtomNumber','Element','AtomIndex'});
-        %atom transition graph as a matlab graph object
-        G = digraph(EdgeTable,NodeTable);
-        
-        %this fails because matlab reorders the columns of the
-        %incidence matrix.
-        I = incidence(G);
-        headTail2=zeros(size(I,2),2);
-        for i=1:size(I,2)
-            headTail2(i,:) = [find(I(:,i)==-1), find(I(:,i)==1)];
-        end
-        
-        res = headTail - headTail2;
-        if any(res,'all')
-            compare = [headTail, headTail2];
-            error('incidence matrices not identical')
-        end
-        
-        bool=~any(I,1);
-        if any(bool)
-            error('I transition matrix must not have any zero columns.')
-        end
-        bool=~any(I,2);
-        if any(bool)
-            error('I transition matrix must not have any zero rows.')
-        end
-        
-        colNonZeroCount=(I~=0)'*ones(size(I,1),1);
-        if any(colNonZeroCount~=2)
-            error('I transition matrix must have two entries per column.')
-        end
-        
-        colCount=I'*ones(size(I,1),1);
-        if any(colCount~=0)
-            error('I transition matrix must have two entries per column, -1 and 1.')
-        end
-        
-        res = A - I;
-        [indi,indj]=find(res);
-        
-        if max(max(res))~=0
-            error('Inconsistent atom transition graph')
-        end
-    end
-    
-    
-
-
+       
     if 0
         %Graph Laplacian
-        La = A*A';
+        La = Ti*Ti';
         %Degree matrix
         D = diag(diag(La));
         
@@ -476,7 +420,7 @@ if sanityChecks
         end
         
         I = incidence(ATG);
-        res = A - I;
+        res = Ti - I;
         if max(max(res))~=0
             error('Inconsistent atom transition graph')
         end
@@ -488,7 +432,11 @@ end
 %atomic decomposition
 res=(M2Ai*M2Ai')*N - M2Ai*Ti*Ti2R;
 if max(max(abs(res)))~=0
-    N2  = (M2Ai*M2Ai')*M2Ai*Ti*Ti2R;
+    mets = model.mets(metAtomMappedBool);
+    rxns = model.rxns(rxnAtomMappedBool);
+     d  = diag(M2Ai*M2Ai');
+     D  = spdiags(1./d,0,length(d),length(d));
+    N2  = D*M2Ai*Ti*Ti2R;
     fprintf('%s\n','Inconsistency between reaction stoichiometry and atom mapped reactions (inconsistent stoichiometry?):')
     for j=1:nMappedRxns
         if any(res(:,j)~=0)
@@ -503,7 +451,7 @@ if max(max(abs(res)))~=0
             fprintf('\n')
         end
     end
-    error('Inconsistent directed atom transition multigraph')
+    warning('Inconsistent directed atom transition multigraph')
 end
 
 
