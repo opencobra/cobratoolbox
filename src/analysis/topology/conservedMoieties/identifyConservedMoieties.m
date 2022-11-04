@@ -906,7 +906,7 @@ if sanityChecks
     
     M2M2 = zeros(nMappedMets,nMoieties);
     for j=1:nMoieties
-        M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) = M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) + 1;
+        M2M2(strcmp(model.mets(metAtomMappedBool),MTG.Nodes.Met{j}),j) = M2M2(strcmp(model.mets(metAtomMappedBool),MTG.Nodes.Met{j}),j) + 1;
     end 
     res = M2M - M2M2;
     if norm(res)~=0
@@ -917,7 +917,7 @@ if sanityChecks
     for j=1:nMoieties
         atomInd = find(ATG.Nodes.MoietyIndex == j);
         for k = 1:length(atomInd)
-            M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) = M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) + 1;
+            M2M3(strcmp(model.mets(metAtomMappedBool),ATG.Nodes.Met{atomInd(k)}),j) = M2M3(strcmp(model.mets(metAtomMappedBool),ATG.Nodes.Met{atomInd(k)}),j) + 1;
         end
     end
     %Normalise each column

@@ -1,4 +1,4 @@
-function molCollectionReport = obtainMetStructures(model, metList, outputDir, sources)
+function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metList, outputDir, sources)
 % Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI,
 % and PubChem. Alternatively, openBabel can be used to convert InChI
 % strings or SMILES in MDL MOL files.
@@ -50,6 +50,7 @@ function molCollectionReport = obtainMetStructures(model, metList, outputDir, so
 %        * .idsToCheck -﻿Id source from which no molecular structures could 
 %               be obtained due to a webTimeout, conversion error, or 
 %               inconsistent id.
+%    newMolFilesDir: directory where new mol files were written, subdirectories for each source.
 
 if nargin < 2 || isempty(metList)
     metList = unique(regexprep(model.mets, '(\[\w\])', ''));
@@ -62,6 +63,13 @@ else
     % Make sure input path ends with directory separator
     outputDir = [regexprep(outputDir,'(/|\\)$',''), filesep];
 end
+
+% Set directory
+newMolFilesDir  = [outputDir 'metStructures' filesep];
+if exist(newMolFilesDir, 'dir') == 0
+    mkdir(newMolFilesDir)
+end
+
 if nargin < 4 || isempty(sources)
     sources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubchem'; 'smiles'};
 else
@@ -98,11 +106,7 @@ end
 
 webTimeout = weboptions('Timeout', 60);
 
-% Set directory
-newMolFilesDir  = [outputDir 'metabolites' filesep];
-if exist(newMolFilesDir, 'dir') == 0
-    mkdir(newMolFilesDir)
-end
+
 
 %% Obtain met data
 

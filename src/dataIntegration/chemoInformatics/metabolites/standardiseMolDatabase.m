@@ -23,6 +23,7 @@ function standardisationReport = standardiseMolDatabase(molDir, metList, standar
 %
 %           'explicitH' - Normal chemical graphs.
 %           'implicitH' - Hydrogen suppressed chemical graphs.
+%           'neutral' - Neutral molecules
 %           'basic' - Updating the header.
 %
 % OUTPUTS:
