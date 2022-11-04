@@ -135,7 +135,7 @@ while ~isempty(J)
         if flipped || isempty(JiRev)
             if singleton
                 warning('\n fastcore.m: Global network is not flux consistent, ignoring corresponding core reaction:\n');
-                model.rxns(J)
+                disp(model.rxns(J))
                 J = [];
                 %error('\n fastcore.m Error: Global network is not consistent.\n');
             else
