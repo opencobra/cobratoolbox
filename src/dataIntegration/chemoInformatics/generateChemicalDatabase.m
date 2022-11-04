@@ -59,11 +59,69 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %           * .standardisation:
 %           * .bondsBF: Number of bonds broken and formed in each reaction, if options.bonds = true.
 %           * .bondsE:  Estimated bond enthalpies for each metabolic reaction, if options.bonds = true.      
+% report:     Struct array containing a diary of the database generation process
 %
-%
-% report:     A report of the database generation process
-%
-% .. Authors: - German Preciat, Ronan Fleming 2022.
+%           *.molCollectionReport: Struct array containing information on the 
+%               metabolite structures each of the model's sources.
+%                   -.metList: List of the metabolites in the model.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.structuresObtained: Number of metabolites with a structure.
+%                   -.structuresObtainedPerSource: A Boolean matrix (mets x sources) 
+%                       indicating whether or not a structure was obtained.
+%                   -.databaseCoverage: Table showing the coverage per source.
+%                   -.idsToCheck: Id's from which the metabolic structure wasn't
+%                       obtained.
+%        	*.sourcesComparison: Struct array containing information on the 
+%               metabolite structures comparison.
+%                   -.mets: List of the metabolites in the model with structure.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.comparisonMatrix: Matrix (mets x sources) with the
+%                       comparison score.
+%                   -.chargeOkBool: Boolean vector indicating whether the 
+%                       metabolite's formula matches the formula of the source 
+%                       with the highest score.
+%                   -.metFormula: String array with the formulas of the
+%                       metabolites.
+%                   -.met_"metID": Comparison tables for each metabolite.
+%                   -.comparisonTable: Table summarising the highest score 
+%                       sources per metabolite.
+%           *.adjustedpHTable: table indicating whether or not the highest 
+%                   scoring metabolite required pH adjustment and identifying 
+%                   metabolites for which the pH could not be adjusted.
+%           *.standardisationReport: Table with InChIKeys, InChIs and
+%                   SMILES for the highest scoring metabolites.
+%           *.reactionsReport: Struct array containing information about the 
+%                   atom-mapped reactions.
+%               -.rxnInDatabase: Cell array containing the rxns IDs of the
+%                   MDL RXN files written.
+%               -.mappedRxns: Cell array containing the rxns IDs of the
+%                   atom-mapped reactions.
+%               -.balancedReactions: Cell array containing the rxns IDs of the
+%                   balanced atom-mapped reactions.
+%               -.unbalancedReactions: Cell array containing the rxns IDs of the
+%                   unbalanced atom-mapped reactions.
+%               -.rxnMissing: Cell array containing the rxns IDs of the reactions
+%                   could not be written due to missing metabolites structures 
+%                   in the reactions.
+%               -.metInDatabase: Cell array containing the metabolite IDs
+%                   in the metabolite database.
+%               -.metsAllwaysInBalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites in balanced reactions at all times.
+%               -.metsSometimesInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites ocassionally in unbalanced reactions.
+%               -.metsAllwaysInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites always in unbalanced reactions.
+%               -.metsNotUsed: Cell array containing the metabolite IDs of
+%                   the metabolites could not be integrated in reactions 
+%                   since another structure was missing.
+%               -.missingMets: Cell array containing the metabolite IDs of
+%                   the missing metabolites
+%               -.table: Table containing information about the 
+%                   atom-mapped reactions.
+%           *.bondsData: A table containing the bonds broken and formed, the 
+%               enthalpy change, and the substrate mass per atom-mapped reaction.
 
 if ~isfield(options, 'resultsDir')
     resultsDir = [pwd filesep];
