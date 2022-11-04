@@ -24,11 +24,14 @@ function [metList, stoichiometries] = findMetsFromRxns(model, reactions)
 %                       will be represented by empty arrays.
 % .. Author: - Thomas Pfau Jan 2018
 
-if ~isnumeric(reactions)
+if ~isnumeric(reactions) & iscell(reactions)
     rxnInd = findRxnIDs(model, reactions);
-else
+elseif isnumeric(reactions)
     rxnInd = reactions;
+else
+    error('wrong reaction format')
 end
+
 
 rxnNotInModel = (rxnInd == 0);
 if any(rxnNotInModel)
@@ -45,7 +48,7 @@ if nargout < 2
 else
     %Initialize the outputs.
     metList = cell(numel(reactions),1);
-    stoichiometries = cell(numel(reactions,1));
+    stoichiometries = cell(numel(reactions),1);
     %Init the relevant reactions.
     relMetList = cell(numel(rxnInd),1);
     relStoichiometries = cell(numel(rxnInd),1);
