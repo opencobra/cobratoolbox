@@ -59,8 +59,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %
 %                   * .Nodes — Table of node information, with `p` rows, one for each atom.
 %                   * .Nodes.Atom - unique index for each atom
-%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
+%                   * .Nodes.AtomIndex - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
 %                   * .Nodes.Met - metabolite containing each atom
 %                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
 %                   * .Nodes.Element - atomic element of each atom
