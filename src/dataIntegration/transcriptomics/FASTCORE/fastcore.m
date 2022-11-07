@@ -170,9 +170,10 @@ rxnRemoveList = setdiff(model.rxns,model.rxns(A));
 
 dummyMetBool = contains(model.mets,'dummy_Met_');
 dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
+dummyRxnList = model.rxns(dummyRxnBool);
 if any(dummyMetBool) || any(dummyRxnBool)
     model = destroyDummyModel(model,dummyMetBool,dummyRxnBool);
-    rxnRemoveList = rxnRemoveList(~dummyRxnBool);
+    rxnRemoveList = setdiff(rxnRemoveList,dummyRxnList);
 end
         
 %removes any infeasible coupling constraints also
