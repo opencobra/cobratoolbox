@@ -1585,7 +1585,7 @@ end
              % evaluate the optimality condition 1
              if tmp1 > problemTypeParams.feasTol * 1e2
                  disp(solution.origStat)
-                 error(['[' solver '] Primal optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
+                 warning(['[' solver '] Primal optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
              else
                  if problemTypeParams.printLevel > 0
                      fprintf(['\n > [' solver '] Primal optimality condition in solveCobraLP satisfied.']);
@@ -1603,7 +1603,7 @@ end
              if tmp2 > problemTypeParams.optTol * 1e2
                  disp(solution.origStat)
                  if ~(length(A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
-                    error(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
+                    warning(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
                  end
              else
                  if problemTypeParams.printLevel > 0
