@@ -1039,7 +1039,7 @@ if solution.stat==1
             % evaluate the optimality condition 1
             if tmp1 > problemTypeParams.feasTol * 1e2
                 disp(solution.origStat)
-                error(['[' solver '] Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
+                warning(['[' solver '] Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Primal optimality condition in solveCobraQP satisfied.']);
@@ -1054,7 +1054,7 @@ if solution.stat==1
             % evaluate the optimality condition 2
             if tmp2 > problemTypeParams.optTol * 1e2
                 disp(solution.origStat)
-                error(['[' solver '] Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
+                warning(['[' solver '] Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Dual optimality condition in solveCobraQP satisfied.\n']);
@@ -1070,7 +1070,7 @@ if solution.stat==1
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
             if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
-                error('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
+                warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
                 fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from osense*c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
             end
         else

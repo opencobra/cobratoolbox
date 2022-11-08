@@ -62,7 +62,7 @@ revRxnBool = model.lb>=minInf & model.ub < maxInf & model.ub<=0 & ~reversibleRxn
 
 if ~any(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool)
     boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool);
-    warning('no selection match to bound criteria')
+    warning('no subset with bounds between [minInf maxInf]')
 else
     boolRemainder=0;
 end
