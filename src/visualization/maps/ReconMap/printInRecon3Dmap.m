@@ -1,4 +1,4 @@
-function printInRecon3Dmap(rxnList, colorValues, outputDir)
+function printInRecon3Dmap(rxnList, colorValues, outputDir, lineWidth, fileName)
 % This function generates a TXT file that can be integrated in the VMH
 % database (vmh.life) to overlay certain reactions 
 %
@@ -12,6 +12,9 @@ function printInRecon3Dmap(rxnList, colorValues, outputDir)
 %                             different colors (default: 0
 %    outputDir:               Directory where the file will be created 
 %                             (default: current directory)  
+%    lineWidth:               Numerical value of line width to set. default=8
+%    fileName:                File name prefix for the output file. Should be a char array.
+%                             default is 'C__fakepath_data4ReconMap3_'.
 %
 % OUTPUTS
 %    
@@ -27,6 +30,22 @@ end
 if nargin < 3 || isempty(outputDir)
     outputDir = pwd;
 end
+if nargin <4 || isempty(lineWidth)
+    lineWidth = 8;
+end
+if ~isnumeric(lineWidth)
+    error('lineWidth needs to be numeric')
+end
+
+if nargin <5 || isempty(fileName)
+    fileName = 'C__fakepath_data4ReconMap3_';
+end
+fileName = char(fileName);
+
+if ~isnumeric(lineWidth)
+    error('lineWidth needs to be numeric')
+end
+
 
 assert(length(rxnList) == length(colorValues), ...
     'The number of reactions do not match with the number of colorValues');
@@ -60,12 +79,13 @@ end
 
 %name	reactionIdentifier	lineWidth	color
 for n = 1:nlt - 1
-    fid = fopen(['C__fakepath_data4ReconMap3_' num2str(n) '.txt'], 'w');
+    fid = fopen([outputDir filesep fileName num2str(n) '.txt'], 'w');
     fprintf(fid, '%s\t%s\t%s\t%s\n', 'name', 'reactionIdentifier', 'lineWidth', 'color');
     for m = 2:mlt %ignore first row
         %note the R_ prefix
         if ~isequal(hexColor{m, n + 1}, '#000000')            
-        fprintf(fid, '%s\t%s%s\t%f4\t%s\n', [], 'R_', strrep(hexColor{m, 1}, '''', ''), 8, strrep(hexColor{m, n + 1}, '''', ''));
+        fprintf(fid, '%s\t%s%s\t%f4\t%s\n', [], 'R_', strrep(hexColor{m, 1}, '''', ''), lineWidth, strrep(hexColor{m, n + 1}, '''', ''));
         end
     end
+    fclose(fid);
 end
