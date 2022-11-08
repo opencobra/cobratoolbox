@@ -69,7 +69,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .EdgeTable.TansInstIndex - unique numeric id for each atom transition instance
 %                   * .EdgeTable.dirTransInstIndex - unique numeric id for each directed atom transition instance
-%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
+%                   * .EdgeTable.rxns - reaction corresponding to each atom transition
 %                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
@@ -140,7 +140,7 @@ end
 %                   * .Nodes — Table of node information, with `p` rows, one for each atom.
 %                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
 %                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.mets - metabolite containing each atom
 %                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
 %                   * .Nodes.Element - atomic element of each atom
 %                   * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
@@ -148,7 +148,7 @@ end
 %                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .Edges.TransIstIndex - unique numeric id for each directed atom transition instance
 %                   * .Edges.OrigTransIstIndex - unique numeric id for each atom transition instance, with original ordering of data
-%                   * .Edges.Rxn - reaction corresponding to each atom transition
+%                   * .Edges.rxns - reaction corresponding to each atom transition
 %                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 
@@ -167,11 +167,11 @@ EdgeTable = table(...
     zeros(nTotalAtomTransitions,1),...
     zeros(nTotalAtomTransitions,1),...
     cell(nTotalAtomTransitions,1),...
-    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','Rxn','HeadAtomIndex','TailAtomIndex',...
+    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','rxns','HeadAtomIndex','TailAtomIndex',...
     'HeadAtom','TailAtom','HeadMet','TailMet','HeadMetAtomNumber','TailMetAtomNumber','Element'});
 
 % NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.model.mets,ATN.atns,ATN.elements,...
-%     'VariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
+%     'VariableNames',{'Atom','AtomIndex','mets','AtomNumber','Element'});
 
 
 k=1;
@@ -255,7 +255,7 @@ for i = 1:nRxns
                 EdgeTable.Trans{k} = [model.rxns{i}  '#' substrateID '#' productID];
                 EdgeTable.TransInstIndex(k) = k;
                 EdgeTable.dirTransInstIndex(k) = k;
-                EdgeTable.Rxn{k} = model.rxns{i};
+                EdgeTable.rxns{k} = model.rxns{i};
                 EdgeTable.HeadAtomIndex(k) = NaN;
                 EdgeTable.TailAtomIndex(k) = NaN;
                 EdgeTable.HeadAtom{k} = substrateID;
@@ -294,14 +294,14 @@ dATM = digraph(EdgeTable);
 Atom =  mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadAtom; dATM.Edges.TailAtom]);
 % 'AtomIndex'
 AtomIndex = (1:size(dATM.Nodes,1))';
-% 'Met'
-Met = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMet; dATM.Edges.TailMet]);
+% 'mets'
+mets = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMet; dATM.Edges.TailMet]);
 % 'AtomNumber'
 AtomNumber = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMetAtomNumber; dATM.Edges.TailMetAtomNumber]);
 % 'Element'
 Element = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.Element; dATM.Edges.Element]);
 
-dATM.Nodes = addvars(dATM.Nodes,Atom,AtomIndex,Met,AtomNumber,Element,'NewVariableNames',{'Atom','AtomIndex','Met','AtomNumber','Element'});
+dATM.Nodes = addvars(dATM.Nodes,Atom,AtomIndex,mets,AtomNumber,Element,'NewVariableNames',{'Atom','AtomIndex','mets','AtomNumber','Element'});
 
 dATM.Edges.HeadAtomIndex = mapAontoB(dATM.Nodes.Name,dATM.Edges.EndNodes(:,1),dATM.Nodes.AtomIndex);
 dATM.Edges.TailAtomIndex = mapAontoB(dATM.Nodes.Name,dATM.Edges.EndNodes(:,2),dATM.Nodes.AtomIndex);
@@ -315,8 +315,8 @@ dATM = digraph(Edges,Nodes);
 dATM.Edges.TransInstIndex = (1:size(dATM.Edges,1))';
 dATM.Edges.dirTransInstIndex = (1:size(dATM.Edges,1))';
 
-rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
-metAtomMappedBool = ismember(model.mets,dATM.Nodes.Met); % True for metabolites included in dATM
+rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.rxns); % True for reactions included in dATM
+metAtomMappedBool = ismember(model.mets,dATM.Nodes.mets); % True for metabolites included in dATM
 
 if any(mbool & ~metAtomMappedBool)
     fprintf('%u%s%u%s\n',nnz(mbool), ' metabolites should be atom mapped, but only ' ,nnz(metAtomMappedBool), ' in the dATM:')
@@ -349,12 +349,12 @@ end
 
 %matrix to map each metabolite to one or more atoms
 nAtoms = size(dATM.Nodes,1);
-[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMappedBool));
+[~,atoms2mets] = ismember(dATM.Nodes.mets,model.mets(metAtomMappedBool));
 M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
 nTransInstances = size(dATM.Edges,1);
-[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMappedBool));
+[~,transInstance2rxns] = ismember(dATM.Edges.rxns,model.rxns(rxnAtomMappedBool));
 Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
 %incidence matrix of directed atom transition multigraph

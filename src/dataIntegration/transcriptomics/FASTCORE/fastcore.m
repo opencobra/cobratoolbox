@@ -177,7 +177,7 @@ if any(dummyMetBool) || any(dummyRxnBool)
 end
         
 %removes any infeasible coupling constraints also
-[tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model_orig, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
+[tissueModel, metRemoveList, ctrsRemoveList] = removeRxns(model, rxnRemoveList,'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
 
 coreMetBool=~ismember(model_orig.mets,metRemoveList);
 if isfield(model,'ctrs')
