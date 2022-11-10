@@ -112,6 +112,21 @@ for i=1:length(inputNames)
                 inputs{n,1} = strtrim([inputNames{i} extractedField{k}]);
                 %disp(inputs{n,1})
                 n=n+1;
+                
+                %one level deeper
+                pat2 = pattern((sprintf(inputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                outputInds2 = find(contains(C,pat2));
+                if ~isempty(outputInds2)
+                    for j2=1:length(outputInds2)
+                        extractedText2 = extract(C{outputInds2(j2)},pat2);
+                        extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                        for k2=1:length(extractedField2)
+                            inputs{n,1} = strtrim([inputNames{i} extractedField{k} extractedField{k2}]);
+                            n=n+1;
+                        end
+                    end
+                end
+                
             end
         end
     end
@@ -138,7 +153,7 @@ end
 n=1;
 for i=1:length(outputNames)
     %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    pat = pattern([' ' sprintf(outputNames{i})]) + '.' + alphanumericsPattern;
+    pat = pattern((sprintf(outputNames{i}))) + '.' + alphanumericsPattern;
     outputInds = find(contains(C,pat));
     if isempty(outputInds)
         outputs{n,1}=strtrim(outputNames{i});
@@ -151,9 +166,23 @@ for i=1:length(outputNames)
             end
             extractedField = extract(extractedText,'.' + alphanumericsPattern);
             for k=1:length(extractedField)
+                
                 outputs{n,1} = strtrim([outputNames{i} extractedField{k}]);
-                %disp(inputs{n,1})
                 n=n+1;
+                
+                %one level deeper
+                pat2 = pattern((sprintf(outputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                outputInds2 = find(contains(C,pat2));
+                if ~isempty(outputInds2)
+                    for j2=1:length(outputInds2)
+                        extractedText2 = extract(C{outputInds2(j2)},pat2);
+                        extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                        for k2=1:length(extractedField2)
+                            outputs{n,1} = strtrim([outputNames{i} extractedField{k} extractedField2{k2}]);
+                            n=n+1;
+                        end
+                    end
+                end
             end
         end
     end

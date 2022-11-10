@@ -1,0 +1,2406 @@
+%\iffalse
+% venndiagram.dtx generated using makedtx version 1.1 (c) Nicola Talbot
+% Command line args:
+%   -author "Nicola Talbot"
+%   -src "venndiagram.sty\Z=>venndiagram.sty"
+%   -doc "venndiagram-manual.tex"
+%   venndiagram
+% Created on 2016/3/16 22:06
+%\fi
+%\iffalse
+%<*package>
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%</package>
+%\fi
+% \iffalse
+% Doc-Source file to use with LaTeX2e
+% Copyright (C) 2016 Nicola Talbot, all rights reserved.
+% \fi
+% \iffalse
+%<*driver>
+\documentclass[widecs]{nlctdoc}
+
+\usepackage{amsmath}
+\usepackage{venndiagram}
+\usepackage{alltt}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[colorlinks,
+            bookmarks,
+            hyperindex=false,
+            pdfauthor={Nicola L.C. Talbot},
+            pdftitle={venndiagram.sty: LaTeX2e Package for Drawing Venn Diagrams},
+            pdfkeywords={LaTeX,package,venn diagram}]{hyperref}
+
+\DisableCrossrefs
+
+\setlength\marginparwidth{6pc}
+
+\doxitem{KeyValOption}{keyvaloption}{options}
+
+\CheckSum{2598}
+
+\begin{document}
+\DocInput{venndiagram.dtx}
+\end{document}
+%</driver>
+%\fi
+%
+%\MakeShortVerb{"}
+%
+%\title{venndiagram v1.1:
+%Drawing Simple Venn Diagrams}
+%\author{Nicola L. C. Talbot\\\url{http://www.dickimaw-books.com/}}
+%
+%\date{2016-03-16}
+%\maketitle
+%
+%The \styfmt{venndiagram} package is provided to assist generating
+%simple two- and three-set Venn diagrams for lectures or assignment
+%sheets. This package requires the \sty{tikz} package.
+%As from v1.1, this package no longer requires the
+%\styfmt{intersections} library.
+%
+%\begin{important}
+%The aim of this package is to provide very simple Venn diagrams for
+%assignments or exam questions. If you require more complex diagrams
+%or different layouts it's simpler to directly use the \sty{tikz} package.
+%\end{important}
+%
+%\tableofcontents
+%
+%\section{Available Commands and Environments}
+%
+%This package defines two environments:
+%\begin{definition}[\DescribeEnv{venndiagram3sets}]
+%\cs{begin}\{venndiagram3sets\}\oarg{options}
+%\end{definition}
+%(for two sets) and
+%\begin{definition}[\DescribeEnv{venndiagram2sets}]
+%\cs{begin}\{venndiagram2sets\}\oarg{options}
+%\end{definition}
+%(for three sets).
+%
+%The optional argument \meta{options} is a comma-separated list of
+%\meta{key}=\meta{value} settings.
+%
+%\begin{important}
+%If the \meta{value} contains commas or equal
+%signs, make sure you enclose the entire value in braces.
+%For example:
+%\begin{verbatim}
+%\begin{venndiagram3sets}[tikzoptions={scale=2,thick}]
+%\end{verbatim}
+%\end{important}
+%
+%The following keys are available:
+%\begin{description}
+%\item[shade] The name of the colour used to shade regions (default:
+%\texttt{lightgray}).
+%
+%\item[labelA] The label for the first set (default: \verb|$A$|).
+%
+%\item[labelB] The label for the second set (default: \verb|$B$|).
+%
+%\item[labelC] (Not available for the 2 set version.) The label for the third set (default: \verb|$C$|).
+%
+%\item[labelOnlyA] The label for the region given by $A\setminus(B \cup C)$ (for 3 set version)
+%or $A\setminus B$ (for 2 set version). (Default: empty.)
+%
+%\item[labelOnlyB] The label for the region given by $B\setminus(A \cup C)$ (for 3 set version)
+%or $B\setminus A$ (for 2 set version). (Default: empty.)
+%
+%\item[labelOnlyC] (Not available for 2 set version.) The label for the region given by 
+%$C\setminus(A \cup B)$. (Default: empty.)
+%
+%\item[labelOnlyAB] (Not available for 2 set version.) The label for the region given by 
+%$(A \cap B) \setminus C$. (Default: empty.)
+%
+%\item[labelOnlyAC] (Not available for 2 set version.) The label for the region given by 
+%$(A \cap C)\setminus B$. (Default: empty.)
+%
+%\item[labelOnlyBC] (Not available for 2 set version.) The label for the region given by 
+%$(B \cap C)\setminus A$. (Default: empty.)
+%
+%\item[labelABC] (Not available for 2 set version.) The label for the region given by 
+%$A \cap B \cap C$. (Default: empty.)
+%
+%\item[labelNotABC] (Not available for 2 set version.) The label for the region given by 
+%$(A \cup B \cup C)^c$. (Default: empty.)
+%
+%\item[labelAB] (Not available for 3 set version.) The label for the region given by 
+%$A \cap B$. (Default: empty.)
+%
+%\item[labelNotAB] (Not available for 3 set version.) The label for the region given by 
+%$(A \cup B)^c$. (Default: empty.)
+%
+%\item[radius] The radius of each set. (Default: 1.2cm.)
+%
+%\item[hgap] The horizontal gap between the outer vertical edge and the
+%nearest set edge. (Default: 0.5cm.)
+%
+%\item[vgap] The vertical gap between the outer horizontal edge and
+%the nearest set edge. (Default: 0.5cm.)
+%
+%\item[overlap] The overlap between the sets. (Default: 0.75cm.)
+%
+%\item[tikzoptions] Any options to pass to \env{tikzpicture}.
+%
+%\end{description}
+%
+%Both environments draw the outline of the sets and the rectangular
+%outline of the encompassing universal set. Within the Venn diagram environments
+%commands are provided to shade various regions. (The commands have a
+%cumulative effect, possibly drawing over each other. The set
+%outlines and labels are drawn at the end of the environment.)
+%Available commands are as follows:
+%
+%\begin{definition}[\DescribeMacro{\fillA}]
+%\cs{fillA}
+%\end{definition}
+%Shades set $A$.
+%\begin{definition}[\DescribeMacro{\fillB}]
+%\cs{fillB}
+%\end{definition}
+%Shades set $B$.
+%\begin{definition}[\DescribeMacro{\fillC}]
+%\cs{fillC}
+%\end{definition}
+%(Only for 3 set version.) Shades set $C$.
+%
+%\begin{definition}[\DescribeMacro{\fillAll}]
+%\cs{fillAll}
+%\end{definition}
+%Shades the entire Venn diagram.
+%
+%\begin{definition}[\DescribeMacro{\fillNotABC}]
+%\cs{fillNotABC}
+%\end{definition}
+%(Not available for 2 sets version.) Fills $(A\cup B \cup C)^c$.
+%
+%\begin{definition}[\DescribeMacro{\fillOnlyA}]
+%\cs{fillOnlyA}
+%\end{definition}
+%Shades set $A \setminus (B \cup C)$ (for 3 sets version)
+%or $A \setminus B$ (for 2 sets version).
+%\begin{definition}[\DescribeMacro{\fillOnlyB}]
+%\cs{fillOnlyB}
+%\end{definition}
+%Shades set $B \setminus (A \cup C)$ (for 3 sets version)
+%or $B \setminus A$ (for 2 sets version).
+%\begin{definition}[\DescribeMacro{\fillOnlyC}]
+%\cs{fillOnlyC}
+%\end{definition}
+%(Not available for 2 sets version.) Shades $C \setminus (A \cup B)$.
+%
+%\begin{definition}[\DescribeMacro{\fillNotA}]
+%\cs{fillNotA}
+%\end{definition}
+%Shades everything except $A$ (that is $A^c$).
+%\begin{definition}[\DescribeMacro{\fillNotB}]
+%\cs{fillNotB}
+%\end{definition}
+%Shades everything except $B$ (that is $B^c$).
+%\begin{definition}[\DescribeMacro{\fillNotC}]
+%\cs{fillNotC}
+%\end{definition}
+%(Not available for 2 set version.) Shades everything except $C$ (that is $C^c$).
+%
+%\begin{definition}[\DescribeMacro{\fillNotAorB}]
+%\cs{fillNotAorB}
+%\end{definition}
+%(Not available for 3 set version.) Shades $(A\cup B)^c$
+%\begin{definition}[\DescribeMacro{\fillNotAorNotB}]
+%\cs{fillNotAorNotB}
+%\end{definition}
+%(Not available for 3 set version.) Shades $(A\cap B)^c$
+%
+%
+%\begin{definition}[\DescribeMacro{\fillANotB}]
+%\cs{fillANotB}
+%\end{definition}
+%Shades $A\setminus B$.
+%\begin{definition}[\DescribeMacro{\fillBNotA}]
+%\cs{fillBNotA}
+%\end{definition}
+%Shades $B\setminus A$.
+%\begin{definition}[\DescribeMacro{\fillANotC}]
+%\cs{fillANotC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $A\setminus C$.
+%\begin{definition}[\DescribeMacro{\fillCNotA}]
+%\cs{fillCNotA}
+%\end{definition}
+%(Not available for 2 set version.) Shades $C\setminus A$.
+%\begin{definition}[\DescribeMacro{\fillBNotC}]
+%\cs{fillBNotC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $B\setminus C$.
+%\begin{definition}[\DescribeMacro{\fillCNotB}]
+%\cs{fillCNotB}
+%\end{definition}
+%(Not available for 2 set version.) Shades $C\setminus B$.
+%
+%\begin{definition}[\DescribeMacro{\fillACapB}]
+%\cs{fillACapB}
+%\end{definition}
+%Shades $A \cap B$. (\cs{fillBCapA} is equivalent to \cs{fillACapB}.)
+%\begin{definition}[\DescribeMacro{\fillACapC}]
+%\cs{fillACapC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $A \cap C$. (\cs{fillCCapA} is equivalent to \cs{fillACapC}.)
+%\begin{definition}[\DescribeMacro{\fillBCapC}]
+%\cs{fillBCapC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $B \cap C$. (\cs{fillCCapB} is equivalent to \cs{fillBCapC}.)
+%
+%\begin{definition}[\DescribeMacro{\fillACapBNotC}]
+%\cs{fillACapBNotC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $A \cap B \setminus C$.
+%(\cs{fillBCapANotC} is equivalent to \cs{fillACapBNotC}.)
+%\begin{definition}[\DescribeMacro{\fillACapCNotB}]
+%\cs{fillACapCNotB}
+%\end{definition}
+%(Not available for 2 set version.) Shades $A \cap C \setminus B$.
+%(\cs{fillCCapANotB} is equivalent to \cs{fillACapCNotB}.)
+%\begin{definition}[\DescribeMacro{\fillBCapCNotA}]
+%\cs{fillBCapCNotA}
+%\end{definition}
+%(Not available for 2 set version.) Shades $B \cap C \setminus A$.
+%(\cs{fillCCapBNotA} is equivalent to \cs{fillBCapCNotA}.)
+%\begin{definition}[\DescribeMacro{\fillACapBCapC}]
+%\cs{fillACapBCapC}
+%\end{definition}
+%(Not available for 2 set version.) Shades $A \cap B \cap C$.
+%(Synonyms: \cs{fillACapCCapB}, \cs{fillBCapACapC}, \cs{fillBCapCCapA},
+%\cs{fillCCapACapB}, \cs{fillCCapBCapA}.)
+%
+%
+%\begin{definition}[\DescribeMacro{\setpostvennhook}]
+%\cs{setpostvennhook}\marg{cmds}
+%\end{definition}
+%Sets the hook applied at the very end of the Venn diagram
+%environments (after the outline and labels are drawn but before the
+%end of the \env{tikzpicture} environment). The Venn diagram
+%environments create coordinate nodes \texttt{venn bottom left},
+%\texttt{venn top left}, \texttt{venn top right} and \texttt{venn
+%bottom right}, which may be referenced within the environment or in
+%the hook.
+%
+%The set labels may also be referenced \emph{but only in
+%\cs{setpostvennhook}}: \texttt{labelOnlyA}, \texttt{labelOnlyB},
+%\texttt{labelOnlyC} (three set version only), \texttt{labelNotABC}
+%(three set version only), \texttt{labelNotAB} (two set version
+%only), \texttt{labelA}, \texttt{labelB}, \texttt{labelC} (three set
+%version only), \texttt{labelOnlyAB}, \texttt{labelOnlyAC} (three set
+%version only), \texttt{labelOnlyBC} (three set version only) and 
+%\texttt{labelAB} (two set version only).
+%
+%\section{Examples}
+%
+%\begin{enumerate}
+%\item (Three sets) $ A \cup B \cup C $
+%
+%\begin{verbatim}
+%\begin{venndiagram3sets}
+% \fillA \fillB \fillC
+%\end{venndiagram3sets}
+%\end{verbatim}
+%Produces:
+%
+%\begin{venndiagram3sets}
+% \fillA \fillB \fillC
+%\end{venndiagram3sets}
+%
+%\item (Two sets) $ A \cup B $
+%
+%\begin{verbatim}
+%\begin{venndiagram2sets}
+% \fillA \fillB
+%\end{venndiagram2sets}
+%\end{verbatim}
+%Produces:
+%
+%\begin{venndiagram2sets}
+% \fillA \fillB
+%\end{venndiagram2sets}
+%
+%\item (Three sets) $ A \setminus (B \cup C)$
+%
+%\begin{verbatim}
+%\begin{venndiagram3sets}
+% \fillOnlyA
+%\end{venndiagram3sets}
+%\end{verbatim}
+%Produces:
+%
+%\begin{venndiagram3sets}
+% \fillOnlyA
+%\end{venndiagram3sets}
+%
+%\item (Two sets) $ A \cap B$:
+%
+%\begin{verbatim}
+%\begin{venndiagram2sets}
+%\fillACapB
+%\end{venndiagram2sets}
+%\end{verbatim}
+%
+%\begin{venndiagram2sets}
+%\fillACapB
+%\end{venndiagram2sets}
+%
+%\item (Three sets) region labels:
+%
+%\begin{verbatim}
+%\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+% labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+% labelNotABC={8}]
+%\end{venndiagram3sets}
+%\end{verbatim}
+%Produces:
+%
+%\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+% labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+% labelNotABC={8}]
+%\end{venndiagram3sets}
+%
+%\item Annotating the diagram:
+%
+%\begin{verbatim}
+%\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+% labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+% labelNotABC={8}]
+%\setpostvennhook
+%{
+%  \draw[<-] (labelA) -- ++(135:3cm) node[above] {Students who eat
+%artichokes};
+%  \draw[<-] (labelB) -- ++(45:3cm) node[above] {Students who eat
+%broccoli};
+%  \draw[<-] (labelC) -- ++(-90:3cm) node[below] {Students who eat
+%carrots};
+%  \draw[<-] (labelABC) -- ++(0:3cm) 
+%    node[right,text width=4cm,align=flush left]
+%   {7 students eat artichokes, broccoli and carrots};
+%  \draw[<-] (labelNotABC) -- ++(-135:3cm)
+%    node[below,text width=4cm,align=flush left]
+%   {8 students don't eat artichokes, broccoli or carrots};
+%}
+%\end{venndiagram3sets}
+%\end{verbatim}
+%Produces:
+%
+%\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+% labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+% labelNotABC={8}]
+%\setpostvennhook
+%{
+%  \draw[<-] (labelA) -- ++(135:3cm) node[above] {Students who eat
+%artichokes};
+%  \draw[<-] (labelB) -- ++(45:3cm) node[above] {Students who eat
+%broccoli};
+%  \draw[<-] (labelC) -- ++(-90:3cm) node[below] {Students who eat
+%carrots};
+%  \draw[<-] (labelABC) -- ++(0:3cm) 
+%    node[right,text width=4cm,align=flush left]
+%   {7 students eat artichokes, broccoli and carrots};
+%  \draw[<-] (labelNotABC) -- ++(-135:3cm)
+%    node[below,text width=4cm,align=flush left]
+%   {8 students don't eat artichokes, broccoli or carrots};
+%}
+%\end{venndiagram3sets}
+%
+%\end{enumerate}
+%
+%\StopEventually{\PrintIndex}
+%
+%
+%\section{The Code}
+%\iffalse
+%    \begin{macrocode}
+%<*venndiagram.sty>
+%    \end{macrocode}
+%\fi
+% Package identification:
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{venndiagram}[2016/03/16 v1.1 (NLCT) Venn diagrams]
+%    \end{macrocode}
+% Required packages:
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+\RequirePackage{tikz}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+% TiKZ intersections library no longer needed. (Removed in v1.1)
+%\changes{1.1}{2016-03-16}{removed intersections library}
+%
+% The \sty{pgf} package reversed the order of arguments of
+% \texttt{atan2} in v3.0, which messes things up a bit.
+% In the event that there are users with older versions of
+% \sty{pgf}, backward-compatibility is required. Add a switch to
+% determine which syntax to use.
+%\begin{macro}{\ifvennoldpgf}
+%\changes{1.1}{2016-03-16}{new}
+% If true use old syntax.
+%    \begin{macrocode}
+\newif\ifvennoldpgf
+%    \end{macrocode}
+%\end{macro}
+% Try to determine this setting.
+%    \begin{macrocode}
+\ifdef\pgfversion
+{
+  \def\@venn@checkversion#1.#2\@venn@end@checkversion{%
+  \ifnum#1<3 \vennoldpgftrue \else \vennoldpgffalse\fi}
+  \expandafter\@venn@checkversion\pgfversion.0\@venn@end@checkversion
+}
+{
+  \vennoldpgftrue
+}
+%    \end{macrocode}
+%
+%\subsection{Initialising the Default Values}
+% Set up macros used by the keys for the Venn diagram options. First the 
+% default set labels.
+%\begin{macro}{\@venn@label@A}
+% Set $A$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@A}{$A$}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@B}
+% Set $B$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@B}{$B$}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@C}
+% Set $C$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@C}{$C$}
+%    \end{macrocode}
+%\end{macro}
+% 
+%\begin{macro}{\@venn@shade}
+% The colour used to shade regions.
+%    \begin{macrocode}
+\newcommand*{\@venn@shade}{lightgray}
+%    \end{macrocode}
+%\end{macro}
+%
+% The default labels for all the other regions are empty.
+%\begin{macro}{\@venn@label@OnlyA}
+% Only set $A$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyA}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@OnlyB}
+% Only set $B$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyB}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@OnlyC}
+% Only set $C$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyC}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@OnlyAB}
+% Sets $A$ and $B$ but not $C$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyAB}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@OnlyAC}
+% Sets $A$ and $C$ but not $B$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyAC}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@OnlyBC}
+% Sets $B$ and $C$ but not $A$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@OnlyBC}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@ABC}
+% Intersection of sets $A$, $B$ and $C$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@ABC}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@NotABC}
+% Everything except $A$, $B$ or $C$:
+%    \begin{macrocode}
+\newcommand*{\@venn@label@NotABC}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@NotAB}
+% Everything except $A$ or $B$ (two set version only):
+%    \begin{macrocode}
+\newcommand*{\@venn@label@NotAB}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@label@AB}
+% Intersection of $A$ and $B$ (two set version only):
+%    \begin{macrocode}
+\newcommand*{\@venn@label@AB}{}
+%    \end{macrocode}
+%\end{macro}
+%
+% Now the default dimensions of the diagrams.
+%\begin{macro}{\@venn@radius}
+% The radius of the sets.
+%    \begin{macrocode}
+\newcommand*{\@venn@radius}{1.2cm}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@hgap}
+% The horizontal distance between the edge of the diagram and the
+% outer edge of the nearest set.
+%    \begin{macrocode}
+\newcommand*{\@venn@hgap}{0.5cm}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@vgap}
+%    \begin{macrocode}
+% The vertical distance between the edge of the diagram and the
+% outer edge of the nearest set.
+\newcommand*{\@venn@vgap}{0.5cm}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@overlap}
+% The size of the set overlap.
+%    \begin{macrocode}
+\newcommand*{\@venn@overlap}{0.75cm}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@tikzoptions}
+% Any options to be passed to the \env{tikzpicture} environment.
+%    \begin{macrocode}
+\newcommand*{\@venn@tikzoptions}{}
+%    \end{macrocode}
+%\end{macro}
+%
+% Lengths to store the centres of the sets and the overall width and
+% height of the diagram.
+%\begin{macro}{\@venn@Ax}
+% The $x$-coordinate of set $A$:
+%    \begin{macrocode}
+\newlength\@venn@Ax
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@Ay}
+% The $y$-coordinate of set $A$:
+%    \begin{macrocode}
+\newlength\@venn@Ay
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@Bx}
+% The $x$-coordinate of set $B$:
+%    \begin{macrocode}
+\newlength\@venn@Bx
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@By}
+% The $y$-coordinate of set $B$:
+%    \begin{macrocode}
+\newlength\@venn@By
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@Cx}
+% The $x$-coordinate of set $C$:
+%    \begin{macrocode}
+\newlength\@venn@Cx
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@Cy}
+% The $y$-coordinate of set $C$:
+%    \begin{macrocode}
+\newlength\@venn@Cy
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@w}
+% The width of the entire Venn diagram.
+%    \begin{macrocode}
+\newlength\@venn@w
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\@venn@h}
+% The height of the entire Venn diagram.
+%    \begin{macrocode}
+\newlength\@venn@h
+%    \end{macrocode}
+%\end{macro}
+%
+%\subsection{Defining the key=value Options}
+%
+% Now define the keys for the optional argument of
+% \env{venndiagram2sets} and \env{venndiagram3sets}.
+% They are all in the family "venn".
+%
+%\begin{keyvaloption}{shade}
+% Option to set the shading.
+%    \begin{macrocode}
+\define@key{venn}{shade}{\def\@venn@shade{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelA}
+% Option to set the label for set $A$.
+%    \begin{macrocode}
+\define@key{venn}{labelA}{\def\@venn@label@A{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelB}
+% Option to set the label for set $B$.
+%    \begin{macrocode}
+\define@key{venn}{labelB}{\def\@venn@label@B{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelC}
+% Option to set the label for set $C$.
+%    \begin{macrocode}
+\define@key{venn}{labelC}{\def\@venn@label@C{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%
+% Now for the region labels.
+%
+%\begin{keyvaloption}{labelOnlyA}
+% Option to set the label for only set $A$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyA}{\def\@venn@label@OnlyA{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelOnlyB}
+% Option to set the label for only set $B$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyB}{\def\@venn@label@OnlyB{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelOnlyC}
+% Option to set the label for only set $C$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyC}{\def\@venn@label@OnlyC{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelOnlyAB}
+% Option to set the label for the intersection of $A$ and $B$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyAB}{\def\@venn@label@OnlyAB{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelOnlyAC}
+% Option to set the label for the intersection of $A$ and $C$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyAC}{\def\@venn@label@OnlyAC{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelOnlyBC}
+% Option to set the label for the intersection of $B$ and $C$.
+%    \begin{macrocode}
+\define@key{venn}{labelOnlyBC}{\def\@venn@label@OnlyBC{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelABC}
+% Option to set the label for the intersection of $A$, $B$ and $C$.
+% (Three set version only)
+%    \begin{macrocode}
+\define@key{venn}{labelABC}{\def\@venn@label@ABC{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelNotABC}
+% Option to set the label for the region outside the three sets.
+% (Three set version only)
+%    \begin{macrocode}
+\define@key{venn}{labelNotABC}{\def\@venn@label@NotABC{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelAB}
+% Option to set the label for the intersection of $A$ and $B$.
+% (Two set version only)
+%    \begin{macrocode}
+\define@key{venn}{labelAB}{\def\@venn@label@AB{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{labelNotAB}
+% Option to set the label for the region outside the two sets.
+% (Two set version only)
+%    \begin{macrocode}
+\define@key{venn}{labelNotAB}{\def\@venn@label@NotAB{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%
+% Now for the dimension options.
+%
+%\begin{keyvaloption}{radius}
+% Option to set the radius.
+%    \begin{macrocode}
+\define@key{venn}{radius}{\def\@venn@radius{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{hgap}
+% Option to set the horizontal gap between the outer edge of the
+% diagram and the nearest set edge.
+%    \begin{macrocode}
+\define@key{venn}{hgap}{\def\@venn@hgap{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{vgap}
+% Option to set the vertical gap between the outer edge of the
+% diagram and the nearest set edge.
+%    \begin{macrocode}
+\define@key{venn}{vgap}{\def\@venn@vgap{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%\begin{keyvaloption}{overlap}
+% Option to set the set overlap.
+%    \begin{macrocode}
+\define@key{venn}{overlap}{\def\@venn@overlap{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%
+% Finally the option to set the information to pass to the
+% \env{tikzpicture} environment.
+%\begin{keyvaloption}{tikzoptions}
+%    \begin{macrocode}
+\define@key{venn}{tikzoptions}{\def\@venn@tikzoptions{#1}}
+%    \end{macrocode}
+%\end{keyvaloption}
+%
+%\subsection{Circle Intersection}
+% Previously commands like \cs{fillOnlyA} used \sty{pgf} path operations
+% to compute the intersection points of the circles, but the code
+% didn't work properly when the co-ordinate system has been scaled.
+% Version 1.1 changes this to calculate the co-ordinates in a more
+% low-level way. We have two circles centred on $(a_x, a_y)$ and
+% $(b_x, b_y)$ both with radius $r$. This gives the equations:
+%\begin{align}
+%(x-a_x)^2+(y-a_y)^2 &= r^2\label{eq:A}\\
+%(x-b_x)^2+(y-b_y)^2 &= r^2
+%\end{align}
+%Combining:
+%\begin{equation}
+%(x-a_x)^2-(x-b_x)^2+(y-a_y)^2-(y-b_y)^2 = 0\label{eq:chord}
+%\end{equation}
+%Re-arranging gives the equation of the chord between the two points
+%of intersection:
+%\[
+%x(b_x-a_x)+y(b_y-a_y) = \frac{b_x^2-a_x^2+b_y^2-a_y^2}{2}
+%\]
+%Special cases:
+%\begin{enumerate}
+%\item $b_x=a_x$ (circles vertically stacked):
+%\[y(b_y-a_y) = \frac{b_y^2-a_y^2}{2}\]
+%Rearranging gives $y=\frac{1}{2}(b_y+a_y)$. Substituting into
+%\eqref{eq:A}:
+%\begin{align*}
+%(x-a_x)^2+\left(\frac{1}{2}(b_y+a_y)-a_y\right)^2 &= r^2\\
+%(x-a_x)^2+\frac{1}{4}(b_y-a_y)^2 &= r^2\\
+%x^2 - 2x a_x + a_x^2+\frac{(b_y-a_y)^2}{4} -r^2 &=0
+%\end{align*}
+%This is a quadratic equation in $x$ with solutions given by
+%\begin{align*}
+%x &= a_x\pm\sqrt{a_x^2-\left(a_x^2+\frac{(b_y-a_y)^2}{4}-r^2\right)}\\
+%&= a_x\pm\sqrt{r^2-\frac{1}{4}(b_y-a_y)^2}
+%\end{align*}
+%If $r^2 < \frac{1}{4}(b_y-a_y)^2$ then no solution exists (circles
+%don't overlap). If $r^2 = \frac{1}{4}(b_y-a_y)^2$ then there's only
+%one point of intersection.
+%\item $b_y=a_y$ (circles horizontally aligned):
+%\[x(b_x-a_x) = \frac{b_x^2-a_x^2}{2} \]
+%Rearranging gives $x=\frac{1}{2}(b_x+a_x)$. Substituting into
+%\eqref{eq:A}:
+%\begin{align*}
+%\left(\frac{b_x+a_x}{2}-a_x\right)^2+(y-a_y)^2 &= r^2\\
+%\frac{1}{4}(b_x-a_x)^2+(y-a_y)^2 &= r^2\\
+%y^2 - 2ya_y+a_y^2+\frac{1}{4}(b_x-a_x)^2-r^2 &= 0
+%\end{align*}
+%This is a quadratic equation in $y$ with solutions given by
+%\begin{align*}
+%y &= a_y\pm\sqrt{a_y^2-\left(a_y^2+\frac{(b_x-a_x)^2}{4}-r^2\right)}\\
+%&= a_y\pm\sqrt{r^2-\frac{1}{4}(b_x-a_x)^2}
+%\end{align*}
+%If $r^2 < \frac{1}{4}(b_x-a_x)^2$ then no solution exists (circles
+%don't overlap). If $r^2 = \frac{1}{4}(b_x-a_x)^2$ then there's only
+%one point of intersection.
+%\end{enumerate}
+%The general case has the chord given by equation~\eqref{eq:chord},
+%which can be rewritten in the form $y = mx + c$ where
+%\begin{align*}
+% m &= \frac{a_x-b_x}{b_y-a_y}\\
+% c &= \frac{b_x^2-a_x^2+b_y^2-a_y^2}{2(b_y-a_y)}
+%\end{align*}
+%Substituting into equation~\eqref{eq:A}:
+%\[
+%(x-a_x)^2+((mx+c)-a_y)^2 = r^2
+%\]
+%Rearranging:
+%\begin{displaymath}
+%(1+m^2)x^2+2x(mc-a_x-a_ym)+a_x^2+c^2-2a_yc+a_y^2-r^2 = 0
+%\end{displaymath}
+%This is a quadratic solution in $x$ with solutions given by
+%\[
+%x = \frac{-(mc-a_x-a_ym)\pm
+%\sqrt{(mc-a_x-a_ym)^2-(1+m^2)(a_x^2+c^2-2a_yc+a_y^2-r^2)}}{1+m^2}
+%\]
+%
+%Provide command to compute the intersection of two circles of the
+%same radius (given by \cs{@venn@radius}.
+%\begin{macro}{\@venn@computecircleintersects}
+%The four arguments are $a_x$, $a_y$, $b_x$ and $b_y$ (the centre
+%co-ordinates in lengths). The results are stored in \cs{@venn@intersect@i@x},
+% \cs{@venn@intersect@i@y}, \cs{@venn@intersect@ii@x} and
+% \cs{@venn@intersect@ii@y}. The number of intersects (0, 1 or 2)
+% is stored in \cs{@venn@intersect@n}.
+%    \begin{macrocode}
+\newcommand*{\@venn@computecircleintersects}[4]{%
+ \ifdim#1=#3\relax
+%    \end{macrocode}
+% Case 1 ($a_x = b_x$). Compute $y = \frac{1}{2}(b_y+a_y)$.
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@intersect@i@y}{0.5*(#4+#2)}%
+  \setlength{\@venn@intersect@ii@y}{\@venn@intersect@i@y}%
+%    \end{macrocode}
+% Compute $r^2 - \frac{1}{4}(b_y-a_y)^2$
+%    \begin{macrocode}
+  \pgfmathsetlength{\dimen@i}{#4-#2}%
+  \pgfmathsetlength{\dimen@}{\@venn@radius*\@venn@radius-0.25*\dimen@i*\dimen@i}%
+  \setlength{\@venn@intersect@i@x}{#1}%
+  \setlength{\@venn@intersect@ii@x}{#1}%
+  \ifdim\dimen@=0pt\relax
+%    \end{macrocode}
+% One point of intersection.
+%    \begin{macrocode}
+   \def\@venn@intersect@n{1}%
+  \else
+   \ifdim\dimen@>0pt\relax
+%    \end{macrocode}
+% Two points of intersection.
+%    \begin{macrocode}
+     \def\@venn@intersect@n{2}%
+     \pgfmathsetlength{\dimen@i}{sqrt(\dimen@)}%
+     \addtolength{\@venn@intersect@i@x}{\dimen@i}%
+     \addtolength{\@venn@intersect@ii@x}{-\dimen@i}%
+   \else
+%    \end{macrocode}
+% No intersection.
+%    \begin{macrocode}
+     \def\@venn@intersect@n{0}%
+   \fi
+  \fi
+ \else
+   \ifdim#2=#4\relax
+%    \end{macrocode}
+% Case 2 ($a_y = b_y$). Compute $x = \frac{1}{2}(b_x+a_x)$
+%    \begin{macrocode}
+     \pgfmathsetlength{\@venn@intersect@i@x}{0.5*(#3+#1)}%
+     \setlength{\@venn@intersect@ii@x}{\@venn@intersect@i@x}%
+%    \end{macrocode}
+% Compute $r^2 - \frac{1}{4}(b_x-a_x)^2$
+%    \begin{macrocode}
+     \setlength{\dimen@i}{#3}%
+     \addtolength{\dimen@i}{-#1}%
+     \pgfmathsetlength{\dimen@}{\@venn@radius*\@venn@radius
+       -0.25*\dimen@i*\dimen@i}%
+     \setlength{\@venn@intersect@i@y}{#2}%
+     \setlength{\@venn@intersect@ii@y}{#2}%
+     \ifdim\dimen@=0pt\relax
+%    \end{macrocode}
+% One point of intersection.
+%    \begin{macrocode}
+      \def\@venn@intersect@n{1}%
+     \else
+      \ifdim\dimen@>0pt\relax
+%    \end{macrocode}
+% Two points of intersection.
+%    \begin{macrocode}
+        \def\@venn@intersect@n{2}%
+        \pgfmathsetlength{\dimen@i}{sqrt(\dimen@)}%
+        \addtolength{\@venn@intersect@i@y}{\dimen@i}%
+        \addtolength{\@venn@intersect@ii@y}{-\dimen@i}%
+      \else
+%    \end{macrocode}
+% No intersection.
+%    \begin{macrocode}
+        \def\@venn@intersect@n{0}%
+      \fi
+     \fi
+   \else
+%    \end{macrocode}
+% General case. Convert all lengths to scalar to reduce chances of
+% exceeding max dimension. Using inches to ensure more reasonable
+% values.
+%    \begin{macrocode}
+    \pgfmathparse{#1/72.27}\let\@vnn@ax\pgfmathresult
+    \pgfmathparse{#2/72.27}\let\@vnn@ay\pgfmathresult
+    \pgfmathparse{#3/72.27}\let\@vnn@bx\pgfmathresult
+    \pgfmathparse{#4/72.27}\let\@vnn@by\pgfmathresult
+    \pgfmathparse{\@venn@radius/72.27}\let\@vnn@r\pgfmathresult
+    \pgfmathparse{\@vnn@ax*\@vnn@ax}\let\@vnn@ax@sq\pgfmathresult
+    \pgfmathparse{\@vnn@ay*\@vnn@ay}\let\@vnn@ay@sq\pgfmathresult
+    \pgfmathparse{\@vnn@bx*\@vnn@bx}\let\@vnn@bx@sq\pgfmathresult
+    \pgfmathparse{\@vnn@by*\@vnn@by}\let\@vnn@by@sq\pgfmathresult
+    \pgfmathparse{\@vnn@r*\@vnn@r}\let\@vnn@r@sq\pgfmathresult
+%    \end{macrocode}
+% Set
+%\[c = \frac{b_x^2-a_x^2+b_y^2-a_y^2}{2(b_y-a_y)}\]
+%    \begin{macrocode}
+    \pgfmathparse{0.5*(\@vnn@bx@sq-\@vnn@ax@sq+\@vnn@by@sq-\@vnn@ay@sq)
+       /(\@vnn@by-\@vnn@ay)}%
+    \let\@vnn@c\pgfmathresult
+%    \end{macrocode}
+% Set
+%\[m = \frac{a_x-b_x}{b_y-a_y}\]
+%    \begin{macrocode}
+    \pgfmathparse{(\@vnn@ax-\@vnn@bx)/(\@vnn@by-\@vnn@ay)}%
+    \let\@vnn@m\pgfmathresult
+%    \end{macrocode}
+% Compute $(1+m^2)$.
+%    \begin{macrocode}
+    \pgfmathparse{1+\@vnn@m*\@vnn@m}%
+    \let\@vnn@one@plus@m@sq\pgfmathresult
+%    \end{macrocode}
+% Compute \[mc-a_x-a_ym = m(c-a_y)-a_x\]
+%    \begin{macrocode}
+     \pgfmathparse{\@vnn@m*(\@vnn@c-\@vnn@ay)-\@vnn@ax}%
+     \let\@vnn@b\pgfmathresult
+%    \end{macrocode}
+% Denote this value $b$ and now compute
+% \[b^2-(1+m^2)(a_x^2+a_y^2+c^2-2a_yc-r^2)\]
+%    \begin{macrocode}
+     \pgfmathparse{\@vnn@b*\@vnn@b
+      - \@vnn@one@plus@m@sq
+       *(\@vnn@ax@sq+\@vnn@ay@sq+\@vnn@c*\@vnn@c
+         -2*\@vnn@ay*\@vnn@c-\@vnn@r@sq)}%
+     \let\@vnn@root\pgfmathresult
+     \setlength\dimen@{\pgfmathresult in}%
+     \ifdim\dimen@=0pt\relax
+%    \end{macrocode}
+% One point of intersection.
+%    \begin{macrocode}
+       \def\@venn@intersect@n{1}%
+%    \end{macrocode}
+%\[x_1 = \frac{-b}{1+m^2}\]
+%    \begin{macrocode}
+        \pgfmathparse{-\@vnn@b/\@vnn@one@plus@m@sq}%
+        \setlength{\@venn@intersect@i@x}{\pgfmathresult in}%
+        \setlength{\@venn@intersect@ii@x}{\@venn@intersect@i@x}%
+%    \end{macrocode}
+%\[y_1 = mx_1 + c\]
+%    \begin{macrocode}
+        \pgfmathparse{\pgfmathresult*\@vnn@m+c}%
+        \setlength{\@venn@intersect@i@y}{\pgfmathresult in}%
+        \setlength{\@venn@intersect@ii@y}{\@venn@intesect@i@y}%
+     \else
+       \ifdim\dimen@>0pt\relax
+%    \end{macrocode}
+% Two points of intersection.
+%    \begin{macrocode}
+         \def\@venn@intersect@n{2}%
+         \pgfmathsqrt{\@vnn@root}%
+         \let\@vnn@root\pgfmathresult
+%    \end{macrocode}
+% First point.
+%    \begin{macrocode}
+         \pgfmathparse{(-\@vnn@b+\@vnn@root)/\@vnn@one@plus@m@sq}%
+         \setlength{\@venn@intersect@i@x}{\pgfmathresult in}%
+         \pgfmathparse{\pgfmathresult*\@vnn@m+\@vnn@c}%
+         \setlength{\@venn@intersect@i@y}{\pgfmathresult in}%
+%    \end{macrocode}
+% Second point.
+%    \begin{macrocode}
+         \pgfmathparse{(-\@vnn@b-\@vnn@root)/\@vnn@one@plus@m@sq}%
+         \setlength{\@venn@intersect@ii@x}{\pgfmathresult in}%
+         \pgfmathparse{\pgfmathresult*\@vnn@m+\@vnn@c}%
+         \setlength{\@venn@intersect@ii@y}{\pgfmathresult in}%
+       \else
+%    \end{macrocode}
+% No intersection.
+%    \begin{macrocode}
+         \def\@venn@intersect@n{0}%
+       \fi
+     \fi
+   \fi
+ \fi
+}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@intersect@i@x}
+%\changes{1.1}{2016-03-16}{new}
+%    \begin{macrocode}
+\newlength\@venn@intersect@i@x
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@intersect@i@y}
+%\changes{1.1}{2016-03-16}{new}
+%    \begin{macrocode}
+\newlength\@venn@intersect@i@y
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@intersect@ii@x}
+%\changes{1.1}{2016-03-16}{new}
+%    \begin{macrocode}
+\newlength\@venn@intersect@ii@x
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@intersect@ii@y}
+%\changes{1.1}{2016-03-16}{new}
+%    \begin{macrocode}
+\newlength\@venn@intersect@ii@y
+%    \end{macrocode}
+%\end{macro}
+%
+%\subsection{Environment Definitions}
+%
+%\begin{environment}{venndiagram3sets}
+% Environment to draw Venn diagram with three sets.
+%    \begin{macrocode}
+\newenvironment{venndiagram3sets}[1][]%
+{%
+%    \end{macrocode}
+% Disable the keys that aren't applicable.
+%    \begin{macrocode}
+  \disable@keys{venn}{labelAB,labelNotAB}%
+%    \end{macrocode}
+% Set the key values given in the optional argument.
+%    \begin{macrocode}
+  \setkeys{venn}{#1}%
+%    \end{macrocode}
+% Calculate centre of set $C$
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@Cx}{\@venn@hgap + 2*\@venn@radius
+    -0.5*\@venn@overlap}%
+  \pgfmathsetlength{\@venn@Cy}{\@venn@vgap+\@venn@radius}%
+%    \end{macrocode}
+% Calculate centre of set $A$
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@Ax}{\@venn@hgap+\@venn@radius}%
+  \pgfmathsetlength{\@venn@Ay}{\@venn@Cy 
+    + (\@venn@radius - 0.5*\@venn@overlap)*1.73205}%
+%    \end{macrocode}
+% Calculate centre of set $B$
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@Bx}{\@venn@hgap+3*\@venn@radius
+    -\@venn@overlap}%
+  \setlength{\@venn@By}{\@venn@Ay}%
+%    \end{macrocode}
+% Compute dimensions of entire diagram
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@w}{2*\@venn@hgap+4*\@venn@radius
+     -\@venn@overlap}%
+  \pgfmathsetlength{\@venn@h}{2*\@venn@vgap+4*\@venn@radius
+     -\@venn@overlap}%
+%    \end{macrocode}
+% Define filling commands.
+% Fill all of set $A$:
+%    \begin{macrocode}
+  \def\fillA{\path[fill=\@venn@shade] (\@venn@Ax,\@venn@Ay)
+    circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill all of set $B$:
+%    \begin{macrocode}
+  \def\fillB{\path[fill=\@venn@shade] (\@venn@Bx,\@venn@By)
+    circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill all of set $C$:
+%    \begin{macrocode}
+  \def\fillC{\path[fill=\@venn@shade] (\@venn@Cx,\@venn@Cy)
+    circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill everything:
+%    \begin{macrocode}
+  \def\fillAll{\path[fill=\@venn@shade] (0,0)
+    rectangle (\@venn@w,\@venn@h);}%
+%    \end{macrocode}
+% Fill everything except set $A$:
+%    \begin{macrocode}
+  \def\fillNotA{\path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill everything except set $B$:
+%    \begin{macrocode}
+  \def\fillNotB{\path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Bx,\@venn@By) circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill everything except set $C$:
+%    \begin{macrocode}
+  \def\fillNotC{\path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill only set $A$.
+%    \begin{macrocode}
+  \let\fillOnlyA\@venn@fillOnlyA@threesets
+%    \end{macrocode}
+% Fill only set $B$:
+%    \begin{macrocode}
+  \let\fillOnlyB\@venn@fillOnlyB@threesets
+%    \end{macrocode}
+% Fill only set $C$:
+%    \begin{macrocode}
+  \let\fillOnlyC\@venn@fillOnlyC@threesets
+%    \end{macrocode}
+% Fill everything except $A$, $B$ or $C$.
+%    \begin{macrocode}
+  \let\fillNotABC\@venn@fillNotABC@threesets
+%    \end{macrocode}
+% Fill $A$ but not $B$
+%    \begin{macrocode}
+  \def\fillANotB{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Ax,\@venn@Ay) circle (\@venn@radius)
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $B$ but not $A$
+%    \begin{macrocode}
+  \def\fillBNotA{%
+    \begin{scope}
+      \clip (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+        (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $A$ but not $C$
+%    \begin{macrocode}
+  \def\fillANotC{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Ax,\@venn@Ay) circle (\@venn@radius)
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $C$ but not $A$
+%    \begin{macrocode}
+  \def\fillCNotA{%
+    \begin{scope}
+      \clip (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius)
+        (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $B$ but not $C$
+%    \begin{macrocode}
+  \def\fillBNotC{%
+    \begin{scope}
+      \clip (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $C$ but not $B$
+%    \begin{macrocode}
+  \def\fillCNotB{%
+    \begin{scope}
+      \clip (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius)
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Fill $A$ intersect $B$
+%    \begin{macrocode}
+  \def\fillACapB{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \path[fill=\@venn@shade] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillBCapA\fillACapB
+%    \end{macrocode}
+% Fill $A$ intersect $C$
+%    \begin{macrocode}
+  \def\fillACapC{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \path[fill=\@venn@shade] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillCCapA\fillACapC
+%    \end{macrocode}
+% Fill $B$ intersect $C$
+%    \begin{macrocode}
+  \def\fillBCapC{%
+    \begin{scope}
+      \clip (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+      \path[fill=\@venn@shade] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillCCapB\fillBCapC
+%    \end{macrocode}
+% Fill $A$ intersect $B$ but not $C$
+%    \begin{macrocode}
+  \def\fillACapBNotC{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \clip (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillBCapANotC\fillACapBNotC
+%    \end{macrocode}
+% Fill $A$ intersect $C$ but not $B$
+%    \begin{macrocode}
+  \def\fillACapCNotB{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \clip (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius)
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillCCapANotB\fillACapCNotB
+%    \end{macrocode}
+% Fill $B$ intersect $C$ but not $A$
+%    \begin{macrocode}
+  \def\fillBCapCNotA{%
+    \begin{scope}
+      \clip (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+      \clip (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+      \path[fill=\@venn@shade,even odd rule] 
+        (\@venn@Cx,\@venn@Cy) circle (\@venn@radius)
+        (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define a synonym:
+%    \begin{macrocode}
+  \let\fillCCapBNotA\fillBCapCNotA
+%    \end{macrocode}
+% Fill the intersection of all three sets
+%    \begin{macrocode}
+  \def\fillACapBCapC{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \clip (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+      \path[fill=\@venn@shade] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define synonyms:
+%    \begin{macrocode}
+  \let\fillACapCCapB\fillACapBCapC
+  \let\fillBCapACapC\fillACapBCapC
+  \let\fillBCapCCapA\fillACapBCapC
+  \let\fillCCapACapB\fillACapBCapC
+  \let\fillCCapBCapA\fillACapBCapC
+%    \end{macrocode}
+% Start the \env{tikzpicture} environment.
+%    \begin{macrocode}
+  \ifdefempty{\@venn@tikzoptions}%
+  {%
+    \def\@venn@dobegin{\begin{tikzpicture}}%
+  }%
+  {%
+    \edef\@venn@dobegin{\noexpand\begin{tikzpicture}%
+       [\expandonce\@venn@tikzoptions]}%
+  }%
+  \@venn@dobegin
+%    \end{macrocode}
+% coordinates of the Venn diagram corners
+%    \begin{macrocode}
+  \path (0,0) coordinate (venn bottom left)
+        (0,\@venn@h) coordinate (venn top left)
+        (\@venn@w,\@venn@h) coordinate (venn top right)
+        (\@venn@w,0) coordinate (venn bottom right);
+}%
+%    \end{macrocode}
+% End environment code:
+%    \begin{macrocode}
+{%
+%    \end{macrocode}
+% Draw outlines
+%    \begin{macrocode}
+    \draw (0,0) rectangle (\@venn@w,\@venn@h);
+    \draw (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+    \draw (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \draw (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);
+%    \end{macrocode}
+% Draw labels
+%    \begin{macrocode}
+    \draw (\@venn@Ax,\@venn@Ay) node[above,left] (labelOnlyA) {\@venn@label@OnlyA};
+    \draw (\@venn@Bx,\@venn@By) node[above,right] (labelOnlyB) {\@venn@label@OnlyB};
+    \draw (\@venn@Cx,\@venn@Cy) node[below] (labelOnlyC) {\@venn@label@OnlyC};
+%    \end{macrocode}
+% Region labels
+%    \begin{macrocode}
+    \draw (\@venn@vgap,\@venn@hgap) node (labelNotABC) {\@venn@label@NotABC};
+    \draw (\@venn@Ax,\@venn@Ay+\@venn@radius)
+      node[below] (labelA) {\@venn@label@A};
+    \draw (\@venn@Bx,\@venn@By+\@venn@radius)
+      node[below] (labelB) {\@venn@label@B};
+    \draw (\@venn@Cx,\@venn@vgap) node[above] (labelC) {\@venn@label@C};
+    \draw (\@venn@Cx,0.5*\@venn@h) node (labelABC) {\@venn@label@ABC};
+    \draw (\@venn@Cx,\@venn@Ay) node[above] (labelOnlyAB) {\@venn@label@OnlyAB};
+    \draw (\@venn@Ax,\@venn@Ay) ++(-60:\@venn@radius-0.5*\@venn@overlap)
+      node[below left] (labelOnlyAC) {\@venn@label@OnlyAC};
+    \draw (\@venn@Bx,\@venn@By) ++(-120:\@venn@radius-0.5*\@venn@overlap)
+      node[below right] (labelOnlyBC) {\@venn@label@OnlyBC};
+    \@postvennhook
+  \end{tikzpicture}
+}
+%    \end{macrocode}
+%\end{environment}
+%
+%\begin{macro}{\@postvennhook}
+% Hook called just before the end of the \env{tikzpicture}
+% environment.
+%    \begin{macrocode}
+\newcommand*{\@postvennhook}{}
+%    \end{macrocode}
+%\end{macro}
+%\begin{macro}{\setpostvennhook}
+% User interface to set the post hook.
+%    \begin{macrocode}
+\newcommand*{\setpostvennhook}[1]{\def\@postvennhook{#1}}
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@fillOnlyA@threesets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillOnlyA} is set to this for the three set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillOnlyA@threesets{%
+%    \end{macrocode}
+% Get the intersection points between $A$ and $B$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% We need the point that's furthest from $C$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the initial angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $A$ and $C$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Cx}{\@venn@Cy}%
+%    \end{macrocode}
+% Need the point furthest from $B$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+      \pgfmathadd{\@venn@end@i@angle}{360}%
+      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@i@x-\@venn@Cx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@i@y-\@venn@Cy}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $B$ and $C$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Bx}{\@venn@By}{\@venn@Cx}{\@venn@Cy}%
+%    \end{macrocode}
+% Need the point closest to $A$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@<\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the second arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@ii@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@ii@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@start@pt@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@start@pt@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@iii@angle\pgfmathresult
+      \pgfmathsubtract{\@venn@end@iii@angle}{360}%
+      \let\@venn@end@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade] (\@venn@start@pt@x,\@venn@start@pt@y) 
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@iii@angle,
+      end angle=\@venn@end@iii@angle] -- cycle;
+    \else
+       \fillOnlyA
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@fillOnlyB@threesets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillOnlyB} is set to this for the three set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillOnlyB@threesets{%
+%    \end{macrocode}
+% Get the intersection points between $B$ and $A$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Bx}{\@venn@By}{\@venn@Ax}{\@venn@Ay}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% We need the point that's furthest from $C$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Bx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@By}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Bx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@By}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the initial angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $B$ and $C$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Bx}{\@venn@By}{\@venn@Cx}{\@venn@Cy}%
+%    \end{macrocode}
+% Need the point furthest from $A$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Bx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@By}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Bx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@By}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@i@x-\@venn@Cx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@i@y-\@venn@Cy}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $A$ and $C$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Cx}{\@venn@Cy}%
+%    \end{macrocode}
+% Need the point closest to $A$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@<\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the second arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@ii@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@ii@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@start@pt@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@start@pt@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade] 
+      (\@venn@start@pt@x,\@venn@start@pt@y) 
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@iii@angle,
+      end angle=\@venn@end@iii@angle] -- cycle;
+    \else
+       \fillOnlyB
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@fillOnlyC@threesets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillOnlyC} is set to this for the three set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillOnlyC@threesets{%
+%    \end{macrocode}
+% Get the intersection points between $C$ and $B$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Cx}{\@venn@Cy}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% We need the point that's furthest from $A$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Cy}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Cy}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the initial angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $C$ and $A$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Cx}{\@venn@Cy}{\@venn@Ax}{\@venn@Ay}%
+%    \end{macrocode}
+% Need the point furthest from $B$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Cy}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Cy}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+      \pgfmathsubtract{\@venn@end@i@angle}{360}%
+      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@i@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@i@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $B$ and $A$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Bx}{\@venn@By}{\@venn@Ax}{\@venn@Ay}%
+%    \end{macrocode}
+% Need the point closest to $C$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@<\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the second arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@ii@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@ii@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@start@pt@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@start@pt@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade] (\@venn@start@pt@x,\@venn@start@pt@y) 
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@iii@angle,
+      end angle=\@venn@end@iii@angle] -- cycle;
+    \else
+       \fillOnlyC
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@fillNotABC@threesets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillNotABC} is set to this for the three set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillNotABC@threesets{%
+%    \end{macrocode}
+% Get the intersection points between $A$ and $B$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% We need the point that's furthest from $C$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Cx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Cy-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+        \edef\@venn@start@pt@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@start@pt@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the initial angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $A$ and $C$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Cx}{\@venn@Cy}%
+%    \end{macrocode}
+% We need the point that's furthest from $B$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Bx-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@By-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+        \edef\@venn@end@pt@i@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@i@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the first arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+      \pgfmathadd{\@venn@end@i@angle}{360}%
+      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@i@x-\@venn@Cx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@i@y-\@venn@Cy}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the intersection between $C$ and $B$.
+%    \begin{macrocode}
+      \@venn@computecircleintersects{\@venn@Cx}{\@venn@Cy}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% We need the point that's furthest from $A$.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@i@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@i@y}%
+      \pgfmathsetlength{\dimen@}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \pgfmathsetlength{\dimen@i}{\@venn@Ax-\@venn@intersect@ii@x}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@Ay-\@venn@intersect@ii@y}%
+      \pgfmathsetlength{\dimen@i}{\dimen@i*\dimen@i+\dimen@ii*\dimen@ii}%
+      \ifdim\dimen@>\dimen@i
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@i@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@i@y}%
+      \else
+        \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Cx}%
+        \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Cy}%
+        \edef\@venn@end@pt@ii@x{\the\@venn@intersect@ii@x}%
+        \edef\@venn@end@pt@ii@y{\the\@venn@intersect@ii@y}%
+      \fi
+%    \end{macrocode}
+% Compute the end angle of the second arc.
+%    \begin{macrocode}
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+      \pgfmathadd{\@venn@end@ii@angle}{360}%
+      \let\@venn@end@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@end@pt@ii@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@end@pt@ii@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle of the third arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@start@pt@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@start@pt@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@iii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade,even odd rule]
+        (0,0) rectangle (\@venn@w,\@venn@h)
+       (\@venn@start@pt@x,\@venn@start@pt@y) 
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@iii@angle,
+      end angle=\@venn@end@iii@angle]
+      -- cycle;
+    \else
+      \path[fill=\@venn@shade,even odd rule]
+        (0,0) rectangle (\@venn@w,\@venn@h)
+       (\@venn@Ax,\@venn@Ay) circle (\@venn@radius)
+       (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+       (\@venn@Cx,\@venn@Cy) circle (\@venn@radius);%
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{environment}{venndiagram2sets}
+%    \begin{macrocode}
+\newenvironment{venndiagram2sets}[1][]%
+{%
+%    \end{macrocode}
+% Disable the keys that aren't applicable.
+%    \begin{macrocode}
+  \disable@keys{venn}{labelABC,labelOnlyC,labelOnlyAC,labelOnlyBC,%
+    labelNotABC,labelC,labelOnlyAB}%
+%    \end{macrocode}
+% Set the key values given in the optional argument.
+%    \begin{macrocode}
+  \setkeys{venn}{#1}%
+%    \end{macrocode}
+  % Calculate centre of A
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@Ax}{\@venn@hgap+\@venn@radius}%
+  \pgfmathsetlength{\@venn@Ay}{\@venn@vgap+\@venn@radius}%
+%    \end{macrocode}
+% Calculate centre of B
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@Bx}{\@venn@hgap+3*\@venn@radius
+    -\@venn@overlap}%
+  \setlength{\@venn@By}{\@venn@Ay}%
+%    \end{macrocode}
+% Compute dimensions of entire diagram
+%    \begin{macrocode}
+  \pgfmathsetlength{\@venn@w}{2*\@venn@hgap+4*\@venn@radius
+     -\@venn@overlap}%
+  \pgfmathsetlength{\@venn@h}{2*\@venn@vgap+2*\@venn@radius}%
+%    \end{macrocode}
+% Define filling commands
+%    \begin{macrocode}
+  \def\fillA{\path[fill=\@venn@shade] (\@venn@Ax,\@venn@Ay)
+    circle (\@venn@radius);}%
+  \def\fillB{\path[fill=\@venn@shade] (\@venn@Bx,\@venn@By)
+    circle (\@venn@radius);}%
+  \def\fillAll{\path[fill=\@venn@shade] (0,0)
+    rectangle (\@venn@w,\@venn@h);}%
+%    \end{macrocode}
+% Fill only set $A$
+%    \begin{macrocode}
+  \let\fillOnlyA\@venn@fillOnlyA@twosets
+%    \end{macrocode}
+% Fill only set $B$
+%    \begin{macrocode}
+  \let\fillOnlyB\@venn@fillOnlyB@twosets
+%    \end{macrocode}
+% Fill everything except $A$
+%    \begin{macrocode}
+  \def\fillNotA{\path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill everything except $B$
+%    \begin{macrocode}
+  \def\fillNotB{\path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Bx,\@venn@By) circle (\@venn@radius);}%
+%    \end{macrocode}
+% Fill everything except $A$ or $B$ ($(A\cup B)^c$)
+%    \begin{macrocode}
+  \def\fillNotAorB{%
+    \begin{scope}
+    \path[clip]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+     ;
+    \path[fill=\@venn@shade,even odd rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Ax,\@venn@Ay) circle (\@venn@radius)
+    ;
+    \end{scope}
+   }%
+%    \end{macrocode}
+% Fill not $A$ or not $B$ ($(A\cap B)^c$)
+%    \begin{macrocode}
+  \def\fillNotAorNotB{%
+    \path[fill=\@venn@shade,nonzero rule]
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Ax,\@venn@Ay) circle (\@venn@radius)
+    (0,0) rectangle (\@venn@w,\@venn@h)
+    (\@venn@Bx,\@venn@By) circle (\@venn@radius)
+    ;
+   }%
+%    \end{macrocode}
+% Fill $A$ but not $B$ (same as only $A$ for two sets).
+%\changes{1.1}{2016-03-16}{made \cs{fillANotB} a synonym for
+%\cs{fillOnlyA}}
+%    \begin{macrocode}
+  \let\fillANotB\fillOnlyA
+%    \end{macrocode}
+% Fill $B$ but not $A$ (same as only $B$ for two sets).
+%\changes{1.1}{2016-03-16}{made \cs{fillBNotA} a synonym for
+%\cs{fillOnlyB}}
+%    \begin{macrocode}
+  \let\fillBNotA\fillOnlyB
+%    \end{macrocode}
+% Fill $A$ intersect $B$
+%    \begin{macrocode}
+  \def\fillACapB{%
+    \begin{scope}
+      \clip (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+      \path[fill=\@venn@shade] 
+        (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+    \end{scope}
+  }%
+%    \end{macrocode}
+% Define synonym:
+%    \begin{macrocode}
+  \let\fillBCapA\fillACapB
+%    \end{macrocode}
+% Start the \env{tikzpicture} environment.
+%    \begin{macrocode}
+  \ifdefempty{\@venn@tikzoptions}%
+  {%
+    \def\@venn@dobegin{\begin{tikzpicture}}%
+  }%
+  {%
+    \edef\@venn@dobegin{\noexpand\begin{tikzpicture}%
+      [\expandonce\@venn@tikzoptions]}%
+  }%
+  \@venn@dobegin
+%    \end{macrocode}
+% coordinates of the Venn diagram corners
+%    \begin{macrocode}
+  \path (0,0) coordinate (venn bottom left)
+        (0,\@venn@h) coordinate (venn top left)
+        (\@venn@w,\@venn@h) coordinate (venn top right)
+        (\@venn@w,0) coordinate (venn bottom right);
+}%
+%    \end{macrocode}
+% End environment code
+%    \begin{macrocode}
+{%
+%    \end{macrocode}
+% Draw outlines
+%    \begin{macrocode}
+    \draw (venn bottom left) rectangle (\@venn@w,\@venn@h);
+    \draw (\@venn@Ax,\@venn@Ay) circle (\@venn@radius);
+    \draw (\@venn@Bx,\@venn@By) circle (\@venn@radius);
+%    \end{macrocode}
+% Draw labels
+%    \begin{macrocode}
+    \draw (\@venn@Ax,\@venn@Ay) node[above,left] (labelOnlyA)
+       {\@venn@label@OnlyA};
+    \draw (\@venn@Bx,\@venn@By) node[above,right] (labelOnlyB)
+       {\@venn@label@OnlyB};
+%    \end{macrocode}
+% Region labels
+%    \begin{macrocode}
+    \draw (\@venn@vgap,\@venn@hgap) node (labelNotAB) {\@venn@label@NotAB};
+    \draw (\@venn@Ax,\@venn@Ay+\@venn@radius)
+      node[below] (labelA) {\@venn@label@A};
+    \draw (\@venn@Bx,\@venn@By+\@venn@radius)
+      node[below] (labelB) {\@venn@label@B};
+    \draw (0.5*\@venn@w,0.5*\@venn@h) node (labelAB) {\@venn@label@AB};
+    \@postvennhook
+  \end{tikzpicture}
+}
+%    \end{macrocode}
+%\end{environment}
+%
+%\begin{macro}{\@venn@fillOnlyA@twosets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillOnlyA} is set to this for the two set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillOnlyA@twosets{%
+%    \end{macrocode}
+% Get the intersection points between $A$ and $B$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% Compute the start angle for the first arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle for the first arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+      \pgfmathadd{\@venn@end@i@angle}{360}%
+      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle for the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle for the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+      \pgfmathadd{\@venn@start@ii@angle}{360}%
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill the path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade]
+       (\@venn@intersect@i@x,\@venn@intersect@i@y)
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+       -- cycle;
+    \else
+       \fillOnlyA
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%
+%\begin{macro}{\@venn@fillOnlyB@twosets}
+%\changes{1.1}{2016-03-16}{new}
+%\cs{fillOnlyB} is set to this for the two set version.
+% Reimplemented in v1.1 to use new circle intersect code.
+%    \begin{macrocode}
+\newcommand*\@venn@fillOnlyB@twosets{%
+%    \end{macrocode}
+% Get the intersection points between $A$ and $B$.
+%    \begin{macrocode}
+    \@venn@computecircleintersects{\@venn@Ax}{\@venn@Ay}{\@venn@Bx}{\@venn@By}%
+%    \end{macrocode}
+% If there aren't two points of intersection, then the circles don't
+% overlap.
+%    \begin{macrocode}
+    \ifnum\@venn@intersect@n=2\relax
+%    \end{macrocode}
+% Compute the start angle for the first arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle for the first arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Bx}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@By}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@i@angle\pgfmathresult
+%      \pgfmathadd{\@venn@end@i@angle}{360}%
+%      \let\@venn@end@i@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the start angle for the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@ii@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@ii@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Compute the end angle for the second arc.
+%    \begin{macrocode}
+      \pgfmathsetlength{\dimen@i}{\@venn@intersect@i@x-\@venn@Ax}%
+      \pgfmathsetlength{\dimen@ii}{\@venn@intersect@i@y-\@venn@Ay}%
+      \ifvennoldpgf
+        \pgfmathatantwo{\dimen@i}{\dimen@ii}%
+      \else
+        \pgfmathatantwo{\dimen@ii}{\dimen@i}%
+      \fi
+      \let\@venn@end@ii@angle\pgfmathresult
+%      \pgfmathadd{\@venn@start@ii@angle}{360}%
+%      \let\@venn@start@ii@angle\pgfmathresult
+%    \end{macrocode}
+% Fill the path
+%    \begin{macrocode}
+      \path[fill=\@venn@shade]
+       (\@venn@intersect@i@x,\@venn@intersect@i@y)
+      arc[radius=\@venn@radius,start angle=\@venn@start@i@angle,
+      end angle=\@venn@end@i@angle]
+      arc[radius=\@venn@radius,start angle=\@venn@start@ii@angle,
+      end angle=\@venn@end@ii@angle]
+       -- cycle;
+    \else
+       \fillOnlyB
+    \fi
+}%
+%    \end{macrocode}
+%\end{macro}
+%\iffalse
+%    \begin{macrocode}
+%</venndiagram.sty>
+%    \end{macrocode}
+%\fi
+%\Finale
+\endinput
