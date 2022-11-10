@@ -1,0 +1,16 @@
+LaTeX Bundle : venndiagram v1.1 
+
+Last Modified : 2016-03-16
+
+Author        : Nicola Talbot
+
+The venndiagram package is provided to assist generating
+simple two- and three-set Venn diagrams for lectures or assignment
+sheets. This package requires the tikz package.
+
+
+This material is subject to the LaTeX Project Public License. 
+See http://www.ctan.org/license/lppl1.3 for the details of that license.
+
+http://www.dickimaw-books.com/
+
