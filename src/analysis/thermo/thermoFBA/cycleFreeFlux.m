@@ -281,16 +281,25 @@ else
             param.approach = 'regularised';
             %param.relaxBounds=1;
             v2 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
-            Vthermo(:, i) = v2;
-            thermoConsistentFluxBool(:,i) = abs(v0 - v2) < eta;
-            %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
-            if ~param.relaxBounds
-                %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
-                forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v2 - model_lb) < eta;
-                forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v2 - model_ub) < eta;
-                thermoConsistentFluxBool(forcedFwdRxnBool)=0;
-                thermoConsistentFluxBool(forcedRevRxnBool)=0;
+            if ~isempty(v2)
+                Vthermo(:, i) = v2;
+                thermoConsistentFluxBool(:,i) = abs(v0 - v2) < eta;
+                
+                %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
+                if ~param.relaxBounds
+                    %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
+                    forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v2 - model_lb) < eta;
+                    forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v2 - model_ub) < eta;
+                    thermoConsistentFluxBool(forcedFwdRxnBool)=0;
+                    thermoConsistentFluxBool(forcedRevRxnBool)=0;
+                end
+            else
+                fprintf('%s\n','computeCycleFreeFlux: regularised approach failed, likely infeasible.')
+                if 0
+                    getReport(ME)
+                end
             end
+            
         end
     end
 end
@@ -317,6 +326,12 @@ feasTol = getCobraSolverParams('LP', 'feasTol');
 if any(model_ub-model_lb<feasTol & model_ub~=model_lb)
     warning('cycleFreeFlux: Unperturbed lower and upper bounds closer than feasibility tolerance. May cause numerical issues.')
 end
+
+bool = abs(v0)<feasTol/100;
+if any(bool)
+    disp(['cycleFreeFlux: Assuming flux in ' int2str(nnz(bool)) ' reactions is less than feasibility tolerance/100 is zero as otherwise it may cause numerical issues.'])
+end
+v0(bool) = 0;
 
 [m,n] = size(model_S);
 p = sum(SConsistentRxnBool);
@@ -382,9 +397,9 @@ switch param.approach
         isR = [SConsistentRxnBool & v0 < 0; false(3*p+m,1)]; % net reverse internal flux
         
         % lower and upper bounds - fixed exchange and zero fluxes
-        if 0
-            lb = [v0; zeros(p, 1); zeros(m, 1); -inf*ones(2*p + clt,1)];
-            ub = [v0; inf*ones(p,1); inf*ones(m, 1); inf*ones(2*p + clt,1)];
+        if 1
+            lb = [v0-feasTol; zeros(p, 1); zeros(m, 1); -inf*ones(2*p + clt,1)];
+            ub = [v0+feasTol; inf*ones(p,1); inf*ones(m, 1); inf*ones(2*p + clt,1)];
         else
             maxUB = 100/feasTol;
             lb = [v0; zeros(p, 1); zeros(m, 1); -maxUB*ones(2*p + clt,1)];
@@ -474,7 +489,7 @@ switch param.approach
             fprintf('%s','cycleFreeFlux: No quadratically regularised solution found. Relaxing LP version...');
             qp = rmfield(qp,'F');
             paramRelax.relaxedPrintLevel=1;
-            [solution, relaxedqp] = relaxedFBA(qp,paramRelax);
+            [solutionRelaxed, relaxedqp] = relaxedFBA(qp,paramRelax);
             
         end
     case 'lp0'
@@ -1022,6 +1037,7 @@ else
             
         end
     end
+    v1 = [];
     warning('cycleFreeFlux: No solution found.');
 end
 

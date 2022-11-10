@@ -1,0 +1,46 @@
+\documentclass{article}
+
+\usepackage{venndiagram}
+
+\begin{document}
+
+$ \mathcal{U} \setminus (\mathcal{A} \cup \mathcal{B} \cup
+\mathcal{C})$:
+
+\begin{venndiagram3sets}
+  \fillNotABC
+\end{venndiagram3sets}
+
+$ \mathcal{B} \setminus \mathcal{A} $
+
+\begin{venndiagram2sets}
+\fillOnlyB
+\end{venndiagram2sets}
+
+Using the labels:
+
+\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+ labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+ labelNotABC={8}]
+\end{venndiagram3sets}
+
+Annotating the diagram:
+
+\begin{venndiagram3sets}[labelOnlyA={1},labelOnlyB={2},labelOnlyC={3},
+ labelOnlyAB={4},labelOnlyAC={5},labelOnlyBC={6},labelABC={7},
+ labelNotABC={8}]
+\setpostvennhook
+{
+  \draw[<-] (labelA) -- ++(135:3cm) node[above] {Students who eat artichokes};
+  \draw[<-] (labelB) -- ++(45:3cm) node[above] {Students who eat broccoli};
+  \draw[<-] (labelC) -- ++(-90:3cm) node[below] {Students who eat carrots};
+  \draw[<-] (labelABC) -- ++(0:3cm)
+    node[right,text width=4cm,align=flush left]
+   {7 students eat artichokes, broccoli and carrots};
+  \draw[<-] (labelNotABC) -- ++(-135:3cm)
+    node[below,text width=4cm,align=flush left]
+   {8 students don't eat artichokes, broccoli or carrots};
+}
+\end{venndiagram3sets}
+
+\end{document}
