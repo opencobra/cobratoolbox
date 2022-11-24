@@ -75,6 +75,7 @@ mapping={
 for i = startSearch : endSearch
     % use Kegg as query term
     % if ~isempty(metabolite_structure.(Mets{i}).keggId) && isempty(find(isnan(metabolite_structure.(Mets{i}).keggId),1))
+    i
     for z = 1 : size(mapping,1)
         if isfield(metabolite_structure.(Mets{i}),(mapping{z,1})) && ~isempty(metabolite_structure.(Mets{i}).(mapping{z,1})) && isempty(find(isnan(metabolite_structure.(Mets{i}).(mapping{z,1})),1))
             %  search for exact term
