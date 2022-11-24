@@ -308,9 +308,9 @@ switch samplerName
         end
         o = sample(P, nPointsReturned, opts);
         samples = o.samples;
-        if size(samples,2) > nPointsReturned
-            samples = samples(:, ((size(samples,2)-nPointsReturned):end));
-        end
+%         if size(samples,2) > nPointsReturned
+%             samples = samples(:, ((size(samples,2)-nPointsReturned):end));
+%         end
         modelSampling = o;
         modelSampling.samples = [];
         volume = 'Set samplerName = ''MFE'' to estimate volume.';
