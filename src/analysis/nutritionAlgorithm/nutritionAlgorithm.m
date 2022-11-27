@@ -469,9 +469,9 @@ end
 for i=1:length(rois)
     ind=find(strcmp(pointsModel.rxns,rois{i}));
     if strcmp(display,'on')
-        disp(['   ',rois{i},' flux = ', num2str(pointsModelSln.v(ind))])
+        disp(['   ',rois{i},' flux = ', num2str(pointsModelSln.v(ind(1)))])
     end
-    roiFlux(i)=pointsModelSln.v(ind);
+    roiFlux(i)=pointsModelSln.v(ind(1));
 end
 if strcmp(slnType,'Quick')
     detailedAnalysis=[];

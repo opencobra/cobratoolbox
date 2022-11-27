@@ -133,7 +133,7 @@ orInd=find(strcmp(infoFile(1,:),'Oxygen Requirement'));
 try
 oxReq=infoFile{find(strcmp(infoFile(:,1),microbeID)),orInd};
 catch
-    error('microbeID is not present in infoFile');
+    error(['microbeID ' microbeID ' is not present in infoFile']);
 end
 
 if ~strcmp(oxReq,'Obligate aerobe')
