@@ -179,9 +179,8 @@ for i=1:steps:length(models)
     modelsTmp = {};
     draftModelsTmp = {};
     summariesTmp = {};
-    
+   
   parfor j=i:i+endPnt
- %for j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         

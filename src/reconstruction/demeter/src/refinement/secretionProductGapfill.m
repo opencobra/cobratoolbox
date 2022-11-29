@@ -23,7 +23,9 @@ function [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,da
 %
 % .. Author:
 %       - Almut Heinken, 2019-2020
-
+%       - Bronson R. Weston, 2022, introduced global additional secretion
+%       reactions
+global additionalSecretionRxns
 
 % structure of lists of reactions to add per secretion product
 % non-alphanumeric characters are removed from secretion product names in
@@ -106,6 +108,14 @@ secretionRxns.Isopropanol = {'EX_2ppoh(e)','2PPOHt2r','EX_acetone(e)','ACETONEt2
 secretionRxns.Lmalate = {'EX_mal_L(e)','MALt2r'};
 secretionRxns.Sulfide = {'EX_h2s(e)','H2St'};
 
+%Add any additional secretion rxns if specified
+if ~isempty(additionalSecretionRxns)
+    addFields=fields(additionalSecretionRxns);
+    for f=1:length(addFields)
+        secretionRxns.(addFields{f})=additionalSecretionRxns.(addFields{f});
+    end
+end
+
 % read in the secretion product data
 secretionTable = readInputTableForPipeline([inputDataFolder filesep 'secretionProductTable.txt']);
 secretionTable(:,find(strncmp(secretionTable(1,:),'Ref',3)))=[];
@@ -144,7 +154,7 @@ if ~isempty(spCols)
     secProds = products(spCols);
     for i = 1:length(secProds)
         % add rxns that are not already in model
-        rxns2Add = setdiff(secretionRxns.(secProds{i}), model.rxns);
+        rxns2Add = setdiff(secretionRxns.(secProds{i}), model.rxns)
         if ~isempty(rxns2Add)
             for j = 1:length(rxns2Add)
                 RxnForm = database.reactions(find(ismember(database.reactions(:, 1), rxns2Add{j})), 3);
