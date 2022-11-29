@@ -30,6 +30,8 @@ function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, bio
 % .. Author:
 %       - Almut Heinken, 2016-2019
 
+warning off;
+
 deletedRxns = {};
 addedRxns = {};
 gfRxns = {};
@@ -522,7 +524,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'D_LACt2pp AND GLUTACCOACL AND GLUTACCOADCpp AND MALLACDtpp AND MALt4pp',[],'GLUTACCOACL','GLUTACCOACLi'
     'ATPS3pp AND GALM1r AND GLUOR AND HYD1pp' ,[],'GLUOR','GLUORi'
     'NEOPRONT_AR_NAD',[],'NEOPRONT_AR_NAD','NEOPRONT_AR_NADi'
-    'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
+   'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
     'PRONT_AR_NAD',[],'PRONT_AR_NAD','PRONT_AR_NADi'
     'PRONT_AR_NADP',[],'PRONT_AR_NADP','PRONT_AR_NADPi'
     'OLSA_AR_NAD',[],'OLSA_AR_NAD','OLSA_AR_NADi'
@@ -645,9 +647,10 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
-
+rxns{j}
                     RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
-                    
+        
+RxForm            
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                         newName=[rxns{j} 'pp'];
                         % make sure we get the correct reaction

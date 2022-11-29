@@ -460,7 +460,9 @@ while go
         if any(model.g0(~model.SConsistentRxnBool))
             setIncentives = 0;
         else
-            fprintf('%s\n','No exchange reaction is being optimised, making another random selection.')
+            if param.printLevel>1
+                fprintf('%s\n','findThermoConsistientFlux: No exchange reaction is being optimised, making another random selection.')
+            end
         end
     end
 %     %no cardinality optimisation of reactions forced to be active
@@ -531,6 +533,7 @@ while go
     %forward, reverse, external
     totalFractThermoFeasFwdRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,1))/nIntRxn;
     totalFractThermoFeasRevRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,2))/nIntRxn;
+    totalFractThermoFeasIntRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,1) | thermo2FluxConsistentBool0(model.SConsistentRxnBool,2))/nIntRxn;
     totalFractExternalRxn = nnz(thermoExFluxConsistentBool00(~model.SConsistentRxnBool))/nExRxn;
     totalFractThermoFeasRxn = nnz(thermoFluxConsistentBool00 | thermoExFluxConsistentBool00)/nRxn;
     
@@ -564,22 +567,22 @@ while go
     if totalFractThermoModelRxnOld==totalFractThermoModelRxn
         noProgress=noProgress+1;
     end
-
-    if (totalFractExternalRxn==1 && totalFractThermoFeasFwdRxn ==1 && totalFractThermoFeasRevRxn ==1) || n==param.nMax || noProgress==5
+    
+    if (totalFractExternalRxn==1 && totalFractThermoFeasIntRxn ==1) || n==param.nMax || noProgress==5
         if param.printLevel>0
-        fprintf('%6%8s%8s%8s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s\n','Reset','iter','nnz(g0<0)','nnz','  feas.f', '   rep.feas.f', 't.feas.f.','  feas.r', '   rep.feas.r', 't.feas.r', 't.feas.int', 't.feas.ext','iteration', 'formulation')
-        end
-        if n ==param.nMax
-            fprintf('%s%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'n = nMax = ',int2str(n))
-        end
-        if noProgress==5
-            fprintf('%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'no progress on % internal reactions thermodynamically flux consistent')
-        end
-        if n == length(solution.v)
-            fprintf('%s%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'n == nRxns')
-        end
-        if totalFractThermoFeasFwdRxn ==1 || totalFractThermoFeasRevRxn ==1
-            fprintf('%s\n','All internal reactions are thermodynamically flux consistent in at least one direction.')
+            fprintf('%6s%8s%8s%8s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s\n','Reset','iter','nnz(g0<0)','nnz','  feas.f', '   rep.feas.f', 't.feas.f.','  feas.r', '   rep.feas.r', 't.feas.r', 't.feas.int', 't.feas.ext','iteration', 'formulation')
+            if n ==param.nMax
+                fprintf('%s%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'n = nMax = ',int2str(n))
+            end
+            if noProgress==5
+                fprintf('%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'no progress on % internal reactions thermodynamically flux consistent')
+            end
+            if n == length(solution.v)
+                fprintf('%s%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'n == nRxns')
+            end
+            if totalFractThermoFeasIntRxn ==1
+                fprintf('%s\n','All internal reactions are thermodynamically flux consistent in at least one direction.')
+            end
         end
         go = 0;
     end
