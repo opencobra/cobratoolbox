@@ -317,7 +317,9 @@ if ~isfield(param,'approach')
     %by default, use the regularised approach, even though it is slower, it is less numerically sensitive
     param.approach = 'lp';
 end
-
+if ~isfield(param,'printLevel')
+    param.printLevel=0;
+end
 if any(model_lb>model_ub)
     error('Model lower bounds cannot be greater than upper bounds')
 end
@@ -329,8 +331,11 @@ end
 
 bool = abs(v0)<feasTol/100;
 if any(bool)
-    disp(['cycleFreeFlux: Assuming flux in ' int2str(nnz(bool)) ' reactions is less than feasibility tolerance/100 is zero as otherwise it may cause numerical issues.'])
+    if param.printLevel>0
+        disp(['cycleFreeFlux: Assuming flux in ' int2str(nnz(bool)) ' reactions that is less than feasibility tolerance/100 is zero, as otherwise it may cause numerical issues.'])
+    end
 end
+        
 v0(bool) = 0;
 
 [m,n] = size(model_S);

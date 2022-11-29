@@ -1441,8 +1441,16 @@ if solution.stat==1
                 
                 %Fraction of thermodynamically feasible internal fluxes
                 if param.printLevel>0
-                    pcent = round(100*nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
-                    fprintf('%3.2f%s\n',pcent,['% thermodynamically feasible nonzero internal fluxes (checked by ' param.thermoConsistencyMethod ' method).'])
+                    if any(isnan(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool))
+                        fprintf('%s%3.2f%s\n','optCardThermo: ',nnz(isnan(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool))...
+                            ,['% NaN thermodynamically feasible nonzero internal fluxes (checked by ' param.thermoConsistencyMethod ' method).'])
+                    end
+                    if nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)==0
+                        pcent = 0;
+                    else
+                        pcent = round(100*nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
+                    end
+                    fprintf('%s%3.2f%s\n','optCardThermo: ',pcent,['% thermodynamically feasible nonzero internal fluxes (checked by ' param.thermoConsistencyMethod ' method).'])
                 end
                 
                 if cycleFreeFluxParam.acceptRepairedFlux
@@ -1500,8 +1508,12 @@ if solution.stat==1
                         outsideBounds = solution.v~=0 & solution.v<model.lb | solution.v>model.ub;
                         if any(outsideBounds)
                             if param.printLevel>0
-                                pcent = round(100*nnz(nonZeroFluxBool & outsideBounds & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
-                                fprintf('%3.2f%s\n',pcent,['% nonzero internal fluxes thermodynamically feasible only after bound relaxation by ' param.thermoConsistencyMethod ' method).'])
+                                if nnz(nonZeroFluxBool & outsideBounds & model.SConsistentRxnBool)==0
+                                    pcent = 0;
+                                else
+                                    pcent = round(100*nnz(nonZeroFluxBool & outsideBounds & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
+                                end
+                                fprintf('%s%3.2f%s\n','optCardThermo: ',pcent,['% nonzero internal fluxes thermodynamically feasible only after bound relaxation by ' param.thermoConsistencyMethod ' method).'])
                             end
                             %eliminate if outside the bounds due to bound relaxation
                             thermoConsistentFluxBool(outsideBounds)=0;
@@ -1510,8 +1522,12 @@ if solution.stat==1
                     
                     %Fraction of thermodynamically feasible internal fluxes
                     if param.printLevel>0
-                        pcent = round(100*nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
-                        fprintf('%3.2f%s\n',pcent,['% thermodynamically feasible internal fluxes (after repair by ' param.thermoConsistencyMethod ' method).'])
+                        if nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)==0
+                            pcent = 0;
+                        else
+                            pcent = round(100*nnz(nonZeroFluxBool & thermoConsistentFluxBool & model.SConsistentRxnBool)/nnz(nonZeroFluxBool & model.SConsistentRxnBool),2);
+                        end
+                        fprintf('%s%3.2f%s\n','optCardThermo: ',pcent,['% thermodynamically feasible internal fluxes (after repair by ' param.thermoConsistencyMethod ' method).'])
                     end
                 else
                     solution.vThermo = solutionConsistency.vThermo;
@@ -1526,7 +1542,7 @@ if solution.stat==1
                 end
                 if 0
                     %v2QNTy never seems to work
-                    warning('cycleFreeFlux did not solve, trying v2QNTy')
+                    warning('optCardThermo: cycleFreeFlux did not solve, trying v2QNTy')
                     if changeTol
                         %change it back
                         changeOK = changeCobraSolverParams('LP', 'feasTol', feasTol);
@@ -1538,17 +1554,17 @@ if solution.stat==1
                     %Fraction of thermodynamically feasible internal fluxes
                     if param.printLevel>0
                         pcent = round(100*nnz(thermoConsistentFluxBool & model.SConsistentRxnBool)/nnz(model.SConsistentRxnBool),2);
-                        fprintf('%3.2f%s\n',pcent,['% thermodynamically feasible internal fluxes (checked by ' param.thermoConsistencyMethod ' method).'])
+                        fprintf('%s%3.2f%s\n','optCardThermo: ',pcent,['% thermodynamically feasible internal fluxes (checked by ' param.thermoConsistencyMethod ' method).'])
                     end
                     %annotate the solution structure with the reaction fluxes that are thermodynamically consistent
                     solution.thermoConsistentFluxBool = thermoConsistentFluxBool;
                 else
-                    warning('cycleFreeFlux did not solve.')
+                    warning('optCardThermo: cycleFreeFlux did not solve.')
                     solution.thermoConsistentFluxBool=[];
                 end
             end
         else
-            fprintf('%s\n','Internal fluxes not double checked for thermodynamic consistency.')
+            fprintf('%s\n','optCardThermo: Internal fluxes not double checked for thermodynamic consistency.')
         end
     end
 end

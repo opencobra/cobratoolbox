@@ -78,6 +78,8 @@ if exist('Ain','var')
                 varNames = Ain.Properties.VariableNames;
                 Bout = table('Size',[length(Bkey), size(Ain,2)],'VariableTypes',varTypes,'VariableNames',varNames);
                 
+                %TODO assign all the properties
+                Bout.Properties.Description = Ain.Properties.Description;
             otherwise
                 error('unrecognised class')
         end
