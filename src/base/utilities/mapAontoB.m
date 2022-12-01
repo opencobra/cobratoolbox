@@ -49,17 +49,18 @@ if exist('Ain','var')
     [~,nlt] = size(Ain);
     if exist('Bin','var')
         classBin = class(Bin);
-        if classAin ~= classBin
+        if ~isequal(classAin,classBin)
             error('Class of Ain and Bin must be the same')
         end
         
         if isa(Ain,'table')
             if ischar(Bkey) && ischar(Akey)
+                %also returns index vectors, ileft and iright, indicating the correspondence between rows in T and rows in Tleft and Tright respectively. 
                 [Bout,ileft,iright] = outerjoin(Bin,Ain,'LeftKeys',Bkey,'RightKeys',Akey,'MergeKeys',1);
             else
                 [Bout,ileft,iright] = outerjoin(Bin,Ain,'MergeKeys',1);
             end
-            Bout=Bout(iright~=0,:);
+            Bout=Bout(ileft~=0,:);
         else
             Bout(LIBkey,:) =  Ain(LOCAkey(LOCAkey~=0),:);
         end
