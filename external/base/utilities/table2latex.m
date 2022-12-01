@@ -66,7 +66,9 @@ function table2latex(T, filename)
                 value = T{row,col};
                 if isstruct(value), error('Table must not contain structs.'); end
                 while iscell(value), value = value{1,1}; end
-                if isinf(value), value = '$\infty$'; end
+                if isnumeric(value)
+                    if isinf(value), value = '$\infty$'; end
+                end
                 temp{1,col} = num2str(value);
             end
             if ~isempty(row_names)
@@ -75,7 +77,7 @@ function table2latex(T, filename)
             fprintf(fileID, '%s \\\\ \n', strjoin(temp, ' & '));
             clear temp;
         end
-    catch
+    catch ME
         error('Unknown error. Make sure that table only contains chars, strings or numeric values.');
     end
     
