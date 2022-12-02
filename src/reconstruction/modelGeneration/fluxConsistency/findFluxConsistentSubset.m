@@ -15,9 +15,9 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %    param:                      can contain:
 %                                  * param.LPsolver - the LP solver to be used
 %                                  * param.epsilon -  minimum nonzero flux, default feasTol*10
-%                                                     Note that fastcc is very sensitive to the value of parm.epsilon                    
+%                                                     Note that fastcc is very sensitive to the value of parm.epsilon
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
-%                                  * param.method - {'swiftcc', ('fastcc'), 'dc'}
+%                                  * param.method - {'swiftcc', ('fastcc'), 'dc','fastB'}
 %                                  * param.reduce - {(0),1} 1 = return fluxConsistModel
 %
 %    printLevel:                 verbose level
@@ -40,6 +40,7 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 % .. Authors:
 %       - Ronan Fleming, 2017
 %       - Mojtaba Tefagh, March 2019 - integration of swiftcc
+%       - Ines Thiele, Dec 2022 - integration of fastB 
 
 % .. Author: - Ronan Fleming 2022
 % .. Please cite:
@@ -226,6 +227,12 @@ switch sol.stat
                     stat   = 0;
                     v = [];
                 end
+            case 'fastB'
+                % use fastBlockedRxns to identify flux consistent rxns
+                printLevel = 0;
+                [BlockedRxns] = identifyFastBlockedRxns(model,model.rxns,printLevel);
+                fluxConsistentRxnBoolTemp = true(size(model.S,2),1);
+                fluxConsistentRxnBoolTemp(ismember(model.rxns,BlockedRxns)) = false;
         end
     case 0
         disp(sol.stat)
@@ -273,7 +280,7 @@ model.fluxInConsistentMetBool=fluxInConsistentMetBool;
 model.fluxInConsistentRxnBool=fluxInConsistentRxnBool;
 
 %Extract flux consistent submodel
-if any(~model.fluxConsistentRxnBool)   
+if any(~model.fluxConsistentRxnBool)
     %removes reactions and maintains stoichiometric consistency
     [fluxConsistModel, ~] = removeRxns(model, model.rxns(~fluxConsistentRxnBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','inclusive');
     try
