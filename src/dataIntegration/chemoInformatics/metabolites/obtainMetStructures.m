@@ -137,8 +137,10 @@ end
 
 % inchi
 inchiFieldBool = ~cellfun(@isempty, regexpi(fields, 'inchi'));
-if any(inchiFieldBool)
-    inchis = model.(fields{inchiFieldBool});
+if any(inchiFieldBool) && isstruct(model.(fields{ismember(fields, 'inchi')}))
+    inchis = model.(fields{ismember(fields, 'inchi')}).standardWithStereoAndCharge;
+elseif any(inchiFieldBool) && ~isstruct(model.(fields{ismember(fields, 'inchi')}))
+    inchis = model.(fields{ismember(fields, 'inchi')});
 else
     inchis = cell(size(model.mets));
 end
