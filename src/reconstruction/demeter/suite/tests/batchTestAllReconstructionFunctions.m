@@ -131,8 +131,8 @@ for i =1:steps:length(modelList)
             modelsToLoad{j}=[modelFolder filesep modelList{j}];
         end
     end
-%    parfor j=i:i+endPnt    
-for j=i:i+endPnt  
+    parfor j=i:i+endPnt    
+%for j=i:i+endPnt  
         if j <= length(modelList)
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP');
