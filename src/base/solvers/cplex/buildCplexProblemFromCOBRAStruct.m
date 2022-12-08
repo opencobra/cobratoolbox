@@ -63,7 +63,7 @@ if isfield(Problem,'F')
             f(bool0)=feasTol/10;
             f(~bool0)=0;
             Problem.F = Problem.F + spdiags(f,0,size(Problem.F,1),size(Problem.F,1));
-            fprintf('%s\n',['buildCplexProblemFromCOBRAStruct: Replacing zeros on the diagonal of QP problem.F with regularisation of ' num2str(feasTol/10)]) 
+            %fprintf('%s\n',['buildCplexProblemFromCOBRAStruct: Replacing zeros on the diagonal of QP problem.F with regularisation of ' num2str(feasTol/10)]) 
         end
     end
     cplexProblem.Model.Q = Problem.F;

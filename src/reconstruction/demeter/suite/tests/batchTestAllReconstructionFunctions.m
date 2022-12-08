@@ -116,7 +116,7 @@ else
 end
 
 %% Start the test suite
-for i = 1:steps:length(modelList)
+for i =1:steps:length(modelList)
     tmpData={};
     if length(modelList)>steps-1 && (length(modelList)-1)>=steps-1
         endPnt=steps-1;
@@ -131,7 +131,8 @@ for i = 1:steps:length(modelList)
             modelsToLoad{j}=[modelFolder filesep modelList{j}];
         end
     end
-    parfor j=i:i+endPnt
+    parfor j=i:i+endPnt    
+%for j=i:i+endPnt  
         if j <= length(modelList)
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP');
@@ -139,7 +140,7 @@ for i = 1:steps:length(modelList)
             changeCobraSolverParams('LP', 'logFile', 0);
             
             try
-                model=readCbModel(modelsToLoad{j});
+                model=readCbModel(modelsToLoad{j},'modelName','model');
             catch
                 modelsToLoad{j}
                 model=load(modelsToLoad{j});

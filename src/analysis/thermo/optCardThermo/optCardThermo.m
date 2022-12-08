@@ -286,6 +286,7 @@ if ~isfield(model,'dummyMetBool')
     if any(~model.SConsistentMetBool)
         if param.printLevel>0
             fprintf('%u%s\n',nnz(~model.SConsistentMetBool),' stoichiometrically inconsistent metabolites')
+            model.mets(find(model.SConsistentMetBool==0))
             fprintf('%u%s\n',nnz(~model.SConsistentRxnBool),' stoichiometrically inconsistent reactions')
         end
     end
@@ -1145,7 +1146,7 @@ switch param.formulation
         
         solution.stat = sol.stat;
         
-        if solution.stat==1
+        if solution.stat==1 
             solution.p = NaN*ones(nRxn,1);
             solution.p(model.SConsistentRxnBool) = sol.xyz(1:nIntRxn,1);
             solution.q = NaN*ones(nRxn,1);
@@ -1426,7 +1427,7 @@ cycleFreeFluxParam.relaxBounds=param.relaxBounds;
 cycleFreeFluxParam.acceptRepairedFlux=param.acceptRepairedFlux;
 cycleFreeFluxParam.epsilon = param.epsilon;
 
-if solution.stat==1
+if solution.stat==1 
     if any(strcmp(param.thermoConsistencyMethod,{'cycleFreeFlux','signProduct','cardOpt','v2QNty'}))
                
         if strcmp(param.thermoConsistencyMethod,'cycleFreeFlux')

@@ -41,7 +41,7 @@ if nargin < 2
     error('Please provide biomass reaction')
 end
 if ~any(ismember(model.rxns, biomassReaction))
-    error(['Biomass reaction "', biomassReaction, '" not found in model.'])
+  %  error(['Biomass reaction "', biomassReaction, '" not found in model.'])
 else
     model = changeObjective(model, biomassReaction);
 end
