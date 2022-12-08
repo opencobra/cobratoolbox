@@ -1146,7 +1146,7 @@ switch param.formulation
         
         solution.stat = sol.stat;
         
-        if solution.stat==1 || solution.stat==3
+        if solution.stat==1 
             solution.p = NaN*ones(nRxn,1);
             solution.p(model.SConsistentRxnBool) = sol.xyz(1:nIntRxn,1);
             solution.q = NaN*ones(nRxn,1);
