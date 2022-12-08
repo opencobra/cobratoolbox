@@ -36,16 +36,12 @@ end
 inputNameAkey = inputname(1);
 inputNameBkey = inputname(2);
 
-classAin = class(Ain);
-
-
-
-
 %LIBkey: an array of the same size as Bkey containing true where the elements of B are in A and false otherwise.
 %LOCAkey: an array LOCB containing the lowest absolute index in Akey for each element in Bkey which is a member of Akey and 0 if there is no such index.
 [LIBkey,LOCAkey] = ismember(Bkey,Akey);
 
 if exist('Ain','var')
+    classAin = class(Ain);
     [~,nlt] = size(Ain);
     if exist('Bin','var')
         classBin = class(Bin);
