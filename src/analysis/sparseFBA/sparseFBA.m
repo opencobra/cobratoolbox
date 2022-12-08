@@ -122,6 +122,7 @@ end
 if isfield(model,'C')
     [nIneq,nltC]=size(model.C);
     [nIneq2,nltd]=size(model.d);
+    [nIneq3,~]=size(model.dsense);
     if nltC~=nRxns
         error('For the constraints C*v <= d the number of columns of S and C are inconsisent')
     end
@@ -282,7 +283,12 @@ end
 LPproblem.osense=osense;
 
 %copy over the constraint sense also
-LPproblem.csense=model.csense;
+if isfield(model,'d')
+    LPproblem.csense(1:size(LPproblem.A,1),1)  = 'E';
+    LPproblem.csense(1:length(model.csense),1) = model.csense;
+else
+    LPproblem.csense=model.csense;
+end
 
 %linear objective coefficient
 if isfield(model,'C')
@@ -382,7 +388,7 @@ switch FBAsolution.stat
         %Check if one can still achieve the same objective only with predicted active reactions
         %remove all predicted non-active reactions
         tightLPproblem = struct('c',LPproblem.c(activeRxnBool),'osense',osense,'A',LPproblem.A(:,activeRxnBool),'csense',LPproblem.csense,...
-            'b',LPproblem.b,'lb',model.lb(activeRxnBool),'ub',model.ub(activeRxnBool));
+            'b',LPproblem.b,'lb',LPproblem.lb(activeRxnBool),'ub',LPproblem.ub(activeRxnBool));
 
         %solve the tighter problem
         tightSolution = solveCobraLP(tightLPproblem,CobraParams);
@@ -405,8 +411,6 @@ switch FBAsolution.stat
             error('Cannot achieve the objective value. Tolerance for non-zero flux is probably too large!')
         end
 end
-%identify active reactions
-activeRxnBool = abs(vApprox)>=epsilon;
 
 %number of reactions in sparse solution
 nSparse=nnz(activeRxnBool);
@@ -502,6 +506,7 @@ if printLevel > 0
          end
     end
 %    fprintf('%u%s%s%s\nRxns',nnz(activeRxnBool),' rxns in sparsest solution found using a ', solutionL0.bestAprox, ' approximation.');
+    fprintf('%u%s\n',nnz(sparseRxnBool),' rxns in sparsest solution.');
     if  checkMinimalSet
         fprintf('%u%s\n',nnz(minimalRxnBool),' of these are heuristically minimal rxns.');
     end

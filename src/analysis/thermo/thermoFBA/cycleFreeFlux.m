@@ -429,7 +429,9 @@ switch param.approach
         
         if solution.stat==1 || solution.stat==3
             if solution.stat==3
-                disp(['cycleFreeFlux, regularised: ' solution.origStatText])
+                if param.printLevel>1
+                    disp(['cycleFreeFlux, regularised: ' solution.origStatText])
+                end
             end
             
             if param.debug && param.printLevel>1
