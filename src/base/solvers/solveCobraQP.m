@@ -1038,8 +1038,7 @@ if solution.stat==1
             
             % evaluate the optimality condition 1
             if tmp1 > problemTypeParams.feasTol * 1e2
-                disp(solution.origStat)
-                warning(['[' solver '] Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
+                fprintf('%s\n',['[' solver '] reports ' solution.origStat ' but Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Primal optimality condition in solveCobraQP satisfied.']);
@@ -1053,8 +1052,7 @@ if solution.stat==1
             
             % evaluate the optimality condition 2
             if tmp2 > problemTypeParams.optTol * 1e2
-                disp(solution.origStat)
-                warning(['[' solver '] Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
+                fprintf('%s\n',['[' solver '] reports ' solution.origStat ' but Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Dual optimality condition in solveCobraQP satisfied.\n']);

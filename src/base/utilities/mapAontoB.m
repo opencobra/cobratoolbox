@@ -58,7 +58,12 @@ if exist('Ain','var')
             end
             Bout=Bout(ileft~=0,:);
         else
-            Bout(LIBkey,:) =  Ain(LOCAkey(LOCAkey~=0),:);
+            Bout = Bin;
+            if size(Bout,2)==size(Ain,2)
+                Bout(LIBkey,:) =  Ain(LOCAkey(LOCAkey~=0),:);
+            else
+                error('size(Bout,2)~=size(Ain,2)')
+            end
         end
     else
         switch classAin
