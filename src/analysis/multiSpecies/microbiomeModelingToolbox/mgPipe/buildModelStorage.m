@@ -1,4 +1,4 @@
-function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath,adaptMedium,includeHumanMets,numWorkers,pruneModels)
+function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath,adaptMedium,includeHumanMets,numWorkers,pruneModels,biomasses)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
@@ -19,15 +19,23 @@ function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,
 %    pruneModels:            boolean indicating whether reactions that do not carry flux on the
 %                            input diet should be removed from the microbe models. 
 %                            Recommended for large datasets (default: false)
+%    biomasses:              Cell array containing names of biomass objective functions
+%                            of models to join. Needs to be the same length as 
+%                            the length of models in the abundance file.
 %
 % OUTPUTS
 %    activeExMets:           list of exchanged metabolites present in at
 %                            least one microbe model that can carry flux
 %    couplingMatrix:         matrix containing coupling constraints for each model to join
+
 %
 % AUTHOR:
 %   - Almut Heinken, 05/2021
 %                    06/2022: added option to remove blocked reactions
+%                    12/2022: Added an optional input to manually 
+%                             define biomass objective functions 
+%                             for non-AGORA reconstructions     
+
 
 mkdir('modelStorage')
 
@@ -49,6 +57,15 @@ end
 activeExMets = {};
 for i = 1:size(microbeNames, 1)
     model = readCbModel([modPath filesep microbeNames{i,1} '.mat']);
+
+    % rename biomass objective functions if they are manually provided
+    if ~isempty(biomasses)
+        findBM = find(strcmp(model.rxns,biomasses{i}));
+        if isempty(findBM)
+            error('Defined biomass objective functions are not correct!')
+        end
+        model.rxns{findBM,1} = ['biomass' num2str(i)];
+    end
 
     ex_mets = model.mets(~cellfun(@isempty, strfind(model.mets, '[e]')));
     ex_rxns = {};
@@ -113,6 +130,12 @@ modelsTmp{i} = {};
 
 parfor i = 1:size(microbeNames, 1)
     model = readCbModel([modPath filesep microbeNames{i,1} '.mat']);
+
+    % rename biomass objective functions if they are manually provided
+    if ~isempty(biomasses)
+        findBM = find(strcmp(model.rxns,biomasses{i}));
+        model.rxns{findBM,1} = ['biomass' num2str(i)];
+    end
 
     % make sure biomass reaction is the objective function
     bio=model.rxns{find(strncmp(model.rxns,'bio',3)),1};

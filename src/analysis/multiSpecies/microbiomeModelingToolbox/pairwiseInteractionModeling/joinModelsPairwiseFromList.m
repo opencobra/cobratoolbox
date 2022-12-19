@@ -29,6 +29,9 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 %     modelFolder:        Path to folder with COBRA model structures to be joined
 %
 % OPTIONAL INPUTS:
+%     biomasses:          Cell array containing names of biomass objective
+%                         functions of models to join. Needs to be the same
+%                         length as modelList.
 %     c:                  Coupling factor by which reactions in each joined model are
 %                         coupled to its biomass reaction (default: 400)
 %     u:                  Threshold representing minimal flux allowed when flux
@@ -41,10 +44,13 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % .. Author:
 %      - Almut Heinken, 02/2018
 %      - Almut Heinken, 02/2020: Inputs and outputs changed for more efficient computation
+%      - Almut Heinken, 12/2022: Added an optional input to manually define biomass
+%                                objective functions for non-AGORA reconstructions     
 
 parser = inputParser();  % Define default input parameters if not specified
 parser.addRequired('modelList', @iscell);
 parser.addRequired('modelFolder', @ischar);
+parser.addParameter('biomasses', {}, @(x) iscell(x))
 parser.addParameter('c', 400, @(x) isnumeric(x))
 parser.addParameter('u', 0, @(x) isnumeric(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
@@ -55,6 +61,7 @@ parser.parse(modelList, modelFolder, varargin{:})
 
 modelList = parser.Results.modelList;
 modelFolder = parser.Results.modelFolder;
+biomasses = parser.Results.biomasses;
 c = parser.Results.c;
 u = parser.Results.u;
 numWorkers = parser.Results.numWorkers;
@@ -91,6 +98,36 @@ existingModels(find(strcmp(existingModels(:,1),'..')),:)=[];
 dInfo = dir(modelFolder);
 models={dInfo.name};
 models=models';
+
+% get biomass reactions for each microbe if not provided
+if isempty(biomasses)
+    for i = 1:size(modelList, 1)
+        findModID = find(strncmp(models,modelList{i,1},length(modelList{i,1})));
+        if ~isempty(findModID)
+            if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
+                model=readCbModel([modelFolder filesep models{findModID,1}]);
+            else
+                error('No model in correct format found in folder!')
+            end
+        else
+            error('Model to load not found in folder!')
+        end
+        if ~isempty(find(strncmp(model.rxns, 'bio', 3)))
+            biomasses{i} = model.rxns{find(strncmp(model.rxns, 'bio', 3)),1};
+        else
+            error('Please define the biomass objective functions for each model manually through the biomasses input parameter.')
+        end
+        % test if biomass is correctly defined
+        if isempty(find(strcmp(model.rxns, biomasses{i})))
+            error('Defined biomass objective functions are not correct!')
+        end
+    end
+end
+
+% test if biomasses are correctly defined
+if length(biomasses) ~= length(modelList)
+    error('Length of biomasses input is not equal to modelList input!')
+end
 
 inputModels={};
 for i = 1:size(modelList, 1)
@@ -141,8 +178,8 @@ for i = 1:size(modelList, 1)
             };
         if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))
             [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag, 'remCyclesFlag', true);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, model1.rxns(find(strncmp(model1.rxns, 'bio', 3)))), c, u);
-            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, model2.rxns(find(strncmp(model2.rxns, 'bio', 3)))), c, u);
+            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, biomasses{i}), c, u);
+            [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, biomasses{k}), c, u);
             pairedModelsTemp{k} = pairedModel;
         else
             pairedModelsTemp{k} = {};
@@ -152,13 +189,11 @@ for i = 1:size(modelList, 1)
     for k = i + 1:size(modelList, 1)
         % keep track of the generated models and populate the output file with
         % information on joined models
-        model1 = inputModels{i};
         pairedModelInfo{cnt, 1} = ['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'];
         pairedModelInfo{cnt, 2} = modelList{i};
-        pairedModelInfo{cnt, 3} = model1.rxns(find(strncmp(model1.rxns, 'bio', 3)));
-        model2 = inputModels{k};
+        pairedModelInfo{cnt, 3} = biomasses{i};
         pairedModelInfo{cnt, 4} = modelList{k};
-        pairedModelInfo{cnt, 5} = model2.rxns(find(strncmp(model2.rxns, 'bio', 3)));
+        pairedModelInfo{cnt, 5} = biomasses{k};
         % save file regularly
         if floor(cnt/1000) == cnt/1000
             save([pairwiseModelFolder filesep 'pairedModelInfo'],'pairedModelInfo');
