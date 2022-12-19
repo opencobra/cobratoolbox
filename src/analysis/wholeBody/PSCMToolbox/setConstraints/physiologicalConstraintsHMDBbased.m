@@ -37,6 +37,9 @@ function modelConstraint = physiologicalConstraintsHMDBbased(model,IndividualPar
 
 modelConstraint = model;
 
+% if set to 1 (it is the case when personalised concentration input data is
+% provided (option direct), then the constraints are set even if the
+% provided concentration is lower than the minConc defined in the script.
 setLB = 0;
 
 
@@ -92,7 +95,11 @@ elseif strcmp(sex,'female')
     BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
     % BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),4};
 end
+try
 BK = str2num(BK(2:end-1));
+catch
+    BK = (BK);
+end
 RenalFlowRate=BK*CardiacOutput*(1-Hematocrit); % k_plasma_organ in ml/min
 GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
 %% read data
@@ -242,7 +249,11 @@ for i = 1 : length(OrgansListExt)
         elseif strcmp(IndividualParameters.sex,'female') % use 2nd col
             B = bloodFlowData{tmp,bloodFlowPercCol(2)};
         end
+        try
         B = str2num(B(2:end-1));
+        catch
+                    B = (B);
+        end
         if  ~isempty(B)
             BloodFlowRate(i,1)=(B)*CardiacOutput; % k_blood_organ in ml/min
             PlasmaFlowRate(i,1)=(B)*CardiacOutput*(1-Hematocrit); % k_plasma_organ in ml/min
@@ -262,9 +273,16 @@ for i = 1 : length(OrgansListExt)
             BScord = bloodFlowData{Scord,bloodFlowPercCol(2)};
             BBrain = bloodFlowData{Brain,bloodFlowPercCol(2)};
         end
-        
+        try
         BScord = str2num(BScord(2:end-1));
+        catch
+                    BScord = (BScord);
+        end
+        try
         BBrain = str2num(BBrain(2:end-1));
+        catch
+        BBrain = (BBrain);
+        end
         B = BBrain + BScord;
         
         BloodFlowRate(i,1)=(B)*CardiacOutput; % k_blood_organ in ml/min
@@ -560,7 +578,7 @@ if strcmp( Biofluid, 'csf') || strcmp( Biofluid, 'all')
                                 end
                             end
                             % UPPER BOUND
-                            MSecretRateCSF = (MConMax/1000)*CSFFlowRate*60*24/1000; % in mmol/day/person
+                            MSecretRateCSF = (MConMax/1000)*CSFBloodFlowRate*60*24/1000; % in mmol/day/person
                             modelConstraint.ub(ExR(j)) = MSecretRateCSF; % maximal possible secretion rate
                             
                         end
@@ -657,7 +675,7 @@ if strcmp( Biofluid, 'u') || strcmp( Biofluid, 'all')
                             'EX_trypta[u]'%Tryptamine is a monoamine compound that is common precursor molecule to many hormones and neurotransmitters
                             'EX_ppbng[u]'% porphobilinogen is produced in excess and excreted in the urine in acute intermittent porphyria and several other porphyrias.
                             'EX_13dampp[u]'%  It is a catabolic byproduct of spermidine. "The excretion of these  substances is usually very small compared to the respective amino acids. "http://www.sciencedirect.com/science/article/pii/0009898171904426
-                            'EX_mhista[u]' %The primary application of urinary N-methylhistamine (NMH) testing is in the diagnosis and monitoring of mast-cell disorders, including mastocytosis, anaphylaxis, and other severe systemic allergic reactions.[1, 2, 3, 4, 5, 6, 7]. The reference range for urinary NMH varies according to subject age, as follows: Age 0-5 years - 120-510 µg/g creatinine; Age 6-16 years - 70-330 µg/g creatinine, Older than16 years - 30-200 µg/g creatinine
+                            'EX_mhista[u]' %The primary application of urinary N-methylhistamine (NMH) testing is in the diagnosis and monitoring of mast-cell disorders, including mastocytosis, anaphylaxis, and other severe systemic allergic reactions.[1, 2, 3, 4, 5, 6, 7]. The reference range for urinary NMH varies according to subject age, as follows: Age 0-5 years - 120-510 ï¿½g/g creatinine; Age 6-16 years - 70-330 ï¿½g/g creatinine, Older than16 years - 30-200 ï¿½g/g creatinine
                             'EX_tym[u]' %Tyramine and its conjugates occur in normal and abnormal urines, although the biological role of tyramine, if any, is obscure. However, it has recently become of interest because severe Parkinsonians excrete raised amounts of tyraminel-R
                             'EX_2hyoxplac[u]'%2-Hydroxyphenylacetate
                             'EX_pmtcrn[u]'
@@ -741,10 +759,10 @@ tmp = find(~cellfun(@isempty,strfind(modelConstraint.rxns,'(miB)_[mi]')));
 modelConstraint.lb(tmp) = 0;
 modelConstraint.ub(tmp) = 0;
 
-if 1
+if ~strcmp(Type,'direct')
     %% set o2[a] and co2[a] constraints
     % Put together by Maike
-    % Composition air in: 78.62% nitrogen, 21% oxygen, 0.96% argon, 0.04% carbon dioxide, 0.5% water vapour
+    % Composition air in: 78.62%ï¿½nitrogen, 21%ï¿½oxygen, 0.96%ï¿½argon, 0.04%ï¿½carbon dioxide, 0.5%ï¿½water vapour
     % Composition air out: 78.04% nitrogen, 14% - 16% oxygen, 4% - 5.3% carbon dioxide, 1% argon and other gases
     % Amount of O2 in:
     %   Tidal volume: 500 ml/breath
@@ -833,7 +851,7 @@ if 1
         
         % 'Muscle_EX_ala_l(e)_[bc]'	'Muscle_ala_L[e]  <=> ala_L[bc] '	alanine secretion	muscle	12.5 mg alanine/min/person (65 kg)	C3H7NO2	89.09	0.233126398	0.233126398	'Muscle_EX_ala_l(e)_[bc]'	0.187	0.280	postabsorption state	Frayn book
         met = 12.5; % mg per min per 65 kg
-        MW = 89.09; % g·mol?1
+        MW = 89.09; % gï¿½mol?1
         met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
         met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
         if modelConstraint.lb(find(ismember(modelConstraint.rxns, 'Muscle_EX_ala_L(e)_[bc]')))<met*0.80 && modelConstraint.ub(find(ismember(modelConstraint.rxns, 'Muscle_EX_ala_L(e)_[bc]')))>=met*0.8
@@ -846,7 +864,7 @@ if 1
         
         % 	RBC_EX_glc(e)_[bc]'	'RBC_glc_D[e]  <=> glc_D[bc] '	glucose uptake 	RBC	25 mg/glc/min/person (65kg)	C6H12O6	180.16	0.230564285	-0.230564285	'RBC_EX_glc(e)_[bc]'	-0.184	-0.277		Frayn book
         met = 25; % mg per min per 65 kg
-        MW = 180.16;% g·mol?1
+        MW = 180.16;% gï¿½mol?1
         met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
         met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
         % set constraints only if they make the range smaller
@@ -858,7 +876,7 @@ if 1
         end
     end
     if 0
-       % 0.07 ± 0.01 mlO2/min/100 g); http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.558.6328&rep=rep1&type=pdf
+       % 0.07 ï¿½ 0.01 mlO2/min/100 g); http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.558.6328&rep=rep1&type=pdf
         % 1.04 kg/l was used for muscle density to convert 1 l to 100 g of skeletal muscle. 
      %   One mole of Hb carries four moles of O2. Then, 1 mol of gas was converted into 1 l with value of 1 mol 
      % gas = 22.4 L standard temperature and pressure, dry (STPD) conditions. 
@@ -889,7 +907,7 @@ if 1
         if 1
             % 'Brain_EX_glc(e)_[csf]'	'Brain_glc_D[e]  <=> glc_D[csf] '	glucose uptake 	brain	80 mg glc/min/person	C6H12O6	180.16	0.737805711	-0.737805711	'Brain_EX_glc(e)_[csf]'	-0.590	-0.885	all day	Frayn book
             met = 80; % mg per min per 65 kg
-            MW = 180.16;% g·mol?1
+            MW = 180.16;% gï¿½mol?1
             met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
             met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
             if modelConstraint.lb(find(ismember(modelConstraint.rxns, 'Brain_EX_glc_D(e)_[csf]')))<-met*1.20 && modelConstraint.ub(find(ismember(modelConstraint.rxns, 'Brain_EX_glc_D(e)_[csf]')))>=-met*1.2
@@ -930,7 +948,7 @@ if 1
         
         % 'Liver_EX_ala_l(e)_[bc]'	'Liver_ala_L[e]  <=> ala_L[bc] '	alanine uptake	liver	12.5 mg alanine/min/person (65 kg)	C3H7NO2	89.09	0.233126398	-0.233126398	'Liver_EX_ala_l(e)_[bc]'	-0.187	-0.280	postabsorption state	Frayn book
         met = 12.5; % mg per min per 65 kg
-        MW = 89.09; % g·mol?1
+        MW = 89.09; % gï¿½mol?1
         met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
         met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
         if modelConstraint.lb(find(ismember(modelConstraint.rxns, 'Liver_EX_ala_L(e)_[bc]')))<-met*1.20 && modelConstraint.ub(find(ismember(modelConstraint.rxns, 'Liver_EX_ala_L(e)_[bc]')))>=-met*1.2
@@ -942,7 +960,7 @@ if 1
         
         % 'Liver_EX_glc(e)_[bc]'	'Liver_glc_D[e]  <=> glc_D[bc] '	glucose secretion	Liver	130 mg glc/min/person (65 kg	C6H12O6	180.16	1.198934281	1.198934281	'Liver_EX_glc(e)_[bc]'	0.959	1.439	postabsorption state	Frayn book
         met = 130; % mg per min per 65 kg
-        MW = 180.16;% g·mol?1
+        MW = 180.16;% gï¿½mol?1
         met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
         met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
         if modelConstraint.lb(find(ismember(modelConstraint.rxns, 'Liver_EX_glc_D(e)_[bc]')))<met*0.80 && modelConstraint.ub(find(ismember(modelConstraint.rxns, 'Liver_EX_glc_D(e)_[bc]')))>=met*0.8
@@ -956,7 +974,7 @@ if 1
         
         % 'Adipocytes_EX_glyc(e)_[bc]'	'Adipocytes_glyc[e]  <=> glyc[bc] '	glycerol secretion 	adipocytes	12 mg glycerol/min/person (65 kg)	C3H8O3	92.09	0.216510604	0.216510604	'Adipocytes_EX_glyc(e)_[bc]'	0.173	0.260	postabsorption state	Frayn book
         met = 12; % mg per min per 65 kg
-        MW = 	92.09;% g·mol?1
+        MW = 	92.09;% gï¿½mol?1
         met = (met * 60 * 24 *IndividualParameters.bodyWeight/65)/1000; %g per day per person (weight adjusted)
         met = met * 1000/ MW ; %mmol per day per person (weight adjusted)
         if modelConstraint.lb(find(ismember(modelConstraint.rxns, 'Adipocytes_EX_glyc(e)_[bc]')))<met*0.80 && modelConstraint.ub(find(ismember(modelConstraint.rxns, 'Adipocytes_EX_glyc(e)_[bc]')))>=met*0.8
@@ -1033,7 +1051,7 @@ if 1
     % each red blood cell contains ~ 270*10^6 haemoglobin, each of which can
     % carry up to 4 o2: e.g., https://en.wikipedia.org/wiki/Red_blood_cell
     % so one red blood cell carries 4*270*10^6 O2
-    % The avogadro number is 6.022140857(74)×10^23 mol?1
+    % The avogadro number is 6.022140857(74)ï¿½10^23 mol?1
     % The normal range in men is approximately 4.7 to 6.1 million cells/ul (microliter). The normal range in women range from 4.2 to 5.4 million cells/ul, according to NIH (National Institutes of Health) data.
     % men: assumed 5.5M/ul and  female: assumed 4.5M/ul
     % if strcmp(sex,'male')
