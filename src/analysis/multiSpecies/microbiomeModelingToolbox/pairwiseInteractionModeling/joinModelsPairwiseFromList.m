@@ -117,10 +117,6 @@ if isempty(biomasses)
         else
             error('Please define the biomass objective functions for each model manually through the biomasses input parameter.')
         end
-        % test if biomass is correctly defined
-        if isempty(find(strcmp(model.rxns, biomasses{i})))
-            error('Defined biomass objective functions are not correct!')
-        end
     end
 end
 
@@ -145,6 +141,11 @@ for i = 1:size(modelList, 1)
         error('Model to load not found in folder!')
     end
 
+    % test if biomass is correctly defined
+    if isempty(find(strcmp(model.rxns, biomasses{i})))
+        error('Defined biomass objective functions are not correct!')
+    end
+
     inputModels{i}=model;
     for k = i + 1:size(modelList, 1)
         findModID = find(strncmp(models,modelList{k,1},length(modelList{k,1})));
@@ -157,6 +158,12 @@ for i = 1:size(modelList, 1)
         else
             error('Model to load not found in folder!')
         end
+
+        % test if biomass is correctly defined
+        if isempty(find(strcmp(model.rxns, biomasses{k})))
+            error('Defined biomass objective functions are not correct!')
+        end
+
         inputModels{k}=model;
     end
     
