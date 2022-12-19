@@ -105,6 +105,9 @@ for i = 1:size(microbeNames, 1)
 
     % find the name of biomass reaction in the microbe model
     bioRxn=model.rxns{find(strncmp(model.rxns,'bio',3))};
+    if isempty(bioRxn)
+        error('Please define the biomass objective functions for each model manually through the biomasses input parameter.')
+    end
     model=coupleRxnList2Rxn(model,model.rxns,bioRxn,400,0); %couple the specific reactions
 
     currentDir = pwd;
