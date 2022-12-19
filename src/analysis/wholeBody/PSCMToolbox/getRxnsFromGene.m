@@ -85,5 +85,5 @@ for i = 1 : length(model.grRules)
     end
 end
 
-Rxns=  model.rxns(find(assoR))
-grRules= model.grRules(find(assoR))
+Rxns=  model.rxns(find(assoR));
+grRules= model.grRules(find(assoR));
