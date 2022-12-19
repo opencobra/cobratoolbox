@@ -63,7 +63,6 @@ database=loadVMHDatabase;
 try
 biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
 
-end
 %
 %% relax enforced uptake of some vitamins-causes infeasibility problems
 relaxConstraints=model.rxns(find(model.lb>0));
@@ -300,5 +299,5 @@ testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) =
 [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database);
 testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
-
+end
 end
