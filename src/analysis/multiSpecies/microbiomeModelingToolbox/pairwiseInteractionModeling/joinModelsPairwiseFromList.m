@@ -12,8 +12,9 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % By default, the gene-protein-reaction associations of the joined models
 % are not merged as the gene associations are not needed for the simulation
 % of pairwise interactions and significantly slow down pairwise model
-% creation.  If merging of genes is desired, please set the input
-% parameter mergeGenes to true.
+% creation.  If merging of genes is desired, please set the input parameter
+% mergeGenes to true. If you are not using AGORA/AGORA2 reconstructions,
+% you may need to define the biomass objective functions manually.
 %
 % Please note: the function takes a cell array with the names of the 
 % COBRA models to join as well as the name of the folder where they are 
@@ -21,25 +22,29 @@ function joinModelsPairwiseFromList(modelList, modelFolder, varargin)
 % joinModelsPairwiseFromList(modelList,'/Users/almut.heinken/Documents/AGORA');
 %
 % USAGE:
-%     joinModelsPairwiseFromList(modelList,  modelFolder, varargin)
+%    joinModelsPairwiseFromList(modelList,  modelFolder, varargin)
 %
 % INPUTS:
-%     modelList:          Cell array with names of reconstruction structures to be
+%    modelList:           Cell array with names of reconstruction structures to be
 %                         joined
-%     modelFolder:        Path to folder with COBRA model structures to be joined
+%    modelFolder:         Path to folder with COBRA model structures to be joined
 %
 % OPTIONAL INPUTS:
-%     biomasses:          Cell array containing names of biomass objective
+%    biomasses:           Cell array containing names of biomass objective
 %                         functions of models to join. Needs to be the same
 %                         length as modelList.
-%     c:                  Coupling factor by which reactions in each joined model are
+%    c:                   Coupling factor by which reactions in each joined model are
 %                         coupled to its biomass reaction (default: 400)
-%     u:                  Threshold representing minimal flux allowed when flux
+%    u:                   Threshold representing minimal flux allowed when flux
 %                         through biomass reaction in zero (default: 0)
-%     mergeGenes:         If true, genes in the joined models are merged and included
+%    mergeGenes:          If true, genes in the joined models are merged and included
 %                         in the joined model structure (default: false)
-%     numWorkers:         Number of workers in parallel pool if desired
-%     pairwiseModelFolder Folder where pairwise models will be saved
+%    remCyclesFlag:       If true, futile cycles that may arise from joining the 
+%                         models are removed (default: false). Recommended
+%                         if AGORA/AGORA2 reconstructions are used, does not work 
+%                         with other namespaces.
+%    numWorkers:          Number of workers in parallel pool if desired
+%    pairwiseModelFolder: Folder where pairwise models will be saved
 %
 % .. Author:
 %      - Almut Heinken, 02/2018
@@ -56,7 +61,7 @@ parser.addParameter('u', 0, @(x) isnumeric(x))
 parser.addParameter('numWorkers', 0, @(x) isnumeric(x))
 parser.addParameter('pairwiseModelFolder', pwd, @(x) ischar(x))
 parser.addParameter('mergeGenesFlag', false, @(x) isnumeric(x) || islogical(x))
-
+parser.addParameter('remCyclesFlag', false, @(x) isnumeric(x) || islogical(x))
 parser.parse(modelList, modelFolder, varargin{:})
 
 modelList = parser.Results.modelList;
@@ -66,6 +71,7 @@ c = parser.Results.c;
 u = parser.Results.u;
 numWorkers = parser.Results.numWorkers;
 mergeGenesFlag = parser.Results.mergeGenesFlag;
+remCyclesFlag = parser.Results.remCyclesFlag;
 pairwiseModelFolder = parser.Results.pairwiseModelFolder;
 
 % initialize COBRA Toolbox and parallel pool
@@ -101,8 +107,8 @@ models=models';
 
 % get biomass reactions for each microbe if not provided
 if isempty(biomasses)
-    for i = 1:size(modelList, 1)
-        findModID = find(strncmp(models,modelList{i,1},length(modelList{i,1})));
+    for i = 1:length(modelList)
+        findModID = find(strncmp(models,modelList{i},length(modelList{i})));
         if ~isempty(findModID)
             if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
                 model=readCbModel([modelFolder filesep models{findModID,1}]);
@@ -126,11 +132,11 @@ if length(biomasses) ~= length(modelList)
 end
 
 inputModels={};
-for i = 1:size(modelList, 1)
+for i = 1:length(modelList)
     
     % Load the reconstructions to be joined
     % workaround to also allow SBML files
-    findModID = find(strncmp(models,modelList{i,1},length(modelList{i,1})));
+    findModID = find(strncmp(models,modelList{i},length(modelList{i})));
     if ~isempty(findModID)
         if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
             model=readCbModel([modelFolder filesep models{findModID,1}]);
@@ -147,8 +153,8 @@ for i = 1:size(modelList, 1)
     end
 
     inputModels{i}=model;
-    for k = i + 1:size(modelList, 1)
-        findModID = find(strncmp(models,modelList{k,1},length(modelList{k,1})));
+    for k = i + 1:length(modelList)
+        findModID = find(strncmp(models,modelList{k},length(modelList{k})));
         if ~isempty(findModID)
             if any(contains(models{findModID,1},{'.mat','.sbml','.xml'}))
                 model=readCbModel([modelFolder filesep models{findModID,1}]);
@@ -169,7 +175,7 @@ for i = 1:size(modelList, 1)
     
     pairedModelsTemp = {};
     
-    parfor k = i + 1:size(modelList, 1)
+    parfor k = i + 1:length(modelList)
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         
@@ -184,7 +190,7 @@ for i = 1:size(modelList, 1)
             strcat(modelList{k}, '_')
             };
         if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))
-            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag, 'remCyclesFlag', true);
+            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag, 'remCyclesFlag', remCyclesFlag);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, biomasses{i}), c, u);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, biomasses{k}), c, u);
             pairedModelsTemp{k} = pairedModel;
@@ -193,7 +199,7 @@ for i = 1:size(modelList, 1)
         end
     end
     
-    for k = i + 1:size(modelList, 1)
+    for k = i + 1:length(modelList)
         % keep track of the generated models and populate the output file with
         % information on joined models
         pairedModelInfo{cnt, 1} = ['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'];
