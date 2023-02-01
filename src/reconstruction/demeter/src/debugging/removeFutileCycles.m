@@ -647,10 +647,7 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
-rxns{j}
-                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
-        
-RxForm            
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};          
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                         newName=[rxns{j} 'pp'];
                         % make sure we get the correct reaction
@@ -684,7 +681,7 @@ RxForm
                 if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                     addedRxns{addCnt, 1} = toRemove{1};
                 end
-                if exist('newForm','var')
+                if exist('newForm','var') && ~any(strncmp(rxns{j},{'EX_','DM_'},3)) && ~strncmp(rxns{j},'sink_',5)
                     addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                 else
                     addedRxns{addCnt, j+1} = rxns{j};
@@ -742,7 +739,7 @@ RxForm
                             if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                                 addedRxns{addCnt, 1} = toRemove{1};
                             end
-                            if contains(RxForm,'[e]')  && exist('newForm','var')
+                            if contains(RxForm,'[e]')  && exist('newForm','var') && ~any(strncmp(rxns{j},{'EX_','DM_'},3)) && ~strncmp(rxns{j},'sink_',5)
                                 addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                             else
                                 addedRxns{addCnt, j+1} = rxns{j};

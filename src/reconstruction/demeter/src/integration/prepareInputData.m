@@ -142,6 +142,31 @@ for i=2:size(infoFile,1)
 end
 infoFile(:,1)=strrep(infoFile(:,1),'-','_');
 
+%% propagate oxygen requirement
+o2Col=find(strcmp(infoFile(1,:),'Oxygen Requirement'));
+if isempty(o2Col)
+    infoFile{1,size(infoFile,2)+1}='Oxygen Requirement';
+    o2Col=find(strcmp(infoFile(1,:),'Oxygen Requirement'));
+end
+taxa={'Species','Genus','Family','Order','Class','Phylum'};
+
+agoraO2Col=find(strcmp(agoraInfoFile(1,:),'Oxygen Requirement'));
+
+for i=2:size(infoFile,1)
+    for j=1:length(taxa)
+        if ~isempty(find(strcmp(infoFile(1,:),taxa{j})))
+            taxon=infoFile{i,find(strcmp(infoFile(1,:),taxa{j}))};
+            
+            taxCol=find(strcmp(agoraInfoFile(1,:),taxa{j}));
+            taxRow=find(strcmp(agoraInfoFile(:,taxCol),taxon));
+            if ~isempty(taxRow)
+                infoFile{i,o2Col}=agoraInfoFile{taxRow,agoraO2Col};
+                break
+            end
+        end
+    end
+end
+
 % save adapted file with taxonomic information as a text file
 writetable(cell2table(infoFile),[inputDataFolder filesep 'adaptedInfoFile'],'FileType','text','Delimiter','tab','WriteVariableNames',false);
 adaptedInfoFilePath = [inputDataFolder filesep 'adaptedInfoFile.txt'];

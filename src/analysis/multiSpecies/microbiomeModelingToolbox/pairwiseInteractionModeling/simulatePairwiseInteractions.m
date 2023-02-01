@@ -101,6 +101,7 @@ if numWorkers > 0
 end
 environment = getEnvironment();
 
+pairwiseSolutions = {};
 if saveSolutionsFlag == true
     pairwiseSolutions{1, 1} = 'pairedModelID';
     pairwiseSolutions{1, 2} = 'PairwiseSolution';
@@ -108,7 +109,6 @@ if saveSolutionsFlag == true
     pairwiseSolutions{1, 4} = 'SingleModel2Solution';
 end
 
-pairwiseSolutions = {};
 pairwiseInteractions{1, 1} = 'pairedModelID';
 pairwiseInteractions{1, 2} = 'ModelID1';
 pairwiseInteractions{1, 3} = 'ModelID2';
@@ -248,7 +248,7 @@ for i = 1:size(pairedModelInfo, 1)
         pairwiseInteractions{i + 1, 10} = iATotal;
     end
     %% store the solutions if storeSolutionFlag==true
-    if nargin > 3 && saveSolutionsFlag == true
+    if saveSolutionsFlag == true
         pairwiseSolutions{i + 1, 1} = pairedModelInfo{i, 1};
         pairwiseSolutions{i + 1, 2} = solPaired.full;
         pairwiseSolutions{i + 1, 3} = solSingle1.full;
