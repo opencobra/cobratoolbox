@@ -144,7 +144,7 @@ end
 %set parameters according to feastol
 feasTol = getCobraSolverParams('LP', 'feasTol');
 if ~isfield(param,'epsilon')
-    param.epsilon = feasTol;
+    param.epsilon = feasTol*10;
 end
 if ~isfield(param,'normalizeZeroNormWeights')
     param.normalizeZeroNormWeights=0;
