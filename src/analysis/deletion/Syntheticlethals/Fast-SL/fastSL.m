@@ -1,4 +1,4 @@
-function fastSL(model,cutoff,order,eliList,atpm)                                  
+function [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals] = fastSL(model,cutoff,order,eliList,atpm)                                  
 %% fastSL(model,cutoff,order,eliList,atpm)
 % Requires the openCOBRA toolbox
 % http://opencobra.sourceforge.net/openCOBRA/Welcome.html
@@ -46,7 +46,7 @@ end
 % Please change this according to your model
 if exist('atpm', 'var')
     if isempty(atpm)
-        atpm = 'ATPM'; %Reaction Id of ATP maintenance reaction- by default it takes 'ATPM'
+        atpm = 'ATPM'; % Reaction Id of ATP maintenance reaction- by default it takes 'ATPM'
     end
 else
     atpm = 'ATPM';
@@ -60,31 +60,28 @@ else
     eliList = model.rxns(ismember(model.rxns,atpm));
 end
 
-fname=strcat(model.description, '_Rxn_lethals.mat');
+fname = strcat(model.description, '_Rxn_lethals.mat');
 
 %%
 global model;
 
 switch order
     case 1
-        [synthetic_lethals]=singleSL(model, cutoff, eliList, atpm);
+        [synthetic_lethals] = singleSL(model, cutoff, eliList, atpm);
+        synthetic_double_lethals = [];
+        synthetic_triple_lethals = [];
        
         fprintf('\n Saving Single Lethal Reactions List...\n');
-        save(fname, 'synthetic_lethals');
         fprintf('Done. \n');
     case 2
-        [synthetic_lethals, synthetic_double_lethals]=doubleSL(model, cutoff, eliList, atpm);
+        [synthetic_lethals, synthetic_double_lethals] = doubleSL(model, cutoff, eliList, atpm);
+        synthetic_triple_lethals = [];
      
         fprintf('\n Saving Single and Double Lethal Reactions List...\n');
-        save(fname, 'synthetic_lethals');
-        save(fname, 'synthetic_double_lethals', '-append');
         fprintf('Done. \n');
     case 3
-        [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals]=tripleSL(model, cutoff, eliList, atpm);
+        [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals] = tripleSL(model, cutoff, eliList, atpm);
       
         fprintf('\n Saving Single, Double and Triple Lethal Reactions List...\n');
-        save(fname, 'synthetic_lethals');
-        save(fname, 'synthetic_double_lethals', '-append');
-        save(fname, 'synthetic_triple_lethals', '-append');
         fprintf('Done. \n');
 end

@@ -7,4 +7,4 @@ eliList = model.rxns(find(findExcRxns(model))); % Eliminate Exhange reactions fo
 % cutoff- 1% of Wildtype growth rate
 % Lethals upto Order 2
 % Output is stored in 'ecoli_core_model_Rxn_lethals.mat'
-fastSL(model, 0.01, 2, eliList);
+[single_Lethal, double_Lethal, triple_lethal] = fastSL(model, 0.01, 2, eliList);
