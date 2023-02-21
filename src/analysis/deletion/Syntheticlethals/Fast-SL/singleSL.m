@@ -1,4 +1,4 @@
-function [Jsl]=singleSL(model,cutoff,eliList,atpm)
+function [Jsl] = singleSL(model, cutoff, eliList, atpm)
 %% [Jsl] = singleSL(model,cutoff,eliList,atpm)
 % INPUT
 % model (the following fields are required - others can be supplied)       
@@ -37,10 +37,10 @@ end
 
 if exist('eliList', 'var')
     if isempty(eliList)
-        eliList = model.rxns(ismember(model.rxns,atpm)); %To eliminate ATPM.
+        eliList = model.rxns(ismember(model.rxns, atpm)); % To eliminate ATPM.
     end
 else
-        eliList = model.rxns(ismember(model.rxns,atpm));
+        eliList = model.rxns(ismember(model.rxns, atpm));
 end
 
 
@@ -49,30 +49,32 @@ Jsl = [];
 
 % Step1 Identify Single Lethal Reactions...
 % Identify minNorm flux distribution
-solWT = optimizeCbModel(model,'max','one');
+solWT = optimizeCbModel(model, 'max', 'one');
 grWT = solWT.f;
-Jnz = find(~eq(solWT.x,0));
+Jnz = find(~eq(solWT.x, 0));
 if (~isempty(eliList))
-    eliIdx = find(ismember(model.rxns,eliList)); %Index of reactions not considered for lethality analysis
-    Jnz=Jnz(~ismember(Jnz,eliIdx)); %Jnz
+    eliIdx = find(ismember(model.rxns, eliList)); % Index of reactions not considered for lethality analysis
+    Jnz = Jnz(~ismember(Jnz, eliIdx)); % Jnz
 end
-h = waitbar(0,'0.00','Name','Identifying Jsl...');
+h = waitbar(0, '0.00', 'Name', 'Identifying Jsl...');
 
 % Identify Single Lethal Reaction Deletions...
-    modeldel=model;
-for iRxn=1:length(Jnz)
-    delIdx_i=Jnz(iRxn);
-    modeldel.lb(delIdx_i) = 0; modeldel.ub(delIdx_i) = 0;
+modeldel = model;
+
+for iRxn = 1:length(Jnz)
+    delIdx_i = Jnz(iRxn);
+    modeldel.lb(delIdx_i) = 0;
+    modeldel.ub(delIdx_i) = 0;
     solKO_i = optimizeCbModel(modeldel);
-    if (solKO_i.f<cutoff*grWT || isnan(solKO_i.f))
-        Jsl=[Jsl;delIdx_i];
+    if (solKO_i.f < cutoff*grWT || isnan(solKO_i.f))
+        Jsl = [Jsl; delIdx_i];
     end
    % Reset bounds on idx reaction
     modeldel.lb(delIdx_i) = model.lb(delIdx_i);
     modeldel.ub(delIdx_i) = model.ub(delIdx_i);
-    waitbar(iRxn/length(Jnz),h,[num2str(round(iRxn*100/length(Jnz))) '% completed...']);
-
+    waitbar(iRxn / length(Jnz), h, [num2str(round(iRxn * 100 / length(Jnz))) '% completed...']);
 end
+
 close(h);
 Jsl = model.rxns(Jsl);
 end
