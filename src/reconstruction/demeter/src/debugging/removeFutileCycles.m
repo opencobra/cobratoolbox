@@ -30,6 +30,8 @@ function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, bio
 % .. Author:
 %       - Almut Heinken, 2016-2019
 
+warning off;
+
 deletedRxns = {};
 addedRxns = {};
 gfRxns = {};
@@ -522,7 +524,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'D_LACt2pp AND GLUTACCOACL AND GLUTACCOADCpp AND MALLACDtpp AND MALt4pp',[],'GLUTACCOACL','GLUTACCOACLi'
     'ATPS3pp AND GALM1r AND GLUOR AND HYD1pp' ,[],'GLUOR','GLUORi'
     'NEOPRONT_AR_NAD',[],'NEOPRONT_AR_NAD','NEOPRONT_AR_NADi'
-    'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
+   'NEOPRONT_AR_NADP',[],'NEOPRONT_AR_NADP','NEOPRONT_AR_NADPi'
     'PRONT_AR_NAD',[],'PRONT_AR_NAD','PRONT_AR_NADi'
     'PRONT_AR_NADP',[],'PRONT_AR_NADP','PRONT_AR_NADPi'
     'OLSA_AR_NAD',[],'OLSA_AR_NAD','OLSA_AR_NADi'
@@ -645,9 +647,7 @@ for i = 2:size(reactionsToReplace, 1)
             for j=1:length(rxns)
                 if isempty(intersect(model.rxns,rxns{j}))
                     % create a new formula
-
-                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};
-                    
+                    RxForm = database.reactions{find(ismember(database.reactions(:, 1), rxns{j})), 3};          
                     if contains(RxForm,'[e]') && any(contains(model.mets,'[p]'))
                         newName=[rxns{j} 'pp'];
                         % make sure we get the correct reaction
@@ -681,7 +681,7 @@ for i = 2:size(reactionsToReplace, 1)
                 if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                     addedRxns{addCnt, 1} = toRemove{1};
                 end
-                if exist('newForm','var')
+                if exist('newForm','var') && ~any(strncmp(rxns{j},{'EX_','DM_'},3)) && ~strncmp(rxns{j},'sink_',5)
                     addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                 else
                     addedRxns{addCnt, j+1} = rxns{j};
@@ -739,7 +739,7 @@ for i = 2:size(reactionsToReplace, 1)
                             if ~isempty(reactionsToReplace{i, 3}) && length(toRemove)==1
                                 addedRxns{addCnt, 1} = toRemove{1};
                             end
-                            if contains(RxForm,'[e]')  && exist('newForm','var')
+                            if contains(RxForm,'[e]')  && exist('newForm','var') && ~any(strncmp(rxns{j},{'EX_','DM_'},3)) && ~strncmp(rxns{j},'sink_',5)
                                 addedRxns{addCnt, j+1} = [rxns{j} 'pp'];
                             else
                                 addedRxns{addCnt, j+1} = rxns{j};

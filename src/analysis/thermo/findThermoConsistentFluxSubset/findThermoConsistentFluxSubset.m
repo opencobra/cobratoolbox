@@ -30,6 +30,7 @@ function [thermoFluxConsistentMetBool,thermoFluxConsistentRxnBool,model,thermoCo
 %
 % param.formulation:            mathematical formulation of inner iteration
 % param.relaxBounds:      Relax bounds that don't include zero. Default is false.
+% param.nMax
 %
 % OUTPUT
 % thermoFluxConsistentMetBool    m x 1 boolean vector indicating thermodynamically flux consistent mets
@@ -232,79 +233,61 @@ end
 %recalculate size of S
 [nMet,nRxn]=size(model.S);
 
-%secondary removal is on by default
-if param.secondaryRemoval
-    % Finds the subset of `S` that is stoichiometrically consistent using
-    % an iterative cardinality optimisation approach
+%heuristically identify exchange reactions and metabolites exclusively
+%involved in exchange reactions
+if ~isfield(model,'SIntRxnBool')  || ~isfield(model,'SIntMetBool')
+    if isfield(model,'mets')
+        %attempts to finds the reactions in the model which export/import from the model
+        %boundary i.e. mass unbalanced reactions
+        %e.g. Exchange reactions
+        %     Demand reactions
+        %     Sink reactions
+        model = findSExRxnInd(model,[],param.printLevel-1);
+    else
+        model.SIntMetBool=true(size(model.S,1),1);
+        model.SIntRxnBool=true(size(model.S,2),1);
+    end
+else
+    if length(model.SIntMetBool)~=size(model.S,1) || length(model.SIntRxnBool)~=size(model.S,2)
+        model = findSExRxnInd(model,[],param.printLevel-1);
+    end
+end
+
+%extract the stoichiometrically consistent subset
+if param.secondaryRemoval && (~isfield(model,'SConsistentRxnBool')  || ~isfield(model,'SConsistentMetBool') || length(model.SConsistentMetBool)~=size(model.S,1) || length(model.SConsistentRxnBool)~=size(model.S,2))
+    
+    SIntRxnBool = model.SIntRxnBool;
+    
     massBalanceCheck=0;
-    [SConsistentMetBool, SConsistentRxnBool,  ~, ~, ~, ~, model] = findStoichConsistentSubset(model,massBalanceCheck);
+    [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, ~, model]...
+        = findStoichConsistentSubset(model, massBalanceCheck, param.printLevel-1);
     
     if param.printLevel>0
-        fprintf('%10u%10u%s\n',nnz(~SConsistentMetBool),nnz(model.SIntRxnBool & ~SConsistentRxnBool),' metabolites and reactions removed by findStoichConsistentSubset called from findThermoConsistentFluxSubset.');
+        fprintf('%10u%%s\n',nnz(~SConsistentMetBool), ' metabolites removed by findStoichConsistentSubset called from findThermoConsistentFluxSubset.');
+    end
+    if param.printLevel>0
+        fprintf('%10u%%s\n',nnz(SIntRxnBool & ~SConsistentRxnBool),' reactions removed by findStoichConsistentSubset called from findThermoConsistentFluxSubset.');
     end
     
+end
+
+%extract the flux consistent subset
+if param.secondaryRemoval && (~isfield(model,'fluxConsistentRxnBool')  || ~isfield(model,'fluxConsistentMetBool') || length(model.fluxConsistentMetBool)~=size(model.S,1) || length(model.fluxConsistentRxnBool)~=size(model.S,2))
     if isfield(model,'C')
         fluxConsistentParam.method='fastcc';%can handle additional constraints
     else
         fluxConsistentParam.method='null_fastcc';
     end
-    [fluxConsistentMetBool, fluxConsistentRxnBool,~,~,model]= findFluxConsistentSubset(model,fluxConsistentParam);
-    if param.printLevel>0
-        fprintf('%10u%10u%s\n',nnz(~fluxConsistentMetBool),nnz(~fluxConsistentRxnBool),' metabolites and reactions removed by findFluxConsistentSubset called from findThermoConsistentFluxSubset.');
-    end
-        
-    %         if 1
-    %             metRemoveList1 = model.mets(~fluxConsistentMetBool);
-    %
-    %             [model, metRemoveList2]  = removeRxns(model, model.rxns(~fluxConsistentRxnBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','inclusive');
-    %             if length(intersect(metRemoveList1,metRemoveList2))~=length(metRemoveList1)
-    %                 error('inconsistent metabolite removal')
-    %             end
-    %
-    %         else
-    %             model.S = model.S(model.fluxConsistentMetBool,model.fluxConsistentRxnBool);
-    %             model.lb = model.lb(model.fluxConsistentRxnBool);
-    %             model.ub = model.ub(model.fluxConsistentRxnBool);
-    %             model.c = model.c(model.fluxConsistentRxnBool);
-    %             model.SConsistentRxnBool = model.SConsistentRxnBool(model.fluxConsistentRxnBool);
-    %             model.SConsistentMetBool = model.SConsistentMetBool(model.fluxConsistentMetBool);
-    %
-    %             [nMet,nRxn]=size(model.S);
-    %
-    %             if isfield(model,'b')
-    %                 model.b = model.b(model.fluxConsistentMetBool);
-    %             else
-    %                 model.b = zeros(nMet,1);
-    %             end
-    %             % assume constraint S*v = b if csense not provided
-    %             if isfield(model, 'csense')
-    %                 model.csense = model.csense(model.fluxConsistentMetBool);
-    %             else
-    %                 % if csense is not declared in the model, assume that all
-    %                 % constraints are equalities.
-    %                 model.csense(1:nMet, 1) = 'E';
-    %             end
-    %
-    %             if isfield(model,'C')
-    %                 %constraints inlusively involved in flux inconsistent reactions are deemed flux inconsistent also
-    %                 fluxConsistentConstraintBool = getCorrespondingRows(model.C,true(size(model.C,1),1),model.fluxConsistentRxnBool,'inclusive');
-    %
-    %                 if ~all(fluxConsistentConstraintBool)
-    %                     fprintf('%s\n',[num2str(nnz(~fluxConsistentConstraintBool)) ' model.C constraints removed'])
-    %
-    %                     model.C = model.C(fluxConsistentConstraintBool,model.fluxConsistentRxnBool);
-    %                     model.d = model.d(fluxConsistentConstraintBool,1);
-    %                     model.dsense = model.dsense(fluxConsistentConstraintBool,1);
-    %                     if isfield(model,'ctrs')
-    %                         model.ctrs = model.ctrs(fluxConsistentConstraintBool,1);
-    %                     end
-    %                     if isfield(model,'ctrNames')
-    %                         model.ctrNames = model.ctrNames(fluxConsistentConstraintBool,1);
-    %                     end
-    %                 end
-    %             end
-    %         end
+    fluxConsistentParam.printLevel=param.printLevel-1;
+    [fluxConsistentMetBool, fluxConsistentRxnBool, ~, ~,~,model] = findFluxConsistentSubset(model,fluxConsistentParam);
     
+    if any(~fluxConsistentRxnBool)
+        fprintf('%u%s\n',nnz(~fluxConsistentRxnBool), ' flux inconsistent reactions removed by findFluxConsistentSubset called from findThermoConsistentFluxSubset.')
+    end
+            
+    if any(~fluxConsistentMetBool)
+        fprintf('%u%s\n',nnz(~fluxConsistentMetBool), ' flux inconsistent metabolites removed by findFluxConsistentSubset called from findThermoConsistentFluxSubset.')
+    end
 end
 
 %%
@@ -460,7 +443,9 @@ while go
         if any(model.g0(~model.SConsistentRxnBool))
             setIncentives = 0;
         else
-            fprintf('%s\n','No exchange reaction is being optimised, making another random selection.')
+            if param.printLevel>1
+                fprintf('%s\n','findThermoConsistientFlux: No exchange reaction is being optimised, making another random selection.')
+            end
         end
     end
 %     %no cardinality optimisation of reactions forced to be active
@@ -531,6 +516,7 @@ while go
     %forward, reverse, external
     totalFractThermoFeasFwdRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,1))/nIntRxn;
     totalFractThermoFeasRevRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,2))/nIntRxn;
+    totalFractThermoFeasIntRxn = nnz(thermo2FluxConsistentBool0(model.SConsistentRxnBool,1) | thermo2FluxConsistentBool0(model.SConsistentRxnBool,2))/nIntRxn;
     totalFractExternalRxn = nnz(thermoExFluxConsistentBool00(~model.SConsistentRxnBool))/nExRxn;
     totalFractThermoFeasRxn = nnz(thermoFluxConsistentBool00 | thermoExFluxConsistentBool00)/nRxn;
     
@@ -564,22 +550,22 @@ while go
     if totalFractThermoModelRxnOld==totalFractThermoModelRxn
         noProgress=noProgress+1;
     end
-
-    if (totalFractExternalRxn==1 && totalFractThermoFeasFwdRxn ==1 && totalFractThermoFeasRevRxn ==1) || n==param.nMax || noProgress==5
+    
+    if (totalFractExternalRxn==1 && totalFractThermoFeasIntRxn ==1) || n==param.nMax || noProgress==5
         if param.printLevel>0
-        fprintf('%6%8s%8s%8s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s\n','Reset','iter','nnz(g0<0)','nnz','  feas.f', '   rep.feas.f', 't.feas.f.','  feas.r', '   rep.feas.r', 't.feas.r', 't.feas.int', 't.feas.ext','iteration', 'formulation')
-        end
-        if n ==param.nMax
-            fprintf('%s%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'n = nMax = ',int2str(n))
-        end
-        if noProgress==5
-            fprintf('%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'no progress on % internal reactions thermodynamically flux consistent')
-        end
-        if n == length(solution.v)
-            fprintf('%s%s%s\n','findThermoConsistentFluxSubset terminating early: ', 'n == nRxns')
-        end
-        if totalFractThermoFeasFwdRxn ==1 || totalFractThermoFeasRevRxn ==1
-            fprintf('%s\n','All internal reactions are thermodynamically flux consistent in at least one direction.')
+            fprintf('%6s%8s%8s%8s%12s%12s%12s%12s%12s%12s%12s%12s%12s%12s\n','Reset','iter','nnz(g0<0)','nnz','  feas.f', '   rep.feas.f', 't.feas.f.','  feas.r', '   rep.feas.r', 't.feas.r', 't.feas.int', 't.feas.ext','iteration', 'formulation')
+            if n ==param.nMax
+                fprintf('%s%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'n = nMax = ',int2str(n))
+            end
+            if noProgress==5
+                fprintf('%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'no progress on % internal reactions thermodynamically flux consistent')
+            end
+            if n == length(solution.v)
+                fprintf('%s%s%s\n','findThermoConsistentFluxSubset: terminating early, ', 'n == nRxns')
+            end
+            if totalFractThermoFeasIntRxn ==1
+                fprintf('%s\n','All internal reactions are thermodynamically flux consistent in at least one direction.')
+            end
         end
         go = 0;
     end

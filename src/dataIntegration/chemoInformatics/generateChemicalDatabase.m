@@ -1,4 +1,4 @@
-function [info, newModel] = generateChemicalDatabase(model, options)
+function [report, modelOut] = generateChemicalDatabase(model, options)
 % This function uses the metabolite identifiers in the model to compare
 % them and save the identifiers with the best score in MDL MOL format
 % and/or inchi and simles and jpeg if it's installed cxcalc and openBabel.
@@ -10,7 +10,7 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %
 % USAGE:
 %
-%    [info, newModel] = generateChemicalDatabase(model, options)
+%    [info, modelOut] = generateChemicalDatabase(model, options)
 %
 % INPUTS:
 %    model:	COBRA model with following fields:
@@ -28,7 +28,7 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %
 %    options:  A structure containing all the arguments for the function:
 %
-%           * .outputDir: The path to the directory containing the RXN files
+%           * .resultsDir: The path to the directory containing the RXN files
 %                   with atom mappings (default: current directory)
 %           * .printlevel: Verbose level
 %           * .standardisationApproach: String containing the type of standardisation
@@ -39,12 +39,12 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %                    'basic' Update the header.
 %           * .keepMolComparison: Logic value for comparing MDL MOL files
 %                   from various sources (default: FALSE)
-%           * .onlyUnmapped: Logic value to select create only unmapped MDL
-%                   RXN files (default: FALSE).
+%           * .atomMapping: Logic value to decide on atom mapping. If false, it will generate only unmapped MDL RXN files (default: TRUE).
+%           * .bonds: Logic value to decide on computing bond enthalpy and bonds broken and formed (default: TRUE) (only if atomMapping = 1);
 %           * .adjustToModelpH: Logic value used to determine whether a molecule's
 %                   pH must be adjusted in accordance with the COBRA model.  
 %                   TRUE, requires MarvinSuite).
-%           * .addDirsToCompare: Cell(s) with the path to directory to an 
+%           * .dirsToCompare: Cell(s) with the path to directory to an 
 %                   existing database (default: empty).
 %           * .dirNames: Cell(s) with the name of the directory(ies) (default: empty).
 %           * .debug: Logical value used to determine whether or not the results 
@@ -52,46 +52,130 @@ function [info, newModel] = generateChemicalDatabase(model, options)
 %                   debugging (default: empty).
 %
 % OUTPUTS:
+% modelOut: A new model with the following additional fields
+%           * .metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
+%           * .rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
+%           * .comparison:      
+%           * .standardisation:
+%           * .bondsBF: Number of bonds broken and formed in each reaction, if options.bonds = true.
+%           * .bondsE:  Estimated bond enthalpies for each metabolic reaction, if options.bonds = true.      
+% report:     Struct array containing a diary of the database generation process
 %
-%    newModel: A new model with the comparison and if onlyUnmapped = false, 
-%           the informaton about the bonds broken and formed as well as the
-%           bond enthalpies for each metabolic reaction.
-%    info:      A diary of the database generation process
+%           *.molCollectionReport: Struct array containing information on the 
+%               metabolite structures each of the model's sources.
+%                   -.metList: List of the metabolites in the model.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.structuresObtained: Number of metabolites with a structure.
+%                   -.structuresObtainedPerSource: A Boolean matrix (mets x sources) 
+%                       indicating whether or not a structure was obtained.
+%                   -.databaseCoverage: Table showing the coverage per source.
+%                   -.idsToCheck: Id's from which the metabolic structure wasn't
+%                       obtained.
+%        	*.sourcesComparison: Struct array containing information on the 
+%               metabolite structures comparison.
+%                   -.mets: List of the metabolites in the model with structure.
+%                   -.sources: Sources from which the metabolic structures 
+%                       were obtained.
+%                   -.comparisonMatrix: Matrix (mets x sources) with the
+%                       comparison score.
+%                   -.chargeOkBool: Boolean vector indicating whether the 
+%                       metabolite's formula matches the formula of the source 
+%                       with the highest score.
+%                   -.metFormula: String array with the formulas of the
+%                       metabolites.
+%                   -.met_"metID": Comparison tables for each metabolite.
+%                   -.comparisonTable: Table summarising the highest score 
+%                       sources per metabolite.
+%           *.adjustedpHTable: table indicating whether or not the highest 
+%                   scoring metabolite required pH adjustment and identifying 
+%                   metabolites for which the pH could not be adjusted.
+%           *.standardisationReport: Table with InChIKeys, InChIs and
+%                   SMILES for the highest scoring metabolites.
+%           *.reactionsReport: Struct array containing information about the 
+%                   atom-mapped reactions.
+%               -.rxnInDatabase: Cell array containing the rxns IDs of the
+%                   MDL RXN files written.
+%               -.mappedRxns: Cell array containing the rxns IDs of the
+%                   atom-mapped reactions.
+%               -.balancedReactions: Cell array containing the rxns IDs of the
+%                   balanced atom-mapped reactions.
+%               -.unbalancedReactions: Cell array containing the rxns IDs of the
+%                   unbalanced atom-mapped reactions.
+%               -.rxnMissing: Cell array containing the rxns IDs of the reactions
+%                   could not be written due to missing metabolites structures 
+%                   in the reactions.
+%               -.metInDatabase: Cell array containing the metabolite IDs
+%                   in the metabolite database.
+%               -.metsAllwaysInBalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites in balanced reactions at all times.
+%               -.metsSometimesInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites ocassionally in unbalanced reactions.
+%               -.metsAllwaysInUnbalancedRxns: Cell array containing the metabolite 
+%                   IDs of the metabolites always in unbalanced reactions.
+%               -.metsNotUsed: Cell array containing the metabolite IDs of
+%                   the metabolites could not be integrated in reactions 
+%                   since another structure was missing.
+%               -.missingMets: Cell array containing the metabolite IDs of
+%                   the missing metabolites
+%               -.table: Table containing information about the 
+%                   atom-mapped reactions.
+%           *.bondsData: A table containing the bonds broken and formed, the 
+%               enthalpy change, and the substrate mass per atom-mapped reaction.
 
-if ~isfield(options, 'outputDir')
-    outputDir = [pwd filesep];
+if ~isfield(options, 'resultsDir')
+    resultsDir = [pwd filesep];
 else
-    % Make sure input path ends with directory separator
-    outputDir = [regexprep(options.outputDir,'(/|\\)$',''), filesep];
+    % Make sure results path ends with directory separator
+    resultsDir = [regexprep(options.resultsDir,'(/|\\)$',''), filesep];
+end
+
+ctfPath = which('metaboliteIDcrossMapping.txt');
+if contains(ctfPath,'not found')
+    error('git clone https://github.com/opencobra/ctf /your/path/ctf \n Then addpath(/your/path/ctf) in matlab')
+else
+    ctfPath = strrep(ctfPath,[filesep 'metaboliteIDcrossMapping.txt'],'');
 end
 
 %% 1. Initialise data and set default variables
-
-metDir = [outputDir 'mets'];
-rxnDir = [outputDir 'rxns'];
-
-modelFields = fieldnames(model);
+metResultsDir = [resultsDir 'mets'];
+rxnResultsDir = [resultsDir 'rxns'];
 
 if ~isfield(options, 'debug')
-    options.debug = false;
+    options.debug = 0;
 end
 if ~isfield(options, 'printlevel')
     options.printlevel = 1;
 end
+
+% molecular identifiers options
 if ~isfield(options, 'standardisationApproach')
-    options.standardisationApproach = 'explicitH';
+    options.standardisationApproach = 'basic';
 end
 if ~isfield(options, 'keepMolComparison')
-    options.keepMolComparison = false;
-end
-if ~isfield(options, 'onlyUnmapped')
-    options.onlyUnmapped = false;
+    options.keepMolComparison = 0;
 end
 if ~isfield(options, 'adjustToModelpH')
-    options.adjustToModelpH = true;
+    options.adjustToModelpH = 0;
 end
+
+% atom mapping options
+if ~isfield(options, 'atomMapping')
+    options.atomMapping = 1;
+end
+
+if ~isfield(options, 'bonds')
+    options.bonds = 1;
+end
+if ~isfield(options,'replaceExistingAtomMappings')
+    options.replaceExistingAtomMappings = 0;
+end
+
 if isfield(options, 'dirsToCompare')
     dirsToCompare = true;
+    if ischar(options.dirsToCompare)
+        options.dirsToCompare={options.dirsToCompare};
+    end
     for i = 1:length(options.dirsToCompare)
         options.dirsToCompare{i} = [regexprep(options.dirsToCompare{i},'(/|\\)$',''), filesep];
         if ~isfolder(options.dirsToCompare)
@@ -109,43 +193,37 @@ if isfield(options, 'dirsToCompare')
         end
     end
 else
-    dirsToCompare = false;
+   options.dirsToCompare = [ctfPath filesep 'mets' filesep 'molFiles'];
+   options.dirNames = {'VMH'};
 end
 
+[cxcalcInstalled,oBabelInstalled,javaInstalled ] = checkChemoinformaticDependencies;
 
-% Check if ChemAxon and openBabel are installed
-[cxcalcInstalled, ~] = system('cxcalc');
-cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
-    display('cxcalc is not installed, two features cannot be used: ')
-    display('1 - jpeg files for molecular structures (obabel required)')
-    display('2 - pH adjustment according to model.met Formulas')
+    disp('cxcalc is not installed, two features cannot be used: ')
+    disp('1 - jpeg files for molecular structures (obabel required)')
+    disp('2 - pH adjustment according to model.met Formulas')
 end
-if isunix || ispc 
-    obabelCommand = 'obabel';
-else
-    obabelCommand = 'openbabel.obabel';
-end
-[oBabelInstalled, ~] = system(obabelCommand);
+
 if oBabelInstalled ~= 1
     oBabelInstalled = false;
     options.standardisationApproach = 'basic';
-    display('obabel is not installed, two features cannot be used: ')
-    display('1 - Generation of SMILES, InChI and InChIkey')
-    display('2 - MOL file standardisation')
+    disp('obabel is not installed, two features cannot be used: ')
+    disp('1 - Generation of SMILES, InChI and InChIkey')
+    disp('2 - MOL file standardisation')
 end
-[javaInstalled, ~] = system('java');
-if javaInstalled ~= 1 && ~options.onlyUnmapped
-    display('java is not installed, atom mappings cannot be computed')
-    options.onlyUnmapped = true;
+
+if javaInstalled ~= 1 && options.atomMapping
+    disp('java is not installed, atom mappings cannot be computed')
+    options.atomMapping = 0;
 end
 
 % Start diary
-if ~isfolder(outputDir)
-    mkdir(outputDir);
+if ~isfolder(resultsDir)
+    mkdir(resultsDir);
 end
-diaryFilename = [outputDir datestr(now,30) '_DatabaseDiary.txt'];
+diaryFilename = [resultsDir datestr(now,30) '_DatabaseDiary.txt'];
 diary(diaryFilename)
 
 if options.printlevel > 0
@@ -182,11 +260,12 @@ umets = unique(mets);
 if options.printlevel > 0
     fprintf('%s\n\n', 'Obtaining MOL files from chemical databases ...')
 end
+%    model: COBRA model
+%    mets: List of metabolites to be download (Default: All)
+%    metResultsDir: Directory that will contain the obtained metabolite structures.
 
-molCollectionReport = obtainMetStructures(model, model.mets, outputDir);
-comparisonDir = [outputDir 'molComparison'];
-movefile([outputDir 'metabolites'], comparisonDir)
-     
+[molCollectionReport, newMolFilesDir] = obtainMetStructures(model, model.mets, metResultsDir);
+
 if dirsToCompare
     molCollectionReport.sources = [molCollectionReport.sources; options.dirNames];
     newIdx = length(molCollectionReport.sources);
@@ -202,10 +281,10 @@ if dirsToCompare
         molCollectionReport.structuresObtained = max([molCollectionReport.structuresObtained; sum(ismember(umets, regexprep({d.name}, '.mol', '')))]);
     end
 end
-info.molCollectionReport = molCollectionReport;
+report.molCollectionReport = molCollectionReport;
 
 if options.printlevel > 0
-    display(molCollectionReport.databaseCoverage)
+    disp(molCollectionReport.databaseCoverage)
 end
 
 % Remove sources without a single metabolite present the model
@@ -216,7 +295,7 @@ for i = length(directories):-1:1
 end
 
 if options.debug
-    save([outputDir '2.debug_afterDownloadMetabolicStructures.mat'])
+    save([resultsDir '2.debug_beforeGeneratingInChIandSMILES.mat'])
 end
 
 %% 3. Compare MOL files downloaded and save the best match
@@ -232,7 +311,7 @@ for i = 1:size(directories, 1)
     if i > 6 && dirsToCompare
         sourceDir = options.dirsToCompare{i - 6};
     else
-        sourceDir = [comparisonDir filesep directories{i} filesep];
+        sourceDir = [newMolFilesDir filesep directories{i} filesep];
     end
     
     % Get list of MOL files
@@ -248,7 +327,11 @@ for i = 1:size(directories, 1)
         name = [metList{j} '.mol'];
         
         if oBabelInstalled
-            
+            if isunix || ispc
+                obabelCommand = 'obabel';
+            else
+                obabelCommand = 'openbabel.obabel';
+            end
             % Get inchis of the original metabolites
             command = [obabelCommand ' -imol ' sourceDir name ' -oinchi '];
             [~, result] = system(command);
@@ -333,7 +416,7 @@ for i = 1:size(directories, 1)
 end
 
 if options.debug
-    save([outputDir '3a.debug_beforeComparison.mat'])
+    save([resultsDir '3a.debug_beforeComparison.mat'])
 end
 
 if exist('groupedSMILES', 'var')
@@ -344,18 +427,18 @@ if exist('groupedSMILES', 'var')
     for i = 1:length(groupedSMILES.mets)
         for j = 1:length(sourcesSmiles)
             if ~isempty(groupedSMILES.(sourcesSmiles{j}){i})
-                fid2 = fopen([outputDir 'tmp'], 'w');
+                fid2 = fopen([resultsDir 'tmp'], 'w');
                 fprintf(fid2, '%s\n', groupedSMILES.(sourcesSmiles{j}){i});
                 fclose(fid2);
                 command = [obabelCommand ' -ismi tmp -O tmp.mol mol -h'];
                 [~, ~] = system(command);
-                molFile = regexp(fileread([outputDir 'tmp.mol']), '\n', 'split')';
+                molFile = regexp(fileread([resultsDir 'tmp.mol']), '\n', 'split')';
                 molFile = regexprep(molFile, 'X|Y|*|R|A', 'H');
-                fid2 = fopen([outputDir filesep 'tmp.mol'], 'w');
+                fid2 = fopen([resultsDir filesep 'tmp.mol'], 'w');
                 fprintf(fid2, '%s\n', molFile{:});
                 fclose(fid2);
                 % Get inchis of the original metabolites
-                command = [obabelCommand ' -imol ' outputDir 'tmp.mol -oinchi'];
+                command = [obabelCommand ' -imol ' resultsDir 'tmp.mol -oinchi'];
                 [~, result] = system(command);
                 result = split(result);
                 groupedInChIs2.(sourcesSmiles{j})(i) = result(contains(result, 'InChI=1S'));
@@ -390,52 +473,52 @@ if exist('groupedFormula', 'var')
 end
 
 % Compare InChI data
-info.sourcesComparison.sources(:, 1) = groupedInChIs.Properties.VariableNames(2:end);
+report.sourcesComparison.sources(:, 1) = groupedInChIs.Properties.VariableNames(2:end);
 for i = 1:length(groupedInChIs.mets)
     comparisonTable = compareInchis(model, groupedInChIs{i, 2:end}, ...
         groupedInChIs.mets{i});
-    info.sourcesComparison.mets{i, 1} = groupedInChIs.mets{i};
-    info.sourcesComparison.comparisonMatrix(i, :) = comparisonTable.scores;
+    report.sourcesComparison.mets{i, 1} = groupedInChIs.mets{i};
+    report.sourcesComparison.comparisonMatrix(i, :) = comparisonTable.scores;
     chagreAccuracy = unique( comparisonTable.chargeOkBool(comparisonTable.scores == ...
         max(comparisonTable.scores)));
-    info.sourcesComparison.chargeOkBool(i, 1) = chagreAccuracy(1);
+    report.sourcesComparison.chargeOkBool(i, 1) = chagreAccuracy(1);
     metFormula = comparisonTable.metFormula(comparisonTable.scores == max(comparisonTable.scores));
     if any(ismissing(metFormula))
         metFormula = '';
     else
         metFormula = unique(metFormula);
     end
-    info.sourcesComparison.metFormula(i, 1) = metFormula(1);
-    info.sourcesComparison.(['met_' groupedInChIs.mets{i}]) = comparisonTable;
+    report.sourcesComparison.metFormula(i, 1) = metFormula(1);
+    report.sourcesComparison.(['met_' groupedInChIs.mets{i}]) = comparisonTable;
 end
 
 % Create a comparison table
-bestScores = max(info.sourcesComparison.comparisonMatrix');
-info.sourcesComparison.comparisonTable = table;
+bestScores = max(report.sourcesComparison.comparisonMatrix');
+report.sourcesComparison.comparisonTable = table;
 warning('off')
-for i = 1:length(info.sourcesComparison.mets)
-    info.sourcesComparison.comparisonTable.mets{i} = info.sourcesComparison.mets{i};
-    bestDir = directories(find(info.sourcesComparison.comparisonMatrix(i, :) == bestScores(i)));
-    info.sourcesComparison.comparisonTable.source{i} = strjoin(bestDir, ' ');
-    info.sourcesComparison.comparisonTable.score(i) = bestScores(i);
-    info.sourcesComparison.comparisonTable.inchi{i} = groupedInChIs.(bestDir{1}){i};
+for i = 1:length(report.sourcesComparison.mets)
+    report.sourcesComparison.comparisonTable.mets{i} = report.sourcesComparison.mets{i};
+    bestDir = directories(find(report.sourcesComparison.comparisonMatrix(i, :) == bestScores(i)));
+    report.sourcesComparison.comparisonTable.source{i} = strjoin(bestDir, ' ');
+    report.sourcesComparison.comparisonTable.score(i) = bestScores(i);
+    report.sourcesComparison.comparisonTable.inchi{i} = groupedInChIs.(bestDir{1}){i};
 end
-info.sourcesComparison.comparisonTable.chargeOkBool = info.sourcesComparison.chargeOkBool;
-info.sourcesComparison.comparisonTable.metFormula = info.sourcesComparison.metFormula;
+report.sourcesComparison.comparisonTable.chargeOkBool = report.sourcesComparison.chargeOkBool;
+report.sourcesComparison.comparisonTable.metFormula = report.sourcesComparison.metFormula;
 warning('on')
 
 % Print data
 if options.printlevel > 0
     
-    display(info.sourcesComparison.comparisonTable)
+    disp(report.sourcesComparison.comparisonTable)
     
     % Sources comparison
-    [db, ~, idx] = unique(split(strjoin(info.sourcesComparison.comparisonTable.source, ' '), ' '));
+    [db, ~, idx] = unique(split(strjoin(report.sourcesComparison.comparisonTable.source, ' '), ' '));
     [~, ib1] = ismember(directories, db);
     timesMatched = histcounts(idx, size(db, 1));
     bar(timesMatched(ib1)')
     title({'Sources comparison', ...
-        ['Metabolites collected: ' num2str(size(info.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 16)
+        ['Metabolites collected: ' num2str(size(report.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 16)
     directoriesLabels = regexprep(db, 'chebi', 'ChEBI');
     directoriesLabels = regexprep(directoriesLabels, 'hmdb', 'HMDB');
     directoriesLabels = regexprep(directoriesLabels, 'inchi', 'InChIs');
@@ -443,14 +526,14 @@ if options.printlevel > 0
     directoriesLabels = regexprep(directoriesLabels, 'pubchem', 'PubChem');
     directoriesLabels = regexprep(directoriesLabels, 'smiles','SMILES');
     set(gca, 'XTick', 1:size(db, 1), 'xticklabel', directoriesLabels(ib1), 'FontSize', 16)
-    metsObtained = fieldnames(info.sourcesComparison);
+    metsObtained = fieldnames(report.sourcesComparison);
     metsObtained = metsObtained(contains(metsObtained, 'met_'));
     [sterochemicalCounter, chargeCounter, formulaOk, noId] = deal(zeros(numel(directories), 1));
     for i = 1:length(metsObtained)
-        formulaOk = formulaOk + info.sourcesComparison.(metsObtained{i}).formulaOkBool;
-        chargeCounter = chargeCounter + info.sourcesComparison.(metsObtained{i}).chargeOkBool;
-        sterochemicalCounter = sterochemicalCounter + info.sourcesComparison.(metsObtained{i}).stereochemicalSubLayers;
-        noId = noId + cellfun(@isempty,info.sourcesComparison.(metsObtained{i}).InChI);
+        formulaOk = formulaOk + report.sourcesComparison.(metsObtained{i}).formulaOkBool;
+        chargeCounter = chargeCounter + report.sourcesComparison.(metsObtained{i}).chargeOkBool;
+        sterochemicalCounter = sterochemicalCounter + report.sourcesComparison.(metsObtained{i}).stereochemicalSubLayers;
+        noId = noId + cellfun(@isempty,report.sourcesComparison.(metsObtained{i}).InChI);
     end
     hold on
     plot(formulaOk, 'r', 'LineWidth', 3)
@@ -461,55 +544,55 @@ if options.printlevel > 0
     legend({'Highest score', 'Formula agree', 'Charge agree', 'Sterochemistry', 'No ids'}, 'Location', 'best')
 
     if options.printlevel > 1
-        display(groupedInChIs)
+        disp(groupedInChIs)
     end
     
 end
 
 % Save the MOL files with highest score
-tmpDir = [metDir filesep 'tmp'];
+tmpDir = [metResultsDir filesep 'tmp'];
 if ~isfolder(tmpDir)
     mkdir(tmpDir)
 end
-for i = 1:length(info.sourcesComparison.comparisonTable.mets)
-    metName = info.sourcesComparison.comparisonTable.mets{i};
-    dirToCopy = split(info.sourcesComparison.comparisonTable.source{i});
-    if isfield(options, 'dirNames') && ismember(dirToCopy{1}, options.dirNames)
+for i = 1:length(report.sourcesComparison.comparisonTable.mets)
+    metName = report.sourcesComparison.comparisonTable.mets{i};
+    dirToCopy = split(report.sourcesComparison.comparisonTable.source{i});
+    if isfield(options, 'dirNames') && any(ismember(dirToCopy{1}, options.dirNames))
         copyfile([options.dirsToCompare{ismember(options.dirNames, dirToCopy{1})} metName '.mol'], tmpDir)
     else
-        copyfile([comparisonDir filesep dirToCopy{1} filesep metName '.mol'], tmpDir)
+        copyfile([newMolFilesDir filesep dirToCopy{1} filesep metName '.mol'], tmpDir)
     end
 end
 if ~options.keepMolComparison
-    rmdir(comparisonDir, 's')
+    rmdir(newMolFilesDir, 's')
 end
 if ~options.adjustToModelpH || ~cxcalcInstalled
-    model.comparison = info.sourcesComparison.comparisonTable;
+    model.comparison = report.sourcesComparison.comparisonTable;
 end
 if options.debug
-    save([outputDir '3b.debug_afterComparison.mat'])
+    save([resultsDir '3b.debug_beforeaAjustToModelpH.mat'])
 end
 
 %% 4. Adjust pH based on the model's chemical formula
 
 if options.adjustToModelpH && cxcalcInstalled
     
-    info.adjustedpHTable = info.sourcesComparison.comparisonTable;
+    report.adjustedpHTable = report.sourcesComparison.comparisonTable;
     
     if options.printlevel > 0
         fprintf('%s\n', 'Adjusting pH based on the model''s chemical formula ...')
-        display(' ')
+        disp(' ')
     end
     
     [needAdjustmentBool, differentFormula, loopError, pHRangePassed] = ...
-        deal(false(size(info.sourcesComparison.comparisonTable, 1), 1));
-    for i = 1:length(info.adjustedpHTable.mets)
+        deal(false(size(report.sourcesComparison.comparisonTable, 1), 1));
+    for i = 1:length(report.adjustedpHTable.mets)
         try
             
-            name = [info.adjustedpHTable.mets{i} '.mol'];
+            name = [report.adjustedpHTable.mets{i} '.mol'];
             
             %  Get number of hydrogens in the model's metabolite
-            metFormula = model.metFormulas(ismember(mets , info.adjustedpHTable.mets{i}));
+            metFormula = model.metFormulas(ismember(mets , report.adjustedpHTable.mets{i}));
             metFormula = editChemicalFormula(metFormula{1});
             [elemetList, ~ , elemetEnd] = regexp(char(metFormula), ['[', ...
                 'A':'Z', '][', 'a':'z', ']?'], 'match');
@@ -520,7 +603,7 @@ if options.adjustToModelpH && cxcalcInstalled
             noOfH_model = numList(hBool);
             
             % Source formula
-            inchiLayersDetail = getInchiData(info.adjustedpHTable.inchi{i});
+            inchiLayersDetail = getInchiData(report.adjustedpHTable.inchi{i});
             molFormula = inchiLayersDetail.metFormula;
             %  Get number of hydrogens in the source's metabolite
             [elemetList, ~ , elemetEnd] = regexp(molFormula, ['[', 'A':'Z', '][', 'a':'z', ']?'], 'match');
@@ -579,7 +662,7 @@ if options.adjustToModelpH && cxcalcInstalled
                     
                     if noOfH_model == noOfH_source
                         movefile([tmpDir filesep 'tmp.mol'], [tmpDir filesep name])
-                        info.adjustedpHTable.metFormula(i) = formulaOk;
+                        report.adjustedpHTable.metFormula(i) = formulaOk;
                     end
                 end
             else
@@ -594,19 +677,23 @@ if options.adjustToModelpH && cxcalcInstalled
         delete([tmpDir filesep 'tmp.mol'])
     end
     
-    info.adjustedpHTable.needAdjustmentBool = needAdjustmentBool;
-    info.adjustedpHTable.notPossible2AdjustBool = differentFormula | loopError | pHRangePassed;
-    info.adjustedpHTable.differentFormula = differentFormula;
-    info.adjustedpHTable.loopError = loopError;
-    info.adjustedpHTable.pHRangePassed = pHRangePassed;
+    report.adjustedpHTable.needAdjustmentBool = needAdjustmentBool;
+    report.adjustedpHTable.notPossible2AdjustBool = differentFormula | loopError | pHRangePassed;
+    report.adjustedpHTable.differentFormula = differentFormula;
+    report.adjustedpHTable.loopError = loopError;
+    report.adjustedpHTable.pHRangePassed = pHRangePassed;
     
     if options.printlevel > 0
-        display('adjustedpH:')
-        display(info.adjustedpHTable)
+        disp('adjustedpH:')
+        disp(report.adjustedpHTable)
     end
     
-    model.comparison = info.adjustedpHTable;
+    model.comparison = report.adjustedpHTable;
     
+end
+
+if options.debug
+    save([resultsDir '4.debug_beforeaStandardiseMOLfiles.mat'])
 end
 
 %% 5. Standardise the MOL files according options
@@ -621,32 +708,32 @@ metList = metList(~cellfun('isempty', regexp(metList,'(\.mol)$')));
 metList = regexprep(metList, '.mol', '');
 metList(~ismember(metList, regexprep(model.mets, '(\[\w\])', ''))) = [];
 
-% Standardise MOL files the most consitent MOL files
-standardisationReport = standardiseMolDatabase(tmpDir, metList, metDir, standardisationApproach);
-info.standardisationReport = standardisationReport;
+% Standardise MOL files the most consistent MOL files
+standardisationReport = standardiseMolDatabase(tmpDir, metList, metResultsDir, standardisationApproach);
+report.standardisationReport = standardisationReport;
 
-if oBabelInstalled
+if oBabelInstalled && isfield(standardisationReport,'SMILES')
     % Create table
     nRows = size(standardisationReport.SMILES, 1);
     varTypes = {'string', 'string', 'string', 'string'};
     varNames = {'mets', 'InChIKeys', 'InChIs', 'SMILES'};
-    info.standardisationReport = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
-    info.standardisationReport.mets(1:end) = standardisationReport.standardised;
-    info.standardisationReport.InChIKeys(1:size(standardisationReport.InChIKeys, 1)) = standardisationReport.InChIKeys;
-    info.standardisationReport.InChIs(1:size(standardisationReport.InChIs, 1)) = standardisationReport.InChIs;
-    info.standardisationReport.SMILES(1:size(standardisationReport.SMILES, 1)) = standardisationReport.SMILES;
+    report.standardisationReport = table('Size', [nRows length(varTypes)], 'VariableTypes', varTypes, 'VariableNames', varNames);
+    report.standardisationReport.mets(1:end) = standardisationReport.standardised;
+    report.standardisationReport.InChIKeys(1:size(standardisationReport.InChIKeys, 1)) = standardisationReport.InChIKeys;
+    report.standardisationReport.InChIs(1:size(standardisationReport.InChIs, 1)) = standardisationReport.InChIs;
+    report.standardisationReport.SMILES(1:size(standardisationReport.SMILES, 1)) = standardisationReport.SMILES;
     % Write table
-    writetable(info.standardisationReport, [metDir filesep 'metaboliteStructures'])
+    writetable(report.standardisationReport, [metResultsDir filesep 'metaboliteStructures'])
 end
 
 if options.printlevel > 0
-    display(info.standardisationReport)
+    disp(report.standardisationReport)
 end
 rmdir(tmpDir, 's')
-model.standardisation = info.standardisationReport;
+model.standardisation = report.standardisationReport;
 
 if options.debug
-    save([outputDir '5.debug_afterStandardisation.mat'])
+    save([resultsDir '5.debug_beforeAtomMapping.mat'])
 end
 
 %% 6. Atom map data
@@ -654,11 +741,11 @@ end
 % Set options
 
 % MOL file directory
-molFileDir = [metDir filesep 'molFiles'];
+molFileDir = [metResultsDir filesep 'molFiles'];
 
 % Create the reaction data directory
-if ~isfolder(rxnDir)
-    mkdir(rxnDir)
+if ~isfolder(rxnResultsDir)
+    mkdir(rxnResultsDir)
 end
 
 % Reactions to atom map
@@ -671,68 +758,89 @@ switch options.standardisationApproach
     case 'implicitH'
         hMapping = false;
     case 'neutral'
+        hMapping = true;
     case 'basic'
         hMapping = true;
 end
 
-% Atom map metabolic reactions
-reactionsReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, options.onlyUnmapped);
+%% Atom map metabolic reactions
+if options.atomMapping
+    writeRXNonly=0;
+    replaceExistingAtomMappings=options.replaceExistingAtomMappings;
+    report.atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, writeRXNonly,replaceExistingAtomMappings);
+    %  A directory with standardised RXN files.
+    rxnResultsDir_unMapped=report.atomMappingReport.rxnResultsDir_unMapped;
+    %  A directory with atom mapped RXN files.
+    rxnResultsDir_atomMapped=report.atomMappingReport.rxnResultsDir_atomMapped;
+    % A directory images for atom mapped reactions.
+    rxnResultsDir_images=report.atomMappingReport.rxnResultsDir_images;
+    % A directory with txt files with data of the atom mappings
+    rxnResultsDir_txtData=report.atomMappingReport.rxnResultsDir_txtData;
+else
+    modelOut=model;
+    arm=[];
+    return
+end
 
-rxnsFilesDir = [rxnDir filesep 'unMapped'];
-% Final database table
+if options.debug
+    save([resultsDir '6.debug_beforeBuildReport.mat'])
+end
+%%
+
+%% Final database table
 
 % Reactions in the database
-info.reactionsReport.rxnInDatabase = reactionsReport.rxnFilesWritten;
+report.atomMappingReport.rxnInDatabase = report.atomMappingReport.rxnFilesWritten;
 % List atom mapped reactions
-if isfolder([rxnDir filesep 'atomMapped'])
-    atomMappedRxns = dir([rxnDir filesep 'unMapped' filesep '*.rxn']);
+if isfolder(rxnResultsDir_atomMapped)
+    atomMappedRxns = dir([rxnResultsDir_unMapped filesep '*.rxn']);
     atomMappedRxns = regexprep({atomMappedRxns.name}, '.rxn', '')';
     atomMappedRxns(~ismember(atomMappedRxns, rxnsToAM)) = [];
 else
     atomMappedRxns = {};
 end
-info.reactionsReport.mappedRxns = atomMappedRxns;
+report.atomMappingReport.mappedRxns = atomMappedRxns;
 % Balanced reactions
-info.reactionsReport.balancedReactions = reactionsReport.balanced;
+report.atomMappingReport.balancedReactions = report.atomMappingReport.balanced;
 % Unalanced reactions
-info.reactionsReport.unbalancedReactions = reactionsReport.unbalanced;
+report.atomMappingReport.unbalancedReactions = report.atomMappingReport.unbalanced;
 % Missing reactions
 model = findSExRxnInd(model);
-info.reactionsReport.rxnMissing = setdiff(model.rxns(model.SIntRxnBool), reactionsReport.rxnFilesWritten);
+report.atomMappingReport.rxnMissing = setdiff(model.rxns(model.SIntRxnBool), report.atomMappingReport.rxnFilesWritten);
 
 % Find metabolites in balanced reactions
-metsInBalanced = unique(regexprep(findMetsFromRxns(model, reactionsReport.balanced), '(\[\w\])', ''));
+metsInBalanced = unique(regexprep(findMetsFromRxns(model, report.atomMappingReport.balanced), '(\[\w\])', ''));
 % Find metabolites in unbalanced reactions
-metsInUnbalanced = unique(regexprep(findMetsFromRxns(model, reactionsReport.unbalanced), '(\[\w\])', ''));
+metsInUnbalanced = unique(regexprep(findMetsFromRxns(model, report.atomMappingReport.unbalanced), '(\[\w\])', ''));
 % Metabolites not used in reactions
-metsNotUsed = info.sourcesComparison.comparisonTable.mets(~ismember(...
-    info.sourcesComparison.comparisonTable.mets, [metsInBalanced; ...
+metsNotUsed = report.sourcesComparison.comparisonTable.mets(~ismember(...
+    report.sourcesComparison.comparisonTable.mets, [metsInBalanced; ...
     metsInUnbalanced]));
 % Metabolite in the database
-info.reactionsReport.metInDatabase = info.sourcesComparison.comparisonTable.mets;
+report.atomMappingReport.metInDatabase = report.sourcesComparison.comparisonTable.mets;
 % Metabolites allways in balanced reactions
-info.reactionsReport.metsAllwaysInBalancedRxns = umets(ismember(umets, setdiff(metsInBalanced, metsInUnbalanced)));
+report.atomMappingReport.metsAllwaysInBalancedRxns = umets(ismember(umets, setdiff(metsInBalanced, metsInUnbalanced)));
 % Metabolites ocassionally in unbalanced reactions
-info.reactionsReport.metsSometimesInUnbalancedRxns = umets(ismember(umets, intersect(metsInBalanced, metsInUnbalanced)));
+report.atomMappingReport.metsSometimesInUnbalancedRxns = umets(ismember(umets, intersect(metsInBalanced, metsInUnbalanced)));
 % Metabolites allways in unbalanced reactions
-info.reactionsReport.metsAllwaysInUnbalancedRxns = umets(ismember(umets, setdiff(metsInUnbalanced, metsInBalanced)));
+report.atomMappingReport.metsAllwaysInUnbalancedRxns = umets(ismember(umets, setdiff(metsInUnbalanced, metsInBalanced)));
 % Metabolites not used
-info.reactionsReport.metsNotUsed = metsNotUsed;
+report.atomMappingReport.metsNotUsed = metsNotUsed;
 % Mising metabolites
-info.reactionsReport.missingMets = setdiff(umets, [metsInBalanced; metsInUnbalanced]);
+report.atomMappingReport.missingMets = setdiff(umets, [metsInBalanced; metsInUnbalanced]);
 
-info.reactionsReport.table = table([ ...
-    size(info.reactionsReport.metInDatabase, 1); ...
-    size(info.reactionsReport.metsAllwaysInBalancedRxns, 1); ...
-    size(info.reactionsReport.metsSometimesInUnbalancedRxns, 1); ...
-    size(info.reactionsReport.metsAllwaysInUnbalancedRxns, 1); ...
-    size(info.reactionsReport.metsNotUsed, 1); ...
-    size(info.reactionsReport.missingMets, 1); ...
-    size(info.reactionsReport.rxnInDatabase, 1); ...
-    size(info.reactionsReport.mappedRxns, 1); ...
-    size(info.reactionsReport.balancedReactions, 1); ...
-    size(info.reactionsReport.unbalancedReactions, 1); ...
-    size(info.reactionsReport.rxnMissing, 1)],...
+report.atomMappingReport.table = table([ ...
+    size(report.atomMappingReport.metInDatabase, 1); ...
+    size(report.atomMappingReport.metsAllwaysInBalancedRxns, 1); ...
+    size(report.atomMappingReport.metsSometimesInUnbalancedRxns, 1); ...
+    size(report.atomMappingReport.metsAllwaysInUnbalancedRxns, 1); ...
+    size(report.atomMappingReport.metsNotUsed, 1); ...
+    size(report.atomMappingReport.missingMets, 1); ...
+    size(report.atomMappingReport.rxnInDatabase, 1); ...
+    size(report.atomMappingReport.mappedRxns, 1); ...
+    size(report.atomMappingReport.balancedReactions, 1); ...
+    size(report.atomMappingReport.unbalancedReactions, 1); ...
+    size(report.atomMappingReport.rxnMissing, 1)],...
     ...
     'VariableNames', ...
     {'Var'},...
@@ -751,18 +859,18 @@ info.reactionsReport.table = table([ ...
 
 if options.printlevel > 0
     
-    if ~options.onlyUnmapped
-        display(info.reactionsReport.table)
+    if ~options.atomMapping
+        disp(report.atomMappingReport.table)
     end
     
     % Metabolites
     figure
     subplot(1, 2, 1)
     labelsToAdd = {'In balanced rxn', 'Ocassionally in unbalanced rxn', 'In unbalanced rxn', 'Missing'};
-    X = [size(info.reactionsReport.metsAllwaysInBalancedRxns, 1);...
-        size(info.reactionsReport.metsSometimesInUnbalancedRxns, 1);...
-        size(info.reactionsReport.metsAllwaysInUnbalancedRxns, 1);...
-        size(info.reactionsReport.missingMets, 1)];
+    X = [size(report.atomMappingReport.metsAllwaysInBalancedRxns, 1);...
+        size(report.atomMappingReport.metsSometimesInUnbalancedRxns, 1);...
+        size(report.atomMappingReport.metsAllwaysInUnbalancedRxns, 1);...
+        size(report.atomMappingReport.missingMets, 1)];
     pieChart = pie(X(find(X)));
     ax = gca();
     pieChart = pie(ax, X(find(X)));
@@ -782,9 +890,9 @@ if options.printlevel > 0
     % Reactions
     subplot(1, 2, 2)
     labelsToAdd = {'Balanced', 'Unbalanced', 'Missing'};
-    X = [size(info.reactionsReport.balancedReactions, 1);...
-        size(info.reactionsReport.unbalancedReactions, 1);...
-        size(info.reactionsReport.rxnMissing, 1)];
+    X = [size(report.atomMappingReport.balancedReactions, 1);...
+        size(report.atomMappingReport.unbalancedReactions, 1);...
+        size(report.atomMappingReport.rxnMissing, 1)];
     ax = gca();
     pieChart = pie(ax, X(find(X)));
     newColors = [...
@@ -799,41 +907,39 @@ if options.printlevel > 0
 end
 if options.printlevel > 1
     disp('RXN files written')
-    display(info.reactionsReport.rxnFilesWritten)
+    disp(report.atomMappingReport.rxnFilesWritten)
     disp('Atom mapped reactions')
-    display(info.reactionsReport.mappedRxns)
+    disp(report.atomMappingReport.mappedRxns)
     disp('Balanced reactions')
-    display(info.reactionsReport.balancedReactions)
+    disp(report.atomMappingReport.balancedReactions)
     disp('Unbalanced reactions')
-    display(info.reactionsReport.unbalancedReactions)
+    disp(report.atomMappingReport.unbalancedReactions)
     disp('Metabolites allways in balanced rxns')
-    display(info.reactionsReport.metsAllwaysInBalancedRxns)
+    disp(report.atomMappingReport.metsAllwaysInBalancedRxns)
     disp('Metabolites ocasional in unbalanced rxns')
-    display(info.reactionsReport.metsSometimesInUnbalancedRxns)
+    disp(report.atomMappingReport.metsSometimesInUnbalancedRxns)
     disp('Metabolites allways in unbalanced rxns')
-    display(info.reactionsReport.metsAllwaysInUnbalancedRxns)
+    disp(report.atomMappingReport.metsAllwaysInUnbalancedRxns)
     disp('Missing metabolites')
-    display(info.reactionsReport.missingMets)
+    disp(report.atomMappingReport.missingMets)
 end
 
 if options.debug
-    save([outputDir '6.debug_endOfReactionDatabase.mat'])
+    save([resultsDir '7.debug_before_bonds.mat'])
 end
 
 %% 7. Bond enthalpies and bonds broken and formed
 
-if ~options.onlyUnmapped
+if options.bonds
     
     % Get bond enthalpies and bonds broken and formed
     if options.printlevel  > 0
-        display('Calculating bonds broken and formed and enthalpy change...')
+        disp('Calculating bonds broken and formed and enthalpy change...')
     end
     
     tmp = findSExRxnInd(model);
-    [enthalpyChange, substrateMass] = findEnthalpyChange(model, model.rxns(tmp.SIntRxnBool), [rxnDir ...
-        filesep 'atomMapped'], options.printlevel);
-    [bondsBrokenAndFormed, ~] = findBondsBrokenAndFormed(model, model.rxns(tmp.SIntRxnBool), [rxnDir ...
-        filesep 'atomMapped'], options.printlevel);
+    [enthalpyChange, substrateMass] = findEnthalpyChange(model, model.rxns(tmp.SIntRxnBool), rxnResultsDir_atomMapped, options.printlevel);
+    [bondsBrokenAndFormed, ~] = findBondsBrokenAndFormed(model, model.rxns(tmp.SIntRxnBool), rxnResultsDir_atomMapped, options.printlevel);
     
     % Replace NaN values to 'Missing'
     missingRxns = isnan(bondsBrokenAndFormed);
@@ -846,13 +952,13 @@ if ~options.onlyUnmapped
     if ~isfield(model, 'rxnNames')
         model.rxnNames = model.rxns;
     end
-    info.bondsData.table = table(model.rxns(tmp.SIntRxnBool), model.rxnNames(tmp.SIntRxnBool), bondsBrokenAndFormed, enthalpyChange, substrateMass, ...
+    report.bondsData.table = table(model.rxns(tmp.SIntRxnBool), model.rxnNames(tmp.SIntRxnBool), bondsBrokenAndFormed, enthalpyChange, substrateMass, ...
             'VariableNames', {'rxns', 'rxnNames', 'bondsBrokenAndFormed', 'enthalpyChange', 'substrateMass'});
-    info.bondsData.table = [sortrows(info.bondsData.table(~missingRxns, :), ...
-        {'bondsBrokenAndFormed'}, {'descend'}); info.bondsData.table(missingRxns, :)];   
+    report.bondsData.table = [sortrows(report.bondsData.table(~missingRxns, :), ...
+        {'bondsBrokenAndFormed'}, {'descend'}); report.bondsData.table(missingRxns, :)];   
         
     if options.printlevel  > 0
-        display(info.bondsData.table)
+        disp(report.bondsData.table)
     end
         
     % Add data in the model
@@ -861,18 +967,15 @@ if ~options.onlyUnmapped
     
 end
 
-if isfile([outputDir 'tmp.mol'])
-    delete([outputDir 'tmp.mol'])
+if isfile([resultsDir 'tmp.mol'])
+    delete([resultsDir 'tmp.mol'])
 end
 
-newModel = model;
-if options.debug
-    save([outputDir '7.debug_endOfGenerateChemicalDatabase.mat'])
-end
+modelOut = model;
 
 diary off
 if options.printlevel > 0 
-    fprintf('%s\n', ['Diary written to: ' outputDir])
+    fprintf('%s\n', ['Diary written to: ' resultsDir diaryFilename])
     fprintf('%s\n', 'generateChemicalDatabase run is complete.')
 end
 

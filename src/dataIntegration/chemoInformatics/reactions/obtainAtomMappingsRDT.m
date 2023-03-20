@@ -1,4 +1,4 @@
-function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, onlyUnmapped)
+function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, writeRXNonly, replaceExistingAtomMappings)
 % Using the reaction decoder tool, compute atom mappings for reactions in a
 % COBRA model. Atom mapping data is presented in a variety of formats,
 % including MDL RXN, SMILES, and images. If this option is selected, the
@@ -7,7 +7,7 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %
 % USAGE:
 %
-%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rxnsToAM, hMapping, maxTime, standariseRxn)
+%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, maxTime, standariseRxn)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -21,33 +21,30 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %                                 identifiers. Should match metabolite
 %                                 identifiers in RXN.
 %                       * .rxns - An n x 1 array of reaction identifiers.
-%                                 Should match rxnfile names in rxnFileDir.
+%                                 Should match rxnfile names in rxnResultsDir_atomMapped.
 %    molFileDir:    Path to the directory containing MOL files for
 %                   metabolites in S. File names should correspond to
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
-%    rxnDir:        Path to directory that will contain the RXN files with
-%                   atom mappings (default: current directory).
-%    rxnsToAM:      List of reactions to atom map (default: all in the
-%                   model).
-%    hMapping:      Logic value to select if hydrogen atoms will be atom
-%                   mapped (default: TRUE).
-%    onlyUnmapped:  Logic value to select create only unmapped MDL RXN
-%                   files (default: FALSE).
+%    rxnResultsDir: Path to directory that will contain the RXN files with atom mappings (default: current directory).
+%    rxnsToAM:      List of reactions to atom map (default: all in the model).
+%    hMapping:      Logic value to select if hydrogen atoms will be atom mapped (default: TRUE).
+%    writeRXNonly:  True to write out standardised RXN files and not atom map them (default: FALSE).
+%    replaceExistingAtomMappings: True to recompute atom mappings, replacing existing RXN files  (default: TRUE).
+%
 %
 % OUTPUTS:
-%    atomMappingReport:	A report with the atom mapping data
-%        *. rxnFilesWritten the MDL RXN written written
-%        *. balanced the balanced reactions
-%        *. unbalancedBool the unbalanced reactions
-%        *. inconsistentBool the inconsistent reactions
-%        *. notMapped the that couldn't be mapped
-%    A directory with standardised RXN files.
-%    A directory with atom mapped RXN files.
-%    A directory images for atom mapped reactions.
-%    A directory with txt files with data of the atom mappings (SMILES,
-%    REACTANT INPUT ATOM INDEX, PRODUCT INPUT ATOM INDEX).
+%    atomMappingReport:	           A report with the atom mapping data
+%        * .rxnFilesWritten        the MDL RXN written
+%        * .balanced               the balanced reactions
+%        * .unbalancedBool         the unbalanced reactions
+%        * .inconsistentBool       the inconsistent reactions
+%        * .notMapped              the that couldn't be mapped
+%        * .rxnResultsDir_unMapped        A directory with standardised RXN files.
+%        * .rxnResultsDir_atomMapped      A directory with atom mapped RXN files.
+%        * .rxnResultsDir_images          A directory images for atom mapped reactions.
+%        * .rxnResultsDir_txtData         A directory with txt files with data of the atom mappings (SMILES, REACTANT INPUT ATOM INDEX, PRODUCT INPUT ATOM INDEX).
 %
 % EXAMPLE:
 %
@@ -62,21 +59,36 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnDir, rx
 %
 % .. Author: - German A. Preciat Gonzalez 25/05/2017
 
-if nargin < 3 || isempty(rxnDir)
-    rxnDir = [pwd filesep];
-else
-    % Make sure input path ends with directory separator
-    rxnDir = [regexprep(rxnDir,'(/|\\)$',''), filesep];
+if ~exist('rxnResultsDir','var') || isempty(rxnResultsDir)
+    rxnResultsDir = pwd;
 end
-if nargin < 4 || isempty(rxnsToAM)
+if ~exist('rxnsToAM','var') || isempty(rxnsToAM)
     rxnsToAM = model.rxns;
 end
-if nargin < 5 || isempty(hMapping)
+if ~exist('hMapping','var') || isempty(rxnsToAM)
     hMapping = true;
 end
-if nargin < 6 || isempty(onlyUnmapped)
-    onlyUnmapped = false;
+if ~exist('replaceExistingAtomMappings','var') || isempty(replaceExistingAtomMappings)
+    replaceExistingAtomMappings = false;
 end
+
+% Make sure input path ends with directory separator
+rxnResultsDir = [regexprep(rxnResultsDir,'(/|\\)$',''), filesep];
+
+if contains(rxnResultsDir,'~')
+    rxnResultsDir = strrep(rxnResultsDir,'~',char(java.lang.System.getProperty('user.home')));
+end
+
+rxnResultsDir_atomMapped = [rxnResultsDir 'atomMapped'];
+atomMappingReport.rxnResultsDir_atomMapped = rxnResultsDir_atomMapped;
+rxnResultsDir_images =[rxnResultsDir 'images'];
+atomMappingReport.rxnResultsDir_images = rxnResultsDir_images;
+rxnResultsDir_txtData = [rxnResultsDir 'txtData'];
+atomMappingReport.rxnResultsDir_txtData = rxnResultsDir_txtData;
+rxnResultsDir_unMapped = [rxnResultsDir 'unMapped'];
+atomMappingReport.rxnResultsDir_unMapped = rxnResultsDir_unMapped;
+
+
 
 % Maximum time for atom mapping each reaction in seconds
 maxTime = 1800;
@@ -93,35 +105,36 @@ end
 [javaInstalled, ~] = system('java');
 
 % Generating new directories
-if ~exist([rxnDir filesep 'unMapped'],'dir')
-    mkdir([rxnDir filesep 'unMapped'])
+if ~exist(rxnResultsDir_unMapped,'dir')
+    mkdir(rxnResultsDir_unMapped)
 end
-if javaInstalled && ~onlyUnmapped
-    if ~exist([rxnDir filesep 'atomMapped'],'dir')
-        mkdir([rxnDir filesep 'atomMapped'])
+
+if javaInstalled
+    if ~exist(rxnResultsDir_atomMapped,'dir')
+        mkdir(rxnResultsDir_atomMapped)
     end
-    if ~exist([rxnDir filesep 'images'],'dir')
-        mkdir([rxnDir filesep 'images'])
+    if ~exist(rxnResultsDir_images,'dir')
+        mkdir(rxnResultsDir_images)
     end
-    if ~exist([rxnDir filesep 'txtData'],'dir')
-        mkdir([rxnDir filesep 'txtData'])
+    if ~exist(rxnResultsDir_txtData,'dir')
+        mkdir(rxnResultsDir_txtData)
     end
 end
 
 % Download the RDT algorithm, if it is not present in the output directory
-if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
-    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+if exist([rxnResultsDir 'rdtAlgorithm.jar'],'file') ~= 2 && javaInstalled
+    urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnResultsDir 'rdtAlgorithm.jar']);
     % Previous releases:
     if ispc % go with an older version due to java version issues
         %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
-        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[rxnResultsDir 'rdtAlgorithm.jar']);
     end
 end
 
-% Delete the protons (hydrogens) for the metabolic network
-% From metabolites
 S = full(model.S);
 if ~hMapping && isfield(model,'metFormulas')
+    % Delete the protons (hydrogens) for the metabolic network
+    % From metabolites
     hToDelete = ismember(model.metFormulas, 'H');
     S(hToDelete, :) = [];
     model.mets(hToDelete) = [];
@@ -137,7 +150,6 @@ mets = model.mets;
 fmets = regexprep(mets, '(\[\w\])', '');
 rxns = rxnsToAM;
 rxnsInModel = model.rxns;
-clear model
 
 % Get list of MOL files
 d = dir(molFileDir);
@@ -161,34 +173,42 @@ fprintf('\n\nGenerating RXN files.\n');
 rxnFilesWrittenBool = false(length(rxns), 1);
 for i = 1:length(rxns)
     rxnBool = ismember(rxnsInModel, rxns{i});
-    metsInRxns = ismember(fmets(find(S(:, rxnBool))), aMets);
-    stoichiometry = S(find(S(:, rxnBool)), rxnBool);
+    metsInRxns = ismember(fmets(S(:, rxnBool)~=0), aMets);
+    stoichiometry = S(S(:, rxnBool)~=0, rxnBool);
     if ~any(~metsInRxns) && length(metsInRxns) > 1 && all(abs(round(stoichiometry) - stoichiometry) < (1e-2))
-        writeRxnfile(S(:, rxnBool), mets, fmets, molFileDir, rxns{i}, [rxnDir...
-            filesep 'unMapped' filesep])
+        writeRxnfile(S(:, rxnBool), mets, fmets, molFileDir, rxns{i}, [rxnResultsDir_unMapped filesep])
         rxnFilesWrittenBool(i) = true;
     end
 end
 atomMappingReport.rxnFilesWritten = rxns(rxnFilesWrittenBool);
 
 % Get list of new RXN files
-d = dir([rxnDir filesep 'unMapped' filesep]);
+d = dir([rxnResultsDir_unMapped filesep]);
 d = d(~[d.isdir]);
 aRxns = regexprep({d.name}', '.rxn', '');
 assert(~isempty(aRxns), 'No rxn file was written.');
 rxnsToAM = rxnsToAM(ismember(rxnsToAM, aRxns));
 
-mappedBool = false(length(rxnsToAM), 1);
+
+%check quality of unmapped RXN files
+model = checkRXNFiles(model, rxnResultsDir_unMapped);
+
+%choose this option to write RXN but not atom map them
+if writeRXNonly
+    return
+end
 
 % Atom map RXN files
-if javaInstalled == 1 && ~onlyUnmapped
+mappedBool = false(length(rxnsToAM), 1);
+if javaInstalled == 1
     
     % Atom map RXN files
     fprintf('Computing atom mappings for %d reactions.\n\n', length(rxnsToAM));
     
     % Download the RDT algorithm, if it is not present in the output directory
-    if exist([rxnDir filesep 'rdtAlgorithm.jar']) ~= 2 && javaInstalled && ~onlyUnmapped
-        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnDir filesep 'rdtAlgorithm.jar']);
+    if exist([rxnResultsDir 'rdtAlgorithm.jar'],'file') ~= 2 && javaInstalled
+        urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.5.0/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar',[rxnResultsDir 'rdtAlgorithm.jar']);
+        %urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.4.1/rdt-2.4.1-jar-with-dependencies.jar',[rxnResultsDir 'rdtAlgorithm.jar']);
         % Previous releases:
         %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/v2.1.0/rdt-2.1.0-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
         %     urlwrite('https://github.com/asad/ReactionDecoder/releases/download/1.5.1/rdt-1.5.1-SNAPSHOT-jar-with-dependencies.jar',[outputDir filesep 'rdtAlgorithm.jar']);
@@ -197,7 +217,7 @@ if javaInstalled == 1 && ~onlyUnmapped
     % Atom map passive transport reactions; The atoms are mapped for the
     % same molecular structures in the substrates as they are in the
     % products i.e. A[m] + B[c] -> A[c] + B[m].
-    mappedTransportRxns = transportRxnAM([rxnDir 'unMapped'], [rxnDir 'atomMapped']);
+    mappedTransportRxns = transportRxnAM(rxnResultsDir_unMapped, rxnResultsDir_atomMapped);
     if ~isempty(mappedTransportRxns)
         mappedBool = false(size(rxnsToAM));
         transportBool = ismember(rxnsToAM, mappedTransportRxns);
@@ -209,16 +229,28 @@ if javaInstalled == 1 && ~onlyUnmapped
     
     % Atom map the rest
     for i = 1:length(nonTransport)
-        name = [rxnDir 'unMapped' filesep nonTransport{i} '.rxn'];
-        command = ['timeout ' num2str(maxTime) 's java -jar ' rxnDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
+        if ~replaceExistingAtomMappings
+            if exist([rxnResultsDir_atomMapped filesep nonTransport{i} '.rxn'],'file')
+                fprintf('%s\n',[rxnResultsDir_atomMapped filesep nonTransport{i} '.rxn exists already, not computed again.'])
+                continue
+            end
+        end
+        
+        name = [rxnResultsDir_unMapped filesep nonTransport{i} '.rxn'];
+        command = ['timeout ' num2str(maxTime) 's java -jar ' rxnResultsDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
         
         if ismac
             command = ['g' command];
         elseif ispc
-            command = ['java -jar ' rxnDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
+            command = ['java -jar ' rxnResultsDir 'rdtAlgorithm.jar -Q RXN -q "' name '" -g -j AAM -f TEXT'];
             
         end
         [status, result] = system(command);
+        if status~=0
+            disp(command)
+            
+            disp(result)
+        end
         if ~contains(result, 'ECBLAST')
             [status, result] = system(command);
         end
@@ -237,17 +269,16 @@ if javaInstalled == 1 && ~onlyUnmapped
         if length(mNames) == 3
             name = regexprep({mNames.name}, 'ECBLAST_|_AAM', '');
             cellfun(@movefile, {mNames.name}, name)
-            cellfun(@movefile, name, {[rxnDir 'images'], [rxnDir...
-                'atomMapped'], [rxnDir 'txtData']})
+            cellfun(@movefile, name, {[rxnResultsDir_images], rxnResultsDir_atomMapped, [rxnResultsDir_txtData]})
             mappedBool(ismember(rxnsToAM, nonTransport{i})) = true;
         elseif ~isempty(mNames)
             delete(mNames.name)
         end
         
     end
-    % I do not think that the algorithm should be downloaded all the time
-    if 1
-        delete([rxnDir 'rdtAlgorithm.jar'])
+    
+    if 0 % 1 = algorithm should be downloaded each time
+        delete([rxnResultsDir 'rdtAlgorithm.jar'])
     end
     
     mappedRxns = rxnsToAM(mappedBool);
@@ -258,10 +289,10 @@ if javaInstalled == 1 && ~onlyUnmapped
         name = [mappedRxns{i} '.rxn'];
         
         % Add header
-        mappedFile = regexp(fileread([rxnDir 'atomMapped' filesep name]), '\n', 'split')';
-        standardFile = regexp(fileread([rxnDir 'unMapped' filesep name]), '\n', 'split')';
+        mappedFile = regexp(fileread([rxnResultsDir_atomMapped filesep name]), '\n', 'split')';
+        standardFile = regexp(fileread([rxnResultsDir_unMapped filesep name]), '\n', 'split')';
         mappedFile{2} = standardFile{2};
-        mappedFile{3} = ['COBRA Toolbox v3.0 - Atom mapped - ' datestr(datetime)];
+        mappedFile{3} = ['Atom mapped with COBRA Toolbox wrap ReactionDecoder rdt-2.5.0-SNAPSHOT - ' datestr(datetime)];
         mappedFile{4} = standardFile{4};
         
         formula = strsplit(mappedFile{4}, {'->', '<=>'});
@@ -300,10 +331,10 @@ if javaInstalled == 1 && ~onlyUnmapped
         begmol = strmatch('$MOL', mappedFile);
         noOfMolSubstrates = str2double(mappedFile{5}(1:3));
         if isnan(noOfMolSubstrates)
-            if ~isfolder([rxnDir 'atomMapped' filesep 'v3000'])
-                mkdir([rxnDir 'atomMapped' filesep 'v3000']);
+            if ~isfolder([rxnResultsDir_atomMapped filesep 'v3000'])
+                mkdir([rxnResultsDir_atomMapped filesep 'v3000']);
             end
-            movefile([rxnDir 'atomMapped' filesep name], [rxnDir 'atomMapped' filesep 'v3000'])
+            movefile([rxnResultsDir_atomMapped filesep name], [rxnResultsDir_atomMapped filesep 'v3000'])
             continue
         end
         substratesMol = mappedFile(begmol(1:noOfMolSubstrates) + 1)';
@@ -316,7 +347,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         
         % Check if the stoichemestry is correct
         if ~isequal(noOfsubstrates, substratesMol) || ~isequal(noOfproducts, productsMol)
-            mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, rxnDir);
+            mappedFile = sortMets(mappedFile, substratesMol, substratesFormula, productsMol, productsFormula, [rxnResultsDir]);
         end
         
         % SMILES TO MOL
@@ -344,7 +375,9 @@ if javaInstalled == 1 && ~onlyUnmapped
                 [~, ~] = system(command);
                 command = ['molconvert rxn ' pwd filesep 'tmp.smiles -o ' pwd filesep 'tmp.mol'];
                 [~, ~] = system(command);
-                delete([pwd filesep 'tmp.smiles'])
+                if exist([pwd filesep 'tmp.smiles'],'file')
+                    delete([pwd filesep 'tmp.smiles'])
+                end
                 molFile = regexp(fileread([pwd filesep 'tmp.mol']), '\n', 'split')';
                 newMappedFile(length(newMappedFile) + 1: length(newMappedFile) + 4) = standardFile(begmolStd(j): begmolStd(j) + 3);
                 newMappedFile(length(newMappedFile) + 1: length(newMappedFile)  + length(molFile) - 4) = molFile(4:end - 1);
@@ -356,7 +389,7 @@ if javaInstalled == 1 && ~onlyUnmapped
         % Sort the atoms in the substrates in ascending order and then map
         % them to the atoms in the products.
         if any(contains(mappedFile, '$MOL'))
-            mappedFile = sortAtomMappingIdx(mappedFile);
+            %mappedFile = sortAtomMappingIdx(mappedFile); % Ronan 3rd Nov, turn this off.
         else
             inconsistentBool(i) = true;
         end
@@ -383,29 +416,29 @@ if javaInstalled == 1 && ~onlyUnmapped
         
         % Rewrite the file
         if ~unbalancedBool(i) && ~inconsistentBool(i)
-            fid2 = fopen([rxnDir 'atomMapped' filesep name], 'w');
+            fid2 = fopen([rxnResultsDir_atomMapped filesep name], 'w');
             fprintf(fid2, '%s\n', mappedFile{:});
             fclose(fid2);
         elseif inconsistentBool(i)
-            if ~exist([rxnDir filesep 'atomMapped' filesep 'inconsistent'],'dir')
-                mkdir([rxnDir filesep 'atomMapped' filesep 'inconsistent'])
+            if ~exist([rxnResultsDir_atomMapped filesep 'inconsistent'],'dir')
+                mkdir([rxnResultsDir_atomMapped filesep 'inconsistent'])
             end
-            movefile([rxnDir 'atomMapped' filesep name], ...
-                [rxnDir 'atomMapped' filesep 'inconsistent'])
+            movefile([rxnResultsDir_atomMapped filesep name], ...
+                [rxnResultsDir_atomMapped filesep 'inconsistent'])
         elseif unbalancedBool(i)
-            if ~exist([rxnDir filesep 'atomMapped' filesep 'unbalanced'],'dir')
-                mkdir([rxnDir filesep 'atomMapped' filesep 'unbalanced'])
+            if ~exist([rxnResultsDir_atomMapped filesep 'unbalanced'],'dir')
+                mkdir([rxnResultsDir_atomMapped filesep 'unbalanced'])
             end
-            fid2 = fopen([rxnDir 'atomMapped' filesep 'unbalanced' filesep name], 'w');
+            fid2 = fopen([rxnResultsDir_atomMapped filesep 'unbalanced' filesep name], 'w');
             fprintf(fid2, '%s\n', mappedFile{:});
             fclose(fid2);
-            delete([rxnDir 'atomMapped' filesep name])
+            delete([rxnResultsDir_atomMapped filesep name])
         end
         
         if oBabelInstalled
             
             % Get rinchis
-            command = [obabelCommand ' -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -orinchi'];
+            command = [obabelCommand ' -irxn ' [rxnResultsDir_unMapped filesep rxnsToAM{i}] '.rxn -orinchi'];
             [~, result] = system(command);
             if ~any(contains(result, '0 molecules converted'))
                 result = split(result);
@@ -414,7 +447,7 @@ if javaInstalled == 1 && ~onlyUnmapped
             end
             
             % Get rsmi
-            command = [obabelCommand ' -irxn ' [rxnDir 'unMapped' filesep rxnsToAM{i}] '.rxn -osmi'];
+            command = [obabelCommand ' -irxn ' [rxnResultsDir_unMapped filesep rxnsToAM{i}] '.rxn -osmi'];
             [~, result] = system(command);
             if ~any(contains(result, '0 molecules converted'))
                 result = splitlines(result);
@@ -425,7 +458,9 @@ if javaInstalled == 1 && ~onlyUnmapped
         end
     end
     
-    delete([pwd filesep 'tmp.mol'])
+%     if exists('tmp.mol','file')
+%         delete('tmp.mol')
+%     end
     atomMappingReport.rxnFilesWritten = rxnsToAM;
     atomMappingReport.balanced = rxnsToAM(~unbalancedBool);
     atomMappingReport.unbalanced = rxnsToAM(unbalancedBool);
@@ -514,16 +549,16 @@ else
 end
 end
 
-function mappedRxns = transportRxnAM(rxnDir, outputDir)
+function mappedRxns = transportRxnAM(rxnResultsDir, outputDir)
 % This function atom maps the transport reactions for a given directory in
 % MDL RXN file format.
 %
 % USAGE:
 %
-% mappedRxns = transportRxnAM(rxnDir, outputDir)
+% mappedRxns = transportRxnAM(rxnResultsDir, outputDir)
 %
 % INPUTS:
-%    rxnDir:               Path to directory that contains the RXN files
+%    rxnResultsDir:               Path to directory that contains the RXN files
 %                          (default: current directory).
 %
 % OPTIONAL INPUTS:
@@ -535,7 +570,7 @@ function mappedRxns = transportRxnAM(rxnDir, outputDir)
 %    mappedRxns:           List of missing MOL files atom mapped transport
 %                          reactions.
 
-rxnDir = [regexprep(rxnDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
+rxnResultsDir = [regexprep(rxnResultsDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
 if nargin < 2 || isempty(outputDir)
     outputDir = [pwd filesep];
 else
@@ -549,14 +584,14 @@ if exist(outputDir) ~= 7
 end
 
 % Check if the directory is not empty
-fnames = dir([rxnDir '*.rxn']);
-assert(~isempty(fnames), '''rxnDir'' does not contain RXN files');
+fnames = dir([rxnResultsDir '*.rxn']);
+assert(~isempty(fnames), '''rxnResultsDir'' does not contain RXN files');
 
 c = 0;
 for i = 1:length(fnames)
     
     % Read the MOL file
-    rxnFile = regexp( fileread([rxnDir fnames(i).name]), '\n', 'split')';
+    rxnFile = regexp( fileread([rxnResultsDir fnames(i).name]), '\n', 'split')';
     rxnFormula = rxnFile{4};
     assert(~isempty(rxnFormula), 'There is not a chemical formula.');
     % Check if it is a transport reaction

@@ -4,7 +4,7 @@ function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %
 % USAGE:
 %
-%    model = addMetInfoInCBmodel(model, inputData)
+%    [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -12,26 +12,27 @@ function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %                       * .S - The m x n stoichiometric matrix for the
 %                              metabolic network.
 %                       * .mets - An m x 1 array of metabolite identifiers.
-%    inputData:     COBRA model with following fields:
+%    inputData: 
 %
 % OPTIONAL INPUTS:
 %    replace:       If the new ID should replace an existing ID, this 
 %                   logical value indicates so (default: false).
 %
-% OUTPUTS:          COBRA model with updated identifiersCOBRA model with 
-%                   the identifiers updated.
+% OUTPUTS:   
+%  newModel:      COBRA model with updated identifiersCOBRA model with the identifiers updated.
+%  hasEffect: 
 
-if nargin < 3 || isempty(replace)
+if ~exist('replace','var')
     replace = false;
 end
-
-hasEffect = false;
 
 if isfile(inputData)
     dbData = readtable(inputData);
 elseif isstruct(inputData)
     dbData = readtable(inputData);
 end
+
+hasEffect = false;
 
 % Get data from model and external source
 sources = {'KEGG', 'HMDB', 'ChEBI', 'PubChem', 'SMILES', 'InChI'};

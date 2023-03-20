@@ -210,6 +210,27 @@ end
 sbmlReactions = modelSBML.reaction;
 %First, extract the notes field.
 [model.subSystems,grRule,~,model.rxnConfidenceScores,rxnReferences,model.rxnNotes,rxnECNumbers,~] = cellfun(@parseSBMLNotesField , {sbmlReactions.notes}','UniformOutput',0);
+
+numericPos = cellfun(@(x) isnumeric(x), model.subSystems);
+if all(numericPos)
+    model.subSystems = cellfun(@(x) num2str(x), model.subSystems,'UniformOutput',0);
+end
+charBool = cellfun(@(x) ischar(x), model.subSystems);
+oneBool = cellfun(@(x) length(x)==1, model.subSystems);
+cellBool = cellfun(@(x) iscell(x), model.subSystems);
+%if all entries are char, leave them as char
+if all(charBool)
+    fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
+else
+    if all(cellBool & oneBool)
+        fprintf('%s\n','One subSystem per reaction, so each model.subSystems{x} is a character array.');
+        model.subSystems = cellfun(@(x) x{1}, model.subSystems,'UniformOutput',0);
+    else
+        fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+        model.subSystems(charBool) = cellfun(@(x) {x}, model.subSystems(charBool),'UniformOutput',0);
+    end
+end
+
 model.rxnConfidenceScores = columnVector(cell2mat(model.rxnConfidenceScores));
 
 %Then set up the S Matrix.

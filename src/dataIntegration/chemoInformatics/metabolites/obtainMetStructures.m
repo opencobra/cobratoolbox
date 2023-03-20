@@ -1,4 +1,4 @@
-function molCollectionReport = obtainMetStructures(model, metList, outputDir, sources)
+function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metList, outputDir, sources)
 % Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI,
 % and PubChem. Alternatively, openBabel can be used to convert InChI
 % strings or SMILES in MDL MOL files.
@@ -50,6 +50,7 @@ function molCollectionReport = obtainMetStructures(model, metList, outputDir, so
 %        * .idsToCheck -﻿Id source from which no molecular structures could 
 %               be obtained due to a webTimeout, conversion error, or 
 %               inconsistent id.
+%    newMolFilesDir: directory where new mol files were written, subdirectories for each source.
 
 if nargin < 2 || isempty(metList)
     metList = unique(regexprep(model.mets, '(\[\w\])', ''));
@@ -62,6 +63,13 @@ else
     % Make sure input path ends with directory separator
     outputDir = [regexprep(outputDir,'(/|\\)$',''), filesep];
 end
+
+% Set directory
+newMolFilesDir  = [outputDir 'metStructures' filesep];
+if exist(newMolFilesDir, 'dir') == 0
+    mkdir(newMolFilesDir)
+end
+
 if nargin < 4 || isempty(sources)
     sources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubchem'; 'smiles'};
 else
@@ -71,25 +79,34 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 
 % Check openbabel installation
-if ismac || ispc
-    [oBabelInstalled, results] = system('obabel');
-    if find(contains(results,'Usage:')) % it is actually installed but input file is missing
-        oBabelInstalled = 1;
-    end
+if isunix || ispc 
+    obabelCommand = 'obabel';
 else
-    [oBabelInstalled, ~] = system('openbabel.obabel');
+    obabelCommand = 'openbabel.obabel';
 end
-if oBabelInstalled == 127
-    oBabelInstalled = 0;
+[oBabelInstalled, ~] = system(obabelCommand);
+if oBabelInstalled ~= 1
+    oBabelInstalled = false;
+    disp('obabel is not installed, two features cannot be used: ')
+    disp('1 - Generation of SMILES, InChI and InChIkey')
+    disp('2 - MOL file standardisation')
 end
+
+% if ismac || ispc
+%     [oBabelInstalled, results] = system('obabel');
+%     if find(contains(results,'Usage:')) % it is actually installed but input file is missing
+%         oBabelInstalled = 1;
+%     end
+% else
+%     [oBabelInstalled, ~] = system('openbabel.obabel');
+% end
+% if oBabelInstalled == 127
+%     oBabelInstalled = 0;
+% end
 
 webTimeout = weboptions('Timeout', 60);
 
-% Set directory
-newMolFilesDir  = [outputDir 'metabolites' filesep];
-if exist(newMolFilesDir, 'dir') == 0
-    mkdir(newMolFilesDir)
-end
+
 
 %% Obtain met data
 
@@ -120,8 +137,10 @@ end
 
 % inchi
 inchiFieldBool = ~cellfun(@isempty, regexpi(fields, 'inchi'));
-if any(inchiFieldBool)
-    inchis = model.(fields{inchiFieldBool});
+if any(inchiFieldBool) && isstruct(model.(fields{ismember(fields, 'inchi')}))
+    inchis = model.(fields{ismember(fields, 'inchi')}).standardWithStereoAndCharge;
+elseif any(inchiFieldBool) && ~isstruct(model.(fields{ismember(fields, 'inchi')}))
+    inchis = model.(fields{ismember(fields, 'inchi')});
 else
     inchis = cell(size(model.mets));
 end

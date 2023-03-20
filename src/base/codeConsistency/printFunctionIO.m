@@ -89,14 +89,17 @@ else
     inputNames = [inputNames;derivedInputNames];
 end
 
+for i=1:length(inputNames)
+    inputNames{i} = strtrim(inputNames{i});
+end
 
 n=1;
 for i=1:length(inputNames)
     %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    pat = pattern([' ' sprintf(inputNames{i})]) + '.' + alphanumericsPattern;
+    pat = pattern([sprintf(inputNames{i})]) + '.' + alphanumericsPattern;
     inputInds = find(contains(C,pat));
     if isempty(inputInds)
-        inputs{n,1}=strtrim(inputNames{i});
+        inputs{n,1}=inputNames{i};
         n=n+1;
     else
         for j=1:length(inputInds)
@@ -109,6 +112,21 @@ for i=1:length(inputNames)
                 inputs{n,1} = strtrim([inputNames{i} extractedField{k}]);
                 %disp(inputs{n,1})
                 n=n+1;
+                
+                %one level deeper
+                pat2 = pattern((sprintf(inputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                outputInds2 = find(contains(C,pat2));
+                if ~isempty(outputInds2)
+                    for j2=1:length(outputInds2)
+                        extractedText2 = extract(C{outputInds2(j2)},pat2);
+                        extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                        for k2=1:length(extractedField2)
+                            inputs{n,1} = strtrim([inputNames{i} extractedField{k} extractedField2{k2}]);
+                            n=n+1;
+                        end
+                    end
+                end
+                
             end
         end
     end
@@ -133,30 +151,47 @@ else
     outputNames = strtrim(outputNames);
 end
 n=1;
-for i=1:length(outputNames)
-    %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    pat = pattern([' ' sprintf(outputNames{i})]) + '.' + alphanumericsPattern;
-    outputInds = find(contains(C,pat));
-    if isempty(outputInds)
-        outputs{n,1}=strtrim(outputNames{i});
-        n=n+1;
-    else
-        for j=1:length(outputInds)
-            extractedText = extract(C{outputInds(j)},pat);
-            if any(strcmp(extractedText,'LPproblem.Solution')) || 0
-                disp(extractedText)
-            end
-            extractedField = extract(extractedText,'.' + alphanumericsPattern);
-            for k=1:length(extractedField)
-                outputs{n,1} = strtrim([outputNames{i} extractedField{k}]);
-                %disp(inputs{n,1})
-                n=n+1;
+if isempty(outputNames)
+    outputs = [];
+else
+    for i=1:length(outputNames)
+        %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
+        pat = pattern((sprintf(outputNames{i}))) + '.' + alphanumericsPattern;
+        outputInds = find(contains(C,pat));
+        if isempty(outputInds)
+            outputs{n,1}=strtrim(outputNames{i});
+            n=n+1;
+        else
+            for j=1:length(outputInds)
+                extractedText = extract(C{outputInds(j)},pat);
+                if any(strcmp(extractedText,'LPproblem.Solution')) || 0
+                    disp(extractedText)
+                end
+                extractedField = extract(extractedText,'.' + alphanumericsPattern);
+                for k=1:length(extractedField)
+                    
+                    outputs{n,1} = strtrim([outputNames{i} extractedField{k}]);
+                    n=n+1;
+                    
+                    %one level deeper
+                    pat2 = pattern((sprintf(outputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                    outputInds2 = find(contains(C,pat2));
+                    if ~isempty(outputInds2)
+                        for j2=1:length(outputInds2)
+                            extractedText2 = extract(C{outputInds2(j2)},pat2);
+                            extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                            for k2=1:length(extractedField2)
+                                outputs{n,1} = strtrim([outputNames{i} extractedField{k} extractedField2{k2}]);
+                                n=n+1;
+                            end
+                        end
+                    end
+                end
             end
         end
     end
+    outputs = unique(outputs,'stable');
 end
-outputs = unique(outputs,'stable');
-
 
 maxLength=max(cellfun('length',[outputs;inputs]));
 maxLength = maxLength +8;

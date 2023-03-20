@@ -34,7 +34,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                   * .Nodes — Table of node information, with `p` rows, one for each atom.
 %                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
 %                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.mets - metabolite containing each atom
 %                   * .Nodes.AtomNumber - unique numeric id for each atom in a metabolite
 %                   * .Nodes.Element - atomic element of each atom
 %                       
@@ -42,7 +42,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges     
 %                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
 %                   * .Edges.TransIndex - unique numeric id for each atom transition instance
-%                   * .Edges.Rxn - reaction abbreviation corresponding to each atom transition instance
+%                   * .Edges.rxns - reaction abbreviation corresponding to each atom transition instance
 %                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 %
@@ -69,7 +69,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Nodes — Table of node information, with `a` rows, one for each atom.
 %          * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
 %          * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%          * .Nodes.Met - metabolite containing each atom
+%          * .Nodes.mets - metabolite containing each atom
 %          * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
 %          * .Nodes.Element - atomic element of each atom
 %          * .Nodes.MoietyIndex - numeric id of the corresponding moiety (arm.MTG.Nodes.MoietyIndex) 
@@ -107,7 +107,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Nodes — Table of node information, with `p` rows, one for each moiety instance.
 %          * .Nodes.MoietyIndex - unique numeric id of the moiety instance 
 %          * .Nodes.Formula - chemical formula of the moiety (Hill notation)
-%          * .Nodes.Met - abbreviation for the metabolite containing the moiety instance (arm.MRH.mets)
+%          * .Nodes.mets - abbreviation for the metabolite containing the moiety instance (arm.MRH.mets)
 %          * .Nodes.Component - numeric id of the corresponding connected component (rows of C2M)
 %          * .Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2M)
 %          * .Nodes.MonoisotopicMass - (Da) monoisotopic exact molecular mass the most abundant isotope of each element as specified by NIST http://physics.nist.gov/PhysRefData/Compositions/
@@ -115,17 +115,17 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %          * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
 %          * .Edges.EndNodes - numeric id of head and tail moieties that defines the graph edges  
 %          * .Edges.Formula - chemical formula of the moiety in this moiety transition (Hill notation)
-%          * .Edges.Rxn - the reaction from which this moiety transition was derived
+%          * .Edges.rxns - the reaction from which this moiety transition was derived
 %          * .Edges.Component - numeric id of the corresponding connected component (columns of M2C)
 %          * .Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of M2I)
 %          * .Edges.IsCanonical - boolean, true if moiety transition is within first component of an isomorphism class 
 %          Note that M = incidence(arm.MTG); gives the p x q incidence matrix of the moitey transition graph
 %
-% arm.I2M Matrix to map each isomorphism class to one or more moiety instances
-% arm.M2I Matrix to map one or more moiety transitions to each isomorphism class
+% arm.I2M  `i x p` matrix to map each isomorphism class to one or more moiety instances
+% arm.M2I  `q x i`  to map one or more moiety transitions to each isomorphism class
 %
-% arm.M2M Matrix to map each metabolite to one or more moiety instances
-% arm.M2R Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
+% arm.M2M  `m x p` matrix to map each metabolite to one or more moiety instances
+% arm.M2R  `q x n` matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
 %
 % arm.L Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes may map to multiple metabolites.
 %
@@ -133,7 +133,7 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %
 % arm.ATG.Edges.TransIstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
 % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
-% arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
+% arm.ATG.Edges.rxns - the reaction from which this atom transition was derived
 %
 % arm.MTG.Nodes.IsCanonical - boolean, true if moiety corresponds to the first component of an isomorphism class (should be all true)
 % arm.MTG.Nodes.Atom - alphanumeric id of the corresponding atom in the first component of an isomorphism class 
@@ -165,8 +165,8 @@ end
 
 
 %% Directed atom transition multigraph
-rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.Rxn); % True for reactions included in dATM
-metAtomMappedBool = ismember(model.mets,dATM.Nodes.Met); % True for reactions included in dATM
+rxnAtomMappedBool = ismember(model.rxns,dATM.Edges.rxns); % True for reactions included in dATM
+metAtomMappedBool = ismember(model.mets,dATM.Nodes.mets); % True for reactions included in dATM
 
 N = sparse(model.S(metAtomMappedBool,rxnAtomMappedBool)); % Stoichometric matrix of atom mapped reactions
 
@@ -192,11 +192,11 @@ if sanityChecks
 end
 
 %matrix to map each metabolite to one or more atoms
-[~,atoms2mets] = ismember(dATM.Nodes.Met,model.mets(metAtomMappedBool));
+[~,atoms2mets] = ismember(dATM.Nodes.mets,model.mets(metAtomMappedBool));
 M2Ai = sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
 
 %matrix mapping one or more directed atom transition instances to each mapped reaction
-[~,transInstance2rxns] = ismember(dATM.Edges.Rxn,model.rxns(rxnAtomMappedBool));
+[~,transInstance2rxns] = ismember(dATM.Edges.rxns,model.rxns(rxnAtomMappedBool));
 Ti2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
 
 
@@ -383,7 +383,7 @@ end
 
 %% mapping of ATG to metabolic network
 %map atoms to metabolites
-[~, atoms2mets] = ismember(ATG.Nodes.Met,model.mets(metAtomMappedBool));
+[~, atoms2mets] = ismember(ATG.Nodes.mets,model.mets(metAtomMappedBool));
 M2A =  sparse(atoms2mets,(1:nAtoms)',1,nMappedMets,nAtoms);
     
 if sanityChecks
@@ -392,7 +392,7 @@ if sanityChecks
         error('Inconsistent mapping of atoms to metabolites')
     end
 
-    bool = strcmp(ATG.Nodes.Met,dATM.Nodes.Met);
+    bool = strcmp(ATG.Nodes.mets,dATM.Nodes.mets);
     if ~all(bool)
          error('inconsistent dATM and ATM node indexing')
     end
@@ -546,7 +546,7 @@ if ~verLessThan('matlab', '9.1')
                     if excludedSubgraphs(j)==0
                         %test for graph isomorphism including of the
                         %metabolite labels of the nodes
-                        if isisomorphic(subgraphs{i,1},subgraphs{j,1},'NodeVariables','Met')
+                        if isisomorphic(subgraphs{i,1},subgraphs{j,1},'NodeVariables','mets')
                             I2C(isomorphismClassNumber,j)=1;
                             excludedSubgraphs(j)=1;
                             subsequentSubgraphIndices(j)=isomorphismClassNumber;
@@ -774,11 +774,11 @@ if ~sanityChecks
     if 1
         %graph.Edges cannot be directly edited in a graph object, so extract,
         %edit and regenerate the graph
-        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','Rxn'});
+        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','rxns'});
         %add variables
         Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
         %reorder the variables 
-        Nodes = MTG.Nodes(:,{'MoietyIndex','Formula','Met','Component','IsomorphismClass'}); 
+        Nodes = MTG.Nodes(:,{'MoietyIndex','Formula','mets','Component','IsomorphismClass'}); 
         Edges = Edges(:,{'EndNodes','Formula','Component','IsomorphismClass','MoietyTransIndex'}); 
         MTG = graph(Edges,Nodes);
     else
@@ -899,14 +899,14 @@ moieties2mets = atoms2mets(isCanonical);
 M2M = sparse(moieties2mets,(1:nMoieties)', 1,nMappedMets,nMoieties);
 
 if sanityChecks
-    [~,moieties2mets2] = ismember(MTG.Nodes.Met,model.mets(metAtomMappedBool));
+    [~,moieties2mets2] = ismember(MTG.Nodes.mets,model.mets(metAtomMappedBool));
     if ~all(moieties2mets == moieties2mets2)
         error('Mismatch of mapping moieties to metabolites')
     end
     
     M2M2 = zeros(nMappedMets,nMoieties);
     for j=1:nMoieties
-        M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) = M2M2(strcmp(model.mets,MTG.Nodes.Met{j}),j) + 1;
+        M2M2(strcmp(model.mets(metAtomMappedBool),MTG.Nodes.mets{j}),j) = M2M2(strcmp(model.mets(metAtomMappedBool),MTG.Nodes.mets{j}),j) + 1;
     end 
     res = M2M - M2M2;
     if norm(res)~=0
@@ -917,7 +917,7 @@ if sanityChecks
     for j=1:nMoieties
         atomInd = find(ATG.Nodes.MoietyIndex == j);
         for k = 1:length(atomInd)
-            M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) = M2M3(strcmp(model.mets,ATG.Nodes.Met{atomInd(k)}),j) + 1;
+            M2M3(strcmp(model.mets(metAtomMappedBool),ATG.Nodes.mets{atomInd(k)}),j) = M2M3(strcmp(model.mets(metAtomMappedBool),ATG.Nodes.mets{atomInd(k)}),j) + 1;
         end
     end
     %Normalise each column
@@ -938,7 +938,7 @@ if 0
     %in general it is not possible to specify the mapping from moiety
     %transitions to reactions with a vector, because more than one moiety
     %transition can map to more than one reaction
-    [~,moietyTransition2rxns]=ismember(MTG.Edges.Rxn,model.rxns(rxnAtomMappedBool));
+    [~,moietyTransition2rxns]=ismember(MTG.Edges.rxns,model.rxns(rxnAtomMappedBool));
     M2R2 = sparse((1:nMoietyTransitions)',moietyTransition2rxns,1,nMoietyTransitions,nMappedRxns);
     %therefore it is not expected that, in general, res will be empty
     res = M2R - M2R2;
@@ -1006,7 +1006,7 @@ if sanityChecks
     for i = 1:nIsomorphismClasses
         for j=1:nComps
             if I2C(i,j)==1
-                subgraphMets=subgraphs{j}.Nodes.Met;
+                subgraphMets=subgraphs{j}.Nodes.mets;
                 
                 %Necessary in case there is more than one moiety in any metabolite,
                 %and if there is, increment the moiety matrix
@@ -1137,9 +1137,9 @@ if ~sanityChecks
     % graph.Edges cannot be directly edited in a graph object, so extract, edit and regenerate the graph
     % arm.ATG.Edges.TransInstIndex - a numeric id the directed atom transition instance from which this atom transition was derived
     % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
-    % arm.ATG.Edges.Rxn - the reaction from which this atom transition was derived
+    % arm.ATG.Edges.rxns - the reaction from which this atom transition was derived
     
-    ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','Rxn'}),ATG.Nodes);
+    ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','rxns'}),ATG.Nodes);
 end
 
 %for i=1:6 Mk = diag(arm.I2M(i,:))*M; Nk = arm.M2M*Mk*arm.M2R;Nk2=diag(arm.L(i,:))*N; disp(norm(Nk-Nk2)); end

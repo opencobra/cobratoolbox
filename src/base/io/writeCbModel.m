@@ -88,7 +88,7 @@ end
 
 % convert model if certain fields are missing
 results = verifyModel(model,'silentCheck',true);
-if ~isempty(results)
+if ~isempty(results) && ~isempty(fieldnames(results))
     model = convertOldStyleModel(model);
 end
 
@@ -204,6 +204,12 @@ switch format
         fclose(fid);
         %% Excel file
     case {'xls', 'xlsx'}
+        if (isunix && (strcmp(fileName, '~') || strncmp(fileName, '~/', 2)))
+            if ~isempty(getenv('HOME'))
+                fileName(1) = [];
+                fileName = [getenv('HOME'), fileName];
+            end
+        end
         if ~contains(fileName, format)
             model2xls(model, strcat(fileName, '.', format), input.compSymbols, input.compNames);
         else

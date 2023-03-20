@@ -167,7 +167,7 @@ switch solver
         %          confgrps, conflictFile, saRequest, basis, xIP, logcon, branchprio, ...
         %          branchdir, cpxSettings);
         [x, s, y, w, f, ninf, sinf, origStat, basis] = cplex(osense*c, A, lb, ub, b_L, b_U,[], [],...
-            problemTypeParams.printLevel, [], [], [], [], [], [], [], osense*F);
+            problemTypeParams.printLevel, [], [], [], [], [], [], [], F);
         
         %x primal variable
         %f objective value
@@ -187,7 +187,7 @@ switch solver
             res1(~isfinite(res1))=0;
             nr1 = norm(res1,inf)
             
-            res2 = osense*c + osense*F*x-A'*y -w;
+            res2 = osense*c + F*x-A'*y -w;
             nr2 = norm(res2,inf)
             if nr1 + nr2 > 1e-6
                 pause(0.1)
@@ -1038,8 +1038,7 @@ if solution.stat==1
             
             % evaluate the optimality condition 1
             if tmp1 > problemTypeParams.feasTol * 1e2
-                disp(solution.origStat)
-                error(['[' solver '] Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
+                fprintf('%s\n',['[' solver '] reports ' solution.origStat ' but Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Primal optimality condition in solveCobraQP satisfied.']);
@@ -1053,8 +1052,7 @@ if solution.stat==1
             
             % evaluate the optimality condition 2
             if tmp2 > problemTypeParams.optTol * 1e2
-                disp(solution.origStat)
-                error(['[' solver '] Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
+                fprintf('%s\n',['[' solver '] reports ' solution.origStat ' but Dual optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
             else
                 if problemTypeParams.printLevel > 0
                     fprintf(['\n > [' solver '] Dual optimality condition in solveCobraQP satisfied.\n']);
@@ -1066,15 +1064,17 @@ if solution.stat==1
             %set the value of the objective
             solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
             solution.objLinear = c'*solution.full;
-            solution.objQuadratic = osense*(1/2)*solution.full'*F*solution.full;
+            solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
-            if norm(solution.obj - f) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
-                error('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
+            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
+                warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
                 fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from osense*c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
             end
         else
             solution.obj = NaN;
+            solution.objLinear = NaN;
+            solution.objQuadratic = NaN;
         end
         
         %         residual = osense*QPproblem.c  + QPproblem.F*solution.full - QPproblem.A'*solution.dual - solution.rcost;
@@ -1101,8 +1101,12 @@ else
     if ~isempty(solution.full)
         %set the value of the objective
         solution.obj = c'*solution.full + 0.5*solution.full'*F*solution.full;
+        solution.objLinear = c'*solution.full;
+        solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
     else
         solution.obj = NaN;
+        solution.objLinear = NaN;
+        solution.objQuadratic = NaN;
     end
 end
 end

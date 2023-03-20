@@ -1,0 +1,14 @@
+v1.1 (2016-03-15):
+
+ * Fixed issue with pgf 3.0 change in syntax for atan2
+   Added \ifvennoldpgf to determine if backward-compatibility is
+   required.
+
+ * Fixed bug in \fillOnly* commands
+   www.dickimaw-books.com/cgi-bin/bugtracker.cgi?action=view&key=58
+
+ * TiKZ intersections library no longer required.
+
+v1.0 (2012-10-24):
+
+ * Initial release

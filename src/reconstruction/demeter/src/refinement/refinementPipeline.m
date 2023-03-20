@@ -23,6 +23,7 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 %
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
+%       - Bronson Weston, obligate aerobe and anaerobe input, 2022
 
 % read the file with organism information
 infoFile = readInputTableForPipeline(infoFilePath);
@@ -120,6 +121,7 @@ summary.('updateGPRCnt') = updateGPRCnt;
 [resolveBlocked,model]=connectRxnGapfilling(model,database);
 summary.('resolveBlocked') = resolveBlocked;
 
+
 % run gapfilling tools to enable biomass production
 [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,biomassReaction, biomassReaction,'max',database);
 summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
@@ -127,19 +129,36 @@ summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
 summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 
 %% Anaerobic growth-may need to run twice
-
-[model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
-summary.('anaerobicGapfillRxns') = oxGapfillRxns;
-summary.('anaerobicGrowthOK') = anaerGrowthOK;
-if ~anaerGrowthOK
-    [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
+orInd=find(strcmp(infoFile(1,:),'Oxygen Requirement'));
+try
+oxReq=infoFile{find(strcmp(infoFile(:,1),microbeID)),orInd};
+catch
+    try
+        orInd=find(strcmp(infoFile(1,:),'O2 Status'));
+        orInd
+        oxReq=infoFile{find(strcmp(infoFile(:,1),microbeID)),orInd};
+    catch
+        error(['microbeID ' microbeID ' is not present in infoFile or O2 requirements are not defined in info file']);
+    end
 end
-summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
-summary.('anaerobicGrowthOK') = anaerGrowthOK;
+
+if ~strcmp(oxReq,'Obligate aerobe')
+    [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
+    summary.('anaerobicGapfillRxns') = oxGapfillRxns;
+    summary.('anaerobicGrowthOK') = anaerGrowthOK;
+    if ~anaerGrowthOK
+        [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
+    end
+    summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
+    summary.('anaerobicGrowthOK') = anaerGrowthOK;
+else
+    summary.('anaerobicGapfillRxns') = NaN;
+    summary.('anaerobicGrowthOK') = NaN;
+end
 
 %% gapfilling for growth on complex medium
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
-if AnaerobicGrowth(1,2) < tol
+if AnaerobicGrowth(1,2) < tol && ~strcmp(oxReq,'Obligate aerobe')
     % apply complex medium
     model = useDiet(model,constraints);
     % run gapfilling tools to enable biomass production if no growth on
@@ -173,7 +192,7 @@ summary.('deletedSEEDRxns')=deletedSEEDRxns;
 % in rare cases: gapfilling for anaerobic growth or growth on complex medium still needed
 for i=1:2
     [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
-    if AerobicGrowth(1,2) < tol
+    if AerobicGrowth(1,2) < tol && ~strcmp(oxReq,'Obligate anaerobe')
         % apply complex medium
         model = useDiet(model,constraints);
         % run gapfilling tools to enable biomass production
@@ -183,7 +202,7 @@ for i=1:2
         summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
     end
     
-    if AnaerobicGrowth(1,1) < tol
+    if AnaerobicGrowth(1,1) < tol && ~strcmp(oxReq,'Obligate aerobe')
         [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database);
         summary.('anaerobicGapfillRxns') = union(summary.('anaerobicGapfillRxns'),oxGapfillRxns);
     end
@@ -302,7 +321,7 @@ if isfield(model,'C')
     model=rmfield(model,'d');
 end
 [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction);
-if AerobicGrowth(1,2) < tol
+if AerobicGrowth(1,2) < tol && ~strcmp(oxReq,'Obligate anaerobe')
     % apply complex medium
     model = useDiet(model,constraints);
     % run gapfilling tools to enable biomass production

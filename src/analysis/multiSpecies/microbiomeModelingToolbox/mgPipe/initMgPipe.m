@@ -20,6 +20,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            row needs to be sample names and the second row needs to 
 %                            be the respective files with diet information.
 %    infoFilePath:           char with path to stratification criteria if available
+%    biomasses:              Cell array containing names of biomass objective functions
+%                            of models to join. Needs to be the same length as 
+%                            the length of models in the abundance file.
 %    hostPath:               char with path to host model, e.g., Recon3D (default: empty)
 %    hostBiomassRxn:         char with name of biomass reaction in host (default: empty)
 %    hostBiomassRxnFlux:     double with the desired upper bound on flux through the host
@@ -60,6 +63,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                                        output of model stats
 %               - Almut Heinken 03/2021: inserted error message if 
 %                                        abundances are not normalized.
+%               - Almut Heinken 12/2022: Added an optional input to manually 
+%                                        define biomass objective functions 
+%                                        for non-AGORA reconstructions     
 
 
 % Define default input parameters if not specified
@@ -70,6 +76,7 @@ parser.addRequired('computeProfiles', @islogical);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
 parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
+parser.addParameter('biomasses', {}, @iscell);
 parser.addParameter('hostPath', '', @ischar);
 parser.addParameter('hostBiomassRxn', '', @ischar);
 parser.addParameter('hostBiomassRxnFlux', 1, @isnumeric);
@@ -90,6 +97,7 @@ computeProfiles = parser.Results.computeProfiles;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
 infoFilePath = parser.Results.infoFilePath;
+biomasses = parser.Results.biomasses;
 hostPath = parser.Results.hostPath;
 hostBiomassRxn = parser.Results.hostBiomassRxn;
 hostBiomassRxnFlux = parser.Results.hostBiomassRxnFlux;
@@ -143,6 +151,13 @@ if any(~isnan(str2double(abundance(1,2:end))))
     error('Some samples names are numeric. Please change to characters to avoid problems in the pipeline.')
 end
 
+% test if biomasses input, if provided, is correct
+if ~isempty(biomasses)
+    if length(biomasses) ~= size(abundance,1)-1
+        error('Length of biomasses input is not equal to the number of models in the abundance file!')
+    end
+end
+
 if strcmp(infoFilePath, '')
     patStat = false;
 else
@@ -184,7 +199,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, biomasses, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels);
 
 cd(currentDir)
 

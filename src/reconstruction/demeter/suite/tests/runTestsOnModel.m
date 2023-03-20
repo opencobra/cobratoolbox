@@ -60,8 +60,9 @@ end
 
 % Load reaction and metabolite database
 database=loadVMHDatabase;
-
+try
 biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
+
 %
 %% relax enforced uptake of some vitamins-causes infeasibility problems
 relaxConstraints=model.rxns(find(model.lb>0));
@@ -139,7 +140,11 @@ basicCompounds={
     };
 modelTest = useDiet(model,basicCompounds);
 modelTest.lb(find(strncmp(modelTest.rxns,'sink_',5)))=0;
-modelTest=changeObjective(modelTest,'DM_atp_c_');
+try
+    modelTest=changeObjective(modelTest,'DM_atp_c_');
+catch
+    modelTest = addReaction(modelTest,'DM_atp_c','atp[c] + h2o[c] -> adp[c] + h[c] + pi[c]');
+end
 FBA=optimizeCbModel(modelTest);
 testResults.ATP_from_O2{1, 2} = FBA.f;
 
@@ -294,5 +299,5 @@ testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) =
 [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database);
 testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
-
+end
 end

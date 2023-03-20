@@ -1,5 +1,5 @@
 function [subSystems]  = getModelSubSystems(model)
-% Get all subSystems present in a model
+% Get unique set of subSystems present in a model
 %
 % USAGE:
 %

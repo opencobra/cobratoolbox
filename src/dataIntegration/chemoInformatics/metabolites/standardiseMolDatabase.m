@@ -23,6 +23,7 @@ function standardisationReport = standardiseMolDatabase(molDir, metList, standar
 %
 %           'explicitH' - Normal chemical graphs.
 %           'implicitH' - Hydrogen suppressed chemical graphs.
+%           'neutral' - Neutral molecules
 %           'basic' - Updating the header.
 %
 % OUTPUTS:
@@ -64,7 +65,7 @@ cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
 end
-if ismac || ispc
+if isunix || ispc 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
@@ -189,7 +190,7 @@ for i = 1:size(aMets, 1)
         % Rewrite headings
         molFile = regexp(fileread([standardisedMolFiles name]), '\n', 'split')';
         molFile{1} = name(1:end-4);
-        molFile{2} = ['COBRA Toolbox v3.0 - ' standardisationApproach ' molecule - ' datestr(datetime)];
+        molFile{2} = ['COBRA Toolbox - ' standardisationApproach ' molecule - ' datestr(datetime)];
         molFile{3} = InChIKey;
         fid2 = fopen([standardisedMolFiles name], 'w');
         fprintf(fid2, '%s\n', molFile{:});

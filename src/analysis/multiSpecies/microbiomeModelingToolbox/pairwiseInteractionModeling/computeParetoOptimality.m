@@ -71,7 +71,7 @@ model = changeObjective(model, rxn1);
 model.osenseStr = 'max';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dmaxRxn1 = solution.obj;
-model = changeObjective(model, rxn2);
+model = changeObjective(model, rxn1);
 model.osenseStr = 'min';
 [solution] = solveCobraLP(buildLPproblemFromModel(model));
 dminRxn1 = solution.obj;
@@ -155,12 +155,19 @@ figure;
 fluxes1 = cell2mat(ParetoFrontier(2:end, 2));
 fluxes2 = cell2mat(ParetoFrontier(2:end, 3));
 scatter(fluxes1, fluxes2);
-label1=strsplit(rxn1{1},['_' 'bio']);
-h = xlabel(label1{1});
-set(h, 'interpreter', 'none');
-label2=strsplit(rxn2{1},['_' 'bio']);
-h = ylabel(label2{1});
-set(h, 'interpreter', 'none');
+try
+    label1=strsplit(rxn1{1},['_' 'bio']);
+    h = xlabel(label1{1});
+    set(h, 'interpreter', 'none');
+    label2=strsplit(rxn2{1},['_' 'bio']);
+    h = ylabel(label2{1});
+    set(h, 'interpreter', 'none');
+catch
+    h = xlabel(rxn1);
+    set(h, 'interpreter', 'none');
+    h = ylabel(rxn2);
+    set(h, 'interpreter', 'none');
+end
 title('Pareto optimality analysis')
 
 end

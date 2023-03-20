@@ -440,6 +440,16 @@ tmp_group_member_struct= getSBMLDefaultStruct('SBML_GROUPS_MEMBER',sbmlLevel, sb
 tmp_group=getSBMLDefaultStruct('SBML_GROUPS_GROUP',sbmlLevel, sbmlVersion,sbmlPackages, sbmlPackageVersions);
 tmp_group.groups_kind = 'partonomy';
 tmp_group.sboTerm = 633;
+
+if 0
+nRxns=size(model.S,2);
+for j=1:nRxns
+    if ~iscell(model.subSystems{j}) && isempty(model.subSystems{j})
+        model.subSystems{j}='Not specified';
+    end
+end
+end
+
 modelSubSystems = getModelSubSystems(model); 
 if ~isempty(modelSubSystems)    
     sbmlModel.groups_version = 1;    

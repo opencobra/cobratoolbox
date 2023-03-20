@@ -30,7 +30,7 @@ function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeI
 %                     March  2022 - changed code to string-matching to make
 %                     it more robust
 
-global CBT_LP_SOLVER
+global CBT_LP_SOLVER additionalSecretionRxns
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
@@ -42,6 +42,14 @@ dataTable = readInputTableForPipeline([inputDataFolder filesep 'secretionProduct
 dataTable(:,find(strncmp(dataTable(1,:),'Ref',3))) = [];
 
 corrRxns = {'Folate','EX_fol(e)','EX_5mthf(e)','EX_thf(e)';'Thiamin','EX_thm(e)','','';'Riboflavin','EX_ribflv(e)','','';'Niacin','EX_nac(e)','EX_ncam(e)','';'Pyridoxine','EX_pydx(e)','EX_pydxn(e)','EX_pydam(e)';'Cobalamin','EX_cbl1(e)','EX_adocbl(e)','';'Menaquinone','EX_mqn7(e)','EX_mqn8(e)','';'GABA','EX_4abut(e)','','';'Biotin','EX_btn(e)','','';'Cholate','EX_cholate(e)','','';'Chenodeoxycholate','EX_C02528(e)','','';'Deoxycholate','EX_dchac(e)','','';'Tyramine','EX_tym(e)','','';'Tryptamine','EX_trypta(e)','','';'Trimethylamine N-oxide','EX_tmao(e)','','';'Trimethylamine','EX_tma(e)','','';'Spermine','EX_sprm(e)','','';'Spermidine','EX_spmd(e)','','';'Putrescine','EX_ptrc(e)','','';'p-Cresol','EX_pcresol(e)','','';'Ammonia','EX_nh4(e)','','';'Nitrogen','EX_n2(e)','','';'Methylamine','EX_mma(e)','','';'Methanol','EX_meoh(e)','','';'L-threonine','EX_thr_L(e)','','';'Linoleic acid','EX_lnlc(e)','','';'Lithocholate','EX_HC02191(e)','','';'L-Glutamate','EX_glu_L(e)','','';'L-Glutamine','EX_gln_L(e)','','';'L-Alanine','EX_ala_L(e)','','';'Indole-3-acetate','EX_ind3ac(e)','','';'Histamine','EX_hista(e)','','';'Peroxide','EX_h2o2(e)','','';'5-Aminovalerate','EX_5aptn(e)','','';'2-Oxobutyrate','EX_2obut(e)','','';'1,2-Ethanediol','EX_12ethd(e)','','';'Hydrogen','EX_h2(e)','','';'2-Aminobutyrate','EX_C02356(e)','','';'1,3-Propanediol','EX_13ppd(e)','','';'1,2-propanediol ','EX_12ppd_S(e)','','';'Acetone','EX_acetone(e)','','';'Butylamine','EX_butam(e)','','';'Cadaverine','EX_15dap(e)','','';'Formaldehyde','EX_fald(e)','','';'Urea','EX_urea(e)','','';'Propanol','EX_ppoh(e)','','';'Propanal','EX_ppal(e)','','';'Phenylethylamine','EX_peamn(e)','','';'Isopropanol','EX_2ppoh(e)','','';'L-malate','EX_mal_L(e)','','';'Sulfide','EX_h2s(e)','',''};
+
+%add any additional secretion reactions to secretionExchanges
+if ~isempty(additionalSecretionRxns)
+    sNames=fields(additionalSecretionRxns);
+    for f=1:length(sNames)
+        corrRxns(end+1,:)={sNames{f}, additionalSecretionRxns.(sNames{f}){1}, '', ''};
+    end
+end
 
 TruePositives = {};  % true positives (secretion in vitro and in silico)
 FalseNegatives = {};  % false negatives (secretion in vitro not in silico)
@@ -75,12 +83,14 @@ else
             end
         else
             if strcmp(dataTable{mInd,i},'1')
+                dataTable{1,i}
                 findCorrRxns = find(strcmp(corrRxns(:,1),dataTable{1,i}));
+                corrRxns(findCorrRxns,2:end)
                 rxns = union(rxns,corrRxns(findCorrRxns,2:end));
             end
         end
     end
-
+    
     % flux variability analysis on reactions of interest
     rxns = unique(rxns);
     rxns = rxns(~cellfun('isempty', rxns));

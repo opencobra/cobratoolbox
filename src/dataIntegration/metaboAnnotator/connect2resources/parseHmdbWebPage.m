@@ -60,7 +60,6 @@ for i = startSearch : endSearch
             end
             list = regexprep(list,' ','');
             for t = 1 : length(list)
-           
                 url=strcat('https://hmdb.ca/metabolites/',list{t});
                 syst = urlread(url);
            
