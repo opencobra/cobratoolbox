@@ -21,6 +21,10 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 %
 % OPTIONAL INPUTS:
 %    toRound:          `{0,(1)}` Option to round the polytope before sampling.
+%                         0: no rounding
+%                         1 (default): round using max volume ellipsoid
+%                         2: round using isotropy (slower, more accurate)
+%                         3: Barrier rounding (the fastest among three & as efficient as isotropic rounding)
 %    roundedPolytope:  The rounded polytope from a previous round of
 %                        sampling the same model.
 %    useFastFVA:       Boolean to use fastFVA (default: `false`)
@@ -64,52 +68,84 @@ if nargin < 7 || isempty(optPercentage)
     optPercentage = 100;
 end
 
-% Preprocess model
-if toPreprocess
-
-    % parse the model to get the meat
-    P = chrrParseModel(model);
-
-    %check for width 0 facets to make sure we are full dimensional
-    %also check for feasibility
-    fprintf('Checking for width 0 facets...\n');
-
-    %check to make sure P.A and P.b are defined, and appropriately sized
-    if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
-        %either P.A or P.b do not exist
-        error('You need to define both P.A and P.b for a polytope {x | P.A*x <= P.b}.');
+if toRound == 3
+    P = struct;
+    P.Aeq = model.S;
+    P.beq = model.b;
+    P.lb = model.lb;
+    P.ub = model.ub;
+    if isfield(model,'dsense')
+       I = (model.dsense == 'E');
+       P.Aeq = [P.Aeq; model.C(I,:)];
+       P.beq = [P.beq; model.d(I)];
+       P.Aineq = model.C(~I,:);
+       P.bineq = model.d(~I,:);
+       flip = 1-2*(model.dsense(~I) == 'G');
+       P.Aineq = flip.*P.Aineq;
+       P.bineq = flip.*P.bineq;
     end
+    P = standardize_problem(P);
 
-    [num_constraints,dim] = size(P.A);
+    % Change to the form of Ax = b, l <= x <= u
+    nP = size(P.Aeq, 2);
+    nIneq = size(P.Aineq, 1);
+    nEq = size(P.Aeq, 1);
 
-    if exist('numSkip')~=1 || isempty(numSkip)
-        numSkip=8*dim^2;
+    P.Aeq = [P.Aeq sparse(nEq, nIneq); P.Aineq speye(nIneq)];
+    P.beq = [P.beq; P.bineq];
+    P.lb = [P.lb; zeros(nIneq, 1)];
+    P.ub = [P.ub; Inf*ones(nIneq, 1)];
+        
+    P = logBarrierRound(P);
+    roundedPolytope = fullification(P);
+else
+    % Preprocess model
+    if toPreprocess
+
+        % parse the model to get the meat
+        P = chrrParseModel(model);
+
+        %check for width 0 facets to make sure we are full dimensional
+        %also check for feasibility
+        fprintf('Checking for width 0 facets...\n');
+
+        %check to make sure P.A and P.b are defined, and appropriately sized
+        if (isfield(P,'A')==0 || isfield(P,'b')==0) || (isempty(P.A) || isempty(P.b))
+            %either P.A or P.b do not exist
+            error('You need to define both P.A and P.b for a polytope {x | P.A*x <= P.b}.');
+        end
+
+        [num_constraints,dim] = size(P.A);
+
+        if exist('numSkip')~=1 || isempty(numSkip)
+            numSkip=8*dim^2;
+        end
+
+        fprintf('Currently (P.A, P.b) are in %d dimensions\n', dim);
+
+        if size(P.b,2)~= 1 || num_constraints ~= size(P.b,1)
+            error('Dimensions of P.b do not align with P.A.\nP.b should be a %d x 1 vector.',num_constraints);
+        end
+
+        if (isfield(P,'A_eq')==0 || isempty(P.A_eq)) && ...
+                (isfield(P,'b_eq')==0 || isempty(P.b_eq))
+            P.A_eq = [];
+            P.b_eq = [];
+        end
+
+        %preprocess the polytope of feasible solutions
+        %restict to null space
+        %round via maximum volume ellipsoid
+        options.toRound=toRound;
+        options.bioModel=1;
+        options.fullDim=0;
+        options.model = model;
+        options.useFastFVA = useFastFVA;
+        options.optPercentage = optPercentage;    
+        [roundedPolytope] = preprocess(P,options);
+        minFlux = roundedPolytope.minFlux;
+        maxFlux = roundedPolytope.maxFlux;
     end
-
-    fprintf('Currently (P.A, P.b) are in %d dimensions\n', dim);
-
-    if size(P.b,2)~= 1 || num_constraints ~= size(P.b,1)
-        error('Dimensions of P.b do not align with P.A.\nP.b should be a %d x 1 vector.',num_constraints);
-    end
-
-    if (isfield(P,'A_eq')==0 || isempty(P.A_eq)) && ...
-            (isfield(P,'b_eq')==0 || isempty(P.b_eq))
-        P.A_eq = [];
-        P.b_eq = [];
-    end
-
-    %preprocess the polytope of feasible solutions
-    %restict to null space
-    %round via maximum volume ellipsoid
-    options.toRound=toRound;
-    options.bioModel=1;
-    options.fullDim=0;
-    options.model = model;
-    options.useFastFVA = useFastFVA;
-    options.optPercentage = optPercentage;
-    [roundedPolytope] = preprocess(P,options);
-    minFlux = roundedPolytope.minFlux;
-    maxFlux = roundedPolytope.maxFlux;
 end
 
 fprintf('Generating samples...\n');
