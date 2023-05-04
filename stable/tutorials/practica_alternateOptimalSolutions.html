@@ -39,7 +39,26 @@
   <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
+  <script type="application/javascript">
+
+    function resizeIFrameToFitContent( iFrame ) {
+    
+      let h = iFrame.contentWindow.document.body.scrollHeight;
+      let widthStyle = h.toString() + "px";
+      iFrame.style.height = widthStyle;
+        
+      console.log(iFrame.contentWindow.document.body.scrollHeight);
+    }
+    
+    window.addEventListener('DOMContentLoaded', function(e) {
+    
+        var iFrame = document.getElementById( 'iFrame1' );
+        resizeIFrameToFitContent( iFrame );
+    
+        
+    } );
+      
+ </script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
   <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
@@ -234,7 +253,7 @@
 h1  {font-size:0px}
 </style>
 <div style="margin:-30px; margin-right:-30px;">
-  <iframe src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/tutorials/analysis/alternateOptimalSolutions/iframe_practical_alternateOptimalSolutions.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
+  <iframe src="analysis/alternateOptimalSolutions/practical_alternateOptimalSolutions.html" width="100%" scrolling="yes" id="iFrame1"  frameborder="0"></iframe>
 </div>
 
 <script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>

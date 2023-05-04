@@ -33,17 +33,20 @@
   
   <meta name="theme-color" content="#ffffff">
 
-
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
+   
+    
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
   <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
   
   
@@ -234,10 +237,22 @@
 h1  {font-size:0px}
 </style>
 <div style="margin:-30px; margin-right:-30px;">
-  <iframe src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/tutorials/visualization/createMetIntrcNetworkTutorial/iframe_createMetIntrcNetworkTutorial.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
+  <iframe src="visualization/createMetIntrcNetworkTutorial/createMetIntrcNetworkTutorial.html" onload="onMyFrameLoad(this)" width="100%" scrolling="no" id="iFrame1"  frameborder="0"></iframe>
 </div>
-
-<script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>
+<script>
+    
+  
+  function onMyFrameLoad() {
+      var iFrame = document.getElementById( 'iFrame1' );
+      let h = iFrame.contentWindow.document.body.scrollHeight;
+      let heightStyle = h.toString() + "px";
+      iFrame.style.height = heightStyle;
+        
+      console.log(iFrame.contentWindow.document.body.scrollHeight);
+  };
+  </script>
+<!--<script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script> -->
+<!--
 <script type="text/javascript">
 
   iFrameResize({
@@ -265,7 +280,8 @@ h1  {font-size:0px}
       );
     }
   });
-</script></div>
+</script> -->
+</div>
 
 
            </div>
@@ -308,10 +324,11 @@ h1  {font-size:0px}
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
+    
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <!--<script type="text/javascript" src="../_static/language_data.js"></script> -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
@@ -339,6 +356,27 @@ h1  {font-size:0px}
     gtag('js', new Date());
     gtag('config', 'G-TRCMZL1FKK');
   </script>
+  <!--
+  <script type="application/javascript">
+
+    function resizeIFrameToFitContent( iFrame ) {
     
+      let h = iFrame.contentWindow.document.body.scrollHeight;
+      let heightStyle = h.toString() + "px";
+      iFrame.style.height = heightStyle;
+        
+      console.log(iFrame.contentWindow.document.body.scrollHeight);
+    }
+    
+    window.addEventListener('DOMContentLoaded', function(e) {
+        console.log("here")
+        var iFrame = document.getElementById( 'iFrame1' );
+        resizeIFrameToFitContent( iFrame );
+    
+        
+    } );
+    
+    </script>
+    -->
 </body>
 </html>

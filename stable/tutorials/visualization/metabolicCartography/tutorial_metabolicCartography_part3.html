@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Extraction of a submap from a Cell Designer map (PART 3) </title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S5 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S7 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S10 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S14 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S15 { margin-left: 3px; margin-top: 4px; margin-bottom: 10px; margin-right: 3px;  }
+.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S17 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S18 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S19 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Extraction of a submap from a Cell Designer map (PART 3) </span></h1><h2 class = "S3"><span class = "S4">Authors: Ronan M.T. Fleming, Leiden University</span></h2><h2 class = "S3"><span class = "S4">Reviewer(s): </span></h2></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S4">INTRODUCTION</span></h2><div class = "S6"><span class = "S4">Given a generic map of metabolism, creat a derivative map by removing a subset of the reactions.</span></div><h2 class = "S3"><span class = "S4">EQUIPMENT SETUP </span></h2><div class = "S6"><span class = "S4">To visualise the metabolic maps it is necessary to obtain the version 4.4 of CellDesigner. This software can be freely downloaded from: </span></div><div class = "S6"><a href = "http://www.celldesigner.org/download.html"><span class = "S0">http://www.celldesigner.org/download.html</span></a></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S4">PROCEDURE</span></h2><h2 class = "S3"><span class = "S4">1. Import a CellDesigner XML file to MATLAB environment</span></h2><div class = "S6"><span class = "S4">The </span><span class = "S8">transformXML2Map</span><span class = "S4"> function parses an XML file from Cell Designer (CD) into a Matlab structure. This structure is organised similarly to the structure found in the COnstraint-Base and Reconstruction Analysis (COBRA) models.</span></div><div class = "S6"><span class = "S4">Read in a map</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S11">[GlyXml, GlyMap] = transformXML2Map(</span><span class = "S12">'glycolysisAndTCA.xml'</span><span class = "S13">);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="11EBA986" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Elapsed time is 1.834226 seconds.</div></div></div></div></div><h2 class = "S3"><span class = "S4">2. Remove some reactions from the map</span></h2></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S16">if </span><span class = "S13">1</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S11">    rxnRemoveList={</span><span class = "S12">'ENO'</span><span class = "S11">;</span><span class = "S12">'PFK'</span><span class = "S11">;</span><span class = "S12">'PGMT'</span><span class = "S11">;</span><span class = "S12">'ABC'</span><span class = "S13">};</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S17">else</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S11">    rxnRemoveList</span><span class = "S11">=</span><span class = "S11">{</span><span class = "S12">'PGMT'</span><span class = "S13">};</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S17">end</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S13">printLevel=1;</span></div></div><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">[GlyXmlStructSubset,GlyMapSubset,rxnNotInMap] = removeMapReactions(GlyXml,GlyMap,rxnRemoveList,printLevel);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="14E60D8B" data-testid="output_1" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ABC not present in the map</div></div></div></div></div><div class = "S18"><span class = "S4">There is no reaction 'ABC' in the map, so the function alerts that it has not been removed. </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">rxnRemoveList(rxnNotInMap)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="B4D48424" data-testid="output_2" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">1×1 cell array</span></span>
+    {'ABC'}</div></div></div></div></div></div><h2 class = "S3"><span class = "S4">3. Export the modified map</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S11">transformMap2XML(GlyXmlStructSubset,GlyMapSubset,</span><span class = "S12">'glycolysisAndTCA_subset.xml'</span><span class = "S13">);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="E0D18399" data-testid="output_3" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Elapsed time is 1.317182 seconds.</div></div></div></div></div><h2 class = "S3"><span class = "S4">4. Import the modified map and compare it with the matlab structures</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S11">[GlyXmlStructSubset2,GlyMapSubset2] = transformXML2Map(</span><span class = "S12">'glycolysisAndTCA_subset.xml'</span><span class = "S13">);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="C5EFC9F6" data-testid="output_4" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Elapsed time is 1.667602 seconds.</div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="9783C964" data-testid="output_5" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">        id: 're2'
+    metaid: 're57'
+      name: 'DPGM'</div></div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="D36F7126" data-testid="output_6" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">            id: 're2'
+        metaid: 're57'
+          name: 'DPGM'
+    reversible: 'true'</div></div></div></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S6"><span class = "S4">Compare xml structure</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">[resultXml, whyXml] = structeq(GlyXmlStructSubset, GlyXmlStructSubset2)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="EE1D4575" data-testid="output_7" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">resultXml = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">logical</span></span>
+   0</div></div></div><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="CA4D69F5" data-testid="output_8" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">whyXml = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    Reason: 'Properties are different &lt;- Unequal Subcell &lt;- Properties are different &lt;- Unequal Subcell &lt;- Properties are different &lt;- Unequal Subcell &lt;- Properties are different &lt;- Unequal Subcell &lt;- Unequal Subcell &lt;- Properties are different &lt;- Unequal Subcell &lt;- Number of fields are different'
+     Where: '(1).sbml(1).model(1).listOfReactions(1).reaction{2}(1).Attributes'</div></div></div></div></div><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">GlyXmlStructSubset.sbml(1).model(1).listOfReactions(1).reaction{2}(1).Attributes</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="D87C5B23" data-testid="output_9" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">        id: 're2'
+    metaid: 're57'
+      name: 'DPGM'</div></div></div></div></div><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">GlyXmlStructSubset2.sbml(1).model(1).listOfReactions(1).reaction{2}(1).Attributes</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="A9988ADD" data-testid="output_10" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ans = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">            id: 're2'
+        metaid: 're57'
+          name: 'DPGM'
+    reversible: 'true'</div></div></div></div></div></div><div class = "S18"><span class = "S4">Compare map structure</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S13">[resultMap, whyMap] = structeq(GlyMapSubset, GlyMapSubset2)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="C755ADEB" data-testid="output_11" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">resultMap = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">logical</span></span>
+   1</div></div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="1032C96F" data-testid="output_12" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">whyMap = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    Reason: ''
+     Where: ''</div></div></div></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S13"></span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S17">return</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S4">4. Remove reactions from the map directly</span></h2><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S11">fileName </span><span class = "S11">=</span><span class = "S11"> </span><span class = "S12">'glycolysisAndTCA.xml'</span><span class = "S13">;</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S13">printLevel=1;</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S13">removeCDReactions(fileName,rxnRemoveList,printLevel)</span></div></div></div><div class = "S18"><span class = "S4"></span></div><div class = "S6"><span class = "S4"></span></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Extraction of a submap from a Cell Designer map (PART 3) *
+%% Authors: Ronan M.T. Fleming, Leiden University
+%% *Reviewer(s): *
+%% INTRODUCTION
+% Given a generic map of metabolism, creat a derivative map by removing a subset 
+% of the reactions.
+%% EQUIPMENT SETUP 
+% To visualise the metabolic maps it is necessary to obtain the version 4.4 
+% of CellDesigner. This software can be freely downloaded from: 
+% 
+% <http://www.celldesigner.org/download.html http://www.celldesigner.org/download.html>
+%% PROCEDURE
+%% 1. Import a CellDesigner XML file to MATLAB environment
+% The |transformXML2Map| function parses an XML file from Cell Designer (CD) 
+% into a Matlab structure. This structure is organised similarly to the structure 
+% found in the COnstraint-Base and Reconstruction Analysis (COBRA) models.
+% 
+% Read in a map
+%%
+[GlyXml, GlyMap] = transformXML2Map('glycolysisAndTCA.xml');
+%% 2. Remove some reactions from the map
+%%
+if 1
+    rxnRemoveList={'ENO';'PFK';'PGMT';'ABC'};
+else
+    rxnRemoveList={'PGMT'};
+end
+printLevel=1;
+[GlyXmlStructSubset,GlyMapSubset,rxnNotInMap] = removeMapReactions(GlyXml,GlyMap,rxnRemoveList,printLevel);
+%% 
+% There is no reaction 'ABC' in the map, so the function alerts that it 
+% has not been removed. 
+
+rxnRemoveList(rxnNotInMap)
+%% 3. Export the modified map
+
+transformMap2XML(GlyXmlStructSubset,GlyMapSubset,'glycolysisAndTCA_subset.xml');
+%% 4. Import the modified map and compare it with the matlab structures
+
+[GlyXmlStructSubset2,GlyMapSubset2] = transformXML2Map('glycolysisAndTCA_subset.xml');
+%% 
+% Compare xml structure
+%%
+[resultXml, whyXml] = structeq(GlyXmlStructSubset, GlyXmlStructSubset2)
+GlyXmlStructSubset.sbml(1).model(1).listOfReactions(1).reaction{2}(1).Attributes
+GlyXmlStructSubset2.sbml(1).model(1).listOfReactions(1).reaction{2}(1).Attributes
+%% 
+% Compare map structure
+
+[resultMap, whyMap] = structeq(GlyMapSubset, GlyMapSubset2)
+
+return
+%% 4. Remove reactions from the map directly
+%%
+fileName = 'glycolysisAndTCA.xml';
+printLevel=1;
+removeCDReactions(fileName,rxnRemoveList,printLevel)
+%% 
+% 
+% 
+%
+##### SOURCE END #####
+--></body></html>

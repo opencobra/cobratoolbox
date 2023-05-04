@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Create an overview table with model properties</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S5 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S7 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S9 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S10 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S12 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S16 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S17 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S18 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S19 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S20 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S21 { text-decoration: underline; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Create an overview table with model properties</span></h1><div class = "S3"><span class = "S4">Author(s): Ines Thiele, Ronan M. T. Fleming, Systems Biochemistry Group, LCSB, University of Luxembourg.</span></div><div class = "S3"><span class = "S4">Reviewer(s): Catherine Fleming, Stefania Magnusdottir, Molecular Systems Physiology Group, LCSB, University of Luxembourg.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">INTRODUCTION</span></h2><div class = "S3"><span class = "S2">In this tutorial, we evaluate the basic properties of the metabolic model, such as the number of reactions, unique metabolites, blocked reactions, dead-end metabolites, and store the information in a table ('Table_Prop'). </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">EQUIPMENT SETUP</span></h2><h2 class = "S6"><span class = "S2">Initialize the COBRA Toolbox.</span></h2><div class = "S3"><span class = "S2">If necessary, initialize The Cobra Toolbox using the </span><span class = "S7">initCobraToolbox</span><span class = "S2"> function.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">initCobraToolbox(false) </span><span class = "S11">% false, as we don't want to update</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="EF9A4636" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2017
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   <a href="http://opencobra.github.io/cobratoolbox" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">http://opencobra.github.io/cobratoolbox</a>
+                                                  | 
+
+ &gt; Checking if git is installed ...  Done.
+ &gt; Checking if the repository is tracked using git ...  Done.
+ &gt; Checking if curl is installed ...  Done.
+ &gt; Checking if remote can be reached ...  Done.
+ &gt; Initializing and updating submodules ... Done.
+ &gt; Adding all the files of The COBRA Toolbox ...  Done.
+ &gt; Define CB map output... set to svg.
+ &gt; Retrieving models ...   Done.
+ &gt; TranslateSBML is installed and working properly.
+ &gt; Configuring solver environment variables ...
+   - [---*] ILOG_CPLEX_PATH: C:\Program Files\IBM\ILOG\CPLEX_Studio1271\cplex\matlab\x64_win64
+   - [----] GUROBI_PATH :  --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   - [---*] TOMLAB_PATH: C:\Program Files\tomlab\
+   - [----] MOSEK_PATH :  --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   Done.
+ &gt; Checking available solvers and solver interfaces ... Done.
+ &gt; Setting default solvers ... Done.
+ &gt; Saving the MATLAB path ... Done.
+   - The MATLAB path was saved in the default location.
+
+ &gt; Summary of available solvers and solver interfaces
+
+					Support           LP 	 MILP 	   QP 	 MIQP 	  NLP
+	----------------------------------------------------------------------
+	cplex_direct 	full          	    0 	    0 	    0 	    0 	    -
+	dqqMinos     	full          	    0 	    - 	    - 	    - 	    -
+	glpk         	full          	    1 	    1 	    - 	    - 	    -
+	gurobi       	full          	    1 	    1 	    1 	    1 	    -
+	ibm_cplex    	full          	    1 	    1 	    1 	    - 	    -
+	matlab       	full          	    1 	    - 	    - 	    - 	    1
+	mosek        	full          	    0 	    0 	    0 	    - 	    -
+	pdco         	full          	    1 	    - 	    1 	    - 	    -
+	quadMinos    	full          	    0 	    - 	    - 	    - 	    0
+	tomlab_cplex 	full          	    1 	    1 	    1 	    1 	    -
+	qpng         	experimental  	    - 	    - 	    1 	    - 	    -
+	tomlab_snopt 	experimental  	    - 	    - 	    - 	    - 	    1
+	gurobi_mex   	legacy        	    0 	    0 	    0 	    0 	    -
+	lindo_old    	legacy        	    0 	    - 	    - 	    - 	    -
+	lindo_legacy 	legacy        	    0 	    - 	    - 	    - 	    -
+	lp_solve     	legacy        	    1 	    - 	    - 	    - 	    -
+	opti         	legacy        	    0 	    0 	    0 	    0 	    0
+	----------------------------------------------------------------------
+	Total        	-             	    7 	    4 	    5 	    2 	    2
+
+ + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.
+
+
+ &gt; You can solve LP problems using: 'glpk' - 'gurobi' - 'ibm_cplex' - 'matlab' - 'pdco' - 'tomlab_cplex' - 'lp_solve' 
+ &gt; You can solve MILP problems using: 'glpk' - 'gurobi' - 'ibm_cplex' - 'tomlab_cplex' 
+ &gt; You can solve QP problems using: 'gurobi' - 'ibm_cplex' - 'pdco' - 'tomlab_cplex' - 'qpng' 
+ &gt; You can solve MIQP problems using: 'gurobi' - 'tomlab_cplex' 
+ &gt; You can solve NLP problems using: 'matlab' - 'tomlab_snopt' 
+
+ &gt; Checking for available updates ...
+ --&gt; You cannot update your fork using updateCobraToolbox(). [3d2698 @ Tutorial-modelProperties].
+     Please use the MATLAB.devTools (<a href="https://github.com/opencobra/MATLAB.devTools" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">https://github.com/opencobra/MATLAB.devTools</a>).</div></div></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">Setting the </span><span class = "S2">optimization</span><span class = "S2"> solver.</span></h2><div class = "S3"><span class = "S2">This tutoria</span><span class = "S2">l will be ru</span><span class = "S2">n </span><span class = "S2">with a </span><span class = "S7">'glpk</span><span class = "S7">'</span><span class = "S2"> package, which is a linear programming ('</span><span class = "S7">LP'</span><span class = "S2">) solver. The </span><span class = "S7">'glpk</span><span class = "S7">'</span><span class = "S2"> package does not require additional instalation and configuration.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">solverName=</span><span class = "S14">'glpk'</span><span class = "S15">;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">solverType=</span><span class = "S14">'LP'</span><span class = "S15">; </span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">changeCobraSolver(solverName,solverType);</span></div></div></div><div class = "S16"><span class = "S2">However, for the analysis of large models, such as Recon 2.04, it is not recommended to use the </span><span class = "S7">'glpk</span><span class = "S7">'</span><span class = "S2"> package but rather an industrial strength solver, such as the </span><span class = "S7">'gurobi'</span><span class = "S2"> package.</span></div><div class = "S3"><span class = "S2">A solver package may offer different types of optimization programmes to solve a problem. The above example used a LP optimization, other types of optimization programmes include; mixed-integer linear programming ('</span><span class = "S7">MILP</span><span class = "S2">'), quadratic programming ('</span><span class = "S7">QP</span><span class = "S2">'), and mixed-integer quadratic programming ('</span><span class = "S7">MIQP</span><span class = "S2">').</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">warning </span><span class = "S17">off MATLAB:subscripting:noSubscriptsSpecified</span></div></div></div><h2 class = "S6"><span class = "S2">COBRA model. </span></h2><div class = "S3"><span class = "S2">In thi</span><span class = "S2">s tutorial, the model used</span><span class = "S2"> is the generic reconstruction of human metabolism, the Recon 2.04 [1], which is provided in the COBRA Toolbox. The Recon 2.04 model</span><span class = "S4"> </span><span class = "S2">can also be downloaded from the </span><a href = "https://www.vmh.life/#downloadview"><span class = "S0">Virtual Metabolic Human</span></a><span class = "S2"> webpage. Before proceeding with the simulations, the path to the model needs to be set up and the model loaded:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">modelFileName = </span><span class = "S14">'Recon2.v04.mat'</span><span class = "S15">;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">modelDirectory = getDistributedModelFolder(modelFileName); </span><span class = "S11">%Look up the folder for the distributed Models.</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">modelFileName= [modelDirectory filesep modelFileName]; </span><span class = "S11">% Get the full path. Necessary to be sure, that the right model is loaded</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">model = readCbModel(modelFileName);</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">PROCEDURE</span></h2><div class = "S3"><span class = "S2">We first initialize the table</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">clear </span><span class = "S17">TableProp</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = 1;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, :) = {</span><span class = "S14">'Model'</span><span class = "S15">}; r = r+1;</span></div></div></div><div class = "S16"><span class = "S2">Determine the number of reactions in the model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Reactions'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(model.rxns));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">Determine the number of metabolites in the model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Metabolites'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(model.mets));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2"> Determine the number of unique metabolites in the model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Metabolites (unique)'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">[g, remR3M] = strtok(model.mets,</span><span class = "S14">'['</span><span class = "S15">);</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(unique(g)));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2"> Determine the number of compartments in model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Compartments (unique)'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(unique(remR3M)));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">Determine the number of unique genes.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Genes (unique)'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">[g,rem]=strtok(model.genes,</span><span class = "S14">'.'</span><span class = "S15">);</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(unique(g)));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2"> Determine the number of subsystems.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Subsystems'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(unique(model.subSystems)));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2"> Determine the number of deadends.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Deadends'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">D3M = detectDeadEnds(model);</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(D3M));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2"> Determine the size of the S matrix.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Size of S'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp{r, 2} = strcat(num2str(size(model.S,1)),</span><span class = "S14">'; '</span><span class = "S15">,num2str(size(model.S,2)));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">Determine the rank of S.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Rank of S'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = strcat(num2str(rank(full(model.S))));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">Determine the percentage of non-zero entries in the S matrix (nnz)</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Percentage nz'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = strcat(num2str((nnz(model.S)/(size(model.S,1)*size(model.S,2)))));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">View table.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S15">TableProp</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="9ED3BB74" data-testid="output_1" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">TableProp = </span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'Model'                             []
+    'Reactions'                '7440'     
+    'Metabolites'              '5063'     
+    'Metabolites (unique)'     '2626'     
+    'Compartments (unique)'    '8'        
+    'Genes (unique)'           '1733'     
+    'Subsystems'               '100'      
+    'Deadends'                 '1332'     
+    'Size of S'                '5063;7440'
+    'Rank of S'                '4666'     
+    'Percentage nz'            '0.0008373'
+</div></div></div></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S3"><span class = "S2">Determine blocked reactions properties (optional).</span></div><div class = "S3"><span class = "S2">To evaluate the following model properties of bloack reactions, the solver package of IBM ILOG CPLEX is required. To install CPLEX refer to </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span class = "S0">solver installation guide</span></a><span class = "S2">, and change the solver to 'ibm_cplex' using the changeCobraSolver as shown above in equipment set-up. </span></div><ul class = "S19"><li class = "S20"><span class = "S0">Determine the number of blocked reactions using fastFVA with 4 paralell workers (optional).</span></li></ul><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">nworkers = 2;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">solver = </span><span class = "S14">'ibm_cplex'</span><span class = "S15">;</span></div></div><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S15">setWorkerCount(nworkers);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="C4208701" data-testid="output_2" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Starting parallel pool (parpool) using the 'local' profile ... </div></div><div class="inlineElement embeddedOutputsTextElement" uid="ED865F12" data-testid="output_3" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">connected to 2 workers.
+Parallel computation initialized</div></div></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">tol = 1e-6;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15"></span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Blocked Reactions'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">[minFluxR3M, maxFluxR3M] = fastFVA(model, 0, </span><span class = "S14">'max'</span><span class = "S15">, solver);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="2B398FBB" data-testid="output_4" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> &gt; The CPLEX version has been determined as 1271.
+
+-- Warning:: You may only ouput 4, 7 or 9 variables.
+
+ &gt;&gt; Solving Model.S. (uncoupled) 
+ &gt;&gt; The number of arguments is: input: 4, output 2.
+ &gt;&gt; Size of stoichiometric matrix: (5063,7440)
+ &gt;&gt; All reactions are solved (7440 reactions - 100%).
+ &gt;&gt; 0 reactions out of 7440 are minimized (0.00%).
+ &gt;&gt; 0 reactions out of 7440 are maximized (0.00%).
+ &gt;&gt; 7440 reactions out of 7440 are minimized and maximized (100.00%).
+
+ -- Starting to loop through the 2 workers. -- 
+
+ -- The splitting strategy is 0. -- 
+
+----------------------------------------------------------------------------------
+--  Task Launched // TaskID: 2 / 2 (LoopID = 2) &lt;&gt; [3721, 7440] / [5063, 7440].
+ &gt;&gt; Number of reactions given to the worker: 3720 
+ &gt;&gt; The number of reactions retrieved is 3720
+ &gt;&gt; Log files will be stored at P:\Gitlab\fork-cobratoolbox\src\analysis\FVA\fastFVA\logFiles
+ -- Start time:     Tue Jul 11 16:59:08 2017
+ &gt;&gt; #Task.ID = 2; logfile: cplexint_logfile_2.log
+        -- Minimization (iRound = 0). Number of reactions: 3720.
+        -- Maximization (iRound = 1). Number of reactions: 3720.
+ -- End time:     Tue Jul 11 17:05:21 2017
+ &gt;&gt; Time spent in FVAc: 373.9 seconds.
+----------------------------------------------------------------------------------
+ ==&gt; 50.0% done. Please wait ...
+
+----------------------------------------------------------------------------------
+--  Task Launched // TaskID: 1 / 2 (LoopID = 1) &lt;&gt; [1, 3720] / [5063, 7440].
+ &gt;&gt; Number of reactions given to the worker: 3720 
+ &gt;&gt; The number of reactions retrieved is 3720
+ &gt;&gt; Log files will be stored at P:\Gitlab\fork-cobratoolbox\src\analysis\FVA\fastFVA\logFiles
+ -- Start time:     Tue Jul 11 16:59:08 2017
+ &gt;&gt; #Task.ID = 1; logfile: cplexint_logfile_1.log
+        -- Minimization (iRound = 0). Number of reactions: 3720.
+        -- Maximization (iRound = 1). Number of reactions: 3720.
+ -- End time:     Tue Jul 11 17:07:21 2017
+ &gt;&gt; Time spent in FVAc: 499.0 seconds.
+----------------------------------------------------------------------------------
+ ==&gt; 100% done. Analysis completed.</div></div></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(intersect(find(abs(minFluxR3M) &lt; tol), find(abs(maxFluxR3M) &lt; tol))));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><ul class = "S19"><li class = "S20"><span class = "S0"> Determine the percentage of blocked reactions.</span></li></ul><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">TableProp(r, 1) = {</span><span class = "S14">'Blocked Reactions (Percentage)'</span><span class = "S15">};</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">TableProp{r, 2} = num2str(length(intersect(find(abs(minFluxR3M) &lt; tol), find(abs(maxFluxR3M) &lt; tol)))/length(model.rxns));</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">r = r + 1;</span></div></div></div><div class = "S16"><span class = "S2">View table</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S15">TableProp</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="E7B10A20" data-testid="output_5" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">TableProp = </span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'Model'                                      []
+    'Reactions'                         '7440'     
+    'Metabolites'                       '5063'     
+    'Metabolites (unique)'              '2626'     
+    'Compartments (unique)'             '8'        
+    'Genes (unique)'                    '1733'     
+    'Subsystems'                        '100'      
+    'Deadends'                          '1332'     
+    'Size of S'                         '5063;7440'
+    'Rank of S'                         '4666'     
+    'Percentage nz'                     '0.0008373'
+    'Blocked Reactions'                 '2123'     
+    'Blocked Reactions (Percentage)'    '0.28535'  
+</div></div></div></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">TIMING</span></h2><div class = "S3"><span class = "S2">This tutorial takes a few minutes depending on solver, computer, and model size. The most time consuming step is the flux variability analysis.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S5"><span class = "S2">References</span></h2><div class = "S3"><span class = "S2"> [1] </span><a href = "http://www.nature.com/nbt/journal/v31/n5/full/nbt.2488.html"><span class = "S21">Thiele et al., A community-driven global reconstruction of human metabolism, Nat Biotech, 2013.</span></a></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Create an overview table with model properties
+% *Author(s): Ines Thiele, Ronan M. T. Fleming, Systems Biochemistry Group, 
+% LCSB, University of Luxembourg.*
+% 
+% *Reviewer(s): Catherine Fleming, Stefania Magnusdottir, Molecular Systems 
+% Physiology Group, LCSB, University of Luxembourg.*
+%% INTRODUCTION
+% In this tutorial, we evaluate the basic properties of the metabolic model, 
+% such as the number of reactions, unique metabolites, blocked reactions, dead-end 
+% metabolites, and store the information in a table ('Table_Prop'). 
+%% EQUIPMENT SETUP
+%% *Initialize the COBRA Toolbox.*
+% If necessary, initialize The Cobra Toolbox using the |initCobraToolbox| function.
+%%
+initCobraToolbox(false) % false, as we don't want to update
+%% *Setting the *optimization* solver.*
+% This tutorial will be run with a |'glpk'| package, which is a linear programming 
+% ('|LP'|) solver. The |'glpk'| package does not require additional instalation 
+% and configuration.
+%%
+solverName='glpk';
+solverType='LP'; 
+changeCobraSolver(solverName,solverType);
+%% 
+% However, for the analysis of large models, such as Recon 2.04, it is not 
+% recommended to use the |'glpk'| package but rather an industrial strength solver, 
+% such as the |'gurobi'| package.
+% 
+% A solver package may offer different types of optimization programmes to 
+% solve a problem. The above example used a LP optimization, other types of optimization 
+% programmes include; mixed-integer linear programming ('|MILP|'), quadratic programming 
+% ('|QP|'), and mixed-integer quadratic programming ('|MIQP|').
+
+warning off MATLAB:subscripting:noSubscriptsSpecified
+%% COBRA model. 
+% In this tutorial, the model used is the generic reconstruction of human metabolism, 
+% the Recon 2.04 [1], which is provided in the COBRA Toolbox. The Recon 2.04 model* 
+% *can also be downloaded from the <https://www.vmh.life/#downloadview Virtual 
+% Metabolic Human> webpage. Before proceeding with the simulations, the path to 
+% the model needs to be set up and the model loaded:
+
+modelFileName = 'Recon2.v04.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+%% PROCEDURE
+% We first initialize the table
+%%
+clear TableProp
+r = 1;
+TableProp(r, :) = {'Model'}; r = r+1;
+%% 
+% Determine the number of reactions in the model.
+
+TableProp(r, 1) = {'Reactions'};
+TableProp{r, 2} = num2str(length(model.rxns));
+r = r + 1;
+%% 
+% Determine the number of metabolites in the model.
+
+TableProp(r, 1) = {'Metabolites'};
+TableProp{r, 2} = num2str(length(model.mets));
+r = r + 1;
+%% 
+%  Determine the number of unique metabolites in the model.
+
+TableProp(r, 1) = {'Metabolites (unique)'};
+[g, remR3M] = strtok(model.mets,'[');
+TableProp{r, 2} = num2str(length(unique(g)));
+r = r + 1;
+%% 
+%  Determine the number of compartments in model.
+
+TableProp(r, 1) = {'Compartments (unique)'};
+TableProp{r, 2} = num2str(length(unique(remR3M)));
+r = r + 1;
+%% 
+% Determine the number of unique genes.
+
+TableProp(r, 1) = {'Genes (unique)'};
+[g,rem]=strtok(model.genes,'.');
+TableProp{r, 2} = num2str(length(unique(g)));
+r = r + 1;
+%% 
+%  Determine the number of subsystems.
+
+TableProp(r, 1) = {'Subsystems'};
+TableProp{r, 2} = num2str(length(unique(model.subSystems)));
+r = r + 1;
+%% 
+%  Determine the number of deadends.
+
+TableProp(r, 1) = {'Deadends'};
+D3M = detectDeadEnds(model);
+TableProp{r, 2} = num2str(length(D3M));
+r = r + 1;
+%% 
+%  Determine the size of the S matrix.
+
+TableProp(r, 1) = {'Size of S'};
+TableProp{r, 2} = strcat(num2str(size(model.S,1)),'; ',num2str(size(model.S,2)));
+r = r + 1;
+%% 
+% Determine the rank of S.
+
+TableProp(r, 1) = {'Rank of S'};
+TableProp{r, 2} = strcat(num2str(rank(full(model.S))));
+r = r + 1;
+%% 
+% Determine the percentage of non-zero entries in the S matrix (nnz)
+
+TableProp(r, 1) = {'Percentage nz'};
+TableProp{r, 2} = strcat(num2str((nnz(model.S)/(size(model.S,1)*size(model.S,2)))));
+r = r + 1;
+%% 
+% View table.
+
+TableProp
+%% 
+% Determine blocked reactions properties (optional).
+% 
+% To evaluate the following model properties of bloack reactions, the solver 
+% package of IBM ILOG CPLEX is required. To install CPLEX refer to <https://opencobra.github.io/cobratoolbox/stable/installation.html 
+% solver installation guide>, and change the solver to 'ibm_cplex' using the changeCobraSolver 
+% as shown above in equipment set-up. 
+% 
+% * Determine the number of blocked reactions using fastFVA with 4 paralell 
+% workers (optional).
+%%
+nworkers = 2;
+solver = 'ibm_cplex';
+setWorkerCount(nworkers);
+tol = 1e-6;
+
+TableProp(r, 1) = {'Blocked Reactions'};
+[minFluxR3M, maxFluxR3M] = fastFVA(model, 0, 'max', solver);
+TableProp{r, 2} = num2str(length(intersect(find(abs(minFluxR3M) < tol), find(abs(maxFluxR3M) < tol))));
+r = r + 1;
+%% 
+% *  Determine the percentage of blocked reactions.
+
+TableProp(r, 1) = {'Blocked Reactions (Percentage)'};
+TableProp{r, 2} = num2str(length(intersect(find(abs(minFluxR3M) < tol), find(abs(maxFluxR3M) < tol)))/length(model.rxns));
+r = r + 1;
+%% 
+% View table
+
+TableProp
+%% TIMING
+% This tutorial takes a few minutes depending on solver, computer, and model 
+% size. The most time consuming step is the flux variability analysis.
+%% References
+%  [1] <http://www.nature.com/nbt/journal/v31/n5/full/nbt.2488.html Thiele et 
+% al., A community-driven global reconstruction of human metabolism, Nat Biotech, 
+% 2013.>
+##### SOURCE END #####
+--></body></html>

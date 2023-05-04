@@ -1,0 +1,970 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Uniform sampling a genome-scale model</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S7 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S10 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S12 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S17 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S18 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S19 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S20 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S21 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S22 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S23 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S24 { margin-left: 3px; margin-top: 4px; margin-bottom: 4px; margin-right: 3px;  }
+.S25 { min-height: 0px; font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Uniform sampling a genome-scale model</span></h1><h2 class = "S3"><span class = "S2">Author(s): </span><span class = "S2">German A. Preciat Gonzalez, Hulda S. Haraldsdóttir, </span><span class = "S2">Systems Biochemistry Group, Leiden University.</span><span class = "S2">  </span></h2><h2 class = "S3"><span class = "S2">Reviewer(s): Almut Heinken, Molecular Systems Physiology Group, National University of Ireland, Galway.</span></h2><h2 class = "S3"><span class = "S2">INTRODUCTION</span></h2><div class = "S4"><span class = "S2">The flux space </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: normal; font-weight: normal">&#937;</span><span class = "S2"> for a given set of biochemical and physiologic constraints is represented by: </span></div><div class = "S5"><span style="vertical-align:-5px"><img src="data:image/png;base64,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" width="171" height="20" /></span></div><div class = "S4"><span class = "S2">where </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">v</span><span class = "S2"> represents feasible flux vectors, </span><span class = "S2"> </span><span style="vertical-align:-5px"><img src="data:image/png;base64,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" width="61.5" height="27" /></span><span class = "S2"> the stoichiometric matrix, while </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">l</span><span class = "S2"> and </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">u</span><span class = "S2"> are lower and upper bounds on fluxes. These criteria still allow a wide range of admissible flux distributions which, in FBA are commonly further restricted by introducing an objective to optimise, transforming the question of admissible fluxes into an FBA problem</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAAApUlEQVRIS+3VsQnCQBxG8V86a61s7awcwHHsBWvBRlxBcACxdgXBxg0sHcDSWgnEEFAh4Uyh/G+Ad+HxvkumpZO1xBXg0myoSFLRxwR3rD7l2sTxEzhDFwssU8EDTLHBFVscvgGuflivAB8DHCrKMH5PxRA7nJCv8PZufXUn3cEcY4yKSee8My5YY1+9oC648a8xwEkPfS3f4Tgcv4YSVUQV/1DFAyCBHykFiN6gAAAAAElFTkSuQmCC" width="11" height="20" /></span><span class = "S2"> of the form</span></div><div class = "S5"><span style="vertical-align:-32px"><img src="data:image/png;base64,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" width="98.5" height="74" /></span></div><div class = "S4"><span class = "S2">where </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">c</span><span class = "S2"> is a linear biological objective function (biomass, ATP consumption, HEME production, etc.). Even under these conditions there is commonly a range of optimal flux distributions, which can be investigated using flux variability analysis. If the general capabilities of the model are of interest, however, uniform sampling of the entire flux space</span><span class = "S2"> </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: normal; font-weight: normal">&#937;</span><span class = "S2"> is able to provide an unbiased characterization, and therefore, can be used to investigate the biochemical networks. It requires collecting a statistically meaningful number of flux distributions uniformly spread throughout the whole flux space and then analysing their properties. There are three basic steps to perform a uniform sampling for a set of feasible fluxes:</span></div><ul class = "S6"><li class = "S7"><span class = "S0">Define the flux space to be sampled from physical and biochemical constraints</span></li><li class = "S7"><span class = "S0">Randomly sample the defined flux space based on uniform statistical criteria</span></li><li class = "S7"><span class = "S0">If is necessary, section the flux space according to post-sampling.</span></li></ul><div class = "S4"><span class = "S2">In COBRA v3 there are three different sampling algorithms: coordinate hit-and-run with rounding (CHRR), artificial centring hit-and-run (ACHR) and the minimum free energy (MFE). In this tutorial, we will use the CHRR algorithm</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABCUlEQVRIS+3VPytHURzH8dcvFslsNCsPQFHKYJEHoAwkyWQwK382AymxWG3yHIhFWTwDeQBKdjp16Lru1T0nv0XnLnc673PP+/P53tPTp6fXJ64C/jJbVCSrCMrGsIR5TOIJVzjCc722XR1P4Ra7OMQbZnGOe6zjpQpPAW9htQIYwD6WsYCHHHDbgG5j46/BwzhBeGeraMpmETtYwV1uePV1MzjGJq6bPHUNr7p2IlYsBHfTJj8VPI7TqKDxSz83SgGPxuOftR0/p25DOMBjHIr3CBnEGl5xkQOewyVGWpyGML/57qoiDMLeL9fYdL1yXcHJV2MBJ//oi+NkA8XxT2Vl8kor/kMrPgCdMCUpcArtMQAAAABJRU5ErkJggg==" width="11" height="20" /></span><span class = "S2"> to uniformly sample a high dimensionally constraint-based model of the differentiation of induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm consists of rounding the anisotropic flux space </span><span class = "S2"> </span><span class = "S2">Ω</span><span class = "S2"> using a maximum volume ellipsoid algorithm</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABKElEQVRIS+3Vvy4EYRSG8d/GFeAmKDUahVIQhSgIUStoRKLzJ/QiUShIRKIhdJSiUroApVqlUAgSOck3snY3dnZ2tpvppviec77nvGempkdPrUdcFfjXbKWiYxWhbAiLmMYInnGFI7w2xjav43mcYAMX+MRkgj5gDe/18LzgpQRaxVsC9GEfU4jCcYOOVbRa0Aw8nhS9lAUexhlucIDvbsChbgATWMY5rvFVdHjZuS3spZd7HOMWH92Cs/P9mMU27rBZNBWthhda1rGbEvPYjePGAhHDyPUCLouAAzCarlzvcwU7mMFTUXAMKq6ebV4UOkRsXuj4M8C8mzeIuTSwsdRZOD0tOxVtf5V5O24LKivHbQtVHZfyPf7Xc+W4ctwckCoVVSqaU/EDJ50vKUvznfcAAAAASUVORK5CYII=" width="11" height="20" /></span><span class = "S2"> and then performs a uniform sampling based on the provably efficient hit-and-run random walk</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAAA5ElEQVRIS+3VsUqCURiH8Z/gYiLSEHQhDg6Cd9DW1pbQGBK4NztoiVDObd6Bu3fgVbS0RDlpfHEIUkHzOzbIOft5zjnP+3/fU3CgVTgQVwL/mE0qcqsoo4cF2vhcje0+jrM9LYzwHBNcQwdzfMQCn+EBL7gIz8+tooi74PUJ3VjgJm5wi/dQvIyd68bnGKCPKUoxwJmCe7ziEcsVcKbnCrNw6LehXeJWxwSVLSO28VfwJl4UFf8KrmKIE1zjLUZLn4ZWvgywcYjhL/guxdvrW0zg3IN+q/fkODleD0lKRUrFMaTiC+MQKim8SxT+AAAAAElFTkSuQmCC" width="11" height="20" /></span><span class = "S2">. Below is a high-level illustration of the process to uniformly sample a random metabolic flux vector </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">v</span><span class = "S2"> from the set </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: normal; font-weight: normal">&#937;</span><span class = "S2"> of all feasible metabolic fluxes (grey). </span><span class = "S8">1)</span><span class = "S2"> Apply a rounding transformation </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">T</span><span class = "S2"> to </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: normal; font-weight: normal">&#937;</span><span class = "S2">. The transformed set </span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAAAkCAYAAAC31nXuAAAEV0lEQVR4Xu3aWch+UxQG8N8/MmUmxY0UUYoLKSFDmS5kyDyUC2Pm4cocQimEiLgwDxFJXJgJoSQkRErChWRKKFOr9qnT6Zzz7vN+5zvf+b/Orq++i332Xut59t5rrWe9q0xj4RBYtXAeTQ6ZSF3AQzCROpG6gAgsoEvTTZ1IXRICm+MBHIS7cAF+X9KK08e1CAx5U3fCE9gOF+Fm/Dvx0j8CQ5J6DB7FJzgKH/fvzrRiIJBL6oY4GMdhd2yKr/AOnsJz+KUF0jVwDS7GjbgUf64GFByCp+e0MyfELBXXuZ7fIP0wXJ9Iuw2vJEJ2xGmJ6A9wFt5qeFI3wj3YI6337pxADf1ZHMLrEP5djrfxD/bF4/gOx+OjZNgOuB0748IUYups7gvXzqTGxnEz78TLibRvKqusnYwPx+PmnoTXanbaHo/hfZyN34ZmZ4791sMt2L/Gr0jybsKLidTv0/rlF+kAvFCzb5+4diY1EpuIgRvjWLzeAMwWuBvxVMXpPR0/VuYGMM/jCDw5B8Ar8cnWeBiv4kr8lYxYN93A8POOlPT9UTIwbnTkDEfj0xrD+8S1E6lxA69NBkfGegp+bkE2HIwb/SsOx0uVufGM7YqTawhfCcJy9twtHeogpxwutsJD2AdnpPKsvF6QGsTVYdY3rp1ILU5pJEVhZBDcVn4EAHETN8AlKQYXG66VEqR4nu/NQXMkc+JGrpMOc8TRYuyCZ7Al9q55wdZHPMOROFYx6xPXRpiast+9SrHxxHQy27AuYmYkCDlZ30h4m8uME/Ag3kth6YsOqwyCaxOpheFhb1PAL/uyWSL+wKQaRSYcT3GfoxzLcteNrDXq489yP5gxr5wIhTrW1c9BcM0hdU+8OcPZ/wupRWl2JK5Kf11UsTKpy4ZrDqmR+UY50jbKycMiP7/bpuQp4moOLlXMyqTmfD8XrssRU6uJUk8v3yiWKUqzzxG39cOOVi0lpmbj2kRq+URekSS+NvtDKXojTciJwR2xGM30JtEh18BBcG0itZyU5CQERZ0ahXo8Md/merkazYvyJnTrMxtEhxxXBsG1TdA/NGWyX87IIKOgvgHnpho1/v87x8OOc1Y6+50lOuS6s+y4tpG6Sao5Q/Jqk/e2wSOpUO+zfKiCtNKkzhIdcklddlxntd5CMbkvdWaahPiQ/qIDcz5uXeDGd9EPnkd0qBK+rLhWSS3qzYijoW+umfTf8xpE/ULM/wnnJGmsuLkhL9Z1KXJP9JjmlUWHHC28avuguFZJDe02+oHRBL8MXyMauREnf6j5XVEkRVcnoT56ijH31NReiyw4+o+LMELnvR/7zSmDDoprldS2uFWV3LrMXZ2JjUQw+sQhqsR4NsmD0aDIHV2w6jK3dv+6mBrPZty+6uhC6qKUNm0A58h8ZQwHw3VWopR7Eqd5I0JgInVEZPRlykRqX0iOaJ2J1BGR0ZcpE6l9ITmidSZSR0RGX6ZMpPaF5IjW+Q+vkFY0hU6CuwAAAABJRU5ErkJggg==" width="58.5" height="18" /></span><span class = "S2"> is such that its maximal inscribed ellipsoid (blue) approximates a unit ball. </span><span class = "S8">2)</span><span class = "S2"> Take </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">q</span><span class = "S2"> steps of coordinate hit-and-run. At each step, i) pick a random coordinate direction </span><span style="vertical-align:-7px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAoCAYAAAALz1FrAAAB7klEQVRIS+3VSciNcRTH8c+LRBZWklKGhWGnLCwsFMlCdkTJkEgRGZbmIYkMKUopRclQLJQiEhEbRBaUjRQLoUgshI7+tx6Pf/e5j3vft+Q+q+d2zznfM/zOeXr0wdPTBwxdSK0ud9vVbVetDtQy7qrr32xXP0zBAszCeLzEVezGq6qyqgY/CocwDftxDt+xCStwASvxoRmoGWQiTibn5XhaCDQVd/AY8/H8byDDcRyTsAS3SkFm4hquYzHe1IVEdWtxGHuwDd8KQaKFRzEb63AEP+pCRuAUxmIpnmE0RqbBz8Nb7EgzKSaQZeVm0mhF0eFRUtQ93MVDfKlSVeP/HGQ9DqaZxHurwWI2mzEXT4oJlCEDsRcRfCt2tZhtw28cFpUlXYYMTnsR2q8DaZpLrl1bsBOnsRqfShEGpGy/4myVssI3B5mBS3iPZbiZAoXtmCTpuAAbkt2a9B4tm4MH5bJykCHYh1XJ+D4+IvYj7laoK/YjgjX2I6qfjoV43QokbGI2semxJ3Eco6obuIjL+FwINAgH0u+NiDb+9lQdyFbENQxncCWJ5g+fTkAmp+riU3A7l1UnIDGH2KuAvOgNSP+0sHHXcnL/xWy3kqE4gXepmuwJahcyAefTlT6G7b2lrkoFtltJJaATM/nPID8BDpFcKavxKxcAAAAASUVORK5CYII=" width="12.5" height="20" /></span><span class = "S2">, and ii) move from current point </span><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="53" height="20" /></span><span class = "S2"> to a random point </span><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="66.5" height="20" /></span><span class = "S2"> along </span><span style="vertical-align:-7px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALEAAAAoCAYAAACxQBtOAAAIuUlEQVR4Xu2cCcitVRWGH1MqlZLKAc2IwGhEzRlMK2kAKy2orBxLcZ4tUcsiG5QGmyiNitLKcgjLAXHOyBGcZxxQQdHSQkOtbOKJtXH73W885zvn99z2hsv973++bw9rv3vtd71rnbsCpRULLLgFVljw+ZfpFwtQQFxAsPAWKCBe+C0sCyggLhhYeAsUEC/8FpYFjA1i+/sM8EXgRmAH4M5i5mKBKSzQiamxQfwS4HvAzsCZwO7AX6ZYQHm1WKATU2ODeD3gV8DGwB7Aj8seFAtMaYFOTI0N4ncBFwCXAzsB9025gPL6YlvgBcAbgU8A7wDeEsu5CrgIOBW4Dfh3yzI7MTU2iA8BjgcOA74J/Gex96DMfgoLrAEcB3wYOAn4GXAP8FLgA8BewOvima8Af20YqxNTY4J45QDu1jHxW6cwQHl1sS2wFvADYBtgX+CUGm/7ZuBHwObA94HDgScry+6FqTFBvA7wC+CmmNDfF3sflsvZrwl8JDzhZoBB0/3A1cBPgd8BT0+58pWALwBHBZD1pE197gj8PLywYsBvK2P3wtSYIN4igjqNdM2Uhpj09S2BP/Qw3qT9L+p7AkvASPVe3rIIY5kDgeumWOgmwBnAq4HtgbNa+kogfXscov0r3rgXpsYE8Xti0p+uuRamsMmgVwuIlzWXADZGkZ/aTga+DtwO/BNYFRBEnwc2Dc+8K3DZIMs/+3DisH3yBC8GvhGU41rgo8Dd2bi9MFUF8SrAt0Mes6/z4wQ/lnUsGTeq3CB+5897Ak9MuOgxX5sliI20NwyDvzM8zcWAQcmlEcTmXujQiBHa1vciwBhCLymQ9F4mh04DvgX8eQTjaBNpnn0fEaARvNX2ytD49Z5q/AZefxo4fo6fOuzUdXc0cEx88NZQtgYNW+eJJdOfiwU3nSYNYrS5VWyip7jOMIMmM8LDswKx3koAeFj1ZEbbbrA8zt99HLgZ+HJ4PTmmspLerqltBHwHWB34WjgMOao/vzfAZvZzmtjCQ/LVoAjO+4AOZ5Mfwkl0/lfEgdGDio/9WlSHZJfEi/33u4ELh+KgiU4kbc6NkePeUek4TXb9CBKWigNX1zsLEAtgwflJwKtSAKcDKwDdrOuD+5nosXVdx2+Lfm6IjX4wW0ja1L6erG3P81uzi5/aTw561YW2oKxu3BzEfd+fGYjNuJ0NrA3UuXjBK3m/ZIKFDj1oQ54fG8Qeco0sUOtkoCQBvQb4Y8QEewO/bNHI3wD8JBZV5629xk9sCHSG2MJnkzOq45tNfe0SB0ylwrU/NGDQHMTnxk3VVXaQ1uswo9EJO8tTfdUT7MZ6Qj+1xF4451J97TzUSMmTKU0p0FdvnARiN8LmnAygmqiVni5RDmmIOmmeENJ5WHtilqtOcuq7zupVPcSrJ0fQJzCrzmcaTjzkoD1n3CY6kZ8o08cGBqkZAOiZroyIdqm48KxBnA6r0bMaalX+0R55cYoap2B+pAVpbwJOj6IoQfxoOAxjjPfFH6mb/DsFi0OBmz+fbORhOQh4qkdnCcRNVLKriyMjTupzCHIn0JdDLzN+E4jzE6VofWy86fPqiB8LT3FX14oq4P8u8MEBpH9A9/97dEw68bIoYHK+UgQ5XrWlw/76uHrVWdtafnWm56wjsMbkiojMTRaN5RgSiPvy09yG/jz05krvnxcHvCtQy3XiJht3YqAJxCtGTbCnyuyLf7z25MIGL8pKeuehtRHm001Butmpz85JDnhgTBAn3v/als1UHtMeAk/+mEuR1Wm/MKiGVEz1x5rrPi05FKlIn2i/zhPPE8QefsezZsJDJH1qwolZw99EPDFx7XlbsiNdC8kA6qQW9djciGqeu8+GJK6tLtiWyenTV90zY4K4ixvmV6FBrpLU4y0TXy048Ieiwi+naG3rlWp48M/JbsS+9lkKT+zcjKOkB1aqNdWU53TN214p8F99F5Y/1wbiJH04GfngdvF3l/7ZNg89l/zMjdR7jd3GBHFafxO3SxslL+7j6drijLHtkPpbKhArSwpKg1PpmEmhalP5UrvWGUxVttsG4gQII1sFeL2wkXebfNS1GXrwbSM5MDQb1NW3n48JYg+cqVd5f/XQKZOZyvUzbdIHxLnnNsYQYFXP4zMHBz+eNO27VHTCQy8YBa4Ba5IS1cLr9GafPyFsaw168sxmRQfRpjYQJ06oB5E6GH1bLjdplVPKk5uBMvr+R4DZYM+iFA+KGapn+qC14ZkxQZwnClK6VtApg0m1PguYdbMKK6cT0gZT8HU80KvVm8iMnvTjlliHVM2+zHy+CtgnEkymnvVkOpIuulJnknl6YjXpX4dttIfBqb+z6MiaiN9nE1Sy/CHwAPClKNN0/cZJSm06iL/1xUEbiHOtuI981DVmikQNhFKkv27wPaNzD8jDXZ3M8fNc03VYVQR/p0ylymC9tIfGSNwmAP3Mwy/A60T+VGcrFbEIXC/loTZ4lPtas6D+fm/0mSiIVWV1nrvLHPMEcXIgdXOqBrJDnu1aY+v/AJTLR11p1M6BwoN5Ur1GVCf0vkaueiO90zQ1An3Gn+QZ1RTnqCfxazSmnOVxKahNNRVqsCZCvB4NwNrW4rrViHeLbzZYz2t2zEBPb5W/mxyJt5SFVkPbPEFcLQzL5zoExIOltjFLMbsMLHit8pc3eUDkfqZyTZoMleq6xlpePk8S3vvjml1e1jXqOuYF4lx3TgvoU1U16mIXsLNZB8ILaJJlpzwvECeNVB4peZfwK91ZwlgnvywXxp1yEUnNMJgcFOhMOe7CvT4vEJuWtdBbfim3SxqhPNOA7vnIh5d6M+sC4aWe0/Ny/HmBWM9rUJS4XV4JpwZr3UBpz7VAKof16159s3v/lzacF4jVVS0GyetTU0WXtQFqiX7LobRnLZDqelUv5MbKb6XVWGBeIC7GLxaYmQUKiGdm2tLxvCxQQDwvS5dxZmaBAuKZmbZ0PC8LFBDPy9JlnJlZ4L+A2EtHxXjADgAAAABJRU5ErkJggg==" width="88.5" height="20" /></span><span class = "S2">. </span><span class = "S8">3)</span><span class = "S2"> Map samples back to the original space by applying the inverse</span><span class = "S2"> transformation, e.g., </span><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="71.5" height="22" /></span><span class = "S2">.</span></div><div class = "S5"><img class="imageNode" width="647" height="280" style="vertical-align: baseline" src="data:image/png;base64,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
+JLSaAAAAAElFTkSuQmCC"></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Equipment setup</span></h2><div class = "S4"><span class = "S2">Please note that some of the plotting options in the tutorial require Matlab 2016a or higher. Moreover, the tutorial requires a working installation of the Parallel Computing Toolbox.</span></div><div class = "S4"><span class = "S2">Please set a solver, e.g., gurobi. Note that the solver ibm_cplex is required for the function fastFVA.</span></div><div class = "S4"><span class = "S2">In this tutorial, we will perform FVA using the function </span><span class = "S10">fluxVariability</span><span class = "S2">. Change the variable </span><span class = "S10">options.useFastFVA = 1</span><span class = "S2"> to use </span><span class = "S10">fastFVA</span><span class = "S2">.</span></div><h2 class = "S3"><span class = "S2">Modelling</span></h2><div class = "S4"><span class = "S2">We will investigate ATP energy production with limited and unlimited oxygen uptake, following closely the flux balance analysis (FBA) tutorial published with</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAAApUlEQVRIS+3VsQnCQBxG8V86a61s7awcwHHsBWvBRlxBcACxdgXBxg0sHcDSWgnEEFAh4Uyh/G+Ad+HxvkumpZO1xBXg0myoSFLRxwR3rD7l2sTxEzhDFwssU8EDTLHBFVscvgGuflivAB8DHCrKMH5PxRA7nJCv8PZufXUn3cEcY4yKSee8My5YY1+9oC648a8xwEkPfS3f4Tgcv4YSVUQV/1DFAyCBHykFiN6gAAAAAElFTkSuQmCC" width="11" height="20" /></span><span class = "S2">.</span></div><div class = "S4"><span class = "S2">We start by loading the model with its flux bounds and the objective function (ATP demand reaction). We set the maximum glucose uptake rate to 18.5 mmol/gDW/hr. To explore the entire space of feasible steady state fluxes we also remove the cellular objective.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">options.useFastFVA = false; </span><span class = "S14">% to use fluxVariability</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">tutorialPath = fileparts(which(</span><span class = "S15">'tutorial_uniformSampling.mlx'</span><span class = "S16">));</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">longFileName=[tutorialPath filesep </span><span class = "S15">'data' </span><span class = "S13">filesep </span><span class = "S15">'iPSC_DA.mat'</span><span class = "S16">];</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S17">if </span><span class = "S16">0</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    model </span><span class = "S13">=</span><span class = "S13"> readCbModel(longFileName,</span><span class = "S15">'modelName'</span><span class = "S13">,</span><span class = "S15">'modelUptClosed'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">else</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    load(longFileName)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    model = modelUptClosed;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">end</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">model = changeRxnBounds(model, </span><span class = "S15">'EX_glc(e)'</span><span class = "S13">, -18.5, </span><span class = "S15">'l'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">model.c = 0 * model.c; </span><span class = "S14">% clear the objective</span></div></div></div><div class = "S19"><span class = "S2">We allow unlimited and limited oxygen uptake in the models creating two distinct models based on the input model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">unlimitedOx = changeRxnBounds(model, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">, -1000, </span><span class = "S15">'l'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">limitedOx = changeRxnBounds(model, </span><span class = "S15">'EX_o2(e)'</span><span class = "S13">, -4, </span><span class = "S15">'l'</span><span class = "S16">);</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Flux variability analysis</span></h2><div class = "S4"><span class = "S2">Flux variability analysis (FVA) returns the minimum and maximum possible flux through every reaction in a model.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S17">if </span><span class = "S16">options.useFastFVA</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [minUn, maxUn] = fastFVA(unlimitedOx, 100);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [minLim, maxLim] = fastFVA(limitedOx, 100);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">else</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [minUn, maxUn] = fluxVariability(unlimitedOx);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [minLim, maxLim] = fluxVariability(limitedOx);</span></div></div><div class = 'inlineWrapper outputs'><div class = "S12 lineNode"><span class = "S18">end</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="4A1DB454" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Starting parallel pool (parpool) using the 'local' profile ...
+Connected to the parallel pool (number of workers: 2).</div></div></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S4"><span class = "S2">FVA predicts faster maximal ATP production with unlimited than with limited oxygen uptake conditions.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ATP = </span><span class = "S15">'DM_atp_c_'</span><span class = "S13">;  </span><span class = "S14">% Identifier of the ATP demand reaction</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ibm = find(ismember(model.rxns, ATP));  </span><span class = "S14">% column index of the ATP demand reaction</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">fprintf(</span><span class = "S15">'Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n'</span><span class = "S16">, maxUn(ibm));</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">fprintf(</span><span class = "S15">'Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n'</span><span class = "S16">, maxLim(ibm));</span></div></div></div><div class = "S19"><span class = "S2">An overall comparison of the FVA results can be obtained by computing the </span><a href = "https://en.wikipedia.org/wiki/Jaccard_index"><span class = "S0">Jaccard index</span></a><span class = "S2"> for each reaction. The Jaccard index is here defined as the ratio between the intersection and union of the flux ranges in the unlimitedOx and limitedOx models. A Jaccard index of 0 indicates completely disjoint flux ranges and a Jaccard index of 1 indicates completely overlapping flux ranges. The mean Jaccard index gives an indication of the overall similarity between the models.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">J = fvaJaccardIndex([minUn, minLim], [maxUn, maxLim]);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">fprintf(</span><span class = "S15">'Mean Jaccard index = %.4f.\n'</span><span class = "S16">, mean(J));</span></div></div></div><div class = "S19"><span class = "S2">To visualise the FVA results, we plot the flux ranges as errorbars, with reactions sorted by the Jaccard index.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">E = [(maxUn - minUn)/2 (maxLim - minLim)/2];</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">Y = [minUn minLim] + E;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[~, xj] = sort(J);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">f1 = figure;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S17">if </span><span class = "S13">strcmp(version(</span><span class = "S15">'-release'</span><span class = "S13">), </span><span class = "S15">'2016b'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    errorbar(X, Y(xj, :), E(xj, :), </span><span class = "S15">'linestyle'</span><span class = "S13">, </span><span class = "S15">'none'</span><span class = "S13">, </span><span class = "S15">'linewidth'</span><span class = "S13">, 2, </span><span class = "S15">'capsize'</span><span class = "S16">, 0);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">else</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    errorbar(X, Y(xj, :), E(xj, :), </span><span class = "S15">'linestyle'</span><span class = "S13">, </span><span class = "S15">'none'</span><span class = "S13">, </span><span class = "S15">'linewidth'</span><span class = "S16">, 2);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">end</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">set(gca, </span><span class = "S15">'xlim'</span><span class = "S16">, [0, length(Y) + 1])</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">legend(</span><span class = "S15">'Unlimited oxygen uptake'</span><span class = "S13">, </span><span class = "S15">'Limited oxygen uptake'</span><span class = "S13">, </span><span class = "S15">'location'</span><span class = "S13">, </span><span class = "S15">'northoutside'</span><span class = "S13">, </span><span class = "S18">...</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">       </span><span class = "S15">'orientation'</span><span class = "S13">, </span><span class = "S15">'horizontal'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">xlabel(</span><span class = "S15">'Reaction'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ylabel(</span><span class = "S15">'Flux range (mmol/gDW/h)'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">yyaxis </span><span class = "S23">right</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">plot(J(xj))</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ylabel(</span><span class = "S15">'Jaccard index'</span><span class = "S16">)</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">Sampling</span></h2><div class = "S4"><span class = "S2">CHRR can be called via the function </span><span class = "S10">sampleCbModel</span><span class = "S2">. The main inputs to </span><span class = "S10">sampleCbModel</span><span class = "S2"> are a COBRA model structure, the name of the selected sampler and a parameter struct that controls properties of the sampler used. In the instance of CHRR, two parameters are important: the sampling density (</span><span class = "S10">nStepsPerPoint)</span><span class = "S2"> and the number of samples (</span><span class = "S10">nPointsReturned). </span><span class = "S2">The total length of the random walk is </span><span class = "S10">nStepsPerPoint*nPointsReturned</span><span class = "S2">. The time it takes to run the sampler depends on the total length of the random walk and the size of the model</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABCUlEQVRIS+3VPytHURzH8dcvFslsNCsPQFHKYJEHoAwkyWQwK382AymxWG3yHIhFWTwDeQBKdjp16Lru1T0nv0XnLnc673PP+/P53tPTp6fXJ64C/jJbVCSrCMrGsIR5TOIJVzjCc722XR1P4Ra7OMQbZnGOe6zjpQpPAW9htQIYwD6WsYCHHHDbgG5j46/BwzhBeGeraMpmETtYwV1uePV1MzjGJq6bPHUNr7p2IlYsBHfTJj8VPI7TqKDxSz83SgGPxuOftR0/p25DOMBjHIr3CBnEGl5xkQOewyVGWpyGML/57qoiDMLeL9fYdL1yXcHJV2MBJ//oi+NkA8XxT2Vl8kor/kMrPgCdMCUpcArtMQAAAABJRU5ErkJggg==" width="11" height="20" /></span><span class = "S2">. However, using sampling parameters that are too small will lead to invalid sampling distributions, e.g.,</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.nStepsPerPoint = 1;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.nPointsReturned = 500;</span></div></div></div><div class = "S19"><span class = "S2">An additional on/off parameter (</span><span class = "S10">toRound</span><span class = "S2">) controls whether or not the polytope is rounded. Rounding large models can be slow but is strongly recommended for the first round of sampling. Below we show how to get around this step in subsequent rounds. </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.toRound = 1;</span></div></div></div><div class = "S19"><span class = "S2">The method outputs two results. First, the model used for sampling (in case of </span><span class = "S10">toRound = 1</span><span class = "S2"> this would be the rounded model), and second, the samples generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options);</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S4"><span class = "S2">The sampler outputs the sampled flux distributions (X_un and X_lim) and the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show that the models are severely undersampled, as evidenced by the presence of multiple sharp peaks.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">nbins = 20;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[yUn, xUn] = hist(X1_un(ibm, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[yLim, xLim] = hist(X1_lim(ibm, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">f2 = figure;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">plot(xUn, yUn, xLim, yLim);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">legend(</span><span class = "S15">'Unlimited oxygen uptake'</span><span class = "S13">, </span><span class = "S15">'Limited oxygen uptake'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">xlabel(</span><span class = "S15">'Flux (mmol/gDW/h)'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ylabel(</span><span class = "S15">'# samples'</span><span class = "S16">)</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S4"><span class = "S2">Undersampling results from selecting too small sampling parameters. The appropriate parameter values depend on the dimension of the polytope Ω  defined by the model constraints (see intro). One rule of thumb says to set  </span><span style="vertical-align:-6px"><img src="data:image/png;base64,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" width="135.5" height="26" /></span><span class = "S2"> to ensure the statistical independence of samples. The random walk should be long enough to ensure convergence to a stationary sampling distribution</span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABCUlEQVRIS+3VPytHURzH8dcvFslsNCsPQFHKYJEHoAwkyWQwK382AymxWG3yHIhFWTwDeQBKdjp16Lru1T0nv0XnLnc673PP+/P53tPTp6fXJ64C/jJbVCSrCMrGsIR5TOIJVzjCc722XR1P4Ra7OMQbZnGOe6zjpQpPAW9htQIYwD6WsYCHHHDbgG5j46/BwzhBeGeraMpmETtYwV1uePV1MzjGJq6bPHUNr7p2IlYsBHfTJj8VPI7TqKDxSz83SgGPxuOftR0/p25DOMBjHIr3CBnEGl5xkQOewyVGWpyGML/57qoiDMLeL9fYdL1yXcHJV2MBJ//oi+NkA8XxT2Vl8kor/kMrPgCdMCUpcArtMQAAAABJRU5ErkJggg==" width="11" height="20" /></span><span class = "S2">.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.nStepsPerPoint = 8 * size(P_lim.A, 2);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.nPointsReturned = 1000;</span></div></div></div><div class = "S19"><span class = "S2">This time, we can avoid the rounding step by inputting the rounded polytope from the previous round of sampling.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">options.toRound = 0;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[~, X2_un] = sampleCbModel(unlimitedOx, [], [], options, P_un);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[~, X2_lim] = sampleCbModel(limitedOx, [], [], options, P_lim);</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S4"><span class = "S2">The converged sampling distributions for the ATP synthase reaction are much smoother, with a single peak at zero flux.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">nbins = 20;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[yUn, xUn] = hist(X2_un(ibm, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">[yLim, xLim] = hist(X2_lim(ibm, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">f3 = figure;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">p1 = plot(xUn, yUn, xLim, yLim);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">legend(</span><span class = "S15">'Unlimited oxygen uptake'</span><span class = "S13">, </span><span class = "S15">'Limited oxygen uptake'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">xlabel(</span><span class = "S15">'Flux (mmol/gDW/h)'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ylabel(</span><span class = "S15">'# samples'</span><span class = "S16">)</span></div></div></div><div class = "S19"><span class = "S2">Adding </span><span class = "S2">the FVA res</span><span class = "S2">u</span><span class = "S2">lts to the plot shows that the sampling distributions give more detailed information about the differences between the two models. In particular, we see that the flux minima and maxima are not equally probable. The number of samples from both the unlimitedOx and limitedOx models peaks at the minimum flux of zero, and decreases monotonically towards the maximum. It decreases more slowly in the unlimitedOx model, indicating that higher ATP production is more probable under unlimited oxygen uptake conditions. It is interesting to see that maximum ATP production is highly improbable in both models.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">ylim = get(gca, </span><span class = "S15">'ylim'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">cUn = get(p1(1), </span><span class = "S15">'color'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">cLim = get(p1(2), </span><span class = "S15">'color'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">hold </span><span class = "S23">on</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">p2 = plot([minUn(ibm), minUn(ibm)], ylim, </span><span class = "S15">'--'</span><span class = "S13">, [maxUn(ibm), maxUn(ibm)], ylim, </span><span class = "S15">'--'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">set(p2,</span><span class = "S15">'color'</span><span class = "S16">, cUn)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">p3 = plot([minLim(ibm), minLim(ibm)], ylim, </span><span class = "S15">'--'</span><span class = "S13">, [maxLim(ibm), maxLim(ibm)], ylim, </span><span class = "S15">'--'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">set(p3, </span><span class = "S15">'color'</span><span class = "S16">, cLim)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">hold </span><span class = "S23">off</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><div class = "S4"><span class = "S2">Finally, plotting sampling distributions for six selected iPSC_dopa reactions shows how oxygen availability affects a variety of metabolic pathways.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">f4 = figure;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">position = get(f4, </span><span class = "S15">'position'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">set(f4, </span><span class = "S15">'units'</span><span class = "S13">, </span><span class = "S15">'centimeters'</span><span class = "S13">, </span><span class = "S15">'position'</span><span class = "S16">, [position(1), position(2), 18, 27])</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">sampledRxns = {</span><span class = "S15">'r2139'</span><span class = "S13">, </span><span class = "S15">'GLNSERNaEx'</span><span class = "S13">, </span><span class = "S15">'HMR_9791'</span><span class = "S13">, </span><span class = "S15">'r1616'</span><span class = "S13">, </span><span class = "S15">'r1578'</span><span class = "S13">, </span><span class = "S15">'r2537'</span><span class = "S16">};</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">rxnsIdx = findRxnIDs(model, sampledRxns);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S14">%ridx = randi(size(model.rxns,1), 1,6);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16"></span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S17">for </span><span class = "S16">i = rxnsIdx</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    nbins = 20;</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [yUn, xUn] = hist(X2_un(i, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    [yLim, xLim] = hist(X2_lim(i, :), nbins);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    </span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    subplot(3, 2, find(rxnsIdx==i))</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    h1 = plot(xUn, yUn, xLim, yLim);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    xlabel(</span><span class = "S15">'Flux (mmol/gDW/h)'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    ylabel(</span><span class = "S15">'# samples'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    title(sprintf(</span><span class = "S15">'%s (%s)'</span><span class = "S13">, strjoin(model.subSystems{i},</span><span class = "S15">';'</span><span class = "S13">), model.rxns{i}), </span><span class = "S15">'FontWeight'</span><span class = "S13">, </span><span class = "S15">'normal'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    </span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    </span><span class = "S17">if </span><span class = "S16">find(rxnsIdx==i)==2</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">        legend(</span><span class = "S15">'Unlimited oxygen uptake'</span><span class = "S13">, </span><span class = "S15">'Limited oxygen uptake'</span><span class = "S16">)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    </span><span class = "S18">end</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    </span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    ylim = get(gca, </span><span class = "S15">'ylim'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S16">    </span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    hold </span><span class = "S23">on</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    h2 = plot([minUn(i), minUn(i)], ylim, </span><span class = "S15">'--'</span><span class = "S13">, [maxUn(i), maxUn(i)], ylim, </span><span class = "S15">'--'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    set(h2,</span><span class = "S15">'color'</span><span class = "S16">,cUn)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    h3 = plot([minLim(i), minLim(i)], ylim, </span><span class = "S15">'--'</span><span class = "S13">, [maxLim(i), maxLim(i)], ylim, </span><span class = "S15">'--'</span><span class = "S16">);</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    set(h3, </span><span class = "S15">'color'</span><span class = "S16">, cLim)</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S13">    hold </span><span class = "S23">off</span></div></div><div class = 'inlineWrapper'><div class = "S12 lineNode"><span class = "S18">end</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S9"><span class = "S2">References</span></h2><div class = "S4"><span class = "S2">1. Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? </span><span class = "S25">Nat. Biotechnol.</span><span class = "S2"> 28(3), 245-248 (2010).</span></div><div class = "S4"><span class = "S2">2. Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and Vempala, S. CHRR: coordinate hit-and-run with rounding for uniform sampling of constraint-based metabolic models. </span><span class = "S25">Bioinformatics</span><span class = "S2">. 33(11), 1741-1743 (2016).</span></div><div class = "S4"><span class = "S2">3. Zhang, Y. and Gao, L. On Numerical Solution of the Maximum Volume Ellipsoid Problem. </span><span class = "S25">SIAM J. Optimiz</span><span class = "S2">. 14(1), 53-76 (2001).</span></div><div class = "S4"><span class = "S2">4. Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, C. L., Smith, R. L., Telgen, J. Hit-and-run algorithms for the identification of nonredundant linear inequalities. </span><span class = "S25">Math. Programming</span><span class = "S2">, 37(2), 184-207 (1987).</span></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Uniform sampling a genome-scale model
+%% Author(s): *German A. Preciat Gonzalez, Hulda S. Haraldsdóttir, *Systems Biochemistry Group, Leiden University.*  *
+%% Reviewer(s): Almut Heinken, Molecular Systems Physiology Group, National University of Ireland, Galway.
+%% INTRODUCTION
+% The flux space $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
+% for a given set of biochemical and physiologic constraints is represented by: 
+% 
+% $$\Omega = \{v \mid Sv=b; l \leq v\leq u\}$$
+% 
+% where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">v</mi></mrow></math>$ represents feasible flux vectors,  
+% $S\in\mathcal{Z}^{m\times n}$ the stoichiometric matrix, while $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">l</mi></mrow></math>$ and $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="italic">u</mi></mrow></math>$ 
+% are lower and upper bounds on fluxes. These criteria still allow a wide range 
+% of admissible flux distributions which, in FBA are commonly further restricted 
+% by introducing an objective to optimise, transforming the question of admissible 
+% fluxes into an FBA problem$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>1</mn></mrow></msup></mrow></math>$ 
+% of the form
+% 
+% $$\begin{array}{ll}\min\limits _{v} & c^{T}v\\\text{s.t.} & Sv=b,\\ & l\leq 
+% v\leq u,\end{array}$$
+% 
+% where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">c</mi></mrow></math>$ is a linear biological objective 
+% function (biomass, ATP consumption, HEME production, etc.). Even under these 
+% conditions there is commonly a range of optimal flux distributions, which can 
+% be investigated using flux variability analysis. If the general capabilities 
+% of the model are of interest, however, uniform sampling of the entire flux space 
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ 
+% is able to provide an unbiased characterization, and therefore, can be used 
+% to investigate the biochemical networks. It requires collecting a statistically 
+% meaningful number of flux distributions uniformly spread throughout the whole 
+% flux space and then analysing their properties. There are three basic steps 
+% to perform a uniform sampling for a set of feasible fluxes:
+% 
+% * Define the flux space to be sampled from physical and biochemical constraints
+% * Randomly sample the defined flux space based on uniform statistical criteria
+% * If is necessary, section the flux space according to post-sampling.
+% 
+% In COBRA v3 there are three different sampling algorithms: coordinate hit-and-run 
+% with rounding (CHRR), artificial centring hit-and-run (ACHR) and the minimum 
+% free energy (MFE). In this tutorial, we will use the CHRR algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% to uniformly sample a high dimensionally constraint-based model of the differentiation 
+% of induced pluripotent stem cells to dopaminergic neurons (iPSC_dopa). The algorithm 
+% consists of rounding the anisotropic flux space  Ω using a maximum volume ellipsoid 
+% algorithm$<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>3</mn></mrow></msup></mrow></math>$ and then performs 
+% a uniform sampling based on the provably efficient hit-and-run random walk$<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>4</mn></mrow></msup></mrow></math>$. Below is a high-level 
+% illustration of the process to uniformly sample a random metabolic flux vector 
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">v</mi></mrow></math>$ from the set $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi>&ohm;</mi></mrow></math>$ of all feasible metabolic 
+% fluxes (grey). *1)* Apply a rounding transformation $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">T</mi></mrow></math>$ to $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi></mrow></math>$. 
+% The transformed set $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&ohm;</mi><mo>&prime;</mo><mo>=</mo><mi 
+% mathvariant="italic">T</mi><mi>&ohm;</mi><mtext> </mtext></mrow></math>$ is 
+% such that its maximal inscribed ellipsoid (blue) approximates a unit ball. *2)* 
+% Take $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">q</mi></mrow></math>$ steps of coordinate hit-and-run. 
+% At each step, i) pick a random coordinate direction $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msub><mrow><mi mathvariant="italic">e</mi></mrow><mrow><mi 
+% mathvariant="italic">i</mi></mrow></msub></mrow></math>$, and ii) move from 
+% current point $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">v</mi><msub><mrow><mo>&prime;</mo></mrow><mrow><mi mathvariant="italic">k</mi></mrow></msub><mo>&isinv;</mo><mi>&ohm;</mi><mo>&prime;</mo></mrow></math>$ 
+% to a random point $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">v</mi><msub><mrow><mo stretchy="false">&prime;</mo></mrow><mrow><mi 
+% mathvariant="italic">k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">&isinv;</mo><mi>&ohm;</mi><mo 
+% stretchy="false">&prime;</mo></mrow></math>$ along $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">v</mi><msub><mrow><mo>&prime;</mo></mrow><mrow><mi 
+% mathvariant="italic">k</mi></mrow></msub><mo>+</mo><mi>&alpha;</mi><msub><mrow><mi 
+% mathvariant="italic">e</mi></mrow><mrow><mi mathvariant="italic">i</mi></mrow></msub><mo>&cap;</mo><mi>&ohm;</mi><mo>&prime;</mo></mrow></math>$. 
+% *3)* Map samples back to the original space by applying the inverse transformation, 
+% e.g., $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mrow><mi 
+% mathvariant="italic">v</mi></mrow><mrow><mi mathvariant="italic">k</mi></mrow></msub><mo>=</mo><msup><mrow><mi 
+% mathvariant="italic">T</mi></mrow><mrow><mo>&minus;</mo><mn>1</mn></mrow></msup><mi 
+% mathvariant="italic">v</mi><msub><mrow><mo>&prime;</mo></mrow><mrow><mi mathvariant="italic">k</mi></mrow></msub></mrow></math>$.
+% 
+% 
+%% Equipment setup
+% Please note that some of the plotting options in the tutorial require Matlab 
+% 2016a or higher. Moreover, the tutorial requires a working installation of the 
+% Parallel Computing Toolbox.
+% 
+% Please set a solver, e.g., gurobi. Note that the solver ibm_cplex is required 
+% for the function fastFVA.
+% 
+% In this tutorial, we will perform FVA using the function |fluxVariability|. 
+% Change the variable |options.useFastFVA = 1| to use |fastFVA|.
+%% Modelling
+% We will investigate ATP energy production with limited and unlimited oxygen 
+% uptake, following closely the flux balance analysis (FBA) tutorial published 
+% with$<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>1</mn></mrow></msup></mrow></math>$.
+% 
+% We start by loading the model with its flux bounds and the objective function 
+% (ATP demand reaction). We set the maximum glucose uptake rate to 18.5 mmol/gDW/hr. 
+% To explore the entire space of feasible steady state fluxes we also remove the 
+% cellular objective.
+%%
+options.useFastFVA = false; % to use fluxVariability
+tutorialPath = fileparts(which('tutorial_uniformSampling.mlx'));
+longFileName=[tutorialPath filesep 'data' filesep 'iPSC_DA.mat'];
+if 0
+    model = readCbModel(longFileName,'modelName','modelUptClosed');
+else
+    load(longFileName)
+    model = modelUptClosed;
+end
+model = changeRxnBounds(model, 'EX_glc(e)', -18.5, 'l');
+model.c = 0 * model.c; % clear the objective
+%% 
+% We allow unlimited and limited oxygen uptake in the models creating two 
+% distinct models based on the input model.
+
+unlimitedOx = changeRxnBounds(model, 'EX_o2(e)', -1000, 'l');
+limitedOx = changeRxnBounds(model, 'EX_o2(e)', -4, 'l');
+%% Flux variability analysis
+% Flux variability analysis (FVA) returns the minimum and maximum possible flux 
+% through every reaction in a model.
+%%
+if options.useFastFVA
+    [minUn, maxUn] = fastFVA(unlimitedOx, 100);
+    [minLim, maxLim] = fastFVA(limitedOx, 100);
+else
+    [minUn, maxUn] = fluxVariability(unlimitedOx);
+    [minLim, maxLim] = fluxVariability(limitedOx);
+end
+%% 
+% FVA predicts faster maximal ATP production with unlimited than with limited 
+% oxygen uptake conditions.
+%%
+ATP = 'DM_atp_c_';  % Identifier of the ATP demand reaction
+ibm = find(ismember(model.rxns, ATP));  % column index of the ATP demand reaction
+fprintf('Max. ATP energy production with an unlimited oxygen uptake: %.4f/h.\n', maxUn(ibm));
+fprintf('Max. ATP energy production with a limited oxygen uptake: %.4f/h.\n\n', maxLim(ibm));
+%% 
+% An overall comparison of the FVA results can be obtained by computing 
+% the <https://en.wikipedia.org/wiki/Jaccard_index Jaccard index> for each reaction. 
+% The Jaccard index is here defined as the ratio between the intersection and 
+% union of the flux ranges in the unlimitedOx and limitedOx models. A Jaccard 
+% index of 0 indicates completely disjoint flux ranges and a Jaccard index of 
+% 1 indicates completely overlapping flux ranges. The mean Jaccard index gives 
+% an indication of the overall similarity between the models.
+
+J = fvaJaccardIndex([minUn, minLim], [maxUn, maxLim]);
+fprintf('Mean Jaccard index = %.4f.\n', mean(J));
+%% 
+% To visualise the FVA results, we plot the flux ranges as errorbars, with 
+% reactions sorted by the Jaccard index.
+
+E = [(maxUn - minUn)/2 (maxLim - minLim)/2];
+Y = [minUn minLim] + E;
+X = [(1:length(Y)) - 0.1; (1:length(Y)) + 0.1]';
+
+[~, xj] = sort(J);
+
+f1 = figure;
+if strcmp(version('-release'), '2016b')
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2, 'capsize', 0);
+else
+    errorbar(X, Y(xj, :), E(xj, :), 'linestyle', 'none', 'linewidth', 2);
+end
+set(gca, 'xlim', [0, length(Y) + 1])
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake', 'location', 'northoutside', ...
+       'orientation', 'horizontal')
+xlabel('Reaction')
+ylabel('Flux range (mmol/gDW/h)')
+
+yyaxis right
+plot(J(xj))
+ylabel('Jaccard index')
+%% Sampling
+% CHRR can be called via the function |sampleCbModel|. The main inputs to |sampleCbModel| 
+% are a COBRA model structure, the name of the selected sampler and a parameter 
+% struct that controls properties of the sampler used. In the instance of CHRR, 
+% two parameters are important: the sampling density (|nStepsPerPoint)| and the 
+% number of samples (|nPointsReturned). |The total length of the random walk is 
+% |nStepsPerPoint*nPointsReturned|. The time it takes to run the sampler depends 
+% on the total length of the random walk and the size of the model$<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><msup><mrow><mtext> </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$. 
+% However, using sampling parameters that are too small will lead to invalid sampling 
+% distributions, e.g.,
+%%
+options.nStepsPerPoint = 1;
+options.nPointsReturned = 500;
+%% 
+% An additional on/off parameter (|toRound|) controls whether or not the 
+% polytope is rounded. Rounding large models can be slow but is strongly recommended 
+% for the first round of sampling. Below we show how to get around this step in 
+% subsequent rounds. 
+
+options.toRound = 1;
+%% 
+% The method outputs two results. First, the model used for sampling (in 
+% case of |toRound = 1| this would be the rounded model), and second, the samples 
+% generated. To sample the unlimitedOx and limitedOx iPSC_dopa models, run,
+
+[P_un, X1_un] =  sampleCbModel(unlimitedOx, [], [], options);
+[P_lim, X1_lim] = sampleCbModel(limitedOx, [], [], options);
+%% 
+% The sampler outputs the sampled flux distributions (X_un and X_lim) and 
+% the rounded polytope (P_un and P_lim). Histograms of sampled ATP synthase show 
+% that the models are severely undersampled, as evidenced by the presence of multiple 
+% sharp peaks.
+%%
+nbins = 20;
+[yUn, xUn] = hist(X1_un(ibm, :), nbins);
+[yLim, xLim] = hist(X1_lim(ibm, :), nbins);
+
+f2 = figure;
+plot(xUn, yUn, xLim, yLim);
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
+xlabel('Flux (mmol/gDW/h)')
+ylabel('# samples')
+%% 
+% Undersampling results from selecting too small sampling parameters. The 
+% appropriate parameter values depend on the dimension of the polytope Ω  defined 
+% by the model constraints (see intro). One rule of thumb says to set  $<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">nSkip</mi><mo>=</mo><mn>8</mn><mo>*</mo><msup><mrow><mi 
+% mathvariant="normal">dim</mi><mrow><mo>(</mo><mrow><mi>&ohm;</mi></mrow><mo>)</mo></mrow></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$ 
+% to ensure the statistical independence of samples. The random walk should be 
+% long enough to ensure convergence to a stationary sampling distribution$<math 
+% xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mrow><mtext> 
+% </mtext></mrow><mrow><mn>2</mn></mrow></msup></mrow></math>$.
+%%
+options.nStepsPerPoint = 8 * size(P_lim.A, 2);
+options.nPointsReturned = 1000;
+%% 
+% This time, we can avoid the rounding step by inputting the rounded polytope 
+% from the previous round of sampling.
+
+options.toRound = 0;
+[~, X2_un] = sampleCbModel(unlimitedOx, [], [], options, P_un);
+[~, X2_lim] = sampleCbModel(limitedOx, [], [], options, P_lim);
+%% 
+% The converged sampling distributions for the ATP synthase reaction are 
+% much smoother, with a single peak at zero flux.
+%%
+nbins = 20;
+[yUn, xUn] = hist(X2_un(ibm, :), nbins);
+[yLim, xLim] = hist(X2_lim(ibm, :), nbins);
+
+f3 = figure;
+p1 = plot(xUn, yUn, xLim, yLim);
+legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
+xlabel('Flux (mmol/gDW/h)')
+ylabel('# samples')
+%% 
+% Adding the FVA results to the plot shows that the sampling distributions 
+% give more detailed information about the differences between the two models. 
+% In particular, we see that the flux minima and maxima are not equally probable. 
+% The number of samples from both the unlimitedOx and limitedOx models peaks at 
+% the minimum flux of zero, and decreases monotonically towards the maximum. It 
+% decreases more slowly in the unlimitedOx model, indicating that higher ATP production 
+% is more probable under unlimited oxygen uptake conditions. It is interesting 
+% to see that maximum ATP production is highly improbable in both models.
+%%
+ylim = get(gca, 'ylim');
+cUn = get(p1(1), 'color');
+cLim = get(p1(2), 'color');
+
+hold on
+p2 = plot([minUn(ibm), minUn(ibm)], ylim, 'REPLACE_WITH_DASH_DASH', [maxUn(ibm), maxUn(ibm)], ylim, 'REPLACE_WITH_DASH_DASH');
+set(p2,'color', cUn)
+p3 = plot([minLim(ibm), minLim(ibm)], ylim, 'REPLACE_WITH_DASH_DASH', [maxLim(ibm), maxLim(ibm)], ylim, 'REPLACE_WITH_DASH_DASH');
+set(p3, 'color', cLim)
+hold off
+%% 
+% Finally, plotting sampling distributions for six selected iPSC_dopa reactions 
+% shows how oxygen availability affects a variety of metabolic pathways.
+%%
+f4 = figure;
+position = get(f4, 'position');
+set(f4, 'units', 'centimeters', 'position', [position(1), position(2), 18, 27])
+
+sampledRxns = {'r2139', 'GLNSERNaEx', 'HMR_9791', 'r1616', 'r1578', 'r2537'};
+rxnsIdx = findRxnIDs(model, sampledRxns);
+
+%ridx = randi(size(model.rxns,1), 1,6);
+
+for i = rxnsIdx
+    nbins = 20;
+    [yUn, xUn] = hist(X2_un(i, :), nbins);
+    [yLim, xLim] = hist(X2_lim(i, :), nbins);
+    
+    subplot(3, 2, find(rxnsIdx==i))
+    h1 = plot(xUn, yUn, xLim, yLim);
+    xlabel('Flux (mmol/gDW/h)')
+    ylabel('# samples')
+    title(sprintf('%s (%s)', strjoin(model.subSystems{i},';'), model.rxns{i}), 'FontWeight', 'normal')
+    
+    if find(rxnsIdx==i)==2
+        legend('Unlimited oxygen uptake', 'Limited oxygen uptake')
+    end
+    
+    ylim = get(gca, 'ylim');
+    
+    hold on
+    h2 = plot([minUn(i), minUn(i)], ylim, 'REPLACE_WITH_DASH_DASH', [maxUn(i), maxUn(i)], ylim, 'REPLACE_WITH_DASH_DASH');
+    set(h2,'color',cUn)
+    h3 = plot([minLim(i), minLim(i)], ylim, 'REPLACE_WITH_DASH_DASH', [maxLim(i), maxLim(i)], ylim, 'REPLACE_WITH_DASH_DASH');
+    set(h3, 'color', cLim)
+    hold off
+end
+%% References
+% 1. Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? 
+% _Nat. Biotechnol._ 28(3), 245-248 (2010).
+% 
+% 2. Haraldsdóttir, H. S., Cousins, B., Thiele, I., Fleming, R.M.T., and 
+% Vempala, S. CHRR: coordinate hit-and-run with rounding for uniform sampling 
+% of constraint-based metabolic models. _Bioinformatics_. 33(11), 1741-1743 (2016).
+% 
+% 3. Zhang, Y. and Gao, L. On Numerical Solution of the Maximum Volume Ellipsoid 
+% Problem. _SIAM J. Optimiz_. 14(1), 53-76 (2001).
+% 
+% 4. Berbee, H. C. P., Boender, C. G. E., Rinnooy Ran, A. H. G., Scheffer, 
+% C. L., Smith, R. L., Telgen, J. Hit-and-run algorithms for the identification 
+% of nonredundant linear inequalities. _Math. Programming_, 37(2), 184-207 (1987).
+##### SOURCE END #####
+--></body></html>

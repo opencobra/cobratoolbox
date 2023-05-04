@@ -1,0 +1,1150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Adding more complex constraints on a model </title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S7 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S8 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S10 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S14 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S15 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S17 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S18 { font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S19 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S20 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Adding more complex constraints on a model </span></h1><h2 class = "S3"><span class = "S2">Authors: Thomas Pfau,Life Sciences Reasearch Unit, University of Luxembourg, Luxembourg.</span></h2><h2 class = "S3"><span class = "S2">Reviewers: </span></h2></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">INTRODUCTION</span></h2><div class = "S5"><span class = "S2">The COBRA Toolbox offers the possibility to add additional constraints to a model that are not direct flux constraints. One example is already indicated in the constraining models tutorial which introduces coupling constraints[1], but there are plenty of other possibilities that can be achieved using constraints.</span></div><div class = "S5"><span class = "S2">The tools introduced in this tutorial are mainly aimed at developers who want to implement complex algorithms or formalism within the COBRA Toolbox environment, but the basics are also useful to integrate specific properties of a model or specific literature data. The section "The COBRA Model structure" is aimed at developers and can be skipped by users who don't to go into the details.</span></div><div class = "S5"><span class = "S2"></span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">The COBRA Model structure</span></h2><div class = "S5"><span class = "S2">In general, the COBRA toolbox represents a model in a struct using multiple fields to represent the different properties of the model. Of particular interest for analysis is the stoichiometric matrix S (which represents the metabolic stoichiometries of the reactions in the model). Under normal circumstances, this matrix can directly be translated into the linear problem matrix A of a problem struct as used by the Toolbox. However, since there are several algorithms which aim at manipulating reactions or metabolites, it is important to draw a distinction between the stoichiometric matrix S and any other constraints or variables which can be added to the model.</span></div><div class = "S5"><span class = "S2">Therefore 3 additional matrices exist, where such information can be stored:</span></div><div class = "S5"><span class = "S2">E - The matrix indicating the influence of additional variables on metabolite levels.</span></div><div class = "S5"><span class = "S2">C - The matrix of additional constraints on the reactions, which are not derived from the steady state condition and</span></div><div class = "S5"><span class = "S2">D - The matrix of interactions between additional Constraints and additional variables.</span></div><div class = "S5"><span class = "S2">Overall A COBRA model will be translated into a Linear problem by combining these matrices in the following way:</span></div><div class = "S6"><span style="vertical-align:-15px"><img src="data:image/png;base64,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" width="253" height="40" /></span><span class = "S2"> </span></div><div class = "S5"><span class = "S2">The Cobra toolbox allows one sided inequality constraints and equality constraints on a model. i.e. there is currently no mechanism to add a constraint like:</span></div><div class = "S6"><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="101.5" height="20" /></span></div><div class = "S5"><span class = "S2">directly. Instead it would be necessary to add the two constraints:</span></div><div class = "S6"><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="59" height="20" /></span></div><div class = "S5"><span class = "S2">and</span></div><div class = "S6"><span style="vertical-align:-7px"><img src="data:image/png;base64,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" width="63" height="20" /></span></div><div class = "S5"><span class = "S2">which is commonly what solvers will translate these constraints into anyways. </span></div><div class = "S5"><span class = "S2">It is best practice to not manually alter the sizes of these matrices, but to use the appropriate model manipulation functions (addReaction/addMultipleReactions, addMetabolite/addMultipleMetabolites, addCOBRAVariables, addCOBRAConstraints). These functions will ensure, that the model structure stays in sync, and all necessary fields are updated appropriately. There is a convenience function to create the corresponding LPproblem struct to the given model: buildLPproblemFromModel(). This function will create and initialize all necessary fields and builds the corresponding LP problem. Any additional modifications of the LP problem imposed by an algorithm should be done on this LP and not on the original model structure.</span></div><div class = "S5"><span class = "S2"></span></div><div class = "S5"><span class = "S2"></span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">PROCEDURE</span></h2><div class = "S5"><span class = "S2">Initially, we will load a model that we want to modify by adding a few additional constraints. The model used will be the simple E.Coli core model:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S9">initCobraToolbox(false)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="D7ECA1B7" data-width="984" data-testid="output_0" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2018
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   <a href="http://opencobra.github.io/cobratoolbox" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">http://opencobra.github.io/cobratoolbox</a>
+                                                  | 
+
+ &gt; Checking if git is installed ...  Done (version: 2.7.4).
+ &gt; Checking if the repository is tracked using git ...  Done.
+ &gt; Checking if curl is installed ...  Done.
+ &gt; Checking if remote can be reached ...  Done.
+ &gt; Initializing and updating submodules (this may take a while)... Done.
+ &gt; Adding all the files of The COBRA Toolbox ...  Done.
+ &gt; Define CB map output... set to svg.
+ &gt; TranslateSBML is installed and working properly.
+ &gt; Configuring solver environment variables ...
+   - [*---] ILOG_CPLEX_PATH: /opt/ibm/ILOG/CPLEX_Studio128/cplex/matlab/x86-64_linux
+   - [*---] GUROBI_PATH: /opt/gurobi800/linux64/matlab
+   - [----] TOMLAB_PATH: --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   - [-*--] MOSEK_PATH: /home/thomas/mosek/8
+   Done.
+ &gt; Checking available solvers and solver interfaces ... Done.
+ &gt; Setting default solvers ... Done.
+ &gt; Saving the MATLAB path ... Done.
+   - The MATLAB path was saved as ~/pathdef.m.
+
+ &gt; Summary of available solvers and solver interfaces
+
+			Support 	   LP 	 MILP 	   QP 	 MIQP 	  NLP
+	----------------------------------------------------------------------
+	gurobi       	active        	    1 	    1 	    1 	    1 	    -
+	ibm_cplex    	active        	    1 	    1 	    1 	    - 	    -
+	tomlab_cplex 	active        	    0 	    0 	    0 	    0 	    -
+	glpk         	active        	    1 	    1 	    - 	    - 	    -
+	mosek        	active        	    1 	    - 	    1 	    - 	    -
+	matlab       	active        	    1 	    - 	    - 	    - 	    1
+	cplex_direct 	active        	    0 	    0 	    0 	    0 	    -
+	dqqMinos     	active        	    1 	    - 	    - 	    - 	    -
+	pdco         	active        	    1 	    - 	    1 	    - 	    -
+	quadMinos    	active        	    1 	    - 	    - 	    - 	    -
+	qpng         	passive       	    - 	    - 	    1 	    - 	    -
+	tomlab_snopt 	passive       	    - 	    - 	    - 	    - 	    0
+	lp_solve     	legacy        	    1 	    - 	    - 	    - 	    -
+	----------------------------------------------------------------------
+	Total        	-             	    9 	    3 	    5 	    1 	    1
+
+ + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.
+
+
+ &gt; You can solve LP problems using: 'gurobi' - 'ibm_cplex' - 'glpk' - 'mosek' - 'matlab' - 'dqqMinos' - 'pdco' - 'quadMinos' 
+ &gt; You can solve MILP problems using: 'gurobi' - 'ibm_cplex' - 'glpk' 
+ &gt; You can solve QP problems using: 'gurobi' - 'ibm_cplex' - 'mosek' - 'pdco' - 'qpng' 
+ &gt; You can solve MIQP problems using: 'gurobi' 
+ &gt; You can solve NLP problems using: 'matlab' 
+
+ &gt; Checking for available updates ...
+ --&gt; You cannot update your fork using updateCobraToolbox(). [b08fe8 @ ConstraintFixes].
+     Please use the MATLAB.devTools (<a href="https://github.com/opencobra/MATLAB.devTools" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">https://github.com/opencobra/MATLAB.devTools</a>) to update your fork.</div></div></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = getDistributedModel(</span><span class = "S12">'ecoli_core_model.mat'</span><span class = "S9">);</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S13">%Create a copy for comparisons</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">model_orig = model;</span></div></div></div><div class = "S14"><span class = "S2">We will add a restriction on the activity of the two aconitase proteins present in E.Coli (aconA and aconB), which catalyse two steps in the citric acid cycle (see below)</span><img class="imageNode" style="vertical-align: baseline" src="data:image/png;base64,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"></div><div class = "S5"><span class = "S2"></span></div><div class = "S5"><span class = "S2">From UNIPROT[2], the Km value of aconitase acting on citrate is 6.13 and 23.8 umol/min/mg for aconA and aconB respectively. For cis-aconitate the values are 14.5 and 39.1 umol/min/mg, respectively. Since most models assume fluxes having the unit mmol/gDW/hr we will have to convert the units to mmol/hr instead of umol/min:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconACit = 6.13 / 1000 * 60;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconAAcon = 14.5 / 1000 * 60;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconBCit = 23.8 / 1000 * 60;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconBAcon = 39.1 / 1000 * 60;</span></div></div></div><div class = "S14"><span class = "S2">From Wiśniewski and Rakus[3] the amount of aconA and aconB per mg E.Coli sample is ~4.05 pmol/mg and 95.95 pmol/mg respectively, with a weight of 97.676 kDa and 93.497 kDa, respectively.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconAmol_per_g = 4.05 * 1000 * 1e-12;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconBmol_per_g = 95.95 * 1000 * 1e-12;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconA_molWeight = 97.676 * 1e3;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconB_molWeight = 93.497 * 1e3;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">aconAAmount = aconAmol_per_g * aconA_molWeight / 0.3; </span><span class = "S13">% divided by 0.3 to account for </span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">                                                      </span><span class = "S13">% the non water fraction assuming</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">                                                      </span><span class = "S13">% 70% water.</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">aconBAmount = aconBmol_per_g * aconB_molWeight / 0.3;</span></div></div></div><div class = "S14"><span class = "S2">Now, there are two genes which code for aconitase in the ecoli core model: b0118 (aconB) and b1276 (aconA). Both the citrate hydratase and the aconitatde dehydratase have the same GPR rule: (b0118 or b1276), so they can both use either enzyme. </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">aconAgene = </span><span class = "S12">'b1276'</span><span class = "S9">;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">aconBgene = </span><span class = "S12">'b0118'</span><span class = "S9">;</span></div></div></div><div class = "S14"><span class = "S2">We would like to add a constraint that not only restricts the activity of these two reactions, but also ensures that the turnover rates are considered. One mg of aconA can support a total flux of ~0.367 mmol/h of ACONTa</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S11">printRxnFormula(model,</span><span class = "S12">'rxnAbbrList'</span><span class = "S11">,{</span><span class = "S12">'ACONTa'</span><span class = "S11">},</span><span class = "S12">'gprFlag'</span><span class = "S9">, true);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="CDFAC0F7" data-width="984" data-testid="output_1" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ACONTa	cit[c] 	&lt;=&gt;	acon-C[c] + h2o[c] 	(b0118 or b1276)</div></div></div></div></div><div class = "S14"><span class = "S2">OR .087 mmol/hr through ACONTb.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S11">printRxnFormula(model,</span><span class = "S12">'rxnAbbrList'</span><span class = "S11">,{</span><span class = "S12">'ACONTb'</span><span class = "S11">},</span><span class = "S12">'gprFlag'</span><span class = "S9">, true);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="2A098067" data-width="984" data-testid="output_2" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">ACONTb	acon-C[c] + h2o[c] 	&lt;=&gt;	icit[c] 	(b0118 or b1276)</div></div></div></div></div><div class = "S14"><span class = "S2">However, it will not be able to do both at the same time. Therefore, we can assume that in addition to its normal metabolites, the reaction also consumes some of the enzyme (for this time step). However, both reactions can also be catalysed by aconB, so they might actually not use any of aconA. Therefore, we need additional constraints that represent the activity through these two reactions. In addition, we need variables that represent the efficiency of one mg of protein to catalyse the reactions.</span></div><div class = "S5"><span class = "S2">Essentially, we have to encode:</span></div><div class = "S5"><span class = "S2">A: The availability of the given proteins </span></div><div class = "S5"><span class = "S2">B: The efficiency of a protein to catalyse a specific reaction</span></div><div class = "S5"><span class = "S2">C: The usage of that protein by the respective reaction.</span></div><div class = "S5"><span class = "S2">And we will do so in this tutorial</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">Adding availability variables.</span></h2><div class = "S5"><span class = "S2">The rxns field is intended to only represent reactions from the model, so if an additional variable is required for a specific task, this variable should not be generated in the rxns field, but in a distinct field for this kind of variables. Therefore, we will add availability variables, which can be thought of as exchange reaction for the enzymes. To do so, we use the following function</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S13">%addCOBRAVariables(model, idList, varargin)</span></div></div></div><div class = "S14"><span class = "S2">The function takes an existing model, and a set of variable ids (</span><span class = "S15">idList</span><span class = "S2">) and generates all required fields for these variables. You can modify the properties of the variables by the following parameters which can either be supplied as parameter/value pairs:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">addCOBRAVariables(model,{</span><span class = "S12">'newVar'</span><span class = "S11">},</span><span class = "S12">'lb'</span><span class = "S11">, -5,</span><span class = "S12">'ub'</span><span class = "S9">,3);</span></div></div></div><div class = "S14"><span class = "S2"> or as a parameter struct:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">params = struct();</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">params.lb = -5;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">params.ub = 3;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">addCOBRAVariables(model,{</span><span class = "S12">'newVar'</span><span class = "S9">},params);</span></div></div></div><div class = "S14"><span class = "S2">The available parameters are:</span></div><ul class = "S16"><li class = "S17"><span class = "S18">'lb'</span><span class = "S0"> - The lower bound(s) of the variable(s) (default: -1000)</span></li><li class = "S17"><span class = "S18">'ub'</span><span class = "S0"> - The upper bound(s) of the variable(s) (default: 1000)</span></li><li class = "S17"><span class = "S18">'c'</span><span class = "S0"> - The objective coefficient(s) of the variable(s) (default: 0)</span></li><li class = "S17"><span class = "S18">'Names'</span><span class = "S0"> - Descriptive name(s) of the variable(s) (default: idList)</span></li></ul><div class = "S5"><span class = "S2">We will now add the variables 'aconA' and 'aconB' with lower bounds 0 and upper bounds according to the values determined above.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">aconVars = {</span><span class = "S12">'aconA'</span><span class = "S11">,</span><span class = "S12">'aconB'</span><span class = "S9">};</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = addCOBRAVariables(model,aconVars,</span><span class = "S12">'lb'</span><span class = "S11">,[0;0],</span><span class = "S12">'ub'</span><span class = "S9">,[aconAAmount;aconBAmount]);</span></div></div></div><div class = "S14"><span class = "S2"></span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2"></span></h2><div class = "S5"><span class = "S2">We further need a conversion between the used amount of aconA and the potential flux through ACONTa. We also need this for ACONTb and the same for aconB.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">linkedReactions = {</span><span class = "S12">'ACONTa'</span><span class = "S11">,</span><span class = "S12">'ACONTb'</span><span class = "S9">};</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S19">for </span><span class = "S9">enzyme = 1:numel(aconVars)</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S19">for </span><span class = "S9">linkedReaction = 1:numel(linkedReactions)</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">        model = addCOBRAVariables(model,{strcat(aconVars{enzyme},</span><span class = "S12">'to'</span><span class = "S11">,linkedReactions{linkedReaction})},</span><span class = "S12">'lb'</span><span class = "S9">,0);</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S20">end</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S20">end</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9"></span></div></div></div><h2 class = "S3"><span class = "S2">Adding usage efficiencies</span></h2><div class = "S5"><span class = "S2">Now, we can add the respective constraints.</span></div><div class = "S5"><span class = "S2">To do so, we will use the function </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S13">%addCOBRAConstraints(model, idList, d, varargin)</span></div></div></div><div class = "S14"><span class = "S2">This function will add constraints to the given </span><span class = "S15">model</span><span class = "S2"> using a list of reactions (</span><span class = "S15">idList</span><span class = "S2">) involved in the constraint and right hand side values for each constraint (</span><span class = "S15">d</span><span class = "S2">). By default, the constraint is assumed to be a limiting constraint, and the coefficients of the reactions is assumed to be one. </span></div><div class = "S5"><span class = "S2">i.e. if you run</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">constMod</span><span class = "S11"> = addCOBRAConstraints(model,{</span><span class = "S12">'FBP'</span><span class = "S11">,</span><span class = "S12">'FBA'</span><span class = "S9">}, 5);</span></div></div></div><div class = "S14"><span class = "S2">The added constraint will restrict the sum of flow through 'FBP' and 'FBA' to 5. The function has parameters which can be used either by parameter/value pairs:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">constMod</span><span class = "S11"> = addCOBRAConstraints(model,{</span><span class = "S12">'FBP'</span><span class = "S11">,</span><span class = "S12">'FBA'</span><span class = "S11">}, 5, </span><span class = "S12">'c'</span><span class = "S11">,[0.2,0.4],</span><span class = "S12">'dsense'</span><span class = "S11">,</span><span class = "S11">[</span><span class = "S12">'L'</span><span class = "S9">]);</span></div></div></div><div class = "S14"><span class = "S2">or using a parameter struct:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">params = struct();</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S9">params.c = [0.2,0.4];</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">params.dsense = </span><span class = "S12">'L'</span><span class = "S9">;</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">constMod = addCOBRAConstraints(model,{</span><span class = "S12">'FBP'</span><span class = "S11">,</span><span class = "S12">'FBA'</span><span class = "S9">}, 5, params);</span></div></div></div><div class = "S14"><span class = "S2">The available parameters are:</span></div><ul class = "S16"><li class = "S17"><span class = "S18">'c'</span><span class = "S0"> - The coefficient matrix with one column per reaction id and one row per added constraint (default: 1 for each element in </span><span class = "S18">idList</span><span class = "S0">)</span></li><li class = "S17"><span class = "S18">'dsense'</span><span class = "S0"> - the sense vector with one element per added constraint ('E' for equality, 'L' for lower than, 'G' for greater than), or one element which is used for all constraints (default: 'L').</span></li><li class = "S17"><span class = "S18">'ConstraintID'</span><span class = "S0"> - a cell array of strings with one element for each added constraint (default: ConstraintXYZ, with XYZ being the position in the ctrs vector)</span></li><li class = "S17"><span class = "S18">checkDuplicates</span><span class = "S0"> - Whether to check for duplicate Constraints (they don't hurt, but they don't help). Note that duplicate IDs are still not allowed.</span></li></ul><div class = "S5"><span class = "S2">Coming back to our example, the first constraint we add is for the amount of aconA, which should be steady (i.e. not more than made available by the aconA variable). More precisely, the amount enzyme made available for ACONTa and ACONTb, should be balanced with the amount of enzyme made available by the aconA variable.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = addCOBRAConstraints(model,{</span><span class = "S12">'aconAtoACONTa'</span><span class = "S11">,</span><span class = "S12">'aconAtoACONTb'</span><span class = "S11">,</span><span class = "S12">'aconA'</span><span class = "S11">},0, </span><span class = "S12">'c'</span><span class = "S11">,[-1,-1,1],</span><span class = "S20">...</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S12">'dsense'</span><span class = "S11">,</span><span class = "S12">'E'</span><span class = "S11">, </span><span class = "S12">'ConstraintID'</span><span class = "S11">, </span><span class = "S12">'aconAAmount'</span><span class = "S9">);</span></div></div></div><div class = "S14"><span class = "S2">The same constraint is introduced for aconB</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = addCOBRAConstraints(model,{</span><span class = "S12">'aconBtoACONTa'</span><span class = "S11">,</span><span class = "S12">'aconBtoACONTb'</span><span class = "S11">,</span><span class = "S12">'aconB'</span><span class = "S11">},0, </span><span class = "S12">'c'</span><span class = "S11">,[-1,-1,1],</span><span class = "S20">...</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S12">'dsense'</span><span class = "S11">,</span><span class = "S12">'E'</span><span class = "S11">, </span><span class = "S12">'ConstraintID'</span><span class = "S11">, </span><span class = "S12">'aconBAmount'</span><span class = "S9">);</span></div></div></div><div class = "S14"><span class = "S2">Next, we also add the efficiencies:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = addCOBRAConstraints(model,{</span><span class = "S12">'aconAtoACONTa'</span><span class = "S11">,</span><span class = "S12">'aconBtoACONTa'</span><span class = "S11">,</span><span class = "S12">'ACONTa'</span><span class = "S11">},0, </span><span class = "S12">'c'</span><span class = "S11">,[aconACit,aconBCit,-1],</span><span class = "S20">...</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S12">'dsense'</span><span class = "S11">,</span><span class = "S12">'E'</span><span class = "S11">, </span><span class = "S12">'ConstraintID'</span><span class = "S11">, </span><span class = "S12">'ACONTaFlux'</span><span class = "S9">);</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = addCOBRAConstraints(model,{</span><span class = "S12">'aconAtoACONTb'</span><span class = "S11">,</span><span class = "S12">'aconBtoACONTb'</span><span class = "S11">,</span><span class = "S12">'ACONTb'</span><span class = "S11">},0, </span><span class = "S12">'c'</span><span class = "S11">,[aconAAcon,aconBAcon,-1],</span><span class = "S20">...</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S12">'dsense'</span><span class = "S11">,</span><span class = "S12">'E'</span><span class = "S11">, </span><span class = "S12">'ConstraintID'</span><span class = "S11">, </span><span class = "S12">'ACONTbFlux'</span><span class = "S9">);</span></div></div></div><div class = "S14"><span class = "S2">Finally, we have a a system, in which the two aconitase reactions are competing for the available enzymes. </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">Analysing the effects of the constraints</span></h2><div class = "S5"><span class = "S2">If we compare the results of a simple FBA optimization of the original model, and the constrained model:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S9">orig_sol = optimizeCbModel(model_orig)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="59F8317D" data-width="984" data-testid="output_3" style="width: 1014px; max-height: 269px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">orig_sol = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         full: [95×1 double]
+          obj: 0.8739
+        rcost: [95×1 double]
+         dual: [72×1 double]
+        slack: [72×1 double]
+       solver: 'gurobi'
+    algorithm: 'default'
+         stat: 1
+     origStat: 'OPTIMAL'
+         time: 0.0043
+        basis: [1×1 struct]
+            f: 0.8739
+            x: [95×1 double]
+            v: [95×1 double]
+            w: [95×1 double]
+            y: [72×1 double]
+            s: [72×1 double]
+</div></div></div></div></div><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S9">restricted_sol = optimizeCbModel(model)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement scrollableOutput" uid="79B3E4F2" data-width="984" data-testid="output_4" style="width: 1014px; max-height: 325px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">restricted_sol = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         full: [101×1 double]
+          obj: 0.0250
+        rcost: [95×1 double]
+         dual: [72×1 double]
+        slack: [72×1 double]
+       solver: 'gurobi'
+    algorithm: 'default'
+         stat: 1
+     origStat: 'OPTIMAL'
+         time: 0.0047
+        basis: [1×1 struct]
+       vars_v: [6×1 double]
+       vars_w: [6×1 double]
+       ctrs_y: [4×1 double]
+       ctrs_s: [4×1 double]
+            f: 0.0250
+            x: [95×1 double]
+            v: [95×1 double]
+            w: [95×1 double]
+            y: [72×1 double]
+            s: [72×1 double]
+</div></div></div></div></div></div><div class = "S14"><span class = "S2">we can easily see that the obtained objective of the modified model is lower than that of the original model.</span></div><div class = "S5"><span class = "S2">Values for additional variables are stored in the solution outputs </span><span class = "S15">vars_v </span><span class = "S2">(value used in the solution) and </span><span class = "S15">vars_w </span><span class = "S2">(reduced cost of the variable). For constraints the respective fields are: </span><span class = "S15">ctrs_y </span><span class = "S2">( fordual values for constraints) and </span><span class = "S15">ctrs_s</span><span class = "S2"> (slacks for the constraints)</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">Modifying variables and constraints</span></h2><div class = "S5"><span class = "S2">Variables and constraints can be altered by the functions changeCOBRAVariable and changeCOBRAConstraint, respectively. Modifications on a variable include the adjustment of upper and lower bounds (by the parameters lb/ub) as well as the objective value (c) and the descriptive name (parameter 'Name').</span></div><div class = "S5"><span class = "S2">Modifying constraints allows the adjustment of the coefficients of the constraint (parameter 'c'), the directionality (parameter 'dsense') and right hand side of the constraint ( parameter 'd') as well as the name (same as for variables). There are several ways to update the coefficients: Either a full row (including both values for the C and the E matrix - if any) needs to be provided, or the IDs along with the coefficients (similar to the situation when generating the constraints) need to be provided. It is important to note that ALL coefficients will be reset if a constraint is modified using the changeCOBRAConstraint function.</span></div><div class = "S5"><span class = "S2">An example of these functions is provided below:</span></div><div class = "S5"><span class = "S2">If we increase the abundance of aconA (by increasing its upper bound)</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = changeCOBRAVariable(model,</span><span class = "S12">'aconA'</span><span class = "S11">,</span><span class = "S12">'ub'</span><span class = "S9">,aconAAmount*2);</span></div></div><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S9">less_restricted_sol = optimizeCbModel(model)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="94F04A4E" data-width="984" data-testid="output_5" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">less_restricted_sol = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         full: [101×1 double]
+          obj: 0.0254
+        rcost: [101×1 double]
+         dual: [76×1 double]
+        slack: [76×1 double]
+       solver: 'gurobi'
+    algorithm: 'default'
+         stat: 1
+     origStat: 'OPTIMAL'
+         time: 0.0030
+        basis: [1×1 struct]
+            x: [95×1 double]
+            f: 0.0254
+            y: [72×1 double]
+            w: [95×1 double]
+            v: [95×1 double]
+</div></div></div></div></div></div><div class = "S14"><span class = "S2">We can see, that the objective increases as more flux through the TCA is possible.</span></div><div class = "S5"><span class = "S2">Similarily, if we reduce the efficiency of aconB on Citrate by 50%:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">model = changeCOBRAConstraints(model,</span><span class = "S12">'ACONTaFlux'</span><span class = "S11">,</span><span class = "S12">'idList'</span><span class = "S11">,{</span><span class = "S12">'aconAtoACONTa'</span><span class = "S11">,</span><span class = "S12">'aconBtoACONTa'</span><span class = "S11">,</span><span class = "S12">'ACONTa'</span><span class = "S11">},</span><span class = "S20">...</span></div></div><div class = 'inlineWrapper'><div class = "S8 lineNode"><span class = "S11">    </span><span class = "S12">'c'</span><span class = "S9">,[aconACit,aconBCit*0.5,-1]);</span></div></div><div class = 'inlineWrapper outputs'><div class = "S8 lineNode"><span class = "S9">less_efficient_aconA = optimizeCbModel(model)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="ABADA38A" data-width="984" data-testid="output_6" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">less_efficient_aconA = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">struct with fields:</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         full: [101×1 double]
+          obj: 0.0159
+        rcost: [101×1 double]
+         dual: [76×1 double]
+        slack: [76×1 double]
+       solver: 'gurobi'
+    algorithm: 'default'
+         stat: 1
+     origStat: 'OPTIMAL'
+         time: 0.0030
+        basis: [1×1 struct]
+            x: [95×1 double]
+            f: 0.0159
+            y: [72×1 double]
+            w: [95×1 double]
+            v: [95×1 double]
+</div></div></div></div></div></div><div class = "S14"><span class = "S2">We can again see the objective drop.</span></div><div class = "S5"><span class = "S2">While we only used a very simple example for this tutorial, this interplay can improve predictive qualities substantially (for more have a look at e.g. [4])</span></div><div class = "S5"><span class = "S2"></span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S2">References</span></h2><div class = "S5"><span class = "S2">[1] Thiele I, Fleming RM, Bordbar A, Schellenberger J, Palsson BØ. Functional characterization of alternate optimal solutions of Escherichia coli's transcriptional and translational machinery. Biophys J. 98(10):2072-81 (2010). </span></div><div class = "S5"><span class = "S2">[2] The UniProt Consortium, UniProt: the universal protein knowledgebase, Nucleic Acids Res. 45: D158-D169 (2017)</span></div><div class = "S5"><span class = "S2">[3]Jacek R. Wiśniewski, Dariusz Rakus, Quantitative analysis of the Escherichia coli proteome, Data in Brief 1, 7-11, (2014)</span></div><div class = "S5"><span class = "S2">[4] Sánchez et al, Improving the phenotype predictions of a yeast genome-scale metabolic model by incorporating enzymatic constraints, Mol Sys Biol, 13:935 (2017)</span></div><div class = "S5"><span class = "S2"></span></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Adding more complex constraints on a model 
+%% Authors: Thomas Pfau,Life Sciences Reasearch Unit, University of Luxembourg, Luxembourg.
+%% Reviewers: 
+%% INTRODUCTION
+% The COBRA Toolbox offers the possibility to add additional constraints to 
+% a model that are not direct flux constraints. One example is already indicated 
+% in the constraining models tutorial which introduces coupling constraints[1], 
+% but there are plenty of other possibilities that can be achieved using constraints.
+% 
+% The tools introduced in this tutorial are mainly aimed at developers who 
+% want to implement complex algorithms or formalism within the COBRA Toolbox environment, 
+% but the basics are also useful to integrate specific properties of a model or 
+% specific literature data. The section "The COBRA Model structure" is aimed at 
+% developers and can be skipped by users who don't to go into the details.
+% 
+% 
+%% The COBRA Model structure
+% In general, the COBRA toolbox represents a model in a struct using multiple 
+% fields to represent the different properties of the model. Of particular interest 
+% for analysis is the stoichiometric matrix S (which represents the metabolic 
+% stoichiometries of the reactions in the model). Under normal circumstances, 
+% this matrix can directly be translated into the linear problem matrix A of a 
+% problem struct as used by the Toolbox. However, since there are several algorithms 
+% which aim at manipulating reactions or metabolites, it is important to draw 
+% a distinction between the stoichiometric matrix S and any other constraints 
+% or variables which can be added to the model.
+% 
+% Therefore 3 additional matrices exist, where such information can be stored:
+% 
+% E - The matrix indicating the influence of additional variables on metabolite 
+% levels.
+% 
+% C - The matrix of additional constraints on the reactions, which are not 
+% derived from the steady state condition and
+% 
+% D - The matrix of interactions between additional Constraints and additional 
+% variables.
+% 
+% Overall A COBRA model will be translated into a Linear problem by combining 
+% these matrices in the following way:
+% 
+% $$<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi 
+% mathvariant="normal">LPproblem</mi><mo>.</mo><mi mathvariant="italic">A</mi><mo>=</mo><mtext> 
+% </mtext><mrow><mo>[</mo><mtable><mtr><mtd><mrow><mi mathvariant="normal">model</mi><mo>.</mo><mi 
+% mathvariant="italic">S</mi></mrow></mtd><mtd><mrow><mi mathvariant="normal">model</mi><mo>.</mo><mi 
+% mathvariant="italic">E</mi></mrow></mtd></mtr><mtr><mtd><mrow><mi mathvariant="normal">model</mi><mo>.</mo><mi 
+% mathvariant="italic">C</mi></mrow></mtd><mtd><mrow><mi mathvariant="normal">model</mi><mo>.</mo><mi 
+% mathvariant="italic">D</mi></mrow></mtd></mtr></mtable><mo>]</mo></mrow></mrow></math>$$ 
+% 
+% The Cobra toolbox allows one sided inequality constraints and equality 
+% constraints on a model. i.e. there is currently no mechanism to add a constraint 
+% like:
+% 
+% $$c_{low} \le v_{R1} \le c_{high}$$
+% 
+% directly. Instead it would be necessary to add the two constraints:
+% 
+% $$c_{low} \le v_{R1}$$
+% 
+% and
+% 
+% $$ v_{R1} \le c_{high}$$
+% 
+% which is commonly what solvers will translate these constraints into anyways. 
+% 
+% It is best practice to not manually alter the sizes of these matrices, 
+% but to use the appropriate model manipulation functions (addReaction/addMultipleReactions, 
+% addMetabolite/addMultipleMetabolites, addCOBRAVariables, addCOBRAConstraints). 
+% These functions will ensure, that the model structure stays in sync, and all 
+% necessary fields are updated appropriately. There is a convenience function 
+% to create the corresponding LPproblem struct to the given model: buildLPproblemFromModel(). 
+% This function will create and initialize all necessary fields and builds the 
+% corresponding LP problem. Any additional modifications of the LP problem imposed 
+% by an algorithm should be done on this LP and not on the original model structure.
+% 
+% 
+% 
+% 
+%% PROCEDURE
+% Initially, we will load a model that we want to modify by adding a few additional 
+% constraints. The model used will be the simple E.Coli core model:
+%%
+initCobraToolbox(false)
+model = getDistributedModel('ecoli_core_model.mat');
+%Create a copy for comparisons
+model_orig = model;
+%% 
+% We will add a restriction on the activity of the two aconitase proteins 
+% present in E.Coli (aconA and aconB), which catalyse two steps in the citric 
+% acid cycle (see below)
+% 
+% 
+% 
+% From UNIPROT[2], the Km value of aconitase acting on citrate is 6.13 and 
+% 23.8 umol/min/mg for aconA and aconB respectively. For cis-aconitate the values 
+% are 14.5 and 39.1 umol/min/mg, respectively. Since most models assume fluxes 
+% having the unit mmol/gDW/hr we will have to convert the units to mmol/hr instead 
+% of umol/min:
+
+aconACit = 6.13 / 1000 * 60;
+aconAAcon = 14.5 / 1000 * 60;
+aconBCit = 23.8 / 1000 * 60;
+aconBAcon = 39.1 / 1000 * 60;
+%% 
+% From Wiśniewski and Rakus[3] the amount of aconA and aconB per mg E.Coli 
+% sample is ~4.05 pmol/mg and 95.95 pmol/mg respectively, with a weight of 97.676 
+% kDa and 93.497 kDa, respectively.
+
+aconAmol_per_g = 4.05 * 1000 * 1e-12;
+aconBmol_per_g = 95.95 * 1000 * 1e-12;
+aconA_molWeight = 97.676 * 1e3;
+aconB_molWeight = 93.497 * 1e3;
+aconAAmount = aconAmol_per_g * aconA_molWeight / 0.3; % divided by 0.3 to account for 
+                                                      % the non water fraction assuming
+                                                      % 70% water.
+aconBAmount = aconBmol_per_g * aconB_molWeight / 0.3;
+%% 
+% Now, there are two genes which code for aconitase in the ecoli core model: 
+% b0118 (aconB) and b1276 (aconA). Both the citrate hydratase and the aconitatde 
+% dehydratase have the same GPR rule: (b0118 or b1276), so they can both use either 
+% enzyme. 
+
+aconAgene = 'b1276';
+aconBgene = 'b0118';
+%% 
+% We would like to add a constraint that not only restricts the activity 
+% of these two reactions, but also ensures that the turnover rates are considered. 
+% One mg of aconA can support a total flux of ~0.367 mmol/h of ACONTa
+
+printRxnFormula(model,'rxnAbbrList',{'ACONTa'},'gprFlag', true);
+%% 
+% OR .087 mmol/hr through ACONTb.
+
+printRxnFormula(model,'rxnAbbrList',{'ACONTb'},'gprFlag', true);
+%% 
+% However, it will not be able to do both at the same time. Therefore, we 
+% can assume that in addition to its normal metabolites, the reaction also consumes 
+% some of the enzyme (for this time step). However, both reactions can also be 
+% catalysed by aconB, so they might actually not use any of aconA. Therefore, 
+% we need additional constraints that represent the activity through these two 
+% reactions. In addition, we need variables that represent the efficiency of one 
+% mg of protein to catalyse the reactions.
+% 
+% Essentially, we have to encode:
+% 
+% A: The availability of the given proteins 
+% 
+% B: The efficiency of a protein to catalyse a specific reaction
+% 
+% C: The usage of that protein by the respective reaction.
+% 
+% And we will do so in this tutorial
+%% Adding availability variables.
+% The rxns field is intended to only represent reactions from the model, so 
+% if an additional variable is required for a specific task, this variable should 
+% not be generated in the rxns field, but in a distinct field for this kind of 
+% variables. Therefore, we will add availability variables, which can be thought 
+% of as exchange reaction for the enzymes. To do so, we use the following function
+%%
+%addCOBRAVariables(model, idList, varargin)
+%% 
+% The function takes an existing model, and a set of variable ids (*idList*) 
+% and generates all required fields for these variables. You can modify the properties 
+% of the variables by the following parameters which can either be supplied as 
+% parameter/value pairs:
+
+addCOBRAVariables(model,{'newVar'},'lb', -5,'ub',3);
+%% 
+%  or as a parameter struct:
+
+params = struct();
+params.lb = -5;
+params.ub = 3;
+addCOBRAVariables(model,{'newVar'},params);
+%% 
+% The available parameters are:
+% 
+% * *'lb'* - The lower bound(s) of the variable(s) (default: -1000)
+% * *'ub'* - The upper bound(s) of the variable(s) (default: 1000)
+% * *'c'* - The objective coefficient(s) of the variable(s) (default: 0)
+% * *'Names'* - Descriptive name(s) of the variable(s) (default: idList)
+% 
+% We will now add the variables 'aconA' and 'aconB' with lower bounds 0 and 
+% upper bounds according to the values determined above.
+
+aconVars = {'aconA','aconB'};
+model = addCOBRAVariables(model,aconVars,'lb',[0;0],'ub',[aconAAmount;aconBAmount]);
+%% 
+% 
+%% 
+% We further need a conversion between the used amount of aconA and the potential 
+% flux through ACONTa. We also need this for ACONTb and the same for aconB.
+%%
+linkedReactions = {'ACONTa','ACONTb'};
+for enzyme = 1:numel(aconVars)
+    for linkedReaction = 1:numel(linkedReactions)
+        model = addCOBRAVariables(model,{strcat(aconVars{enzyme},'to',linkedReactions{linkedReaction})},'lb',0);
+    end
+end
+
+%% Adding usage efficiencies
+% Now, we can add the respective constraints.
+% 
+% To do so, we will use the function 
+
+%addCOBRAConstraints(model, idList, d, varargin)
+%% 
+% This function will add constraints to the given *model* using a list of 
+% reactions (*idList*) involved in the constraint and right hand side values for 
+% each constraint (*d*). By default, the constraint is assumed to be a limiting 
+% constraint, and the coefficients of the reactions is assumed to be one. 
+% 
+% i.e. if you run
+
+constMod = addCOBRAConstraints(model,{'FBP','FBA'}, 5);
+%% 
+% The added constraint will restrict the sum of flow through 'FBP' and 'FBA' 
+% to 5. The function has parameters which can be used either by parameter/value 
+% pairs:
+
+constMod = addCOBRAConstraints(model,{'FBP','FBA'}, 5, 'c',[0.2,0.4],'dsense',['L']);
+%% 
+% or using a parameter struct:
+
+params = struct();
+params.c = [0.2,0.4];
+params.dsense = 'L';
+constMod = addCOBRAConstraints(model,{'FBP','FBA'}, 5, params);
+%% 
+% The available parameters are:
+% 
+% * *'c'* - The coefficient matrix with one column per reaction id and one row 
+% per added constraint (default: 1 for each element in *idList*)
+% * *'dsense'* - the sense vector with one element per added constraint ('E' 
+% for equality, 'L' for lower than, 'G' for greater than), or one element which 
+% is used for all constraints (default: 'L').
+% * *'ConstraintID'* - a cell array of strings with one element for each added 
+% constraint (default: ConstraintXYZ, with XYZ being the position in the ctrs 
+% vector)
+% * *checkDuplicates* - Whether to check for duplicate Constraints (they don't 
+% hurt, but they don't help). Note that duplicate IDs are still not allowed.
+% 
+% Coming back to our example, the first constraint we add is for the amount 
+% of aconA, which should be steady (i.e. not more than made available by the aconA 
+% variable). More precisely, the amount enzyme made available for ACONTa and ACONTb, 
+% should be balanced with the amount of enzyme made available by the aconA variable.
+
+model = addCOBRAConstraints(model,{'aconAtoACONTa','aconAtoACONTb','aconA'},0, 'c',[-1,-1,1],...
+    'dsense','E', 'ConstraintID', 'aconAAmount');
+%% 
+% The same constraint is introduced for aconB
+
+model = addCOBRAConstraints(model,{'aconBtoACONTa','aconBtoACONTb','aconB'},0, 'c',[-1,-1,1],...
+    'dsense','E', 'ConstraintID', 'aconBAmount');
+%% 
+% Next, we also add the efficiencies:
+
+model = addCOBRAConstraints(model,{'aconAtoACONTa','aconBtoACONTa','ACONTa'},0, 'c',[aconACit,aconBCit,-1],...
+    'dsense','E', 'ConstraintID', 'ACONTaFlux');
+model = addCOBRAConstraints(model,{'aconAtoACONTb','aconBtoACONTb','ACONTb'},0, 'c',[aconAAcon,aconBAcon,-1],...
+    'dsense','E', 'ConstraintID', 'ACONTbFlux');
+%% 
+% Finally, we have a a system, in which the two aconitase reactions are 
+% competing for the available enzymes. 
+%% Analysing the effects of the constraints
+% If we compare the results of a simple FBA optimization of the original model, 
+% and the constrained model:
+%%
+orig_sol = optimizeCbModel(model_orig)
+restricted_sol = optimizeCbModel(model)
+%% 
+% we can easily see that the obtained objective of the modified model is 
+% lower than that of the original model.
+% 
+% Values for additional variables are stored in the solution outputs *vars_v 
+% *(value used in the solution) and *vars_w *(reduced cost of the variable). For 
+% constraints the respective fields are: *ctrs_y *( fordual values for constraints) 
+% and *ctrs_s* (slacks for the constraints)
+%% Modifying variables and constraints
+% Variables and constraints can be altered by the functions changeCOBRAVariable 
+% and changeCOBRAConstraint, respectively. Modifications on a variable include 
+% the adjustment of upper and lower bounds (by the parameters lb/ub) as well as 
+% the objective value (c) and the descriptive name (parameter 'Name').
+% 
+% Modifying constraints allows the adjustment of the coefficients of the 
+% constraint (parameter 'c'), the directionality (parameter 'dsense') and right 
+% hand side of the constraint ( parameter 'd') as well as the name (same as for 
+% variables). There are several ways to update the coefficients: Either a full 
+% row (including both values for the C and the E matrix - if any) needs to be 
+% provided, or the IDs along with the coefficients (similar to the situation when 
+% generating the constraints) need to be provided. It is important to note that 
+% ALL coefficients will be reset if a constraint is modified using the changeCOBRAConstraint 
+% function.
+% 
+% An example of these functions is provided below:
+% 
+% If we increase the abundance of aconA (by increasing its upper bound)
+%%
+model = changeCOBRAVariable(model,'aconA','ub',aconAAmount*2);
+less_restricted_sol = optimizeCbModel(model)
+%% 
+% We can see, that the objective increases as more flux through the TCA 
+% is possible.
+% 
+% Similarily, if we reduce the efficiency of aconB on Citrate by 50%:
+
+model = changeCOBRAConstraints(model,'ACONTaFlux','idList',{'aconAtoACONTa','aconBtoACONTa','ACONTa'},...
+    'c',[aconACit,aconBCit*0.5,-1]);
+less_efficient_aconA = optimizeCbModel(model)
+%% 
+% We can again see the objective drop.
+% 
+% While we only used a very simple example for this tutorial, this interplay 
+% can improve predictive qualities substantially (for more have a look at e.g. 
+% [4])
+% 
+% 
+%% References
+% [1] Thiele I, Fleming RM, Bordbar A, Schellenberger J, Palsson BØ. Functional 
+% characterization of alternate optimal solutions of Escherichia coli's transcriptional 
+% and translational machinery. Biophys J. 98(10):2072-81 (2010). 
+% 
+% [2] The UniProt Consortium, UniProt: the universal protein knowledgebase, 
+% Nucleic Acids Res. 45: D158-D169 (2017)
+% 
+% [3]Jacek R. Wiśniewski, Dariusz Rakus, Quantitative analysis of the Escherichia 
+% coli proteome, Data in Brief 1, 7-11, (2014)
+% 
+% [4] Sánchez et al, Improving the phenotype predictions of a yeast genome-scale 
+% metabolic model by incorporating enzymatic constraints, Mol Sys Biol, 13:935 
+% (2017)
+% 
+%
+##### SOURCE END #####
+--></body></html>

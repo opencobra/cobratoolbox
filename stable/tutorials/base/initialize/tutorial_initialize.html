@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Initialise the COBRA Toolbox</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S6 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S7 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S9 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S10 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S13 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S17 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S18 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S19 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S20 { font-family: Helvetica, Arial, sans-serif; margin-left: 0px; margin-top: 10px; margin-bottom: 20px; margin-right: 0px;  }
+.S21 { text-align: left; line-height: 21px; white-space: pre-wrap; white-space: pre-wrap; margin-left: 56px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S22 { font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Initialise the COBRA Toolbox</span></h1><div class = "S3"><span class = "S2">Authors: Ronan Fleming, Leiden University.</span></div><div class = "S3"><span class = "S2">Reviewers: </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">MATERIALS - EQUIPMENT SETUP</span></h2><div class = "S3"><span class = "S5">Please ensure that all the required dependencies (e.g. , </span><span class = "S6">git</span><span class = "S5"> and </span><span class = "S6">curl</span><span class = "S5">) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span class = "S0">here</span></a><span class = "S5">.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">PROCEDURE </span></h2><div class = "S3"><span class = "S5">At the start of each MATLAB session, The COBRA Toolbox should be initialised. Navigate to the directory where you installed The COBRA Toolbox and initialise, but without updating it.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">updateToolbox=1;</span></div></div><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S11">initCobraToolbox(updateToolbox) </span><span class = "S12">% false, as we don't want to update</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="B330869C" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2019
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   <a href="http://opencobra.github.io/cobratoolbox" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">http://opencobra.github.io/cobratoolbox</a>
+                                                  | 
+
+ &gt; Checking if git is installed ...  Done (version: 2.17.2).
+ &gt; Checking if the repository is tracked using git ...  Done.
+ &gt; Checking if curl is installed ...  Done.
+ &gt; Checking if remote can be reached ...  Done.
+ &gt; Initializing and updating submodules (this may take a while)... Done.
+ &gt; Adding all the files of The COBRA Toolbox ...  Done.
+ &gt; Define CB map output... set to svg.
+ &gt; TranslateSBML is installed and working properly.
+ &gt; Configuring solver environment variables ...
+   - [----] ILOG_CPLEX_PATH: --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   - [---*] GUROBI_PATH: /Library/gurobi800/mac64/matlab
+   - [----] TOMLAB_PATH: --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   - [----] MOSEK_PATH: --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: pre; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   Done.
+ &gt; Checking available solvers and solver interfaces ... Done.
+ &gt; Setting default solvers ... Done.
+ &gt; Saving the MATLAB path ... Done.
+   - The MATLAB path was saved in the default location.
+
+ &gt; Summary of available solvers and solver interfaces
+
+			Support 	   LP 	 MILP 	   QP 	 MIQP 	  NLP
+	----------------------------------------------------------------------
+	gurobi       	active        	    1 	    1 	    1 	    1 	    -
+	ibm_cplex    	active        	    0 	    0 	    0 	    0 	    -
+	tomlab_cplex 	active        	    0 	    0 	    0 	    0 	    -
+	glpk         	active        	    1 	    1 	    - 	    - 	    -
+	mosek        	active        	    0 	    - 	    0 	    - 	    -
+	matlab       	active        	    1 	    - 	    - 	    - 	    1
+	cplex_direct 	active        	    0 	    0 	    0 	    - 	    -
+	dqqMinos     	active        	    1 	    - 	    - 	    - 	    -
+	pdco         	active        	    1 	    - 	    1 	    - 	    -
+	quadMinos    	active        	    1 	    - 	    - 	    - 	    -
+	qpng         	passive       	    - 	    - 	    1 	    - 	    -
+	tomlab_snopt 	passive       	    - 	    - 	    - 	    - 	    0
+	lp_solve     	legacy        	    1 	    - 	    - 	    - 	    -
+	----------------------------------------------------------------------
+	Total        	-             	    7 	    2 	    3 	    1 	    1
+
+ + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.
+
+
+ &gt; You can solve LP problems using: 'glpk' - 'pdco' 
+ &gt; You can solve MILP problems using: 'glpk' 
+ &gt; You can solve QP problems using: 'pdco' - 'qpng' 
+ &gt; You can solve MIQP problems using: 
+ &gt; You can solve NLP problems using: 
+
+ &gt; Checking for available updates ...
+ &gt; The COBRA Toolbox is up-to-date.</div></div></div></div></div><div class = "S14"><span class = "S5">The user who primarily uses the official openCOBRA repository may automatically initialise The COBRA Toolbox. To do so, edit the MATLAB </span><span class = "S6">startup.m</span><span class = "S5"> file and add a line with </span><span class = "S6">initCobraToolbox</span><span class = "S5"> </span><span class = "S5">so that The COBRA Toolbox is initialised each time that MATLAB is started. 					</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">if </span><span class = "S11">usejava(</span><span class = "S16">'desktop'</span><span class = "S11">) &amp;&amp; 0  </span><span class = "S12">% This line of code is to avoid execution in non gui-environments    </span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S11">    edit </span><span class = "S17">startup.m</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S18">end</span></div></div></div><h2 class = "S19"><span class = "S5">ANTICIPATED RESULTS</span></h2><div class = "S3"><span class = "S5">The initialisation step automatically checks the configuration of all of the required and some of the optional software dependencies. During initialisation, all git submodules are udpated. The solver paths are set when available and compatible. A system-dependent table with the solver status is returned, together with solver suggestions. The user is also presented with options to update The COBRA Toolbox when necessary. It is important to check if the solvers installed are satisfactory. A table stating the solver compatibility and availability is printed to the user during initialisation. </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">CRITICAL STEP</span></h2><div class = "S3"><span class = "S5">During initialisation, a check for software dependencies is made and reported to the command window. It is not necessary that all possible dependencies are satisfied before beginning to use the toolbox, e.g., satisfaction of a dependency on a multi-scale linear optimisation solver is not necessary for modelling with a mono-scale metabolic model. However, other software dependencies are essential to be satisfied, e.g., dependency on a linear optimisation solver must be satisfied for any method that uses flux balance analysis. </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">TROUBLESHOOTING</span></h2><ol class = "S20"><li class = "S21"><span class = "S0">Read the output of the initialisation script in the command window. Any warning or error messages, though often brief, will often point toward the source of the problem during initialisation if read literally. </span></li><li class = "S21"><span class = "S0">Verify that all software versions are supported and have been correctly installed. </span></li><li class = "S21"><span class = "S0">Ensure that you are using the latest version of The COBRA Toolbox by typing </span><span class = "S22">updateCobraToolbox</span></li><li class = "S21"><span class = "S0">Verify and test The COBRA Toolbox, as described in the "Verify and test The COBRA Toolbox" tutorial. </span></li><li class = "S21"><span class = "S0">Finally, if nothing else works, consult the COBRA Toolbox forum, as described in the "Engaging with The COBRA Toolbox community" tutorial.</span></li></ol></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Initialise the COBRA Toolbox*
+% *Authors: Ronan Fleming, Leiden University.*
+% 
+% *Reviewers: *
+%% MATERIALS - EQUIPMENT SETUP
+% Please ensure that all the required dependencies (e.g. , |git| and |curl|) 
+% of The COBRA Toolbox have been properly installed by following the installation 
+% guide <https://opencobra.github.io/cobratoolbox/stable/installation.html here>.
+%% PROCEDURE 
+% At the start of each MATLAB session, The COBRA Toolbox should be initialised. 
+% Navigate to the directory where you installed The COBRA Toolbox and initialise, 
+% but without updating it.
+%%
+updateToolbox=1;
+initCobraToolbox(updateToolbox) % false, as we don't want to update
+%% 
+% The user who primarily uses the official openCOBRA repository may automatically 
+% initialise The COBRA Toolbox. To do so, edit the MATLAB |startup.m| file and 
+% add a line with |initCobraToolbox| so that The COBRA Toolbox is initialised 
+% each time that MATLAB is started. 					
+
+if usejava('desktop') && 0  % This line of code is to avoid execution in non gui-environments    
+    edit startup.m
+end
+%% *ANTICIPATED RESULTS*
+% The initialisation step automatically checks the configuration of all of the 
+% required and some of the optional software dependencies. During initialisation, 
+% all git submodules are udpated. The solver paths are set when available and 
+% compatible. A system-dependent table with the solver status is returned, together 
+% with solver suggestions. The user is also presented with options to update The 
+% COBRA Toolbox when necessary. It is important to check if the solvers installed 
+% are satisfactory. A table stating the solver compatibility and availability 
+% is printed to the user during initialisation. 
+%% CRITICAL STEP
+% During initialisation, a check for software dependencies is made and reported 
+% to the command window. It is not necessary that all possible dependencies are 
+% satisfied before beginning to use the toolbox, e.g., satisfaction of a dependency 
+% on a multi-scale linear optimisation solver is not necessary for modelling with 
+% a mono-scale metabolic model. However, other software dependencies are essential 
+% to be satisfied, e.g., dependency on a linear optimisation solver must be satisfied 
+% for any method that uses flux balance analysis. 
+%% TROUBLESHOOTING
+% # Read the output of the initialisation script in the command window. Any 
+% warning or error messages, though often brief, will often point toward the source 
+% of the problem during initialisation if read literally. 
+% # Verify that all software versions are supported and have been correctly 
+% installed. 
+% # Ensure that you are using the latest version of The COBRA Toolbox by typing 
+% |updateCobraToolbox|
+% # Verify and test The COBRA Toolbox, as described in the "Verify and test 
+% The COBRA Toolbox" tutorial. 
+% # Finally, if nothing else works, consult the COBRA Toolbox forum, as described 
+% in the "Engaging with The COBRA Toolbox community" tutorial.
+##### SOURCE END #####
+--></body></html>

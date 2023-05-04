@@ -234,9 +234,19 @@
 h1  {font-size:0px}
 </style>
 <div style="margin:-30px; margin-right:-30px;">
-  <iframe src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/tutorials/reconstruction/recon2FBAmodel/iframe_tutorial_reconToFBAmodel2.html" width="100%" scrolling="yes" id="iFrameResizer0" style="overflow: visible; height: 228px;" frameborder="0"></iframe>
+  <iframe src="reconstruction/recon2FBAmodel/tutorial_reconToFBAmodel2.html" onload="onMyFrameLoad(this)" width="100%" scrolling="no" id="iFrame1" frameborder="0"></iframe>
 </div>
-
+<script>   
+  
+  function onMyFrameLoad() {
+      var iFrame = document.getElementById( 'iFrame1' );
+      let h = iFrame.contentWindow.document.body.scrollHeight;
+      let heightStyle = h.toString() + "px";
+      iFrame.style.height = heightStyle;
+        
+      console.log(iFrame.contentWindow.document.body.scrollHeight);
+  };
+  </script>
 <script type="text/javascript" src="../_static/js/iframeResizer.min.js"></script>
 <script type="text/javascript">
 

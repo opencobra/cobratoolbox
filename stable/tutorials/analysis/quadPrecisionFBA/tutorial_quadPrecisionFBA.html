@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Quadruple precision Flux Balance Analysis</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { text-align: center; line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S6 { min-height: 0px; font-style: italic; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S7 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S9 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S10 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S11 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S13 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(160, 32, 240); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S17 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S18 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 10px; margin-bottom: 9px; margin-right: 10px;  }
+.S19 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(34, 139, 34); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S20 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Quadruple precision Flux Balance Analysis</span></h1><h2 class = "S3"><span class = "S2">Author(s): Ronan M.T. Fleming,, Leiden University</span></h2><h2 class = "S3"><span class = "S2">Reviewer(s):</span></h2><h2 class = "S3"><span class = "S2">INTRODUCTION</span></h2><div class = "S4"><span class = "S2">In this tutorial, Flux Balance Analysis (FBA) is introduced using the E. coli core model, with functions in the COBRA Toolbox v3.0 [2].  </span></div><div class = "S4"><span class = "S2">Flux balance analysis is a solution to the optimisation problem</span></div><div class = "S5"><span style="vertical-align:-26px"><img src="data:image/png;base64,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" width="97.5" height="63" /></span></div><div class = "S4"><span class = "S2">where </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">c</span><span class = "S2"> is a vector of linear objective coefficients, </span><span style="font-family:Cambria, 'Times New Roman', serif; font-style: italic; font-weight: normal">S</span><span class = "S2"> is an m times n matrix of stoichiometric coefficients for m molecular species involved in n reactions. </span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAAkCAYAAADrXDbKAAAFJUlEQVRoQ+2aach1UxiGrw8ZQz5SZEqmP0iEzDImU8bPnExJ5pIx8/iDEBkzzzOhDGUOpUyFSPyREMk866pn1Wpbe599zvnOt9+TvertPb3r7LWeda97Pc99r/3Oom/zHIFZ83zGfkJ60DsgQQ96D3oHCHQwZc/0HvQOEOhgyp7pMwz07YBnspjeAuYAn3QQ5zhTLgXcAuyWDbIZ8Oo4g47z7CCmLwdcCewNPAgcDnw/zoQdPTsfcARwXcw/o0FfBLgCOAq4GDgL+Ksj4Maddn3gCUAizWjQlwRuAvaK1HLfuCvv8Pk1AeNfd6aDvhpwL7A8sAtgXp/WNjWgp2L6AnAA8MW0Ig5MDegnApcD1wInA7/2oI+PQJN6yYvoSVFQB824ILAhsBOwNbBxPPB8bNzjwJ/ZIMq5a4D9CnJuFeB0YM/oeyxieK8hCFXKRsBhwLbAysDnwBvA68DRwOotc3q+/jRlSUwsGgpPZafQuBD4pwmoJtDN43cBWwFbAi81DLQQcChwQnznUuApwIAE4Lj4+5FRI/KhjMHUdQfwA7BDKIyLIp25+LR5gncQ8HEhlsViwccDDwBXAR8AbuzBEdviQ0rGBYADQ+f7qD6lKiZynPQCEquxNYGeJJZ5fJApWjo2aJMARVam5oZcFsDXaf2Ub92kp4GFgTOBrwHZu3+cFEErnTrBMf1dAtwImBZ/ymKw/1Tg/CFB9+ubAq/ERqvi3q0gmnD6MVRetf8/G9AEuuy7s6UpSqB7rGTiN5WZ0livBYAe+bzlRa4EWi5dS/Vlg4jT9LY78GaBagk8u4bR6bsCkujJWNt3lbE9Rbc19LcGff5gxWnAufHTmKcGnKi04HeAfYGPGkDfHni20i+YslgGXx+/f8m+kwr+c7GpnpBqG0W9SMqz46eUz3OcNJGept9HTS9z2xQNA3odCy1S5xVAzwteaUMSBqOAnuNQytd5/yHA7YMAt78uvawF3A8sM4IpWjYKn+CtF2pBFWFrw/RhQU+pzQI8t0HPa00pnyfzuAbgCVUhDWx1oCdT1HRcq4OvGGnI4F6MTfsQ+Ayw2Fggpw30lM/rBMAewEPAUOaxDnRzuZKtrSlS+yr5Vop8q2T7O9uVSaYXFY1a3wJuDMeE9Bw3p4vNGVHbSvl8CeDqkKPeTylVfx5I85r0kov9NqYoD67ueG8R7J8E0/MiW6eOxGLYW8Z8M6v52jVr6LwqrpOxtfiXmG7+vRtQcw8yRQ6cF7KS0lEj+3fd5SRAN4YkSf2sg324suJRdHpeKzRIGsXUxMWTpZnTEJYU11Cg6/58Y2Qu3gcwLze1XDapZbXDX8YDydjoSFcAvqqRjKlwr92w0Um9lI6yVwZ6CtOYrtUY3o8YdKqeWJ2jhd1rgjY6PQddUyVxTJmS8RTgAuDYuG4Y6ga2xPQk9t1FLfwjlfuS0ga4WJngKfFuRCv8G7AN8DLwKHBz3GXvHFcESffn1wCOLbhq8vyORgAEW+PjafFoa/FTcwz1v7l9djDw7Yhh1VA1EkITY5opzVFdV+6kxcLxbDpdSWT8Xns7no7dgprH3JrpeX5MD7UR/S5aFmkOdgT+CBenu5R5Ftr0AsEFWKDPiVtLWejndC/ivPdEQdT9CdqtwObZKr4NNkuIHPh1oqCl96E6SV83as2VdSkGn1GZ+Ubs04ZjnCsyr0OM4wbA+avvkNuKjv7f6gakzol0D3oxPZFJ/++D9qB3wIAe9B70DhDoYMqe6T3oHSDQwZT/Ail6cTTUNUsTAAAAAElFTkSuQmCC" width="46.5" height="18" /></span><span class = "S2">are n times 1 vectors that are the lower and upper bounds on the n times 1 variable vector </span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAkCAYAAAB8DZEQAAABg0lEQVRIS+3Vv0tXYRQG8I851doUDS5CTjY4ZmO4aVMhGhGELSEIEdpghFCCQzQ2m5TgUk46BEESuIVDin9Bg0sgLkJx4L1w+fq9v77Dl4Z74XIv73vO87znec65d0AfroE+cGhJGqncytXK1UiBRsFtd/3/cl3BOzxOR93BDE5yR7+BTdxMa/E+hz9F5XUz/jKWsYifuI+jDoAhrOM2XuMlzpuQROwd7OIA93DYAXAVGxjFXeyXmVTUwmPYxjWMY68DJMC38BULOOuFZBifEGRT+JIDiYMF8LM6VUReUSWZHBOYTdJkPNeTHz+qvMgSikjyXfYCb1JCxM9jGg9wXGdgikgGsYIlvEr332R0yBgdFcbHWuVV9u0KggB7nzy4hLcJMTw5rUTPlV8UG0P4Ien/FJOI5yP8qktQZnzs3cJ3xNSvpSpW8bGuTFXGx342C9FpIc1nPK+aiW4VlnmSn5UgeILfTWSqU0k2KyN4iG+9EFR50ivmhbz299tIylauRnL9A8nCPyXKgQ04AAAAAElFTkSuQmCC" width="12.5" height="18" /></span><span class = "S2">of reaction rates (fluxes). The optimal objective value is </span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAAoCAYAAABEklK7AAADs0lEQVRoQ+3Yeah1YxQG8N+HyJTkk7EMGSNCURIh/CNFyOyTMfyDMmTKmFmIMmceUkLKLFOhlFCGJEOJTMksU0+tXadzz9E59+x9b3znrdO999x3r/U+71rrWc/aCywGa8FigNEU5P8lytNITiP5H7qBabqOGayDcfcIz5yNi/D3CHtb2dJWJJfGJVgBZ+IrHIazsC/ewtq4F1fg0VZOP6KRtkAuxGU4Hx+jAb0pDsXXWA4X4Ca8P+L5WtnWFsj+w6yMu/ABTsfvrZx2ppElcWJlSLJn4OoK5BZ4CBfizo4AxuyKuBTX4r25BrlXkdDueLVDkGvinqr9V+YSZLLjXOyEMO7nLYJMrZ+H9fEcfixfIbTPsAN+qBL5ufHbRbquhFvwDU7CLy2CjKk1cASOwTo9tr/FzbgBn/b67ALkxngAd+DqlgH2mlutLnNPfIQD8fogf12A3A1PVbq+2CHIbXEbLsd+lb651BkiowuQSdHU4gH4sCOQy1TPfQLPY5MqjdPwXb/PUUDG4M5VB9tVHaS430SchL5DAFnpj7cWtR9UymcYzh3xQs8/Dymm7N0fCRiBkRWfScnHsXn5erkncltXP35nXJC5oaTD9vUztfZXSbejq8hPwa9YpdTMPuXkwWrUw5p0Lnib6qNRRudUdHrPuASOx3V4t7IjEnGs9W+RjOPbsToO77v1JgonT0guaebXl/RLa8inv6Ya4Z+MORW/jYWQoe94VsWN2LsOkIbb6zwReKzAPz2u0579jcZNHcdff8uJbIveXVRRnBWRDYvkkUXPDyO/zyjmCYD1P3oGLi4ZeBS+79mwHu7Da7ONYmwNAtmQR6IYpyGSLleTjk8WK0dENGeL/0Q3TD12LTaHHgSyScUwZjMLdgmyqe83+trOuqV/H8FV+HO2hxgEMsNu1EqoOrNgl6maczcTSxh6/5omlioS2rKy6YvZAhyWrk1vGkQEk/ga9uwGuL/aSQR2poldqj2lfUSIT7QGRXKuQaa/hr33QEazt4v0XsKV+GMihEOIp2G7TPYnlNLo9bNWfX8Nvpz0AFi2eu2x1So2wmbI323YH8iuuyKtI8ST+ny2emTUR9IodB9Jl9caGW8mXU0vzOVmmgjBZJQaOgSP63BQui5fL6VSD1mZ7AN4w9KteSsXoNGSba0me2LzuOqNrb2yHCYGAjQ9KnJuK3yCZ4oMEsXo1zZX0ysz8Ea6/dSm8VGmkDb9zYutKch5ufYOnE4j2cGlzovJaSTn5do7cPoPrjXDKa2eav4AAAAASUVORK5CYII=" width="28.5" height="20" /></span><span class = "S2">  is always unique, but the optimal vector </span><span style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAoCAYAAADpE0oSAAACDElEQVRYR+3WTchNcRAG8N+LElsrWdgobEjKBlnJRliIhKTERiISEkn5Llla+y4pHxuSElJ2opCFtYWVhFI0mlOn655z73nfc73F/W/u7fznzDPzzDwzZ8Q4nZFxwjUE/mvMD6keUj0wBv655pqHubhRRdmgMl6OxTiGn93ABwW8AwuwB18HCbwQ5/Acz7AaQfcFzMaSzP5JEURbGU/CMuzGyo4MA+w0HuJ728CFvwlYj6v54DwOlgEHBTwZZzAFrzOITfjQWee2qC78LsJGHM6m2ov3uNULeGo2xLY0vJ+OPpVejGYJfc7PZ/F/ewKtxT18zrvIPKT1AN/K4N0yDuMjOICXSde7john4hKW4gSO4keT+VpFdRHlK6zD2w6n03AlJbMGL5qAhm0VcOjyLqanBkOb5RMavYlHdUOiLpgq4Fm4jggghsGdkpN4JybSPowq27qMCypXIOQQtBZnRtY3plTj2vbScbm7D+FkvhDZ7sIGbE6pNC3vb/sqqifieE6d2DDFlonaRgmik4OFrpunn0jqBkiMugC4mDWNcRgjME7U+Es/AFU2dcAxgS5nPXdiFeJ3K96MBbSO6riLRf4UMb3OZrancG0sFPdqrrgvtBodHrTexv6qxd6UgTqqy1oO0Piq+NgUYDQ1LrQ8B1vwuC3QXjVuE+cPX23v476DHQL3TdVYDf8/qn8BYNBbKdNZfl0AAAAASUVORK5CYII=" width="15" height="20" /></span><span class = "S2"> is usually not unique.</span></div><div class = "S4"><span class = "S2">In summary, the data is {c,S,l,u} and the variable being optimised is v.</span></div><h2 class = "S3"><span class = "S2">TIMING</span></h2><div class = "S4"><span class = "S6">&lt; 1 hrs</span></div><h2 class = "S3"><span class = "S2">MATERIALS - EQUIPMENT SETUP</span></h2><div class = "S4"><span class = "S2">Please ensure that all the required dependencies (e.g. , </span><span class = "S7">git</span><span class = "S2"> and </span><span class = "S7">curl</span><span class = "S2">) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span class = "S0">here</span></a><span class = "S2">. Please ensure that the COBRA Toolbox has been initialised (tutorial_initialize.mlx) and verify that the pre-packaged LP and QP solvers are functional (tutorial_verify.mlx).</span></div><h2 class = "S3"><span class = "S2">PROCEDURE</span></h2><h2 class = "S3"><span class = "S2">Load a multiscale model</span></h2><div class = "S4"><span class = "S2">To load a model from a MAT-file, you can simply use the filename (with or without file extension). </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S11">if </span><span class = "S12">~exist(</span><span class = "S13">'model'</span><span class = "S12">,</span><span class = "S13">'var'</span><span class = "S14">)</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S12">    load </span><span class = "S15">ME_matrix_GlcAer_WT.mat</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S14">    model = modelGlcOAer_WT;</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S12">    clear </span><span class = "S13">modelGlcOAer_WT</span><span class = "S14">;</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S16">end</span></div></div></div><h2 class = "S3"><span class = "S6">Check the scaling properties of a stoichiometric matrix</span></h2><div class = "S4"><span class = "S2">The scaling properties of the stoichiometric matrix using:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S14">[precisionEstimate, solverRecommendation] = checkScaling(model);</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="B1EC6BFF" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> ------------------------ Scaling summary report ------------------------
+
+ Estimation level:                             fine (scltol = 1.00)
+ Name of matrix:                               S
+ Size of matrix:
+        * metabolites:                         68298
+        * reactions:                           76664
+ Stoichiometric coefficients:
+        * Minimum (absolute non-zero value):   5.50e-05
+        * Maximum (absolute non-zero value):   8.01e+05
+ Lower bound coefficients:
+        * Minimum (absolute non-zero value):   1.00e+06
+        * Maximum (absolute non-zero value):   1.00e+09
+ Upper bound coefficients:
+        * Minimum (absolute non-zero value):   5.54e+00
+        * Maximum (absolute non-zero value):   1.00e+09
+ Row scaling coefficients:
+        * Minimum:                             1.67e-03 (row #: 24548)
+        * Maximum:                             7.90e+04 (row #: 66206)
+ Column scaling coefficients:
+        * Minimum:                             3.47e-04 (column #: 130)
+        * Maximum:                             1.13e+04 (column #: 24943)
+
+ ---------------------------------- Ratios --------------------------------
+
+ Ratio of stoichiometric coefficients:         1.46e+10
+ Order of magnitude diff. (stoich. coeff.):    10
+
+ Ratio of lower bounds:                        1.00e+03
+ Order of magnitude diff. (lower bounds):      3
+
+ Ratio of upper bounds:                        1.80e+08
+ Order of magnitude diff. (upper bounds):      8
+
+ Ratio of row scaling coefficients:            4.72e+07
+ Order of magnitude diff. (row scaling):       7
+
+ Ratio of column scaling coefficients:         3.27e+07
+ Order of magnitude diff. (column scaling):    7
+
+ --------------------------------------------------------------------------
+
+ -&gt; The model has badly scaled rows and columns. Quad precision is strongly recommended.
+
+    Set the Quad MINOS solver with: &gt;&gt; changeCobraSolver('quadMinos', 'LP')</div></div></div></div></div><div class = "S18"><span class = "S2">If </span><span class = "S7">precisionEstimate=='quad'</span><span class = "S2"> then the "model has badly scaled rows and colums" then a quad precision solver is required. </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S14">precisionEstimate</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="1B8A3CDB" data-testid="output_1" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">precisionEstimate = </span>'quad'</div></div></div></div></div></div><div class = "S18"><span class = "S2">Quad precision solvers come installed by default in COBRA Toolbox v3 so solverRecommendation should include  {'dqqMinos'} and   {'quadMinos'}</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S14">solverRecommendation</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsVariableStringElement" uid="43E002C2" data-testid="output_2" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">solverRecommendation = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">1×2 cell array</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    {'dqqMinos'}    {'quadMinos'}
+</div></div></div></div></div></div><div class = "S18"><span class = "S2">Change to a solution approach that combines double and quad precision to try to solve the LP problem.  If they are properly installed then </span><span class = "S7">solverOK == 1</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S10 lineNode"><span class = "S12">[solverOK, solverInstalled] = changeCobraSolver(</span><span class = "S13">'dqqMinos'</span><span class = "S12">,</span><span class = "S13">'LP'</span><span class = "S14">)</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="63CFDC55" data-testid="output_3" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> &gt; Solver dqqMinos is installed but not working properly.</div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="019967E2" data-testid="output_4" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">solverOK = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">logical</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   0
+</div></div></div><div class="inlineElement embeddedOutputsVariableStringElement" uid="BF489C41" data-testid="output_5" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">solverInstalled = <span class="headerElement" style="white-space: pre; font-style: italic; color: rgb(179, 179, 179); font-size: 12px;">logical</span></span></div><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   1
+</div></div></div></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%[solverOK, solverInstalled] = changeCobraSolver('quadMinos','LP')</span></div></div></div><div class = "S18"><span class = "S2">Further information on numerical characterisation of COBRA models can be found in </span><span class = "S7">tutorial_numCharact.mlx</span></div><h2 class = "S3"><span class = "S2">Solve a quad FBA problem</span></h2><div class = "S4"><span class = "S2">Solve a FBA problem in quad precision using </span><span class = "S7">optimizeCbModel</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S11">if </span><span class = "S14">solverOK</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S12">    FBAsolution = optimizeCbModel(model,</span><span class = "S13">'max'</span><span class = "S14">);</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S16">end</span></div></div></div><h2 class = "S3"><span class = "S2">TROUBLESHOOTING</span></h2><div class = "S4"><span class = "S2">Always check the value of </span><span class = "S7">solution.stat</span><span class = "S2">, which returns the status of the solution, even when using quad precision.</span></div><div class = "S4"><span class = "S7">solution.stat == 1 </span><span class = "S2"> means the FBA problem is solved successfully. Anything else and there is a problem.</span></div><div class = "S4"><span class = "S2">Although it does not happen often, there are many reasons why an FBA problem might not solve, so they are divided into three categories. </span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%      solution.stat - Solver status in standardized form:</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `-1` - No solution reported (timelimit, numerical problem etc)</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `1` - Optimal solution</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `2` - Unbounded solution</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `0` - Infeasible</span></div></div></div><div class = "S18"><span class = "S7">solution.stat == 0</span><span class = "S2">  means that the problem is overconstrainted and no feasible flux vector v exists. The constraints need to be relaxed before the problem will solve. See tutorial_relaxedFBA.mlx</span></div><div class = "S4"><span class = "S7">solution.stat = 2</span><span class = "S2">  means that the problem is underconstrained to the extent that the possible optimal value of the objective is unbounded, that is infinity, or minus infinity. This means that extra constraints need to be added, e.g., lower and upper bounds on the reaction rates.</span></div><div class = "S4"><span class = "S7">solution.stat = 1</span><span class = "S2">  means that the problem is more complicated than either of the above. It could be that the problem does, in principle, have a solution, but that the current solver cannot find one, so an industrial quality solver should be tested, e.g., gurobi. It could also mean that the FBA problem is poorly scaled so there are numerical problems solving it, or it could also be just slightly infeasible, in which case a higher precision solver will be required to solve the problem, e.g., a quadruple precision solver. The way each solver reports the nature of the problem varies between solvers, so checking </span><span class = "S7">solution.origStat</span><span class = "S2"> against the documentation that comes with each solver is necessary to figure out what the potential solution is.</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%    solution.stat - Solver status in standardized form:</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `-1` - No solution reported (timelimit, numerical problem etc)</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `1` - Optimal solution</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `2` - Unbounded solution</span></div></div><div class = 'inlineWrapper'><div class = "S10 lineNode"><span class = "S19">%                      * `0` - Infeasible</span></div></div></div><h2 class = "S3"><span class = "S6">Acknowledgments</span></h2><div class = "S4"><span class = "S6">Prof. Michael A. Saunders at Stanford University is responsible for the quad precision solvers that are included in the COBRA toolbox.</span></div><h2 class = "S3"><span class = "S2">REFERENCES</span></h2><div class = "S4"><span class = "S2">[1] P. E. Gill, W. Murray, M. A. Saunders and M. H. Wright (1987). Maintaining LU factors of a general sparse matrix, Linear Algebra and its Applications 88/89, 239-270.</span></div><div class = "S4"><span class = "S2">[2] Multiscale modeling of metabolism and macromolecular synthesis in E. coli and its application to the evolution of codon usage, Thiele et al., PLoS One, 7(9):e45635 (2012).</span></div><div class = "S4"><span class = "S2">[3] D. Ma, L. Yang, R. M. T. Fleming, I. Thiele, B. O. Palsson and M. A. Saunders, Reliable and efficient solution of genome-scale models of Metabolism and macromolecular Expression, Scientific Reports 7, 40863; doi: \url{10.1038/srep40863} (2017). </span><a href = "http://rdcu.be/oCpn."><span class = "S0">http://rdcu.be/oCpn.</span></a></div><div class = "S4"><span class = "S2">[4]. Laurent Heirendt &amp; Sylvain Arreckx, Thomas Pfau, Sebastian N. Mendoza, Anne Richelle, Almut Heinken, Hulda S. Haraldsdottir, Jacek Wachowiak, Sarah M. Keating, Vanja Vlasov, Stefania Magnusdottir, Chiam Yu Ng, German Preciat, Alise Zagare, Siu H.J. Chan, Maike K. Aurich, Catherine M. Clancy, Jennifer Modamio, John T. Sauls, Alberto Noronha, Aarash Bordbar, Benjamin Cousins, Diana C. El Assal, Luis V. Valcarcel, Inigo Apaolaza, Susan Ghaderi, Masoud Ahookhosh, Marouen Ben Guebila, Andrejs Kostromins, Nicolas Sompairac, Hoai M. Le, Ding Ma, Yuekai Sun, Lin Wang, James T. Yurkovich, Miguel A.P. Oliveira, Phan T. Vuong, Lemmer P. El Assal, Inna Kuperstein, Andrei Zinovyev, H. Scott Hinton, William A. Bryant, Francisco J. Aragon Artacho, Francisco J. Planes, Egils Stalidzans, Alejandro Maass, Santosh Vempala, Michael Hucka, Michael A. Saunders, Costas D. Maranas, Nathan E. Lewis, Thomas Sauter, Bernhard Ø. Palsson, Ines Thiele, Ronan M.T. Fleming, </span><span class = "S20">Creation and analysis of biochemical constraint-based models: the COBRA Toolbox v3.0</span><span class = "S2">, Nature Protocols, volume 14, pages 639–702, 2019 </span><a href = "https://doi.org/10.1038/s41596-018-0098-2"><span class = "S0">doi.org/10.1038/s41596-018-0098-2</span></a><span class = "S2">.</span></div><div class = "S4"><span class = "S6"></span></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% Quadruple precision Flux Balance Analysis
+%% Author(s): Ronan M.T. Fleming,, Leiden University
+%% Reviewer(s):
+%% INTRODUCTION
+% In this tutorial, Flux Balance Analysis (FBA) is introduced using the E. coli 
+% core model, with functions in the COBRA Toolbox v3.0 [2].  
+% 
+% Flux balance analysis is a solution to the optimisation problem
+% 
+% $$\begin{array}{ll}\textrm{max} & c^{T}v\\\text{s.t.} & Sv=b\\ & l\leq 
+% v\leq u\end{array}\end{equation}$$
+% 
+% where $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">c</mi></mrow></math>$ is a vector of linear objective coefficients, 
+% $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">S</mi></mrow></math>$ is an m times n matrix of stoichiometric 
+% coefficients for m molecular species involved in n reactions. $<math xmlns="http://www.w3.org/1998/Math/MathML" 
+% display="inline"><mrow><mi mathvariant="italic">l</mi><mtext> </mtext><mi mathvariant="normal">and</mi><mtext> 
+% </mtext><mi mathvariant="italic">u</mi><mtext> </mtext></mrow></math>$are n 
+% times 1 vectors that are the lower and upper bounds on the n times 1 variable 
+% vector $<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi 
+% mathvariant="italic">v</mi><mtext> </mtext></mrow></math>$of reaction rates 
+% (fluxes). The optimal objective value is $c^{T}v^{\star}$  is always unique, 
+% but the optimal vector $v^{\star}$ is usually not unique.
+% 
+% In summary, the data is {c,S,l,u} and the variable being optimised is v.
+%% TIMING
+% _< 1 hrs_
+%% MATERIALS - EQUIPMENT SETUP
+% Please ensure that all the required dependencies (e.g. , |git| and |curl|) 
+% of The COBRA Toolbox have been properly installed by following the installation 
+% guide <https://opencobra.github.io/cobratoolbox/stable/installation.html here>. 
+% Please ensure that the COBRA Toolbox has been initialised (tutorial_initialize.mlx) 
+% and verify that the pre-packaged LP and QP solvers are functional (tutorial_verify.mlx).
+%% PROCEDURE
+%% Load a multiscale model
+% To load a model from a MAT-file, you can simply use the filename (with or 
+% without file extension). 
+
+if ~exist('model','var')
+    load ME_matrix_GlcAer_WT.mat
+    model = modelGlcOAer_WT;
+    clear modelGlcOAer_WT;
+end
+%% _Check the scaling properties of a stoichiometric matrix_
+% The scaling properties of the stoichiometric matrix using:
+
+[precisionEstimate, solverRecommendation] = checkScaling(model);
+%% 
+% If |precisionEstimate=='quad'| then the "model has badly scaled rows and 
+% colums" then a quad precision solver is required. 
+
+precisionEstimate
+%% 
+% Quad precision solvers come installed by default in COBRA Toolbox v3 so 
+% solverRecommendation should include  {'dqqMinos'} and   {'quadMinos'}
+
+solverRecommendation
+%% 
+% Change to a solution approach that combines double and quad precision 
+% to try to solve the LP problem.  If they are properly installed then |solverOK 
+% == 1|
+
+[solverOK, solverInstalled] = changeCobraSolver('dqqMinos','LP')
+%[solverOK, solverInstalled] = changeCobraSolver('quadMinos','LP')
+%% 
+% Further information on numerical characterisation of COBRA models can 
+% be found in |tutorial_numCharact.mlx|
+%% Solve a quad FBA problem
+% Solve a FBA problem in quad precision using |optimizeCbModel|
+
+if solverOK
+    FBAsolution = optimizeCbModel(model,'max');
+end
+%% TROUBLESHOOTING
+% Always check the value of |solution.stat|, which returns the status of the 
+% solution, even when using quad precision.
+% 
+% |solution.stat == 1 | means the FBA problem is solved successfully. Anything 
+% else and there is a problem.
+% 
+% Although it does not happen often, there are many reasons why an FBA problem 
+% might not solve, so they are divided into three categories. 
+
+%      solution.stat - Solver status in standardized form:
+%                      * `-1` - No solution reported (timelimit, numerical problem etc)
+%                      * `1` - Optimal solution
+%                      * `2` - Unbounded solution
+%                      * `0` - Infeasible
+%% 
+% |solution.stat == 0|  means that the problem is overconstrainted and no 
+% feasible flux vector v exists. The constraints need to be relaxed before the 
+% problem will solve. See tutorial_relaxedFBA.mlx
+% 
+% |solution.stat = 2|  means that the problem is underconstrained to the 
+% extent that the possible optimal value of the objective is unbounded, that is 
+% infinity, or minus infinity. This means that extra constraints need to be added, 
+% e.g., lower and upper bounds on the reaction rates.
+% 
+% |solution.stat = 1|  means that the problem is more complicated than either 
+% of the above. It could be that the problem does, in principle, have a solution, 
+% but that the current solver cannot find one, so an industrial quality solver 
+% should be tested, e.g., gurobi. It could also mean that the FBA problem is poorly 
+% scaled so there are numerical problems solving it, or it could also be just 
+% slightly infeasible, in which case a higher precision solver will be required 
+% to solve the problem, e.g., a quadruple precision solver. The way each solver 
+% reports the nature of the problem varies between solvers, so checking |solution.origStat| 
+% against the documentation that comes with each solver is necessary to figure 
+% out what the potential solution is.
+
+%    solution.stat - Solver status in standardized form:
+%                      * `-1` - No solution reported (timelimit, numerical problem etc)
+%                      * `1` - Optimal solution
+%                      * `2` - Unbounded solution
+%                      * `0` - Infeasible
+%% _Acknowledgments_
+% _Prof. Michael A. Saunders at Stanford University is responsible for the quad 
+% precision solvers that are included in the COBRA toolbox._
+%% REFERENCES
+% [1] P. E. Gill, W. Murray, M. A. Saunders and M. H. Wright (1987). Maintaining 
+% LU factors of a general sparse matrix, Linear Algebra and its Applications 88/89, 
+% 239-270.
+% 
+% [2] Multiscale modeling of metabolism and macromolecular synthesis in E. 
+% coli and its application to the evolution of codon usage, Thiele et al., PLoS 
+% One, 7(9):e45635 (2012).
+% 
+% [3] D. Ma, L. Yang, R. M. T. Fleming, I. Thiele, B. O. Palsson and M. A. 
+% Saunders, Reliable and efficient solution of genome-scale models of Metabolism 
+% and macromolecular Expression, Scientific Reports 7, 40863; doi: \url{10.1038/srep40863} 
+% (2017). <http://rdcu.be/oCpn. http://rdcu.be/oCpn.>
+% 
+% [4]. Laurent Heirendt & Sylvain Arreckx, Thomas Pfau, Sebastian N. Mendoza, 
+% Anne Richelle, Almut Heinken, Hulda S. Haraldsdottir, Jacek Wachowiak, Sarah 
+% M. Keating, Vanja Vlasov, Stefania Magnusdottir, Chiam Yu Ng, German Preciat, 
+% Alise Zagare, Siu H.J. Chan, Maike K. Aurich, Catherine M. Clancy, Jennifer 
+% Modamio, John T. Sauls, Alberto Noronha, Aarash Bordbar, Benjamin Cousins, Diana 
+% C. El Assal, Luis V. Valcarcel, Inigo Apaolaza, Susan Ghaderi, Masoud Ahookhosh, 
+% Marouen Ben Guebila, Andrejs Kostromins, Nicolas Sompairac, Hoai M. Le, Ding 
+% Ma, Yuekai Sun, Lin Wang, James T. Yurkovich, Miguel A.P. Oliveira, Phan T. 
+% Vuong, Lemmer P. El Assal, Inna Kuperstein, Andrei Zinovyev, H. Scott Hinton, 
+% William A. Bryant, Francisco J. Aragon Artacho, Francisco J. Planes, Egils Stalidzans, 
+% Alejandro Maass, Santosh Vempala, Michael Hucka, Michael A. Saunders, Costas 
+% D. Maranas, Nathan E. Lewis, Thomas Sauter, Bernhard Ø. Palsson, Ines Thiele, 
+% Ronan M.T. Fleming, *Creation and analysis of biochemical constraint-based models: 
+% the COBRA Toolbox v3.0*, Nature Protocols, volume 14, pages 639–702, 2019 <https://doi.org/10.1038/s41596-018-0098-2 
+% doi.org/10.1038/s41596-018-0098-2>.
+% 
+% __
+##### SOURCE END #####
+--></body></html>

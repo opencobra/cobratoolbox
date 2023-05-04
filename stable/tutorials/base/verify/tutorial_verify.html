@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Verify the COBRA Toolbox</title><style type="text/css">
+* {margin: 0; padding: 0;}
+body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
+h1, h2 {font-weight: normal;}
+.content { padding: 30px; }
+
+.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
+.S2 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S3 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
+.S4 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
+.S5 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S6 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S7 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S8 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
+.S9 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S10 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+.S11 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S12 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
+.S13 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
+.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
+.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
+
+.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
+.LineNodeBlock+.paragraphNode {margin-top: 10px;}
+.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
+.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
+.lineNode .textBox {white-space: pre;}
+.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
+.outputRegion {}
+.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
+.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+.outputParagraph:empty {margin: 0;}
+.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
+.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
+.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
+.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
+.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
+.embeddedOutputsSymbolicElement { overflow: initial !important;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
+.veSpecifier {}
+.veContainer {}
+.veSpecifierBox {height: 400px; width: 500px;}
+.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
+.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
+.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
+.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
+.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
+.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
+.veMetaSummary {font-style: italic;}
+.veSpecifier .veTable .scroller {overflow: hidden;}
+.veSpecifier .veTable:hover .scroller {overflow: auto;}
+.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.veSpecifier .veVariableName {padding-top: 2px;}
+.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
+.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
+.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
+.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
+.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
+.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
+.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
+.veSpecifier .veTable .dataBody {color: #000000;}
+.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
+.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
+.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
+.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
+.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
+.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
+.variableElement {}
+.embeddedOutputsVariableElement.inlineElement {}
+.inlineElement .variableElement {}
+.variableNameElement {margin-bottom: 3px; display: inline-block;}
+.variableValue { width: 100% !important; }
+.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
+.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
+.embeddedOutputsMatrixElement.inlineElement {}
+.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
+.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
+.inlineElement .matrixElement {max-height: 300px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
+.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
+.matrixElement { max-height: none !important; }
+.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
+.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
+.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
+.alertPlugin-onTextLine {visibility: hidden;}
+.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
+.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
+.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
+.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
+.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
+.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
+</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Verify the COBRA Toolbox</span></h1><div class = "S3"><span class = "S2">Authors: Ronan Fleming, Leiden University</span></div><div class = "S3"><span class = "S2">Reviewers: </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">MATERIALS - EQUIPMENT SETUP</span></h2><div class = "S3"><span class = "S5">Please ensure that all the required dependencies (e.g. , </span><span class = "S6">git</span><span class = "S5"> and </span><span class = "S6">curl</span><span class = "S5">) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span class = "S0">here</span></a><span class = "S5">.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">PROCEDURE </span></h2></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">Check available optimisation solvers 	</span></h2><div class = "S3"><span class = "S5">At initialisation, one from a set of available optimisation solvers will be selected as the default solver. If </span><span class = "S6">Gurobi</span><span class = "S5"> is installed, it is used as the default solver for LP, QP and MILP problems. Otherwise, the </span><span class = "S6">GLPK</span><span class = "S5"> solver is selected by for LP and MILP problems and QPNG is selected for QP problems. Check the currently selected solvers with:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">changeCobraSolver</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="DF3B31D2" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Defined solvers are:
+    CBT_LP_SOLVER: glpk
+    CBT_MILP_SOLVER: glpk
+    CBT_QP_SOLVER: qpng</div></div></div></div></div><h2 class = "S12"><span class = "S5">ANTICIPATED RESULTS </span></h2><div class = "S3"><span class = "S5">A list of solvers assigned to solve each class of optimisation solver is returned. 				</span></div><h2 class = "S12"><span class = "S5">CRITICAL STEP</span></h2><div class = "S3"><span class = "S5">A dependency on at least one linear optimisation solver must be satisfied for flux balance analysis. </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">Verify a basic installation of the COBRA Toolbox</span></h2><div class = "S3"><span class = "S5">Test if flux balance analysis works</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">testFBA</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="92801610" data-testid="output_1" data-width="984" style="width: 1014px; max-height: 392px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Testing flux balance analysis using glpk ... 
+&gt;&gt; Optimal minimum 1-norm solution
+BiomassEcoli        	      0.9219
+EX_co2(e)           	       21.78
+EX_glc(e)           	         -10
+EX_h2o(e)           	       41.29
+EX_h(e)             	       8.428
+EX_nh4(e)           	      -9.851
+EX_o2(e)            	      -19.93
+EX_pi(e)            	     -0.8405
+EX_so4(e)           	     -0.2149
+
+&gt;&gt; Optimal solution on fructose
+BiomassEcoli        	      0.9219
+EX_co2(e)           	       21.78
+EX_glc(e)           	         -10
+EX_h2o(e)           	       41.29
+EX_h(e)             	       8.428
+EX_nh4(e)           	      -9.851
+EX_o2(e)            	      -19.93
+EX_pi(e)            	     -0.8405
+EX_so4(e)           	     -0.2149
+
+&gt;&gt; Optimal anaerobic solution
+
+&gt;&gt; Optimal ethanol secretion rate solution 
+Done.</div></div></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10"></span></div></div><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">testSolveCobraLP</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="4A0EBD8C" data-testid="output_2" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Running dummyModel with solveCobraLP using glpk ... 
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+Original LP has 2 rows, 2 columns, 4 non-zeros
+Objective value = 600
+OPTIMAL SOLUTION FOUND BY LP PRESOLVER
+
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+Done.
+   Running ecoli with solveCobraLP using glpk ... Done.
+   Running dummyModel with solveCobraLP using pdco ... 
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.018898 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.010743 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.019409 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+Done.
+   Running ecoli with solveCobraLP using pdco ... Done.
+
+Testing model with linear constraint matrix that has 72 rows and 95 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... Done.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.009595       0.873922       0.113308       0.091665                glpk	                       default
+  2       0.031681       0.873922       0.113047       0.235520                pdco	                       default
+
+Testing model with linear constraint matrix that has 2 rows and 2 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... 
+Step lengths too smallDone.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.011557     600.000000      -0.000000    -200.000000                glpk	                       default
+  2       0.009231     600.000000       0.000000    -200.000000                pdco	                       default
+
+Testing model with linear constraint matrix that has 1 rows and 1 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... Done.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.013073       1.000000       1.000000      -0.000000                glpk	                       default
+  2       0.062806       1.000000       1.000000       0.000000                pdco	                       default
+   Running optimalityConditions tests in solveCobraLP using pdco ...  Done.
+   Running optimalityConditions tests in solveCobraLP using glpk ...  Done.</div></div></div></div></div><h2 class = "S12"><span class = "S5">(Optional) Verify and test the entire COBRA Toolbox</span></h2><h2 class = "S12"><span class = "S5">TIMING ∼30 min</span></h2><div class = "S3"><span class = "S5">Optionally test the functionality of The COBRA Toolbox locally, especially if one encounters an error running a function. The test suite runs tailored tests that verify the output and proper execution of core functions on the locally configured system. The full test suite can be invoked by typing:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">testCOBRAToolbox=0;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S14">if </span><span class = "S10">testCOBRAToolbox</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">    </span><span class = "S15">t</span><span class = "S10">estAll</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S16">end</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">ANTICIPATED RESULTS</span></h2><div class = "S3"><span class = "S5">The test suite starts by initialising The COBRA Toolbox and thereafter, all of the tests are run. At the end of the test run, a comprehensive summary table is presented in which the respective tests and their test outcome is shown. On a properly configured system that is compatible with the most recent version of The COBRA Toolbox, all tests should pass.</span></div><h2 class = "S12"><span class = "S5">TROUBLESHOOTING</span></h2><div class = "S3"><span class = "S5">If some third party dependencies are not properly installed, some tests may fail. The test suite, despite some tests failing, is not interrupted. The tests that fail are listed with a false status in the column Passed. The specific test can then be run individually to determine the exact cause of the error. If the error can be fixed, follow the tutorial on how to contribute to The COBRA Toolbox and contribute a fix.</span></div></div></div>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Verify the COBRA Toolbox*
+% *Authors: Ronan Fleming, Leiden University*
+% 
+% *Reviewers: *
+%% MATERIALS - EQUIPMENT SETUP
+% Please ensure that all the required dependencies (e.g. , |git| and |curl|) 
+% of The COBRA Toolbox have been properly installed by following the installation 
+% guide <https://opencobra.github.io/cobratoolbox/stable/installation.html here>.
+%% PROCEDURE 
+%% Check available optimisation solvers 	
+% At initialisation, one from a set of available optimisation solvers will be 
+% selected as the default solver. If |Gurobi| is installed, it is used as the 
+% default solver for LP, QP and MILP problems. Otherwise, the |GLPK| solver is 
+% selected by for LP and MILP problems and QPNG is selected for QP problems. Check 
+% the currently selected solvers with:
+%%
+changeCobraSolver
+%% ANTICIPATED RESULTS 
+% A list of solvers assigned to solve each class of optimisation solver is returned. 				
+%% CRITICAL STEP
+% A dependency on at least one linear optimisation solver must be satisfied 
+% for flux balance analysis. 
+%% Verify a basic installation of the COBRA Toolbox
+% Test if flux balance analysis works
+%%
+testFBA
+
+testSolveCobraLP
+%% (Optional) Verify and test the entire COBRA Toolbox
+%% TIMING ∼30 min
+% Optionally test the functionality of The COBRA Toolbox locally, especially 
+% if one encounters an error running a function. The test suite runs tailored 
+% tests that verify the output and proper execution of core functions on the locally 
+% configured system. The full test suite can be invoked by typing:
+
+testCOBRAToolbox=0;
+if testCOBRAToolbox
+    testAll
+end
+%% ANTICIPATED RESULTS
+% The test suite starts by initialising The COBRA Toolbox and thereafter, all 
+% of the tests are run. At the end of the test run, a comprehensive summary table 
+% is presented in which the respective tests and their test outcome is shown. 
+% On a properly configured system that is compatible with the most recent version 
+% of The COBRA Toolbox, all tests should pass.
+%% TROUBLESHOOTING
+% If some third party dependencies are not properly installed, some tests may 
+% fail. The test suite, despite some tests failing, is not interrupted. The tests 
+% that fail are listed with a false status in the column Passed. The specific 
+% test can then be run individually to determine the exact cause of the error. 
+% If the error can be fixed, follow the tutorial on how to contribute to The COBRA 
+% Toolbox and contribute a fix.
+##### SOURCE END #####
+--></body></html>
