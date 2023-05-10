@@ -26,6 +26,7 @@ jobs:
           
           # Change the graphics driver
           export MESA_LOADER_DRIVER_OVERRIDE=i965
+          
           # Run your MATLAB script
           chmod +x run_matlab.sh
           ./run_matlab.sh
