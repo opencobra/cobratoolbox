@@ -16,6 +16,11 @@ jobs:
 
       - name: Convert mlx files to PDF and HTML
         run: |
+          # Start Xvfb on display :99
+          sudo Xvfb :99 &
+          # Set the DISPLAY environment variable
+          export DISPLAY=:99
+          # Run your MATLAB script
           chmod +x run_matlab.sh
           ./run_matlab.sh
 
