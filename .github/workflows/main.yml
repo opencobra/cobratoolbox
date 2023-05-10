@@ -23,6 +23,9 @@ jobs:
           sudo Xvfb :99 &
           # Set the DISPLAY environment variable
           export DISPLAY=:99
+          
+          # Change the graphics driver
+          export MESA_LOADER_DRIVER_OVERRIDE=i965
           # Run your MATLAB script
           chmod +x run_matlab.sh
           ./run_matlab.sh
