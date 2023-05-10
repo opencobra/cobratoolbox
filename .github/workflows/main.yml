@@ -16,6 +16,7 @@ jobs:
 
       - name: Convert mlx files to PDF and HTML
         run: |
+          chmod +x run_matlab.sh
           ./run_matlab.sh
 
       - name: Commit and push the changes
