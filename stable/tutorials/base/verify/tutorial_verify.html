@@ -1,126 +1,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="MATLAB R2016a"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><title>Verify the COBRA Toolbox</title><style type="text/css">
-* {margin: 0; padding: 0;}
-body {text-align: start; line-height: 17.2339992523193px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Consolas, Inconsolata, Menlo, monospace; font-style: normal; font-size: 14px; font-weight: normal; text-decoration: none; white-space: normal; }
-h1, h2 {font-weight: normal;}
-.content { padding: 30px; }
-
-.S0 { margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S1 { line-height: 26.3999996185303px; min-height: 24px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-size: 22px; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 15px; margin-right: 10px;  }
-.S2 { min-height: 0px; font-weight: bold; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S3 { line-height: 21px; min-height: 17px; white-space: pre-wrap; font-family: Helvetica, Arial, sans-serif; white-space: pre-wrap; margin-left: 4px; margin-top: 2px; margin-bottom: 9px; margin-right: 10px;  }
-.S4 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 3px; margin-bottom: 9px; margin-right: 10px;  }
-.S5 { min-height: 0px; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S6 { min-height: 0px; font-family: monospace; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S7 { min-height: 0px; color: rgb(0, 95, 206); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S8 { margin-left: 3px; margin-top: 10px; margin-bottom: 10px; margin-right: 3px;  }
-.S9 { line-height: 15.5926666259766px; min-height: 18px; white-space: nowrap; font-size: 12.6666669845581px; white-space: nowrap; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S10 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
-.S11 { color: rgb(64, 64, 64); margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S12 { line-height: 20.576000213623px; min-height: 20px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; white-space: pre-wrap; margin-left: 4px; margin-top: 15px; margin-bottom: 9px; margin-right: 10px;  }
-.S13 { margin-left: 3px; margin-top: 10px; margin-bottom: 4px; margin-right: 3px;  }
-.S14 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S15 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px;  }
-.S16 { line-height: 15.5926675796509px; min-height: 0px; white-space: pre; color: rgb(0, 0, 255); font-size: 12.6666679382324px; white-space: pre; margin-left: 0px; margin-top: 0px; margin-bottom: 0px; margin-right: 45px;  }
-
-.LineNodeBlock {margin: 10px 0 10px 0; background-color: #F7F7F7;}
-.LineNodeBlock+.paragraphNode {margin-top: 10px;}
-.lineNode {padding-left: 10px; border-left: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
-.inlineWrapper:first-child .lineNode,.inlineWrapper.outputs+.inlineWrapper .lineNode {padding-top: 5px; border-top: 1px solid #E9E9E9;}
-.inlineWrapper:last-child .lineNode,.inlineWrapper.outputs .lineNode {padding-bottom: 5px; border-bottom: 1px solid #E9E9E9;}
-.lineNode .textBox {white-space: pre;}
-.outputGroup {margin: 2px 0 2px 0; padding: 2px 2px 2px 4px;}
-.outputRegion {}
-.outputParagraph {color: rgba(64, 64, 64, 1); padding: 10px 0 6px 17px; background: white; overflow-x: hidden;}
-.inlineWrapper:last-child .outputParagraph {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
-.outputParagraph:empty {margin: 0;}
-.inlineElement .symbolicElement {margin-top: 1px; margin-bottom: 1px;}
-.embeddedOutputsSymbolicElement .MathEquation {margin-top: 4px; margin-bottom: 4px;}
-.embeddedOutputsSymbolicElement .MathEquation.displaySymbolicElement {margin-left: 15px;}
-.embeddedOutputsSymbolicElement .MathEquation.inlineSymbolicElement {}
-.embeddedOutputsSymbolicElement {overflow-x: auto; overflow-y: hidden;}
-.embeddedOutputsSymbolicElement { overflow: initial !important;}
-.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre; word-wrap: initial; min-height: 18px; max-height: 250px; overflow: auto;}
-.textElement,.rtcDataTipElement .textElement {padding-top: 3px;}
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2023a"><title>Verify the COBRA Toolbox</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 0 10px 0; }
+.S3 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { color: rgb(33, 33, 33); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsErrorElement .diagnosticMessage-errorType {    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsWarningElement .diagnosticMessage-warningType {    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2022 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: var(--mw-color-matlabWarning);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: var(--mw-color-matlabWarning);    text-decoration: underline;}
+.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-warningType,.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: var(--mw-color-matlabWarning) !important;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: var(--mw-color-matlabErrors);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: var(--mw-color-matlabErrors);    text-decoration: underline;}
+.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-errorType,.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: var(--mw-color-matlabErrors) !important;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: pre;    word-wrap:  initial;    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsTextElement .textElement,.embeddedOutputsVariableStringElement .textElement {    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 2px;}
 .embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
 .inlineElement .textElement {}
-.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement { max-height: none !important; overflow: initial !important;}
-.veSpecifier {}
-.veContainer {}
-.veSpecifierBox {height: 400px; width: 500px;}
-.veSpecifier .veTable {padding-top: 3px; padding-bottom: 4px;}
-.veSpecifierBox .veSpecifier .veContainer {position: relative; width: 100%; height: 370px;}
-.veSpecifierBox .dijitDialogPaneContent {width: 97% !important; height: 88% !important;}
-.veSpecifier .veTable .rowHeadersWrapper {padding-bottom: 0;}
-.veSpecifier .veTable .scroller .variableEditorRenderers {padding-right: 3px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;}
-.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {visibility: hidden; z-index: 0;}
-.veMetaSummary {font-style: italic;}
-.veSpecifier .veTable .scroller {overflow: hidden;}
-.veSpecifier .veTable:hover .scroller {overflow: auto;}
-.veSpecifier .veVariableName,.veSpecifier .veDimensionFont {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
-.veSpecifier .veVariableName {padding-top: 2px;}
-.veSpecifier .veDimensionFont {font-style: italic; color: #9A9A9A;}
-.veSpecifier .scroller::-webkit-scrollbar-track {background-color: white;}
-.veSpecifier .scroller::-webkit-scrollbar-corner {background-color: white;}
-.veSpecifier .veTable .topRowHeaderWrapper {border: none; background-color: #F8F9FA;}
-.veSpecifier .mw_type_ListBase.showCellBorders,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper,.veSpecifier .veTable .verticalScrollSpacer,.veSpecifier .veTable .horizontalScrollSpacer {border: none;}
-.veSpecifier .veTable .dataScrollerNode {border: 1px solid #BFBFBF;}
-.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode,.veSpecifier .veTable .dataBody {font-family: Arial; font-size: 13px;}
-.veSpecifier .veTable .columnHeaderNode,.veSpecifier .veTable .rowHeaderNode {color: #7F7F7F;}
-.veSpecifier .veTable .dataBody {color: #000000;}
-.veSpecifier .veTable .columnHeaderNode .cell .drag,.veSpecifier .veTable .columnHeaderNode .cell .header,.veSpecifier .veTable .topHeaderWrapper,.veSpecifier .veTable .bottomRowHeaderWrapper {background-color: #F8F9FA;}
-.veSpecifier .veTable .columnHeaderNode .cell .dragBorder {border-right: 1px solid #F8F9FA;}
-.veSpecifier .veTable .rowHeaderNode .cell {padding-top: 3px; text-align: center; border-bottom: 1px solid #F8F9FA;}
-.veSpecifier .veTable .dataBody .cell .plainText {text-align: right;}
-.veSpecifier .veTable .dataBody .row .cell {border-bottom: 1px solid #E9E9E9; border-right: 1px solid #E9E9E9;}
-.embeddedOutputsVariableElement {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; min-height: 18px; max-height: 250px; overflow: auto;}
-.variableElement {}
-.embeddedOutputsVariableElement.inlineElement {}
-.inlineElement .variableElement {}
-.variableNameElement {margin-bottom: 3px; display: inline-block;}
-.variableValue { width: 100% !important; }
-.embeddedOutputsMatrixElement {min-height: 18px; box-sizing: border-box; font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
-.embeddedOutputsMatrixElement .matrixElement,.rtcDataTipElement .matrixElement {position: relative;}
-.matrixElement .variableValue,.rtcDataTipElement .matrixElement .variableValue {white-space: pre; display: inline-block; vertical-align: top; overflow: hidden;}
-.embeddedOutputsMatrixElement.inlineElement {}
-.embeddedOutputsMatrixElement.inlineElement .topHeaderWrapper {display: none;}
-.embeddedOutputsMatrixElement.inlineElement .veTable .body {padding-top: 0 !important; max-height: 100px;}
-.inlineElement .matrixElement {max-height: 300px;}
-.embeddedOutputsMatrixElement .matrixElement .valueContainer,.rtcDataTipElement .matrixElement .valueContainer {white-space: nowrap; margin-bottom: 3px;}
-.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis.hide,.embeddedOutputsMatrixElement .matrixElement .verticalEllipsis.hide,.rtcDataTipElement .matrixElement .valueContainer .horizontalEllipsis.hide,.rtcDataTipElement .matrixElement .verticalEllipsis.hide {display: none;}
-.embeddedOutputsMatrixElement .matrixElement .valueContainer .horizontalEllipsis {margin-bottom: -3px;}
-.matrixElement { max-height: none !important; }
-.dijitTooltipDialog .dijitTooltipContainer .dijitTooltipContents .alertPlugin-alertMessage {min-width: 12px; max-width: 400px; max-height: 300px; overflow: auto;}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar {width: 11px; height: 11px;}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-track {background-color: rgba(0, 0, 0, 0);}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-corner {background-color: rgba(0, 0, 0, 0);}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {border-radius: 7px; background-color: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0); background-clip: padding-box;}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
-.dijitTooltipDialog .alertPlugin-alertMessage::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0);}
-.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb {background-color: rgba(0, 0, 0, 0.1);}
-.dijitTooltipDialog .alertPlugin-alertMessage:hover::-webkit-scrollbar-thumb:hover {background-color: rgba(0, 0, 0, 0.2);}
-.alertPlugin-alertLine {position: absolute; display: initial; width: 40px; text-align: right; cursor: text;}
-.alertPlugin-onTextLine {visibility: hidden;}
-.alertPlugin-hasTooltip .alertPlugin-warningImg,.alertPlugin-hasTooltip .alertPlugin-errorImg {cursor: pointer;}
-.alertPlugin-alertLine .alertPlugin-warningElement,.alertPlugin-alertLine .alertPlugin-errorElement {display: inline-block; margin-right: 4px;}
-.alertPlugin-isStale {-webkit-filter: opacity(0.4) grayscale(80%); filter: opacity(0.4) grayscale(80%);}
-.diagnosticMessage-wrapper {font-family: Consolas, Inconsolata, Menlo, monospace; font-size: 12px;}
-.diagnosticMessage-wrapper.diagnosticMessage-warningType {color: rgb(255,100,0);}
-.diagnosticMessage-wrapper.diagnosticMessage-warningType a {color: rgb(255,100,0); text-decoration: underline;}
-.diagnosticMessage-wrapper.diagnosticMessage-errorType {color: rgb(230,0,0);}
-.diagnosticMessage-wrapper.diagnosticMessage-errorType a {color: rgb(230,0,0); text-decoration: underline;}
-.diagnosticMessage-wrapper .diagnosticMessage-messagePart {white-space: pre-wrap;}
-.diagnosticMessage-wrapper .diagnosticMessage-stackPart {white-space: pre;}
-.embeddedOutputsWarningElement{min-height: 18px; max-height: 250px; overflow: auto;}
-.embeddedOutputsWarningElement.inlineElement {}
-.embeddedOutputsErrorElement {min-height: 18px; max-height: 250px; overflow: auto;}
-.embeddedOutputsErrorElement.inlineElement {}
-.variableNameElement .headerElement {color: rgb(179, 179, 179); font-style: italic;}
-.variableNameElement .headerElement .headerDataType {color: rgb(147, 176, 230);}
-</style></head><body><div class = "content"><div class = 'SectionBlock containment active'><h1 class = "S1"><span class = "S2">Verify the COBRA Toolbox</span></h1><div class = "S3"><span class = "S2">Authors: Ronan Fleming, Leiden University</span></div><div class = "S3"><span class = "S2">Reviewers: </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">MATERIALS - EQUIPMENT SETUP</span></h2><div class = "S3"><span class = "S5">Please ensure that all the required dependencies (e.g. , </span><span class = "S6">git</span><span class = "S5"> and </span><span class = "S6">curl</span><span class = "S5">) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span class = "S0">here</span></a><span class = "S5">.</span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">PROCEDURE </span></h2></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">Check available optimisation solvers 	</span></h2><div class = "S3"><span class = "S5">At initialisation, one from a set of available optimisation solvers will be selected as the default solver. If </span><span class = "S6">Gurobi</span><span class = "S5"> is installed, it is used as the default solver for LP, QP and MILP problems. Otherwise, the </span><span class = "S6">GLPK</span><span class = "S5"> solver is selected by for LP and MILP problems and QPNG is selected for QP problems. Check the currently selected solvers with:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">changeCobraSolver</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement" uid="DF3B31D2" data-testid="output_0" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Defined solvers are:
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S5 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S6 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span style=' font-weight: bold;'>Verify the COBRA Toolbox</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Authors: Ronan Fleming, Leiden University</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Reviewers: </span></div><h2  class = 'S2'><span>MATERIALS - EQUIPMENT SETUP</span></h2><div  class = 'S1'><span>Please ensure that all the required dependencies (e.g. , </span><span style=' font-family: monospace;'>git</span><span> and </span><span style=' font-family: monospace;'>curl</span><span>) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span>here</span></a><span>.</span></div><h2  class = 'S2'><span>PROCEDURE </span></h2><h2  class = 'S2'><span>Check available optimisation solvers 	</span></h2><div  class = 'S1'><span>At initialisation, one from a set of available optimisation solvers will be selected as the default solver. If </span><span style=' font-family: monospace;'>Gurobi</span><span> is installed, it is used as the default solver for LP, QP and MILP problems. Otherwise, the </span><span style=' font-family: monospace;'>GLPK</span><span> solver is selected by for LP and MILP problems and QPNG is selected for QP problems. Check the currently selected solvers with:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre"><span >changeCobraSolver</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="FE8C2D17" prevent-scroll="true" data-testid="output_0" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" data-previous-available-width="1115" data-previous-scroll-height="61" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">Defined solvers are:
     CBT_LP_SOLVER: glpk
     CBT_MILP_SOLVER: glpk
-    CBT_QP_SOLVER: qpng</div></div></div></div></div><h2 class = "S12"><span class = "S5">ANTICIPATED RESULTS </span></h2><div class = "S3"><span class = "S5">A list of solvers assigned to solve each class of optimisation solver is returned. 				</span></div><h2 class = "S12"><span class = "S5">CRITICAL STEP</span></h2><div class = "S3"><span class = "S5">A dependency on at least one linear optimisation solver must be satisfied for flux balance analysis. </span></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">Verify a basic installation of the COBRA Toolbox</span></h2><div class = "S3"><span class = "S5">Test if flux balance analysis works</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">testFBA</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="92801610" data-testid="output_1" data-width="984" style="width: 1014px; max-height: 392px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Testing flux balance analysis using glpk ... 
+    CBT_QP_SOLVER: qpng</div></div></div></div></div><h2  class = 'S5'><span>ANTICIPATED RESULTS </span></h2><div  class = 'S1'><span>A list of solvers assigned to solve each class of optimisation solver is returned. 				</span></div><h2  class = 'S5'><span>CRITICAL STEP</span></h2><div  class = 'S1'><span>A dependency on at least one linear optimisation solver must be satisfied for flux balance analysis. </span></div><h2  class = 'S2'><span>Verify a basic installation of the COBRA Toolbox</span></h2><div  class = 'S1'><span>Test if flux balance analysis works</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre"><span >testFBA</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="F4BE4582" prevent-scroll="true" data-testid="output_1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" data-previous-available-width="1115" data-previous-scroll-height="401" data-hashorizontaloverflow="false" style="max-height: 412px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">   Testing flux balance analysis using glpk ... 
 &gt;&gt; Optimal minimum 1-norm solution
 BiomassEcoli        	      0.9219
 EX_co2(e)           	       21.78
@@ -146,7 +63,7 @@ EX_so4(e)           	     -0.2149
 &gt;&gt; Optimal anaerobic solution
 
 &gt;&gt; Optimal ethanol secretion rate solution 
-Done.</div></div></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10"></span></div></div><div class = 'inlineWrapper outputs'><div class = "S9 lineNode"><span class = "S10">testSolveCobraLP</span></div><div class="outputParagraph" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 14px;"><div class="inlineElement embeddedOutputsTextElement scrollableOutput" uid="4A0EBD8C" data-testid="output_2" data-width="984" style="width: 1014px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Running dummyModel with solveCobraLP using glpk ... 
+Done.</div></div></div></div><div class="inlineWrapper"><div  class = 'S6'>&nbsp;</div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >testSolveCobraLP</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="68687915" prevent-scroll="true" data-testid="output_2" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent scrollArea" data-previous-available-width="1115" data-previous-scroll-height="4225" data-hashorizontaloverflow="false" style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">   Running dummyModel with solveCobraLP using glpk ... 
  &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
  &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
 
@@ -431,13 +348,14 @@ Testing model with linear constraint matrix that has 1 rows and 1 columns...
   1       0.013073       1.000000       1.000000      -0.000000                glpk	                       default
   2       0.062806       1.000000       1.000000       0.000000                pdco	                       default
    Running optimalityConditions tests in solveCobraLP using pdco ...  Done.
-   Running optimalityConditions tests in solveCobraLP using glpk ...  Done.</div></div></div></div></div><h2 class = "S12"><span class = "S5">(Optional) Verify and test the entire COBRA Toolbox</span></h2><h2 class = "S12"><span class = "S5">TIMING ∼30 min</span></h2><div class = "S3"><span class = "S5">Optionally test the functionality of The COBRA Toolbox locally, especially if one encounters an error running a function. The test suite runs tailored tests that verify the output and proper execution of core functions on the locally configured system. The full test suite can be invoked by typing:</span></div><div class = 'LineNodeBlock contiguous'><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S10">testCOBRAToolbox=0;</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S14">if </span><span class = "S10">testCOBRAToolbox</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S15">    </span><span class = "S15">t</span><span class = "S10">estAll</span></div></div><div class = 'inlineWrapper'><div class = "S9 lineNode"><span class = "S16">end</span></div></div></div></div><div class = "S0"></div><div class = 'SectionBlock containment'><h2 class = "S4"><span class = "S5">ANTICIPATED RESULTS</span></h2><div class = "S3"><span class = "S5">The test suite starts by initialising The COBRA Toolbox and thereafter, all of the tests are run. At the end of the test run, a comprehensive summary table is presented in which the respective tests and their test outcome is shown. On a properly configured system that is compatible with the most recent version of The COBRA Toolbox, all tests should pass.</span></div><h2 class = "S12"><span class = "S5">TROUBLESHOOTING</span></h2><div class = "S3"><span class = "S5">If some third party dependencies are not properly installed, some tests may fail. The test suite, despite some tests failing, is not interrupted. The tests that fail are listed with a false status in the column Passed. The specific test can then be run individually to determine the exact cause of the error. If the error can be fixed, follow the tutorial on how to contribute to The COBRA Toolbox and contribute a fix.</span></div></div></div>
+   Running optimalityConditions tests in solveCobraLP using glpk ...  Done.</div></div></div></div></div><h2  class = 'S5'><span>(Optional) Verify and test the entire COBRA Toolbox</span></h2><h2  class = 'S5'><span>TIMING ∼30 min</span></h2><div  class = 'S1'><span>Optionally test the functionality of The COBRA Toolbox locally, especially if one encounters an error running a function. The test suite runs tailored tests that verify the output and proper execution of core functions on the locally configured system. The full test suite can be invoked by typing:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >testCOBRAToolbox=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >testCOBRAToolbox</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    testAll</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S2'><span>ANTICIPATED RESULTS</span></h2><div  class = 'S1'><span>The test suite starts by initialising The COBRA Toolbox and thereafter, all of the tests are run. At the end of the test run, a comprehensive summary table is presented in which the respective tests and their test outcome is shown. On a properly configured system that is compatible with the most recent version of The COBRA Toolbox, all tests should pass.</span></div><h2  class = 'S5'><span>TROUBLESHOOTING</span></h2><div  class = 'S1'><span>If some third party dependencies are not properly installed, some tests may fail. The test suite, despite some tests failing, is not interrupted. The tests that fail are listed with a false status in the column Passed. The specific test can then be run individually to determine the exact cause of the error. If the error can be fixed, follow the tutorial on how to contribute to The COBRA Toolbox and contribute a fix.</span></div>
+<br>
 <!-- 
 ##### SOURCE BEGIN #####
 %% *Verify the COBRA Toolbox*
 % *Authors: Ronan Fleming, Leiden University*
 % 
-% *Reviewers: *
+% *Reviewers:* 
 %% MATERIALS - EQUIPMENT SETUP
 % Please ensure that all the required dependencies (e.g. , |git| and |curl|) 
 % of The COBRA Toolbox have been properly installed by following the installation 
@@ -449,7 +367,7 @@ Testing model with linear constraint matrix that has 1 rows and 1 columns...
 % default solver for LP, QP and MILP problems. Otherwise, the |GLPK| solver is 
 % selected by for LP and MILP problems and QPNG is selected for QP problems. Check 
 % the currently selected solvers with:
-%%
+
 changeCobraSolver
 %% ANTICIPATED RESULTS 
 % A list of solvers assigned to solve each class of optimisation solver is returned. 				
@@ -458,7 +376,7 @@ changeCobraSolver
 % for flux balance analysis. 
 %% Verify a basic installation of the COBRA Toolbox
 % Test if flux balance analysis works
-%%
+
 testFBA
 
 testSolveCobraLP
@@ -487,4 +405,5 @@ end
 % If the error can be fixed, follow the tutorial on how to contribute to The COBRA 
 % Toolbox and contribute a fix.
 ##### SOURCE END #####
---></body></html>
+-->
+</div></body></html>
