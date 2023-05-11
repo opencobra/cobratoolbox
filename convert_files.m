@@ -1,11 +1,11 @@
-function convert_files(mlx_files)
-    if isempty(mlx_files)
+function convert_files(mlx_file_list)
+    if isempty(mlx_file_list)
         disp('No mlx files found.');
         return;
     end
     
-    for k = 1:length(mlx_files)
-        mlx_path = mlx_files{k};
+    for k = 1:length(mlx_file_list)
+        mlx_path = mlx_file_list{k};
         html_path = strrep(mlx_path, '.mlx', '.html');
         pdf_path = strrep(mlx_path, '.mlx', '.pdf');
         fprintf('Converting: %s\n', mlx_path);
@@ -16,6 +16,8 @@ function convert_files(mlx_files)
         catch ME
             fprintf('Error during HTML conversion: %s\n', ME.message);
         end       
+       
     end
 end
+
 
