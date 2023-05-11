@@ -13,10 +13,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2.4.2
+        
+      - name: Find updated mlx files
+        id: find-updated-files
+        run: |
+          mlx_files=$(git diff --diff-filter=d --name-only -- '*.mlx')
+          echo "::set-output name=mlx_files::$mlx_files"
 
       - name: Convert mlx files to PDF and HTML
         run: |        
-          sudo apt-get install -y xvfb libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxrandr2 libxtst6
+          # sudo apt-get install -y xvfb libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxrandr2 libxtst6
 
           # Start Xvfb on display :99
           # Start Xvfb on display :99
@@ -29,8 +35,11 @@ jobs:
           
           # Run your MATLAB script
           chmod +x run_matlab.sh
-          ./run_matlab.sh
-
+          
+          # Run your MATLAB script with the list of updated mlx files
+          ./run_matlab.sh ${{ steps.find-updated-files.outputs.mlx_files }}
+          
+          
       - name: Commit and push the changes
         run: |
           git config --local user.email "action@github.com"
