@@ -17,9 +17,11 @@ jobs:
       - name: Find updated mlx files
         id: find-updated-files
         run: |
-         mlx_files=$(git diff --name-only HEAD^..HEAD -- '*.mlx')
-         echo "::set-output name=mlx_files::$mlx_files"
-         echo "Updated mlx files: $mlx_files"
+          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+          mlx_files=$(git diff --name-only ${{ github.base_ref }} HEAD -- '*.mlx')
+          echo "::set-output name=mlx_files::$mlx_files"
+          echo "Updated mlx files: $mlx_files"
+
 
 
 
