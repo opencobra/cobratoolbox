@@ -16,25 +16,15 @@ jobs:
         
       - name: Find updated mlx files
         id: find-updated-files
-        run: |
-          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
-          mlx_files=$(git diff --name-only ${{ github.base_ref }} HEAD -- '*.mlx')
-          echo "::set-output name=mlx_files::$mlx_files"
-          echo "Updated mlx files: $mlx_files"
-
-
-
-
+        uses: tj-actions/changed-files@v35
+        with:
+          files: '**/*.mlx'
 
       - name: Convert mlx files to PDF and HTML
-        run: |       
-      
-          
-          # Run your MATLAB script
+        if: steps.find-updated-files.outputs.any_changed == 'true'
+        run: |
           chmod +x run_matlab.sh
-          
-          # Run your MATLAB script with the list of updated mlx files
-          ./run_matlab.sh ${{ steps.find-updated-files.outputs.mlx_files }}
+          ./run_matlab.sh "${{ steps.find-updated-files.outputs.all_changed_files }}"
           
           
       - name: Commit and push the changes
