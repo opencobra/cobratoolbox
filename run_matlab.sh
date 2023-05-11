@@ -8,7 +8,7 @@ mlx_files=("$@")
 echo mlx_files
 
 # Call MATLAB with the convert_files function and pass the mlx_files as input
-"/home/aaron/Documents/Matlab/bin/matlab" -batch "addpath('.'); convert_files(${mlx_files})"
+"/home/aaron/Documents/Matlab/bin/matlab" -batch "addpath('.'); convert_files(strsplit('$1', ' '))"
 
 
 
