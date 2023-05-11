@@ -7,7 +7,7 @@ echo "Location of convert_files.m: $(pwd)/convert_files.m"
 mlx_files=("$@")
 
 # Call MATLAB with the convert_files function and pass the mlx_files as input
-matlab -batch "addpath('.'); convert_files(${mlx_files})"
+"/home/aaron/Documents/Matlab/bin/matlab" -batch "addpath('.'); convert_files(${mlx_files})"
 
 
 
