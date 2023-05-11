@@ -22,7 +22,7 @@ jobs:
 
       - name: Convert mlx files to PDF and HTML
         run: |        
-          sudo apt-get install -y xvfb libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxrandr2 libxtst6
+          # sudo apt-get install -y xvfb libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxrandr2 libxtst6
 
           # Start Xvfb on display :99
           # Start Xvfb on display :99
