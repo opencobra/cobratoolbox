@@ -6,7 +6,7 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %
 % INPUTS:
 %    model:          COBRA model structure
-%    fluxData:       Data matrix/vector (for example, solution.v)
+%    fluxData:       n x k Data matrix/vector (for example, solution.v)
 %
 % OPTIONAL INPUTS:
 %    nonZeroFlag:    Only print nonzero rows (Default = false)
@@ -14,7 +14,7 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %    sortCol:        Column used for sorting (-1, none; 0, labels; >0, data
 %                    columns;) (Default = -1)
 %    fileName:       Name of output file (Default = [])
-%    headerRow:      Header (Default = [])
+%    headerRow:      k x 1 cell array Header (Default = [])
 %    formulaFlag:    Print reaction formulas (Default = false)
 %    gprFlag:        Print reaction GPR (Default = false)
 %
@@ -47,11 +47,14 @@ if nargin < 9
     gprFlag = false;
 end
 
+labels = model.rxns;
+labels = pad(labels);
+ 
 if excFlag
     bool = findExcRxns(model, true, false);
 else
     bool = true(size(model.S,2),1);
-    labels = model.rxns;
+     
 end
 
 if length(nonZeroFlag)==size(model.S,2)
@@ -69,12 +72,11 @@ if formulaFlag
     if nonZeroFlag
         labels = [model.rxns,model.rxns];
         %only generate the formulas for the nonzero entries
-        formulas = printRxnFormula(model, labels(bool), false, false);
-        labels(bool,2) = formulas;
+        labels(bool,end+1) = printRxnFormula(model, labels(bool), false, false);
     else
-        formulas = printRxnFormula(model, labels, false, false);
-        labels = [labels, formulas];
+        labels(:,end+1) = printRxnFormula(model, labels, false, false);
     end
+    labels(:,end) = pad(labels(:,end));
 end
 
 % Add GPR
@@ -85,6 +87,7 @@ if gprFlag
     else
         labels = [labels, model.grRules];
     end
+    labels(:,end) = pad(labels(:,end));
 end
 
 %only print the nonzeros
@@ -92,8 +95,6 @@ if nonZeroFlag
     labels = labels(bool,:);
     fluxData = fluxData(bool,:);
 end
-
-labels(:,2) = pad(labels(:,2));
 
 %print the labeled data
 printLabeledData(labels, fluxData, 0, sortCol, fileName, headerRow)

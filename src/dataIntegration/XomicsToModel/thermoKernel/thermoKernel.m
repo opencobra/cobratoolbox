@@ -16,13 +16,16 @@ function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(mo
 %
 % OPTIONAL INPUTS:
 %    model:             (optional fields)
-%          * b - `m x 1` change in concentration with time
-%          * csense - `m x 1` character array with entries in {L,E,G}
-%          * osenseStr: Maximize ('max')/minimize ('min') (opt, default = 'max') linear part of the objective.
-%          * C - `k x n` Left hand side of C*v <= d
-%          * d - `k x n` Right hand side of C*v <= d
-%          * dsense - `k x 1` character array with entries in {L,E,G}
-%          * beta - scalar  trade-off parameter on minimisation of one-norm of internal fluxes. Increase to incentivise thermodynamic feasibility in optCardThermo
+%          * .b - `m x 1` change in concentration with time
+%          * .csense - `m x 1` character array with entries in {L,E,G}
+%          * .osenseStr: Maximize ('max')/minimize ('min') (opt, default = 'max') linear part of the objective.
+%          * .C - `k x n` Left hand side of C*v <= d
+%          * .d - `k x n` Right hand side of C*v <= d
+%          * .dsense - `k x 1` character array with entries in {L,E,G}
+%          * .beta - A scalar weight on minimisation of one-norm of internal fluxes. Default 1e-4. 
+%                    Larger values increase the incentive to find a flux vector to be thermodynamically feasibile in each iteration of optCardThermo 
+%                    and decrease the incentive to search the steady state solution space for a flux vector that results in certain reactions and
+%                    metabolites to be active and present, respectively.
 %
 %    activeInactiveRxn: - `n x 1` with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
 %    rxnWeights:        - `n x 1` real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive 
@@ -42,9 +45,17 @@ function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(mo
 %                   * .normalizeZeroNormWeights - {(0),1}, normalises zero norm weights
 %                                                 rxnWeights  = rxnWeights./sum(abs(rxnWeights));
 %                                                 metWeights  = metWeights./sum(abs(metWeights));
-%                   * .param.removeOrphanGenes - {(1),0}, removes orphan genes from thermoModel
-%                   * .formulation - mathematical formulation of thermoKernel algorithm (use default unless expert user)
-% 
+%                   * .rxnWeightsConsistentWithMetWeights {(0),1} If true and metWeights are provided, make the corresponding reaction weights consistent
+%                   * .metWeightsConsistentWithRxnWeights {(0),1} If true and rxnWeights are provided, make the corresponding metabolite weights consistent
+%                   * .acceptRepairedFlux {(1),0} If true, a post processing step after each inner iteration minimises the absolute value of internal reaction flux, 
+%                                                 while (a) all exchange fluxes are kept constant, and (b) no internal flux is allowed to change direction or increase in size.   
+%                   * .relaxBounds {(0),1} If true, allow internal bounds forcing non-zero flux to be relaxed as minimising absolute value of internal 
+%                                          fluxes is only guarunteed to return a thermodynamically feasible flux if such bounds can be relaxed.
+%                   * .removeOrphanGenes - {(1),0}, removes orphan genes from thermoModel
+%                   * .formulation - mathematical formulation of thermoKernel algorithm (Default is 'pqzwrs'. Do not change unless expert user.)
+%                   * .plotThermoKernelStats {(0),1} generates a figure with confusion matrices comparing anticipated vs actual metabolites and reactions in the extracted model
+%                   * .plotThermoKernelWeights {(0),1} generates a figure displaying the weights given to actual and anticipated but omitted metabolites and reactions in the extracted model
+    
 % OUTPUTS:
 %   thermoModel:           thermodynamically consistent model extracted from input model
 %   thermoModelMetBool:   `m` x 1 boolean vector of thermodynamically consistent `mets` in input model

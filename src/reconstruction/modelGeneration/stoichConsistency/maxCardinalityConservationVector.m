@@ -153,7 +153,7 @@ switch method
         cardProblem.A=S';
         cardProblem.b=zeros(nlt,1);
         cardProblem.lb=zeros(mlt,1);
-        if 0
+        if 1
             cardProblem.ub=(1/epsilon)*ones(mlt,1);
         else
             cardProblem.ub=inf*ones(mlt,1);

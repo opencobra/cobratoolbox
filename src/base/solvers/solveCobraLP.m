@@ -705,25 +705,41 @@ switch solver
         %              blx and bux. Note -inf is allowed in blc and blx.
         %              Similarly, inf is allowed in buc and bux.
 
-        if isempty(csense)
-            % assumes all equality constraints
-            % [res] = msklpopt(c,a,blc,buc,blx,bux,param,cmd)
-            [res] = msklpopt(osense * c, A, b, b, lb, ub, param, cmd);
-        else
-            blc = b;
-            buc = b;
-            buc(csense == 'G') = inf;
-            blc(csense == 'L') = -inf;
-            % [res] = msklpopt(       c,a,blc,buc,blx,bux,param,cmd)
+        
+        blc = b;
+        buc = b;
+        buc(csense == 'G') = inf;
+        blc(csense == 'L') = -inf;
+        
+        if 0
             [res] = msklpopt(osense * c, A, blc, buc, lb, ub, param, cmd);
-%             res.sol.itr
-%             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
-%             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
-%             pasue(eps)
+            %             res.sol.itr
+            %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
+            %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
+            %             pasue(eps)
+            
+        else
+            prob.c = osense * c;
+            prob.a = A;
+            prob.blc     = blc;
+            prob.buc     = buc;
+            prob.blx     = lb;
+            prob.bux     = ub;
+            
+            if ~isempty(basis)
+                prob.sol.bas.skc  = basis.skc;
+                prob.sol.bas.skx  = basis.skx;
+                prob.sol.bas.xc   = basis.xc;
+                prob.sol.bas.xx   = basis.xx;
+            end
+            
+            % Use the primal simplex optimizer.
+            param.MSK_IPAR_OPTIMIZER = 'MSK_OPTIMIZER_PRIMAL_SIMPLEX';
+            [rcode,res] = mosekopt(cmd,prob,param);
         end
-
+                
         %parse mosek result structure
-        [stat,origStat,x,y,w,s,~] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        [stat,origStat,x,y,w,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         if stat ==1
             f=c'*x;
         else
@@ -1276,6 +1292,7 @@ switch solver
         [CplexLPproblem, logFile, logToFile] = setCplexParametersForProblem(CplexLPproblem,problemTypeParams,solverParams,'LP');
         %logToFile=0;
         
+
         % optimize the problem
         CplexLPproblem.solve();
     
@@ -1299,6 +1316,10 @@ switch solver
             y = osense*CplexLPproblem.Solution.dual;
             %res1 = A*solution.full + solution.slack - b;
             s = b - A * x; % output the slack variables
+            
+            %save basis also
+            basis = CplexLPproblem.Start;
+            
         elseif origStat == 2 ||   origStat == 20
             stat = 2; %unbounded
         elseif origStat == 3
@@ -1374,6 +1395,8 @@ switch solver
         if exist([pwd filesep 'clone2_' labindex '.log'],'file')
             delete([pwd filesep 'clone2_' labindex '.log'])
         end
+        
+
     case 'lindo'
         %%
         error('The lindo interface is obsolete.');

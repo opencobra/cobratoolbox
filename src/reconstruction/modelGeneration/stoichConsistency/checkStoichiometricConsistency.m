@@ -114,42 +114,47 @@ else
 end
 
 
+checkConsistency = 0;
 
-% Check the stoichiometric consistency of the network by
-% solving the following linear problem
-%       min sum(m_i)
-%           s.t     S'*m = 0
-%                   m >= 1
-% where l  is is a  mx1 vector of the molecular mass of m molecular species
-N=model.S(:,model.SIntRxnBool);
-LPproblem.A=N';
-LPproblem.b=zeros(size(LPproblem.A,1),1);
-LPproblem.lb=ones(size(LPproblem.A,2),1);
-LPproblem.ub=inf*ones(size(LPproblem.A,2),1);
-LPproblem.c=1*ones(size(LPproblem.A,2),1);
-LPproblem.osense=1;
-LPproblem.csense(1:size(LPproblem.A,1),1)='E';
+if checkConsistency
+    % Check the stoichiometric consistency of the network by
+    % solving the following linear problem
+    %       min sum(m_i)
+    %           s.t     S'*m = 0
+    %                   m >= 1
+    % where l  is is a  mx1 vector of the molecular mass of m molecular species
+    N=model.S(:,model.SIntRxnBool);
+    LPproblem.A=N';
+    LPproblem.b=zeros(size(LPproblem.A,1),1);
+    LPproblem.lb=ones(size(LPproblem.A,2),1);
+    LPproblem.ub=inf*ones(size(LPproblem.A,2),1);
+    LPproblem.c=1*ones(size(LPproblem.A,2),1);
+    LPproblem.osense=1;
+    LPproblem.csense(1:size(LPproblem.A,1),1)='E';
+    
+    %Requires the openCOBRA toolbox
+    solution = solveCobraLP(LPproblem,'printLevel',printLevel-1);
+    
+    %OUTPUT
+    % solution Structure containing the following fields describing a LP
+    % solution
+    %  full     Full LP solution vector
+    %  obj      Objective value
+    %  rcost    Reduced costs
+    %  dual     Dual solution
+    %  solver   Solver used to solve LP problem
+    %
+    %  stat     Solver status in standardized form
+    %            1   Optimal solution
+    %            2   Unbounded solution
+    %            0   Infeasible
+    %           -1   No solution reported (timelimit, numerical problem etc)
+    isConsistent=solution.stat;
+else
+    isConsistent = 0;
+    N=model.S(:,model.SIntRxnBool);
+end
 
-%Requires the openCOBRA toolbox
-solution = solveCobraLP(LPproblem,'printLevel',printLevel);
-
-%OUTPUT
-% solution Structure containing the following fields describing a LP
-% solution
-%  full     Full LP solution vector
-%  obj      Objective value
-%  rcost    Reduced costs
-%  dual     Dual solution
-%  solver   Solver used to solve LP problem
-%
-%  stat     Solver status in standardized form
-%            1   Optimal solution
-%            2   Unbounded solution
-%            0   Infeasible
-%           -1   No solution reported (timelimit, numerical problem etc)
-
-
-isConsistent=solution.stat;
 
 % If the network is not stoichiometrically consistent then one maximizes
 % the number of  positive component of the molecular masses vector
