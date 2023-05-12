@@ -1,4 +1,4 @@
-function [stat,origStat,x,y,z,s,doty] = parseMskResult(res,A,blc,buc,printLevel,param)
+function [stat,origStat,x,y,z,s,doty,bas] = parseMskResult(res,A,blc,buc,printLevel,param)
 %parse the res structure returned from mosek
 
 % initialise variables
@@ -9,6 +9,7 @@ y = [];
 z = [];
 s = [];
 doty = [];
+bas = [];
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -90,6 +91,12 @@ if isfield(res, 'sol')
                     % Dual variables to affine conic constraints
                     doty = res.sol.bas.doty;
                 end
+                %https://docs.mosek.com/10.0/toolbox/advanced-hotstart.html
+                bas.skc = res.sol.bas.skc;
+                bas.skx = res.sol.bas.skx;
+                bas.xc = res.sol.bas.xc;
+                bas.xx = res.sol.bas.xx;
+                
             case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
                 stat=0; % infeasible
             case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}

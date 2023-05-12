@@ -31,15 +31,19 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %    * .C - `k x n` Left hand side of C*v <= d
 %    * .d - `k x 1` Right hand side of C*v <= d
 %    * .dsense - `k x 1` character array with entries in {L,E,G}
+%    * .beta - A scalar weight on minimisation of one-norm of internal fluxes. Default 1e-4. 
+%              Larger values increase the incentive to find a flux vector to be thermodynamically feasibile in thermoKernel and decrease the incentive
+%              to search the steady state solution space for a flux vector that results in certain reactions and metabolites to be active and present,
+%              respectively.
 %
 %%  specificData:  A structure containing context-specific data:
 %
 %   * .activeGenes - cell array of Entrez ID of genes that are known to be active based on the bibliomic data (Default: empty).
 %   * .inactiveGenes - cell array of Entrez ID of genes known to be inactive based on the bibliomics data (Default: empty).
 %
-%   * .activeReactions -cell array of reactions know to be active based on bibliomic data (Default: empty).
-%   * .inactiveReactions - cell array of reactions know to be inactive based on bibliomic data (Default: empty).
-
+%   * .activeReactions -cell array of reaction identifiers know to be active based on bibliomic data (Default: empty).
+%   * .inactiveReactions - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).
+i
 %   * .coupledRxns -﻿Table containing information about the coupled reactions. This includes the coupled reaction identifier, the
 %                    list of coupled reactions, the coefficients of those reactions, the constraint, the sense or the directionality of the constraint,
 %                    and the reference (Default: empty).
@@ -556,7 +560,7 @@ if ~isfield(model,'rxnNames')
 end
 % Fix demand reaction names
 %DM_CE5026[c] -> Demand for 5-S-Glutathionyl-L-Dopa
-rxnNamesToFixList = model.rxns(contains(model.rxns, {'DM_', 'EX_', 'sink_'}) & strcmp(model.rxns, model.rxnNames));
+rxnNamesToFixList = model.rxns(contains(model.rxns, {'DM_', 'EX_', '_'}) & strcmp(model.rxns, model.rxnNames));
 for i = 1:length(rxnNamesToFixList)
     rxnBool = strcmp(model.rxns, rxnNamesToFixList{i});
     metBool = model.S(:, rxnBool) ~= 0;
@@ -1120,7 +1124,7 @@ end
 %% 9. Close sink and demand reactions - Set non-core sinks and demands to inactive
 coreRxnBool = ismember(model.rxns, coreRxnAbbr);
 
-model.lbpreSinkDemandOff = model.lb;
+model.model = model.lb;
 model.ubpreSinkDemandOff = model.ub;
 
 % Identify reaction type

@@ -1,6 +1,6 @@
 function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, problemType)
 % Set the parameters for a specific problem from the COBRA Parameter
-% structure and a solver specific parameter structre (latter has
+% structure and a solver specific parameter structure (latter has
 % precedence). The cobra parameters structure contains fields as specified in
 % `getCobraSolverParamsOptionsForType`, while solverParams needs to
 % contain a structure compatible with `setCplexParam`.
@@ -105,6 +105,12 @@ end
 
 % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
 cplexProblem = setCplexParam(cplexProblem, solverParams);
+
+if isfield(cplexProblem,'Start')
+    %https://www.ibm.com/docs/en/icos/12.8.0.0?topic=parameters-advanced-start-switch
+    cplexProblem.Param.advance.Cur = 1;
+end
+        
 end
 
 function redirect(outFile,l)
