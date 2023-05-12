@@ -1,0 +1,27 @@
+name: MATLAB Conversion
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths:
+      - '**.mlx'
+
+jobs:
+  convert:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2.4.2
+
+      - name: Convert mlx files to PDF and HTML
+        run: |
+          ./run_matlab.sh
+
+      - name: Commit and push the changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Add generated PDF and HTML files"
+          git push https://${{ secrets.GH_ACTIONS_PAT }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
