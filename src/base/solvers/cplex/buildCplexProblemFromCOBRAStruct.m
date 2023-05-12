@@ -86,7 +86,11 @@ if isfield(Problem,'vartype')
     cplexProblem.Model.ctype = columnVector(Problem.vartype)';
 end
 
-if isfield(Problem,'x0')
-    cplexProblem.Start.x = Problem.x0;
+if isfield(Problem,'basis') || isfield(Problem,'x0')
+    if isfield(Problem,'basis')
+        cplexProblem.Start = Problem.basis;
+    elseif isfield(Problem,'x0')
+        cplexProblem.Start.x = Problem.x0;
+    end
 end
 

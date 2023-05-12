@@ -12,7 +12,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       .solver:                 Use either 'GIMME','iMAT','INIT','MBA',
 %                                'mCADRE','fastCore','swiftcore'
 %
-%       .additionalparam:        see NOTE section below
+%       . 'additional parameters':        see section below entiteld OPTIONAL INPUTS SPECIFIC TO EACH MODEL EXTRACTION ALGORITHM
 %
 % OPTIONAL INPUTS:
 %	funcModel:               1 - Build a functional model having only reactions
@@ -29,7 +29,7 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 % OUTPUTS:
 %	tissueModel:                     extracted model
 %
-% NOTES:
+% OPTIONAL INPUTS SPECIFIC TO EACH MODEL EXTRACTION ALGORITHM:
 % This section describes the additional parameter fields that need to be set in
 % 'options' structure depending on the solver used. Some of these
 % are optional (marked by an '*'), if not defined, they will be set at their
@@ -113,7 +113,33 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %                                    'gurobi'. It fallbacks to the COBRA LP solver interface if 
 %                                    another supported solver is called or 'gurobi' is not available.
 %
+%   for thermoKernel
+
+%       options.activeInactiveRxn: - `n x 1` with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
+%       options.rxnWeights:        - `n x 1` real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive 
+%                                            to promote a reaction to be inactive and zero to be indifferent to activity or inactivity  
+%       options.presentAbsentMet:  - `m x 1` with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
+%       options.metWeights:        - `m x 1` real valued penalties on zero norm of metabolite "activity", negative to promote a metabolite to be present, positive 
+%                                            to promote a metabolite to be absent and zero to be indifferent to presence or absence 
+%       options.printLevel - greater than zero to recieve more output
+%       options.bigNum - definition of a large positive number (Default value = 1e6)
+%       options.nbMaxIteration -  maximal number of outer iterations of thermoKernel (Default value = 30)
+%       options.epsilon - smallest non-zero flux - (Default value = feasTol = 1e-6)
+%       options.normalizeZeroNormWeights - {(0),1}, true to normalise zero norm weights
+%                                                 rxnWeights  = rxnWeights./sum(abs(rxnWeights));
+%                                                 metWeights  = metWeights./sum(abs(metWeights));
+%       options.removeOrphanGenes - {(1),0}, removes orphan genes from thermoModel
 %
+%       model.activeInactiveRxn: - `n x 1` with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
+%       model.rxnWeights:        - `n x 1` real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive 
+%                                          to promote a reaction to be inactive and zero to be indifferent to activity or inactivity  
+%       model.presentAbsentMet:  - `m x 1` with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
+%       model.metWeights:        - `m x 1` real valued penalties on zero norm of metabolite "activity", negative to promote a metabolite to be present, positive 
+%                                          to promote a metabolite to be absent and zero to be indifferent to presence or absence 
+%       model.beta - A scalar weight on minimisation of one-norm of internal fluxes. Default 1e-4. 
+%                    Larger values increase the incentive to find a flux vector to be thermodynamically feasibile in each iteration of optCardThermo 
+%                    and decrease the incentive to search the steady state solution space for a flux vector that results in certain reactions and
+%                    metabolites to be active and present, respectively.
 
 % .. Authors:
 %       - Aarash Bordbar 05/15/2009
@@ -199,6 +225,24 @@ else
             if ~isfield(options,'weights'),options.weights=ones(length(model.lb),1);end
             if ~isfield(model,'rev'),model.rev=double(model.lb<0);end
         case 'thermoKernel'
+            %       options.activeInactiveRxn: - `n x 1` with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
+            %       options.rxnWeights:        - `n x 1` real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive
+            %                                            to promote a reaction to be inactive and zero to be indifferent to activity or inactivity
+            %       options.presentAbsentMet:  - `m x 1` with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
+            %       options.metWeights:        - `m x 1` real valued penalties on zero norm of metabolite "activity", negative to promote a metabolite to be present, positive
+            %                                            to promote a metabolite to be absent and zero to be indifferent to presence or absence
+            %       options.printLevel - greater than zero to recieve more output
+            %       options.bigNum - definition of a large positive number (Default value = 1e6)
+            %       options.nbMaxIteration -  maximal number of outer iterations of thermoKernel (Default value = 30)
+            %       options.epsilon - smallest non-zero flux - (Default value = feasTol = 1e-6)
+            %       options.normalizeZeroNormWeights - {(0),1}, true to normalise zero norm weights
+            %                                                 rxnWeights  = rxnWeights./sum(abs(rxnWeights));
+            %                                                 metWeights  = metWeights./sum(abs(metWeights));
+            %       options.param.removeOrphanGenes - {(1),0}, removes orphan genes from thermoModel
+            %       options.beta - scalar  trade-off parameter on minimisation of one-norm of internal fluxes. Increase to incentivise thermodynamic feasibility in optCardThermo
+            if ~isfield(options,'activeInactiveRxn')
+                options.activeInactiveRxn = [];
+            end
             if ~isfield(options,'rxnWeights')
                 if isfield(options,'core')
                     options.rxnWeights = ones(length(model.lb),1)*0.01; %penalty for non-core reactions
@@ -208,16 +252,12 @@ else
                     warning('The required option field "rxnWeights" is not defined for thermoKernel method')
                 end
             end
-                        
-            if ~isfield(options,'activeInactiveRxn')
-                options.activeInactiveRxn = [];
+            if ~isfield(options,'presentAbsentMet')
+                options.presentAbsentMet=[];
             end
             if ~isfield(options,'metWeights')
                 options.metWeights=[];
-                fprintf('%\n','The option field "metWeights" is not defined for thermoKernel method')                
-            end
-            if ~isfield(options,'presentAbsentMet')
-                options.presentAbsentMet=[];
+                fprintf('%\n','The option field "metWeights" is not defined for thermoKernel method')
             end
             if ~isfield(options,'epsilon')
                 options.epsilon=getCobraSolverParams('LP', 'feasTol');

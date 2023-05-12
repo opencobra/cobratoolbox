@@ -441,23 +441,37 @@ while iterateCardinalityOpt>0
                 %find the reaction(s) with unknown consistency involving maximum
                 %number of metabolites
                 maxMetsPerRxn=full(max(nMetsPerRxnTmp(model.unknownSConsistencyRxnBool)));
-
-                if maxMetsPerRxn>=4
+                
+                if maxMetsPerRxn>=10
                     %check in case any(model.unknownSConsistencyRxnBool)==0
                     if isempty(maxMetsPerRxn)
                         maxMetsPerRxn=0;
                     end
                     %boolean reactions to be consisdered inconsistent and removed
                     rxnRemoveBool=nMetsPerRxnTmp==maxMetsPerRxn;
-
+                    
                     %metabolites exclusively involved in inconsistent reactions are
                     %deemed inconsistent
                     metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
-
+                    
                     if printLevel>1
-                        fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically internal reactions, each involving ',maxMetsPerRxn, ' metabolites.')
+                        fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically internal reactions of unknown consistency, each involving ',maxMetsPerRxn, ' metabolites.')
                         if printLevel >1
-                             formulas = printRxnFormula(model,model.rxns(rxnRemoveBool));
+                            formulas = printRxnFormula(model,model.rxns(rxnRemoveBool));
+                        end
+                    end
+                elseif maxMetsPerRxn>=4
+                    nonIntegerRxnBool = any(mod(model.S,1))';
+                    rxnRemoveBool = nonIntegerRxnBool & model.unknownSConsistencyRxnBool;
+                    
+                    %metabolites exclusively involved in inconsistent reactions are
+                    %deemed inconsistent
+                    metRemoveBool = getCorrespondingRows(model.S,true(nMet,1),rxnRemoveBool,'exclusive');
+                    
+                    if printLevel>1
+                        fprintf('%6u\t%6u\t%s%u%s\n',nnz(metRemoveBool), nnz(rxnRemoveBool), ' removed heuristically internal reactions of unknown consistency, each involving ',maxMetsPerRxn, ' metabolites with non-integer coefficients.')
+                        if printLevel >1
+                            formulas = printRxnFormula(model,model.rxns(rxnRemoveBool));
                         end
                     end
                 else
@@ -465,6 +479,8 @@ while iterateCardinalityOpt>0
                     %reactions of unknown consistency is too small
                     break
                 end
+                
+
             end
         case 'isolatedInconsistent'
             %%decide subset to be tested during this iteration
