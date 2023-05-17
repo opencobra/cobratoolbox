@@ -41,6 +41,13 @@ for i = 1:length(problemRxnList)
             options.activeReactions{rxnBool} = fixedRxnList{i};
         end
     end
+    %replace the corresponding reaction in the rxns2constrain list
+     if isfield(options, 'rxns2constrain')
+         rxnBool = strcmp(options.rxns2constrain.rxns, problemRxnList{i});
+         if any(rxnBool)
+         options.rxns2constrain.rxns{rxnBool}=fixedRxnList{i};
+         end
+     end
 %     
 %     %replace the old active reaction abbreviations with new ones
 %     %options.activeReactions = strrep(options.activeReactions,problemRxnList,fixedRxnList);
