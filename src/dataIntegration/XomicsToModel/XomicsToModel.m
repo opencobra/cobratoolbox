@@ -43,7 +43,6 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %
 %   * .activeReactions -cell array of reaction identifiers know to be active based on bibliomic data (Default: empty).
 %   * .inactiveReactions - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).
-i
 %   * .coupledRxns -﻿Table containing information about the coupled reactions. This includes the coupled reaction identifier, the
 %                    list of coupled reactions, the coefficients of those reactions, the constraint, the sense or the directionality of the constraint,
 %                    and the reference (Default: empty).
