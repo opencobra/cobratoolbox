@@ -10,4 +10,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run tests
       run: |
-        matlab -batch "runtests('YourTestScript.m')"
+        matlab -batch "runtests('test/testAll.m')"
