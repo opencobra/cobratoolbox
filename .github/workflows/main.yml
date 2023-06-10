@@ -11,4 +11,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run tests
       run: |
-        /usr/local/MATLAB/R2020a/bin/matlab "runtests('./test/testAll.m')"
+        /usr/local/MATLAB/R2020a/bin/matlab -r "runtests('./test/testAll.m');exit;"
+
