@@ -6,7 +6,7 @@ on:
       
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, King]
     steps:
     - uses: actions/checkout@v2
     - name: Run tests
