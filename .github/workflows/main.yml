@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run tests
       run: |      
-       /home/aaron/Documents/Matlab/bin/matlab -batch "runtests('./test/testAll.m');"
+       /home/aaron/Documents/Matlab/bin/matlab -batch "reply = 'Y'; "runtests('./test/testAll.m');"
 
         
 
