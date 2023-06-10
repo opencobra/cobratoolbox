@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run tests
-      run: |      
-       /home/aaron/Documents/Matlab/bin/matlab -batch "reply = 'Y'; "runtests('./test/testAll.m');"
+      run: |         
+        /home/aaron/Documents/Matlab/bin/matlab -nodesktop -nosplash -r "reply = 'Y'; runtests('./test/testAll.m');exit;"
 
         
 
