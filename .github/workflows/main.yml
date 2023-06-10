@@ -2,7 +2,8 @@ name: MATLAB Tests
 on: 
   pull_request:
     branches:
-      - main
+      - master
+      
 jobs:
   build:
     runs-on: [self-hosted, matlab]
