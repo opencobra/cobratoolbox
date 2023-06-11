@@ -1,15 +1,13 @@
-import mlreportgen.report.*
-import mlreportgen.dom.*
-
-% Create a Report object and set its output format to PDF
-rpt = Report('test_results', 'pdf');
-
-% Add content to the report
-append(rpt, TitlePage('Title', 'Test Results'));
-
-% Run your tests and append the results to the report
+% Run your tests
 testResults = runtests('./test/testAll_ghActions.m');
-append(rpt, testResults);
 
-% Close the report (this generates the PDF file)
-close(rpt);
+% Open a file for writing
+fid = fopen('test_results.txt', 'w');
+
+% Write the test results to the file
+for i = 1:length(testResults)
+    fprintf(fid, 'Test: %s, Result: %s\n', testResults(i).Name, string(testResults(i).Passed));
+end
+
+% Close the file
+fclose(fid);
