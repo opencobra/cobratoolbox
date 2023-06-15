@@ -10,8 +10,8 @@ Here are the following steps taken in the tutorial CI pipeline:
 2. This triggers the [GitHub action workflow](https://github.com/opencobra/COBRA.tutorials/blob/master/.github/workflows/main.yml) which is hosted on a local computer (self-hosted runner). Here the .mlx file is converted to a .html file and pushed to the gh-pages branch of the cobratoolbox repository
 3. This then triggers a [seperate Github actions workflow](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml) on the cobratoolbox gh-pages branch. This workflow reconfigures the various files and directories so that the html tutorial can be integrated into the website 
 
-## Continuous integration of functions
+## Continuous Integration of Functions
 to be added ...
 
-## Running Matlab tests on pull requests
+## Running Matlab Tests on Pull Requests
 to be added ...
