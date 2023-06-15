@@ -1,36 +1,63 @@
-name: MATLAB Conversion
+name: Extract HTML Info
 
 on:
   push:
-    branches:
-      - gh-pages
+    branches: [ gh-pages ]
     paths:
-      - '**.mlx'
+    - '**.html'
 
 jobs:
-  convert:
-    runs-on: self-hosted
+  extract-info:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2.4.2
-        
-      - name: Find updated mlx files
-        id: find-updated-files
-        uses: tj-actions/changed-files@v35
+      - name: Checkout Repository
+        uses: actions/checkout@v2
         with:
-          files: '**/*.mlx'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Check Commit Message
+        id: check_msg
+        run: |
+          commit_msg=$(git log --format=%B -n 1)
+          if [[ "$commit_msg" == "Sync files from source repo" ]]; then
+            echo "::set-output name=run_job::true"
+          else
+            echo "::set-output name=run_job::false"
+          fi
 
-      - name: Convert mlx files to PDF and HTML
-        if: steps.find-updated-files.outputs.any_changed == 'true'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        if: steps.check_msg.outputs.run_job == 'true'
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        if: steps.check_msg.outputs.run_job == 'true'
         run: |
-          chmod +x run_matlab.sh
-          ./run_matlab.sh "${{ steps.find-updated-files.outputs.all_changed_files }}"
-          
-          
-      - name: Commit and push the changes
+          python -m pip install --upgrade pip
+          pip install beautifulsoup4
+
+      - name: Get Changed HTML Files
+        id: getfile
+        if: steps.check_msg.outputs.run_job == 'true'
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
+          echo "::set-output name=file::$changed_files"
+
+      - name: Extract Info from HTML Files
+        if: steps.check_msg.outputs.run_job == 'true'
+        run: |
+          for file in ${{ steps.getfile.outputs.file }}
+          do
+            python extract_info.py $file
+          done
+          
+      - name: Commit and Push New File
+        if: steps.check_msg.outputs.run_job == 'true'
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Add generated PDF and HTML files"
-          git push https://${{ secrets.GH_ACTIONS_PAT }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
+          git commit -m "Add new HTML file" || echo "No changes to commit"
+          git push -f origin gh-pages
