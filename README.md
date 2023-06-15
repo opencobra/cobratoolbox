@@ -4,3 +4,6 @@ This website is built and hosted using GitHub pages, please read the documentati
 
 
 ## Continuous Integration of Tutorials:
+
+Here are the following steps taken in the tutorial CI pipeline:
+1. Contributor posts .m and .mlx tutorial to the [Tutorials repository](https://github.com/opencobra/COBRA.tutorials)
