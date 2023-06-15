@@ -1,1 +1,1 @@
-# cobratoolbox web-site docs
+# cobratoolbox website documentation
