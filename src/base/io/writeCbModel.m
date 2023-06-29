@@ -11,7 +11,7 @@ function outmodel = writeCbModel(model, varargin)
 % OPTIONAL INPUTS:
 %    varargin:          Optional parameters in 'Parametername',value
 %                       format. Available parameterNames are:
-%                       * format:   File format to be used ('text', 'xls', 'mat'(default) 'expa' or 'sbml')
+%                       * format:   File format to be used ('text', 'xls', 'mat'(default), 'expa', 'json' or 'sbml')
 %                         text will only output data from required fields (with GPR rules converted to string representation)
 %                         xls is restricted to the fields defined in the xls io documentation.
 %                         expa will print all reactions with Exchangers being detected by findExcRxns
@@ -29,6 +29,7 @@ function outmodel = writeCbModel(model, varargin)
 %       - Richard Que 3/17/10 -  Added ability to specify compartment names and symbols
 %       - Longfei Mao 26/04/2016 -  Added support for the FBCv2 format
 %       - Thomas Pfau May 2017  - Changed To Parameter/Value pairs and added flexibility
+%       - Ines Thiele May 2023 - Added option to write json files
 %
 % EXAMPLES:
 %
@@ -161,6 +162,8 @@ if isempty(fileName)
             [fileNameFull, filePath] = uiputfile({'*.mat'});
         case 'expa'
             [fileNameFull, filePath] = uiputfile({'*.expa'});
+        case 'json'
+            [fileNameFull, filePath] = uiputfile({'*.json'});
         case 'toselect'
             [fileNameFull, filePath] = uiputfile({'*.mat', 'Matlab File'; '*.xml' 'SBML Model'; '*.txt' 'Text Export'; '*.xls;*.xlsx' 'Excel Export'; '*.MPS' 'MPS Export'});
         otherwise
@@ -230,6 +233,9 @@ switch format
         %% expa
     case 'expa'
         convertModelToEX(model,fileName,0,model.rxns(findExcRxns(model)));
+        %% Uknown
+    case 'json'
+        model2JSON(model,fileName);
         %% Uknown
     otherwise
         error('Unknown file format');

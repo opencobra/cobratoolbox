@@ -1,5 +1,13 @@
 function [] = generateMetaboReport(modelProperties,reportDir,orgNames)
-% This function generates
+% This function generates the metaboReport.
+%
+% INPUT 
+% modelProperties strcuture containing the model properties, generated with
+% 
+%
+%
+% Ines Thiele 2022
+
 F = fieldnames(modelProperties);
 
 for i = 1 : length(F)
