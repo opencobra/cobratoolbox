@@ -221,7 +221,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %
 % Requires The COBRA Toolbox and a linear optimisation solver (e.g. Gurobi) to be installed
 %
-% 2022 German Preciat, Agnieszka Wegrzyn, Ronan Fleming
+% 2023 German Preciat, Agnieszka Wegrzyn, Xi Luo, Ronan Fleming
 
 model = genericModel;
 
