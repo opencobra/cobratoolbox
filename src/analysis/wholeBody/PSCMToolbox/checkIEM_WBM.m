@@ -184,8 +184,8 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
             modelIEM.ub(c+1) = (1-fractionKO)*solution.v(model.c~=0);
             modelIEM.ub(c+1)=fix(modelIEM.lb(c+1)*1000000)/1000000;% remove the last few digits from the 16 digits allowed by matlab
         else
-            modelIEM.ub(contains(modelIEM.rxns,IEMRxns))=0;
-            modelIEM.lb(contains(modelIEM.rxns,IEMRxns))=0;
+            modelIEM.ub(ismember(modelIEM.rxns,IEMRxns))=0;
+            modelIEM.lb(ismember(modelIEM.rxns,IEMRxns))=0;
         end
         tic;
         if useSolveCobraLPCPLEX
@@ -268,8 +268,12 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                         else
                             solution = optimizeWBModel(model);
                             if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                model.lb(c+1)=fix(model.lb(c+1)*10000)/10000;
+                                model.lb(c+1)=1000;
                                 solution = optimizeWBModel(model);
+                                if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                                    model.lb(c+1)=10;
+                                    solution = optimizeWBModel(model);
+                                end
                             end
                             
                         end
@@ -321,8 +325,12 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                         else
                             solution = optimizeWBModel(modelIEM);
                             if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                modelIEM.lb(c+1)=fix(modelIEM.lb(c+1)*10000)/10000;
+                                modelIEM.lb(c+1)=1000;
                                 solution = optimizeWBModel(modelIEM);
+                                if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                                    modelIEM.lb(c+1)=10;
+                                    solution = optimizeWBModel(modelIEM);
+                                end
                             end
                         end
                         timeTaken=toc;
