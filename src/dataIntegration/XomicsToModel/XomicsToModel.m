@@ -221,7 +221,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %
 % Requires The COBRA Toolbox and a linear optimisation solver (e.g. Gurobi) to be installed
 %
-% 2022 German Preciat, Agnieszka Wegrzyn, Ronan Fleming
+% 2023 German Preciat, Agnieszka Wegrzyn, Xi Luo, Ronan Fleming
 
 model = genericModel;
 
@@ -1029,7 +1029,11 @@ end
 if ~any(activeModelGeneBool)
     activeEntrezGeneID = [];
 else
-    activeEntrezGeneID = model.genes(activeModelGeneBool);
+    try
+        activeEntrezGeneID = model.genes(activeModelGeneBool);
+    catch
+        activeEntrezGeneID = model.genes(find(activeModelGeneBool));
+    end
 end
 
 % Active genes from manual curation
@@ -1962,6 +1966,7 @@ if ~isempty(activeEntrezGeneID)
     end
     
     if 0 && param.debug && param.findThermoConsistentFluxSubset
+      
         % Identify the flux consistent set
         paramFluxConsistency.epsilon = param.fluxEpsilon;
         paramFluxConsistency.method = param.fluxCCmethod;
