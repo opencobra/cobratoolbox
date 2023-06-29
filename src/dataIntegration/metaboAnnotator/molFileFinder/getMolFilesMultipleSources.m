@@ -72,7 +72,18 @@ for i = startSearch : endSearch
             modelFake.metKEGGID{cnt,1} = '';
         end
         if length(find(isnan(metabolite_structure.(F{i}).hmdb)))==0 && ~isempty(metabolite_structure.(F{i}).hmdb)
-            modelFake.metHMDBID{cnt,1} = metabolite_structure.(F{i}).hmdb;
+            % if multiple HMDB ID's are given use only the first entry
+            % (this assumes that the hmdb id's point to the same
+            % metabolite, e.g., as in the case of HMDB01311; HMDB00171
+            if strfind(metabolite_structure.(F{i}).hmdb,';')
+                tmp = split(metabolite_structure.(F{i}).hmdb,';');
+                modelFake.metHMDBID{cnt,1} = tmp{1};
+            elseif strfind(metabolite_structure.(F{i}).hmdb,',')
+                tmp = split(metabolite_structure.(F{i}).hmdb,',');
+                modelFake.metHMDBID{cnt,1} = tmp{1};
+            else
+                modelFake.metHMDBID{cnt,1} = metabolite_structure.(F{i}).hmdb;
+            end
         else
             modelFake.metHMDBID{cnt,1} = '';
             

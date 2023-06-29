@@ -54,7 +54,7 @@ function solution = optCardThermo(model,param)
 %          * .lambda1 - trade-off parameter on minimise `||x||_1`
 %          * .delta0  - trade-off parameter on maximise `||y||_0`
 %          * .delta1  - trade-off parameter on minimise `||y||_1'
-%          * .beta    - trade-off parameter on minimise `||p||_1' + `||q||_1'
+%          * .beta    - trade-off parameter on minimise `||p||_1' + `||q||_1', increase to incentivise thermodynamic feasibility
 
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output

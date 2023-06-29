@@ -23,6 +23,7 @@ modelListUpdated=modelListUpdated';
 tic;
 for i = s : e%length(modelList)
     i
+<<<<<<< HEAD
     load(strcat(folder, modelList{i}));
     %[modelProp1,ScoresOverall1] = generateMemoteLikeScore(model);
     [modelUpdated] = populateModelMetStr(model, metabolite_structure_rBioNet,1);
@@ -53,6 +54,42 @@ for i = s : e%length(modelList)
     fileName = regexprep(modelList{i},'.mat','');
     if isempty(find(ismember(modelListUpdated,strcat(fileName,'.xml'))))
         outmodel = writeCbModel(modelUpdated, 'format','sbml', 'fileName', strcat(folderUpdated,'',fileName));
+=======
+    if isempty(find(ismember(modelListUpdated,strcat(modelList{i}))))
+        load(strcat(folder, modelList{i}));
+        %[modelProp1,ScoresOverall1] = generateMemoteLikeScore(model);
+        [modelUpdated] = populateModelMetStr(model, metabolite_structure_rBioNet,1);
+        [modelUpdated] = annotateSBOTerms(modelUpdated);
+        modelUpdated = rmfield(modelUpdated,'metInChIString'); % wrongly in microbe models
+        
+        [modelUpdated] = populateModelwithRxnIDs(modelUpdated);
+        try
+            [modelProp2,ScoresOverall2] = generateMemoteLikeScore(modelUpdated);
+            
+            modelProperties.(regexprep(modelList{i},'.mat','')).ScoresOverall = ScoresOverall2;
+            modelProperties.(regexprep(modelList{i},'.mat','')).modelUpdated = modelUpdated;
+            modelProperties.(regexprep(modelList{i},'.mat','')).modelProp2 = modelProp2;
+            ScoresOverall{i,1} = regexprep(modelList{i},'.mat','');
+            ScoresOverall{i,2} = num2str(ScoresOverall2);
+            % if mod(i,10)
+            save(strcat(reportDir,'AGORA2_MetaboRePorts_',modelList{i}),'modelProperties','ScoresOverall');
+            clear modelProperties
+            %  end
+            %% save updated mat file
+        end
+        
+        model =modelUpdated;
+        save(strcat(folderUpdated,modelList{i}),'model');
+        
+        %%generate sbml file
+        %remove description from model structure as this causes issues
+        
+%         modelUpdated = rmfield(modelUpdated,'description');
+%         fileName = regexprep(modelList{i},'.mat','');
+%         if isempty(find(ismember(modelListUpdated,strcat(fileName,'.xml'))))
+%             outmodel = writeCbModel(modelUpdated, 'format','sbml', 'fileName', strcat(folderUpdated,'',fileName));
+%         end
+>>>>>>> develop
     end
 end
 toc;
@@ -61,4 +98,8 @@ save('AGORA2_MetaboRePorts_ScoresOverall.mat','ScoresOverall');
 
 evalc('generateMemoteLikeReport(modelProperties,reportDir)');
 
+<<<<<<< HEAD
 %%
+=======
+%%
+>>>>>>> develop

@@ -35,7 +35,7 @@ else
     rxn = rxnDB;
 end
 % load extended rBioNet
-if exist('metabolite_structure_rBioNet','var')
+if exist('metabolite_structure_rBioNet','var') &&  ~isempty(metabolite_structure_rBioNet)
     if ~isstruct(metabolite_structure_rBioNet)
        load(metabolite_structure_rBioNet)
     end

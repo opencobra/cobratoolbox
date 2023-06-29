@@ -77,7 +77,7 @@ else
 end
 
 % load extended rBioNet -- Not implemented yet
-if ~exist('metabolite_structure_rBioNet','var')
+if ~exist('metabolite_structure_rBioNet','var') || isempty(metabolite_structure_rBioNet)
     load met_strc_rBioNet;
 end
 F = fieldnames(metabolite_structure_rBioNet);

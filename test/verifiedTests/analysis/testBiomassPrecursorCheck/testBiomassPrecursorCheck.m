@@ -84,6 +84,18 @@ model = addReaction(model, 'BIOMASS2', 'reactionFormula', 'metTest1[c] + atp[c] 
 model = changeObjective(model, {'Biomass_Ecoli_core_N(w/GAM)-Nmet2'; 'BIOMASS2'}, 1);
 % additional functionalities not turned on
 [missingMets0, presentMets0] = biomassPrecursorCheck(model);
+
+if 1
+    % producible cofactors identified as missingMets when checkConservedQuantities not turned on
+    assert(isempty(setxor(missingMets0, {'accoa[c]';'atp[c]';'nad[c]';'nadph[c]';'metTest1[c]'})))
+    assert(isempty(setxor(presentMets0, {'3pg[c]';'e4p[c]';'f6p[c]';'g3p[c]';'g6p[c]';...
+        'gln-L[c]';'glu-L[c]';'h2o[c]';'oaa[c]';'pep[c]';'pyr[c]';'r5p[c]'})))
+else
+    % producible cofactors identified as missingMets when checkConservedQuantities not turned on
+    assert(isempty(setxor(missingMets0, {'atp[c]';'metTest1[c]'})))
+    assert(isempty(setxor(presentMets0, {})))
+end
+
 % additional functionalities turned on
 if exist([pwd filesep 'testBiomassPrecursorCheck.txt'], 'file')
     delete([pwd filesep 'testBiomassPrecursorCheck.txt'])
@@ -95,11 +107,6 @@ diary off
 % empty coupledMets
 assert(isempty(coupledMets))
 
-% producible cofactors identified as missingMets when checkConservedQuantities not turned on
-assert(isempty(setxor(missingMets0, {'accoa[c]';'atp[c]';'nad[c]';'nadph[c]';'metTest1[c]'})))
-assert(isempty(setxor(presentMets0, {'3pg[c]';'e4p[c]';'f6p[c]';'g3p[c]';'g6p[c]';...
-    'gln-L[c]';'glu-L[c]';'h2o[c]';'oaa[c]';'pep[c]';'pyr[c]';'r5p[c]'})))
-
 % no missingMets when checkConservedQuantities turned on
 assert(isempty(missingMets))
 % same set of presentMets
@@ -109,9 +116,12 @@ assert(isempty(setxor(presentMets, presentMets0)))
 missingCofsStr = cellfun(@(x) strjoin(x, '|'), missingCofs, 'UniformOutput', false);
 assert(isempty(setxor(missingCofsStr, {'metTest1[c]|metTest2[c]'})))
 presentCofsStr = cellfun(@(x) strjoin(x, '|'), presentCofs, 'UniformOutput', false);
-assert(isempty(setxor(presentCofsStr, {'nadp[c]|nadph[c]'; 'adp[c]|atp[c]'; ...
-    'accoa[c]|coa[c]'; 'nad[c]|nadh[c]'})))
-
+if 1
+    assert(isempty(setxor(presentCofsStr, {'nadp[c]|nadph[c]'; 'adp[c]|atp[c]'; ...
+        'accoa[c]|coa[c]'; 'nad[c]|nadh[c]'})))
+else
+    assert(isempty(setxor(presentCofsStr, {'adp[c]|atp[c]'})))
+end
 % check the correct printing of the results
 f = fopen('testBiomassPrecursorCheck.txt', 'r');
 l = fgetl(f);

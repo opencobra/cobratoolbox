@@ -14,7 +14,11 @@ function [outFile] = getMolFileFromDrugbank(metAbbr,drugbank,directory)
 % get and save mol file
 % https://go.drugbank.com/structures/metabolites/DBMET01243.mol
 % https://go.drugbank.com/structures/small_molecule_drugs/DB05478.mol
-mkdir(directory);
+try
+    mkdir(directory);
+catch
+    directory = regexprep(directory,'^/','');
+end
 try
     url=strcat('https://go.drugbank.com/structures/metabolites/',drugbank,'.mol');
     outFile = websave([directory filesep metAbbr,'.mol'],url);

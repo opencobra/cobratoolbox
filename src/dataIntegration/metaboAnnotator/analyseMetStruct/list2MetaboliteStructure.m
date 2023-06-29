@@ -54,7 +54,7 @@ end
 
 if exist('fileName','var') && ~isempty(fileName)
     if ispc || 1
-        % read in xlsx file 
+        % read in xlsx file
         [NUM,TXT,RAW]=xlsread(fileName);
     else
         [NUM,TXT,RAW] = xlsreadXLSX(fileName);
@@ -128,19 +128,23 @@ else
         disp(RAW{i,name_col})
         clear  VMHId
         if ~exist('customMetAbbrList','var')
-           %[VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rxnDB,customMetAbbrList)
+            %[VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rxnDB,customMetAbbrList)
             [VMHId] = generateVMHMetAbbr(RAW{i,name_col},metabolite_structure_rBioNet,metab,rxn);
             customMetAbbrList = convertCharsToStrings(VMHId);
         else
             [VMHId] = generateVMHMetAbbr(RAW{i,name_col},metabolite_structure_rBioNet,metab,rxn,customMetAbbrList);
-            customMetAbbrList = [customMetAbbrList ; convertCharsToStrings(VMHId)];
+            try
+                customMetAbbrList = [customMetAbbrList ; convertCharsToStrings(VMHId)];
+            catch
+                customMetAbbrList{end+1} =  VMHId;
+            end
         end
         RAW{i,vmh_col} = VMHId;
         save tmp
     end
-
+    
     [metabolite_structure] =createNewMetaboliteStructure(RAW,fileName,metabolite_structure_rBioNet,metab,rxn);
-
+    
     VMH_existance =[];
     rBioNet_existance = [];
     listDuplicates =[];
@@ -182,7 +186,9 @@ for i = 1:length(F)
     
     [metabolite_structure] = assignClassyFire(metabolite_structure,startSearch,endSearch);
     if mod(i,10)==1
-        save(fileNameOutput)
+        if exist('fileNameOutput','var') && ~isempty(fileNameOutput)
+            save(fileNameOutput)
+        end
     end
 end
 % these are offline files
@@ -220,10 +226,14 @@ if ~isempty(match)
             % metabolite structure from metabolite_structure_rBioNet
             % rBioNet IDs contain ';' that might be not valid for matlab
             % fields. The new Fields are found in metabolite_structure
+<<<<<<< HEAD
             field=fieldnames(metabolite_structure.(F{match(i)}));
             field_rBioNet=fieldnames(metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]));
             [missingfields,map] = setdiff(field,field_rBioNet);
             %remove
+=======
+            
+>>>>>>> develop
             metabolite_structure = rmfield(metabolite_structure,[F(match(i))]);
             % add field from metabolite_structure_rBioNet
             metabolite_structure.(['VMH_' rBioNet_existance{match(i),4}]) = metabolite_structure_rBioNet.(['VMH_' rBioNet_existance{match(i),4}]);
@@ -237,8 +247,9 @@ if ~isempty(match)
         end
     end
 end
-
-save(fileNameOutput);
+if exist('fileNameOutput','var') && ~isempty(fileNameOutput)
+    save(fileNameOutput);
+end
 % add any missing fields to structure
 metabolite_structure= addField2MetStructure(metabolite_structure);
 
@@ -254,4 +265,6 @@ if xlsProvided == 1
     writecell(RAW,fileNameU);
 end
 %  save collectedMetStruct metabolite_structure
-save(fileNameOutput)
+if exist('fileNameOutput','var') && ~isempty(fileNameOutput)
+    save(fileNameOutput)
+end

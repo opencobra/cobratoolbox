@@ -50,8 +50,9 @@ formula = 1;
 % loop for each metabolite instead of each search for all metabolites at
 % once to avoid too quick repinging of a single database
 for i = 1: length(F)
-    progress = i/length(F);
-    fprintf([num2str(progress) '% ... Annotating metabolites from different resources ... \n']);
+        progress = i/length(F);
+    fprintf([num2str(progress*100) ' percent ... Annotating metabolites from different resources ... \n']);
+   
     
     startSearch =i;
     endSearch = i;

@@ -77,7 +77,7 @@ if ismac || ispc
         oBabelInstalled = 1;
     end
 else
-    [oBabelInstalled, ~] = system('openbabel.obabel');
+    [oBabelInstalled] = system('openbabel.obabel');
 end
 if oBabelInstalled == 127
     oBabelInstalled = 0;
@@ -88,7 +88,11 @@ webTimeout = weboptions('Timeout', 60);
 % Set directory
 newMolFilesDir  = [outputDir 'metabolites' filesep];
 if exist(newMolFilesDir, 'dir') == 0
-    mkdir(newMolFilesDir)
+    try
+        mkdir(newMolFilesDir);
+    catch
+        newMolFilesDir = regexprep(newMolFilesDir,'^/','');
+    end
 end
 
 %% Obtain met data
