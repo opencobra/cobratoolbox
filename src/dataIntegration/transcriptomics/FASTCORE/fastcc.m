@@ -4,7 +4,7 @@ function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 %
 % USAGE:
 %
-%    [A, modelFlipped, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
+%    [A, modelFlipped, V] = fastcc(modelAS, epsilon, printLevel, modeFlag, method)
 %
 % INPUTS:
 %    model:         cobra model structure containing the fields:
