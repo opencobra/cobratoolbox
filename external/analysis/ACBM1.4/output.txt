@@ -1,0 +1,3 @@
+Time E. coli_Count E. coli_Conc Glucose_Count Glucose_Conc E. coli_Died bacteria_couldn't_eat
+0 24 0.1 107057 10.0 0 0
+1 24 0.1 107057 10.0 0 0
