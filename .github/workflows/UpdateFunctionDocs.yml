@@ -1,0 +1,33 @@
+name: Update function docs
+
+on:
+  pull_request_target:
+    types:
+      - closed
+    branches: [ master ]
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      working-directory: ./docs
+      run: |
+        pip install -r requirements.txt
+    - name: generate documentation
+      working-directory: ./docs
+      run: |
+        make html
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: ./docs/build/html/modules
+        branch: gh-pages
+        target-folder: latest/modules
+          

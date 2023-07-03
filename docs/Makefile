@@ -65,7 +65,7 @@ html:
 	#-e  matlab executable path"
 	bash prepareTutorials.sh -t=$(ARTENOLIS_DATA_PATH)/fork-COBRA.tutorials -c=$(ARTENOLIS_DATA_PATH)/fork-cobratoolbox -p=$(ARTENOLIS_DATA_PATH)/cobratoolbox -m=rst
 	@echo "Generating list of suggestions for the websearch."
-	python2 generateJSONList.py
+	python3 generateJSONList.py
 	@echo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
