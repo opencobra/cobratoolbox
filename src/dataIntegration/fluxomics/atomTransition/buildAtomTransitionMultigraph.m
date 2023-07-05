@@ -291,15 +291,15 @@ dATM = digraph(EdgeTable);
 
 % 'Atom'
 %Bout = mapAontoB(Akey,Bkey,Ain,Bin)
-Atom =  mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadAtom; dATM.Edges.TailAtom]);
+Atom =  mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadAtom; dATM.Edges.TailAtom],[],0);
 % 'AtomIndex'
 AtomIndex = (1:size(dATM.Nodes,1))';
 % 'mets'
-mets = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMet; dATM.Edges.TailMet]);
+mets = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMet; dATM.Edges.TailMet],[],0);
 % 'AtomNumber'
-AtomNumber = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMetAtomNumber; dATM.Edges.TailMetAtomNumber]);
+AtomNumber = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.HeadMetAtomNumber; dATM.Edges.TailMetAtomNumber],[],0);
 % 'Element'
-Element = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.Element; dATM.Edges.Element]);
+Element = mapAontoB([dATM.Edges.HeadAtom; dATM.Edges.TailAtom],dATM.Nodes.Name,[dATM.Edges.Element; dATM.Edges.Element],[],0);
 
 dATM.Nodes = addvars(dATM.Nodes,Atom,AtomIndex,mets,AtomNumber,Element,'NewVariableNames',{'Atom','AtomIndex','mets','AtomNumber','Element'});
 
