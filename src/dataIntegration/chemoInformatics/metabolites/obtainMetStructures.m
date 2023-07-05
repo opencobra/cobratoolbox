@@ -136,7 +136,8 @@ if any(hmdbFieldBool)
 end
 
 % inchi
-inchiFieldBool = ~cellfun(@isempty, regexpi(fields, 'inchi'));
+%inchiFieldBool = ~cellfun(@isempty, regexpi(fields, 'inchi'));%confuses with metInChI
+inchiFieldBool = contains(fields,'inchi');
 if any(inchiFieldBool) && isstruct(model.(fields{ismember(fields, 'inchi')}))
     inchis = model.(fields{ismember(fields, 'inchi')}).standardWithStereoAndCharge;
 elseif any(inchiFieldBool) && ~isstruct(model.(fields{ismember(fields, 'inchi')}))
