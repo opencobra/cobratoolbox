@@ -1,61 +1,113 @@
 
+
 <!DOCTYPE html>
-
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>gMCS — The COBRA Toolbox</title>
-<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="../../../_static/json/manifest.json" rel="manifest"/>
-<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
-<meta content="#ffffff" name="theme-color"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
-<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
-<link href="../../../genindex.html" rel="index" title="Index">
-<link href="../../../search.html" rel="search" title="Search">
-<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
-<link href="../index.html" rel="up" title="Analysis">
-<link href="../KLdistance/index.html" rel="next" title="KLdistance">
-<link href="../geometricFBA/index.html" rel="prev" title="geometricFBA">
-<script src="../../../_static/js/modernizr.min.js"></script>
-</link></link></link></link></link></link></link></head>
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  gtag('config', 'G-KFJTC6J15L');
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gMCS &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="KLdistance" href="../KLdistance/index.html"/>
+        <link rel="prev" title="geometricFBA" href="../geometricFBA/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
 
 <body class="wy-body-for-nav" role="document">
-<div class="wy-grid-for-nav">
-<nav class="wy-nav-side" data-toggle="wy-nav-shift">
-<div class="wy-side-scroll">
-<div class="wy-side-nav-search">
-<a href="../../../index.html">
-<img alt="logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/logo.png"/>
-</a>
-<h1>The COBRA Toolbox</h1>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
 <div role="search">
-<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
-<input id="simple" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<script>
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
     	var options = {
 
 		url: "../../../_static/json/functions.json",
@@ -90,14 +142,18 @@
 
 
     </script>
-</form>
+  </form>
 </div>
-</div>
-<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
-</ul>
-<ul class="current">
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
@@ -145,344 +201,415 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
+      <li class="breadcrumb-item active">gMCS</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
 </div>
-</div>
-</nav>
-<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
-<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
-<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="../../../index.html">The COBRA Toolbox</a>
-</nav>
-<div class="wy-nav-content">
-<div class="rst-content">
-<div aria-label="breadcrumbs navigation" role="navigation">
-<ul class="wy-breadcrumbs">
-<li><a href="../../../contents.html">Docs</a> »</li>
-<li><a href="../../index.html">Functions</a> »</li>
-<li><a href="../index.html">Analysis</a> »</li>
-<li>gMCS</li>
-<li class="wy-breadcrumbs-aside">
-</li>
-</ul>
-<hr/>
-</div>
-<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
-<div itemprop="articleBody">
-<div class="section" id="gmcs">
-<span id="id1"></span><h1>gMCS<a class="headerlink" href="#gmcs" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.analysis.gMCS"></span><dl class="function">
-<dt id="src.analysis.gMCS.GPR2models">
-<code class="descname">GPR2models</code><span class="sig-paren">(</span><em>metabolic_model</em>, <em>selected_rxns</em>, <em>separate_transcript</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/gMCS/GPR2models.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="gmcs">
+<span id="id1"></span><h1>gMCS<a class="headerlink" href="#gmcs" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.gMCS"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.GPR2models">
+<span class="sig-name descname"><span class="pre">GPR2models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolic_model</span></em>, <em class="sig-param"><span class="pre">selected_rxns</span></em>, <em class="sig-param"><span class="pre">separate_transcript</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.GPR2models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Each GPR rule is converted into a network where the reaction and genes
 involved are interconnected.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metabolic_model</strong> –
-Metabolic model structure (COBRA Toolbox format)</li>
-<li><strong>selected_rxns</strong> –
-Index array which indicates selected reactions to
-calculate the network.</li>
-<li><strong>separate_transcript</strong> –
-Character used to discriminate
-different isoforms of a gene. Default ‘’.</li>
-</ul>
+<div><p>[networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)</p>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<dl>
+<dt>INPUTS:</dt><dd><p>metabolic_model:        Metabolic model structure (COBRA Toolbox format)
+selected_rxns:          Index array which indicates selected reactions to</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>numWorkers</strong> –
-Maximum number of workers
-* 0 - maximum provided by the system (automatic)
-(default). If parallel pool is active, numWorkers
+<div><p>calculate the network.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>separate_transcript:    Character used to discriminate</dt><dd><p>different isoforms of a gene. Default ‘’.</p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><dl>
+<dt>numWorkers:        Maximum number of workers</dt><dd><ul class="simple">
+<li><p>0 - maximum provided by the system (automatic)</p></li>
+</ul>
+<p>(default). If parallel pool is active, numWorkers
 is defined by the system, otherwise is 1.
 * 1 - sequential
-* 2+ - parallel</li>
-<li><strong>printLevel</strong> –
-show the reactions created in models.
-* 0 - shows nothing
-* 1 - shows progress by reactions (default)
-* 2+ - shows everything (reaction and network generation)</li>
+* 2+ - parallel</p>
+</dd>
+<dt>printLevel:        show the reactions created in models.</dt><dd><ul class="simple">
+<li><p>0 - shows nothing</p></li>
+<li><p>1 - shows progress by reactions (default)</p></li>
+<li><p>2+ - shows everything (reaction and network generation)</p></li>
 </ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt><dd><p>networks:          Cell array which contains all the networks.
+rxnNumGenes:       Array with the number of genes present in each GPR</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>networks</strong> –
-Cell array which contains all the networks.</li>
-<li><strong>rxnNumGenes</strong> –
-Array with the number of genes present in each GPR
-rule for each reaction.</li>
-</ul>
+<div><p>rule for each reaction.</p>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.gMCS.buildGmatrix">
-<code class="descname">buildGmatrix</code><span class="sig-paren">(</span><em>model_name</em>, <em>model</em>, <em>separate_isoform</em>, <em>numWorkers</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/gMCS/buildGmatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.buildGmatrix">
+<span class="sig-name descname"><span class="pre">buildGmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_name</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">separate_isoform</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.buildGmatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the G matrix required for the calculation of genetic Minimal Cut
 Sets (gMCSs).</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model_name</strong> –
-Name of the metabolic model under study.</li>
-<li><strong>model_struct</strong> –
-Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>separate_isoform</strong> –
-Character used to discriminate different isoforms of a gene.</li>
-</ul>
+<div><p>[G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)</p>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>numWorkers</strong> –
-Maximum number of workers
-* 0 - maximum provided by the system (automatic)
-* 1 - sequential
-* 2+ - parallel</li>
-<li><strong>printLevel</strong> –
-show the reactions created in models.
-* 0 - shows nothing
-* 1 - shows progress by reactions (default)
-* 2+ - shows everything (reaction and network generation)</li>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>model_name:          Name of the metabolic model under study.
+model_struct:        Metabolic model structure (COBRA Toolbox format).
+separate_isoform:    Character used to discriminate different isoforms of a gene.</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
+<dt>numWorkers:        Maximum number of workers</dt><dd><ul class="simple">
+<li><p>0 - maximum provided by the system (automatic)</p></li>
+<li><p>1 - sequential</p></li>
+<li><p>2+ - parallel</p></li>
 </ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>G</strong> –
-G matrix.</li>
-<li><strong>G_ind</strong> –
-Gene knockouts associated with each row in the G matrix.</li>
-<li><strong>related</strong> –
-Relationships among rows of the G matrix.</li>
-<li><strong>n_genes_KO</strong> –
-Number of genes whose knockout is added by each row of the G matrix.</li>
-<li><strong>G_time</strong> –
-Calculation times for each of the steps.</li>
+</dd>
+<dt>printLevel:        show the reactions created in models.</dt><dd><ul class="simple">
+<li><p>0 - shows nothing</p></li>
+<li><p>1 - shows progress by reactions (default)</p></li>
+<li><p>2+ - shows everything (reaction and network generation)</p></li>
 </ul>
-</div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">G</span><span class="p">,</span> <span class="n">G_ind</span><span class="p">,</span> <span class="n">related</span><span class="p">,</span> <span class="n">n_genes_KO</span><span class="p">,</span> <span class="n">G_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">buildGmatrix</span><span class="p">(</span><span class="s1">'Recon2.v04'</span><span class="p">,</span> <span class="n">modelR204</span><span class="p">,</span> <span class="s1">'.'</span><span class="p">)</span>
-</pre></div>
-</div>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>G:             G matrix.
+G_ind:         Gene knockouts associated with each row in the G matrix.
+related:       Relationships among rows of the G matrix.
+n_genes_KO:    Number of genes whose knockout is added by each row of the G matrix.
+G_time:        Calculation times for each of the steps.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(‘Recon2.v04’, modelR204, ‘.’)</p>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.gMCS.calculateGeneMCS">
-<code class="descname">calculateGeneMCS</code><span class="sig-paren">(</span><em>model_name</em>, <em>model_struct</em>, <em>n_gmcs</em>, <em>max_len_gmcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/gMCS/calculateGeneMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.calculateGeneMCS">
+<span class="sig-name descname"><span class="pre">calculateGeneMCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_name</span></em>, <em class="sig-param"><span class="pre">model_struct</span></em>, <em class="sig-param"><span class="pre">n_gmcs</span></em>, <em class="sig-param"><span class="pre">max_len_gmcs</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.calculateGeneMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate genetic Minimal Cut Sets (gMCSs) using the warm-start strategy
 available in CPLEX, namely cplex.populate(), with or without selecting a
 given knockout, among all the genes included in the model or a given
 subset of them. Apaolaza et al., 2017 (Nature Communications).</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, options)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model_name</strong> –
-Name of the metabolic model under study (in order to
-identify the G matrix).</li>
-<li><strong>model_struct</strong> –
-Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>n_gmcs</strong> –
-Number of gMCSs to calculate.</li>
-<li><strong>max_len_gmcs</strong> –
-Number of genes in the largest gMCS to be calculated.</li>
-</ul>
+<div><p>[gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, max_len_gmcs, varargin)</p>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul>
-<li><p class="first"><strong>options</strong> –
-Structure with fields:</p>
-<ul>
-<li><p class="first">.KO - Selected gene knockout. Default: [].</p>
-</li>
-<li><p class="first">.gene_set - Cell array containing the set of
-genes among which the gMCSs are wanted to be calculated.
-Default: [] (all genes are included).</p>
-</li>
-<li><p class="first">.timelimit - Time limit for the calculation of gMCSs
-each time the solver is called. Default: 1e75.</p>
-</li>
-<li><p class="first">.target_b - Desired activity level of the metabolic
-task to be disrupted. Default: 1e-3;</p>
-</li>
-<li><p class="first">.separate_transcript - Character used to discriminate
-different transcripts of a gene. Default: ‘’.
-Example: separate_transcript = ‘’</p>
-<blockquote>
-<div><blockquote>
-<div><p>gene 10005.1    ==&gt;    gene 10005.1
-gene 10005.2    ==&gt;    gene 10005.2
-gene 10005.3    ==&gt;    gene 10005.3</p>
-</div></blockquote>
-<dl class="docutils">
-<dt>separate_transcript = ‘.’</dt>
-<dd><p class="first last">gene 10005.1
-gene 10005.2    ==&gt;    gene 10005
-gene 10005.3</p>
+<dl>
+<dt>INPUTS:</dt><dd><dl class="simple">
+<dt>model_name:      Name of the metabolic model under study (in order to</dt><dd><p>identify the G matrix).</p>
 </dd>
 </dl>
-</div></blockquote>
-</li>
-<li><p class="first">.forceLength - 1 if the constraint limiting the
-length of the gMCSs is to be active (recommended for
-enumerating low order gMCSs), 0 otherwise.
-Default: 1.</p>
-</li>
-<li><p class="first">.numWorkers  - is the maximun number of workers</p>
-</li>
-</ul>
-<p>used by Cplex and GPR2models. 0 = automatic, 1 =
-sequential, &gt;1 = parallel. Default = 0;
-* .printLevel - 1 if the process is wanted to be</p>
+<p>model_struct:    Metabolic model structure (COBRA Toolbox format).
+n_gmcs:          Number of gMCSs to calculate.
+max_len_gmcs:    Number of genes in the largest gMCS to be calculated.</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><p>KO:                 Selected gene knockout. (default = [])
+gene_set:           Cell array containing the set of genes among which</p>
 <blockquote>
-<div><p>shown on the screen, 0 otherwise. Default: 1.</p>
+<div><p>the gMCSs are wanted to be calculated.
+(default = [], all genes)</p>
 </div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
+<dl>
+<dt>target_b:           Desired activity level of the metabolic task to be</dt><dd><p>disrupted. (default = 1e-3)</p>
+</dd>
+<dt>nutrientGMCS:       Boolean variable.  0 to calculate GeneMCS, 1 to</dt><dd><p>calculate MCS containing genes and nutrients,
+known as ngMCS. (default = false)</p>
+</dd>
+<dt>exchangeRxns:       Cell array containing the set of reactions to be</dt><dd><p>included as inputs of nutrients from the cell
+environment / culture medium. (default = [], which
+are all reactions with only one 1 metabolite
+consiedered as input for the model)</p>
+</dd>
+<dt>onlyNutrients:      Boolean variable.  1 to calculate MCS only using</dt><dd><p>selected KO and nutrients, 0 to use everything.
+If there is no KO selected, it is set to false.
+(default = false)</p>
+</dd>
+<dt>separate_transcript:Character used to separate</dt><dd><p>different transcripts of a gene. (default = ‘’)
+Examples:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>gmcs</strong> –
-Cell array containing the calculated gMCSs.</li>
-<li><strong>gmcs_time</strong> –
-Calculation times of the different processes in
-the algorithm.</li>
+<li><dl class="simple">
+<dt>separate_transcript = ‘’</dt><dd><ul>
+<li><p>gene 10005.1    ==&gt;    gene 10005.1</p></li>
+<li><p>gene 10005.2    ==&gt;    gene 10005.2</p></li>
+<li><p>gene 10005.3    ==&gt;    gene 10005.3</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>separate_transcript = ‘.’</dt><dd><ul>
+<li><p>gene 10005.1</p></li>
+<li><p>gene 10005.2    ==&gt;    gene 10005</p></li>
+<li><p>gene 10005.3</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">With</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">'Recon2.v04'</span><span class="p">,</span> <span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-<span class="o">%</span><span class="n">Being</span><span class="p">:</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">KO</span> <span class="o">=</span> <span class="s1">'6240'</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">gene_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'2987'</span><span class="p">;</span> <span class="s1">'6241'</span><span class="p">}</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">timelimit</span> <span class="o">=</span> <span class="mi">300</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">target_b</span> <span class="o">=</span> <span class="mf">1e-4</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">separate_transcript</span> <span class="o">=</span> <span class="s1">'.'</span><span class="p">;</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">forceLength</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">printLevel</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="o">%</span><span class="n">Without</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">gmcs</span><span class="p">,</span> <span class="n">gmcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateGeneMCS</span><span class="p">(</span><span class="s1">'ecoli_core_model'</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Check the installation of cplex</p>
+</dd>
+<dt>forceLength:        1 if the constraint limiting the length of the</dt><dd><p>gMCSs is to be active (recommended for
+enumerating low order gMCSs), 0 otherwise
+(default = 1)</p>
+</dd>
+<dt>timelimit:          Time limit for the calculation of gMCSs each time</dt><dd><p>the solver is called. (default = 1e75)</p>
+</dd>
+<dt>numWorkers:         Integer: is the maximun number of workers used</dt><dd><p>by Cplex and GPR2models. 0 = automatic,
+1 = sequential, &gt; 1 = parallel. (default = 0)</p>
+</dd>
+<dt>printLevel:         Integer. 1 if the process is wanted to be shown</dt><dd><p>on the screen, 0 otherwise. (default = 1)</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>gmcs:         Cell array containing the calculated gMCSs.
+gmcs_time:    Calculation times of the different processes in</p>
+<blockquote>
+<div><p>the algorithm.</p>
+</div></blockquote>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>%With optional values
+[gmcs, gmcs_time] = calculateGeneMCS(‘Recon2.v04’, modelR204, 100, 10, …</p>
+<blockquote>
+<div><p>‘KO’ = ‘6240’, …
+‘gene_set’ = {‘2987’; ‘6241’},  …
+‘timelimit’ = 300,  …
+‘target_b’ = 1e-4,
+‘separate_transcript’ = ‘.’,  …
+‘forceLength’ = 0, …
+‘printLevel’ = 0)</p>
+</div></blockquote>
+<p>%Without optional values
+[gmcs, gmcs_time] = calculateGeneMCS(‘ecoli_core_model’, model, 100, 10)</p>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.gMCS.calculateMCS">
-<code class="descname">calculateMCS</code><span class="sig-paren">(</span><em>model_struct</em>, <em>n_mcs</em>, <em>max_len_mcs</em>, <em>options</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/gMCS/calculateMCS.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.calculateMCS">
+<span class="sig-name descname"><span class="pre">calculateMCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_struct</span></em>, <em class="sig-param"><span class="pre">n_mcs</span></em>, <em class="sig-param"><span class="pre">max_len_mcs</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.calculateMCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Minimal Cut Sets (MCSs) using the warm-start strategy available
 in CPLEX, namely cplex.populate(), with or without selecting a given
 knockout, among all the reactions included in the model or a given subset
 of them. Tobalina et al., 2016 (Bioinformatics); von Kamp and Klamt, 2014
 (PLoS Computational Biology).</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model_struct</strong> –
-Metabolic model structure (COBRA Toolbox format).</li>
-<li><strong>n_mcs</strong> –
-Number of MCSs to calculate.</li>
-<li><strong>max_len_mcs</strong> –
-Number of reactions in the largest MCS to be calculated.</li>
-</ul>
+<div><p>[mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)</p>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>model_struct:    Metabolic model structure (COBRA Toolbox format).
+n_mcs:           Number of MCSs to calculate.
+max_len_mcs:     Number of reactions in the largest MCS to be calculated.</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUT:
+OPTIONAL INPUTS:</p>
 <blockquote>
-<div><ul>
-<li><p class="first"><strong>options</strong> –
-Structure with fields:</p>
-<ul class="simple">
-<li>.KO - Selected reaction knockout. Default: [].</li>
-<li>.rxn_set - Cell array containing the set of
-reactions (‘rxns’) among which the MCSs are
-wanted to be calculated. Default: [] (all reactions
-are included).</li>
-<li>.timelimit - Time limit for the calculation of MCSs
-each time the solver is called. Default: 1e75.</li>
-<li>.target_b - Desired activity level of the metabolic
-task to be disrupted. Default: 1e-3;</li>
-<li>.forceLength - 1 if the constraint limiting the
-length of the MCSs is to be active (recommended for
-enumerating low order MCSs), 0 otherwise.
-Default: 1.</li>
-<li>.numWorkers  - is the maximun number of workers</li>
-</ul>
-<p>used by Cplex and GPR2models. 0 = automatic, 1 =
-sequential, &gt;1 = parallel. Default = 0;
-* .printLevel - 1 if the process is wanted to be</p>
+<div><p>KO:                 Selected reaction knockout. (default = [])
+rxn_set:            Cell array containing the set of reactions among which</p>
 <blockquote>
-<div><p>shown on the screen, 0 otherwise. Default: 1.</p>
+<div><p>the MCSs are wanted to be calculated.
+taken from model.rxns
+(default = [], all reactions)</p>
 </div></blockquote>
-</li>
-</ul>
+<dl class="simple">
+<dt>target_b:           Desired activity level of the metabolic task to be</dt><dd><p>disrupted. (default = 1e-3)</p>
+</dd>
+<dt>forceLength:        1 if the constraint limiting the length of the</dt><dd><p>MCSs is to be active (recommended for
+enumerating low order MCSs), 0 otherwise
+(default = 1)</p>
+</dd>
+<dt>timelimit:          Time limit for the calculation of MCSs each time</dt><dd><p>the solver is called. (default = 1e75)</p>
+</dd>
+<dt>numWorkers:         Integer: is the maximun number of workers used</dt><dd><p>by Cplex and GPR2models. 0 = automatic,
+1 = sequential, &gt; 1 = parallel. (default = 0)</p>
+</dd>
+<dt>printLevel:         Integer. 1 if the process is wanted to be shown</dt><dd><p>on the screen, 0 otherwise. (default = 1)</p>
+</dd>
+</dl>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<dl>
+<dt>OUTPUTS:</dt><dd><p>mcs:         Cell array containing the calculated MCSs.
+mcs_time:    Calculation times of the different processes in</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>mcs</strong> –
-Cell array containing the calculated MCSs.</li>
-<li><strong>mcs_time</strong> –
-Calculation times of the different processes in
-the algorithm.</li>
-</ul>
+<div><p>the algorithm.</p>
 </div></blockquote>
-<p><strong>Example</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">With</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">modelR204</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-<span class="o">%</span><span class="n">Being</span><span class="p">:</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">KO</span> <span class="o">=</span> <span class="s1">'r1651'</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">rxn_set</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'r1652'</span><span class="p">;</span> <span class="s1">'r1653'</span><span class="p">;</span> <span class="s1">'r1654'</span><span class="p">}</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">timelimit</span> <span class="o">=</span> <span class="mi">300</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">target_b</span> <span class="o">=</span> <span class="mf">1e-4</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">forceLength</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="o">%</span><span class="n">options</span><span class="o">.</span><span class="n">printLevel</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="o">%</span><span class="n">Without</span> <span class="n">optional</span> <span class="n">values</span>
-<span class="p">[</span><span class="n">mcs</span><span class="p">,</span> <span class="n">mcs_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculateMCS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Check the installation of cplex</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>%With optional values
+[mcs, mcs_time] = calculateMCS(modelR204, 100, 10, …</p>
+<blockquote>
+<div><p>‘KO’, ‘r1651’, …
+‘rxn_set’, {‘r1652’; ‘r1653’; ‘r1654’}, …
+‘timelimit’, 300, …
+‘target_b’, 1e-4, …
+‘forceLength’, 0, …
+‘printLevel’, 0, …</p>
+</div></blockquote>
+<p>%Without optional values
+[mcs, mcs_time] = calculateMCS(model, 100, 10)</p>
 </dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.checkGeneMCS">
+<span class="sig-name descname"><span class="pre">checkGeneMCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">gMCSs</span></em>, <em class="sig-param"><span class="pre">isoform_separator</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.checkGeneMCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the gMCS is Minimal and Cut Set
+gMCS = gene Minimal Cut Set
+Minimal = the knock-off of all the genes of the gMCS is neccesary to
+eliminate the objective function
+Cut Set = The elimination of all the genes ensures the elimination of the
+objective reaction</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, gMCSs, isoform_separator)</p>
+</div></blockquote>
+<dl>
+<dt>INPUTS:</dt><dd><p>model:                 Metabolic model in COBRA format.
+gMCSs:                 cell array which stores all the gMCSs previously</p>
+<blockquote>
+<div><p>calculated. Each position contains a gMCS.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>isoform_separator:     genes in the model have different isoformes,</dt><dd><p>which are identificated by a separator from the
+gene name. (Default = ‘’).</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt><dd><dl class="simple">
+<dt>IsCutSet:              array which indicates the biomass producion if</dt><dd><p>all genes of the gMCSs are deleted</p>
+</dd>
+<dt>IsMinimal:             array which indicates the maximum of biomass if</dt><dd><p>any gene is deleted</p>
+</dd>
+<dt>geneNotMinimal:        cell array which stores all the genes which</dt><dd><p>make the gMCS not minimal (this errors are
+produced by the restriction of coputation
+time).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The isoform separator is neccesary to consider some genes as the same
+gene. Example: genes 555.1, 555.2 and 555.3 are considered as gene 555</p>
 </div>
-</div>
-<div class="articleComments">
-</div>
-</div>
-<footer>
-<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a accesskey="n" class="btn btn-default float-right" href="../KLdistance/index.html" rel="next" title="KLdistance">Next <span class="fa fa-arrow-circle-right"></span></a>
-<a accesskey="p" class="btn btn-default" href="../geometricFBA/index.html" rel="prev" title="geometricFBA"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-</div>
-<hr/>
-<div role="contentinfo">
-<p>
-        © Copyright 2017-2018, The COBRA Toolbox developers.
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.gMCS.prepareModelNutrientGeneMCS">
+<span class="sig-name descname"><span class="pre">prepareModelNutrientGeneMCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">exchangeRxns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.gMCS.prepareModelNutrientGeneMCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add artificial genes for the exchange reactions and prepare model for the
+gMCS implementation which includes nutrients from the culture medium.</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>model = prepareModelNutrientGeneMCS(model, exchangeRxns)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>model:             Metabolic model structure (COBRA Toolbox format).</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
+<dt>exchangeRxns:      Exchange reactions to be included (default = all</dt><dd><p>reactions which start by ‘<a href="#id2"><span class="problematic" id="id3">EX_</span></a>’, ‘<a href="#id4"><span class="problematic" id="id5">DM_</span></a>’ or ‘<a href="#id6"><span class="problematic" id="id7">sink_</span></a>’
+and only have one metabolite involved.</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt><dd><dl class="simple">
+<dt>model:             Metabolic model structure with genes for selected</dt><dd><p>exchanges (COBRA Toolbox format).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>model = prepareModelNutrientGeneMCS(model, exchangeRxns);</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../KLdistance/index.html" class="btn btn-default float-right" title="KLdistance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../geometricFBA/index.html" class="btn btn-default" title="geometricFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
 
     </p>
-</div>
+  </div>
   Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-</div>
-</div>
-</section>
-</div>
-<script type="text/javascript">
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
             VERSION:'2.0.0',
@@ -492,15 +619,35 @@ the algorithm.</li>
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-<script src="../../../_static/jquery.js" type="text/javascript"></script>
-<script src="../../../_static/underscore.js" type="text/javascript"></script>
-<script src="../../../_static/doctools.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script src="../../../_static/js/theme.js" type="text/javascript"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

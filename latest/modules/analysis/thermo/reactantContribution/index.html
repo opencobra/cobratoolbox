@@ -1,61 +1,113 @@
 
+
 <!DOCTYPE html>
-
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>reactantContribution — The COBRA Toolbox</title>
-<link href="../../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="../../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link color="#5bbad5" href="../../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="../../../../_static/json/manifest.json" rel="manifest"/>
-<meta content="../../../../_static/browserconfig.xml" name="msapplication-config"/>
-<meta content="#ffffff" name="theme-color"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
-<link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="../../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
-<link href="../../../../genindex.html" rel="index" title="Index">
-<link href="../../../../search.html" rel="search" title="Search">
-<link href="../../../../index.html" rel="top" title="The COBRA Toolbox">
-<link href="../index.html" rel="up" title="Thermo">
-<link href="../thermoFBA/index.html" rel="next" title="thermoFBA">
-<link href="../protons/index.html" rel="prev" title="protons">
-<script src="../../../../_static/js/modernizr.min.js"></script>
-</link></link></link></link></link></link></link></head>
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  gtag('config', 'G-KFJTC6J15L');
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>reactantContribution &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Thermo" href="../index.html"/>
+        <link rel="next" title="thermoFBA" href="../thermoFBA/index.html"/>
+        <link rel="prev" title="protons" href="../protons/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
 
 <body class="wy-body-for-nav" role="document">
-<div class="wy-grid-for-nav">
-<nav class="wy-nav-side" data-toggle="wy-nav-shift">
-<div class="wy-side-scroll">
-<div class="wy-side-nav-search">
-<a href="../../../../index.html">
-<img alt="logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/logo.png"/>
-</a>
-<h1>The COBRA Toolbox</h1>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
 <div role="search">
-<form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
-<input id="simple" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<script>
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
     	var options = {
 
 		url: "../../../../_static/json/functions.json",
@@ -90,14 +142,18 @@
 
 
     </script>
-</form>
+  </form>
 </div>
-</div>
-<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
-</ul>
-<ul class="current">
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
@@ -160,146 +216,118 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Thermo</a></li>
+      <li class="breadcrumb-item active">reactantContribution</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
 </div>
-</div>
-</nav>
-<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
-<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
-<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="../../../../index.html">The COBRA Toolbox</a>
-</nav>
-<div class="wy-nav-content">
-<div class="rst-content">
-<div aria-label="breadcrumbs navigation" role="navigation">
-<ul class="wy-breadcrumbs">
-<li><a href="../../../../contents.html">Docs</a> »</li>
-<li><a href="../../../index.html">Functions</a> »</li>
-<li><a href="../../index.html">Analysis</a> »</li>
-<li><a href="../index.html">Thermo</a> »</li>
-<li>reactantContribution</li>
-<li class="wy-breadcrumbs-aside">
-</li>
-</ul>
-<hr/>
-</div>
-<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
-<div itemprop="articleBody">
-<div class="section" id="reactantcontribution">
-<span id="id1"></span><h1>reactantContribution<a class="headerlink" href="#reactantcontribution" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.analysis.thermo.reactantContribution"></span><dl class="function">
-<dt id="src.analysis.thermo.reactantContribution.acidDissociationConstant">
-<code class="descname">acidDissociationConstant</code><span class="sig-paren">(</span><em>metAbbr</em>, <em>Alberty2006</em>, <em>metAbbrAlbertyAbbr</em>, <em>temp</em>, <em>is</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/reactantContribution/acidDissociationConstant.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="reactantcontribution">
+<span id="id1"></span><h1>reactantContribution<a class="headerlink" href="#reactantcontribution" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.reactantContribution"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.reactantContribution.acidDissociationConstant">
+<span class="sig-name descname"><span class="pre">acidDissociationConstant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metAbbr</span></em>, <em class="sig-param"><span class="pre">Alberty2006</span></em>, <em class="sig-param"><span class="pre">metAbbrAlbertyAbbr</span></em>, <em class="sig-param"><span class="pre">temp</span></em>, <em class="sig-param"><span class="pre">is</span></em>, <em class="sig-param"><span class="pre">chi</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.acidDissociationConstant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Acid dissociation constant for the different metabolite species that make up a reactant</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, is, chi)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div><p>[Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlbertyAbbr, temp, is, chi)</p>
+</div></blockquote>
+<dl>
+<dt>INPUTS:</dt><dd><p>metAbbr:               reconstruction reactant abbreviation
+Alberty2006:           Basic data on the metabolite species that make</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>metAbbr</strong> –
-reconstruction reactant abbreviation</li>
-<li><strong>Alberty2006</strong> –
-Basic data on the metabolite species that make
-up a reactant, compiled by Robert A. Alberty,
+<div><p>up a reactant, compiled by Robert A. Alberty,
 Massachusetts Institute of Technology.
 In Print: <cite>Robert A. Alberty, Biochemical Thermodynamics:
 Applications of Mathematica. John Wiley &amp; Sons, 2006. p391-395</cite>
 Online: BasicBioChemData3.nb
-<a class="reference external" href="http://library.wolfram.com/infocenter/MathSource/5704/">http://library.wolfram.com/infocenter/MathSource/5704/</a></li>
-<li><strong>metAbbrAlbertyAbbr</strong> –
-mapping from model metabolite primary key to
-primary key of reactants in <cite>Alberty2006</cite></li>
-</ul>
+<a class="reference external" href="http://library.wolfram.com/infocenter/MathSource/5704/">http://library.wolfram.com/infocenter/MathSource/5704/</a></p>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>temp</strong> –
-temperature (default 298.15 K)</li>
-<li><strong>is</strong> –
-ionic strength (default 0 M)</li>
-<li><strong>chi</strong> –
-electrical potential (default 0)</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Ka</strong> –
-apparent equilibrium constants</li>
-<li><strong>pKa</strong> –
-<span class="math">\(-log_{10}(Ka)\)</span></li>
-</ul>
-</div></blockquote>
+<dl class="simple">
+<dt>metAbbrAlbertyAbbr:    mapping from model metabolite primary key to</dt><dd><p>primary key of reactants in <cite>Alberty2006</cite></p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUT</dt><dd><p>temp:                  temperature (default 298.15 K)
+is:                    ionic strength (default 0 M)
+chi:                   electrical potential (default 0)</p>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>Ka:                    apparent equilibrium constants
+pKa:                   <span class="math notranslate nohighlight">\(-log_{10}(Ka)\)</span></p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.thermo.reactantContribution.calcdGHT">
-<code class="descname">calcdGHT</code><span class="sig-paren">(</span><em>dGzero</em>, <em>dHzero</em>, <em>zi</em>, <em>nH</em>, <em>pHr</em>, <em>is</em>, <em>temp</em>, <em>chi</em>, <em>Legendre</em>, <em>LegendreCHI</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/reactantContribution/calcdGHT.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.reactantContribution.calcdGHT">
+<span class="sig-name descname"><span class="pre">calcdGHT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dGzero</span></em>, <em class="sig-param"><span class="pre">dHzero</span></em>, <em class="sig-param"><span class="pre">zi</span></em>, <em class="sig-param"><span class="pre">nH</span></em>, <em class="sig-param"><span class="pre">pHr</span></em>, <em class="sig-param"><span class="pre">is</span></em>, <em class="sig-param"><span class="pre">temp</span></em>, <em class="sig-param"><span class="pre">chi</span></em>, <em class="sig-param"><span class="pre">Legendre</span></em>, <em class="sig-param"><span class="pre">LegendreCHI</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.calcdGHT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the standard transformed Gibbs energy of a reactant</p>
 <p>Reproduces the function of T (in Kelvin), pHa (electrode pH), and ionic strength (is) that
 gives the standard transformed Gibbs energy of formation of a reactant
 (sum of species) and the standard transformed enthalpy of a reactant.</p>
 <p>Assuming p pseudoisomer species corresponding to one reactant</p>
 <p>Optional output dependent on multiple precision toolbox</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dGzero</strong> –
-<cite>p x 1</cite> standard Gibbs energy of formation at 298.15 K</li>
-<li><strong>zi</strong> –
-<cite>p x 1</cite> electric charge</li>
-<li><strong>nH</strong> –
-<cite>p x 1</cite> number of hydrogen atoms in each species</li>
-<li><strong>pHr</strong> –
-real pH of 5 to 9 (see realpH.m)</li>
-<li><strong>is</strong> –
-ionic strength 0 to 0.35 M</li>
-<li><strong>temp</strong> –
-temperature 273.15 K to 313.15 K</li>
-</ul>
+<div><p>[dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, dHzero, zi, nH, pHr, is, temp, chi, Legendre, LegendreCHI, printLevel)</p>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>dGzero:         <cite>p x 1</cite> standard Gibbs energy of formation at 298.15 K
+zi:             <cite>p x 1</cite> electric charge
+nH:             <cite>p x 1</cite> number of hydrogen atoms in each species
+pHr:            real pH of 5 to 9 (see realpH.m)
+is:             ionic strength 0 to 0.35 M
+temp:           temperature 273.15 K to 313.15 K</p>
+</dd>
+<dt>OPTIONAL INPUT:</dt><dd><p>dHzero:         <cite>p x 1</cite> standard enthalpy of formation at 298.15 K
+chi:            electrical potential
+Legendre:       {(1), 0} Legendre Transformation for specifc pHr?
+LegendreCHI:    {(1), 0} Legendre Transformation for specifc electrical potential?</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>dGf0:           reactant standard transformed Gibbs energy of formation
+dHf0:           reactant standard transformed enthalpy of formation
+mf:             mole fraction of each species within a pseudoisomer group
+aveHbound:      average number of protons bound to a reactant
+aveZi:          average charge of a reactant
+lambda:         activity coefficient for each metabolite species
+gpfnsp:         metabolite species standard transformed Gibbs energy of formation</p>
+</dd>
+</dl>
+<p>OPTIONAL OUTPUT:</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>dHzero</strong> –
-<cite>p x 1</cite> standard enthalpy of formation at 298.15 K</li>
-<li><strong>chi</strong> –
-electrical potential</li>
-<li><strong>Legendre</strong> –
-{(1), 0} Legendre Transformation for specifc pHr?</li>
-<li><strong>LegendreCHI</strong> –
-{(1), 0} Legendre Transformation for specifc electrical potential?</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dGf0</strong> –
-reactant standard transformed Gibbs energy of formation</li>
-<li><strong>dHf0</strong> –
-reactant standard transformed enthalpy of formation</li>
-<li><strong>mf</strong> –
-mole fraction of each species within a pseudoisomer group</li>
-<li><strong>aveHbound</strong> –
-average number of protons bound to a reactant</li>
-<li><strong>aveZi</strong> –
-average charge of a reactant</li>
-<li><strong>lambda</strong> –
-activity coefficient for each metabolite species</li>
-<li><strong>gpfnsp</strong> –
-metabolite species standard transformed Gibbs energy of formation</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>dHf0</strong> –
-standard transformed enthalpy of formation</li>
-</ul>
+<div><p>dHf0:           standard transformed enthalpy of formation</p>
 </div></blockquote>
 <p>The values of the standard transformed Gibbs energy of formation
 and the standard transformed enthalpy of formation can be calculated
@@ -314,138 +342,150 @@ See <cite>p41 Alberty 2003</cite></p>
 <p>Multiple Precision Toolbox for MATLAB by Ben Barrowes (mptoolbox_1.1)
 <a class="reference external" href="http://www.mathworks.com/matlabcentral/fileexchange/6446">http://www.mathworks.com/matlabcentral/fileexchange/6446</a></p>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation">
-<code class="descname">setCommonZeroStandardGibbsEnergyOfFormation</code><span class="sig-paren">(</span><em>model</em>, <em>adjustedMetList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation">
+<span class="sig-name descname"><span class="pre">setCommonZeroStandardGibbsEnergyOfFormation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">adjustedMetList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.setCommonZeroStandardGibbsEnergyOfFormation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets all Alberty’s cofactor metabolites to have a common thermodynamic baseline.</p>
 <p>Sets all the exceptional metabolites to have a common baseline.
 i.e. Standard transformed Gibbs energies of reactants with the baseline adjusted
 for certain paired cofactors e.g. <cite>fad</cite> &amp; <cite>fadh2</cite>, such that the
 difference between the two is the same as in Albertys data but
 the absolute values are consistent with the group contribution data</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetList)</div></blockquote>
-<p><strong>Input</strong></p>
+<div><p>model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetList)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><p>model:              Thermodynamic model:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> –
-Thermodynamic model:<ul>
-<li>.met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)</li>
-<li>.met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)</li>
-<li>.met(m).dGft0Source - origin of data, <cite>Keq</cite> or <cite>groupContFileName.txt</cite></li>
-<li>.met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)</li>
-</ul>
-</li>
+<li><p>.met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)</p></li>
+<li><p>.met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)</p></li>
+<li><p>.met(m).dGft0Source - origin of data, <cite>Keq</cite> or <cite>groupContFileName.txt</cite></p></li>
+<li><p>.met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)</p></li>
 </ul>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
+</dd>
+<dt>OPTIONAL INPUT:</dt><dd><p>adjustedMetList:</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>model:              structure with field:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>adjustedMetList</strong></li>
-</ul>
-</div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> –
-structure with field:<ul>
-<li>.met(m).dGft0 - Standard transformed Gibbs energies of reactants
+<li><p>.met(m).dGft0 - Standard transformed Gibbs energies of reactants
 with the baseline adjusted for certain paired
 cofactors e.g. <cite>fad</cite> &amp; <cite>fadh2</cite>, such that the
 difference between the two is the same as in
 Albertys data but the absolute values are
-consistent with the group contribution data</li>
-</ul>
-</li>
+consistent with the group contribution data</p></li>
 </ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction">
-<code class="descname">singleMetaboliteSpeciesReaction</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction">
+<span class="sig-name descname"><span class="pre">singleMetaboliteSpeciesReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.singleMetaboliteSpeciesReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies reactions involving reactants with only one metabolite species.</p>
 <p>Identifies the reactions involving one substrate metabolite species reactant,
 one product metabolite species reactant and where each reactant is composed
 of only one metabolite species.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)</div></blockquote>
-<p><strong>Input</strong></p>
+<div><p>[rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><p>model:    structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> –
-structure with fields:<ul>
-<li>.S</li>
-<li>.met(m).mf - mole fraction of each species</li>
-</ul>
-</li>
+<li><p>.S</p></li>
+<li><p>.met(m).mf - mole fraction of each species</p></li>
 </ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry">
-<code class="descname">thermodynamicAdjustmentToStoichiometry</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry">
+<span class="sig-name descname"><span class="pre">thermodynamicAdjustmentToStoichiometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.reactantContribution.thermodynamicAdjustmentToStoichiometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thermodynamic adjustments to the stoichiometric matrix for ‘co2’, ‘h2o’, and bound cofactors.</p>
-<p>In aqueous phase, carbon dioxide is distributed between ‘CO2(aq)’, ‘H2CO3’, ‘HCO3^-‘, ‘CO3^2-‘.
+<p>In aqueous phase, carbon dioxide is distributed between ‘CO2(aq)’, ‘H2CO3’, ‘HCO3^-’, ‘CO3^2-‘.
 For each ‘CO2(tot)’ in a reaction  add an ‘H2O’ to the other side of reaction, and change the formula for
 carbon dioxide to ‘CO2.H20’ = ‘H2CO3’ see <cite>p150 Alberty 2003</cite>.</p>
 <p>Also adjust stoichiometric matrix to account for the fact that the cofactors of
 succinate dehydrogenase, FAD/FADH, are bound.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>model = thermodynamicAdjustmentToStoichiometry(model)</div></blockquote>
-<p><strong>Input</strong></p>
+<div><p>model = thermodynamicAdjustmentToStoichiometry(model)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><p>model:    structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> –
-structure with fields:<ul>
-<li>.S</li>
-<li>.mets</li>
-<li>.rxns</li>
-</ul>
-</li>
+<li><p>.S</p></li>
+<li><p>.mets</p></li>
+<li><p>.rxns</p></li>
 </ul>
 </div></blockquote>
-<p><strong>Output</strong></p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>model:    structure with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> –
-structure with fields:<ul>
-<li>.S - thermodynamically adjusted stoichiometric matrix</li>
-<li>.mets</li>
-<li>.rxns</li>
-<li>.Sold</li>
-</ul>
-</li>
+<li><p>.S - thermodynamically adjusted stoichiometric matrix</p></li>
+<li><p>.mets</p></li>
+<li><p>.rxns</p></li>
+<li><p>.Sold</p></li>
 </ul>
 </div></blockquote>
+</dd>
+</dl>
 </dd></dl>
-</div>
-</div>
-<div class="articleComments">
-</div>
-</div>
-<footer>
-<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a accesskey="n" class="btn btn-default float-right" href="../thermoFBA/index.html" rel="next" title="thermoFBA">Next <span class="fa fa-arrow-circle-right"></span></a>
-<a accesskey="p" class="btn btn-default" href="../protons/index.html" rel="prev" title="protons"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-</div>
-<hr/>
-<div role="contentinfo">
-<p>
-        © Copyright 2017-2018, The COBRA Toolbox developers.
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../thermoFBA/index.html" class="btn btn-default float-right" title="thermoFBA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../protons/index.html" class="btn btn-default" title="protons" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
 
     </p>
-</div>
+  </div>
   Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-</div>
-</div>
-</section>
-</div>
-<script type="text/javascript">
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
             VERSION:'2.0.0',
@@ -455,15 +495,36 @@ structure with fields:<ul>
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-<script src="../../../../_static/jquery.js" type="text/javascript"></script>
-<script src="../../../../_static/underscore.js" type="text/javascript"></script>
-<script src="../../../../_static/doctools.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script src="../../../../_static/js/theme.js" type="text/javascript"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

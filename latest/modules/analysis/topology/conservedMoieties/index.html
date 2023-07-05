@@ -1,61 +1,113 @@
 
+
 <!DOCTYPE html>
-
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>conservedMoieties — The COBRA Toolbox</title>
-<link href="../../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="../../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link color="#5bbad5" href="../../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="../../../../_static/json/manifest.json" rel="manifest"/>
-<meta content="../../../../_static/browserconfig.xml" name="msapplication-config"/>
-<meta content="#ffffff" name="theme-color"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
-<link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="../../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
-<link href="../../../../genindex.html" rel="index" title="Index">
-<link href="../../../../search.html" rel="search" title="Search">
-<link href="../../../../index.html" rel="top" title="The COBRA Toolbox">
-<link href="../index.html" rel="up" title="Topology">
-<link href="../extremeRays/index.html" rel="next" title="extremeRays">
-<link href="../circuits/index.html" rel="prev" title="Circuits">
-<script src="../../../../_static/js/modernizr.min.js"></script>
-</link></link></link></link></link></link></link></head>
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  gtag('config', 'G-KFJTC6J15L');
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>conservedMoieties &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Topology" href="../index.html"/>
+        <link rel="next" title="extremeRays" href="../extremeRays/index.html"/>
+        <link rel="prev" title="Circuits" href="../circuits/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
 
 <body class="wy-body-for-nav" role="document">
-<div class="wy-grid-for-nav">
-<nav class="wy-nav-side" data-toggle="wy-nav-shift">
-<div class="wy-side-scroll">
-<div class="wy-side-nav-search">
-<a href="../../../../index.html">
-<img alt="logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/logo.png"/>
-</a>
-<h1>The COBRA Toolbox</h1>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
 <div role="search">
-<form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
-<input id="simple" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<script>
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
     	var options = {
 
 		url: "../../../../_static/json/functions.json",
@@ -90,14 +142,18 @@
 
 
     </script>
-</form>
+  </form>
 </div>
-</div>
-<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
-</ul>
-<ul class="current">
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
@@ -152,275 +208,346 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
 </ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Topology</a></li>
+      <li class="breadcrumb-item active">conservedMoieties</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
 </div>
-</div>
-</nav>
-<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
-<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
-<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="../../../../index.html">The COBRA Toolbox</a>
-</nav>
-<div class="wy-nav-content">
-<div class="rst-content">
-<div aria-label="breadcrumbs navigation" role="navigation">
-<ul class="wy-breadcrumbs">
-<li><a href="../../../../contents.html">Docs</a> »</li>
-<li><a href="../../../index.html">Functions</a> »</li>
-<li><a href="../../index.html">Analysis</a> »</li>
-<li><a href="../index.html">Topology</a> »</li>
-<li>conservedMoieties</li>
-<li class="wy-breadcrumbs-aside">
-</li>
-</ul>
-<hr/>
-</div>
-<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
-<div itemprop="articleBody">
-<div class="section" id="conservedmoieties">
-<span id="id1"></span><h1>conservedMoieties<a class="headerlink" href="#conservedmoieties" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-src.analysis.topology.conservedMoieties"></span><dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.classifyMoieties">
-<code class="descname">classifyMoieties</code><span class="sig-paren">(</span><em>L</em>, <em>S</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/classifyMoieties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.classifyMoieties" title="Permalink to this definition">¶</a></dt>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="conservedmoieties">
+<span id="id1"></span><h1>conservedMoieties<a class="headerlink" href="#conservedmoieties" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.topology.conservedMoieties"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.classifyMoieties">
+<span class="sig-name descname"><span class="pre">classifyMoieties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">L</span></em>, <em class="sig-param"><span class="pre">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.classifyMoieties" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classifies conserved moieties for a metabolic network</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>types = classifyMoieties(L, S)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>L</strong> –
-The <cite>m x r</cite> moiety matrix with moiety vectors as columns.</li>
-<li><strong>S</strong> –
-The <cite>m x n</cite> total stoichiometric matrix.</li>
-</ul>
+<div><p>types = classifyMoieties(L, S)</p>
 </div></blockquote>
-<p><strong>Output</strong></p>
+<dl>
+<dt>INPUTS:</dt><dd><p>L:        The <cite>r</cite> x <cite>m</cite> moiety matrix with moiety vectors as columns.
+S:        The <cite>m</cite> x <cite>n</cite> total stoichiometric matrix.</p>
+</dd>
+<dt>OUTPUT:</dt><dd><dl>
+<dt>types:    an <cite>r</cite> x <cite>1</cite> cell array of with one of the following moiety classifications</dt><dd><p>‘Internal’ moiety that is also conserved in the open network
+‘Transitive’ moiety that is only found in primary metabolites
+‘Integrative’ moiety that is not conserved in the open</p>
 <blockquote>
-<div><ul class="simple">
-<li><strong>types</strong> –
-an <cite>r x 1</cite> cell array of moiety classifications</li>
-</ul>
+<div><p>network and found in both primary and secondary metabolites.</p>
 </div></blockquote>
+</dd>
+</dl>
+</dd>
+<dt>isSecondary  <cite>m x 1</cite> Boolean vector indicating secondary metabolites</dt><dd><p>(containing at least one internal conserved moiety’)</p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.constructElementalMatrix">
-<code class="descname">constructElementalMatrix</code><span class="sig-paren">(</span><em>metFormulas</em>, <em>metCharges</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/constructElementalMatrix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.constructElementalMatrix" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.constructElementalMatrix">
+<span class="sig-name descname"><span class="pre">constructElementalMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metFormulas</span></em>, <em class="sig-param"><span class="pre">metCharges</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.constructElementalMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs the elemental matrix for a set of metabolites</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[E, elements] = constructElementalMatrix(metFormulas, metCharges)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metFormulas</strong> –
-<cite>m x 1</cite> cell array of metabolite formulas, e.g., CHO2</li>
-</ul>
+<div><p>[E, elements] = constructElementalMatrix(metFormulas, metCharges)</p>
 </div></blockquote>
-<p><strong>Optional input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>metCharges</strong> –
-<cite>m x 1</cite> vector of metabolite charges. Used to compute the
-electron vector.</li>
-</ul>
-</div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>E</strong> –
-The <cite>m x p</cite> elemental matrix where <cite>p</cite> is the number of unique
-elements in <cite>metFormulas</cite> (plus the electron if <cite>metCharges</cite> is
-included as input)</li>
-<li><strong>elements</strong> –
-<cite>1 x p</cite> cell array of element symbols (e for electron)</li>
-</ul>
-</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><p>metFormulas:    <cite>m x 1</cite> cell array of metabolite formulas, e.g., CHO2</p>
+</dd>
+<dt>OPTIONAL INPUT:</dt><dd><dl class="simple">
+<dt>metCharges:     <cite>m x 1</cite> vector of metabolite charges. Used to compute the</dt><dd><p>electron vector.</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt><dd><dl class="simple">
+<dt>E:              The <cite>m x p</cite> elemental matrix where <cite>p</cite> is the number of unique</dt><dd><p>elements in <cite>metFormulas</cite> (plus the electron if <cite>metCharges</cite> is
+included as input)</p>
+</dd>
+</dl>
+<p>elements:       <cite>1 x p</cite> cell array of element symbols (e for electron)</p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.decomposeMoietyVectors">
-<code class="descname">decomposeMoietyVectors</code><span class="sig-paren">(</span><em>L</em>, <em>N</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/decomposeMoietyVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.decomposeMoietyVectors" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.decomposeMoietyVectors">
+<span class="sig-name descname"><span class="pre">decomposeMoietyVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">L</span></em>, <em class="sig-param"><span class="pre">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.decomposeMoietyVectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decomposes moiety vectors for a metabolic network.</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>D = decomposeMoieties(L, N);</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>L</strong> –
-The <cite>m x r</cite> moiety matrix with moiety vectors as columns.</li>
-<li><strong>N</strong> –
-The <cite>m x u</cite> internal stoichiometric matrix such that <span class="math">\(N^T L = 0\)</span>.</li>
-</ul>
+<div><p>D = decomposeMoieties(L, N);</p>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>D</strong> –
-An <cite>m x t</cite> moiety matrix with decomposed moiety vectors as columns <span class="math">\((t \geq r)\)</span>.</li>
-</ul>
-</div></blockquote>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>L:    The <cite>m x r</cite> moiety matrix with moiety vectors as columns.
+N:    The <cite>m x u</cite> internal stoichiometric matrix such that <span class="math notranslate nohighlight">\(N^T L = 0\)</span>.</p>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>D:    An <cite>m x t</cite> moiety matrix with decomposed moiety vectors as columns <span class="math notranslate nohighlight">\((t \geq r)\)</span>.</p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.estimateMoietyFormulas">
-<code class="descname">estimateMoietyFormulas</code><span class="sig-paren">(</span><em>L</em>, <em>E</em>, <em>elements</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.estimateMoietyFormulas" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.estimateMoietyFormulas">
+<span class="sig-name descname"><span class="pre">estimateMoietyFormulas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">L</span></em>, <em class="sig-param"><span class="pre">E</span></em>, <em class="sig-param"><span class="pre">elements</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.estimateMoietyFormulas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the chemical formulas of conserved moieties in a metabolic network</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>moietyFormulas = estimateMoietyFormulas(L, E, elements)</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>L</strong> –
-The <cite>m x r</cite> moiety matrix for a metabolic network. Each column is a
-moiety vector.</li>
-<li><strong>E</strong> –
-The <cite>m x p</cite> elemental matrix for metabolites in the metabolic network.</li>
-<li><strong>elements</strong> –
-A <cite>1 x p</cite> cell array of element symbols.</li>
-</ul>
+<div><p>moietyFormulas = estimateMoietyFormulas(L, E, elements)</p>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>M</strong> –
-An <cite>r x p</cite> estimated elemental matrix for moieties.</li>
-<li><strong>moietyFormulas</strong> –
-An <cite>r x 1</cite> cell array of estimated moiety formulas.</li>
-</ul>
-</div></blockquote>
+<dl>
+<dt>INPUTS:</dt><dd><dl class="simple">
+<dt>L:                 The <cite>m x r</cite> moiety matrix for a metabolic network. Each column is a</dt><dd><p>moiety vector.</p>
+</dd>
+</dl>
+<p>E:                 The <cite>m x p</cite> elemental matrix for metabolites in the metabolic network.
+elements:          A <cite>1 x p</cite> cell array of element symbols.</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>M:                 An <cite>r x p</cite> estimated elemental matrix for moieties.
+moietyFormulas:    An <cite>r x 1</cite> cell array of estimated moiety formulas.</p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.findElementaryMoietyVectors">
-<code class="descname">findElementaryMoietyVectors</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/findElementaryMoietyVectors.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.findElementaryMoietyVectors" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.findElementaryMoietyVectors">
+<span class="sig-name descname"><span class="pre">findElementaryMoietyVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.findElementaryMoietyVectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enumerate all possible elementary conserved moiety vectors based on the
 left null space of the stoichiometric matrix S.</p>
-<p><strong>Usage</strong></p>
-<blockquote>
-<div>EMV = findElementaryMoietyVectors(model, method)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> –
-COBRA model</li>
-</ul>
-</div></blockquote>
-<dl class="docutils">
-<dt>OPTIONAL INPUTS (in name-value pair):</dt>
-<dd><dl class="first docutils">
-<dt>‘method’:           method for finding all conserved moiety vectors</dt>
-<dd><ul class="first last simple">
-<li>‘efmtool’:  use EFMtool, ‘CalculateFluxModes.m’ must be in matlab path (default)</li>
-<li>‘null’:     use matlab rational null basis.</li>
+<dl>
+<dt>USAGE:</dt><dd><p>EMV = findElementaryMoietyVectors(model, method)</p>
+</dd>
+<dt>INPUT:</dt><dd><p>model:                  COBRA model</p>
+</dd>
+<dt>OPTIONAL INPUTS (in name-value pair):</dt><dd><dl class="simple">
+<dt>‘method’:           method for finding all conserved moiety vectors</dt><dd><ul class="simple">
+<li><p>‘efmtool’:  use EFMtool, ‘CalculateFluxModes.m’ must be in matlab path (default)</p></li>
+<li><p>‘null’:     use matlab rational null basis.</p></li>
 </ul>
 </dd>
-<dt>‘deadCMs’:           include dead end metabolites or not (default true)</dt>
-<dd>(will have more conserved moieties found for dead end metabolites if true)</dd>
+<dt>‘deadCMs’:           include dead end metabolites or not (default true)</dt><dd><p>(will have more conserved moieties found for dead end metabolites if true)</p>
+</dd>
 </dl>
 <p>‘printLevel’:       print messages or not (default 0).</p>
-<p class="last">Other COBRA LP solver parameters, see solveCobraLP.m</p>
+<p>Other COBRA LP solver parameters, see solveCobraLP.m</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>EMV:                all minimal conserved moiety vectors</p>
 </dd>
 </dl>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>EMV</strong> –
-all minimal conserved moiety vectors</li>
-</ul>
-</div></blockquote>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.topology.conservedMoieties.identifyConservedMoieties">
-<code class="descname">identifyConservedMoieties</code><span class="sig-paren">(</span><em>model</em>, <em>ATN</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/topology/conservedMoieties/identifyConservedMoieties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.topology.conservedMoieties.identifyConservedMoieties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identifies conserved moieties in a metabolic network (model) by graph
-theoretical analysis of the corresponding atom transition network (ATN).</p>
-<p><strong>Usage</strong></p>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.identifyConservedMoieties">
+<span class="sig-name descname"><span class="pre">identifyConservedMoieties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">dATM</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.identifyConservedMoieties" title="Permalink to this definition">¶</a></dt>
+<dd><p>[arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)</p>
+<p>Identifies conserved moieties in a metabolic network (model) by graph
+theoretical analysis of the corresponding directed atom transition network (dATM).
+Decomposes a stoichiometric matrix into a set of moiety transitions, that
+is</p>
 <blockquote>
-<div>[L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoieties(model, ATN)</div></blockquote>
-<p><strong>Inputs</strong></p>
+<div><p>N = inv(M2M*M2M’)*M2M*M*M2R;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>where</dt><dd><p>N   = model.S(arm.MRH.metAtomMappedBool,arm.MRH.rxnAtomMappedBool) = arm.MRH.S(arm.MRH.metAtomMappedBool,arm.MRH.rxnAtomMappedBool);
+M2M = arm.M2M;
+M   = incidence(arm.MTG);
+M2R = arm.M2R;</p>
+</dd>
+</dl>
+<p>where M2M*M2M’ is a diagonal matrix and each diagonal entry is the number
+of moieties in a metabolite.</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)</p>
+</div></blockquote>
+<dl>
+<dt>INPUTS:</dt><dd><p>model:        Structure with following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>model</strong> –
-Structure with following fields:<ul>
-<li>.S - The <cite>m x n</cite> stoichiometric matrix for the metabolic network</li>
-<li>.mets - An <cite>m x 1</cite> array of metabolite identifiers. Should match
-metabolite identifiers in rxnfiles.</li>
-<li>.rxns - An <cite>n x 1</cite> array of reaction identifiers. Should match
-<cite>rxnfile</cite> names in <cite>rxnFileDir</cite>.</li>
-</ul>
-</li>
-<li><strong>ATN</strong> –
-Structure with following fields:<ul>
-<li>.A - A <cite>p x q</cite> sparse incidence matrix for the atom transition
-network, where <cite>p</cite> is the number of atoms and <cite>q</cite> is
-the number of atom transitions.</li>
-<li>.mets - A <cite>p x 1</cite> cell array of metabolite identifiers to link
-atoms to their metabolites. The order of atoms is the
-same in <cite>A</cite> as in the molfile for each metabolite.</li>
-<li>.rxns - A <cite>q x 1</cite> cell array of reaction identifiers to link atom
-transitions to their reactions. The order of atom
-transitions is the same in <cite>A</cite> as in the <cite>rxnfile</cite> (with
-atom mappings) for each reaction.</li>
-<li>.elements - A <cite>p x 1</cite> cell array of element symbols for atoms in <cite>A</cite>.</li>
-</ul>
-</li>
+<li><p>.S - The <cite>m x n</cite> stoichiometric matrix for the metabolic network</p></li>
+<li><p>.mets - An <cite>m x 1</cite> array of metabolite identifiers. Should match metabolite identifiers in rxnfiles.</p></li>
+<li><p>.rxns - An <cite>n x 1</cite> array of reaction identifiers. Should match <cite>rxnfile</cite> names in <cite>rxnFileDir</cite>.</p></li>
 </ul>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
+<dl class="simple">
+<dt>dATM:          Directed atom transition multigraph, obtained from buildAtomTransitionMultigraph.m</dt><dd><p>A MATLAB digraph structure with the following tables and variables:</p>
+<ul class="simple">
+<li><p>.Nodes — Table of node information, with <cite>p</cite> rows, one for each atom.</p></li>
+<li><p>.Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element</p></li>
+<li><p>.Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph</p></li>
+<li><p>.Nodes.mets - metabolite containing each atom</p></li>
+<li><p>.Nodes.AtomNumber - unique numeric id for each atom in a metabolite</p></li>
+<li><p>.Nodes.Element - atomic element of each atom</p></li>
+<li><p>.Edges — Table of edge information, with <cite>q</cite> rows, one for each atom transition instance.</p></li>
+<li><p>.Edges.EndNodes - two-column cell array of character vectors that defines the graph edges</p></li>
+<li><p>.Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms</p></li>
+<li><p>.Edges.TransIndex - unique numeric id for each atom transition instance</p></li>
+<li><p>.Edges.rxns - reaction abbreviation corresponding to each atom transition instance</p></li>
+<li><p>.Edges.HeadAtomIndex - head Nodes.AtomIndex</p></li>
+<li><p>.Edges.TailAtomIndex - tail Nodes.AtomIndex</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS:
+options:       Structure with following fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>L</strong> –
-An <cite>m x r</cite> matrix of r moiety vectors in the left null
-space of <cite>S</cite>.</li>
-<li><strong>M</strong> –
-The <cite>u x v</cite> incidence matrix of the moiety supergraph
-where each connected component is a moiety graph.</li>
-<li><strong>moietyFormulas</strong> –
-<cite>r x 1</cite> cell array with chemical formulas of moieties</li>
-<li><strong>moieties2mets</strong> –
-<cite>u x 1</cite> vector mapping moieties (rows of <cite>M</cite>) to
-metabolites (rows of S)</li>
-<li><strong>moieties2vectors</strong> –
-<cite>u x 1</cite> vector mapping moieties (rows of <cite>M</cite>) to
-moiety vectors (columns of <cite>L</cite>)</li>
-<li><strong>atoms2moieties</strong> –
-<cite>p x 1</cite> vector mapping atoms (rows of <cite>A</cite>) to moieties
-(rows of <cite>M</cite>)</li>
-<li><strong>mtrans2rxns</strong> –
-‘v x 1’ vector mapping moiety transitions
-(columns of M) to reactions (columns of S)</li>
-<li><strong>atrans2mtrans</strong> –
-‘q x 1’ vector mapping atom transitions
-(columns of A) to moiety transitions (columns
-of M)</li>
+<li><p>.sanityChecks {(0),1} true if additional sanity checks</p></li>
+</ul>
+<p>on computations, but substantially more computation time</p>
+</div></blockquote>
+<p>OUTPUTS:
+arm            atomically resolved model as a matlab structure with the following fields:</p>
+<p>arm.MRH:                    Directed metabolic reaction hypergraph, i.e. standard COBRA model, with additional fields:
+arm.MRH.metAtomMappedBool:  <cite>m x 1</cite> boolean vector indicating atom mapped metabolites
+arm.MRH.rxnAtomMappedBool:  <cite>n x 1</cite> boolean vector indicating atom mapped reactions</p>
+<p>arm.dATM:                   Directed atom transition multigraph (dATM) obtained from buildAtomTransitionMultigraph.m</p>
+<p>arm.M2Ai:              <cite>m</cite> x <cite>a</cite> matrix mapping each mapped metabolite to one or more atoms in the directed atom transition multigraph
+arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or more directed atom transition instances to each mapped reaction
+arm.Ti2I               <cite>t</cite> x <cite>i</cite> matrix to map one or more directed atom transition instances to each isomorphism class</p>
+<p>arm.ATG:  Atom transition graph, as a MATLAB graph structure with the following tables and variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.Nodes — Table of node information, with <cite>a</cite> rows, one for each atom.</p></li>
+<li><p>.Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element</p></li>
+<li><p>.Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph</p></li>
+<li><p>.Nodes.mets - metabolite containing each atom</p></li>
+<li><p>.Nodes.AtomNumber - unique numeric id for each atom in an atom mapping</p></li>
+<li><p>.Nodes.Element - atomic element of each atom</p></li>
+<li><p>.Nodes.MoietyIndex - numeric id of the corresponding moiety (arm.MTG.Nodes.MoietyIndex)</p></li>
+<li><p>.Nodes.Component - numeric id of the corresponding connected component (rows of C2A)</p></li>
+<li><p>.Nodes.IsomorphismClass - numeric id of the corresponding isomprphism class (rows of I2C)</p></li>
+<li><p>.Nodes.IsCanonical - boolean, true if atom is within first component of an isomorphism class</p></li>
+<li><p>.Edges — Table of edge information, with <cite>u</cite> rows, one for each atom transition instance.</p></li>
+<li><p>.Edges.EndNodes - numeric id of head and tail atoms that defines the graph edges</p></li>
+<li><p>.Edges.Trans - unique alphanumeric id for each atom transition by concatenation of head and tail atoms</p></li>
+<li><p>.Edges.HeadAtomIndex - head Nodes.AtomIndex</p></li>
+<li><p>.Edges.TailAtomIndex - tail Nodes.AtomIndex</p></li>
+<li><p>.Edges.HeadAtom - head Nodes.Atom</p></li>
+<li><p>.Edges.TailAtom - tail Nodes.Atom</p></li>
+<li><p>.Edges.TransIndex - unique numeric id for each atom transition</p></li>
+<li><p>.Edges.Component - numeric id of the corresponding connected component (columns of T2C)</p></li>
+<li><p>.Edges.IsomorphismClass - numeric id of the corresponding isomprphism class (columns of T2I)</p></li>
+<li><p>.Edges.IsCanonical - boolean, true if atom transition is within first component of an isomorphism class</p></li>
 </ul>
 </div></blockquote>
+<p>arm.M2A:  <cite>m x a</cite> matrix mapping each metabolite to one or more atoms in the (undirected) atom transition graph
+arm.A2R:  <cite>u x n</cite> matrix that maps atom transitions to reactions. An atom transition can map to multiple reactions and a reaction can map to multiple atom transitions
+arm.A2Ti: <cite>u x t</cite> matrix to map each atom transition (in ATG) to one or more directed atom transition instance (in dATM) with reorientation if necessary.</p>
+<p>arm.I2C  <cite>i x c</cite> matrix to map each isomorphism class (I) to one or more components (C) of the atom transition graph (ATG)
+arm.C2A  <cite>c x a</cite> matrix to map each connected component (C) of the atom transition graph to one or more atoms (A)
+arm.A2C  <cite>u x c</cite> matrix to map one or more atom transitions (T) to connected components (C) of the atom transition graph (ATG)</p>
+<p>arm.I2A  <cite>i x a</cite> matrix to map each isomorphism class to one or more atoms of the atom transition graph (ATG)
+arm.A2I  <cite>u x i</cite> matrix to map one or more atom transitions to each isomorphism class</p>
+<p>arm.MTG = MTG; % (undirected) moiety transition graph</p>
 </dd></dl>
-</div>
-</div>
-<div class="articleComments">
-</div>
-</div>
-<footer>
-<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a accesskey="n" class="btn btn-default float-right" href="../extremeRays/index.html" rel="next" title="extremeRays">Next <span class="fa fa-arrow-circle-right"></span></a>
-<a accesskey="p" class="btn btn-default" href="../circuits/index.html" rel="prev" title="Circuits"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-</div>
-<hr/>
-<div role="contentinfo">
-<p>
-        © Copyright 2017-2018, The COBRA Toolbox developers.
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.relateConservedMoietiesToConservationRelations">
+<span class="sig-name descname"><span class="pre">relateConservedMoietiesToConservationRelations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">R</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.relateConservedMoietiesToConservationRelations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a stoichiometric matrix N, a set of conserved moieties C, and a set of
+conservation relations R, such that C*N = 0 and R*N = 0, then compute a matrix X,
+such that C = X*R, and R’<a href="#id2"><span class="problematic" id="id3">*</span></a>x = C(j,:)’ with x’ =: X(j,:) of minimal cardinality.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.representativeMoiety">
+<span class="sig-name descname"><span class="pre">representativeMoiety</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MMN</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.representativeMoiety" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each moiety, identify a set of representative molecules, based on
+various criteria</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.topology.conservedMoieties.representativeMolecule">
+<span class="sig-name descname"><span class="pre">representativeMolecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">L</span></em>, <em class="sig-param"><span class="pre">moietyFormulae</span></em>, <em class="sig-param"><span class="pre">mets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.topology.conservedMoieties.representativeMolecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each moiety, identify a set of representative molecules, based on
+various criteria</p>
+<p>INPUT
+L                     Matrix to map isomorphism classes to metabolites.
+moietyFormulae        Chemical formula of the moiety (Hill notation)
+mets                  Metabolite abbreviation</p>
+<p>OUTPUT
+minimalMassMetabolite       Abbreviation of metabolite with minimal mass relative to the moiety
+minimalMassFraction         Fraction of moiety/metabolite mass
+numMinimalMassMetabolites   Number of metabolites with minimal mass</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../extremeRays/index.html" class="btn btn-default float-right" title="extremeRays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../circuits/index.html" class="btn btn-default" title="Circuits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
 
     </p>
-</div>
+  </div>
   Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-</div>
-</div>
-</section>
-</div>
-<script type="text/javascript">
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
             VERSION:'2.0.0',
@@ -430,15 +557,36 @@ of M)</li>
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-<script src="../../../../_static/jquery.js" type="text/javascript"></script>
-<script src="../../../../_static/underscore.js" type="text/javascript"></script>
-<script src="../../../../_static/doctools.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script src="../../../../_static/js/theme.js" type="text/javascript"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>

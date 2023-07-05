@@ -1,61 +1,113 @@
 
+
 <!DOCTYPE html>
-
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FVA — The COBRA Toolbox</title>
-<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="../../../_static/json/manifest.json" rel="manifest"/>
-<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
-<meta content="#ffffff" name="theme-color"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
-<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
-<link href="../../../genindex.html" rel="index" title="Index">
-<link href="../../../search.html" rel="search" title="Search">
-<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
-<link href="../index.html" rel="up" title="Analysis">
-<link href="fastFVA/index.html" rel="next" title="fastFVA">
-<link href="../fluxEnrichmentAnalysis/index.html" rel="prev" title="fluxEnrichmentAnalysis">
-<script src="../../../_static/js/modernizr.min.js"></script>
-</link></link></link></link></link></link></link></head>
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  gtag('config', 'G-KFJTC6J15L');
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FVA &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="fastFVA" href="fastFVA/index.html"/>
+        <link rel="prev" title="fluxEnrichmentAnalysis" href="../fluxEnrichmentAnalysis/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
 
 <body class="wy-body-for-nav" role="document">
-<div class="wy-grid-for-nav">
-<nav class="wy-nav-side" data-toggle="wy-nav-shift">
-<div class="wy-side-scroll">
-<div class="wy-side-nav-search">
-<a href="../../../index.html">
-<img alt="logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/logo.png"/>
-</a>
-<h1>The COBRA Toolbox</h1>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
 <div role="search">
-<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
-<input id="simple" name="q" placeholder="Search docs" type="text"/>
-<input name="check_keywords" type="hidden" value="yes"/>
-<input name="area" type="hidden" value="default"/>
-<script>
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
     	var options = {
 
 		url: "../../../_static/json/functions.json",
@@ -90,14 +142,18 @@
 
 
     </script>
-</form>
+  </form>
 </div>
-</div>
-<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
-</ul>
-<ul class="current">
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
@@ -148,162 +204,256 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 </ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
+      <li class="breadcrumb-item active">FVA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
 </div>
-</div>
-</nav>
-<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
-<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
-<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="../../../index.html">The COBRA Toolbox</a>
-</nav>
-<div class="wy-nav-content">
-<div class="rst-content">
-<div aria-label="breadcrumbs navigation" role="navigation">
-<ul class="wy-breadcrumbs">
-<li><a href="../../../contents.html">Docs</a> »</li>
-<li><a href="../../index.html">Functions</a> »</li>
-<li><a href="../index.html">Analysis</a> »</li>
-<li>FVA</li>
-<li class="wy-breadcrumbs-aside">
-</li>
-</ul>
-<hr/>
-</div>
-<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
-<div itemprop="articleBody">
-<div class="section" id="fva">
-<span id="id1"></span><h1>FVA<a class="headerlink" href="#fva" title="Permalink to this headline">¶</a></h1>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="fva">
+<span id="id1"></span><h1>FVA<a class="headerlink" href="#fva" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="fastFVA/index.html">fastFVA</a></li>
 </ul>
 </div>
-<span class="target" id="module-src.analysis.FVA"></span><dl class="function">
-<dt id="src.analysis.FVA.fluxVariability">
-<code class="descname">fluxVariability</code><span class="sig-paren">(</span><em>model</em>, <em>optPercentage</em>, <em>osenseStr</em>, <em>rxnNameList</em>, <em>printLevel</em>, <em>allowLoops</em>, <em>method</em>, <em>cpxControl</em>, <em>advind</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/FVA/fluxVariability.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-src.analysis.FVA"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.FVA.fluxVariability">
+<span class="sig-name descname"><span class="pre">fluxVariability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.fluxVariability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs flux variablity analysis</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method)</div></blockquote>
-<p><strong>Input</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>model</strong> –
-COBRA model structure</li>
-</ul>
+<div><p>[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops)
+[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics, useMtFVA)
+[…] = fluxVariability(model, …, ‘name’, value, …, solverParams)
+[…] = fluxVariability(model, …, paramStruct)</p>
 </div></blockquote>
-<p><strong>Optional inputs</strong></p>
+<dl>
+<dt>INPUT:</dt><dd><p>model:            COBRA model structure</p>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><dl>
+<dt>(support name-value argument inputs or a single [function + solver] parameter structure input)</dt><dd><dl class="simple">
+<dt>optPercentage:    Only consider solutions that give you at least a certain</dt><dd><p>percentage of the optimal solution (Default = 100
+or optimal solutions only)</p>
+</dd>
+</dl>
+<p>osenseStr:        Objective sense, ‘min’ or ‘max’ (default)
+rxnNameList:      List of reactions for which FVA is performed</p>
 <blockquote>
-<div><blockquote>
+<div><p>(Default = all reactions in the model)</p>
+</div></blockquote>
+<p>printLevel:       Verbose level (default: 0). 1 to show a progress bar. 2 to print results for each reaction
+allowLoops:       Whether loops are allowed in solution or which method to block loops.</p>
+<blockquote>
 <div><ul class="simple">
-<li><strong>optPercentage</strong> –
-Only consider solutions that give you at least a certain
-percentage of the optimal solution (Default = 100
-or optimal solutions only)</li>
-<li><strong>osenseStr</strong> –
-Objective sense (‘min’ or ‘max’) (Default = ‘max’)</li>
-<li><strong>rxnNameList</strong> –
-List of reactions for which FVA is performed
-(Default = all reactions in the model)</li>
-<li><strong>printLevel</strong> –
-Verbose level (default: 0)</li>
-<li><strong>allowLoops</strong> –
-Whether loops are allowed in solution. (Default = true)
-See <cite>optimizeCbModel</cite> for description</li>
-<li><strong>method</strong> –
-when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):<ul>
-<li>‘FBA’    : standards FBA solution</li>
-<li>‘0-norm’ : minimzes the vector  0-norm</li>
-<li>‘1-norm’ : minimizes the vector 1-norm</li>
-<li>‘2-norm’ : minimizes the vector 2-norm</li>
-<li>‘minOrigSol’ : minimizes the euclidean distance of each vector to the original solution vector</li>
-</ul>
+<li><p>1 (or true) : loops allowed (default)</p></li>
+<li><p>0 (or false): loops not allowed. Use  to find loopless solutions</p></li>
+<li><p>‘original’  : original loopless FVA</p></li>
+<li><p>‘fastSNP’   : loopless FVA with with Fast-SNP preprocessing of nullspace</p></li>
+<li><p>‘LLC-NS’    : localized loopless FVA using information from nullsapce</p></li>
+<li><dl class="simple">
+<dt>‘LLC-EFM’<span class="classifier">localized loopless FVA using information from EFMs.</span></dt><dd><p>Require CalculateFluxModes.m from EFMtool to calculate EFMs.</p>
+</dd>
+</dl>
 </li>
 </ul>
 </div></blockquote>
-<p>cpxControl:        solver-specific parameter structure</p>
-<p>advind:            switch to use the solution basis</p>
+<p>method:           when Vmin and Vmax are in the output, the flux vector can be (Default = 2-norm):</p>
 <blockquote>
 <div><ul class="simple">
-<li>0 : default</li>
-<li>1 : uses the original problem solution basis as advanced basis</li>
+<li><p>‘FBA’    : standards FBA solution</p></li>
+<li><p>‘0-norm’ : minimzes the vector  0-norm</p></li>
+<li><p>‘1-norm’ : minimizes the vector 1-norm</p></li>
+<li><p>‘2-norm’ : minimizes the vector 2-norm</p></li>
+<li><p>‘minOrigSol’ : minimizes the euclidean distance of each vector to the original solution vector</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>solverParams:     solver-specific parameter structure. Can also be inputted as the first or last arguement</dt><dd><p>if using name-value argument inputs (with or without the keyword ‘solverParams’).
+Can also be inputted as part of a parameter structure together with other function parameters</p>
+</dd>
+</dl>
+<p>advind:           switch to use the solution basis</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0 : default</p></li>
+<li><p>1 : uses the original problem solution basis as advanced basis</p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt>threads:          number of threads used for the analysis</dt><dd><ul class="simple">
+<li><p>1, 2, 3, …: number of threads</p></li>
+<li><p>0:            defaulted number of threads for the parallel computing toolbox</p></li>
+</ul>
+<p>(default to be 1 if no parpool is activited, otherwise use the existing parpool)</p>
+</dd>
+<dt>heuristics:       level of heuristics to accelerate FVA.</dt><dd><p>0: no heuristics (default if rxnNameList has &lt; 5 reactions)
+1: solve max-sum-flux and min-sum-flux LPs to get reactions which already hit the bounds
+2: solve additionally a single LP to find all blocked irreversible reactions (default if rxnNameList has &gt;= 5 reactions)</p>
+</dd>
+</dl>
+</dd>
+<dt>useMtFVA:          run FVA multi-threaded via an external JVM with CPLEX as solver</dt><dd><blockquote>
+<div><p>does not return Vmin, Vmax; requires allowLoops = true and method = ‘FBA’</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0 : default, do not use mtFVA</p></li>
+<li><p>1 : use mtFVA</p></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
-<p><strong>Outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>minFlux</strong> –
-Minimum flux for each reaction</li>
-<li><strong>maxFlux</strong> –
-Maximum flux for each reaction</li>
-</ul>
-</div></blockquote>
-<p><strong>Optional outputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>Vmin</strong> –
-Matrix of column flux vectors, where each column is a
-separate minimization.</li>
-<li><strong>Vmax</strong> –
-Matrix of column flux vectors, where each column is a
-separate maximization.</li>
-</ul>
-</div></blockquote>
+<p>paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>minFlux:          Minimum flux for each reaction
+maxFlux:          Maximum flux for each reaction</p>
+</dd>
+<dt>OPTIONAL OUTPUT:</dt><dd><p>Vmin:             Matrix of column flux vectors, where each column is a separate minimization.
+Vmax:             Matrix of column flux vectors, where each column is a separate maximization.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>FVA for all rxns at 100% max value of the objective function:</dt><dd><p>[minFlux, maxFlux] = fluxVariability(model);</p>
+</dd>
+<dt>Loopless FVA for rxns in <cite>rxnNames</cite> at &lt;= 90% min value of the objective function, print results for each reaction:</dt><dd><p>[minFlux, maxFlux] = fluxVariability(model, 90, ‘min’, rxnNames, 2, 0);</p>
+</dd>
+<dt>Same as the 1st example, but also return the corresponding flux distributions with 2-norm minimized:</dt><dd><p>[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, [], [],    [],       0, 1, ‘2-norm’);</p>
+</dd>
+<dt>Name-value inputs, with Cobra LP parameter <cite>feasTol</cite> and solver-specific (gurobi) parameter <cite>Presolve</cite>:</dt><dd><p>[minFlux, maxFlux] = fluxVariability(model, ‘optPercentage’, 99, ‘allowLoops’, 0, ‘threads’, 0, ‘feasTol’, 1e-8, struct(‘Presolve’, 0));</p>
+</dd>
+<dt>Single parameter structure input including function, Cobra LP and solver parameters:</dt><dd><p>[minFlux, maxFlux] = fluxVariability(model, struct(‘optPercentage’, 99, ‘allowLoops’, ‘original’, ‘threads’, 0, ‘feasTol’, 1e-8, ‘Presolve’, 0));</p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="function">
-<dt id="src.analysis.FVA.fvaJaccardIndex">
-<code class="descname">fvaJaccardIndex</code><span class="sig-paren">(</span><em>minFlux</em>, <em>maxFlux</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/efb2c06be702aaed38349581ba73ed420251992b/src/analysis/FVA/fvaJaccardIndex.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.analysis.FVA.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.FVA.fvaJaccardIndex">
+<span class="sig-name descname"><span class="pre">fvaJaccardIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minFlux</span></em>, <em class="sig-param"><span class="pre">maxFlux</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.fvaJaccardIndex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares flux ranges by computing the Jaccard index</p>
-<p><strong>Usage</strong></p>
+<p>USAGE:</p>
 <blockquote>
-<div>J = fvaJaccardIndex(minFlux, maxFlux);</div></blockquote>
-<p><strong>Inputs</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>minFlux</strong> –
-An <cite>n x k</cite> matrix of minimum fluxes through <cite>n</cite> reactions in <cite>k</cite>
-different constraint-based models (<cite>k &gt; 1</cite>).</li>
-<li><strong>maxFlux</strong> –
-An <cite>n x k</cite> matrix of maximum fluxes through n reactions in <cite>k</cite>
-different constraint-based models (<cite>k &gt; 1</cite>).</li>
-</ul>
+<div><p>J = fvaJaccardIndex(minFlux, maxFlux);</p>
 </div></blockquote>
-<p><strong>Output</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><strong>J</strong> –
-An <cite>n x 1</cite> vector of Jaccard indices, defined as the
-intersection divided by the union of all <cite>k</cite> flux ranges</li>
-</ul>
-</div></blockquote>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><dl class="simple">
+<dt>minFlux:    An <cite>n x k</cite> matrix of minimum fluxes through <cite>n</cite> reactions in <cite>k</cite></dt><dd><p>different constraint-based models (<cite>k &gt; 1</cite>).</p>
+</dd>
+<dt>maxFlux:    An <cite>n x k</cite> matrix of maximum fluxes through n reactions in <cite>k</cite></dt><dd><p>different constraint-based models (<cite>k &gt; 1</cite>).</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt><dd><dl class="simple">
+<dt>J:           An <cite>n x 1</cite> vector of Jaccard indices, defined as the</dt><dd><p>intersection divided by the union of all <cite>k</cite> flux ranges</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
-</div>
-</div>
-<div class="articleComments">
-</div>
-</div>
-<footer>
-<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-<a accesskey="n" class="btn btn-default float-right" href="fastFVA/index.html" rel="next" title="fastFVA">Next <span class="fa fa-arrow-circle-right"></span></a>
-<a accesskey="p" class="btn btn-default" href="../fluxEnrichmentAnalysis/index.html" rel="prev" title="fluxEnrichmentAnalysis"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-</div>
-<hr/>
-<div role="contentinfo">
-<p>
-        © Copyright 2017-2018, The COBRA Toolbox developers.
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.FVA.mtFVA">
+<span class="sig-name descname"><span class="pre">mtFVA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">rxnsIdx</span></em>, <em class="sig-param"><span class="pre">cpxControl</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FVA.mtFVA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform flux variability analysis using multi-threading (via a JAVA VM)
+and CPLEX as solver.</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><blockquote>
+<div><p>LPproblem:   COBRA LPproblem structure</p>
+<dl class="simple">
+<dt>rxnsIdx:     Vector of reaction indices for which to run the</dt><dd><p>optimizations; a positive index indicates a maximization,
+a negative index a minimization of the respective
+reaction; by default the fluxes through all reactions are
+minimzed and maximized</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>cpxControl:   used as parameter for setCplexParam</p>
+</dd>
+<dt>OUTPUTS:</dt><dd><p>minFlux:     Minimum flux for each reaction
+maxFlux:     Maximum flux for each reaction</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fastFVA/index.html" class="btn btn-default float-right" title="fastFVA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../fluxEnrichmentAnalysis/index.html" class="btn btn-default" title="fluxEnrichmentAnalysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
 
     </p>
-</div>
+  </div>
   Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-</div>
-</div>
-</section>
-</div>
-<script type="text/javascript">
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
             VERSION:'2.0.0',
@@ -313,15 +463,35 @@ intersection divided by the union of all <cite>k</cite> flux ranges</li>
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-<script src="../../../_static/jquery.js" type="text/javascript"></script>
-<script src="../../../_static/underscore.js" type="text/javascript"></script>
-<script src="../../../_static/doctools.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-<script src="../../../_static/js/theme.js" type="text/javascript"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
 </body>
 </html>
