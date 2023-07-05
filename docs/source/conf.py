@@ -15,8 +15,8 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-
-import os
+# importing packages
+import os # imports os 
 import sys
 
 sys.path.append('sphinxext')
@@ -40,7 +40,7 @@ matlab_src_dir = os.path.abspath(os.path.join('..', '..'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'sphinxcontrib.matlab',
     'github',
     'sphinx.ext.mathjax',
@@ -100,7 +100,7 @@ release = u'2.0.0'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 conf_py_path = os.getcwd()
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -157,7 +157,7 @@ import sphinx_rtd_theme
 
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path(),
                    sphinx_cobra_theme.get_theme_dir()]
-print html_theme_path
+print(html_theme_path)
 html_sidebars = sphinx_cobra_theme.default_sidebars()
 
 # shutil.copy()
