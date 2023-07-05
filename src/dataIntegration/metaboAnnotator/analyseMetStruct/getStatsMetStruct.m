@@ -13,6 +13,7 @@ function [IDs,IDcount,Table] = getStatsMetStruct(metabolite_structure)
 Mets = fieldnames(metabolite_structure);
 IDs = fieldnames(metabolite_structure.(Mets{1}));
 IDcount = zeros(length(IDs),1);
+Table{1,1} = 'MetStrctID';
 for i = 1 : length(Mets)
     Table{i+1,1} = Mets{i,1};
     for j = 1 : length(IDs)

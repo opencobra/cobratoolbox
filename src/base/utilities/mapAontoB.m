@@ -1,5 +1,7 @@
-function [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin)
-% Maps the data from Ain onto Bin by matching primary keys from Akey onto Bkey 
+function [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin,printLevel)
+% Maps the data from Ain onto Bin by matching keys from Akey onto Bkey
+% If Akey is not unique, it maps the lowest absolute index in Akey to the
+% corresponding Bkey, but gives a warning, unless printLevel=0;
 %
 % USAGE:
 %   [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin)
@@ -25,12 +27,18 @@ function [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin)
 %
 % Author(s):
 
+if ~exist('printLevel','var')
+    printLevel=1;
+end
+
 if class(Akey)~=class(Bkey)
     error('class of Akey and Bkey must be the same')
 end
 
 if length(unique(Akey))~=length(Akey)
-    error('mapAontoB assumes that each Akey entry is unique')
+    if printLevel>0
+        warning('Akey is not unique, using lowest absolute index in Akey.')
+    end
 end
 
 inputNameAkey = inputname(1);
@@ -39,6 +47,12 @@ inputNameBkey = inputname(2);
 %LIBkey: an array of the same size as Bkey containing true where the elements of B are in A and false otherwise.
 %LOCAkey: an array LOCB containing the lowest absolute index in Akey for each element in Bkey which is a member of Akey and 0 if there is no such index.
 [LIBkey,LOCAkey] = ismember(Bkey,Akey);
+
+if exist('Bin','var')
+    if isempty(Bin)
+        clear Bin;
+    end
+end
 
 if exist('Ain','var')
     classAin = class(Ain);

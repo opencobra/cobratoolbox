@@ -1,4 +1,4 @@
-function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion)
+function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks,TableSingleDel] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion,resultsPath,param)
 % This function performs various quality control and quality assurance
 % tests.
 % [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion)
@@ -13,6 +13,11 @@ function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenS
 %                               secretion compartment is named differently, it
 %                               can be specified here
 % runSingleGeneDeletion         if 0 (default): function does not run single gene deletion otw choose 1
+% resultsPath                   path where the results should be saved
+%                               (default: location where 'MethodSection3.mlx' folder is)
+% param                         testing parameters. Some test are done by
+%                               default, others need to be specified (see
+%                               below)
 %
 % OUTPUT
 % TableChecks                   Table overview of the performed tests and
@@ -27,14 +32,27 @@ function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenS
 % TestSolutionNameClosedSinks   List of results when testing for 460 metabolic
 %                               functions with all sinks closed
 %
-% Ines Thiele 2016-2019 
+% Ines Thiele 2016-2019, 2023
 
-global resultsPath
-resultsPath = which('MethodSection3.mlx');
-resultsPath = strrep(resultsPath,'MethodSection3.mlx',['Results' filesep]);
+%% parameter specification
+% param.testRev                 test whether model.rev and model.lb&model.ub are consistent (default: 0)
+% param.checkDuplicates         check for duplicated reactions, using the 'FR' method (default:0)
+% 
 
-if ~exist([resultsPath 'OrganChecks'],'dir')
-    mkdir([resultsPath 'OrganChecks'])
+
+
+if ~exist('resultsPath','var')
+    pathProvided = 0;
+    global resultsPath
+    resultsPath = which('MethodSection3.mlx');
+    resultsPath = strrep(resultsPath,'MethodSection3.mlx',['Results' filesep]);
+    
+    if ~exist([resultsPath 'OrganChecks'],'dir')
+        mkdir([resultsPath 'OrganChecks'])
+    end
+else
+    pathProvided = 1;
+    resultsPath = resultsPath;
 end
 
 if ~exist('ExtraCellCompIn','var')
@@ -369,7 +387,7 @@ end
 cnt = cnt + 1;
 
 TableChecks{cnt,1} = 'Check duplicated reactions';
-if 0
+if exist('param','var') && isfield(param,'checkDuplicates') && param.checkDuplicates == 1
     method='FR';
     removeFlag=0;
     [modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(model,method,removeFlag);
@@ -410,7 +428,7 @@ end
 cnt = cnt + 1;
 
 TableChecks{cnt,1} = 'Check consistency of model.rev with model.lb';
-if 0
+if exist('param','var') && isfield(param,'testRev') && param.testRev == 1
     Rev = setdiff(find(model.lb<0), find(model.rev==1));
     if isempty(Rev)
         TableChecks{cnt,2} = 'model.rev and model.lb are consistent.';
@@ -426,12 +444,17 @@ TableChecks{cnt,1} = 'Check whether singleGeneDeletion runs smoothly';
 if runSingleGeneDeletion == 1
     try
         [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model);
+        TableSingleDel(:,1) = model.genes;
+        TableSingleDel(:,2) = num2cell(grRatio);
+        TableSingleDel(:,3) = num2cell(hasEffect);
         TableChecks{cnt,2} = 'singleGeneDeletion finished without problems.';
     catch
         TableChecks{cnt,2} = 'There are problems with singleGeneDeletion.';
     end
 else
     TableChecks{cnt,2} = 'Not performed.';
+    TableSingleDel = [];
+    
 end
 cnt = cnt + 1;
 
@@ -453,8 +476,10 @@ else
 end
 cnt = cnt + 1;
 
-if 0
-save([resultsPath 'OrganChecks' filesep resultsFileName,'.mat'],'TableChecks', 'Table_csources', 'CSourcesTestedRxns', 'TestSolutionNameOpenSinks','TestSolutionNameClosedSinks');
+if pathProvided == 0
+    save([resultsPath 'OrganChecks' filesep resultsFileName,'.mat'],'TableChecks', 'Table_csources', 'CSourcesTestedRxns', 'TestSolutionNameOpenSinks','TestSolutionNameClosedSinks','TableSingleDel');
+else pathProvided == 1 
+    save([resultsPath resultsFileName,'.mat'],'TableChecks', 'Table_csources', 'CSourcesTestedRxns', 'TestSolutionNameOpenSinks','TestSolutionNameClosedSinks','TableSingleDel');
 end
 if saveDiary
     diary off;

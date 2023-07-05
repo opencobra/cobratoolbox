@@ -516,7 +516,7 @@ if options.printlevel > 0
     [db, ~, idx] = unique(split(strjoin(report.sourcesComparison.comparisonTable.source, ' '), ' '));
     [~, ib1] = ismember(directories, db);
     timesMatched = histcounts(idx, size(db, 1));
-    bar(timesMatched(ib1)')
+    bar(timesMatched(ib1(ibl~=0))')%changed to ib1(ibl~=0) otherwise "Array indices must be positive integers or logical values." not sure if this is correct - Ronan
     title({'Sources comparison', ...
         ['Metabolites collected: ' num2str(size(report.sourcesComparison.comparisonTable, 1))]}, 'FontSize', 16)
     directoriesLabels = regexprep(db, 'chebi', 'ChEBI');
