@@ -17,7 +17,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 import os # imports os 
-import sys
+import sys # imports sys
 
 sys.path.append('sphinxext')
 from github_linkcode import github_linkcode_resolve
