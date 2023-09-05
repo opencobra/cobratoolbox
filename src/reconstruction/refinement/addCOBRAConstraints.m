@@ -147,12 +147,12 @@ if ~all(fieldsPresent)
     if any(fieldsPresent)        
         for i = 1:numel(ConstraintFields)
             if ~isfield(model,ConstraintFields{i})
-                model = createEmptyField(model,ConstraintFields{i});
+                model = createEmptyFields(model,ConstraintFields{i});
             else
                 if ~isempty(model.(ConstraintFields{i}))
                     error('Inconsistent Field sizes detected. Expected an empty field but %s was non empty',ConstraintFields{i})            
                 else
-                    model = createEmptyField(model,ConstraintFields{i}); %Replace the existing to make sure the dimensions are correct.
+                    model = createEmptyFields(model,ConstraintFields{i}); %Replace the existing to make sure the dimensions are correct.
                 end
             end
         end
