@@ -185,12 +185,16 @@ for i = 1:length(modelList)
             model1
             model2
             };
+        modelBiomasses = {
+            biomasses{i}
+            biomasses{k}
+            };
         nameTagsModels = {
             strcat(modelList{i}, '_')
             strcat(modelList{k}, '_')
             };
         if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))
-            [pairedModel] = createMultipleSpeciesModel(models, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag, 'remCyclesFlag', remCyclesFlag);
+            [pairedModel] = createMultipleSpeciesModel(models, modelBiomasses, 'nameTagsModels', nameTagsModels,'mergeGenesFlag', mergeGenesFlag, 'remCyclesFlag', remCyclesFlag);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{1, 1}, pairedModel.rxns)), strcat(nameTagsModels{1, 1}, biomasses{i}), c, u);
             [pairedModel] = coupleRxnList2Rxn(pairedModel, pairedModel.rxns(strmatch(nameTagsModels{2, 1}, pairedModel.rxns)), strcat(nameTagsModels{2, 1}, biomasses{k}), c, u);
             pairedModelsTemp{k} = pairedModel;
