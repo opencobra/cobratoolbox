@@ -1525,7 +1525,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
     end
     
     % Check if the inactive genes are present in omics data
-    if any(activeEntrezGeneID)
+    if ~isempty(activeEntrezGeneID)
         if any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && param.curationOverOmics
             %manual curation takes precedence over omics
             genesIgnoredBool = ismember(activeEntrezGeneID, specificData.inactiveGenes);
