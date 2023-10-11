@@ -14,4 +14,14 @@ Here are the following steps taken in the tutorial CI pipeline:
 to be added ...
 
 ## Running Matlab Tests on Pull Requests
-to be added ...
+The testing workflow is defined in the main.yml file. This workflow is triggered on every push to the repository and runs the MATLAB tests using the GitHub Actions runner.
+
+### Workflow Steps:
+Setup: Install the MATLAB environment on the GitHub Actions runner.
+
+Run Tests: Execute the runTestsAndGenerateReport.m script to run the tests and generate a report.
+
+(Optional) Publish Results: You may choose to publish test results or reports to external platforms or as GitHub Pages.
+
+### MATLAB Test Function: runTestsAndGenerateReport.m
+The test function runTestsAndGenerateReport.m is responsible for executing the tests and generating a report of the results. This script is executed as part of the GitHub Actions workflow. The tests are designed to be automatically run using GitHub Actions whenever code is pushed to the repository. This ensures that any new changes do not introduce unexpected behavior or break existing functionality.
