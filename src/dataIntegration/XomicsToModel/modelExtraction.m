@@ -63,8 +63,11 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
             end
             
             %default weights of NaN
-            metWeights = NaN * ones(length(model.mets), 1);
-            rxnWeights = NaN * ones(length(model.rxns), 1);
+            % metWeights = NaN * ones(length(model.mets), 1);
+            % rxnWeights = NaN * ones(length(model.rxns), 1);
+
+            metWeights = zeros(length(model.mets), 1);
+            rxnWeights = zeros(length(model.rxns), 1);
                         
             if param.weightsFromOmics && isfield(model, 'expressionRxns')
                 % If present set the fixed weight relative to median of the log of the gene expression value
@@ -77,6 +80,9 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
                     [bool, locb] = ismember(dummyGene, model.genes);
                     activeModelGeneBool = model.geneExpVal >= exp(param.transcriptomicThreshold);
                     defaultRxnWeight = median(log(model.geneExpVal(activeModelGeneBool)));
+                    if isnan(defaultRxnWeight)
+                        defaultRxnWeight = 0;
+                    end
                     if param.printLevel > 1
                         figure
                         histogram(log(model.geneExpVal(activeModelGeneBool)))
@@ -97,7 +103,6 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
                 fprintf('%s\n', 'Using unitary weights on metabolites and reactions as input to thermoKernel.')
                 defaultRxnWeicoreRxnBool = ismember(model.rxns, coreRxnAbbr);ght = 1.1;
                 defaultMetWeight = 1.1;
-                defaultRxnWeight = 1.1;
             end
             
             % Correspondence between weights on core metabolites and reactions
