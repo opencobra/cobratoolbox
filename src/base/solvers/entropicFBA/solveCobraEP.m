@@ -630,7 +630,7 @@ switch problemTypeParams.solver
         Oz1 = sparse(size(A,1),quadCone1);
         
         Ox1 = sparse(p,varNotNorm);
-        Ip  = spdiag(ones(p,1));
+        Ip  = spdiags(ones(p,1));
         Opd = sparse(p,nExpCone);
         Opq = sparse(p,nQuadCone);
         Op1 = sparse(p,quadCone1);

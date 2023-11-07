@@ -37,19 +37,19 @@ param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_OFF';
 %Dual feasibility tolerance used by the interior-point optimizer for conic problems.
 %Default:1.0e-8
 %Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = 1.0e-11; 
 
 %MSK_DPAR_INTPNT_CO_TOL_PFEAS
 %Primal feasibility tolerance used by the interior-point optimizer for conic problems.
 %Default: 1.0e-8
 % Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1.0e-10; %was 1e-11 may be too aggressive -RF
 
 %MSK_DPAR_INTPNT_CO_TOL_REL_GAP
 %Relative gap termination tolerance used by the interior-point optimizer for conic problems.
 %Default:1.0e-8
 %Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = 1.0e-9; %was 1e-11 may be too aggressive -RF
 %useful for ensuring dual feasibility is as good as primal
 
 % MSK_IPAR_INTPNT_MAX_ITERATIONS 
