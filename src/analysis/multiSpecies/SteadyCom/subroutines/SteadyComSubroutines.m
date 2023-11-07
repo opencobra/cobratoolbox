@@ -234,7 +234,7 @@ else
         spName = spAbbr;
     end
     if isfield(infoCom, 'spBm')
-        indCom.spBm = modelCom.rxns(infoCom.spBm);
+        indCom.spBm = modelCom.rxns(infoCom.spBm); %modelCom.infoCom.spBm
     end
     if isfield(infoCom,'spATPM')
         indCom.spATPM = modelCom.rxns(infoCom.spATPM);

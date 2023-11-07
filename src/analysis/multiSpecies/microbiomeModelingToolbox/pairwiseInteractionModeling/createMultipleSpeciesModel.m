@@ -1,4 +1,4 @@
-function [modelJoint] = createMultipleSpeciesModel(models, varargin)
+function [modelJoint] = createMultipleSpeciesModel(models, biomasses, varargin)
 % Based on the implementation from *Klitgord and Segre 2010, PMID 21124952*.
 % The present implementation has been used in *PMID 23022739*, *PMID 25841013*,
 % *PMID 25901891*, *PMID 27893703*.
@@ -24,6 +24,9 @@ function [modelJoint] = createMultipleSpeciesModel(models, varargin)
 %
 %                         * models{1,1} = model 1
 %                         * models{2,1} = model 2...
+%    biomasses:           Cell array containing names of biomass objective
+%                         functions of models to join. Needs to be the same
+%                         length as models.
 %
 % OPTIONAL INPUTS:
 %    nameTagsModels:    cell array of tags for reaction/metabolite abbreviation
@@ -144,7 +147,6 @@ metIndices =~cellfun(@isempty, regexp(modelHost.mets, '\[e0\]$'));
 modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '[e0]', '[e]');
 end
 %% Remove futile cycles that may appear after joining (optional)
-
 if remCyclesFlag
     database = loadVMHDatabase;
 
@@ -156,8 +158,7 @@ if remCyclesFlag
     unionRxns=unique(unionRxns);
     for i = 1:modelNumber
         model=models{i, 1};
-        biomassReaction=model.rxns(find(strncmp(model.rxns, 'bio', 3)));
-        model = removeFutileCycles(model, biomassReaction, database,unionRxns);
+        model = removeFutileCycles(model, biomasses{i}, database,unionRxns);
         models{i, 1} = model;
     end
 end
