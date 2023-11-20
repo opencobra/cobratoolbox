@@ -8,6 +8,7 @@
 % Authors:
 %     - Kristina Grausa 05/16/2022 - created 
 %     - Kristina Grausa 08/22/2022 - standard header and formatting
+%     - Farid Zare      11/20/2023 - Repository address corrected
 %
 
 global CBTDIR
@@ -39,7 +40,7 @@ for k = 1:length(solvers.LP)
        
        fprintf(' -- Running testFluxShifts.m using the solver interface: %s ... ', solvers.LP{k});
        
-       assert(numel(dir('resultsPostOptimization\fluxShifts\')) > 2)
+       assert(numel(dir('resultsPostOptimization/fluxShifts/')) > 2)
        
        % output a success message
        fprintf('Done.\n');
