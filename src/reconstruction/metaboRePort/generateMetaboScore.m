@@ -1,4 +1,4 @@
-function [modelProp,ScoresOverall] = generateMemoteLikeScore(model,nworkers)
+function [modelProp,ScoresOverall] = generateMetaboScore(model,nworkers)
 
 % Ines Thiele June 2022
 
@@ -53,7 +53,9 @@ for i = 1 : length(model.rxns)
         a = printRxnFormula(model,'rxnAbbrList',model.rxns{i},'printFlag',0);
         c = regexp(a,'\[\w]');
         c = c{1};
-        clear comp;
+        if exist('comp','var')
+            clear comp;
+        end
         for k = 1 : length(c)
             comp{k} = a{1}(c(k):c(k)+2);
         end
