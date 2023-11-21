@@ -1,6 +1,6 @@
 function [modelUpdated] = populateModelwithRxnIDs(model)
-
-[~,~,RAW] = xlsread('C:\Users\0123322S\Dropbox\Studies\VMH\VMH_reactionList.xlsx');
+global CBTDIR
+[~,~,RAW] = xlsread([CBTDIR filesep 'src' filesep 'reconstruction', filesep 'metaboReport', filesep, 'VMH_reactionList.xlsx']);
 
 %  model field reactionList column header
 translate={
