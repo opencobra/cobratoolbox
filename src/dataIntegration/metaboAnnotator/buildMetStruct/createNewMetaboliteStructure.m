@@ -3,22 +3,30 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 % no VMHId is provided in the header of the input, then VMHId are
 % generated.
 %
-% INPUT
-% Input                          Cell array containing the metabolites
-%                                   The information provided must be as follows:
-%                                   metList={
-%                                   'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
-%                                   'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
-%                                   'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
-% source                            source of the information contained in metArray
-%                                   (e.g., 'Manually assembled by IT')
-% metabolite_structure_rBioNet      (optional and only necessary if the
-%                                   input has no VMHId)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure              metabolite structure
+%    [metabolite_structure] = createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)
+% 
+% INPUT:
+%    Input:                             Cell array containing the metabolites
+%                                       The information provided must be as follows:
+%                                       metList={
+%                                       'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
+%                                       'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
+%                                       'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
+%    source:                            source of the information contained in metArray
+%                                       (e.g., 'Manually assembled by IT')
+%    metabolite_structure_rBioNet:      (optional and only necessary if the
+%                                       input has no VMHId)
+%    metab:
+%    rxnDB:
 %
-% Ines Thiele, 09/2021
+% OUTPUT:
+%    metabolite_structure:              metabolite structure
+%
+%.. Author:
+%    -Ines Thiele,    09/2021
+%    -Farid Zare      20/11/2023       Documentation is enhanced. One line is added to generate a MATLAB valid variable name
 
 %load rbionet data
 rBioNetPath =  fileparts(which('tutorial_MetaboAnnotator'));
@@ -83,16 +91,11 @@ for i = 2 : size(RAW,1)
     
     %make a temporary VMHId name in case the existing one is an invalid field name
     VMHId_suggestion = VMHId;
-    if  isvarname(strcat('VMHId_', VMHId))
-        fieldname = strcat('VMH_',VMHId);
-    else
-
-        VMHId_suggestion = VMHId;
-        %VMHId = datestr(now,'yyyymmddTHHMMSS');
-
-        fieldname = strcat('VMH_',VMHId);
+    if  ~isvarname(strcat('VMHId_', VMHId))
+        VMHId = matlab.lang.makeValidName(strcat('VMHId_', VMHId));
     end
     
+    fieldname = strcat('VMH_',VMHId);
     metabolite_structure.(fieldname) = struct();
     metabolite_structure.(fieldname).VMHId_suggestion = VMHId_suggestion;
     
