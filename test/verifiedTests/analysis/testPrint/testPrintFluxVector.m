@@ -6,7 +6,6 @@
 %
 % Authors:
 %     - Sylvain Arreckx March 2017
-%     - Farid Zare      21/11/2023    old file deleted, A success message is added
 %
 
 global CBTDIR
@@ -34,15 +33,9 @@ diary('printFluxVector.txt');
 printFluxVector(model, flux);
 diary off
 
-%Initialize the test
-fprintf(' -- Running testPrintFluxVector.m:');
-
 text1 = importdata('refData_printFluxVector.txt');
 text2 = importdata('printFluxVector.txt');
 assert(isequal(text1, text2));
-
-% remove the old file
-delete('printFluxVector.txt');
 
 printFluxVector(model, flux, true, false, 1, 'printFluxVector.txt', [], true);
 text1 = importdata('refData_printFluxVectorFormula.txt');
@@ -51,9 +44,6 @@ assert(isequal(text1, text2));
 
 % remove the generated file
 delete('printFluxVector.txt');
-
-% output a success message
-fprintf('... Done.\n');
 
 % change the directory
 cd(currentDir)
