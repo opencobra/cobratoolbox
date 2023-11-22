@@ -16,19 +16,25 @@ fileDir = fileparts(which('testChangeCobraSolver'));
 cd(fileDir);
 
 % Three arguments
-ok = changeCobraSolver('pdco', 'MINLP', 0);
-assert(ok == false);
+if any(ismember('MINLP',OPT_PROB_TYPES))
+    ok = changeCobraSolver('pdco', 'MINLP', 0);
+    assert(ok == false);
+else
+    fprintf('There is no MINLP in opt problem types')
+end
 
 ok = changeCobraSolver('pdco', 'LP', 0);
 assert(ok == true);
 global CBT_LP_SOLVER
 assert(strcmp(CBT_LP_SOLVER, 'pdco'))
 
+if any(ismember('MINLP',OPT_PROB_TYPES))
 global CBT_MINLP_SOLVER
 CBT_MINLP_SOLVER = [];
 ok = changeCobraSolver('pdco', 'MINLP', 0);
 assert(ok == false);
 assert(isempty(CBT_MINLP_SOLVER))
+end
 
 try
     ok = changeCobraSolver('gurobi_mex', 'MILP', 1);
