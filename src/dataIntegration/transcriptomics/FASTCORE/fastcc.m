@@ -1,4 +1,4 @@
-function [A,orientation,V] = fastcc_cobra(model,epsilon,printLevel,modeFlag,method)
+function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
 % The FASTCC algorithm for testing the consistency of a stoichiometric model.
 % Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
 %
