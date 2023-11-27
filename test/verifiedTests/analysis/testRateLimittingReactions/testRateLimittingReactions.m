@@ -8,6 +8,7 @@
 % Authors:
 %     - Kristina Grausa 05/16/2022 - created 
 %     - Kristina Grausa 08/22/2022 - standard header and formatting
+%     - Farid Zare      11/21/2023 - Correction of repository address format 
 %
 
 global CBTDIR
@@ -38,7 +39,7 @@ for k = 1:length(solvers.LP)
  
        fprintf(' -- Running testRateLimittingReactions.m using the solver interface: %s ... ', solvers.LP{k});
        
-       assert(numel(dir('resultsPostOptimization\rateLimittingReactions')) > 2)
+       assert(numel(dir('resultsPostOptimization/rateLimittingReactions')) > 2)
        
        % output a success message
        fprintf('Done.\n');
