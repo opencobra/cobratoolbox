@@ -1,4 +1,4 @@
-function [A,orientation,V] = fastcc_cobra(model,epsilon,printLevel,modeFlag,method)
+function [A,orientation,V] = fastccCobra(model,epsilon,printLevel,modeFlag,method)
 % The FASTCC algorithm for testing the consistency of a stoichiometric model.
 % Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
 %
@@ -59,7 +59,7 @@ if ~exist('method','var')
 end
 
 tic
-
+[model] = fixIrrRFASTCORMICS(model)
 if strcmp(method,'nonconvex') && (isfield(model,'C') || isfield(model,'E'))
     issueConfirmationWarning('The nonconvex implementation of fastcc does not yet work with additional constraints in the C and E fields of the model');
 end
