@@ -392,52 +392,6 @@ another supported solver is called or ‘gurobi’ is not available.</p>
 </div></blockquote>
 </dd></dl>
 
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.dataIntegration.transcriptomics.fastccCobra">
-<span class="sig-name descname"><span class="pre">fastccCobra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">modeFlag</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.transcriptomics.fastccCobra" title="Permalink to this definition">¶</a></dt>
-<dd><p>The FASTCC algorithm for testing the consistency of a stoichiometric model.
-Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[A, modelFlipped, V] = fastcc(model, epsilon, printLevel, modeFlag, method)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:         cobra model structure containing the fields:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
-<li><p>lb - <cite>n</cite> x 1 flux lower bound</p></li>
-<li><p>ub - <cite>n</cite> x 1 flux uppper bound</p></li>
-<li><p>rxns - <cite>n</cite> x 1 cell array of reaction abbreviations</p></li>
-</ul>
-</div></blockquote>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>model:</dt><dd><ul class="simple">
-<li><p>b - <cite>m x 1</cite> change in concentration with time</p></li>
-<li><p>csense - <cite>m x 1</cite> character array with entries in {L,E,G}</p></li>
-<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
-<li><p>d - <cite>k x n</cite> Right hand side of C*v &lt;= d</p></li>
-<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
-</ul>
-</dd>
-</dl>
-<p>epsilon:       smallest flux that is considered nonzero
-printLevel:    0 = silent, 1 = summary, 2 = debug</p>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>modeFlag:      {(0),1}; 1=return matrix of modes V
-method:        ‘original’ - default or ‘nonconvex’</p>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>A:             indices of flux consistent reactions in model
-orientation:   <cite>n</cite> x 1 vector indicating the orientation of flux</p>
-<blockquote>
-<div><p>consistency, where -1 means flux consistent in reverse direction only</p>
-</div></blockquote>
-<p>V:             <cite>n</cite> x <cite>k</cite> matrix such that <cite>S(:,A) * V(:,A) = 0 and |V(:,A)|’ * 1 &gt; 0</cite></p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
 
