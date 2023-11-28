@@ -116,6 +116,13 @@ for i=2:size(sampleData,1)
         dataAll=str2double(sampleData(i,2:end));
     end
     
+    % remove fluxes under the solver limit
+    for j=1:length(dataAll)
+        if abs(dataAll(j)) < 0.0000000001
+            dataAll(j) =  0;
+        end
+    end
+    
     % separate data by group
     for j=1:length(groups)
         dataGrouped{j}=dataAll';
@@ -185,7 +192,8 @@ end
 nsMets={};
 cnt=1;
 for i=2:size(Statistics,1)
-    if Statistics{i,5}==0
+    if Statistics{i,3}>=0.05 || isnan(Statistics{i,3})
+%     if Statistics{i,5}==0
         nsMets{cnt,1}=Statistics{i,1};
         cnt=cnt+1;
     end
