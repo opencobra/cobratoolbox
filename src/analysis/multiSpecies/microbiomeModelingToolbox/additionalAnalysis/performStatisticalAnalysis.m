@@ -192,8 +192,7 @@ end
 nsMets={};
 cnt=1;
 for i=2:size(Statistics,1)
-    if Statistics{i,3}>=0.05 || isnan(Statistics{i,3})
-%     if Statistics{i,5}==0
+    if Statistics{i,5}==0
         nsMets{cnt,1}=Statistics{i,1};
         cnt=cnt+1;
     end
