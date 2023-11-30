@@ -23,8 +23,8 @@ model = getDistributedModel('ecoli_core_model.mat');
 delete('printConstraints.txt');
 
 diary('printConstraints.txt');
-minInf = -Inf;
-maxInf = +Inf;
+minInf = 0;% [-Inf,-1000,-100,0]try different combination to test the function
+maxInf = 1000; % [0,100,1000,+Inf]
 printConstraints(model, minInf, maxInf);
 diary off
 text1 = readMixedData('refData_printConstraints.txt');
