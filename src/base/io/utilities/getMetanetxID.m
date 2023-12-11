@@ -16,10 +16,9 @@ function metanetxID = getMetanetxID(name)
 %
 % EXAMPLE:
 %
-%    % this could be an example that can be copied from the documentation to MATLAB
-%    [output1, output2] = someFunction(11, '22', structure, [1;2])
-%    % without optional values
-%    output1 = someFunction(11, '22')
+%    >>  metanetxID = getMetanetxID('10dacb')
+%        metanetxID =
+%       'MNXM1702'
 %
 % NOTE:
 %    In the case of more than one matches for the metabolite, this
