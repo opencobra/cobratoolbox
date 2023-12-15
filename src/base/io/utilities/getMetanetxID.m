@@ -71,16 +71,17 @@ if numel(response) > 1
     response = response{1};
 end
 
-if strcmp(outputStyle, 'name')
-    metanetxID = response.desc;
-elseif strcmp(outputStyle, 'metanetx')
-    metanetxID = response.mnx_id;
-else
-    error('Invalid type of requested output')
-end
-
 if isempty(response)
     % Assign NaN if there was not any match for the metabolite
     metanetxID = nan;
+else
+    if strcmp(outputStyle, 'name')
+        metanetxID = response.desc;
+    elseif strcmp(outputStyle, 'metanetx')
+        metanetxID = response.mnx_id;
+    else
+        error('Invalid type of requested output')
+    end
+
 end
 end
