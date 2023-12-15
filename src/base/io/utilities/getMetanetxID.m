@@ -1,33 +1,48 @@
-function metanetxID = getMetanetxID(name)
-% This function converts metabolite names into MetaNetX metabolite IDs 
+function [metanetxID] = getMetanetxID(name, varargin)
+% This function converts metabolite names into MetaNetX metabolite IDs
 % using API
 %
 % USAGE:
 %
-%    [metanetxID] = metaNetXID(name)
+%    [metanetxID] = getMetanetxID(name, outputType)
 %
 % INPUTS:
 %    name:     string name of the metabolite (Common names, VMH names, CHEBI ids,
-%    swiss lipids id, HMDB ids, and lipidmaps are supported) 
+%    swiss lipids id, HMDB ids, and lipidmaps are supported)
+%
+% OPTIONAL INPUT:
+%    outputType:    This function can output name of the
+%    metabolite or its MetaNetx ID, for getting name of
+%    the metabolite use 'name' string as the second input and for MentaNetX
+%    ID use 'metanetx' string as the second input.
+%    The default input of the function is 'metanetx'
 %
 % OUTPUT:
 %    metanetxID:    MetaNetX metabolite IDs of the metabolite
-%
 %
 % EXAMPLE:
 %
 %    >>  metanetxID = getMetanetxID('10dacb')
 %        metanetxID =
 %       'MNXM1702'
+%    >>  metanetxID = getMetanetxID('10dacb', 'name')
+%        metanetxID =
+%       '10-deacetylbaccatin III'
 %
 % NOTE:
 %    In the case of more than one matches for the metabolite, this
 %    functions returns the first match
-%    If input value "name" only contains numbers, the functions recognizes 
+%    If input value "name" only contains numbers, the functions recognizes
 %    it as chebi numbers and searchs for "chebi: + name"
 %
 % .. Author: - Farid Zare, 7/12/2024
 %
+
+if nargin > 1
+    outputStyle = lower(varargin{1});
+elseif nargin == 1
+    outputStyle = 'metanetx';
+end
 
 apiURL = 'https://beta.metanetx.org/cgi-bin/mnxweb/search';
 
@@ -48,15 +63,19 @@ url = [apiURL '?' queryString];
 % Make the request using webread
 response = webread(url);
 
+if strcmp(outputStyle, 'name')
+    metanetxID = response.desc;
+elseif strcmp(outputStyle, 'metanetx')
+    metanetxID = response.mnx_id;
+else
+    error('Invalid type of requested output')
+end
+
 if isempty(response)
     % Assign NaN if there was not any match for the metabolite
     metanetxID = nan;
-
 elseif numel(response) > 1
     % If there are more than one matched IDs take the first one
-    metanetxID = response{1}.mnx_id;
-
-else
-    metanetxID = response.mnx_id;
+    metanetxID = metanetxID{1};
 end
 end
