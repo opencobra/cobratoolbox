@@ -44,6 +44,10 @@ elseif nargin == 1
     outputStyle = 'metanetx';
 end
 
+% Inorder to get the exact ID, "+" is added to the beggining of the name
+% metabolite
+name = strcat('+', name);
+
 apiURL = 'https://beta.metanetx.org/cgi-bin/mnxweb/search';
 
 %Check if input is just numbers
@@ -63,6 +67,10 @@ url = [apiURL '?' queryString];
 % Make the request using webread
 response = webread(url);
 
+if numel(response) > 1
+    response = response{1};
+end
+
 if strcmp(outputStyle, 'name')
     metanetxID = response.desc;
 elseif strcmp(outputStyle, 'metanetx')
@@ -74,8 +82,5 @@ end
 if isempty(response)
     % Assign NaN if there was not any match for the metabolite
     metanetxID = nan;
-elseif numel(response) > 1
-    % If there are more than one matched IDs take the first one
-    metanetxID = metanetxID{1};
 end
 end
