@@ -75,3 +75,6 @@
 [submodule "external/base/io/xlread"]
 	path = external/base/io/xlread
 	url = https://github.com/tpfau/xlread
+[submodule "src/chatGPT/MatGPT"]
+	path = src/chatGPT/MatGPT
+	url = git@github.com:toshiakit/MatGPT.git
