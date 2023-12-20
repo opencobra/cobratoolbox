@@ -19,9 +19,15 @@
 import os # imports os 
 import sys
 
+import pybtex
+
+
 sys.path.append('sphinxext')
 from github_linkcode import github_linkcode_resolve
 
+
+sys.path.append('./')
+from CitationStyle import ModStyle
 
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..')))
 # sys.path.insert(0, os.path.abspath('.'))
@@ -45,19 +51,15 @@ extensions = [
     'github',
     'sphinx.ext.mathjax',
     'sphinx.ext.linkcode',
-    'sphinxcontrib.fulltoc']
+    'sphinxcontrib.fulltoc','sphinxcontrib.bibtex','sphinx_tabs.tabs']
 
 mathjax_path = 'https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-
-def linkcode_resolve(domain, info):
-    return github_linkcode_resolve(
-            domain=domain,
-            info=info,
-            allowed_module_names=['src'],
-            github_org_id='opencobra',
-            github_repo_id='cobratoolbox',
-            branch='master',
-            source_prefix='')
+matlab_auto_link="all"
+    
+def linkcode_resolve():
+    return 'https://github.com/'
+bibtex_bibfiles = ['../COBRA.bib']
+bibtex_default_style = 'unsrt'
 
 
 # autodoc_member_order='groupwise'
@@ -393,3 +395,5 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #
 # texinfo_no_detailmenu = False
+
+pybtex.plugin.register_plugin('pybtex.style.formatting', 'modstyle', ModStyle)
