@@ -42,16 +42,13 @@ function vennfig = venn4(n,varargin)
 %
 % Reference: 
 % cff-version: 1.2.0
-% message: "If you use this software, please cite it as below."
-% authors:
+% ..Authors:
 %   - family-names: Wong
 %    given-names: Man Ho
 %    orcid: https://orcid.org/0000-0002-3738-1914
 %    version: 1.0.0
 %    doi: 10.5281/zenodo.7297812
 %    date-released: 2022-11-07
-%
-%..Author: Man Ho Wong (2022)
 
 % default set names
 s = repmat(" ",4,1);   % white space as spaceholder
