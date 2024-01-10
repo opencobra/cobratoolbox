@@ -332,6 +332,8 @@ statPath:             char with path of directory where results of</p>
 <dl class="simple">
 <dt>violinPath:           char with path of directory where violin plots are</dt><dd><p>saved</p>
 </dd>
+<dt>plotType              Type of plot to be created: violin plot (default)</dt><dd><p>or boxplot. Allowed entries: “ViolinPlot”,”Boxplot”</p>
+</dd>
 <dt>sampleGroupHeaders    list of one or more column headers in file with the</dt><dd><p>sample information that should be analyzed
 (e.g., disease status, age). If not provided, the
 second column will be used.</p>
@@ -579,7 +581,9 @@ stratification       Column header containing the desired group</p>
 provided, the second column will be used.</p>
 </div></blockquote>
 <dl class="simple">
-<dt>plottedFeature       Name of the feature to plot that will be displayed</dt><dd><p>as the plot title (e.g., ‘Fluxes’)</p>
+<dt>plotType             Type of plot to be created: violin plot (default) or</dt><dd><p>boxplot. Allowed entries: “ViolinPlot”,”Boxplot”</p>
+</dd>
+<dt>plottedFeature       Name of the feature to plot that will be displayed</dt><dd><p>as the plot title (e.g., ‘Flux”es’)</p>
 </dd>
 <dt>unit                 Unit of the plotted data that will be displayed as</dt><dd><p>the y axis label (e.g., mmol/person/day)</p>
 </dd>

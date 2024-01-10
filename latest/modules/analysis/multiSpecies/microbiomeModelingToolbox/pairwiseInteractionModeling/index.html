@@ -389,7 +389,7 @@ used to identify mechanisms for rescued genes.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.pairwiseInteractionModeling.createMultipleSpeciesModel">
-<span class="sig-name descname"><span class="pre">createMultipleSpeciesModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">models</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.pairwiseInteractionModeling.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createMultipleSpeciesModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">models</span></em>, <em class="sig-param"><span class="pre">biomasses</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.pairwiseInteractionModeling.createMultipleSpeciesModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Based on the implementation from <em>Klitgord and Segre 2010, PMID 21124952</em>.
 The present implementation has been used in <em>PMID 23022739</em>, <em>PMID 25841013</em>,
 <em>PMID 25901891</em>, <em>PMID 27893703</em>.</p>
@@ -415,6 +415,9 @@ but not from body fluids to the lumen.</p>
 <li><p>models{2,1} = model 2…</p></li>
 </ul>
 </div></blockquote>
+</dd>
+<dt>biomasses:           Cell array containing names of biomass objective</dt><dd><p>functions of models to join. Needs to be the same
+length as models.</p>
 </dd>
 </dl>
 </dd>
