@@ -1,5 +1,5 @@
 function vennfig = venn4(n,varargin)
-%% Draw venn diagram with two to four sets with optional text labels.
+% Draw venn diagram with two to four sets with optional text labels.
 % User can specify the number of sets to draw (maximum four) and label each
 % set and the intersectional regions between sets.
 % 
