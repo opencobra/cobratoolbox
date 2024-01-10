@@ -18,7 +18,7 @@ function printConstraints(model, minInf, maxInf, rxnSelection, modelAfter, print
 %
 
 % .. Authors:
-%       - Ines Thiele 02/09, Ronan Fleming 2020
+%       - Ines Thiele 02/09, Ronan Fleming 2020, Yanjun Liu 2023
 
 if ~exist('minInf','var')|| isempty(minInf)
     minInf=-Inf;
@@ -67,7 +67,7 @@ revRxnBool0b = model.lb >= minInf & model.ub <= maxInf & model.ub == 0 & ~revers
 
 
 if ~any(closedRxnBool | reversibleRxnBool | fwdRxnBool0b | revRxnBool0b | fwdRxnBoolNon0b | revRxnBoolNon0b)
-    boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool | revRxnBool);
+    boolRemainder = rxnSelection & ~(closedRxnBool | reversibleRxnBool | fwdRxnBool0b | revRxnBool0b | fwdRxnBoolNon0b | revRxnBoolNon0b);
     warning('no subset with bounds between [minInf maxInf]')
 else
     boolRemainder=0;

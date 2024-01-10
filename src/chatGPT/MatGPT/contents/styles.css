@@ -1,0 +1,116 @@
+.table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+}
+
+.table-row {
+  display: table-row;
+  border-bottom: 1px solid #dddddd;
+}
+
+.table-row:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table-row:last-of-type {
+  border-bottom: 2px solid #104871;
+}
+
+.table-cell,
+.table-header {
+  display: table-cell;
+  padding: 12px 15px;
+  white-space: pre-wrap;
+}
+
+.table-row.active-row {
+  font-weight: bold;
+  color: #104871;
+}
+
+.table-header {
+  background-color: #104871;
+  color: #ffffff;
+  text-align: left;
+}
+
+.code-block {
+  display: block;
+  font-size: 1.15em;
+  background-color: #dcebf3;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 0px 0px 0px 0px;
+}
+
+.test-block-green {
+  display: block;
+  font-size: 1.15em;
+  background-color: #dcf3dc;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 0px 0px 0px 0px;
+}
+
+.test-block-red {
+  display: block;
+  font-size: 1.15em;
+  background-color: #f3dcdc;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 0px 0px 0px 0px;
+}
+
+.code-inline {
+  font-size: 1.25em;
+  font-weight: normal;
+}
+
+.ml-figure {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.test-report div {
+  margin-bottom: 10px;
+}
+
+.test,
+.figures,
+.artifacts {
+  border: 1px solid #7d9dd6;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+table.resp {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #404040;
+  border-style: solid;
+  color: #000000;
+}
+
+table.resp td,
+table.resp th {
+  border-width: 2px;
+  border-color: #404040;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.resp thead {
+  background-color: #404040;
+  color: #ffffff;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

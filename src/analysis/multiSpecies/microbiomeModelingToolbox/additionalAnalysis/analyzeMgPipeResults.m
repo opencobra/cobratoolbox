@@ -22,10 +22,13 @@ function analyzeMgPipeResults(infoFilePath,resPath,varargin)
 %                       statistical analysis are saved
 % violinPath:           char with path of directory where violin plots are
 %                       saved
+% plotType              Type of plot to be created: violin plot (default)
+%                       or boxplot. Allowed entries: "ViolinPlot","Boxplot"
 % sampleGroupHeaders    list of one or more column headers in file with the
 %                       sample information that should be analyzed 
 %                       (e.g., disease status, age). If not provided, the
 %                       second column will be used.
+% 
 %
 % .. Author: Almut Heinken, 12/2020
 
@@ -34,6 +37,7 @@ parser.addRequired('infoFilePath', @ischar);
 parser.addRequired('resPath', @ischar);
 parser.addParameter('statPath', [pwd filesep 'Statistics'], @ischar);
 parser.addParameter('violinPath', [pwd filesep 'ViolinPlots'], @ischar);
+parser.addParameter('plotType', 'ViolinPlot', @ischar);
 parser.addParameter('sampleGroupHeaders', '', @iscellstr);
 
 parser.parse(infoFilePath, resPath, varargin{:});
@@ -42,7 +46,12 @@ infoFilePath = parser.Results.infoFilePath;
 resPath = parser.Results.resPath;
 statPath = parser.Results.statPath;
 violinPath = parser.Results.violinPath;
+plotType = parser.Results.plotType;
 sampleGroupHeaders = parser.Results.sampleGroupHeaders;
+
+if ~any(strcmp(plotType,{'ViolinPlot','Boxplot'}))
+    error('Invalid entry for plot type!')
+end
 
 % create the folders
 mkdir(statPath)
@@ -108,13 +117,13 @@ for i=1:length(fileList)
                 writetable(cell2table(significantFeatures),[statPath filesep filename '_' sampleGroupHeaders{j} '_SignificantFeatures'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
             end
             
-            % create violin plots
+            % create plots
             currentDir=pwd;
             cd(violinPath)
             
             % create violin plots for net uptake and secretion files
             if any(contains(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
-                makeViolinPlots(sampleData, infoFile, 'stratification',sampleGroupHeaders{j}, 'plottedFeature', filename, 'unit', 'mmol/person/day')
+                makeViolinPlots(sampleData, infoFile, 'stratification',sampleGroupHeaders{j}, 'plotType' , plotType, 'plottedFeature', filename, 'unit', 'mmol/person/day')
             end
             cd(currentDir)
         end

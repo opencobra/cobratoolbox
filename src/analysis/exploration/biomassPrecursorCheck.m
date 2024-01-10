@@ -32,6 +32,7 @@ function [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = bio
 %                    (returned only if checkConservedQuantities = true)
 %
 % .. Authors: - Pep Charusanti & Richard Que (July 2010)
+%             - Hadjar Rahou (Nov 2023) (fix a bug)
 
 if ~exist('checkCoupling','var') || isempty(checkCoupling)
     checkCoupling = 0;
@@ -118,12 +119,19 @@ if checkConservedQuantities && ~isempty(missingMets)
         EMV = findElementaryMoietyVectors(model);
     else
         % atom transition network is supplied.
-        EMV = identifyConservedMoieties(model, ATN);
-        types = classifyMoieties(EMV, model.S);
-        EMV = EMV(:, strcmp(types, 'Internal'));
+        %EMV = identifyConservedMoieties(model, ATN);
+        %types = classifyMoieties(EMV, model.S);
+        %EMV = EMV(:, strcmp(types, 'Internal'));
+        arm = identifyConservedMoieties(model, ATN); %Hadjar
+        L=arm.L; 
+        types = classifyMoieties(L, model.S);
+        L = L(strcmp(types, 'Internal'),:);
+        EMV=L';
     end
     % biomass metabolites that contain conserved moieties
-    mCofactor = any(model.S(:, colS_biomass) ~= 0, 2) & any(EMV, 2);
+    %mCofactor = any(model.S(:, colS_biomass) ~= 0, 2) & any(EMV, 2);
+    mCofactor = (any(model.S(:, colS_biomass) < 0, 2) & any(EMV, 2)); %Hadjar
+    %pause(2);
     % elementary moieties involved in biomass production
     cofactorPairMatrix = EMV(:, any(EMV(mCofactor, :), 1));
     % each cell of cofactorPair stores the set of cofactor metabolites to be produced.

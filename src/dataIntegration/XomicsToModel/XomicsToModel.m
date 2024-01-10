@@ -1525,27 +1525,32 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
     end
     
     % Check if the inactive genes are present in omics data
-    if any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && param.curationOverOmics
-        %manual curation takes precedence over omics
-        genesIgnoredBool = ismember(activeEntrezGeneID, specificData.inactiveGenes);
-        if param.printLevel > 0
-            disp([num2str(sum(genesIgnoredBool)), ...
-                ' active genes from the omics data have been manually assigned as inactive genes and will be discarded from the omics data:'])
-            disp(activeEntrezGeneID(genesIgnoredBool))
-            %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
-            %disp('This is a link to <a href="http://www.google.com">Google</a>.')
+    if ~isempty(activeEntrezGeneID)
+        if any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && param.curationOverOmics
+            %manual curation takes precedence over omics
+            genesIgnoredBool = ismember(activeEntrezGeneID, specificData.inactiveGenes);
+            if param.printLevel > 0
+                disp([num2str(sum(genesIgnoredBool)), ...
+                    ' active genes from the omics data have been manually assigned as inactive genes and will be discarded from the omics data:'])
+                disp(activeEntrezGeneID(genesIgnoredBool))
+                %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
+                %disp('This is a link to <a href="http://www.google.com">Google</a>.')
+            end
+            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
+        elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
+            %omics takes precedence over manual curation
+            genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
+            if param.printLevel > 0
+                disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
+                disp(specificData.inactiveGenes(genesIgnoredBool))
+            end
+            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
         end
-        specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
-    elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
-        %omics takes precedence over manual curation
-        genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
+    else
         if param.printLevel > 0
-            disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
-            disp(specificData.inactiveGenes(genesIgnoredBool))
+            disp('no manually selected active genes and omics data')
         end
-        activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
     end
-    
     % Check if the inactive genes are present in the model
     inactiveGeneBool = ismember(model.genes, specificData.inactiveGenes);
     if ~any(inactiveGeneBool)

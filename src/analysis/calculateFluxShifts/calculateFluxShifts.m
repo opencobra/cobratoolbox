@@ -1,6 +1,6 @@
 function calculateFluxShifts(source, target)
 % Compares reaction flux values (min, max) between two models or more models
-% in resultsPostOptimization\contextSpecificModels folder and writes the
+% in resultsPostOptimization/contextSpecificModels folder and writes the
 % comparison results ('up', 'down', 1) in a new column in the target model
 %
 % USAGE:
@@ -16,22 +16,23 @@ function calculateFluxShifts(source, target)
 % .. Authors:
 %       - Kristina Grausa 05/16/2022
 %       - Kristina Grausa 08/23/2022 - standard header and formatting
+%       - Farid Zare      20/11/2023 - Repository addresses are corrected, standard variable names
     
     % Get target model/-s
     destTarget = {};
     if string(target) == "All"
-        destTarget = string(strcat('resultsPostOptimization\contextSpecificModels\*.xls'));
+        destTarget = string(strcat('resultsPostOptimization/contextSpecificModels/*.xls'));
     else
-        destTarget = string(strcat('resultsPostOptimization\contextSpecificModels\*',char(target),'*.xls'));
+        destTarget = string(strcat('resultsPostOptimization/contextSpecificModels/*',char(target),'*.xls'));
     end
-    T = dir(destTarget);
+    xlsFilesInfo = dir(destTarget);
 
     % Source model
-    destSource = string(strcat('resultsPostOptimization\contextSpecificModels\*',char(source),'*.xls'));
+    destSource = string(strcat('resultsPostOptimization/contextSpecificModels/*',char(source),'*.xls'));
     S = dir(destSource);
     sheetName = 'Reaction List';
-    filename = strcat(S.folder, '\', S.name);
-    dataSource=readtable(filename,'Sheet',sheetName);
+    filename = strcat(S.folder, '/', S.name);
+    dataSource = readtable(filename,'Sheet',sheetName);
 
     % Get minFlux and MaxFlux columns from source model
     minFluxSource = dataSource.MinFlux;
@@ -47,59 +48,59 @@ function calculateFluxShifts(source, target)
     end
 
     % Get min and max flux data from target model file
-    for i=1:1:length(T)
-        if ~contains(T(i).name,char(source))
+    for i=1:length(xlsFilesInfo)
 
-            filename = strcat(T(i).folder, '\', T(i).name);
+        if ~contains(xlsFilesInfo(i).name,char(source))
+            filename = strcat(xlsFilesInfo(i).folder, '/', xlsFilesInfo(i).name);
             data=readtable(filename,'Sheet',sheetName);
 
             try
             % Get minFlux and MaxFlux columns from target model file
-            minFlux = data.MinFlux;
-            maxFlux = data.MaxFlux;
+            minFluxTarget = data.MinFlux;
+            maxFluxTarget = data.MaxFlux;
 
             % Create and fill cell arrays (min, max) with rounded flux
             % values from target model
-            minFlux_r = cell(height(minFlux),1);
-            maxFlux_r = cell(height(maxFlux),1);
+            minFluxTarget_r = cell(height(minFluxTarget),1);
+            maxFluxTarget_r = cell(height(maxFluxTarget),1);
 
             for k=1:1:height(data)
-                minFlux_r{k} = round(str2double(minFlux{k}),6);
-                maxFlux_r{k} = round(str2double(maxFlux{k}),6);
+                minFluxTarget_r{k} = round(str2double(minFluxTarget{k}),6);
+                maxFluxTarget_r{k} = round(str2double(maxFluxTarget{k}),6);
             end
 
             % Create and fill flux ratio cell arrays (target/source)
-            MinFluxRatio = cell(height(minFlux),1);
-            MaxFluxRatio = cell(height(minFlux),1);
+            MinFluxRatio = cell(height(minFluxTarget),1);
+            MaxFluxRatio = cell(height(minFluxTarget),1);
 
             % Calculate ratios for all reaction fluxes
-            for n=1:1:length(minFlux)
-                minRatio = minFlux_r{n}/minFluxSource_r{n};
-                maxRatio = maxFlux_r{n}/maxFluxSource_r{n};
+            for n=1:1:length(minFluxTarget)
+                minRatio = minFluxTarget_r{n}/minFluxSource_r{n};
+                maxRatio = maxFluxTarget_r{n}/maxFluxSource_r{n};
                 minRatio = round(minRatio,6);
                 maxRatio = round(maxRatio,6);
 
                 % Source flux is 0
-                if minFluxSource_r{n} == 0 && minFlux_r{n} ~= 0
+                if minFluxSource_r{n} == 0 && minFluxTarget_r{n} ~= 0
                     minRatio = 'up';
                 end
-                if maxFluxSource_r{n} == 0 && maxFlux_r{n} ~= 0
+                if maxFluxSource_r{n} == 0 && maxFluxTarget_r{n} ~= 0
                     maxRatio = 'up';
                 end
 
                 % Target flux is 0
-                if minFlux_r{n} == 0 &&  minFluxSource_r{n} ~= 0
+                if minFluxTarget_r{n} == 0 &&  minFluxSource_r{n} ~= 0
                     minRatio = 'down';
                 end
-                if maxFlux_r{n} == 0 && maxFluxSource_r{n} ~= 0
+                if maxFluxTarget_r{n} == 0 && maxFluxSource_r{n} ~= 0
                     maxRatio = 'down';
                 end
 
                 % Both are 0
-                if minFlux_r{n} == 0 &&  minFluxSource_r{n} == 0
+                if minFluxTarget_r{n} == 0 &&  minFluxSource_r{n} == 0
                     minRatio = 1;
                 end
-                if maxFlux_r{n} == 0 && maxFluxSource_r{n} == 0
+                if maxFluxTarget_r{n} == 0 && maxFluxSource_r{n} == 0
                     maxRatio = 1;
                 end
 
@@ -108,7 +109,7 @@ function calculateFluxShifts(source, target)
             end
             
             % Save results
-            folderName = 'resultsPostOptimization\fluxShifts\';
+            folderName = 'resultsPostOptimization/fluxShifts/';
             if ~exist(folderName, 'dir')
                mkdir(folderName)
             end
@@ -117,7 +118,7 @@ function calculateFluxShifts(source, target)
             ratioData.Properties.VariableNames = {strcat('MinFlux_',source{1}), strcat('MaxFlux_',source{1}), 'MinFluxRatio', 'MaxFluxRatio'};
             newData = [data ratioData];
             
-            temp = split(T(i).name,".");
+            temp = split(xlsFilesInfo(i).name,".");
             resultFileName = strcat(temp(1),'_flux_shifts.xls');
             fullResultFilePath = strcat(folderName, resultFileName);
             writetable(newData,fullResultFilePath{1},'AutoFitWidth',false);

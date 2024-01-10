@@ -10,7 +10,7 @@ function [modelPersonalized,IndividualParametersNew] = individualizedLabReport(m
 %                           personalized or updated based on the input
 %                           data. This structure, with default parameters, can be obtained using the
 %                           script standardPhysiolDefaultParameters.m
-% InputData                 InputData
+% InputData                 InputData: specify compartment by placing [bc], [u] or [csf] after the metabolite name 
 % optionCardiacOutput       Different ways of calculatibg the cardiac
 %                           output based on physiological data have been implemented.
 %                           - Based on heart rate and stroke volume: CardiacOutput = HeartRate * StrokeVolume. (optionCardiacOutput = 1, default)
@@ -96,7 +96,7 @@ end
 Hematocrit = ismember(lower(InputData(:,1)),'hematocrit');
 if ~isempty(find(Hematocrit))
     He = InputData(Hematocrit,3);
-    IndividualParameters.Hematocrit =str2num(char(He{1}))/100 ;
+    IndividualParameters.Hematocrit = char(He{1})/100 ;
 end
 
 % Creatinine given in mg/dL in InputData and in IndividualParameters
@@ -246,80 +246,128 @@ if optionCardiacOutput ~=-1 % skip adjustment of CO
 end
 %% apply HMDB data based on IndividualParameters
 modelPersonalized = model;
-%modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters);
+modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters);
 
-%% prepare for the urine and blood concentration data
-%
-if 0
-    %InputDataMetabolites=[Data.textdata(Start+1:end,VMH) MetConMin MetConMax];
-    Type = 'direct';
-    % first blood
-    % glucose
-    MW_glc= 180.16;% g�mol?1;
-    Glc = ismember(InputData(:,1),'Glucose');
-    if ~isempty(find(Glc))
-        Glc = InputData(Glc,3);
-        Glc =str2num(char(Glc{1})) ;
-        % calculate glucose in mM
-        GlcMin = Glc * 10 * (1/MW_glc)*1000*0.8; %in mmol/L
-        GlcMax = Glc * 10 * (1/MW_glc)*1000*1.2; %in mmol/L
-        GlcMin = cellstr(num2str(GlcMin));
-        GlcMin = regexprep(GlcMin,' ','');
-        for j = 1 : size(GlcMin,1)
-            GlcMin{j,1} = (GlcMin(j,1));
+% Obtain molecular weights using computeMW and create table of metabolite name and moleceular weight
+InputDataT = array2table(InputData);
+InputDataT.Properties.VariableNames = ["parameter" "unit" "MetCon"];
+mets = model.mets;
+MW = computeMW(model);
+AllMolecularWeights = unique(table(mets, MW)); 
+
+%% Blood metabolites
+Type = 'direct';
+counter = 0;
+%Load each metabolite and MW, calculate lb and ub  
+ContainsBC = find(contains(InputDataT.parameter, '[bc]'));
+BCmet = InputDataT.parameter(ContainsBC);
+InputDataMetabolitesBC = cell(size(BCmet, 1),3);
+if ~isempty(ContainsBC)
+    for i= 1:size(BCmet,1)
+        inputMet = BCmet{i};
+        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
+        if ~isempty(rowInd)
+            MW = AllMolecularWeights.MW(rowInd);
+            Conc = str2double(InputDataT.MetCon{i});
+            
+            Name = inputMet;
+            MetConMin  = Conc*10*(1/MW)*1000*0.8;
+            MetConMax = Conc*10*(1/MW)*1000*1.2;
+            InputDataMetabolitesBC(i, :) = {Name,  MetConMin,  MetConMax};
+            clear Name MetConMin MinCon MetConMax MaxCon
+        else
+            missing{i} =  inputMet;
+            missing = missing(~cellfun('isempty',missing));
         end
-        GlcMax = cellstr(num2str(GlcMax));
-        GlcMax = regexprep(GlcMax,' ','');
-        for j = 1 : size(GlcMax,1)
-            GlcMax{j,1} = (GlcMax(j,1));
+        counter = counter + 1;
+        fprintf('Calculated blood metabolite concentration #%d\n', counter);
+        
+        if isempty(rowInd)
+            disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
         end
-        InputDataMetabolitesBC(1,:) = ['glc_D'   GlcMin  GlcMax];
     end
-    % Cholesterol
-    MW_chsterol = 386.65;% g/mol;
-    Chsterol = ismember(InputData(:,1),'Cholesterol');
-    if ~isempty(find(Chsterol))
-        Chsterol = InputData(Chsterol,3);
-        Chsterol =str2num(char(Chsterol{1})) ;
-        % calculate Chsterol in mM
-        ChsterolMin = Chsterol * 10 * (1/MW_chsterol)*1000*0.8; %in mmol/L
-        ChsterolMax = Chsterol * 10 * (1/MW_chsterol)*1000*1.2; %in mmol/L
-        ChsterolMin = cellstr(num2str(ChsterolMin));
-        ChsterolMin = regexprep(ChsterolMin,' ','');
-        for j = 1 : size(ChsterolMin,1)
-            ChsterolMin{j,1} = (ChsterolMin(j,1));
-        end
-        ChsterolMax = cellstr(num2str(ChsterolMax));
-        ChsterolMax = regexprep(ChsterolMax,' ','');
-        for j = 1 : size(ChsterolMax,1)
-            ChsterolMax{j,1} = (ChsterolMax(j,1));
-        end
-        InputDataMetabolitesBC(2,:) = ['chsterol'   ChsterolMin  ChsterolMax];
+    
+    for j = 1:size(BCmet(:))
+        InputDataMetabolitesBC{j, 1}=strrep(InputDataMetabolitesBC{j, 1},'[bc]','');
     end
-    modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, Type, InputDataMetabolitesBC, 'bc');
-    %urea given in mg/dl in input data
-    % Cholesterol
-    MW_urea = 60.06;% g/mol;
-    MW_creatinine = 113.1179;%g/mol
-    Urea = ismember(InputData(:,1),'Urea');
-    if ~isempty(find(Urea))
-        Urea = InputData(Urea,3);
-        Urea =str2num(char(Urea{1})) ;
-        % calculate Urea in mM
-        UreaMin = Urea * 10 * (1/MW_urea)*1000*0.8/(IndividualParameters.MConUrCreatinineMax * 10 * (1/MW_creatinine)); %in umol urea/mmol creatine
-        UreaMax = Urea * 10 * (1/MW_urea)*1000*1.2/(IndividualParameters.MConUrCreatinineMax * 10 * (1/MW_creatinine)); %in umol urea/mmol creatine
-        UreaMin = cellstr(num2str(UreaMin));
-        UreaMin = regexprep(UreaMin,' ','');
-        for j = 1 : size(UreaMin,1)
-            UreaMin{j,1} = (UreaMin(j,1));
-        end
-        UreaMax = cellstr(num2str(UreaMax));
-        UreaMax = regexprep(UreaMax,' ','');
-        for j = 1 : size(UreaMax,1)
-            UreaMax{j,1} = (UreaMax(j,1));
-        end
-        InputDataMetabolitesU(2,:) = ['urea'   UreaMin  UreaMax];
+    
+    if exist('InputDataMetabolitesBC','var')
+        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesBC, 'bc');
     end
-    modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, Type, InputDataMetabolitesU, 'u');
 end
-IndividualParametersNew =IndividualParameters;
+ %% Urine Metabolites
+ContainsU = find(contains(InputDataT.parameter, '[u]'));
+Umet = InputDataT.parameter(ContainsU);
+InputDataMetabolitesU = cell(size(Umet, 1),3);
+if ~isempty(ContainsU)
+    for i= 1:size(Umet,1)
+        inputMet = Umet{i};
+        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
+        if ~isempty(rowInd)
+            MW = AllMolecularWeights.MW(rowInd);
+            Conc = str2double(InputDataT.MetCon{i});
+            
+            Name = inputMet;
+            MetConMin  = Conc*10*(1/MW)*1000*0.8;
+            MetConMax = Conc*10*(1/MW)*1000*1.2;
+            InputDataMetabolitesU(i, :) = {Name,  MetConMin,  MetConMax};
+            clear Name MetConMin MinCon MetConMax MaxCon
+        else
+            missing{i} =  inputMet;
+            missing = missing(~cellfun('isempty',missing));
+        end
+        counter = counter + 1;
+        fprintf('Calculated urine metabolite concentration #%d\n', counter);
+        
+        if isempty(rowInd)
+            disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
+        end
+    end
+    
+    for j = 1:size(Umet(:))
+        InputDataMetabolitesU{j, 1}=strrep(InputDataMetabolitesU{j, 1},'[u]','');
+    end
+    
+    if exist('InputDataMetabolitesU','var')
+        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesU, 'u');
+    end
+end
+ %% CSF metabolites   
+ContainsCSF = find(contains(InputDataT.parameter, '[csf]'));
+CSFmet = InputDataT.parameter(ContainsCSF);
+InputDataMetabolitesCSF = cell(size(CSFmet, 1),3);
+if ~isempty(ContainsCSF)
+    for i= 1:size(CSFmet,1)
+        inputMet = CSFmet{i};
+        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
+        if ~isempty(rowInd)
+            MW = AllMolecularWeights.MW(rowInd);
+            Conc = str2double(InputDataT.MetCon{i});
+            
+            Name = inputMet;
+            MetConMin  = Conc*10*(1/MW)*1000*0.8;
+            MetConMax = Conc*10*(1/MW)*1000*1.2;
+            InputDataMetabolitesCSF(i, :) = {Name,  MetConMin,  MetConMax};
+            clear Name MetConMin MinCon MetConMax MaxCon
+        else
+            missing{i} =  inputMet;
+            missing = missing(~cellfun('isempty',missing));
+        end
+        counter = counter + 1;
+        fprintf('Calculated Cerebrospinal fluid metabolite concentration #%d\n', counter);
+        
+        if isempty(rowInd)
+            disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
+        end
+    end
+    
+    for j = 1:size(CSFmet(:))
+        InputDataMetabolitesCSF{j, 1}=strrep(InputDataMetabolitesCSF{j, 1},'[csf]','');
+    end
+    
+    if exist('InputDataMetabolitesCSF','var')
+        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesCSF, 'csf');
+    end
+end
+    IndividualParametersNew = IndividualParameters;
+end

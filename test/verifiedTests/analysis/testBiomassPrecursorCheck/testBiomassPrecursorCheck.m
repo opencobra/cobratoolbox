@@ -5,6 +5,7 @@
 %
 % Authors:
 %    - Siu Hung Joshua Chan June 2018
+%    - Hadjar Rahou (Nov 2023) (fix a bug)
 
 % save the current path
 currentDir = pwd;
@@ -159,7 +160,8 @@ end
 
 dataDir = fileparts(which('testBiomassPrecursorCheck'));
 % build the atom transition network using the data
-ATN = buildAtomTransitionNetwork(model, [dataDir filesep 'data' filesep 'atomMapped']);
+%ATN = buildAtomTransitionNetwork(model, [dataDir filesep 'data' filesep 'atomMapped']);
+[ATN, ~, ~, ~, ~] = buildAtomTransitionMultigraph(model, [dataDir filesep 'data' filesep 'atomMapped']); %Hadjar
 
 % add a hypothetical biomass reaction to the model
 model = addReaction(model, 'BIOMASS', 'reactionFormula', '0.1 dopa[c] + 0.1 h2o[c] + 0.2 thbpt[c] -> 0.2 dhbpt[c]', 'objectiveCoef', 1);

@@ -1,4 +1,4 @@
-function [modelProp,ScoresOverall] = generateMemoteLikeScore(model,nworkers)
+function [modelProp,ScoresOverall] = generateMetaboScore(model,nworkers)
 
 % Ines Thiele June 2022
 
@@ -45,7 +45,7 @@ for i = 1 : length(model.rxns)
         DmR = DmR + 1;
     elseif  ~isempty(find(contains(model.rxns{i},'Sink_'))) || ~isempty(find(contains(model.rxns{i},'sink_')))
         SinkR = SinkR + 1;
-    elseif  ~isempty(find(contains(model.rxns{i},'biomass')))
+    elseif  ~isempty(find(contains(lower(model.rxns{i}),'biomass')))
         % Biomass Reactions SBO:0000629 Presence
         BioR = BioR + 1;
     else
@@ -53,7 +53,9 @@ for i = 1 : length(model.rxns)
         a = printRxnFormula(model,'rxnAbbrList',model.rxns{i},'printFlag',0);
         c = regexp(a,'\[\w]');
         c = c{1};
-        clear comp;
+        if exist('comp','var')
+            clear comp;
+        end
         for k = 1 : length(c)
             comp{k} = a{1}(c(k):c(k)+2);
         end
@@ -93,16 +95,17 @@ modelProp.SinkRxns = SinkR;
 modelProp.Details.SinkRxns = [model.rxns(contains(model.rxns,'Sink_'));model.rxns(contains(model.rxns,'sink_'))];
 % biomass reactions
 modelProp.BiomassRxns = BioR;
-modelProp.Details.BiomassRxns = model.rxns(contains(model.rxns,'biomass'));% exclude EX_biomass?
+modelProp.Details.BiomassRxns = model.rxns(contains(lower(model.rxns,'biomass')));% exclude EX_biomass?
 
 modelProp.MetabolicRxns = MetR;
 modelProp.Details.MetabolicRxns =MetRxns';
 modelProp.TransportRxns = TransR;
 modelProp.Details.TransportRxns =TransRxns';
 
-% reactions without GPR - TODO should be only internal reactions
+% internal reactions without GPR 
 RxnsWOGpr = model.rxns(find(cellfun(@isempty,model.grRules)));
-
+External = [modelProp.Details.ExchangeRxns;modelProp.Details.DemandRxns;modelProp.Details.SinkRxns ;modelProp.Details.BiomassRxns ];
+RxnsWOGpr = setdiff(RxnsWOGpr,External);
 modelProp.RxnsWithoutGpr = length(RxnsWOGpr)*100/modelProp.n;
 modelProp.Details.RxnsWithoutGpr = RxnsWOGpr;
 
