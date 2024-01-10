@@ -38,7 +38,7 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University
-
+    tempModel = model;
     S = model.S;
     [m, n] = size(S);
     rev = ones(n, 1);
@@ -135,6 +135,6 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
         end
     end
     reconInd = ismember(fullCouplings, reacNum(weights == 0));
-    reconstruction = removeRxns(model, model.rxns(~reconInd));
+    reconstruction = removeRxns(tempModel, tempModel.rxns(~reconInd));
     reconstruction = removeUnusedGenes(reconstruction);
 end
