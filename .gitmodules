@@ -78,3 +78,4 @@
 [submodule "external/visualization/MatGPT"]
 	path = external/visualization/MatGPT
 	url = git@github.com:toshiakit/MatGPT.git
+        branch = main

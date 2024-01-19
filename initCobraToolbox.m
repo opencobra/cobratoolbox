@@ -226,12 +226,44 @@ if installedGit
         %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
         %[status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+        % [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+        % 
+        % if status_gitSubmodule ~= 0
+        %     fprintf(strrep(result_gitSubmodule, '\', '\\'));
+        %     error('The submodules could not be initialized.');
+        % end
+
+        % 19/01/2024 FZ Get all submodule path 
+        submoduleInfo = evalc('system(''git submodule foreach echo $path'')');
+
+        % Extract submodule paths using regular expressions
+        pattern = 'Entering ''(.+?)''';
+        matches = regexp(submoduleInfo, pattern, 'tokens');
         
-        if status_gitSubmodule ~= 0
-            fprintf(strrep(result_gitSubmodule, '\', '\\'));
-            error('The submodules could not be initialized.');
+        % Extract submodule paths from the matches
+        submodulePaths = cellfun(@(x) x{1}, matches, 'UniformOutput', false);
+        
+        % Save current path
+        operatingDir = pwd;
+
+        for i = 1:length(submodulePaths)
+            % Change to repository of each submodule
+            cd(fullfile(currentDir, submodulePaths{i}));
+            % submodules point to master, don't pull in remote changes
+            [status_gitSubmodule, result_gitSubmodule] = system('git checkout master');
+            % In the cases where default branch name is main, submodule
+            % point to main
+            if status_gitSubmodule
+                [status_gitSubmodule, result_gitSubmodule] = system('git checkout main');
+            end
+
+            if status_gitSubmodule
+                fprintf(strrep(result_gitSubmodule, '\', '\\'));
+                error('The submodules could not be initialized.');
+            end
         end
+        % Go back to previous path
+        cd(operatingDir);
         
         % reset each submodule
         %https://github.com/bazelbuild/continuous-integration/issues/727
