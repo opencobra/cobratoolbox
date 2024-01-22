@@ -99,7 +99,7 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
 end
 
 % retrieve the current directory
-currentDir = pwd;
+currentDir = fileparts(which(mfilename));
 
 % define the root path of The COBRA Toolbox and change to it.
 CBTDIR = fileparts(which('initCobraToolbox'));
