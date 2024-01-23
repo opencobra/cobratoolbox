@@ -27,7 +27,7 @@ jobs:
       id: getfile
       
       run: |
-        changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.mlx')
+        changed_files=$(git diff | grep '\.mlx')
         echo "::set-output name=file::$changed_files"
 
     - name: Convert MLX to HTML
