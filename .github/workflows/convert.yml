@@ -19,8 +19,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up MATLAB environment
-      uses: matlab-actions/setup-matlab@v1
+   
 
     - name: Find MLX Files
       id: find-mlx
