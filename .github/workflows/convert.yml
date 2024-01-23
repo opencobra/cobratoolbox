@@ -19,6 +19,8 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+  
+
    
 
     - name: Get Changed HTML Files
@@ -32,3 +34,12 @@ jobs:
       if: steps.find-mlx.outputs.mlx_files != ''
       run: |
         ./run_matlab.sh "${{ steps.getfile.outputs.mlx_files }}"
+        
+    - name: Commit and Push New File
+      if: steps.check_msg.outputs.run_job == 'true'
+      run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add .
+          git commit -m "Add new HTML file" || echo "No changes to commit"
+          git push -f origin gh-pages
