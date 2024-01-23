@@ -1,0 +1,34 @@
+name: MATLAB MLX to HTML Conversion
+
+# Trigger the workflow on push events but only for the main branch
+on:
+  push:
+    branches:
+      - gh-pages
+    paths:
+    - '**.mlx'
+
+# The jobs key is a collection of the jobs to run
+jobs:
+  convert-mlx-to-html:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up MATLAB environment
+      uses: matlab-actions/setup-matlab@v1
+
+    - name: Find MLX Files
+      id: find-mlx
+      run: |
+        mlx_files=$(find . -type f -name '*.mlx')
+        echo "::set-output name=mlx_files::$mlx_files"
+
+    - name: Convert MLX to HTML
+      if: steps.find-mlx.outputs.mlx_files != ''
+      run: |
+        ./run_matlab.sh "${{ steps.find-mlx.outputs.mlx_files }}"
