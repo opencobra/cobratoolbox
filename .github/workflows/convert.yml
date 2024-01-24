@@ -26,9 +26,9 @@ jobs:
         echo "::set-output name=mlx_file::$changed_files"
 
     - name: Convert MLX to HTML
-      if: steps.getfile.outputs.mlx_files != ''
+      if: steps.getfile.outputs.mlx_file != ''
       run: |
-        ./run_matlab.sh "${{ steps.getfile.outputs.mlx_files }}"
+        ./run_matlab.sh "${{ steps.getfile.outputs.mlx_file }}"
         
     - name: Commit and Push New File
       
