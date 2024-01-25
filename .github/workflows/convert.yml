@@ -47,5 +47,4 @@ jobs:
 
     - name: Cleanup Environment
       run: |
-            cd ..
-            rm -rf cobratoolbox
+            git clone --recurse-submodules https://github.com/opencobra/cobratoolbox.git
