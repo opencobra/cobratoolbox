@@ -20,18 +20,24 @@ jobs:
       uses: actions/checkout@v2   
 
     - name: Get Changed MLX Files
-      id: getfile      
+      id: getfile
       run: |
-        changed_files=$(git diff --name-only || grep '\.mlx')
-        echo "::set-output name=mlx_file::$changed_files"
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.mlx' || echo "")
+          echo "Changed MLX files: $changed_files"
+          echo "::set-output name=mlx_file::$changed_files"
+
+      
+
+    - name: Make MATLAB Script Executable
+      run: chmod +x ./run_matlab.sh
 
     - name: Convert MLX to HTML
-      
+      if: steps.getfile.outputs.mlx_file != ''
       run: |
-        ./run_matlab.sh "${{ steps.getfile.outputs.mlx_file }}"
+          ./run_matlab.sh "${{ steps.getfile.outputs.mlx_file }}"
+          
         
-    - name: Commit and Push New File
-      
+    - name: Commit and Push New File      
       run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
