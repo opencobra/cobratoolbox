@@ -85,7 +85,7 @@
         branch = main
 
 [submodule "binary"]
-    path = binary
-    url = https://github.com/opencobra/COBRA.binary.git
-    ignore = dirty
-    branch = master
+    	path = binary
+    	url = https://github.com/opencobra/COBRA.binary.git
+   	ignore = dirty
+    	branch = master
