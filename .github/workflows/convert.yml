@@ -45,4 +45,7 @@ jobs:
           git commit -m "Add new HTML file" || echo "No changes to commit"
           git push -f origin gh-pages
 
-  
+    - name: Add binary submodule
+      run: |
+        git submodule add https://github.com/opencobra/COBRA.binary.git
+
