@@ -1,3 +1,7 @@
+[submodule "binary"]
+	path = binary
+	url = https://github.com/opencobra/COBRA.binary.git
+	
 [submodule "GeoCalcLib"]
 	path = external/analysis/GeoCalcLib
 	url = https://github.com/rmtfleming/GeoCalcLib.git
