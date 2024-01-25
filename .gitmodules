@@ -1,7 +1,8 @@
 [submodule "binary"]
 	path = binary
-	url = https://github.com/opencobra/COBRA.binary.git
-	
+	url = https://github.com/opencobra/COBRA.binary/tree/43f41b0b7f7f215b1401dded720d5bc79f137e9e
+	ignore = dirty
+	branch = master
 [submodule "GeoCalcLib"]
 	path = external/analysis/GeoCalcLib
 	url = https://github.com/rmtfleming/GeoCalcLib.git
