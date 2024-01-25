@@ -45,7 +45,4 @@ jobs:
           git commit -m "Add new HTML file" || echo "No changes to commit"
           git push -f origin gh-pages
 
-    - name: Cleanup Environment
-      run: |
-            cd ..
-            git clone --recurse-submodules https://github.com/opencobra/cobratoolbox.git
+  
