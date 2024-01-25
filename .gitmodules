@@ -18,11 +18,6 @@
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
 	ignore = dirty
 	branch = master
-[submodule "binary"]
-	path = binary
-	url = https://github.com/opencobra/COBRA.binary.git
-	ignore = dirty
-	branch = master
 [submodule "gaimc"]
 	path = external/analysis/gaimc
 	url = https://github.com/dgleich/gaimc.git
