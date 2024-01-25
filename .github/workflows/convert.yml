@@ -26,6 +26,11 @@ jobs:
           echo "Changed MLX files: $changed_files"
           echo "::set-output name=mlx_file::$changed_files"
 
+    - name: Print Changed MLX Files
+      if: steps.getfile.outputs.mlx_file != ''
+      run: echo "The following MLX files have been changed ${{ steps.getfile.outputs.mlx_file }}"
+
+
       
 
     - name: Make MATLAB Script Executable
