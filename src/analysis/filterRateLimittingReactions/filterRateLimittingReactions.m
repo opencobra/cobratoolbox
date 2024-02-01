@@ -7,17 +7,19 @@ function filterRateLimittingReactions(phenotype)
 %
 % USAGE:
 %
-%   filterRateLimittingReactions(phenotype)
+%    filterRateLimittingReactions(phenotype)
 %
 % INPUTS:
-%   phenotype:              char representing the phenotype name provided
-%                           in each model name of the same phanotype
+%    phenotype:              char representing the phenotype name provided
+%                            in each model name of the same phanotype
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022
 %       - Kristina Grausa 08/23/2022 - standard header and formatting
+%       - Farid Zare      11/21/2023 - Correction of repository address format 
+%
 
-    dest = string(strcat('resultsPostOptimization\contextSpecificModels\*', phenotype, '*.xls'));
+    dest = string(strcat('resultsPostOptimization/contextSpecificModels/*', phenotype, '*.xls'));
     S = dir(dest);
     count = length(S);
 
@@ -27,7 +29,7 @@ function filterRateLimittingReactions(phenotype)
 
     for i=1:1:count
         sheetName = 'Reaction List';
-        filename = strcat(S(i).folder, '\', S(i).name);
+        filename = strcat(S(i).folder, '/', S(i).name);
         data=readtable(filename,'Sheet',sheetName);
 
         % Copy headers
@@ -79,7 +81,7 @@ function filterRateLimittingReactions(phenotype)
     end
     
     % Save results
-    folderName = 'resultsPostOptimization\rateLimittingReactions\';
+    folderName = 'resultsPostOptimization/rateLimittingReactions/';
     if ~exist(folderName, 'dir')
        mkdir(folderName)
     end

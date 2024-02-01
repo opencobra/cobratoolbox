@@ -116,6 +116,13 @@ for i=2:size(sampleData,1)
         dataAll=str2double(sampleData(i,2:end));
     end
     
+    % remove fluxes under the solver limit
+    for j=1:length(dataAll)
+        if abs(dataAll(j)) < 0.0000000001
+            dataAll(j) =  0;
+        end
+    end
+    
     % separate data by group
     for j=1:length(groups)
         dataGrouped{j}=dataAll';

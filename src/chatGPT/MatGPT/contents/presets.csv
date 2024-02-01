@@ -1,0 +1,288 @@
+name,content,prompt,model,max_tokens,temperature,test_code
+AI Assistant,You are a helpful assistant. Answer as concisely as possible. ,Where is the capital of France?,gpt-3.5-turbo,1000,1,0
+English to MATLAB Code,You are a helpful assistant that generates MATLAB code using the latest features from R2021a or later. ,"Define two random vectors x and y, fit a linear model to the data, and plot both the data and fitted line.",gpt-3.5-turbo,1000,0,1
+English to Simulink Model,"You are a helpful assistant that creates Simulink models.  
+You create the models by generating MATLAB code that adds all the necessary blocks and set their parameters. 
+Automatically arrange the blocks by adding this line of code:
+Simulink.BlockDiagram.arrangeSystem(model)
+Save the model and run it.","Model name: 'sine_multiplied' 
+Add Sine Wave block with amplification = 1. 
+Multiply the sine wave signal by 3. 
+Add Scope block with 2 input ports. 
+Visualize both signals by connecting them to the same Scope block. ",gpt-3.5-turbo,1000,0,1
+Summarize Code,You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze MATLAB code and provide concise summary of what the code does. ,"Summarize what the following code by Cecelya https://www.mathworks.com/matlabcentral/communitycontests/contests/5/entries/12418 does. 
+
+```matlab
+m = 0:.01:1;
+T = -4:.01:25; 
+x=1-(5/4*(1-mod(3.6*T, 2)).^2-1/4).^2/2; 
+P=exp(-T/5)/2; 
+s=sinpi(P); 
+c=cospi(P); 
+y=2*m'.^5.*(1.6*m'-1).^2.*s; 
+S=x.*(m'.*s+y.*c); 
+X=S.*sinpi(T); 
+Y=S.*cospi(T); 
+Z=m'.*c+y.*s; 
+surf(X,Y,x.*Z,X.^2+Y.^2+Z.^4); 
+axis( 'equal','off') 
+view([0 33]) 
+colormap(flip(hot)) 
+shading('interp')
+```",gpt-3.5-turbo,1000,0,0
+Explain Code Step by Step,You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze MATLAB code and explain the code step by step.,"Explain what the following code  by Cecelya https://www.mathworks.com/matlabcentral/communitycontests/contests/5/entries/12418 does. 
+
+```matlab
+m = 0:.01:1;
+T = -4:.01:25; 
+x=1-(5/4*(1-mod(3.6*T, 2)).^2-1/4).^2/2; 
+P=exp(-T/5)/2; 
+s=sinpi(P); 
+c=cospi(P); 
+y=2*m'.^5.*(1.6*m'-1).^2.*s; 
+S=x.*(m'.*s+y.*c); 
+X=S.*sinpi(T); 
+Y=S.*cospi(T); 
+Z=m'.*c+y.*s; 
+surf(X,Y,x.*Z,X.^2+Y.^2+Z.^4); 
+axis( 'equal','off') 
+view([0 33]) 
+colormap(flip(hot)) 
+shading('interp')
+```",gpt-3.5-turbo,1000,0,0
+Script to function,You are a friendly and helpful teaching assistant for MATLAB programmers. Convert MATLAB scripts to a local function and call the function using sample inputs.  ,"Convert the following script by Cecelya https://www.mathworks.com/matlabcentral/communitycontests/contests/5/entries/12418 to a function, using m and T as input variables and set default values to those variables. 
+
+```matlab
+m = 0:.01:1;
+T = -4:.01:25; 
+x=1-(5/4*(1-mod(3.6*T, 2)).^2-1/4).^2/2; 
+P=exp(-T/5)/2; 
+s=sinpi(P); 
+c=cospi(P); 
+y=2*m'.^5.*(1.6*m'-1).^2.*s; 
+S=x.*(m'.*s+y.*c); 
+X=S.*sinpi(T); 
+Y=S.*cospi(T); 
+Z=m'.*c+y.*s; 
+surf(X,Y,x.*Z,X.^2+Y.^2+Z.^4); 
+axis( 'equal','off') 
+view([0 33]) 
+colormap(flip(hot)) 
+shading('interp')
+```",gpt-3.5-turbo,1000,0,1
+Write doc to function,"You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze a MATLAB function and add an elaborate, high quality docstring to the function.","Write useful docstring to this function derived from the code by Cecelya https://www.mathworks.com/matlabcentral/communitycontests/contests/5/entries/12418, using comment format %PLOTBLOOMINGLIGHTS does blah blah blah.  
+
+```matlab
+function plotBloomingLight(m,T)
+arguments
+    m double {mustBeVector} = 0:.01:1;
+    T double {mustBeVector} = -4:.01:25; 
+end
+x=1-(5/4*(1-mod(3.6*T, 2)).^2-1/4).^2/2; 
+P=exp(-T/5)/2; 
+s=sinpi(P); 
+c=cospi(P); 
+y=2*m'.^5.*(1.6*m'-1).^2.*s; 
+S=x.*(m'.*s+y.*c); 
+X=S.*sinpi(T); 
+Y=S.*cospi(T); 
+Z=m'.*c+y.*s; 
+surf(X,Y,x.*Z,X.^2+Y.^2+Z.^4); 
+axis( 'equal','off') 
+view([0 33]) 
+colormap(flip(hot)) 
+shading('interp')
+end
+```",gpt-3.5-turbo,1000,0,0
+Fix Bug,You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze buggy MATLAB code and provide error free code using latest features from R2021a or later. ,"Fix bug in the following MATLAB code
+
+```matlab
+% Buggy MATLAB code
+
+a = 1; b = 2;
+function y = add(a, b)
+y = ""a"" + b
+end
+```
+
+% Fixed MATLAB code",gpt-3.5-turbo,1000,0,0
+Write Unit Tests,You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze MATLAB functions and write appropriate unit tests.,"Write unit tests for this function, 
+
+```matlab
+function y = add(a, b)
+y = a + b
+end
+```",gpt-3.5-turbo,1000,0,0
+Vectorize Code,You are a friendly and helpful teaching assistant for MATLAB programmers. Analyze MATLAB code and rewrite it to improve efficiency using vectorization rather than for loops.,"Vectorize the following code without using for loop. 
+
+```matlab
+i = 0;
+for t = 0:.01:10
+    i = i + 1;
+    y(i) = sin(t);
+end
+```",gpt-3.5-turbo,1000,0,1
+Act as MATLAB Command Window,"You are a MATLAB interpreter. I will give you MATLAB code, you'll reply with what the Command Window should show. Do not provide any explanations. Do not respond with anything except the output of the code. ","```matlab
+x = (1:10)*2
+```
+
+",gpt-3.5-turbo,1000,0,0
+Sentiment Analysis,You are a helpful assistant that helps data scientists by analyzing sentiment expressed in a given text.,"Decide whether sentiment is positive, neutral, or negative for the following text
+
+1. ""I can't stand homework""
+2. ""This sucks. I'm bored 😠""
+3. ""I can't wait for Halloween!!!""
+4. ""My cat is adorable ❤️❤️""
+5. ""I hate chocolate""
+
+Text sentiment ratings:",gpt-3.5-turbo,1000,0,0
+Contact Extraction,You are a helpful assistant that helps data scientists by analyzing unstructured data and extract personally identifiable information.,"Extract the name and mailing address from this text: 
+
+Dear Kelly,
+     
+It was great to talk to you at the seminar. I thought Jane's talk was quite good.
+Thank you for the book. Here's my address
+
+2111 Ash Lane, Crestview CA 92002
+
+Best,
+
+Maya",gpt-3.5-turbo,1000,0,0
+Extract table from PDF,You are a helpful assistant that helps data scientists by analyzing unstructured data and recreate a table from the text extracted from a PDF file.,"format the following PDF data into a table. Start with a title, then the table and end with a footer citing the source.
+
+A(Percentage)verage annual export growth rates of creative goods, 2006−2020
+     
+     
+     Region 2006−2010 2011−2015
+     
+     Developing economies 9.8 4.9
+     
+     Developed economies 1.5 0.2
+     
+     Least developed countries 19.5 4.2
+     
+     Small island developing States 12.8 -0.6
+     
+     World – creative goods 5.1 2.7
+     
+     World – all goods 3.6 -1.8
+     
+     Source: UNCTAD based on UN COMTRADE Database.
+     
+     
+     2016−2020
+     
+     2.0
+     
+     0.3
+     
+     38.3
+     
+     -29.8
+     
+     1.2
+     
+     2.6
+     
+     
+     2006−2020
+     
+     5.9
+     
+     1.3
+     
+     10.1
+     
+     -3.9
+     
+     3.5
+     
+     2.4
+     
+     
+     2020
+     
+     -10.6
+     
+     -14.9
+     
+     -2.2
+     
+     -48.5
+     
+     -12.5
+     
+     -7.2
+     
+     
+     ",gpt-3.5-turbo,1000,0,0
+Top 10 SciFi movies,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Create a  table of top 10 science fiction movies,  their year of release, and box office gross. Name columns 'Title', 'Year', and 'Gross'.",gpt-3.5-turbo,1000,0,0
+San Francisco Weather,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Create a table of weather temperatures for San Francisco.
+Name columns 'Month', 'High', and 'Low'. 
+Use abbreviated month names. Use numbers only for temperature using Fahrenheit.",gpt-3.5-turbo,1000,0,0
+Boston Housing Prices,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Housing prices are correlated with size of the house. 
+Create a table of housing prices in Boston based on square footage as size 
+with columns named 'Sqft' and 'Price' with 10 rows. Randomize the values in 'Sqft', 
+while maintaining the correlation to 'Price' with some variation.",gpt-3.5-turbo,1000,0,0
+Boston Landmarks,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Create a markdown table of famous landmarks in Boston 
+     with latitude and longitude in decimal degrees, i.e. 42.361145, -71.057083
+     Generate MATLAB Code that stores the data in variables landmarks, lat and lon. 
+     Use geoscatter function to plot the data points. Annotate the data points with the names of the landmarks using text function.
+     Avoid using for loop.",gpt-3.5-turbo,1000,0,0
+Remove duplicate names,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Here is a list of names.
+
+John Smith
+William Davis
+Sarah Brown
+Thomas Miller
+Julia Johnson
+Adam White
+David Taylor
+Smith Paul
+Davis William
+Brown Jennifer
+
+Create a table with two columns from this list 
+that split the first name and last name. 
+If first name appears as last name, correct the order.  
+remove any duplicates. Show the table in markdown format.",gpt-3.5-turbo,1000,0,0
+Email Domains to Company Names,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Identify legal company names based on the following domains
+
+1. @apple.com
+2. @walmart.com
+3. @exxonmobil.com
+4. @berkshirehathaway.com
+5. @amazon.com
+6. @unitedhealthgroup.com
+7. @cvs.com
+8. @costco.com
+9. @jpmorganchase.com
+10. @home-depot.com
+11. @mcdonalds.com
+12. @chevron.com1
+13. @unitedparcelservice.com
+14. @dell.com",gpt-3.5-turbo,1000,0,0
+Normalize University Names,You are a helpful assistant that helps data scientists extract useful public data for analysis.,"Normalize the list of university names below. If a university has multiple names, apply the most common full name, not an abbreviation.
+
+CMU
+Caltech
+Carnegie Mellon UNiversity
+Carnegie Mellon University
+Cambrige
+Cambridge University
+Columbia
+Columbia University
+Cornell
+Cornell University
+Duke
+Duke University
+Duke Univiersity
+Georgia Institute of Technolog
+Georgia Institute of Technology
+Georgia Tech
+Georgia Tech.
+Georgiatech
+MIT
+Massachusetts Institute of Technology
+
+",gpt-3.5-turbo,1000,0,0

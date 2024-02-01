@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link href="styles.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div class="table">
+            <div class="table-row">
+                <div class="table-header" style="width:10%">Role</div>
+                <div class="table-header">Content</div>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+            function setup(htmlComponent) {
+
+                htmlComponent.addEventListener("DataChanged", function(event) { 
+                    // Get a reference to the table
+                    var table = document.querySelector('.table');
+                    var changedData = htmlComponent.Data;
+                    
+                    // Create a new row
+                    var newRow = document.createElement('div');
+                    newRow.classList.add('table-row');
+
+                    // Create the two cells in the new row
+                    var cell1 = document.createElement('div');
+                    cell1.classList.add('table-cell');                    
+                    var cell2 = document.createElement('div');
+                    cell2.classList.add('table-cell');
+            
+
+                    // Add Role text in 1st cell
+                    cell1.innerHTML = changedData[0];                
+                    cell2.innerHTML = changedData[1]; 
+                    
+                    // Add the cells to the new row
+                    newRow.appendChild(cell1);
+                    newRow.appendChild(cell2);
+                    
+                    // Add the new row to the table
+                    table.appendChild(newRow);
+                });
+
+            }
+        </script>
+    </body>
+</html>

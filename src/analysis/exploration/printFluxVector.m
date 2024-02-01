@@ -20,7 +20,8 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %
 
 % .. Authors:
-%       - Markus Herrgard, Ronan Fleming
+%    - Markus Herrgard, Ronan Fleming
+%    - Farid Zare    21/11/2023    Corrected outputing multiple rxn names
 
 if isempty(fluxData)
     return
@@ -70,7 +71,6 @@ end
 % Add reaction formulas
 if formulaFlag
     if nonZeroFlag
-        labels = [model.rxns,model.rxnNames];
         %only generate the formulas for the nonzero entries
         labels(bool,end+1) = printRxnFormula(model, labels(bool,1), false, false);
     else
