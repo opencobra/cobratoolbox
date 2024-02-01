@@ -31,11 +31,12 @@ jobs:
       run: |
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.mlx' || echo "")
           echo "Changed MLX files: $changed_files"
-          echo "::set-output name=mlx_file::$changed_files"
+          echo "mlx_file=$changed_files" >> $GITHUB_ENV
 
     - name: Print Changed MLX Files
       if: steps.getfile.outputs.mlx_file != ''
-      run: echo "The following MLX files have been changed ${{ steps.getfile.outputs.mlx_file }}"
+      run: echo "The following MLX files have been changed ${{ env.mlx_file  }}"
+
 
     - name: Make MATLAB Script Executable
       run: chmod +x ./run_matlab.sh
