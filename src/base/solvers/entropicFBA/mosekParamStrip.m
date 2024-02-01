@@ -40,8 +40,8 @@ end
 if isfield(solverParams,'finalFluxConsistency')
      solverParams = rmfield(solverParams,'finalFluxConsistency');
 end
-if isfield(solverParams,'tissueSpecificSolver')
-     solverParams = rmfield(solverParams,'tissueSpecificSolver');
+if isfield(solverParams,'modelExtractionAlgorithm')
+     solverParams = rmfield(solverParams,'modelExtractionAlgorithm');
 end
 end
 

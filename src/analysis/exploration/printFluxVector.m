@@ -70,13 +70,12 @@ end
 % Add reaction formulas
 if formulaFlag
     if nonZeroFlag
-        labels = [model.rxns,model.rxns];
+        labels = [model.rxns,model.rxnNames];
         %only generate the formulas for the nonzero entries
-        labels(bool,end+1) = printRxnFormula(model, labels(bool), false, false);
+        labels(bool,end+1) = printRxnFormula(model, labels(bool,1), false, false);
     else
         labels(:,end+1) = printRxnFormula(model, labels, false, false);
     end
-    labels(:,end) = pad(labels(:,end));
 end
 
 % Add GPR
@@ -87,7 +86,6 @@ if gprFlag
     else
         labels = [labels, model.grRules];
     end
-    labels(:,end) = pad(labels(:,end));
 end
 
 %only print the nonzeros
@@ -95,6 +93,8 @@ if nonZeroFlag
     labels = labels(bool,:);
     fluxData = fluxData(bool,:);
 end
+
+labels(:,end) = pad(labels(:,end));
 
 %print the labeled data
 printLabeledData(labels, fluxData, 0, sortCol, fileName, headerRow)

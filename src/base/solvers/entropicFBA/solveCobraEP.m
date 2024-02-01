@@ -192,7 +192,8 @@ if problemTypeParams.debug
             [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,'minimize');
             
             %parse mosek result structure
-            [solutionLP2.stat,solutionLP2.origStat,x,y,w] = parseMskResult(res);
+            [solutionLP2.stat,solutionLP2.origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res);%,A,blc,buc,printLevel,param)
+            %[solutionLP2.stat,solutionLP2.origStat,x,y,w] = parseMskResult(res);
 %             if stat ==1
 %                 f=c'*x;
 %                 % slack for blc <= A*x <= buc
@@ -570,7 +571,7 @@ switch problemTypeParams.solver
         %
         %         Assuming Q is positive semidefinite, there exists an F such that Q = F'*F
         %
-        %         min  (d.*x)'*(log(x./y) + c)  + (1/2)*x'*(R'*R)*x
+        %         min  (d.*x)'*(log(x./y) + c)  + (1/2)*x'*(F'*F)*x
         %         s.t. l <= A[x;y] <= u
         %
         %         where d,c,A,l,u,Q are data and x,y are variables, is equivalent to
@@ -585,7 +586,7 @@ switch problemTypeParams.solver
         %         min   d*e + d*c*x + q 
         %         s.t.   (y, x, -e) \in K_{exp}     Exponential cone % MSK_CT_PEXP
         %                (1, s, Fx) \in Q^{k+2}_{r} Quadratic cone % MSK_CT_QUAD
-        %         l <= A[x;y] <= u
+        %         l <= [A, 0, 0]*[x;y;e;s] <= u
         %
         %         Such a problem could be formulated using the Affine conic constraints, as shown in the following code:
         
@@ -677,10 +678,11 @@ switch problemTypeParams.solver
         else
             [~, res] = mosekopt('symbcon echo(0)');
         end
-%         For affine conic constraints Fx+g∈, where =1×⋯×s, cones is a list consisting of s
-%         concatenated cone descriptions. If a cone requires no additional parameters (quadratic, rotated quadratic, exponential, zero) then its description is
-%         [type,len]
+        % https://docs.mosek.com/9.2/toolbox/data-types.html#cones
+%         For affine conic constraints Fx+g \in K, where K = K_1 * K_2 * ... * K_s, cones is a list consisting of s oncatenated cone descriptions. 
+%         If a cone requires no additional parameters (quadratic, rotated quadratic, exponential, zero) then its description is [type,len]
 %         where type is the type (conetype) and len is the length (dimension). The length must be present.
+        
         %cone type 
         prob.cones(1:2:2*nExpCone) = res.symbcon.MSK_CT_PEXP;
         nCone = nExpCone+nQuadCone;
@@ -851,7 +853,7 @@ switch problemTypeParams.solver
             end
             
         end
-        %overised if in debug mode
+        %overide if in debug mode
         if problemTypeParams.debug
             cmd = 'minimize';
         end
@@ -874,7 +876,8 @@ switch problemTypeParams.solver
         solution.time = toc;
         
         %parse mosek result structure      
-        [stat,origStat,x,y,z,s,doty] = parseMskResult(res,prob.a,prob.blc,prob.buc,problemTypeParams.printLevel,paramMosek);
+        %[stat,origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res,A,blc,buc,printLevel,param)
+        [stat,origStat,x,y,z,zl,zu,s,doty] = parseMskResult(res,prob.a,prob.blc,prob.buc,problemTypeParams.printLevel,paramMosek);
         
         solution.stat = stat;
         solution.origStat = origStat;
@@ -1062,7 +1065,8 @@ switch solution.stat
                 end
                 [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,cmd);
                 
-                [statLP,origStat,x,y,z,s,doty] = parseMskResult(res,EPproblem.A,EPproblem.blc,EPproblem.buc,problemTypeParams.printLevel);
+                %[stat,origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res,A,blc,buc,printLevel,param)
+                [statLP,origStat,x,y,z,zl,zu,s,doty] = parseMskResult(res,EPproblem.A,EPproblem.blc,EPproblem.buc,problemTypeParams.printLevel);
                 
    
         end
