@@ -23,7 +23,7 @@ jobs:
         mkdir cobratoolbox_repo  
     
         # Clone the repository into the cobratoolbox_repo directory
-        git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox_repo
+        git clone --depth=3 https://github.com/opencobra/cobratoolbox.git cobratoolbox_repo
         cd cobratoolbox_repo
 
     - name: Get Changed MLX Files
