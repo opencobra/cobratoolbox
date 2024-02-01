@@ -314,10 +314,11 @@ s.t. <span class="math notranslate nohighlight">\(A*(x, y, z) &lt;= b\)</span>
 <li><p>.k - <cite>p x 1</cite> OR a <cite>size(A,2) x 1</cite> strictly positive weight vector on minimise <cite>||x||_0</cite></p></li>
 <li><p>.d - <cite>q x 1</cite> OR a <cite>size(A,2) x 1</cite> strictly positive weight vector on maximise <cite>||y||_0</cite></p></li>
 <li><p>.o <cite>size(A,2) x 1</cite> strictly positive weight vector on minimise <cite>||[x;y;z]||_1</cite></p></li>
-<li><p>.lambda0 - trade-off parameter on minimise <cite>||x||_0</cite></p></li>
-<li><p>.lambda1 - trade-off parameter on minimise <cite>||x||_1</cite></p></li>
-<li><p>.delta0 - trade-off parameter on maximise <cite>||y||_0</cite></p></li>
-<li><p>.delta1 - trade-off parameter on minimise <a href="#id4"><span class="problematic" id="id5">`</span></a>||y||_1</p></li>
+<li><p>.lambda0 - global parameter on minimise <cite>||x||_0</cite></p></li>
+<li><p>.lambda1 - global parameter on minimise <cite>||x||_1</cite></p></li>
+<li><p>.delta0 - global parameter on maximise <cite>||y||_0</cite></p></li>
+<li><p>.delta1 - global parameter on minimise <a href="#id4"><span class="problematic" id="id5">`</span></a>||y||_1</p></li>
+<li><p>.alpha1 - global parameter on minimise <a href="#id6"><span class="problematic" id="id7">`</span></a>||z||_1</p></li>
 </ul>
 </dd>
 <dt>param:      Parameters structure:</dt><dd><ul class="simple">

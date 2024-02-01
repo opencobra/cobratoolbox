@@ -505,6 +505,23 @@ geneList:    List of genes</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.exploration.findGenesFromMets">
+<span class="sig-name descname"><span class="pre">findGenesFromMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findGenesFromMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>find the set of genes that correspond to a set of metabolites</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[geneList] = findGenesFromMets(model, metabolites)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><p>model:      COBRA model structure
+metList:    List of metabolite identifiers in a model to find the corresponding genes for</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>geneList:     List of genes corresponding to reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.exploration.findGenesFromRxns">
 <span class="sig-name descname"><span class="pre">findGenesFromRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">reactions</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findGenesFromRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a gene list of the genes that correspond to the

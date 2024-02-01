@@ -577,7 +577,9 @@ If compSymbols and compNames are not provided, they are obtained by default from
 <p>% Write a model in sbml format (a popup will ask for the name)
 outmodel = writeCbModel(model, ‘format’,’sbml’)
 % Write a model in the specified format with the given file name
-outmodel = writeCbModel(model, ‘format’,’mat’, ‘fileName’, ‘TestModel.mat’)</p>
+outmodel = writeCbModel(model, ‘format’,’mat’, ‘fileName’, ‘TestModel.mat’)
+% Write a model in xls
+outmodel = writeCbModel(Recon3D, ‘format’,’xls’,’fileName’,’Recon3D_301_Thiele_2018.xls’);</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <cite>writeCbModel</cite> function relies on another function
