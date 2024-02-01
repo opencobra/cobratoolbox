@@ -17,7 +17,18 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2   
+      uses: actions/checkout@v2
+      with:
+        repository: opencobra/cobratoolbox
+        token: ${{ secrets.GITHUB_TOKEN }}
+        submodules: false # Avoid automatic handling of submodules
+
+    # Add Custom Submodule Handling step here
+    - name: Custom Submodule Handling
+      run: |
+        # Initialize and update required submodules only. Replace 'some/submodule/path' with actual submodule path.
+        # If you do not need to handle submodules, you can remove this step or comment it out.
+        git submodule update --init --recursive -- some/submodule/path
 
     - name: Get Changed MLX Files
       id: getfile
@@ -30,9 +41,6 @@ jobs:
       if: steps.getfile.outputs.mlx_file != ''
       run: echo "The following MLX files have been changed ${{ steps.getfile.outputs.mlx_file }}"
 
-
-      
-
     - name: Make MATLAB Script Executable
       run: chmod +x ./run_matlab.sh
 
@@ -41,13 +49,13 @@ jobs:
       run: |
           ./run_matlab.sh "${{ steps.getfile.outputs.mlx_file }}"
           
-        
-    - name: Commit and Push New File      
+    - name: Commit and Push New File
       run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add .
           git commit -m "Add new HTML file" || echo "No changes to commit"
           git push -f origin gh-pages
+
 
 
