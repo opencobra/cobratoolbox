@@ -1,4 +1,4 @@
-function [stat,origStat,x,y,z,s,doty,bas] = parseMskResult(res,A,blc,buc,printLevel,param)
+function [stat,origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res,A,blc,buc,printLevel,param)
 %parse the res structure returned from mosek
 
 % initialise variables
@@ -7,9 +7,13 @@ origStat = [];
 x = [];
 y = [];
 z = [];
-s = [];
+zl = [];
+zu = [];
+k = [];
 doty = [];
 bas = [];
+pobjval =[];
+dobjval =[];
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -29,12 +33,16 @@ if isfield(res, 'sol')
                 stat = 1; % optimal solution found
                 x=res.sol.itr.xx; % primal solution.
                 y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+                z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
+                zl=res.sol.itr.slx;  %dual to blx <= x
+                zu=res.sol.itr.sux; %dual to   x <= bux
                 if isfield(res.sol.itr,'doty')
                     % Dual variables to affine conic constraints
                     doty = res.sol.itr.doty;
                 end
                 
+                pobjval = res.sol.itr.pobjval;
+                dobjval = res.sol.itr.dobjval;
 %                 % TODO  -work this out with Erling
 %                 % override if specific solver selected
 %                 if isfield(param,'MSK_IPAR_OPTIMIZER')
@@ -43,7 +51,7 @@ if isfield(res, 'sol')
 %                             stat = 1; % optimal solution found
 %                             x=res.sol.bas.xx; % primal solution.
 %                             y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
+%                             z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
 %                             if isfield(res.sol.itr,'doty')
 %                                 % Dual variables to affine conic constraints
 %                                 doty = res.sol.itr.doty;
@@ -52,7 +60,7 @@ if isfield(res, 'sol')
 %                             stat = 1; % optimal solution found
 %                             x=res.sol.itr.xx; % primal solution.
 %                             y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+%                             z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
 %                             if isfield(res.sol.itr,'doty')
 %                                 % Dual variables to affine conic constraints
 %                                 doty = res.sol.itr.doty;
@@ -64,7 +72,7 @@ if isfield(res, 'sol')
 %                     stat = 1; % optimal solution found
 %                     x=res.sol.bas.xx; % primal solution.
 %                     y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                     z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
+%                     z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
 %                 end
                 
             case {'MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER','PRIMAL_INFEASIBLE_CER'}
@@ -86,7 +94,9 @@ if isfield(res, 'sol')
                 stat = 1; % optimal solution found
                 x=res.sol.bas.xx; % primal solution.
                 y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
+                z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
+                zl=res.sol.bas.slx;  %dual to blx <= x
+                zu=res.sol.bas.sux; %dual to   x <= bux
                 if isfield(res.sol.bas,'doty')
                     % Dual variables to affine conic constraints
                     doty = res.sol.bas.doty;
@@ -117,7 +127,9 @@ if isfield(res, 'sol')
                     stat = 1; % optimal solution found
                     x=res.sol.bas.xx; % primal solution.
                     y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                    z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
+                    z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
+                    zl=res.sol.bas.slx;  %dual to blx <= x
+                    zu=res.sol.bas.sux; %dual to   x <= bux
                     if isfield(res.sol.bas,'doty')
                         % Dual variables to affine conic constraints
                         doty = res.sol.bas.doty;
@@ -126,7 +138,9 @@ if isfield(res, 'sol')
                     stat = 1; % optimal solution found
                     x=res.sol.itr.xx; % primal solution.
                     y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                    z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+                    z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
+                    zl=res.sol.bas.slx;  %dual to blx <= x
+                    zu=res.sol.bas.sux; %dual to   x <= bux
                     if isfield(res.sol.itr,'doty')
                         % Dual variables to affine conic constraints
                         doty = res.sol.itr.doty;
@@ -137,13 +151,13 @@ if isfield(res, 'sol')
     
     if stat ==1 && exist('A','var')
         %slack for blc <= A*x <= buc
-        s = zeros(size(A,1),1);
+        k = zeros(size(A,1),1);
         %slack for blc = A*x = buc
-        s(blc==buc) = abs(A(blc==buc,:)*x - blc(blc==buc));
+        k(blc==buc) = abs(A(blc==buc,:)*x - blc(blc==buc));
         %slack for blc <= A*x
-        s(~isfinite(blc)) = A(~isfinite(blc),:)*x - blc(~isfinite(blc));
+        k(~isfinite(blc)) = A(~isfinite(blc),:)*x - blc(~isfinite(blc));
         %slack for A*x <= buc
-        s(~isfinite(buc)) = buc(~isfinite(buc)) - A(~isfinite(buc),:)*x;
+        k(~isfinite(buc)) = buc(~isfinite(buc)) - A(~isfinite(buc),:)*x;
         
         %debugging
         % if printLevel>2

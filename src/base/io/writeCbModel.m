@@ -37,6 +37,8 @@ function outmodel = writeCbModel(model, varargin)
 %    outmodel = writeCbModel(model, 'format','sbml')
 %    % Write a model in the specified format with the given file name
 %    outmodel = writeCbModel(model, 'format','mat', 'fileName', 'TestModel.mat')
+%    % Write a model in xls
+%    outmodel = writeCbModel(Recon3D, 'format','xls','fileName','Recon3D_301_Thiele_2018.xls');
 %
 % NOTE:
 %    The `writeCbModel` function relies on another function

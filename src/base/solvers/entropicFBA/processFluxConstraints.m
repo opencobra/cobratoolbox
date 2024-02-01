@@ -1,9 +1,57 @@
+function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param)
+%
+% USAGE:
+%   processFluxConstraints(model,param)
+%
+% INPUTS:
+%  model.osenseStr:
+%  model.S:              
+%  model.SConsistentRxnBool:
+%  model.lb:                    
+%  model.ub: 
+%  model.c:              
+%  model.cf:            
+%  model.cr:            
+%  model.g: 
+%
+%  param.printLevel:
+%  param.maxUnidirectionalFlux:
+%  param.solver:    
+%  param.minUnidirectionalFlux:
+%  param.internalNetFluxBounds:
+%  param.debug:      
+%  param.method:    
+%
+% OPTIONAL INPUTS
+%  model.vfl:          
+%  model.vfu:          
+%  model.vrl:          
+%  model.vru:  
+
+% OUTPUTS:
+% vfl:          
+% vfu:          
+% vrl:          
+% vru:  
+%
+%
+% EXAMPLE:
+%
+% NOTE:
+%
+% Author(s): Ronan Fleming
+
 %% processing for fluxes
+
 %find the maximal set of metabolites and reactions that are stoichiometrically consistent
 if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
     massBalanceCheck=0;
     [~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, massBalanceCheck, param.printLevel-1);
 end
+
+N=model.S(:,model.SConsistentRxnBool);
+[m,n]=size(N);
+k=nnz(~model.SConsistentRxnBool);
 
 if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
     %default linear objective sense is maximisation
@@ -127,6 +175,20 @@ switch param.internalNetFluxBounds
     otherwise
         error(['param.internalNetFluxBounds = ' param.internalNetFluxBounds ' is an unrecognised input'])
 end
+
+switch param.externalNetFluxBounds
+    case 'none'
+        if param.printLevel>0
+            fprintf('%s\n','Using no internal net flux bounds.')
+        end
+        lb(~model.SConsistentRxnBool,1)=-ones(k,1)*inf;
+        ub(~model.SConsistentRxnBool,1)= ones(k,1)*inf;
+    case 'original'
+        if param.printLevel>0
+            fprintf('%s\n','Using existing external net flux bounds without modification.')
+        end
+end
+
 vl = lb(model.SConsistentRxnBool);
 vu = ub(model.SConsistentRxnBool);
 %exchange reaction bounds (may be overwritten if conc method is chosen)
