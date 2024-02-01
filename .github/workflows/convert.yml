@@ -16,19 +16,20 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with:
-        repository: opencobra/cobratoolbox
-        token: ${{ secrets.GITHUB_TOKEN }}
-        submodules: false # Avoid automatic handling of submodules
-
-    # Add Custom Submodule Handling step here
-    - name: Custom Submodule Handling
+    - name: Manual Repository Checkout
       run: |
-        # Initialize and update required submodules only. Replace 'some/submodule/path' with actual submodule path.
-        # If you do not need to handle submodules, you can remove this step or comment it out.
-        git submodule update --init --recursive -- some/submodule/path
+        # Setup Git credentials
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        
+        # Ensure the working directory is clean
+        rm -rf * || true
+        
+        # Clone the repository without submodules
+        git clone --depth=1 https://github.com/opencobra/cobratoolbox.git .
+        
+        # Optionally, manually checkout a specific branch if needed
+        # git checkout your-branch-name
 
     - name: Get Changed MLX Files
       id: getfile
