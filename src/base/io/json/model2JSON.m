@@ -140,12 +140,18 @@ for i = 1 : length(model.rxns)
     fprintf(fid,strcat('"',model.rxns{i},'"\n'));
     fprintf(fid,']\n');
     fprintf(fid,'},\n');
-    fprintf(fid,'"annotation":{\n');
-    fprintf(fid,'"metanetx.reaction":[\n');
-    fprintf(fid,strcat('"',model.rxnMetaNetXID{i},'"\n'));
-    fprintf(fid,'],\n');
-    fprintf(fid,strcat('"sbo":"',model.rxnSBOTerms{i},'"\n'));
     
+    
+    fprintf(fid,'"annotation":{\n');
+    if isfield(model,'rxnMetaNetXID')
+        fprintf(fid,'"metanetx.reaction":[\n');
+        fprintf(fid,strcat('"',model.rxnMetaNetXID{i},'"\n'));
+        fprintf(fid,'],\n');
+    end
+    if isfield(model,'rxnSBOTerms')
+        fprintf(fid,strcat('"sbo":"',model.rxnSBOTerms{i},'"\n'));
+    end
+
     fprintf(fid,'}'); % close annotation
     if i < length(model.rxns)
         fprintf(fid,'},\n'); % close reaction
@@ -210,7 +216,9 @@ for i = 1 : length(model.genes)
     fprintf(fid,strcat( ']\n'));
     fprintf(fid,strcat( '},\n'));
     fprintf(fid,strcat( '"annotation":{','\n'));
-    fprintf(fid,strcat('"sbo":"',model.geneSBOTerms{i},'"\n'));
+    if isfield(model,'geneSBOTerms')
+        fprintf(fid,strcat('"sbo":"',model.geneSBOTerms{i},'"\n'));
+    end
     
     fprintf(fid,strcat( '}\n')); % close annotation
     

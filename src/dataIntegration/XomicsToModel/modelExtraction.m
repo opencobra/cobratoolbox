@@ -9,9 +9,9 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
     end
     
     % Set the parameters for createTissueSpecificModel
-    tissueModelOptions.solver = param.tissueSpecificSolver;
+    tissueModelOptions.solver = param.modelExtractionAlgorithm;
     
-    switch param.tissueSpecificSolver
+    switch param.modelExtractionAlgorithm
         case {'fastcore','fastCore'}
             tissueModelOptions.epsilon = param.fluxEpsilon;
             tissueModelOptions.core = find(ismember(model.rxns, coreRxnAbbr));

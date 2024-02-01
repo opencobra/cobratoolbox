@@ -208,7 +208,7 @@ B = model.S(:,~model.SConsistentRxnBool);
 [~,k] = size(B);  % number of external reactions
 
 %% processing for fluxes
-processFluxConstraints
+[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
 %% optionally processing for concentrations
 processConcConstraints
@@ -1084,7 +1084,9 @@ switch param.method
                 
                 %
                 if 1
-                    solution = solveCobraEP(EPproblem,param);
+                    mosekParam=param;
+                    mosekParam.printLevel=param.printLevel-1;
+                    solution = solveCobraEP(EPproblem,mosekParam);
                 else
                     [verify,method,printLevel,debug,feasTol,optTol,solver,param] =...
                         getCobraSolverParams('EP',getCobraSolverParamsOptionsForType('EP'),param);

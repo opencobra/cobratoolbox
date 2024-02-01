@@ -33,10 +33,11 @@ function solution = optimizeCardinality(problem, param)
 %                   * .k - `p x 1` OR a `size(A,2) x 1` strictly positive weight vector on minimise `||x||_0`
 %                   * .d - `q x 1` OR a `size(A,2) x 1` strictly positive weight vector on maximise `||y||_0`
 %                   * .o `size(A,2) x 1` strictly positive weight vector on minimise `||[x;y;z]||_1`
-%                   * .lambda0 - trade-off parameter on minimise `||x||_0`
-%                   * .lambda1 - trade-off parameter on minimise `||x||_1`
-%                   * .delta0 - trade-off parameter on maximise `||y||_0`
-%                   * .delta1 - trade-off parameter on minimise `||y||_1
+%                   * .lambda0 - global parameter on minimise `||x||_0`
+%                   * .lambda1 - global parameter on minimise `||x||_1`
+%                   * .delta0 - global parameter on maximise `||y||_0`
+%                   * .delta1 - global parameter on minimise `||y||_1
+%                   * .alpha1 - global parameter on minimise `||z||_1
 %
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
