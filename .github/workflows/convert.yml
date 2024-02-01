@@ -18,12 +18,16 @@ jobs:
     steps:
     - name: Manual Repository Checkout
       run: |
-        # Setup Git credentials
-        git config --global user.name "GitHub Action"
-        git config --global user.email "action@github.com"
-        
-        # Create a new directory and clone the repository into it
-        mkdir cobratoolbox_repo
+        # Check if the cobratoolbox_repo directory exists
+        if [ -d "cobratoolbox_repo" ]; then
+          # If it exists, clean it to avoid conflicts
+          rm -rf cobratoolbox_repo/*
+        else
+          # If it doesn't exist, create it
+          mkdir cobratoolbox_repo
+        fi
+
+        # Clone the repository into the cobratoolbox_repo directory
         git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox_repo
         cd cobratoolbox_repo
 
