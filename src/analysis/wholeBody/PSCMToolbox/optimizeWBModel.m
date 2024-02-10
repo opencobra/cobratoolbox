@@ -1,8 +1,8 @@
-function solution = optimizeWBModel(model, param)
+function [solution, maxDeviation] = optimizeWBModel(model, param)
 % Solves flux balance analysis problems, and variants thereof
 %
 % Solves LP problems of the form
-%
+%a
 % .. math::
 %
 %    max/min  ~& c^T v \\
@@ -12,7 +12,7 @@ function solution = optimizeWBModel(model, param)
 %
 % USAGE:
 %
-%    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
+%   [solution, maxDeviation] = optimizeWBModel(model, param)
 %
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
@@ -22,7 +22,7 @@ function solution = optimizeWBModel(model, param)
 %                         * lb - `n x 1` Lower bounds
 %                         * ub - `n x 1` Upper bounds
 %                         * dxdt - `m x 1` change in concentration with time
-%                         * csense - `m x 1` character array with entries in {L,E,G} 
+%                         * csense - `m x 1` character array with entries in {L,E,G}
 %                           (The code is backward compatible with an m + k x 1 csense vector,
 %                           where k is the number of coupling constraints)
 %
@@ -59,6 +59,10 @@ function solution = optimizeWBModel(model, param)
 %                   the linear part of the objective. However, this should be
 %                   checked on a case by case basis, by optimization with and
 %                   without regularisation.
+%    * rounding     Rounding of constraints, recommended for large-scale
+%                   WBM models. The rounding is done in S, lb, and ub to
+%                   limit numerical accuracy in pars with experimental
+%                   and technical accuracy.
 %
 % OUTPUT:
 %    solution:       solution object:
@@ -76,7 +80,14 @@ function solution = optimizeWBModel(model, param)
 %                          * origStat - Original status returned by the specific solver
 %                          * ctrs_y - the duals for the constraints from C
 %                          * ctrs_slack - Slacks of the additional constraints
+%
+% Jan 2024 - Faiz Khan Mohammad & Ines Thiele, added better dealing with models that
+% have stat=3 when performing QP. maxDeviation is now returnd and
+% param.rounding is now an optional parameter.
 
+% tolerance for deviation from lb/ub boundaries of flux values
+dTol = 1e-5;
+maxDeviation = [];
 
 if isfield(model,'osenseStr')
     if ~any(strcmp(model.osenseStr,{'min','max'}))
@@ -121,12 +132,17 @@ if exist('param','var')
     if ~isfield(param,'verify')
         param.verify=0;
     end
+    if isfield(param,'rounding')
+        model.lb = round(model.lb,param.rounding);
+        model.ub = round(model.ub,param.rounding);
+        model.S = round(model.S,param.rounding);
+    end
 else
     param.minNorm=[];
     param.verify = 0;
 end
 
-validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct'};
+validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct','gurobi'};
 
 if 1
     %mlb = magnitude of a large bound
@@ -143,7 +159,7 @@ if isempty(param.minNorm)  %Linear optimisation
     if ~any(strcmp(solverName,validatedSolvers))
         fprintf('%s\n','Note that the solvers validated for use with the PSCM toolbox are:')
         disp(validatedSolvers)
-        [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', 'LP',1,1);
+        [solverOK, solverInstalled] = changeCobraSolver('gurobi', 'LP',1,1);
         if ~solverOK
             error([solverName ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
         end
@@ -154,7 +170,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
     
     %check in case there is no linear objective
     noLinearObjective = all(model.c==0);
-
+    
     if noLinearObjective
         [tmp, solverOK] = getCobraSolver('QP');
         solverName{1,1} = tmp;
@@ -171,7 +187,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
             fprintf('%s\n','Note that the solvers validated for use with the PSCM toolbox are:')
             disp(validatedSolvers)
             %switch over to a validated solver
-            [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', solverName{i,2},1,1);
+            [solverOK, solverInstalled] = changeCobraSolver('gurobi', solverName{i,2},1,1);
             if solverOK
                 fprintf('%s\n',[solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
             else
@@ -193,19 +209,29 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
         end
     end
     
-%       1 (S,B) Optimal solution found
-%       2 (S,B) Model has an unbounded ray
-%       3 (S,B) Model has been proven infeasible
-%       4 (S,B) Model has been proven either infeasible or unbounded
-%       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
-%       6 (S,B) Solution is available, but not proven optimal, due to numeric difficulties
-
+    % check accuracy of solution
+    dLB = min(solution.v-model.lb);
+    dUB = min(model.ub-solution.v);
+    maxDeviation = min(dLB,dUB);
+    fprintf('%s%i\n','Lower bound deviation: ', dLB)
+    fprintf('%s%i\n','Upper bound deviation: ', dUB)
+    
+    %       1 (S,B) Optimal solution found
+    %       2 (S,B) Model has an unbounded ray
+    %       3 (S,B) Model has been proven infeasible
+    %       4 (S,B) Model has been proven either infeasible or unbounded
+    %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
+    %       6 (S,B) Solution is available, but not proven optimal, due to numeric difficulties
+    
     % origStat == 5 means Optimal solution is available, but with infeasibilities after unscaling
     % origStat == 6 means Solution is available, but not proved optimal, due to numeric difficulties during optimization
     %if solution.stat~=0 && (solution.origStat == 5 || solution.origStat == 6)
-    if solution.stat == 3
+    % only treat solution.stat == 3 if the solution values have a greater
+    % deviation than defined with dTol
+    if solution.stat == 3 && abs(maxDeviation) >=dTol
         %rescale the problem and try to solve it again
         if 1
+            modelOri = model;
             if ~isempty(solution.v)
                 %rescale with help from previous solution
                 bigN=max(abs(solution.v));
@@ -222,8 +248,8 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
             % reduce the "infinity" bounds on all other reactions.
             % note this step does not affect any non-infinity bounds set on the
             % whole-body metabolic model
-            model.lb(model.lb==-mlb)= -10000; % reduce the effective unbound constraints to lower number, representing inf
-            model.ub(model.ub==mlb)=   10000;% reduce the effective unbound constraints to lower number, representing inf
+            % model.lb(model.lb==-mlb)= -10000; % reduce the effective unbound constraints to lower number, representing inf
+            % model.ub(model.ub==mlb)=   10000;% reduce the effective unbound constraints to lower number, representing inf
         end
         
         if 1
@@ -246,7 +272,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
         %  * ctrs_slack - Slacks of the additional constraints
         
         % rescale the computed solution by the factor of 1000
-        solution.f = solution.f*1000; 
+        solution.f = solution.f*1000;
         solution.v = solution.v*1000;
         solution.y = solution.y*1000;
         solution.w = solution.w*1000;
@@ -266,6 +292,36 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
                 fprintf('%s%s\n','Second solution.origStatText = ', ExitText)
             end
         end
+        
+        % check accuracy of solution
+        
+        dLB = min(solution.v-modelOri.lb);
+        dUB = min(modelOri.ub-solution.v);
+        maxDeviation = min(dLB,dUB);
+        fprintf('%s%i\n','Lower bound deviation: ', dLB)
+        fprintf('%s%i\n','Upper bound deviation: ', dUB)
+    elseif solution.stat==1 % added by Faiz
+        if isfield(solution,'ctrs_y')
+            solution.ctrs_y = solution.ctrs_y;
+        end
+        if isfield(solution,'ctrs_slack')
+            solution.ctrs_slack = solution.ctrs_slack;
+        end
+        
+        if param.printLevel>0
+            fprintf('%s%i\n','Second solution.stat = ', solution.stat)
+            fprintf('%s%i\n','Second solution.origStat = ', solution.origStat)
+            if param.printLevel>1 && any(contains(solverName(:,1),'cplex'))
+                [ExitText,~] = cplexStatus(solution.origStat);
+                fprintf('%s%s\n','Second solution.origStatText = ', ExitText)
+            end
+        end
+        % check accuracy of solution
+        dLB = min(solution.v-model.lb);
+        dUB = min(model.ub-solution.v);
+        maxDeviation = min(dLB,dUB);
+        fprintf('%s%i\n','Lower bound deviation: ', dLB)
+        fprintf('%s%i\n','Upper bound deviation: ', dUB)
     else
         if 0
             %return NaN of correct dimensions if problem does not solve properly
