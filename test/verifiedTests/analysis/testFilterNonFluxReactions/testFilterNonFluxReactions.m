@@ -8,7 +8,7 @@
 % Authors:
 %     - Kristina Grausa 05/16/2022 - created 
 %     - Kristina Grausa 08/22/2022 - standard header and formatting
-%     - Farid Zare      20/11/2023 - Repository addresses are corrected
+%     - Farid Zare      02/12/2024 - Repository addresses are corrected
 %
 
 global CBTDIR
@@ -31,6 +31,9 @@ tol = 1e-8;
 % set function params
 phenotype = 'WT';
 
+% Load reference Data
+load('ref_nonflux_reactions.mat')
+
 for k = 1:length(solvers.LP)
     solverLPOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
 
@@ -38,8 +41,12 @@ for k = 1:length(solvers.LP)
        filterNonFluxReactions(phenotype);
        
        fprintf(' -- Running testNonFluxReactions.m using the solver interface: %s ... ', solvers.LP{k});
+
+       % Load the result
+       resultPath = fullfile('resultsPostOptimization', 'nonFluxReactions', 'nonFluxReactionsWT.xls');
+       resultData = readtable(resultPath);
        
-       assert(numel(dir('resultsPostOptimization/nonFluxReactions/')) > 2)
+       assert(isequaln(resultData, refData));
        
        % output a success message
        fprintf('Done.\n');
