@@ -31,6 +31,9 @@ tol = 1e-8;
 % set function params
 phenotype = 'WT';
 
+% Load reference data
+load('ref_rate_limitting_reactions_WT.mat');
+
 for k = 1:length(solvers.LP)
     solverLPOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
 
@@ -38,9 +41,13 @@ for k = 1:length(solvers.LP)
        filterRateLimittingReactions(phenotype);
  
        fprintf(' -- Running testRateLimittingReactions.m using the solver interface: %s ... ', solvers.LP{k});
-       
-       assert(numel(dir('resultsPostOptimization/rateLimittingReactions')) > 2)
-       
+
+       % Load result data
+       resultPath = fullfile('resultsPostOptimization', 'rateLimittingReactions', '_rate_limitting_reactionsWT.xls');
+       resultData = readtable(resultPath);
+
+       assert(isequaln(refData, resultData));
+              
        % output a success message
        fprintf('Done.\n');
     end
