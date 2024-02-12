@@ -1,4 +1,5 @@
-% The COBRAToolbox: calculateFluxShifts.m
+% The COBRAToolbox: This script tests the functionality of 
+%                   calculateFluxShifts.m function
 %
 % Purpose:
 %     - For testing the IgemRNA post-optimization task called "Calculate flux
@@ -8,7 +9,7 @@
 % Authors:
 %     - Kristina Grausa 05/16/2022 - created 
 %     - Kristina Grausa 08/22/2022 - standard header and formatting
-%     - Farid Zare      11/20/2023 - Repository address corrected
+%     - Farid Zare      02/12/2024 - Repository address corrected
 %
 
 global CBTDIR
@@ -32,6 +33,9 @@ tol = 1e-8;
 source = {'SRR8994357_WT';};
 target = {'SRR8994378_S47D';};
 
+% Load Reference Data
+load('refData_flux_shifts.mat');
+
 for k = 1:length(solvers.LP)
     solverLPOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
 
@@ -39,8 +43,13 @@ for k = 1:length(solvers.LP)
        calculateFluxShifts(source, target);
        
        fprintf(' -- Running testFluxShifts.m using the solver interface: %s ... ', solvers.LP{k});
+
+       % load the result
+       resultPath = ['resultsPostOptimization', filesep, 'fluxShifts', filesep, 'SRR8994378_S47D_flux_shifts.xls'];
+       resultData = readtable(resultPath);
        
-       assert(numel(dir('resultsPostOptimization/fluxShifts/')) > 2)
+       % Compare the result with reference data
+       assert(isequaln(refData, resultData));
        
        % output a success message
        fprintf('Done.\n');
@@ -48,4 +57,4 @@ for k = 1:length(solvers.LP)
 end
 
 % change the directory
-cd(currentDir)
+cd(currentDir);
