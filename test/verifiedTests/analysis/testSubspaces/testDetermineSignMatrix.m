@@ -5,7 +5,7 @@
 %
 % Authors:
 %     - Laurent Heirendt, November 2018
-%
+%     - Farid Zare      , February 2024 Update reference data
 
 % save the current path and initialize the test
 currentDir = fileparts(which(mfilename));
@@ -15,6 +15,9 @@ model = createToyModelForLifting(false);
 
 % load reference test data
 load([currentDir filesep 'refData_determineBinaryMatrix.mat']);
+
+% Initialize the test
+fprintf(' -- Running testDetermineSignMatrix.m ...')
 
 % run the function with full output
 [test_Shat, test_Shatabs, test_mconnect, test_nconnect, test_mconnectin, test_mconnectout] = determineSignMatrix(model.S);
@@ -35,7 +38,7 @@ assert(isequal(test_mconnect, mconnect))
 assert(isequal(test_nconnect, nconnect))
 
 % run the function with minimal output
-[test_Shat, test_Shatabs, test_mconnect, test_nconnect] = determineSignMatrix(model.S);
+[test_Shat, test_Shatabs] = determineSignMatrix(model.S);
 
 assert(isequal(test_Shat, Shat))
 assert(isequal(test_Shatabs, Shatabs))
@@ -45,6 +48,9 @@ assert(isequal(test_Shatabs, Shatabs))
 
 assert(isequal(test_mconnect, sort(mconnect, 'descend')));
 assert(isequal(test_nconnect, sort(nconnect, 'descend')));
+
+% print a success message
+fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)
