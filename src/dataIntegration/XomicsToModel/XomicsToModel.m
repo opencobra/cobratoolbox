@@ -572,12 +572,12 @@ for i = 1:length(rxnNamesToFixList)
     end
 end
 
-if ~isempty(model.rxns(model.S(contains(model.mets, 'h[i]'), :) ~= 0))
-    if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
-        [model, specificData, problemRxnList, fixedRxnList] = ...
-            regulariseMitochondrialReactions(model, specificData, param.printLevel);
-    end
-end
+% if ~isempty(model.rxns(model.S(contains(model.mets, 'h[i]'), :) ~= 0))
+%     if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
+%         [model, specificData, problemRxnList, fixedRxnList] = ...
+%             regulariseMitochondrialReactions(model, specificData, param.printLevel);
+%     end
+% end
 
 % Check feasibility
 sol = optimizeCbModel(model);
