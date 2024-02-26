@@ -6,6 +6,7 @@
 % Authors:
 %     - Original file: Almut Heinken - March 2017
 %     - CI integration: Laurent Heirendt - March 2017
+%     - Farid Zare Feb 2024 (Adding biomass input)
 %
 % Note:
 %     - The solver libraries must be included separately
@@ -46,18 +47,23 @@ for k = 1:length(solverPkgs)
 
             % define an empty cell
             microbeModels = {};
+            biomass = {};
 
             if j == 1  % test joining of one microbe model with/without host
                 microbeModels{1, 1} = model;
+                % As the biomass reaction is the objective function
+                biomass{1, 1} = model.rxns(logical(model.c));
 
             elseif j == 2  % test joining of two microbes with/without host
                 for p = 1:2
                     microbeModels{p, 1} = model;
+                    biomass{p, 1} = model.rxns(logical(model.c));
                 end
 
             elseif j == 3  % test joining of three  microbes with/without host
                 for p = 1:3
                     microbeModels{p, 1} = model;
+                    biomass{p,1} = model.rxns(logical(model.c));
                 end
 
                 % use custom nametags
@@ -71,13 +77,14 @@ for k = 1:length(solverPkgs)
                 [modelJoint] = createMultipleSpeciesModel(microbeModels);
 
                 % one microbe model with host
-                [modelJointHost] = createMultipleSpeciesModel(microbeModels, 'modelHost',  host, 'mergeGenesFlag', false);
+                biomass = {'Biomass_Ecoli_core_w_GAM'};
+                [modelJointHost] = createMultipleSpeciesModel(microbeModels, biomass, 'modelHost',  host, 'mergeGenesFlag', false);
             else
                 % three microbe models with host
-                [modelJointHost] = createMultipleSpeciesModel(microbeModels, microbeNameTags, host, hostNameTag, false);
+                [modelJointHost] = createMultipleSpeciesModel(microbeModels, biomass, microbeNameTags, host, hostNameTag, false);
 
                 % three microbe models without host
-                [modelJoint] = createMultipleSpeciesModel(microbeModels, 'nameTagsModels', microbeNameTags, 'mergeGenesFlag', false);
+                [modelJoint] = createMultipleSpeciesModel(microbeModels, biomass, 'nameTagsModels', microbeNameTags, 'mergeGenesFlag', false);
             end
 
             for i = 1:j
