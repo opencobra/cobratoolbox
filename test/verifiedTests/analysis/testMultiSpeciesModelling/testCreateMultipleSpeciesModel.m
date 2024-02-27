@@ -77,7 +77,6 @@ for k = 1:length(solverPkgs)
                 [modelJoint] = createMultipleSpeciesModel(microbeModels);
 
                 % one microbe model with host
-                biomass = {'Biomass_Ecoli_core_w_GAM'};
                 [modelJointHost] = createMultipleSpeciesModel(microbeModels, biomass, 'modelHost',  host, 'mergeGenesFlag', false);
             else
                 % three microbe models with host
