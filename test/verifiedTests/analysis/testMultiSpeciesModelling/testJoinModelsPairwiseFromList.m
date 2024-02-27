@@ -35,10 +35,8 @@ if ~exist('pairedModelInfo', 'var')
         model = getDistributedModel([modelList{i} '.mat']);
         % Save all the models into the modelFolder
         save(fullfile(fileDir, modelList{i}), 'model');
-        inputModels{i,1}=model;
     end
     joinModelsPairwiseFromList(modelList, fileDir);
-
     % Load pairedModelInfo
     load('pairedModelInfo.mat');
 end
