@@ -19,8 +19,11 @@ cd(fileDir);
 % load reference data and model
 model = getDistributedModel('ecoli_core_model.mat');
 
+%Initialize the test
+fprintf(' -- Running testMergeModelFieldPositions ... ');
+
 %Merge two reactions first two reactions which have a non empty rules
-%field. 
+%field.
 
 rxnspos = [3,4,8];
 modelMerged = mergeModelFieldPositions(model,'rxns',rxnspos);
@@ -48,7 +51,7 @@ assert(any(ismember(newgrRules,modelMerged.grRules{newreacpos})));
 assert(isequal(modelMerged.S(:,newreacpos), sum(model.S(:,rxnspos),2)));
 
 %Also check that the subSystems were merged properly
-assert(isequal(unique([model.subSystems{rxnspos}]),modelMerged.subSystems{newreacpos}));
+assert(isequal(strjoin(unique([model.subSystems(rxnspos)]), ';'),modelMerged.subSystems{newreacpos}));
 
 %Now, lets change the model a bit, and duplicate the name of a gene
 %(replacing it in all grRules).
