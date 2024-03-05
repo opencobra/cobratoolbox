@@ -1536,7 +1536,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
                 %disp('This is a link to <a href="http://www.google.com">Google</a>.')
             end
-            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
+            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];           
         elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
             %omics takes precedence over manual curation
             genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
@@ -1544,7 +1544,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
                 disp(specificData.inactiveGenes(genesIgnoredBool))
             end
-            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
+            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
         end
     else
         if param.printLevel > 0
