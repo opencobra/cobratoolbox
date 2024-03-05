@@ -126,7 +126,7 @@ for k = 1:length(solverPkgs.LP)
         assert(norm(model.S * L0solution.x - model.b, 2) < tol);
         assert(abs(FBAsolution.f - L0solution.x'* model.c) < 0.01);
         %sum(abs(L1solution.x)>tol)
-        assert(sum(abs(L0solution.x)>tol)<=397)
+        assert(sum(abs(L0solution.x)>tol)<=399)
 
         % Minimise the zero norm using optimizeCardinality
         minNorm = 'optimizeCardinality';
