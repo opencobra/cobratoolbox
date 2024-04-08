@@ -94,6 +94,7 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %               decrease or no change between the two vectors
 %
 % Author(s): Agnieszka Wegrzyn
+%            Y
 
 modelOrg = model;
 
@@ -719,7 +720,7 @@ metName = regexprep(met,'\[\w\]','');
 compartment = getCompartment(met);
 figName = [param.modelName,'_',metName,'_',compartment,'_graph.tif'];
 if param.saveFig
-    savefig(graph,figName)
+    saveas(gcf, figName);
 end
 end
 
