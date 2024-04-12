@@ -49,13 +49,11 @@ if strcmp(demandTest,'true')
 else
     rxnNames = '';
 end
-modelexchangesAbbr = unique([modelexchangesAbbr;rxnNames']);
-modelexchangesAbbr = modelexchangesAbbr(ismember(modelexchangesAbbr,'biomass_maintenance')); 
+modelexchangesAbbr = unique([modelexchangesAbbr;rxnNames']); 
 TestRxnNum = length(modelexchangesAbbr);
 FluxExV =[];
 while cnt == 1
-    %modelClosed = changeObjective(modelClosed,modelexchangesAbbr);
-    modelClosed = changeObjective(modelClosed,'biomass_maintenance');
+    modelClosed = changeObjective(modelClosed,modelexchangesAbbr);
     FF2=optimizeCbModel(modelClosed,'max');
     if FF2.stat == 0
         %This should not happen, but can due to constraints making the
