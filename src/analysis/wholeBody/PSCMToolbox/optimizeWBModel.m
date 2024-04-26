@@ -182,7 +182,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
     
     param.printLevel = getCobraSolverParams('QP','printLevel',param);
     
-    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
+    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param)
     
     if param.printLevel>0
         fprintf('%s%i\n','First solution.stat = ', solution.stat)
@@ -203,12 +203,13 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
     % origStat == 5 means Optimal solution is available, but with infeasibilities after unscaling
     % origStat == 6 means Solution is available, but not proved optimal, due to numeric difficulties during optimization
     %if solution.stat~=0 && (solution.origStat == 5 || solution.origStat == 6)
-    if solution.stat == 3
+    if solution.stat == 3 ||solution.stat == 1
         %rescale the problem and try to solve it again
         if 1
             if ~isempty(solution.v)
                 %rescale with help from previous solution
                 bigN=max(abs(solution.v));
+                bigN
             else
                 %rescale without any previous solution
                 bigN = 500000;
@@ -233,7 +234,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
             model.ub=model.ub/1000;
         end
         
-        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops,  param);
+        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops,  param)
         
         
         % rescale the computed solution by the factor of 1000
