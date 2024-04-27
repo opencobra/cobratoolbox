@@ -739,7 +739,7 @@ switch solver
         end
                 
         %parse mosek result structure
-        [stat,origStat,x,y,w,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        [stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         if stat ==1
             f=c'*x;
         else

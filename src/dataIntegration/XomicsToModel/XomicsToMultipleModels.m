@@ -29,7 +29,7 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %       * .metabolomicsBeforeExtraction - Indicate whether the metabolomic
 %          data is included before or after the extraction (Possible options:
 %          true and false; default: true);
-%       * .tissueSpecificSolver - Extraction solver (Possible options: 'fastCore' and
+%       * .modelExtractionAlgorithm - Extraction solver (Possible options: 'fastCore' and
 %          'thermoKernel'; default: 'thermoKernel')
 %       * .outputDir - Directory where the models will be generated (Default: current
 %          directory)
@@ -79,12 +79,12 @@ else
     specificDataforXomics = struct;
 end
 % Tissue specific solver
-if isfield(modelGenerationConditions, 'tissueSpecificSolver')
-    tissueSpecificSolver = modelGenerationConditions.tissueSpecificSolver;
-elseif ~isfield(modelGenerationConditions, 'tissueSpecificSolver') && isfield(param, 'tissueSpecificSolver')
-    tissueSpecificSolver = {param.tissueSpecificSolver};
+if isfield(modelGenerationConditions, 'modelExtractionAlgorithm')
+    modelExtractionAlgorithm = modelGenerationConditions.modelExtractionAlgorithm;
+elseif ~isfield(modelGenerationConditions, 'modelExtractionAlgorithm') && isfield(param, 'modelExtractionAlgorithm')
+    modelExtractionAlgorithm = {param.modelExtractionAlgorithm};
 else
-    tissueSpecificSolver = {'thermoKernel'};
+    modelExtractionAlgorithm = {'thermoKernel'};
 end
 % Active genes approach
 if isfield(modelGenerationConditions, 'activeGenesApproach')
@@ -163,7 +163,7 @@ end
 if length(specificDataLabels) > 1
     conditionsBool(3) = true;
 end
-if length(tissueSpecificSolver) > 1
+if length(modelExtractionAlgorithm) > 1
     conditionsBool(4) = true;
 end
 if length(activeGenesApproach) > 1
@@ -197,7 +197,7 @@ unknownmodelGenerationConditions = setdiff(fieldnames(modelGenerationConditions)
     {'cobraSolver' 
     'genericModel'
     'specificData'
-    'tissueSpecificSolver'
+    'modelExtractionAlgorithm'
     'activeGenesApproach'
     'transcriptomicThreshold'
     'limitBounds'
@@ -241,8 +241,8 @@ for firstGruoup = 1:length(cobraSolver)
             specificData = specificDataforXomics.(specificDataLabels{thirdGruoup});
             
             % Extraction algorithm
-            for fourthGroup = 1:length(tissueSpecificSolver)
-                param.tissueSpecificSolver = tissueSpecificSolver{fourthGroup};
+            for fourthGroup = 1:length(modelExtractionAlgorithm)
+                param.modelExtractionAlgorithm = modelExtractionAlgorithm{fourthGroup};
                 
                 % Active genes approach
                 for fifthGroup = 1:length(activeGenesApproach)
@@ -309,7 +309,7 @@ for firstGruoup = 1:length(cobraSolver)
                                                 conditions = [solverLabel; ...
                                                     modelLabel; ...
                                                     specificDataLabel; ...
-                                                    tissueSpecificSolver{fourthGroup}; ...
+                                                    modelExtractionAlgorithm{fourthGroup}; ...
                                                     activeGenesApproach{fifthGroup}; ...
                                                     {['transcriptomicsT' num2str(transcriptomicThreshold(sixthGroup))]}; ...
                                                     {['limitBoundary.' num2str(limitBounds(seventhGroup))]}; ...

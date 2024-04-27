@@ -20,6 +20,7 @@ function [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demand
 % .. Authors:
 %       - IT Jan 2015
 %       - description added by AH July 2017
+%       - modification  YJ Liu Dec 2023
 %
 if nargin<3
     demandTest = 'true';

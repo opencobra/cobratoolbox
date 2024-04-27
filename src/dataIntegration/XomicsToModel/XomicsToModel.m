@@ -114,7 +114,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .diaryFilename -﻿The location where a diary will be printed with the function output. (Default: 0).
 %   * .fluxCCmethod -﻿String with thee name of the algorithm to be used for the flux consistency check (Possible options: 'swiftcc', 'fastcc' or 'dc', Default: 'fastcc').
 %
-%   * .tissueSpecificSolver - Tissue-specific solver to be used to extract the context-specific model 
+%   * .modelExtractionAlgorithm - Model extraction algorithm to be used to extract the context-specific model 
 %                           'thermoKernel' (Default)
 %                           'fastCore'
 %
@@ -306,12 +306,12 @@ end
 if ~isfield(param, 'curationOverOmics')
     param.curationOverOmics = 0;
 end
-if isfield(param, 'tissueSpecificSolver')
-    if ~any(ismember(param.tissueSpecificSolver,{'thermoKernel','fastCore'}))
-        error(['Unrecognised param.tissueSpecificSolver =' param.tissueSpecificSolver])
+if isfield(param, 'modelExtractionAlgorithm')
+    if ~any(ismember(param.modelExtractionAlgorithm,{'thermoKernel','fastCore'}))
+        error(['Unrecognised param.modelExtractionAlgorithm =' param.modelExtractionAlgorithm])
     end
 else
-    param.tissueSpecificSolver = 'thermoKernel';
+    param.modelExtractionAlgorithm = 'thermoKernel';
 end
 if ~isfield(param, 'activeGenesApproach')
     param.activeGenesApproach = 'oneRxnPerActiveGene';
@@ -573,7 +573,7 @@ for i = 1:length(rxnNamesToFixList)
 end
 
 if ~isempty(model.rxns(model.S(contains(model.mets, 'h[i]'), :) ~= 0))
-    if strcmp(param.tissueSpecificSolver, 'thermoKernel')
+    if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
         [model, specificData, problemRxnList, fixedRxnList] = ...
             regulariseMitochondrialReactions(model, specificData, param.printLevel);
     end
@@ -1255,10 +1255,10 @@ if isfield(specificData, 'rxns2constrain') && ~isempty(specificData.rxns2constra
         disp(' ')
     end
     
-    if strcmp(param.tissueSpecificSolver, 'thermoKernel') || strcmp(param.tissueSpecificSolver, 'fastCore')
+    if strcmp(param.modelExtractionAlgorithm, 'thermoKernel') || strcmp(param.modelExtractionAlgorithm, 'fastCore')
         bool = strncmp(specificData.rxns2constrain.rxns, 'DM_', 3);
         if param.printLevel > 0
-            fprintf('%s\n', ['tissueSpecificSolver = ' param.tissueSpecificSolver ...
+            fprintf('%s\n', ['modelExtractionAlgorithm = ' param.modelExtractionAlgorithm ...
                 '. Ignoring specificData.rxns2constrain for demand reactions, i.e. with prefix DM_'])
             if param.printLevel > 1
                 disp(specificData.rxns2constrain(bool, :))
@@ -1536,7 +1536,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
                 %disp('This is a link to <a href="http://www.google.com">Google</a>.')
             end
-            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
+            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];           
         elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
             %omics takes precedence over manual curation
             genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
@@ -1544,7 +1544,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
                 disp(specificData.inactiveGenes(genesIgnoredBool))
             end
-            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
+            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
         end
     else
         if param.printLevel > 0
@@ -1765,14 +1765,14 @@ if  sol.stat ~= 1
     model = modelTemp;
 end
 
-if strcmp(param.tissueSpecificSolver, 'thermoKernel') && param.debug
+if strcmp(param.modelExtractionAlgorithm, 'thermoKernel') && param.debug
     save([param.workingDirectory filesep '17.debug_prior_to_thermo_flux_consistency_check.mat'])
 end
 
 %% 18. Find thermodynamically consistent subset
 % Identify the largest thermodynamically flux consistent subset (if the 
 % thermoKernel algorithm is selected as the model extraction algorithm for step 20)
-if strcmp(param.tissueSpecificSolver, 'thermoKernel')
+if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
     if param.findThermoConsistentFluxSubset
         
         if param.printLevel > 0
@@ -1960,7 +1960,7 @@ if ~isempty(activeEntrezGeneID)
 %             metsOrig = model.mets;
 %             rxnsOrig = model.rxns;
             % Create a createDummyModel for the active genes
-            [model, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, param.TolMaxBoundary, param.tissueSpecificSolver,coreRxnAbbr, param.fluxEpsilon);
+            [model, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, param.TolMaxBoundary, param.modelExtractionAlgorithm,coreRxnAbbr, param.fluxEpsilon);
             
         case 'deleteModelGenes'
             [~, ~, rxnInGenes, ~] = deleteModelGenes(model, activeEntrezGeneID);
@@ -2039,7 +2039,7 @@ if param.finalFluxConsistency
         [nMet,nRxn]=size(model.S);
         fprintf('%u%s%u%s\n', nMet, ' x ', nRxn, ' stoichiometric matrix, after final flux consistency.')
     else
-        switch param.tissueSpecificSolver
+        switch param.modelExtractionAlgorithm
             case 'fastCore'
                 
                 paramConsistency.epsilon = param.fluxEpsilon;

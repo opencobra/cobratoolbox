@@ -9,9 +9,9 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
     end
     
     % Set the parameters for createTissueSpecificModel
-    tissueModelOptions.solver = param.tissueSpecificSolver;
+    tissueModelOptions.solver = param.modelExtractionAlgorithm;
     
-    switch param.tissueSpecificSolver
+    switch param.modelExtractionAlgorithm
         case {'fastcore','fastCore'}
             tissueModelOptions.epsilon = param.fluxEpsilon;
             tissueModelOptions.core = find(ismember(model.rxns, coreRxnAbbr));
@@ -79,10 +79,13 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
                     dummyGene = strrep(dummyRxn, 'dummy_Rxn_', '');
                     [bool, locb] = ismember(dummyGene, model.genes);
                     activeModelGeneBool = model.geneExpVal >= exp(param.transcriptomicThreshold);
-                    defaultRxnWeight = median(log(model.geneExpVal(activeModelGeneBool)));
-                    if isnan(defaultRxnWeight)
-                        defaultRxnWeight = 0;
+       
+                    if median(log(model.geneExpVal(activeModelGeneBool))) <= 0 % The distribution of genes expression value in log scale is not normal
+                        defaultRxnWeight = median(log(model.geneExpVal(activeModelGeneBool))) - param.transcriptomicThreshold;%To avoid negative weights on core reactions
+                    else
+                        defaultRxnWeight = median(log(model.geneExpVal(activeModelGeneBool)));
                     end
+                    
                     if param.printLevel > 1
                         figure
                         histogram(log(model.geneExpVal(activeModelGeneBool)))

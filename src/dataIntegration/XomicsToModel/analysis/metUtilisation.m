@@ -8,7 +8,7 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %   the graph to visualise the major producers and consumers of a
 %   metabolite. Flux can be given either as a single vector, as a pair of
 %   vector for a comparison between two different predictions, or as a
-%   sampling matrix, in which case a meana nd standard deviation will be
+%   sampling matrix, in which case a meana and standard deviation will be
 %   used to estimate idividual contributions of each reaction to the total
 %   metabolite balance
 %

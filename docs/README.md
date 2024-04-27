@@ -1,29 +1,38 @@
 # Building COBRA Toolbox documentation
+Each accepted pull request triggers two workflows (W1 and W2) to generate documentation for functions, 
+contributors and citations.
 
-This procedure has been tested on Ubuntu 20.04. The documentation build
-uses Python 2.
+### W1 (.github/workflows/UpdateFunctionDocs.yml)
+This workflow does the following:
+1) Install python 3.10
+2) Install required packages defined in /docs/requirements.txt
+3) Run Python code (/docs/source/sphinxext/GenerateCitationsRST.py) to generate './docs/source/citations.rst' file
+4) Run Python code (/docs/source/sphinxext/copy_files.py) to adapt the installed packages for Matlab functions. Files required to run this:
+     1) 'docs/source/sphinxext/linkcode.py'
+     2) 'docs/source/sphinxext/tabs.css'
+5) Run python code (/docs/source/modules/GetRSTfiles.py) to generate all the .rst files required for documenting all the functions in '/src/'
+6) Generate documentation using 'make HTML'. Files required to run this:
+     1) 'docs/createModulesPage.sh'
+     2) 'docs/generateJSONList.py'
+     3) 'docs/source/sphinxext/CitationStyle.py'
+     4) 'docs/COBRA.bib'.
+COBRA.bib file has to be updated manually each month. Currently the .bib file is retrieved from [web of science](https://www.webofscience.com/wos/woscc/summary/d043671b-cd33-418b-9781-a92c21471897-bec2b3ea/relevance/1(overlay:export/exbt))
+7) Deploying to gh-pages in the latest folder (Only files in /latest/modules/ folder and /latest/citations.html will get updated). This requires 'docs/source/Citations/citations.html'
+   
+### W2 (.github/workflows/UpdateContributors.yml)
+This workflow does the following:
+1) Install python 3.10
+2) Install required packages defined in /docs/source/Contributions/requirements.txt
+3) Run Python code files:
+    1) /docs/source/Contributions/UpdateContributorsList.py
+    2) /docs/source/Contributions/GenerateContributorsHTML.py <br>
+       This code requires:
+       	1) '/docs/source/Contributions/AllContributors.csv'
+       	2) '/docs/source/Contributions/contributorsTemp.html'
+       	3) '/docs/source/Contributions/contributors/contributors.html'
+4) Deploying to gh-pages (/latest/contributors.html)
 
-```
-sudo apt update
-sudo apt install -y python-pip
-```
-
-The from the cobratoolbox/docs directory:
-
-```
-pip install -r requirements.txt
-```
-
-To build the documentation:
-
-```
-make html
-```
-
-Output HTML documentation will be in directory ./build/html
-
-
-## Building documenation using Docker
+## Building documentation using Docker (Has not been tested for new version)
 
 Installing unwanted versions of Python and modules can be avoided by 
 building with Docker: 
@@ -47,7 +56,7 @@ in /var/tmp/cobratoolbox_doc_timestamp.tar.gz
 You can specify an alternative directory by changing the location of
 the /output mountpoint in the docker run command.
 
-## Building COBRA.tutorials
+## Building COBRA.tutorials (Has not been tested for new version)
 
 Check that wkhtmltopdf is installed
 which wkhtmltopdf
@@ -89,12 +98,6 @@ on 2021-06-16 running on Ubuntu 18.04 with MATLAB R2020b
 Remark: the dependency on matlab for this step makes it difficult to dockerize
 due to the need for matlab licence files.
 
-## Publishing the HTML to live site
-
-To publish the updated documentation on the cobratoolbox website at
-https://opencobra.github.io/cobratoolbox/stable/
-checkout the gh-pages branch of the https://github.com/opencobra/cobratoolbox.git repository
-and replace the ./stable or ./latest directory with the build output.
 
 ## Adding Google Analytics tracking code to the template
 

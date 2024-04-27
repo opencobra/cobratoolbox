@@ -13,7 +13,7 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 % subject to      N*(vf - vr) - x + x0  <=> b   : y_N
 %                 C*(vf - vr)           <=> d   : y_C
-%                     lb <= [vf - vr; w] <= ub  : y_v
+%                     lb <= [vf - vr; w] <= ub  : z_v
 %                         dxl <= x  - x0 <= dxu : z_dx
 %                         vfl <= vf      <= vfu : z_vf
 %                         vrl <=      vr <= vru : z_vr
@@ -23,30 +23,31 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % with Biochemical optimality conditions
 %  || N*(vf - vr) - x + x0 - b ||_inf
 %  || C*(vf - vr) - d ||_inf
-%  || g*log(vf) + ci + cf + N'*y_N + C'*y_C + y_v + z_vf ||_inf
-%  || g*log(vr) - ci + cr - N'*y_N - C'*y_C - y_vi + z_vr ||_inf
+%  || g*log(vf) + ci + cf + N'*y_N + C'*y_C + z_v + z_vf ||_inf
+%  || g*log(vr) - ci + cr - N'*y_N - C'*y_C - z_v + z_vr ||_inf
 %  || f.*log(x)  + u0 - y_N + z_dx - z_x  ||_inf
 %  || f.*log(x0) + u0 + y_N - z_dx + z_x0 ||_inf
 %
 % with  Derived biochemical optimality conditions (fluxes)
-% || g*log(vr/vf) + cr - cf - 2*(ci + N'*y_N + C'*y_C + y_vi) + z_vr - z_vf ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci + N'*y_N + C'*y_C + z_vi) + z_vr - z_vf ||_inf
+% where z_vi is the subset of z_v corresponding to internal reactions
 %
 % with  Derived biochemical optimality conditions (concentrations)
 % || f.*log(x/x0) - 2*y_N + 2*z_dx + z_x - z_x0 ||_inf
 % || f.*log(x.*x0) + 2*u0 + z_x + z_x0 ||_inf
 %
 % Derived biochemical optimality conditions (fluxes and concentrations)
-% || g*log(vf) + cf + ci + N'*(u0 + log(x) + z_dx + z_x) + C'*y_C + y_vi + z_vf ||_inf
-% || g*log(vr) + cr - ci - N'*(u0 + log(x) + z_dx + z_x) - C'*y_C - y_vi + z_vr ||_inf
+% || g*log(vf) + cf + ci + N'*(u0 + log(x) + z_dx + z_x) + C'*y_C + z_vi + z_vf ||_inf
+% || g*log(vr) + cr - ci - N'*(u0 + log(x) + z_dx + z_x) - C'*y_C - z_vi + z_vr ||_inf
 %
 % Derived biochemical optimality conditions (fluxes and concentrations, combining forward and reverse)
-% || g*log(vr/vf) + cr - cf - 2*(ci + N'*(u0 + f*log(x)  + z_dx +   z_x) + C'*y_C + y_vi) - z_vf + z_vr ||_inf
-% || g*log(vr/vf) + cr - cf - 2*(ci - N'*(u0 + f*log(x0) - z_dx + z_x0) + C'*y_C + y_vi) - z_vf + z_vr ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci + N'*(u0 + f*log(x)  + z_dx +   z_x) + C'*y_C + z_vi) - z_vf + z_vr ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci - N'*(u0 + f*log(x0) - z_dx + z_x0) + C'*y_C + z_vi) - z_vf + z_vr ||_inf
 %
 % If (but not only if) the input data is as follows:
 % g = 2, f = 1, cr = cf, ci = 0,
 % C = 0, d = 0,  <=> y_C = 0
-% vl = -inf, vu = inf <=> y_v = 0
+% vl = -inf, vu = inf <=> z_v = 0 (for internal reactions)
 % dxl = -inf, dxu = inf, <=> z_dx = 0
 % ub = inf, <=> z_vf = 0
 % lb = - inf, <=> z_vr = 0
@@ -128,7 +129,6 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %           *.vt:  scalar total internal reaction flux sum(vf + vr)
 %           *.y_N: m × 1 double dual variable to steady state constraints
 %           *.y_C: z × 1 double dual variable to coupling constraints
-%           *.y_vi: n x 1 double dual variable to box constraints on internal net flux
 %           *.z_v: (n + k) x 1 double dual variable to box constraints on net flux
 %           *.z_vf: n x 1 double dual variable to box constraints on forward flux
 %           *.z_vr: n x 1 double dual variable to box constraints on reverse flux
@@ -208,7 +208,7 @@ B = model.S(:,~model.SConsistentRxnBool);
 [~,k] = size(B);  % number of external reactions
 
 %% processing for fluxes
-processFluxConstraints
+[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
 %% optionally processing for concentrations
 processConcConstraints
@@ -1084,7 +1084,9 @@ switch param.method
                 
                 %
                 if 1
-                    solution = solveCobraEP(EPproblem,param);
+                    mosekParam=param;
+                    mosekParam.printLevel=param.printLevel-1;
+                    solution = solveCobraEP(EPproblem,mosekParam);
                 else
                     [verify,method,printLevel,debug,feasTol,optTol,solver,param] =...
                         getCobraSolverParams('EP',getCobraSolverParamsOptionsForType('EP'),param);
@@ -1566,13 +1568,12 @@ switch solution.stat
             end
         end
         
-        y_v=zeros(n+k,1);
-        y_v(model.SConsistentRxnBool)= z_vi;
-        y_v(~model.SConsistentRxnBool) = z_ve;
-        z_v = y_v;
+        z_v = zeros(n+k,1);
+        z_v(model.SConsistentRxnBool)= z_vi;
+        z_v(~model.SConsistentRxnBool) = z_ve;
         
-        [solution.v,solution.vf,solution.vr,solution.vt,solution.y_N,solution.y_v,solution.z_dx,solution.z_vf,solution.z_vr,solution.z_vi,solution.z_v,solution.stat,solution.osense] =...
-            deal(v,vf,vr,vt,y_N,y_v,z_dx,z_vf,z_vr,z_vi,z_v,solution.stat,osense);
+        [solution.v,solution.vf,solution.vr,solution.vt,solution.y_N,solution.z_dx,solution.z_vf,solution.z_vr,solution.z_vi,solution.z_v,solution.stat,solution.osense] =...
+            deal(v,vf,vr,vt,y_N,z_dx,z_vf,z_vr,z_vi,z_v,solution.stat,osense);
         
         if exist('x0','var')
             [solution.x, solution.x0, solution.z_x, solution.z_x0, solution.z_dx] = deal(x, x0, z_x, z_x0, z_dx);

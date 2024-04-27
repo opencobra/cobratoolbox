@@ -295,8 +295,6 @@ for i=1:length(sampNames)
     modelNames{i}=['microbiota_model_samp_' sampNames{i}];
 end
 
-close all
-
 if ~isempty(infoFilePath)
     [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers, infoFilePath);
 else
