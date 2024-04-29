@@ -4,11 +4,10 @@ This website is hosted on the GitHub servers using gh-pages. Here at the gh-page
 
 
 ## Continuous Integration of Tutorials:
+### High level Overview
+The whole idea of the continuous integration of the tutorials is that whenever a user contributes a tutorial in the format of a .mlx file on the [tutorials repo](https://github.com/opencobra/COBRA.tutorials) it should be converted to html and then rendered accordingly on the Cobratoolbox website in the [tutorials section](https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html). This involves using MATLAB on a self-hosted server (King server) to generate the html file. This html is then pushed to the websites codebase repository which is the [gh-pages branch](https://github.com/opencobra/cobratoolbox/tree/gh-pages) of the main cobratoolbox repository.
 
-Here are the following steps taken in the tutorial CI pipeline:
-1. Contributor posts .m and .mlx tutorial to the [Tutorials Repository](https://github.com/opencobra/COBRA.tutorials)
-2. This triggers the [GitHub action workflow](https://github.com/opencobra/COBRA.tutorials/blob/master/.github/workflows/main.yml) which is hosted on a local computer (self-hosted runner). Here the .mlx file is converted to a .html file and pushed to the gh-pages branch of the cobratoolbox repository
-3. This then triggers a [seperate Github actions workflow](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml) on the cobratoolbox gh-pages branch. This workflow reconfigures the various files and directories so that the html tutorial can be integrated into the website 
+GitHub actions is used to detect when a push (specifically .mlx push) is made to the tutorials repo. Then once the .mlx has been converted it is pushed to the gh-branch of the main repo. Again, GitHub actions can detect this push and configures the website to incorporate the extra tutorial. 
 
 ## Continuous Integration of Functions
 Each accepted pull request triggers two workflows (W1 and W2) to generate documentation for functions, 
