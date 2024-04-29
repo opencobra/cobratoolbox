@@ -21,7 +21,8 @@ Here is an explanation of each section of the .yml file. Pictures of the section
 
 This section of code basically means it will only run when a push is made to the master branch and one of the file types is a .mlx file. If not .mlx files are pushed, we don’t continue.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/8526883b-d9e5-4358-a65c-20aee6d0affc)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/bfdb2072-f7d7-480f-b483-a8b701149284)
+
 
 - Next, we have a series of ‘jobs’ to compute.
 - The ‘runs-on’ parameter indicates where these jobs are computed. Here I specify it runs on ‘self-hosted’ because we need Matlab on King to run the .mlx to html. Generally, I would avoid using a self-hosted server but since Matlab is not an opensource programming language it needs to be ran a computer which has Matlab installed with a license.
