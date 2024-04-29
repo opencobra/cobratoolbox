@@ -99,20 +99,24 @@ feasTol = getCobraSolverParams('LP', 'feasTol');
 epsilon = feasTol*10;
 
 [nMet,nRxn]=size(model.S);
-if ~isfield(model,'mets')
-    %assume all reactions are internal
-    model.SIntRxnBool=true(nRxn,1);
-    intR='';
+
+if isfield(model,'SConsistentRxnBool')
+    model.SIntRxnBool=model.SConsistentRxnBool;
 else
-    if ~isfield(model,'SIntRxnBool') || ~isfield(model,'SIntMetBool')
-        %Requires the openCOBRA toolbox
-        model=findSExRxnInd(model);
-        intR='internal reaction ';
-    else
+    if ~isfield(model,'mets')
+        %assume all reactions are internal
+        model.SIntRxnBool=true(nRxn,1);
         intR='';
+    else
+        if ~isfield(model,'SIntRxnBool') || ~isfield(model,'SIntMetBool')
+            %Requires the openCOBRA toolbox
+            model=findSExRxnInd(model);
+            intR='internal reaction ';
+        else
+            intR='';
+        end
     end
 end
-
 
 checkConsistency = 0;
 

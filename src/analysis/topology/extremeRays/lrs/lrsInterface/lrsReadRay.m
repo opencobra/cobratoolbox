@@ -10,6 +10,13 @@ function [Q, vertexBool, fileNameOut] = lrsReadRay(modelName,param)
 % modelName     string giving the prefix of the *.ext file that will contain the vertex representation
 %               It is assumed the file is pwd/*.ine, otherwise provide the full path.
 %
+% OPTIONAL INPUT:
+%    param:         parameter structure with the following fields:
+%    *.positivity:    if equals to 1, then positive orthant base
+%    *.inequality:    if equals to 1, then represent as two inequalities rather than a single equality
+%    *.shellScript:   if equals to 1, then lrs is run through a bash script
+%    *.redund         if equals to 0, then remove redundant linear equalities 
+%
 % OUTPUT:
 % Q             m x n integer matrix where each row is a variable and each column is a vertex or ray
 % vertexBool         n x 1 Boolean vector indicating which columns of Q are vertices
