@@ -1,6 +1,6 @@
 # Cobratoolbox Website Documentation
 
-This website is built and hosted using GitHub pages, please read the documentation for more information: https://docs.github.com/en/pages
+This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages
 
 
 ## Continuous Integration of Tutorials:
