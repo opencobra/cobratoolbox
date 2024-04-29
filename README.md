@@ -15,7 +15,9 @@ To understand GitHub actions you need to look for the github workflow folder whe
 
 **What does main.yml do?**
 Here is an explanation of each section of the .yml file. Pictures of the sections are added and an explanation is given beneath the picture.
+
 ![image](https://github.com/opencobra/cobratoolbox/assets/68754265/19d16a8d-013b-43c8-b40c-9145de5e2a45)
+
 This section of code basically means it will only run when a push is made to the master branch and one of the file types is a .mlx file. If not .mlx files are pushed, we don’t continue.
 
 ![image](https://github.com/opencobra/cobratoolbox/assets/68754265/8526883b-d9e5-4358-a65c-20aee6d0affc)
