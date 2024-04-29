@@ -28,12 +28,14 @@ This section of code basically means it will only run when a push is made to the
 - The ‘runs-on’ parameter indicates where these jobs are computed. Here I specify it runs on ‘self-hosted’ because we need Matlab on King to run the .mlx to html. Generally, I would avoid using a self-hosted server but since Matlab is not an opensource programming language it needs to be ran a computer which has Matlab installed with a license.
 - There are several steps to do in the jobs section. Here the first step is to checkout the source repo i.e. get all the details about the repo and the pushes made to the repo.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/d7b28552-1f08-4254-9678-0aea71e4b7fb)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/92cc085c-9d8d-4451-a9ef-c4efee7e41d7)
+
 
 - Here we have two more steps. The first step in this picture is used to find all the files that have been changed based on the most recent push.
 - The next step is then used to find all the .mlx files that were pushed to the repository.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/a48d469e-77da-4a97-a6de-d65cfd1d176c)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/6f7af540-8b60-425c-89d1-1cf0ce5c9e9d)
+
 
 The chmod command just makes the .sh files executable.
 
@@ -45,7 +47,8 @@ The chmod command just makes the .sh files executable.
 
 • Both files can be found on the tutorial’s repository. Here are the links to [setup.sh](https://github.com/opencobra/COBRA.tutorials/blob/master/setup.sh) and [build.sh](https://github.com/opencobra/COBRA.tutorials/blob/master/build.sh)
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/b9073f25-5672-4868-90fd-eaf8a81e5456)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/b9a748df-c94c-45bb-bedd-1d84482ea14a)
+
 
 Here is the code to run the setup.sh and build.sh. We loop through all the .mlx files that were pushed. If it is the first file we are looking at we also run setup.sh to create the folder locations in the cobratoolbox – ghpages branch repository. Then afterwards build,sh is ran to convert the file to html and push to the created folder location
 
@@ -53,7 +56,8 @@ Here is the code to run the setup.sh and build.sh. We loop through all the .mlx 
 
 Go to this page of the repo to create a new self-hosted runner:
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/21f1b9ce-27c4-4074-b120-5d6d60c85ed0)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/05535af0-9ccf-4c38-9e79-512f738cc0f0)
+
 
 By pressing the green new runner button, you are given easy instructions on how to set it up. You should have access to a terminal on King for this. To run the self-hosted runner nagivate to the folder you created it in and run ./run.sh to run the self-hosted runner.
 
@@ -64,27 +68,31 @@ In a similar fashion to the first step a .yml file is in the .github/workflows f
 
 The main.yml can be explained as follows:
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/3bff4623-59fb-4f93-b3d5-66b4085c0a64)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/36885564-4f94-4615-a85e-5e2acb388e25)
+
 
 This specifies that the .yml file will run if a .html file is pushed to the gh-pages branch.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/102d2842-d251-4270-9ae7-6ef9e2f464a3)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/c9ebbeec-1699-40ce-88bd-97005fd7f39b)
 
 Here the second step is to checkout the repository and find any changes that were made. Also note that we are now running on ‘ubuntu-latest’ and not ‘self-hosted’ as there is no need to use King for this part.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/ffae17b1-6e3a-48fc-b321-d86cf1e99791)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/9005eef6-820c-4e61-96b1-e450296b122d)
+
 
 In the tutorials repo we push to the gh-pages branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/65f5a955-ef54-4d1f-9d4f-646b676bbbce)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/e7b7338c-87e3-4f34-83a7-57b2cbe8b0a0)
+
 
 Here are some basic steps such as 1. Set up python got github actions 2. Install Python dependencies needed 3. Get the html files that were pushed to the repository.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/e844ec48-412e-40bf-95ae-bd4c8c2da933)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/b0a063ed-5172-42a5-83de-47f3cb5d1ae1)
+
 
 Now we run the python file to configure the website to adjust to the added tutorial.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/13323d91-3cb6-4ffc-9ad0-248698c7a0e1)
+![image](https://github.com/opencobra/cobratoolbox/assets/68754265/5eeda5b7-e8d3-4bb8-9ae6-79676ddfbf4a)
 
 After changing and adding the folders/files around in the repo we push the changes to the repository
 
