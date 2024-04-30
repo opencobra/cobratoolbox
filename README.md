@@ -16,13 +16,13 @@ To understand GitHub actions you need to look for the github workflow folder whe
 **What does main.yml do?**
 Here is an explanation of each section of the .yml file. Pictures of the sections are added and an explanation is given beneath the picture.
 
-'''
+```
 on:
   push:
     branches: [ master ]
     paths:
     - '**.mlx'
-'''
+```
 
 
 This section of code basically means it will only run when a push is made to the master branch and one of the file types is a .mlx file. If not .mlx files are pushed, we don’t continue.
