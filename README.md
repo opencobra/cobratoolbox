@@ -27,20 +27,47 @@ on:
 
 This section of code basically means it will only run when a push is made to the master branch and one of the file types is a .mlx file. If not .mlx files are pushed, we don’t continue.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/bfdb2072-f7d7-480f-b483-a8b701149284)
+```
+jobs:
+  copy-changes:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Source Repo
+        uses: actions/checkout@v2
+        with:
+          repository: 'openCOBRA/COBRA.tutorials'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+```
 
 
 - Next, we have a series of ‘jobs’ to compute.
 - The ‘runs-on’ parameter indicates where these jobs are computed. Here I specify it runs on ‘self-hosted’ because we need Matlab on King to run the .mlx to html. Generally, I would avoid using a self-hosted server but since Matlab is not an opensource programming language it needs to be ran a computer which has Matlab installed with a license.
 - There are several steps to do in the jobs section. Here the first step is to checkout the source repo i.e. get all the details about the repo and the pushes made to the repo.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/92cc085c-9d8d-4451-a9ef-c4efee7e41d7)
+```
+- name: Get All Changed Files
+  id: files
+  uses: jitterbit/get-changed-files@v1
+
+- name: Find changed files
+  id: getfile
+  run: |
+      files=$(echo "${{ steps.files.outputs.all }}" | tr ' ' '\n' | grep -E '\.mlx$')
+      echo "::set-output name=file::$files"
+```
 
 
 - Here we have two more steps. The first step in this picture is used to find all the files that have been changed based on the most recent push.
 - The next step is then used to find all the .mlx files that were pushed to the repository.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/6f7af540-8b60-425c-89d1-1cf0ce5c9e9d)
+```
+  - name: Give execute permission to the script
+    run: chmod +x build.sh
+    
+  - name: Give execute permission to the other script  
+    run: chmod +x setup.sh
+```
 
 
 The chmod command just makes the .sh files executable.
