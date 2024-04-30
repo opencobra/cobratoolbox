@@ -80,8 +80,23 @@ The chmod command just makes the .sh files executable.
 
 • Both files can be found on the tutorial’s repository. Here are the links to [setup.sh](https://github.com/opencobra/COBRA.tutorials/blob/master/setup.sh) and [build.sh](https://github.com/opencobra/COBRA.tutorials/blob/master/build.sh)
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/b9a748df-c94c-45bb-bedd-1d84482ea14a)
-
+```
+  - name: Sync with Destination Repo
+    run: |
+      counter=0
+      for file in ${{ steps.getfile.outputs.file }}; do
+        if [ $counter -eq 0 ]
+        then
+          # This is the first iteration, handle the file differently
+          ./setup.sh opencobra/cobratoolbox ${{ secrets.DEST_REPO_TOKEN }} $file 
+          ./build.sh opencobra/cobratoolbox ${{ secrets.DEST_REPO_TOKEN }} $file 
+        else
+          ./build.sh openCOBRA/cobratoolbox ${{ secrets.DEST_REPO_TOKEN }} 
+        fi
+        counter=$((counter+1))
+      done
+    if: steps.getfile.outputs.file != ''
+```
 
 Here is the code to run the setup.sh and build.sh. We loop through all the .mlx files that were pushed. If it is the first file we are looking at we also run setup.sh to create the folder locations in the cobratoolbox – ghpages branch repository. Then afterwards build,sh is ran to convert the file to html and push to the created folder location
 
@@ -101,31 +116,92 @@ In a similar fashion to the first step a .yml file is in the .github/workflows f
 
 The main.yml can be explained as follows:
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/36885564-4f94-4615-a85e-5e2acb388e25)
+```
+on:
+  push:
+    branches: [ gh-pages ]
+    paths:
+    - '**.html'
+```
 
 
 This specifies that the .yml file will run if a .html file is pushed to the gh-pages branch.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/c9ebbeec-1699-40ce-88bd-97005fd7f39b)
+```
+jobs:
+  extract-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+```
 
 Here the second step is to checkout the repository and find any changes that were made. Also note that we are now running on ‘ubuntu-latest’ and not ‘self-hosted’ as there is no need to use King for this part.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/9005eef6-820c-4e61-96b1-e450296b122d)
+```
+- name: Check Commit Message
+  id: check_msg
+  run: |
+    commit_msg=$(git log --format=%B -n 1)
+    if [[ "$commit_msg" == "Sync files from source repo" ]]; then
+      echo "::set-output name=run_job::true"
+    else
+      echo "::set-output name=run_job::false"
+    fi
+```
 
 
 In the tutorials repo we push to the gh-pages branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/e7b7338c-87e3-4f34-83a7-57b2cbe8b0a0)
+```
+- name: Set up Python
+  uses: actions/setup-python@v2
+  if: steps.check_msg.outputs.run_job == 'true'
+  with:
+    python-version: '3.x'
 
+- name: Install Dependencies
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    python -m pip install --upgrade pip
+    pip install beautifulsoup4
+
+- name: Get Changed HTML Files
+  id: getfile
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
+    echo "::set-output name=file::$changed_files"
+```
 
 Here are some basic steps such as 1. Set up python got github actions 2. Install Python dependencies needed 3. Get the html files that were pushed to the repository.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/b0a063ed-5172-42a5-83de-47f3cb5d1ae1)
+```
+- name: Extract Info from HTML Files
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    for file in ${{ steps.getfile.outputs.file }}
+    do
+      python extract_info.py $file
+    done
+```
 
 
 Now we run the python file to configure the website to adjust to the added tutorial.
 
-![image](https://github.com/opencobra/cobratoolbox/assets/68754265/5eeda5b7-e8d3-4bb8-9ae6-79676ddfbf4a)
+```
+- name: Commit and Push New File
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    git config user.name "GitHub Action"
+    git config user.email "action@github.com"
+    git add .
+    git commit -m "Sync files from source repo" || echo "No changes to commit"
+    git push -f origin gh-pages
+```
 
 After changing and adding the folders/files around in the repo we push the changes to the repository
 
