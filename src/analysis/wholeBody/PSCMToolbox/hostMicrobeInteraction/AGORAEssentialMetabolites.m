@@ -191,6 +191,34 @@ AGORAessential ={'EX_12dgr180[u]'
 'EX_chsterol[u]'
 'EX_acmana[u]'
 'EX_xan[u]'
-'EX_gsn[u]'};
+'EX_gsn[u]'
+
+% New essential metabolites March 2024, M. Moghimi
+'EX_5HPET[u]'
+'EX_ach[u]'
+'EX_appnn[u]'
+'EX_btn[u]'
+'EX_cl[u]'
+'EX_gd1c_hs[u]'
+'EX_glygn5[u]'
+'EX_melib[u]'
+'EX_prostge1[u]'
+'EX_sucr[u]'
+'EX_gam[u]'
+'EX_indole[u]'
+'EX_ksi[u]'
+'EX_pydx5p[u]'
+'EX_pime[u]'
+'EX_no3[u]'
+'EX_tre[u]'
+'EX_metala[u]'
+'EX_mnl[u]'
+'EX_glyleu[u]'
+'EX_chor[u]'
+'EX_mn2[u]'
+'EX_12dgr180[u]',
+
+% New essential metabolite March 2024, T. Hensen
+'EX_metsox_S_L[u]'};
 
 AGORAessential = unique(AGORAessential);
