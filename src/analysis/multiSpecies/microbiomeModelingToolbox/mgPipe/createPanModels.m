@@ -1,4 +1,4 @@
-function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
+function createPanModels(agoraPath, panPath, taxonLevel, agoraVersion, numWorkers)
 % This function creates pan-models for all unique taxa (e.g., species)
 % included in the AGORA resource. If reconstructions of multiple strains
 % in a given taxon are present, the reactions in these reconstructions will
@@ -14,7 +14,7 @@ function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
 %
 % USAGE:
 %
-%   createPanModels(agoraPath,panPath,taxonLevel)
+%   createPanModels(agoraPath,panPath,taxonLevel, agoraVersion, numWorkers)
 %
 % INPUTS:
 %    agoraPath     String containing the path to the AGORA reconstructions.
@@ -23,16 +23,16 @@ function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
 %                  created pan-models will be stored in. Must end with a file separator.
 %    taxonLevel    String with desired taxonomical level of the pan-models.
 %                  Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
+%    agoraVersion  Version of AGORA that will be used (allowed inputs: 'AGORA', 'AGORA2')
 %
 % OPTIONAL INPUTS
 %    numWorkers    Number of workers for parallel pool (default: no pool)
-%    taxTable      File with information on taxonomy of reconstruction
-%                  resource (default: 'AGORA_infoFile.xlsx')
 %
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 06/2018: adapted to function.
 %       - Almut Heinken, 03/2021: enabled parallelization
+%       - Almut Heinken, 05/2024: enforced specifying AGORA version
 
 tol = 1e-5;
 
@@ -58,10 +58,13 @@ end
 solver = CBT_LP_SOLVER;
 environment = getEnvironment();
 
-if ~exist('taxTable','var')
+% load the file with information on AGORA/AGORA2
+if strcmp(agoraVersion,'AGORA')
     infoFile = readInputTableForPipeline('AGORA_infoFile.xlsx');
+elseif strcmp(agoraVersion,'AGORA2')
+    infoFile = readInputTableForPipeline('AGORA2_infoFile.xlsx');
 else
-    infoFile = readInputTableForPipeline(taxTable);
+    error('Incorrect input for agoraVersion! Allowed inputs: AGORA, AGORA2')
 end
 
 % get the reaction and metabolite database
