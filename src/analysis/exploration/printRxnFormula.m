@@ -133,7 +133,10 @@ for i = 1:length(rxnAbbrList)
 
     rxnAbbr = rxnAbbrList{i};
 
-    rxnID = findRxnIDs(model, rxnAbbr);
+    rxnID = i;
+    % this original line has caused issues if reaction abbr were not unique
+    % (which should generally not be present)
+    %  rxnID = findRxnIDs(model, rxnAbbr);
 
     if (rxnID > 0)
 
