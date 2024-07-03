@@ -7,7 +7,6 @@
 %     - Farid Zare 03/07/2024
 %
 
-global CBTDIR
 
 % define the features required to run the test
 requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
