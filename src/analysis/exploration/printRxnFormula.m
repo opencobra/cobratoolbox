@@ -132,19 +132,22 @@ formulas = cell(size(rxnAbbrList));
 for i = 1:length(rxnAbbrList)
 
     rxnAbbr = rxnAbbrList{i};
-    rxnID = find(contains(model.rxns, rxnAbbr));
     
-    % To account for any duplicates in rxn IDs
-    if size(rxnID,1) > 1
-        error("It seems you have duplicated reaction IDs in your model. Reaction in question %s", rxnAbbr)
-    end
+    
     % The solution line made it so the i'th reaction was printed regardless of which
     % reactions were put in, giving a wrong output
     % rxnID = i;
     
     % this original line has caused issues if reaction abbr were not unique
     % (which should generally not be present)
-    %  rxnID = findRxnIDs(model, rxnAbbr);
+    % Uncommented this line and added a conditional statement that stops
+    % the code when multiple indexes are returned.
+     rxnID = findRxnIDs(model, rxnAbbr);
+    
+    % To account for any duplicates in rxn IDs
+    if size(rxnID,1) > 1
+        error("It seems you have duplicated reaction IDs in your model. Reaction in question %s", rxnAbbr)
+    end
     
     if (rxnID > 0)
 
