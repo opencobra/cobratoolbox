@@ -15,8 +15,18 @@ function [metData] = metanetxMapper(metInfo, varargin)
 %    'name', 'vmh', and 'chebi' for more accurate respond
 %
 % OUTPUT:
-%    metData: Information of corrosponding metabolite including: 
-%    Common name, MetaNetX ID, VMH name, CHEBI, HMDB, KEGG, BIGG, and Swiss Lipids IDs 
+%    metData: A structure variable including fields of metabolite Identifiers: 
+%           -metName:            Common Name
+%           -metMetaNetXID:      MetaNetX ID
+%           -metVMHID:           VMH Symbol
+%           -metCheBIID:         ChEBI ID
+%           -metHMDBID:          HMDB ID
+%           -metKEGGID:          KEGG ID
+%           -metBiGGID:          BIGG ID
+%           -metSwissLipidsID:   Swiss Lipids ID(only for lipids)
+%           -metInChIString:     InChI String
+%           -metInChIkey:        InChI key
+%           -metSmiles:          SMILES ID
 %
 % EXAMPLE:
 %     >>  metData = metanetxMapper('SLM:000390086')
@@ -24,28 +34,34 @@ function [metData] = metanetxMapper(metInfo, varargin)
 % 
 %         struct with fields:
 %              
-%                   metName: "O-3-methylbutanoyl-(R)-carnitine"
-%                   metMetaNetXID: "MNXM1101229"
-%                   metVMHID: "ivcrn"
-%                   metCheBIID: "70819"
-%                   metHMDBID: "HMDB0000688"
-%                   metKEGGID: "C20826"
-%                   metBiGGID: "ivcrn"
-%                   metSwissLipidsID: "SLM:000390086"
+%                    metName: "O-3-methylbutanoyl-(R)-carnitine"
+%                    metMetaNetXID: "MNXM1101229"
+%                    metVMHID: "ivcrn"
+%                    metCheBIID: "70819"
+%                    metHMDBID: "HMDB0000688"
+%                    metKEGGID: "C20826"
+%                    metBiGGID: "ivcrn"
+%                    metSwissLipidsID: "SLM:000390086"
+%                    metInChIString: "InChI=1S/C12H23NO4/c1-9(2)6-12(16)17-10(7-11(14)15)8-13(3,4)5/h9-10H,6-8H2,1-5H3/t10-/m1/s1"
+%                    metInChIkey: "IGQBPDJNUXPEMT-SNVBAGLBSA-N"
+%                    metSmiles: "[CH3:1][CH:9]([CH3:2])[CH2:6][C:12](=[O:16])[O:17][C@H:10]([CH2:7][C:11](=[O:14])[O-:15])[CH2:8][N+:13]([CH3:3])([CH3:4])[CH3:5]"
 %
 %    >>  metData = metanetxMapper('glu_L', 'VMH')
 %        metData =
 %
 %        struct with fields:
 %
-%                   metName: "L-glutamate"
-%                   metMetaNetXID: "MNXM1409599"
-%                   metVMHID: "glu_L"
-%                   metCheBIID: "14321"
-%                   metHMDBID: "HMDB0000148"
-%                   metKEGGID: "C00025"
-%                   metBiGGID: "glu__L"
-%                   metSwissLipidsID: ""
+%                    metName: "L-glutamate"
+%                    metMetaNetXID: "MNXM741173"
+%                    metVMHID: "glu_L"
+%                    metCheBIID: "16015"
+%                    metHMDBID: "HMDB0000148"
+%                    metKEGGID: "C00025"
+%                    metBiGGID: "glu__L"
+%                    metSwissLipidsID: ""
+%                    metInChIString: "InChI=1S/C5H9NO4/c6-3(5(9)10)1-2-4(7)8/h3H,1-2,6H2,(H,7,8)(H,9,10)/p-1/t3-/m0/s1"
+%                    metInChIkey: "WHUUTDBJXJRKMK-VKHMYHEASA-M"
+%                    metSmiles: "[CH2:1]([CH2:2][C:4](=[O:7])[OH:8])[C@@H:3]([C:5](=[O:9])[OH:10])[NH2:6]"
 %
 % NOTE:
 %    In the case of more than one matches for the metabolite, this
@@ -99,7 +115,9 @@ else
 end
 
 % Define output as a struct
-metData = struct('metName', "", 'metMetaNetXID', "", 'metVMHID', "", 'metCheBIID', "", 'metHMDBID', "", 'metKEGGID', "", 'metBiGGID', "", 'metSwissLipidsID', "");
+metData = struct('metName', "", 'metMetaNetXID', "", 'metVMHID', "", 'metCheBIID',...
+    "", 'metHMDBID', "", 'metKEGGID', "", 'metBiGGID', "", 'metSwissLipidsID', "",...
+    'metInChIString', "", 'metInChIkey', "", 'metSmiles', "");
 
 % Make the request using webread and respond an empty response to empty
 % names
@@ -140,6 +158,27 @@ if ~isempty(response)
         % Assign metanetx and name
         metData.metMetaNetXID = string(response.mnx_id);
         metData.metName = string(response.name);
+
+        % Assign InChIkey 
+        if isfield(response, 'InChIkey')
+            InChIkey = response.InChIkey;
+            InChIkey = string(InChIkey);
+            metData.metInChIkey = InChIkey;
+        end
+
+        % Assign InChI String
+        if isfield(response, 'InChI')
+            InChI = response.InChI;
+            InChI = string(InChI);
+            metData.metInChIString = InChI;
+        end
+
+        % Assign Smiles
+        if isfield(response, 'SMILES')
+            SMILES = response.SMILES;
+            SMILES = string(SMILES);
+            metData.metSmiles = SMILES;
+        end
 
         ref = response.xrefs;
 
