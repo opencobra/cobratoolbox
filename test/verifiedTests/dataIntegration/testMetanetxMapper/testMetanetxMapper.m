@@ -22,7 +22,7 @@ currentDir = cd(fileparts(which(mfilename)));
 % determine the test path for references
 testPath = pwd;
 
-fprintf(' -- Running testmetanetxMapper ... ');
+fprintf(' -- Running testMetanetxMapper ... ');
 
 % Convert Swiss lipids to HMDB
 metData = metanetxMapper('SLM:000390086');
@@ -40,8 +40,16 @@ assert(strcmp(metData.metKEGGID, 'C00042'));
 metData = metanetxMapper('SLM:000000287');
 assert(strcmp(metData.metBiGGID, 'chsterol'));
 
+% Convert ChEBI to InChi
+metData = metanetxMapper('64368', 'chebi');
+assert(strcmp(metData.metInChIkey, 'BJBUEDPLEOHJGE-UHFFFAOYSA-N'));
+
+% Convert InChiKey to SMILES
+metData = metanetxMapper('HEBKCHPVOIAQTA-SCDXWVJYSA-N');
+assert(strcmp(metData.metSmiles, '[CH2:1]([C@@H:3]([C@H:5]([C@@H:4]([CH2:2][OH:7])[OH:9])[OH:10])[OH:8])[OH:6]'));
+
 fprintf('Done.\n');
-fprintf('testmetanetxMapper passed successfully.\n');
+fprintf('testMetanetxMapper passed successfully.\n');
 
 % change the directory
-cd(currentDir)
+cd(currentDir);
