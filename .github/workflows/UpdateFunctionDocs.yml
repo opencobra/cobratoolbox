@@ -1,10 +1,7 @@
 name: Update function docs
 
 on:
-  pull_request_target:
-    types:
-      - closed
-    branches: [ master ]
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
