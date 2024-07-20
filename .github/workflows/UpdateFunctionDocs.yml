@@ -49,3 +49,11 @@ jobs:
         publish_branch: gh-pages
         keep_files: true
         destination_dir: latest
+    - name: Deploy the citations static page
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html/_static
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: latest/_static
