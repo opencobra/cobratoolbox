@@ -4,23 +4,29 @@ function variable = loadPSCMfile(fileName, searchDirectory)
 % available version in the cobratoolbox is loaded. By specifiying the
 % searchDirectory variable, .mat files are only searched in the given user defined 
 % directory. By default, all files within the MATLAB path variable are
-% searched (see doc path). If the full filename is given, the exact
-% specified file is loaded. For example, male =
-% male = loadPSCMfile('Harvey_1_03d'); loads the male WBM version 1_03d, while
-% male = loadPSCMfile('Harvey');, loads the latest available male WBM
-% model.
+% searched. If the full filename is given, the exact specified file is loaded. 
 %
 % USAGE:
 %       variable = loadPSCMfile(fileName, searchDirectory)
 %
-% INPUT:
-% fileName:         Nickname of .mat file to load or full name of .mat file to load
+% INPUTS:
+% fileName:             Nickname of .mat file to load or full name of .mat file to load
 %
 % OPTIONAL INPUTS
-% searchDirectory   User specified directory with .mat file to load. 
+% searchDirectory:      User specified directory with .mat file to load. 
 %
 % OUTPUT:
-% variable:         Matlab variable returned
+% variable:             Matlab variable returned
+%
+% EXAMPLE: 
+%           % Giving only WBM nickname loads the latest available WBM:
+%           male = loadPSCMfile('Harvey');
+%           % Giving the exact name of the .mat file loads the exact
+%           specified mode:
+%           female = loadPSCMfile('Harvetta_1_03d'); 
+%           % Specifiying the search directory loads the .mat file
+%           within that directory:
+%           male = loadPSCMfile('Harvetta','MYDIRECTORY')
 %
 % AUTHORS:
 %   - Ines Thiele, 2020
@@ -109,17 +115,21 @@ end
 function nameOfWBM = findLatestWBM(filename, searchDirectory, excludeVersion)
 % Function for finding the name of the latest version of WBM models in the directory.
 %
+% USAGE:
+%                   nameOfWBM = findLatestWBM(filename, searchDirectory, excludeVersion)
+%
 % INPUT:
-% fileName:     Nickname of .mat file to load (Harvey or Harvetta)
+% fileName:         Nickname of .mat file to load (Harvey or Harvetta)
 %
 % OPTIONAL INPUT
-% searchDirectory     Character array to directory with WBM models.
-% ExcludeVersion  Name of version to exclude
+% searchDirectory   Character array to directory with WBM models.
+% ExcludeVersion    Name of version to exclude
 %
 % OUTPUT:
-% nameOfWBM:     Name of latest version of WBM model (character array)
+% nameOfWBM:        Name of latest version of WBM model (character array).
 %
-% Author: Tim Hensen, July 2024
+% Author: 
+%         - Tim Hensen, August 2024
 
 if nargin <2
     searchDirectory = 'WBM_reconstructions';
@@ -198,11 +208,17 @@ function variable = legacyLoadWBM101(fileName)
 % This function contains legacy support for loading
 % Harvetta_1_01d, Harvetta_1_01c, and Harvey_1_01c.
 %
+% USAGE:
+%                   variable = legacyLoadWBM101(fileName)
+%
 % INPUT:
-% fileName:     Nickname of .mat file to load (Harvey or Harvetta)
+% fileName:         Nickname of .mat file to load (Harvey or Harvetta)
 %
 % OUTPUT:
 % variable:     matlab variable returned
+%
+% Author: 
+%         - Tim Hensen, August 2024
 
 % If loading Harvetta_1_01d returns an error, Harvetta_1_01c is loaded.
 if matches(fileName,'Harvetta_1_01d')
@@ -236,12 +252,19 @@ end
 function variable = correctWBMfields(model, modelSex)
 % This function replaces the field model.gender by model.sex and removes
 % the field model.rxnGeneMat".
-% models.
+%
+% USAGE:
+%                   variable = correctWBMfields(model, modelSex)
+%
 % INPUT:
-% model_in:  Input WBM model
+% model:            WBM model
+% modelSex          Character or string array of the sex of the WBM model
 %
 % OUTPUT:
-% variable:  WBM model with removed gender and rxnGeneMat fields
+% variable:     matlab variable returned
+%
+% Author: 
+%         - Tim Hensen, August 2024
 
 % Replace model.gender by model.sex
 if isfield(model,'gender')
@@ -259,4 +282,3 @@ end
 % Set output
 variable = model;
 end
-
