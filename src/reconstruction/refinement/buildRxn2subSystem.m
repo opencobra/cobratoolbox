@@ -1,14 +1,19 @@
-function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem(model)
+function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem(model, removeSubSystems)
 % Generates reaction-subSystem matrix for a COBRA model
 % This function adds two fields to the COBRA model: 1) rxnSubsystemMat and
-% 2)subSystemsNames
+% 2)subSystemsNames and removes the old subSystems field(optional and can
+% be set to false)
 %
 % USAGE:
 %
-%    [modelOut, rxnSubSystemMat, subSystemNames] = buildRxnSubSystemMat(model)
+%    [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem(model, removeSubSystems)
 %
 % INPUTS:
 %    model:               COBRA model structure
+%
+% OPTIONAL INPUTS:
+%    removeSubSystems:     Binary variable, if equals to 1 or true SubSystems 
+%                         field will be removed from the model default:true
 %
 % OUTPUTS:
 %    modelOut:            COBRA model structure containing two added fields of
@@ -23,17 +28,30 @@ function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSy
 %     - Farid Zare 25 March 2024
 %
 
+% set optional input
+if nargin < 2
+    removeSubSystems = true;
+elseif ~islogical(removeSubSystems) & removeSubSystems ~= 1 && removeSubSystems ~= 0
+    error('removeSubSystem input should be logical variable true/false or 1/0')
+end
+
 % Check to see if model already has these fields
-if isfield(model, 'rxnSubSystemMat')
-    warning('rxnSubsystemMat field already exists in the model')
+if isfield(model, 'rxn2subSystem')
+    warning('rxn2subSystem matrix already exists in the model')
 end
 
 if isfield(model, 'subSystemNames')
     warning('subSystemNames field already exists in the model')
 end
 
+% Error if there is no subSystems field in the model
 if ~isfield(model, 'subSystems')
     error('subSystems field should exist in the model')
+end
+
+% Error if there is no rxns field in the model
+if ~isfield(model, 'rxns')
+    error('rxns field should exist in the model')
 end
 
 % Check if the sub-system cell is a nested cell variable
@@ -67,5 +85,11 @@ end
 
 % Assign two fields to the output model
 modelOut = model;
+
+% Remove the subSystem field if it was set
+if removeSubSystems
+    modelOut = rmfield(modelOut, 'subSystems');
+end
+
 modelOut.subSystemNames = subSystemNames;
 modelOut.rxn2subSystem = rxn2subSystem;
