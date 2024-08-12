@@ -51,7 +51,11 @@ if isfield(model, 'subSystems')
         % In the case of nested cell format of sub-systems
         subSystemVec = {};
         for i = 1:numel(model.subSystems)
-            subList = model.subSystems{i};
+            if ischar(model.subSystems{i})
+                subList = model.subSystems(i);
+            else
+                subList = model.subSystems{i};
+            end
             % turn it into a vertical vector if it is not
             subList = columnVector(subList);
             subSystemVec = [subSystemVec; subList];

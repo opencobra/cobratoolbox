@@ -20,9 +20,11 @@ function [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printL
 % .. Authors:
 %     - Markus Herrgard 9/14/07
 %     - CI integration: Laurent Heirendt
-%     - Farid Zare 26/3/2024 nested cells compatibility
-
-%TODO this function needs updating to use structeq.m
+%     - Farid Zare 2024/08/12: New format of subSystems in the model
+%
+% Note: Notice that this function checks if two models are the same, two 
+% same models does not necessary mean two same structures.
+% use structeq.m to compare two structures
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -58,8 +60,8 @@ end
 
 % Check if subSystems field is nested cells
 if isfield(model1, 'subSystems') || isfield(model2, 'subSystems')
-    [~, rxnSubSystemMat1, subSystemNames1, nestedCells1] = generateRxnSubsystemMat(model1);
-    [~, rxnSubSystemMat2, subSystemNames2, nestedCells2] = generateRxnSubsystemMat(model2);
+    [~, rxnSubSystemMat1, subSystemNames1, nestedCells1] = buildRxn2subSystem(model1);
+    [~, rxnSubSystemMat2, subSystemNames2, nestedCells2] = buildRxn2subSystem(model2);
 end
 
 % initialize variables

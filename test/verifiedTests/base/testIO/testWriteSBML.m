@@ -14,7 +14,7 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testWriteSBML'));
 cd(fileDir);
-fprintf('   Testing testWriteSBML ...');
+fprintf('-- Running testWriteSBML ...');
 
 
 testModelXML = readCbModel('Ec_iJR904.xml');
@@ -68,5 +68,5 @@ catch
     % pass
 end
 
-fprintf('testWriteSBML passed!');
+fprintf('testWriteSBML passed!\n');
 
