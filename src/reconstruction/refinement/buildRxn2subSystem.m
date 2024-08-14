@@ -12,13 +12,13 @@ function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSy
 %    model:               COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    removeSubSystems:     Binary variable, if equals to 1 or true SubSystems 
+%    removeSubSystems:    Binary variable, if equals to 1 (or true) subSystems 
 %                         field will be removed from the model default:true
 %
 % OUTPUTS:
 %    modelOut:            COBRA model structure containing two added fields of
-%                         "rxnSubSystemMat" and "subSystemsNames"
-%    rxn2subSystem:     Matrix of reactions vs subSystems
+%                         "rxn2subSystem" and "subSystemsNames"
+%    rxn2subSystem:       Matrix of reactions vs subSystems
 %    subSystemNames:      Unique sub-system names in the model with order
 %                         corrosponding to the matrix
 %    nestedCells:         logical variable, True if sub-system field is a  

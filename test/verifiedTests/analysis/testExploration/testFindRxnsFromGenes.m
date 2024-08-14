@@ -2,6 +2,7 @@
 %
 % Purpose:
 %     - tests that reactions are found when providing a list of genes.
+%     - tests the correct functionality of findRxnFromGenes function
 %
 % Authors:
 %     - Original file: Stefania Magnusdottir August 2017
@@ -25,6 +26,9 @@ model = convertOldStyleModel(model);
 
 % get reactions for gene list, include gene not in model and nested cell
 geneList = {'b0115'; {'b0722'; 'MadeUp'}};
+
+% Initiate the test
+fprintf(' -- Running testFindRxnsFromGenes ... ');
 
 [geneRxnsStruct, geneRxnsArray] = findRxnsFromGenes(model, geneList, 0, 1);
 
@@ -62,3 +66,6 @@ end
 
 % change the directory
 cd(currentDir)
+
+% output a success message
+fprintf('Done.\n');

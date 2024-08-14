@@ -13,9 +13,6 @@ currentDir = cd(fileparts(which(mfilename)));
 % determine the test path for references
 testPath = pwd;
 
-% set the tolerance
-tol = 1e-8;
-
 % Create a Toy model
 model = createToyModel(0, 0, 0);
 
