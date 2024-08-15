@@ -15,9 +15,10 @@ function [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)
 %    rxnPos:                A double array of positions of the reactions in
 %                           reactionNames in the model (same order).
 %
-% USAGE:
-%    %Obtain all reactions with Glycolysis in their respective subSystems
-%     field.
+% EXAMPLE:
+%
+%    Obtain all reactions with Glycolysis in their respective subSystems
+%    field.
 %    [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,'Glycolysis')
 %
 % .. Author: - Thomas Pfau Nov 2017, 
