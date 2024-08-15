@@ -42,7 +42,7 @@ if nargin < 5 || isempty(TolMaxBoundary)
 end
 
 specificData.inputData = inputData;
-opts = detectImportOptions(inputData);
+
 
 fprintf('%s%s\n','Reading inputData from : ', inputData) 
 % Indentify all sheets
@@ -102,7 +102,7 @@ if isfield(specificData, 'mediaData') && isfield(specificData, 'cellCultureData'
     assayVolume = specificData.cellCultureData.assayVolume; %(L)
     proteinFraction = specificData.cellCultureData.proteinFraction; %dimensionless
     uptakeSign = specificData.cellCultureData.uptakeSign; %dimensionless
-    %Yanjun
+    
     specificData.mediaData = table(specificData.mediaData.rxns, ...
         specificData.mediaData.mediumConcentrations, specificData.mediaData.mediumConcentrations, ...
         'VariableNames', {'rxns', 'mediumMaxUptake','mediumConcentrations'});
@@ -111,7 +111,7 @@ if isfield(specificData, 'mediaData') && isfield(specificData, 'cellCultureData'
     %     specificData.mediaData.lb, specificData.mediaData.ub, ...
     %     'VariableNames', {'rxns', 'lb','ub'});
 
-    %Yanjun:
+ 
     for i = 1:length(specificData.mediaData.rxns)
         % specificData.mediumConcentrations(i) *
         % (uptakeSign * volume(L) * proteinFraction) /
