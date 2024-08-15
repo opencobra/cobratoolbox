@@ -1,6 +1,7 @@
 function model2JSON(model,fileName)
-% This function writes a json file from matlab structure.
-% I validated json format with https://jsonlint.com/.
+% This function writes a JSON file from Matlab structure.
+% JSON files can be validated by isValidJSON function or online tools like
+% https://jsonlint.com/.
 %
 % USAGE:
 %
@@ -31,13 +32,14 @@ for i = 1 : length(model.mets)
     met = regexprep(met,'\]','');
     fprintf(fid,strcat( '"id":"',met,'",\n'));
     fprintf(fid,strcat( '"name":"',model.metNames{i},'",\n'));
-    x = split(model.mets{i},'[');
-    comp = regexprep(x{2},'\]','');
+    comp = getCompartment(model.mets{i});
     fprintf(fid,strcat( '"compartment":"',comp,'",\n'));
     if isfield(model, 'metCharges')
         fprintf(fid,strcat( '"charge":',num2str(model.metCharges(i)),',\n'));
     end
-    fprintf(fid,strcat( '"formula":"',(model.metFormulas{i}),'",\n'));
+    if isfield(model, 'metFormulas')
+        fprintf(fid,strcat( '"formula":"',(model.metFormulas{i}),'",\n'));
+    end
     fprintf(fid,'"notes":{\n');
     fprintf(fid,'"original_vmh_ids":[\n');
     fprintf(fid,strcat('"',model.mets{i},'"\n'));
@@ -123,7 +125,8 @@ for i = 1 : length(model.rxns)
     for j = 1 : length(metList)
         met = regexprep(metList{j},'\[','_');
         met = regexprep(met,'\]','');
-        if isempty(strfind(num2str(stoichiometries(j,1)),'.'))
+        % Avoid using .0 for scientific notations
+        if ~contains(num2str(stoichiometries(j,1)),'.') && ~contains(num2str(stoichiometries(j,1)), 'e') && ~contains(num2str(stoichiometries(j,1)), 'E')
             fprintf(fid,strcat('"',met,'":',num2str(stoichiometries(j,1)),'.0'));
         else
             fprintf(fid,strcat('"',met,'":',num2str(stoichiometries(j,1)),''));
@@ -261,7 +264,7 @@ for i = 1 : length(uniqueCompartments)
     elseif strcmp('e',uniqueCompartments{i})
         fprintf(fid, '"e":"extracellular space"');
     elseif strcmp('g',uniqueCompartments{i})
-        fprintf(fid, '"g":"golgi apparatus",');
+        fprintf(fid, '"g":"golgi apparatus"');
     elseif strcmp('i',uniqueCompartments{i})
         fprintf(fid, '"i":"inner mitochondrial compartment"');
     elseif strcmp('l',uniqueCompartments{i})
@@ -273,7 +276,7 @@ for i = 1 : length(uniqueCompartments)
     elseif strcmp('r',uniqueCompartments{i})
         fprintf(fid, '"r":"endoplasmic reticulum"');
     elseif strcmp('p',uniqueCompartments{i})
-        fprintf(fid, '"p":"periplasm');
+        fprintf(fid, '"p":"periplasm"');
     elseif strcmp('x',uniqueCompartments{i})
         fprintf(fid, '"x":"peroxisome/glyoxysome"');
     end
