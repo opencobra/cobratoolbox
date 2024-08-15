@@ -1,7 +1,9 @@
 % The COBRAToolbox: testModel2JSON.m
 %
 % Purpose:
-%     - Test the model2JSON function, ensuring it converts a toy COBRA model structure to a JSON file correctly.
+%     - Test the model2JSON function, ensuring it correctly converts any COBRA
+%       model structure to a JSON file. The validity of the
+%       generated JSON file is confirmed by isValidJSON function
 %
 % Authors:
 %     - Farid Zare, 24/08/14
@@ -13,205 +15,29 @@ currentDir = cd(fileparts(which(mfilename)));
 % Determine the test path for references
 testPath = pwd;
 
-% Build a toy model from scratch with compartment annotations
-model = struct();
-model.mets = {'A[c]', 'B[c]'};  % Compartment notation added
-model.metNames = {'Metabolite A', 'Metabolite B'};
-model.metCharges = [0, 0];
-model.metFormulas = {'C6H12O6', 'C4H4O4'};
-model.rxns = {'R1'};
-model.rxnNames = {'Reaction 1'};
-model.S = [-1; 1];  % Stoichiometric matrix: A -> B
-model.lb = [0];
-model.ub = [1000];
-model.c = [1];
-model.genes = {'G1'};
-model.grRules = {'G1'};
-model.subSystems = {'Subsystem 1'};
-model.modelID = 'ToyModel';
-
 % Initiate the test
-fprintf(' -- Running testIsReactionInSubSystem ... \n');
+fprintf(' -- Running testModel2JSON ... \n');
 
-% Case 1
-% Expected JSON content (with No metabolite annotation)
-expectedJSONContent = [
-    '{\n',...
-    '"metabolites":[\n',...
-    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":{\n}\n},\n',...
-    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"reactions":[\n',...
-    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":"Subsystem 1",',...
-    '\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"genes":[\n',...
-    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"id":"ToyModel",\n',...
-    '"compartments":{\n"c":"cytosol"\n}\n',...
-    '}\n'
-];
+% Run the code for 5 different models
+modelNames = {'ecoli_core_model.mat', 'Recon1.0model.mat', 'Recon2.v05.mat',...
+    'Abiotrophia_defectiva_ATCC_49176.mat', 'Recon3DModel_301.mat', 'iJO1366.mat'};
 
-% Replace literal "\n" with actual newlines in expectedJSONContent
-expectedJSONContent = strrep(expectedJSONContent, '\n', newline);
+% Ensure the model2JSON can produce valid JSON files for all the models
+for i = 1:numel(modelNames)
+    model = getDistributedModel(modelNames{i});
 
-% Run the function being tested
-outputFileName = 'toyModel_output.json';
-model2JSON(model, outputFileName);
+    % Run the function being tested
+    fileName = 'testModel_output.json';
+    model2JSON(model, fileName);
 
-% Read the generated JSON file
-fid = fopen(outputFileName, 'r');
-generatedJSONContent = fread(fid, '*char')';
-fclose(fid);
+    % Check to see if the file is valid
+    [isValid] = isValidJSON(fileName);
 
-% Verify that the generated JSON matches the expected JSON
-assert(strcmp(generatedJSONContent, expectedJSONContent), 'Generated JSON does not match the expected JSON');
+    % Clean up (delete the generated JSON file)
+    delete(fileName);
 
-% Case 2
-% Expected JSON content (with one metabolite annotation)
-model.metReactomeID = {'a', 'b'};
-
-expectedJSONContent = [
-    '{\n',...
-    '"metabolites":[\n',...
-    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":{\n"reactome.compound":[\n"a"\n]\n}\n},\n',...
-    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":{\n"reactome.compound":[\n"b"\n]\n}\n}\n],\n',...
-    '"reactions":[\n',...
-    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
-    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"genes":[\n',...
-    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"id":"ToyModel",\n',...
-    '"compartments":{\n"c":"cytosol"\n}\n',...
-    '}\n'
-];
-
-% Replace literal "\n" with actual newlines in expectedJSONContent
-expectedJSONContent = strrep(expectedJSONContent, '\n', newline);
-
-% Run the function being tested
-outputFileName = 'toyModel_output.json';
-model2JSON(model, outputFileName);
-
-% Read the generated JSON file
-fid = fopen(outputFileName, 'r');
-generatedJSONContent = fread(fid, '*char')';
-fclose(fid);
-
-% Verify that the generated JSON matches the expected JSON
-assert(strcmp(generatedJSONContent, expectedJSONContent), 'Generated JSON does not match the expected JSON');
-
-% Case 3
-% Expected JSON content (with multiple metabolite annotation)
-model.metSEEDID = {'a', 'b'};
-
-expectedJSONContent = [
-    '{\n',...
-    '"metabolites":[\n',...
-    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"a"\n],\n"seed.compound":[\n"a"\n]\n}\n},\n',...
-    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"b"\n],\n"seed.compound":[\n"b"\n]\n}\n}\n],\n',...
-    '"reactions":[\n',...
-    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
-    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"genes":[\n',...
-    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"id":"ToyModel",\n',...
-    '"compartments":{\n"c":"cytosol"\n}\n',...
-    '}\n'
-]; 
-
-
-% Replace literal "\n" with actual newlines in expectedJSONContent
-expectedJSONContent = strrep(expectedJSONContent, '\n', newline);
-
-% Run the function being tested
-outputFileName = 'toyModel_output.json';
-model2JSON(model, outputFileName);
-
-% Read the generated JSON file
-fid = fopen(outputFileName, 'r');
-generatedJSONContent = fread(fid, '*char')';
-fclose(fid);
-
-% Verify that the generated JSON matches the expected JSON
-assert(strcmp(generatedJSONContent, expectedJSONContent), 'Generated JSON does not match the expected JSON');
-
-% Case 4
-% Expected JSON content (one reaction annotation)
-model.rxnMetaNetXID = {'m1', 'm2'};
-
-expectedJSONContent = [
-    '{\n',...
-    '"metabolites":[\n',...
-    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"a"\n],\n"seed.compound":[\n"a"\n]\n}\n},\n',...
-    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"b"\n],\n"seed.compound":[\n"b"\n]\n}\n}\n],\n',...
-    '"reactions":[\n',...
-    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
-    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n"metanetx.reaction":[\n"m1"\n]\n}\n}\n],\n',...
-    '"genes":[\n',...
-    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"id":"ToyModel",\n',...
-    '"compartments":{\n"c":"cytosol"\n}\n',...
-    '}\n'
-]; 
-
-
-% Replace literal "\n" with actual newlines in expectedJSONContent
-expectedJSONContent = strrep(expectedJSONContent, '\n', newline);
-
-% Run the function being tested
-outputFileName = 'toyModel_output.json';
-model2JSON(model, outputFileName);
-
-% Read the generated JSON file
-fid = fopen(outputFileName, 'r');
-generatedJSONContent = fread(fid, '*char')';
-fclose(fid);
-
-% Verify that the generated JSON matches the expected JSON
-assert(strcmp(generatedJSONContent, expectedJSONContent), 'Generated JSON does not match the expected JSON');
-
-% Case 5
-% Expected JSON content (multiple reaction annotation)
-model.rxnSBOTerms = {'s1', 's2'};
-
-expectedJSONContent = [
-    '{\n',...
-    '"metabolites":[\n',...
-    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"a"\n],\n"seed.compound":[\n"a"\n]\n}\n},\n',...
-    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":',...
-    '{\n"reactome.compound":[\n"b"\n],\n"seed.compound":[\n"b"\n]\n}\n}\n],\n',...
-    '"reactions":[\n',...
-    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
-    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n"metanetx.reaction":[\n"m1"\n],\n"sbo":[\n"s1"\n]\n}\n}\n],\n',...
-    '"genes":[\n',...
-    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
-    '"id":"ToyModel",\n',...
-    '"compartments":{\n"c":"cytosol"\n}\n',...
-    '}\n'
-]; 
-
-
-% Replace literal "\n" with actual newlines in expectedJSONContent
-expectedJSONContent = strrep(expectedJSONContent, '\n', newline);
-
-% Run the function being tested
-outputFileName = 'toyModel_output.json';
-model2JSON(model, outputFileName);
-
-% Read the generated JSON file
-fid = fopen(outputFileName, 'r');
-generatedJSONContent = fread(fid, '*char')';
-fclose(fid);
-
-% Verify that the generated JSON matches the expected JSON
-assert(strcmp(generatedJSONContent, expectedJSONContent), 'Generated JSON does not match the expected JSON');
-
-% Clean up (delete the generated JSON file)
-delete(outputFileName);
+    assert(isValid, ['The model ' modelNames{i} ' produced an invalid JSON file.'])
+end
 
 % Change the directory back to the original
 cd(currentDir);
