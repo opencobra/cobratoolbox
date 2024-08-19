@@ -1,11 +1,11 @@
-function [solICONGEMs, solEflux, R, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha)
+function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha)
 % Algorithm to Integrate a Gene Co-expression Network and Genome-scale Metabolic Model:
 % This algorithm calculates the reaction flux distribution for each condition by applying 
 % quadratic programming.
 %
 % USAGE:
 %
-%    solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+%    [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
 %
 % INPUTS:
 %
@@ -24,7 +24,8 @@ function [solICONGEMs, solEflux, R, boundEf] = ICONGEMs(model, exp, genetxt, con
 %    alpha:               The value for the proportion of biomass (default value: 1).
 %                         
 % OUTPUTS:
-%    solution:             Flux distribution table corresponding to reaction flux names.
+%    solICONGEMs:             Flux distribution table corresponding to reaction flux names.
+%    boundEf:                 Upper bound of E-flux.
 %
 % EXAMPLES:
 %    % This could be an example that can be copied from the documentation to MATLAB:
