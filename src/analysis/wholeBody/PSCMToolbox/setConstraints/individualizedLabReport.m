@@ -10,11 +10,7 @@ function [modelPersonalized,IndividualParametersNew] = individualizedLabReport(m
 %                           personalized or updated based on the input
 %                           data. This structure, with default parameters, can be obtained using the
 %                           script standardPhysiolDefaultParameters.m
-<<<<<<< Updated upstream
-% InputData                 InputData: specify compartment by placing [bc], [u] or [csf] after the metabolite name 
-=======
 % InputData                 InputData: specify compartment by placing [bc], [u] or [csf] after the metabolite name
->>>>>>> Stashed changes
 % optionCardiacOutput       Different ways of calculatibg the cardiac
 %                           output based on physiological data have been implemented.
 %                           - Based on heart rate and stroke volume: CardiacOutput = HeartRate * StrokeVolume. (optionCardiacOutput = 1, default)
@@ -286,56 +282,6 @@ end
 %% apply HMDB data based on IndividualParameters
 modelPersonalized = model;
 modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters);
-<<<<<<< Updated upstream
-
-% Obtain molecular weights using computeMW and create table of metabolite name and moleceular weight
-InputDataT = array2table(InputData);
-InputDataT.Properties.VariableNames = ["parameter" "unit" "MetCon"];
-mets = model.mets;
-MW = computeMW(model);
-AllMolecularWeights = unique(table(mets, MW)); 
-
-%% Blood metabolites
-Type = 'direct';
-counter = 0;
-%Load each metabolite and MW, calculate lb and ub  
-ContainsBC = find(contains(InputDataT.parameter, '[bc]'));
-BCmet = InputDataT.parameter(ContainsBC);
-InputDataMetabolitesBC = cell(size(BCmet, 1),3);
-if ~isempty(ContainsBC)
-    for i= 1:size(BCmet,1)
-        inputMet = BCmet{i};
-        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
-        if ~isempty(rowInd)
-            MW = AllMolecularWeights.MW(rowInd);
-            Conc = str2double(InputDataT.MetCon{i});
-            
-            Name = inputMet;
-            MetConMin  = Conc*10*(1/MW)*1000*0.8;
-            MetConMax = Conc*10*(1/MW)*1000*1.2;
-            InputDataMetabolitesBC(i, :) = {Name,  MetConMin,  MetConMax};
-            clear Name MetConMin MinCon MetConMax MaxCon
-        else
-            missing{i} =  inputMet;
-            missing = missing(~cellfun('isempty',missing));
-        end
-        counter = counter + 1;
-        fprintf('Calculated blood metabolite concentration #%d\n', counter);
-        
-        if isempty(rowInd)
-            disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
-        end
-    end
-    
-    for j = 1:size(BCmet(:))
-        InputDataMetabolitesBC{j, 1}=strrep(InputDataMetabolitesBC{j, 1},'[bc]','');
-    end
-    
-    if exist('InputDataMetabolitesBC','var')
-        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesBC, 'bc');
-    end
-end
-=======
  % Test feasibility
 % enforce body weight maintenance
 modelPersonalized = changeRxnBounds(modelPersonalized, 'Whole_body_objective_rxn', 1, 'b');
@@ -450,7 +396,6 @@ if ~isempty(ContainsBC)
     end
 
 end
->>>>>>> Stashed changes
  %% Urine Metabolites
 ContainsU = find(contains(InputDataT.parameter, '[u]'));
 Umet = InputDataT.parameter(ContainsU);
@@ -458,16 +403,6 @@ InputDataMetabolitesU = cell(size(Umet, 1),3);
 if ~isempty(ContainsU)
     for i= 1:size(Umet,1)
         inputMet = Umet{i};
-<<<<<<< Updated upstream
-        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
-        if ~isempty(rowInd)
-            MW = AllMolecularWeights.MW(rowInd);
-            Conc = str2double(InputDataT.MetCon{i});
-            
-            Name = inputMet;
-            MetConMin  = Conc*10*(1/MW)*1000*0.8;
-            MetConMax = Conc*10*(1/MW)*1000*1.2;
-=======
         row = ismember(InputDataT.parameter,inputMet);
         met = regexprep(inputMet, '\[.*?\]', '');
         idx = find(strcmp(AllMolecularWeights.metIDs, met));
@@ -499,7 +434,6 @@ if ~isempty(ContainsU)
             MetConMin  = Conc*10*(1/MW)*1000*0.8;
             MetConMax = Conc*10*(1/MW)*1000*1.2;
             
->>>>>>> Stashed changes
             InputDataMetabolitesU(i, :) = {Name,  MetConMin,  MetConMax};
             clear Name MetConMin MinCon MetConMax MaxCon
         else
@@ -509,24 +443,11 @@ if ~isempty(ContainsU)
         counter = counter + 1;
         fprintf('Calculated urine metabolite concentration #%d\n', counter);
         
-<<<<<<< Updated upstream
-        if isempty(rowInd)
-=======
         if isempty(row)
->>>>>>> Stashed changes
             disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
         end
     end
     
-<<<<<<< Updated upstream
-    for j = 1:size(Umet(:))
-        InputDataMetabolitesU{j, 1}=strrep(InputDataMetabolitesU{j, 1},'[u]','');
-    end
-    
-    if exist('InputDataMetabolitesU','var')
-        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesU, 'u');
-    end
-=======
      InputDataMetabolitesU(:, 1) = Umet; 
     
     if exist('InputDataMetabolitesU','var')
@@ -548,7 +469,6 @@ if ~isempty(ContainsU)
         IndividualParameters.UrineMetabolites = InputDataMetabolitesU;
     end
     
->>>>>>> Stashed changes
 end
  %% CSF metabolites   
 ContainsCSF = find(contains(InputDataT.parameter, '[csf]'));
@@ -557,12 +477,6 @@ InputDataMetabolitesCSF = cell(size(CSFmet, 1),3);
 if ~isempty(ContainsCSF)
     for i= 1:size(CSFmet,1)
         inputMet = CSFmet{i};
-<<<<<<< Updated upstream
-        rowInd = find(ismember(AllMolecularWeights.mets, inputMet));
-        if ~isempty(rowInd)
-            MW = AllMolecularWeights.MW(rowInd);
-            Conc = str2double(InputDataT.MetCon{i});
-=======
          row = ismember(InputDataT.parameter,inputMet);
          met = regexprep(inputMet, '\[.*?\]', '');
          idx = find(strcmp(AllMolecularWeights.metIDs, met));
@@ -593,7 +507,6 @@ if ~isempty(ContainsCSF)
             % CONVERT TO MICROMOLE PER LITER
             MetConMin  = Conc*10*(1/MW)*1000*0.8;
             MetConMax = Conc*10*(1/MW)*1000*1.2;
->>>>>>> Stashed changes
             
             Name = inputMet;
             MetConMin  = Conc*10*(1/MW)*1000*0.8;
@@ -603,28 +516,11 @@ if ~isempty(ContainsCSF)
         else
             missing{i} =  inputMet;
             missing = missing(~cellfun('isempty',missing));
-<<<<<<< Updated upstream
-=======
             
->>>>>>> Stashed changes
         end
         counter = counter + 1;
         fprintf('Calculated Cerebrospinal fluid metabolite concentration #%d\n', counter);
         
-<<<<<<< Updated upstream
-        if isempty(rowInd)
-            disp  'Metabolite not found: please check spelling or naming of metabolite in input data'
-        end
-    end
-    
-    for j = 1:size(CSFmet(:))
-        InputDataMetabolitesCSF{j, 1}=strrep(InputDataMetabolitesCSF{j, 1},'[csf]','');
-    end
-    
-    if exist('InputDataMetabolitesCSF','var')
-        modelPersonalized = physiologicalConstraintsHMDBbased(modelPersonalized,IndividualParameters, '',Type, InputDataMetabolitesCSF, 'csf');
-    end
-=======
         if isempty(row)
             disp('Metabolite not found: please check spelling or naming of metabolite in input data')
         end
@@ -651,7 +547,6 @@ if ~isempty(ContainsCSF)
         IndividualParameters.CerebrospinalFluid = InputDataMetabolitesCSF;
     end
    
->>>>>>> Stashed changes
 end
     IndividualParametersNew = IndividualParameters;
 end
