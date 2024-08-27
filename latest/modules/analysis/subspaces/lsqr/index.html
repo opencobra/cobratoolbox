@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Subspaces" href="../index.html"/>
-        <link rel="next" title="Nullspace" href="../nullspace/index.html"/>
-        <link rel="prev" title="Subspaces" href="../index.html"/> 
+        <link rel="next" title="Filternonfluxreactions" href="../../filterNonFluxReactions/index.html"/>
+        <link rel="prev" title="Rowreduce" href="../rowReduce/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -157,45 +159,57 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LT2/index.html">Lt2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamic FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">findMIIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">geometricFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">gMCS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">KLdistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">rMTA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">ROOM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GT1/index.html">Gt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LT1/index.html">Lt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastForest/index.html">Fastforest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">Kldistance</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Subspaces</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Lsqr</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../nullspace/index.html">Nullspace</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rank/index.html">Rank</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../rowReduce/index.html">rowReduce</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../subspaceProjection/index.html">subspaceProjection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nullspace/index.html">Nullspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../subspaceProjection/index.html">Subspaceprojection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rowReduce/index.html">Rowreduce</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Lsqr</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../filterNonFluxReactions/index.html">Filternonfluxreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findUpDownRegulatedGenes/index.html">Findupdownregulatedgenes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -210,6 +224,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -250,7 +265,7 @@
 <span id="id1"></span><h1>Lsqr<a class="headerlink" href="#lsqr" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.analysis.subspaces.lsqr"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.lsqr.aprod">
-<span class="sig-name descname"><span class="pre">aprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">iw</span></em>, <em class="sig-param"><span class="pre">rw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.lsqr.aprod" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">aprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">iw</span></em>, <em class="sig-param"><span class="pre">rw</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/lsqr/aprod.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.aprod" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the simplest example for testing  LSQR.
 <span class="math notranslate nohighlight">\(A = rw\)</span>.
 If <cite>mode = 1</cite>, <cite>aprod</cite> computes <span class="math notranslate nohighlight">\(y = A x\)</span>.
@@ -260,7 +275,7 @@ for some matrix  <cite>A</cite>.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.lsqr.cgls">
-<span class="sig-name descname"><span class="pre">cgls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Aname</span></em>, <em class="sig-param"><span class="pre">shift</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">kmax</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">prnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.lsqr.cgls" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cgls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Aname</span></em>, <em class="sig-param"><span class="pre">shift</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">kmax</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">prnt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/lsqr/cgls.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.cgls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a symmetric system</p>
 <p><span class="math notranslate nohighlight">\((A^T A + shift I)x = A^T b\)</span> or <span class="math notranslate nohighlight">\(N x = A^T b\)</span>,</p>
 <p>where <cite>A</cite> is a general <cite>m</cite> by <cite>n</cite> matrix and shift may be positive or negative.
@@ -275,34 +290,36 @@ It MAY be unstable otherwise.</p>
 </ul>
 </div></blockquote>
 <p>The M-file must not be called Aname.m!</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[x, resNE, k, info] = cgls( Aname ,shift, b, m, n, kmax, tol, prnt)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>Aname:    name of file
-shift:    if 0 then <cite>cgls</cite> is Hestenes and Stiefel’s specialized form
-b:        used in the formulas in description
-m, n:     dimensions of the matrix
-kmax:     maximum number of iterations.
-tol:      desired relative residual size, <span class="math notranslate nohighlight">\(norm(rNE)/norm(A^T b)\)</span>,</p>
-<blockquote>
-<div><p>where <span class="math notranslate nohighlight">\(rNE = A^T b - N x\)</span>.</p>
-</div></blockquote>
-<p>prnt:     1 gives an iteration log, 0 suppresses it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[x, resNE, k, info] = cgls</strong> (<em>Aname ,shift, b, m, n, kmax, tol, prnt</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>x:        from the formulas in description
-resNE:    relative residual for normal equations: <span class="math notranslate nohighlight">\(norm(A^T b - Nx)/norm(A^T b)\)</span>.
-k:        final number of iterations performed.
-info:     gives information on the result:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Aname</strong> – name of file</p></li>
+<li><p><strong>shift</strong> – if 0 then <cite>cgls</cite> is Hestenes and Stiefel’s specialized form</p></li>
+<li><p><strong>b</strong> – used in the formulas in description</p></li>
+<li><p><strong>m, n</strong> – dimensions of the matrix</p></li>
+<li><p><strong>kmax</strong> – maximum number of iterations.</p></li>
+<li><p><strong>tol</strong> – desired relative residual size, <span class="math notranslate nohighlight">\(norm(rNE)/norm(A^T b)\)</span>,
+where <span class="math notranslate nohighlight">\(rNE = A^T b - N x\)</span>.</p></li>
+<li><p><strong>prnt</strong> – 1 gives an iteration log, 0 suppresses it.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – from the formulas in description</p></li>
+<li><p><strong>resNE</strong> – relative residual for normal equations: <span class="math notranslate nohighlight">\(norm(A^T b - Nx)/norm(A^T b)\)</span>.</p></li>
+<li><p><strong>k</strong> – final number of iterations performed.</p></li>
+<li><p><strong>info</strong> – gives information on the result:</p>
+<ul>
 <li><p>1 if required accuracy was achieved,</p></li>
 <li><p>2 if the limit kmax was reached,</p></li>
 <li><p>3 if N seems to be singular or indefinite.</p></li>
 <li><p>4 if instability seems likely.  (<cite>N</cite> indefinite and <cite>normx</cite> decreased.)</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -315,7 +332,7 @@ is a simple modification.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.lsqr.lsqr">
-<span class="sig-name descname"><span class="pre">lsqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">aprodname</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">damp</span></em>, <em class="sig-param"><span class="pre">atol</span></em>, <em class="sig-param"><span class="pre">btol</span></em>, <em class="sig-param"><span class="pre">conlim</span></em>, <em class="sig-param"><span class="pre">itnlim</span></em>, <em class="sig-param"><span class="pre">show</span></em>, <em class="sig-param"><span class="pre">covindex</span></em>, <em class="sig-param"><span class="pre">userstop</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqr" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lsqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">aprodname</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">damp</span></em>, <em class="sig-param"><span class="pre">atol</span></em>, <em class="sig-param"><span class="pre">btol</span></em>, <em class="sig-param"><span class="pre">conlim</span></em>, <em class="sig-param"><span class="pre">itnlim</span></em>, <em class="sig-param"><span class="pre">show</span></em>, <em class="sig-param"><span class="pre">covindex</span></em>, <em class="sig-param"><span class="pre">userstop</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/lsqr/lsqr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqr" title="Permalink to this definition">¶</a></dt>
 <dd><p>LSQR solves  <span class="math notranslate nohighlight">\(A x = b\)</span>  or  <span class="math notranslate nohighlight">\(min ||b - A x||_2\)</span>  if <span class="math notranslate nohighlight">\(damp = 0\)</span>,
 or <span class="math notranslate nohighlight">\(min ||(b) - (A) x||\)</span> otherwise.
 <span class="math notranslate nohighlight">\(||(0) (damp\ I)||2\)</span>
@@ -323,73 +340,64 @@ or <span class="math notranslate nohighlight">\(min ||(b) - (A) x||\)</span> oth
 where <cite>aprod</cite> is a function handle that performs the matrix-vector operations.
 If <cite>mode = 1</cite>,   <cite>aprod</cite>  must return  <span class="math notranslate nohighlight">\(y = A x\)</span>   without altering <cite>x</cite>.
 If <cite>mode = 2</cite>,   <cite>aprod</cite>  must return  <span class="math notranslate nohighlight">\(y = A^T x\)</span>  without altering <cite>x</cite>.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>m,n:           dimensions of the matrix
-aprodname:     function handle
-b:             from <span class="math notranslate nohighlight">\(A x = b\)</span>
-atol, btol:    are stopping tolerances. If both are 1.0e-9 (say),</p>
-<blockquote>
-<div><p>the final residual norm should be accurate to about 9 digits.
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr</strong> (<em>m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>m,n</strong> – dimensions of the matrix</p></li>
+<li><p><strong>aprodname</strong> – function handle</p></li>
+<li><p><strong>b</strong> – from <span class="math notranslate nohighlight">\(A x = b\)</span></p></li>
+<li><p><strong>atol, btol</strong> – are stopping tolerances. If both are 1.0e-9 (say),
+the final residual norm should be accurate to about 9 digits.
 (The final <cite>x</cite> will usually have fewer correct digits,
-depending on <cite>cond(A)</cite> and the size of damp.)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>conlim:        is also a stopping tolerance.  <cite>lsqr</cite> terminates if an estimate</dt><dd><p>of <cite>cond(A)`</cite> exceeds <cite>conlim</cite>.  For compatible systems <cite>Ax = b</cite>,
+depending on <cite>cond(A)</cite> and the size of damp.)</p></li>
+<li><p><strong>conlim</strong> – is also a stopping tolerance.  <cite>lsqr</cite> terminates if an estimate
+of <cite>cond(A)`</cite> exceeds <cite>conlim</cite>.  For compatible systems <cite>Ax = b</cite>,
 conlim could be as large as 1.0e+12 (say). For least-squares
 problems, <cite>conlim</cite> should be less than 1.0e+8.
 Maximum precision can be obtained by setting
 <cite>atol = btol = conlim = zero</cite>, but the number of iterations
-may then be excessive.</p>
-</dd>
-</dl>
-<p>itnlim:        is an explicit limit on iterations (for safety).
-show:          1 - gives an iteration log, 0 - suppresses output,
-covindex:      specified index set of the columns and rows of the</p>
-<blockquote>
-<div><p>covariance matrix</p>
-</div></blockquote>
-<dl>
-<dt>userstop:      a function handle that checks a user-defined stopping</dt><dd><p>criteria. The function handle should be in the form
+may then be excessive.</p></li>
+<li><p><strong>itnlim</strong> – is an explicit limit on iterations (for safety).</p></li>
+<li><p><strong>show</strong> – 1 - gives an iteration log, 0 - suppresses output,</p></li>
+<li><p><strong>covindex</strong> – specified index set of the columns and rows of the
+covariance matrix</p></li>
+<li><p><strong>userstop</strong> – a function handle that checks a user-defined stopping
+criteria. The function handle should be in the form
 <cite>[istop, atol, userout] = userstop(istop, atol, arnorm, itn)</cite>;</p>
 <p>if <cite>userstop</cite> returns <cite>istop &gt; 0</cite> lsqr will stop
 if <cite>userstop</cite> returns <cite>istop = 0</cite> lsqr will continue
 the userstop function can alter the tolerance atol.</p>
+</li>
+</ul>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>x:             is the final solution.
-istop:         gives the reason for termination.</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – is the final solution.</p></li>
+<li><p><strong>istop</strong> – gives the reason for termination.</p>
+<ul>
 <li><p>1 means <cite>x</cite> is an approximate solution to <cite>Ax = b</cite>.</p></li>
 <li><p>2 means <cite>x</cite> approximately solves the least-squares problem.</p></li>
 </ul>
-</div></blockquote>
-<p>itn:           changed to 0 in the code
-r1norm:        = <cite>norm(r)</cite>, where <span class="math notranslate nohighlight">\(r = b - A x\)</span>.
-r2norm:        = <span class="math notranslate nohighlight">\(sqrt(norm(r)^2  +  damp^2 * norm(x)^2)\)</span></p>
-<blockquote>
-<div><p>= <cite>r1norm</cite> if <span class="math notranslate nohighlight">\(damp = 0\)</span>.</p>
-</div></blockquote>
-<p>anorm:         = estimate of Frobenius norm of Abar = [<cite>A</cite>]. [<cite>damp*I</cite>]
-acond:         = estimate of <cite>cond(Abar)</cite>.
-arnorm:        = estimate of <span class="math notranslate nohighlight">\(norm(A^T r - damp^2 x)\)</span>.
-xnorm:         = <cite>norm(x)</cite>.
-var:           (if present) estimates all diagonals of <span class="math notranslate nohighlight">\((A^T A)^{-1}\)</span> (if <span class="math notranslate nohighlight">\(damp = 0\)</span>)</p>
-<blockquote>
-<div><p>or more generally <span class="math notranslate nohighlight">\((A^T A + damp^2 I)^{-1}\)</span>.
+</li>
+<li><p><strong>itn</strong> – changed to 0 in the code</p></li>
+<li><p><strong>r1norm</strong> – = <cite>norm(r)</cite>, where <span class="math notranslate nohighlight">\(r = b - A x\)</span>.</p></li>
+<li><p><strong>r2norm</strong> – = <span class="math notranslate nohighlight">\(sqrt(norm(r)^2  +  damp^2 * norm(x)^2)\)</span>
+= <cite>r1norm</cite> if <span class="math notranslate nohighlight">\(damp = 0\)</span>.</p></li>
+<li><p><strong>anorm</strong> – = estimate of Frobenius norm of Abar = [<cite>A</cite>]. [<cite>damp*I</cite>]</p></li>
+<li><p><strong>acond</strong> – = estimate of <cite>cond(Abar)</cite>.</p></li>
+<li><p><strong>arnorm</strong> – = estimate of <span class="math notranslate nohighlight">\(norm(A^T r - damp^2 x)\)</span>.</p></li>
+<li><p><strong>xnorm</strong> – = <cite>norm(x)</cite>.</p></li>
+<li><p><strong>var</strong> – (if present) estimates all diagonals of <span class="math notranslate nohighlight">\((A^T A)^{-1}\)</span> (if <span class="math notranslate nohighlight">\(damp = 0\)</span>)
+or more generally <span class="math notranslate nohighlight">\((A^T A + damp^2 I)^{-1}\)</span>.
 This is well defined if <cite>A</cite> has full column rank or <span class="math notranslate nohighlight">\(damp &gt; 0\)</span>.
-(Not sure what <cite>var</cite> means if <span class="math notranslate nohighlight">\(rank(A) &lt; n\)</span> and <span class="math notranslate nohighlight">\(damp = 0\)</span>.)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>cov:           (if present) esitmates the rows and columns of the</dt><dd><p>covariance matrix specified by the covindex set.</p>
-</dd>
-</dl>
-<p>userout:       output data from the <cite>userstop</cite> function</p>
+(Not sure what <cite>var</cite> means if <span class="math notranslate nohighlight">\(rank(A) &lt; n\)</span> and <span class="math notranslate nohighlight">\(damp = 0\)</span>.)</p></li>
+<li><p><strong>cov</strong> – (if present) esitmates the rows and columns of the
+covariance matrix specified by the covindex set.</p></li>
+<li><p><strong>userout</strong> – output data from the <cite>userstop</cite> function</p></li>
+</ul>
 </dd>
 </dl>
 <p>LSQR uses an iterative (conjugate-gradient-like) method.
@@ -410,7 +418,7 @@ LSQR and CRAIG, BIT 35, 588-604</cite>.</p></li>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.lsqr.lsqraprod">
-<span class="sig-name descname"><span class="pre">lsqraprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">iw</span></em>, <em class="sig-param"><span class="pre">rw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqraprod" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lsqraprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">iw</span></em>, <em class="sig-param"><span class="pre">rw</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/lsqr/lsqraprod.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqraprod" title="Permalink to this definition">¶</a></dt>
 <dd><p>if <cite>mode = 1</cite>, <cite>lsqraprod</cite> computes <span class="math notranslate nohighlight">\(y = A x\)</span>,
 if <cite>mode = 2</cite>, <cite>lsqraprod</cite> computes <span class="math notranslate nohighlight">\(y = A^T x\)</span>
 for some matrix <cite>A</cite>.</p>
@@ -438,7 +446,7 @@ It uses the leading <cite>m n</cite> submatrix from:</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.lsqr.lsqrtest">
-<span class="sig-name descname"><span class="pre">lsqrtest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">damp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqrtest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lsqrtest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">damp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/lsqr/lsqrtest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.lsqr.lsqrtest" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <span class="math notranslate nohighlight">\(m = n\)</span> and <span class="math notranslate nohighlight">\(damp = 0\)</span>, this sets up a system <span class="math notranslate nohighlight">\(A x = b\)</span>
 and calls <cite>lsqr.m</cite> to solve it.  Otherwise, the usual
 least-squares or damped least-squares problem is solved.
@@ -457,10 +465,10 @@ least-squares or damped least-squares problem is solved.
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../nullspace/index.html" class="btn btn-default float-right" title="Nullspace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../filterNonFluxReactions/index.html" class="btn btn-default float-right" title="Filternonfluxreactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Subspaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rowReduce/index.html" class="btn btn-default" title="Rowreduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -498,6 +506,9 @@ least-squares or damped least-squares problem is solved.
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

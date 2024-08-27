@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>c13solver &mdash; The COBRA Toolbox</title>
+  <title>C13solver &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Fluxomics" href="../index.html"/>
-        <link rel="next" title="Metabotools" href="../../metabotools/index.html"/>
-        <link rel="prev" title="atomTransition" href="../atomTransition/index.html"/> 
+        <link rel="next" title="Atomtransition" href="../atomTransition/index.html"/>
+        <link rel="prev" title="Fluxomics" href="../index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,15 +160,19 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Data integration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">ChemoInformatics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fluxomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../atomTransition/index.html">atomTransition</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">c13solver</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">C13solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../atomTransition/index.html">Atomtransition</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelCreation/index.html">Modelcreation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inactiveGeneDeletion/index.html">Inactivegenedeletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -183,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -208,9 +215,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Data integration</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Fluxomics</a></li>
-      <li class="breadcrumb-item active">c13solver</li>
+      <li class="breadcrumb-item active">C13solver</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -220,60 +227,66 @@
            <div itemprop="articleBody">
             
   <section id="c13solver">
-<span id="id1"></span><h1>c13solver<a class="headerlink" href="#c13solver" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>C13solver<a class="headerlink" href="#c13solver" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.fluxomics.c13solver"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.Combination">
-<span class="sig-name descname"><span class="pre">Combination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.Combination" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Combination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">k</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/Combination.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.Combination" title="Permalink to this definition">¶</a></dt>
 <dd><p>Produces the array of combinations possible picking k from n
 adapted from Combinadics
 <a class="reference external" href="http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx">http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx</a></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = Combination(n, k)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>n:      number of elements in the pool
-k:      number of elements to pick from <cite>n</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = Combination</strong> (<em>n, k</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:    array of combinations</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>n</strong> – number of elements in the pool</p></li>
+<li><p><strong>k</strong> – number of elements to pick from <cite>n</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – array of combinations</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.cdv2idv">
-<span class="sig-name descname"><span class="pre">cdv2idv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.cdv2idv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cdv2idv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/cdv2idv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.cdv2idv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformation matrix to transform cumomers to idv’s.
 <cite>idv = cdv2idv(log2(length(cdv)))*cdv</cite>;
 Employs memoization.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = cdv2idv(n)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>n:      cdv</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = cdv2idv</strong> (<em>n</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:    idv</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>n</strong> – cdv</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – idv</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver">
-<span class="sig-name descname"><span class="pre">generateIsotopomerSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">inputMet</span></em>, <em class="sig-param"><span class="pre">experiment</span></em>, <em class="sig-param"><span class="pre">FVAflag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generateIsotopomerSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">inputMet</span></em>, <em class="sig-param"><span class="pre">experiment</span></em>, <em class="sig-param"><span class="pre">FVAflag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints a file which looks like BiosyntheticMappingFile except that it has the
 indexes of every reaction in there as well.
 After that it calls converter.pl, optimizer.pl and validator.pl but I can
 take care of that.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>generateIsotopomerSolver(model, inputMet, experiment, FVAflag)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:         model structure with .isotopomer filed
-inputMet:      input metabolites
-experiment:    structure
-FVAflag:       default = false, if true then additinoal operations involving fluxVariability involved</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>generateIsotopomerSolver</strong> (<em>model, inputMet, experiment, FVAflag</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure with .isotopomer filed</p></li>
+<li><p><strong>inputMet</strong> – input metabolites</p></li>
+<li><p><strong>experiment</strong> – structure</p></li>
+<li><p><strong>FVAflag</strong> – default = false, if true then additinoal operations involving fluxVariability involved</p></li>
+</ul>
 </dd>
 </dl>
 <p>Prints a file to /isotopomer/solver/ directory</p>
@@ -281,86 +294,91 @@ FVAflag:       default = false, if true then additinoal operations involving flu
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.idv2cdv">
-<span class="sig-name descname"><span class="pre">idv2cdv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2cdv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">idv2cdv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2cdv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2cdv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns transformation to go from idv to cumomers.
 <cite>cdv = idv2cdv(log2(length(idv)))*idv</cite>;</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = idv2cdv(n)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>n:      idv</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = idv2cdv</strong> (<em>n</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:    cdv</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>n</strong> – idv</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – cdv</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.idv2idv">
-<span class="sig-name descname"><span class="pre">idv2idv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2idv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">idv2idv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2idv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2idv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outputs a transformation matrix for changing from forward to reverse order.</p>
 <p>order 1 (Jennie’s)</p>
 <p>000, 001, 010, 011, 100, 101, 110, 111</p>
 <p>order 2 (mine)</p>
 <p>000, 100, 010, 110, 001, 101, 011, 111</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = idv2idv(n)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>n:      matrix, size of matrix <cite>(2^n x 2^n)</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = idv2idv</strong> (<em>n</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:    transforamtion matrix</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>n</strong> – matrix, size of matrix <cite>(2^n x 2^n)</cite></p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – transforamtion matrix</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.idv2mdv">
-<span class="sig-name descname"><span class="pre">idv2mdv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">fragment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2mdv" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">idv2mdv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">fragment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/idv2mdv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.idv2mdv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns transofmation matrix from idv’s (either Jennie’s or Jan’s order).
 <cite>MDV = idv2mdv(log2(length(idv)))*idv</cite>;</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = idv2mdv(n, fragment)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>n:           matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = idv2mdv</strong> (<em>n, fragment</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>fragment:    a vector of carbons to be included.  [ 0, 0, 1, 1, 1]’ = last 3 carbons.</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>n</strong> – matrix</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:         transformation matrix</p>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>fragment</strong> – a vector of carbons to be included.  [ 0, 0, 1, 1, 1]’ = last 3 carbons.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>out</strong> – transformation matrix</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.scoreC13Fit">
-<span class="sig-name descname"><span class="pre">scoreC13Fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flux</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">namesset</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.scoreC13Fit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">scoreC13Fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flux</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">namesset</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.scoreC13Fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function (1) computes the theoretical mdv distribution vector for
 a given flux vector, <cite>v</cite>, (2) and then computes an error score by taking a
 running sum of the squared difference between the theortical and
 experimental <cite>mdv</cite> vectors.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[output] = scoreC13Fit(flux, expdata, model, namesset, method)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>flux:        flux vector
-expdata:     experimental data structure
-model:       model structure
-namesset:    set of names
-method:      method 1 = cumomer, method 2 = CMU</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[output] = scoreC13Fit</strong> (<em>flux, expdata, model, namesset, method</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:      contains fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>flux</strong> – flux vector</p></li>
+<li><p><strong>expdata</strong> – experimental data structure</p></li>
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>namesset</strong> – set of names</p></li>
+<li><p><strong>method</strong> – method 1 = cumomer, method 2 = CMU</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – contains fields:</p>
+<ul class="simple">
 <li><p>error - the calculated error sum value</p></li>
 <li><p>theory - theoretical <cite>mdv</cite> vector</p></li>
 <li><p>experimental - experimental <cite>mdv</cite> vector</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -394,10 +412,10 @@ expdata - experimental data structure</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metabotools/index.html" class="btn btn-default float-right" title="Metabotools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../atomTransition/index.html" class="btn btn-default float-right" title="Atomtransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../atomTransition/index.html" class="btn btn-default" title="atomTransition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Fluxomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -435,6 +453,9 @@ expdata - experimental data structure</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

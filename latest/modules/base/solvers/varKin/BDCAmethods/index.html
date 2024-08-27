@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BDCAmethods &mdash; The COBRA Toolbox</title>
+  <title>Bdcamethods &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
-        <link rel="up" title="varKin" href="../index.html"/>
-        <link rel="next" title="derFreeMethods" href="../derFreeMethods/index.html"/>
-        <link rel="prev" title="varKin" href="../index.html"/> 
+        <link rel="up" title="Varkin" href="../index.html"/>
+        <link rel="next" title="Levmarmethods" href="../levMarMethods/index.html"/>
+        <link rel="prev" title="Derfreemethods" href="../derFreeMethods/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -159,21 +161,35 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../io/index.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../cardOpt/index.html">cardOpt</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../index.html">varKin</a><ul class="current">
-<li class="toctree-l5 current"><a class="current reference internal" href="#">BDCAmethods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../derFreeMethods/index.html">derFreeMethods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../levMarMethods/index.html">levMarMethods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../msk/index.html">Msk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Varkin</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../derFreeMethods/index.html">Derfreemethods</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Bdcamethods</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../levMarMethods/index.html">Levmarmethods</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../codeConsistency/index.html">Codeconsistency</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -188,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -215,8 +232,8 @@
           <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Solvers</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">varKin</a></li>
-      <li class="breadcrumb-item active">BDCAmethods</li>
+          <li class="breadcrumb-item"><a href="../index.html">Varkin</a></li>
+      <li class="breadcrumb-item active">Bdcamethods</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -226,23 +243,23 @@
            <div itemprop="articleBody">
             
   <section id="bdcamethods">
-<span id="id1"></span><h1>BDCAmethods<a class="headerlink" href="#bdcamethods" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Bdcamethods<a class="headerlink" href="#bdcamethods" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.solvers.varKin.BDCAmethods"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.BDCA">
-<span class="sig-name descname"><span class="pre">BDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapp</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.BDCA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">BDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapp</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/BDCA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.BDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>BDCA is a derivative-free algorithm for solving systems of nonlinear
 equations <span class="math notranslate nohighlight">\(f(x) = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span> using the nonlinear unconstrained minimization
 <span class="math notranslate nohighlight">\(\textrm{min}\ \psi(x) = 1/2 ||f(x)||^2\)</span> s.t. <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[x_best,psi_best,out] = BDCA(mapp, x0, options)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>mapp:        function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite>
-x0:          initial point
-options:     structure including the parameteres of scheme</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[x_best,psi_best,out] = BDCA</strong> (<em>mapp, x0, options</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mapp</strong> – function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
 <li><p>.TimeLimit - maximum running time</p></li>
@@ -268,13 +285,15 @@ options:     structure including the parameteres of scheme</p>
 </ol>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>x_best:      the best approximation of the optimizer
-psi_best:    the best approximation of the optimum
-out:         structure including more output information</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_best</strong> – the best approximation of the optimizer</p></li>
+<li><p><strong>psi_best</strong> – the best approximation of the optimum</p></li>
+<li><p><strong>out</strong> – structure including more output information</p>
+<ul>
 <li><p>.T - running time</p></li>
 <li><p>.Niter - total number of iterations</p></li>
 <li><p>.Nmap - total number of mapping evaluations</p></li>
@@ -283,27 +302,28 @@ out:         structure including more output information</p>
 <li><p>.psi_error - relative error <span class="math notranslate nohighlight">\((\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))\)</span></p></li>
 <li><p>.Status - reason of termination</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.DCA">
-<span class="sig-name descname"><span class="pre">DCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapp</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.DCA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapp</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/DCA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.DCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>DCA is a derivative-free algorithm for solving systems of nonlinear
 equations <span class="math notranslate nohighlight">\(f(x) = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span> using the nonlinear unconstrained minimization
 <span class="math notranslate nohighlight">\(min psi(x) = 1/2 ||f(x)||^2\)</span> s.t. <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[x_best,psi_best,out] = DCA(mapp, x0, options)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>mapp:        function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite>
-x0:          initial point
-options:     structure including the parameteres of scheme</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[x_best,psi_best,out] = DCA</strong> (<em>mapp, x0, options</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mapp</strong> – function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
 <li><p>.TimeLimit - maximum running time</p></li>
@@ -329,13 +349,15 @@ options:     structure including the parameteres of scheme</p>
 </ol>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>x_best:      the best approximation of the optimizer
-psi_best:    the best approximation of the optimum
-out:         structure including more output information</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_best</strong> – the best approximation of the optimizer</p></li>
+<li><p><strong>psi_best</strong> – the best approximation of the optimum</p></li>
+<li><p><strong>out</strong> – structure including more output information</p>
+<ul>
 <li><p>.T - running time</p></li>
 <li><p>.Niter - total number of iterations</p></li>
 <li><p>.Nmap - total number of mapping evaluations</p></li>
@@ -344,43 +366,49 @@ out:         structure including more output information</p>
 <li><p>.psi_error - relative error <span class="math notranslate nohighlight">\((\psi_k-\psi_{opt})/(\psi_0-\psi_{opt}))\)</span></p></li>
 <li><p>.Status - reason of termination</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.FuncGradHessSub">
-<span class="sig-name descname"><span class="pre">FuncGradHessSub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">R</span></em>, <em class="sig-param"><span class="pre">kin</span></em>, <em class="sig-param"><span class="pre">rho</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.FuncGradHessSub" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">FuncGradHessSub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">R</span></em>, <em class="sig-param"><span class="pre">kin</span></em>, <em class="sig-param"><span class="pre">rho</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.FuncGradHessSub" title="Permalink to this definition">¶</a></dt>
 <dd><p><cite>SubGradHess</cite> provides the function value, the gradient, and the Hessian
 of the subproblem of DCA and BDCA to be used in <cite>fminunc</cite>.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[func, grad, Hess] = FuncGradHessSub(x, y, F, R, kin, rho)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>x,y:     points
-F:       Forward stoichiometric matrix
-kin:     kinetics parameter in <span class="math notranslate nohighlight">\(R^{2n}\)</span>
-rho:     strongly comvex modulus</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[func, grad, Hess] = FuncGradHessSub</strong> (<em>x, y, F, R, kin, rho</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>f:       function value
-grad:    gradient
-H:       Hessian</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x,y</strong> – points</p></li>
+<li><p><strong>F</strong> – Forward stoichiometric matrix</p></li>
+<li><p><strong>kin</strong> – kinetics parameter in <span class="math notranslate nohighlight">\(R^{2n}\)</span></p></li>
+<li><p><strong>rho</strong> – strongly comvex modulus</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> – function value</p></li>
+<li><p><strong>grad</strong> – gradient</p></li>
+<li><p><strong>H</strong> – Hessian</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.InitialBDCA">
-<span class="sig-name descname"><span class="pre">InitialBDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.InitialBDCA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">InitialBDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/InitialBDCA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.InitialBDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p><cite>InitialBDCA</cite> is a function for initializing the parameters of BDCA and
 DCA. If some parameters specified by the user <cite>InitialDuplo</cite> uses these
 parameters. Otherwise, the default values will be used.</p>
-<dl>
-<dt>INPUTS:</dt><dd><p>options:           structure including the parameteres of scheme</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul class="simple">
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
 <li><p>.TimeLimit - maximum running time</p></li>
@@ -406,81 +434,89 @@ parameters. Otherwise, the default values will be used.</p>
 </ol>
 </li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>MaxNumIter:        maximum number of iterations
-MaxNumMapEval:     maximum number of function evaluations
-TimeLimit:         maximum running time
-epsilon:           accuracy parameter
-x_opt:             optimizer
-psi_opt:           optimum
-alpha:             constant for the line search
-beta:              backtracking constant
-lambda_bar:        starting step-size for the line search
-flag_x_error:      1: saves <span class="math notranslate nohighlight">\(x_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(x_{error}\)</span> (default)
-flag_psi_error:    1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)
-flag_time:         1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)
-Stopping_Crit:     stopping criterion</p>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>MaxNumIter</strong> – maximum number of iterations</p></li>
+<li><p><strong>MaxNumMapEval</strong> – maximum number of function evaluations</p></li>
+<li><p><strong>TimeLimit</strong> – maximum running time</p></li>
+<li><p><strong>epsilon</strong> – accuracy parameter</p></li>
+<li><p><strong>x_opt</strong> – optimizer</p></li>
+<li><p><strong>psi_opt</strong> – optimum</p></li>
+<li><p><strong>alpha</strong> – constant for the line search</p></li>
+<li><p><strong>beta</strong> – backtracking constant</p></li>
+<li><p><strong>lambda_bar</strong> – starting step-size for the line search</p></li>
+<li><p><strong>flag_x_error</strong> – 1: saves <span class="math notranslate nohighlight">\(x_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(x_{error}\)</span> (default)</p></li>
+<li><p><strong>flag_psi_error</strong> – 1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)</p></li>
+<li><p><strong>flag_time</strong> – 1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)</p></li>
+<li><p><strong>Stopping_Crit</strong> – stopping criterion</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.Rate_function">
-<span class="sig-name descname"><span class="pre">Rate_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opt</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.Rate_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>USAGE:</p>
-<blockquote>
-<div><p>fxk = Rate_function(opt, varargin)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>xk:     current point;
-opt:    structure includes required parameters:</p>
-<blockquote>
-<div><ul class="simple">
+<span class="sig-name descname"><span class="pre">Rate_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opt</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/Rate_function.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.Rate_function" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fxk = Rate_function</strong> (<em>opt, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xk</strong> – current point;</p></li>
+<li><p><strong>opt</strong> – structure includes required parameters:</p>
+<ul>
 <li><p>.FR - concatenation of forward and reverse stoichiometric matrix</p></li>
 <li><p>.A - Reduced forward stoichiometric matrix</p></li>
 <li><p>.B - Reduced reverse stoichiometric matrix</p></li>
 <li><p>.k - initial kinetic</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>fxk:</p>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fxk</strong></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.BDCAmethods.StopCritBDCA">
-<span class="sig-name descname"><span class="pre">StopCritBDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nfxk</span></em>, <em class="sig-param"><span class="pre">Niter</span></em>, <em class="sig-param"><span class="pre">Nmap</span></em>, <em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">MaxNumIter</span></em>, <em class="sig-param"><span class="pre">MaxNumMapEval</span></em>, <em class="sig-param"><span class="pre">TimeLimit</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">Stopping_Crit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.StopCritBDCA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">StopCritBDCA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nfxk</span></em>, <em class="sig-param"><span class="pre">Niter</span></em>, <em class="sig-param"><span class="pre">Nmap</span></em>, <em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">MaxNumIter</span></em>, <em class="sig-param"><span class="pre">MaxNumMapEval</span></em>, <em class="sig-param"><span class="pre">TimeLimit</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">Stopping_Crit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.BDCAmethods.StopCritBDCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function checking that one of the stopping criteria
 holds to terminate LLM and GLM. It perepare the status determining why
 the algorithm is stopped.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[StopFlag, Status] = StopCritBDCA(nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>nhxk:             the norm 2 of <cite>h(xk)</cite>
-Niter:            the number of iterations
-Nmap:             the number of mapping calls
-T:                the running time
-MaxNumIter:       maximum number of iterations
-MaxNumMapEval:    maximum number of function evaluations
-TimeLimit:        maximum running time
-epsilon:          accuracy parameter
-Stopping_Crit:    stopping criterion:</p>
-<blockquote>
-<div><ol class="arabic simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[StopFlag, Status] = StopCritBDCA</strong> (<em>nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>nhxk</strong> – the norm 2 of <cite>h(xk)</cite></p></li>
+<li><p><strong>Niter</strong> – the number of iterations</p></li>
+<li><p><strong>Nmap</strong> – the number of mapping calls</p></li>
+<li><p><strong>T</strong> – the running time</p></li>
+<li><p><strong>MaxNumIter</strong> – maximum number of iterations</p></li>
+<li><p><strong>MaxNumMapEval</strong> – maximum number of function evaluations</p></li>
+<li><p><strong>TimeLimit</strong> – maximum running time</p></li>
+<li><p><strong>epsilon</strong> – accuracy parameter</p></li>
+<li><p><strong>Stopping_Crit</strong> – stopping criterion:</p>
+<ol class="arabic simple">
 <li><p>stop if <span class="math notranslate nohighlight">\(||nfxk|| \leq \epsilon\)</span></p></li>
 <li><p>stop if <cite>MaxNumIter</cite> is reached</p></li>
 <li><p>stop if <cite>MaxNumMapEval</cite> is reached</p></li>
 <li><p>stop if <cite>TimeLimit</cite> is reached</p></li>
 <li><p>stop if (default) <span class="math notranslate nohighlight">\(||hxk|| \leq \epsilon\)</span> or <cite>MaxNumIter</cite> is reached</p></li>
 </ol>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>StopFlag:         1: if one of the stopping criteria holds, 0: if none of the stopping criteria holds
-Status:           the reason of the scheme termination</p>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>StopFlag</strong> – 1: if one of the stopping criteria holds, 0: if none of the stopping criteria holds</p></li>
+<li><p><strong>Status</strong> – the reason of the scheme termination</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -497,10 +533,10 @@ Status:           the reason of the scheme termination</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../derFreeMethods/index.html" class="btn btn-default float-right" title="derFreeMethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../levMarMethods/index.html" class="btn btn-default float-right" title="Levmarmethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="varKin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../derFreeMethods/index.html" class="btn btn-default" title="Derfreemethods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -538,6 +574,9 @@ Status:           the reason of the scheme termination</p>
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

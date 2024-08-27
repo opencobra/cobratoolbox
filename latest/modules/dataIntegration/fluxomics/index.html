@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
-        <link rel="up" title="Data integration" href="../index.html"/>
-        <link rel="next" title="atomTransition" href="atomTransition/index.html"/>
-        <link rel="prev" title="ChemoInformatics" href="../chemoInformatics/index.html"/> 
+        <link rel="up" title="Dataintegration" href="../index.html"/>
+        <link rel="next" title="C13solver" href="c13solver/index.html"/>
+        <link rel="prev" title="Metabotools" href="../metabotools/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,15 +160,19 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Data integration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">ChemoInformatics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fluxomics</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="atomTransition/index.html">atomTransition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="c13solver/index.html">c13solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="c13solver/index.html">C13solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="atomTransition/index.html">Atomtransition</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelCreation/index.html">Modelcreation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../inactiveGeneDeletion/index.html">Inactivegenedeletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -183,6 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -208,7 +215,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Data integration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Dataintegration</a></li>
       <li class="breadcrumb-item active">Fluxomics</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -222,300 +229,338 @@
 <span id="id1"></span><h1>Fluxomics<a class="headerlink" href="#fluxomics" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="atomTransition/index.html">atomTransition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="c13solver/index.html">c13solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c13solver/index.html">C13solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atomTransition/index.html">Atomtransition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="atomTransition/ATN/index.html">Atn</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <span class="target" id="module-src.dataIntegration.fluxomics"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.C13ConfidenceInterval">
-<span class="sig-name descname"><span class="pre">C13ConfidenceInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">max_score</span></em>, <em class="sig-param"><span class="pre">directions</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
-<dd><p>USAGE:</p>
-<blockquote>
-<div><p>[vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>v0:                     set of flux vectors to be used as initial guesses.  They may be valid or not.
-expdata:                experimental data
-model:                  the standard model. Additional field .N (= null(S)) should also</p>
-<blockquote>
-<div><p>be provided. This is a basis of the flux space.</p>
-</div></blockquote>
-<p>max_score:              maximum allowable data fit error</p>
+<span class="sig-name descname"><span class="pre">C13ConfidenceInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">max_score</span></em>, <em class="sig-param"><span class="pre">directions</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/C13ConfidenceInterval.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[vs, output, v0] = C13ConfidenceInterval</strong> (<em>v0, expdata, model, max_score, directions, majorIterationLimit</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>directions:             ones and zeros of which reactions to compute (size = <cite>n</cite> x 1) or numbers of reactions to use  aka. [1; 5; 7; 8; 200] or</dt><dd><p>reaction strings  aka.  {‘GPK’, ‘PGL’}.  Ratios are possible with this input only.  Default = [] meaning  - do FVA with no ratios.</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v0</strong> – set of flux vectors to be used as initial guesses.  They may be valid or not.</p></li>
+<li><p><strong>expdata</strong> – experimental data</p></li>
+<li><p><strong>model</strong> – the standard model. Additional field .N (= null(S)) should also
+be provided. This is a basis of the flux space.</p></li>
+<li><p><strong>max_score</strong> – maximum allowable data fit error</p></li>
+</ul>
 </dd>
-</dl>
-<p>majorIterationLimit:    default = 10000</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directions</strong> – ones and zeros of which reactions to compute (size = <cite>n</cite> x 1) or numbers of reactions to use  aka. [1; 5; 7; 8; 200] or
+reaction strings  aka.  {‘GPK’, ‘PGL’}.  Ratios are possible with this input only.  Default = [] meaning  - do FVA with no ratios.</p></li>
+<li><p><strong>majorIterationLimit</strong> – default = 10000</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>vs:                     matrix
-output:                 structure
-v0:                     as in input</p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vs</strong> – matrix</p></li>
+<li><p><strong>output</strong> – structure</p></li>
+<li><p><strong>v0</strong> – as in input</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.compareBinsOfFluxes">
-<span class="sig-name descname"><span class="pre">compareBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">sammin</span></em>, <em class="sig-param"><span class="pre">sammax</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.compareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">sammin</span></em>, <em class="sig-param"><span class="pre">sammax</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/compareBinsOfFluxes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes the overall sammin and sammax samples, bins them into
 separate bin sizes and compares them, then compares the
 results to the largest bin size.
 calls <cite>[totalz, zscore, mdv1, mdv2] = compareTwoSamp(xglc, model, samp1, samp2, measuredMetabolites)</cite>
 sammin and sammax each contain bins of fluxes in <cite>x.samps(r,1).points</cite></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[output] = compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>xglc:           sugar distribution
-model:          model structure
-sammin:         samples containing bins of fluxes
-sammax:         samples containing bins of fluxes</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[output] = compareBinsOfFluxes</strong> (<em>xglc, model, sammin, sammax, metabolites</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>metabolites:    list of metabolites</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xglc</strong> – sugar distribution</p></li>
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>sammin</strong> – samples containing bins of fluxes</p></li>
+<li><p><strong>sammax</strong> – samples containing bins of fluxes</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:         result of comparison</p>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>metabolites</strong> – list of metabolites</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>output</strong> – result of comparison</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.compareMultSamp">
-<span class="sig-name descname"><span class="pre">compareMultSamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samps</span></em>, <em class="sig-param"><span class="pre">measuredMetabolites</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.compareMultSamp" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareMultSamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samps</span></em>, <em class="sig-param"><span class="pre">measuredMetabolites</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/compareMultSamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareMultSamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the multiple sets of samples</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMetabolites)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>xglc:                   sugar distribution, a random sugar distribution is calculated if empty
-model:                  model structure, expects <cite>model.rxns</cite> to contain a list of rxn names
-samps:                  samples, expects to have a field named points containing an array of sampled points</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[totalz, zscore, mdvs] = compareMultSamp</strong> (<em>xglc, model, samps, measuredMetabolites</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>measuredMetabolites:    parameter fed to <cite>calcMDVfromSamp.m</cite> which only calculates the MDVs for the metabolites listed in this array</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xglc</strong> – sugar distribution, a random sugar distribution is calculated if empty</p></li>
+<li><p><strong>model</strong> – model structure, expects <cite>model.rxns</cite> to contain a list of rxn names</p></li>
+<li><p><strong>samps</strong> – samples, expects to have a field named points containing an array of sampled points</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>totalz:                 sum of all zscores
-zscore:                 calculated difference for each mdv element distributed across all the points
-mdvs:                   contains fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>measuredMetabolites</strong> – parameter fed to <cite>calcMDVfromSamp.m</cite> which only calculates the MDVs for the metabolites listed in this array</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>totalz</strong> – sum of all zscores</p></li>
+<li><p><strong>zscore</strong> – calculated difference for each mdv element distributed across all the points</p></li>
+<li><p><strong>mdvs</strong> – contains fields:</p>
+<ul>
 <li><p>mdv - the calculated mdv distribution converted from the idv
 solved from each point contained in their respective samples <cite>sampX</cite></p></li>
 <li><p>names - the names of the metabolites</p></li>
 <li><p>ave - the average of each mdv element across all of the points</p></li>
 <li><p>stdev - the standard dev for each mdv element across all points</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.compareTwoMDVs">
-<span class="sig-name descname"><span class="pre">compareTwoMDVs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv1</span></em>, <em class="sig-param"><span class="pre">mdv2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoMDVs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareTwoMDVs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv1</span></em>, <em class="sig-param"><span class="pre">mdv2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/compareTwoMDVs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoMDVs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares the 2 sets of mdvs</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[totalz, zscore] = compareTwoMDVs(mdv1, mdv2)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>mdv1, mdv2:    contains fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[totalz, zscore] = compareTwoMDVs</strong> (<em>mdv1, mdv2</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>mdv1, mdv2</strong> – contains fields:</p>
+<ul class="simple">
 <li><p>mdv - the calculated mdv distribution converted from the idv
 solved from each point contained in their respective samples <cite>sampX</cite></p></li>
 <li><p>names - the names of the metabolites</p></li>
 <li><p>ave - the average of each mdv element across all of the points</p></li>
 <li><p>stdev - the standard dev for each mdv element across all points</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>totalz:        sum of all zscores
-zscore:        calculated difference for each mdv element distributed across all the points</p>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>totalz</strong> – sum of all zscores</p></li>
+<li><p><strong>zscore</strong> – calculated difference for each mdv element distributed across all the points</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.compareTwoSamp">
-<span class="sig-name descname"><span class="pre">compareTwoSamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samp1</span></em>, <em class="sig-param"><span class="pre">samp2</span></em>, <em class="sig-param"><span class="pre">measuredMetabolites</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoSamp" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareTwoSamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samp1</span></em>, <em class="sig-param"><span class="pre">samp2</span></em>, <em class="sig-param"><span class="pre">measuredMetabolites</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/compareTwoSamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.compareTwoSamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the 2 sets of samples</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMetabolites)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>xglc:                   sugar distribution, a random sugar distribution is calculated if empty
-model:                  model structure, expects <cite>model.rxns</cite> to contain a list of rxn names
-samp1, samp2:           samples, expects <cite>samp1</cite> and <cite>samp2</cite> to have a field named points containing an array of sampled points</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[totalz, zscore, mdvs] = compareMultSamp</strong> (<em>xglc, model, samps, measuredMetabolites</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>measuredMetabolites:    parameter fed to calcMDVfromSamp.m which only calculates the MDVs for the metabolites listed in this array</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xglc</strong> – sugar distribution, a random sugar distribution is calculated if empty</p></li>
+<li><p><strong>model</strong> – model structure, expects <cite>model.rxns</cite> to contain a list of rxn names</p></li>
+<li><p><strong>samp1, samp2</strong> – samples, expects <cite>samp1</cite> and <cite>samp2</cite> to have a field named points containing an array of sampled points</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>totalz:                 sum of all zscores
-zscore:                 calculated difference for each mdv element distributed across all the points
-mdv1, mdv2:             contains fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>measuredMetabolites</strong> – parameter fed to calcMDVfromSamp.m which only calculates the MDVs for the metabolites listed in this array</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>totalz</strong> – sum of all zscores</p></li>
+<li><p><strong>zscore</strong> – calculated difference for each mdv element distributed across all the points</p></li>
+<li><p><strong>mdv1, mdv2</strong> – contains fields:</p>
+<ul>
 <li><p>mdv - the calculated mdv distribution converted from the idv
 solved from each point contained in their respective samples <cite>sampX</cite></p></li>
 <li><p>names - the names of the metabolites</p></li>
 <li><p>ave - the average of each mdv element across all of the points</p></li>
 <li><p>stdev - the standard dev for each mdv element across all points</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.fitC13Data">
-<span class="sig-name descname"><span class="pre">fitC13Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
-<dd><p>USAGE:</p>
-<blockquote>
-<div><p>[vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>v0:                     It will automatically be converted to alpha by solving <cite>N*alpha = v</cite>;</dt><dd><p>if <cite>v0</cite> is a matrix then it is assumed to be a multiple start situation and
-<cite>vout</cite> will also have this size.</p>
+<span class="sig-name descname"><span class="pre">fitC13Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/fitC13Data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[vout, rout] = fitC13Data</strong> (<em>v0, expdata, model, majorIterationLimit</em>)</p>
 </dd>
-<dt>expdata:                either a data structure or a cell array of structures, in</dt><dd><p>which case it is assumed that you wan to fit the sum of the scores</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v0</strong> – It will automatically be converted to alpha by solving <cite>N*alpha = v</cite>;
+if <cite>v0</cite> is a matrix then it is assumed to be a multiple start situation and
+<cite>vout</cite> will also have this size.</p></li>
+<li><p><strong>expdata</strong> – either a data structure or a cell array of structures, in
+which case it is assumed that you wan to fit the sum of the scores</p></li>
+<li><p><strong>model</strong> – model structure</p></li>
+</ul>
 </dd>
-</dl>
-<p>model:                  model structure</p>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>majorIterationLimit</strong> – max number of iterations solver is allowed to take. Default = 1000</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>majorIterationLimit:    max number of iterations solver is allowed to take. Default = 1000</p>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>vout:                   reflects size of <cite>v0</cite>, result of NLPsolution
-rout:                   cell, result of NLPsolution</p>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vout</strong> – reflects size of <cite>v0</cite>, result of NLPsolution</p></li>
+<li><p><strong>rout</strong> – cell, result of NLPsolution</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.getBinsOfFluxes">
-<span class="sig-name descname"><span class="pre">getBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">samp</span></em>, <em class="sig-param"><span class="pre">numfluxes</span></em>, <em class="sig-param"><span class="pre">numbins</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.getBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">samp</span></em>, <em class="sig-param"><span class="pre">numfluxes</span></em>, <em class="sig-param"><span class="pre">numbins</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/getBinsOfFluxes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a <cite>samp.points</cite> fluxes and bin them by numfluxes (remainder not used)
 or divide up in to bins of fluxes by numbins (remainder not used)
 sample each bin of fluxes and compare the differences between them.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[output] = getBinsOfFluxes(samp, numfluxes, numbins)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>samp:         fluxes
-numfluxes:    default = 100
-numbins:      default = []</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[output] = getBinsOfFluxes</strong> (<em>samp, numfluxes, numbins</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:       structure with <cite>.samps</cite> field</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>samp</strong> – fluxes</p></li>
+<li><p><strong>numfluxes</strong> – default = 100</p></li>
+<li><p><strong>numbins</strong> – default = []</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – structure with <cite>.samps</cite> field</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.getCompareBinsOfFluxes">
-<span class="sig-name descname"><span class="pre">getCompareBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samplo</span></em>, <em class="sig-param"><span class="pre">samphi</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.getCompareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getCompareBinsOfFluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xglc</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samplo</span></em>, <em class="sig-param"><span class="pre">samphi</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/getCompareBinsOfFluxes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getCompareBinsOfFluxes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares the bins of fluxes between <cite>samplo</cite> and <cite>samphi</cite>,
 calls <cite>compareBinsOfFluxes(xglc, model, sammin, sammax, metabolites).
 `samplo</cite> and <cite>samphi</cite> each contain samples in <cite>x.points</cite></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[output] = getCompareBinsOfFluxes(xglc, model, samplo, samphi, metabolites)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>xglc:           sugar distribution
-model:          model structure
-samplo:         samples containing bins of fluxes
-samphi:         samples containing bins of fluxes</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[output] = getCompareBinsOfFluxes</strong> (<em>xglc, model, samplo, samphi, metabolites</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>metabolites:    list of metabolites</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xglc</strong> – sugar distribution</p></li>
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>samplo</strong> – samples containing bins of fluxes</p></li>
+<li><p><strong>samphi</strong> – samples containing bins of fluxes</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:         result of comparison</p>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>metabolites</strong> – list of metabolites</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>output</strong> – result of comparison</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.getRandGlc">
-<span class="sig-name descname"><span class="pre">getRandGlc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.getRandGlc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getRandGlc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/getRandGlc.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.getRandGlc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates random glucose in isotopomer format</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[xGlc] = getRandGlc()</p>
-</div></blockquote>
-<dl class="simple">
-<dt>OUTPUT:</dt><dd><p>xGlc:    random glucose</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[xGlc] = getRandGlc()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>xGlc</strong> – random glucose</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.goodInitialPoint">
-<span class="sig-name descname"><span class="pre">goodInitialPoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.goodInitialPoint" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">goodInitialPoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/goodInitialPoint.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.goodInitialPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates <cite>4*length(model.lb)</cite> random points,
 takes linear combinations of them so that all points are in the interior.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = goodInitialPoint(model, n)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:    model structure
-n:        number, default = 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = goodInitialPoint</strong> (<em>model, n</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:      random points with linear combinations</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>n</strong> – number, default = 1</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – random points with linear combinations</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.isotopomerViewer">
-<span class="sig-name descname"><span class="pre">isotopomerViewer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv1</span></em>, <em class="sig-param"><span class="pre">mdv2</span></em>, <em class="sig-param"><span class="pre">names</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.isotopomerViewer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isotopomerViewer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv1</span></em>, <em class="sig-param"><span class="pre">mdv2</span></em>, <em class="sig-param"><span class="pre">names</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/isotopomerViewer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.isotopomerViewer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in an “experiment” and views the isotopomer as distributions
 between <cite>mdv1</cite> and <cite>mdv2</cite>. No output.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>isotopomerViewer(mdv1, mdv2, names)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>mdv1, mdv2:    structures
-names:         names in the plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>isotopomerViewer</strong> (<em>mdv1, mdv2, names</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mdv1, mdv2</strong> – structures</p></li>
+<li><p><strong>names</strong> – names in the plot</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.naturallabel">
-<span class="sig-name descname"><span class="pre">naturallabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.naturallabel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">naturallabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/naturallabel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.naturallabel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a natural label <cite>idv</cite> of <cite>n</cite> carbons.
 Assumes 1.1% C13</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = naturallabel(n)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>n:      size of label</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = naturallabel</strong> (<em>n</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:    natural label idv of n carbons</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>n</strong> – size of label</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – natural label idv of n carbons</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.runHiLoExp">
-<span class="sig-name descname"><span class="pre">runHiLoExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">experiment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.runHiLoExp" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">runHiLoExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">experiment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/runHiLoExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.runHiLoExp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an experiment with the following structure
 and splits the sample space at the median of a target flux
 solves the two spaces with a given sugar and compares the
 resulting <cite>mdvs</cite> to provide a z-score.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[experiment] = runHiLoExp(experiment)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>experiment:    contains:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[experiment] = runHiLoExp</strong> (<em>experiment</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>experiment</strong> – contains:</p>
+<ul class="simple">
 <li><p>model with fields:</p>
 <ul>
 <li><p>S = the stoichiometric matrix</p></li>
@@ -545,49 +590,56 @@ if the targets have been replaced using the param list</p></li>
 </ul>
 </li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.score_KS">
-<span class="sig-name descname"><span class="pre">score_KS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv</span></em>, <em class="sig-param"><span class="pre">hilo</span></em>, <em class="sig-param"><span class="pre">lambda</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.score_KS" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">score_KS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv</span></em>, <em class="sig-param"><span class="pre">hilo</span></em>, <em class="sig-param"><span class="pre">lambda</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/score_KS.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_KS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates KS score</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = score_ridge(mdv, hilo, lambda, crossval)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>mdv:         structure
-hilo:        (0’s and 1’s), ideally there will be a similar # of each.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = score_ridge</strong> (<em>mdv, hilo, lambda, crossval</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>lambda:      weighting, if the mean is less than lambda, the scores get weighted less, default = .02</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mdv</strong> – structure</p></li>
+<li><p><strong>hilo</strong> – (0’s and 1’s), ideally there will be a similar # of each.</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:         score</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>lambda</strong> – weighting, if the mean is less than lambda, the scores get weighted less, default = .02</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>out</strong> – score</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.score_ridge">
-<span class="sig-name descname"><span class="pre">score_ridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv</span></em>, <em class="sig-param"><span class="pre">hilo</span></em>, <em class="sig-param"><span class="pre">lambda</span></em>, <em class="sig-param"><span class="pre">crossval</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.fluxomics.score_ridge" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">score_ridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mdv</span></em>, <em class="sig-param"><span class="pre">hilo</span></em>, <em class="sig-param"><span class="pre">lambda</span></em>, <em class="sig-param"><span class="pre">crossval</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/score_ridge.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.score_ridge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates ridge score</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[out] = score_ridge(mdv, hilo, lambda, crossval)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>mdv:         structure
-hilo:        (0’s and 1’s), ideally there will be a similar # of each.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[out] = score_ridge</strong> (<em>mdv, hilo, lambda, crossval</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>lambda:      ridge parameter, default = .01
-crossval:    whether to do cross validation. This severely slows</p>
-<blockquote>
-<div><p>down the computation, default is no.</p>
-</div></blockquote>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mdv</strong> – structure</p></li>
+<li><p><strong>hilo</strong> – (0’s and 1’s), ideally there will be a similar # of each.</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:         score</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lambda</strong> – ridge parameter, default = .01</p></li>
+<li><p><strong>crossval</strong> – whether to do cross validation. This severely slows
+down the computation, default is no.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>out</strong> – score</p>
 </dd>
 </dl>
 </dd></dl>
@@ -604,10 +656,10 @@ crossval:    whether to do cross validation. This severely slows</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="atomTransition/index.html" class="btn btn-default float-right" title="atomTransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="c13solver/index.html" class="btn btn-default float-right" title="C13solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../chemoInformatics/index.html" class="btn btn-default" title="ChemoInformatics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabotools/index.html" class="btn btn-default" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -645,6 +697,9 @@ crossval:    whether to do cross validation. This severely slows</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

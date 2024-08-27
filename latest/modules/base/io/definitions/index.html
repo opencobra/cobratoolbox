@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
-        <link rel="up" title="IO" href="../index.html"/>
-        <link rel="next" title="KEGG" href="../KEGG/index.html"/>
-        <link rel="prev" title="BiGG" href="../BiGG/index.html"/> 
+        <link rel="up" title="Io" href="../index.html"/>
+        <link rel="next" title="Python" href="../python/index.html"/>
+        <link rel="prev" title="Json" href="../json/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,18 +161,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">IO</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">BiGG</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Definitions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">KEGG</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -185,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -211,7 +221,7 @@
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">IO</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Io</a></li>
       <li class="breadcrumb-item active">Definitions</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -225,74 +235,76 @@
 <span id="id1"></span><h1>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.io.definitions"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.definitions.descFileRead">
-<span class="sig-name descname"><span class="pre">descFileRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.io.definitions.descFileRead" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">descFileRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/definitions/descFileRead.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.definitions.descFileRead" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function provides the same raw output as tdfread from the
 statistics toolbox, making sure, that we don’t need that as a
 prerequesite</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[raw] = descFileRead(fileName)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><dl class="simple">
-<dt>fileName:             The filename of a tab delimited data file. The</dt><dd><p>first row of the file will be considered to be headers (with spaces
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[raw] = descFileRead</strong> (<em>fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>fileName</strong> – The filename of a tab delimited data file. The
+first row of the file will be considered to be headers (with spaces
 being replaced by ‘_’.</p>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUTS:</dt><dd><dl class="simple">
-<dt>raw:                  A struct with one field per header and a char</dt><dd><p>array of all data listed in the column.</p>
-</dd>
-</dl>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>raw</strong> – A struct with one field per header and a char
+array of all data listed in the column.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.definitions.getAnnotationFieldName">
-<span class="sig-name descname"><span class="pre">getAnnotationFieldName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">annotatedField</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">annotationQualifier</span></em>, <em class="sig-param"><span class="pre">qualifierSelection</span></em>, <em class="sig-param"><span class="pre">invertSelection</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.io.definitions.getAnnotationFieldName" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getAnnotationFieldName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">annotatedField</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">annotationQualifier</span></em>, <em class="sig-param"><span class="pre">qualifierSelection</span></em>, <em class="sig-param"><span class="pre">invertSelection</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/definitions/getAnnotationFieldName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.definitions.getAnnotationFieldName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the cobra field corresponding to the given database for the annotion
 Qualifier and the given annotated field.</p>
-<dl>
-<dt>USAGE:</dt><dd><p>fieldName = getAnnotationFieldName(annotatedField,database,annotationQualifier)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldName = getAnnotationFieldName</strong> (<em>annotatedField,database,annotationQualifier</em>)</p>
 </dd>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>annotationField:            The base field that is being annotated</dt><dd><p>(e.g. ‘rxn’, ‘model’, ‘comp’, …)</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>annotationField</strong> – The base field that is being annotated
+(e.g. ‘rxn’, ‘model’, ‘comp’, …)</p></li>
+<li><p><strong>database</strong> – The database names of the annotation. (e.g.
+kegg)</p></li>
+<li><p><strong>annotationQualifier</strong> – The annotation qualifier (see
+<a class="reference external" href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a> for possible qualifiers)</p></li>
+</ul>
 </dd>
-<dt>database:                   The database names of the annotation. (e.g.</dt><dd><p>kegg)</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qualifierSelection</strong> – Exclude the qualifiers from mappings (default: {}).</p></li>
+<li><p><strong>invertSelection</strong> – Invert the qualifierSelection i.e. use
+only those specified (default: false);</p></li>
+</ul>
 </dd>
-<dt>annotationQualifier:        The annotation qualifier (see</dt><dd><p><a class="reference external" href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a> for possible qualifiers)</p>
-</dd>
-</dl>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>qualifierSelection:         Exclude the qualifiers from mappings (default: {}).
-invertSelection:            Invert the qualifierSelection i.e. use</p>
-<blockquote>
-<div><p>only those specified (default: false);</p>
-</div></blockquote>
-</dd>
-<dt>OUTPUTS:</dt><dd><dl class="simple">
-<dt>fieldNames:                 The name of the field corresponding to the</dt><dd><p>given annotation.</p>
-</dd>
-</dl>
-<p>dbIDs:                      A Cell array with the DB IDs
-relations:                  The relations the field has with the db</p>
-<blockquote>
-<div><p>names (for defined fields, this can be a
-multiple tpes separated by ‘;’</p>
-</div></blockquote>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldNames</strong> – The name of the field corresponding to the
+given annotation.</p></li>
+<li><p><strong>dbIDs</strong> – A Cell array with the DB IDs</p></li>
+<li><p><strong>relations</strong> – The relations the field has with the db
+names (for defined fields, this can be a
+multiple tpes separated by ‘;’</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.definitions.getRegisteredDatabases">
-<span class="sig-name descname"><span class="pre">getRegisteredDatabases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.base.io.definitions.getRegisteredDatabases" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getRegisteredDatabases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/definitions/getRegisteredDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.definitions.getRegisteredDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all databases registered with identifiers.org along with their
 pattern and and prefix data.</p>
-<dl>
-<dt>USAGE:</dt><dd><p>identifiersDBs = getRegisteredDatabases()</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>identifiersDBs = getRegisteredDatabases()</strong></p>
 </dd>
+</dl>
+<dl>
 <dt>OUPUTS:</dt><dd><dl>
 <dt>identifiersDBs:        A Struct with data on each database registered</dt><dd><p>with identifiers.org (needs web access).
 The struct will have the following fields:</p>
@@ -321,10 +333,10 @@ The struct will have the following fields:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../KEGG/index.html" class="btn btn-default float-right" title="KEGG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../python/index.html" class="btn btn-default float-right" title="Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../BiGG/index.html" class="btn btn-default" title="BiGG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../json/index.html" class="btn btn-default" title="Json" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -362,6 +374,9 @@ The struct will have the following fields:</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

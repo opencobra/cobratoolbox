@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>visualizeEpistasis &mdash; The COBRA Toolbox</title>
+  <title>Visualizeepistasis &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -70,7 +72,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
         <link rel="next" title="Tutorials" href="../../../tutorials/index.html"/>
-        <link rel="prev" title="MetabolicCartography" href="../metabolicCartography/index.html"/> 
+        <link rel="prev" title="Sammim" href="../SAMMIM/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,14 +160,21 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">cellDesigner</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">MetabolicCartography</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">visualizeEpistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Visualizeepistasis</a></li>
 </ul>
 </li>
 </ul>
@@ -179,6 +188,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -205,7 +215,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Visualization</a></li>
-      <li class="breadcrumb-item active">visualizeEpistasis</li>
+      <li class="breadcrumb-item active">Visualizeepistasis</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -215,34 +225,35 @@
            <div itemprop="articleBody">
             
   <section id="visualizeepistasis">
-<span id="id1"></span><h1>visualizeEpistasis<a class="headerlink" href="#visualizeepistasis" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Visualizeepistasis<a class="headerlink" href="#visualizeepistasis" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.visualization.visualizeEpistasis"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.visualizeEpistasis.convertGene2PathwayInteractions">
-<span class="sig-name descname"><span class="pre">convertGene2PathwayInteractions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">E</span></em>, <em class="sig-param"><span class="pre">epSys</span></em>, <em class="sig-param"><span class="pre">uSys</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.visualizeEpistasis.convertGene2PathwayInteractions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">convertGene2PathwayInteractions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">E</span></em>, <em class="sig-param"><span class="pre">epSys</span></em>, <em class="sig-param"><span class="pre">uSys</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/visualizeEpistasis/convertGene2PathwayInteractions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.visualizeEpistasis.convertGene2PathwayInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function was written to find out the type of epistatic interactions
 that either exist between two different or within same subsystem</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[neg,zer,nd,pos] = convertGene2PathwayInteractions(E,epSys,uSys)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>E:     A square epistatic interaction matrix (or genes or reactions)
-epSys: Subsystems belonging to the gene at that index (a second</p>
-<blockquote>
-<div><p>order cell array) Each cell array may contain one or more
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[neg,zer,nd,pos] = convertGene2PathwayInteractions</strong> (<em>E,epSys,uSys</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>E</strong> – A square epistatic interaction matrix (or genes or reactions)</p></li>
+<li><p><strong>epSys</strong> – Subsystems belonging to the gene at that index (a second
+order cell array) Each cell array may contain one or more
 subsystems.
 e.g. for first gene or reaction in E:
-epCmpt{1,1} = {‘Glycolysis’;’TCA cycle’}</p>
-</div></blockquote>
-<dl class="simple">
-<dt>uSys:  Unique Subsystems in the epCmpt (use this arguments if</dt><dd><p>interested in interactions between selected subsystems in the epSys)</p>
+epCmpt{1,1} = {‘Glycolysis’;’TCA cycle’}</p></li>
+<li><p><strong>uSys</strong> – Unique Subsystems in the epCmpt (use this arguments if
+interested in interactions between selected subsystems in the epSys)</p></li>
+</ul>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>neg:            matrix of number of aggravating (negative) pathway-pair interactions
-zer:            matrix of number of no-epistatic interactions pathway-pair interactions
-nd:             matrix of number of non-decisive interactions pathway-pair interactions
-pos:            matrix of number of buffering (positive) interactions pathway-pair interactions</p>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>neg</strong> – matrix of number of aggravating (negative) pathway-pair interactions</p></li>
+<li><p><strong>zer</strong> – matrix of number of no-epistatic interactions pathway-pair interactions</p></li>
+<li><p><strong>nd</strong> – matrix of number of non-decisive interactions pathway-pair interactions</p></li>
+<li><p><strong>pos</strong> – matrix of number of buffering (positive) interactions pathway-pair interactions</p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -255,26 +266,27 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.visualizeEpistasis.findSubsystemOfGenes">
-<span class="sig-name descname"><span class="pre">findSubsystemOfGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">genes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.visualizeEpistasis.findSubsystemOfGenes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findSubsystemOfGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">genes</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/visualizeEpistasis/findSubsystemOfGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.visualizeEpistasis.findSubsystemOfGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is used to find out which genes belong to which subsystem</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes(model,genes)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:    model to which genes belong to
-genes:    genes in question, if not provided will do it for all</p>
-<blockquote>
-<div><p>the genes, default: model.genes</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes</strong> (<em>model,genes</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>rxns:         Reactions governed by these genes
-subsys:       subsystem(s) to which the gene belongs to
-subsysGenes:  which Genes are involved in each subsystem, subsystem</p>
-<blockquote>
-<div><p>name given by the cell array, usys</p>
-</div></blockquote>
-<p>uSys:         unique subsystems</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model to which genes belong to</p></li>
+<li><p><strong>genes</strong> – genes in question, if not provided will do it for all
+the genes, default: model.genes</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxns</strong> – Reactions governed by these genes</p></li>
+<li><p><strong>subsys</strong> – subsystem(s) to which the gene belongs to</p></li>
+<li><p><strong>subsysGenes</strong> – which Genes are involved in each subsystem, subsystem
+name given by the cell array, usys</p></li>
+<li><p><strong>uSys</strong> – unique subsystems</p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -287,7 +299,7 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.visualizeEpistasis.visualizePathwayInEpistasis">
-<span class="sig-name descname"><span class="pre">visualizePathwayInEpistasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Nall</span></em>, <em class="sig-param"><span class="pre">radius</span></em>, <em class="sig-param"><span class="pre">pathwayNames</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.visualizeEpistasis.visualizePathwayInEpistasis" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">visualizePathwayInEpistasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Nall</span></em>, <em class="sig-param"><span class="pre">radius</span></em>, <em class="sig-param"><span class="pre">pathwayNames</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/visualizeEpistasis/visualizePathwayInEpistasis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.visualizeEpistasis.visualizePathwayInEpistasis" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function creates a circular network such that all the nodes are
 arranged in a circle. The nodes represent a pathway, the color of the
 node represents whether the interactions within a pathway are none, positive,
@@ -296,25 +308,26 @@ The edges represent which pathways are sharing which
 type of interaction. The color of the edge represents if the interactions
 are positive negative or mixed. The with of the edge represent the total number
 of interactions between any two given pathways.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><dl class="simple">
-<dt>Nall:          a structure representing the epistatic interaction networks:</dt><dd><p>Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
-Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[both,pos,neg]=visualizePathwayInEpistasis</strong> (<em>Nall,radius,pathwayNames</em>)</p>
 </dd>
-</dl>
-<p>radius:        radius of the generic circles for clock diagram.
-pathwayNames:  subSystem names corresponding to matrices in Nall</p>
-<blockquote>
-<div><p>structure</p>
-</div></blockquote>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Nall</strong> – a structure representing the epistatic interaction networks:
+Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
+Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.</p></li>
+<li><p><strong>radius</strong> – radius of the generic circles for clock diagram.</p></li>
+<li><p><strong>pathwayNames</strong> – subSystem names corresponding to matrices in Nall
+structure</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>both:          contains both positive and negative interactions
-pos:           contains only positive interactions
-neg:           contains only negative interactions</p>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>both</strong> – contains both positive and negative interactions</p></li>
+<li><p><strong>pos</strong> – contains only positive interactions</p></li>
+<li><p><strong>neg</strong> – contains only negative interactions</p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -340,7 +353,7 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
         <a href="../../../tutorials/index.html" class="btn btn-default float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metabolicCartography/index.html" class="btn btn-default" title="MetabolicCartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../SAMMIM/index.html" class="btn btn-default" title="Sammim" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -378,6 +391,9 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 
