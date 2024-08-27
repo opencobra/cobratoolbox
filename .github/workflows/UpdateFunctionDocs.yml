@@ -35,12 +35,18 @@ jobs:
     - name: Copy the citations html page
       run: |
         cp ./docs/build/html/citations.html ./docs/source/Citations/citations.html
-    - name: Deploy the function modules
+    - name: Deploy the function modules in the latest site
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: ./docs/build/html/modules
         branch: gh-pages
         target-folder: latest/modules
+    - name: Deploy the function modules in the stable site
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: ./docs/build/html/modules
+        branch: gh-pages
+        target-folder: stable/modules
     - name: Deploy the citations page in latest site
       uses: peaceiris/actions-gh-pages@v3
       with:
