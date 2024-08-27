@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Testing chemical and biochemical fidelity</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: normal; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span style=' font-weight: bold;'>Testing chemical and biochemical fidelity</span></h1><h2  class = 'S1'><span>Authors: Ronan Fleming, Ines Thiele, University of Luxembourg.</span></h2><h2  class = 'S1'><span>Reviewer: Almut Heinken, University of Luxembourg.</span></h2><h2  class = 'S1'><span>Introduction</span></h2><div  class = 'S2'><span>Once a context-specific model is generated, but before a it is used to make predictions of biological relevance, it should be subjected to a range of quantitative and qualitative chemical and biochemical fidelity tests. The stoichiometric consistency tests should not be necessary if one starts with a generic model where the internal reactions are all stoichiometrically consistent then a context-specific model extracted from it should also be stoichiometrically consistent. Beyond chemical fidelity, it is also very important to test biochemical fidelity. Such tests are very specific to the particular biological domain one is modelling. Here we focus on human metabolism and use the Recon3.0model or Recon2.0 model.</span></div><h2  class = 'S1'><span>PROCEDURE</span></h2><h2  class = 'S1'><span>Load a model</span></h2><div  class = 'S2'><span>Load Recon2.0model. You may also load your own model.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span >modelFileName = </span><span style="color: rgb(170, 4, 249);">'Recon2.0model.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >modelDirectory = getDistributedModelFolder(modelFileName); </span><span style="color: rgb(2, 128, 9);">%Look up the folder for the distributed Models.</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >modelFileName= [modelDirectory filesep modelFileName]; </span><span style="color: rgb(2, 128, 9);">% Get the full path. Necessary to be sure, that the right model is loaded</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >model = readCbModel(modelFileName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div></div><div  class = 'S6'><span>Display the size of the  model</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span >[nMet,nRxn] = size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >); fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' totals in '</span><span >, model.modelID)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div></div><div  class = 'S6'><span>Set the threshold to classify flux into non-zero and zero flux:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >threshold=1e-6;</span></span></div></div></div><div  class = 'S6'><span>Set a solver</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% changeCobraSolver ('gurobi', 'all', 1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >changeCobraSolver (</span><span style="color: rgb(170, 4, 249);">'glpk'</span><span >, </span><span style="color: rgb(170, 4, 249);">'all'</span><span >, 1);</span></span></div></div></div><h2  class = 'S8'><span>Production of mthgxl from 12ppd-S</span></h2><div  class = 'S2'><span>Add sink reactions for either end of the proposed pathway:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = addSinkReactions(model,{</span><span style="color: rgb(170, 4, 249);">'12ppd_S[c]'</span><span >,</span><span style="color: rgb(170, 4, 249);">'mthgxl[c]'</span><span >},[-100 -1; 0 100]);</span></span></div></div></div><div  class = 'S6'><span>Change the objective to maximise the sink reaction for mthgxl[c]</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = changeObjective(model,</span><span style="color: rgb(170, 4, 249);">'sink_mthgxl[c]'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Test if it is possible to attain a nonzero objective, and if it is compute a sparse flux vector:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >sol = optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >,</span><span style="color: rgb(170, 4, 249);">'zero'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Check to see if there is a non-zero flux through the objective</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%g%s\n'</span><span >,sol.v(model.c~=0),</span><span style="color: rgb(170, 4, 249);">' flux through the sink_mthgxl[c] reaction'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span>Display the sparse flux solution, but only the non-zero fluxes, above a specified threshold.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >abs(sol.v(n))&gt;threshold</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            formula=printRxnFormula(model, model.rxns{n}, 0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%10g%15s\t%-60s\n'</span><span >,sol.v(n),model.rxns{n}, formula{1});</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span style=' font-weight: bold;'> ANTICIPATED RESULTS</span></div><div  class = 'S2'><span>If FBAsol.stat==1 then it is feasible to produce methylglyoxal from (S)-propane-1,2-diol. If FBAsol.stat==0, then this metabolic function is infeasible. This is not anticipated and indicates that further gap filling is required (cf Gap Filling Tutorial).</span></div><h2  class = 'S8'><span>Metabolic task: 4abut -&gt; succ[m]</span></h2><div  class = 'S2'><span>Add sink reactions for either end of the proposed pathway:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = addSinkReactions(model,{</span><span style="color: rgb(170, 4, 249);">'4abut[c]'</span><span >,</span><span style="color: rgb(170, 4, 249);">'succ[m]'</span><span >},[-100 -1; 0 100]);</span></span></div></div></div><div  class = 'S6'><span>Change the objective to maximise the sink reaction for nh4[c]</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = changeObjective(model,</span><span style="color: rgb(170, 4, 249);">'sink_succ[m]'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Test if it is possible to attain a nonzero objective, and if it is compute a sparse flux vector:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >sol = optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >,</span><span style="color: rgb(170, 4, 249);">'zero'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Check to see if there is a non-zero flux through the objective</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%g%s\n'</span><span >,sol.v(model.c~=0),</span><span style="color: rgb(170, 4, 249);">' flux through the sink_succ[m] reaction'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span>Dis</span><span>play the sparse flux solution, but only the non-zero fluxes, above a specified threshold.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >abs(sol.v(n))&gt;threshold</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            formula=printRxnFormula(model, model.rxns{n}, 0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%10g%15s\t%-60s\n'</span><span >,sol.v(n),model.rxns{n}, formula{1});</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span style=' font-weight: bold;'> ANTICIPATED RESULTS</span></div><div  class = 'S2'><span>If FBAsol.stat==1 then it is feasible to produce mitochondrial succinate from 4-Aminobutanoate. If FBAsol.stat==0, then this metabolic function is infeasible. This is not anticipated and indicates that further gap filling is required (cf Gap Filling Tutorial).</span></div><h2  class = 'S8'><span>Metabolic task: gly -&gt; co2 and nh4 (via glycine cleavage system)</span></h2><div  class = 'S2'><span>Add sink reactions for either end of the proposed pathway:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = addSinkReactions(model,{</span><span style="color: rgb(170, 4, 249);">'gly[c]'</span><span >,</span><span style="color: rgb(170, 4, 249);">'co2[c]'</span><span >,</span><span style="color: rgb(170, 4, 249);">'nh4[c]'</span><span >},[-100 -1; 0.1 100; 0.1 100]);</span></span></div></div></div><div  class = 'S6'><span>Change the objective to maximise the sink reaction for nh4[c]</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >model = changeObjective(model,</span><span style="color: rgb(170, 4, 249);">'sink_nh4[c]'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Test if it is possible to attain a nonzero objective, and if it is compute a sparse flux vector:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >sol = optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >,</span><span style="color: rgb(170, 4, 249);">'zero'</span><span >);</span></span></div></div></div><div  class = 'S6'><span>Check to see if there is a non-zero flux through the objective</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%g%s\n'</span><span >,sol.v(model.c~=0),</span><span style="color: rgb(170, 4, 249);">' flux through the sink_nh4[c] reaction'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span>Dis</span><span>play the sparse flux solution, but only the non-zero fluxes, above a specified threshold.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">if </span><span >sol.stat==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >abs(sol.v(n))&gt;threshold</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            formula=printRxnFormula(model, model.rxns{n}, 0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%10g%15s\t%-60s\n'</span><span >,sol.v(n),model.rxns{n}, formula{1});</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: normal"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S6'><span style=' font-weight: bold;'> ANTICIPATED RESULTS</span></div><div  class = 'S2'><span>If FBAsol.stat==1 then it is feasible to produce CO2 and NH4 from glycine. If FBAsol.stat==0, then this metabolic function is infeasible. This is not anticipated and indicates that further gap filling is required (cf Gap Filling Tutorial).</span></div><h2  class = 'S8'><span>REFERENCES</span></h2><div  class = 'S2'><span>[fleming_cardinality_nodate] Fleming, R.M.T., et al., Cardinality optimisation in constraint-based modelling: illustration with Recon 3D (submitted), 2017.</span></div><div  class = 'S2'><span style=' font-style: italic;'> </span><span>[</span><a href = "#LyXCite-sparsePaper"><span style=' text-decoration: underline;'>sparsePaper</span></a><span>] Le Thi, H.A., Pham Dinh, T., Le, H.M., and Vo, X.T. (2015). DC approximation approaches for sparse</span><span> </span><span>optimization</span><span>. European Journal of Operational Research 244, 26–46.</span></div><div  class = 'S2'></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Testing chemical and biochemical fidelity*
+%% Authors: Ronan Fleming, Ines Thiele, University of Luxembourg.
+%% Reviewer: Almut Heinken, University of Luxembourg.
+%% Introduction
+% Once a context-specific model is generated, but before a it is used to make 
+% predictions of biological relevance, it should be subjected to a range of quantitative 
+% and qualitative chemical and biochemical fidelity tests. The stoichiometric 
+% consistency tests should not be necessary if one starts with a generic model 
+% where the internal reactions are all stoichiometrically consistent then a context-specific 
+% model extracted from it should also be stoichiometrically consistent. Beyond 
+% chemical fidelity, it is also very important to test biochemical fidelity. Such 
+% tests are very specific to the particular biological domain one is modelling. 
+% Here we focus on human metabolism and use the Recon3.0model or Recon2.0 model.
+%% PROCEDURE
+%% Load a model
+% Load Recon2.0model. You may also load your own model.
+
+modelFileName = 'Recon2.0model.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+
+%% 
+% Display the size of the  model
+
+[nMet,nRxn] = size(model.S);
+fprintf('%6s\t%6s\n','#mets','#rxns'); fprintf('%6u\t%6u\t%s%s\n',nMet,nRxn,' totals in ', model.modelID)
+
+%% 
+% Set the threshold to classify flux into non-zero and zero flux:
+
+threshold=1e-6;
+%% 
+% Set a solver
+
+% changeCobraSolver ('gurobi', 'all', 1);
+changeCobraSolver ('glpk', 'all', 1);
+%% Production of mthgxl from 12ppd-S
+% Add sink reactions for either end of the proposed pathway:
+
+model = addSinkReactions(model,{'12ppd_S[c]','mthgxl[c]'},[-100 -1; 0 100]);
+%% 
+% Change the objective to maximise the sink reaction for mthgxl[c]
+
+model = changeObjective(model,'sink_mthgxl[c]');
+%% 
+% Test if it is possible to attain a nonzero objective, and if it is compute 
+% a sparse flux vector:
+
+sol = optimizeCbModel(model,'max','zero');
+%% 
+% Check to see if there is a non-zero flux through the objective
+
+if sol.stat==1
+    fprintf('%g%s\n',sol.v(model.c~=0),' flux through the sink_mthgxl[c] reaction')
+end
+%% 
+% Display the sparse flux solution, but only the non-zero fluxes, above a specified 
+% threshold.
+
+if sol.stat==1
+    for n=1:nRxn
+        if abs(sol.v(n))>threshold
+            formula=printRxnFormula(model, model.rxns{n}, 0);
+            fprintf('%10g%15s\t%-60s\n',sol.v(n),model.rxns{n}, formula{1});
+        end
+    end
+end
+%% 
+% *ANTICIPATED RESULTS*
+% 
+% If FBAsol.stat==1 then it is feasible to produce methylglyoxal from (S)-propane-1,2-diol. 
+% If FBAsol.stat==0, then this metabolic function is infeasible. This is not anticipated 
+% and indicates that further gap filling is required (cf Gap Filling Tutorial).
+%% Metabolic task: 4abut -> succ[m]
+% Add sink reactions for either end of the proposed pathway:
+
+model = addSinkReactions(model,{'4abut[c]','succ[m]'},[-100 -1; 0 100]);
+%% 
+% Change the objective to maximise the sink reaction for nh4[c]
+
+model = changeObjective(model,'sink_succ[m]');
+%% 
+% Test if it is possible to attain a nonzero objective, and if it is compute 
+% a sparse flux vector:
+
+sol = optimizeCbModel(model,'max','zero');
+%% 
+% Check to see if there is a non-zero flux through the objective
+
+if sol.stat==1
+    fprintf('%g%s\n',sol.v(model.c~=0),' flux through the sink_succ[m] reaction')
+end
+%% 
+% Display the sparse flux solution, but only the non-zero fluxes, above a specified 
+% threshold.
+
+if sol.stat==1
+    for n=1:nRxn
+        if abs(sol.v(n))>threshold
+            formula=printRxnFormula(model, model.rxns{n}, 0);
+            fprintf('%10g%15s\t%-60s\n',sol.v(n),model.rxns{n}, formula{1});
+        end
+    end
+end
+%% 
+% *ANTICIPATED RESULTS*
+% 
+% If FBAsol.stat==1 then it is feasible to produce mitochondrial succinate from 
+% 4-Aminobutanoate. If FBAsol.stat==0, then this metabolic function is infeasible. 
+% This is not anticipated and indicates that further gap filling is required (cf 
+% Gap Filling Tutorial).
+%% Metabolic task: gly -> co2 and nh4 (via glycine cleavage system)
+% Add sink reactions for either end of the proposed pathway:
+
+model = addSinkReactions(model,{'gly[c]','co2[c]','nh4[c]'},[-100 -1; 0.1 100; 0.1 100]);
+%% 
+% Change the objective to maximise the sink reaction for nh4[c]
+
+model = changeObjective(model,'sink_nh4[c]');
+%% 
+% Test if it is possible to attain a nonzero objective, and if it is compute 
+% a sparse flux vector:
+
+sol = optimizeCbModel(model,'max','zero');
+%% 
+% Check to see if there is a non-zero flux through the objective
+
+if sol.stat==1
+    fprintf('%g%s\n',sol.v(model.c~=0),' flux through the sink_nh4[c] reaction')
+end
+%% 
+% Display the sparse flux solution, but only the non-zero fluxes, above a specified 
+% threshold.
+
+if sol.stat==1
+    for n=1:nRxn
+        if abs(sol.v(n))>threshold
+            formula=printRxnFormula(model, model.rxns{n}, 0);
+            fprintf('%10g%15s\t%-60s\n',sol.v(n),model.rxns{n}, formula{1});
+        end
+    end
+end
+%% 
+% *ANTICIPATED RESULTS*
+% 
+% If FBAsol.stat==1 then it is feasible to produce CO2 and NH4 from glycine. 
+% If FBAsol.stat==0, then this metabolic function is infeasible. This is not anticipated 
+% and indicates that further gap filling is required (cf Gap Filling Tutorial).
+%% REFERENCES
+% [fleming_cardinality_nodate] Fleming, R.M.T., et al., Cardinality optimisation 
+% in constraint-based modelling: illustration with Recon 3D (submitted), 2017.
+% 
+% [<#LyXCite-sparsePaper sparsePaper>] Le Thi, H.A., Pham Dinh, T., Le, H.M., 
+% and Vo, X.T. (2015). DC approximation approaches for sparse optimization. European 
+% Journal of Operational Research 244, 26–46.
+% 
+%
+##### SOURCE END #####
+-->
+</div></body></html>
