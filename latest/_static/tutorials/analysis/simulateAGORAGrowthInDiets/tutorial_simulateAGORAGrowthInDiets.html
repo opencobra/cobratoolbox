@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Simulation of growth of human gut microbes on different diets</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Simulation of growth of human gut microbes on different diets</span></h1><h2  class = 'S1'><span>Author: Almut Heinken, Molecular Systems Physiology Group, University of Luxembourg.</span></h2><div  class = 'S2'><span>This tutorial shows how to simulate growth of the AGORA gut microbial models (or other microbial models) on different dietary inputs under aerobic and anaerobic conditions.</span></div><h2  class = 'S1'><span>Initialize the COBRA Toolbox</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >initCobraToolbox</span></span></div></div></div><h2  class = 'S4'><span>Prepare input data and models</span></h2><div  class = 'S2'><span>change directory to where the tutorial is located</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >tutorialPath = fileparts(which(</span><span style="color: rgb(170, 4, 249);">'tutorial_simulateAGORAGrowthInDiets'</span><span >));</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >cd(tutorialPath);</span></span></div></div></div><div  class = 'S7'><span>We will use the AGORA resource (Magnusdottir et al., Nat Biotechnol. 2017 Jan;35(1):81-89) in this tutorial. AGORA version 1.03 is available at https://github.com/VirtualMetabolicHuman/AGORA. Download AGORA and place the models into a folder.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >system(</span><span style="color: rgb(170, 4, 249);">'curl -LJO https://github.com/VirtualMetabolicHuman/AGORA/archive/master.zip'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >unzip(</span><span style="color: rgb(170, 4, 249);">'AGORA-master'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >modPath = [pwd filesep </span><span style="color: rgb(170, 4, 249);">'AGORA-master' </span><span >filesep </span><span style="color: rgb(170, 4, 249);">'CurrentVersion' </span><span >filesep </span><span style="color: rgb(170, 4, 249);">'AGORA_1_03' </span><span >filesep' </span><span style="color: rgb(170, 4, 249);">'AGORA_1_03_mat'</span><span >];</span></span></div></div></div><div  class = 'S7'><span>Import a file with information on the AGORA organisms including reconstruction names and taxonomy.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >[~,infoFile,~]=xlsread(</span><span style="color: rgb(170, 4, 249);">'AGORA_infoFile.xlsx'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">% Load the AGORA reconstructions.</span></span></div></div></div><h2  class = 'S4'><span>Load the AGORA reconstructions to be joined.</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >i=2:size(infoFile,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=readCbModel([modPath filesep infoFile{i,1} </span><span style="color: rgb(170, 4, 249);">'.mat'</span><span >]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    inputModels{i-1,1}=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S4'><span>Simulation of growth on a Western and a high fiber diet in presence and absence of oxygen</span></h2><div  class = 'S2'><span>The diets were first described in Table S12, Magnusdottir et al., Nat Biotechnol. 2017 Jan;35(1):81-89. Please note that there are slight differences between this implementation of the Western diet and the one used for simulations in the original AGORA publication (see https://www.vmh.life/files/reconstructions/AGORA/1.01/AGORA-Flux-Table.md). Since the resulting differences in growth rate are only minor, it is recommended to use the implementation provided in cobratoolbox/papers/2018_microbiomeModelingToolbox/resources. This implementation is consistent with the Western diet used in the microbeMicrobeInteractions tutorial. Both diets are simulated in presence and absence of oxygen.</span></div><h2  class = 'S1'><span>Set a Western diet as dietary input.</span></h2><div  class = 'S2'><span>This will simulate growth on a diet high in simple sugars and fat, but low in fiber. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dietConstraints=readtable(</span><span style="color: rgb(170, 4, 249);">'WesternDietAGORA.txt'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >dietConstraints=table2cell(dietConstraints);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >dietConstraints(:,2)=cellstr(num2str(cell2mat(dietConstraints(:,2))));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >i=1:size(inputModels,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=inputModels{i,1};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass'</span><span >,7))));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=useDiet(model,dietConstraints);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,1)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">% Enable uptake of oxygen</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeRxnBounds(model,</span><span style="color: rgb(170, 4, 249);">'EX_o2(e)'</span><span >,-10,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,2)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S4'><span>Set a high fiber diet as dietary input.</span></h2><div  class = 'S2'><span>This will simulate growth on a diet high in fiber, but low in simple sugars and fat.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dietConstraints=readtable(</span><span style="color: rgb(170, 4, 249);">'HighFiberDietAGORA.txt'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >dietConstraints=table2cell(dietConstraints);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >dietConstraints(:,2)=cellstr(num2str(cell2mat(dietConstraints(:,2))));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >i=1:size(inputModels,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=inputModels{i,1};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass'</span><span >,7))));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=useDiet(model,dietConstraints);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,3)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">% Enable uptake of oxygen</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeRxnBounds(model,</span><span style="color: rgb(170, 4, 249);">'EX_o2(e)'</span><span >,-10,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,4)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S4'><span>Plot the growth rates on the two diets.</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dataAll=vertcat(data(:,1),data(:,2),data(:,3),data(:,4));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group=cell(size(data,1),4);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,1)={</span><span style="color: rgb(170, 4, 249);">'Western diet, anoxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,2)={</span><span style="color: rgb(170, 4, 249);">'Western diet, oxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,3)={</span><span style="color: rgb(170, 4, 249);">'High fiber diet, anoxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,4)={</span><span style="color: rgb(170, 4, 249);">'High fiber diet, oxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >groupAll=vertcat(group(:,1),group(:,2),group(:,3),group(:,4));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >figure</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >boxplot(dataAll,groupAll,</span><span style="color: rgb(170, 4, 249);">'PlotStyle'</span><span >,</span><span style="color: rgb(170, 4, 249);">'traditional'</span><span >,</span><span style="color: rgb(170, 4, 249);">'BoxStyle'</span><span >,</span><span style="color: rgb(170, 4, 249);">'outline'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >h = findobj(gca,</span><span style="color: rgb(170, 4, 249);">'Tag'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Box'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">% Change colors</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >j=1:length(h)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'g'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==2</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'b'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==3</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'y'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==4</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'r'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >set(gca, </span><span style="color: rgb(170, 4, 249);">'FontSize'</span><span >, 12)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >title(</span><span style="color: rgb(170, 4, 249);">'Growth rates in 818 AGORA gut microbe models on two diets'</span><span >)</span></span></div></div></div><h2  class = 'S4'><span>Grow AGORA on a diet created with VMH Diet Designer</span></h2><div  class = 'S2'><span>Here, a diet provided by the Diet Designer tool at the Virtual Metabolic Human website (https://www.vmh.life/, Noronha et al., "The Virtual Metabolic Human database: integrating human and gut microbiome metabolism with nutrition and disease", Nucleic Acids Research (2018) will be used. A number of pre-made diets are available at https://www.vmh.life/#nutrition and in cobratoolbox/papers/2018_microbiomeModelingToolbox/resources. The user can also generate a customized diet with the DietDesigner tool and use it for simulations with AGORA. Note that the diets were designed for microbiome simulations and the predicted growth rates may be very high for single AGORA models.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dietConstraints=adaptVMHDietToAGORA(</span><span style="color: rgb(170, 4, 249);">'AverageEuropeanDiet'</span><span >,</span><span style="color: rgb(170, 4, 249);">'AGORA'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >clear </span><span style="color: rgb(170, 4, 249);">data</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >i=1:size(inputModels,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=inputModels{i,1};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass'</span><span >,7))));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=useDiet(model,dietConstraints);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,1)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">% Enable uptake of oxygen</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    model=changeRxnBounds(model,</span><span style="color: rgb(170, 4, 249);">'EX_o2(e)'</span><span >,-10,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    FBA=optimizeCbModel(model,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    data(i,2)=FBA.f;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S4'><span>Plot the growth rates on the Average European diet.</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dataAll=vertcat(data(:,1),data(:,2));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group=cell(size(data,1),2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,1)={</span><span style="color: rgb(170, 4, 249);">'Average European diet, anoxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >group(:,2)={</span><span style="color: rgb(170, 4, 249);">'Average European diet, oxic'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >groupAll=vertcat(group(:,1),group(:,2));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >figure</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >boxplot(dataAll,groupAll,</span><span style="color: rgb(170, 4, 249);">'PlotStyle'</span><span >,</span><span style="color: rgb(170, 4, 249);">'traditional'</span><span >,</span><span style="color: rgb(170, 4, 249);">'BoxStyle'</span><span >,</span><span style="color: rgb(170, 4, 249);">'outline'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >h = findobj(gca,</span><span style="color: rgb(170, 4, 249);">'Tag'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Box'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">% Change colors</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >j=1:length(h)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'g'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >j==2</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        patch(get(h(j),</span><span style="color: rgb(170, 4, 249);">'XData'</span><span >),get(h(j),</span><span style="color: rgb(170, 4, 249);">'YData'</span><span >),</span><span style="color: rgb(170, 4, 249);">'b'</span><span >,</span><span style="color: rgb(170, 4, 249);">'FaceAlpha'</span><span >,.5);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >set(gca, </span><span style="color: rgb(170, 4, 249);">'FontSize'</span><span >, 12)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >title(</span><span style="color: rgb(170, 4, 249);">'Growth rates in 818 AGORA gut microbe models on an Average European diet'</span><span >)</span></span></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Simulation of growth of human gut microbes on different diets
+%% Author: Almut Heinken, Molecular Systems Physiology Group, University of Luxembourg.
+% This tutorial shows how to simulate growth of the AGORA gut microbial models 
+% (or other microbial models) on different dietary inputs under aerobic and anaerobic 
+% conditions.
+%% Initialize the COBRA Toolbox
+
+initCobraToolbox
+%% Prepare input data and models
+% change directory to where the tutorial is located
+
+tutorialPath = fileparts(which('tutorial_simulateAGORAGrowthInDiets'));
+cd(tutorialPath);
+%% 
+% We will use the AGORA resource (Magnusdottir et al., Nat Biotechnol. 2017 
+% Jan;35(1):81-89) in this tutorial. AGORA version 1.03 is available at https://github.com/VirtualMetabolicHuman/AGORA. 
+% Download AGORA and place the models into a folder.
+
+system('curl -LJO https://github.com/VirtualMetabolicHuman/AGORA/archive/master.zip')
+unzip('AGORA-master')
+modPath = [pwd filesep 'AGORA-master' filesep 'CurrentVersion' filesep 'AGORA_1_03' filesep' 'AGORA_1_03_mat'];
+%% 
+% Import a file with information on the AGORA organisms including reconstruction 
+% names and taxonomy.
+
+[~,infoFile,~]=xlsread('AGORA_infoFile.xlsx');
+% Load the AGORA reconstructions.
+%% Load the AGORA reconstructions to be joined.
+
+for i=2:size(infoFile,1)
+    model=readCbModel([modPath filesep infoFile{i,1} '.mat']);
+    inputModels{i-1,1}=model;
+end
+%% Simulation of growth on a Western and a high fiber diet in presence and absence of oxygen
+% The diets were first described in Table S12, Magnusdottir et al., Nat Biotechnol. 
+% 2017 Jan;35(1):81-89. Please note that there are slight differences between 
+% this implementation of the Western diet and the one used for simulations in 
+% the original AGORA publication (see https://www.vmh.life/files/reconstructions/AGORA/1.01/AGORA-Flux-Table.md). 
+% Since the resulting differences in growth rate are only minor, it is recommended 
+% to use the implementation provided in cobratoolbox/papers/2018_microbiomeModelingToolbox/resources. 
+% This implementation is consistent with the Western diet used in the microbeMicrobeInteractions 
+% tutorial. Both diets are simulated in presence and absence of oxygen.
+%% Set a Western diet as dietary input.
+% This will simulate growth on a diet high in simple sugars and fat, but low 
+% in fiber. 
+
+dietConstraints=readtable('WesternDietAGORA.txt');
+dietConstraints=table2cell(dietConstraints);
+dietConstraints(:,2)=cellstr(num2str(cell2mat(dietConstraints(:,2))));
+for i=1:size(inputModels,1)
+    model=inputModels{i,1};
+    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,'biomass',7))));
+    model=useDiet(model,dietConstraints);
+    FBA=optimizeCbModel(model,'max');
+    data(i,1)=FBA.f;
+    % Enable uptake of oxygen
+    model=changeRxnBounds(model,'EX_o2(e)',-10,'l');
+    FBA=optimizeCbModel(model,'max');
+    data(i,2)=FBA.f;
+end
+%% Set a high fiber diet as dietary input.
+% This will simulate growth on a diet high in fiber, but low in simple sugars 
+% and fat.
+
+dietConstraints=readtable('HighFiberDietAGORA.txt');
+dietConstraints=table2cell(dietConstraints);
+dietConstraints(:,2)=cellstr(num2str(cell2mat(dietConstraints(:,2))));
+for i=1:size(inputModels,1)
+    model=inputModels{i,1};
+    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,'biomass',7))));
+    model=useDiet(model,dietConstraints);
+    FBA=optimizeCbModel(model,'max');
+    data(i,3)=FBA.f;
+    % Enable uptake of oxygen
+    model=changeRxnBounds(model,'EX_o2(e)',-10,'l');
+    FBA=optimizeCbModel(model,'max');
+    data(i,4)=FBA.f;
+end
+%% Plot the growth rates on the two diets.
+
+dataAll=vertcat(data(:,1),data(:,2),data(:,3),data(:,4));
+group=cell(size(data,1),4);
+group(:,1)={'Western diet, anoxic'};
+group(:,2)={'Western diet, oxic'};
+group(:,3)={'High fiber diet, anoxic'};
+group(:,4)={'High fiber diet, oxic'};
+groupAll=vertcat(group(:,1),group(:,2),group(:,3),group(:,4));
+figure
+boxplot(dataAll,groupAll,'PlotStyle','traditional','BoxStyle','outline')
+h = findobj(gca,'Tag','Box');
+% Change colors
+for j=1:length(h)
+    if j==1
+        patch(get(h(j),'XData'),get(h(j),'YData'),'g','FaceAlpha',.5);
+    end
+    if j==2
+        patch(get(h(j),'XData'),get(h(j),'YData'),'b','FaceAlpha',.5);
+    end
+    if j==3
+        patch(get(h(j),'XData'),get(h(j),'YData'),'y','FaceAlpha',.5);
+    end
+    if j==4
+        patch(get(h(j),'XData'),get(h(j),'YData'),'r','FaceAlpha',.5);
+    end
+end
+set(gca, 'FontSize', 12)
+title('Growth rates in 818 AGORA gut microbe models on two diets')
+%% Grow AGORA on a diet created with VMH Diet Designer
+% Here, a diet provided by the Diet Designer tool at the Virtual Metabolic Human 
+% website (https://www.vmh.life/, Noronha et al., "The Virtual Metabolic Human 
+% database: integrating human and gut microbiome metabolism with nutrition and 
+% disease", Nucleic Acids Research (2018) will be used. A number of pre-made diets 
+% are available at https://www.vmh.life/#nutrition and in cobratoolbox/papers/2018_microbiomeModelingToolbox/resources. 
+% The user can also generate a customized diet with the DietDesigner tool and 
+% use it for simulations with AGORA. Note that the diets were designed for microbiome 
+% simulations and the predicted growth rates may be very high for single AGORA 
+% models.
+
+dietConstraints=adaptVMHDietToAGORA('AverageEuropeanDiet','AGORA');
+clear data
+for i=1:size(inputModels,1)
+    model=inputModels{i,1};
+    model=changeObjective(model,model.rxns(find(strncmp(model.rxns,'biomass',7))));
+    model=useDiet(model,dietConstraints);
+    FBA=optimizeCbModel(model,'max');
+    data(i,1)=FBA.f;
+    % Enable uptake of oxygen
+    model=changeRxnBounds(model,'EX_o2(e)',-10,'l');
+    FBA=optimizeCbModel(model,'max');
+    data(i,2)=FBA.f;
+end
+%% Plot the growth rates on the Average European diet.
+
+dataAll=vertcat(data(:,1),data(:,2));
+group=cell(size(data,1),2);
+group(:,1)={'Average European diet, anoxic'};
+group(:,2)={'Average European diet, oxic'};
+groupAll=vertcat(group(:,1),group(:,2));
+figure
+boxplot(dataAll,groupAll,'PlotStyle','traditional','BoxStyle','outline')
+h = findobj(gca,'Tag','Box');
+% Change colors
+for j=1:length(h)
+    if j==1
+        patch(get(h(j),'XData'),get(h(j),'YData'),'g','FaceAlpha',.5);
+    end
+    if j==2
+        patch(get(h(j),'XData'),get(h(j),'YData'),'b','FaceAlpha',.5);
+    end
+end
+set(gca, 'FontSize', 12)
+title('Growth rates in 818 AGORA gut microbe models on an Average European diet')
+##### SOURCE END #####
+-->
+</div></body></html>

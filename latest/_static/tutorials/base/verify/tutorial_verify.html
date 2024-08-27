@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Verify the COBRA Toolbox</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement{    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: pre;    word-wrap:  initial;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S5 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span style=' font-weight: bold;'>Verify the COBRA Toolbox</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Authors: Ronan Fleming, Leiden University</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Reviewers: </span></div><h2  class = 'S2'><span>MATERIALS - EQUIPMENT SETUP</span></h2><div  class = 'S1'><span>Please ensure that all the required dependencies (e.g. , </span><span style=' font-family: monospace;'>git</span><span> and </span><span style=' font-family: monospace;'>curl</span><span>) of The COBRA Toolbox have been properly installed by following the installation guide </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html"><span>here</span></a><span>.</span></div><h2  class = 'S2'><span>PROCEDURE </span></h2><h2  class = 'S2'><span>Check available optimisation solvers 	</span></h2><div  class = 'S1'><span>At initialisation, one from a set of available optimisation solvers will be selected as the default solver. If </span><span style=' font-family: monospace;'>Gurobi</span><span> is installed, it is used as the default solver for LP, QP and MILP problems. Otherwise, the </span><span style=' font-family: monospace;'>GLPK</span><span> solver is selected by for LP and MILP problems and QPNG is selected for QP problems. Check the currently selected solvers with:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre"><span >changeCobraSolver</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="3A08D692" data-testid="output_0" data-width="428" data-height="59" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Defined solvers are:
+    CBT_LP_SOLVER: glpk
+    CBT_MILP_SOLVER: glpk
+    CBT_QP_SOLVER: qpng</div></div></div></div></div><h2  class = 'S5'><span>ANTICIPATED RESULTS </span></h2><div  class = 'S1'><span>A list of solvers assigned to solve each class of optimisation solver is returned. 				</span></div><h2  class = 'S5'><span>CRITICAL STEP</span></h2><div  class = 'S1'><span>A dependency on at least one linear optimisation solver must be satisfied for flux balance analysis. </span></div><h2  class = 'S2'><span>Verify a basic installation of the COBRA Toolbox</span></h2><div  class = 'S1'><span>Test if flux balance analysis works</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: pre"><span >testFBA</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="6F46C7D4" data-testid="output_1" data-width="428" data-height="381" data-hashorizontaloverflow="false" style="width: 458px; max-height: 392px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Testing flux balance analysis using glpk ... 
+&gt;&gt; Optimal minimum 1-norm solution
+BiomassEcoli        	      0.9219
+EX_co2(e)           	       21.78
+EX_glc(e)           	         -10
+EX_h2o(e)           	       41.29
+EX_h(e)             	       8.428
+EX_nh4(e)           	      -9.851
+EX_o2(e)            	      -19.93
+EX_pi(e)            	     -0.8405
+EX_so4(e)           	     -0.2149
+
+&gt;&gt; Optimal solution on fructose
+BiomassEcoli        	      0.9219
+EX_co2(e)           	       21.78
+EX_glc(e)           	         -10
+EX_h2o(e)           	       41.29
+EX_h(e)             	       8.428
+EX_nh4(e)           	      -9.851
+EX_o2(e)            	      -19.93
+EX_pi(e)            	     -0.8405
+EX_so4(e)           	     -0.2149
+
+&gt;&gt; Optimal anaerobic solution
+
+&gt;&gt; Optimal ethanol secretion rate solution 
+Done.</div></div></div></div><div class="inlineWrapper"><div  class = 'S6'></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: pre"><span >testSolveCobraLP</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="9B73A5F4" data-testid="output_2" data-width="428" data-height="4007" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">   Running dummyModel with solveCobraLP using glpk ... 
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+Original LP has 2 rows, 2 columns, 4 non-zeros
+Objective value = 600
+OPTIMAL SOLUTION FOUND BY LP PRESOLVER
+
+ &gt; [glpk] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [glpk] Optimality condition (2) in solveCobraLP satisfied.
+Done.
+   Running ecoli with solveCobraLP using glpk ... Done.
+   Running dummyModel with solveCobraLP using pdco ... 
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.018898 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.010743 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+
+   --------------------------------------------------------
+   pdco.m                      Version pdco5 of 15 Jun 2018
+   Primal-dual barrier method to minimize a convex function
+   subject to linear constraints Ax + r = b,  bl &lt;= x &lt;= bu
+                                                           
+   Michael Saunders       SOL and ICME, Stanford University
+   Contributors:     Byunggyoo Kim (SOL), Chris Maes (ICME)
+                     Santiago Akle (ICME), Matt Zahr (ICME)
+                     Aekaansh Verma (ME)                   
+   --------------------------------------------------------
+
+The objective is linear
+The matrix A is an explicit dense matrix
+
+m        =        2     n        =        2      nnz(A)  =        4
+max |b | =        1     max |x0| =  1.0e+00      xsize   =  1.0e+02
+max |y0| =        0     max |z0| =  1.0e+00      zsize   =  1.0e+02
+
+x0min    =        1     featol   =  1.0e-06      d1max   =  5.0e-04
+z0min    =        1     opttol   =  1.0e-06      d2max   =  5.0e-04
+mu0      =  1.0e-01     steptol  =     0.99     bigcenter=     1000
+
+LSMR/MINRES:
+atol1    =  1.0e-10     atol2    =  1.0e-15      btol    =  0.0e+00
+conlim   =  1.0e+12     itnlim   =       20      show    =        0
+
+Method   =        1     (1 or 11=chol  2 or 12=QR  3 or 13=LSMR  4 or 14=MINRES 21=SQD(LU)  22=SQD(MA57))
+Eliminating dy before dx  
+ 
+
+Bounds:
+  [0,inf]  [-inf,0]  Finite bl  Finite bu  Two bnds   Fixed    Free
+        0         0          2          2         2       0       0
+  [0, bu]  [bl,  0]  excluding fixed variables
+        2         0
+
+Itn   mu stepx stepz  Pinf  Dinf  Cinf   Objective    nf  center     Chol
+  0                    0.3   0.6   0.0 -5.9999997e+04        1.0
+  1 -1.0 0.756 0.756  -0.3  -0.0  -0.4 -2.6962494e+04  1    30.9        3
+  2 -1.0 0.078 0.078  -0.3  -0.0  -0.4 -2.5877439e+04  1  1164.7
+  3 -1.0 0.147 0.147  -0.4  -0.1  -0.5 -2.2098922e+04  1   143.5
+  4 -1.1 0.006 0.006  -0.4  -0.1  -0.5 -2.1984231e+04  1  6471.0
+  5 -1.1 0.014 0.014  -0.4  -0.1  -0.5 -2.1261135e+04  1   434.8
+  6 -1.1 0.019 0.019  -0.4  -0.1  -0.5 -1.7870918e+04  1  3621.6
+  7 -1.1 1.000 1.000 -16.5  -8.5   0.4  3.7050583e+06  1   305.1
+  8 -1.1 1.000 1.000 -17.8 -12.6  -1.0  3.6809979e+06  1     1.2
+  9 -2.9 0.998 0.998 -17.8 -12.7  -2.7  3.6794412e+06  1     2.1
+ 10 -4.2 1.000 1.000 -17.8 -12.6  -4.2  3.6794068e+06  1     1.0
+ 11 -6.2 1.000 1.000 -18.3 -13.1  -6.2  3.6794056e+06  1     1.0
+   Converged
+
+max |x| =     0.010    max |y| = 38400.000    max |z| =  1728.333   scaled
+max |x| =     1.000    max |y| =3840000.006    max |z| =172833.334 unscaled
+PDitns  =        11   Cholitns =         0    cputime =       0.0
+
+Distribution of vector     x         z
+[  1e+05,  1e+06 )         0         2
+[  1e+04,  1e+05 )         0         0
+[  1e+03,  1e+04 )         0         0
+[    100,  1e+03 )         0         0
+[     10,    100 )         0         0
+[      1,     10 )         0         0
+[    0.1,      1 )         2         0
+[   0.01,    0.1 )         0         0
+[  0.001,   0.01 )         0         0
+[      0,  0.001 )         0         0 
+Elapsed time is 0.019409 seconds.
+
+ &gt; [pdco] Optimality condition (1) in solveCobraLP satisfied.
+ &gt; [pdco] Optimality condition (2) in solveCobraLP satisfied.
+Done.
+   Running ecoli with solveCobraLP using pdco ... Done.
+
+Testing model with linear constraint matrix that has 72 rows and 95 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... Done.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.009595       0.873922       0.113308       0.091665                glpk	                       default
+  2       0.031681       0.873922       0.113047       0.235520                pdco	                       default
+
+Testing model with linear constraint matrix that has 2 rows and 2 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... 
+Step lengths too smallDone.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.011557     600.000000      -0.000000    -200.000000                glpk	                       default
+  2       0.009231     600.000000       0.000000    -200.000000                pdco	                       default
+
+Testing model with linear constraint matrix that has 1 rows and 1 columns...
+   Testing testDifferentLPSolvers using cplex_direct ... Done.
+   Testing testDifferentLPSolvers using glpk ... Done.
+   Testing testDifferentLPSolvers using gurobi ... Done.
+   Testing testDifferentLPSolvers using ibm_cplex ... Done.
+   Testing testDifferentLPSolvers using matlab ... Done.
+   Testing testDifferentLPSolvers using mosek ... Done.
+   Testing testDifferentLPSolvers using pdco ... Done.
+   Testing testDifferentLPSolvers using quadMinos ... Done.
+   Testing testDifferentLPSolvers using tomlab_cplex ... Done.
+   Testing testDifferentLPSolvers using mosek_linprog ... Done.
+   Testing testDifferentLPSolvers using dqqMinos ... Done.
+
+ Summary:
+              time            obj        y(rand)        w(rand)              solver	                     algorithm
+  1       0.013073       1.000000       1.000000      -0.000000                glpk	                       default
+  2       0.062806       1.000000       1.000000       0.000000                pdco	                       default
+   Running optimalityConditions tests in solveCobraLP using pdco ...  Done.
+   Running optimalityConditions tests in solveCobraLP using glpk ...  Done.</div></div></div></div></div><h2  class = 'S5'><span>(Optional) Verify and test the entire COBRA Toolbox</span></h2><h2  class = 'S5'><span>TIMING ∼30 min</span></h2><div  class = 'S1'><span>Optionally test the functionality of The COBRA Toolbox locally, especially if one encounters an error running a function. The test suite runs tailored tests that verify the output and proper execution of core functions on the locally configured system. The full test suite can be invoked by typing:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >testCOBRAToolbox=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >testCOBRAToolbox</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    testAll</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S2'><span>ANTICIPATED RESULTS</span></h2><div  class = 'S1'><span>The test suite starts by initialising The COBRA Toolbox and thereafter, all of the tests are run. At the end of the test run, a comprehensive summary table is presented in which the respective tests and their test outcome is shown. On a properly configured system that is compatible with the most recent version of The COBRA Toolbox, all tests should pass.</span></div><h2  class = 'S5'><span>TROUBLESHOOTING</span></h2><div  class = 'S1'><span>If some third party dependencies are not properly installed, some tests may fail. The test suite, despite some tests failing, is not interrupted. The tests that fail are listed with a false status in the column Passed. The specific test can then be run individually to determine the exact cause of the error. If the error can be fixed, follow the tutorial on how to contribute to The COBRA Toolbox and contribute a fix.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Verify the COBRA Toolbox*
+% *Authors: Ronan Fleming, Leiden University*
+% 
+% *Reviewers:* 
+%% MATERIALS - EQUIPMENT SETUP
+% Please ensure that all the required dependencies (e.g. , |git| and |curl|) 
+% of The COBRA Toolbox have been properly installed by following the installation 
+% guide <https://opencobra.github.io/cobratoolbox/stable/installation.html here>.
+%% PROCEDURE 
+%% Check available optimisation solvers 	
+% At initialisation, one from a set of available optimisation solvers will be 
+% selected as the default solver. If |Gurobi| is installed, it is used as the 
+% default solver for LP, QP and MILP problems. Otherwise, the |GLPK| solver is 
+% selected by for LP and MILP problems and QPNG is selected for QP problems. Check 
+% the currently selected solvers with:
+
+changeCobraSolver
+%% ANTICIPATED RESULTS 
+% A list of solvers assigned to solve each class of optimisation solver is returned. 				
+%% CRITICAL STEP
+% A dependency on at least one linear optimisation solver must be satisfied 
+% for flux balance analysis. 
+%% Verify a basic installation of the COBRA Toolbox
+% Test if flux balance analysis works
+
+testFBA
+
+testSolveCobraLP
+%% (Optional) Verify and test the entire COBRA Toolbox
+%% TIMING ∼30 min
+% Optionally test the functionality of The COBRA Toolbox locally, especially 
+% if one encounters an error running a function. The test suite runs tailored 
+% tests that verify the output and proper execution of core functions on the locally 
+% configured system. The full test suite can be invoked by typing:
+
+testCOBRAToolbox=0;
+if testCOBRAToolbox
+    testAll
+end
+%% ANTICIPATED RESULTS
+% The test suite starts by initialising The COBRA Toolbox and thereafter, all 
+% of the tests are run. At the end of the test run, a comprehensive summary table 
+% is presented in which the respective tests and their test outcome is shown. 
+% On a properly configured system that is compatible with the most recent version 
+% of The COBRA Toolbox, all tests should pass.
+%% TROUBLESHOOTING
+% If some third party dependencies are not properly installed, some tests may 
+% fail. The test suite, despite some tests failing, is not interrupted. The tests 
+% that fail are listed with a false status in the column Passed. The specific 
+% test can then be run individually to determine the exact cause of the error. 
+% If the error can be fixed, follow the tutorial on how to contribute to The COBRA 
+% Toolbox and contribute a fix.
+##### SOURCE END #####
+-->
+</div></body></html>
