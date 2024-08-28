@@ -161,6 +161,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../rFBA/index.html">Rfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ICONGEMs/index.html">Icongems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../dynamicFBA/index.html">Dynamicfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
@@ -298,19 +299,39 @@ model             Updated model structure</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.io.loadPSCMfile">
-<span class="sig-name descname"><span class="pre">loadPSCMfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/io/loadPSCMfile.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.io.loadPSCMfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a mat file into the workspace, given a nickname or a full filename
-Assumes that fileName points to a mat file with a single variable,
-otherwise the set of variables in the mat file are returned as a
-structure, where each field is a variable.</p>
-<p>INPUT:
-fileName:     nickname of .mat file to load</p>
-<blockquote>
-<div><p>or
-full name of .mat file to load</p>
-</div></blockquote>
+<span class="sig-name descname"><span class="pre">loadPSCMfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">searchDirectory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/io/loadPSCMfile.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.io.loadPSCMfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a .mat file into the workspace, given a nickname or a full filename.
+If a nickname is given, i.e., “Harvey”, “Harvetta”, or Recon3D (legacy feature), the latest
+available version in the cobratoolbox is loaded. By specifiying the
+searchDirectory variable, .mat files are only searched in the given user defined
+directory. By default, all files within the MATLAB path variable are
+searched. If the full filename is given, the exact specified file is loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>variable = loadPSCMfile</strong> (<em>fileName, searchDirectory</em>)</p>
+</dd>
+</dl>
+<p>INPUTS:
+fileName:             Nickname of .mat file to load or full name of .mat file to load</p>
+<p>OPTIONAL INPUTS
+searchDirectory:      User specified directory with .mat file to load.</p>
 <p>OUTPUT:
-variable:     matlab variable returned</p>
+variable:             Matlab variable returned</p>
+<p class="rubric">Example</p>
+<p>% Giving only WBM nickname loads the latest available WBM:
+male = loadPSCMfile(‘Harvey’);
+% Giving the exact name of the .mat file loads the exact
+specified mode:
+female = loadPSCMfile(‘Harvetta_1_03d’);
+% Specifiying the search directory loads the .mat file
+within that directory:
+male = loadPSCMfile(‘Harvetta’,’MYDIRECTORY’)</p>
+<p class="rubric">AUTHORS</p>
+<ul class="simple">
+<li><p>Ines Thiele, 2020</p></li>
+<li><p>Tim Hensen, July 2024: Removed hardcoding of WBMs names and added</p></li>
+</ul>
+<p>option for searching a user defined directories.</p>
 </dd></dl>
 
 </section>

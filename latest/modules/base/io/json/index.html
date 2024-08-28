@@ -234,14 +234,42 @@
   <section id="json">
 <span id="id1"></span><h1>Json<a class="headerlink" href="#json" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.io.json"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.json.isValidJSON">
+<span class="sig-name descname"><span class="pre">isValidJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/json/isValidJSON.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.json.isValidJSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if a JSON file is valid or not.
+A JSON file is considered valid if it can be decoded into a structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[isValid] = isValidJSON</strong> (<em>fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>fileName</strong> – A string containing the file name of the JSON file</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>isValid</strong> – A logical variable: 1 if JSON file is valid
+0 if JSON file is invalid</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[isValid] = isValidJSON(‘toyModel_output.json’)</p>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.json.model2JSON">
 <span class="sig-name descname"><span class="pre">model2JSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/json/model2JSON.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.json.model2JSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function writes a json file from matlab structure.
-I validated json format with <a class="reference external" href="https://jsonlint.com/">https://jsonlint.com/</a>.</p>
-<p>INPUT
-model     model structure
-fileName  name of file including extension .json</p>
-<p>Ines Thiele, May 2023</p>
+<dd><p>This function writes a JSON file from Matlab structure.
+JSON files can be validated by isValidJSON function or online tools like
+<a class="reference external" href="https://jsonlint.com/">https://jsonlint.com/</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model2JSON</strong> (<em>model,fileName</em>)</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>INPUT</dt><dd><p>model:     model structure
+fileName:  name of file including extension .json</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
