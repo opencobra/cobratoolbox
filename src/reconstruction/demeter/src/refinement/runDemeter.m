@@ -1,7 +1,7 @@
-function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = runPipeline(draftFolder, varargin)
-% This function runs the semi-automatic refinement pipeline consisting of
-% three steps: 1) refining all draft reconstructions, 2) testing the
-% refined reconstructions against the input data, 3) preparing a report
+function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = runDEMETER(draftFolder, varargin)
+% This function runs the DEMETER pipeline consisting of three steps:
+% 1) refining all draft reconstructions, 2) testing the refined
+% reconstructions against the input data, 3) preparing a report
 % detailing any additional debugging that needs to be performed.
 %
 % USAGE:
