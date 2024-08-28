@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="cardOpt" href="cardOpt/index.html"/>
-        <link rel="prev" title="SBML-utilities" href="../io/utilities/SBML/index.html"/> 
+        <link rel="next" title="Nlp" href="NLP/index.html"/>
+        <link rel="prev" title="Ci" href="../ci/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,16 +161,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../io/index.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Solvers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="cardOpt/index.html">cardOpt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="varKin/index.html">varKin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="msk/index.html">Msk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -183,6 +199,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -222,22 +239,36 @@
 <span id="id1"></span><h1>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="cardOpt/index.html">cardOpt</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cardOpt/sparseLP/index.html">sparseLP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cardOpt/tangiCode/index.html">tangiCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NLP/index.html">Nlp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lindo/index.html">Lindo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="msk/index.html">Msk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rescale/index.html">Rescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cardOpt/index.html">Cardopt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cardOpt/smoothConcave/index.html">Smoothconcave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardOpt/sparseLP/index.html">Sparselp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cardOpt/sparseLP/old/index.html">Old</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="varKin/index.html">varKin</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="varKin/BDCAmethods/index.html">BDCAmethods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="varKin/derFreeMethods/index.html">derFreeMethods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="varKin/levMarMethods/index.html">levMarMethods</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="varKin/index.html">Varkin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="varKin/derFreeMethods/index.html">Derfreemethods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="varKin/BDCAmethods/index.html">Bdcamethods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="varKin/levMarMethods/index.html">Levmarmethods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gams/index.html">Gams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="init/index.html">Init</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cplex/index.html">Cplex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l1"><a class="reference internal" href="param/index.html">Param</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.base.solvers"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.buildLPproblemFromModel">
-<span class="sig-name descname"><span class="pre">buildLPproblemFromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">verify</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">buildLPproblemFromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">verify</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds an COBRA Toolbox LP/QP problem structure from a COBRA Toolbox model structure.</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\begin{split}   max/min  ~&amp; c^T x + 0.5 x^T F x \\
@@ -273,59 +304,67 @@
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.isCompatible">
-<span class="sig-name descname"><span class="pre">isCompatible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">specificSolverVersion</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">isCompatible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">specificSolverVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/isCompatible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
 <dd><p>determine the compatibility status of a solver based on the file compatMatrix.rst</p>
-<dl>
-<dt>USAGE:</dt><dd><p>compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>compatibleStatus = isCompatible</strong> (<em>solverName, printLevel, specificSolverVersion</em>)</p>
 </dd>
-<dt>INPUT:</dt><dd><p>solverName:            Name of the solver
-printLevel:            verbose level (default: 0)
-specificSolverVersion: string with specific solver version (example: ‘12.7.1’ or ‘6.5.1’)</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>solverName</strong> – Name of the solver</p></li>
+<li><p><strong>printLevel</strong> – verbose level (default: 0)</p></li>
+<li><p><strong>specificSolverVersion</strong> – string with specific solver version (example: ‘12.7.1’ or ‘6.5.1’)</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>compatibleStatus:      compatibility status</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>compatibleStatus</strong> – compatibility status</p>
+<ul class="simple">
 <li><p>0: not compatible with the COBRA Toolbox (tested)</p></li>
 <li><p>1: compatible with the COBRA Toolbox (tested)</p></li>
 <li><p>2: unverified compatibility with the COBRA Toolbox (not tested)</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.optimizeTwoCbModels">
-<span class="sig-name descname"><span class="pre">optimizeTwoCbModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model1</span></em>, <em class="sig-param"><span class="pre">model2</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">minFluxFlag</span></em>, <em class="sig-param"><span class="pre">verbFlag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.optimizeTwoCbModels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimizeTwoCbModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model1</span></em>, <em class="sig-param"><span class="pre">model2</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">minFluxFlag</span></em>, <em class="sig-param"><span class="pre">verbFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optimizeTwoCbModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optimizeTwoCbModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simultaneously solve two flux balance problems and
 minimize the difference between the two solutions</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, model2, osenseStr, minFluxFlag, verbFlag)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model1:           The first COBRA model
-model2:           The second COBRA model, where both models have mandatory fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solution1, solution2, totalFluxDiff] = optimizeTwoCbModels</strong> (<em>model1, model2, osenseStr, minFluxFlag, verbFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model1</strong> – The first COBRA model</p></li>
+<li><p><strong>model2</strong> – The second COBRA model, where both models have mandatory fields:</p>
+<ul>
 <li><p>S - Stoichiometric matrix</p></li>
 <li><p>b - Right hand side = 0</p></li>
 <li><p>c - Objective coefficients</p></li>
 <li><p>lb - Lower bounds</p></li>
 <li><p>ub - Upper bounds</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>osenseStr:        Maximize (‘max’)/minimize (‘min’) (Default = ‘max’)
-minFluxFlag:      Minimize the absolute value of fluxes in the optimal MOMA</p>
-<blockquote>
-<div><p>solution (Default = false)</p>
-</div></blockquote>
-<p>verbFlag:         Verbose output (Default = false)</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (Default = ‘max’)</p></li>
+<li><p><strong>minFluxFlag</strong> – Minimize the absolute value of fluxes in the optimal MOMA
+solution (Default = false)</p></li>
+<li><p><strong>verbFlag</strong> – Verbose output (Default = false)</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>solution1:        Solution for the 1st model
-solution2:        Solution for the 2nd model
-totalFluxDiff:    1-norm of the difference between the flux vectors sum|v1-v2|</p>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>solution1</strong> – Solution for the 1st model</p></li>
+<li><p><strong>solution2</strong> – Solution for the 2nd model</p></li>
+<li><p><strong>totalFluxDiff</strong> – 1-norm of the difference between the flux vectors sum|v1-v2|</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -365,16 +404,15 @@ lb2 &lt;= v2 &lt;= ub2</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.solveCobraLP">
-<span class="sig-name descname"><span class="pre">solveCobraLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.solveCobraLP" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">solveCobraLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/solveCobraLP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.solveCobraLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based LP problems</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solveCobraLP(LPproblem, varargin)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>LPproblem:     Structure containing the following fields describing the LP problem to be solved</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solveCobraLP</strong> (<em>LPproblem, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
+<ul class="simple">
 <li><p>.A - m x n linear constraint matrix</p></li>
 <li><p>.b - m x 1 right hand sider vector for constraint A*x = b</p></li>
 <li><p>.c - n x 1 linear objective coefficient vector</p></li>
@@ -387,10 +425,11 @@ lb2 &lt;= v2 &lt;= ub2</p>
 </dl>
 </li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>varargin:      Additional parameters either as parameter struct, or as</dt><dd><p>parameter/value pairs. A combination is possible, if
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
+parameter/value pairs. A combination is possible, if
 the parameter struct is either at the beginning or the
 end of the optional input.
 All fields of the struct which are not COBRA parameters
@@ -398,60 +437,54 @@ All fields of the struct which are not COBRA parameters
 problem type will be passed on to the solver in a
 solver specific manner. Some optional parameters which
 can be passed to the function as parameter value pairs,
-or as part of the options struct are listed below:</p>
-</dd>
-</dl>
-<p>printLevel:    Printing level</p>
-<blockquote>
-<div><ul class="simple">
+or as part of the options struct are listed below:</p></li>
+<li><p><strong>printLevel</strong> – Printing level</p>
+<ul>
 <li><p>0 - Silent (Default)</p></li>
 <li><p>1 - Warnings and Errors</p></li>
 <li><p>2 - Summary information</p></li>
 <li><p>3 - More detailed information</p></li>
 <li><p>&gt; 10 - Pause statements, and maximal printing (debug mode)</p></li>
 </ul>
-</div></blockquote>
-<dl class="simple">
-<dt>saveInput:     Saves LPproblem to filename specified in field.</dt><dd><p>i.e. parameters.saveInput = ‘LPproblem.mat’;</p>
-</dd>
-<dt>minNorm:       {(0), scalar , <cite>n x 1</cite> vector}, where <cite>[m, n] = size(S)</cite>;</dt><dd><p>If not zero then, minimise the Euclidean length
+</li>
+<li><p><strong>saveInput</strong> – Saves LPproblem to filename specified in field.
+i.e. parameters.saveInput = ‘LPproblem.mat’;</p></li>
+<li><p><strong>minNorm</strong> – {(0), scalar , <cite>n x 1</cite> vector}, where <cite>[m, n] = size(S)</cite>;
+If not zero then, minimise the Euclidean length
 of the solution to the LP problem. minNorm ~1e-6 should be
 high enough for regularisation yet maintain the same value for
 the linear part of the objective. However, this should be
 checked on a case by case basis, by optimization with and
-without regularisation.</p>
+without regularisation.</p></li>
+<li><p><strong>primalOnly</strong> – {(0), 1}; 1 = only return the primal vector (lindo solvers)</p></li>
+<li><p><strong>solverParams</strong> – solver-specific parameter structure with field names
+that match exactly those in that solvers matlab interface.</p></li>
+</ul>
 </dd>
-</dl>
-<p>primalOnly:    {(0), 1}; 1 = only return the primal vector (lindo solvers)</p>
-<dl class="simple">
-<dt>solverParams:  solver-specific parameter structure with field names</dt><dd><p>that match exactly those in that solvers matlab interface.</p>
-</dd>
-</dl>
-</dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>solution:      Structure containing the following fields describing a LP solution:</dt><dd><ul class="simple">
-<li><p>.full:         Full LP solution vector</p></li>
-<li><p>.obj:          Objective value</p></li>
-<li><p>.rcost:        Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= v &lt;= ub\)</span></p></li>
-<li><p>.dual:         dual solution to <cite>A*v (‘E’ | ‘G’ | ‘L’) b</cite></p></li>
-<li><p>.solver:       Solver used to solve LP problem</p></li>
-<li><p>.algorithm:    Algorithm used by solver to solve LP problem</p></li>
-<li><p>.stat:         Solver status in standardized form</p>
-<ul>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields describing a LP solution:
+* .full:         Full LP solution vector
+* .obj:          Objective value
+* .rcost:        Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= v &lt;= ub\)</span>
+* .dual:         dual solution to <cite>A*v (‘E’ | ‘G’ | ‘L’) b</cite>
+* .solver:       Solver used to solve LP problem
+* .algorithm:    Algorithm used by solver to solve LP problem
+* .stat:         Solver status in standardized form</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>0 - Infeasible problem</p></li>
 <li><p>1 - Optimal solution</p></li>
 <li><p>2 - Unbounded solution</p></li>
 <li><p>3 - Almost optimal solution</p></li>
 <li><p>-1 - Some other problem (timelimit, numerical problem etc)</p></li>
 </ul>
-</li>
+</div></blockquote>
+<ul class="simple">
 <li><p>.origStat:         Original status returned by the specific solver</p></li>
 <li><p>.origStatText:     Original status text returned by the specific solver</p></li>
 <li><p>.time:         Solve time in seconds</p></li>
 <li><p>.basis:        (optional) LP basis corresponding to solution</p></li>
 </ul>
-</dd>
-</dl>
 </dd>
 </dl>
 <div class="admonition note">
@@ -476,19 +509,18 @@ includes the minNorm and the <cite>printLevel</cite> flags.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.solveCobraMILP">
-<span class="sig-name descname"><span class="pre">solveCobraMILP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MILPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.solveCobraMILP" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">solveCobraMILP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MILPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/solveCobraMILP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.solveCobraMILP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based MILP problems
 The solver is defined in the CBT_MILP_SOLVER global variable
 (set using <cite>changeCobraSolver</cite>). Solvers currently available are
 ‘tomlab_cplex’ and ‘glpk’</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solution = solveCobraMILP(MILPproblem, parameters)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>MILPproblem:     Structure containing the following fields describing the LP problem to be solved</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = solveCobraMILP</strong> (<em>MILPproblem, parameters</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>MILPproblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
+<ul class="simple">
 <li><p>.A - LHS matrix</p></li>
 <li><p>.b - RHS vector</p></li>
 <li><p>.c - Objective coeff vector</p></li>
@@ -500,16 +532,17 @@ each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p><
 <li><p>.vartype - Variable types (‘C’ continuous, ‘I’ integer, ‘B’ binary)</p></li>
 <li><p>.x0 - Initial solution</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 <p>Optional parameters can be entered using parameters structure or as
 parameter followed by parameter value: i.e. ,’printLevel’, 3)
 Setting <cite>parameters</cite> = ‘default’ uses default setting set in
 <cite>getCobraSolverParameters</cite>.</p>
-<dl>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>varargin:        Additional parameters either as parameter struct, or as</dt><dd><p>parameter/value pairs. A combination is possible, if
+<dl class="field-list simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
+parameter/value pairs. A combination is possible, if
 the parameter struct is either at the beginning or the
 end of the optional input.
 All fields of the struct which are not COBRA parameters
@@ -517,31 +550,27 @@ All fields of the struct which are not COBRA parameters
 problem type will be passed on to the solver in a
 solver specific manner. Some optional parameters which
 can be passed to the function as parameter value pairs,
-or as part of the options struct are listed below:</p>
-</dd>
-</dl>
-<p>timeLimit:       Global solver time limit
-intTol:          Integrality tolerance
-relMipGapTol:    Relative MIP gap tolerance
-logFile:         Log file (for CPLEX)
-printLevel:      Printing level</p>
-<blockquote>
-<div><ul class="simple">
+or as part of the options struct are listed below:</p></li>
+<li><p><strong>timeLimit</strong> – Global solver time limit</p></li>
+<li><p><strong>intTol</strong> – Integrality tolerance</p></li>
+<li><p><strong>relMipGapTol</strong> – Relative MIP gap tolerance</p></li>
+<li><p><strong>logFile</strong> – Log file (for CPLEX)</p></li>
+<li><p><strong>printLevel</strong> – Printing level</p>
+<ul>
 <li><p>0 - Silent (Default)</p></li>
 <li><p>1 - Warnings and Errors</p></li>
 <li><p>2 - Summary information</p></li>
 <li><p>3 - More detailed information</p></li>
 <li><p>&gt; 10 - Pause statements, and maximal printing (debug mode)</p></li>
 </ul>
-</div></blockquote>
-<dl class="simple">
-<dt>saveInput:       Saves LPproblem to filename specified in field.</dt><dd><p>i.e. parameters.saveInput = ‘LPproblem.mat’;</p>
+</li>
+<li><p><strong>saveInput</strong> – Saves LPproblem to filename specified in field.
+i.e. parameters.saveInput = ‘LPproblem.mat’;</p></li>
+</ul>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUT:</dt><dd><p>solution:        Structure containing the following fields describing a MILP solution</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields describing a MILP solution</p>
+<ul class="simple">
 <li><p>.cont:        Continuous solution</p></li>
 <li><p>.int:         Integer solution</p></li>
 <li><p>.full:        Full MILP solution vector</p></li>
@@ -559,30 +588,30 @@ printLevel:      Printing level</p>
 <li><p>.origStat:    Original status returned by the specific solver</p></li>
 <li><p>.time:        Solve time in seconds</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.solveCobraMIQP">
-<span class="sig-name descname"><span class="pre">solveCobraMIQP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MIQPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.solveCobraMIQP" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">solveCobraMIQP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MIQPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/solveCobraMIQP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.solveCobraMIQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based QP problems
 The solver defined in the <cite>CBT_MIQP_SOLVER</cite> global variable (set using
 <cite>changeCobraSolver</cite>). Solvers currently available are ‘tomlab_cplex’</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solution = solveCobraMIQP(MIQPproblem, varargin)</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = solveCobraMIQP</strong> (<em>MIQPproblem, varargin</em>)</p>
+</dd>
+</dl>
 <p>Solves problems of the type
 <span class="math notranslate nohighlight">\(min osense * 0.5 x' * F * x + osense * c' * x\)</span>
 s/t. <span class="math notranslate nohighlight">\(lb &lt;= x &lt;= ub\)</span>
 <span class="math notranslate nohighlight">\(A * x  &lt;=/=/&gt;= b\)</span>
 <cite>xi</cite> = integer</p>
-<dl>
-<dt>INPUT:</dt><dd><p>MIQPproblem:     Structure containing the following fields describing the MIQP problem to be solved</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>MIQPproblem</strong> – Structure containing the following fields describing the MIQP problem to be solved</p>
+<ul class="simple">
 <li><p>.A - LHS matrix</p></li>
 <li><p>.b - RHS vector</p></li>
 <li><p>.F - F matrix for quadratic objective (see above)</p></li>
@@ -593,16 +622,17 @@ s/t. <span class="math notranslate nohighlight">\(lb &lt;= x &lt;= ub\)</span>
 <li><p>.csense - Constraint senses, a string containting the constraint sense for
 each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 <p>Optional parameters can be entered using parameters structure or as
 parameter followed by parameter value: i.e. ,’printLevel’, 3)
 Setting <cite>parameters</cite> = ‘default’ uses default setting set in
 <cite>getCobraSolverParameters</cite>.</p>
-<dl>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>varargin:        Additional parameters either as parameter struct, or as</dt><dd><p>parameter/value pairs. A combination is possible, if
+<dl class="field-list simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
+parameter/value pairs. A combination is possible, if
 the parameter struct is either at the beginning or the
 end of the optional input.
 All fields of the struct which are not COBRA parameters
@@ -610,15 +640,14 @@ All fields of the struct which are not COBRA parameters
 problem type will be passed on to the solver in a
 solver specific manner. Some optional parameters which
 can be passed to the function as parameter value pairs,
-or as part of the options struct are listed below:</p>
+or as part of the options struct are listed below:</p></li>
+<li><p><strong>printLevel</strong> – Print level for solver</p></li>
+<li><p><strong>saveInput</strong> – Saves LPproblem to filename specified in field.</p></li>
+</ul>
 </dd>
-</dl>
-<p>printLevel:      Print level for solver
-saveInput:       Saves LPproblem to filename specified in field.</p>
-</dd>
-<dt>OUTPUT:</dt><dd><p>solution:        Structure containing the following fields describing a MIQP solution</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields describing a MIQP solution</p>
+<ul class="simple">
 <li><p>.full:        Full MIQP solution vector</p></li>
 <li><p>.obj:         Objective value</p></li>
 <li><p>.solver:      Solver used to solve MIQP problem</p></li>
@@ -634,14 +663,13 @@ saveInput:       Saves LPproblem to filename specified in field.</p>
 <li><p>.origStat:    Original status returned by the specific solver</p></li>
 <li><p>.time:        Solve time in seconds</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.solveCobraQP">
-<span class="sig-name descname"><span class="pre">solveCobraQP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">QPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.solveCobraQP" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">solveCobraQP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">QPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/solveCobraQP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.solveCobraQP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves constraint-based QP problems</p>
 <p>The solver is defined in the CBT_MILP_SOLVER global variable
 (set using changeCobraSolver). Solvers currently available are
@@ -653,14 +681,13 @@ s/t <span class="math notranslate nohighlight">\(lb &lt;= x &lt;= ub\)</span>
 <p>If minimising, then F must be positive semi-definite i.e. chol(F) does
 not return an error. If maximising, then chol(-F) must not return an
 error.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solution = solveCobraQP(QPproblem, varargin)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>QPproblem:       Structure containing the following fields describing the QP</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = solveCobraQP</strong> (<em>QPproblem, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>QPproblem</strong> – Structure containing the following fields describing the QP</p>
+<ul class="simple">
 <li><p>.A - LHS matrix</p></li>
 <li><p>.b - RHS vector</p></li>
 <li><p>.F - positive semidefinite matrix for quadratic part of objective (see above)</p></li>
@@ -671,16 +698,17 @@ error.</p>
 <li><p>.csense - Constraint senses, a string containing the constraint sense for
 each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 <p>Optional parameters can be entered using parameters structure or as
 parameter followed by parameter value: i.e. ,’printLevel’, 3)
 Setting <cite>parameters</cite> = ‘default’ uses default setting set in
 <cite>getCobraSolverParameters</cite>.</p>
-<dl>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>varargin:        Additional parameters either as parameter struct, or as</dt><dd><p>parameter/value pairs. A combination is possible, if
+<dl class="field-list simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
+parameter/value pairs. A combination is possible, if
 the parameter struct is either at the beginning or the
 end of the optional input.
 All fields of the struct which are not COBRA parameters
@@ -688,15 +716,14 @@ All fields of the struct which are not COBRA parameters
 problem type will be passed on to the solver in a
 solver specific manner. Some optional parameters which
 can be passed to the function as parameter value pairs,
-or as part of the options struct are listed below:</p>
+or as part of the options struct are listed below:</p></li>
+<li><p><strong>printLevel</strong> – Print level for solver</p></li>
+<li><p><strong>saveInput</strong> – Saves LPproblem to filename specified in field.</p></li>
+</ul>
 </dd>
-</dl>
-<p>printLevel:      Print level for solver
-saveInput:       Saves LPproblem to filename specified in field.</p>
-</dd>
-<dt>OUTPUT:</dt><dd><p>solution:        Structure containing the following fields describing a QP solution</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields describing a QP solution</p>
+<ul class="simple">
 <li><p>.full:        Full QP solution vector</p></li>
 <li><p>.rcost:       Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= x &lt;= ub\)</span></p></li>
 <li><p>.dual:        dual solution to <span class="math notranslate nohighlight">\(A*x &lt;=/=/&gt;= b\)</span></p></li>
@@ -712,25 +739,23 @@ saveInput:       Saves LPproblem to filename specified in field.</p>
 <li><p>3 - Almost optimal solution</p></li>
 <li><p>-1 - Some other problem (timelimit, numerical problem etc)</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.verifyCobraProblem">
-<span class="sig-name descname"><span class="pre">verifyCobraProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">XPproblem</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">verbose</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verifyCobraProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">XPproblem</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">verbose</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/verifyCobraProblem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.verifyCobraProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verifies dimensions of fields in <cite>XPproblem</cite> and determines if they are
 valid LP, QP, MILP, MIQP problems. Also checks inputs for NaN.
 If <cite>x</cite> is provided, it will see if <cite>x</cite> is a valid solution to tolerance (tol).</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem(XPproblem, x, tol, verbose)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>XPproblem:             struct containing:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[statusOK, invalidConstraints, invalidVars, objective] = verifyCobraProblem</strong> (<em>XPproblem, x, tol, verbose</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>XPproblem</strong> – struct containing:</p>
+<ul class="simple">
 <li><p>.A - Constraints matrix</p></li>
 <li><p>.b - rhs</p></li>
 <li><p>.csense - vector of ‘E’, ‘L’, ‘G’ for equality, Less than and Greater than constraint</p></li>
@@ -740,20 +765,23 @@ If <cite>x</cite> is provided, it will see if <cite>x</cite> is a valid solution
 <li><p>.vartype - vector of ‘C’, ‘I’, ‘B’ for ‘continuous’, ‘integer’, ‘binary’
 variables (optional, only used for MILP, MIQP problems).</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>x:                     Vector. Function will determine if <cite>x</cite> satisfies <cite>XPproblem</cite>
-tol:                   numerical tolerance to which all constraints should be verified to. (default = 1e-8)
-verbose:               Controls whether results are printed to screen.(Default = true)</p>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Vector. Function will determine if <cite>x</cite> satisfies <cite>XPproblem</cite></p></li>
+<li><p><strong>tol</strong> – numerical tolerance to which all constraints should be verified to. (default = 1e-8)</p></li>
+<li><p><strong>verbose</strong> – Controls whether results are printed to screen.(Default = true)</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>statusOK:              Returns -1 if any field in <cite>XPproblem</cite> has an error,</dt><dd><p>returns 0 if the x vector is not valid for <cite>XPproblem</cite> and
-returns 1 if at least one problem type is satisfied</p>
-</dd>
-</dl>
-<p>invalidConstraints:    Vector which lists a 1 for any constaint that is invalid
-invalidVars:           Vector which lists a 1 for any variable that is invalid
-objective:             Objective of <cite>XPproblem</cite></p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>statusOK</strong> – Returns -1 if any field in <cite>XPproblem</cite> has an error,
+returns 0 if the x vector is not valid for <cite>XPproblem</cite> and
+returns 1 if at least one problem type is satisfied</p></li>
+<li><p><strong>invalidConstraints</strong> – Vector which lists a 1 for any constaint that is invalid</p></li>
+<li><p><strong>invalidVars</strong> – Vector which lists a 1 for any variable that is invalid</p></li>
+<li><p><strong>objective</strong> – Objective of <cite>XPproblem</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -770,10 +798,10 @@ objective:             Objective of <cite>XPproblem</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cardOpt/index.html" class="btn btn-default float-right" title="cardOpt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="NLP/index.html" class="btn btn-default float-right" title="Nlp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../io/utilities/SBML/index.html" class="btn btn-default" title="SBML-utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../ci/index.html" class="btn btn-default" title="Ci" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -811,6 +839,9 @@ objective:             Objective of <cite>XPproblem</cite></p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

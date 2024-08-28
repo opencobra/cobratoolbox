@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>INIT &mdash; The COBRA Toolbox</title>
+  <title>Init &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="iMAT" href="../iMAT/index.html"/>
-        <link rel="prev" title="GIMME" href="../GIMME/index.html"/> 
+        <link rel="next" title="Preprocessing" href="../preprocessing/index.html"/>
+        <link rel="prev" title="Gimme" href="../GIMME/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,20 +160,26 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Data integration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">ChemoInformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">SWIFTCORE</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">FASTCORE</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">MBA</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">GIMME</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">INIT</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">iMAT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Init</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelCreation/index.html">Modelcreation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../inactiveGeneDeletion/index.html">Inactivegenedeletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -188,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -213,9 +222,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Data integration</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Transcriptomics</a></li>
-      <li class="breadcrumb-item active">INIT</li>
+      <li class="breadcrumb-item active">Init</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -225,40 +234,40 @@
            <div itemprop="articleBody">
             
   <section id="init">
-<span id="id1"></span><h1>INIT<a class="headerlink" href="#init" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Init<a class="headerlink" href="#init" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.INIT"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.transcriptomics.INIT.INIT">
-<span class="sig-name descname"><span class="pre">INIT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">runtime</span></em>, <em class="sig-param"><span class="pre">logfile</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.transcriptomics.INIT.INIT" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">INIT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">runtime</span></em>, <em class="sig-param"><span class="pre">logfile</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/INIT/INIT.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.INIT.INIT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use the INIT algorithm (<cite>Agren et al., 2012</cite>) to extract a context
 specific model using data. INIT algorithm find the optimal trade-off
 between inluding and removing reactions based on their given weights. If
 desired, accumulation of certain metabolites can be allowed or even
 forced.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>tissueModel = INIT(model, weights, tol, runtime, logfile)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:               input model (COBRA model structure)
-weights:             column with positive and negative weights for each reaction</p>
-<blockquote>
-<div><p>positive weights are reactions with high expression, negative
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>tissueModel = INIT</strong> (<em>model, weights, tol, runtime, logfile</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – input model (COBRA model structure)</p></li>
+<li><p><strong>weights</strong> – column with positive and negative weights for each reaction
+positive weights are reactions with high expression, negative
 weigths for reaction with low expression (must be same length
-as model.rxns)</p>
-</div></blockquote>
+as model.rxns)</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>tol:                 minimum flux threshold for “expressed” reactions</dt><dd><p>(default 1e-8)</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> – minimum flux threshold for “expressed” reactions
+(default 1e-8)</p></li>
+<li><p><strong>logfile</strong> – name of the file to save the MILP log (string)</p></li>
+<li><p><strong>runtime</strong> – maximum solve time for the MILP (default value - 7200s)</p></li>
+<li><p><strong>epsilon</strong> – value added/subtracted to upper/lower bounds
+(default 1)</p></li>
+</ul>
 </dd>
-</dl>
-<p>logfile:             name of the file to save the MILP log (string)
-runtime:             maximum solve time for the MILP (default value - 7200s)
-epsilon:             value added/subtracted to upper/lower bounds</p>
-<blockquote>
-<div><p>(default 1)</p>
-</div></blockquote>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>tissueModel:         extracted model</p>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>tissueModel</strong> – extracted model</p>
 </dd>
 </dl>
 <p><cite>Agren et al. (2012). Reconstruction of genome-scale active metabolic
@@ -278,10 +287,10 @@ Comput. Biol. 8, e1002518.</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../iMAT/index.html" class="btn btn-default float-right" title="iMAT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../preprocessing/index.html" class="btn btn-default float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../GIMME/index.html" class="btn btn-default" title="GIMME" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../GIMME/index.html" class="btn btn-default" title="Gimme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -319,6 +328,9 @@ Comput. Biol. 8, e1002518.</cite></p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

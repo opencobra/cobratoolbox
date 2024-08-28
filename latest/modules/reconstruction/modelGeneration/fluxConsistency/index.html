@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>fluxConsistency &mdash; The COBRA Toolbox</title>
+  <title>Fluxconsistency &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
-        <link rel="up" title="modelGeneration" href="../index.html"/>
-        <link rel="next" title="DCA" href="DCA/index.html"/>
-        <link rel="prev" title="modelGeneration" href="../index.html"/> 
+        <link rel="up" title="Modelgeneration" href="../index.html"/>
+        <link rel="next" title="Dca" href="DCA/index.html"/>
+        <link rel="prev" title="Stoichconsistency" href="../stoichConsistency/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,25 +160,28 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">growthExpMatch</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">modelGeneration</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">fluxConsistency</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="DCA/index.html">DCA</a></li>
-<li class="toctree-l5"><a class="reference internal" href="GREEDY/index.html">GREEDY</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">massBalance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">modelVerification</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">stoichConsistency</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Fluxconsistency</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="DCA/index.html">Dca</a></li>
+<li class="toctree-l5"><a class="reference internal" href="GREEDY/index.html">Greedy</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -191,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -217,8 +223,8 @@
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">modelGeneration</a></li>
-      <li class="breadcrumb-item active">fluxConsistency</li>
+          <li class="breadcrumb-item"><a href="../index.html">Modelgeneration</a></li>
+      <li class="breadcrumb-item active">Fluxconsistency</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -228,60 +234,61 @@
            <div itemprop="articleBody">
             
   <section id="fluxconsistency">
-<span id="id1"></span><h1>fluxConsistency<a class="headerlink" href="#fluxconsistency" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Fluxconsistency<a class="headerlink" href="#fluxconsistency" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="DCA/index.html">DCA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GREEDY/index.html">GREEDY</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DCA/index.html">Dca</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GREEDY/index.html">Greedy</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.reconstruction.modelGeneration.fluxConsistency"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.fluxConsistency.findFluxConsistentSubset">
-<span class="sig-name descname"><span class="pre">findFluxConsistentSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.findFluxConsistentSubset" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findFluxConsistentSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.findFluxConsistentSubset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the subset of <cite>S</cite> that is flux consistent using various algorithms,
 but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:                      structure with field:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset</strong> (<em>model, param, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with field:</p>
+<ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 </ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>param</strong> – can contain:
+* param.LPsolver - the LP solver to be used
+* param.epsilon -  minimum nonzero flux, default feasTol*10</p>
+<blockquote>
+<div><p>Note that fastcc is very sensitive to the value of parm.epsilon</p>
 </div></blockquote>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>param:                      can contain:</dt><dd><ul class="simple">
-<li><p>param.LPsolver - the LP solver to be used</p></li>
-<li><dl class="simple">
-<dt>param.epsilon -  minimum nonzero flux, default feasTol*10</dt><dd><p>Note that fastcc is very sensitive to the value of parm.epsilon</p>
-</dd>
-</dl>
-</li>
+<ul class="simple">
 <li><p>param.modeFlag - {(0),1} 1 = return flux modes</p></li>
 <li><p>param.method - {‘swiftcc’, (‘fastcc’), ‘dc’,’fastB’}</p></li>
 <li><p>param.reduce - {(0),1} 1 = return fluxConsistModel</p></li>
 </ul>
+</li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+<li><p><strong>model.rev - the 0-1 vector with 1’s corresponding to the reversible reactions</strong> (<em>if using swiftcc</em>)</p></li>
+</ul>
 </dd>
-</dl>
-<p>printLevel:                 verbose level</p>
-<p>model.rev - the 0-1 vector with 1’s corresponding to the reversible reactions (if using swiftcc)</p>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>fluxConsistentMetBool:      <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite>
-fluxConsistentRxnBool:      <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite>
-fluxInConsistentMetBool:    <cite>m</cite> x 1 boolean vector indicating flux inconsistent <cite>mets</cite>
-fluxInConsistentRxnBool:    <cite>n</cite> x 1 boolean vector indicating flux inconsistent <cite>rxns</cite>
-model:                      structure with fields duplicating the single output arguments:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fluxConsistentMetBool</strong> – <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></p></li>
+<li><p><strong>fluxConsistentRxnBool</strong> – <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></p></li>
+<li><p><strong>fluxInConsistentMetBool</strong> – <cite>m</cite> x 1 boolean vector indicating flux inconsistent <cite>mets</cite></p></li>
+<li><p><strong>fluxInConsistentRxnBool</strong> – <cite>n</cite> x 1 boolean vector indicating flux inconsistent <cite>rxns</cite></p></li>
+<li><p><strong>model</strong> – structure with fields duplicating the single output arguments:</p>
+<ul>
 <li><p>.fluxConsistentMetBool</p></li>
 <li><p>.fluxConsistentRxnBool</p></li>
 <li><p>.fluxInConsistentMetBool</p></li>
 <li><p>.fluxInConsistentRxnBool</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -298,10 +305,10 @@ model:                      structure with fields duplicating the single output 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="DCA/index.html" class="btn btn-default float-right" title="DCA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="DCA/index.html" class="btn btn-default float-right" title="Dca" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="modelGeneration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../stoichConsistency/index.html" class="btn btn-default" title="Stoichconsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -339,6 +346,9 @@ model:                      structure with fields duplicating the single output 
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

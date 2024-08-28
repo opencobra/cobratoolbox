@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sparseFBA &mdash; The COBRA Toolbox</title>
+  <title>Sparsefba &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
-        <link rel="next" title="Subspaces" href="../subspaces/index.html"/>
-        <link rel="prev" title="CHRR" href="../sampling/CHRR/index.html"/> 
+        <link rel="next" title="Gmcs" href="../gMCS/index.html"/>
+        <link rel="prev" title="Logfiles" href="../FVA/fastFVA/logFiles/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -157,38 +159,50 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">sparseFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT2/index.html">Lt2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GT1/index.html">Gt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT1/index.html">Lt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterNonFluxReactions/index.html">Filternonfluxreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findUpDownRegulatedGenes/index.html">Findupdownregulatedgenes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -203,6 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -229,7 +244,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
-      <li class="breadcrumb-item active">sparseFBA</li>
+      <li class="breadcrumb-item active">Sparsefba</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -239,10 +254,10 @@
            <div itemprop="articleBody">
             
   <section id="sparsefba">
-<span id="id1"></span><h1>sparseFBA<a class="headerlink" href="#sparsefba" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Sparsefba<a class="headerlink" href="#sparsefba" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.analysis.sparseFBA"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.sparseFBA.findSparsePathway">
-<span class="sig-name descname"><span class="pre">findSparsePathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnPenalty</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sparseFBA.findSparsePathway" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findSparsePathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnPenalty</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sparseFBA/findSparsePathway.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sparseFBA.findSparsePathway" title="Permalink to this definition">¶</a></dt>
 <dd><p>input a cobra model and find a sparse pathway given penalties on certain
 reactions being active rxnPenalty(j)&gt;0 and incentives on certain reactions
 being active rxnPenalty(j)&lt;0 and indifferent to the activity of other
@@ -251,7 +266,7 @@ reactions rxnPenalty(j)==0</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.sparseFBA.sparseFBA">
-<span class="sig-name descname"><span class="pre">sparseFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">checkMinimalSet</span></em>, <em class="sig-param"><span class="pre">checkEssentialSet</span></em>, <em class="sig-param"><span class="pre">zeroNormApprox</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sparseFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">checkMinimalSet</span></em>, <em class="sig-param"><span class="pre">checkEssentialSet</span></em>, <em class="sig-param"><span class="pre">zeroNormApprox</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sparseFBA/sparseFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sparseFBA.sparseFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the minimal set of reactions subject to a LP objective</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}min ~&amp;~ ||v||_0 \\
@@ -259,51 +274,42 @@ s.t ~&amp;~ S v \leq, = or \geq b \\
     ~&amp;~ c^T v = f* \\
     ~&amp;~ l \leq v \leq u\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(f*\)</span> is the optimal value of objective (default is <span class="math notranslate nohighlight">\(max c^T v\)</span>).</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><dl class="simple">
-<dt>model:               (the following fields are required - others can be supplied):</dt><dd><ul class="simple">
-<li><p>S - Stoichiometric matrix</p></li>
-<li><p>b - Right hand side = dx/dt</p></li>
-<li><p>c - Objective coefficients</p></li>
-<li><p>lb - Lower bounds</p></li>
-<li><p>ub - Upper bounds</p></li>
-</ul>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA</strong> (<em>model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel</em>)</p>
 </dd>
-</dl>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied):
+* S - Stoichiometric matrix
+* b - Right hand side = dx/dt
+* c - Objective coefficients
+* lb - Lower bounds
+* ub - Upper bounds</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>model:               (optional for C*v&lt;=d):</dt><dd><ul class="simple">
-<li><p>C - Stoichiometric matrix</p></li>
-<li><p>d - Right hand side = dx/dt</p></li>
-</ul>
-</dd>
-</dl>
-<p>osenseStr:           (default = ‘max’)</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>model</strong> – (optional for C*v&lt;=d):
+* C - Stoichiometric matrix
+* d - Right hand side = dx/dt</p></li>
+<li><p><strong>osenseStr</strong> – (default = ‘max’)</p>
+<ul class="simple">
 <li><p>max: <span class="math notranslate nohighlight">\(f* = argmax \{max\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></p></li>
 <li><p>min: <span class="math notranslate nohighlight">\(f* = argmin \{min\ c^T v: Sv \leq, = or \geq b, l \leq v \leq u\}\)</span></p></li>
 <li><p>none: ignore the constraint <span class="math notranslate nohighlight">\(c^T v = f*\)</span></p></li>
 </ul>
-</div></blockquote>
-<dl>
-<dt>checkMinimalSet:     {0,(1)} Heuristically check if the selected set of reactions is minimal</dt><dd><p>by removing one by one the predicted active reaction</p>
+</li>
+<li><p><strong>checkMinimalSet</strong> – {0,(1)} Heuristically check if the selected set of reactions is minimal
+by removing one by one the predicted active reaction</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>true = check (default value)</p></li>
 <li><p>false = do not check</p></li>
 </ul>
 </div></blockquote>
-</dd>
-</dl>
-<p>checkEssentialSet:   {0,(1)} Heuristically check if the selected set of reactions is essential
-zeroNormApprox:      appoximation type of zero-norm (only available when minNorm = ‘zero’) (default = ‘cappedL1’)</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>checkEssentialSet</strong> – {0,(1)} Heuristically check if the selected set of reactions is essential</p></li>
+<li><p><strong>zeroNormApprox</strong> – appoximation type of zero-norm (only available when minNorm = ‘zero’) (default = ‘cappedL1’)</p>
+<ul class="simple">
 <li><p>‘cappedL1’ : Capped-L1 norm</p></li>
 <li><p>‘exp’      : Exponential function</p></li>
 <li><p>‘log’      : Logarithmic function</p></li>
@@ -313,18 +319,21 @@ zeroNormApprox:      appoximation type of zero-norm (only available when minNorm
 <li><p>‘l1’       : L1 norm</p></li>
 <li><p>‘all’      : try all approximations and return the best result</p></li>
 </ul>
-</div></blockquote>
-<p>printLevel:          Printing level</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>printLevel</strong> – Printing level</p>
+<ul class="simple">
 <li><p>0 - Silent (Default)</p></li>
 <li><p>1 - Summary information</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>vSparse:             Depends on the set of reactions
-sparseRxnBool:       Returns a vector with 1 and 0’s, where 1 means sparse
-essentialRxnBool:    Returns a vector with 1 and 0’s, where 1 means essential</p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vSparse</strong> – Depends on the set of reactions</p></li>
+<li><p><strong>sparseRxnBool</strong> – Returns a vector with 1 and 0’s, where 1 means sparse</p></li>
+<li><p><strong>essentialRxnBool</strong> – Returns a vector with 1 and 0’s, where 1 means essential</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -341,10 +350,10 @@ essentialRxnBool:    Returns a vector with 1 and 0’s, where 1 means essential<
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../subspaces/index.html" class="btn btn-default float-right" title="Subspaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../gMCS/index.html" class="btn btn-default float-right" title="Gmcs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../sampling/CHRR/index.html" class="btn btn-default" title="CHRR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../FVA/fastFVA/logFiles/index.html" class="btn btn-default" title="Logfiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -382,6 +391,9 @@ essentialRxnBool:    Returns a vector with 1 and 0’s, where 1 means essential<
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

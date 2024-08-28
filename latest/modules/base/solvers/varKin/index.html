@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>varKin &mdash; The COBRA Toolbox</title>
+  <title>Varkin &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="BDCAmethods" href="BDCAmethods/index.html"/>
-        <link rel="prev" title="tangiCode" href="../cardOpt/tangiCode/index.html"/> 
+        <link rel="next" title="Derfreemethods" href="derFreeMethods/index.html"/>
+        <link rel="prev" title="Old" href="../cardOpt/sparseLP/old/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,21 +161,35 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">cardOpt</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">varKin</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="BDCAmethods/index.html">BDCAmethods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="derFreeMethods/index.html">derFreeMethods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="levMarMethods/index.html">levMarMethods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../msk/index.html">Msk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Varkin</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="derFreeMethods/index.html">Derfreemethods</a></li>
+<li class="toctree-l5"><a class="reference internal" href="BDCAmethods/index.html">Bdcamethods</a></li>
+<li class="toctree-l5"><a class="reference internal" href="levMarMethods/index.html">Levmarmethods</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -188,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -215,7 +232,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
-      <li class="breadcrumb-item active">varKin</li>
+      <li class="breadcrumb-item active">Varkin</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -225,17 +242,17 @@
            <div itemprop="articleBody">
             
   <section id="varkin">
-<span id="id1"></span><h1>varKin<a class="headerlink" href="#varkin" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Varkin<a class="headerlink" href="#varkin" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="BDCAmethods/index.html">BDCAmethods</a></li>
-<li class="toctree-l1"><a class="reference internal" href="derFreeMethods/index.html">derFreeMethods</a></li>
-<li class="toctree-l1"><a class="reference internal" href="levMarMethods/index.html">levMarMethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="derFreeMethods/index.html">Derfreemethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BDCAmethods/index.html">Bdcamethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levMarMethods/index.html">Levmarmethods</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.base.solvers.varKin"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.optimizeVKmodel">
-<span class="sig-name descname"><span class="pre">optimizeVKmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">parms</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.solvers.varKin.optimizeVKmodel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimizeVKmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">parms</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/optimizeVKmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.optimizeVKmodel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for finding a solution of the nonlinear system
 <span class="math notranslate nohighlight">\(h(x) = f(x) = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (I)
 or <span class="math notranslate nohighlight">\(h(x) = (f(x)^T, l(x)^T)^T = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (II)
@@ -246,23 +263,22 @@ with several solvers. For (I), one can use all the following solvers;
 however, for (II), one can only apply local solvers LLM_F, LLM_FY,
 LLM_YF, LLM and global solvers GLM_FY, GLM_YF, LevMar, LMLS, and LMTR.
 If <cite>sonver</cite> field is empty, the code will use LMTR as the default.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>output = optimizeVKmodel(model, solver, x0, parms)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:    stracture includes <cite>F</cite>, <cite>R</cite> and/or <cite>L</cite></p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = optimizeVKmodel</strong> (<em>model, solver, x0, parms</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – stracture includes <cite>F</cite>, <cite>R</cite> and/or <cite>L</cite></p>
+<ul>
 <li><p>.F - forward stoichiometric matrix</p></li>
 <li><p>.R - reverse stoichiometric matrix</p></li>
 <li><p>.L - basis for the left null-space of <cite>N = R - F</cite></p></li>
 <li><p>.l0 - constant <span class="math notranslate nohighlight">\(l_0\)</span></p></li>
 </ul>
-</div></blockquote>
-<p>solver:</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>solver</strong> –</p>
+<ul>
 <li><p>Local <cite>Levenberg-Marquardt</cite> (LM) solvers:</p>
 <ul>
 <li><p>LLM - LM of <cite>Ahookhosh et al.</cite></p></li>
@@ -294,11 +310,10 @@ If <cite>sonver</cite> field is empty, the code will use LMTR as the default.</p
 </ul>
 </li>
 </ul>
-</div></blockquote>
-<p>Parameters for LLM_F, LLM_FY, LLM_YF, LLM, GLM_FY, GLM_YF, LevMar, LMLS, LMTR
-parms:     structure including the parameteres of schemes</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>Parameters for LLM_F, LLM_FY, LLM_YF, LLM, GLM_FY, GLM_YF, LevMar, LMLS, LMTR</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
 <li><p>.eta - constant for <cite>Levenberg-Marquardt</cite> parameter</p></li>
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
@@ -326,18 +341,16 @@ parms:     structure including the parameteres of schemes</p>
 </ol>
 </li>
 </ul>
-</div></blockquote>
-<p>Parameters for DCA, BDCA
-parms:     structure including the parameteres of schemes</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>Parameters for DCA, BDCA</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
 <li><p>mapp - function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
 </ul>
-</div></blockquote>
-<p>x0:        initial point
-options:   structure including the parameteres of scheme</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
 <li><p>.TimeLimit - maximum running time</p></li>
@@ -363,18 +376,16 @@ options:   structure including the parameteres of scheme</p>
 </ul>
 </li>
 </ul>
-</div></blockquote>
-<p>Parameters for BDF, CSDF, DBDF
-parms:     structure including the parameteres of schemes</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>Parameters for BDF, CSDF, DBDF</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
 <li><p>mapp - function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
 </ul>
-</div></blockquote>
-<p>x0:        initial point
-options:   structure including the parameteres of scheme</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
 <li><p>.MaxNumIter - maximum number of iterations</p></li>
 <li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
 <li><p>.TimeLimit - maximum running time</p></li>
@@ -398,11 +409,12 @@ options:   structure including the parameteres of scheme</p>
 </ul>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:    structure including more output information:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – structure including more output information:</p>
+<ul class="simple">
 <li><p>.x_best - the best approximation of the optimizer</p></li>
 <li><p>.psi_best - the best approximation of the optimum</p></li>
 <li><p>.T - running time</p></li>
@@ -415,7 +427,6 @@ options:   structure including the parameteres of scheme</p>
 <li><p>.Status - reason of termination</p></li>
 <li><p>.Time - running time of all iterations</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -432,10 +443,10 @@ options:   structure including the parameteres of scheme</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="BDCAmethods/index.html" class="btn btn-default float-right" title="BDCAmethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="derFreeMethods/index.html" class="btn btn-default float-right" title="Derfreemethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cardOpt/tangiCode/index.html" class="btn btn-default" title="tangiCode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cardOpt/sparseLP/old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -473,6 +484,9 @@ options:   structure including the parameteres of scheme</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>rFBA &mdash; The COBRA Toolbox</title>
+  <title>Rfba &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
-        <link rel="next" title="rMTA" href="../rMTA/index.html"/>
-        <link rel="prev" title="relaxedFBA" href="../relaxedFBA/index.html"/> 
+        <link rel="next" title="Filterratelimittingreactions" href="../filterRateLimittingReactions/index.html"/>
+        <link rel="prev" title="Analysis" href="../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -157,38 +159,50 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">rFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT2/index.html">Lt2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GT1/index.html">Gt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT1/index.html">Lt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterNonFluxReactions/index.html">Filternonfluxreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findUpDownRegulatedGenes/index.html">Findupdownregulatedgenes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -203,6 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -229,7 +244,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
-      <li class="breadcrumb-item active">rFBA</li>
+      <li class="breadcrumb-item active">Rfba</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -239,43 +254,42 @@
            <div itemprop="articleBody">
             
   <section id="rfba">
-<span id="id1"></span><h1>rFBA<a class="headerlink" href="#rfba" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Rfba<a class="headerlink" href="#rfba" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.analysis.rFBA"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.rFBA.dynamicRFBA">
-<span class="sig-name descname"><span class="pre">dynamicRFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">substrateRxns</span></em>, <em class="sig-param"><span class="pre">initConcentrations</span></em>, <em class="sig-param"><span class="pre">initBiomass</span></em>, <em class="sig-param"><span class="pre">timeStep</span></em>, <em class="sig-param"><span class="pre">nSteps</span></em>, <em class="sig-param"><span class="pre">plotRxns</span></em>, <em class="sig-param"><span class="pre">exclUptakeRxns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">dynamicRFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">substrateRxns</span></em>, <em class="sig-param"><span class="pre">initConcentrations</span></em>, <em class="sig-param"><span class="pre">initBiomass</span></em>, <em class="sig-param"><span class="pre">timeStep</span></em>, <em class="sig-param"><span class="pre">nSteps</span></em>, <em class="sig-param"><span class="pre">plotRxns</span></em>, <em class="sig-param"><span class="pre">exclUptakeRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/rFBA/dynamicRFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.rFBA.dynamicRFBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs dynamic rFBA simulation using the static optimization approach</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[concentrationMatrix, excRxnNames, timeVec,biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:                  a regulatory COBRA model
-substrateRxns:          list of exchange reaction names for substrates</p>
-<blockquote>
-<div><p>initially in the media that may change (i.e. not
-h2o or co2)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>initConcentrations:     initial concentrations of substrates (in the same</dt><dd><p>structure as substrateRxns)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[concentrationMatrix, excRxnNames, timeVec,biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA</strong> (<em>model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns</em>)</p>
 </dd>
-</dl>
-<p>initBiomass:            initial biomass
-timeStep:               time step size
-nSteps:                 maximum number of time steps
-plotRxns:               reactions to be plotted
-exclUptakeRxns:         list of uptake reactions whose substrate</p>
-<blockquote>
-<div><p>concentrations do not change (opt, default
-{‘EX_co2(e)’, ‘EX_o2(e)’, ‘EX_h2o(e)’, ‘EX_h(e)’})</p>
-</div></blockquote>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – a regulatory COBRA model</p></li>
+<li><p><strong>substrateRxns</strong> – list of exchange reaction names for substrates
+initially in the media that may change (i.e. not
+h2o or co2)</p></li>
+<li><p><strong>initConcentrations</strong> – initial concentrations of substrates (in the same
+structure as substrateRxns)</p></li>
+<li><p><strong>initBiomass</strong> – initial biomass</p></li>
+<li><p><strong>timeStep</strong> – time step size</p></li>
+<li><p><strong>nSteps</strong> – maximum number of time steps</p></li>
+<li><p><strong>plotRxns</strong> – reactions to be plotted</p></li>
+<li><p><strong>exclUptakeRxns</strong> – list of uptake reactions whose substrate
+concentrations do not change (opt, default
+{‘EX_co2(e)’, ‘EX_o2(e)’, ‘EX_h2o(e)’, ‘EX_h(e)’})</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>concentrationMatrix:    matrix of extracellular metabolite concentrations
-excRxnNames:            names of exchange reactions for the EC metabolites
-timeVec:                vector of time points
-biomassVec:             vector of biomass values
-drGenes:                vector of downregulated genes
-constrainedRxns:        vector of downregulated reactions
-states:                 vector of regulatory network states</p>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>concentrationMatrix</strong> – matrix of extracellular metabolite concentrations</p></li>
+<li><p><strong>excRxnNames</strong> – names of exchange reactions for the EC metabolites</p></li>
+<li><p><strong>timeVec</strong> – vector of time points</p></li>
+<li><p><strong>biomassVec</strong> – vector of biomass values</p></li>
+<li><p><strong>drGenes</strong> – vector of downregulated genes</p></li>
+<li><p><strong>constrainedRxns</strong> – vector of downregulated reactions</p></li>
+<li><p><strong>states</strong> – vector of regulatory network states</p></li>
+</ul>
 </dd>
 </dl>
 <p>If no initial concentration is given for a substrate that has an open
@@ -293,53 +307,57 @@ described in <em>[Mahadevan, R. et al. Biophys J, 83:1331-1340 (2003)]</em>.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.rFBA.optimizeRegModel">
-<span class="sig-name descname"><span class="pre">optimizeRegModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">initialRegState</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimizeRegModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">initialRegState</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/rFBA/optimizeRegModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.rFBA.optimizeRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the steady state solution of a model with Boolean regulatory constraints</p>
-<dl>
-<dt>USAGE:</dt><dd><p>[FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel(model, initialRegState)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel</strong> (<em>model, initialRegState</em>)</p>
 </dd>
-<dt>INPUTS:</dt><dd><p>model:              a regulatory COBRA model
-initialRegState:    the initial state of the regulatory network as a</p>
-<blockquote>
-<div><p>Boolean vector (opt, default = all false)</p>
-</div></blockquote>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – a regulatory COBRA model</p></li>
+<li><p><strong>initialRegState</strong> – the initial state of the regulatory network as a
+Boolean vector (opt, default = all false)</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><dl class="simple">
-<dt>FBAsols:            all of the FBA solutions at the steady state (or stable</dt><dd><p>cycle) of the regulatory network</p>
-</dd>
-</dl>
-<p>DRgenes:            the genes that are OFF for every FBA solution
-constrainedRxns:    the reactions that are OFF for every FBA solution
-cycleStart:         the number of iterations before the regulatory network</p>
-<blockquote>
-<div><p>reaches the steady state or cycle</p>
-</div></blockquote>
-<dl class="simple">
-<dt>states:             the state of the regulatory network at every iteration</dt><dd><p>calculated</p>
-</dd>
-</dl>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FBAsols</strong> – all of the FBA solutions at the steady state (or stable
+cycle) of the regulatory network</p></li>
+<li><p><strong>DRgenes</strong> – the genes that are OFF for every FBA solution</p></li>
+<li><p><strong>constrainedRxns</strong> – the reactions that are OFF for every FBA solution</p></li>
+<li><p><strong>cycleStart</strong> – the number of iterations before the regulatory network
+reaches the steady state or cycle</p></li>
+<li><p><strong>states</strong> – the state of the regulatory network at every iteration
+calculated</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.rFBA.solveBooleanRegModel">
-<span class="sig-name descname"><span class="pre">solveBooleanRegModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">initialState</span></em>, <em class="sig-param"><span class="pre">inputs1States</span></em>, <em class="sig-param"><span class="pre">inputs2States</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">solveBooleanRegModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">initialState</span></em>, <em class="sig-param"><span class="pre">inputs1States</span></em>, <em class="sig-param"><span class="pre">inputs2States</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/rFBA/solveBooleanRegModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.rFBA.solveBooleanRegModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the next state of the regulatory network based on the current state.
 Called by <cite>optimizeRegModel</cite> and <cite>dynamicRFBA</cite></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel(model, initialState, inputs1States, inputs2States)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:                 a regulatory COBRA model
-initialState:          initial state of regulatory network
-inputs1States:         initial state of type 1 inputs (metabolites)
-inputs2States:         initial state of type 2 inputs (reactions)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel</strong> (<em>model, initialState, inputs1States, inputs2States</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>finalState:            final state of regulatory network
-finalInputs1States:    final state of type 1 inputs
-finalInputs2States:    final state of type 2 inputs</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – a regulatory COBRA model</p></li>
+<li><p><strong>initialState</strong> – initial state of regulatory network</p></li>
+<li><p><strong>inputs1States</strong> – initial state of type 1 inputs (metabolites)</p></li>
+<li><p><strong>inputs2States</strong> – initial state of type 2 inputs (reactions)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>finalState</strong> – final state of regulatory network</p></li>
+<li><p><strong>finalInputs1States</strong> – final state of type 1 inputs</p></li>
+<li><p><strong>finalInputs2States</strong> – final state of type 2 inputs</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -356,10 +374,10 @@ finalInputs2States:    final state of type 2 inputs</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rMTA/index.html" class="btn btn-default float-right" title="rMTA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../filterRateLimittingReactions/index.html" class="btn btn-default float-right" title="Filterratelimittingreactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../relaxedFBA/index.html" class="btn btn-default" title="relaxedFBA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -397,6 +415,9 @@ finalInputs2States:    final state of type 2 inputs</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

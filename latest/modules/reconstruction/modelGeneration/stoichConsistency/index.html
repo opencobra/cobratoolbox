@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>stoichConsistency &mdash; The COBRA Toolbox</title>
+  <title>Stoichconsistency &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
-        <link rel="up" title="modelGeneration" href="../index.html"/>
-        <link rel="next" title="rBioNet" href="../../rBioNet/index.html"/>
-        <link rel="prev" title="modelVerification" href="../modelVerification/index.html"/> 
+        <link rel="up" title="Modelgeneration" href="../index.html"/>
+        <link rel="next" title="Fluxconsistency" href="../fluxConsistency/index.html"/>
+        <link rel="prev" title="Modelverification" href="../modelVerification/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,21 +160,24 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">growthExpMatch</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">modelGeneration</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">fluxConsistency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">massBalance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">modelVerification</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">stoichConsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">rBioNet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -187,6 +192,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -213,8 +219,8 @@
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">modelGeneration</a></li>
-      <li class="breadcrumb-item active">stoichConsistency</li>
+          <li class="breadcrumb-item"><a href="../index.html">Modelgeneration</a></li>
+      <li class="breadcrumb-item active">Stoichconsistency</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -224,10 +230,10 @@
            <div itemprop="articleBody">
             
   <section id="stoichconsistency">
-<span id="id1"></span><h1>stoichConsistency<a class="headerlink" href="#stoichconsistency" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Stoichconsistency<a class="headerlink" href="#stoichconsistency" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.stoichConsistency"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency">
-<span class="sig-name descname"><span class="pre">checkStoichiometricConsistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">checkStoichiometricConsistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/checkStoichiometricConsistency.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.checkStoichiometricConsistency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verification of stoichiometric consistency by checking for at least one
 strictly positive basis in the left nullspace of <cite>S</cite>.
 If <cite>S</cite> is not stoichiometrically consistent detect conserved and unconserved
@@ -243,14 +249,13 @@ Detection of stoichiometric inconsistencies in biomolecular
 models. Bioinformatics, 24(19):2245–2251, 2008</cite>.</p>
 <p>Detection of conserved and unconserved metabolites based on a new
 implementation by Nikos Vlassis &amp; Ronan Fleming.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[isConsistent, m, model] = checkStoichiometricConsistency(model, printLevel, method)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:         structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[isConsistent, m, model] = checkStoichiometricConsistency</strong> (<em>model, printLevel, method</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
 <li><p>model.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>model.mets - if exists, but <cite>SIntRxnBool does not exist, then
 `findSExRxnBool</cite> will attempt to identify exchange
@@ -264,47 +269,47 @@ then we will attempt to identify such reactions,
 <cite>model.rxns</cite> exists, otherwise, we will assume all
 reactions are supposed to be non-exchange reactions. (optional)</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>printLevel:    {(0), 1}
-method:        structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>printLevel</strong> – {(0), 1}</p></li>
+<li><p><strong>method</strong> – structure with fields:</p>
+<ul>
 <li><p>method.interface - {(‘SDCCO’),’LP’, ‘MILP’, ‘DCCO’} interface called to do the consistency check</p></li>
 <li><p>method.solver - {(default solver as specified by CBT_LP_SOLVER), or any other CBT compatible LP solver}</p></li>
 <li><p>method.param - solver specific parameter structure</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>isConsistent:        Solver status in standardized form:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>isConsistent</strong> – Solver status in standardized form:</p>
+<ul>
 <li><p>1 - Optimal solution (Stoichiometrically consistent)</p></li>
 <li><p>2 - Unbounded solution (Should never happen)</p></li>
 <li><p>0 - Infeasible (Stoichiometrically INconsistent)</p></li>
 <li><p>-1 - No solution reported (timelimit, numerical problem etc)</p></li>
 </ul>
-</div></blockquote>
-<dl class="simple">
-<dt>m:             <cite>m</cite> x 1 strictly positive vector in left nullspace</dt><dd><p>(empty if it does not exist)</p>
-</dd>
-</dl>
-<p>model:         structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>m</strong> – <cite>m</cite> x 1 strictly positive vector in left nullspace
+(empty if it does not exist)</p></li>
+<li><p><strong>model</strong> – structure with fields:</p>
+<ul>
 <li><p>.SConsistentMetBool - m x 1 boolean vector indicating metabolites involved
 in the maximal consistent vector</p></li>
 <li><p>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector non-exchange reaction involving
 a stoichiometrically consistent metabolite</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons">
-<span class="sig-name descname"><span class="pre">findMassLeaksAndSiphons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findMassLeaksAndSiphons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMassLeaksAndSiphons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the metabolites in a network that either leak mass or act as a
 siphon for mass, with (default) or without the bounds on a model.
 The approach is to solve the problem:</p>
@@ -317,66 +322,66 @@ or <span class="math notranslate nohighlight">\(-\infty \leq v \leq \infty\)</sp
 or <span class="math notranslate nohighlight">\(-\infty \leq y \leq 0\)</span> (seminegative net stoichiometry = siphon)</p>
 <p>If there are any zero rows of <cite>S</cite>, then the corresponding entry in y is
 set to zero.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons(model, metBool, rxnBool, modelBoundsFlag, param, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:              structure with fields (only <cite>.S</cite> is mandatory)</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY, statp, statn] = findMassLeaksAndSiphons</strong> (<em>model, metBool, rxnBool, modelBoundsFlag, param, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields (only <cite>.S</cite> is mandatory)</p>
+<ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>.lb - Lower bounds</p></li>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>metBool:            <cite>m</cite> x 1 boolean vector of metabolites to test for leakage
-rxnBool:            <cite>n</cite> x 1 boolean vector of reactions to test for leakage
-modelBoundsFlag:    {0, (1)}</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metBool</strong> – <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p></li>
+<li><p><strong>rxnBool</strong> – <cite>n</cite> x 1 boolean vector of reactions to test for leakage</p></li>
+<li><p><strong>modelBoundsFlag</strong> – {0, (1)}</p>
+<ul>
 <li><p>0 = set all reaction bounds to -inf, inf</p></li>
 <li><p>1 = use reaction bounds provided by model.lb and .ub</p></li>
 </ul>
-</div></blockquote>
-<p>param:             structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>param</strong> – structure with fields:</p>
+<ul>
 <li><p>param.epsilon - (getCobraSolverParams(‘LP’, ‘feasTol’)*100)</p></li>
 <li><p>param.eta - (<cite>feasTol*100</cite>), smallest nonzero mass leak/siphon</p></li>
 <li><p>param.theta - (0.5) parameter of capped l1 approximation</p></li>
 <li><p>param.method - {(‘quasiConcave’), ‘dc’} method of approximation</p></li>
 </ul>
-</div></blockquote>
-<p>printLevel:         {(0), 1, 2 = debug}</p>
+</li>
+<li><p><strong>printLevel</strong> – {(0), 1, 2 = debug}</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>leakRxnBool:        <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-leakRxnBool:        <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode
-siphonMetBool:      <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode
-siphonRxnBool:      <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode
-leakY:              <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-siphonY:            <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode
-statp:              status (positive leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>leakRxnBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>leakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p><strong>siphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
+<li><p><strong>siphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
+<li><p><strong>leakY</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>siphonY</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode</p></li>
+<li><p><strong>statp</strong> – status (positive leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
-<p>statn:              status (negative leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>statn</strong> – status (negative leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 <p>Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I.
@@ -385,7 +390,7 @@ Cardinality optimisation in constraint-based modelling: Application to human met
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode">
-<span class="sig-name descname"><span class="pre">findMinimalLeakageMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findMinimalLeakageMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp; ||v||_0 + ||y||_0 \\
@@ -393,33 +398,35 @@ s.t. ~&amp; Sv - y = 0, \\
      ~&amp; l \leq v \leq u\end{split}\]</div>
 <p>with either <span class="math notranslate nohighlight">\(0 \leq y\)</span> (semipositive net stoichiometry)
 or <span class="math notranslate nohighlight">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool, modelBoundsFlag, epsilon, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:              (the following fields are required: <cite>.S</cite>, <cite>.lb</cite>, <cite>.ub</cite>)</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode</strong> (<em>model, metBool, modelBoundsFlag, epsilon, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required: <cite>.S</cite>, <cite>.lb</cite>, <cite>.ub</cite>)</p>
+<ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>.lb - Lower bounds</p></li>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>metBool:            <cite>m</cite> x 1 boolean vector of metabolites to test for leakage
-modelBoundsFlag:    {0, (1)} where:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metBool</strong> – <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p></li>
+<li><p><strong>modelBoundsFlag</strong> – {0, (1)} where:</p>
+<ul>
 <li><p>0 = set all reaction bounds to -inf, inf</p></li>
 <li><p>1 = use reaction bounds provided by model.lb and .ub</p></li>
 </ul>
-</div></blockquote>
-<p>epsilon:            getCobraSolverParams(‘LP’, ‘feasTol’)*100, smallest nonzero reaction flux in leakage mode
-printLevel:         {(0), 1}</p>
+</li>
+<li><p><strong>epsilon</strong> – getCobraSolverParams(‘LP’, ‘feasTol’)*100, smallest nonzero reaction flux in leakage mode</p></li>
+<li><p><strong>printLevel</strong> – {(0), 1}</p></li>
+</ul>
 </dd>
+</dl>
+<dl>
 <dt>OUTPUTS</dt><dd><p>Vp:                 <cite>n</cite> x 1 vector (positive leakage modes)
 Yp:                 <cite>m</cite> x 1 vector (positive leakage modes)
 statp:              status (positive leakage modes)</p>
@@ -448,7 +455,7 @@ statn:              status (negative leakage modes)</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet">
-<span class="sig-name descname"><span class="pre">findMinimalLeakageModeMet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findMinimalLeakageModeMet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeMet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
 minimal set of reactions involved. Test metabolites in metBool.</p>
 <p>Solve the problem</p>
@@ -464,71 +471,74 @@ and either <span class="math notranslate nohighlight">\(0 \leq y\)</span> (semip
 or <span class="math notranslate nohighlight">\(y \leq 0\)</span> (seminegative net stoichiometry)</p>
 <p>and <span class="math notranslate nohighlight">\(1 \leq y(metBool)\)</span> (semipositive net stoichiometry)
 or <span class="math notranslate nohighlight">\(y(metBool) \leq 1\)</span> (seminegative net stoichiometry)</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet(model, metBool, rxnBool, modelBoundsFlag, params, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:              structure with fields (bools are not mandatory)</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet</strong> (<em>model, metBool, rxnBool, modelBoundsFlag, params, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure with fields (bools are not mandatory)</p>
+<ul>
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>.lb - Lower bounds</p></li>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
 </ul>
-</div></blockquote>
-<p>metBool:            <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p>
+</li>
+<li><p><strong>metBool</strong> – <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>rxnBool:            <cite>n</cite> x 1 boolean vector of reactions to test for leakage
-modelBoundsFlag:    {0,(1)}</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnBool</strong> – <cite>n</cite> x 1 boolean vector of reactions to test for leakage</p></li>
+<li><p><strong>modelBoundsFlag</strong> – {0,(1)}</p>
+<ul>
 <li><p>0 = set all reaction bounds to -inf, inf</p></li>
 <li><p>1 = use reaction bounds provided by model.lb and .ub</p></li>
 </ul>
-</div></blockquote>
-<p>params:             structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>params</strong> – structure with fields:</p>
+<ul>
 <li><p>params.epsilon - (<cite>feasTol*100</cite>), smallest nonzero mass leak/siphon</p></li>
 <li><p>params.monoMetMode - {(0), 1} boolean to test for leakage of only one metabolite</p></li>
 </ul>
-</div></blockquote>
-<p>printLevel:         {(0), 1}</p>
+</li>
+<li><p><strong>printLevel</strong> – {(0), 1}</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>minleakRxnBool:        <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-minleakRxnBool:        <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode
-minsiphonMetBool:      <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode
-imnsiphonRxnBool:      <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode
-leakY:              <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-siphonY:            <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode
-statp:              status (positive leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minleakRxnBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>minleakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p><strong>minsiphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
+<li><p><strong>imnsiphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
+<li><p><strong>leakY</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>siphonY</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode</p></li>
+<li><p><strong>statp</strong> – status (positive leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
-<p>statn:              status (negative leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>statn</strong> – status (negative leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn">
-<span class="sig-name descname"><span class="pre">findMinimalLeakageModeRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findMinimalLeakageModeRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnBool</span></em>, <em class="sig-param"><span class="pre">metBool</span></em>, <em class="sig-param"><span class="pre">modelBoundsFlag</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findMinimalLeakageModeRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a minimal set of leak (or siphon) metabolites and the corresponding
 minimal set of exclusive reactions involved. Test reactions in rxnBool.</p>
 <dl>
@@ -547,103 +557,101 @@ s.t. ~&amp; Sv - y = 0, \</p>
 <dt>or</dt><dd><p>y(metBool) &lt;= -1 (seminegative net stoichiometry)</p>
 </dd>
 </dl>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn(model, rxnBool, metBool, modelBoundsFlag, params, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:               structure with fields (bools are not mandatory)</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, leakY, siphonY, statp, statn] = findMinimalLeakageModeRxn</strong> (<em>model, rxnBool, metBool, modelBoundsFlag, params, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure with fields (bools are not mandatory)</p>
+<ul>
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>.lb - Lower bounds</p></li>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
 </ul>
-</div></blockquote>
-<p>rxnBool:             <cite>n</cite> x 1 boolean vector of reactions to test for leakage</p>
+</li>
+<li><p><strong>rxnBool</strong> – <cite>n</cite> x 1 boolean vector of reactions to test for leakage</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>metBool:             <cite>m</cite> x 1 boolean vector of metabolites to test for leakage
-modelBoundsFlag:     {0, (1)}</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metBool</strong> – <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p></li>
+<li><p><strong>modelBoundsFlag</strong> – {0, (1)}</p>
+<ul>
 <li><p>0 = set all reaction bounds to -inf, inf</p></li>
 <li><p>1 = use reaction bounds provided by model.lb and .ub</p></li>
 </ul>
-</div></blockquote>
-<p>params:              structure with fields:</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>params</strong> – structure with fields:</p>
+<ul>
 <li><p>params.eta - (feasTol*100), smallest nonzero mass leak/siphon</p></li>
 <li><p>params.monoRxnMode - {(1), 0} adds one stoichiometrically inconsistent reaction at a time</p></li>
 </ul>
-</div></blockquote>
-<p>printLevel:          {(0), 1}</p>
+</li>
+<li><p><strong>printLevel</strong> – {(0), 1}</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>minLeakMetBool       <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-minLeakRxnBool:      <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode
-minSiphonMetBool:    <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode
-minSiphonRxnBool:    <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode
-leakY:               <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode
-siphonY:             <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode
-statp:               status (positive leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minLeakMetBool       `m` x 1 boolean of metabolites in a positive leakage mode</strong></p></li>
+<li><p><strong>minLeakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p><strong>minSiphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
+<li><p><strong>minSiphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
+<li><p><strong>leakY</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>siphonY</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode</p></li>
+<li><p><strong>statp</strong> – status (positive leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
-<p>statn:               status (negative leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>statn</strong> – status (negative leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset">
-<span class="sig-name descname"><span class="pre">findStoichConsistentSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">massBalanceCheck</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findStoichConsistentSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">massBalanceCheck</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.findStoichConsistentSubset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the subset of <cite>S</cite> that is stoichiometrically consistent using
 an iterative cardinality optimisation approach</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model] = findStoichConsistentSubset(model, massBalanceCheck, printLevel, fileName, epsilon)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:                         structure with:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsistentRxnBool, unknownSConsistencyMetBool, unknownSConsistencyRxnBool, model] = findStoichConsistentSubset</strong> (<em>model, massBalanceCheck, printLevel, fileName, epsilon</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with:</p>
+<ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>model.SIntRxnBool              n x 1 boolean of reactions heuristically though to be mass balanced
-massBalanceCheck:              {0, (1)} mass and charge balance can be checked by looking at formulas</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0 = heuristic detection of exchange reactions (using</p></li>
-</ul>
-<p><cite>findSExRxnInd</cite>) will be use to warm start algorithmic part
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model.SIntRxnBool              n x 1 boolean of reactions heuristically though to be mass balanced</strong></p></li>
+<li><p><strong>massBalanceCheck</strong> – {0, (1)} mass and charge balance can be checked by looking at formulas
+* 0 = heuristic detection of exchange reactions (using
+<cite>findSExRxnInd</cite>) will be use to warm start algorithmic part
 * 1 = reactions that seem mass imbalanced will be used to
 warm start the algorithmic steps to find the
 stoichiometrically consistent part.
-<cite>model.metFormulas</cite> must exist for mass balance check</p>
-</div></blockquote>
-<p>printLevel:                    verbose level
-fileName:                      char, used when writing inconsistent metabolites and</p>
-<blockquote>
-<div><p>reactions to a file</p>
-</div></blockquote>
-<p>epsilon:                       (<cite>feasTol*10</cite>) min nonzero mass, 1/epsilon = max mass</p>
+<cite>model.metFormulas</cite> must exist for mass balance check</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+<li><p><strong>fileName</strong> – char, used when writing inconsistent metabolites and
+reactions to a file</p></li>
+<li><p><strong>epsilon</strong> – (<cite>feasTol*10</cite>) min nonzero mass, 1/epsilon = max mass</p></li>
+</ul>
 </dd>
 </dl>
 <p>OUTPUT:
@@ -673,31 +681,32 @@ model</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.leakTest">
-<span class="sig-name descname"><span class="pre">leakTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.leakTest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">leakTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/leakTest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.leakTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp; \lambda ||v||_0 - \delta ||s||_0 \\
 s.t. ~&amp; Sv + s = 0, \\
      ~&amp; l \leq v \leq u.\end{split}\]</div>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solution = leakTest(model, params, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:         structure with fields (bools are not mandatory)</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = leakTest</strong> (<em>model, params, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure with fields (bools are not mandatory)</p>
+<ul>
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
 <li><p>.lb - Lower bounds</p></li>
 <li><p>.ub - Upper bounds</p></li>
 </ul>
-</div></blockquote>
-<p>params:        structure with fields
-printLevel:    verbose level</p>
+</li>
+<li><p><strong>params</strong> – structure with fields</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><p>solution:      Structure containing the following fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>solution</strong> – Structure containing the following fields:</p>
+<ul class="simple">
 <li><p>v - <cite>n</cite> x 1 vector</p></li>
 <li><p>s - <cite>m</cite> x 1 vector</p></li>
 <li><p>stat - status:</p>
@@ -709,14 +718,13 @@ printLevel:    verbose level</p>
 </ul>
 </li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector">
-<span class="sig-name descname"><span class="pre">maxCardinalityConservationVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">maxCardinalityConservationVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxCardinalityConservationVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maximises the cardinality of the conservation vector:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}max  ~&amp; ||l||_0 \\
@@ -745,16 +753,16 @@ The resulting problem is solved with a DC program.</p>
 were the <cite>l0</cite> norm is approximated by the capped <cite>l1</cite> norm.
 The resulting problem is solved with a DC program. Should give the same
 answer as optimizeCardinality.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector(S, param)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>S:                         <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[maxConservationMetBool, maxConservationRxnBool, solution] = maxCardinalityConservationVector</strong> (<em>S, param</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>param:   structure with:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>S</strong> – <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>param</strong> – structure with:</p>
+<ul class="simple">
 <li><p>.nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)</p></li>
 <li><p>.eta - Smallest value considered non-zero (Default value feasTol*10)</p></li>
 <li><p>.epsilon - <cite>1/epsilon</cite> is the largest molecular mass considered (Default value getCobraSolverParams(‘LP’, ‘feasTol’)*10)</p></li>
@@ -762,13 +770,13 @@ answer as optimizeCardinality.</p>
 <li><p>.theta - Parameter of capped <cite>l1</cite> approximation (Default value 0.5)</p></li>
 <li><p>.method - {‘quasiConcave’, (‘optimizeCardinality’)}</p></li>
 </ul>
-</div></blockquote>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>maxConservationMetBool:    <cite>m</cite> x 1 boolean for consistent metabolites
-maxConservationRxnBool:    <cite>n</cite> x 1 boolean for reactions exclusively involving consistent metabolites
-solution:                  Structure containing the following fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>maxConservationMetBool</strong> – <cite>m</cite> x 1 boolean for consistent metabolites</p></li>
+<li><p><strong>maxConservationRxnBool</strong> – <cite>n</cite> x 1 boolean for reactions exclusively involving consistent metabolites</p></li>
+<li><p><strong>solution</strong> – Structure containing the following fields:</p>
+<ul>
 <li><p>l - <cite>m</cite> x 1 molecular mass vector</p></li>
 <li><p>k - <cite>n</cite> x 1 reaction complex mass vector</p></li>
 <li><p>stat - status:</p>
@@ -780,105 +788,121 @@ solution:                  Structure containing the following fields:</p>
 </ul>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector">
-<span class="sig-name descname"><span class="pre">maxEntConsVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">SInt</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector" title="Permalink to this definition">¶</a></dt>
-<dd><p>USAGE:</p>
-<blockquote>
-<div><p>[m, bool] = maxEntConsVector(SInt, printLevel)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>SInt:          <cite>m</cite> x <cite>n</cite> matrix
-printLevel:    verbose level</p>
+<span class="sig-name descname"><span class="pre">maxEntConsVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">SInt</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[m, bool] = maxEntConsVector</strong> (<em>SInt, printLevel</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>m:             primal solution
-bool:          is 1 if <cite>m &gt; 0</cite></p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SInt</strong> – <cite>m</cite> x <cite>n</cite> matrix</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> – primal solution</p></li>
+<li><p><strong>bool</strong> – is 1 if <cite>m &gt; 0</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector">
-<span class="sig-name descname"><span class="pre">minCardinalityConservationRelaxationVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">minCardinalityConservationRelaxationVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.minCardinalityConservationRelaxationVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp; \lambda ||x||_0 \\
 s.t. ~&amp; x + S^T z = 0 \\
      ~&amp; -\infty \leq x \leq \infty, \\
      ~&amp; 1 \leq z \leq 1 / \epsilon\end{split}\]</div>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector(S, param, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>S:                <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVector</strong> (<em>S, param, printLevel</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>param:           structure with:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>S</strong> – <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – structure with:</p>
+<ul>
 <li><p>param.epsilon - (getCobraSolverParams(‘LP’, ‘feasTol’)*100) 1/epsilon is the largest flux expected</p></li>
 <li><p>param.eta - (<cite>feasTol</cite> * 100), cutoff for mass leak/siphon</p></li>
 <li><p>param.nonRelaxBool - (false(n, 1)), <cite>n</cite> x 1 boolean vector for reactions not to relax</p></li>
 </ul>
-</div></blockquote>
-<p>printLevel:       verbose level</p>
+</li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>relaxRxnBool:     <cite>n</cite> x 1 boolean vector where true correspond to relaxation
-solutionRelax:    structure with:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>relaxRxnBool</strong> – <cite>n</cite> x 1 boolean vector where true correspond to relaxation</p></li>
+<li><p><strong>solutionRelax</strong> – structure with:</p>
+<ul>
 <li><p>solutionRelax.stat - solution status</p></li>
 <li><p>solutionRelax.x - <cite>n</cite> x 1 vector where nonzeros&gt;eta correspond to relaxations</p></li>
 <li><p>solutionRelax.z - <cite>m</cite> x 1 vector where positives correspond to molecular mass</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors">
-<span class="sig-name descname"><span class="pre">optimalConservationVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">lambda</span></em>, <em class="sig-param"><span class="pre">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">optimalConservationVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">lambda</span></em>, <em class="sig-param"><span class="pre">delta</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.optimalConservationVectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}min  ~&amp; \lambda ||x||_0 - \delta ||y||_0 \\
 s.t. ~&amp; x + S^T y = 0 \\
      ~&amp; 0 \leq y \leq 1e4\end{split}\]</div>
-<p>USAGE:</p>
-<blockquote>
-<div><p>solution = optimalConservationVectors(S, lambda, delta)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>S:           <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = optimalConservationVectors</strong> (<em>S, lambda, delta</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>lambda:      default = 1
-delta:       default = 1</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>S</strong> – <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>solution:    result of the solved cardinality optimization problem</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lambda</strong> – default = 1</p></li>
+<li><p><strong>delta</strong> – default = 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – result of the solved cardinality optimization problem</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode">
-<span class="sig-name descname"><span class="pre">printMinimalLeakageMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minMetBool</span></em>, <em class="sig-param"><span class="pre">minRxnBool</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printMinimalLeakageMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minMetBool</span></em>, <em class="sig-param"><span class="pre">minRxnBool</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/printMinimalLeakageMode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.printMinimalLeakageMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints out the data on each leakage mode</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:         model structure
-minMetBool:    boolean of metabolites in a positive leakage mode
-minRxnBool:    boolean of reactions exclusively involved in a positive leakage mode
-y:             contains <cite>minMetBool</cite>
-printLevel:    verbose level
-fileName:      name of the file</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>printMinimalLeakageMode</strong> (<em>model, minMetBool, minRxnBool, y, printLevel, fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>minMetBool</strong> – boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>minRxnBool</strong> – boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p><strong>y</strong> – contains <cite>minMetBool</cite></p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+<li><p><strong>fileName</strong> – name of the file</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -895,10 +919,10 @@ fileName:      name of the file</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../rBioNet/index.html" class="btn btn-default float-right" title="rBioNet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../fluxConsistency/index.html" class="btn btn-default float-right" title="Fluxconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../modelVerification/index.html" class="btn btn-default" title="modelVerification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modelVerification/index.html" class="btn btn-default" title="Modelverification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -936,6 +960,9 @@ fileName:      name of the file</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

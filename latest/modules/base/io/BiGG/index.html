@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BiGG &mdash; The COBRA Toolbox</title>
+  <title>Bigg &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
-        <link rel="up" title="IO" href="../index.html"/>
-        <link rel="next" title="Definitions" href="../definitions/index.html"/>
-        <link rel="prev" title="IO" href="../index.html"/> 
+        <link rel="up" title="Io" href="../index.html"/>
+        <link rel="next" title="Kegg" href="../KEGG/index.html"/>
+        <link rel="prev" title="Newt" href="../newt/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,18 +161,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">IO</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">BiGG</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">KEGG</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Bigg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -185,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -211,8 +221,8 @@
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">IO</a></li>
-      <li class="breadcrumb-item active">BiGG</li>
+          <li class="breadcrumb-item"><a href="../index.html">Io</a></li>
+      <li class="breadcrumb-item active">Bigg</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -222,47 +232,44 @@
            <div itemprop="articleBody">
             
   <section id="bigg">
-<span id="id1"></span><h1>BiGG<a class="headerlink" href="#bigg" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Bigg<a class="headerlink" href="#bigg" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.io.BiGG"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.BiGG.listBiGGModels">
-<span class="sig-name descname"><span class="pre">listBiGGModels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.base.io.BiGG.listBiGGModels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">listBiGGModels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/BiGG/listBiGGModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.BiGG.listBiGGModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[str] = listBiGGModels()</p>
-</div></blockquote>
-<dl class="simple">
-<dt>OUTPUT:</dt><dd><p>str:    result of url read</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[str] = listBiGGModels()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>str</strong> – result of url read</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.BiGG.loadBiGGModel">
-<span class="sig-name descname"><span class="pre">loadBiGGModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_ids</span></em>, <em class="sig-param"><span class="pre">format</span></em>, <em class="sig-param"><span class="pre">multichoice</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.base.io.BiGG.loadBiGGModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">loadBiGGModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_ids</span></em>, <em class="sig-param"><span class="pre">format</span></em>, <em class="sig-param"><span class="pre">multichoice</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/BiGG/loadBiGGModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.BiGG.loadBiGGModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>model = listBiGGModel(model_ids)</p>
-</div></blockquote>
-<p>OPTIONAL INPUTS:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>model_ids:     The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui</dt><dd><p>will ask for the model to load.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = listBiGGModel</strong> (<em>model_ids</em>)</p>
 </dd>
-<dt>format:        The format from Bigg to load. Either ‘sbml’ or (‘mat’).</dt><dd><p>Default(‘mat’)</p>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model_ids</strong> – The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui
+will ask for the model to load.</p></li>
+<li><p><strong>format</strong> – The format from Bigg to load. Either ‘sbml’ or (‘mat’).
+Default(‘mat’)</p></li>
+<li><p><strong>multichoice</strong> – Whether multiple models can be loaded if no ids are
+given. (Default: true)</p></li>
+</ul>
 </dd>
-<dt>multichoice:   Whether multiple models can be loaded if no ids are</dt><dd><p>given. (Default: true)</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>varargout:     The models in the order of the selected ids. If</dt><dd><p>multiple models are selected in the dialog, a struct
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – The models in the order of the selected ids. If
+multiple models are selected in the dialog, a struct
 is provided with the models being fields of that
 struct.</p>
-</dd>
-</dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -297,10 +304,10 @@ struct.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../definitions/index.html" class="btn btn-default float-right" title="Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../KEGG/index.html" class="btn btn-default float-right" title="Kegg" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="IO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../newt/index.html" class="btn btn-default" title="Newt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -338,6 +345,9 @@ struct.</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

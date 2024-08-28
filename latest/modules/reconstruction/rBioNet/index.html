@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>rBioNet &mdash; The COBRA Toolbox</title>
+  <title>Rbionet &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="Refinement" href="../refinement/index.html"/>
-        <link rel="prev" title="stoichConsistency" href="../modelGeneration/stoichConsistency/index.html"/> 
+        <link rel="next" title="Gui" href="gui/index.html"/>
+        <link rel="prev" title="Massbalance" href="../modelGeneration/massBalance/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,15 +160,20 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">growthExpMatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Rbionet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -181,6 +188,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -207,7 +215,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Reconstruction</a></li>
-      <li class="breadcrumb-item active">rBioNet</li>
+      <li class="breadcrumb-item active">Rbionet</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -217,37 +225,44 @@
            <div itemprop="articleBody">
             
   <section id="rbionet">
-<span id="id1"></span><h1>rBioNet<a class="headerlink" href="#rbionet" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Rbionet<a class="headerlink" href="#rbionet" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</div>
 <span class="target" id="module-src.reconstruction.rBioNet"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.BalancePrep">
-<span class="sig-name descname"><span class="pre">BalancePrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">BalancePrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/BalancePrep.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Balances the reactions, used in <cite>ReactionChecks</cite></p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>output = BalancePrep(meta_meta)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>meta_meta:    matrix from <cite>ReconstructionTool</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = BalancePrep</strong> (<em>meta_meta</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:   <cite>leftside</cite>, <cite>rightside</cite>, <cite>charge_l</cite> and <cite>charge_r</cite> in <cite>varargout</cite></p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>meta_meta</strong> – matrix from <cite>ReconstructionTool</cite></p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – <cite>leftside</cite>, <cite>rightside</cite>, <cite>charge_l</cite> and <cite>charge_r</cite> in <cite>varargout</cite></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.CreateGPR">
-<span class="sig-name descname"><span class="pre">CreateGPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.CreateGPR" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CreateGPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/CreateGPR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.CreateGPR" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for CreateGPR.fig
 CreateGPR, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = addmetabolites(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -269,34 +284,36 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GPR2Genes">
-<span class="sig-name descname"><span class="pre">GPR2Genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">GPR</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">GPR2Genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">GPR</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GPR2Genes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input is a list of GPRs and output is a unique list of genes.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>Genes = GPR2Genes(GPR)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>GPR:    list of GPRs</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Genes = GPR2Genes</strong> (<em>GPR</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>Genes:  unique list of genes</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>GPR</strong> – list of GPRs</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>Genes</strong> – unique list of genes</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GenesAndReactions">
-<span class="sig-name descname"><span class="pre">GenesAndReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.GenesAndReactions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">GenesAndReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GenesAndReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesAndReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for GenesAndReactions.fig
 GenesAndReactions, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = GenesAndReactions(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = GenesAndReactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -318,34 +335,38 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GenesReactions">
-<span class="sig-name descname"><span class="pre">GenesReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genelist</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">GenesReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genelist</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GenesReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns genes in model and the associative reactions.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>list = GenesReactions(genelist, rxns)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>genelist:    list of genes
-rxns:        reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>list = GenesReactions</strong> (<em>genelist, rxns</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>list:        genes in model and the associative reactions</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>genelist</strong> – list of genes</p></li>
+<li><p><strong>rxns</strong> – reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>list</strong> – genes in model and the associative reactions</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.Keep_reactions">
-<span class="sig-name descname"><span class="pre">Keep_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.Keep_reactions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Keep_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/Keep_reactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.Keep_reactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for Keep_reactions.fig
 Keep_reactions, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = Keep_reactions(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = Keep_reactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -368,17 +389,20 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.LegalRxnFormula">
-<span class="sig-name descname"><span class="pre">LegalRxnFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">abbreviation</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LegalRxnFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">abbreviation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LegalRxnFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if all reactions are legal</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>result = LegalRxnFormula(formula, abbreviation)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>formula:        cell vector with reactions formulas
-abbreviation:   cell vector with reaction abbreviation (optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>result = LegalRxnFormula</strong> (<em>formula, abbreviation</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>result:         true if all reactions are legal, else false. <cite>msgbox</cite> lets user know which reaction is incorrect</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>formula</strong> – cell vector with reactions formulas</p></li>
+<li><p><strong>abbreviation</strong> – cell vector with reaction abbreviation (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>result</strong> – true if all reactions are legal, else false. <cite>msgbox</cite> lets user know which reaction is incorrect</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -390,81 +414,89 @@ Add more tests in near future.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.LoadReaction">
-<span class="sig-name descname"><span class="pre">LoadReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnline</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">rxn_line</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LoadReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnline</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">rxn_line</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LoadReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>output = LoadReaction(rxnline, metab, meta_compartment, rxn_line)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>rxnline:           data of the reaction
-metab:             from ReconstructionTool
-meta_compartment:  from ReconstructionTool
-rxn_line:          not used</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = LoadReaction</strong> (<em>rxnline, metab, meta_compartment, rxn_line</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>output:            input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnline</strong> – data of the reaction</p></li>
+<li><p><strong>metab</strong> – from ReconstructionTool</p></li>
+<li><p><strong>meta_compartment</strong> – from ReconstructionTool</p></li>
+<li><p><strong>rxn_line</strong> – not used</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>output</strong> – input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReactionChecks">
-<span class="sig-name descname"><span class="pre">ReactionChecks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxn</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">newrxns</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionChecks" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ReactionChecks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxn</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">newrxns</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReactionChecks.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionChecks" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is an start to simplefying the balancing and similarity
 checking of reactions process.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>data_output = ReactionChecks(rxn, metab, meta_compartment, newrxns, data)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>rxn:                 reactions
-metab:               from ReconstructionTool
-meta_compartment:    from ReconstructionTool
-newrxns:             reactions to be added to model
-data:                data of reactions process</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data_output = ReactionChecks</strong> (<em>rxn, metab, meta_compartment, newrxns, data</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>data_output:     if everything is okay</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxn</strong> – reactions</p></li>
+<li><p><strong>metab</strong> – from ReconstructionTool</p></li>
+<li><p><strong>meta_compartment</strong> – from ReconstructionTool</p></li>
+<li><p><strong>newrxns</strong> – reactions to be added to model</p></li>
+<li><p><strong>data</strong> – data of reactions process</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data_output</strong> – if everything is okay</p>
+<ul class="simple">
 <li><p>newrxns - (reactions can be removed) set table</p></li>
 <li><p>handles.data - all similarity info including dispdata.</p></li>
 <li><p>handles.check</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReactionEq">
-<span class="sig-name descname"><span class="pre">ReactionEq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">react</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ReactionEq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">react</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReactionEq.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares reactions for equality</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>matched = ReactionEq(react, rxns)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>react:    new reaction
-rxns:     similar reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>matched = ReactionEq</strong> (<em>react, rxns</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>matched:  abbreviation name for exact reaction match</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>react</strong> – new reaction</p></li>
+<li><p><strong>rxns</strong> – similar reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>matched</strong> – abbreviation name for exact reaction match</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReconstructionCreator">
-<span class="sig-name descname"><span class="pre">ReconstructionCreator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionCreator" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ReconstructionCreator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReconstructionCreator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionCreator" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for ReconstructionCreator.fig
 ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = ReconstructionCreator(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = ReconstructionCreator</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -487,17 +519,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReconstructionTool">
-<span class="sig-name descname"><span class="pre">ReconstructionTool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionTool" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ReconstructionTool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReconstructionTool.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionTool" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for ReconstructionTool.fig
 ReconstructionTool by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = ReconstructionTool(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = ReconstructionTool</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -520,17 +553,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addmetabolites">
-<span class="sig-name descname"><span class="pre">addmetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.addmetabolites" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addmetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addmetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmetabolites" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for addmetabolites.fig
 addmetabolites, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = addmetabolites(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -552,18 +586,19 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addmissing">
-<span class="sig-name descname"><span class="pre">addmissing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.addmissing" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addmissing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addmissing.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmissing" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for addmissing.fig
 addmissing, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = addmissing(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmissing</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -586,17 +621,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addreactions">
-<span class="sig-name descname"><span class="pre">addreactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.addreactions" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addreactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addreactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addreactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for addreactions.fig
 addreactions, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = addreactions(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addreactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -619,50 +655,51 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.balancecheck">
-<span class="sig-name descname"><span class="pre">balancecheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em>, <em class="sig-param"><span class="pre">output</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">balancecheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em>, <em class="sig-param"><span class="pre">output</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/balancecheck.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns balance - if empty it means that balance checks out, otherwise the output is a cell matrix</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>balance = balancecheck(meta_meta, output)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>meta_meta:     is cell matrix meta_meta type, with one metabolite in each line,</dt><dd><p>rows are [Abbreviation, Description, Coefficient, Compartment, Side, Charge formula].</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>balance = balancecheck</strong> (<em>meta_meta, output</em>)</p>
 </dd>
-</dl>
-<p>output:        default = 0, other option = 1</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>meta_meta</strong> – is cell matrix meta_meta type, with one metabolite in each line,
+rows are [Abbreviation, Description, Coefficient, Compartment, Side, Charge formula].</p></li>
+<li><p><strong>output</strong> – default = 0, other option = 1</p></li>
+</ul>
 </dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>balance:       is empty if balance checks out, if unbalanced it returns</dt><dd><p>cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;</p>
-</dd>
-</dl>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>balance</strong> – is empty if balance checks out, if unbalanced it returns
+cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.closeGUI">
-<span class="sig-name descname"><span class="pre">closeGUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>USAGE:</p>
-<blockquote>
-<div><p>closeGUI()</p>
-</div></blockquote>
+<span class="sig-name descname"><span class="pre">closeGUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/closeGUI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>closeGUI()</strong></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.compartment">
-<span class="sig-name descname"><span class="pre">compartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.compartment" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/compartment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.compartment" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for compartment.fig
 compartment, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = compartment(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = compartment</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -685,39 +722,42 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.data2model">
-<span class="sig-name descname"><span class="pre">data2model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">description</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">data2model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">description</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in data from <cite>rbionet</cite> to create a complete reconstruction</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>model_out = data2model(data, description,database)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>data:          data from <cite>rbionet</cite>
-description:   model description</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model_out = data2model</strong> (<em>data, description,database</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><dl class="simple">
-<dt>database:     file with reaction and metabolite database in format:</dt><dd><p>database.reactions=reaction database
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – data from <cite>rbionet</cite></p></li>
+<li><p><strong>description</strong> – model description</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>database</strong> – file with reaction and metabolite database in format:
+database.reactions=reaction database
 database.metabolites=metabolite database</p>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUT:</dt><dd><p>model_out:     creates a complete reconstruction</p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model_out</strong> – creates a complete reconstruction</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.formula2mets">
-<span class="sig-name descname"><span class="pre">formula2mets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">formula2mets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/formula2mets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a rxn formula and produces a list of metabolites</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>metabolites = formula2mets(formula)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>formula:       rxn formula</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metabolites = formula2mets</strong> (<em>formula</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>metabolites:   list of metabolites</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formula</strong> – rxn formula</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>metabolites</strong> – list of metabolites</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -728,35 +768,37 @@ database.metabolites=metabolite database</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.getgenelist">
-<span class="sig-name descname"><span class="pre">getgenelist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.getgenelist" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getgenelist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/getgenelist.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.getgenelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads gene-list text file and returns data.
 Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
 a tab.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>out = getgenelist(input_dir)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>input_dir:    gene-list text file</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>out = getgenelist</strong> (<em>input_dir</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>out:          data</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>input_dir</strong> – gene-list text file</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – data</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.load_reaction">
-<span class="sig-name descname"><span class="pre">load_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.load_reaction" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/load_reaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.load_reaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for load_reaction.fig
 load_reaction, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = load_reaction(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = load_reaction</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -779,17 +821,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.met_charge_formula">
-<span class="sig-name descname"><span class="pre">met_charge_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.met_charge_formula" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">met_charge_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/met_charge_formula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.met_charge_formula" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for met_charge_formula.fig
 met_charge_formula, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = met_charge_formula(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = met_charge_formula</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -812,17 +855,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.metabolites_in_database">
-<span class="sig-name descname"><span class="pre">metabolites_in_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.metabolites_in_database" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">metabolites_in_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/metabolites_in_database.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.metabolites_in_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for metabolites_in_database.fig
 metabolites_in_database, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = metabolites_in_database(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = metabolites_in_database</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -845,67 +889,74 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.mets2str">
-<span class="sig-name descname"><span class="pre">mets2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mets2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/mets2str.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates strings for message boxes</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>outstr = mets2str(str)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>str:       struct of names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outstr = mets2str</strong> (<em>str</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>outstr:    ‘act’, ‘acon-C’, ‘pep’</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>str</strong> – struct of names</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>outstr</strong> – ‘act’, ‘acon-C’, ‘pep’</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model2data">
-<span class="sig-name descname"><span class="pre">model2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fordb</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fordb</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model2data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load complete reconstructions and output format for rBioNets ReconstructionCreator.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>data_out = model2data(model, fordb)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:    model
-fordb:    1 if metabolite table is wanted, default 0 if not</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data_out = model2data</strong> (<em>model, fordb</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>data_out:</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model</p></li>
+<li><p><strong>fordb</strong> – 1 if metabolite table is wanted, default 0 if not</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data_out</strong></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model2text">
-<span class="sig-name descname"><span class="pre">model2text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.model2text" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model2text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model2text.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2text" title="Permalink to this definition">¶</a></dt>
 <dd><p>This script takes in a reconstruction model and prints it out into a text
 file. It can be used standalone from the <cite>rBioNet</cite>.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>model2text(data, model)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>data:    model or .mat datafile table as in ReconstructionCreator (RC)
-model:   true if data is a model, false if RC table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model2text</strong> (<em>data, model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – model or .mat datafile table as in ReconstructionCreator (RC)</p></li>
+<li><p><strong>model</strong> – true if data is a model, false if RC table.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model_description">
-<span class="sig-name descname"><span class="pre">model_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.model_description" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model_description.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for model_description.fig
 model_description, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = model_description(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = model_description</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -928,17 +979,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model_stats">
-<span class="sig-name descname"><span class="pre">model_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.model_stats" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">model_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model_stats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for model_stats.fig
 model_stats, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = model_stats(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = model_stats</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -961,35 +1013,39 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.neighborRxn2data">
-<span class="sig-name descname"><span class="pre">neighborRxn2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxn_numb</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.neighborRxn2data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">neighborRxn2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxn_numb</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/neighborRxn2data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.neighborRxn2data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Program used to get neigbor reactions and set up correct format for the
 Reconstruction analyzer.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>data = neighborRxn2data(model, rxn_numb)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:         model
-rxn_numb:      number of reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data = neighborRxn2data</strong> (<em>model, rxn_numb</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>data:</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model</p></li>
+<li><p><strong>rxn_numb</strong> – number of reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data</strong></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetAbout">
-<span class="sig-name descname"><span class="pre">rBioNetAbout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetAbout" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rBioNetAbout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetAbout.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetAbout" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for rBioNetAbout.fig
 rBioNetAbout, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = rBioNetAbout(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = rBioNetAbout</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1012,38 +1068,42 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetSaveLoad">
-<span class="sig-name descname"><span class="pre">rBioNetSaveLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSaveLoad" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rBioNetSaveLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetSaveLoad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSaveLoad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Through here the metabolite and reaction databases are loaded and saved.
 This script makes it possible to store databases in any path set in matlab.
 Missing for compartments, thats for later.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>output = rBioNetSaveLoad(mode,type,data)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>mode:      ‘save’ or ‘load’
-type:      ‘met’, ‘rxn’ or ‘comp’
-data:      data to save</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = rBioNetSaveLoad</strong> (<em>mode,type,data</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:    if ‘load’ then data else 1 if succes by save, 0 if empty or failed</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mode</strong> – ‘save’ or ‘load’</p></li>
+<li><p><strong>type</strong> – ‘met’, ‘rxn’ or ‘comp’</p></li>
+<li><p><strong>data</strong> – data to save</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – if ‘load’ then data else 1 if succes by save, 0 if empty or failed</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetSettings">
-<span class="sig-name descname"><span class="pre">rBioNetSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSettings" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rBioNetSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetSettings.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSettings" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for rBioNetSettings.fig
 rBioNetSettings, by itself, creates a new object or raises the existing
 singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = rBioNetSettings(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = rBioNetSettings</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1066,36 +1126,40 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNet_search">
-<span class="sig-name descname"><span class="pre">rBioNet_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">table</span></em>, <em class="sig-param"><span class="pre">column</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">exact</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rBioNet_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">table</span></em>, <em class="sig-param"><span class="pre">column</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">exact</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNet_search.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs simple searches in rBioNet tables.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>output = rBioNet_search(table, column, str, exact)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>table:       Table or model
-Column:      number
-String:      search phrase
-Exact match: true or false</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = rBioNet_search</strong> (<em>table, column, str, exact</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>output:   Array containing results.</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>table</strong> – Table or model</p></li>
+<li><p><strong>Column</strong> – number</p></li>
+<li><p><strong>String</strong> – search phrase</p></li>
+<li><p><strong>Exact match</strong> – true or false</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – Array containing results.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.sim_general">
-<span class="sig-name descname"><span class="pre">sim_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.sim_general" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sim_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/sim_general.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.sim_general" title="Permalink to this definition">¶</a></dt>
 <dd><p>MATLAB code for sim_general.fig
 sim_general, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = sim_general(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = sim_general</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1118,17 +1182,18 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.similarities">
-<span class="sig-name descname"><span class="pre">similarities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.similarities" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">similarities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/similarities.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarities" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for similarities.fig
 similarities, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = similarities(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = similarities</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1151,35 +1216,39 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.similarity">
-<span class="sig-name descname"><span class="pre">similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">bar</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">bar</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/similarity.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the reaction lines with similarities</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>reactions = similarity(formula,data,bar)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>formula:    reaction formula
-data:       reaction list
-bar:        <cite>waitbar</cite> exists then 1, else 0, default 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>reactions = similarity</strong> (<em>formula,data,bar</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>reactions:   numbers of rxn lines that share similarity</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>formula</strong> – reaction formula</p></li>
+<li><p><strong>data</strong> – reaction list</p></li>
+<li><p><strong>bar</strong> – <cite>waitbar</cite> exists then 1, else 0, default 1</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>reactions</strong> – numbers of rxn lines that share similarity</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.unbalanced">
-<span class="sig-name descname"><span class="pre">unbalanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.unbalanced" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unbalanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/unbalanced.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.unbalanced" title="Permalink to this definition">¶</a></dt>
 <dd><p>m-file for unbalanced.fig
 unbalanced, by itself, creates a new object or raises the existing singleton*.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>varargout = unbalanced(varargin)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>varargin:    various input arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = unbalanced</strong> (<em>varargin</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>varargout:   various output arguments</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1202,32 +1271,37 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.webDatabases">
-<span class="sig-name descname"><span class="pre">webDatabases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">db</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">webDatabases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">db</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">type</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to major databases.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>webDatabases(db, str, type)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>db:      database = {‘kegg’, ‘ec’, ‘pubchem’, ‘chebi’, ‘hmdb’}
-str:     ID of metabolite / reaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>webDatabases</strong> (<em>db, str, type</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><p>type:    1 if reaction, 0 for metabolite (only used for the KEGG database.</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>db</strong> – database = {‘kegg’, ‘ec’, ‘pubchem’, ‘chebi’, ‘hmdb’}</p></li>
+<li><p><strong>str</strong> – ID of metabolite / reaction</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>type</strong> – 1 if reaction, 0 for metabolite (only used for the KEGG database.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.webKeggMapper">
-<span class="sig-name descname"><span class="pre">webKeggMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em>, <em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">webKeggMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em>, <em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webKeggMapper.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to kegg mapper.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>webKeggMapper(id,str)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>id:    Either ‘ec’ or ‘kegg’
-str:   ID of themetabolite / reaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>webKeggMapper</strong> (<em>id,str</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>id</strong> – Either ‘ec’ or ‘kegg’</p></li>
+<li><p><strong>str</strong> – ID of themetabolite / reaction</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1244,10 +1318,10 @@ str:   ID of themetabolite / reaction</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../refinement/index.html" class="btn btn-default float-right" title="Refinement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="gui/index.html" class="btn btn-default float-right" title="Gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../modelGeneration/stoichConsistency/index.html" class="btn btn-default" title="stoichConsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modelGeneration/massBalance/index.html" class="btn btn-default" title="Massbalance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1285,6 +1359,9 @@ str:   ID of themetabolite / reaction</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

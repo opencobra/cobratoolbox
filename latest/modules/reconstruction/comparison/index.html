@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="modelBorgifier" href="modelBorgifier/index.html"/>
-        <link rel="prev" title="Reconstruction" href="../index.html"/> 
+        <link rel="next" title="Modelborgifier" href="modelBorgifier/index.html"/>
+        <link rel="prev" title="Auxillaryfiles" href="../fastGapFill/AuxillaryFiles/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,18 +160,20 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Comparison</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modelBorgifier/index.html">modelBorgifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modelBorgifier/index.html">Modelborgifier</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">growthExpMatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -184,6 +188,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -220,15 +225,18 @@
            <div itemprop="articleBody">
             
   <section id="comparison">
-<h1>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modelBorgifier/index.html">modelBorgifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelBorgifier/index.html">Modelborgifier</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modelBorgifier/gui/index.html">Gui</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <span class="target" id="module-src.reconstruction.comparison"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.comparison.compareModels">
-<span class="sig-name descname"><span class="pre">compareModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.comparison.compareModels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/compareModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.compareModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>compares modelA with modelB, looking for differences between the
 structures</p>
 <blockquote>
@@ -241,9 +249,9 @@ isSameModel:   true if identical models, false otherwise
 differences:   structure listing differences between models</p>
 <blockquote>
 <div><dl class="simple">
-<dt><a href="#id1"><span class="problematic" id="id2">*</span></a>.reason: gives a text stack of why the difference occurred</dt><dd><p>as well as a field</p>
+<dt><a href="#id2"><span class="problematic" id="id3">*</span></a>.reason: gives a text stack of why the difference occurred</dt><dd><p>as well as a field</p>
 </dd>
-<dt><a href="#id3"><span class="problematic" id="id4">*</span></a>.where: contains the indices and subfields of the structure</dt><dd><p>where the comparison failed.</p>
+<dt><a href="#id4"><span class="problematic" id="id5">*</span></a>.where: contains the indices and subfields of the structure</dt><dd><p>where the comparison failed.</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -263,10 +271,10 @@ differences:   structure listing differences between models</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modelBorgifier/index.html" class="btn btn-default float-right" title="modelBorgifier" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="modelBorgifier/index.html" class="btn btn-default float-right" title="Modelborgifier" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Reconstruction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../fastGapFill/AuxillaryFiles/index.html" class="btn btn-default" title="Auxillaryfiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -304,6 +312,9 @@ differences:   structure listing differences between models</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

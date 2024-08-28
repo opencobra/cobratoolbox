@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>modelVerification &mdash; The COBRA Toolbox</title>
+  <title>Modelverification &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
-        <link rel="up" title="modelGeneration" href="../index.html"/>
-        <link rel="next" title="stoichConsistency" href="../stoichConsistency/index.html"/>
-        <link rel="prev" title="basicPhysicochemicalData" href="../massBalance/basicPhysicochemicalData/index.html"/> 
+        <link rel="up" title="Modelgeneration" href="../index.html"/>
+        <link rel="next" title="Stoichconsistency" href="../stoichConsistency/index.html"/>
+        <link rel="prev" title="Modelproperties" href="../modelProperties/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,21 +160,24 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">growthExpMatch</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">modelGeneration</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">fluxConsistency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">massBalance</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">modelVerification</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">stoichConsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelverification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">rBioNet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -187,6 +192,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -213,8 +219,8 @@
       <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">modelGeneration</a></li>
-      <li class="breadcrumb-item active">modelVerification</li>
+          <li class="breadcrumb-item"><a href="../index.html">Modelgeneration</a></li>
+      <li class="breadcrumb-item active">Modelverification</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -224,70 +230,71 @@
            <div itemprop="articleBody">
             
   <section id="modelverification">
-<span id="id1"></span><h1>modelVerification<a class="headerlink" href="#modelverification" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Modelverification<a class="headerlink" href="#modelverification" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.reconstruction.modelGeneration.modelVerification"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelVerification.checkDatabaseIDs">
-<span class="sig-name descname"><span class="pre">checkDatabaseIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">results</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.checkDatabaseIDs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">checkDatabaseIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">results</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelVerification/checkDatabaseIDs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.checkDatabaseIDs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the model for validity of database identifiers</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>results = checkDatabaseIDs(model,results)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>model:       a structure that represents the COBRA model.
-results:     the results structure for this test</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>results = checkDatabaseIDs</strong> (<em>model,results</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – a structure that represents the COBRA model.</p></li>
+<li><p><strong>results</strong> – the results structure for this test</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>results</strong> – a struct with problematic database ids added.</p>
 </dd>
 </dl>
-<p>OUTPUT:</p>
-<blockquote>
-<div><p>results:     a struct with problematic database ids added.</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelVerification.checkPresentFields">
-<span class="sig-name descname"><span class="pre">checkPresentFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldProperties</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">results</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.checkPresentFields" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">checkPresentFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldProperties</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">results</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.checkPresentFields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the model fields for consistency with the given fieldProperties and
 update the results struct.
 The desired properties of each field are described here:
 <a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md</a>
 And computationally defined here: ‘COBRA_structure_fields.tab’</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>results = checkPresentFields(fieldProperties,model, results)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><dl class="simple">
-<dt>fieldProperties:  field properties as obtained by</dt><dd><p>getDefinedFieldProperties</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>results = checkPresentFields</strong> (<em>fieldProperties,model, results</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldProperties</strong> – field properties as obtained by
+getDefinedFieldProperties</p></li>
+<li><p><strong>model</strong> – a structure that represents the COBRA model.</p></li>
+<li><p><strong>results</strong> – the results structure for this test</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>results</strong> – The updated results struct.</p>
 </dd>
 </dl>
-<p>model:            a structure that represents the COBRA model.
-results:          the results structure for this test</p>
-</dd>
-</dl>
-<p>OUTPUT:</p>
-<blockquote>
-<div><p>results:          The updated results struct.</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelVerification.verifyModel">
-<span class="sig-name descname"><span class="pre">verifyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verifyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelVerification/verifyModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks the model for consistency with the COBRA Toolbox</p>
 <p>A list of fields of a COBRA structure is described in
 <a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md</a>
 and defined computationally in:
 src/base/io/definitions/COBRA_structure_fields.tab</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>results = verifyModel(model, varargin)</p>
-</div></blockquote>
-<dl>
-<dt>INPUT:</dt><dd><p>model:       a structure that represents the COBRA model.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>results = verifyModel</strong> (<em>model, varargin</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><dl>
-<dt>varargin:    varargin describes the additional checks (except the</dt><dd><p>basic check whether a models fields adhere to the field
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – a structure that represents the COBRA model.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – varargin describes the additional checks (except the
+basic check whether a models fields adhere to the field
 definitions. They are to be provided as ParameterName,
 Value pairs (e.g. verifyModel(model, ‘massBalance’, true)
 Options are:</p>
@@ -307,19 +314,14 @@ Options are:</p>
 </ul>
 </div></blockquote>
 </dd>
-</dl>
-</dd>
-</dl>
-<p>OUTPUT:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>results:     a struct containing fields for each requested option and an</dt><dd><p>additional field <cite>Errors</cite> indicating the problems with the
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>results</strong> – a struct containing fields for each requested option and an
+additional field <cite>Errors</cite> indicating the problems with the
 model structure detected by the <cite>verifyModel</cite> function.
 Results of additional options are returned in fields with
 the respective names.</p>
 </dd>
 </dl>
-</div></blockquote>
 <p class="rubric">Examples</p>
 <p>1) Do a simple Field check with the default required fields.
 results = verifyModel(model,’simpleCheck’, true)
@@ -333,16 +335,15 @@ results = verifyModel(model,’simpleCheck’, true,’requiredFields’,{‘S,�
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelVerification.verifyRuleSyntax">
-<span class="sig-name descname"><span class="pre">verifyRuleSyntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ruleString</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyRuleSyntax" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verifyRuleSyntax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ruleString</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelVerification/verifyRuleSyntax.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelVerification.verifyRuleSyntax" title="Permalink to this definition">¶</a></dt>
 <dd><p>try to verify if a given rule string is syntactically correct
-USAGE:</p>
-<blockquote>
-<div><p>tf = verifyRuleSyntax(ruleString)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><p>ruleString:    The string in rule format (i.e. x(1) | x(2) &amp; x(3) …)</p>
+:USAGE: <strong>tf = verifyRuleSyntax</strong> (<em>ruleString</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>ruleString</strong> – The string in rule format (i.e. x(1) | x(2) &amp; x(3) …)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><p>tf:            Whether the given string is evaluateable (i.e. the syntax is correct)</p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>tf</strong> – Whether the given string is evaluateable (i.e. the syntax is correct)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,10 +360,10 @@ USAGE:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../stoichConsistency/index.html" class="btn btn-default float-right" title="stoichConsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../stoichConsistency/index.html" class="btn btn-default float-right" title="Stoichconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../massBalance/basicPhysicochemicalData/index.html" class="btn btn-default" title="basicPhysicochemicalData" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modelProperties/index.html" class="btn btn-default" title="Modelproperties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -400,6 +401,9 @@ USAGE:</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

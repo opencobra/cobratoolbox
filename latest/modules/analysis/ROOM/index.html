@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ROOM &mdash; The COBRA Toolbox</title>
+  <title>Room &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
-        <link rel="next" title="rumba" href="../rumba/index.html"/>
-        <link rel="prev" title="robustnessAnalysis" href="../robustnessAnalysis/index.html"/> 
+        <link rel="next" title="Relaxedfba" href="../relaxedFBA/index.html"/>
+        <link rel="prev" title="Rmta" href="../rMTA/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -157,38 +159,50 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">ROOM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT2/index.html">Lt2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GT1/index.html">Gt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LT1/index.html">Lt1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filterNonFluxReactions/index.html">Filternonfluxreactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findUpDownRegulatedGenes/index.html">Findupdownregulatedgenes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -203,6 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -229,7 +244,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
-      <li class="breadcrumb-item active">ROOM</li>
+      <li class="breadcrumb-item active">Room</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -239,34 +254,38 @@
            <div itemprop="articleBody">
             
   <section id="room">
-<span id="id1"></span><h1>ROOM<a class="headerlink" href="#room" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Room<a class="headerlink" href="#room" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.analysis.ROOM"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.ROOM.ROOM">
-<span class="sig-name descname"><span class="pre">ROOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fluxWT</span></em>, <em class="sig-param"><span class="pre">rxnKO</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.ROOM.ROOM" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ROOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fluxWT</span></em>, <em class="sig-param"><span class="pre">rxnKO</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/ROOM/ROOM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.ROOM.ROOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a MILP version of the ROOM (Regulatory on/off minimization of
 metabolic flux changes) approach</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, WTflux, rxnKO, delta, epsilon, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:            Metabolic model
-fluxWT:           Numeric array with flux distribution of wild type
-rxnKO:            List of perturbations performed to the model</p>
-<blockquote>
-<div><p>(reactions that are eliminated)</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[fluxROOM, solutionROOM, totalFluxDiff] = ROOM</strong> (<em>model, WTflux, rxnKO, delta, epsilon, printLevel</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>delta:            Multiplicative tol for flux change (Default = 0.03)
-epsilon:          Additive tolerance for flux change (Default = 0.001)
-printLevel:       Verbose output (Default = 1)</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model</p></li>
+<li><p><strong>fluxWT</strong> – Numeric array with flux distribution of wild type</p></li>
+<li><p><strong>rxnKO</strong> – List of perturbations performed to the model
+(reactions that are eliminated)</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>fluxROOM:         Flux distribution after ROOM calculation
-solutionROOM:     Solution structure
-totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></p>
-</div></blockquote>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> – Multiplicative tol for flux change (Default = 0.03)</p></li>
+<li><p><strong>epsilon</strong> – Additive tolerance for flux change (Default = 0.001)</p></li>
+<li><p><strong>printLevel</strong> – Verbose output (Default = 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fluxROOM</strong> – Flux distribution after ROOM calculation</p></li>
+<li><p><strong>solutionROOM</strong> – Solution structure</p></li>
+<li><p><strong>totalFluxDiff</strong> – Euclidean distance of ROOM objective, i.e.
+<span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></p></li>
+</ul>
 </dd>
 </dl>
 <p>Solve the following problem:</p>
@@ -291,31 +310,35 @@ totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.ROOM.linearROOM">
-<span class="sig-name descname"><span class="pre">linearROOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fluxWT</span></em>, <em class="sig-param"><span class="pre">rxnKO</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.ROOM.linearROOM" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">linearROOM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fluxWT</span></em>, <em class="sig-param"><span class="pre">rxnKO</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/ROOM/linearROOM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.ROOM.linearROOM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a LP version of the ROOM (Regulatory on/off minimization of
 metabolic flux changes) approach</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[fluxROOM, solutionROOM, totalFluxDiff] = linearROOM(model, WTflux, rxnKO, delta, epsilon, printLevel)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:            Metabolic model
-fluxWT:           Numeric array with flux distribution of wild type
-rxnKO:            List of perturbations performed to the model</p>
-<blockquote>
-<div><p>(reactions that are eliminated)</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[fluxROOM, solutionROOM, totalFluxDiff] = linearROOM</strong> (<em>model, WTflux, rxnKO, delta, epsilon, printLevel</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><p>delta:            Multiplicative tol for flux change (Default = 0.03)
-epsilon:          Additive tolerance for flux change (Default = 0.001)
-printLevel:       Verbose output (Default = 1)</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model</p></li>
+<li><p><strong>fluxWT</strong> – Numeric array with flux distribution of wild type</p></li>
+<li><p><strong>rxnKO</strong> – List of perturbations performed to the model
+(reactions that are eliminated)</p></li>
+</ul>
 </dd>
-<dt>OUTPUTS:</dt><dd><p>fluxROOM:         Flux distribution after ROOM calculation
-solutionROOM:     Solution structure
-totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></p>
-</div></blockquote>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta</strong> – Multiplicative tol for flux change (Default = 0.03)</p></li>
+<li><p><strong>epsilon</strong> – Additive tolerance for flux change (Default = 0.001)</p></li>
+<li><p><strong>printLevel</strong> – Verbose output (Default = 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fluxROOM</strong> – Flux distribution after ROOM calculation</p></li>
+<li><p><strong>solutionROOM</strong> – Solution structure</p></li>
+<li><p><strong>totalFluxDiff</strong> – Euclidean distance of ROOM objective, i.e.
+<span class="math notranslate nohighlight">\(\sum (v_{wt}-v_{del})^2\)</span></p></li>
+</ul>
 </dd>
 </dl>
 <p>Solve the following problem:</p>
@@ -350,10 +373,10 @@ totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rumba/index.html" class="btn btn-default float-right" title="rumba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../relaxedFBA/index.html" class="btn btn-default float-right" title="Relaxedfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../robustnessAnalysis/index.html" class="btn btn-default" title="robustnessAnalysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rMTA/index.html" class="btn btn-default" title="Rmta" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -391,6 +414,9 @@ totalFluxDiff:    Euclidean distance of ROOM objective, i.e.</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

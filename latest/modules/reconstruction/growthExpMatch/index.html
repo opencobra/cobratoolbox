@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>growthExpMatch &mdash; The COBRA Toolbox</title>
+  <title>Growthexpmatch &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="modelGeneration" href="../modelGeneration/index.html"/>
-        <link rel="prev" title="AuxillaryFiles" href="../fastGapFill/AuxillaryFiles/index.html"/> 
+        <link rel="next" title="Modelgeneration" href="../modelGeneration/index.html"/>
+        <link rel="prev" title="Gui" href="../comparison/modelBorgifier/gui/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,15 +160,17 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">fastGapFill</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">growthExpMatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">modelGeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">rBioNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -181,6 +185,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -207,7 +212,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Reconstruction</a></li>
-      <li class="breadcrumb-item active">growthExpMatch</li>
+      <li class="breadcrumb-item active">Growthexpmatch</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -217,48 +222,44 @@
            <div itemprop="articleBody">
             
   <section id="growthexpmatch">
-<span id="id1"></span><h1>growthExpMatch<a class="headerlink" href="#growthexpmatch" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Growthexpmatch<a class="headerlink" href="#growthexpmatch" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.reconstruction.growthExpMatch"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.growthExpMatch.growthExpMatch">
-<span class="sig-name descname"><span class="pre">growthExpMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">iterations</span></em>, <em class="sig-param"><span class="pre">dictionary</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">growthExpMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">iterations</span></em>, <em class="sig-param"><span class="pre">dictionary</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/growthExpMatch/growthExpMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the <cite>growthExpMatch</cite> algorithm</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[solution] = growthExpMatch(model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:           COBRA model structure
-KEGGFilename:    File name containing Kegg database (.lst file with list of</p>
-<blockquote>
-<div><p>reactions: each listing is reaction name followed by colon
-followed by the reaction formula)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>compartment:     [c] –&gt; transport from cytoplasm [c] to extracellulat space</dt><dd><p>[e] (default), [p] creates transport from [c] to [p]
-and from [p] to [c]</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solution] = growthExpMatch</strong> (<em>model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList</em>)</p>
 </dd>
-</dl>
-<p>iterations:      Number of iterations to run
-dictionary:      <cite>n</cite> x 2 cell array of metabolites names for conversion from</p>
-<blockquote>
-<div><p>Kegg ID’s to the compound abbreviations from BiGG database
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>KEGGFilename</strong> – File name containing Kegg database (.lst file with list of
+reactions: each listing is reaction name followed by colon
+followed by the reaction formula)</p></li>
+<li><p><strong>compartment</strong> – [c] –&gt; transport from cytoplasm [c] to extracellulat space
+[e] (default), [p] creates transport from [c] to [p]
+and from [p] to [c]</p></li>
+<li><p><strong>iterations</strong> – Number of iterations to run</p></li>
+<li><p><strong>dictionary</strong> – <cite>n</cite> x 2 cell array of metabolites names for conversion from
+Kegg ID’s to the compound abbreviations from BiGG database
 (1st column is compound abb. (non-compartmenalized) and
-2nd column is Kegg ID) Both columns are the same length.</p>
-</div></blockquote>
+2nd column is Kegg ID) Both columns are the same length.</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>logFile:         solution is printed in this file (name of reaction added and</dt><dd><p>flux of that particular reaction) (Default = GEMLog.txt)</p>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logFile</strong> – solution is printed in this file (name of reaction added and
+flux of that particular reaction) (Default = GEMLog.txt)</p></li>
+<li><p><strong>threshold</strong> – threshold number for biomass reaction; model is considered
+to be growing when the flux of the biomass reaction is
+above threshold. (Default = 0.05)</p></li>
+</ul>
 </dd>
-<dt>threshold:       threshold number for biomass reaction; model is considered</dt><dd><p>to be growing when the flux of the biomass reaction is
-above threshold. (Default = 0.05)</p>
-</dd>
-</dl>
-</dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>solution:        MILP solution that consists of the continuous solution, integer</dt><dd><p>solution, objective value, stat, full solution, and
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – MILP solution that consists of the continuous solution, integer
+solution, objective value, stat, full solution, and
 imported reactions</p>
-</dd>
-</dl>
 </dd>
 </dl>
 <div class="admonition note">
@@ -280,24 +281,22 @@ generateSUXMatrix(model, dictionary, KEGGFilename, compartment)</cite></p></li>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.growthExpMatch.printSolutionGEM">
-<span class="sig-name descname"><span class="pre">printSolutionGEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">itNum</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printSolutionGEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">itNum</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays the solution for <cite>growthExpMatch</cite> iterations</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>printSolutionGEM(MatricesSUX, solution, logFile, itNum)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>MatricesSUX:    SUX Matrix
-solution:       MILP solution that consists of the continuous solution, integer</p>
-<blockquote>
-<div><p>solution, objective value, stat, full solution, and
-imported reactions</p>
-</div></blockquote>
-<dl class="simple">
-<dt>logFile:        solution is printed in this file (name of reaction added and</dt><dd><p>flux of that particular reaction) (Default = GEMLog.txt)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>printSolutionGEM</strong> (<em>MatricesSUX, solution, logFile, itNum</em>)</p>
 </dd>
-</dl>
-<p>itNum:          number of iterations</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>MatricesSUX</strong> – SUX Matrix</p></li>
+<li><p><strong>solution</strong> – MILP solution that consists of the continuous solution, integer
+solution, objective value, stat, full solution, and
+imported reactions</p></li>
+<li><p><strong>logFile</strong> – solution is printed in this file (name of reaction added and
+flux of that particular reaction) (Default = GEMLog.txt)</p></li>
+<li><p><strong>itNum</strong> – number of iterations</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -314,10 +313,10 @@ imported reactions</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../modelGeneration/index.html" class="btn btn-default float-right" title="modelGeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../modelGeneration/index.html" class="btn btn-default float-right" title="Modelgeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../fastGapFill/AuxillaryFiles/index.html" class="btn btn-default" title="AuxillaryFiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../comparison/modelBorgifier/gui/index.html" class="btn btn-default" title="Gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -355,6 +354,9 @@ imported reactions</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ChemoInformatics &mdash; The COBRA Toolbox</title>
+  <title>Chemoinformatics &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,15 +62,17 @@
   
     <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
-        <link rel="up" title="Data integration" href="../index.html"/>
-        <link rel="next" title="Fluxomics" href="../fluxomics/index.html"/>
-        <link rel="prev" title="Data integration" href="../index.html"/> 
+        <link rel="up" title="Dataintegration" href="../index.html"/>
+        <link rel="next" title="Inchi" href="inchi/index.html"/>
+        <link rel="prev" title="Imat" href="../transcriptomics/iMAT/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -158,11 +160,22 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Data integration</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">ChemoInformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Chemoinformatics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelCreation/index.html">Modelcreation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../inactiveGeneDeletion/index.html">Inactivegenedeletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -179,6 +192,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -204,8 +218,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Data integration</a></li>
-      <li class="breadcrumb-item active">ChemoInformatics</li>
+          <li class="breadcrumb-item"><a href="../index.html">Dataintegration</a></li>
+      <li class="breadcrumb-item active">Chemoinformatics</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -215,10 +229,25 @@
            <div itemprop="articleBody">
             
   <section id="chemoinformatics">
-<span id="id1"></span><h1>ChemoInformatics<a class="headerlink" href="#chemoinformatics" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Chemoinformatics<a class="headerlink" href="#chemoinformatics" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molecularWeight/basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RXN/index.html">Rxn</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RXN/old/index.html">Old</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
+</ul>
+</div>
 <span class="target" id="module-src.dataIntegration.chemoInformatics"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.atomicallyResolveModel">
-<span class="sig-name descname"><span class="pre">atomicallyResolveModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.atomicallyResolveModel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">atomicallyResolveModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/atomicallyResolveModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.atomicallyResolveModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>1. Takes a standard COBRA model as input, annotates the metabolites with information on metabolite identifers (e.g. InChIKey) and then metabolite
 compares the identifiers and saves the most consistent identifiers in MDL MOL format, representing the structure of each metabolite, as well as
 the InChI, SMILES and images of each metabolite structure also (if ChemAxon cxcalc and openBabel are installed).</p>
@@ -245,31 +274,25 @@ A := incidence(dATM);</p>
 </dd>
 </dl>
 <p>so we have the atomic decomposition M2Ai*M2Ai’<a href="#id2"><span class="problematic" id="id3">*</span></a>N = M2Ai*A*Ti2R</p>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>model:      COBRA model with following fields:</dt><dd><ul class="simple">
-<li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
-<li><p>.rxns - An n x 1 array of reaction identifiers.</p></li>
-<li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:
+* .S - The m x n stoichiometric matrix for the metabolic network.
+* .rxns - An n x 1 array of reaction identifiers.
+* .mets - An m x 1 array of metabolite identifiers.</p>
 </dd>
-</dl>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>model:      COBRA model with following fields:</dt><dd><ul class="simple">
-<li><p>.metFormulas - An m x 1 array of metabolite chemical formulas.</p></li>
-<li><p>.metinchi - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metsmiles - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metKEGG - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metHMDB - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metPubChem - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metCHEBI - An m x 1 array of metabolite identifiers.</p></li>
-</ul>
-</dd>
-</dl>
-<p>param:  A structure containing all the arguments for the function:</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:
+* .metFormulas - An m x 1 array of metabolite chemical formulas.
+* .metinchi - An m x 1 array of metabolite identifiers.
+* .metsmiles - An m x 1 array of metabolite identifiers.
+* .metKEGG - An m x 1 array of metabolite identifiers.
+* .metHMDB - An m x 1 array of metabolite identifiers.
+* .metPubChem - An m x 1 array of metabolite identifiers.
+* .metCHEBI - An m x 1 array of metabolite identifiers.</p></li>
+<li><p><strong>param</strong> – A structure containing all the arguments for the function:</p>
+<ul>
 <li><p>.printlevel: Verbose level</p></li>
 <li><p>.debug: Logical value used to determine whether or not the results  of different points in the function will be saved for debugging (default: empty).</p></li>
 <li><dl class="simple">
@@ -278,8 +301,11 @@ A := incidence(dATM);</p>
 </dl>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
+</dl>
+<dl>
 <dt>molecular structure file options</dt><dd><ul>
 <li><p>.metaboliteIDcrossMapping: True to cross map metabolite IDs using <a class="reference external" href="https://github.com/opencobra/ctf/metaboliteIDcrossMapping.txt">https://github.com/opencobra/ctf/metaboliteIDcrossMapping.txt</a></p></li>
 <li><p>.replace:     True if the new ID should replace an existing ID (default: FALSE).</p></li>
@@ -359,25 +385,24 @@ arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or mor
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.checkChemoinformaticDependencies">
-<span class="sig-name descname"><span class="pre">checkChemoinformaticDependencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.checkChemoinformaticDependencies" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">checkChemoinformaticDependencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.checkChemoinformaticDependencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>check chemoinformatic dependencies</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.deleteProtons">
-<span class="sig-name descname"><span class="pre">deleteProtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.deleteProtons" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteProtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/deleteProtons.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.deleteProtons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to delete the protons in the metabolic network</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>newModel = deleteProtons(model)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>model:         COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newModel = deleteProtons</strong> (<em>model</em>)</p>
 </dd>
-<dt>OUTPUTS:</dt><dd><dl class="simple">
-<dt>newModel:      COBRA model without protons nor protons trasport</dt><dd><p>reactions.</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model.</p>
 </dd>
-</dl>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>newModel</strong> – COBRA model without protons nor protons trasport
+reactions.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -386,35 +411,35 @@ arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or mor
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.editChemicalFormula">
-<span class="sig-name descname"><span class="pre">editChemicalFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metFormula</span></em>, <em class="sig-param"><span class="pre">addOrRemove</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.editChemicalFormula" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">editChemicalFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metFormula</span></em>, <em class="sig-param"><span class="pre">addOrRemove</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/editChemicalFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.editChemicalFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes non-chemical characters from the chemical formula and replaces
 them with a R group. Produces a chemical formula from a string of atoms.
 Removes or add atoms in the formula.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[metFormula] = cobraFormulaToChemFormula(metReconFormula)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>metReconFormula:   An n x 1 array of metabolite Recon formulas</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[metFormula] = cobraFormulaToChemFormula</strong> (<em>metReconFormula</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl>
-<dt>addOrRemove:          A struct array containing:</dt><dd><p><a href="#id4"><span class="problematic" id="id5">*</span></a>.elements - element to edit
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>metReconFormula</strong> – An n x 1 array of metabolite Recon formulas</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>addOrRemove</strong> – A struct array containing:
+<a href="#id4"><span class="problematic" id="id5">*</span></a>.elements - element to edit
 <a href="#id6"><span class="problematic" id="id7">*</span></a>.times - vector indicated the times the</p>
 <blockquote>
 <div><p>element will be deleted (negative) or
 added (positive)</p>
 </div></blockquote>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUTS:</dt><dd><p>newFormula: A chemical formula for a metabolite</p>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>newFormula</strong> – A chemical formula for a metabolite</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.generateChemicalDatabase">
-<span class="sig-name descname"><span class="pre">generateChemicalDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.generateChemicalDatabase" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generateChemicalDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/generateChemicalDatabase.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.generateChemicalDatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function uses the metabolite identifiers in the model to compare
 them and save the identifiers with the best score in MDL MOL format
 and/or inchi and simles and jpeg if it’s installed cxcalc and openBabel.
@@ -423,14 +448,14 @@ RXN files that represent a metabolic reaction and can only be written if
 there is a MDL MOL file for each metabolite in a metabolic reaction.
 If JAVA is installed, it also atom maps the metabolic reactions
 with an MDL RXN file.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[info, modelOut] = generateChemicalDatabase(model, options)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>model:      COBRA model with following fields:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[info, modelOut] = generateChemicalDatabase</strong> (<em>model, options</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul class="simple">
 <li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
 <li><p>.rxns - An n x 1 array of reaction identifiers.</p></li>
 <li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
@@ -442,10 +467,9 @@ with an MDL RXN file.</p>
 <li><p>.metPubChem - An m x 1 array of metabolite identifiers.</p></li>
 <li><p>.metCHEBI - An m x 1 array of metabolite identifiers.</p></li>
 </ul>
-</div></blockquote>
-<p>options:  A structure containing all the arguments for the function:</p>
-<blockquote>
-<div><ul>
+</li>
+<li><p><strong>options</strong> – A structure containing all the arguments for the function:</p>
+<ul>
 <li><dl class="simple">
 <dt>.resultsDir: The path to the directory containing the RXN files</dt><dd><p>with atom mappings (default: current directory)</p>
 </dd>
@@ -489,7 +513,8 @@ debugging (default: empty).</p>
 </dl>
 </li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 <p>OUTPUTS:
@@ -594,26 +619,25 @@ since another structure was missing.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.openBabelConverter">
-<span class="sig-name descname"><span class="pre">openBabelConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">origFormat</span></em>, <em class="sig-param"><span class="pre">outputFormat</span></em>, <em class="sig-param"><span class="pre">saveFileDir</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.dataIntegration.chemoInformatics.openBabelConverter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">openBabelConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">origFormat</span></em>, <em class="sig-param"><span class="pre">outputFormat</span></em>, <em class="sig-param"><span class="pre">saveFileDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/openBabelConverter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.openBabelConverter" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function converts chemoformatic formats using OpenBabel. It requires
 to have openbabel installed. The formats that can be converted are used
 MDL MOL, SMILES, InChI, InChIKey, MDL RXN, reaction SMILES and rInChI.</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>newStructure = openBabelConverter(origFormat, outputFormat, saveFile)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUT:</dt><dd><dl class="simple">
-<dt>origFormat:    Original chemoinformatic format. Chemical tables such</dt><dd><p>as MDL MOL or MDL RXN must be provided as files</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newStructure = openBabelConverter</strong> (<em>origFormat, outputFormat, saveFile</em>)</p>
 </dd>
-<dt>outputFormat:  The format to be converted. Formats supported: smiles,</dt><dd><p>mol, inchi, inchikey, rxn and rinchi.</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>origFormat</strong> – Original chemoinformatic format. Chemical tables such
+as MDL MOL or MDL RXN must be provided as files</p></li>
+<li><p><strong>outputFormat</strong> – The format to be converted. Formats supported: smiles,
+mol, inchi, inchikey, rxn and rinchi.</p></li>
+</ul>
 </dd>
-</dl>
-</dd>
-<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
-<dt>saveFileDir:        String with the directory where the new format will be</dt><dd><p>saved. If is empty, the format is not saved.</p>
-</dd>
-</dl>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>saveFileDir</strong> – String with the directory where the new format will be
+saved. If is empty, the format is not saved.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -643,10 +667,10 @@ newFormat = openBabelConverter(origFormat, outputFormat);</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../fluxomics/index.html" class="btn btn-default float-right" title="Fluxomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="inchi/index.html" class="btn btn-default float-right" title="Inchi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Data integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../transcriptomics/iMAT/index.html" class="btn btn-default" title="Imat" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -684,6 +708,9 @@ newFormat = openBabelConverter(origFormat, outputFormat);</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

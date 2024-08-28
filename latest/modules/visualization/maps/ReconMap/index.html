@@ -5,11 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ReconMaps &mdash; The COBRA Toolbox</title>
+  <title>Reconmap &mdash; The COBRA Toolbox</title>
   
 
   
@@ -62,6 +62,8 @@
   
     <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../../../_static/tabs.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -69,7 +71,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Maps" href="../index.html"/>
-        <link rel="next" title="MetabolicCartography" href="../../metabolicCartography/index.html"/>
+        <link rel="next" title="Efmviz" href="../../efmviz/index.html"/>
         <link rel="prev" title="Maps" href="../index.html"/> 
 
   
@@ -158,17 +160,24 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">cellDesigner</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Maps</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">ReconMaps</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Reconmap</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">MetabolicCartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../visualizeEpistasis/index.html">visualizeEpistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../EscherMap/index.html">Eschermap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
 </ul>
 </li>
 </ul>
@@ -182,6 +191,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
 </ul>
 
           
@@ -209,7 +219,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Visualization</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Maps</a></li>
-      <li class="breadcrumb-item active">ReconMaps</li>
+      <li class="breadcrumb-item active">Reconmap</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -218,51 +228,50 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="reconmaps">
-<span id="id1"></span><h1>ReconMaps<a class="headerlink" href="#reconmaps" title="Permalink to this heading">¶</a></h1>
+  <section id="reconmap">
+<span id="id1"></span><h1>Reconmap<a class="headerlink" href="#reconmap" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.visualization.maps.ReconMap"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.buildFluxDistLayout">
-<span class="sig-name descname"><span class="pre">buildFluxDistLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">identifier</span></em>, <em class="sig-param"><span class="pre">hexColour</span></em>, <em class="sig-param"><span class="pre">maxThickness</span></em>, <em class="sig-param"><span class="pre">content</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">buildFluxDistLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">identifier</span></em>, <em class="sig-param"><span class="pre">hexColour</span></em>, <em class="sig-param"><span class="pre">maxThickness</span></em>, <em class="sig-param"><span class="pre">content</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/buildFluxDistLayout.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.buildFluxDistLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a layout for MINERVA from a flux distribution. If a dictionary
 of identifiers is not provided it is assumed that the map and the COBRA
 model’s nomenclature is coherent. Sends the layout to the remote MINERVA
 instance</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, thickness, content)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>minerva:           Struct with the information of minerva instance:</dt><dd><p>address, login, password and model (map)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[serverResponse] = buildFluxDistLayout</strong> (<em>minerva, model, solution, identifier, hexColour, thickness, content</em>)</p>
 </dd>
-</dl>
-<p>model:             COBRA model structure
-solution.v:        optimizeCb solution structure with a flux vector
-identifier:        Name for the layout in MINERVA</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minerva</strong> – Struct with the information of minerva instance:
+address, login, password and model (map)</p></li>
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>solution.v</strong> – optimizeCb solution structure with a flux vector</p></li>
+<li><p><strong>identifier</strong> – Name for the layout in MINERVA</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL INPUT:</dt><dd><dl class="simple">
-<dt>hexColour          colour of overlay (hex color format)</dt><dd><p>e.g. ‘#009933’ corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hexColour          colour of overlay</strong> (<em>hex color format</em>) – e.g. ‘#009933’ corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a>
 If you want to make a color gradient, you can input
 an array of 2 or 3 colors like [“#ff0000”, “#6617B5”, “#0000ff”]
 note that they should be declared with (”) rather
-than with (‘)</p>
+than with (‘)</p></li>
+<li><p><strong>maxThickness</strong> – maximum thickness</p></li>
+<li><p><strong>content</strong> – character array with the following format for each
+reaction to be displayed. Bypasses the use of solution.v to set the format.
+‘name%09reactionIdentifier%09lineWidth%09color%0D’</p></li>
+</ul>
 </dd>
-</dl>
-<p>maxThickness:      maximum thickness
-content:           character array with the following format for each</p>
-<blockquote>
-<div><p>reaction to be displayed. Bypasses the use of solution.v to set the format.
-‘name%09reactionIdentifier%09lineWidth%09color%0D’</p>
-</div></blockquote>
-</dd>
-<dt>OUTPUT:</dt><dd><p>serverResponse:          Response of the MINERVA</p>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>serverResponse</strong> – Response of the MINERVA</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.changeCbMapOutput">
-<span class="sig-name descname"><span class="pre">changeCbMapOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">outputFormat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.changeCbMapOutput" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">changeCbMapOutput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">outputFormat</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/changeCbMapOutput.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.changeCbMapOutput" title="Permalink to this definition">¶</a></dt>
 <dd><p>changeCbMapOutput sets the output format for drawCbMap. Displays
 outputFormat if no inputs provided.</p>
 <blockquote>
@@ -281,117 +290,113 @@ outputFormat if no inputs provided.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.generateSubsystemLayouts">
-<span class="sig-name descname"><span class="pre">generateSubsystemLayouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generateSubsystemLayouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/generateSubsystemLayouts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>generateSubsystemLayouts( minerva, cobra_model, color )</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>minerva:           Struct with the information of minerva instance:</dt><dd><p>address, login, password and model (map)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>generateSubsystemLayouts</strong> (<em>minerva, cobra_model, color</em>)</p>
 </dd>
-</dl>
-<p>cobra_model:       COBRA model structure
-color:             Color</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minerva</strong> – Struct with the information of minerva instance:
+address, login, password and model (map)</p></li>
+<li><p><strong>cobra_model</strong> – COBRA model structure</p></li>
+<li><p><strong>color</strong> – Color</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.generateSubsytemsLayout">
-<span class="sig-name descname"><span class="pre">generateSubsytemsLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">subsystem</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generateSubsytemsLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">subsystem</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/generateSubsytemsLayout.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>generateSubsytemsLayout(minerva, cobra_model, subsystem, color)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><dl class="simple">
-<dt>minerva:           Struct with the information of minerva instance:</dt><dd><p>address, login, password and model (map)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>generateSubsytemsLayout</strong> (<em>minerva, cobra_model, subsystem, color</em>)</p>
 </dd>
-</dl>
-<p>cobra_model:       COBRA model structure
-subsystem:         Subsystem
-color:             Color</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minerva</strong> – Struct with the information of minerva instance:
+address, login, password and model (map)</p></li>
+<li><p><strong>cobra_model</strong> – COBRA model structure</p></li>
+<li><p><strong>subsystem</strong> – Subsystem</p></li>
+<li><p><strong>color</strong> – Color</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.makeColorGradient">
-<span class="sig-name descname"><span class="pre">makeColorGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">col1</span></em>, <em class="sig-param"><span class="pre">col2</span></em>, <em class="sig-param"><span class="pre">ncol</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.makeColorGradient" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">makeColorGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">col1</span></em>, <em class="sig-param"><span class="pre">col2</span></em>, <em class="sig-param"><span class="pre">ncol</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/makeColorGradient.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.makeColorGradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a color gradient in hex format, based on color 1 and 2</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[cmap] = makeColorGradient(col1, col2, ncol)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>INPUTS:</dt><dd><p>col1:                      First color
-col2:                      Last color
-ncol:                      Number of colors in between</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[cmap] = makeColorGradient</strong> (<em>col1, col2, ncol</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>cmap:                      Color gradient map with the corresponding</dt><dd><p>colors in hex format</p>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>col1</strong> – First color</p></li>
+<li><p><strong>col2</strong> – Last color</p></li>
+<li><p><strong>ncol</strong> – Number of colors in between</p></li>
+</ul>
 </dd>
-</dl>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>cmap</strong> – Color gradient map with the corresponding
+colors in hex format</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.postMINERVArequest">
-<span class="sig-name descname"><span class="pre">postMINERVArequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">login</span></em>, <em class="sig-param"><span class="pre">password</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">googleLicenseContent</span></em>, <em class="sig-param"><span class="pre">identifier</span></em>, <em class="sig-param"><span class="pre">content</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">postMINERVArequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">login</span></em>, <em class="sig-param"><span class="pre">password</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">googleLicenseContent</span></em>, <em class="sig-param"><span class="pre">identifier</span></em>, <em class="sig-param"><span class="pre">content</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a new layout to a MINERVA instance</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>[response] = postMINERVArequest(minerva_servlet, login, password, map, identifier, content)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>minerva_servlet:           URL
-login:                     MINERVA username
-password:                  MINERVA password
-map:                       MINERVA map
-googleLicenseContent:      True if user agreed to Google Maps terms of</p>
-<blockquote>
-<div><p>use: <a class="reference external" href="https://cloud.google.com/maps-platform/terms/">https://cloud.google.com/maps-platform/terms/</a></p>
-</div></blockquote>
-<p>identifier:                Layout name
-content:                   Content of the layout</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[response] = postMINERVArequest</strong> (<em>minerva_servlet, login, password, map, identifier, content</em>)</p>
 </dd>
-<dt>OUTPUT:</dt><dd><dl class="simple">
-<dt>response:                  MINERVA’s response - cell array index 1 - 0/1</dt><dd><p>whether the overlay was successfully uploaded.
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>minerva_servlet</strong> – URL</p></li>
+<li><p><strong>login</strong> – MINERVA username</p></li>
+<li><p><strong>password</strong> – MINERVA password</p></li>
+<li><p><strong>map</strong> – MINERVA map</p></li>
+<li><p><strong>googleLicenseContent</strong> – True if user agreed to Google Maps terms of
+use: <a class="reference external" href="https://cloud.google.com/maps-platform/terms/">https://cloud.google.com/maps-platform/terms/</a></p></li>
+<li><p><strong>identifier</strong> – Layout name</p></li>
+<li><p><strong>content</strong> – Content of the layout</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>response</strong> – MINERVA’s response - cell array index 1 - 0/1
+whether the overlay was successfully uploaded.
 index 2 - success or error message</p>
-</dd>
-</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.maps.ReconMap.printInRecon3Dmap">
-<span class="sig-name descname"><span class="pre">printInRecon3Dmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">colorValues</span></em>, <em class="sig-param"><span class="pre">outputDir</span></em>, <em class="sig-param"><span class="pre">lineWidth</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.visualization.maps.ReconMap.printInRecon3Dmap" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">printInRecon3Dmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">colorValues</span></em>, <em class="sig-param"><span class="pre">outputDir</span></em>, <em class="sig-param"><span class="pre">lineWidth</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/printInRecon3Dmap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.printInRecon3Dmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function generates a TXT file that can be integrated in the VMH
 database (vmh.life) to overlay certain reactions</p>
-<p>USAGE:</p>
-<blockquote>
-<div><p>printInRecon3Dmap(rxnList, output, values)</p>
-</div></blockquote>
-<dl>
-<dt>INPUTS:</dt><dd><p>rxnList:                 List of rxn to be higligted
-colorValues:             Numerical value for each reaction (to assign</p>
-<blockquote>
-<div><p>different colors (default: 0</p>
-</div></blockquote>
-<dl class="simple">
-<dt>outputDir:               Directory where the file will be created</dt><dd><p>(default: current directory)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>printInRecon3Dmap</strong> (<em>rxnList, output, values</em>)</p>
 </dd>
-</dl>
-<p>lineWidth:               Numerical value of line width to set. default=8
-fileName:                File name prefix for the output file. Should be a char array.</p>
-<blockquote>
-<div><p>default is ‘C__fakepath_data4ReconMap3_’.</p>
-</div></blockquote>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnList</strong> – List of rxn to be higligted</p></li>
+<li><p><strong>colorValues</strong> – Numerical value for each reaction (to assign
+different colors (default: 0</p></li>
+<li><p><strong>outputDir</strong> – Directory where the file will be created
+(default: current directory)</p></li>
+<li><p><strong>lineWidth</strong> – Numerical value of line width to set. default=8</p></li>
+<li><p><strong>fileName</strong> – File name prefix for the output file. Should be a char array.
+default is ‘C__fakepath_data4ReconMap3_’.</p></li>
+</ul>
 </dd>
 </dl>
 <p>OUTPUTS</p>
@@ -412,7 +417,7 @@ fileName:                File name prefix for the output file. Should be a char 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metabolicCartography/index.html" class="btn btn-default float-right" title="MetabolicCartography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../efmviz/index.html" class="btn btn-default float-right" title="Efmviz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -453,6 +458,9 @@ fileName:                File name prefix for the output file. Should be a char 
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 
