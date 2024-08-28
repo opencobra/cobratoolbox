@@ -1,7 +1,10 @@
 name: Update Contributors list
 
 on:
-  workflow_dispatch:
+  pull_request_target:
+    types:
+      - closed
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
       working-directory: ./docs/source/Contributions
       run: |
         python GenerateContributorsHTML.py
-    - name: Deploy to gh-pages
+    - name: Deploy to latest/gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,5 +35,13 @@ jobs:
         publish_branch: gh-pages
         keep_files: true
         destination_dir: latest
+    - name: Deploy to stable/gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/source/Contributions/contributors
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: stable
 
         
