@@ -285,13 +285,13 @@ end
 fluxSpans(delArray,:)=[];
 
 % minFluxes = secretion
-cell2csv(['Contributions' filesep 'Microbe_Secretion.csv'],minFluxes)
+cell2csv([resultsFolder filesep 'Microbe_Secretion.csv'],minFluxes)
 
 % maxFluxes = uptake
-cell2csv(['Contributions' filesep 'Microbe_Uptake.csv'],maxFluxes)
+cell2csv([resultsFolder filesep 'Microbe_Uptake.csv'],maxFluxes)
 
 % fluxSpans = span between minimal and maximal flux
-cell2csv(['Contributions' filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
+cell2csv([resultsFolder filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
 
 delete('minFluxes.mat')
 delete('maxFluxes.mat')

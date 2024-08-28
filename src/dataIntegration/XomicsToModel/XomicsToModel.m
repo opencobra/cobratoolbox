@@ -944,11 +944,9 @@ if isfield(specificData, 'transcriptomicData') && ~isempty(specificData.transcri
     model.geneExpVal(locb(bool)) = specificData.transcriptomicData.expVal(bool);
     activeModelGeneBool = model.geneExpVal >= exp(param.transcriptomicThreshold);
     
-    if param.inactiveGenesTranscriptomics
-        %append inactive genes to inactive genes list
-        specificData.inactiveGenes = [specificData.inactiveGenes; model.genes(model.geneExpVal < exp(param.transcriptomicThreshold))];
-    end
-    
+    % inactive genes identified by transcriptomic data
+    specificData.inactiveGenesOmics = model.genes(model.geneExpVal < exp(param.transcriptomicThreshold));
+
     if param.printLevel > 2
         var1 = log(model.geneExpVal(isfinite(model.geneExpVal)));
         figure()
@@ -1034,11 +1032,6 @@ else
     catch
         activeEntrezGeneID = model.genes(find(activeModelGeneBool));
     end
-end
-
-% Active genes from manual curation
-if isfield(specificData, 'activeGenes')
-    activeEntrezGeneID = [activeEntrezGeneID; specificData.activeGenes];
 end
 
 %unique genes
@@ -1536,7 +1529,7 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
                 %disp('This is a link to <a href="http://www.google.com">Google</a>.')
             end
-            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
+            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
         elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
             %omics takes precedence over manual curation
             genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
@@ -1544,13 +1537,20 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                 disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
                 disp(specificData.inactiveGenes(genesIgnoredBool))
             end
-            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
+            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
         end
     else
         if param.printLevel > 0
             disp('no manually selected active genes and omics data')
         end
     end
+
+    if param.inactiveGenesTranscriptomics
+        %append inactive genes to inactive genes list
+        specificData.inactiveGenes = [specificData.inactiveGenes; specificData.inactiveGenesOmics];
+    end
+
+
     % Check if the inactive genes are present in the model
     inactiveGeneBool = ismember(model.genes, specificData.inactiveGenes);
     if ~any(inactiveGeneBool)
@@ -1942,6 +1942,11 @@ end
 
 %% 19. Identify active reactions from genes
 if ~isempty(activeEntrezGeneID)
+
+    % Active genes from omics data and manual curation
+    if isfield(specificData, 'activeGenes')
+        activeEntrezGeneID = [activeEntrezGeneID; specificData.activeGenes];
+    end
     
     bool = ismember(activeEntrezGeneID, model.genes);
     if any(~bool)

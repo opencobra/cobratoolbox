@@ -7,7 +7,6 @@ on:
     branches: [ master ]
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -20,14 +19,66 @@ jobs:
       working-directory: ./docs
       run: |
         pip install -r requirements.txt
+    - name: Generate publications rst file
+      working-directory: ./docs/source/sphinxext
+      run: |
+        python GenerateCitationsRST.py
+    - name: Update packages
+      working-directory: ./docs/source
+      run: |
+        python ./sphinxext/copy_files.py
+    - name: Generate functions rst files
+      working-directory: ./docs/source/modules
+      run: |
+        python ./GetRSTfiles.py
     - name: generate documentation
       working-directory: ./docs
       run: |
         make html
-    - name: Deploy
+    - name: Copy the citations html page
+      run: |
+        cp ./docs/build/html/citations.html ./docs/source/Citations/citations.html
+    - name: Deploy the function modules in the latest site
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: ./docs/build/html/modules
         branch: gh-pages
         target-folder: latest/modules
-          
+    - name: Deploy the function modules in the stable site
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: ./docs/build/html/modules
+        branch: gh-pages
+        target-folder: stable/modules
+    - name: Deploy the citations page in latest site
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/source/Citations
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: latest
+    - name: Deploy the citations static page in latest site
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html/_static
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: latest/_static
+    - name: Deploy the citations page in stable site
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/source/Citations
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: stable
+    - name: Deploy the citations static page in stable site
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html/_static
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: stable/_static

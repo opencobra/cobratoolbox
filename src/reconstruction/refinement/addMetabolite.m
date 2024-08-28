@@ -81,9 +81,9 @@ if(iscell(metID))
 end
 
 parser = inputParser();
-parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
-parser.addRequired('metID',@(x) iscell(x) || ischar(x))
-parser.addParamValue('metName',defaultMetName,@(x) ischar(x) || iscell(x) )
+parser.addRequired('model',@isstruct); % we only check, whether its a struct, no details for speed
+parser.addRequired('metID',@(x) iscell(x) || ischar(x));
+parser.addParamValue('metName',defaultMetName,@(x) ischar(x) || iscell(x) );
 parser.addParamValue('metFormula',defaultFormula, @(x) ischar(x) || iscell(x));
 parser.addParamValue('ChEBIID',defaultCHEBI, @(x) ischar(x) || iscell(x));
 parser.addParamValue('KEGGId',defaultKEGG, @(x) ischar(x) || iscell(x));
