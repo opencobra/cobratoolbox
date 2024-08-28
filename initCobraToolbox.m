@@ -99,7 +99,7 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
 end
 
 % retrieve the current directory
-currentDir = fileparts(which(mfilename));
+currentDir = pwd;
 
 % define the root path of The COBRA Toolbox and change to it.
 CBTDIR = fileparts(which('initCobraToolbox'));
@@ -249,7 +249,7 @@ if installedGit
 
         for i = 1:length(submodulePaths)
             % Run Git commands using the full path
-            submodulePath = fullfile(currentDir, submodulePaths{i});
+            submodulePath = fullfile(CBTDIR, submodulePaths{i});
 
             % submodules point to master, don't pull in remote changes
             [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout master']);
