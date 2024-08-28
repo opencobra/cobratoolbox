@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Coupling &mdash; The COBRA Toolbox</title>
+  <title>Icongems &mdash; The COBRA Toolbox</title>
   
 
   
@@ -71,8 +71,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Analysis" href="../index.html"/>
-        <link rel="next" title="Qfca" href="../QFCA/index.html"/>
-        <link rel="prev" title="Calculatefluxshifts" href="../calculateFluxShifts/index.html"/> 
+        <link rel="next" title="Dynamicfba" href="../dynamicFBA/index.html"/>
+        <link rel="prev" title="Filterratelimittingreactions" href="../filterRateLimittingReactions/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -161,7 +161,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Icongems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
@@ -169,7 +169,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../LT2/index.html">Lt2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
@@ -245,7 +245,7 @@
       <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
-      <li class="breadcrumb-item active">Coupling</li>
+      <li class="breadcrumb-item active">Icongems</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -254,133 +254,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="coupling">
-<span id="id1"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.analysis.coupling"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.analysis.coupling.addCouplingConstraint">
-<span class="sig-name descname"><span class="pre">addCouplingConstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">d</span></em>, <em class="sig-param"><span class="pre">ineqSense</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/coupling/addCouplingConstraint.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.coupling.addCouplingConstraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
-Appends to existing inequality constraints if they are present</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>modelConstrained = constrainRxnListAboveBound</strong> (<em>model, rxnList, c, d, ineqSense</em>)</p>
-</dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
-<li><p><strong>rxnList</strong> – cell array of reaction names</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>c</strong> – <cite>k x 1</cite> vector <span class="math notranslate nohighlight">\(c*v \geq d\)</span></p></li>
-<li><p><strong>d</strong> – <cite>n x 1</cite> vector <span class="math notranslate nohighlight">\(c*v \geq d\)</span></p></li>
-<li><p><strong>ineqSense</strong> – <cite>k x 1</cite> inequality sense {‘L’,’G’}</p></li>
-</ul>
-</dd>
-<dt class="field-even">OUTPUT</dt>
-<dd class="field-even"><p><strong>modelConstrained</strong> – constrained model:</p>
-<ul class="simple">
-<li><p>S - Stoichiometric matrix</p></li>
-<li><p>b - Right hand side = dx/dt</p></li>
-<li><p>C - Inequality constraint matrix</p></li>
-<li><p>d - Inequality constraint right hand side
-<span class="math notranslate nohighlight">\([S; C] * v {=, \leq, \geq } [dxdt, d]\)</span></p></li>
-</ul>
+  <section id="icongems">
+<span id="id1"></span><h1>Icongems<a class="headerlink" href="#icongems" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.ICONGEMs"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.ICONGEMs.ICONGEMs">
+<span class="sig-name descname"><span class="pre">ICONGEMs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">exp</span></em>, <em class="sig-param"><span class="pre">genetxt</span></em>, <em class="sig-param"><span class="pre">condition</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">alpha</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/ICONGEMs/ICONGEMs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.ICONGEMs.ICONGEMs" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Algorithm to Integrate a Gene Co-expression Network and Genome-scale Metabolic Model:</dt><dd><p>This algorithm calculates the reaction flux distribution for each condition by applying
+quadratic programming.</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)</p>
+</div></blockquote>
+<p>INPUTS:</p>
+<blockquote>
+<div><p>model:           input model (COBRA model structure)
+exp:             expression profile corresponding to the gene names that</p>
+<blockquote>
+<div><p>extract from gene expression profile file</p>
+</div></blockquote>
+<dl class="simple">
+<dt>genetxt:         list of gene names that extract from gene expression profile</dt><dd><p>file</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.analysis.coupling.addRatioReaction">
-<span class="sig-name descname"><span class="pre">addRatioReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">listOfRxns</span></em>, <em class="sig-param"><span class="pre">ratioCoeff</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/coupling/addRatioReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.coupling.addRatioReaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds ratio reaction.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>modelNew = addRatioReaction</strong> (<em>model, listOfRxns, ratioCoeff</em>)</p>
+</div></blockquote>
+<dl>
+<dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
+<dt>threshold:           The value of the correlation coefficient for constructing</dt><dd><p>the co-expression network (default value: 0.9).</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model structure</p></li>
-<li><p><strong>listOfRxns</strong> – List of 2 Reactions</p></li>
-<li><p><strong>ratioCoeff</strong> – Array of ratio coefficient between the 2 reactions</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OUTPUT</dt>
-<dd class="field-odd"><p><strong>modelNew</strong> – COBRA model structure containing the ratio</p>
+<dt>condition:           Row vector indicating the number of conditions</dt><dd><p>corresponding to the conditions in exp
+(default value: 1:size(exp, 2)).</p>
 </dd>
 </dl>
-<p class="rubric">Example</p>
-<p>%1 v_EX_ac(e) = 2 v_EX_for(e):
-modelNew = addRatioReaction(model, {‘EX_ac(e)’ ‘EX_for(e)’}, [1 2])</p>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.analysis.coupling.constrainRxnListAboveBound">
-<span class="sig-name descname"><span class="pre">constrainRxnListAboveBound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">d</span></em>, <em class="sig-param"><span class="pre">ineqSense</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/coupling/constrainRxnListAboveBound.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.coupling.constrainRxnListAboveBound" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constrains one (weighted) sum of fluxes to be above a lower bound.
-Appends to existing inequality constraints if they are present</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>modelConstrained = constrainRxnListAboveBound</strong> (<em>model, rxnList, c, d, ineqSense</em>)</p>
+<p>alpha:               The value for the proportion of biomass (default value: 1).</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
-<li><p><strong>rxnList</strong> – cell array of reaction names</p></li>
-</ul>
+<dt>OUTPUTS:</dt><dd><p>solICONGEMs:             Flux distribution table corresponding to reaction flux names.
+boundEf:                 Upper bound of E-flux.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>c</strong> – <cite>k x 1</cite> vector <span class="math notranslate nohighlight">\(c*v \geq d\)</span></p></li>
-<li><p><strong>d</strong> – <cite>n x 1</cite> vector <span class="math notranslate nohighlight">\(c*v \geq d\)</span></p></li>
-<li><p><strong>ineqSense</strong> – <cite>k x 1</cite> inequality sense {‘L’,’G’}</p></li>
-</ul>
-</dd>
-<dt class="field-even">OUTPUT</dt>
-<dd class="field-even"><p><strong>modelConstrained</strong> – constrained model:</p>
-<ul class="simple">
-<li><p>S - Stoichiometric matrix</p></li>
-<li><p>b - Right hand side = dx/dt</p></li>
-<li><p>C - Inequality constraint matrix</p></li>
-<li><p>d - Inequality constraint right hand side
-<span class="math notranslate nohighlight">\([S; C] * v {=, \leq, \geq } [dxdt, d]\)</span></p></li>
-</ul>
+<dt>EXAMPLES:</dt><dd><p>% This could be an example that can be copied from the documentation to MATLAB:
+solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+% without optional values:
+solution = ICONGEMs(model, exp, genetxt)</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.analysis.coupling.coupleRxnList2Rxn">
-<span class="sig-name descname"><span class="pre">coupleRxnList2Rxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">rxnC</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">u</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/coupling/coupleRxnList2Rxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.coupling.coupleRxnList2Rxn" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function adds coupling constraints to the fluxes <cite>vi</cite> of a given list of reactions
-(<cite>RxnList</cite>).The constraints are proportional to the flux <cite>v</cite> of a specified
-reaction <cite>rxnC</cite>, so that for all reactions in <cite>RxnList</cite> <cite>vi ~ vrxnC</cite>.
-For all reactions, a threshold <cite>u</cite> on flux is set (default value: 0.01).</p>
-<p>To add a coupling constraint to a reaction, a coupling vector <cite>c</cite> is
-determined (default value 1000). <cite>c</cite> is multiplied by <cite>vrxnC</cite>, so that for
-all irreversible reactions in <cite>RxnList vi - c * vrxnC &lt;= u</cite>.</p>
-<p>For all reversible reactions, the following equation holds true for the
-reverse direction: <cite>vi + c * vrxnC &gt;= u</cite>.</p>
-<p>The output is a coupled model (<cite>modelCoupled</cite>), in which for every new
-entry in <cite>modelCoupled.b</cite> a “slack” variable has been added
-to <cite>modelCoupled.mets</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[modelCoupled] = coupleRxnList2Rxn</strong> (<em>model, rxnList, rxnC, c, u</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
-<li><p><strong>rxnList</strong> – array of reaction names</p></li>
-<li><p><strong>rxnC</strong> – reaction that should be coupled with each reaction in the
-reaction list</p></li>
-<li><p><strong>c</strong> – vector of coupling factors for each rxn in rxnList (default c = 1000)</p></li>
-<li><p><strong>u</strong> – vector of lower bounds one reaction couples (default u = 0.01)</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OUTPUT</dt>
-<dd class="field-odd"><p><strong>modelCoupled</strong> – coupled model</p>
+<dt>..Author:</dt><dd><p>-Thummarat Paklao, 01/02/2024, Department of Mathematics and Computer Science, Faculty of Science, Chulalongkorn University, Thailand.
+-Apichat Suratanee, 01/02/2024, Department of Mathematics, Faculty of Applied Science, King Mongkut’s University of Technology North Bangkok.
+-Kitiporn Plaimas, 01/02/2024, Department of Mathematics and Computer Science, Faculty of Science, Chulalongkorn University, Thailand.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -397,10 +317,10 @@ reaction list</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../QFCA/index.html" class="btn btn-default float-right" title="Qfca" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../dynamicFBA/index.html" class="btn btn-default float-right" title="Dynamicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../calculateFluxShifts/index.html" class="btn btn-default" title="Calculatefluxshifts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../filterRateLimittingReactions/index.html" class="btn btn-default" title="Filterratelimittingreactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -443,7 +363,6 @@ reaction list</p></li>
     <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

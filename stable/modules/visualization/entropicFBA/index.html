@@ -228,7 +228,7 @@
 <span id="id1"></span><h1>Entropicfba<a class="headerlink" href="#entropicfba" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.visualization.entropicFBA"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.entropicFBA.plotyy_eFBA">
-<span class="sig-name descname"><span class="pre">plotyy_eFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">objective</span></em>, <em class="sig-param"><span class="pre">C_max</span></em>, <em class="sig-param"><span class="pre">N</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/plotyy_eFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.plotyy_eFBA" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plotyy_eFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">objective</span></em>, <em class="sig-param"><span class="pre">C_max</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">d</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/plotyy_eFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.plotyy_eFBA" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>This function plot entropicFBA in a plotyy way</dt><dd><p>Flux through objective function (solution.v)) as a function of C_value on axis1 and
 and non- linear/ linear/ part of objective function as a function od C_value on axis2
@@ -244,6 +244,7 @@ perform entropicFluxBalanceAnalysis</p></li>
 larger number the variables do not change)</p></li>
 <li><p><strong>N</strong> – The number of C_value (since the model my be infeasible for some value of C
 the plotted figure will have fewer numbers in x axis</p></li>
+<li><p><strong>d</strong> – a value to set axis in a way that the whole plot is visible</p></li>
 </ul>
 </dd>
 </dl>
