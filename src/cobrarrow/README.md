@@ -80,8 +80,6 @@ To ensure MATLAB uses this Python environment every time it starts:
 
 ### Example Use of Calling MATLAB APIs
 
-Refer to MATLAB script `testMatlab.m` that uses the MATLAB API to perform some operations.
-
 ```matlab
 % Example MATLAB script to use the MATLAB API
 
