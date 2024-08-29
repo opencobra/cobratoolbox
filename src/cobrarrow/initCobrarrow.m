@@ -14,31 +14,35 @@ else
     fprintf('Python Executable: \n');
     disp(pyEnvInfo.Executable);
 
+    % test Python version compatibility
     try
-        py.math.sqrt(16); % test Python version compatibility
-
-        % Get the current directory where the MATLAB script is located
-        currentFile = mfilename('fullpath');
-        currentDir = fileparts(currentFile);
-        
-        % Construct the full path to the requirements.txt file
-        requirementsPath = fullfile(currentDir, 'requirements.txt');
-
-        % Use python -m pip install to ensure pip is invoked correctly
-        cmd = sprintf('"%s" -m pip install -r "%s"', pyEnvInfo.Executable, requirementsPath);
-        status = system(cmd);
-
-        if status == 0
-            disp('Packages installed successfully.');
-        else
-            disp('Failed to install packages.');
-        end
-
-        fprintf("\nNow you can use the COBRArrow API in MATLAB.\n\n");
+        py.math.sqrt(16); 
     catch ME
         showInstruction();
-        error('Failed to use Python. Please check the Python installation.\n');
+        rethrow(ME);
     end
+
+    % Get the current directory where the MATLAB script is located
+    currentFile = mfilename('fullpath');
+    currentDir = fileparts(currentFile);
+
+    % Construct the full path to the requirements.txt file
+    requirementsPath = fullfile(currentDir, 'requirements.txt');
+
+    % Use python -m pip install to ensure pip is invoked correctly
+    cmd = sprintf('"%s" -m pip install -r "%s"', pyEnvInfo.Executable, requirementsPath);
+    status = system(cmd);
+
+    if status == 0
+        % test if pyarrow package works
+        py.pyarrow.table(py.dict(pyargs('column1', {1, 2, 3, 4})));
+        disp('Python package pyarrow installed successfully.');
+    else
+        error('Failed to install packages.');
+    end
+
+    fprintf("\nNow you can use the COBRArrow API in MATLAB.\n\n");
+
 end
 end
 
