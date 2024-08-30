@@ -1,14 +1,14 @@
-function [problemTypeParams, solverParams] = parseSolverParameters(problemType, varargin)
+function [params, solverOnlyParams] = parseSolverParameters(problemType, varargin)
 % Gets default cobra solver parameters for a problem of type problemType, unless 
 % overridden by cobra solver parameters provided by varagin either as parameter
 % struct, or as parameter/value pairs.
 %
 % USAGE:
-%    [problemTypeParams, solverParams] = parseSolverParameters(problemType,varargin)
+%    [params, solverOnlyParams] = parseSolverParameters(problemType,varargin)
 %
 % INPUT:
 %    problemType:       The type of the problem to get parameters for
-%                       ('LP','MILP','QP','MIQP','NLP','EP')
+%                       ('LP','MILP','QP','MIQP','NLP','EP','CLP')
 %
 % OPTIONAL INPUTS:
 %    varargin:          Additional parameters either as parameter struct, or as
@@ -16,19 +16,16 @@ function [problemTypeParams, solverParams] = parseSolverParameters(problemType, 
 %                       the parameter struct is either at the beginning or the
 %                       end of the optional input.
 %                       All fields of the struct which are not COBRA parameters
-%                       (see `getCobraSolverParamsOptionsForType`) for this
+%                       (see `getCobraParamsOptionsForType`) for this
 %                       problem type will be passed on to the solver in a
 %                       solver specific manner.
 %
 % OUTPUTS:
-%    problemTypeParams: The COBRA Toolbox specific parameters for this
-%                       problem type given the provided parameters
+%    params: The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters
 %
-%    solverParams:      Additional parameters provided which are not part
-%                       of the COBRA parameters and are assumed to be part
-%                       of direct solver input structs. For some solvers, it
-%                       is essential to not include any extraneous fields that are 
-%                       outside the solver interface specification.
+%    solverOnlyParams:  Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
+%                       For some solvers, it is essential to NOT include any extraneous fields that are outside the solver interface specification,
+%                       otherwise an error will result.
 
 cobraSolverParameters = getCobraSolverParamsOptionsForType(problemType); % build the default Parameter Structure
 
@@ -48,13 +45,13 @@ nVarargin = numel(varargin);
 if nVarargin > 0
     % we should have a struct at the end
     if mod(nVarargin,2) == 1
-        optParamStruct = varargin{end};
-        if ~isstruct(optParamStruct)
+        solverOnlyParams = varargin{end};
+        if ~isstruct(solverOnlyParams)
             % but it could also be at the first position, so test that as well.
-            optParamStruct = varargin{1};
+            solverOnlyParams = varargin{1};
             varargin(1) = [];
             nVarargin = numel(varargin); %added this in case varagin{1} is the parameter structure
-            if ~isstruct(optParamStruct)
+            if ~isstruct(solverOnlyParams)
                 error(['Invalid Parameters supplied.\n',...
                        'Parameters have to be supplied either as parameter/Value pairs, or as struct.\n',...
                        'A combination is possible, if the last or first input argument is a struct, and all other arguments are parameter/value pairs'])
@@ -62,9 +59,10 @@ if nVarargin > 0
         else
             varargin(end) = [];
         end
+        
     else
         % no parameter struct. so initialize an empty one.
-        optParamStruct = struct();
+        solverOnlyParams = struct();
     end
     nVarargin = numel(varargin); %added this in case varagin{1} is the parameter structure
     % now, loop through all parameter/value pairs.
@@ -75,9 +73,9 @@ if nVarargin > 0
         end
         % the param struct overrides the only use the parameter if it is
         % not a field of the parameter struct.
-        if ~isfield(optParamStruct,cparam)
+        if ~isfield(solverOnlyParams,cparam)
             try
-                optParamStruct.(cparam) = varargin{i+1};
+                solverOnlyParams.(cparam) = varargin{i+1};
             catch
                 error('All parameters have to be valid matlab field names. %s is not a valid field name',cparam);
             end
@@ -87,23 +85,28 @@ if nVarargin > 0
     end
 else
     % no optional parameters.
-    optParamStruct = struct();
+    solverOnlyParams = struct();
 end
 
 % set up the cobra parameters
-problemTypeParams = struct();
+params = struct();
 
 for i = 1:numel(defaultParams(:,1))
     % if the field is part of the optional parameters (i.e. explicitly provided) use it.
-    if isfield(optParamStruct,defaultParams{i,1})
-        problemTypeParams.(defaultParams{i,1}) = optParamStruct.(defaultParams{i,1});
+    if isfield(solverOnlyParams,defaultParams{i,1})
+        params.(defaultParams{i,1}) = solverOnlyParams.(defaultParams{i,1});
         % and remove the field from the struct for the solver specific parameters.
-        optParamStruct = rmfield(optParamStruct,defaultParams{i,1});
+        solverOnlyParams = rmfield(solverOnlyParams,defaultParams{i,1});
     else
         % otherwise use the default parameter
-        problemTypeParams.(defaultParams{i,1}) = defaultParams{i,2};
+        params.(defaultParams{i,1}) = defaultParams{i,2};
     end
 end
 
-% assign all remaining parameters to the solver parameter struct.
-solverParams = optParamStruct;
+% %duplicate this parameter in both structures
+% if isfield(params,'printLevel') && ~isfield(solverOnlyParams,'printLevel')
+%     solverOnlyParams.printLevel = params.printLevel;
+% end
+% if isfield(params,'debug') && ~isfield(solverOnlyParams,'debug')
+%     solverOnlyParams.debug = params.debug;
+% end
