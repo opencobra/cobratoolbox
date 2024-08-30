@@ -45,6 +45,8 @@ fileNameOut = lrsRun(modelName, param);
 %read in vertex representation
 [Q, vertexBool, fileNameOut] = lrsReadRay(modelName,param);
 system(['cp ' fileNameOut ' ' strrep(fileNameOut,'test.ext','test_lrs.ext')])  
+
+
 %write out vertex representation
 [fileNameOut, extension] = lrsWriteRay(Q,modelName,vertexBool,param);
 system(['cp ' fileNameOut ' ' strrep(fileNameOut,'test.ext','test_manual.ext')])  
@@ -62,6 +64,7 @@ if 0
     %implicit representation of a polytope is not uniquely defined from vertex representation
     assert(all((S - A)==0,'all'))
 end
+
 %write out halfspace representation
 fileNameOut = lrsWriteHalfspace(A, b, csense, [modelName '2'], param);
 %run lrs

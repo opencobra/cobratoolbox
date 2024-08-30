@@ -192,16 +192,7 @@ if problemTypeParams.debug
             [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,'minimize');
             
             %parse mosek result structure
-            [solutionLP2.stat,solutionLP2.origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res);%,A,blc,buc,printLevel,param)
-            %[solutionLP2.stat,solutionLP2.origStat,x,y,w] = parseMskResult(res);
-%             if stat ==1
-%                 f=c'*x;
-%                 % slack for blc <= A*x <= buc
-%                 s = b - A * x; % output the slack variables
-%             else
-%                 f = NaN;
-%                 s = NaN*ones(size(A,1),1);
-%             end
+            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,EPproblem,solverParams,problemTypeParams.printLevel);
         
             switch solutionLP2.stat
                 case 0
@@ -679,7 +670,7 @@ switch problemTypeParams.solver
             [~, res] = mosekopt('symbcon echo(0)');
         end
         % https://docs.mosek.com/9.2/toolbox/data-types.html#cones
-%         For affine conic constraints Fx+g \in K, where K = K_1 * K_2 * ... * K_s, cones is a list consisting of s oncatenated cone descriptions. 
+%         For affine conic constraints Fx+g \in K, where K = K_1 * K_2 * ... * K_s, cones is a list consisting of concatenated cone descriptions. 
 %         If a cone requires no additional parameters (quadratic, rotated quadratic, exponential, zero) then its description is [type,len]
 %         where type is the type (conetype) and len is the length (dimension). The length must be present.
         
@@ -876,9 +867,9 @@ switch problemTypeParams.solver
         solution.time = toc;
         
         %parse mosek result structure      
-        %[stat,origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res,A,blc,buc,printLevel,param)
-        [stat,origStat,x,y,z,zl,zu,s,doty] = parseMskResult(res,prob.a,prob.blc,prob.buc,problemTypeParams.printLevel,paramMosek);
-        
+       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,printLevel)
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
+
         solution.stat = stat;
         solution.origStat = origStat;
         switch stat
@@ -893,30 +884,39 @@ switch problemTypeParams.solver
                         fprintf('%8.4g %8.4g %8.4g\n',prob.blx(ind(i)),x(ind(i)),prob.bux(ind(i)));
                     end
                 end
+
+                %slacks
+                sbl = prob.a*x - prob.blc;
+                sbu = prob.buc - prob.a*x;
+                s = sbu - sbl; %TODO -double check this
+                if problemTypeParams.printLevel>1
+                    fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                    fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+                end
                 
                 if problemTypeParams.printLevel > 1
                     % Problem definition here: https://docs.mosek.com/9.2/toolbox/prob-def-affine-conic.html
                     fprintf('%s\n','Optimality conditions (numerical)')
                     % Guide to interpreting the solution summary: https://docs.mosek.com/9.2/toolbox/debugging-log.html#continuous-problem
                     fprintf('%8.2g %s\n',norm(prob.a(prob.blc==prob.buc,:)*x - prob.blc(prob.blc==prob.buc),inf), '|| A*x - b ||_inf');
-                    val = norm(prob.c - prob.a'*y - z - prob.f'*doty,inf);
-                    fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*doty ||_inf');
+                    val = norm(prob.c - prob.a'*y - z - prob.f'*k,inf);
+                    fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*k ||_inf');
                     if val>1e-6 || problemTypeParams.debug
-                        solution.T0 = table(prob.c - prob.a'*y - z - prob.f'*doty,prob.c, prob.a'*y, z,prob.f'*doty,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
+                        solution.T0 = table(prob.c - prob.a'*y - z - prob.f'*k,prob.c, prob.a'*y, z,prob.f'*k,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
                     end
-                    %fprintf('%8.2g %s\n',norm(prob.c - prob.f'*s,inf), '|| c - F''s ||_inf');
+                    %fprintf('%8.2g %s\n',norm(prob.c - prob.f'*s,inf), '|| c - F''k ||_inf');
                     fprintf('%8.2g %s\n',norm(-y + res.sol.itr.slc - res.sol.itr.suc,inf), '|| -y + res.sol.itr.slc - res.sol.itr.suc ||_inf');
                     %fprintf('%8.2g %s\n',prob.c'*x - prob.b'*y, ' c''*x -b''*y');
                     
-                    fprintf('%8.2g %s\n',(prob.f*x + prob.g)'*doty, '(F*x + g)''*s >= 0');
+                    fprintf('%8.2g %s\n',(prob.f*x + prob.g)'*k, '(F*x + g)''*k >= 0');
                 end
                 
                 %%% Reorder
                 % Dual variables to affine conic constraints, based on original order of rows in F matrix
-                y_K = zeros(length(doty),1);
-                y_K(1:nCone,1) = doty(1:3:3*nCone);
-                y_K(nCone+1:2*nCone,1) = doty(2:3:3*nCone);
-                y_K(2*nCone+1:3*nCone,1) = doty(3:3:3*nCone);
+                y_K = zeros(length(k),1);
+                y_K(1:nCone,1) = k(1:3:3*nCone);
+                y_K(nCone+1:2*nCone,1) = k(2:3:3*nCone);
+                y_K(2*nCone+1:3*nCone,1) = k(3:3:3*nCone);
                 
                 %check with the original order of the affine cone constraints
                 val = norm(prob.c - prob.a'*y - z - F'*y_K,inf);
@@ -924,7 +924,7 @@ switch problemTypeParams.solver
                     fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*y_K ||_inf');
                 end
                 if val>1e-6 || problemTypeParams.debug
-                    solution.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*doty,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
+                    solution.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*k,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
                 end
                 
                 if problemTypeParams.printLevel > 1
@@ -1012,7 +1012,7 @@ switch problemTypeParams.solver
                 
             otherwise
                 
-                doty = NaN*ones(size(prob.f,1),1);
+                k = NaN*ones(size(prob.f,1),1);
         end              
     otherwise
         error([problemTypeParams.solver ' is an unrecognised solver'])
@@ -1065,8 +1065,7 @@ switch solution.stat
                 end
                 [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,cmd);
                 
-                %[stat,origStat,x,y,z,zl,zu,k,doty,bas,pobjval,dobjval] = parseMskResult(res,A,blc,buc,printLevel,param)
-                [statLP,origStat,x,y,z,zl,zu,s,doty] = parseMskResult(res,EPproblem.A,EPproblem.blc,EPproblem.buc,problemTypeParams.printLevel);
+                [stat,origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,prob,solverParams,printLevel);
                 
    
         end

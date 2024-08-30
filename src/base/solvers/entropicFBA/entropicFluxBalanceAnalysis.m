@@ -102,7 +102,7 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
 %
 %  param.solver:                    {('pdco'),'mosek'}
-%  param.method:                    {('fluxes'),'fluxesConcentrations','fluxTracer')} maximise entropy of fluxes or also concentrations
+%  param.method:                    {('fluxes'),'fluxConc')} maximise entropy of fluxes or also concentrations
 %  param.printLevel:                {(0),1}
 %
 %
@@ -114,7 +114,9 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 %  Parameters related with concentration optimisation:
 %  param.maxConc:                   scalar maximum permitted metabolite concentration
-%  param.externalNetFluxBounds:
+%  param.externalNetFluxBounds:     ('original') = use bounds on external reactions from model.lb and model.ub
+%                                     'dxReplacement' = replace model.lb and model.ub with bounds on change in concentration
+%                                     'none' = set exchange reactions to be unbounded
 %
 %  model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
 %  model.T:              scalar temperature (default 310.15 Kelvin)
@@ -159,6 +161,9 @@ if ~isfield(param,'solver')
 end
 if ~isfield(param,'method')
     param.method='fluxes';
+end
+if ~isfield(param,'externalNetFluxBounds')
+    param.externalNetFluxBounds='original';
 end
 
 if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
@@ -211,7 +216,10 @@ B = model.S(:,~model.SConsistentRxnBool);
 [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
 %% optionally processing for concentrations
-processConcConstraints
+%processConcConstraints
+if contains(lower(param.method),'conc')
+    [f,u0,x0l,x0u,xl,xu,dxl,dxu,vel,veu,B] = processConcConstraints(model,param);
+end
 
 %matrices for padding
 Omn = sparse(m,n);
@@ -299,8 +307,8 @@ switch param.method
                 EPproblem.osense = 1; %minimise
                 
                 %bounds
-                EPproblem.lb = [vfl;vrl;vl;model.xl;model.x0l;model.dxl];
-                EPproblem.ub = [vfu;vru;vu;model.xu;model.x0u;model.dxu];
+                EPproblem.lb = [vfl;vrl;vl;xl;x0l;dxl];
+                EPproblem.ub = [vfu;vru;vu;xu;x0u;dxu];
                 
                 if any(EPproblem.lb > EPproblem.ub)
                     if any(vfl>vfu)
@@ -312,17 +320,17 @@ switch param.method
                     if any(vl>vu)
                         error('vl>vu, i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.xl>model.xu)
+                    if any(xl>xu)
                         error('model.xl>model.xu i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.x0l>model.x0u)
+                    if any(x0l>x0u)
                         error('model.x0l>model.x0u i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.dxl>model.dxu)
-                        bool = (model.dxl~=0 | model.dxu~=0) & model.dxl>model.dxu;
-                        T=table(model.dxl(bool),model.dxu(bool));
+                    if any(dxl>dxu)
+                        bool = (dxl~=0 | dxu~=0) & dxl>dxu;
+                        T=table(dxl(bool),dxu(bool));
                         disp(T)
-                        error('model.dxl>model.dxu i.e. lower bound on dx cannot be greater than upper bound')
+                        error('dxl>dxu i.e. lower bound on dx cannot be greater than upper bound')
                     end
                 end
                 %variables for entropy maximisation
@@ -475,8 +483,8 @@ switch param.method
                         Omn,  Omn,  Omk,    Im,   -Im;
                         C,   -C,    D,   Ocm,   Ocm];
                     %     vf,   vr,    w,     x,    x0
-                    EPproblem.blc = [model.b;vl;model.dxl;model.d];
-                    EPproblem.buc = [model.b;vu;model.dxu;model.d];
+                    EPproblem.blc = [model.b;vl;dxl;model.d];
+                    EPproblem.buc = [model.b;vu;dxu;model.d];
                     csense(1:size(EPproblem.A,1),1)='E';
                     csense(1:m,1)=model.csense;
                     csense(2*m+n+1:2*m+n+nConstr,1) = model.dsense;
@@ -486,8 +494,8 @@ switch param.method
                         In,    -In,  Onk,   Onm,   Onm;
                          Omn,  Omn,  Omk,    Im,   -Im];
                     %     vf,   vr,    w,     x,    x0
-                    EPproblem.blc = [model.b;vl;model.dxl];
-                    EPproblem.buc = [model.b;vu;model.dxu];
+                    EPproblem.blc = [model.b;vl;dxl];
+                    EPproblem.buc = [model.b;vu;dxu];
                     csense(1:size(EPproblem.A,1),1)='E';
                     csense(1:m,1)=model.csense;
                 end
@@ -513,8 +521,8 @@ switch param.method
                 EPproblem.osense = 1; %minimise
                 
                 %bounds
-                EPproblem.lb = [vfl;vrl;vel;model.xl;model.x0l];
-                EPproblem.ub = [vfu;vru;veu;model.xu;model.x0u];
+                EPproblem.lb = [vfl;vrl;vel;xl;x0l];
+                EPproblem.ub = [vfu;vru;veu;xu;x0u];
                 
                 %variables for entropy maximisation
                 %           vf, vr,         w, x, x0
@@ -638,6 +646,8 @@ switch param.method
                 z_vf   = solution.rcost(1:n,1);
                 % duals to bounds on reverse unidirectional fluxes
                 z_vr    = solution.rcost(n+1:2*n,1);
+                %dual to bounds on net exchange fluxes
+                z_ve    = solution.rcost(2*n+1:2*n+k,1); 
                 %duals to bounds on final concentration
                 z_x   = solution.rcost(2*n+k+1:2*n+k+m,1);
                 %duals to bounds on initial concentration
@@ -1528,7 +1538,7 @@ switch param.method
         end
     case 'fluxTracing'
     otherwise
-        error('Incorrect method choice');
+        error('entropicFluxBalanceAnalysis: Incorrect method choice');
 end
 
 if 0

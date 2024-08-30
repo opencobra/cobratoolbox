@@ -4,18 +4,18 @@ function fileNameOut = lrsWriteHalfspace(A, b, csense, modelName, param)
 %
 % USAGE:
 %
-%    lrsInputHalfspace(A, D, filename, positivity, inequality, a, d, f, sh)
+%    lrsWriteHalfspace(A, b, csense, modelName, param)
 %
 % INPUTS:
-%    A:             matrix of linear equalities :math:`A x =(a)`
-%    D:             matrix of linear inequalities :math:`D x \geq (d)`
-%    filename:      base name of output file
+%    A:             m x n matrix of linear constraints :math:`A x (csense) b`
 %
 % OPTIONAL INPUTS:
-%    positivity:    {0, (1)} if positivity == 1, then positive orthant base
-%    inequality:    {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy
-%    a:             boundary values for matrix of linear equalities :math:`A x = a`
-%    d:             boundary values for matrix of linear inequalities :math:`D x \geq d`
+%    b:             m x 1 rhs of linear constraints
+%    csense:        m x 1 char with ('E'),'G' or 'L'
+%    modelName:     name of the model to be used when generating filenames, 'model' by default
+%    param.positivity:    {0, (1)} if positivity == 1, then positive orthant base
+%    param.inequality:    {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy
+
 %    f:             linear objective for a linear optimization problem in rational arithmetic
 %
 %                   minimise :math:`f^T x`,
@@ -46,9 +46,14 @@ if ~isfield(param,'sh')
     param.sh = 0;
 end
 
-if exist('f') ~= 1
+if exist('f','var') ~= 1
     f = [];
 end
+
+if length(csense)~=size(A,1)
+    error('csense must equal the number of rows of A')
+end
+
 
 eqBool = csense == 'E';
 leBool = csense == 'L';

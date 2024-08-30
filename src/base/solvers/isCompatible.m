@@ -1,5 +1,9 @@
 function compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
 % determine the compatibility status of a solver based on the file compatMatrix.rst
+% stored here cobratoolbox/docs/source/installation/compatMatrix.rst
+% 
+% clear isCompatible when the compatMatrix has been changed as the data from compatMatrix
+% is stored in a persistent variable
 %
 % USAGE:
 %    compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
@@ -51,7 +55,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     compatMatrixFile = [CBTDIR filesep 'docs' filesep 'source' filesep 'installation' filesep 'compatMatrix.rst'];
 
     % read in the file with the compatibility matrix
-    persistent C;
+    %persistent C;
     persistent compatMatrix;
     persistent testedOS;
 
@@ -104,7 +108,8 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
                     % convert untested flag
                     Cpart = strrep(Cpart, ':warning:', '2');
 
-                    C{end+1} = strtrim(Cpart);
+                    %C(end+1,:) = [testedOS{end} strtrim(Cpart)];
+                    C(end+1,:) = strtrim(Cpart);
                 else
                     if ~isempty(C)
                         compatMatrix{end+1} = C;
@@ -174,7 +179,7 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
     % determine the version of MATLAB and the corresponding column
     versionMatlab = ['R' version('-release')];
     if ~isempty(cMatrix)
-        compatMatlabVersions = cMatrix{1}(2:end);
+        compatMatlabVersions = cMatrix(1,2:end);
         colIndexVersion = strmatch(versionMatlab, compatMatlabVersions);
     else
         colIndexVersion = [];
@@ -198,9 +203,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
         end
 
         % check compatibility of solver
-        for i = 1:length(cMatrix)
+        for i = 2:length(cMatrix)
             % save the row of the compatibilitx matrix
-            row = cMatrix{i};
+            row = cMatrix(i,:);
 
             % determine the name of the solver
             solverNameRow = row{1};

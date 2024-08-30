@@ -7,7 +7,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % INPUTS:
 %    solverName:           Solver name
-%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` (opt, default
+%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` 'EP', 'CLP' (opt, default
 %                          `LP`, `all`).  'all' attempts to change all applicable
 %                          solvers to solverName.  This is purely a shorthand
 %                          convenience.
@@ -179,6 +179,7 @@ global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_EP_SOLVER;
+global CBT_CLP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
@@ -217,6 +218,8 @@ if validationLevel == -1
             CBT_MIQP_SOLVER = solverName;
         case 'EP'
             CBT_EP_SOLVER = solverName;
+        case 'CLP'
+            CBT_CLP_SOLVER = solverName;
     end
     solverOK = NaN;
     return
@@ -244,7 +247,7 @@ configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
-    definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];
+    definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER, CBT_CLP_SOLVER, CBT_EP_SOLVER];
     if isempty(definedSolvers)
         fprintf('No solvers are defined!\n');
     else
@@ -532,8 +535,12 @@ if solverOK
                 eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
             end
         catch ME
+            %This is the code that describes what went wrong if a call to a solver does not work           
             if printLevel > 0
+                fprintf(2,'The identifier was:\n%s',ME.identifier);
+                fprintf(2,'There was an error! The message was:\n%s',ME.message);
                 disp(ME.message);
+                rethrow(ME)
             end
             solverOK = false;
             eval(['CBT_', solverType, '_SOLVER = oldval;']);
