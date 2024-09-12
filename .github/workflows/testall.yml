@@ -1,7 +1,8 @@
 name: MATLAB Tests
-on: 
+on:
   pull_request:
-    
+    branches:
+      - main 
       
 jobs:
   build:
