@@ -1,10 +1,9 @@
 name: MATLAB Tests
 on:
   pull_request:
-    types:
-      - opened
+    
     branches:
-      - '*'      
+      - '**'      
       
 jobs:
   build:
