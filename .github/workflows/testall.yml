@@ -10,14 +10,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Clone COBRA Toolbox
+      run: |
+        git clone https://github.com/opencobra/cobratoolbox.git ~/cobratoolbox
+
     - name: Run tests
       run: |    
         export DISPLAY=:99
         Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        /usr/local/MATLAB/R2024a/bin/matlab -batch "addpath('test/verifiedTests/analysis/testOptimizeCbModel'); testOptimizeCbModel"
-    
+        /usr/local/MATLAB/R2024a/bin/matlab -batch "run('~/cobratoolbox/initCobraToolbox.m'); changeCobraSolver('glpk', 'LP'); testOptimizeCbModel"
+
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
-        path: test/verifiedTests/analysis/testOptimizeCbModel/test_results.txt
+        path: test_results.txt
