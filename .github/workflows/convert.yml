@@ -38,13 +38,6 @@ jobs:
       run: echo "The following MLX files have been changed ${{ env.mlx_file  }}"
 
 
-    # - name: Make MATLAB Script Executable
-    #   run: chmod +x ./run_matlab.sh
-
-    # - name: Convert MLX to HTML
-    #   if: steps.getfile.outputs.mlx_file != ''
-    #   run: |
-    #       ./run_matlab.sh "${{ steps.getfile.outputs.mlx_file }}"
           
     - name: Commit and Push New File
       run: |
