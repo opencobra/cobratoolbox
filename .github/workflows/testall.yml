@@ -12,14 +12,14 @@ jobs:
 
     - name: Clone COBRA Toolbox
       run: |
-        git clone https://github.com/opencobra/cobratoolbox.git ~/cobratoolbox
+        git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
     - name: Run tests
       run: |    
         export DISPLAY=:99
         Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         /usr/local/MATLAB/R2024a/bin/matlab -batch "
-          run('~/cobratoolbox/initCobraToolbox.m'); 
+          run('cobratoolbox/initCobraToolbox.m'); 
           changeCobraSolver('glpk', 'LP'); 
           diary('test_results.txt'); 
           testOptimizeCbModel; 
