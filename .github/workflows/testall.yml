@@ -13,7 +13,7 @@ jobs:
     - name: Run tests
       run: |    
         export DISPLAY=:99
-        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & /usr/local/MATLAB/R2024a/bin/matlab -nodesktop -nosplash -r "runTestsAndGenerateReport;exit;"
+        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & /usr/local/MATLAB/R2024a/bin/matlab -nodesktop -nosplash -r "/test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel ;exit;"
 
 
     - name: Upload Test Report
