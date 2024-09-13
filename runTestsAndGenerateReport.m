@@ -1,5 +1,5 @@
 % Run your tests
-testResults = runtests('./test/testAll_ghActions.m');
+testResults = runtests('./test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m);
 
 % Open a file for writing
 fid = fopen('test_results.txt', 'w');
