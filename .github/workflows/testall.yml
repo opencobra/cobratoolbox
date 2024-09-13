@@ -1,23 +1,23 @@
 name: MATLAB Tests
 on:
   pull_request:
-    
     branches:
-      - '**'      
-      
+      - '**'
+
 jobs:
   build:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
+
     - name: Run tests
       run: |    
         export DISPLAY=:99
-        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & /usr/local/MATLAB/R2024a/bin/matlab -nodesktop -nosplash -r "/test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel ;exit;"
-
-
+        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        /usr/local/MATLAB/R2024a/bin/matlab -batch "addpath('test/verifiedTests/analysis/testOptimizeCbModel'); testOptimizeCbModel"
+    
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
-        path: test_results.txt    
+        path: test/verifiedTests/analysis/testOptimizeCbModel/test_results.txt
