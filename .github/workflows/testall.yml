@@ -22,11 +22,14 @@ jobs:
     - name: Run MATLAB tests
       uses: matlab-actions/run-command@v1
       with:
-        command: "run('cobratoolbox/initCobraToolbox.m'); cd('cobratoolbox/test'); diary('test_results.txt'); launchTestSuite = true; run('testall.m'); diary off;"
-
+        command: |
+          run('cobratoolbox/initCobraToolbox.m');
+          diary('test_results.txt');
+          testCobraToolbox;
+          diary off;
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
-        path: test/test_results.txt
+        path: test_results.txt
