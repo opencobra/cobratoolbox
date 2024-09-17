@@ -19,18 +19,22 @@ jobs:
       with:
         release: R2024a  # Specify the MATLAB release
 
+    - name: Set environment variables
+      run: |
+        echo "HOME=jenkins" >> $GITHUB_ENV
+
     - name: Run MATLAB tests
       uses: matlab-actions/run-command@v1
       with:
         command: |
           run('cobratoolbox/initCobraToolbox.m'); 
-          changeCobraSolver('glpk', 'LP'); 
+          cd('test'); 
           diary('test_results.txt'); 
-          testOptimizeCbModel; 
+          run('testall.m');
           diary off;
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
-        path: test_results.txt
+        path: test/test_results.txt
