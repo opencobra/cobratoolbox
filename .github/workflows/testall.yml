@@ -25,7 +25,7 @@ jobs:
         command: |
           run('cobratoolbox/initCobraToolbox.m');
           diary('test_results.txt');
-          testCobraToolbox;
+          run('cobratoolbox/runTestsAndGenerateReport.m');
           diary off;
 
     - name: Upload Test Report
