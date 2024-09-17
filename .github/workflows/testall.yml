@@ -17,19 +17,16 @@ jobs:
     - name: Set up MATLAB
       uses: matlab-actions/setup-matlab@v1
       with:
-        release: R2024a  # Specify the MATLAB release
-
-    - name: Set environment variables
-      run: |
-        echo "HOME=jenkins" >> $GITHUB_ENV
+        release: R2023a  # Use a supported release
 
     - name: Run MATLAB tests
       uses: matlab-actions/run-command@v1
       with:
         command: |
-          run('cobratoolbox/initCobraToolbox.m'); 
-          cd('test'); 
-          diary('test_results.txt'); 
+          run('cobratoolbox/initCobraToolbox.m');
+          cd('test');
+          diary('test_results.txt');
+          launchTestSuite = true;
           run('testall.m');
           diary off;
 
