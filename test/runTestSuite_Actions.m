@@ -47,50 +47,74 @@ environment = getEnvironment();
 % save the current warning state
 warnstate = warning();
 
-% run the tests and show outputs.
+% Run the tests and show outputs.
 for i = 1:numel(testFileNames)
-    % shut down any existing parpool.
+    % Shut down any existing parallel pool.
     try
-        % test if there is a parpool that we should shut down before the next test.
+        % Test if there is a parallel pool that we should shut down before the next test.
         p = gcp('nocreate');
         delete(p);
     catch
-        % do nothing
+        % Do nothing if there's no parallel pool.
     end
 
-    % reset the globals
-    restoreEnvironment(environment)
+    % Reset the globals.
+    restoreEnvironment(environment);
 
-    % reset the warning state
+    % Reset the warning state.
     warning(warnstate);
 
-    [~,file,ext] = fileparts(testFileNames{i});
+    [~, file, ext] = fileparts(testFileNames{i});
     testName = file;
     fprintf('****************************************************\n\n');
-    fprintf('Running %s\n\n',testName);
-    results(i) = runScriptFile([file ext]);
-    fprintf('\n\n%s %s!\n',testName,results(i).status);
+    fprintf('Running %s\n\n', testName);
+
+    % Add try-catch block around the test execution.
+    try
+        % Record the start time.
+        tic;
+        % Run the test script.
+        results(i) = runScriptFile([file ext]);
+        % Record the elapsed time.
+        results(i).time = toc;
+    catch ME
+        % Handle the error and store the result as failed.
+        results(i).passed = false;
+        results(i).skipped = false;
+        results(i).failed = true;
+        results(i).status = 'failed';
+        results(i).fileName = [file ext];
+        results(i).time = NaN;
+        results(i).statusMessage = ME.message;
+        results(i).Error = ME;
+    end
+
+    fprintf('\n\n%s %s!\n', testName, results(i).status);
     if ~results(i).passed
         if results(i).skipped
-            fprintf('Reason:\n%s\n',results(i).statusMessage);
+            fprintf('Reason:\n%s\n', results(i).statusMessage);
         else
             trace = results(i).Error.getReport();
-            tracePerLine = strsplit(trace,'\n');
-            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')),tracePerLine));
-            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.
-            fprintf('Reason:\n%s\n',trace);
+            tracePerLine = strsplit(trace, '\n');
+            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')), tracePerLine));
+            if ~isempty(testSuitePosition)
+                trace = strjoin(tracePerLine(1:(testSuitePosition - 7)), '\n'); % Remove the testSuite trace.
+            else
+                trace = strjoin(tracePerLine, '\n');
+            end
+            fprintf('Reason:\n%s\n', trace);
         end
     end
     fprintf('\n\n****************************************************\n');
 end
 
-% create a table from the fields
-resultTable= table({results.fileName}',{results.status}',[results.passed]',[results.skipped]',...
-                            [results.failed]',[results.time]',{results.statusMessage}',...
-                            'VariableNames',{'TestName','Status','Passed','Skipped','Failed','Time','Details'});
+% Create a table from the fields.
+resultTable = table({results.fileName}', {results.status}', [results.passed]', [results.skipped]', ...
+                           [results.failed]', [results.time]', {results.statusMessage}', ...
+                           'VariableNames', {'TestName', 'Status', 'Passed', 'Skipped', 'Failed', 'Time', 'Details'});
 
-% change back to the original directory.
-cd(currentDir)
+% Change back to the original directory.
+cd(currentDir);
 end
 
 
