@@ -42,7 +42,6 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .inactiveGenes - cell array of Entrez ID of genes known to be inactive based on the bibliomics data (Default: empty).
 %
 %   * .activeReactions -cell array of reaction identifiers know to be active based on bibliomic data (Default: empty).
-%   * .inactiveReactions - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).
 %   * .coupledRxns -﻿Table containing information about the coupled reactions. This includes the coupled reaction identifier, the
 %                    list of coupled reactions, the coefficients of those reactions, the constraint, the sense or the directionality of the constraint,
 %                    and the reference (Default: empty).
@@ -75,7 +74,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .rxns2add.ub: vector of reaction upper bounds
 %   * .rxns2add.geneRule: gene rules to which the reaction is subject
 %
-%   * .rxns2remove.rxns -﻿cell array of reaction identifiers to be removed from the generic model (Default: empty).
+%   * .rxns2remove.rxns - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).
 %
 %   * .rxns2constrain -﻿Table where each row corresponds to a reaction to constrain (Default: empty).
 %   * .rxns2constrain.rxns: reaction identifier
@@ -124,6 +123,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %
 %   * .weightsFromOmics - True to use weights derived from transcriptomic data when biasing inclusion of reactions with thermoKernel (Default: true)
 %   * .curationOverOmics -﻿True to use literature curated data with priority over other omics data (Default: false).
+%   * .activeOverInactive -﻿True to use active data with priority over inactive data (Default: false).
 %
 %   * .inactiveGenesTranscriptomics - ﻿Logical, indicate if inactive genes in the transcriptomic analysis should be added to the list of inactive genes (Default: true).
 %   * .transcriptomicThreshold - Logarithmic scale transcriptomic cutoff threshold for determining whether or not a gene is active (Default: 0).
@@ -225,7 +225,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 
 model = genericModel;
 
-%% 1. Prepare data
+%% 1. Data preparation
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 % specificData default values
@@ -257,9 +257,6 @@ if ~exist('param','var')
 end
 if ~isfield(param, 'debug')
     param.debug = 0;
-end
-if ~isfield(param, 'inactiveReactions')
-    param.inactiveReactions = []; %TODO needs cleanup
 end
 if ~isfield(param, 'metabolomicWeights')
     param.metabolomicWeights = 'SD';
@@ -305,6 +302,9 @@ if ~isfield(param, 'fluxCCmethod')
 end
 if ~isfield(param, 'curationOverOmics')
     param.curationOverOmics = 0;
+end
+if ~isfield(param, 'activeOverInactive')
+    param.activeOverInactive = 0;
 end
 if isfield(param, 'modelExtractionAlgorithm')
     if ~any(ismember(param.modelExtractionAlgorithm,{'thermoKernel','fastCore'}))
@@ -475,7 +475,7 @@ if isfield(specificData, 'exoMet') && ~ismember('rxns', specificData.exoMet.Prop
         end
     else
         warning('no reaction IDs or metabolite IDs provided, exoMet data will be discarded')
-        rmfield(specificData, 'exoMet')
+        specificData = rmfield(specificData, 'exoMet');
     end
     
     %this is not on by default, if not present remove rows with no rxns
@@ -517,7 +517,7 @@ if isfield(specificData, 'exoMet') && ~ismember('rxnNames', specificData.exoMet.
     specificData.exoMet.rxnNames(LIA,1)= model.rxnNames(LOCB(LOCB~=0));
 end
 
-%% 2. Generic model checks
+%% 2. Generic model check
 if param.printLevel > 0
     disp('--------------------------------------------------------------')
     disp(' ')
@@ -576,6 +576,12 @@ if ~isempty(model.rxns(model.S(contains(model.mets, 'h[i]'), :) ~= 0))
     if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
         [model, specificData, problemRxnList, fixedRxnList] = ...
             regulariseMitochondrialReactions(model, specificData, param.printLevel);
+        if param.printLevel > 0
+            disp('Problem rxn list:')
+            display(problemRxnList)
+            disp('fixed rxn list:')
+            display(fixedRxnList)
+        end
     end
 end
 
@@ -591,7 +597,7 @@ if param.printLevel > 0
     end
 end
 
-%% 2b. Set objective function (if provided) %TODO - check numbering
+%% 3. Set objective function (if provided)
 if isfield(param, 'setObjective')
     if ismember(param.setObjective, model.rxns) && ~isempty(param.setObjective) && sum(ismember(param.setObjective, model.rxns)) == 1
         if param.printLevel > 0
@@ -621,7 +627,7 @@ else
     model.c = zeros(size(model.c));
 end
 
-%% 3. Add missing reactions - "bibliomics" (if provided)
+%% 4. Add missing reactions - "bibliomics" (if provided)
 
 % Add reactions (requires: rxns, mass balanced rxnFormulas
 % optional:lb, ub, subSystems, grRules to add to the model)
@@ -717,7 +723,7 @@ if isfield(specificData, 'rxns2add') && ~isempty(specificData.rxns2add)
     
 end
 
-%% 4. Identify core metabolites and reactions
+%% 5. Identify core metabolites and reactions
 % Based on bibliomic, metabolomic and cell culture data
 
 %set core metabolites
@@ -730,47 +736,54 @@ end
 %remove duplicates
 [coreMetAbbr, coreMetAbbr0] = deal(unique(coreMetAbbr));
 
-% Set coreRxnAbbr
-coreRxnAbbr = {};
+% Set coreBiblioRxnAbbr
+coreBiblioRxnAbbr = {};
 if isfield(param, 'setObjective')
-    coreRxnAbbr = cellstr(param.setObjective);
+    coreBiblioRxnAbbr = cellstr(param.setObjective);
 end
 if isfield(param,'biomassRxn')
-    coreRxnAbbr = [coreRxnAbbr; cellstr(param.biomassRxn)];
-end
-if isfield(param,'maintenanceRxn')
-    coreRxnAbbr = [coreRxnAbbr; cellstr(param.maintenanceRxn)];
+    coreBiblioRxnAbbr = [coreBiblioRxnAbbr; cellstr(param.biomassRxn)];
 end
 if isfield(specificData, 'rxns2add')
-    coreRxnAbbr = [coreRxnAbbr; specificData.rxns2add.rxns];
+    coreBiblioRxnAbbr = [coreBiblioRxnAbbr; specificData.rxns2add.rxns];
 end
 if isfield(specificData, 'activeReactions')  && ~isempty(specificData.activeReactions)
-    coreRxnAbbr = [coreRxnAbbr; specificData.activeReactions];
+    coreBiblioRxnAbbr = [coreBiblioRxnAbbr; specificData.activeReactions];
 end
 if isfield(specificData, 'rxns2constrain') && ~isempty(specificData.rxns2constrain)
-    coreRxnAbbr = [coreRxnAbbr; specificData.rxns2constrain.rxns];
+    coreBiblioRxnAbbr = [coreBiblioRxnAbbr; specificData.rxns2constrain.rxns];
 end
 if isfield(specificData, 'coupledRxns') && ~isempty(specificData.coupledRxns)
     for i = 1:length(specificData.coupledRxns.coupledRxnsList)
-        coreRxnAbbr = [coreRxnAbbr; split(specificData.coupledRxns.coupledRxnsList{i}, ', ')];
+        coreBiblioRxnAbbr = [coreBiblioRxnAbbr; split(specificData.coupledRxns.coupledRxnsList{i}, ', ')];
     end
 end
-if isfield(specificData, 'mediaData') && ~isempty(specificData.mediaData)
-    coreRxnAbbr = [coreRxnAbbr; specificData.mediaData.rxns];
-end
 
+% Set coreOmicsRxnAbbr
+coreOmicsRxnAbbr = {};
+if isfield(param,'maintenanceRxn')
+    coreOmicsRxnAbbr = [coreOmicsRxnAbbr; cellstr(param.maintenanceRxn)];
+end
+if isfield(specificData, 'mediaData') && ~isempty(specificData.mediaData)
+    coreOmicsRxnAbbr = [coreOmicsRxnAbbr; specificData.mediaData.rxns];
+end
 if isfield(specificData, 'exoMet') && ~isempty(specificData.exoMet) && ...
         ismember('rxns', specificData.exoMet.Properties.VariableNames)
-    coreRxnAbbr = [coreRxnAbbr; model.rxns(ismember(model.rxns,specificData.exoMet.rxns))];
+    coreOmicsRxnAbbr = [coreOmicsRxnAbbr; model.rxns(ismember(model.rxns,specificData.exoMet.rxns))];
 end
 
-%remove duplicates
-[coreRxnAbbr, coreRxnAbbr0] = deal(unique(coreRxnAbbr));
+% Remove duplicates
+[coreRxnAbbr, coreRxnAbbr0] = deal(unique([coreBiblioRxnAbbr; coreOmicsRxnAbbr]));
 
-%compare core reactions
+% Compare core reactions
 param.message = 'generic model';
-[coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis([],model, coreMetAbbr, ...
-    coreRxnAbbr, [], [], param);
+[coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis([], model, coreMetAbbr, coreRxnAbbr, [], [], param);
+if param.printLevel > 0
+    disp('coreRxnAbbr')
+    disp(coreMetAbbrNew)
+    disp('coreRxnAbbrNew')
+    disp(coreRxnAbbrNew)
+end
 
 % Identify the stoichiometrically consistent subset of the model
 massBalanceCheck = 0;
@@ -800,7 +813,7 @@ end
 
 %compare core reactions
 param.message = 'stoichiometric inconsistency';
-[coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(model,stoichConsistModel, coreMetAbbr, coreRxnAbbr, [], [], param);
+[coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(model, stoichConsistModel, coreMetAbbr, coreRxnAbbr, [], [], param);
 
 % Use the stoichiometrically consistent submodel henceforth
 if isfield(model, 'metRemoveBool') || isfield(model, 'rxnRemoveBool')
@@ -834,10 +847,10 @@ else
 end
 
 if param.debug
-    save([param.workingDirectory filesep '4.debug_prior_to_setting_default_min_and_max_bounds.mat'])
+    save([param.workingDirectory filesep '5.debug_prior_to_setting_default_min_and_max_bounds.mat'])
 end
 
-%% 5. Set limit bounds
+%% 6. Set limit bounds
 
 % Change default bounds to new default bounds
 model.lb(model.lb == minBound) = param.TolMinBoundary;
@@ -880,7 +893,7 @@ switch sol.stat
         error('Infeasible model with default bounds.')
 end
 
-%% 6. Identify active genes
+%% 7. Identify active genes
 % Based on bibliomic, transcriptomic and proteomic data
 
 % Include transcriptomic data
@@ -944,9 +957,13 @@ if isfield(specificData, 'transcriptomicData') && ~isempty(specificData.transcri
     model.geneExpVal(locb(bool)) = specificData.transcriptomicData.expVal(bool);
     activeModelGeneBool = model.geneExpVal >= exp(param.transcriptomicThreshold);
     
-    % inactive genes identified by transcriptomic data
-    specificData.inactiveGenesOmics = model.genes(model.geneExpVal < exp(param.transcriptomicThreshold));
-
+    if param.inactiveGenesTranscriptomics
+        %append inactive genes to inactive genes list
+        omicsInactiveGenes = model.genes(model.geneExpVal < exp(param.transcriptomicThreshold));
+    else
+        omicsInactiveGenes = [];
+    end
+    
     if param.printLevel > 2
         var1 = log(model.geneExpVal(isfinite(model.geneExpVal)));
         figure()
@@ -954,7 +971,7 @@ if isfield(specificData, 'transcriptomicData') && ~isempty(specificData.transcri
         ylim = get(gca, 'ylim');
         hold on
         line([param.transcriptomicThreshold param.transcriptomicThreshold], [ylim(1) ylim(2)], 'color', 'r', 'LineWidth', 2);
-        t = text(param.transcriptomicThreshold, ylim(2) - [ylim(2) * 0.05], 'Threshold');
+        t = text(param.transcriptomicThreshold, ylim(2) - (ylim(2) * 0.05), 'Threshold');
         t.FontSize = 14;
         hold off
         title('Expression threshold')
@@ -993,7 +1010,7 @@ if  isfield(specificData, 'proteomicData') && ~isempty(specificData.proteomicDat
     proteomics_data.Properties.VariableNames = {'genes' 'expVal'};
     temp = {};
     if isnumeric(proteomics_data.genes)
-        for i=1:length(proteomics_data.genes)
+        for i = 1:length(proteomics_data.genes)
             temp(end + 1, 1) = {num2str(proteomics_data.genes(i))};
         end
         proteomics_data.geneId = temp;
@@ -1001,7 +1018,7 @@ if  isfield(specificData, 'proteomicData') && ~isempty(specificData.proteomicDat
         proteomics_data.geneId = proteomics_data.genes;
     end
     modelProtein = false(length(proteomics_data.genes), 1);
-    for i=1:length(proteomics_data.geneId)
+    for i = 1:length(proteomics_data.geneId)
         if ismember(proteomics_data.geneId(i), model.genes)
             modelProtein(i) = 1;
         end
@@ -1016,7 +1033,7 @@ if  isfield(specificData, 'proteomicData') && ~isempty(specificData.proteomicDat
         end
         activeProteins = temp;
     end
-    for i=1:length(model.genes)
+    for i = 1:length(model.genes)
         if ismember(model.genes(i), activeProteins)
             activeModelGeneBool(i) = 1;
         end
@@ -1025,19 +1042,16 @@ end
 
 % Active genes from transcriptomic and proteomic data
 if ~any(activeModelGeneBool)
-    activeEntrezGeneID = [];
+    activeOmicsGeneID = [];
 else
     try
-        activeEntrezGeneID = model.genes(activeModelGeneBool);
+        activeOmicsGeneID = model.genes(activeModelGeneBool);
     catch
-        activeEntrezGeneID = model.genes(find(activeModelGeneBool));
+        activeOmicsGeneID = model.genes(find(activeModelGeneBool));
     end
 end
 
-%unique genes
-[activeEntrezGeneID, activeEntrezGeneID0] = deal(unique(activeEntrezGeneID));
-
-%% 7. Close ions
+%% 8. Close ions
 if param.closeIons && isfield(model,'metFormulas')
     %extracellular metabolites
     exMet = contains(model.mets, '[e]');
@@ -1066,10 +1080,10 @@ else
 end
 
 if param.debug
-    save([param.workingDirectory filesep '7.debug_prior_to_exchange_constraints.mat'])
+    save([param.workingDirectory filesep '8.debug_prior_to_exchange_constraints.mat'])
 end
 
-%% 8. Close exchange reactions
+%% 9. Close exchange reactions
 %attempts to finds the reactions in the model which export/import from the model
 %boundary i.e. mass unbalanced reactions
 %e.g. Exchange reactions
@@ -1117,7 +1131,7 @@ if param.closeUptakes && isfield(specificData, 'mediaData')
     end
 end
 
-%% 9. Close sink and demand reactions - Set non-core sinks and demands to inactive
+%% 10. Close sink and demand reactions - Set non-core sinks and demands to inactive
 coreRxnBool = ismember(model.rxns, coreRxnAbbr);
 
 model.model = model.lb;
@@ -1208,36 +1222,30 @@ elseif sol.stat == 1
     end
 end
 
-%% 
 if param.metabolomicsBeforeExtraction && param.debug
-    save([param.workingDirectory filesep '10.a.debug_prior_to_metabolomicsBeforeExtraction.mat'])
+    save([param.workingDirectory filesep '10.debug_prior_to_metabolomicsBeforeExtraction.mat'])
 end
 
-%% 10. Set growth media constraints, before model extraction
-if param.metabolomicsBeforeExtraction
-    % Growth media constraints, before any other constraint applied to model
+%% 11. Metabolic constraints, before model extraction
+
+% 12. Cell culture data - Set growth media constraints, before model extraction
+% Growth media constraints, before any other constraint applied to model
+if param.growthMediaBeforeReactionRemoval
     [model, specificData, coreRxnAbbr, modelGenerationReport] = ...
         growthMediaToModel(model, specificData, param, coreRxnAbbr, modelGenerationReport);
+    save([param.workingDirectory filesep '12.debug_prior_to_metabolomic_constraints.mat'])
 end
 
-%% 
-if param.metabolomicsBeforeExtraction && param.debug
-    save([param.workingDirectory filesep '10.b.debug_prior_to_metabolomic_constraints.mat'])
-end
-
-%% 10. Set metabolic constraints, before model extraction
-if param.metabolomicsBeforeExtraction
-    % Metabolomic data constraints, before any other constraint applied to model
+% 13. Metabolomics - Set metabolic constraints, before model extraction
+% Metabolomic data constraints, before any other constraint applied to model
+if param.metabolomicsBeforeExtraction    
     [model, specificData, coreRxnAbbr, ~, modelGenerationReport] = ...
         metabolomicsTomodel(model, specificData, param, coreRxnAbbr, modelGenerationReport);
+    save([param.workingDirectory filesep '13.debug_prior_to_custom_constraints.mat'])
 end
 
-%%
-if param.debug
-    save([param.workingDirectory filesep '10.debug_prior_to_custom_constraints.mat'])
-end
 
-%% 11. Add custom constraints
+%% 14. Add custom constraints
 modelBefore = model;
 if isfield(specificData, 'rxns2constrain') && ~isempty(specificData.rxns2constrain)
     
@@ -1259,8 +1267,14 @@ if isfield(specificData, 'rxns2constrain') && ~isempty(specificData.rxns2constra
         end
         specificData.rxns2constrain(bool, :) = [];
     end
-    [model, rxnsConstrained, rxnBoundsCorrected] = constrainRxns(model, specificData, param, 'customConstraints', param.printLevel);
-    
+    [model, fo] = constrainRxns(model, specificData, param, 'customConstraints', param.printLevel);
+    if param.printLevel > 0 && ~isempty(rxnsConstrained) && ~isempty(rxnBoundsCorrected)
+        disp('Rxns constrained:')
+        disp(rxnsConstrained)
+        disp('Rxn bounds corrected:')
+        disp(rxnBoundsCorrected)
+    end
+
     if param.printLevel > 1
         fprintf('%s\n','Table of custom constraints with non-default bounds:')
         rxnBool = ismember(model.rxns, specificData.rxns2constrain.rxns);
@@ -1307,10 +1321,10 @@ if isfield(specificData, 'rxns2constrain') && ~isempty(specificData.rxns2constra
 end
 
 if param.debug
-    save([param.workingDirectory filesep '11.debug_prior_to_setting_coupled_reactions.mat'])
+    save([param.workingDirectory filesep '14.debug_prior_to_setting_coupled_reactions.mat'])
 end
 
-%% 12. Set coupled reactions (if provided)
+%% 15. Set coupled reactions (if provided)
 if param.addCoupledRxns == 1 && isfield(specificData, 'coupledRxns') && ~isempty(specificData.coupledRxns)
     
     if param.printLevel > 0
@@ -1340,15 +1354,21 @@ if param.addCoupledRxns == 1 && isfield(specificData, 'coupledRxns') && ~isempty
         'The sense constraint in ''specificData.coupledRxns.csence'' (''L'': <= , ''G'': >=, ''E'': =), is missing for for at least 1 reaction');
     for i = 1:length(specificData.coupledRxns.coupledRxnsList)
         
+        if ischar(specificData.coupledRxns.c{i})
+            coefficients = str2double(strsplit(specificData.coupledRxns.c{i}, ', '));
+        else
+            coefficients = specificData.coupledRxns.c{i};
+        end
+
         assert(~any(0 == findRxnIDs(model, split(specificData.coupledRxns.coupledRxnsList{i}, ', '))), 'A coupledRxn is missing in the model')
         % Add coupled reactions
         if isa(specificData.coupledRxns.d, 'double')
             model = addCOBRAConstraints(model, split(specificData.coupledRxns.coupledRxnsList{i}, ', '), ...
-                specificData.coupledRxns.d(i), 'c', str2num(specificData.coupledRxns.c{i}), ...
+                specificData.coupledRxns.d(i), 'c', coefficients, ...
                 'dsense', specificData.coupledRxns.csence{i}, 'ConstraintID', specificData.coupledRxns.couplingConstraintID{i});
         elseif isa(specificData.coupledRxns.d, 'cell')
             model = addCOBRAConstraints(model, split(specificData.coupledRxns.coupledRxnsList{i}, ', '), ...
-                specificData.coupledRxns.d{i}, 'c', str2num(specificData.coupledRxns.c{i}), ...
+                specificData.coupledRxns.d{i}, 'c', coefficients, ...
                 'dsense', specificData.coupledRxns.csence{i}, 'ConstraintID', specificData.coupledRxns.couplingConstraintID{i});
         end
         
@@ -1408,44 +1428,56 @@ if param.addCoupledRxns == 1 && isfield(specificData, 'coupledRxns') && ~isempty
 end
 
 if param.debug
-    save([param.workingDirectory filesep '12.debug_prior_to_removing_inactive_reactions.mat'])
+    save([param.workingDirectory filesep '15.debug_prior_to_removing_inactive_reactions.mat'])
 end
 
-%% 13. Remove inactive reactions - "bibliomics" (if provided)
-if (isfield(specificData, 'rxns2remove') && ~isempty(specificData.rxns2remove)) || isfield(specificData, 'inactiveReactions')
-    %save old model
+%% 16. Remove inactive reactions - "bibliomics" (if provided)
+
+if (isfield(specificData, 'rxns2remove') && ~isempty(specificData.rxns2remove))
+    % Save old model
     oldModel = model;
     
-    [nMet,nRxn] = size(model.S);
+    [~, nRxn] = size(model.S);
     if param.printLevel > 0
         disp('--------------------------------------------------------------')
         disp(' ')
     end
     
-    if isfield(specificData, 'inactiveReactions')
-        specificData.rxns2remove.rxns = unique([specificData.rxns2remove.rxns; specificData.inactiveReactions]);
-    end
-    
-    % Check if the rxns2remove are present in coreRxnAbbr
-    if any(ismember(specificData.rxns2remove.rxns, coreRxnAbbr)) && ~param.curationOverOmics
-        rxnsIgnored = specificData.rxns2remove.rxns(ismember(specificData.rxns2remove.rxns, coreRxnAbbr));
+    % Check if the rxns2remove are present in coreOmicsRxnAbbr
+    if any(ismember(specificData.rxns2remove.rxns, coreOmicsRxnAbbr)) && ~param.curationOverOmics
+
+        % Omics data over manual curation
+        rxnsIgnoredBool = ismember(specificData.rxns2remove.rxns, coreOmicsRxnAbbr);
         if param.printLevel > 0
-            disp([num2str(numel(rxnsIgnored)), ...
-                ' manually selected inactive reactions have been marked as active by omics data and will be discarded:'])
+            disp([num2str(sum(rxnsIgnoredBool)), ...
+                ' manually selected inactive reactions have been marked as active by omics data:'])
             disp(rxnsIgnored)
         end
-        bool = ismember(specificData.rxns2remove.rxns, coreRxnAbbr);
-        specificData.rxns2remove(bool,:) = [];
-    elseif any(ismember(specificData.rxns2remove.rxns, coreRxnAbbr)) && param.curationOverOmics
-        rxnsIgnored = coreRxnAbbr(ismember(coreRxnAbbr, specificData.rxns2remove.rxns));
+        specificData.rxns2remove(rxnsIgnoredBool, :) = [];
+
+    elseif any(ismember(specificData.rxns2remove.rxns, coreOmicsRxnAbbr)) && param.curationOverOmics
+
+        % Manual curation over omics data
+        rxnsIgnoredBool = ismember(coreOmicsRxnAbbr, specificData.rxns2remove.rxns);
         if param.printLevel > 0
-            disp([num2str(numel(rxnsIgnored)), ...
+            disp([num2str(sum(rxnsIgnoredBool)), ...
                 ' manually selected inactive reactions have been marked as active by omics data and will be discarded in omics data:'])
             disp(rxnsIgnored)
         end
-        coreRxnAbbr(ismember(coreRxnAbbr, specificData.rxns2remove.rxns)) = [];
+        coreOmicsRxnAbbr(rxnsIgnoredBool) = [];
     end
     
+    % Set coreRxnAbbr
+    coreRxnAbbr = unique([coreBiblioRxnAbbr; coreOmicsRxnAbbr]);
+    if param.activeOverInactive && any(ismember(specificData.rxns2remove.rxns, coreRxnAbbr))
+        % If there is a rxn in both, inactive and active bibliomic data,
+        % active rxns takes precedence over inactive rxns
+        specificData.rxns2remove.rxns(ismember(specificData.rxns2remove.rxns, coreRxnAbbr)) = [];
+    elseif ~param.activeOverInactive && any(ismember(coreRxnAbbr, specificData.rxns2remove.rxns))
+        % Inactive rxns takes precedence over active rxns
+        coreRxnAbbr(ismember(coreRxnAbbr, specificData.rxns2remove.rxns)) = [];
+    end
+
     if param.printLevel > 0
         disp(['Removing ' num2str(numel(specificData.rxns2remove.rxns)) ' reactions ...'])
         disp(' ')
@@ -1465,7 +1497,7 @@ if (isfield(specificData, 'rxns2remove') && ~isempty(specificData.rxns2remove)) 
     % Check feasibility
     sol = optimizeCbModel(modelTemp);
     if  sol.stat ~= 1
-        inactiveRelaxOptions=param.relaxOptions;
+        inactiveRelaxOptions = param.relaxOptions;
         inactiveRelaxOptions.internalRelax = 2;
         inactiveRelaxOptions.exchangeRelax = 1;
         %only allow to relax the bounds that have changed
@@ -1498,75 +1530,108 @@ if (isfield(specificData, 'rxns2remove') && ~isempty(specificData.rxns2remove)) 
     
     %check if core metabolites or reactions have been removed
     param.message = 'bibliomic inactive reactions';
-    [coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(oldModel,model, coreMetAbbr, coreRxnAbbr, [], [], param);
+    [coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(oldModel, model, coreMetAbbr, coreRxnAbbr, [], [], param);
 end
 
 if param.debug
-    save([param.workingDirectory filesep '13.debug_prior_to_removing_inactive_genes.mat'])
+    save([param.workingDirectory filesep '16.debug_prior_to_removing_inactive_genes.mat'])
 end
 
-%% 14. Remove inactive genes - "bibliomics" (if provided) (not present in the coreRxns)
-if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes)
+%% 17. Remove inactive genes (if provided) (not present in the coreRxns)
+if (isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes)) || ~isempty(omicsInactiveGenes)
     %save input model
     oldModel = model;
-    
-    [nMet,nRxn] = size(model.S);
+
+    [~, nRxn] = size(model.S);
     if param.printLevel > 0
         disp('--------------------------------------------------------------')
         disp(' ')
         fprintf('%s\n',['Removing ' int2str(length(specificData.inactiveGenes)) ' inactive genes...'])
     end
     
-    % Check if the inactive genes are present in omics data
-    if ~isempty(activeEntrezGeneID)
-        if any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && param.curationOverOmics
-            %manual curation takes precedence over omics
-            genesIgnoredBool = ismember(activeEntrezGeneID, specificData.inactiveGenes);
-            if param.printLevel > 0
-                disp([num2str(sum(genesIgnoredBool)), ...
-                    ' active genes from the omics data have been manually assigned as inactive genes and will be discarded from the omics data:'])
-                disp(activeEntrezGeneID(genesIgnoredBool))
-                %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
-                %disp('This is a link to <a href="http://www.google.com">Google</a>.')
-            end
-            activeEntrezGeneID(ismember(activeEntrezGeneID, specificData.inactiveGenes)) = [];
-        elseif any(ismember(specificData.inactiveGenes, activeEntrezGeneID)) && ~param.curationOverOmics
-            %omics takes precedence over manual curation
-            genesIgnoredBool = ismember(specificData.inactiveGenes, activeEntrezGeneID);
-            if param.printLevel > 0
-                disp([num2str(sum(genesIgnoredBool)), ' manually selected inactive genes have been marked as active by omics data and will be discarded:'])
-                disp(specificData.inactiveGenes(genesIgnoredBool))
-            end
-            specificData.inactiveGenes(ismember(specificData.inactiveGenes, activeEntrezGeneID)) = [];
+    activeGeneID0 = unique([specificData.activeGenes; activeOmicsGeneID]);
+    
+    if param.curationOverOmics 
+        % Manual curation takes precedence over omics
+
+        if ~isempty(omicsInactiveGenes)
+            % Identifies inactive genes from omics that should be active
+            % accoding by manual curation
+            inactive2removeBool = ismember(omicsInactiveGenes, specificData.activeGenes);
+            omicsInactiveGenes(inactive2removeBool) = [];
         end
+        
+        % Identifies active genes from omics that should be inactive
+        % accoding by manual curation
+        active2removeBool = ismember(activeOmicsGeneID, specificData.inactiveGenes);
+
+        if param.printLevel > 0 && sum(active2removeBool) > 0
+            disp([num2str(sum(active2removeBool)), ...
+                ' active genes from the omics data have been manually assigned as inactive genes and will be discarded from the omics data:'])
+            disp(activeOmicsGeneID(active2removeBool))
+            %https://blogs.mathworks.com/community/2007/07/09/printing-hyperlinks-to-the-command-window/
+            %disp('This is a link to <a href="http://www.google.com">Google</a>.')
+        end
+        activeOmicsGeneID(active2removeBool) = [];
+
+    elseif ~param.curationOverOmics && ~isempty(specificData.inactiveGenes) 
+        % Omics takes precedence over manual curation
+
+        % Identifies inactive genes from manual curation that should be 
+        % active accoding by omics data
+        inactive2removeBool = ismember(specificData.inactiveGenes, activeOmicsGeneID);
+        specificData.inactiveGenes(inactive2removeBool) = [];
+        
+        % Identifies active genes from manual curation that should be 
+        % inactive accoding by omics data
+        active2removeBool = ismember(specificData.activeGenes, omicsInactiveGenes);
+
+        if param.printLevel > 0 && sum(active2removeBool) > 0
+            disp([num2str(sum(active2removeBool)), ...
+                ' manually selected active genes have been marked as inactive by omics data and will be discarded:'])
+            disp(specificData.activeGenes(active2removeBool))
+        end
+        specificData.activeGenes(active2removeBool) = [];
     else
-        if param.printLevel > 0
-            disp('no manually selected active genes and omics data')
-        end
+        active2removeBool = 0;
     end
 
-    if param.inactiveGenesTranscriptomics
-        %append inactive genes to inactive genes list
-        specificData.inactiveGenes = [specificData.inactiveGenes; specificData.inactiveGenesOmics];
+    if param.printLevel > 0 && sum(active2removeBool) == 0
+        disp('no manually selected active genes and omics data')
     end
 
+    % Set inactive genes
+    inactiveGenes = unique([omicsInactiveGenes; specificData.inactiveGenes]);
+    % Set active genes
+    activeGenes = unique([activeOmicsGeneID; specificData.activeGenes]);
 
+    if param.activeOverInactive 
+        % Active genes takes precedence over inactiveGenes
+        inactiveGenes(ismember(inactiveGenes, activeGenes)) = [];    
+    else 
+        % Inactive genes takes precedence over activeGenes
+        activeGenes(ismember(activeGenes, inactiveGenes)) = [];    
+    end
+
+    
     % Check if the inactive genes are present in the model
-    inactiveGeneBool = ismember(model.genes, specificData.inactiveGenes);
-    if ~any(inactiveGeneBool)
+    inactiveGenesBool = ismember(model.genes, inactiveGenes);
+    if ~any(inactiveGenesBool)
         warning('None of the inactive genes were present in the model')
     else
         %check if there are any inactive genes that are not present in the
         %model
-        absentGeneBool = ~ismember(specificData.inactiveGenes, model.genes);
+        absentGeneBool = ~ismember(inactiveGenes, model.genes);
         if any(absentGeneBool)
             if param.printLevel > 0
                 disp([num2str(nnz(absentGeneBool)) ' inactive genes are not in the model to be removed.'])
             end
+            if param.printLevel > 1
+                disp(inactiveGenes(absentGeneBool))
+            end
         end
         
         % Bool inactive genes
-        inactiveGenesBool = ismember(model.genes, specificData.inactiveGenes);
         coreRxnsBool = ismember(model.rxns, coreRxnAbbr);
         genesFromCoreBool = any(model.rxnGeneMat(coreRxnsBool, :))';
         inactiveGenesNonCoreBool = inactiveGenesBool & ~genesFromCoreBool;
@@ -1602,9 +1667,9 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
             if solution.stat == 0
                 error('Infeasible model after removing inactive genes (that do not affect core reactions) and relaxation failed.')
             end
-            %identify reactions not to be removed
+            % Identify reactions not to be removed
             relaxedReactionBool = solution.p > feasTol | solution.q > feasTol;
-            %remove reactions necessary to be relaxed from reactions to be deleted
+            % Remove reactions necessary to be relaxed from reactions to be deleted
             deletedReactions = setdiff(deletedReactions, model.rxns(relaxedReactionBool));
             
             if param.printLevel > 0
@@ -1615,21 +1680,29 @@ if isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGenes
                     printConstraints(model, -inf, inf, relaxedReactionBool);
                 end
             end
-            %add reaction to core reactions
+            % Add reaction to core reactions
             coreRxnAbbr = [coreRxnAbbr; model.rxns(relaxedReactionBool)];
         end
-        
+
+        if param.activeOverInactive % Active rxns takes precedence over reactions removed from inactive genes
+            deletedReactions(ismember(deletedReactions, coreRxnAbbr)) = [];
+        end
         [model, deletedMetabolites] = removeRxns(model, deletedReactions, 'metRemoveMethod', 'exclusive', 'ctrsRemoveMethod', 'infeasible');
-        
+
         % Remove unused genes
-        [model, inactiveGenes] = removeUnusedGenes(model);
+        [model, inactiveGenesRemoved] = removeUnusedGenes(model);
         
-        notInactiveGenes = setdiff(inactiveGenesNonCore,inactiveGenes);
+        notInactiveGenes = setdiff(inactiveGenesNonCore, inactiveGenesRemoved);
         if param.printLevel > 0
             nNotInactiveGenes = numel(notInactiveGenes);
             fprintf('%s\n',[num2str(nNotInactiveGenes) ...
                 ' genes were specified as inactive but not removed as they are' ...
                 ' involved in reactions that may be catalysed by other gene products, or are essential.'])
+            if ~isempty(deletedMetabolites)
+                disp(' ')
+                disp('Deleted metabolites:')
+                disp(deletedMetabolites)
+            end
         end
         if param.printLevel > 2
             disp(notInactiveGenes)
@@ -1655,9 +1728,13 @@ end
 %     [model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationReport] = metabolomicsTomodel(model, specificData, coreRxnAbbr, modelGenerationReport);
 % end
 
-%% 16. Test feasibility
-% Test feasability & relax bounds if needed (only exchange reactions)
+if param.debug
+    save([param.workingDirectory filesep '17.debug_prior_to_flux_consistency_check.mat'])
+end
 
+%% 18. Find flux consistent subset (Gene information)
+
+% Test feasability & relax bounds if needed (only exchange reactions)
 sol = optimizeCbModel(model);
 if  sol.stat ~= 1
     if param.printLevel > 0
@@ -1678,15 +1755,9 @@ if  sol.stat ~= 1
     model = modelTemp;
 end
 
-if param.debug
-    save([param.workingDirectory filesep '16.debug_prior_to_flux_consistency_check.mat'])
-end
-
-%% 17. Find flux consistent subset (Gene information)
-
-if any((model.ub-model.lb)<feasTol*10 & model.lb~=model.ub)
+if any((model.ub - model.lb) < feasTol * 10 & model.lb ~= model.ub)
     disp('Reactions with small difference between upper and lower bounds, may cause difficulty with flux consistency ...')
-    printConstraints(model,-inf,inf,(model.ub-model.lb)<feasTol*10 & model.lb~=model.ub)
+    printConstraints(model, -inf, inf, (model.ub - model.lb) < feasTol * 10 & model.lb ~= model.ub)
 end
 
 
@@ -1729,7 +1800,7 @@ fluxInConsistentMetAbbr = model.mets(~fluxConsistentMetBool);
 fluxInConsistentRxnAbbr = model.rxns(~fluxConsistentRxnBool);
 
 param.message = 'flux inconsistency';
-[coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(model,fluxConsistModel, coreMetAbbr, coreRxnAbbr, fluxInConsistentMetAbbr, fluxInConsistentRxnAbbr, param);
+[coreMetAbbr, coreRxnAbbr] = coreMetRxnAnalysis(model, fluxConsistModel, coreMetAbbr, coreRxnAbbr, fluxInConsistentMetAbbr, fluxInConsistentRxnAbbr, param);
 
 % Proceed with flux consistent model
 model = fluxConsistModel;
@@ -1766,10 +1837,10 @@ if  sol.stat ~= 1
 end
 
 if strcmp(param.modelExtractionAlgorithm, 'thermoKernel') && param.debug
-    save([param.workingDirectory filesep '17.debug_prior_to_thermo_flux_consistency_check.mat'])
+    save([param.workingDirectory filesep '18.debug_prior_to_thermo_flux_consistency_check.mat'])
 end
 
-%% 18. Find thermodynamically consistent subset
+%% 19. Find thermodynamically consistent subset
 % Identify the largest thermodynamically flux consistent subset (if the 
 % thermoKernel algorithm is selected as the model extraction algorithm for step 20)
 if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
@@ -1891,8 +1962,6 @@ if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
         % Regenerate model.rxnGeneMat to be sure it is correct
         model = buildRxnGeneMat(model);
         
-        activeEntrezGeneID = unique(activeEntrezGeneID);
-        
         if 0
             %apply thermodynamic flux consistency bounds
             model.lb_old = model.lb;
@@ -1937,26 +2006,21 @@ if strcmp(param.modelExtractionAlgorithm, 'thermoKernel')
 end
 
 if strcmp(param.activeGenesApproach,'oneRxnPerActiveGene') && param.debug
-    save([param.workingDirectory filesep '18.debug_prior_to_create_dummy_model.mat'])
+    save([param.workingDirectory filesep '19.debug_prior_to_create_dummy_model.mat'])
 end
 
-%% 19. Identify active reactions from genes
-if ~isempty(activeEntrezGeneID)
-
-    % Active genes from omics data and manual curation
-    if isfield(specificData, 'activeGenes')
-        activeEntrezGeneID = [activeEntrezGeneID; specificData.activeGenes];
-    end
+%% 20. Identify active reactions from genes
+if ~isempty(activeGenes)
     
-    bool = ismember(activeEntrezGeneID, model.genes);
+    bool = ismember(activeGenes, model.genes);
     if any(~bool)
         if param.printLevel > 0
             fprintf('%u%s\n', nnz(~bool), ' active genes not present in model.genes, so they are ignored.')
             if param.printLevel > 1
-                disp(activeEntrezGeneID(~bool))
+                disp(activeGenes(~bool))
             end
         end
-        activeEntrezGeneID = activeEntrezGeneID(bool);
+        activeGenes = activeGenes(bool);
     end
     
     switch param.activeGenesApproach
@@ -1965,10 +2029,10 @@ if ~isempty(activeEntrezGeneID)
 %             metsOrig = model.mets;
 %             rxnsOrig = model.rxns;
             % Create a createDummyModel for the active genes
-            [model, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, param.TolMaxBoundary, param.modelExtractionAlgorithm,coreRxnAbbr, param.fluxEpsilon);
+            [model, coreRxnAbbr] = createDummyModel(model, activeGenes, param.TolMaxBoundary, param.modelExtractionAlgorithm,coreRxnAbbr, param.fluxEpsilon);
             
         case 'deleteModelGenes'
-            [~, ~, rxnInGenes, ~] = deleteModelGenes(model, activeEntrezGeneID);
+            [~, ~, rxnInGenes, ~] = deleteModelGenes(model, activeGenes);
             coreRxnAbbr = unique([coreRxnAbbr; rxnInGenes]);
             
         otherwise
@@ -1981,7 +2045,7 @@ if ~isempty(activeEntrezGeneID)
         paramFluxConsistency.epsilon = param.fluxEpsilon;
         paramFluxConsistency.method = param.fluxCCmethod;
         paramFluxConsistency.printLevel = param.printLevel;
-        [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel] =...
+        [~, fluxConsistentRxnBool, ~, ~, model, fluxConsistModel] =...
             findFluxConsistentSubset(model, paramFluxConsistency);
         
         param.message = 'dummy model flux inconsistency';
@@ -2003,7 +2067,7 @@ if ~isempty(activeEntrezGeneID)
             paramThermoFluxConsistency.acceptRepairedFlux = 1;
         end
         paramThermoFluxConsistency.iterationMethod = 'random';
-        [thermoFluxConsistentMetBool, thermoFluxConsistentRxnBool, model, thermoConsistModel]...
+        [~, thermoFluxConsistentRxnBool, model, thermoConsistModel]...
             = findThermoConsistentFluxSubset(model, paramThermoFluxConsistency);
         if ~any(thermoFluxConsistentRxnBool)
             error('Model is completely thermodynamically flux inconsistent prior to tissue specific model generation')
@@ -2015,23 +2079,25 @@ if ~isempty(activeEntrezGeneID)
 end
 
 if param.debug
-    save([param.workingDirectory filesep '19.debug_prior_to_create_tissue_specific_model.mat'])
+    save([param.workingDirectory filesep '20.debug_prior_to_create_tissue_specific_model.mat'])
 end
 
-%% 20. Model extraction
-% extract a context specific model. 
+%% 21. Model extraction
+% Extract a context specific model. 
+
+% 22. thermoKernel (if selected)
 modelExtraction
 
+if param.debug
+    save([param.workingDirectory filesep '22.debug_prior_to_finalFluxConsistency.mat'])
+end
 
-%% x. Final flux consistency
+% Final flux consistency
 if param.finalFluxConsistency
-    if param.debug
-        save([param.workingDirectory filesep '21.debug_prior_to_finalFluxConsistency.mat'])
-    end
     if 1
         paramConsistency.epsilon = param.fluxEpsilon;
         paramConsistency.method = param.fluxCCmethod;
-        [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model, fluxConsistModel]...
+        [~, ~, ~, ~, model, fluxConsistModel]...
             = findFluxConsistentSubset(model, paramConsistency);
         
         solution = optimizeCbModel(fluxConsistModel);
@@ -2111,29 +2177,24 @@ if param.finalFluxConsistency
     end
 end
 
-%% 21. Growth media integration after extraction
-if ~param.metabolomicsBeforeExtraction && param.debug
-    save([param.workingDirectory filesep '21a.debug_prior_to_growthMediaToModel.mat'])
-end
+%% 11. Metabolic constraints, before model extraction
 
-%%
-if ~param.metabolomicsBeforeExtraction
+% 12. Cell culture data - Set growth media constraints, before model extraction
+% Growth media constraints, before any other constraint applied to model
+if ~param.growthMediaBeforeReactionRemoval
     [model, specificData, coreRxnAbbr, modelGenerationReport] = ...
         growthMediaToModel(model, specificData, param, coreRxnAbbr, modelGenerationReport);
+    save([param.workingDirectory filesep 'x12.debug_prior_to_metabolomic_constraints.mat'])
 end
 
-%% Metabolomic data integration, after extraction
-if ~param.metabolomicsBeforeExtraction && param.debug
-    save([param.workingDirectory filesep '21b.debug_prior_to_metabolomicsTomodel.mat'])
-end
-
-%%
-if ~param.metabolomicsBeforeExtraction
-    [model, specificData, coreRxnAbbr, ~ ,modelGenerationReport] = ...
+% 13. Metabolomics - Set metabolic constraints, before model extraction
+% Metabolomic data constraints, before any other constraint applied to model
+if ~param.metabolomicsBeforeExtraction    
+    [model, specificData, coreRxnAbbr, ~, modelGenerationReport] = ...
         metabolomicsTomodel(model, specificData, param, coreRxnAbbr, modelGenerationReport);
+    save([param.workingDirectory filesep 'x13.debug_prior_to_final_adjustments.mat'])
 end
 
-%%
 sol = optimizeCbModel(model);
 if  sol.stat ~= 1
     disp('--------------------------------------------------------------')
@@ -2148,7 +2209,7 @@ elseif sol.stat == 1
     end
 end
 
-%% 21. Final adjustments
+%% 23. Final adjustments
 
 % Save the used specificData
 model.XomicsToModelSpecificData = specificData;
@@ -2191,25 +2252,23 @@ model.relaxationUsed = relaxationUsed;
 model = orderModelFields(model);
 
 if param.debug
-    save([param.workingDirectory filesep '22.debug_prior_to_debugXomicsToModel.mat'])
+    save([param.workingDirectory filesep '23.debug_prior_to_debugXomicsToModel.mat'])
 end
 
+modelGenerationReport.coreRxnAbbr = coreRxnAbbr;
+modelGenerationReport.coreMetAbbr = coreMetAbbr;
+modelGenerationReport.activeGenes = activeGenes;
 
-
-modelGenerationReport.coreRxnAbbr=coreRxnAbbr;
-modelGenerationReport.coreMetAbbr=coreMetAbbr;
-modelGenerationReport.activeEntrezGeneID=activeEntrezGeneID;
-
-modelGenerationReport.coreRxnAbbr0=coreRxnAbbr0;
-modelGenerationReport.coreMetAbbr0=coreMetAbbr0;
-modelGenerationReport.activeEntrezGeneID0=activeEntrezGeneID0;
+modelGenerationReport.coreRxnAbbr0 = coreRxnAbbr0;
+modelGenerationReport.coreMetAbbr0 = coreMetAbbr0;
+modelGenerationReport.activeGeneID0 = activeGeneID0;
 
 % Debug XomicsToModel
 if param.debug && param.printLevel > 0
     fprintf('%s\n','debugXomicsToModel:')
     disp(' ')
     coreData.rxns = coreRxnAbbr0;
-    coreData.genes = str2double(activeEntrezGeneID0);
+    coreData.genes = str2double(activeGeneID0);
     coreData.mets = totalMets;
     %should give same result
     if 1
