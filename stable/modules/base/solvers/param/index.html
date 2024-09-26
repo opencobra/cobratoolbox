@@ -308,7 +308,7 @@ without regularisation.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.param.getCobraSolverParams">
-<span class="sig-name descname"><span class="pre">getCobraSolverParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverType</span></em>, <em class="sig-param"><span class="pre">paramNames</span></em>, <em class="sig-param"><span class="pre">paramStructure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/getCobraSolverParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getCobraSolverParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">paramNames</span></em>, <em class="sig-param"><span class="pre">paramStructure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/getCobraSolverParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function gets the specified paramStructure in <cite>paramNames</cite> from
 paramStructure, the global cobra paramters variable or default values set within
 this script.</p>
@@ -318,11 +318,11 @@ paramStructure &gt; solver type paramStructure &gt; default paramStructure</p>
 See examples below.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>varargout = getCobraSolverParams</strong> (<em>solverType, paramNames, paramStructure</em>)</p>
+<dd class="field-odd"><p><strong>varargout = getCobraSolverParams</strong> (<em>problemType, paramNames, paramStructure</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>solverType</strong> – Type of solver used: ‘LP’, ‘MILP’, ‘QP’, ‘MIQP’</p></li>
+<li><p><strong>problemType</strong> – Type of problem solved: ‘LP’, ‘MILP’, ‘QP’, ‘MIQP’, ‘EP’, ‘CLP’</p></li>
 <li><p><strong>paramNames</strong> – Cell array of strings containing parameter names OR one
 parameter name as string</p></li>
 </ul>
@@ -381,11 +381,11 @@ overridden by cobra solver parameters provided by varagin either as parameter
 struct, or as parameter/value pairs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[problemTypeParams, solverParams] = parseSolverParameters</strong> (<em>problemType,varargin</em>)</p>
+<dd class="field-odd"><p><strong>[param, solverOnlyParams] = parseSolverParameters</strong> (<em>problemType,varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUT</dt>
 <dd class="field-even"><p><strong>problemType</strong> – The type of the problem to get parameters for
-(‘LP’,’MILP’,’QP’,’MIQP’,’NLP’,’EP’)</p>
+(‘LP’,’MILP’,’QP’,’MIQP’,’NLP’,’EP’,’CLP’)</p>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS</dt>
 <dd class="field-odd"><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
@@ -393,19 +393,16 @@ parameter/value pairs. A combination is possible, if
 the parameter struct is either at the beginning or the
 end of the optional input.
 All fields of the struct which are not COBRA parameters
-(see <cite>getCobraSolverParamsOptionsForType</cite>) for this
+(see <cite>getCobraParamsOptionsForType</cite>) for this
 problem type will be passed on to the solver in a
 solver specific manner.</p>
 </dd>
 <dt class="field-even">OUTPUTS</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>problemTypeParams</strong> – The COBRA Toolbox specific parameters for this
-problem type given the provided parameters</p></li>
-<li><p><strong>solverParams</strong> – Additional parameters provided which are not part
-of the COBRA parameters and are assumed to be part
-of direct solver input structs. For some solvers, it
-is essential to not include any extraneous fields that are
-outside the solver interface specification.</p></li>
+<li><p><strong>param</strong> – The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters</p></li>
+<li><p><strong>solverOnlyParams</strong> – Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
+For some solvers, it is essential to NOT include any extraneous fields that are outside the solver interface specification,
+otherwise an error will result.</p></li>
 </ul>
 </dd>
 </dl>

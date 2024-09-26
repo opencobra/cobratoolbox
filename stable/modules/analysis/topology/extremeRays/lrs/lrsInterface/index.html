@@ -341,6 +341,17 @@ modelName     string giving the prefix of the <a href="#id10"><span class="probl
 <blockquote>
 <div><p>It is assumed the file is pwd/<a href="#id12"><span class="problematic" id="id13">*</span></a>.ine, otherwise provide the full path.</p>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – parameter structure with the following fields:</p></li>
+<li><p><strong>*.positivity</strong> – if equals to 1, then positive orthant base</p></li>
+<li><p><strong>*.inequality</strong> – if equals to 1, then represent as two inequalities rather than a single equality</p></li>
+<li><p><strong>*.shellScript</strong> – if equals to 1, then lrs is run through a bash script</p></li>
+<li><p><strong>*.redund         if equals to 0, then remove redundant linear equalities</strong></p></li>
+</ul>
+</dd>
+</dl>
 <p>OUTPUT:
 Q             m x n integer matrix where each row is a variable and each column is a vertex or ray
 vertexBool         n x 1 Boolean vector indicating which columns of Q are vertices</p>
@@ -386,28 +397,20 @@ number of rows</p>
 <span class="sig-name descname"><span class="pre">lrsWriteHalfspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">csense</span></em>, <em class="sig-param"><span class="pre">modelName</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.lrsInterface.lrsWriteHalfspace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Outputs a file for lrs to convert an H-representation (half-space) of a
 polyhedron to a V-representation (vertex / ray) via vertex enumeration</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>lrsInputHalfspace</strong> (<em>A, D, filename, positivity, inequality, a, d, f, sh</em>)</p>
+<dd class="field-odd"><p><strong>lrsWriteHalfspace</strong> (<em>A, b, csense, modelName, param</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>A</strong> – matrix of linear equalities <span class="math notranslate nohighlight">\(A x =(a)\)</span></p></li>
-<li><p><strong>D</strong> – matrix of linear inequalities <span class="math notranslate nohighlight">\(D x \geq (d)\)</span></p></li>
-<li><p><strong>filename</strong> – base name of output file</p></li>
-</ul>
+<dd class="field-even"><p><strong>A</strong> – m x n matrix of linear constraints <span class="math notranslate nohighlight">\(A x (csense) b\)</span></p>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>positivity</strong> – {0, (1)} if positivity == 1, then positive orthant base</p></li>
-<li><p><strong>inequality</strong> – {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy</p></li>
-<li><p><strong>a</strong> – boundary values for matrix of linear equalities <span class="math notranslate nohighlight">\(A x = a\)</span></p></li>
-<li><p><strong>d</strong> – boundary values for matrix of linear inequalities <span class="math notranslate nohighlight">\(D x \geq d\)</span></p></li>
-<li><p><strong>f</strong> – linear objective for a linear optimization problem in rational arithmetic</p>
-<p>minimise <span class="math notranslate nohighlight">\(f^T x\)</span>,
-subject to <span class="math notranslate nohighlight">\(A x = (a)\)</span>, <span class="math notranslate nohighlight">\(D x \geq (d)\)</span></p>
-</li>
-<li><p><strong>sh</strong> – {(0), 1} if <cite>sh == 1</cite>, output a shell script for submitting qsub job</p></li>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>b</strong> – m x 1 rhs of linear constraints</p></li>
+<li><p><strong>csense</strong> – m x 1 char with (‘E’),’G’ or ‘L’</p></li>
+<li><p><strong>modelName</strong> – name of the model to be used when generating filenames, ‘model’ by default</p></li>
+<li><p><strong>param.positivity</strong> – {0, (1)} if positivity == 1, then positive orthant base</p></li>
+<li><p><strong>param.inequality</strong> – {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy</p></li>
 </ul>
 </dd>
 </dl>

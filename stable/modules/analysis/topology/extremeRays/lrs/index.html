@@ -339,26 +339,31 @@
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.topology.extremeRays.lrs.extremePools">
-<span class="sig-name descname"><span class="pre">extremePools</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">positivity</span></em>, <em class="sig-param"><span class="pre">inequality</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/lrs/extremePools.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.extremePools" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the extreme pools of a stoichiometric model using the vertex / facet enumeration package</p>
+<span class="sig-name descname"><span class="pre">extremePools</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/lrs/extremePools.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.lrs.extremePools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the extreme pools of a stoichiometric model using the vertex / facet enumeration package
+such that</p>
 <dl class="field-list simple">
 <dt class="field-odd">INPUT</dt>
-<dd class="field-odd"><p><strong>model</strong> – structure with:</p>
-<ul class="simple">
-<li><p>.S - <cite>m x n</cite> Stoichiometric matrix with integer coefficients. If no
-other inputs are specified it is assumed that all reactions are
-reversible and <cite>S.v = 0</cite></p></li>
-<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean vector with 1 for internal reactions</p></li>
-<li><p>.description - description</p></li>
-</ul>
+<dd class="field-odd"><p><strong>model.S  - `m x</strong> (<em>n + k</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUT</dt>
+<dt class="field-even">OPTIONAL INPUTS</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><strong>model.SConsistentRxnBool</strong> – n x 1  boolean indicating  stoichiometrically consistent metabolites</p></li>
+<li><p><strong>model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.</strong></p></li>
+<li><p><strong>model.SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.</strong></p></li>
 <li><p><strong>positivity</strong> – {0, (1)} if <cite>positivity == 1</cite>, then positive orthant base</p></li>
 <li><p><strong>inequality</strong> – {(0), 1} if <cite>inequality == 1</cite>, then use two inequalities rather than a single equaltiy</p></li>
 </ul>
 </dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> – p x m matrix of non-negative entries such that P*N = 0.</p></li>
+<li><p><strong>vertexBool         n x 1 Boolean vector indicating which columns of P are vertices</strong></p></li>
+<li><p><strong>N</strong> – m x n stoichiometric matrix used such that P*N.</p></li>
+</ul>
+</dd>
 </dl>
+<p>Author(s) Ronan Fleming</p>
 </dd></dl>
 
 </section>

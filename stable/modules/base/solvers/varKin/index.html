@@ -251,8 +251,8 @@
 </ul>
 </div>
 <span class="target" id="module-src.base.solvers.varKin"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.varKin.optimizeVKmodel">
-<span class="sig-name descname"><span class="pre">optimizeVKmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">parms</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/optimizeVKmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.optimizeVKmodel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object mat" id="src.base.solvers.varKin.optimizeVKmodel0">
+<span class="sig-name descname"><span class="pre">optimizeVKmodel0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">parms</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/optimizeVKmodel0.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.optimizeVKmodel0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for finding a solution of the nonlinear system
 <span class="math notranslate nohighlight">\(h(x) = f(x) = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (I)
 or <span class="math notranslate nohighlight">\(h(x) = (f(x)^T, l(x)^T)^T = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (II)
@@ -269,7 +269,7 @@ If <cite>sonver</cite> field is empty, the code will use LMTR as the default.</p
 </dd>
 <dt class="field-even">INPUT</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – stracture includes <cite>F</cite>, <cite>R</cite> and/or <cite>L</cite></p>
+<li><p><strong>model</strong> – structure includes <cite>F</cite>, <cite>R</cite> and/or <cite>L</cite></p>
 <ul>
 <li><p>.F - forward stoichiometric matrix</p></li>
 <li><p>.R - reverse stoichiometric matrix</p></li>
