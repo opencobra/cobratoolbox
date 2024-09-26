@@ -19,14 +19,14 @@ function variable = loadPSCMfile(fileName, searchDirectory)
 % variable:             Matlab variable returned
 %
 % EXAMPLE: 
-%           % Giving only WBM nickname loads the latest available WBM:
-%           male = loadPSCMfile('Harvey');
-%           % Giving the exact name of the .mat file loads the exact
-%           specified mode:
-%           female = loadPSCMfile('Harvetta_1_03d'); 
-%           % Specifiying the search directory loads the .mat file
-%           within that directory:
-%           male = loadPSCMfile('Harvetta','MYDIRECTORY')
+%               % Giving only WBM nickname loads the latest available WBM:
+%               male = loadPSCMfile('Harvey');
+%               % Giving the exact name of the .mat file loads the exact
+%               specified mode:
+%               female = loadPSCMfile('Harvetta_1_03d'); 
+%               % Also specifiying the search directory loads the .mat file
+%               within that directory:
+%               male = loadPSCMfile('Harvetta','MYDIRECTORY')
 %
 % AUTHORS:
 %   - Ines Thiele, 2020
@@ -131,8 +131,8 @@ function nameOfWBM = findLatestWBM(filename, searchDirectory, excludeVersion)
 % Author: 
 %         - Tim Hensen, August 2024
 
-if nargin <2
-    searchDirectory = 'WBM_reconstructions';
+if isempty(searchDirectory)
+    searchDirectory = what('2020_WholeBodyModelling\Data').path;
 end
 
 if nargin<3
