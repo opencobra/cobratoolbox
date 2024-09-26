@@ -1,4 +1,4 @@
-f-hostedname: MATLAB Tests
+name: MATLAB Tests
 on:
   pull_request:
     branches:
