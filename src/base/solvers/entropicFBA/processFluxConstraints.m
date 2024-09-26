@@ -27,7 +27,7 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 %  param.solver:    {'pdco',('mosek')}
 %  param.debug:     {(0),1} 1 = run in debug mode 
 %  param.method:    {('fluxes'),'fluxesConcentrations'} maximise entropy of fluxes (default) or also concentrations
-%  param.maxUnidirectionalFlux: maximum unidirectional flux (inf by default)
+%  param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
 %  param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
 %  param.internalNetFluxBounds: ('original')   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds
 %                                'directional' = use model.lb and model.ub to set the direction of net flux bounds (ignoring magnitude)
@@ -57,22 +57,6 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 
 %% processing for fluxes
 
-%find the maximal set of metabolites and reactions that are stoichiometrically consistent
-if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
-    massBalanceCheck=0;
-    [~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, massBalanceCheck, param.printLevel-1);
-end
-
-N=model.S(:,model.SConsistentRxnBool);
-[m,n]=size(N);
-k=nnz(~model.SConsistentRxnBool);
-
-if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
-    %default linear objective sense is maximisation
-    model.osenseStr = 'max';
-end
-[~,osense] = getObjectiveSense(model);
-
 if ~isfield(param,'maxUnidirectionalFlux')
     %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
     param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));
@@ -90,6 +74,26 @@ if ~isfield(param,'externalNetFluxBounds')
     param.externalNetFluxBounds='original';
 end
 
+if ~isfield(param,'method')
+    param.method='fluxes';
+end
+
+%find the maximal set of metabolites and reactions that are stoichiometrically consistent
+if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
+    massBalanceCheck=0;
+    [~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, massBalanceCheck, param.printLevel-1);
+end
+
+N=model.S(:,model.SConsistentRxnBool);
+[m,n]=size(N);
+k=nnz(~model.SConsistentRxnBool);
+
+if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
+    %default linear objective sense is maximisation
+    model.osenseStr = 'max';
+end
+[~,osense] = getObjectiveSense(model);
+
 if isfield(param,'internalBounds')
     error('internalBounds replaced by other parameter options')
 end
@@ -98,6 +102,7 @@ if isfield(param,'debug') && param.debug
     solution_optimizeCbModel = optimizeCbModel(model);
     switch solution_optimizeCbModel.stat
         case 0
+            disp(solution_optimizeCbModel.origStat)
             message = 'Input model is not feasible according to optimizeCbModel.';
             warning(message)
             solution = solution_optimizeCbModel;
@@ -193,7 +198,7 @@ end
 switch param.externalNetFluxBounds
     case 'none'
         if param.printLevel>0
-            fprintf('%s\n','Using no internal net flux bounds.')
+            fprintf('%s\n','Using no external net flux bounds.')
         end
         lb(~model.SConsistentRxnBool,1)=-ones(k,1)*inf;
         ub(~model.SConsistentRxnBool,1)= ones(k,1)*inf;
@@ -296,6 +301,13 @@ else
     %osense is only used to changes the sense of the model.c part
     ci = osense*model.c(model.SConsistentRxnBool);
     ce = osense*model.c(~model.SConsistentRxnBool);
+end
+
+if ~isfield(model,'cf') && isfield(model,'c_vf')
+    model.cf=model.c_vf;
+end
+if ~isfield(model,'cr') && isfield(model,'c_vr')
+    model.cr=model.c_vr;
 end
 
 if ~isfield(model,'cf') || isempty(model.cf)

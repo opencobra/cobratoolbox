@@ -712,7 +712,7 @@ switch solution.stat
         end
     case 2
         if printLevel>0
-            warning('Unbounded solution.');
+            warning('Unbounded model.');
         end
     case 3
         if printLevel>0

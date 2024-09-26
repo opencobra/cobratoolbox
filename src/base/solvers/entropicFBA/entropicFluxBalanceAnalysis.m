@@ -93,10 +93,13 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.x0u:     m x 1    non-negative upper bound on initial molecular concentrations
 % model.xl:      m x 1    non-negative lower bound on final molecular concentrations 
 % model.xu:      m x 1    non-negative lower bound on final molecular concentrations
-% model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations  
-% model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  
+% model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations    dxl <= x - x0
+% model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  x - x0 <= dxu
 %        
 % model.Q        (n + k) x (n + k)    positive semi-definite matrix to minimise (1/2)v'*Q*v
+%
+% model.H        (n + k) x (n + k)    positive semi-definite matrix in objective (1/2)(v-h)'*H*(v-h) to be minimised 
+% model.h        (n + k) x 1          vector in objective (1/2)(v-h)'*H*(v-h) to be minimised
 %
 % model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
@@ -158,6 +161,9 @@ if ~isfield(param,'debug')
 end
 if ~isfield(param,'solver')
     param.solver='mosek';
+end
+if ~isfield(param,'entropyMaxMethod')
+    param.method=param.entropyMaxMethod; %TODO 
 end
 if ~isfield(param,'method')
     param.method='fluxes';

@@ -428,6 +428,8 @@ switch solver
         param = updateStructData(param,solverParams);
         %problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
         
+        param = mosekParamStrip(param);
+
         % Optimize the problem.
         % min osense*0.5*x'*F*x + osense*c'*x
         % st. blc <= A*x <= buc

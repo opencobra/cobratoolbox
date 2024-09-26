@@ -130,7 +130,7 @@ function solution = solveCobraEP(EPproblem, varargin)
 %
 % Author(s): Ronan M.T. Fleming, 2021
 
-[problemTypeParams, solverParams] = parseSolverParameters('EP', varargin{:});
+[problemTypeParams, solverOnlyParams] = parseSolverParameters('EP', varargin{:});
 
 if ~isfield(problemTypeParams,'debug')
     problemTypeParams.debug = 1;
@@ -138,7 +138,7 @@ end
 
 % Remove outer function specific parameters to avoid crashing solver interfaces
 % Default EP parameters are removed within solveCobraEP, so are not removed here
-solverParams = mosekParamStrip(solverParams);
+solverOnlyParams = mosekParamStrip(solverOnlyParams);
 
 if any(EPproblem.lb>EPproblem.ub)
     error('EPproblem.lb>EPproblem.ub');
@@ -178,21 +178,26 @@ if problemTypeParams.debug
         case 'mosek'
             %https://docs.mosek.com/8.1/toolbox/solving-linear.html
             if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
+                solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
             end
             if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
+                solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
             end
+
+            %remove any fields with names that do not begin with 'MSK_'
+            solverOnlyParams = mosekParamStrip(solverOnlyParams);
+
+            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,'minimize');
+            
             %If the feasibility tolerance is changed by the solverParams
             %struct, this needs to be forwarded to the cobra Params for the
             %final consistency test!
             if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
+                solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
             end
-            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,'minimize');
-            
+
             %parse mosek result structure
-            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,EPproblem,solverParams,problemTypeParams.printLevel);
+            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,EPproblem,solverOnlyParams,problemTypeParams.printLevel);
         
             switch solutionLP2.stat
                 case 0
@@ -329,38 +334,38 @@ switch problemTypeParams.solver
             end
         end
                 
-        if isfield(solverParams,'d1')
-            d1 = solverParams.d1;
+        if isfield(solverOnlyParams,'d1')
+            d1 = solverOnlyParams.d1;
         else
             d1 = 1e-4;
         end
-        if isfield(solverParams,'d2')
-            d2 = solverParams.d2;
+        if isfield(solverOnlyParams,'d2')
+            d2 = solverOnlyParams.d2;
         else
             d2 = 1e-4;
         end
-        if isfield(solverParams,'x0')
-            x0 = solverParams.x0;
+        if isfield(solverOnlyParams,'x0')
+            x0 = solverOnlyParams.x0;
         else
             x0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverParams,'y0')
-            y0 = solverParams.y0;
+        if isfield(solverOnlyParams,'y0')
+            y0 = solverOnlyParams.y0;
         else
             y0 = ones(size(Aeq,1),1);
         end
-        if isfield(solverParams,'z0')
-            z0 = solverParams.z0;
+        if isfield(solverOnlyParams,'z0')
+            z0 = solverOnlyParams.z0;
         else
             z0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverParams,'xsize')
-            xsize = solverParams.xsize;
+        if isfield(solverOnlyParams,'xsize')
+            xsize = solverOnlyParams.xsize;
         else
             xsize = 1;
         end
-        if isfield(solverParams,'zsize')
-            zsize = solverParams.zsize;
+        if isfield(solverOnlyParams,'zsize')
+            zsize = solverOnlyParams.zsize;
         else
             zsize = 1;
         end
@@ -807,23 +812,23 @@ switch problemTypeParams.solver
         %set default mosek parameters for this type of problem
         paramMosek=mosekParamSetEFBA;
         
-        if ~isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-            if isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = solverParams.feasTol;
+        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
+            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
+                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = solverOnlyParams.feasTol;
             else
                 paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = problemTypeParams.feasTol;
             end
         end
-        if ~isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-            if isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = solverParams.optTol;
+        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
+            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
+                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = solverOnlyParams.optTol;
             else
                 paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = problemTypeParams.optTol;
             end
         end
         
         % only set the print level if not already set via solverParams structure
-        if ~isfield(solverParams, 'MSK_IPAR_LOG')
+        if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
             switch problemTypeParams.printLevel
                 case 0
                     echolev = 0;
@@ -868,7 +873,8 @@ switch problemTypeParams.solver
         
         %parse mosek result structure      
        %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,printLevel)
-        [stat,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
+       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,printLevel)
 
         solution.stat = stat;
         solution.origStat = origStat;
@@ -1026,46 +1032,49 @@ switch solution.stat
                 disp(solution.origStat)
                 %solution.origStat: 'PRIMAL_INFEASIBLE_CER'
                 solutionLP = solveCobraLP(EPproblem);
+                statLP=solutionLP.stat;
+                
             case 'mosek'
                 %https://docs.mosek.com/8.1/toolbox/solving-linear.html
                 if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
+                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
                 end
                 if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                    solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
+                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
                 end
                 %If the feasibility tolerance is changed by the solverParams
                 %struct, this needs to be forwarded to the cobra Params for the
                 %final consistency test!
                 if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
+                    solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
                 end
 
                 
                 % only set the print level if not already set via solverParams structure
-                if ~isfield(solverParams, 'MSK_IPAR_LOG')
+                if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
                     switch problemTypeParams.printLevel
                         case 0
                             echolev = 0;
                         case 1
                             echolev = 3;
                         case 2
-                            solverParams.MSK_IPAR_LOG_INTPNT = 1;
-                            solverParams.MSK_IPAR_LOG_SIM = 1;
+                            solverOnlyParams.MSK_IPAR_LOG_INTPNT = 1;
+                            solverOnlyParams.MSK_IPAR_LOG_SIM = 1;
                             echolev = 3;
                         otherwise
                             echolev = 0;
                     end
                 end
                 if echolev == 0
-                    solverParams.MSK_IPAR_LOG = 0;
+                    solverOnlyParams.MSK_IPAR_LOG = 0;
                     cmd = ['minimize echo(' int2str(echolev) ')'];
                 else
                     cmd = 'minimize';
                 end
-                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,cmd);
+                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,cmd);
                 
-                [stat,origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,prob,solverParams,printLevel);
+                %[stat,origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,prob,problemTypeParams.printLevel);
+                [statLP,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
                 
    
         end
