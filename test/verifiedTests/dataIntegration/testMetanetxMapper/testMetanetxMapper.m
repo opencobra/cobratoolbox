@@ -7,12 +7,6 @@
 %     - Farid Zare 03/07/2024
 %
 
-
-% define the features required to run the test
-requiredToolboxes = { 'bioinformatics_toolbox', 'optimization_toolbox' };
-
-requiredSolvers = { 'dqqMinos', 'matlab' };
-
 % require the specified toolboxes and solvers, along with a UNIX OS
 solversPkgs = prepareTest();
 
