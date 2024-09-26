@@ -126,7 +126,7 @@ else
     param.verify = 0;
 end
 
-validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct'};
+validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct', 'gurobi'};
 
 if 1
     %mlb = magnitude of a large bound

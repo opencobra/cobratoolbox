@@ -7,7 +7,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % INPUTS:
 %    solverName:           Solver name
-%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` (opt, default
+%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` 'EP', 'CLP' (opt, default
 %                          `LP`, `all`).  'all' attempts to change all applicable
 %                          solvers to solverName.  This is purely a shorthand
 %                          convenience.
@@ -179,6 +179,7 @@ global CBT_LP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_EP_SOLVER;
+global CBT_CLP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
 global ENV_VARS;
@@ -217,6 +218,8 @@ if validationLevel == -1
             CBT_MIQP_SOLVER = solverName;
         case 'EP'
             CBT_EP_SOLVER = solverName;
+        case 'CLP'
+            CBT_CLP_SOLVER = solverName;
     end
     solverOK = NaN;
     return
@@ -244,7 +247,7 @@ configEnvVars();
 
 % Print out all solvers defined in global variables CBT_*_SOLVER
 if nargin < 1
-    definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER];
+    definedSolvers = [CBT_LP_SOLVER, CBT_MILP_SOLVER, CBT_QP_SOLVER, CBT_MIQP_SOLVER, CBT_NLP_SOLVER, CBT_CLP_SOLVER, CBT_EP_SOLVER];
     if isempty(definedSolvers)
         fprintf('No solvers are defined!\n');
     else
@@ -378,8 +381,6 @@ if ~contains(solverType, SOLVERS.(solverName).type)
     end
 end
 
-
-
 % add the solver path for GUROBI, MOSEK or CPLEX
 if contains(solverName, 'tomlab_cplex') || contains(solverName, 'cplex_direct') && ~isempty(TOMLAB_PATH)
     TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
@@ -510,8 +511,8 @@ end
 
 % set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
-    if 0 %set to 1 to debug a new solver
-        if strcmp(solverName,'cplexlp')
+    if 1 %set to 1 to debug a new solver
+        if strcmp(solverName,'mosek')
             pause(0.1);
         end
     end
@@ -522,7 +523,11 @@ if solverOK
         eval(['oldval = CBT_', solverType, '_SOLVER;']);
         eval(['CBT_', solverType, '_SOLVER = solverName;']);
         % validate with a simple problem.
-        problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        if strcmp(solverName,'mosek') && strcmp(solverType,'CLP') || strcmp(solverType,'all')
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);  
+        else
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        end
         try
             %This is the code that actually tests if a solver is working
             if validationLevel>1
@@ -532,8 +537,12 @@ if solverOK
                 eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
             end
         catch ME
+            %This is the code that describes what went wrong if a call to a solver does not work           
             if printLevel > 0
+                fprintf(2,'The identifier was:\n%s',ME.identifier);
+                fprintf(2,'There was an error! The message was:\n%s',ME.message);
                 disp(ME.message);
+                rethrow(ME)
             end
             solverOK = false;
             eval(['CBT_', solverType, '_SOLVER = oldval;']);

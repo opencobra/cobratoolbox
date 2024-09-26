@@ -500,9 +500,9 @@ classdef COBRArrow
             
             % Convert specific fields in the struct to appropriate MATLAB types
             resultStruct.rxns = cellfun(@char, cell(tempStruct.rxns), 'UniformOutput', false)';
-            resultStruct.flux = double(tempStruct.flux)';
+            resultStruct.flux = cellfun(@double, cell(tempStruct.flux))';
             resultStruct.status = char(tempStruct.status);
-            resultStruct.objective_value = double(tempStruct.objective_value);
+            resultStruct.objective_value = cellfun(@double, cell(tempStruct.objective_value));
         end
         
         function persistModel(obj, schemaName, toOverwrite)
@@ -1065,7 +1065,7 @@ classdef COBRArrow
             columnData = pyArrowTable.columns{1}.to_pylist();
             
             % Convert the Python list to a MATLAB double array
-            data = double(columnData);
+            data = cellfun(@double, cell(columnData));
             
             % Transpose the double array to match the expected MATLAB format
             fieldData = data';
@@ -1139,9 +1139,9 @@ classdef COBRArrow
             ncols = dimensionsArray(2);
             
             % Extract row, column, and value data from the PyArrow table
-            row = double(pyArrowTable.columns{1}.to_pylist());
-            col = double(pyArrowTable.columns{2}.to_pylist());
-            val = double(pyArrowTable.columns{3}.to_pylist());
+            row = cellfun(@double, cell(pyArrowTable.columns{1}.to_pylist()));
+            col = cellfun(@double, cell(pyArrowTable.columns{2}.to_pylist()));
+            val = cellfun(@double, cell(pyArrowTable.columns{3}.to_pylist()));
             
             % Construct a sparse matrix from the row, column, and value data
             fieldData = sparse(row, col, val, nrows, ncols);
@@ -1236,7 +1236,7 @@ classdef COBRArrow
             columnData = pyArrowTable.columns{1}.to_pylist();
             
             % Convert the Python list to a MATLAB int64 array
-            data = int64(columnData);
+            data = cellfun(@int64, cell(columnData));
             % Transpose the integer array to match the expected MATLAB format
             fieldData = data';
         end
