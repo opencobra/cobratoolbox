@@ -1,10 +1,10 @@
-function [params, solverOnlyParams] = parseSolverParameters(problemType, varargin)
+function [param, solverOnlyParams] = parseSolverParameters(problemType, varargin)
 % Gets default cobra solver parameters for a problem of type problemType, unless 
 % overridden by cobra solver parameters provided by varagin either as parameter
 % struct, or as parameter/value pairs.
 %
 % USAGE:
-%    [params, solverOnlyParams] = parseSolverParameters(problemType,varargin)
+%    [param, solverOnlyParams] = parseSolverParameters(problemType,varargin)
 %
 % INPUT:
 %    problemType:       The type of the problem to get parameters for
@@ -21,7 +21,7 @@ function [params, solverOnlyParams] = parseSolverParameters(problemType, varargi
 %                       solver specific manner.
 %
 % OUTPUTS:
-%    params: The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters
+%    param: The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters
 %
 %    solverOnlyParams:  Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
 %                       For some solvers, it is essential to NOT include any extraneous fields that are outside the solver interface specification,
@@ -89,24 +89,49 @@ else
 end
 
 % set up the cobra parameters
-params = struct();
+param = struct();
 
 for i = 1:numel(defaultParams(:,1))
     % if the field is part of the optional parameters (i.e. explicitly provided) use it.
     if isfield(solverOnlyParams,defaultParams{i,1})
-        params.(defaultParams{i,1}) = solverOnlyParams.(defaultParams{i,1});
+        param.(defaultParams{i,1}) = solverOnlyParams.(defaultParams{i,1});
         % and remove the field from the struct for the solver specific parameters.
         solverOnlyParams = rmfield(solverOnlyParams,defaultParams{i,1});
     else
         % otherwise use the default parameter
-        params.(defaultParams{i,1}) = defaultParams{i,2};
+        param.(defaultParams{i,1}) = defaultParams{i,2};
     end
 end
 
-% %duplicate this parameter in both structures
-% if isfield(params,'printLevel') && ~isfield(solverOnlyParams,'printLevel')
-%     solverOnlyParams.printLevel = params.printLevel;
-% end
-% if isfield(params,'debug') && ~isfield(solverOnlyParams,'debug')
-%     solverOnlyParams.debug = params.debug;
-% end
+%move following set of parameters from solverOnlyParams to param
+if isfield(solverOnlyParams,'maxConc')
+    param.maxConc = solverOnlyParams.maxConc;
+    solverOnlyParams = rmfield(solverOnlyParams,'maxConc');
+end
+if isfield(solverOnlyParams,'method')
+    param.method = solverOnlyParams.method;
+    solverOnlyParams = rmfield(solverOnlyParams,'method');
+end
+if isfield(solverOnlyParams,'maxUnidirectionalFlux')
+    param.maxUnidirectionalFlux = solverOnlyParams.maxUnidirectionalFlux;
+    solverOnlyParams = rmfield(solverOnlyParams,'maxUnidirectionalFlux');
+end
+if isfield(solverOnlyParams,'minUnidirectionalFlux')
+    param.minUnidirectionalFlux = solverOnlyParams.minUnidirectionalFlux;
+    solverOnlyParams = rmfield(solverOnlyParams,'minUnidirectionalFlux');
+end
+if isfield(solverOnlyParams,'internalNetFluxBounds')
+    param.internalNetFluxBounds = solverOnlyParams.internalNetFluxBounds;
+    solverOnlyParams = rmfield(solverOnlyParams,'internalNetFluxBounds');
+end
+if isfield(solverOnlyParams,'externalNetFluxBounds')
+    param.externalNetFluxBounds = solverOnlyParams.externalNetFluxBounds;
+    solverOnlyParams = rmfield(solverOnlyParams,'externalNetFluxBounds');
+end
+if isfield(solverOnlyParams,'rounding')
+    param.rounding = solverOnlyParams.rounding;
+    solverOnlyParams = rmfield(solverOnlyParams,'rounding');
+end
+if isfield(param,'printLevel')
+    solverOnlyParams.printLevel = param.printLevel -1;
+end

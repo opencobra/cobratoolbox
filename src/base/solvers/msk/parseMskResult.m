@@ -13,7 +13,12 @@ function [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskRes
 %  printLevel:  
 %
 % OUTPUTS:
-%  stat:     cobra toolbox status
+%  stat - Solver status in standardized form:
+%   * 0 - Infeasible problem
+%   * 1 - Optimal solution
+%   * 2 - Unbounded solution
+%   * 3 - Almost optimal solution
+%   * -1 - Some other problem (timelimit, numerical problem etc)
 %  origStat: solver status
 %  x:   primal variable vector         
 %  y:   dual variable vector to linear constraints (yl - yu)
@@ -39,6 +44,8 @@ stat =[];
 origStat = [];
 x = [];
 y = [];
+yl = [];
+yu = [];
 z = [];
 zl = [];
 zu = [];
@@ -60,7 +67,12 @@ if isfield(res, 'sol')
         origStat = res.sol.itr.solsta;
         %disp(origStat)
         switch origStat
-            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}
+            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL','UNKNOWN'}
+                if strcmp(res.rcodestr,'MSK_RES_TRM_STALL')
+                    warning('Mosek stalling, returning solution as it may be almost optimal')
+                else
+                    stat=-1; %some other problem
+                end
                 stat = 1; % optimal solution found
                 x=res.sol.itr.xx; % primal solution.
                 y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
@@ -193,7 +205,7 @@ else
         fprintf('%s\n',res.rmsg)
         fprintf('%s\n',res.rcodestr)
     end
-    origStat = [];
+    origStat = res.rcodestr;
     stat = -1;
 end
 

@@ -381,8 +381,6 @@ if ~contains(solverType, SOLVERS.(solverName).type)
     end
 end
 
-
-
 % add the solver path for GUROBI, MOSEK or CPLEX
 if contains(solverName, 'tomlab_cplex') || contains(solverName, 'cplex_direct') && ~isempty(TOMLAB_PATH)
     TOMLAB_PATH = strrep(TOMLAB_PATH, '~', getenv('HOME'));
@@ -513,8 +511,8 @@ end
 
 % set solver related global variables (only for actively maintained solver interfaces)
 if solverOK
-    if 0 %set to 1 to debug a new solver
-        if strcmp(solverName,'cplexlp')
+    if 1 %set to 1 to debug a new solver
+        if strcmp(solverName,'mosek')
             pause(0.1);
         end
     end
@@ -525,7 +523,11 @@ if solverOK
         eval(['oldval = CBT_', solverType, '_SOLVER;']);
         eval(['CBT_', solverType, '_SOLVER = solverName;']);
         % validate with a simple problem.
-        problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        if strcmp(solverName,'mosek') && strcmp(solverType,'CLP') || strcmp(solverType,'all')
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);  
+        else
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+        end
         try
             %This is the code that actually tests if a solver is working
             if validationLevel>1
