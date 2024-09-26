@@ -305,7 +305,10 @@
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.isCompatible">
 <span class="sig-name descname"><span class="pre">isCompatible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">specificSolverVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/isCompatible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.isCompatible" title="Permalink to this definition">¶</a></dt>
-<dd><p>determine the compatibility status of a solver based on the file compatMatrix.rst</p>
+<dd><p>determine the compatibility status of a solver based on the file compatMatrix.rst
+stored here cobratoolbox/docs/source/installation/compatMatrix.rst</p>
+<p>clear isCompatible when the compatMatrix has been changed as the data from compatMatrix
+is stored in a persistent variable</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
 <dd class="field-odd"><p><strong>compatibleStatus = isCompatible</strong> (<em>solverName, printLevel, specificSolverVersion</em>)</p>

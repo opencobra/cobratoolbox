@@ -297,7 +297,6 @@ respectively.</p>
 <li><p>.activeGenes - cell array of Entrez ID of genes that are known to be active based on the bibliomic data (Default: empty).</p></li>
 <li><p>.inactiveGenes - cell array of Entrez ID of genes known to be inactive based on the bibliomics data (Default: empty).</p></li>
 <li><p>.activeReactions -cell array of reaction identifiers know to be active based on bibliomic data (Default: empty).</p></li>
-<li><p>.inactiveReactions - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).</p></li>
 <li><dl class="simple">
 <dt>.coupledRxns -﻿Table containing information about the coupled reactions. This includes the coupled reaction identifier, the</dt><dd><p>list of coupled reactions, the coefficients of those reactions, the constraint, the sense or the directionality of the constraint,
 and the reference (Default: empty).</p>
@@ -327,7 +326,7 @@ and the reference (Default: empty).</p>
 <li><p>.rxns2add.lb: vector of reaction lower bounds</p></li>
 <li><p>.rxns2add.ub: vector of reaction upper bounds</p></li>
 <li><p>.rxns2add.geneRule: gene rules to which the reaction is subject</p></li>
-<li><p>.rxns2remove.rxns -﻿cell array of reaction identifiers to be removed from the generic model (Default: empty).</p></li>
+<li><p>.rxns2remove.rxns - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).</p></li>
 <li><p>.rxns2constrain -﻿Table where each row corresponds to a reaction to constrain (Default: empty).</p></li>
 <li><p>.rxns2constrain.rxns: reaction identifier</p></li>
 <li><p>.rxns2constrain.lb:</p></li>
@@ -378,6 +377,7 @@ and the reference (Default: empty).</p>
 <li><p>.findThermoConsistentFluxSubset - True to identify largest thermodynamically flux consistent set before extracting a subset with thermoKernel (Default: true)</p></li>
 <li><p>.weightsFromOmics - True to use weights derived from transcriptomic data when biasing inclusion of reactions with thermoKernel (Default: true)</p></li>
 <li><p>.curationOverOmics -﻿True to use literature curated data with priority over other omics data (Default: false).</p></li>
+<li><p>.activeOverInactive -﻿True to use active data with priority over inactive data (Default: false).</p></li>
 <li><p>.inactiveGenesTranscriptomics - ﻿Logical, indicate if inactive genes in the transcriptomic analysis should be added to the list of inactive genes (Default: true).</p></li>
 <li><p>.transcriptomicThreshold - Logarithmic scale transcriptomic cutoff threshold for determining whether or not a gene is active (Default: 0).</p></li>
 <li><p>.thresholdP -﻿Logarithmic scale proteomic cutoff threshold for determining whether or not a gene is active (Default: 0).</p></li>
@@ -594,7 +594,7 @@ true and false; default: true);</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>.modelExtractionAlgorithm - Extraction solver (Possible options: ‘fastCore’ and</dt><dd><p>‘thermoKernel’; default: ‘thermoKernel’)</p>
+<dt>.tissueSpecificSolver - Extraction solver (Possible options: ‘fastCore’ and</dt><dd><p>‘thermoKernel’; default: ‘thermoKernel’)</p>
 </dd>
 </dl>
 </li>

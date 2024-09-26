@@ -385,14 +385,16 @@ model.x0l:     m x 1    non-negative lower bound on initial molecular concentrat
 model.x0u:     m x 1    non-negative upper bound on initial molecular concentrations
 model.xl:      m x 1    non-negative lower bound on final molecular concentrations
 model.xu:      m x 1    non-negative lower bound on final molecular concentrations
-model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations
-model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations</p>
+model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations    dxl &lt;= x - x0
+model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  x - x0 &lt;= dxu</p>
 <p>model.Q        (n + k) x (n + k)    positive semi-definite matrix to minimise (1/2)v’<a href="#id58"><span class="problematic" id="id59">*</span></a>Q*v</p>
+<p>model.H        (n + k) x (n + k)    positive semi-definite matrix in objective (1/2)(v-h)’<a href="#id60"><span class="problematic" id="id61">*</span></a>H*(v-h) to be minimised
+model.h        (n + k) x 1          vector in objective (1/2)(v-h)’<a href="#id62"><span class="problematic" id="id63">*</span></a>H*(v-h) to be minimised</p>
 <p>model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
 model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites</p>
 <blockquote>
 <div><p>param.solver:                    {(‘pdco’),’mosek’}
-param.method:                    {(‘fluxes’),’fluxesConcentrations’,’fluxTracer’)} maximise entropy of fluxes or also concentrations
+param.method:                    {(‘fluxes’),’fluxConc’)} maximise entropy of fluxes or also concentrations
 param.printLevel:                {(0),1}</p>
 </div></blockquote>
 <dl>
@@ -404,7 +406,11 @@ param.internalNetFluxBounds:     ‘original’ (default) maintains direction an
 </div></blockquote>
 <p>Parameters related with concentration optimisation:
 param.maxConc:                   scalar maximum permitted metabolite concentration
-param.externalNetFluxBounds:</p>
+param.externalNetFluxBounds:     (‘original’) = use bounds on external reactions from model.lb and model.ub</p>
+<blockquote>
+<div><p>‘dxReplacement’ = replace model.lb and model.ub with bounds on change in concentration
+‘none’ = set exchange reactions to be unbounded</p>
+</div></blockquote>
 <p>model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
 model.T:              scalar temperature (default 310.15 Kelvin)</p>
 </dd>
@@ -413,18 +419,18 @@ model.T:              scalar temperature (default 310.15 Kelvin)</p>
 solution: solution structure with the following fields</p>
 <blockquote>
 <div><blockquote>
-<div><p><a href="#id60"><span class="problematic" id="id61">*</span></a>.v:   n x 1 double net flux
-<a href="#id62"><span class="problematic" id="id63">*</span></a>.vf:  n x 1 double unidirectional forward internal reaction flux
-<a href="#id64"><span class="problematic" id="id65">*</span></a>.vr:  n x 1 double unidirectional reverse internal reaction flux
-<a href="#id66"><span class="problematic" id="id67">*</span></a>.vt:  scalar total internal reaction flux sum(vf + vr)
-<a href="#id68"><span class="problematic" id="id69">*</span></a>.y_N: m × 1 double dual variable to steady state constraints
-<a href="#id70"><span class="problematic" id="id71">*</span></a>.y_C: z × 1 double dual variable to coupling constraints
-<a href="#id72"><span class="problematic" id="id73">*</span></a>.z_v: (n + k) x 1 double dual variable to box constraints on net flux
-<a href="#id74"><span class="problematic" id="id75">*</span></a>.z_vf: n x 1 double dual variable to box constraints on forward flux
-<a href="#id76"><span class="problematic" id="id77">*</span></a>.z_vr: n x 1 double dual variable to box constraints on reverse flux
-<a href="#id78"><span class="problematic" id="id79">*</span></a>.time: solve time
-<a href="#id80"><span class="problematic" id="id81">*</span></a>.stat: COBRA toolbox standard solution status
-<a href="#id82"><span class="problematic" id="id83">*</span></a>.origStat: solution status as provided by the solver</p>
+<div><p><a href="#id64"><span class="problematic" id="id65">*</span></a>.v:   n x 1 double net flux
+<a href="#id66"><span class="problematic" id="id67">*</span></a>.vf:  n x 1 double unidirectional forward internal reaction flux
+<a href="#id68"><span class="problematic" id="id69">*</span></a>.vr:  n x 1 double unidirectional reverse internal reaction flux
+<a href="#id70"><span class="problematic" id="id71">*</span></a>.vt:  scalar total internal reaction flux sum(vf + vr)
+<a href="#id72"><span class="problematic" id="id73">*</span></a>.y_N: m × 1 double dual variable to steady state constraints
+<a href="#id74"><span class="problematic" id="id75">*</span></a>.y_C: z × 1 double dual variable to coupling constraints
+<a href="#id76"><span class="problematic" id="id77">*</span></a>.z_v: (n + k) x 1 double dual variable to box constraints on net flux
+<a href="#id78"><span class="problematic" id="id79">*</span></a>.z_vf: n x 1 double dual variable to box constraints on forward flux
+<a href="#id80"><span class="problematic" id="id81">*</span></a>.z_vr: n x 1 double dual variable to box constraints on reverse flux
+<a href="#id82"><span class="problematic" id="id83">*</span></a>.time: solve time
+<a href="#id84"><span class="problematic" id="id85">*</span></a>.stat: COBRA toolbox standard solution status
+<a href="#id86"><span class="problematic" id="id87">*</span></a>.origStat: solution status as provided by the solver</p>
 </div></blockquote>
 <p>modelOut: solved model with optional input fields populated by defaults, if they were not provided</p>
 </div></blockquote>
@@ -444,14 +450,70 @@ param      parameter structure to be passed to the MOSEK solver</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.mosekParamStrip">
 <span class="sig-name descname"><span class="pre">mosekParamStrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/mosekParamStrip.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.mosekParamStrip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove outer function specific parameters to avoid crashing solver interfaces
-Default EP parameters are removed within solveCobraEP, so are not removed here</p>
+<dd><p>Remove non-modek parameters to avoid crashing solver interface</p>
 </dd></dl>
 
-<dl class="mat script">
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.processConcConstraints">
-<span class="sig-name descname"><span class="pre">processConcConstraints</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/processConcConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.processConcConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>processing for concentrations</p>
+<span class="sig-name descname"><span class="pre">processConcConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/processConcConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.processConcConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[] = processConcConstraints</strong> (<em>model,param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x (n + k)</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>(n + k) x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>(n + k) x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>(n + k) x 1</cite> Upper bounds on net flux</p></li>
+</ul>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
+model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
+model.rxns:</p>
+<blockquote>
+<div><p>model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+model.u0:      m x 1    standard transformed Gibbs energy of formation (default 0)
+model.c0l:     m x 1    non-negative lower bound on initial molecular concentrations
+model.c0u:     m x 1    non-negative upper bound on initial molecular concentrations
+model.cl:      m x 1    non-negative lower bound on final molecular concentrations
+model.cu:      m x 1    non-negative lower bound on final molecular concentrations
+model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
+model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
+model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
+model.temperature:              scalar temperature (default 310.15 Kelvin)</p>
+<p>param.method:  ‘fluxConc’
+param.maxConc: (1e4) maximim micromolar concentration allowed
+param.maxConc: (1e-4) minimum micromolar concentration allowed
+param.externalNetFluxBounds:   (‘original’) =</p>
+<blockquote>
+<div><p>‘dxReplacement’ = when model.dcl or model.dcu is provided then they set the upper and lower bounds on metabolite exchange</p>
+</div></blockquote>
+<p>param.printLevel:</p>
+</div></blockquote>
+<p>OUTPUTS:
+f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+u0:      m x 1    standard transformed Gibbs energy of formation, divided by RT (default 0)
+c0l:     m x 1    non-negative lower bound on initial molecular concentrations
+c0u:     m x 1    non-negative upper bound on initial molecular concentrations
+cl:      m x 1    non-negative lower bound on final molecular concentrations
+cu:      m x 1    non-negative lower bound on final molecular concentrations
+dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations
+dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations</p>
+<blockquote>
+<div><p>wl:     k x 1    lower bound on external net flux
+wu:     k x 1    upper bound on external net flux</p>
+<blockquote>
+<div><p>B:    <cite>m x k</cite>   External stoichiometric matrix
+b:     m x 1    RHS of S*v = b</p>
+</div></blockquote>
+</div></blockquote>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan Fleming</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -459,36 +521,63 @@ Default EP parameters are removed within solveCobraEP, so are not removed here</
 <span class="sig-name descname"><span class="pre">processFluxConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/processFluxConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.processFluxConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>processFluxConstraints</strong> (<em>model,param</em>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processFluxConstraints</strong> (<em>model</em>)</p></li>
+<li><p><strong>processFluxConstraints</strong> (<em>model,param</em>)</p></li>
+</ul>
 </dd>
 <dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model.osenseStr</strong></p></li>
-<li><p><strong>model.S</strong></p></li>
-<li><p><strong>model.SConsistentRxnBool</strong></p></li>
-<li><p><strong>model.lb</strong></p></li>
-<li><p><strong>model.ub</strong></p></li>
-<li><p><strong>model.c</strong></p></li>
-<li><p><strong>model.cf</strong></p></li>
-<li><p><strong>model.cr</strong></p></li>
-<li><p><strong>model.g</strong></p></li>
-<li><p><strong>param.printLevel</strong></p></li>
-<li><p><strong>param.maxUnidirectionalFlux</strong></p></li>
-<li><p><strong>param.solver</strong></p></li>
-<li><p><strong>param.minUnidirectionalFlux</strong></p></li>
-<li><p><strong>param.internalNetFluxBounds</strong></p></li>
-<li><p><strong>param.debug</strong></p></li>
-<li><p><strong>param.method</strong></p></li>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x (n + k)</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>(n + k) x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>(n + k) x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>(n + k) x 1</cite> Upper bounds on net flux</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="simple">
-<dt>OPTIONAL INPUTS</dt><dd><p>model.vfl:
-model.vfu:
-model.vrl:
-model.vru:</p>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><blockquote>
+<div><p>model.osenseStr: (‘max’) or ‘min’. The default linear objective sense is maximisation, i.e. ‘max’
+model.cf:       n x 1    real valued linear objective coefficients on internal forward flux (default 0)
+model.cr:       n x 1    real valued linear objective coefficients on internal reverse flux (default 0)
+model.g         n x 1    strictly positive weight on internal flux entropy maximisation (default 2)
+model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
+model.vfl:      n x 1    non-negative lower bound on internal forward flux (default 0)
+model.vfu:      n x 1    non-negative upper bound on internal forward flux (default inf)
+model.vrl:      n x 1    non-negative lower bound on internal reverse flux (default 0)
+model.vru:      n x 1    non-negative upper bound on internal reverse flux (default 0)</p>
+</div></blockquote>
+<p>param.printLevel:
+param.solver:    {‘pdco’,(‘mosek’)}
+param.debug:     {(0),1} 1 = run in debug mode
+param.method:    {(‘fluxes’),’fluxesConcentrations’} maximise entropy of fluxes (default) or also concentrations
+param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
+param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
+param.internalNetFluxBounds: (‘original’)   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds</p>
+<blockquote>
+<div><p>‘directional’ = use model.lb and model.ub to set the direction of net flux bounds (ignoring magnitude)
+‘none’        = ignore model.lb and model.ub and allow all net flues to be reversible</p>
+</div></blockquote>
 </dd>
 </dl>
+<p>OUTPUTS:
+vl:       n x 1    lower bound on internal net flux
+vu:       n x 1    upper bound on internal net flux
+vel:      k x 1    lower bound on external net flux
+veu:      k x 1    upper bound on external net flux
+vfl:      n x 1    non-negative lower bound on internal forward flux
+vfu:      n x 1    non-negative upper bound on internal forward flux
+vrl:      n x 1    non-negative lower bound on internal reverse flux
+vru:      n x 1    non-negative upper bound on internal reverse flux
+ci:       n x 1    linear objective coefficients corresponding to internal net fluxes
+vel:      k x 1    linear objective coefficients corresponding to external net fluxes
+cf:       n x 1    real valued linear objective coefficients on internal forward flux
+cr:       n x 1    real valued linear objective coefficients on internal reverse flux
+g         n x 1    strictly positive weight on internal flux entropy maximisation</p>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan Fleming</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -496,7 +585,7 @@ model.vru:</p>
 <span class="sig-name descname"><span class="pre">solveCobraEP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">EPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/solveCobraEP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.solveCobraEP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the following optimisation problem:</p>
 <dl class="simple">
-<dt>minimize   osense*(c.*d)’x + d.*x’(log(x) -1) + (1/2)*x’<a href="#id84"><span class="problematic" id="id85">*</span></a>Q*x</dt><dd><p>x</p>
+<dt>minimize   osense*(c.*d)’x + d.*x’(log(x) -1) + (1/2)*x’<a href="#id88"><span class="problematic" id="id89">*</span></a>Q*x</dt><dd><p>x</p>
 </dd>
 <dt>subject to    A*x    &lt;=&gt; b<span class="classifier">y</span></dt><dd><p>lb &lt;= x  &lt;=  ub      : z</p>
 </dd>
@@ -509,7 +598,7 @@ subject to    blc &lt;= A*x &lt;= buc   : y</p>
 <p>However, when EPproblem.P is present, the following optimisation problem
 is solved:</p>
 <dl class="simple">
-<dt>minimize   osense*(c.*d)’<a href="#id86"><span class="problematic" id="id87">*</span></a>x  + (d.*x)’<a href="#id88"><span class="problematic" id="id89">*</span></a>log(x./q) + (1/2)*x’<a href="#id90"><span class="problematic" id="id91">*</span></a>Q*x = osense*(c.*d)’<a href="#id92"><span class="problematic" id="id93">*</span></a>x  + (d.*x)’<a href="#id94"><span class="problematic" id="id95">*</span></a>log(x) - (d.*x)’<a href="#id96"><span class="problematic" id="id97">*</span></a>log(q) + (1/2)*x’<a href="#id98"><span class="problematic" id="id99">*</span></a>Q*x</dt><dd><p>x,q</p>
+<dt>minimize   osense*(c.*d)’<a href="#id90"><span class="problematic" id="id91">*</span></a>x  + (d.*x)’<a href="#id92"><span class="problematic" id="id93">*</span></a>log(x./q) + (1/2)*x’<a href="#id94"><span class="problematic" id="id95">*</span></a>Q*x = osense*(c.*d)’<a href="#id96"><span class="problematic" id="id97">*</span></a>x  + (d.*x)’<a href="#id98"><span class="problematic" id="id99">*</span></a>log(x) - (d.*x)’<a href="#id100"><span class="problematic" id="id101">*</span></a>log(q) + (1/2)*x’<a href="#id102"><span class="problematic" id="id103">*</span></a>Q*x</dt><dd><p>x,q</p>
 </dd>
 <dt>subject to    A*x    &lt;=&gt; b<span class="classifier">y</span></dt><dd><p>P*x - q =  0         : r
 lb &lt;= x  &lt;=  ub      : z</p>
@@ -614,9 +703,9 @@ optTol:         Optimality tolerance</p>
 <dt class="field-even">OUTPUT</dt>
 <dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields describing a LP solution:
 * .obj:          Objective value
-<a href="#id100"><span class="problematic" id="id101">*</span></a>.objLinear      osense*c’<a href="#id102"><span class="problematic" id="id103">*</span></a>x;
-<a href="#id104"><span class="problematic" id="id105">*</span></a>.objEntropy     d.*x’<a href="#id106"><span class="problematic" id="id107">*</span></a>(log(x) -1);
-<a href="#id108"><span class="problematic" id="id109">*</span></a>.objQuadratic   (1/2)*x’<a href="#id110"><span class="problematic" id="id111">*</span></a>Q*x;
+<a href="#id104"><span class="problematic" id="id105">*</span></a>.objLinear      osense*c’<a href="#id106"><span class="problematic" id="id107">*</span></a>x;
+<a href="#id108"><span class="problematic" id="id109">*</span></a>.objEntropy     d.*x’<a href="#id110"><span class="problematic" id="id111">*</span></a>(log(x) -1);
+<a href="#id112"><span class="problematic" id="id113">*</span></a>.objQuadratic   (1/2)*x’<a href="#id114"><span class="problematic" id="id115">*</span></a>Q*x;
 * .full:         Primal solution vector
 * .slack:        bl = A*x + s = bu
 * .rcost:        Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= x &lt;= ub\)</span>

@@ -240,8 +240,52 @@
 <span id="id1"></span><h1>Msk<a class="headerlink" href="#msk" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.solvers.msk"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.msk.parseMskResult">
-<span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">blc</span></em>, <em class="sig-param"><span class="pre">buc</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/msk/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.msk.parseMskResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>parse the res structure returned from mosek</p>
+<span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em>, <em class="sig-param"><span class="pre">solverOnlyParams</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/msk/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.msk.parseMskResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse the res structure returned from mosek
+:INPUTS: <strong>res</strong> – mosek results structure returned by mosekopt</p>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><p>prob:        mosek problem structure passed to mosekopt
+solverOnlyParams:      Additional parameters provided which are not part</p>
+<blockquote>
+<div><p>of the COBRA parameters and are assumed to be part
+of direct solver input structs. For some solvers, it
+is essential to not include any extraneous fields that are
+outside the solver interface specification.</p>
+</div></blockquote>
+<p>printLevel:</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stat - Solver status in standardized form</strong> –</p>
+<ul>
+<li><p>0 - Infeasible problem</p></li>
+<li><p>1 - Optimal solution</p></li>
+<li><p>2 - Unbounded solution</p></li>
+<li><p>3 - Almost optimal solution</p></li>
+<li><p>-1 - Some other problem (timelimit, numerical problem etc)</p></li>
+</ul>
+</li>
+<li><p><strong>origStat</strong> – solver status</p></li>
+<li><p><strong>x</strong> – primal variable vector</p></li>
+<li><p><strong>y</strong> – dual variable vector to linear constraints (yl - yu)</p></li>
+<li><p><strong>yl</strong> – dual variable vector to lower bound on linear constraints</p></li>
+<li><p><strong>yu</strong> – dual variable vector to upper bound on linear constraints</p></li>
+<li><p><strong>z</strong> – dual variable vector to box constraints (zl - zu)</p></li>
+<li><p><strong>zl</strong> – dual variable vector to lower bounds</p></li>
+<li><p><strong>zu</strong> – dual variable vector to upper bounds</p></li>
+<li><p><strong>k</strong> – dual variable vector to affine conic constraints</p></li>
+<li><p><strong>basis  basis returned by mosekopt</strong></p></li>
+<li><p><strong>pobjval</strong> – primal objective value returned by modekopt</p></li>
+<li><p><strong>dobjval</strong> – dual objective value returned by modekopt</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[~,res]=mosekopt(‘minimize’,prob);</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan Fleming</p>
 </dd></dl>
 
 </section>

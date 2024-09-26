@@ -467,7 +467,7 @@ colBool = [1; 1; 1; 0; 0];</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.topology.integerizeS">
-<span class="sig-name descname"><span class="pre">integerizeS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">SIntRxnBool</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/integerizeS.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.integerizeS" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">integerizeS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">internalRxnsOnly</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/integerizeS.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.integerizeS" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert an S matrix with some non integer coefficients into an S matrix
 with all integer coefficients
 assumes that there are a maximum of six significant digits in the biomass
@@ -475,13 +475,10 @@ reaction</p>
 <dl class="simple">
 <dt>INPUT</dt><dd><p>S         stoichiometric matrix</p>
 </dd>
-<dt>OPTIONAL INPUT</dt><dd><dl class="simple">
-<dt>SIntRxnBool         Boolean of internal (mass balanced) reactions.</dt><dd><p>If provided, only these reactions are integerised</p>
+<dt>OPTIONAL INPUT</dt><dd><p>internalRxnsOnly (1),0. 1 = integerise internal reactions only</p>
 </dd>
-</dl>
-</dd>
-<dt>OUTPUT</dt><dd><p>SInteger  stoichiometric matrix of integers
-G         scaling matrix, SInteger=S*G;</p>
+<dt>OUTPUT</dt><dd><p>S         stoichiometric matrix with internal reactions integers, unless internalRxnsOnly =0, whence all reactions will be integerised
+g         scaling vector such that modelIn.S*diag(g)=modelOut.S;</p>
 </dd>
 </dl>
 </dd></dl>
