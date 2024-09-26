@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use GitHub-hosted runner
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
 
@@ -14,19 +14,9 @@ jobs:
       run: |
         git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
-    - name: Set up MATLAB
-      uses: matlab-actions/setup-matlab@v1
-      with:
-        release: R2023a  # Use a supported release
-
     - name: Run MATLAB tests
-      uses: matlab-actions/run-command@v1
-      with:
-        command: |
-          run('cobratoolbox/initCobraToolbox.m');
-          diary('test_results.txt');
-          run('cobratoolbox/runTestsAndGenerateReport.m');
-          diary off;
+      run: |
+        matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/runTestsAndGenerateReport.m'); diary off;"
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
