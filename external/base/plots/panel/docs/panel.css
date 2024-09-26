@@ -1,0 +1,63 @@
+
+body
+{
+	font-family:segoe ui, verdana;
+	font-size:medium;
+	color:#335;
+	max-width:1000px;
+	margin:auto;
+	background-color:gray;
+}
+
+#main
+{
+	background-color:white;
+	padding:32px;
+}
+
+.note
+{
+	background-color:#d96;
+	color:white;
+	padding:16px;
+	font-size:small;
+}
+
+h1, h2, h3, h4, h5
+{
+	font-family:Segoe UI, Times;
+	color:black;
+}
+
+a:link, a:visited
+{
+	color:blue;
+	text-decoration:none;
+}
+
+a:hover
+{
+	text-decoration:underline;
+}
+
+tt, pre, dh.ref, .snippet
+{
+	font-family:"andale mono", "courier new";
+	color:#930;
+	font-weight:bold;
+}
+
+dh
+{
+	font-weight:bold;
+}
+
+dd
+{
+	margin-bottom:24px;
+}
+
+.snippet
+{
+	white-space:pre;
+}

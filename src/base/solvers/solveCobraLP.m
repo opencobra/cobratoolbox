@@ -739,9 +739,18 @@ switch solver
         end
                 
         %parse mosek result structure
-        [stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         if stat ==1
             f=c'*x;
+            %slacks
+            sbl = prob.a*x - prob.blc;
+            sbu = prob.buc - prob.a*x;
+            s = sbu - sbl; %TODO -double check this
+            if problemTypeParams.printLevel>1
+                fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+            end
         else
             f = NaN;
             s = NaN*ones(size(A,1),1);

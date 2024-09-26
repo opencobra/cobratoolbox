@@ -53,16 +53,16 @@ for i = 1:length(sheets)
     fprintf('%s%s\n','Reading sheet: ', sheets{i})
     switch sheets{i}
         case 'activeGenes'
-            data = readtable(inputData, 'Sheet', 'activeGenes');
+            data = readtable(inputData, 'Sheet', 'activeGenes','NumHeaderLines',0);
             specificData.activeGenes = data.genes;
         case 'activeReactions'
-            data = readtable(inputData, 'Sheet', 'activeReactions');
+            data = readtable(inputData, 'Sheet', 'activeReactions','NumHeaderLines',0);
             specificData.activeReactions = data.rxns;
         case 'inactiveGenes'
-            data = readtable(inputData, 'Sheet', 'inactiveGenes');
+            data = readtable(inputData, 'Sheet', 'inactiveGenes','NumHeaderLines',0);
             specificData.inactiveGenes = data.genes;
         case 'rxns2add'
-            specificData.rxns2add = readtable(inputData, 'Sheet', 'rxns2add');
+            specificData.rxns2add = readtable(inputData, 'Sheet', 'rxns2add','NumHeaderLines',0);
             if ismember('geneRule', specificData.rxns2add.Properties.VariableNames)
                 %convert each entry to a cell array of characters
                 if isnumeric(specificData.rxns2add.geneRule)
@@ -72,7 +72,7 @@ for i = 1:length(sheets)
                 end
             end
         otherwise
-            eval(sprintf('specificData.%s = readtable(inputData, ''Sheet'', ''%s'');', sheets{i}, sheets{i}));
+             eval(sprintf('specificData.%s = readtable(inputData, ''Sheet'', ''%s'',''NumHeaderLines'',0);', sheets{i}, sheets{i}));
     end
 end
     
@@ -106,7 +106,12 @@ if isfield(specificData, 'mediaData') && isfield(specificData, 'cellCultureData'
     specificData.mediaData = table(specificData.mediaData.rxns, ...
         specificData.mediaData.mediumConcentrations, specificData.mediaData.mediumConcentrations, ...
         'VariableNames', {'rxns', 'mediumMaxUptake','mediumConcentrations'});
-    
+
+    % specificData.mediaData = table(specificData.mediaData.rxns, ...
+    %     specificData.mediaData.lb, specificData.mediaData.ub, ...
+    %     'VariableNames', {'rxns', 'lb','ub'});
+
+ 
     for i = 1:length(specificData.mediaData.rxns)
         % specificData.mediumConcentrations(i) *
         % (uptakeSign * volume(L) * proteinFraction) /

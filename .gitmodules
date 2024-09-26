@@ -1,3 +1,8 @@
+[submodule "binary"]
+	path = binary
+	url = https://github.com/opencobra/COBRA.binary.git
+	ignore = dirty
+	branch = master
 [submodule "GeoCalcLib"]
 	path = external/analysis/GeoCalcLib
 	url = https://github.com/rmtfleming/GeoCalcLib.git
@@ -16,11 +21,6 @@
 [submodule "Smith-Decomposition"]
 	path = external/base/utilities/Smith-Decomposition
 	url = https://github.com/nbfigueroa/Smith-Decomposition.git
-	ignore = dirty
-	branch = master
-[submodule "binary"]
-	path = binary
-	url = https://github.com/opencobra/COBRA.binary.git
 	ignore = dirty
 	branch = master
 [submodule "gaimc"]

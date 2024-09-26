@@ -13,7 +13,7 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 % subject to      N*(vf - vr) - x + x0  <=> b   : y_N
 %                 C*(vf - vr)           <=> d   : y_C
-%                     lb <= [vf - vr; w] <= ub  : y_v
+%                     lb <= [vf - vr; w] <= ub  : z_v
 %                         dxl <= x  - x0 <= dxu : z_dx
 %                         vfl <= vf      <= vfu : z_vf
 %                         vrl <=      vr <= vru : z_vr
@@ -23,30 +23,31 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % with Biochemical optimality conditions
 %  || N*(vf - vr) - x + x0 - b ||_inf
 %  || C*(vf - vr) - d ||_inf
-%  || g*log(vf) + ci + cf + N'*y_N + C'*y_C + y_v + z_vf ||_inf
-%  || g*log(vr) - ci + cr - N'*y_N - C'*y_C - y_vi + z_vr ||_inf
+%  || g*log(vf) + ci + cf + N'*y_N + C'*y_C + z_v + z_vf ||_inf
+%  || g*log(vr) - ci + cr - N'*y_N - C'*y_C - z_v + z_vr ||_inf
 %  || f.*log(x)  + u0 - y_N + z_dx - z_x  ||_inf
 %  || f.*log(x0) + u0 + y_N - z_dx + z_x0 ||_inf
 %
 % with  Derived biochemical optimality conditions (fluxes)
-% || g*log(vr/vf) + cr - cf - 2*(ci + N'*y_N + C'*y_C + y_vi) + z_vr - z_vf ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci + N'*y_N + C'*y_C + z_vi) + z_vr - z_vf ||_inf
+% where z_vi is the subset of z_v corresponding to internal reactions
 %
 % with  Derived biochemical optimality conditions (concentrations)
 % || f.*log(x/x0) - 2*y_N + 2*z_dx + z_x - z_x0 ||_inf
 % || f.*log(x.*x0) + 2*u0 + z_x + z_x0 ||_inf
 %
 % Derived biochemical optimality conditions (fluxes and concentrations)
-% || g*log(vf) + cf + ci + N'*(u0 + log(x) + z_dx + z_x) + C'*y_C + y_vi + z_vf ||_inf
-% || g*log(vr) + cr - ci - N'*(u0 + log(x) + z_dx + z_x) - C'*y_C - y_vi + z_vr ||_inf
+% || g*log(vf) + cf + ci + N'*(u0 + log(x) + z_dx + z_x) + C'*y_C + z_vi + z_vf ||_inf
+% || g*log(vr) + cr - ci - N'*(u0 + log(x) + z_dx + z_x) - C'*y_C - z_vi + z_vr ||_inf
 %
 % Derived biochemical optimality conditions (fluxes and concentrations, combining forward and reverse)
-% || g*log(vr/vf) + cr - cf - 2*(ci + N'*(u0 + f*log(x)  + z_dx +   z_x) + C'*y_C + y_vi) - z_vf + z_vr ||_inf
-% || g*log(vr/vf) + cr - cf - 2*(ci - N'*(u0 + f*log(x0) - z_dx + z_x0) + C'*y_C + y_vi) - z_vf + z_vr ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci + N'*(u0 + f*log(x)  + z_dx +   z_x) + C'*y_C + z_vi) - z_vf + z_vr ||_inf
+% || g*log(vr/vf) + cr - cf - 2*(ci - N'*(u0 + f*log(x0) - z_dx + z_x0) + C'*y_C + z_vi) - z_vf + z_vr ||_inf
 %
 % If (but not only if) the input data is as follows:
 % g = 2, f = 1, cr = cf, ci = 0,
 % C = 0, d = 0,  <=> y_C = 0
-% vl = -inf, vu = inf <=> y_v = 0
+% vl = -inf, vu = inf <=> z_v = 0 (for internal reactions)
 % dxl = -inf, dxu = inf, <=> z_dx = 0
 % ub = inf, <=> z_vf = 0
 % lb = - inf, <=> z_vr = 0
@@ -92,16 +93,19 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.x0u:     m x 1    non-negative upper bound on initial molecular concentrations
 % model.xl:      m x 1    non-negative lower bound on final molecular concentrations 
 % model.xu:      m x 1    non-negative lower bound on final molecular concentrations
-% model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations  
-% model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  
+% model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations    dxl <= x - x0
+% model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  x - x0 <= dxu
 %        
 % model.Q        (n + k) x (n + k)    positive semi-definite matrix to minimise (1/2)v'*Q*v
+%
+% model.H        (n + k) x (n + k)    positive semi-definite matrix in objective (1/2)(v-h)'*H*(v-h) to be minimised 
+% model.h        (n + k) x 1          vector in objective (1/2)(v-h)'*H*(v-h) to be minimised
 %
 % model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
 %
 %  param.solver:                    {('pdco'),'mosek'}
-%  param.method:                    {('fluxes'),'fluxesConcentrations','fluxTracer')} maximise entropy of fluxes or also concentrations
+%  param.method:                    {('fluxes'),'fluxConc')} maximise entropy of fluxes or also concentrations
 %  param.printLevel:                {(0),1}
 %
 %
@@ -113,7 +117,9 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 %  Parameters related with concentration optimisation:
 %  param.maxConc:                   scalar maximum permitted metabolite concentration
-%  param.externalNetFluxBounds:
+%  param.externalNetFluxBounds:     ('original') = use bounds on external reactions from model.lb and model.ub
+%                                     'dxReplacement' = replace model.lb and model.ub with bounds on change in concentration
+%                                     'none' = set exchange reactions to be unbounded
 %
 %  model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
 %  model.T:              scalar temperature (default 310.15 Kelvin)
@@ -128,7 +134,6 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %           *.vt:  scalar total internal reaction flux sum(vf + vr)
 %           *.y_N: m × 1 double dual variable to steady state constraints
 %           *.y_C: z × 1 double dual variable to coupling constraints
-%           *.y_vi: n x 1 double dual variable to box constraints on internal net flux
 %           *.z_v: (n + k) x 1 double dual variable to box constraints on net flux
 %           *.z_vf: n x 1 double dual variable to box constraints on forward flux
 %           *.z_vr: n x 1 double dual variable to box constraints on reverse flux
@@ -157,8 +162,14 @@ end
 if ~isfield(param,'solver')
     param.solver='mosek';
 end
+if ~isfield(param,'entropyMaxMethod')
+    param.method=param.entropyMaxMethod; %TODO 
+end
 if ~isfield(param,'method')
     param.method='fluxes';
+end
+if ~isfield(param,'externalNetFluxBounds')
+    param.externalNetFluxBounds='original';
 end
 
 if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
@@ -211,7 +222,10 @@ B = model.S(:,~model.SConsistentRxnBool);
 [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
 %% optionally processing for concentrations
-processConcConstraints
+%processConcConstraints
+if contains(lower(param.method),'conc')
+    [f,u0,x0l,x0u,xl,xu,dxl,dxu,vel,veu,B] = processConcConstraints(model,param);
+end
 
 %matrices for padding
 Omn = sparse(m,n);
@@ -299,8 +313,8 @@ switch param.method
                 EPproblem.osense = 1; %minimise
                 
                 %bounds
-                EPproblem.lb = [vfl;vrl;vl;model.xl;model.x0l;model.dxl];
-                EPproblem.ub = [vfu;vru;vu;model.xu;model.x0u;model.dxu];
+                EPproblem.lb = [vfl;vrl;vl;xl;x0l;dxl];
+                EPproblem.ub = [vfu;vru;vu;xu;x0u;dxu];
                 
                 if any(EPproblem.lb > EPproblem.ub)
                     if any(vfl>vfu)
@@ -312,17 +326,17 @@ switch param.method
                     if any(vl>vu)
                         error('vl>vu, i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.xl>model.xu)
+                    if any(xl>xu)
                         error('model.xl>model.xu i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.x0l>model.x0u)
+                    if any(x0l>x0u)
                         error('model.x0l>model.x0u i.e. lower bound on dx cannot be greater than upper bound')
                     end
-                    if any(model.dxl>model.dxu)
-                        bool = (model.dxl~=0 | model.dxu~=0) & model.dxl>model.dxu;
-                        T=table(model.dxl(bool),model.dxu(bool));
+                    if any(dxl>dxu)
+                        bool = (dxl~=0 | dxu~=0) & dxl>dxu;
+                        T=table(dxl(bool),dxu(bool));
                         disp(T)
-                        error('model.dxl>model.dxu i.e. lower bound on dx cannot be greater than upper bound')
+                        error('dxl>dxu i.e. lower bound on dx cannot be greater than upper bound')
                     end
                 end
                 %variables for entropy maximisation
@@ -475,8 +489,8 @@ switch param.method
                         Omn,  Omn,  Omk,    Im,   -Im;
                         C,   -C,    D,   Ocm,   Ocm];
                     %     vf,   vr,    w,     x,    x0
-                    EPproblem.blc = [model.b;vl;model.dxl;model.d];
-                    EPproblem.buc = [model.b;vu;model.dxu;model.d];
+                    EPproblem.blc = [model.b;vl;dxl;model.d];
+                    EPproblem.buc = [model.b;vu;dxu;model.d];
                     csense(1:size(EPproblem.A,1),1)='E';
                     csense(1:m,1)=model.csense;
                     csense(2*m+n+1:2*m+n+nConstr,1) = model.dsense;
@@ -486,8 +500,8 @@ switch param.method
                         In,    -In,  Onk,   Onm,   Onm;
                          Omn,  Omn,  Omk,    Im,   -Im];
                     %     vf,   vr,    w,     x,    x0
-                    EPproblem.blc = [model.b;vl;model.dxl];
-                    EPproblem.buc = [model.b;vu;model.dxu];
+                    EPproblem.blc = [model.b;vl;dxl];
+                    EPproblem.buc = [model.b;vu;dxu];
                     csense(1:size(EPproblem.A,1),1)='E';
                     csense(1:m,1)=model.csense;
                 end
@@ -513,8 +527,8 @@ switch param.method
                 EPproblem.osense = 1; %minimise
                 
                 %bounds
-                EPproblem.lb = [vfl;vrl;vel;model.xl;model.x0l];
-                EPproblem.ub = [vfu;vru;veu;model.xu;model.x0u];
+                EPproblem.lb = [vfl;vrl;vel;xl;x0l];
+                EPproblem.ub = [vfu;vru;veu;xu;x0u];
                 
                 %variables for entropy maximisation
                 %           vf, vr,         w, x, x0
@@ -638,6 +652,8 @@ switch param.method
                 z_vf   = solution.rcost(1:n,1);
                 % duals to bounds on reverse unidirectional fluxes
                 z_vr    = solution.rcost(n+1:2*n,1);
+                %dual to bounds on net exchange fluxes
+                z_ve    = solution.rcost(2*n+1:2*n+k,1); 
                 %duals to bounds on final concentration
                 z_x   = solution.rcost(2*n+k+1:2*n+k+m,1);
                 %duals to bounds on initial concentration
@@ -1528,7 +1544,7 @@ switch param.method
         end
     case 'fluxTracing'
     otherwise
-        error('Incorrect method choice');
+        error('entropicFluxBalanceAnalysis: Incorrect method choice');
 end
 
 if 0
@@ -1568,13 +1584,12 @@ switch solution.stat
             end
         end
         
-        y_v=zeros(n+k,1);
-        y_v(model.SConsistentRxnBool)= z_vi;
-        y_v(~model.SConsistentRxnBool) = z_ve;
-        z_v = y_v;
+        z_v = zeros(n+k,1);
+        z_v(model.SConsistentRxnBool)= z_vi;
+        z_v(~model.SConsistentRxnBool) = z_ve;
         
-        [solution.v,solution.vf,solution.vr,solution.vt,solution.y_N,solution.y_v,solution.z_dx,solution.z_vf,solution.z_vr,solution.z_vi,solution.z_v,solution.stat,solution.osense] =...
-            deal(v,vf,vr,vt,y_N,y_v,z_dx,z_vf,z_vr,z_vi,z_v,solution.stat,osense);
+        [solution.v,solution.vf,solution.vr,solution.vt,solution.y_N,solution.z_dx,solution.z_vf,solution.z_vr,solution.z_vi,solution.z_v,solution.stat,solution.osense] =...
+            deal(v,vf,vr,vt,y_N,z_dx,z_vf,z_vr,z_vi,z_v,solution.stat,osense);
         
         if exist('x0','var')
             [solution.x, solution.x0, solution.z_x, solution.z_x0, solution.z_dx] = deal(x, x0, z_x, z_x0, z_dx);

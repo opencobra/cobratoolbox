@@ -115,6 +115,9 @@ end
 function [solverVersion, rootPathSolver] = extractVersionNumber(globalVar, solverNamePattern)
 % extract the version number based on the path of the solver
 
+    if strcmpi('mosek',solverNamePattern) && contains(globalVar,'mosektoolslinux64x86')
+        solverNamePattern= ['mosektoolslinux64x86' filesep 'mosek' filesep];
+    end
     index = regexp(lower(globalVar), lower(solverNamePattern));
     rootPathSolver = globalVar(1:index-1);
     beginIndex = index + length(solverNamePattern);

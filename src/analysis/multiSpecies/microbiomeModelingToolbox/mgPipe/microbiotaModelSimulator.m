@@ -79,9 +79,7 @@ allDietExch = regexprep(allDietExch,'EX_','Diet_EX_');
 allDietExch = regexprep(allDietExch,'\[fe\]','\[d\]');
 
 % define human-derived metabolites present in the gut: primary bile acids, amines, mucins, host glycans
-if includeHumanMets
-    HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
-end
+HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
 
 %% start the simulations
 
@@ -319,7 +317,7 @@ else
                     else
                         diet = readInputTableForPipeline(loadDiet);  % load the text file with the diet
  
-                        for j = 1:length(diet)
+                        for j = 2:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end
                     end
