@@ -91,7 +91,7 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
 2) Navigate to `here <https://academic.ibm.com/a2mt/downloads/data_science#/>` 
 
-3) Select CPLEX
+3) Select IBM ILOG CPLEX Optimization Studio
 
 4) Search Text for “CPLEX 12.10”
 
