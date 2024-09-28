@@ -85,25 +85,36 @@ TOMLAB
 IBM ILOG CPLEX
 ~~~~~~~~~~~~~~
 
-1) Download the ``CPLEX`` installation binary. The limited community
-   edition is
-   `here <https://www.ibm.com/products/ilog-cplex-optimization-studio>`__.
-   CPLEX is free for students (and academics) and further information
-   how to register and download is
-   `here <https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en>`__.
+N.B. CPLEX is free for students and academics, but only the last version with a matlab interface is 12.10.
+
+1) Obtain IBMid as academic using a university address
+
+2) Navigate to `here <https://academic.ibm.com/a2mt/downloads/data_science#/>` 
+
+3) Select CPLEX
+
+4) Search Text for “CPLEX 12.10”
+
+5) Select HTTP
+
+6) Select box to left of “CC439ML IBM ILOG CPLEX Optimization Studio V12.10 for Linux x86-64 Multilingual”
+
+7) Below, select “I agree”, only then the option to download appears!
+
+8) Select "Download" then download of cplex_studio1210.linux-x86-64.bin should start
 
 2) |macos| |linux| Add ``execute`` permission to binary
 
    .. code-block:: console
 
-      $ chmod +x <cplexbinary>.bin
+      $ chmod +x cplex_studio1210.linux-x86-64.bin
 
 3) |macos| |linux| Run the installer binary as superuser, follow the installation
    procedure, and accept the default installation path.
 
    .. code-block:: console
 
-      $ sudo ./<cplexbinary>.bin
+      $ sudo ./cplex_studio1210.linux-x86-64.bin
 
    |windows| Run
    ``cplex_studio<ver>.win-x86-64.exe`` as an administrator. Follow the
