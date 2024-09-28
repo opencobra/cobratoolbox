@@ -149,7 +149,7 @@ if isempty(CBT_PROG_FIELD_PROPS)
     relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.Model_Field);
     relarray = [raw.Model_Field(relrows),raw.Xdim(relrows),raw.Ydim(relrows),raw.Evaluator(relrows),raw.Default_Value(relrows),raw.BasicFields(relrows),raw.FieldBasisType,raw.FBAFields(relrows)];
     progInfo = cell(0,8);
-    for i = 1:size(relarray)
+    for i = 1:length(relarray)
         xval = relarray{i,2};
         if ~isnumeric(xval)
             xnumval = str2num(xval);

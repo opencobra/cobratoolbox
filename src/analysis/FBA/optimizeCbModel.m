@@ -377,7 +377,7 @@ else
     
     % Solve initial LP
     if allowLoops
-        solution = solveCobraLP(optProblem);
+        solution = solveCobraLP(optProblem, param);
     else
         MILPproblem = addLoopLawConstraints(optProblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem);
@@ -566,7 +566,7 @@ elseif strcmp(minNorm, 'one')
         optProblem2.osense = 1;
         % Re-solve the problem
         if allowLoops
-            solution = solveCobraLP(optProblem2);
+            solution = solveCobraLP(optProblem2, param);
         else
             MILPproblem2 = addLoopLawConstraints(optProblem2, model, 1:nRxns);
             solution = solveCobraMILP(MILPproblem2);
@@ -622,7 +622,7 @@ elseif strcmp(minNorm, 'one')
         optProblem2.osense = 1;
         
         % Re-solve the problem
-        solution = solveCobraLP(optProblem2);
+        solution = solveCobraLP(optProblem2, param);
         
 
     elseif length(minNorm)> 1 || minNorm > 0
