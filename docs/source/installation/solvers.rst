@@ -103,13 +103,13 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
 8) Select "Download" then download of cplex_studio1210.linux-x86-64.bin should start
 
-2) |macos| |linux| Add ``execute`` permission to binary
+9) |macos| |linux| Add ``execute`` permission to binary
 
    .. code-block:: console
 
       $ chmod +x cplex_studio1210.linux-x86-64.bin
 
-3) |macos| |linux| Run the installer binary as superuser, follow the installation
+10) |macos| |linux| Run the installer binary as superuser, follow the installation
    procedure, and accept the default installation path.
 
    .. code-block:: console
@@ -117,11 +117,11 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
       $ sudo ./cplex_studio1210.linux-x86-64.bin
 
    |windows| Run
-   ``cplex_studio<ver>.win-x86-64.exe`` as an administrator. Follow the
+   ``cplex_studio1210.win-x86-64.exe`` as an administrator. Follow the
    installation instructions and install ``CPLEX`` in
-   ``C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>``.
+   ``C:\Program Files\IBM\ILOG\CPLEX_Studio1210``.
 
-4) |macos| |linux| Set the environment variable by editing your ``~/.bashrc`` file:
+11) |macos| |linux| Set the environment variable by editing your ``~/.bashrc`` file:
 
    .. code-block:: console
 
@@ -134,13 +134,13 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
    .. code-block:: console
 
-      export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio<ver>"
+      export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio1210"
 
    On |macos|:
 
    .. code-block:: console
 
-      export ILOG_CPLEX_PATH="/Applications/IBM/ILOG/CPLEX_Studio<ver>"
+      export ILOG_CPLEX_PATH="/Applications/IBM/ILOG/CPLEX_Studio1210"
 
    Reload your ``~/.bashrc``:
 
@@ -154,8 +154,8 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
    |windows| |warning| If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable ``ILOG_CPLEX_PATH`` pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a `startup.m` file as detailed here `here <https://nl.mathworks.com/help/matlab/ref/startup.html>`__.
    In this startup file add the following command:
-   ``setenv('ILOG_CPLEX_PATH','C:\<yourCPLEXPath>\CPLEX_Studio<ver>\cplex\matlab\<arch>')``
-   where ``<yourCPLEXPath>`` is the path to cplex, ``<ver>`` is the installed version and ``<arch>`` is the architecture identifier.
+   ``setenv('ILOG_CPLEX_PATH','C:\<yourCPLEXPath>\CPLEX_Studio1210\cplex\matlab\<arch>')``
+   where ``<yourCPLEXPath>`` is the path to cplex, ``1210`` is the installed version and ``<arch>`` is the architecture identifier.
 
 GUROBI
 ~~~~~~
