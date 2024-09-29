@@ -182,7 +182,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
     
     param.printLevel = getCobraSolverParams('QP','printLevel',param);
     
-    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param)
+    solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
     
     if param.printLevel>0
         fprintf('%s%i\n','First solution.stat = ', solution.stat)
