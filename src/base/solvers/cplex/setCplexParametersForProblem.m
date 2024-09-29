@@ -118,7 +118,15 @@ if isfield(solverParams,'lpmethod')
     % 6	CPX_ALG_CONCURRENT 	Concurrent (Dual, Barrier, and Primal in opportunistic parallel mode; Dual and Barrier in deterministic parallel mode)
     cplexProblem.Param.lpmethod.Cur=solverParams.lpmethod;
     %cplexProblem.Param.qpmethod.Cur='CPX_ALG_PRIMAL';
+else
+    cplexProblem.Param.lpmethod.Cur=3;%best benchmark performance on Harvetta
 end
+
+if isfield(solverParams,'timelimit')
+    %https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
+    cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
+end
+
 
 if isfield(solverParams,'printLevel')
     solverParams=rmfield(solverParams,'printLevel');

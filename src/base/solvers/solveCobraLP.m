@@ -1374,11 +1374,14 @@ switch solver
         else
             stat = -1;
         end
-        
-        % cplexStatus analyzes the CPLEX output Inform code and returns
-        % the CPLEX solution status message in ExitText and the TOMLAB exit flag
-        % in ExitFlag
-        [origStatText, ~] = cplexStatus(origStat);
+        if 0
+            % cplexStatus analyzes the CPLEX output Inform code and returns
+            % the CPLEX solution status message in ExitText and the TOMLAB exit flag
+            % in ExitFlag
+            [origStatText, ~] = cplexStatus(origStat);
+        else
+            origStat = CplexLPproblem.Solution.statusstring;
+        end
 
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
