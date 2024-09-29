@@ -67,7 +67,7 @@ if isfield(res, 'sol')
         origStat = res.sol.itr.solsta;
         %disp(origStat)
         switch origStat
-            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL','UNKNOWN'}
+            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}
                 if strcmp(res.rcodestr,'MSK_RES_TRM_STALL')
                     warning('Mosek stalling, returning solution as it may be almost optimal')
                 else
@@ -130,9 +130,8 @@ if isfield(res, 'sol')
                 warning(['Unrecognised solsta: ' origStat])
                 stat=-1; %some other problem
         end
-    end
-    
-    if isfield(res.sol,'bas') && ~isequal(res.sol.bas.solsta,'UNKNOWN') %dont overwite interior point solution 
+    elseif isfield(res.sol,'bas')
+        %&& ~isequal(res.sol.bas.solsta,'UNKNOWN') %dont overwite interior point solution 
         origStat = res.sol.bas.solsta;
         switch origStat
             case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}

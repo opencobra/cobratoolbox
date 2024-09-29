@@ -171,7 +171,9 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %    (usually matlabinstall/toolboxes/local/startup.m)
 %
 
-
+if strcmp(solverName,'cplex')
+    solverName='ibm_cplex';
+end
 global SOLVERS;
 global CBTDIR;
 global OPT_PROB_TYPES;
