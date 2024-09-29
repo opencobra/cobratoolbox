@@ -642,21 +642,21 @@ switch solver
 
         param = solverParams;
         % only set the print level if not already set via solverParams structure
-        if ~isfield(param, 'MSK_IPAR_LOG')
+        if ~isfield(solverParams, 'MSK_IPAR_LOG')
             switch problemTypeParams.printLevel
                 case 0
                     echolev = 0;
                 case 1
                     echolev = 3;
                 case 2
-                    param.MSK_IPAR_LOG_INTPNT = 1;
-                    param.MSK_IPAR_LOG_SIM = 1;
+                    solverParams.MSK_IPAR_LOG_INTPNT = 1;
+                    solverParams.MSK_IPAR_LOG_SIM = 1;
                     echolev = 3;
                 otherwise
                     echolev = 0;
             end
             if echolev == 0
-                param.MSK_IPAR_LOG = 0;
+                solverParams.MSK_IPAR_LOG = 0;
                 cmd = ['minimize echo(' int2str(echolev) ')'];
             else
                 cmd = 'minimize';
@@ -664,22 +664,23 @@ switch solver
         end
 
         %https://docs.mosek.com/8.1/toolbox/solving-linear.html
-        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-            param.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
+        if ~isfield(solverParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
+            solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
         end
-        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-            param.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
+        if ~isfield(solverParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
+            solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
         end
         %If the feasibility tolerance is changed by the solverParams
         %struct, this needs to be forwarded to the cobra Params for the
         %final consistency test!
-        if isfield(param,'MSK_DPAR_INTPNT_TOL_PFEAS')
-            problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_TOL_PFEAS;
+        if isfield(solverParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
+            problemTypeParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
         end
+
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
 
-        % Syntax:      [res] = msklpopt(c,a,blc,buc,blx,bux,param,cmd)
+        % Syntax:      [res] = msklpopt(c,a,blc,buc,blx,bux,solverParams,cmd)
         %
         % Purpose:     Solves the optimization problem
         %
@@ -696,7 +697,7 @@ switch solver
         %                buc    Upper bounds on constraints.
         %                blx    Lower bounds on variables.
         %                bux    Upper bounds on variables.
-        %                param  New MOSEK parameters.
+        %                solverParams  New MOSEK parameters.
         %                cmd    MOSEK commands.
         %
         %              blc=[] and buc=[] means that the
@@ -712,7 +713,7 @@ switch solver
         blc(csense == 'L') = -inf;
         
         if 0
-            [res] = msklpopt(osense * c, A, blc, buc, lb, ub, param, cmd);
+            [res] = msklpopt(osense * c, A, blc, buc, lb, ub, solverParams, cmd);
             %             res.sol.itr
             %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
             %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
@@ -733,9 +734,8 @@ switch solver
                 prob.sol.bas.xx   = basis.xx;
             end
             
-            % Use the primal simplex optimizer.
-            param.MSK_IPAR_OPTIMIZER = 'MSK_OPTIMIZER_PRIMAL_SIMPLEX';
-            [rcode,res] = mosekopt(cmd,prob,param);
+
+            [rcode,res] = mosekopt(cmd,prob,solverParams);
         end
                 
         %parse mosek result structure
@@ -1560,6 +1560,7 @@ switch solver
         fprintf(' > The interface to ''mps'' from solveCobraLP is not supported anymore.\n -> Instead use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
         writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
+        stat = 1;
     otherwise
         if isempty(solver)
             error('There is no solver for LP problems available');

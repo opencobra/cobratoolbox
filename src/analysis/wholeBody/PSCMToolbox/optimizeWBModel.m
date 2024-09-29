@@ -46,7 +46,7 @@ function solution = optimizeWBModel(model, param)
 %                         parts of the objective are always assumed to be
 %                         minimised.
 %
-%    * solverName:    Solver name {'tomlab_cplex','ibm_cplex','cplex_direct'}
+%    * solverName:    Solver name {'tomlab_cplex','ibm_cplex','cplex_direct','mosek'}
 %
 %    * printLevel:    verbose level
 %                      *   if `0`, warnings and errors are silenced. (default: 0)
@@ -126,7 +126,7 @@ else
     param.verify = 0;
 end
 
-validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct', 'gurobi'};
+validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct', 'gurobi','cplex','mosek'};
 
 if 1
     %mlb = magnitude of a large bound
