@@ -87,7 +87,52 @@ if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
 end
 
 
-if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
+if isfield(solverParams,'qpmethod')
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-algorithm-continuous-quadratic-optimization
+    % 0	CPX_ALG_AUTOMATIC	Automatic: let CPLEX choose; default
+    % 1	CPX_ALG_PRIMAL	Use the primal simplex optimizer.
+    % 2	CPX_ALG_DUAL	Use the dual simplex optimizer.
+    % 3	CPX_ALG_NET	Use the network optimizer.
+    % 4	CPX_ALG_BARRIER	Use the barrier optimizer.
+    % 6	CPX_ALG_CONCURRENT	Use the concurrent optimizer.
+    switch solverParams.qpmethod
+        case 'AUTOMATIC'
+            cplexProblem.Param.qpmethod.Cur=0;
+        case 'PRIMAL'
+            cplexProblem.Param.qpmethod.Cur=1;
+        case 'DUAL'
+            cplexProblem.Param.qpmethod.Cur=2;
+        case 'NETWORK'
+            cplexProblem.Param.qpmethod.Cur=3;
+        case 'BARRIER'
+            cplexProblem.Param.qpmethod.Cur=4;
+        case 'CONCURRENT'
+            cplexProblem.Param.qpmethod.Cur=6;
+        otherwise
+            error('unrecognised option for solverParams.qpmethod')
+    end
+    %this is how it was, it seems wrong - Ronan
+    % switch cobraParams.method
+    %     case -1 % automatic
+    %         cplexProblem.Param.qpmethod.Cur = -1;
+    %     case 0
+    %         cplexProblem.Param.qpmethod.Cur = 1;
+    %     case 1
+    %         cplexProblem.Param.qpmethod.Cur = 2;
+    %     case 2
+    %         cplexProblem.Param.qpmethod.Cur = 4;
+    %     case 3
+    %         cplexProblem.Param.qpmethod.Cur = 6;
+    %     case 5
+    %         cplexProblem.Param.qpmethod.Cur = 3;
+    %     otherwise
+    %         cplexProblem.Param.qpmethod.Cur = 0;
+    % end
+end
+
+if strcmp(problemType,'MIQP')
+    %this is how it was, it seems wrong - Ronan
+    warning('check the cobraParams.method mapping to algorithm numbers is correct')
     switch cobraParams.method
         case -1 % automatic
             cplexProblem.Param.qpmethod.Cur = -1;
@@ -106,6 +151,7 @@ if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
     end
 end
 
+
 if isfield(solverParams,'lpmethod')
     %https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-algorithm-continuous-linear-problems
     % Value Symbol Meaning
@@ -116,10 +162,26 @@ if isfield(solverParams,'lpmethod')
     % 4	CPX_ALG_BARRIER 	Barrier
     % 5	CPX_ALG_SIFTING 	Sifting
     % 6	CPX_ALG_CONCURRENT 	Concurrent (Dual, Barrier, and Primal in opportunistic parallel mode; Dual and Barrier in deterministic parallel mode)
-    cplexProblem.Param.lpmethod.Cur=solverParams.lpmethod;
-    %cplexProblem.Param.qpmethod.Cur='CPX_ALG_PRIMAL';
+    switch solverParams.lpmethod
+        case 'AUTOMATIC'
+            cplexProblem.Param.lpmethod.Cur=0;
+        case 'PRIMAL'
+            cplexProblem.Param.lpmethod.Cur=1;
+        case 'DUAL'
+            cplexProblem.Param.lpmethod.Cur=2;
+        case 'NETWORK'
+            cplexProblem.Param.lpmethod.Cur=3;
+        case 'BARRIER'
+            cplexProblem.Param.lpmethod.Cur=4;
+        case 'SIFTING'
+            cplexProblem.Param.lpmethod.Cur=5;
+        case 'CONCURRENT'
+            cplexProblem.Param.lpmethod.Cur=6;
+        otherwise
+            error('unrecognised option for solverParams.lpmethod')
+    end
 else
-    cplexProblem.Param.lpmethod.Cur=3;%best benchmark performance on Harvetta
+    cplexProblem.Param.lpmethod.Cur=4;%BARRIER provided best benchmark performance on Harvetta
 end
 
 if isfield(solverParams,'timelimit')
@@ -127,6 +189,13 @@ if isfield(solverParams,'timelimit')
     cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
 end
 
+if isfield(solverParams,'qpmethod')
+    solverParams=rmfield(solverParams,'qpmethod');
+end
+
+if isfield(solverParams,'lpmethod')
+    solverParams=rmfield(solverParams,'lpmethod');
+end
 
 if isfield(solverParams,'printLevel')
     solverParams=rmfield(solverParams,'printLevel');

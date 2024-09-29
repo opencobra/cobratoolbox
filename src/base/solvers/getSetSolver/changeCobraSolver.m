@@ -7,10 +7,10 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % INPUTS:
 %    solverName:           Solver name
-%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` 'EP', 'CLP' (opt, default
-%                          `LP`, `all`).  'all' attempts to change all applicable
-%                          solvers to solverName.  This is purely a shorthand
-%                          convenience.
+%    solverType:           Solver type ('LP' by default)
+%                          (a) One of the following: `LP` `MILP`, `QP`, `MIQP` 'EP', 'CLP'
+%                          (b) 'all' attempts to change all applicable solvers to solverName.  This is purely a shorthand convenience.
+%                          (c) Cell array of solverTypes, e.g. {'LP','QP'}   
 %    printLevel:           verbose level
 %
 %                           *   if `0`, warnings and errors are silenced
