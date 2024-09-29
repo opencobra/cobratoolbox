@@ -138,9 +138,9 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %    solution:       solution object:
 %
 %                          * f - Linear objective value (from LP problem)
-%                          * f0 - Zero-norm objective value (optional, from second optimisation problem)
-%                          * f1 - One-norm objective value  (optional, from second optimisation problem)
-%                          * f2 - Two-norm objective value  (optional, from second optimisation problem)
+%                          * f0 - Zero-norm objective value
+%                          * f1 - One-norm objective value 
+%                          * f2 - Two-norm objective value
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
 %                          * y - Dual to the matrix inequality constraints (Shadow prices)
 %                          * w - Dual to the box constraints (Reduced costs)
@@ -696,6 +696,10 @@ elseif strcmp(minNorm, 'one')
     end
 end
 
+%dummy parts of the solution
+solution.f0 = NaN;
+solution.f1 = NaN;
+solution.f2 = NaN;
 
 switch solution.stat
     case 1
@@ -733,12 +737,7 @@ if solution.stat == 1 || solution.stat == 3
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
     solution.f = objectiveLP;
-    
-    %dummy parts of the solution
-    solution.f0 = NaN;
-    solution.f1 = NaN;
-    solution.f2 = NaN;
-    
+        
     if isempty(minNorm)
         minNorm = 'empty';
     end
