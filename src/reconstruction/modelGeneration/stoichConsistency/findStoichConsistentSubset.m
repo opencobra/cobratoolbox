@@ -780,7 +780,7 @@ if exist('fileName','var') && ~isempty(fileName) && massBalanceCheck
         fprintf(fid,'%u%s\n',nnz(model.SInConsistentRxnBool & model.SIntRxnBool & imBalancedRxnBool),' Heuristically internal, stoich inconsistent, imbalanced rxns.');
         rxnAbbrList=model.rxns(model.SInConsistentRxnBool & model.SIntRxnBool & imBalancedRxnBool);
         formulas = printRxnFormula(model,rxnAbbrList,printFlag,lineChangeFlag,metNameFlag,fid,directionFlag,gprFlag);
-    end
+    end/home/rfleming/drive/sbgCloud/projects/variationalKinetics/results/WBM/home/rfleming/drive/sbgCloud/projects/variationalKinetics/results/WBM/home/rfleming/drive/sbgCloud/projects/variationalKinetics/results/WBM
     % mass and charge balance
     fileNameBase=[fileName '_Heuristically_internal_stoich_inconsistent_imbalanced_Rxns_' datestr(now,30) '_'];
     %mass and charge balance can be checked by looking at formulas
