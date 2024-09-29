@@ -33,7 +33,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %                     * .biomassBool - Boolean of biomass reaction
 %                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
 %                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
-%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` (optional field)
+%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` or 'Excretion_EX' (optional field)
 %
 % .. Author: -  Ronan Fleming
 
@@ -129,10 +129,12 @@ if isfield(model,'subSystems')
         model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
     end
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 ...
+        | strncmp('Diet_EX_', model.rxns, 8)==1  | strncmp('Excretion_EX_', model.rxns, 12)==1 | biomassBool | model.ExchRxnBool;
 else
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 ...
+        | strncmp('Diet_EX_', model.rxns, 8)==1  | strncmp('Excretion_EX_', model.rxns, 12)==1 | biomassBool;
 end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;

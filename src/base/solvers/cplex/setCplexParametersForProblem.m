@@ -14,6 +14,8 @@ function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexPr
 %    solverParams:      the solver specific parameter structure has to be compatible with `setCplexParam`
 %    problemType:       The type of Problem ('LP','MILP','QP','MIQP').
 %
+% see https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters
+% see  https://www.ibm.com/docs/en/icos/12.10.0
 
 %set the default parameters so we can see what they are
 cplexProblem.setDefault;
@@ -84,6 +86,7 @@ if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
     cplexProblem.Param.timelimit.Cur = cobraParams.timeLimit;
 end
 
+
 if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
     switch cobraParams.method
         case -1 % automatic
@@ -101,6 +104,32 @@ if strcmp(problemType,'QP') || strcmp(problemType,'MIQP')
         otherwise
             cplexProblem.Param.qpmethod.Cur = 0;
     end
+end
+
+if isfield(solverParams,'lpmethod')
+    %https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-algorithm-continuous-linear-problems
+    % Value Symbol Meaning
+    % 0	CPX_ALG_AUTOMATIC 	Automatic: let CPLEX choose; default
+    % 1	CPX_ALG_PRIMAL 	Primal simplex
+    % 2	CPX_ALG_DUAL 	Dual simplex
+    % 3	CPX_ALG_NET 	Network simplex
+    % 4	CPX_ALG_BARRIER 	Barrier
+    % 5	CPX_ALG_SIFTING 	Sifting
+    % 6	CPX_ALG_CONCURRENT 	Concurrent (Dual, Barrier, and Primal in opportunistic parallel mode; Dual and Barrier in deterministic parallel mode)
+    cplexProblem.Param.lpmethod.Cur=solverParams.lpmethod;
+    %cplexProblem.Param.qpmethod.Cur='CPX_ALG_PRIMAL';
+else
+    cplexProblem.Param.lpmethod.Cur=3;%best benchmark performance on Harvetta
+end
+
+if isfield(solverParams,'timelimit')
+    %https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
+    cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
+end
+
+
+if isfield(solverParams,'printLevel')
+    solverParams=rmfield(solverParams,'printLevel');
 end
 
 % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
