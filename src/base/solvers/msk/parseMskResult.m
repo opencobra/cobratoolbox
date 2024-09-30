@@ -353,3 +353,46 @@ end
 %         solutionLP.stat=-1; %some other problem
 %     end
 % end
+
+
+% old code from solveCobraQP
+% if isempty(res)
+%     stat=-1;
+% else
+%     if isfield(res,'sol')
+%         origStat=res.sol.itr.solsta;
+%         if strcmp(res.sol.itr.prosta,'PRIMAL_AND_DUAL_FEASIBLE') &&  (strcmp(res.sol.itr.solsta,'OPTIMAL') || strcmp(res.sol.itr.solsta,'NEAR_OPTIMAL'))
+%             stat=1;
+%             % x solution.
+%             x = res.sol.itr.xx;
+%             %f = 0.5*x'*F*x + c'*x;
+%             f = osense*res.sol.itr.pobjval;
+% 
+%             %dual to equality
+%             y= res.sol.itr.y;
+% 
+%             %dual to lower and upper bounds
+%             w = (res.sol.itr.slx - res.sol.itr.sux);
+% 
+%             %slack for blc <= A*x <= buc
+%             s = zeros(size(csense,1),1);
+%             if ~isempty(csense)
+%                 %slack for A*x <= b
+%                 s_U =  b_L - A*x;
+%                 s(csense == 'L') = s_U(csense == 'L');
+%                 %slack for b <= A*x
+%                 s_L =  b_U + A*x;%TODO, needs testing
+%                 s(csense == 'G') = s_L(csense == 'G');
+%                 %norm(A*x + s -b)
+%                 %pause
+%             end
+%             %                     %slack for blc <= A*x <= buc
+%             %                     s = b - A*x;
+%         else
+%             stat=3;
+%         end
+%     else
+%         stat=3;
+%         origStat=[res.rmsg , res.rcodestr];
+%     end
+% end

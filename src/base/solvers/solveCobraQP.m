@@ -368,17 +368,6 @@ switch solver
         origStat=info.status;
         %%
     case 'mosek'
-        if (~isempty(csense))
-            b_L(csense == 'E',1) = b(csense == 'E');
-            b_U(csense == 'E',1) = b(csense == 'E');
-            b_L(csense == 'G',1) = b(csense == 'G');
-            b_U(csense == 'G',1) = inf;
-            b_L(csense == 'L',1) = -inf;
-            b_U(csense == 'L',1) = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
         
         if problemTypeParams.printLevel>0
             cmd='minimize';
@@ -430,12 +419,34 @@ switch solver
         
         param = mosekParamStrip(param);
 
-        % Optimize the problem.
-        % min osense*0.5*x'*F*x + osense*c'*x
-        % st. blc <= A*x <= buc
-        %     bux <= x   <= bux
-        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+
+        blc = b;
+        buc = b;
+        if (~isempty(csense))
+            buc(csense == 'G') = inf;
+            blc(csense == 'L') = -inf;
+        end
+
+
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+        %https://docs.mosek.com/latest/toolbox/data-types.html#prob
+        [prob.qosubi,prob.qosubj,prob.qoval]=find(F);
         
+        if 0
+            % Optimize the problem.
+            % min osense*0.5*x'*F*x + osense*c'*x
+            % st. blc <= A*x <= buc
+            %     bux <= x   <= bux
+            [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
+        else
+            [rcode,res] = mosekopt(cmd,prob,param);
+        end
+
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
@@ -443,46 +454,21 @@ switch solver
         %           3   Other problem (time limit etc)
         %%
         
-        if isempty(res)
-            stat=3;
-        else
-            if isfield(res,'sol')
-                origStat=res.sol.itr.solsta;
-                if strcmp(res.sol.itr.prosta,'PRIMAL_AND_DUAL_FEASIBLE') &&  (strcmp(res.sol.itr.solsta,'OPTIMAL') || strcmp(res.sol.itr.solsta,'NEAR_OPTIMAL'))
-                    stat=1;
-                    % x solution.
-                    x = res.sol.itr.xx;
-                    %f = 0.5*x'*F*x + c'*x;
-                    f = osense*res.sol.itr.pobjval;
-                    
-                    %dual to equality
-                    y= res.sol.itr.y;
-                    
-                    %dual to lower and upper bounds
-                    w = (res.sol.itr.slx - res.sol.itr.sux);
-                    
-                    %slack for blc <= A*x <= buc
-                    s = zeros(size(csense,1),1);
-                    if ~isempty(csense)
-                        %slack for A*x <= b
-                        s_U =  b_L - A*x;
-                        s(csense == 'L') = s_U(csense == 'L');
-                        %slack for b <= A*x
-                        s_L =  b_U + A*x;%TODO, needs testing
-                        s(csense == 'G') = s_L(csense == 'G');
-                        %norm(A*x + s -b)
-                        %pause
-                    end
-                    %                     %slack for blc <= A*x <= buc
-                    %                     s = b - A*x;
-                else
-                    stat=3;
-                end
-            else
-                stat=3;
-                origStat=[res.rmsg , res.rcodestr];
-            end
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
         end
+
+        %parse mosek result structure
+        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -499,6 +485,21 @@ switch solver
             norm(osense*c + osense*F*x -A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
             norm(osense*c + osense*F*x -A'*y2 -w,inf)
+        end
+
+        if stat ==1 || stat ==3
+            f=c'*x;
+            %slacks
+            sbl = prob.a*x - prob.blc;
+            sbu = prob.buc - prob.a*x;
+            s = sbu - sbl; %TODO -double check this
+            if problemTypeParams.printLevel>1
+                fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+            end
+        else
+            f = NaN;
+            s = NaN*ones(size(A,1),1);
         end
         
         

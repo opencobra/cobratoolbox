@@ -234,7 +234,7 @@ elseif isnumeric(param.minNorm) %quadratic optimisation, proceeds in two steps
             model.ub=model.ub/1000;
         end
         
-        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops,  param)
+        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops,  param);
         
         
         % rescale the computed solution by the factor of 1000

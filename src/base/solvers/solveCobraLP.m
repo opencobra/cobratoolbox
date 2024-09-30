@@ -712,36 +712,41 @@ switch solver
         buc(csense == 'G') = inf;
         blc(csense == 'L') = -inf;
         
-        if 0
-            [res] = msklpopt(osense * c, A, blc, buc, lb, ub, solverParams, cmd);
-            %             res.sol.itr
-            %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
-            %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
-            %             pasue(eps)
-            
-        else
-            prob.c = osense * c;
-            prob.a = A;
-            prob.blc     = blc;
-            prob.buc     = buc;
-            prob.blx     = lb;
-            prob.bux     = ub;
-            
-            if ~isempty(basis)
-                prob.sol.bas.skc  = basis.skc;
-                prob.sol.bas.skx  = basis.skx;
-                prob.sol.bas.xc   = basis.xc;
-                prob.sol.bas.xx   = basis.xx;
-            end
-            
 
-            [rcode,res] = mosekopt(cmd,prob,solverParams);
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+
+        if ~isempty(basis)
+            prob.sol.bas.skc  = basis.skc;
+            prob.sol.bas.skx  = basis.skx;
+            prob.sol.bas.xc   = basis.xc;
+            prob.sol.bas.xx   = basis.xx;
         end
-                
+
+        [rcode,res] = mosekopt(cmd,prob,solverParams);
+
+
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
+        end
+            
         %parse mosek result structure
         %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
-        if stat ==1
+        
+        if stat ==1 || stat ==3
             f=c'*x;
             %slacks
             sbl = prob.a*x - prob.blc;

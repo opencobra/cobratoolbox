@@ -732,7 +732,7 @@ if ~isfield(solution,'dual') || isempty(solution.dual)
 end
 
 % Return a solution or an almost optimal solution
-if solution.stat == 1 || solution.stat == 3
+if solution.stat == 1 || solution.stat == 3 
     % solution found. Set corresponding values
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
@@ -756,10 +756,18 @@ if solution.stat == 1 || solution.stat == 3
             %one norm
             solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
         case 'two'
-            solution.f1 = solution.objLinear;
-            solution.f2 = solution.objQuadratic;
-            solution = rmfield(solution,'objLinear');
-            solution = rmfield(solution,'objQuadratic');
+            if isfield(solution,'objLinear')
+                solution.f1 = solution.objLinear;
+                solution = rmfield(solution,'objLinear');
+            else
+                solution.f1 = 0;
+            end
+            if isfield(solution,'objQuadratic')
+                solution.f2 = solution.objQuadratic;
+                solution = rmfield(solution,'objQuadratic');
+            else
+                solution.f2 = solution.f;
+            end
         otherwise
             if exist('LPproblem2','var')
                 if isfield(optProblem2,'F')
