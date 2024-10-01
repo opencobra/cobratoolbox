@@ -27,7 +27,10 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .c - Objective coeff vector
 %                       * .lb - Lower bound vector
 %                       * .ub - Upper bound vector
-%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .osense - linear objective sense (-1 max, +1 min),
+%                                   it is assumed that the quadratic part
+%                                   is minimised and the F matrix is
+%                                   positive semi-definite
 %                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
@@ -94,9 +97,10 @@ solStat = -99;
 
 if 0
     F2 = QPproblem.F;
+    %This line modifies the diagonal elements of F2 by setting them to zero.
     F2(1:size(QPproblem.F,1):end)=0;
     if all(all(F2)) == 0
-        %nonzeros on diagonal only
+        %only nonzeros in QPproblem.F are on the diagonal
         try
             %try cholesky decomposition
             B = chol(QPproblem.F);
@@ -126,8 +130,10 @@ if ~isempty(problemTypeParams.saveInput)
     save(fileName,'QPproblem')
 end
 
-if strcmp(solver,'ibm_cplex') %debug
-    CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+if strcmp(solver,'ibm_cplex')
+    % Initialize the CPLEX object
+    %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
+    cplexProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
 end
 
 %clear the problem structure so it does not interfere later
@@ -226,7 +232,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
+        tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
         
         %optional parameters
         tomlabProblem.PriLvl=problemTypeParams.printLevel;
@@ -274,19 +280,16 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            res2 = osense*c + osense*F*x-A'*y -w;
+            res2 = osense*c + F*x-A'*y -w;
             norm(res2,inf)
         end
         
         %%
-    case 'ibm_cplex'
-        % Initialize the CPLEX object
-        %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
-        
-        [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,problemTypeParams,solverParams,'QP');
+    case 'ibm_cplex'        
+        [cplexProblem, logFile, logToFile] = setCplexParametersForProblem(cplexProblem,problemTypeParams,solverParams,'QP');
         
         % optimize the problem
-        Result = CplexQPProblem.solve();
+        Result = cplexProblem.solve();
         if logToFile
             % Close the output file
             fclose(logFile);
@@ -323,8 +326,8 @@ switch solver
         end
         
         %Update Tolerance According to actual setting
-        problemTypeParams.feasTol = CplexQPProblem.Param.simplex.tolerances.feasibility.Cur;
-        problemTypeParams.optTol = CplexQPProblem.Param.simplex.tolerances.optimality.Cur;
+        problemTypeParams.feasTol = cplexProblem.Param.simplex.tolerances.feasibility.Cur;
+        problemTypeParams.optTol = cplexProblem.Param.simplex.tolerances.optimality.Cur;
         
     case 'cplex_direct'
         %% Tomlab cplex.m direct
@@ -354,7 +357,7 @@ switch solver
         
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (osense*QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+        [x, f, y, info] = qpng (QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
         
         w=[];
         
@@ -368,17 +371,6 @@ switch solver
         origStat=info.status;
         %%
     case 'mosek'
-        if (~isempty(csense))
-            b_L(csense == 'E',1) = b(csense == 'E');
-            b_U(csense == 'E',1) = b(csense == 'E');
-            b_L(csense == 'G',1) = b(csense == 'G');
-            b_U(csense == 'G',1) = inf;
-            b_L(csense == 'L',1) = -inf;
-            b_U(csense == 'L',1) = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
         
         if problemTypeParams.printLevel>0
             cmd='minimize';
@@ -430,12 +422,26 @@ switch solver
         
         param = mosekParamStrip(param);
 
-        % Optimize the problem.
-        % min osense*0.5*x'*F*x + osense*c'*x
-        % st. blc <= A*x <= buc
-        %     bux <= x   <= bux
-        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
-        
+
+        blc = b;
+        buc = b;
+        if (~isempty(csense))
+            buc(csense == 'G') = inf;
+            blc(csense == 'L') = -inf;
+        end
+
+
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+        %https://docs.mosek.com/latest/toolbox/data-types.html#prob
+        [prob.qosubi,prob.qosubj,prob.qoval]=find(F);
+
+        [rcode,res] = mosekopt(cmd,prob,param);
+      
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
@@ -443,46 +449,21 @@ switch solver
         %           3   Other problem (time limit etc)
         %%
         
-        if isempty(res)
-            stat=3;
-        else
-            if isfield(res,'sol')
-                origStat=res.sol.itr.solsta;
-                if strcmp(res.sol.itr.prosta,'PRIMAL_AND_DUAL_FEASIBLE') &&  (strcmp(res.sol.itr.solsta,'OPTIMAL') || strcmp(res.sol.itr.solsta,'NEAR_OPTIMAL'))
-                    stat=1;
-                    % x solution.
-                    x = res.sol.itr.xx;
-                    %f = 0.5*x'*F*x + c'*x;
-                    f = osense*res.sol.itr.pobjval;
-                    
-                    %dual to equality
-                    y= res.sol.itr.y;
-                    
-                    %dual to lower and upper bounds
-                    w = (res.sol.itr.slx - res.sol.itr.sux);
-                    
-                    %slack for blc <= A*x <= buc
-                    s = zeros(size(csense,1),1);
-                    if ~isempty(csense)
-                        %slack for A*x <= b
-                        s_U =  b_L - A*x;
-                        s(csense == 'L') = s_U(csense == 'L');
-                        %slack for b <= A*x
-                        s_L =  b_U + A*x;%TODO, needs testing
-                        s(csense == 'G') = s_L(csense == 'G');
-                        %norm(A*x + s -b)
-                        %pause
-                    end
-                    %                     %slack for blc <= A*x <= buc
-                    %                     s = b - A*x;
-                else
-                    stat=3;
-                end
-            else
-                stat=3;
-                origStat=[res.rmsg , res.rcodestr];
-            end
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
         end
+
+        %parse mosek result structure
+        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -496,9 +477,24 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            norm(osense*c + osense*F*x -A'*y -w,inf)
+            norm(osense*c + F*x -A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
-            norm(osense*c + osense*F*x -A'*y2 -w,inf)
+            norm(osense*c + F*x -A'*y2 -w,inf)
+        end
+
+        if stat ==1 || stat ==3
+            f=c'*x;
+            %slacks
+            sbl = prob.a*x - prob.blc;
+            sbu = prob.buc - prob.a*x;
+            s = sbu - sbl; %TODO -double check this
+            if problemTypeParams.printLevel>1
+                fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+            end
+        else
+            f = NaN;
+            s = NaN*ones(size(A,1),1);
         end
         
         
@@ -859,7 +855,7 @@ switch solver
             lbeq = [QPproblem.lb ; zeros(nSlacks,1)];
             ubeq = [QPproblem.ub ; inf*ones(nSlacks,1)];
             ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
-            Feq  = [osense*QPproblem.F , sparse(m, nSlacks);
+            Feq  = [QPproblem.F , sparse(m, nSlacks);
                 sparse(nSlacks,n + nSlacks)];
         end
         
@@ -1049,7 +1045,7 @@ if solution.stat==1
         end
         if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek','ibm_cplex'}))%todo, debug gurobi QP
             % determine the residual 2
-            res2 = osense*c  + osense*F*solution.full - A' * solution.dual - solution.rcost;
+            res2 = osense*c  + F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
             % evaluate the optimality condition 2
@@ -1115,8 +1111,8 @@ end
 
 %Helper function for pdco
 function [obj,grad,hess] = QPObj(x,ceq,Feq,osense)
-obj  = osense*ceq'*x + osense*0.5*x'*Feq*x;
-grad = osense*ceq + osense*Feq*x;
+obj  = osense*ceq'*x + 0.5*x'*Feq*x;
+grad = osense*ceq + Feq*x;
 hess = osense*Feq;
 end
 

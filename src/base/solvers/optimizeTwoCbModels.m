@@ -111,8 +111,8 @@ if (verbFlag)
     fprintf('%f seconds\n',FBAsol1.time+FBAsol2.time);
 end
 
-LPproblem1 = buildLPproblemFromModel(model1);
-LPproblem2 = buildLPproblemFromModel(model2);
+LPproblem1 = buildOptProblemFromModel(model1);
+LPproblem2 = buildOptProblemFromModel(model2);
 [nCtrs1,nVars1]  = size(LPproblem1.A);
 [nCtrs2,nVars2]  = size(LPproblem2.A);
 

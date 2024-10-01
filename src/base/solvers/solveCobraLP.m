@@ -61,7 +61,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
 %                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
 %                     * .solver:       Solver used to solve LP problem
-%                     * .algorithm:    Algorithm used by solver to solve LP problem
+%                     * .method:    Algorithm used by solver to solve LP problem
 %                     * .stat:         Solver status in standardized form
 %
 %                       * 0 - Infeasible problem
@@ -125,9 +125,11 @@ global MINOS_PATH
 solver = problemTypeParams.solver;
 
 % check solver compatibility with minNorm option
-if ~isempty(problemTypeParams.minNorm)
-    if ~any(strcmp(solver, {'cplex_direct'}))
-        error(['Solver is ' solver ' but minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.'])
+if isfield(problemTypeParams,'minNorm')
+    if ~isempty(problemTypeParams.minNorm) && problemTypeParams.minNorm~=0
+        if ~any(strcmp(solver, {'cplex_direct'}))
+            error(['Solver is ' solver ' but minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.'])
+        end
     end
 end
 
@@ -220,7 +222,7 @@ w = [];
 stat = 0;
 origStat = [];
 origStatText = [];
-algorithm = 'default';
+method = 'default';
 
 t_start = clock;
 if isempty(solver)
@@ -266,7 +268,7 @@ switch solver
         % switch opts.solver
         %     case 'clp'
         %         % https://projects.coin-or.org/Clp
-        %         % set CLP algorithm  - options
+        %         % set CLP method  - options
         %         % 1. automatic
         %         % 2. barrier
         %         % 3. primalsimplex - primal simplex
@@ -321,7 +323,7 @@ switch solver
         % else
         %     f = obj;
         % end
-        % [w, y, algorithm, stat, origStat, t] = parseOPTIresult(exitflag, info);
+        % [w, y, method, stat, origStat, t] = parseOPTIresult(exitflag, info);
 
     case 'dqqMinos'
         if ~isunix
@@ -712,36 +714,41 @@ switch solver
         buc(csense == 'G') = inf;
         blc(csense == 'L') = -inf;
         
-        if 0
-            [res] = msklpopt(osense * c, A, blc, buc, lb, ub, solverParams, cmd);
-            %             res.sol.itr
-            %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
-            %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
-            %             pasue(eps)
-            
-        else
-            prob.c = osense * c;
-            prob.a = A;
-            prob.blc     = blc;
-            prob.buc     = buc;
-            prob.blx     = lb;
-            prob.bux     = ub;
-            
-            if ~isempty(basis)
-                prob.sol.bas.skc  = basis.skc;
-                prob.sol.bas.skx  = basis.skx;
-                prob.sol.bas.xc   = basis.xc;
-                prob.sol.bas.xx   = basis.xx;
-            end
-            
 
-            [rcode,res] = mosekopt(cmd,prob,solverParams);
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+
+        if ~isempty(basis)
+            prob.sol.bas.skc  = basis.skc;
+            prob.sol.bas.skx  = basis.skx;
+            prob.sol.bas.xc   = basis.xc;
+            prob.sol.bas.xx   = basis.xx;
         end
-                
+
+        [rcode,res] = mosekopt(cmd,prob,solverParams);
+
+
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
+        end
+            
         %parse mosek result structure
         %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
-        if stat ==1
+        
+        if stat ==1 || stat ==3
             f=c'*x;
             %slacks
             sbl = prob.a*x - prob.blc;
@@ -757,7 +764,7 @@ switch solver
         end
             
         if isfield(param,'MSK_IPAR_OPTIMIZER')
-            algorithm=param.MSK_IPAR_OPTIMIZER;
+            method=param.MSK_IPAR_OPTIMIZER;
         end
     case 'mosek_linprog'
         %% mosek
@@ -824,7 +831,7 @@ switch solver
         %   params.outputflag = 0;          % Silence gurobi
         %   params.resultfile = 'test.mps'; % Write out problem to MPS file
 
-        % params.method gives the algorithm used to solve continuous models
+        % params.method gives the method used to solve continuous models
         % -1=automatic,
         %  0=primal simplex,
         %  1=dual simplex,
@@ -965,17 +972,17 @@ switch solver
             % i.e. params.method     = 1;          % use dual simplex method
             switch param.Method
                 case -1
-                    algorithm='automatic';
+                    method='automatic';
                 case 1
-                    algorithm='primal simplex';
+                    method='primal simplex';
                 case 2
-                    algorithm='dual simplex';
+                    method='dual simplex';
                 case 3
-                    algorithm='barrier';
+                    method='barrier';
                 case 4
-                    algorithm='concurrent';
+                    method='concurrent';
                 otherwise
-                    algorithm='deterministic concurrent';
+                    method='deterministic concurrent';
             end
         end
 
@@ -1162,7 +1169,7 @@ switch solver
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,problemTypeParams.printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
-        solution.algorithm = algorithm; % dummy
+        solution.method = method; % dummy
      %   solution.slack = [];
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
@@ -1185,12 +1192,12 @@ switch solver
 %         Output:
 %         x             Solution found by the optimization function. If exitflag > 0, then x is a solution; otherwise, x is the value of the optimization routine when it terminated prematurely.
 %         fval          Value of the objective function at the solution x
-%         exitflag 	    Integer identifying the reason the optimization algorithm terminated
+%         exitflag 	    Integer identifying the reason the optimization method terminated
 %         output 	    Structure containing information about the optimization. The fields of the structure are:
 %           iterations:   Number of iterations
-%           algorithm:    Optimization algorithm used
+%           method:    Optimization method used
 %           message:      Exit message
-%           time:         Execution time of the algorithm
+%           time:         Execution time of the method
 %           cplexstatus:  Status code of the solution
 %           cplexstatusstring: Status string of the solution
 %         lambda 	    Structure containing the Lagrange multipliers at the solution x (separated by constraint type). This is only available for problems that do not contain quadratic constraints. See cplexqp() for details.
@@ -1275,9 +1282,9 @@ switch solver
             %this is the dual to the simple ineequality constraints : reduced costs
             w =  lambda.lower - lambda.upper;
             
-            algorithm = output.algorithm;
+            method = output.method;
             if 0 %debug
-                disp(algorithm)
+                disp(method)
                 norm(osense * c  - A' * y - w,inf)
             end
         else
@@ -1385,19 +1392,19 @@ switch solver
 
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
-                algorithm='Automatic';
+                method='Automatic';
             case 1
-                algorithm='Primal Simplex';
+                method='Primal Simplex';
             case 2
-                algorithm='Dual Simplex';
+                method='Dual Simplex';
             case 3
-                algorithm='Network Simplex (Does not work for almost all stoichiometric matrices)';
+                method='Network Simplex (Does not work for almost all stoichiometric matrices)';
             case 4
-                algorithm='Barrier (Interior point method)';
+                method='Barrier (Interior point method)';
             case 5
-                algorithm='Sifting';
+                method='Sifting';
             case 6
-                algorithm='Concurrent Dual, Barrier and Primal';
+                method='Concurrent Dual, Barrier and Primal';
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         labindex = 1;
@@ -1602,8 +1609,8 @@ if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     t = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
     [solution.full, solution.obj, solution.rcost, solution.dual, solution.slack, ...
-     solution.solver, solution.algorithm, solution.stat, solution.origStat, ...
-     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,algorithm,stat,origStat,origStatText,t,basis);
+     solution.solver, solution.method, solution.stat, solution.origStat, ...
+     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,method,stat,origStat,origStatText,t,basis);
 elseif strcmp(solver,'mps')
     solution = [];
 end
@@ -1787,12 +1794,12 @@ end
 % end
 
 
-% function [w,y,algorithm,stat,exitflag,t] = parseOPTIresult(varargin)
+% function [w,y,method,stat,exitflag,t] = parseOPTIresult(varargin)
 % exitflag = varargin{1};
 % info = varargin{2};
 % w = [];
 % y = [];
-% algorithm = [];
+% method = [];
 % stat = exitflag;
 % t = [];
 % if isfield(info,'Lambda')
@@ -1805,7 +1812,7 @@ end
 %     end
 % end
 % if isfield(info,'Algorithm')
-%     algorithm = info.Algorithm;
+%     method = info.Algorithm;
 % end
 % switch exitflag
 %     case -5 % user exit
@@ -1871,18 +1878,18 @@ end
 %     end
 %     if strcmp(params.solver,'clp') | strcmp(params.solver,'ooqp') |...
 %        strcmp(params.solver,'scip') | strcmp(params.solver,'auto')
-%         if isfield(params,'algorithm')
-%             solverOpts.algorithm = params.algorithm;
+%         if isfield(params,'method')
+%             solverOpts.method = params.method;
 %         end
 %     else
-%         warning('OPTI algorithm cannot be set for LP solvers other than CLP, OOQP and SCIP');
+%         warning('OPTI method cannot be set for LP solvers other than CLP, OOQP and SCIP');
 %     end
 %     varargin = varargin(2:end);
 % end
 % % other input arguments are name value pairs
 % optname = varargin(1:2:length(varargin));
 % optval = varargin(2:2:length(varargin));
-% % optlist = {'solver','algorithm','printLevel','display','warnings',...
+% % optlist = {'solver','method','printLevel','display','warnings',...
 % %            'tolrfun','tolafun','optTol','solverOpts'};
 % if any(strcmpi(optname,'solver'))
 %     opts = optiset(opts,'solver',optval{strcmpi(optname,'solver')});
@@ -1920,8 +1927,8 @@ end
 % % else
 % %     solverOpts = [];
 % % end
-% if any(strcmpi(optname,'algorithm'))
-%     solverOpts.algorithm = optval{strcmpi(optname,'algorithm')};
+% if any(strcmpi(optname,'method'))
+%     solverOpts.method = optval{strcmpi(optname,'method')};
 % end
 % if any(strcmpi(optname,'optTol'))
 %     optTol = optval{strcmpi(optname,'optTol')};

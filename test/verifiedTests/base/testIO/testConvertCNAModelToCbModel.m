@@ -47,8 +47,8 @@ if statusCNA
     %Osense is no longer a model field, so we need to check, whether the
     %generated LPproblems are the same (or we have to make a lot of if
     %statements...)
-    LPproblemA = buildLPproblemFromModel(model_new);    
-    LPproblemB = buildLPproblemFromModel(model);
+    LPproblemA = buildOptProblemFromModel(model_new);    
+    LPproblemB = buildOptProblemFromModel(model);
     assert(isequal(LPproblemA.osense*LPproblemA.c, LPproblemB.osense*LPproblemB.c));
     assert(isequal(model_new.metNames, model.metNames));
     assert(isequal(model_new.b, model.b));

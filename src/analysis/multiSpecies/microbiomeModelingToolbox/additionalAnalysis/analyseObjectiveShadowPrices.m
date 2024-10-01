@@ -263,7 +263,7 @@ for j = 1:size(objectiveList, 1)
             % add corresponding metabolite
             modelTemp=changeRxnBounds(modelTemp,objectiveList{j,2},-1000,'l');
         end
-        FBA = solveCobraLP(buildLPproblemFromModel(modelTemp));
+        FBA = solveCobraLP(buildOptProblemFromModel(modelTemp));
         FBAsolution{j,1}=FBA;
     end
 end

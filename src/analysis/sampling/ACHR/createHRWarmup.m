@@ -30,7 +30,7 @@ if (nargin < 3)||isempty(verbFlag), verbFlag = false; end
 if (nargin < 4), bias = []; end
 if (nargin < 5)||isempty(nPointsCheck), nPointsCheck = true; end
 
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 [nMets,nRxns] = size(LPproblem.A);
 

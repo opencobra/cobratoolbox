@@ -51,7 +51,7 @@ for k = 1:length(solverPkgs)
 
     if solverOK == 1
         fprintf('   Testing coupleRxnList2Rxn using %s ... ', solverPkgs{k});
-        LPproblem = buildLPproblemFromModel(modelCoupled);
+        LPproblem = buildOptProblemFromModel(modelCoupled);
         % optimize a random coupled reaction 100 times
         for i = 1:100
             rxnInd = rxnList{randi(length(rxnList), 1), 1};
