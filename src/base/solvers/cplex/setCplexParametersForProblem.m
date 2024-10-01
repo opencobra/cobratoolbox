@@ -1,16 +1,15 @@
-function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, problemType)
+function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, problemType)
 % Set the parameters for a specific problem from the COBRA Parameter
 % structure and a solver specific parameter structure (latter has
 % precedence). The cobra parameters structure contains fields as specified in
 % `getCobraSolverParamsOptionsForType`, while solverParams needs to
 % contain a structure compatible with `setCplexParam`.
 % USAGE:
-%    cplexProblem = setCplexParametersForProblem(cplexProblem, cobraParams, solverParams, ProblemType)
+%    cplexProblem = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, ProblemType)
 %
 % INPUTS:
 %    cplexProblem:      the Cplex() object to set the parameters
-%    cobraParams:       the COBRA parameter structure, with parameters as defined in
-%                       `getCobraSolverParamsOptionsForType`
+%    problemTypeParams:  problem type parameters as defined in getCobraSolverParamsOptionsForType
 %    solverParams:      the solver specific parameter structure has to be compatible with `setCplexParam`
 %    problemType:       The type of Problem ('LP','MILP','QP','MIQP').
 %
@@ -21,14 +20,14 @@ function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexPr
 cplexProblem.setDefault;
 
 % set the printLevel to the cobra Parameters
-cplexProblem.Param.output.writelevel.Cur = cobraParams.printLevel;
-cplexProblem.Param.barrier.display.Cur = cobraParams.printLevel;
-cplexProblem.Param.simplex.display.Cur = cobraParams.printLevel;
-cplexProblem.Param.sifting.display.Cur = cobraParams.printLevel;
-cplexProblem.Param.paramdisplay.Cur = double(cobraParams.printLevel~=0);
+cplexProblem.Param.output.writelevel.Cur = problemTypeParams.printLevel;
+cplexProblem.Param.barrier.display.Cur = problemTypeParams.printLevel;
+cplexProblem.Param.simplex.display.Cur = problemTypeParams.printLevel;
+cplexProblem.Param.sifting.display.Cur = problemTypeParams.printLevel;
+cplexProblem.Param.paramdisplay.Cur = double(problemTypeParams.printLevel~=0);
         
 %%turn off display output if printLevel is set to 0
-if cobraParams.printLevel == 0
+if problemTypeParams.printLevel == 0
     %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.7.1/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#ad15aa55e15ab198965472a5517db380b
     %DisplayFunc
     %A property of the Cplex class that is a pointer to a function which provides control of display of output.
@@ -36,13 +35,14 @@ if cobraParams.printLevel == 0
     %With the default, all of the log information from CPLEX will be displayed.
     %If the Cplex.DisplayFunc property is set to empty, then the log information from CPLEX will not be displayed.
     %In addition, users can write a custom DisplayFunc to control the output.
-    cplexProblem.DisplayFunc = [];
+    cplexProblem.DisplayFunc = 0;
 end
 
-if isscalar(cobraParams.logFile)
-    if cobraParams.logFile == 1
+
+if isscalar(problemTypeParams.logFile)
+    if problemTypeParams.logFile == 1
         % allow print to command window by setting solverParams.logFile == 1
-        logFile = cobraParams.logFile;
+        logFile = problemTypeParams.logFile;
         logToFile = false;
         cplexProblem.DisplayFunc = @(x) redirect(1,x);
     else
@@ -53,37 +53,37 @@ if isscalar(cobraParams.logFile)
         cplexProblem.Param.output.clonelog.Cur = -1;
     end
 else 
-    if isempty(cobraParams.logFile)
+    if isempty(problemTypeParams.logFile)
         % we assume that the logFile Parameter being empty indicates no
         % logging requested.
         logFile = 0;
         logToFile = false;
         cplexProblem.Param.output.clonelog.Cur = -1;
     else
-        logFile = fopen(cobraParams.logFile,'a');
+        logFile = fopen(problemTypeParams.logFile,'a');
         logToFile = true;
         cplexProblem.DisplayFunc = @(x) redirect(logFile,x);
     end
 end
 
 % set tolerances
-cplexProblem.Param.simplex.tolerances.feasibility.Cur = cobraParams.feasTol;
-cplexProblem.Param.simplex.tolerances.optimality.Cur = cobraParams.optTol;
+cplexProblem.Param.simplex.tolerances.feasibility.Cur = problemTypeParams.feasTol;
+cplexProblem.Param.simplex.tolerances.optimality.Cur = problemTypeParams.optTol;
 
-cplexProblem.Param.network.tolerances.feasibility.Cur = cobraParams.feasTol;
-cplexProblem.Param.network.tolerances.optimality.Cur = cobraParams.optTol;
+cplexProblem.Param.network.tolerances.feasibility.Cur = problemTypeParams.feasTol;
+cplexProblem.Param.network.tolerances.optimality.Cur = problemTypeParams.optTol;
 
 %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.7.0/ilog.odms.cplex.help/CPLEX/Parameters/topics/BarEpComp.html
 %Sets the tolerance on complementarity for convergence. The barrier algorithm terminates with an optimal solution if the relative complementarity is smaller than this value.
 %Changing this tolerance to a smaller value may result in greater numerical precision of the solution, but also increases the chance of failure to converge in the algorithm and consequently may result in no solution at all. Therefore, caution is advised in deviating from the default setting.
-% cplexProblem.Param.barrier.convergetol.Cur = cobraParams.feasTol;
+% cplexProblem.Param.barrier.convergetol.Cur = problemTypeParams.feasTol;
 
 if strcmp(problemType,'MILP') || strcmp(problemType,'MIQP')
     % Set Integer specific parameters.
-    cplexProblem.Param.mip.tolerances.mipgap.Cur =  cobraParams.relMipGapTol;
-    cplexProblem.Param.mip.tolerances.integrality.Cur =  cobraParams.intTol;
-    cplexProblem.Param.mip.tolerances.absmipgap.Cur =  cobraParams.absMipGapTol;
-    cplexProblem.Param.timelimit.Cur = cobraParams.timeLimit;
+    cplexProblem.Param.mip.tolerances.mipgap.Cur =  problemTypeParams.relMipGapTol;
+    cplexProblem.Param.mip.tolerances.integrality.Cur =  problemTypeParams.intTol;
+    cplexProblem.Param.mip.tolerances.absmipgap.Cur =  problemTypeParams.absMipGapTol;
+    cplexProblem.Param.timelimit.Cur = problemTypeParams.timeLimit;
 end
 
 
@@ -112,7 +112,7 @@ if isfield(solverParams,'qpmethod')
             error('unrecognised option for solverParams.qpmethod')
     end
     %this is how it was, it seems wrong - Ronan
-    % switch cobraParams.method
+    % switch problemTypeParams.method
     %     case -1 % automatic
     %         cplexProblem.Param.qpmethod.Cur = -1;
     %     case 0
@@ -132,8 +132,8 @@ end
 
 if strcmp(problemType,'MIQP')
     %this is how it was, it seems wrong - Ronan
-    warning('check the cobraParams.method mapping to algorithm numbers is correct')
-    switch cobraParams.method
+    warning('check the problemTypeParams.method mapping to algorithm numbers is correct')
+    switch problemTypeParams.method
         case -1 % automatic
             cplexProblem.Param.qpmethod.Cur = -1;
         case 0
@@ -184,31 +184,57 @@ else
     cplexProblem.Param.lpmethod.Cur=4;%BARRIER provided best benchmark performance on Harvetta
 end
 
+if isfield(solverParams,'scaind')
+    % Decides how to scale the problem matrix.
+    % Value  Meaning
+    % -1	No scaling
+    % 0	Equilibration scaling; default
+    % 1	More aggressive scaling
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
+    cplexProblem.Param.read.scale.Cur = solverParams.scaind;
+end
+
 if isfield(solverParams,'timelimit')
-    %https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
     cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
 end
 
-if isfield(solverParams,'qpmethod')
-    solverParams=rmfield(solverParams,'qpmethod');
+if isfield(solverParams,'emphasis_numerical')
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
+    cplexProblem.Param.emphasis.numerical.Cur = solverParams.emphasis_numerical;
 end
 
-if isfield(solverParams,'lpmethod')
-    solverParams=rmfield(solverParams,'lpmethod');
+if isfield(solverParams,'markowitz')
+    %     Influences pivot selection during basis factoring. Increasing the Markowitz threshold may improve the numerical properties of the solution.
+    % Any number from 0.0001 to 0.99999; default: 0.01
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-markowitz-tolerance
+    cplexProblem.Param.simplex.tolerances.markowitz.Cur = solverParams.markowitz;
 end
-
-if isfield(solverParams,'printLevel')
-    solverParams=rmfield(solverParams,'printLevel');
-end
-
-% Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
-cplexProblem = setCplexParam(cplexProblem, solverParams);
 
 if isfield(cplexProblem,'Start')
     %https://www.ibm.com/docs/en/icos/12.8.0.0?topic=parameters-advanced-start-switch
     cplexProblem.Param.advance.Cur = 1;
 end
-        
+
+
+if 0
+    % not clear what setCplexParam function does, skipping it 
+    if isfield(solverParams,'qpmethod')
+        solverParams=rmfield(solverParams,'qpmethod');
+    end
+
+    if isfield(solverParams,'lpmethod')
+        solverParams=rmfield(solverParams,'lpmethod');
+    end
+
+    if isfield(solverParams,'printLevel')
+        solverParams=rmfield(solverParams,'printLevel');
+    end
+
+    % Set IBM-Cplex-specific parameters. Will overide Cobra solver parameters
+    cplexProblem = setCplexParam(cplexProblem, solverParams);
+end
+
 end
 
 function redirect(outFile,l)

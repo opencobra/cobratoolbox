@@ -54,7 +54,7 @@ model_orig = model;
 
 [nMets,nRxns] = size(model.S);
 
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 %reactions irreversible in the reverse direction
 Ir = model.lb < 0 & model.ub<=0;

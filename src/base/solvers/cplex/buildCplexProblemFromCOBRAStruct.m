@@ -26,6 +26,9 @@ try
 catch ME
     error('CPLEX not installed or licence server not up')
 end
+[m,n]=size(Problem.A);
+b_L = sparse(m,1);
+b_U = sparse(m,1);
 if (~isempty(Problem.csense))
     % build the rhs/lhs of the problem.
     boolE = Problem.csense == 'E';
@@ -62,7 +65,7 @@ if isfield(Problem,'F')
             feasTol = getCobraSolverParams('LP', 'feasTol');
             f(bool0)=feasTol/10;
             f(~bool0)=0;
-            Problem.F = Problem.F + spdiags(f,0,size(Problem.F,1),size(Problem.F,1));
+            Problem.F = Problem.F + spdiags(f,0,n,n);
             %fprintf('%s\n',['buildCplexProblemFromCOBRAStruct: Replacing zeros on the diagonal of QP problem.F with regularisation of ' num2str(feasTol/10)]) 
         end
     end
@@ -77,6 +80,9 @@ if isfield(Problem,'osense')
         cplexProblem.Model.sense = 'minimize';
     else
         cplexProblem.Model.sense = 'maximize';
+        if isfield(cplexProblem.Model,'Q')
+            cplexProblem.Model.Q = -cplexProblem.Model.Q;
+        end
     end
 else
     cplexProblem.Model.sense = 'minimize';

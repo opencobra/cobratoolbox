@@ -62,7 +62,7 @@ MILPproblem = struct();
 %-M1 <= -M1y - i_act     %-> if i_act > 0 then y = 0;
 %minprod = minprod * y + d  %-> if y = 0 then d = minprod;
 % build a basic lp problem from the model.
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 [nCtrs,nVars] = size(LPproblem.A);
 
 relmets = ~ismember(model.mets,ignoredMets);

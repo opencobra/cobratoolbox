@@ -10,9 +10,25 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
 %
-% Optionally, it also solves a second problem
+% Optionally, it also solves a second cardinality optimisation problem
 %
-%    max/min  ~& g0.*|v|_0 + g1.*|v|_1 + g2.*|v|_2 + 0.5 v^T*F*v\\
+%    max/min  ~& g1.*|v|_1
+%    s.t.     ~& S v = b ~~~~~~~~~~~:y \\
+%             ~& C v \leq d~~~~~~~~:y \\
+%             ~& lb \leq v \leq ub~~~~:w
+%             ~& c^T*v == c^T*vStar
+%
+% Optionally, it also solves a second QP problem
+%
+%    max/min  ~& g2.*|v|_2 + 0.5 v^T*F*v\\
+%    s.t.     ~& S v = b ~~~~~~~~~~~:y \\
+%             ~& C v \leq d~~~~~~~~:y \\
+%             ~& lb \leq v \leq ub~~~~:w
+%             ~& c^T*v == c^T*vStar
+%
+% Optionally, it also solves a second cardinality optimisation problem
+%
+%    max/min  ~& g0.*|v|_0 + g1.*|v|_1
 %    s.t.     ~& S v = b ~~~~~~~~~~~:y \\
 %             ~& C v \leq d~~~~~~~~:y \\
 %             ~& lb \leq v \leq ub~~~~:w
@@ -204,8 +220,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 
 % Process arguments and set up problem
 
-% Figure out objective sense
 
+% Figure out linear objective sense
 if exist('osenseStr', 'var') 
     if isempty(osenseStr)
         model.osenseStr = 'max';
@@ -262,9 +278,9 @@ if exist('allowLoops', 'var')
 else
     allowLoops = true;
 end
-
+            
 %use global solver parameter, unless these these are specified in the input
-[printLevel, primalOnlyFlag, verify] = getCobraSolverParams('LP',{'printLevel','primalOnly', 'verify'},param);
+[printLevel, primalOnlyFlag, verify,feasTol] = getCobraSolverParams('LP',{'printLevel','primalOnly', 'verify','feasTol'},param);
 
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);
@@ -285,8 +301,7 @@ else
     nVars = 0;
 end
 
-% build the optimization problem, after it has been actively requested to be verified
-optProblem = buildLPproblemFromModel(model,verify);
+
 if ischar(minNorm)
     if strcmp(minNorm, 'oneInternal')
         SConsistentRxnBool=model.SConsistentRxnBool;
@@ -351,23 +366,56 @@ else
     twoNormWeights=[];
 end
 
-if allowLoops && ~strcmp(minNorm,'optimizeCardinality')
-    clear model
+%if there is no linear objective, do a QP
+if all(model.c==0)
+    noLinearOptimisation = 1;
 end
 
-% save the original size of the problem
-[~,nTotalVars] = size(optProblem.A);
+% if there is no linear objective and no quadratic objective, do an LP
+if isempty(minNorm)
+    noLinearOptimisation = 0;
+end
 
-%check in case there is no linear objective
-noLinearObjective = all(optProblem.c==0);
+% If there is are linear and quadrative objectives but the bounds on the
+% corresponding reaction are fixed, then there is no need to solve an LP
+% first, so do a QP
+if all( (model.lb == model.ub & model.c~=0) == (model.c~=0)) && ~isempty(minNorm)
+    noLinearOptimisation = 1;
+end
+
+% If this is a quadratically regularised LP, go straight to QP
+% TODO This is a hack of the param.minNorm to direct solution to QRLP or QRQP
+if isfield(param,'solveWBMmethod')
+    if any(strcmp(param.solveWBMmethod,{'QRLP','QRQP'}))
+        noLinearOptimisation = 1;
+        param.minNormWBM = minNorm;
+        minNorm = param.solveWBMmethod;
+    else
+        param.solveWBMmethod = [];
+    end
+else
+    param.solveWBMmethod = [];
+end
+
 
 %%
 t1 = clock;
 
-if noLinearObjective && ~isempty(minNorm)
+if noLinearOptimisation
     %no need to solve an LP first
     objectiveLP = 0;
 else
+
+    % build the optimization problem, after it has been actively requested to be verified
+    optProblem = buildOptProblemFromModel(model,verify);
+
+    if allowLoops && ~strcmp(minNorm,'optimizeCardinality')
+        clear model
+    end
+
+    % save the original size of the problem
+    [~,nTotalVars] = size(optProblem.A);
+
     if 0
         %debug
         solution=solveCobraLPCPLEX(optProblem,1,0,0,[],0,'ILOGcomplex');
@@ -393,7 +441,8 @@ end
 
 %only run if minNorm is not empty, and either there is no linear objective
 %or there is a linear objective and the LP problem solved to optimality
-if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solution.stat==1 && ~isempty(minNorm))
+if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 && solution.stat==1 && ~isempty(minNorm))
+
     if strcmp(minNorm, 'optimizeCardinality')
         % DC programming for solving the cardinality optimization problem
         % The `l0` norm is approximated by a capped-`l1` function.
@@ -467,7 +516,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
         %                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
         
-        if noLinearObjective
+        if noLinearOptimisation
             % The following are assumed to be inherited correctly from
             % optProblem built above
             %     * .A - `s x size(A,2)` LHS matrix
@@ -504,7 +553,7 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         %                   lb <= v <= ub
         
         % Define the constraints structure
-        if noLinearObjective
+        if noLinearOptimisation
             % Call the sparse LP solver
             solutionL0 = sparseLP(optProblem, zeroNormApprox);
         else
@@ -523,8 +572,8 @@ if (noLinearObjective==1 && ~isempty(minNorm)) || (noLinearObjective==0 && solut
         solution.dual   = [];
         solution.rcost  = [];
         solution.slack  = [];
-        
-elseif strcmp(minNorm, 'one')
+
+    elseif strcmp(minNorm, 'one')
         % Optimize the absolute value of fluxes
         % Solve secondary LP to optimize weighted 1-norm of v
         % Weight provided by model.g1
@@ -623,7 +672,34 @@ elseif strcmp(minNorm, 'one')
         
         % Re-solve the problem
         solution = solveCobraLP(optProblem2, param);
-        
+
+    elseif strcmp(minNorm, 'QRLP')
+
+        buildOptProblemFromModel_param.method='QRLP';
+        optProblem = buildOptProblemFromModel(model, 0, buildOptProblemFromModel_param);
+        solutionQRLP = solveCobraQP(optProblem,param);
+
+        solution.full     = solutionQRLP.full(1:optProblem.n);%       Full QP solution vector
+        solution.rcost    = solutionQRLP.rcost(1:optProblem.n);%       Reduced costs, dual solution to :math:`lb <= x <= ub`
+        solution.dual     = solutionQRLP.dual(1:optProblem.m);%        dual solution to :math:`A*x <=/=/>= b`
+        solution.slack    = solutionQRLP.full(1:optProblem.m);%       slack variable such that :math:`A*x + s = b`
+        solution.obj      = model.c'*solution.full;%         Objective value
+        solution.solver   = solutionQRLP.solver;%      Solver used to solve QP problem
+        solution.origStat = solutionQRLP.origStat;%    Original status returned by the specific solver
+        solution.time     = solutionQRLP.time;%        Solve time in seconds
+        solution.stat     = solutionQRLP.stat;%        Solver status in standardized form (see below)
+        solution.r = solutionQRLP.full(optProblem.n+1:optProblem.m); % A*x + r <=> b
+        solution.p = solutionQRLP.full(optProblem.n+optProblem.m+1:optProblem.n+optProblem.m+optProblem.n);
+        solution.p(solution.p < feasTol) = 0; % lb + p <= x <= ub + q
+        solution.q = solutionQRLP.full(optProblem.n+optProblem.m+1:optProblem.n+optProblem.m+optProblem.n); % lb + p <= x <= ub + q
+        solution.q(solution.q > -feasTol) = 0; % lb + p <= x <= ub + q
+        solution.q = -solution.q; % lb + p <= x <= ub + q
+
+    elseif strcmp(minNorm, 'QRQP')
+
+        buildOptProblemFromModel_param.method='QRQP';
+        optProblem = buildOptProblemFromModel(model, 0, buildOptProblemFromModel_param);
+        solution = solveCobraQP(optProblem);
 
     elseif length(minNorm)> 1 || minNorm > 0
         %THIS SECTION BELOW ASSUMES WRONGLY THAT c HAVE ONLY ONE NONZERO SO I
@@ -645,7 +721,7 @@ elseif strcmp(minNorm, 'one')
         if isnumeric(minNorm)
             if length(minNorm)==nTotalVars && size(minNorm,1)~=size(minNorm,2)
                 minNorm=columnVector(minNorm);
-            elseif length(minNorm)==1
+            elseif isscalar(minNorm)
                 minNorm=ones(nTotalVars,1)*minNorm;
             else
                 error(['minNorm has dimensions ' int2str(size(minNorm,1)) ' x ' int2str(size(minNorm,2)) ' but it can only of the form {(0), ''one'', ''zero'', > 0 , n x 1 vector}.'])
@@ -659,7 +735,7 @@ elseif strcmp(minNorm, 'one')
         end
         
         % quadratic minimization of the norm.
-        if noLinearObjective
+        if noLinearOptimisation
             optProblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
             if allowLoops
                 %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
@@ -694,6 +770,11 @@ elseif strcmp(minNorm, 'one')
             end
         end
     end
+end
+
+%TODO fix this Hack in case param.minNorm is used again
+if ~isempty(param.solveWBMmethod)
+    minNorm = param.minNormWBM;
 end
 
 %dummy parts of the solution
@@ -750,7 +831,6 @@ if solution.stat == 1 || solution.stat == 3
             solution.f1 = solution.f;
         case 'zero'
             %zero norm
-            feasTol = getCobraSolverParams('LP', 'feasTol');
             solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
         case 'one'
             %one norm
