@@ -462,7 +462,6 @@ switch solver
         end
 
         %parse mosek result structure
-        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         %debugging
@@ -483,7 +482,7 @@ switch solver
         end
 
         if stat ==1 || stat ==3
-            f=c'*x;
+            f = pobjval;
             %slacks
             sbl = prob.a*x - prob.blc;
             sbu = prob.buc - prob.a*x;
@@ -635,58 +634,90 @@ switch solver
         %% gurobi
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
-        % https://www.gurobi.com/documentation/9.0/refman/matlab_the_model_argument.html#matlab:model
-        
-        resultgurobi = struct('x',[],'objval',[],'pi',[]);
-        %Set up the parameters
-        params = struct();
+
+        %  The param struct contains Gurobi parameters. A full list may be
+        %  found on the Parameter page of the reference manual:
+        %  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
+        % MATLAB Parameter Examples
+        % In the MATLAB interface, parameters are passed to Gurobi through a struct. 
+        % To modify a parameter, you create a field in the struct with the appropriate name, 
+        % and set it to the desired value. For example, to set the TimeLimit parameter to 100 you'd do:
+        % 
+        % param.timelimit = 100;
+        % The case of the parameter name is ignored, as are underscores. Thus, you could also do:
+        % param.timeLimit = 100;
+        % ...or...
+        % param.TIME_LIMIT = 100;
+        % All desired parameter changes should be stored in a single struct, which is passed as the second parameter to the gurobi function.
+        param=solverParams;
+
+        % param.method gives the method used to solve continuous models
+        % -1=automatic,
+        %  0=primal simplex,
+        %  1=dual simplex,
+        %  2=barrier,
+        %  3=concurrent,
+        %  4=deterministic concurrent
+        % i.e. param.method     = 1;          % use dual simplex method
+        if isfield(param,'lpmethod')
+            %gurobiAlgorithms = {'AUTOMATIC','PRIMAL','DUAL','BARRIER','CONCURRENT','CONCURRENT_DETERMINISTIC'};
+            % -1=automatic,
+            % 0=primal simplex,
+            % 1=dual simplex,
+            % 2=barrier,
+            % 3=concurrent,
+            % 4=deterministic concurrent
+            switch param.lpmethod
+                case 'AUTOMATIC' 
+                    param.method = -1;
+                case 'PRIMAL'
+                    param.method = 0;
+                case 'DUAL'
+                    param.method = 2;
+                case 'BARRIER'
+                    param.method = 2;
+                otherwise
+                    %https://www.gurobi.com/documentation/current/refman/method.html
+                    %Concurrent methods aren't available for QP and QCP. 
+                    error('Unrecognised param.lpmethod for gurobi')
+            end
+            param = rmfield(param,'lpmethod');
+        end
+
         switch problemTypeParams.printLevel
             case 0
-                params.OutputFlag = 0;
-                params.DisplayInterval = 1;
+                param.OutputFlag = 0;
+                param.DisplayInterval = 1;
             case problemTypeParams.printLevel>1
-                params.OutputFlag = 1;
-                params.DisplayInterval = 5;
+                param.OutputFlag = 1;
+                param.DisplayInterval = 5;
             otherwise
-                params.OutputFlag = 0;
-                params.DisplayInterval = 1;
+                param.OutputFlag = 0;
+                param.DisplayInterval = 1;
         end
-        
-        if problemTypeParams.method == -1
-            %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-?flash_digest=3cee39a758f70e26f090b839b1f4c572fbccd778
-            params.Method = 1;
-        else
-            %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
-            params.Method = problemTypeParams.method;
-        end
-        params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        params.FeasibilityTol = problemTypeParams.feasTol;
-        params.OptimalityTol = problemTypeParams.optTol;
+
+        param.FeasibilityTol = problemTypeParams.feasTol;
+        param.OptimalityTol = problemTypeParams.optTol;
         %Update param struct with Solver Specific parameters
-        params = updateStructData(params,solverParams);
+        param = updateStructData(param,solverParams);
         
         %Update feasTol in case it is changed by the solver Parameters
-        problemTypeParams.feasTol = params.FeasibilityTol;
-        
+        problemTypeParams.feasTol = param.FeasibilityTol;
         
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
         gurobiQP.sense(csense == 'G') = '>';
         
-        %modelsense (optional)
-        %The optimization sense. Allowed values are 'min' (minimize) or 'max' (maximize). When absent, the default optimization sense is minimization.
-        if osense == -1
-            gurobiQP.modelsense = 'max';
-        else
-            gurobiQP.modelsense = 'min';
-        end
+        % minimization always
+        gurobiQP.modelsense = 'min';
+        %if maximisation, only change the linear part of the objective
+        gurobiQP.obj = (double(c)+0)*osense;%gurobi wants a dense double vector as an objective
         
         gurobiQP.A = A;
-        gurobiQP.rhs = b;
+        gurobiQP.rhs = full(b); %model.rhs must be a dense double vector
         gurobiQP.lb = lb;
         gurobiQP.ub = ub;
-        %gurobi wants a dense double vector as an objective
-        gurobiQP.obj = double(c)+0;%full
+
         
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
@@ -701,7 +732,7 @@ switch solver
         end
         
         try
-            resultgurobi = gurobi(gurobiQP,params);
+            resultgurobi = gurobi(gurobiQP,param);
         catch ME
             if contains(ME.message,'Gurobi error 10020: Objective Q not PSD (negative diagonal entry)')
                 warning('%s\n','Gurobi cannot solve a QP problem if it is given a diagonal Q with some of those diagonals equal to zero')
@@ -755,7 +786,7 @@ switch solver
             % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
             gurobiQP.obj(:) = 0;
             gurobiQP.F(:,:) = 0;
-            resultgurobi = gurobi(gurobiQP,params);
+            resultgurobi = gurobi(gurobiQP,param);
             if strcmp(resultgurobi.status,'OPTIMAL')
                 stat = 2;
             else
@@ -1043,9 +1074,9 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek','ibm_cplex'}))%todo, debug gurobi QP
+        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && any(strcmp(solver,{'mosek','ibm_cplex','gurobi'}))
             % determine the residual 2
-            res2 = osense*c  + F*solution.full - A' * solution.dual - solution.rcost;
+            res2 = c  + F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
             % evaluate the optimality condition 2
@@ -1065,9 +1096,11 @@ if solution.stat==1
             solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
-            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
+            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2 && ~any(strcmp(solver,{'mosek'}))
+                % TODO - mosek is passing back a slightly different
+                % objective for testSolveCobraQP.m problem 1 - why?
                 warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
-                fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from osense*c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
+                fprintf('%s%g\n',['The difference between the value the optimal objective c''*x + 0.5*x''*F*x minus the ' solver ' objective is: '] ,f - solution.obj)
             end
         else
             solution.obj = NaN;

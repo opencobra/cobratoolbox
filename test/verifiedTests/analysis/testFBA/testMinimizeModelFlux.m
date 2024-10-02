@@ -34,7 +34,11 @@ for k = 1:length(solverPkgs.LP)
     sol = minimizeModelFlux(currentmodel,'min','one');
     assert(abs(sol.x(end)) < tol);
     sol = minimizeModelFlux(currentmodel);
-    assert(abs(sol.x(end) - 12000) <= tol); %Since its reversible, exchangers cycle and all rev reactions cycle.
+    bool = abs(sol.x(end) - 12000) <= tol; %Since its reversible, exchangers cycle and all rev reactions cycle.
+    if ~bool
+        disp(bool)
+    end
+    assert(bool);
     sol = minimizeModelFlux(currentmodel,'max','one'); %same as before.
     assert(abs(sol.x(end) - 12000 ) <= tol); %Since its reversible, exchangers cycle and all rev reactions cycle.
     currentmodel.osenseStr = 'min';

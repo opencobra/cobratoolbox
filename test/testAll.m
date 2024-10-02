@@ -238,7 +238,7 @@ try
                 fprintf('%s:\n', resultTable.TestName{failedTests(i)});
                 trace = result(failedTests(i)).Error.getReport();
                 tracePerLine = strsplit(trace, '\n');
-                testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')), tracePerLine));
+                testSuitePosition = find(cellfun(@(x) contains(x, 'runTestSuite'), tracePerLine));
                 trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition - 7)), '\n'));  % Remove the testSuiteTrace.
                 fprintf('%s\n', trace);
                 fprintf('------------------------------------------------\n')

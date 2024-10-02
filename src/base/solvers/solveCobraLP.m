@@ -826,11 +826,21 @@ switch solver
 
         %  The params struct contains Gurobi parameters. A full list may be
         %  found on the Parameter page of the reference manual:
-        %     http://www.gurobi.com/documentation/5.5/reference-manual/node798#sec:Parameters
-        %  For example:
-        %   params.outputflag = 0;          % Silence gurobi
-        %   params.resultfile = 'test.mps'; % Write out problem to MPS file
+        %  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
+        % MATLAB Parameter Examples
+        % In the MATLAB interface, parameters are passed to Gurobi through a struct. 
+        % To modify a parameter, you create a field in the struct with the appropriate name, 
+        % and set it to the desired value. For example, to set the TimeLimit parameter to 100 you'd do:
+        % 
+        % params.timelimit = 100;
+        % The case of the parameter name is ignored, as are underscores. Thus, you could also do:
+        % params.timeLimit = 100;
+        % ...or...
+        % params.TIME_LIMIT = 100;
+        % All desired parameter changes should be stored in a single struct, which is passed as the second parameter to the gurobi function.
+        param=solverParams;
 
+        % https://www.gurobi.com/documentation/current/refman/method.html
         % params.method gives the method used to solve continuous models
         % -1=automatic,
         %  0=primal simplex,
@@ -839,8 +849,33 @@ switch solver
         %  3=concurrent,
         %  4=deterministic concurrent
         % i.e. params.method     = 1;          % use dual simplex method
+        if isfield(param,'lpmethod')
+            %gurobiAlgorithms = {'AUTOMATIC','PRIMAL','DUAL','BARRIER','CONCURRENT','CONCURRENT_DETERMINISTIC'};
+            % -1=automatic,
+            % 0=primal simplex,
+            % 1=dual simplex,
+            % 2=barrier,
+            % 3=concurrent,
+            % 4=deterministic concurrent
+            switch param.lpmethod
+                case 'AUTOMATIC' 
+                    param.method = -1;
+                case 'PRIMAL'
+                    param.method = 0;
+                case 'DUAL'
+                    param.method = 2;
+                case 'BARRIER'
+                    param.method = 2;
+                case 'CONCURRENT'
+                    param.method = 3;
+                case 'DETERMINISTIC_CONCURRENT'
+                    param.method = 4;
+                otherwise
+                    error('Unrecognised param.lpmethod for gurobi')
+            end
+            param = rmfield(param,'lpmethod');
+        end
 
-        param=solverParams;
         if ~isfield(param,'OutputFlag')
             switch problemTypeParams.printLevel
                 case 0
@@ -1389,22 +1424,22 @@ switch solver
         else
             origStat = CplexLPproblem.Solution.statusstring;
         end
-
+        
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
-                method='Automatic';
+                method='AUTOMATIC';
             case 1
-                method='Primal Simplex';
+                method='PRIMAL';
             case 2
-                method='Dual Simplex';
+                method='DUAL';
             case 3
-                method='Network Simplex (Does not work for almost all stoichiometric matrices)';
+                method='NETWORK';
             case 4
-                method='Barrier (Interior point method)';
+                method='BARRIER';
             case 5
-                method='Sifting';
+                method='SIFTING';
             case 6
-                method='Concurrent Dual, Barrier and Primal';
+                method='CONCURRENT';
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         labindex = 1;
