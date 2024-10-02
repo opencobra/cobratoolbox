@@ -161,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
@@ -249,10 +250,10 @@
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>solverName</strong> – Solver name</p></li>
-<li><p><strong>solverType</strong> – Solver type, <cite>LP</cite>, <cite>MILP</cite>, <cite>QP</cite>, <cite>MIQP</cite> ‘EP’, ‘CLP’ (opt, default
-<cite>LP</cite>, <cite>all</cite>).  ‘all’ attempts to change all applicable
-solvers to solverName.  This is purely a shorthand
-convenience.</p></li>
+<li><p><strong>solverType</strong> – Solver type (‘LP’ by default)
+(a) One of the following: <cite>LP</cite> <cite>MILP</cite>, <cite>QP</cite>, <cite>MIQP</cite> ‘EP’, ‘CLP’
+(b) ‘all’ attempts to change all applicable solvers to solverName.  This is purely a shorthand convenience.
+(c) Cell array of solverTypes, e.g. {‘LP’,’QP’}</p></li>
 <li><p><strong>printLevel</strong> – verbose level</p>
 <ul>
 <li><p>if <cite>0</cite>, warnings and errors are silenced</p></li>

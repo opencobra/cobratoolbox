@@ -161,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
@@ -396,19 +397,18 @@ be necessary if directly modifying the Cplex.Param structure.
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.cplex.setCplexParametersForProblem">
-<span class="sig-name descname"><span class="pre">setCplexParametersForProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cplexProblem</span></em>, <em class="sig-param"><span class="pre">cobraParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em>, <em class="sig-param"><span class="pre">problemType</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/cplex/setCplexParametersForProblem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.cplex.setCplexParametersForProblem" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setCplexParametersForProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cplexProblem</span></em>, <em class="sig-param"><span class="pre">problemTypeParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em>, <em class="sig-param"><span class="pre">problemType</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/cplex/setCplexParametersForProblem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.cplex.setCplexParametersForProblem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters for a specific problem from the COBRA Parameter
 structure and a solver specific parameter structure (latter has
 precedence). The cobra parameters structure contains fields as specified in
 <cite>getCobraSolverParamsOptionsForType</cite>, while solverParams needs to
 contain a structure compatible with <cite>setCplexParam</cite>.
-:USAGE: <strong>cplexProblem = setCplexParametersForProblem</strong> (<em>cplexProblem, cobraParams, solverParams, ProblemType</em>)</p>
+:USAGE: <strong>cplexProblem = setCplexParametersForProblem</strong> (<em>cplexProblem, problemTypeParams, solverParams, ProblemType</em>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">INPUTS</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cplexProblem</strong> – the Cplex() object to set the parameters</p></li>
-<li><p><strong>cobraParams</strong> – the COBRA parameter structure, with parameters as defined in
-<cite>getCobraSolverParamsOptionsForType</cite></p></li>
+<li><p><strong>problemTypeParams</strong> – problem type parameters as defined in getCobraSolverParamsOptionsForType</p></li>
 <li><p><strong>solverParams</strong> – the solver specific parameter structure has to be compatible with <cite>setCplexParam</cite></p></li>
 <li><p><strong>problemType</strong> – The type of Problem (‘LP’,’MILP’,’QP’,’MIQP’).</p></li>
 </ul>
