@@ -161,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
@@ -306,6 +307,47 @@ reformulated problem.</p></li>
 </dd>
 <dt class="field-odd">OUTPUTS</dt>
 <dd class="field-odd"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.rescale.reformulateWBMCoupling">
+<span class="sig-name descname"><span class="pre">reformulateWBMCoupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/reformulateWBMCoupling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.reformulateWBMCoupling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reformulates badly-scaled model
+Transforms LPproblems with badly-scaled stoichiometric and
+coupling constraints of the form:
+<span class="math notranslate nohighlight">\(max c*x\)</span> subject to: math:<cite>Ax &lt;= b</cite></p>
+<p>Eliminates the need for scaling and hence prevents infeasibilities
+after unscaling. After using PREFBA to transform a badly-scaled FBA program,
+please turn off scaling and reduce the aggressiveness of presolve.</p>
+<p>Rransforms a badly-scaled LPproblem
+contained in the struct FBA and returns the transformed program in the
+structure FBA. <cite>reformulate</cite> assumes <cite>S</cite> and <cite>C</cite> do not contain very small entries
+and transforms constraints containing very large entries (entries larger than
+BIG). BIG should be set between 1000 and 10000 on double precision machines.
+<cite>printLevel</cite> = 1 or 0 enables/diables printing respectively.</p>
+<p>Reformulation techniques are described in detail in:
+<cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
+Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>LPproblem, BIG, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure contain the original LP to be solved. The format of
+this struct is described in the documentation for <cite>solveCobraLP.m</cite></p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BIG</strong> – A parameter the controls the largest entries that appear in the
+reformulated problem.</p></li>
+<li><p><strong>printLevel</strong> – 1 enables printing of problem statistics;
+0 = silent</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved.</p>
 </dd>
 </dl>
 </dd></dl>

@@ -161,26 +161,22 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../LT2/index.html">Lt2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">Sparsefba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../LT1/index.html">Lt1</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">Relaxedfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../calculateFluxShifts/index.html">Calculatefluxshifts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../igemRNA/index.html">Igemrna</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../filterRateLimittingReactions/index.html">Filterratelimittingreactions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../filterNonFluxReactions/index.html">Filternonfluxreactions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ICONGEMs/index.html">Icongems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">Room</a></li>
@@ -193,8 +189,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../GT1/index.html">Gt1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../findUpDownRegulatedGenes/index.html">Findupdownregulatedgenes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Subspaces</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="lsqr/index.html">Lsqr</a></li>
@@ -277,17 +271,34 @@
 </div>
 <span class="target" id="module-src.analysis.subspaces"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.subspaces.checkScaling">
-<span class="sig-name descname"><span class="pre">checkScaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">estLevel</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/checkScaling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.checkScaling" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">checkScaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">estLevel</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">matrixA</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/subspaces/checkScaling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.subspaces.checkScaling" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
 <dd class="field-odd"><p><strong>[precisionEstimate, scalingProperties] = checkScaling</strong> (<em>model, estLevel, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x n</cite> Stoichiometric matrix</p></li>
+<li><p>lb - <cite>n x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>n x 1</cite> Upper bounds on net flux</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> –</p>
+<ul>
+<li><p>c  - <cite>n x 1</cite> Linear objective coefficients</p></li>
+<li><p>b - <cite>m x 1</cite> change in concentration with time</p></li>
+<li><p>csense - <cite>m x 1</cite> character array with entries in {L,E,G}
+(The code is backward compatible with an m + k x 1 csense vector,
+where k is the number of coupling constraints)</p></li>
+<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
+<li><p>d - <cite>k x 1</cite> Right hand side of C*v &lt;= d</p></li>
+<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
+</ul>
+</li>
 <li><p><strong>estLevel</strong> – level of estimation: <cite>crude</cite>, <cite>medium</cite>, <cite>fine</cite> (default)</p></li>
 <li><p><strong>printLevel</strong> – verbose level (default: 1). Level 0 is quiet.</p></li>
 </ul>
@@ -300,7 +311,7 @@
 <ul>
 <li><p>.estLevel: <cite>crude</cite>, <cite>medium</cite>, <cite>fine</cite> (default)</p></li>
 <li><p>.scltol: value between 0 and 1 (column or row ratio as large as possible)</p></li>
-<li><p>.matrixAS: name of matrix</p></li>
+<li><p>.matrixA: name of matrix</p></li>
 <li><p>.nMets: number of metabolites</p></li>
 <li><p>.nRxns: number of reactions</p></li>
 <li><p>.minS: minimum of all stoichiometric coefficients</p></li>

@@ -161,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Solvers</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="varKin/index.html">Varkin</a></li>
@@ -267,13 +268,28 @@
 </ul>
 </div>
 <span class="target" id="module-src.base.solvers"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.buildLPproblemFromModel">
-<span class="sig-name descname"><span class="pre">buildLPproblemFromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">verify</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/buildLPproblemFromModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.buildLPproblemFromModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds an COBRA Toolbox LP/QP problem structure from a COBRA Toolbox model structure.</p>
+<dt class="sig sig-object mat" id="src.base.solvers.buildOptProblemFromModel">
+<span class="sig-name descname"><span class="pre">buildOptProblemFromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">verify</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/buildOptProblemFromModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.buildOptProblemFromModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds an COBRA Toolbox LP,QP,RLP,or RQP problem structure from a COBRA Toolbox model structure.</p>
+<blockquote>
+<div><p>LP - linear optimisation</p>
+</div></blockquote>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\begin{split}   max/min  ~&amp; c^T x + 0.5 x^T F x \\
    s.t.     ~&amp; [S, E; C, D] x &lt;=&gt; b ~~~~~~~~~~~:y \\
-            ~&amp; lb \leq x \leq ub~~~~:w\end{split}\\USAGE:\\   optProblem = buildoptProblemFromModel(model)\\INPUT:
+            ~&amp; lb \leq x \leq ub~~~~:w\end{split}\\QRLP - quadratically regularised LP\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}   max/min  ~&amp; c^T x + 0.5 x^T F x \\
+   s.t.     ~&amp; [S, E; C, D] x + r &lt;=&gt; b ~~~~~~~~~~~:y \\
+            ~&amp; lb \leq x + u \leq ub~~~~:w\end{split}\\QP - quadratic optimisation\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}   max/min  ~&amp; c^T x + 0.5 x^T F x \\
+   s.t.     ~&amp; [S, E; C, D] x &lt;=&gt; b ~~~~~~~~~~~:y \\
+            ~&amp; lb \leq x \leq ub~~~~:w\end{split}\\QRLP - quadratically regularised QP\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}   max/min  ~&amp; c^T x + 0.5 x^T F x \\
+   s.t.     ~&amp; [S, E; C, D] x + r &lt;=&gt; b ~~~~~~~~~~~:y \\
+            ~&amp; lb \leq x + u \leq ub~~~~:w\end{split}\\USAGE:\\   optProblem = buildoptProblemFromModel(model,verify)\\INPUT:
    model:     A COBRA model structure with at least the following fields\\               * `.S` - The stoichiometric matrix
                * `.c` - Objective coeff vector
                * `.lb` - Lower bound vector
@@ -471,7 +487,7 @@ that match exactly those in that solvers matlab interface.</p></li>
 * .rcost:        Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= v &lt;= ub\)</span>
 * .dual:         dual solution to <cite>A*v (‘E’ | ‘G’ | ‘L’) b</cite>
 * .solver:       Solver used to solve LP problem
-* .algorithm:    Algorithm used by solver to solve LP problem
+* .method:    Algorithm used by solver to solve LP problem
 * .stat:         Solver status in standardized form</p>
 <blockquote>
 <div><ul class="simple">
@@ -697,7 +713,13 @@ error.</p>
 <li><p>.c - Objective coeff vector</p></li>
 <li><p>.lb - Lower bound vector</p></li>
 <li><p>.ub - Upper bound vector</p></li>
-<li><p>.osense - Objective sense (-1 max, +1 min)</p></li>
+<li><dl class="simple">
+<dt>.osense - linear objective sense (-1 max, +1 min),</dt><dd><p>it is assumed that the quadratic part
+is minimised and the F matrix is
+positive semi-definite</p>
+</dd>
+</dl>
+</li>
 <li><p>.csense - Constraint senses, a string containing the constraint sense for
 each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 </ul>
