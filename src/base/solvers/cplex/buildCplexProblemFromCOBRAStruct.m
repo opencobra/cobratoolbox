@@ -56,7 +56,7 @@ cplexProblem.Model.lhs = columnVector(b_L);
 cplexProblem.Model.ub = Problem.ub;
 cplexProblem.Model.lb = Problem.lb;
 
-if isfield(Problem,'F')
+if isfield(Problem,'F') && any(Problem.F,'all')
     f = diag(Problem.F);
     bool0 = f==0;
     if any(bool0)
@@ -72,20 +72,14 @@ if isfield(Problem,'F')
     cplexProblem.Model.Q = Problem.F;
 end
 
+%always set the problem to minimise, but change the linear objective sign   
+cplexProblem.Model.sense = 'minimize';
 if isfield(Problem,'c')
-    cplexProblem.Model.obj = Problem.c;
+    cplexProblem.Model.obj = Problem.osense*Problem.c;
 end
-if isfield(Problem,'osense')
-    if Problem.osense == 1
-        cplexProblem.Model.sense = 'minimize';
-    else
-        cplexProblem.Model.sense = 'maximize';
-        if isfield(cplexProblem.Model,'Q')
-            cplexProblem.Model.Q = -cplexProblem.Model.Q;
-        end
-    end
-else
-    cplexProblem.Model.sense = 'minimize';
+
+if isfield(Problem,'osense') && isfield(Problem,'c')
+    cplexProblem.Model.obj = Problem.osense*Problem.c;
 end
 
 if isfield(Problem,'vartype')

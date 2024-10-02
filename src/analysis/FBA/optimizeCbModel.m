@@ -366,28 +366,30 @@ else
     twoNormWeights=[];
 end
 
+%by default, do linear optimisation unless not required
+doLinearOptimisation = 1;
 %if there is no linear objective, do a QP
 if all(model.c==0)
-    noLinearOptimisation = 1;
+    doLinearOptimisation = 0;
 end
 
 % if there is no linear objective and no quadratic objective, do an LP
 if isempty(minNorm)
-    noLinearOptimisation = 0;
+    doLinearOptimisation = 1;
 end
 
 % If there is are linear and quadrative objectives but the bounds on the
 % corresponding reaction are fixed, then there is no need to solve an LP
 % first, so do a QP
 if all( (model.lb == model.ub & model.c~=0) == (model.c~=0)) && ~isempty(minNorm)
-    noLinearOptimisation = 1;
+    doLinearOptimisation = 0;
 end
 
 % If this is a quadratically regularised LP, go straight to QP
 % TODO This is a hack of the param.minNorm to direct solution to QRLP or QRQP
 if isfield(param,'solveWBMmethod')
     if any(strcmp(param.solveWBMmethod,{'QRLP','QRQP'}))
-        noLinearOptimisation = 1;
+        doLinearOptimisation = 0;
         param.minNormWBM = minNorm;
         minNorm = param.solveWBMmethod;
     else
@@ -398,23 +400,17 @@ else
 end
 
 
+% build the optimization problem
+optProblem = buildOptProblemFromModel(model,verify);
+% save the original size of the problem
+[~,nTotalVars] = size(optProblem.A); % nTotalVars needed even if optProblem not used for an LP
+
 %%
 t1 = clock;
-
-if noLinearOptimisation
-    %no need to solve an LP first
-    objectiveLP = 0;
-else
-
-    % build the optimization problem, after it has been actively requested to be verified
-    optProblem = buildOptProblemFromModel(model,verify);
-
+if doLinearOptimisation
     if allowLoops && ~strcmp(minNorm,'optimizeCardinality')
         clear model
     end
-
-    % save the original size of the problem
-    [~,nTotalVars] = size(optProblem.A);
 
     if 0
         %debug
@@ -422,7 +418,7 @@ else
         solution.f=solution.obj;
         return
     end
-    
+
     % Solve initial LP
     if allowLoops
         solution = solveCobraLP(optProblem, param);
@@ -430,18 +426,21 @@ else
         MILPproblem = addLoopLawConstraints(optProblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem);
     end
-    
+
     %save objective from LP
     objectiveLP = solution.obj;
-    
+
     if strcmp(solution.solver,'mps')
         return;
     end
+else
+    %no need to solve an LP first
+    objectiveLP = 0;
 end
 
 %only run if minNorm is not empty, and either there is no linear objective
 %or there is a linear objective and the LP problem solved to optimality
-if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 && solution.stat==1 && ~isempty(minNorm))
+if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 && solution.stat==1 && ~isempty(minNorm))
 
     if strcmp(minNorm, 'optimizeCardinality')
         % DC programming for solving the cardinality optimization problem
@@ -516,7 +515,15 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
         %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
         %                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
         
-        if noLinearOptimisation
+        if doLinearOptimisation
+            optProblem2 = optProblem;
+            optProblem2.A = [optProblem.A ; optProblem.c'];
+            optProblem2.b = [optProblem.b ; objectiveLP];
+            optProblem2.csense = [optProblem.csense;'E'];
+            optProblem2.lb = optProblem.lb;
+            optProblem2.ub = optProblem.ub;
+            solCard = optimizeCardinality(optProblem2, param);
+        else
             % The following are assumed to be inherited correctly from
             % optProblem built above
             %     * .A - `s x size(A,2)` LHS matrix
@@ -527,16 +534,7 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
             %     * .osense - Objective sense  for problem.c only (1 means minimise (default), -1 means maximise)
             %     * .csense - `s x 1` Constraint senses, a string containing the constraint sense for
             %                  each row in `A` ('E', equality, 'G' greater than, 'L' less than).
-            
             solCard = optimizeCardinality(optProblem, param);
-        else
-            optProblem2 = optProblem;
-            optProblem2.A = [optProblem.A ; optProblem.c'];
-            optProblem2.b = [optProblem.b ; objectiveLP];
-            optProblem2.csense = [optProblem.csense;'E'];
-            optProblem2.lb = optProblem.lb;
-            optProblem2.ub = optProblem.ub;
-            solCard = optimizeCardinality(optProblem2, param);
         end
         
         solution.stat   = solCard.stat;
@@ -553,10 +551,7 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
         %                   lb <= v <= ub
         
         % Define the constraints structure
-        if noLinearOptimisation
-            % Call the sparse LP solver
-            solutionL0 = sparseLP(optProblem, zeroNormApprox);
-        else
+        if doLinearOptimisation
             optProblem2.A = [optProblem.A ; optProblem.c'];
             optProblem2.b = [optProblem.b ; objectiveLP];
             optProblem2.csense = [optProblem.csense;'E'];
@@ -564,6 +559,9 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
             optProblem2.ub = optProblem.ub;
             % Call the sparse LP solver
             solutionL0 = sparseLP(optProblem2, zeroNormApprox);
+        else
+            % Call the sparse LP solver
+            solutionL0 = sparseLP(optProblem, zeroNormApprox);
         end
 
         %Store results
@@ -733,24 +731,10 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
         else
             error(['minNorm has dimensions ' int2str(size(minNorm,1)) ' x ' int2str(size(minNorm,2)) ' but it can only of the form {(0), ''one'', ''zero'', > 0 , n x 1 vector}.'])
         end
-        
+
         % quadratic minimization of the norm.
-        if noLinearOptimisation
-            optProblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
-            if allowLoops
-                %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
-                %part of a loop. By definition, exchange reactions are not part of these loops, more
-                %properly called stoichiometrically balanced cycles.
-                
-                solution = solveCobraQP(optProblem);
-            else
-                %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
-                %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
-                MIQPproblem = addLoopLawConstraints(optProblem, model, 1:nTotalVars);
-                solution = solveCobraMIQP(MIQPproblem);
-            end
-        else
-            % set previous optimum as constraint.
+        if doLinearOptimisation
+            % set previous linear optimum as constraint.
             optProblem2 = optProblem;
             optProblem2.A = [optProblem.A;optProblem.c'];
             optProblem2.b = [optProblem.b;objectiveLP];
@@ -766,6 +750,21 @@ if (noLinearOptimisation==1 && ~isempty(minNorm)) || (noLinearOptimisation==0 &&
                 %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
                 %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
                 MIQPproblem = addLoopLawConstraints(optProblem2, model, 1:nTotalVars);
+                solution = solveCobraMIQP(MIQPproblem);
+            end
+        else
+
+            optProblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
+            if allowLoops
+                %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
+                %part of a loop. By definition, exchange reactions are not part of these loops, more
+                %properly called stoichiometrically balanced cycles.
+
+                solution = solveCobraQP(optProblem);
+            else
+                %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
+                %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
+                MIQPproblem = addLoopLawConstraints(optProblem, model, 1:nTotalVars);
                 solution = solveCobraMIQP(MIQPproblem);
             end
         end

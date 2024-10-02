@@ -21,7 +21,9 @@ tol = 1e-6;
 %Test the requirements
 if 1
     useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', 'mosek', ...
-                             'tomlab_cplex', 'mosek_linprog','cplexlp'}; % 'lp_solve': legacy
+        'tomlab_cplex', 'mosek_linprog','cplexlp'}; % 'lp_solve': legacy
+    useSolversIfAvailable = {'cplex_direct', 'glpk', 'gurobi', 'ibm_cplex', 'matlab', ...
+        'tomlab_cplex', 'mosek_linprog','cplexlp'}; % 'lp_solve': legacy
     excludeSolvers={'pdco'};
 else
     useSolversIfAvailable = {'pdco'};
@@ -56,7 +58,11 @@ for k = 1:length(solverPkgs.LP)
         % Regular FBA
         minNorm = 0;
         FBAsolution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
-        assert(FBAsolution.stat == 1);
+        bool = (FBAsolution.stat == 1);
+        if ~bool
+            disp(bool)
+        end
+        assert(bool);
         assert(norm(model.S * FBAsolution.x - model.b, 2) < tol);     
         
         if strcmp(solverPkgs.LP{k}, 'tomlab_cplex')
