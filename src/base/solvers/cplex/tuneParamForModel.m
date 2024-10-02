@@ -33,4 +33,4 @@ function optimParam = tuneParamForModel(model,varargin)
 %
 % .. Author: Thomas Pfau Dec 2017
 
-optimParam = tuneParam(buildLPproblemFromModel(model),varargin{:});
+optimParam = tuneParam(buildOptProblemFromModel(model),varargin{:});

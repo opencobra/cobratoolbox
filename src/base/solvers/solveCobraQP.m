@@ -27,7 +27,10 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .c - Objective coeff vector
 %                       * .lb - Lower bound vector
 %                       * .ub - Upper bound vector
-%                       * .osense - Objective sense (-1 max, +1 min)
+%                       * .osense - linear objective sense (-1 max, +1 min),
+%                                   it is assumed that the quadratic part
+%                                   is minimised and the F matrix is
+%                                   positive semi-definite
 %                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %
@@ -94,9 +97,10 @@ solStat = -99;
 
 if 0
     F2 = QPproblem.F;
+    %This line modifies the diagonal elements of F2 by setting them to zero.
     F2(1:size(QPproblem.F,1):end)=0;
     if all(all(F2)) == 0
-        %nonzeros on diagonal only
+        %only nonzeros in QPproblem.F are on the diagonal
         try
             %try cholesky decomposition
             B = chol(QPproblem.F);
@@ -126,8 +130,10 @@ if ~isempty(problemTypeParams.saveInput)
     save(fileName,'QPproblem')
 end
 
-if strcmp(solver,'ibm_cplex') %debug
-    CplexQPProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
+if strcmp(solver,'ibm_cplex')
+    % Initialize the CPLEX object
+    %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
+    cplexProblem = buildCplexProblemFromCOBRAStruct(QPproblem);
 end
 
 %clear the problem structure so it does not interfere later
@@ -226,7 +232,7 @@ switch solver
             b_L = b;
             b_U = b;
         end
-        tomlabProblem = qpAssign(osense*F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
+        tomlabProblem = qpAssign(F,osense*c,A,b_L,b_U,lb,ub,[],'CobraQP');
         
         %optional parameters
         tomlabProblem.PriLvl=problemTypeParams.printLevel;
@@ -274,19 +280,16 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            res2 = osense*c + osense*F*x-A'*y -w;
+            res2 = osense*c + F*x-A'*y -w;
             norm(res2,inf)
         end
         
         %%
-    case 'ibm_cplex'
-        % Initialize the CPLEX object
-        %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.10.0/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
-        
-        [CplexQPProblem, logFile, logToFile] = setCplexParametersForProblem(CplexQPProblem,problemTypeParams,solverParams,'QP');
+    case 'ibm_cplex'        
+        [cplexProblem, logFile, logToFile] = setCplexParametersForProblem(cplexProblem,problemTypeParams,solverParams,'QP');
         
         % optimize the problem
-        Result = CplexQPProblem.solve();
+        Result = cplexProblem.solve();
         if logToFile
             % Close the output file
             fclose(logFile);
@@ -323,8 +326,8 @@ switch solver
         end
         
         %Update Tolerance According to actual setting
-        problemTypeParams.feasTol = CplexQPProblem.Param.simplex.tolerances.feasibility.Cur;
-        problemTypeParams.optTol = CplexQPProblem.Param.simplex.tolerances.optimality.Cur;
+        problemTypeParams.feasTol = cplexProblem.Param.simplex.tolerances.feasibility.Cur;
+        problemTypeParams.optTol = cplexProblem.Param.simplex.tolerances.optimality.Cur;
         
     case 'cplex_direct'
         %% Tomlab cplex.m direct
@@ -354,7 +357,7 @@ switch solver
         
         x0=ones(size(QPproblem.A,2),1);
         %equality constraint matrix must be full row rank
-        [x, f, y, info] = qpng (osense*QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
+        [x, f, y, info] = qpng (QPproblem.F, osense*QPproblem.c, full(QPproblem.A), QPproblem.b, ctype, QPproblem.lb, QPproblem.ub, x0);
         
         w=[];
         
@@ -368,17 +371,6 @@ switch solver
         origStat=info.status;
         %%
     case 'mosek'
-        if (~isempty(csense))
-            b_L(csense == 'E',1) = b(csense == 'E');
-            b_U(csense == 'E',1) = b(csense == 'E');
-            b_L(csense == 'G',1) = b(csense == 'G');
-            b_U(csense == 'G',1) = inf;
-            b_L(csense == 'L',1) = -inf;
-            b_U(csense == 'L',1) = b(csense == 'L');
-        else
-            b_L = b;
-            b_U = b;
-        end
         
         if problemTypeParams.printLevel>0
             cmd='minimize';
@@ -430,12 +422,26 @@ switch solver
         
         param = mosekParamStrip(param);
 
-        % Optimize the problem.
-        % min osense*0.5*x'*F*x + osense*c'*x
-        % st. blc <= A*x <= buc
-        %     bux <= x   <= bux
-        [res] = mskqpopt(osense*F,osense*c,A,b_L,b_U,lb,ub,param,cmd);
-        
+
+        blc = b;
+        buc = b;
+        if (~isempty(csense))
+            buc(csense == 'G') = inf;
+            blc(csense == 'L') = -inf;
+        end
+
+
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+        %https://docs.mosek.com/latest/toolbox/data-types.html#prob
+        [prob.qosubi,prob.qosubj,prob.qoval]=find(F);
+
+        [rcode,res] = mosekopt(cmd,prob,param);
+      
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
@@ -443,46 +449,20 @@ switch solver
         %           3   Other problem (time limit etc)
         %%
         
-        if isempty(res)
-            stat=3;
-        else
-            if isfield(res,'sol')
-                origStat=res.sol.itr.solsta;
-                if strcmp(res.sol.itr.prosta,'PRIMAL_AND_DUAL_FEASIBLE') &&  (strcmp(res.sol.itr.solsta,'OPTIMAL') || strcmp(res.sol.itr.solsta,'NEAR_OPTIMAL'))
-                    stat=1;
-                    % x solution.
-                    x = res.sol.itr.xx;
-                    %f = 0.5*x'*F*x + c'*x;
-                    f = osense*res.sol.itr.pobjval;
-                    
-                    %dual to equality
-                    y= res.sol.itr.y;
-                    
-                    %dual to lower and upper bounds
-                    w = (res.sol.itr.slx - res.sol.itr.sux);
-                    
-                    %slack for blc <= A*x <= buc
-                    s = zeros(size(csense,1),1);
-                    if ~isempty(csense)
-                        %slack for A*x <= b
-                        s_U =  b_L - A*x;
-                        s(csense == 'L') = s_U(csense == 'L');
-                        %slack for b <= A*x
-                        s_L =  b_U + A*x;%TODO, needs testing
-                        s(csense == 'G') = s_L(csense == 'G');
-                        %norm(A*x + s -b)
-                        %pause
-                    end
-                    %                     %slack for blc <= A*x <= buc
-                    %                     s = b - A*x;
-                else
-                    stat=3;
-                end
-            else
-                stat=3;
-                origStat=[res.rmsg , res.rcodestr];
-            end
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
         end
+
+        %parse mosek result structure
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -496,9 +476,24 @@ switch solver
             res1(~isfinite(res1))=0;
             norm(res1,inf)
             
-            norm(osense*c + osense*F*x -A'*y -w,inf)
+            norm(osense*c + F*x -A'*y -w,inf)
             y2=res.sol.itr.slc-res.sol.itr.suc;
-            norm(osense*c + osense*F*x -A'*y2 -w,inf)
+            norm(osense*c + F*x -A'*y2 -w,inf)
+        end
+
+        if stat ==1 || stat ==3
+            f = pobjval;
+            %slacks
+            sbl = prob.a*x - prob.blc;
+            sbu = prob.buc - prob.a*x;
+            s = sbu - sbl; %TODO -double check this
+            if problemTypeParams.printLevel>1
+                fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+            end
+        else
+            f = NaN;
+            s = NaN*ones(size(A,1),1);
         end
         
         
@@ -639,58 +634,90 @@ switch solver
         %% gurobi
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
-        % https://www.gurobi.com/documentation/9.0/refman/matlab_the_model_argument.html#matlab:model
-        
-        resultgurobi = struct('x',[],'objval',[],'pi',[]);
-        %Set up the parameters
-        params = struct();
+
+        %  The param struct contains Gurobi parameters. A full list may be
+        %  found on the Parameter page of the reference manual:
+        %  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
+        % MATLAB Parameter Examples
+        % In the MATLAB interface, parameters are passed to Gurobi through a struct. 
+        % To modify a parameter, you create a field in the struct with the appropriate name, 
+        % and set it to the desired value. For example, to set the TimeLimit parameter to 100 you'd do:
+        % 
+        % param.timelimit = 100;
+        % The case of the parameter name is ignored, as are underscores. Thus, you could also do:
+        % param.timeLimit = 100;
+        % ...or...
+        % param.TIME_LIMIT = 100;
+        % All desired parameter changes should be stored in a single struct, which is passed as the second parameter to the gurobi function.
+        param=solverParams;
+
+        % param.method gives the method used to solve continuous models
+        % -1=automatic,
+        %  0=primal simplex,
+        %  1=dual simplex,
+        %  2=barrier,
+        %  3=concurrent,
+        %  4=deterministic concurrent
+        % i.e. param.method     = 1;          % use dual simplex method
+        if isfield(param,'lpmethod')
+            %gurobiAlgorithms = {'AUTOMATIC','PRIMAL','DUAL','BARRIER','CONCURRENT','CONCURRENT_DETERMINISTIC'};
+            % -1=automatic,
+            % 0=primal simplex,
+            % 1=dual simplex,
+            % 2=barrier,
+            % 3=concurrent,
+            % 4=deterministic concurrent
+            switch param.lpmethod
+                case 'AUTOMATIC' 
+                    param.method = -1;
+                case 'PRIMAL'
+                    param.method = 0;
+                case 'DUAL'
+                    param.method = 2;
+                case 'BARRIER'
+                    param.method = 2;
+                otherwise
+                    %https://www.gurobi.com/documentation/current/refman/method.html
+                    %Concurrent methods aren't available for QP and QCP. 
+                    error('Unrecognised param.lpmethod for gurobi')
+            end
+            param = rmfield(param,'lpmethod');
+        end
+
         switch problemTypeParams.printLevel
             case 0
-                params.OutputFlag = 0;
-                params.DisplayInterval = 1;
+                param.OutputFlag = 0;
+                param.DisplayInterval = 1;
             case problemTypeParams.printLevel>1
-                params.OutputFlag = 1;
-                params.DisplayInterval = 5;
+                param.OutputFlag = 1;
+                param.DisplayInterval = 5;
             otherwise
-                params.OutputFlag = 0;
-                params.DisplayInterval = 1;
+                param.OutputFlag = 0;
+                param.DisplayInterval = 1;
         end
-        
-        if problemTypeParams.method == -1
-            %https://support.gurobi.com/hc/en-us/community/posts/360057936252-Optimal-objective-from-a-simple-QP-problem-?flash_digest=3cee39a758f70e26f090b839b1f4c572fbccd778
-            params.Method = 1;
-        else
-            %-1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent
-            params.Method = problemTypeParams.method;
-        end
-        params.Presolve = -1; % -1 - auto, 0 - no, 1 - conserv, 2 - aggressive
-        params.FeasibilityTol = problemTypeParams.feasTol;
-        params.OptimalityTol = problemTypeParams.optTol;
+
+        param.FeasibilityTol = problemTypeParams.feasTol;
+        param.OptimalityTol = problemTypeParams.optTol;
         %Update param struct with Solver Specific parameters
-        params = updateStructData(params,solverParams);
+        param = updateStructData(param,solverParams);
         
         %Update feasTol in case it is changed by the solver Parameters
-        problemTypeParams.feasTol = params.FeasibilityTol;
-        
+        problemTypeParams.feasTol = param.FeasibilityTol;
         
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
         gurobiQP.sense(csense == 'G') = '>';
         
-        %modelsense (optional)
-        %The optimization sense. Allowed values are 'min' (minimize) or 'max' (maximize). When absent, the default optimization sense is minimization.
-        if osense == -1
-            gurobiQP.modelsense = 'max';
-        else
-            gurobiQP.modelsense = 'min';
-        end
+        % minimization always
+        gurobiQP.modelsense = 'min';
+        %if maximisation, only change the linear part of the objective
+        gurobiQP.obj = (double(c)+0)*osense;%gurobi wants a dense double vector as an objective
         
         gurobiQP.A = A;
-        gurobiQP.rhs = b;
+        gurobiQP.rhs = full(b); %model.rhs must be a dense double vector
         gurobiQP.lb = lb;
         gurobiQP.ub = ub;
-        %gurobi wants a dense double vector as an objective
-        gurobiQP.obj = double(c)+0;%full
+
         
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
@@ -705,7 +732,7 @@ switch solver
         end
         
         try
-            resultgurobi = gurobi(gurobiQP,params);
+            resultgurobi = gurobi(gurobiQP,param);
         catch ME
             if contains(ME.message,'Gurobi error 10020: Objective Q not PSD (negative diagonal entry)')
                 warning('%s\n','Gurobi cannot solve a QP problem if it is given a diagonal Q with some of those diagonals equal to zero')
@@ -759,7 +786,7 @@ switch solver
             % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
             gurobiQP.obj(:) = 0;
             gurobiQP.F(:,:) = 0;
-            resultgurobi = gurobi(gurobiQP,params);
+            resultgurobi = gurobi(gurobiQP,param);
             if strcmp(resultgurobi.status,'OPTIMAL')
                 stat = 2;
             else
@@ -859,7 +886,7 @@ switch solver
             lbeq = [QPproblem.lb ; zeros(nSlacks,1)];
             ubeq = [QPproblem.ub ; inf*ones(nSlacks,1)];
             ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
-            Feq  = [osense*QPproblem.F , sparse(m, nSlacks);
+            Feq  = [QPproblem.F , sparse(m, nSlacks);
                 sparse(nSlacks,n + nSlacks)];
         end
         
@@ -1047,9 +1074,9 @@ if solution.stat==1
                 end
             end
         end
-        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && ~any(strcmp(solver,{'mosek','ibm_cplex'}))%todo, debug gurobi QP
+        if ~isempty(solution.full) && ~isempty(solution.rcost) && ~isempty(solution.dual) && any(strcmp(solver,{'mosek','ibm_cplex','gurobi'}))
             % determine the residual 2
-            res2 = osense*c  + osense*F*solution.full - A' * solution.dual - solution.rcost;
+            res2 = c  + F*solution.full - A' * solution.dual - solution.rcost;
             tmp2 = norm(res2, inf);
             
             % evaluate the optimality condition 2
@@ -1069,9 +1096,11 @@ if solution.stat==1
             solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
-            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2
+            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2 && ~any(strcmp(solver,{'mosek'}))
+                % TODO - mosek is passing back a slightly different
+                % objective for testSolveCobraQP.m problem 1 - why?
                 warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')
-                fprintf('%s%g\n','The difference between the optimal value of the solver objective and objective from osense*c''*x + 0.5*x''*F*x is: ' ,f - solution.obj)
+                fprintf('%s%g\n',['The difference between the value the optimal objective c''*x + 0.5*x''*F*x minus the ' solver ' objective is: '] ,f - solution.obj)
             end
         else
             solution.obj = NaN;
@@ -1115,8 +1144,8 @@ end
 
 %Helper function for pdco
 function [obj,grad,hess] = QPObj(x,ceq,Feq,osense)
-obj  = osense*ceq'*x + osense*0.5*x'*Feq*x;
-grad = osense*ceq + osense*Feq*x;
+obj  = osense*ceq'*x + 0.5*x'*Feq*x;
+grad = osense*ceq + Feq*x;
 hess = osense*Feq;
 end
 

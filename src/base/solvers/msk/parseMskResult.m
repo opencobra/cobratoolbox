@@ -152,7 +152,8 @@ if isfield(res, 'sol')
                 bas.skx = res.sol.bas.skx;
                 bas.xc = res.sol.bas.xc;
                 bas.xx = res.sol.bas.xx;
-                
+                pobjval = res.sol.bas.pobjval;
+                dobjval = res.sol.bas.dobjval;
             case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
                 stat=0; % infeasible
             case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
@@ -182,6 +183,8 @@ if isfield(res, 'sol')
                         % Dual variables to affine conic constraints
                         k = res.sol.bas.s;
                     end
+                    pobjval = res.sol.bas.pobjval;
+                    dobjval = res.sol.bas.dobjval;
                 case 'MSK_OPTIMIZER_INTPNT'
                     stat = 1; % optimal solution found
                     x=res.sol.itr.xx; % primal solution.
@@ -195,6 +198,8 @@ if isfield(res, 'sol')
                         % Dual variables to affine conic constraints
                         k = res.sol.itr.doty;
                     end
+                    pobjval = res.sol.itr.pobjval;
+                    dobjval = res.sol.itr.dobjval;
             end
         end
     end    
@@ -207,149 +212,3 @@ else
     origStat = res.rcodestr;
     stat = -1;
 end
-
-% % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
-% if isfield(res, 'sol')
-%     if isfield(res.sol, 'itr')
-%         origStat = res.sol.itr.solsta;
-%         if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%             origStat = 1; % optimal solution found
-%         elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             stat=0; % infeasible
-%         end
-%     end
-%     if isfield(res.sol,'bas')
-%         origStat = res.sol.bas.solsta;
-%         if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%             stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             stat=0; % infeasible
-%         end
-%     end
-%     
-% else
-%     %try to solve with default solverParamseters
-%     [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub);
-%     if isfield(res,'sol')
-%         if isfield(res.sol, 'itr')
-%             solutionLP2.origStat = res.sol.itr.solsta;
-%             if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP2.origStat = 1; % optimal solution found
-%             elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP2.stat=0; % infeasible
-%             end
-%         end
-%         if isfield(res.sol,'bas')
-%             solutionLP2.origStat = res.sol.bas.solsta;
-%             if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP2.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP2.stat=0; % infeasible
-%             end
-%         end
-%         if solutionLP2.stat ==0
-%             if problemTypesolverParamss.printLevel>2
-%                 disp(res);
-%             end
-%         end
-%     else
-%         fprintf('%s\n',res.rcode)
-%         fprintf('%s\n',res.rmsg)
-%         fprintf('%s\n',res.rcodestr)
-%         solutionLP2.stat=-1; %some other problem
-%     end
-% end
-
-% % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
-% if isfield(res, 'sol')
-%     if isfield(res.sol, 'itr')
-%         solutionLP.origStat = res.sol.itr.solsta;
-%         if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%             solutionLP.stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.itr.solsta,'PRIMAL_INFEASIBLE_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             solutionLP.stat=0; % infeasible
-%         end
-%     end
-%     if isfield(res.sol,'bas')
-%         solutionLP.origStat = res.sol.bas.solsta;
-%         if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%             solutionLP.stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.bas.solsta,'PRIMAL_INFEASIBLE_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             solutionLP.stat=0; % infeasible
-%         end
-%     end
-% else
-%     %try to solve with default solverParamseters
-%     [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub);
-%     if isfield(res,'sol')
-%         if isfield(res.sol, 'itr')
-%             solutionLP.origStat = res.sol.itr.solsta;
-%             if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP.stat=0; % infeasible
-%             end
-%         end
-%         if isfield(res.sol,'bas')
-%             solutionLP.origStat = res.sol.bas.solsta;
-%             if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP.stat=0; % infeasible
-%             end
-%         end
-%         if solutionLP.stat ==0
-%             if problemTypesolverParamss.printLevel>2
-%                 disp(res);
-%             end
-%         end
-%     else
-%         solution.origStat = res.rcodestr;
-%         fprintf('%s\n',res.rcode)
-%         fprintf('%s\n',res.rmsg)
-%         fprintf('%s\n',res.rcodestr)
-%         solutionLP.stat=-1; %some other problem
-%     end
-% end

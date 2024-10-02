@@ -154,7 +154,7 @@ end
 if (solutionWT.stat > 0)
 
     if minNorm
-        QPproblem = buildLPproblemFromModel(modelDel);
+        QPproblem = buildOptProblemFromModel(modelDel);
         QPproblem.c(1:nRxns1) = -2*solutionWT.x;
         QPproblem.F = sparse(size(QPproblem.A,2));
         QPproblem.F(1:nRxns2,1:nRxns2) = 2*speye(nRxns2);
@@ -166,8 +166,8 @@ if (solutionWT.stat > 0)
         % 1: Swt*v1 = 0 for the wild type
         % 2: Sdel*v2 = 0 for the deletion strain
         % 5: c'v1 = f1 (wild type)
-        LPWT = buildLPproblemFromModel(modelWT);
-        LPDel = buildLPproblemFromModel(modelDel);        
+        LPWT = buildOptProblemFromModel(modelWT);
+        LPDel = buildOptProblemFromModel(modelDel);        
         [nWTCtrs,nWTVars] = size(LPWT.A);
         [nDelCtrs,nDelVars] = size(LPDel.A);
         deltaMat = createDeltaMatchMatrix(modelWT.rxns,modelDel.rxns);

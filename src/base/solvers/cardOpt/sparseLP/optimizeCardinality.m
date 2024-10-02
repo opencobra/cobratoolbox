@@ -88,7 +88,12 @@ solution.y = [];
 solution.z = [];
 solution.stat = 1;
 
-feasTol = getCobraSolverParams('LP', 'feasTol');
+[feasTol] = getCobraSolverParams('LP', 'feasTol');
+
+global CBT_LP_SOLVER
+if strcmp('mosek',CBT_LP_SOLVER)
+    error('mosek not working with optCard  -TODO debug with testOptimizeCbModel')
+end
 
 %% Check inputs
 if ~exist('param','var') || isempty(param)
