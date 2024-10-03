@@ -1,15 +1,13 @@
 function [main, mid] = optEnvelope(model, desiredProduct, varargin)
 % optEnvelope uses MILP to find minimum active reactions and then finds 
-% smallest set of reactions in the pool of inactive reactions that offers  
-% same production envelope.
-% Algorith provides multiple ways to reinsert reactions - sequential,
-% MILP, GA(under construction)
+% smallest set of reactions in the pool of inactive reactions that offers same production envelope.
+% Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)
 %
-%   EXAMPLE: [knockouts, midKnockouts] = optEnvelope(model, 'EX_ac_e', 'timeLimit', 600, 'protectedRxns', {'H2Ot_f','H2Ot_b'}, 'midPoints', 15);
+%   EXAMPLE: [mainKnockouts, midKnockouts] = optEnvelope(model, 'EX_ac_e', 'timeLimit', 600, 'protectedRxns', {'H2Ot_f','H2Ot_b'}, 'midPoints', 15);
 %
 % INPUT
 %  model              COBRA model structure
-%  desiredProduct     Reaction ID of desired product
+%  desiredProduct     Reaction name of desired product
 %
 %  protectedRxns      (opt) Aditional reactions to ignore (must be in irreversible form) (default: {})
 %  numTries           (opt) Number of iteration for finding best possible set of deletions (default: [])
@@ -24,9 +22,10 @@ function [main, mid] = optEnvelope(model, desiredProduct, varargin)
 %  GAon               (unfinished function)
 %
 % OUTPUT
-%  knockouts          List of which reactions to remove for the optimal
-%                     envelope
-%  midKnockoutsTable  Table of reactions to remove for midpoint envelopes
+%  main               Structure that contains information about reactions to remove for optimal envelope
+%                     Information about most probable point
+%  mid                Structure that contains information about reactions to remove for midpoint envelopes
+%                     Information about most probable points for midpoint envelopes
 %
 % NOTES
 %  It should be mentioned that a figure (desired product versus biomass)
