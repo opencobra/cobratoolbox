@@ -1,4 +1,24 @@
 function [knockouts] = milpOEReinserts(model, data, K, toDel, minP, numKO, timeLimit, printLevel)
+% This function is creating and calculating MILP to get certain amount
+% of knockouts to achieve best production envelope
+%
+% INPUTS
+%   model       COBRA model structure
+%   data        Information about MAR
+%   K           List of reactions that cannot be selected for knockout
+%   toDel       Variable that shows what to delete:
+%                   0: reactions
+%                   1: genes
+%                   2: enzymes
+%   minP        Information about biomass and desired product
+%   numKO       Number of knockouts to achieve
+%   timeLimit   Time limit for gurobi optimization
+%   printLevel  Print level for gurobi optimization
+%
+% OUTPUT
+%   knockouts   List of reactions that when removed gives optimal envelope
+%
+% Author(s): Kristaps Berzins
 
 if nargin < 7
     timeLimit = inf;
