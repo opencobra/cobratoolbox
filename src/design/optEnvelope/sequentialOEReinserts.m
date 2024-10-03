@@ -1,5 +1,28 @@
 function [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit)
-% Calculates knockouts from set of inactive reactions. Uses sequential method.
+% This function is going through inactive reactions sequentially and
+% reinserting them one by one to get best possible set of knockouts for
+% optimal envelope. With numTries parameter this can be done multiple times
+% by randomizing list of inactive reactions
+%
+% INPUTS
+%   modelOld            COBRA model structure
+%   data                Information about MAR
+%   K                   List of reactions that cannot be selected for knockout
+%   toDel               Variable that shows what to delete:
+%                           0: reactions
+%                           1: genes
+%                           2: enzymes
+%   minP                Information about biomass and desired product
+%   midPoints           Number of middle points to calculate mid envelopes for
+%   numTries            Number of iterations for randomizing indexes of inactive reactions
+%   timeLimit           Time limit for numTries iterations optimization
+%
+% OUTPUT
+%   mainKnockouts       List of reactions that when removed gives optimal envelope
+%   finalMidKnockouts   List of reactions that when removed gives optimal
+%                       envelope for middle envelopes
+%
+% Author(s): Kristaps Berzins
 
 switch toDel
     case 0  %Reactions
