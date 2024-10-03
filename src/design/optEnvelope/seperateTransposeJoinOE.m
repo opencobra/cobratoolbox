@@ -1,4 +1,7 @@
 function [A_w,Ay_w ,B_w,C_w, lb_w, ub_w, wSize]=seperateTransposeJoinOE(A, Ay, B,C,ySize, yMax, aSizeCol, highNum, zSize)
+% Function to transpose and join arrays for milpOEReinserts.m function
+%
+% Author(s): Kristaps Berzins
 
 wSize=size(A',2);
 
