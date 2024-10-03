@@ -1639,7 +1639,7 @@ if (isfield(specificData, 'inactiveGenes') && ~isempty(specificData.inactiveGene
         
         % Find the reactions that would be deleted in response to deletion
         %of a gene
-        [~, ~, deletedReactions, ~] = allRxnPerActiveGene(model, model.genes(inactiveGenesNonCoreBool));
+        [~, ~, deletedReactions, ~] = deleteModelGenes(model, model.genes(inactiveGenesNonCoreBool));
         
         % Set bounds of inactive reactions to zero
         modelTemp = changeRxnBounds(model, deletedReactions, 0, 'b');
