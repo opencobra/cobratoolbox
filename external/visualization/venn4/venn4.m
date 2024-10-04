@@ -251,19 +251,13 @@ switch n
         disp('n must be an integer between 2 and 4.')
 end
 
-% % Get all text objects
-% h=vennfig.findobj('Type','text')
-%
-% % Configure texts
-% set(h,'fontsize',11,'FontWeight','bold');
-% for i = 1:length(h)
-%     if ismember(h(i).String,sets)
-%         h(i).FontSize = 14;
-%         h(i).FontWeight = 'bold';
-%     else
-%         h(i).Color = labelC;
-%     end
-% end
+% Set label color
+h=vennfig.findobj('Type','text'); % Get all text objects
+for i = 1:length(h)
+    if ~ ismember(h(i).String,sets)
+        h(i).Color = labelC;
+    end
+end
 
 % Configure edges
 if n > 3
