@@ -1,4 +1,4 @@
-name: MATLAB Tests
+name: MATLAB Tests #ci 7.1
 
 on:
   pull_request_target:
@@ -17,18 +17,19 @@ jobs:
         run: |
           git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
-      - name: Run MATLAB tests and generate coverage
+      - name: Write MATLAB test script
         run: |
-          matlab -batch "try
+          cat << 'EOF' > run_tests.m
+          try
               % Initialize COBRA Toolbox
               run('cobratoolbox/initCobraToolbox.m');
-              
+
               % Start logging to a diary file
               diary('test_results.txt');
-              
+
               % Run tests and generate report
               run('cobratoolbox/test/runTestAndGenerateReport.m');
-              
+
               diary off;
           catch ME
               % Catch and log any errors
@@ -36,8 +37,12 @@ jobs:
               disp(getReport(ME));
               diary off;
               exit(1);  % Exit with error code for CI to detect failure
-          end"
+          end
+          EOF
 
+      - name: Run MATLAB tests and generate coverage
+        run: |
+          matlab -batch "run('run_tests.m');"
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
