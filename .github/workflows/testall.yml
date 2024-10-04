@@ -21,15 +21,18 @@ jobs:
         run: |
           cat << 'EOF' > run_tests.m
           try
-              % Initialize COBRA Toolbox
-              run('cobratoolbox/initCobraToolbox.m');
-
+              % Initialize COBRA Toolbox without updating
+              initCobraToolbox(false);
+              
+              % Set CPLEX as the default solver for all problem types
+              changeCobraSolver('ibm_cplex', 'ALL', 1);
+              
               % Start logging to a diary file
               diary('test_results.txt');
-
-              % Run tests and generate report
-              run('cobratoolbox/test/runTestAndGenerateReport.m');
-
+              
+              % Run the COBRA Toolbox test suite
+              runCobraTestSuite;
+              
               diary off;
           catch ME
               % Catch and log any errors
@@ -39,6 +42,7 @@ jobs:
               exit(1);  % Exit with error code for CI to detect failure
           end
           EOF
+
 
       - name: Run MATLAB tests and generate coverage
         run: |
