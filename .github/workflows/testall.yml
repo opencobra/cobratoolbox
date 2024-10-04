@@ -4,42 +4,42 @@ on:
   pull_request_target:
     types:
       - closed
-    branches: [ master ]
+    branches:
+      - master  # Ensure the indentation is correct here
 
 jobs:
   build:
-    runs-on: self-hosted # hosted
+    runs-on: self-hosted  # You can change this to 'ubuntu-latest' if you need hosted runners
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Clone COBRA Toolbox
-      run: |
-        git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+      - name: Clone COBRA Toolbox
+        run: |
+          git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
-    - name: Run MATLAB tests and generate coverage
-    
-    run: |
-      matlab -batch "try
-          % Initialize COBRA Toolbox
-          run('cobratoolbox/initCobraToolbox.m'); 
-          
-          % Start logging to a diary file
-          diary('test_results.txt'); 
-          
-          % Run tests and generate report
-          run('cobratoolbox/test/runTestAndGenerateReport.m'); 
-          
-          diary off;
-      catch ME
-          % Catch and log any errors
-          disp('An error occurred:');
-          disp(getReport(ME));
-          diary off;
-          exit(1);  % Exit with error code for CI to detect failure
-      end"
+      - name: Run MATLAB tests and generate coverage
+        run: |
+          matlab -batch "try
+              % Initialize COBRA Toolbox
+              run('cobratoolbox/initCobraToolbox.m'); 
+              
+              % Start logging to a diary file
+              diary('test_results.txt'); 
+              
+              % Run tests and generate report
+              run('cobratoolbox/test/runTestAndGenerateReport.m'); 
+              
+              diary off;
+          catch ME
+              % Catch and log any errors
+              disp('An error occurred:');
+              disp(getReport(ME));
+              diary off;
+              exit(1);  % Exit with error code for CI to detect failure
+          end"
 
-    - name: Upload Test Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-report
-        path: test_results.txt
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: test_results.txt
