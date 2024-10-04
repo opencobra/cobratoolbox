@@ -1,8 +1,9 @@
 name: MATLAB Tests
 on:
-  pull_request:
-    branches:
-      - '**'
+  pull_request_target:
+    types:
+      - closed
+    branches: [ master ]
 
 jobs:
   build:
