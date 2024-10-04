@@ -21,13 +21,13 @@ jobs:
         run: |
           matlab -batch "try
               % Initialize COBRA Toolbox
-              run('cobratoolbox/initCobraToolbox.m'); 
+              run('cobratoolbox/initCobraToolbox.m');
               
               % Start logging to a diary file
-              diary('test_results.txt'); 
+              diary('test_results.txt');
               
               % Run tests and generate report
-              run('cobratoolbox/test/runTestAndGenerateReport.m'); 
+              run('cobratoolbox/test/runTestAndGenerateReport.m');
               
               diary off;
           catch ME
@@ -37,6 +37,7 @@ jobs:
               diary off;
               exit(1);  % Exit with error code for CI to detect failure
           end"
+
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
