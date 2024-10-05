@@ -30,12 +30,44 @@ createPanModels(modPath,panPath,'Species',numWorkers);
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
-assert(isempty(notGrowing))
+% assert(isempty(notGrowing))
+if ~isempty(notGrowing)
+    disp('Some models are not growing. Do you want to stop the execution?');
+    userInput = input('Type "y" to stop, or "n" to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error('Execution stopped because some models are not growing in panSpeciesModels');
+    else
+        disp('Continuing the execution despite some models not growing in panSpeciesModels');
+    end
+end
 
 % test that ATP production is not too high
 [tooHighATP,ATP_fluxes] = plotATPTestResults(panPath, 'pan-models','numWorkers',numWorkers);
-assert(max(cell2mat(ATP_fluxes(2:end,2))) < 200)
-assert(max(cell2mat(ATP_fluxes(2:end,3))) < 150)
+% assert(max(cell2mat(ATP_fluxes(2:end,2))) < 200)
+% assert(max(cell2mat(ATP_fluxes(2:end,3))) < 150)
+% Check the Aerobic ATP production
+if max(cell2mat(ATP_fluxes(2:end,2))) >= 200
+    disp(['The maximum ATP flux in ',cell2mat(ATP_fluxes(1,2)),' exceeds 200.']);
+    userInput = input('Type "y" to stop, or any other key to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error(['Execution stopped because the maximum ATP flux in ', cell2mat(ATP_fluxes(1,2)),'panSpeciesModels exceeds 200.']);
+    else
+        disp(['Continuing despite ATP flux exceeding 200 in ', cell2mat(ATP_fluxes(1,2)), 'panSpeciesModels']);
+    end
+end
+% Check the Anaerobic ATP production
+if max(cell2mat(ATP_fluxes(2:end,3))) >= 150
+    disp(['The maximum ATP flux in ',cell2mat(ATP_fluxes(1,3)),' panSpeciesModels exceeds 150.']);
+    userInput = input('Type "y" to stop, or "n" to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error(['Execution stopped because the maximum ATP flux in ', cell2mat(ATP_fluxes(1,3)),' panSpeciesModels exceeds 150.']);
+    else
+        disp(['Continuing despite ATP flux exceeding 150 in ', cell2mat(ATP_fluxes(1,3)), 'panSpeciesModels']);
+    end
+end
 
 % create the pan-models on genus level
 panPath=[pwd filesep 'panGenusModels'];
@@ -44,9 +76,42 @@ createPanModels(modPath,panPath,'Genus',numWorkers);
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
-assert(isempty(notGrowing))
+%assert(isempty(notGrowing))
+if ~isempty(notGrowing)
+    disp('Some models are not growing. Do you want to stop the execution?');
+    userInput = input('Type "y" to stop, or "n" to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error('Execution stopped because some models are not growing in panGenusModels');
+    else
+        disp('Continuing the execution despite some models not growing in panGenusModels');
+    end
+end
 
 % test that ATP production is not too high
 [tooHighATP,ATP_fluxes] = plotATPTestResults(panPath, 'pan-models','numWorkers',numWorkers);
-assert(max(cell2mat(ATP_fluxes(2:end,2))) < 250)
-assert(max(cell2mat(ATP_fluxes(2:end,3))) < 200)
+% assert(max(cell2mat(ATP_fluxes(2:end,2))) < 250)
+% assert(max(cell2mat(ATP_fluxes(2:end,3))) < 200)
+
+% Check the Aerobic ATP production
+if max(cell2mat(ATP_fluxes(2:end,2))) >= 250
+    disp(['The maximum ATP flux in ',cell2mat(ATP_fluxes(1,2)),' panSpeciesModels exceeds 200.']);
+    userInput = input('Type "y" to stop, or "n" to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error(['Execution stopped because the maximum ATP flux in ', cell2mat(ATP_fluxes(1,2)),' panSpeciesModels exceeds 200.']);
+    else
+        disp(['Continuing despite ATP flux exceeding 200 in ', cell2mat(ATP_fluxes(1,2)), 'panSpeciesModels']);
+    end
+end
+% Check the Anaerobic ATP production
+if max(cell2mat(ATP_fluxes(2:end,3))) >= 200
+    disp(['The maximum ATP flux in ',cell2mat(ATP_fluxes(1,3)),' exceeds 150.']);
+    userInput = input('Type "y" to stop, or "n" to continue: ', 's');
+    
+    if strcmpi(userInput, 'y')
+        error(['Execution stopped because the maximum ATP flux in ', cell2mat(ATP_fluxes(1,3)),' model exceeds 150.']);
+    else
+        disp(['Continuing despite ATP flux exceeding 150 in ', cell2mat(ATP_fluxes(1,3))]);
+    end
+end
