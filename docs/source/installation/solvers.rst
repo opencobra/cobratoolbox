@@ -154,7 +154,9 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
 12) |linux| |macos|  Edit matlab startup.m file and add the folllwing line:
 
-.. code-block:: addpath('/opt/ibm/ILOG/CPLEX_Studio1210/cplex/matlab/x86-64_linux');
+.. code-block:: console
+
+addpath('/opt/ibm/ILOG/CPLEX_Studio1210/cplex/matlab/x86-64_linux');
 
 |windows| Add the path to 'C:\Program Files\IBM\ILOG\CPLEX_Studio1210\CPLEX_Studio1210\cplex\matlab\<yourarch>'
 
