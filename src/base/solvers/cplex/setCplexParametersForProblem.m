@@ -192,7 +192,6 @@ if isfield(solverParams,'lpmethod') && strcmp(problemType,'LP')
     if isnumeric(solverParams.lpmethod)
         cplexProblem.Param.lpmethod.Cur=solverParams.lpmethod; %backward compatibility
     else
-        solverParams.lpmethod
         switch solverParams.lpmethod
             case 'AUTOMATIC'
                 cplexProblem.Param.lpmethod.Cur=0;

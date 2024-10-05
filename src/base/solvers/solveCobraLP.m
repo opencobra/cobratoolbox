@@ -222,7 +222,7 @@ w = [];
 stat = 0;
 origStat = [];
 origStatText = [];
-method = 'default';
+method = '';
 
 t_start = clock;
 if isempty(solver)
@@ -745,11 +745,10 @@ switch solver
         end
             
         %parse mosek result structure
-        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         if stat ==1 || stat ==3
-            f=c'*x;
+            f = c'*x;
             %slacks
             sbl = prob.a*x - prob.blc;
             sbu = prob.buc - prob.a*x;
@@ -1424,7 +1423,7 @@ switch solver
         else
             origStat = CplexLPproblem.Solution.statusstring;
         end
-        
+
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
                 method='AUTOMATIC';

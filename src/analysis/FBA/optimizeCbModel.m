@@ -59,8 +59,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x 1` Right hand side of C*v <= d
 %                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
-%
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
+%
 %                         * g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g2 - `n x 1` weights on two norm

@@ -92,7 +92,12 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
       lrgind  = find(Sabs(k1,:)>BIG);
       lrgnums = Sabs(k1,lrgind);
       dum     = max(floor(log(lrgnums)./logbig),1);
-      stp     = 2^mode(ceil(log2(lrgnums)./dum));
+
+      if 0
+          stp = 2^mode(ceil(log2(lrgnums)./dum));
+      else
+          stp = mode(nthroot(lrgnums,dum+1));
+      end
 
       maxdum  = max(dum);
       dumblk       = spdiags([ones(maxdum,1) -stp*ones(maxdum,1)],...
@@ -175,7 +180,11 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 
       sgn = sign(C(i,j));
       dum = max(floor(log(qty)/logbig),1);
-      stp = 2^ceil(log2(qty)/dum);
+      if 0
+          stp = 2^ceil(log2(qty)/dum);
+      else
+          stp = nthroot(qty,dum+1);
+      end
 
       dumblk = spdiags(sgn*[-ones(dum,1) stp*ones(dum,1)],...
                        [0 1],dum,dum);
