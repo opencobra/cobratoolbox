@@ -120,8 +120,9 @@ assert(isequal(model2.S, reducedSMatrix));
 %Assert that the right mets are removed and that the others are retained.
 assert(isempty(intersect(model2.mets,model.mets(removedMets))) && isempty(setxor(setdiff(model.mets,model.mets(removedMets)),model2.mets)))
 
-%Now, remove a metabolite
-model = removeMetabolites(model,model.mets{end});
+%Now, remove a metabolite but keep reactions
+removeRxnFlag =0;
+model = removeMetabolites(model,model.mets{end},removeRxnFlag);
 % and try this again (same sized rxns and mets)
 model2 = removeFieldEntriesForType(model,removedMets,'mets', length(model.mets));
 reducedSMatrix = model.S;
