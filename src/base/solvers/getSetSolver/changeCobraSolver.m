@@ -434,9 +434,15 @@ end
 
 solverOK = false;
 
-% determine the compatibility status
-compatibleStatus = isCompatible(solverName, printLevel);
+if 0
+    % TODO: UPDATE docs/source/installation/compatMatrix.rst
+    % compatibleStatus determine the compatibility status
+    compatibleStatus = isCompatible(solverName, printLevel);
+else
+    %skip this as it is a pain to maintain compatibility matrix.
+    compatibleStatus = 2;
 
+end
 % * 0: not compatible with the COBRA Toolbox (tested)
 % * 1: compatible with the COBRA Toolbox (tested)
 % * 2: unverified compatibility with the COBRA Toolbox (not tested)

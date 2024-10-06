@@ -422,14 +422,12 @@ switch solver
         
         param = mosekParamStrip(param);
 
-
         blc = b;
         buc = b;
         if (~isempty(csense))
             buc(csense == 'G') = inf;
             blc(csense == 'L') = -inf;
         end
-
 
         prob.c = osense * c;
         prob.a = A;
@@ -482,7 +480,7 @@ switch solver
         end
 
         if stat ==1 || stat ==3
-            f = pobjval;
+            f = c'*x + 0.5*x'*F*x;
             %slacks
             sbl = prob.a*x - prob.blc;
             sbu = prob.buc - prob.a*x;

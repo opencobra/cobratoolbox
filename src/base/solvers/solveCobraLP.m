@@ -222,7 +222,7 @@ w = [];
 stat = 0;
 origStat = [];
 origStatText = [];
-method = 'default';
+method = '';
 
 t_start = clock;
 if isempty(solver)
@@ -745,15 +745,15 @@ switch solver
         end
             
         %parse mosek result structure
-        %[stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
         
         if stat ==1 || stat ==3
-            f=c'*x;
+            f = c'*x;
             %slacks
             sbl = prob.a*x - prob.blc;
             sbu = prob.buc - prob.a*x;
             s = sbu - sbl; %TODO -double check this
+            w = zl - zu;
             if problemTypeParams.printLevel>1
                 fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
                 fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
@@ -1358,11 +1358,15 @@ switch solver
         %stat = origStat;
         if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
             stat = 1;
-            f = CplexLPproblem.Solution.objval;
             if ~isfield(CplexLPproblem.Solution,'x')
                 disp(CplexLPproblem)
             end
             x = CplexLPproblem.Solution.x;
+            if 1
+                f = c'*x;
+            else
+                f = CplexLPproblem.Solution.objval; %do not use as it gives the opposite sign for maximise
+            end
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;
             %res1 = A*solution.full + solution.slack - b;
@@ -1424,7 +1428,7 @@ switch solver
         else
             origStat = CplexLPproblem.Solution.statusstring;
         end
-        
+
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
                 method='AUTOMATIC';
