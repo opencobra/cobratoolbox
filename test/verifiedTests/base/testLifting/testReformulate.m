@@ -1,5 +1,6 @@
 %BIG = 1000;
 BIG = 1024;
+printLevel=1;
 
 LPproblem.A = [ -1;-10000;1;1];
 LPproblem.b = zeros(4,1);
@@ -76,3 +77,7 @@ disp(full(LPproblem_lifted.A))
 % well-scaled coupling constraints. This may take a few minutes.
 %        1              0           -100       
 %        0           -100              1       
+
+
+%revert to normal format
+format short
