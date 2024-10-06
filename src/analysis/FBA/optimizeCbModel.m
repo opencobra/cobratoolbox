@@ -827,7 +827,7 @@ if solution.stat == 1 || solution.stat == 3
     %the value of the second part of the objective depends on the norm
     switch minNorm
         case 'empty'
-            solution.f1 = solution.f;
+            solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
         case 'zero'
             %zero norm
             solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
@@ -835,22 +835,24 @@ if solution.stat == 1 || solution.stat == 3
             %one norm
             solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
         case 'two'
-            if isfield(solution,'objLinear')
-                solution.f1 = solution.objLinear;
-                solution = rmfield(solution,'objLinear');
+            if isfield(optProblem,'c')
+                solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
+                if isfield(solution,'objLinear')
+                    solution = rmfield(solution,'objLinear');
+                end
             else
                 solution.f1 = 0;
             end
+            solution.f2 = 0.5*solution.full'*optProblem.F*solution.full;
             if isfield(solution,'objQuadratic')
                 solution.f2 = solution.objQuadratic;
                 solution = rmfield(solution,'objQuadratic');
-            else
-                solution.f2 = solution.f;
             end
         otherwise
             if exist('LPproblem2','var')
                 if isfield(optProblem2,'F')
-                    %two norm
+                    solution.f0 = 0;
+                    solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
                     solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
                 end
             end
@@ -912,7 +914,7 @@ if solution.stat == 1 || solution.stat == 3
     
     solution.time = etime(clock, t1);
     
-    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
+    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'method';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
     % reorder fields for better readability
     currentfields = fieldnames(solution);
     presentfields = ismember(fieldOrder,currentfields);

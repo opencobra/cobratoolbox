@@ -9,12 +9,12 @@ if exist('model','var')
     clear model
 end
 
-BIG = 1024;
+BIG = 999;
 printLevel = 1;
 
+%% positive and negative coefficients
 model.S = [0, 0];
 model.rxns = {'rxn1';'rxn2'};
-
 model.C = [ 1,  -10000];
 model.d = 0;
 model.dsense = 'L';
@@ -45,6 +45,44 @@ disp(full([model_lifted.C, model_lifted.D]))
 %        1              0           -100       
 %        0           -100              1    
 
+%% positive and large negative coefficients
+model.S = [0, 0];
+model.rxns = {'rxn1';'rxn2'};
+model.C = [ 1,  -1000000];
+model.d = 0;
+model.dsense = 'L';
+model.ctrs = {'test'};
+
+[model_lifted] = liftCouplingConstraints(model, BIG, printLevel);
+
+format rational
+disp(full([model_lifted.C, model_lifted.D]))
+
+%% positive coefficients with second large positive coefficient
+model.S = [0, 0];
+model.rxns = {'rxn1';'rxn2'};
+model.C = [ 1,  1000000];
+model.d = 0;
+model.dsense = 'L';
+model.ctrs = {'test'};
+
+[model_lifted] = liftCouplingConstraints(model, BIG, printLevel);
+
+format rational
+disp(full([model_lifted.C, model_lifted.D]))
+
+%% positive coefficients only
+model.S = [0, 0];
+model.rxns = {'rxn1';'rxn2'};
+model.C = [ 1,  10000];
+model.d = 0;
+model.dsense = 'L';
+model.ctrs = {'test'};
+
+[model_lifted] = liftCouplingConstraints(model, BIG, printLevel);
+
+format rational
+disp(full([model_lifted.C, model_lifted.D]))
 
 %% 
 model.S = [0, 0];
@@ -65,3 +103,6 @@ disp(full([model_lifted.C, model_lifted.D]))
 %        1              0          -1000              0       
 %        0              0              1          -1000       
 %        0          -1000              0              1      
+
+%revert to normal format
+format short
