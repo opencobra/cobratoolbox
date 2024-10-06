@@ -129,10 +129,14 @@ end
 accessSolution=[];
 if isfield(res, 'sol')
     if isfield(res.sol,'itr') && isfield(res.sol,'bas')
-        if any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'UNKNOWN'}))
+        if  any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'UNKNOWN'}))
             accessSolution = 'bas';
-        else any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'UNKNOWN'}))
+        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'UNKNOWN'}))
             accessSolution = 'itr';
+        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
+            accessSolution = 'itr';
+        elseif any(strcmp(res.sol.bas.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
+            accessSolution = 'bas';
         end
         if isempty(accessSolution)
             disp('Report this error to the cobra toolbox google group please')

@@ -753,6 +753,7 @@ switch solver
             sbl = prob.a*x - prob.blc;
             sbu = prob.buc - prob.a*x;
             s = sbu - sbl; %TODO -double check this
+            w = zl - zu;
             if problemTypeParams.printLevel>1
                 fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
                 fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
@@ -1357,11 +1358,15 @@ switch solver
         %stat = origStat;
         if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
             stat = 1;
-            f = CplexLPproblem.Solution.objval;
             if ~isfield(CplexLPproblem.Solution,'x')
                 disp(CplexLPproblem)
             end
             x = CplexLPproblem.Solution.x;
+            if 1
+                f = c'*x;
+            else
+                f = CplexLPproblem.Solution.objval; %do not use as it gives the opposite sign for maximise
+            end
             w = osense*CplexLPproblem.Solution.reducedcost;
             y = osense*CplexLPproblem.Solution.dual;
             %res1 = A*solution.full + solution.slack - b;
