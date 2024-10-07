@@ -71,9 +71,7 @@ ENV_VARS.STATUS = 0;
 if exist('GUROBI_PATH', 'var') ~= 1
     GUROBI_PATH = '';
 end
-if exist('ILOG_CPLEX_PATH', 'var') ~= 1
-    ILOG_CPLEX_PATH = '';
-end
+
 if exist('TOMLAB_PATH', 'var') ~= 1
     TOMLAB_PATH = '';
 end
