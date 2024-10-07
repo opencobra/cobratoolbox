@@ -3,27 +3,33 @@ function line = addEnv(origModel, biomass, desiredProduct, varargin)
 % Algorithm is able to knock out genes as well as reactions to produce
 % production envelope
 %
-%INPUT
-%  origModel         COBRA model structure
-%  biomass           Reaction name of biomass
-%  desiredProduct    Reaction name of desired product
-%  KnockOuts         (opt) List of knockouts for production envelope (default: {})
-%  colour            (opt) Short name for colour of line to plot (default: 'r' (red))
-%  prodMol           (opt) Molar mass of target product for yield plot
-%  subUptake         (opt) Uptake of substrate for yield plot
-%  molarSum          (opt) Molar mass of substrate for yield plot
+% INPUTS:
+%   origModel         COBRA model structure [struct]
+%   biomass           Reaction name of biomass [char]
+%   desiredProduct    Reaction name of desired product [char]
 %
-%OUTPUT
-%  line              Line data for plot function
+% OPTIONAL INPUTS:
+%   KnockOuts         (opt) List of knockouts for production envelope [cell array] (default: {})
+%   colour            (opt) Short name for colour of line to plot [anything that can be colour in matlab] (default: 'r' (red))
+%   prodMol           (opt) Molar mass of target product for yield plot [double]
+%   subUptake         (opt) Uptake of substrate for yield plot [double]
+%   molarSum          (opt) Molar mass of substrate for yield plot [double]
 %
-%NOTES
-%  Sometimes last point of envelope drops to zero (might be rounding error)
-%  but this function connects last points of lines so the graph creates
-%  continuous line.
-% This algorithm only adds graph. It does not change labels.
+% OUTPUTS
+%   line              Line data for plot function
 %
-% Created by Kristaps Berzins    31/10/2022
-% Modified by Kristaps Berzins   30/09/2024
+% NOTES
+%   Sometimes last point of envelope drops to zero (might be rounding error)
+%   but this function connects last points of lines so the graph creates
+%   continuous line.
+%   This algorithm only adds graph. It does not change labels.
+%
+% EXAMPLE:
+%   line = addEnv(model, 'BIOMASS_Ecoli', 'EX_ac_e', {'GHMT2r','GND','SUCCt2r','SUCD4','AKGt2r','GLUt2r'}, 'm')
+%
+% AUTHORS:
+%   Created by Kristaps Berzins    31/10/2022
+%   Modified by Kristaps Berzins   30/09/2024
 
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(origModel, 'rxns')...
