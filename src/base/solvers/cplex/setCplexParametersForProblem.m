@@ -229,6 +229,10 @@ if isfield(solverParams,'timelimit')
     % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
     cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
 end
+if isfield(solverParams,'secondsTimeLimit')
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
+    cplexProblem.Param.timelimit.Cur = solverParams.secondsTimeLimit;
+end
 
 if isfield(solverParams,'emphasis_numerical')
     % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis

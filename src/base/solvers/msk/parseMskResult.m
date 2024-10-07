@@ -137,17 +137,19 @@ if isfield(res, 'sol')
             accessSolution = 'itr';
         elseif any(strcmp(res.sol.bas.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
             accessSolution = 'bas';
-        end
-        if isempty(accessSolution)
-            disp('Report this error to the cobra toolbox google group please')
-            error('Unrecognised combination of res.sol.bas.prosta & res.sol.itr.solsta, see https://docs.mosek.com/latest/toolbox/accessing-solution.html')
+        else
+            origStat = res.sol.itr.solsta;
+            accessSolution = 'dontAccess';
         end
     elseif isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
         accessSolution = 'itr';
     elseif ~isfield(res.sol,'itr') && isfield(res.sol,'bas')
         accessSolution = 'bas';
-    elseif ~isfield(res.sol,'itr') && ~isfield(res.sol,'bas')  
+    elseif ~isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
         error('TODO encode parse of mixed integer optimiser solution')
+    else
+        disp('Report this error to the cobra toolbox google group please')
+        error('Unrecognised combination of res.sol.bas.prosta & res.sol.itr.solsta, see https://docs.mosek.com/latest/toolbox/accessing-solution.html')
     end
 end
 
@@ -180,19 +182,8 @@ switch accessSolution
                 end
                 pobjval = res.sol.itr.pobjval;
                 dobjval = res.sol.itr.dobjval;
-
-            case {'PRIM_INFEAS_CER','NEAR_PRIM_INFEAS_CER','PRIMAL_INFEASIBLE_CER'}
-                stat=0; % infeasible
-                origStat = [origStat ' & ' res.rcodestr];
-            case {'DUAL_INFEAS_CER','NEAR_DUAL_INFEAS_CER','DUAL_INFEASIBLE_CER'}
-                stat=2; % Unbounded solution
-                origStat = [origStat ' & ' res.rcodestr];
-            case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS'}
-                stat=-1; %some other problem
-                origStat = [origStat ' & ' res.rcodestr];
             otherwise
-                warning(['Unrecognised res.sol.itr.solsta: ' origStat])
-                stat=-1; %some other problem
+                accessSolution = 'dontAccess';
         end
 
     case 'bas'
@@ -223,63 +214,30 @@ switch accessSolution
                 bas.xx = res.sol.bas.xx;
                 pobjval = res.sol.bas.pobjval;
                 dobjval = res.sol.bas.dobjval;
-            case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
-                stat=0; % infeasible
-                origStat = [origStat ' & ' res.rcodestr];
-            case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
-                stat=2; % Unbounded solution
-                origStat = [origStat ' & ' res.rcodestr];
-            case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS'}
-                stat=-1; %some other problem
-                origStat = [origStat ' & ' res.rcodestr];
             otherwise
-                warning(['Unrecognised res.sol.bas.solsta: ' origStat])
-                stat=-1; %some other problem
+                accessSolution = 'dontAccess';
         end
-    otherwise
-        fprintf('%s\n',res.rcode)
-        fprintf('%s\n',res.rmsg)
-        fprintf('%s\n',res.rcodestr)
-        if strcmp(origStat,'UNKNOWN')
+end
+
+if strcmp(accessSolution,'dontAccess')
+    switch origStat
+        case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
+            stat=0; % infeasible
             origStat = [origStat ' & ' res.rcodestr];
-        end
+        case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
+            stat=2; % Unbounded solution
+            origStat = [origStat ' & ' res.rcodestr];
+        case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS'}
+            stat=-1; %some other problem
+            origStat = [origStat ' & ' res.rcodestr];
+        otherwise
+            warning(['Unrecognised res.sol.bas.solsta: ' origStat])
+            stat=-1; %some other problem
+            fprintf('%s\n',res.rcode)
+            fprintf('%s\n',res.rmsg)
+            fprintf('%s\n',res.rcodestr)
+            if strcmp(origStat,'UNKNOWN')
+                origStat = [origStat ' & ' res.rcodestr];
+            end
+    end
 end
-
-if printLevel>0
-    fprintf('%s\n',res.rcode)
-    fprintf('%s\n',res.rmsg)
-    fprintf('%s\n',res.rcodestr)
-end
-
-
-%                 % TODO  -work this out with Erling
-%                 % override if specific solver selected
-%                 if isfield(solverOnlyParams,'MSK_IPAR_OPTIMIZER')
-%                     switch solverOnlyParams.MSK_IPAR_OPTIMIZER
-%                         case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-%                             stat = 1; % optimal solution found
-%                             x=res.sol.bas.xx; % primal solution.
-%                             y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
-%                             if isfield(res.sol.itr,'doty')
-%                                 % Dual variables to affine conic constraints
-%                                 s = res.sol.itr.doty;
-%                             end
-%                         case 'MSK_OPTIMIZER_INTPNT'
-%                             stat = 1; % optimal solution found
-%                             x=res.sol.itr.xx; % primal solution.
-%                             y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
-%                             if isfield(res.sol.itr,'doty')
-%                                 % Dual variables to affine conic constraints
-%                                 s = res.sol.itr.doty;
-%                             end
-%                     end
-%                 end
-%                 if isfield(res.sol,'bas') && 0
-%                     % override
-%                     stat = 1; % optimal solution found
-%                     x=res.sol.bas.xx; % primal solution.
-%                     y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                     z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
-%                 end

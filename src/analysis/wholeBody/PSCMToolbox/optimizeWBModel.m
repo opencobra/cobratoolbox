@@ -89,7 +89,9 @@ end
 if ~isfield('param','minNorm')
     param.minNorm = 0;
 end
-
+if ~isfield('param','secondsTimeLimit')
+    param.secondsTimeLimit = 100;
+end
 if isfield(model,'osenseStr')
     if ~any(strcmp(model.osenseStr,{'min','max'}))
         error('model.osenseStr can only be either min or max')
@@ -198,7 +200,7 @@ switch solverName
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
         param.emphasis_numerical=1;
     case 'mosek'
-        param.MSK_DPAR_OPTIMIZER_MAX_TIME=secondsTimeLimit;
+        param.MSK_DPAR_OPTIMIZER_MAX_TIME=param.secondsTimeLimit;
         param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
         param.MSK_IPAR_LOG_INTPNT=10;
         param.MSK_IPAR_LOG_PRESOLVE=10;
