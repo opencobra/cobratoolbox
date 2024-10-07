@@ -421,7 +421,11 @@ if doLinearOptimisation
 
     % Solve initial LP
     if allowLoops
-        solution = solveCobraLP(optProblem, param);
+        paramLP = param;
+        if isfield(paramLP,'minNorm')
+            paramLP = rmfield(paramLP,'minNorm');
+        end
+        solution = solveCobraLP(optProblem, paramLP);
     else
         MILPproblem = addLoopLawConstraints(optProblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem);
@@ -435,7 +439,7 @@ if doLinearOptimisation
     end
 else
     %no need to solve an LP first
-    objectiveLP = 0;
+    objectiveLP = [];
 end
 
 %only run if minNorm is not empty, and either there is no linear objective
@@ -816,7 +820,11 @@ if solution.stat == 1 || solution.stat == 3
     % solution found. Set corresponding values
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
-    solution.f = objectiveLP;
+    if isempty(objectiveLP)
+        solution.f = objectiveLP;
+    else
+        solution.f = optProblem.c'*solution.full(1:nTotalVars,1);
+    end
         
     if isempty(minNorm)
         minNorm = 'empty';

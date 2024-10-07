@@ -3,7 +3,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % USAGE:
 %
-%    solverOK = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
+%    [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
 %
 % INPUTS:
 %    solverName:           Solver name
