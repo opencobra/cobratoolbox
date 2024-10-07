@@ -3,40 +3,42 @@ function [main, mid] = optEnvelope(model, desiredProduct, varargin)
 % smallest set of reactions in the pool of inactive reactions that offers same production envelope.
 % Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)
 %
+% INPUTS:
+%   model              COBRA model structure [struct]
+%   desiredProduct     Reaction name of desired product [char]
+%
+% OPTIONAL INPUTS:
+%   protectedRxns      (opt) Aditional reactions to ignore (must be in irreversible form) [cell array] (default: {})
+%   numTries           (opt) Iterations for finding best possible set of deletions [double] (default: [])
+%   numKO              (opt) Number of reactions to remove for final result (triggers MILP for reaction reinsertion) [double] (default: [])
+%   prodMol            (opt) Molar mass of product for yield plot (g/mol) [double] (default: [])
+%   midPoints          (opt) Number of points to check along the edge for best envelope [double] (default: 0)
+%   timeLimit          (opt) Time limit for gurobi optimization in seconds (also limits time for numTries) [double] (default: inf)
+%   printLevel         (opt) Print level for gurobi optimization [double] (default: 0)
+%   drawEnvelope       (opt) Binary value to determine if algorithm should draw envelopes [logical] (default: true)
+%   delGenes           (unfinished function)
+%   delEnzymes         (unfinished function)
+%   GAon               (unfinished function)
+%
+% OUTPUTS:
+%   main               Structure that contains information about reactions to remove for optimal envelope
+%                      Information about most probable point
+%   mid                Structure that contains information about reactions to remove for midpoint envelopes
+%                      Information about most probable points for midpoint envelopes
+%
 %   EXAMPLE: [mainKnockouts, midKnockouts] = optEnvelope(model, 'EX_ac_e', 'timeLimit', 600, 'protectedRxns', {'H2Ot_f','H2Ot_b'}, 'midPoints', 15);
 %
-% INPUT
-%  model              COBRA model structure
-%  desiredProduct     Reaction name of desired product
-%
-%  protectedRxns      (opt) Aditional reactions to ignore (must be in irreversible form) (default: {})
-%  numTries           (opt) Number of iteration for finding best possible set of deletions (default: [])
-%  numKO              (opt) Number of reactions to remove for final result (triggers MILP for reaction reinsertion) (default: [])
-%  prodMol            (opt) Molar mass of product for yield plot (g/mol) (default: [])
-%  midPoints          (opt) Number of points to check along the edge for best envelope (default: 10)
-%  timeLimit          (opt) Time limit for gurobi optimization (also limits time for numTries) (default: inf)
-%  printLevel         (opt) Print level for gurobi optimization (default: 0)
-%  drawEnvelope       (opt) Binary value to determine if algorithm should draw envelopes (default: true)
-%  delGenes           (unfinished function)
-%  delEnzymes         (unfinished function)
-%  GAon               (unfinished function)
-%
-% OUTPUT
-%  main               Structure that contains information about reactions to remove for optimal envelope
-%                     Information about most probable point
-%  mid                Structure that contains information about reactions to remove for midpoint envelopes
-%                     Information about most probable points for midpoint envelopes
-%
 % NOTES
-%  It should be mentioned that a figure (desired product versus biomass)
-%  including plots for wild-type and opt enveople is presented after
-%  running optEnvelope
-%  Mid Envelopes currently work only for sequential (default) reinsertions
+%   It should be mentioned that a figure (desired product versus biomass)
+%   including plots for wild-type and opt enveople is presented after
+%   running optEnvelope
+%   Mid Envelopes currently work only for sequential (default) reinsertions
 %
-% created by  Ehsan Motamedian     02/09/2022
-% modified by Kristaps Berzins     06/12/2022
-% modified by Ehsan Motamedian     25/01/2023 switch to middle points was added
-% modified by Kristaps Berzins     30/09/2024 improved algorightms, fixed bugs, added functionality
+% AUTHORS:
+%   created by  Ehsan Motamedian     02/09/2022
+%   modified by Kristaps Berzins     06/12/2022
+%   modified by Ehsan Motamedian     25/01/2023 switch to middle points was added
+%   modified by Kristaps Berzins     30/09/2024 improved algorightms, fixed bugs, added functionality
 
 
 %% 0. Set parameters
