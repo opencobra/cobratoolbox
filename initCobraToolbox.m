@@ -71,7 +71,9 @@ ENV_VARS.STATUS = 0;
 if exist('GUROBI_PATH', 'var') ~= 1
     GUROBI_PATH = '';
 end
-
+if exist('ILOG_CPLEX_PATH', 'var') ~= 1
+    ILOG_CPLEX_PATH = '';
+end
 if exist('TOMLAB_PATH', 'var') ~= 1
     TOMLAB_PATH = '';
 end
@@ -407,11 +409,11 @@ OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP','EP','CLP'};
 %Define a set of "use first" solvers, other supported solvers will also be added to the struct.
 %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
 SOLVERS = struct('gurobi',struct(),...
+    'ibm_cplex',struct(),...
     'tomlab_cplex',struct(),...
     'glpk',struct(),...
     'mosek',struct(),...
     'matlab',struct());
-
 
 % active support - supported solvers
 SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
@@ -423,7 +425,7 @@ SOLVERS.dqqMinos.type = {'LP','QP'};
 SOLVERS.matlab.type = {'LP', 'NLP'};
 % active support of cplex interfaces - supported solvers
 SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
-%SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 SOLVERS.cplexlp.type = {'LP'};
 SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 
@@ -449,7 +451,7 @@ SOLVERS.pdco.categ = 'active';
 SOLVERS.quadMinos.categ = 'active';
 
 SOLVERS.cplex_direct.categ = 'active';
-%SOLVERS.ibm_cplex.categ = 'active';
+SOLVERS.ibm_cplex.categ = 'active';
 SOLVERS.cplexlp.categ = 'active';
 SOLVERS.tomlab_cplex.categ = 'active';
 
