@@ -9,16 +9,16 @@ function [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoi
 %                 reaction [double array]
 %   K             List of reactions that cannot be selected for knockout (reaction IDs) [double array]
 %   minP          Struct with information about biomass and desired product.
-%                       * bioID     ID of biomass [double]
-%                       * bioMin    1% of max value of biomass in wild-type [double]
-%                       * bioMax    max value of biomass in wild-type [double]
-%                       * proID [double]
-%                       * proMin    1% of max value of desired product in wild-type [double]
-%                       * proMax    max value of desired product in wild-type [double]
+%                       * bioID         ID of biomass [double]
+%                       * bioMin        1% of max value of biomass in wild-type [double]
+%                       * bioMax        max value of biomass in wild-type [double]
+%                       * proID         ID of desired product[double]
+%                       * proMin        1% of max value of desired product in wild-type [double]
+%                       * proMax        max value of desired product in wild-type [double]
 %   toDel         Numeric variable that shows what to delete:
-%                   0: reactions
-%                   1: genes
-%                   2: enzymes
+%                       0: reactions
+%                       1: genes
+%                       2: enzymes
 %   timeLimit     Time limit for gurobi optimization (in seconds) [double]
 %   midPoints     Number of mid points to calculate active reactions for (default: 0) [double]
 %   printLevel    Print level for gurobi optimization (default: 0) [double]
