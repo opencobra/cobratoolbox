@@ -3,7 +3,7 @@ function [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeL
 % of knockouts to achieve best production envelope
 %
 % INPUTS:
-%   model       COBRA model structure [struct]
+%   model       COBRA model structure in irreversible form [struct]
 %   data        Information about MAR (structure that contains mainActive field
 %               with reactions that are found to be active reactions by minActiveRxns.m) [struct]
 %   K           List of reactions that cannot be selected for knockout (reaction IDs) [double array]
