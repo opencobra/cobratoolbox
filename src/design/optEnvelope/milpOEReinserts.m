@@ -4,12 +4,12 @@ function [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeL
 %
 % INPUTS:
 %   model       COBRA model structure in irreversible form [struct]
-%   data        Information about MAR (structure that contains mainActive field
-%               with reactions that are found to be active reactions by minActiveRxns.m) [struct]
+%   data        Struct with information about:
+%                   * mainActive    List of active reactions for main envelope [cell array]
 %   K           List of reactions that cannot be selected for knockout (reaction IDs) [double array]
 %   minP        Struct with information about biomass and desired product.
-%               Must contain proID field with information about ID of desired product
-%               Must contain bioID field with information about ID of biomass [struct]
+%               	* bioID         ID of biomass [double]
+%                   * proID         ID of desired product[double]
 %   numKO       Number of knockouts to achieve [double]
 %
 % OPTIONAL INPUTS:
