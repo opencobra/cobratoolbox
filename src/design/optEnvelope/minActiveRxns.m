@@ -117,9 +117,9 @@ switch toDel
         data = struct();
         data.pro = zeros(midPoints, 1);
         data.bio = zeros(midPoints, 1);
-        data.w = zeros(midPoints, 1);
-        data.wBio = zeros(midPoints, 1);
-        data.wPro = zeros(midPoints, 1);
+%         data.w = zeros(midPoints, 1);
+%         data.wBio = zeros(midPoints, 1);
+%         data.wPro = zeros(midPoints, 1);
         
         for i = 1:midPoints + 1
             try
