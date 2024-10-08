@@ -1,27 +1,46 @@
 function [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
-% minActiveRxns determines the minimum reactions needed to be active at
-% a specific point
+% This function finds a set of minimum number of reactions needed to be active at
+% a specific point on production envelope for best possible production
+% envelope
 %
-%INPUT
-%  model         COBRA model structure 
-%  matchRev      Matching of forward and backward reactions of a reversible
-%                reaction
-%  K             List of reactions that cannot be selected for knockout
-%  minP          Structure that contains information about biomass and product
-%  toDel         Variable that shows what to delete
-%                0: reactions
-%                1: genes
-%                2: enzymes
-%  timeLimit     Time limit for gurobi optimization
-%  midPoints     Number of mid points to calculate active reactions for (default: 0)
-%  printLevel    Print level for gurobi optimization (default: 0)
+% INPUTS:
+%   model         COBRA model structure in irreversible form [struct]
+%   matchRev      Matching of forward and backward reactions of a reversible
+%                 reaction [double array]
+%   K             List of reactions that cannot be selected for knockout (reaction IDs) [double array]
+%   minP          Struct with information about biomass and desired product.
+%                       * bioID     ID of biomass [double]
+%                       * bioMin    1% of max value of biomass in wild-type [double]
+%                       * bioMax    max value of biomass in wild-type [double]
+%                       * proID [double]
+%                       * proMin    1% of max value of desired product in wild-type [double]
+%                       * proMax    max value of desired product in wild-type [double]
+%   toDel         Numeric variable that shows what to delete:
+%                   0: reactions
+%                   1: genes
+%                   2: enzymes
+%   timeLimit     Time limit for gurobi optimization (in seconds) [double]
+%   midPoints     Number of mid points to calculate active reactions for (default: 0) [double]
+%   printLevel    Print level for gurobi optimization (default: 0) [double]
 %
-%OUTPUT
-%  ActiveRxns    List of minimum active reactions at a specific point
+% OUTPUTS:
+%   data          Struct with information about:
+%                       * pro           Minimal product for best envelope
+%                       * bio           Maximum biomass for best envelope
+%                       * results       results of MILP
+%                       * mainModel     model for main envelope
+%                       * mainActive    List of active reactions for main envelope
+%                       * models        models for all mid envelopes
+%                       * active        Lists for active reactions for mid envelopes
 %
-%  created by    Ehsan Motamedian        09/02/2022
-%  modified by   Kristaps Berzins        31/10/2022
-%  modified by   Kristaps Berzins        30/10/2024     Added calculation of active reactions for middle points
+% NOTE:
+%   This function is designed to be used with optEnvelope and was not
+%   designed as stand-alone function.
+%
+% AUTHORS:
+%   created by    Ehsan Motamedian        09/02/2022
+%   modified by   Kristaps Berzins        31/10/2022
+%   modified by   Kristaps Berzins        30/10/2024     Added calculation of active reactions for middle points
 
 if nargin < 5
     toDel = 0;
@@ -140,12 +159,12 @@ switch toDel
             end
         end
         
-        % Calculation of n best results (showing results as graph)
-        maxBio = max(data.bio);
-        maxPro = max(data.pro);
-        data.wBio = data.bio / maxBio;
-        data.wPro = data.pro / maxPro;
-        data.w = data.wBio + data.wPro;
+        % Calculation of n best results (showing results as graph) (debug)
+%         maxBio = max(data.bio);
+%         maxPro = max(data.pro);
+%         data.wBio = data.bio / maxBio;
+%         data.wPro = data.pro / maxPro;
+%         data.w = data.wBio + data.wPro;
         
     %% GENES
     case 1
