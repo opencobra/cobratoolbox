@@ -174,7 +174,7 @@ warning off
 if isempty(numKO)
     [knockouts, midKnockouts] = sequentialOEReinserts(model, data, K, toDel, minP, midPoints, numTries, timeLimit);
 else
-    [knockouts] = milpOEReinserts(model, data, K, toDel, minP, numKO, timeLimit, printLevel);
+    [knockouts] = milpOEReinserts(model, data, K,  minP, numKO, toDel, timeLimit, printLevel);
 end
 warning on
 
