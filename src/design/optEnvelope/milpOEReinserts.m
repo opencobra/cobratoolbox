@@ -1,25 +1,38 @@
-function [knockouts] = milpOEReinserts(model, data, K, toDel, minP, numKO, timeLimit, printLevel)
+function [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeLimit, printLevel)
 % This function is creating and calculating MILP to get certain amount
 % of knockouts to achieve best production envelope
 %
-% INPUTS
-%   model       COBRA model structure
-%   data        Information about MAR
-%   K           List of reactions that cannot be selected for knockout
-%   toDel       Variable that shows what to delete:
+% INPUTS:
+%   model       COBRA model structure [struct]
+%   data        Information about MAR (structure that contains mainActive field
+%               with reactions that are found to be active reactions by minActiveRxns.m) [struct]
+%   K           List of reactions that cannot be selected for knockout (reaction IDs) [double array]
+%   minP        Struct with information about biomass and desired product.
+%               Must contain proID field with information about ID of desired product
+%               Must contain bioID field with information about ID of biomass [struct]
+%   numKO       Number of knockouts to achieve [double]
+%
+% OPTIONAL INPUTS:
+%   toDel       Numeric variable that shows what to delete:
 %                   0: reactions
 %                   1: genes
 %                   2: enzymes
-%   minP        Information about biomass and desired product
-%   numKO       Number of knockouts to achieve
-%   timeLimit   Time limit for gurobi optimization
-%   printLevel  Print level for gurobi optimization
+%   timeLimit   Time limit for gurobi optimization (in seconds) [double]
+%   printLevel  Print level for gurobi optimization [double]
 %
-% OUTPUT
+% OUTPUTS:
 %   knockouts   List of reactions that when removed gives optimal envelope
 %
-% Author(s): Kristaps Berzins
+% AUTHORS:
+%   created by Kristaps Berzins 31/10/2022
+%
+% NOTES:
+%   This function is not designed for stand-alone use. Should be used by
+%   using optEnvelope.m with set numKO parameter
 
+if nargin < 6
+    toDel = 0;
+end
 if nargin < 7
     timeLimit = inf;
 end
