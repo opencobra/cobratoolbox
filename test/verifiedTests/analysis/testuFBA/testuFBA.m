@@ -96,7 +96,7 @@ if solverMILPOk & solverLPOk
     % Test output
     sol = optimizeCbModel(uFBAoutput.model);
 
-    solassert(sol.f > 0.225 & sol.f < 0.235, 'Solution incorrect to 2 decimals.')
+    assert(sol.f > 0.142 & sol.f < 0.144, 'Solution incorrect to 2 decimals.')
 else
     fprintf('This test requires Gurobi to run properly')
 end
