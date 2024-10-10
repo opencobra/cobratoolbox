@@ -1,0 +1,32 @@
+name: Code Cov CI
+
+on:
+  push:
+    branches: [develop]  # Trigger workflow on push to master
+  pull_request:
+    branches: [develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Install MATLAB and dependencies (assuming you're using the MATLAB GitHub Action)
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v1
+        with:
+          release: R2022a  # Specify the MATLAB version you need
+
+      # Run MATLAB tests from the /test directory
+      - name: Run MATLAB tests and generate coverage
+        run: |
+          matlab -batch "coverageReport = matlab.unittest.plugins.codecoverage.CoverageReport('coverage'); runtests('test', 'IncludeSubfolders', true, 'CoverageReport', coverageReport);"
+      
+      # Upload coverage report to Codecov
+      - name: Upload coverage to Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash)
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
