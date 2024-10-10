@@ -26,7 +26,8 @@ numWorkers=4;
 % create the pan-models on species level
 panPath=[pwd filesep 'panSpeciesModels'];
 
-createPanModels(modPath,panPath,'Species','AGORA',numWorkers);
+builtTaxa = {'Acinetobacter junii','Bacteroides ovatus','Enterobacter cloacae','Megasphaera elsdenii','Ruminococcus flavefaciens'};
+createPanModels(modPath,panPath,'Species','AGORA_infoFile.xlsx',numWorkers,builtTaxa)
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
@@ -40,7 +41,8 @@ assert(max(cell2mat(ATP_fluxes(2:end,3))) < 150)
 % create the pan-models on genus level
 panPath=[pwd filesep 'panGenusModels'];
 
-createPanModels(modPath,panPath,'Genus','AGORA',numWorkers);
+builtTaxa = {'Acinetobacter','Bacteroides','Megasphaera','Ruminococcus'};
+createPanModels(modPath,panPath,'Genus','AGORA_infoFile.xlsx',numWorkers,builtTaxa);
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
