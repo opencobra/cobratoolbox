@@ -12,6 +12,7 @@ global OPT_PROB_TYPES;
 currentDir = pwd;
 
 % initialize the test
+fprintf(' -- Running testChangeCobraSolver: ... \n');
 fileDir = fileparts(which('testChangeCobraSolver'));
 cd(fileDir);
 
@@ -29,11 +30,11 @@ global CBT_LP_SOLVER
 assert(strcmp(CBT_LP_SOLVER, 'pdco'))
 
 if any(ismember('MINLP',OPT_PROB_TYPES))
-global CBT_MINLP_SOLVER
-CBT_MINLP_SOLVER = [];
-ok = changeCobraSolver('pdco', 'MINLP', 0);
-assert(ok == false);
-assert(isempty(CBT_MINLP_SOLVER))
+    global CBT_MINLP_SOLVER
+    CBT_MINLP_SOLVER = [];
+    ok = changeCobraSolver('pdco', 'MINLP', 0);
+    assert(ok == false);
+    assert(isempty(CBT_MINLP_SOLVER))
 end
 
 try
@@ -87,5 +88,5 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
-% Zero argument
-changeCobraSolver();
+% output a success message
+fprintf('Done.\n');

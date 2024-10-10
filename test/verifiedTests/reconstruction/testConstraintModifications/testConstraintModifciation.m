@@ -17,6 +17,9 @@
 
 currentDir = pwd;
 
+% Initiate the test
+fprintf('   Testing testConstraintModifciation...\n')
+
 %Lets start with the E.coli core model
 model = getDistributedModel('ecoli_core_model.mat');
 %Assert that the model does not yet have these fields.
@@ -96,12 +99,12 @@ assert(isSameCobraModel(modelWConst2,modelWConst)) % No new constraint was added
 %Finally, test whether modifications in the model correctly update the C
 %Matrix
 rxnstoDel = 2:4;
-modelDel = removeRxns(modelWConst, modelWConst.rxns(rxnstoDel));
+modelDel = removeRxns(modelWConst, modelWConst.rxns(rxnstoDel), 'ctrsRemoveMethod', 'legacy');
 assert(size(modelDel.C,2) == size(modelDel.S,2));
 temp = modelWConst.C;
 temp(:,rxnstoDel) = [];
 assert(isequal(modelDel.C,temp));
-modelDel = removeRxns(modelWConst, modelWConst.rxns(1:4)); %This removes all elements from the model 
+modelDel = removeRxns(modelWConst, modelWConst.rxns(1:4), 'ctrsRemoveMethod', 'legacy'); %This removes all elements from the model 
 assert(~isfield(modelDel,'C'));
 
 %And test whether addition of reactions correctly updates C
@@ -135,8 +138,6 @@ assert(isSameCobraModel(modelWMultConst,modelWMultConst2));
 modelWMultConst = addCOBRAConstraints(model,rxnList,[d;d],'c',[c;c],'dsense',[dsense;dsense],'checkDuplicate',true);
 assert(size(modelWMultConst.C,1) == 3); %Three constraints
 
-
-
 % %Also test the RxnList coupling function. Temporarily disabled until
 % decision on coupleRxnList2Rxns is made
 % %This should add cs of 1000, and us of 0.001;
@@ -153,7 +154,8 @@ assert(size(modelWMultConst.C,1) == 3); %Three constraints
 % assert(all(modelWithList.d(2:3) == [-0.01;0.01]));%The forward / backwards
 % assert(all(modelWithList.dsense(1:3)== ['L';'G';'L']));
 
-
+% output a success message
+fprintf('Done.\n');
 
 cd(currentDir);
 

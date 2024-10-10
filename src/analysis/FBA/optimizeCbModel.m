@@ -59,8 +59,8 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x 1` Right hand side of C*v <= d
 %                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
-%
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
+%
 %                         * g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g2 - `n x 1` weights on two norm
@@ -421,7 +421,11 @@ if doLinearOptimisation
 
     % Solve initial LP
     if allowLoops
-        solution = solveCobraLP(optProblem, param);
+        paramLP = param;
+        if isfield(paramLP,'minNorm')
+            paramLP = rmfield(paramLP,'minNorm');
+        end
+        solution = solveCobraLP(optProblem, paramLP);
     else
         MILPproblem = addLoopLawConstraints(optProblem, model, 1:nRxns);
         solution = solveCobraMILP(MILPproblem);
@@ -435,7 +439,7 @@ if doLinearOptimisation
     end
 else
     %no need to solve an LP first
-    objectiveLP = 0;
+    objectiveLP = [];
 end
 
 %only run if minNorm is not empty, and either there is no linear objective
@@ -816,7 +820,11 @@ if solution.stat == 1 || solution.stat == 3
     % solution found. Set corresponding values
     
     %the value of the linear part of the objective is always the optimal objective from the first LP
-    solution.f = objectiveLP;
+    if isempty(objectiveLP)
+        solution.f = objectiveLP;
+    else
+        solution.f = optProblem.c'*solution.full(1:nTotalVars,1);
+    end
         
     if isempty(minNorm)
         minNorm = 'empty';
@@ -827,7 +835,7 @@ if solution.stat == 1 || solution.stat == 3
     %the value of the second part of the objective depends on the norm
     switch minNorm
         case 'empty'
-            solution.f1 = solution.f;
+            solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
         case 'zero'
             %zero norm
             solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
@@ -835,22 +843,24 @@ if solution.stat == 1 || solution.stat == 3
             %one norm
             solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
         case 'two'
-            if isfield(solution,'objLinear')
-                solution.f1 = solution.objLinear;
-                solution = rmfield(solution,'objLinear');
+            if isfield(optProblem,'c')
+                solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
+                if isfield(solution,'objLinear')
+                    solution = rmfield(solution,'objLinear');
+                end
             else
                 solution.f1 = 0;
             end
+            solution.f2 = 0.5*solution.full'*optProblem.F*solution.full;
             if isfield(solution,'objQuadratic')
                 solution.f2 = solution.objQuadratic;
                 solution = rmfield(solution,'objQuadratic');
-            else
-                solution.f2 = solution.f;
             end
         otherwise
             if exist('LPproblem2','var')
                 if isfield(optProblem2,'F')
-                    %two norm
+                    solution.f0 = 0;
+                    solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
                     solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
                 end
             end
@@ -912,7 +922,7 @@ if solution.stat == 1 || solution.stat == 3
     
     solution.time = etime(clock, t1);
     
-    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'algorithm';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
+    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'method';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
     % reorder fields for better readability
     currentfields = fieldnames(solution);
     presentfields = ismember(fieldOrder,currentfields);

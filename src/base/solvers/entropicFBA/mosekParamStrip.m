@@ -1,6 +1,10 @@
 function solverParams = mosekParamStrip(solverParams)
 % Remove non-modek parameters to avoid crashing solver interface
 
+if isfield(solverParams,'timelimit')
+    solverParams.MSK_DPAR_OPTIMIZER_MAX_TIME = solverParams.timelimit;
+end
+
 % Get all field names
 fieldNames = fieldnames(solverParams);
 

@@ -192,7 +192,6 @@ if isfield(solverParams,'lpmethod') && strcmp(problemType,'LP')
     if isnumeric(solverParams.lpmethod)
         cplexProblem.Param.lpmethod.Cur=solverParams.lpmethod; %backward compatibility
     else
-        solverParams.lpmethod
         switch solverParams.lpmethod
             case 'AUTOMATIC'
                 cplexProblem.Param.lpmethod.Cur=0;
@@ -229,6 +228,10 @@ end
 if isfield(solverParams,'timelimit')
     % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
     cplexProblem.Param.timelimit.Cur = solverParams.timelimit;
+end
+if isfield(solverParams,'secondsTimeLimit')
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
+    cplexProblem.Param.timelimit.Cur = solverParams.secondsTimeLimit;
 end
 
 if isfield(solverParams,'emphasis_numerical')
