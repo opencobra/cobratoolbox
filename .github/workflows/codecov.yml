@@ -22,7 +22,7 @@ jobs:
       # Run only the specific test_myfunction.m file from the /tests directory
       - name: Run MATLAB tests and generate coverage
         run: |
-          matlab -batch "import matlab.unittest.TestRunner; import matlab.unittest.plugins.CodeCoveragePlugin; import matlab.unittest.plugins.codecoverage.CoberturaFormat; runner = TestRunner.withTextOutput; runner.addPlugin(CodeCoveragePlugin.forFolder('src', 'Producing', CoberturaFormat('coverage.xml'))); results = runner.run(testsuite('tests/test_myfunction.m')); assertSuccess(results);"
+          matlab -batch "import matlab.unittest.TestRunner; import matlab.unittest.plugins.CodeCoveragePlugin; import matlab.unittest.plugins.codecoverage.CoberturaFormat; runner = TestRunner.withTextOutput; runner.addPlugin(CodeCoveragePlugin.forFolder('src', 'Producing', CoberturaFormat('coverage.xml'))); results = runner.run(testsuite('test/test_myfunction.m')); assertSuccess(results);"
       
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
