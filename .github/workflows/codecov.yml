@@ -27,6 +27,7 @@ jobs:
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
         run: |
+          coverage xml
           bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
