@@ -41,7 +41,7 @@ assert(max(cell2mat(ATP_fluxes(2:end,3))) < 150)
 % create the pan-models on genus level
 panPath=[pwd filesep 'panGenusModels'];
 
-builtTaxa = {'Acinetobacter','Bacteroides','Megasphaera','Ruminococcus'};
+builtTaxa = {'Acinetobacter','Butyricimonas','Megasphaera','Ruminococcus'};
 createPanModels(modPath,panPath,'Genus','AGORA_infoFile.xlsx',numWorkers,builtTaxa);
 
 % test that pan-models can grow
