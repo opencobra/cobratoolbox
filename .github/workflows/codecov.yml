@@ -2,7 +2,7 @@ name: Code Cov CI
 
 on:
   push:
-    branches: [develop]  # Trigger workflow on push to master
+    branches: [develop]  # Trigger workflow on push to develop
   pull_request:
     branches: [develop]
 
@@ -27,7 +27,6 @@ jobs:
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
         run: |
-          coverage xml
-          bash <(curl -s https://codecov.io/bash)
+          bash <(curl -s https://codecov.io/bash) -f coverage.xml -F matlab
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
