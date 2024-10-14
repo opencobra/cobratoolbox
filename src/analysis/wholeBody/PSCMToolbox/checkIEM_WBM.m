@@ -1,4 +1,4 @@
-function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
+ function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
 % This function performs the inborn error of metabolism simulations by
 % deleting (or reducing) the flux through reaction(s) affected by a gene
 % defect and optimized the flux through a defined set of biomarker

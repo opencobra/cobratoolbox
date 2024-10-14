@@ -1,6 +1,26 @@
 function [modelProp,ScoresOverall] = generateMetaboScore(model,nworkers)
-
-% Ines Thiele June 2022
+% Analyzes metabolic model properties and generates scores.
+% This function analyzes various aspects of the metabolic model,
+% including basic properties, stoichiometric consistency, matrix conditioning,
+% annotation of metabolites, reactions, genes, SBO terms, and generates
+% overall scores for different aspects.
+%
+% USAGE:
+%   [modelProp, ScoresOverall] = generateMetaboScore(model, nworkers)
+%
+% INPUTS:
+%   - model: metabolic model structure (COBRA Toolbox format)
+%   - nworkers: (optional) number of workers for parallel processing
+%
+% OUTPUT:
+%   - modelProp: structure containing various properties of the metabolic model
+%   - ScoresOverall: structure containing overall scores for different aspects
+%
+% EXAMPLE:
+%   [modelProp, ScoresOverall] = generateMetaboScore(model)
+%   [modelProp, ScoresOverall] = generateMetaboScore(model, 4)
+%
+%  .. Author: -Ines Thiele June 2022
 
 if ~exist('nworkers','var')
     nworkers = 4;
@@ -95,14 +115,14 @@ modelProp.SinkRxns = SinkR;
 modelProp.Details.SinkRxns = [model.rxns(contains(model.rxns,'Sink_'));model.rxns(contains(model.rxns,'sink_'))];
 % biomass reactions
 modelProp.BiomassRxns = BioR;
-modelProp.Details.BiomassRxns = model.rxns(contains(lower(model.rxns,'biomass')));% exclude EX_biomass?
+modelProp.Details.BiomassRxns = model.rxns(contains(lower(model.rxns),'biomass'));% exclude EX_biomass?
 
 modelProp.MetabolicRxns = MetR;
 modelProp.Details.MetabolicRxns =MetRxns';
 modelProp.TransportRxns = TransR;
 modelProp.Details.TransportRxns =TransRxns';
 
-% internal reactions without GPR 
+% internal reactions without GPR
 RxnsWOGpr = model.rxns(find(cellfun(@isempty,model.grRules)));
 External = [modelProp.Details.ExchangeRxns;modelProp.Details.DemandRxns;modelProp.Details.SinkRxns ;modelProp.Details.BiomassRxns ];
 RxnsWOGpr = setdiff(RxnsWOGpr,External);
@@ -257,31 +277,31 @@ for i = 1 : size(fields)
         % remove met from variable metWOAnno (metabolite without
         % annotation)
         metWOAnno = (intersect(metWOAnno,missingMet)) ;
-        
+
         % get number of metabolites with annotation that conform with
         % database id format
         % test format
         clear confF* missing
         if contains(fields(i,2),'###')
             strs = strsplit(fields{i,2},'###');
-            
+
             confFormat1 = model.(fields{i,1})(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{1}))));
             confFormat2 =  model.(fields{i,1})(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{2}))));
             confFormat = unique([confFormat1;confFormat2]);
-            
+
             confFormatM1 = model.mets(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{1}))));
             confFormatM2 =  model.mets(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{2}))));
             confFormatM = unique([confFormatM1;confFormatM2]);
-            
+
             % remove any potential NaN
             confFormat(ismember(confFormat,'NaN'))=[];
             confFormatM(ismember(confFormat,'NaN'))=[];
-            
+
             confFormatM = split(confFormatM,'[');
             confFormatM = unique(confFormatM(:,1));
             modelProp.(strcat('AnnoMetConf', fields{i}))= (length(confFormatM))*100/(modelProp.metUnique - length(missingMet)); % how many have it
             p =  setdiff(modelProp.Details.metabolites_unique, missingMet);
-            
+
             NonConf = setdiff(p,confFormatM);
             modelProp.Details.(strcat('AnnoMetNonConf', fields{i})) = NonConf;
         else
@@ -290,12 +310,12 @@ for i = 1 : size(fields)
             % remove any potential NaN
             confFormatM(ismember(confFormat,'NaN'))=[];
             confFormat(ismember(confFormat,'NaN'))=[];
-            
+
             confFormatM = split(confFormatM,'[');
             confFormatM = unique(confFormatM(:,1));
             modelProp.(strcat('AnnoMetConf', fields{i}))= (length(confFormatM))*100/(modelProp.metUnique - length(missingMet)); % how many have it
             p =  setdiff(modelProp.Details.metabolites_unique, missingMet);
-            
+
             NonConf = setdiff(p,confFormatM);
             modelProp.Details.(strcat('AnnoMetNonConf', fields{i})) = NonConf;
         end
@@ -304,8 +324,8 @@ for i = 1 : size(fields)
         modelProp.(strcat('AnnoMet' ,fields{i})) = 0; % how many have it
         modelProp.(strcat('AnnoMetConf', fields{i})) = 0; % how many have it
         modelProp.Details.(strcat('AnnoMetNonConf', fields{i})) = {};
-        
-        
+
+
     end
 end
 % Presence of Metabolite Annotation
@@ -345,13 +365,13 @@ rxnWOAnno = model.rxns;
 for i = 1 : size(fields)
     if isfield(model,fields{i,1})
         missingRxn = model.rxns(cellfun('isempty', model.(fields{i,1})));
-        
+
         modelProp.Details.(strcat('missing', fields{i})) = missingRxn;
         modelProp.(strcat('AnnoRxn', fields{i}))= (modelProp.n - length(missingRxn))*100/modelProp.n; % how many have it
         % remove rxn from variable rxnWOAnno (reaction without
         % annotation)
         rxnWOAnno = (intersect(rxnWOAnno,missingRxn)) ;
-        
+
         % get number of reactions with annotation that conform with
         % database id format
         % test format
@@ -361,9 +381,9 @@ for i = 1 : size(fields)
             confFormat2 = model.rxns(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{2}))));
             confFormat3 = model.rxns(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), strs{3}))));
             confFormat = [confFormat1;confFormat2;confFormat3];
-            
+
             modelProp.(strcat('AnnoRxnConf', fields{i}))= (length(confFormat))*100/(modelProp.n - length(missingRxn)); % how many have it
-            
+
             p =  setdiff(model.rxns, missingRxn);
             NonConf = setdiff(p,confFormat);
             modelProp.Details.(strcat('AnnoRxnNonConf', fields{i})) = NonConf;
@@ -373,14 +393,14 @@ for i = 1 : size(fields)
             p =  setdiff(model.rxns, missingRxn);
             NonConf = setdiff(p,confFormat);
             modelProp.Details.(strcat('AnnoRxnNonConf', fields{i})) = NonConf;
-            
+
         end
     else
         modelProp.Details.(strcat('missing' ,fields{i})) = model.rxns;
         modelProp.(strcat('AnnoRxn' ,fields{i})) = 0; % how many have it
         modelProp.(strcat('AnnoRxnConf', fields{i})) = 0; % how many have it
         modelProp.Details.(strcat('AnnoRxnNonConf', fields{i})) = {};
-        
+
     end
     %
 end
@@ -425,12 +445,12 @@ fields = {
 for i = 1 : size(fields)
     if isfield(model,fields{i,1})
         missingGene = model.genes(cellfun('isempty', model.(fields{i,1})));
-        
+
         modelProp.Details.(strcat('missing', fields{i})) = missingGene;
         modelProp.(strcat('AnnoGene', fields{i}))= (length(model.genes) - length(missingGene))*100/length(model.genes); % how many have it
         % remove rxn from variable geneWOAnno (reaction without
         % annotation)
-        
+
         % get number of reactions with annotation that conform with
         % database id format
         % test format
@@ -449,14 +469,14 @@ for i = 1 : size(fields)
                 confFormat = [confFormat1;confFormat2;confFormat3;confFormat4];
             end
             modelProp.(strcat('AnnoGeneConf', fields{i}))= (length(confFormat))*100/(length(model.genes) - length(missingGene)); % how many have it
-            
+
             p =  setdiff(model.genes, missingGene);
             NonConf = setdiff(p,confFormat);
             modelProp.Details.(strcat('AnnoGeneNonConf', fields{i})) = NonConf;
         else
             confFormat = model.(fields{i,1})(find(cellfun(@(x)~isempty(x),regexp(model.(fields{i,1}), fields(i,2)))));
             modelProp.(strcat('AnnoGeneConf', fields{i}))= (length(confFormat))*100/(length(model.genes) - length(missingGene)); % how many have it
-            
+
             p =  setdiff(model.genes, missingGene);
             NonConf = setdiff(p,confFormat);
             modelProp.Details.(strcat('AnnoGeneNonConf', fields{i})) = NonConf;

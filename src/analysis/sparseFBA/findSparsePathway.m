@@ -6,7 +6,7 @@ function [solution,sparseRxnBool] = findSparsePathway(model,rxnPenalty,param)
 
 
 %build LP problem
-problem = buildLPproblemFromModel(model);
+problem = buildOptProblemFromModel(model);
 [m,n]=size(problem.A);
 
 if ~exist('rxnPenalty','var')

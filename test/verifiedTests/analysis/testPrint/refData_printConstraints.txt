@@ -1,144 +1,54 @@
-MinConstraints:
-ACALD	-1000
-ACALDt	-1000
-ACKr	-1000
-ACONTa	-1000
-ACONTb	-1000
-ACt2r	-1000
-ADK1	-1000
-AKGt2r	-1000
-ALCD2x	-1000
-ATPM	8.39
-ATPS4r	-1000
-CO2t	-1000
-D_LACt2	-1000
-ENO	-1000
-ETOHt2r	-1000
-EX_co2(e)	-1000
-EX_glc(e)	-10
-EX_h(e)	-1000
-EX_h2o(e)	-1000
-EX_nh4(e)	-1000
-EX_o2(e)	-1000
-EX_pi(e)	-1000
-FBA	-1000
-FUM	-1000
-G6PDH2r	-1000
-GAPD	-1000
-GLUDy	-1000
-GLUt2r	-1000
-H2Ot	-1000
-ICDHyr	-1000
-LDH_D	-1000
-MDH	-1000
-NH4t	-1000
-O2t	-1000
-PGI	-1000
-PGK	-1000
-PGM	-1000
-PIt2r	-1000
-PTAr	-1000
-PYRt2r	-1000
-RPE	-1000
-RPI	-1000
-SUCOAS	-1000
-TALA	-1000
-TKT1	-1000
-TKT2	-1000
-TPI	-1000
-maxConstraints:
-ACALD	1000
-ACALDt	1000
-ACKr	1000
-ACONTa	1000
-ACONTb	1000
-ACt2r	1000
-ADK1	1000
-AKGDH	1000
-AKGt2r	1000
-ALCD2x	1000
-ATPM	1000
-ATPS4r	1000
-Biomass_Ecoli_core_w_GAM	1000
-CO2t	1000
-CS	1000
-CYTBD	1000
-D_LACt2	1000
-ENO	1000
-ETOHt2r	1000
-EX_ac(e)	1000
-EX_acald(e)	1000
-EX_akg(e)	1000
-EX_co2(e)	1000
-EX_etoh(e)	1000
-EX_for(e)	1000
-EX_fru(e)	1000
-EX_fum(e)	1000
-EX_glc(e)	1000
-EX_gln_L(e)	1000
-EX_glu_L(e)	1000
-EX_h(e)	1000
-EX_h2o(e)	1000
-EX_lac_D(e)	1000
-EX_mal_L(e)	1000
-EX_nh4(e)	1000
-EX_o2(e)	1000
-EX_pi(e)	1000
-EX_pyr(e)	1000
-EX_succ(e)	1000
-FBA	1000
-FBP	1000
-FORt2	1000
-FORti	1000
-FRD7	1000
-FRUpts2	1000
-FUM	1000
-FUMt2_2	1000
-G6PDH2r	1000
-GAPD	1000
-GLCpts	1000
-GLNS	1000
-GLNabc	1000
-GLUDy	1000
-GLUN	1000
-GLUSy	1000
-GLUt2r	1000
-GND	1000
-H2Ot	1000
-ICDHyr	1000
-ICL	1000
-LDH_D	1000
-MALS	1000
-MALt2_2	1000
-MDH	1000
-ME1	1000
-ME2	1000
-NADH16	1000
-NADTRHD	1000
-NH4t	1000
-O2t	1000
-PDH	1000
-PFK	1000
-PFL	1000
-PGI	1000
-PGK	1000
-PGL	1000
-PGM	1000
-PIt2r	1000
-PPC	1000
-PPCK	1000
-PPS	1000
-PTAr	1000
-PYK	1000
-PYRt2r	1000
-RPE	1000
-RPI	1000
-SUCCt2_2	1000
-SUCCt3	1000
-SUCDi	1000
-SUCOAS	1000
-TALA	1000
-THD2	1000
-TKT1	1000
-TKT2	1000
-TPI	1000
+     <strong>Forward_Reaction, 0 bound</strong>                               <strong>Name</strong>                              <strong>lb</strong>     <strong>ub</strong>                                                                                                                                                                                          <strong>equation</strong>                                                                                                                                                                                     
+    <strong>____________________________</strong>    <strong>_______________________________________________________</strong>    <strong>__</strong>    <strong>____</strong>    <strong>__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</strong>
+    {'AKGDH'                   }    {'2-Oxoglutarate dehydrogenase'                       }    0     1000    {'akg[c] + coa[c] + nad[c]  -> co2[c] + nadh[c] + succoa[c] '                                                                                                                                                                                                                                                                                                                    }
+    {'Biomass_Ecoli_core_w_GAM'}    {'Biomass Objective Function with GAM'                }    0     1000    {'1.496 3pg[c] + 3.7478 accoa[c] + 59.81 atp[c] + 0.361 e4p[c] + 0.0709 f6p[c] + 0.129 g3p[c] + 0.205 g6p[c] + 0.2557 gln-L[c] + 4.9414 glu-L[c] + 59.81 h2o[c] + 3.547 nad[c] + 13.0279 nadph[c] + 1.7867 oaa[c] + 0.5191 pep[c] + 2.8328 pyr[c] + 0.8977 r5p[c]  -> 59.81 adp[c] + 4.1182 akg[c] + 3.7478 coa[c] + 59.81 h[c] + 3.547 nadh[c] + 13.0279 nadp[c] + 59.81 pi[c] '}
+    {'CS'                      }    {'citrate synthase'                                   }    0     1000    {'accoa[c] + h2o[c] + oaa[c]  -> cit[c] + coa[c] + h[c] '                                                                                                                                                                                                                                                                                                                        }
+    {'CYTBD'                   }    {'cytochrome oxidase bd (ubiquinol-8: 2 protons)'     }    0     1000    {'2 h[c] + 0.5 o2[c] + q8h2[c]  -> h2o[c] + 2 h[e] + q8[c] '                                                                                                                                                                                                                                                                                                                     }
+    {'EX_ac(e)'                }    {'Acetate exchange'                                   }    0     1000    {'ac[e]  -> '                                                                                                                                                                                                                                                                                                                                                                    }
+    {'EX_acald(e)'             }    {'Acetaldehyde exchange'                              }    0     1000    {'acald[e]  -> '                                                                                                                                                                                                                                                                                                                                                                 }
+    {'EX_akg(e)'               }    {'2-Oxoglutarate exchange'                            }    0     1000    {'akg[e]  -> '                                                                                                                                                                                                                                                                                                                                                                   }
+    {'EX_etoh(e)'              }    {'Ethanol exchange'                                   }    0     1000    {'etoh[e]  -> '                                                                                                                                                                                                                                                                                                                                                                  }
+    {'EX_for(e)'               }    {'Formate exchange'                                   }    0     1000    {'for[e]  -> '                                                                                                                                                                                                                                                                                                                                                                   }
+    {'EX_fru(e)'               }    {'D-Fructose exchange'                                }    0     1000    {'fru[e]  -> '                                                                                                                                                                                                                                                                                                                                                                   }
+    {'EX_fum(e)'               }    {'Fumarate exchange'                                  }    0     1000    {'fum[e]  -> '                                                                                                                                                                                                                                                                                                                                                                   }
+    {'EX_gln_L(e)'             }    {'L-Glutamine exchange'                               }    0     1000    {'gln-L[e]  -> '                                                                                                                                                                                                                                                                                                                                                                 }
+    {'EX_glu_L(e)'             }    {'L-Glutamate exchange'                               }    0     1000    {'glu-L[e]  -> '                                                                                                                                                                                                                                                                                                                                                                 }
+    {'EX_lac_D(e)'             }    {'D-Lactate exchange'                                 }    0     1000    {'lac-D[e]  -> '                                                                                                                                                                                                                                                                                                                                                                 }
+    {'EX_mal_L(e)'             }    {'L-Malate exchange'                                  }    0     1000    {'mal-L[e]  -> '                                                                                                                                                                                                                                                                                                                                                                 }
+    {'EX_pyr(e)'               }    {'Pyruvate exchange'                                  }    0     1000    {'pyr[e]  -> '                                                                                                                                                                                                                                                                                                                                                                   }
+    {'EX_succ(e)'              }    {'Succinate exchange'                                 }    0     1000    {'succ[e]  -> '                                                                                                                                                                                                                                                                                                                                                                  }
+    {'FBP'                     }    {'fructose-bisphosphatase'                            }    0     1000    {'fdp[c] + h2o[c]  -> f6p[c] + pi[c] '                                                                                                                                                                                                                                                                                                                                           }
+    {'FORt2'                   }    {'formate transport via proton symport (uptake only)' }    0     1000    {'for[e] + h[e]  -> for[c] + h[c] '                                                                                                                                                                                                                                                                                                                                              }
+    {'FORti'                   }    {'formate transport via diffusion'                    }    0     1000    {'for[c]  -> for[e] '                                                                                                                                                                                                                                                                                                                                                            }
+    {'FRD7'                    }    {'fumarate reductase'                                 }    0     1000    {'fum[c] + q8h2[c]  -> q8[c] + succ[c] '                                                                                                                                                                                                                                                                                                                                         }
+    {'FRUpts2'                 }    {'Fructose transport via PEP:Pyr PTS (f6p generating)'}    0     1000    {'fru[e] + pep[c]  -> f6p[c] + pyr[c] '                                                                                                                                                                                                                                                                                                                                          }
+    {'FUMt2_2'                 }    {'Fumarate transport via proton symport (2 H)'        }    0     1000    {'fum[e] + 2 h[e]  -> fum[c] + 2 h[c] '                                                                                                                                                                                                                                                                                                                                          }
+    {'GLCpts'                  }    {'D-glucose transport via PEP:Pyr PTS'                }    0     1000    {'glc-D[e] + pep[c]  -> g6p[c] + pyr[c] '                                                                                                                                                                                                                                                                                                                                        }
+    {'GLNS'                    }    {'glutamine synthetase'                               }    0     1000    {'atp[c] + glu-L[c] + nh4[c]  -> adp[c] + gln-L[c] + h[c] + pi[c] '                                                                                                                                                                                                                                                                                                              }
+    {'GLNabc'                  }    {'L-glutamine transport via ABC system'               }    0     1000    {'atp[c] + gln-L[e] + h2o[c]  -> adp[c] + gln-L[c] + h[c] + pi[c] '                                                                                                                                                                                                                                                                                                              }
+    {'GLUN'                    }    {'glutaminase'                                        }    0     1000    {'gln-L[c] + h2o[c]  -> glu-L[c] + nh4[c] '                                                                                                                                                                                                                                                                                                                                      }
+    {'GLUSy'                   }    {'glutamate synthase (NADPH)'                         }    0     1000    {'akg[c] + gln-L[c] + h[c] + nadph[c]  -> 2 glu-L[c] + nadp[c] '                                                                                                                                                                                                                                                                                                                 }
+    {'GND'                     }    {'phosphogluconate dehydrogenase'                     }    0     1000    {'6pgc[c] + nadp[c]  -> co2[c] + nadph[c] + ru5p-D[c] '                                                                                                                                                                                                                                                                                                                          }
+    {'ICL'                     }    {'Isocitrate lyase'                                   }    0     1000    {'icit[c]  -> glx[c] + succ[c] '                                                                                                                                                                                                                                                                                                                                                 }
+    {'MALS'                    }    {'malate synthase'                                    }    0     1000    {'accoa[c] + glx[c] + h2o[c]  -> coa[c] + h[c] + mal-L[c] '                                                                                                                                                                                                                                                                                                                      }
+    {'MALt2_2'                 }    {'Malate transport via proton symport (2 H)'          }    0     1000    {'2 h[e] + mal-L[e]  -> 2 h[c] + mal-L[c] '                                                                                                                                                                                                                                                                                                                                      }
+    {'ME1'                     }    {'malic enzyme (NAD)'                                 }    0     1000    {'mal-L[c] + nad[c]  -> co2[c] + nadh[c] + pyr[c] '                                                                                                                                                                                                                                                                                                                              }
+    {'ME2'                     }    {'malic enzyme (NADP)'                                }    0     1000    {'mal-L[c] + nadp[c]  -> co2[c] + nadph[c] + pyr[c] '                                                                                                                                                                                                                                                                                                                            }
+    {'NADH16'                  }    {'NADH dehydrogenase (ubiquinone-8 & 3 protons)'      }    0     1000    {'4 h[c] + nadh[c] + q8[c]  -> 3 h[e] + nad[c] + q8h2[c] '                                                                                                                                                                                                                                                                                                                       }
+    {'NADTRHD'                 }    {'NAD transhydrogenase'                               }    0     1000    {'nad[c] + nadph[c]  -> nadh[c] + nadp[c] '                                                                                                                                                                                                                                                                                                                                      }
+    {'PDH'                     }    {'pyruvate dehydrogenase'                             }    0     1000    {'coa[c] + nad[c] + pyr[c]  -> accoa[c] + co2[c] + nadh[c] '                                                                                                                                                                                                                                                                                                                     }
+    {'PFK'                     }    {'phosphofructokinase'                                }    0     1000    {'atp[c] + f6p[c]  -> adp[c] + fdp[c] + h[c] '                                                                                                                                                                                                                                                                                                                                   }
+    {'PFL'                     }    {'pyruvate formate lyase'                             }    0     1000    {'coa[c] + pyr[c]  -> accoa[c] + for[c] '                                                                                                                                                                                                                                                                                                                                        }
+    {'PGL'                     }    {'6-phosphogluconolactonase'                          }    0     1000    {'6pgl[c] + h2o[c]  -> 6pgc[c] + h[c] '                                                                                                                                                                                                                                                                                                                                          }
+    {'PPC'                     }    {'phosphoenolpyruvate carboxylase'                    }    0     1000    {'co2[c] + h2o[c] + pep[c]  -> h[c] + oaa[c] + pi[c] '                                                                                                                                                                                                                                                                                                                           }
+    {'PPCK'                    }    {'phosphoenolpyruvate carboxykinase'                  }    0     1000    {'atp[c] + oaa[c]  -> adp[c] + co2[c] + pep[c] '                                                                                                                                                                                                                                                                                                                                 }
+    {'PPS'                     }    {'phosphoenolpyruvate synthase'                       }    0     1000    {'atp[c] + h2o[c] + pyr[c]  -> amp[c] + 2 h[c] + pep[c] + pi[c] '                                                                                                                                                                                                                                                                                                                }
+    {'PYK'                     }    {'pyruvate kinase'                                    }    0     1000    {'adp[c] + h[c] + pep[c]  -> atp[c] + pyr[c] '                                                                                                                                                                                                                                                                                                                                   }
+    {'SUCCt2_2'                }    {'succinate transport via proton symport (2 H)'       }    0     1000    {'2 h[e] + succ[e]  -> 2 h[c] + succ[c] '                                                                                                                                                                                                                                                                                                                                        }
+    {'SUCCt3'                  }    {'succinate transport out via proton antiport'        }    0     1000    {'h[e] + succ[c]  -> h[c] + succ[e] '                                                                                                                                                                                                                                                                                                                                            }
+    {'SUCDi'                   }    {'succinate dehydrogenase (irreversible)'             }    0     1000    {'q8[c] + succ[c]  -> fum[c] + q8h2[c] '                                                                                                                                                                                                                                                                                                                                         }
+    {'THD2'                    }    {'NAD(P) transhydrogenase'                            }    0     1000    {'2 h[e] + nadh[c] + nadp[c]  -> 2 h[c] + nad[c] + nadph[c] '                                                                                                                                                                                                                                                                                                                    }
+    <strong>Forward_Reaction, non-0 bound</strong>                 <strong>Name</strong>                   <strong>lb</strong>      <strong>ub</strong>                        <strong>equation</strong>                   
+    <strong>_____________________________</strong>    <strong>_______________________________</strong>    <strong>____</strong>    <strong>____</strong>    <strong>______________________________________________</strong>
+              {'ATPM'}               {'ATP maintenance requirement'}    8.39    1000    {'atp[c] + h2o[c]  -> adp[c] + h[c] + pi[c] '}
+

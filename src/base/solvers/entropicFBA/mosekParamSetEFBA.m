@@ -30,26 +30,27 @@ param.MSK_IPAR_INTPNT_SCALING ='MSK_SCALING_FREE';
 % Possible Values: MSK_ON    Switch the option on. 
 %                  MSK_OFF   Switch the option off. 
 % Default value:   MSK_ON
-param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_OFF'; 
+param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_ON'; 
 
 %%%%%%%%%%%%% NONLINEAR TERMINATION CRITERIA%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MSK_DPAR_INTPNT_CO_TOL_DFEAS 
 %Dual feasibility tolerance used by the interior-point optimizer for conic problems.
 %Default:1.0e-8
 %Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = 1e-10;
 
 %MSK_DPAR_INTPNT_CO_TOL_PFEAS
 %Primal feasibility tolerance used by the interior-point optimizer for conic problems.
 %Default: 1.0e-8
 % Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1.0e-10; %was 1e-11 may be too aggressive -RF
 
 %MSK_DPAR_INTPNT_CO_TOL_REL_GAP
 %Relative gap termination tolerance used by the interior-point optimizer for conic problems.
 %Default:1.0e-8
 %Accepted: [0.0; 1.0]
-param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = 1.0e-11;
+param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = 1.0e-9; %was 1e-11 may be too aggressive -RF
+
 %useful for ensuring dual feasibility is as good as primal
 
 % MSK_IPAR_INTPNT_MAX_ITERATIONS 
@@ -94,7 +95,7 @@ param.MSK_IPAR_INTPNT_SOLVE_FORM='MSK_SOLVE_FREE';
 % A small number means the optimizer gets more conservative about declaring the model infeasible.
 % Possible Values:Any number between 0.0 and 1.0. 
 % Default value: 1.0e-8
-param.MSK_DPAR_INTPNT_TOL_INFEAS=1e-8; 
+param.MSK_DPAR_INTPNT_TOL_INFEAS=1e-10; 
 
 %%%%%%%%%%%%%%%%%%%%%%OUTPUT%%%%%%%%%%%%%%%%%%
 %MSK_IPAR_LOG_INTPNT

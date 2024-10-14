@@ -33,7 +33,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %                     * .biomassBool - Boolean of biomass reaction
 %                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
 %                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
-%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` (optional field)
+%                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` or 'Excretion_EX' (optional field)
 %
 % .. Author: -  Ronan Fleming
 
@@ -122,6 +122,27 @@ for n=1:nRxn
     end
 end
 
+%whole body models have a sex field
+if isfield(model,'sex')
+    sex = model.sex;
+    %List of organs in the model
+    OrganLists
+    nOrgans=length(OrgansListExt);
+    for i=1:nOrgans
+        OrgansListExt{i}=[OrgansListExt{i} '_'];
+    end
+    OrgansListExt=[OrgansListExt;'Excretion_';'Diet_'];
+    WBMrxns=model.rxns;
+    for j=1:nRxn
+        %replace the organs with ''
+        WBMrxns{j} = replace(model.rxns{j},OrgansListExt,'');
+    end
+    rxns = WBMrxns;
+else
+    rxns = model.rxns;
+end
+
+
 % models with typical HMR subsystems - heuristic
 if isfield(model,'subSystems')
     model.ExchRxnBool=cellfun(@(x) any(ismember({'Exchange reactions','Artificial reactions','Pool reactions'},x)),model.subSystems);
@@ -129,21 +150,21 @@ if isfield(model,'subSystems')
         model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
     end
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+    model.ExchRxnBool=strncmp('EX_', rxns, 3)==1 | strncmp('Exch_', rxns, 5)==1 | strncmp('Ex_', rxns, 5)==1 | biomassBool | model.ExchRxnBool;
 else
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', model.rxns, 3)==1 | strncmp('Exch_', model.rxns, 5)==1 | strncmp('Ex_', model.rxns, 5)==1 | biomassBool;
+    model.ExchRxnBool=strncmp('EX_', rxns, 3)==1 | strncmp('Exch_', rxns, 5)==1 | strncmp('Ex_', rxns, 5)==1 | biomassBool;
 end
 %demand reactions going out of model
-model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
+model.DMRxnBool=strncmp('DM_', rxns, 3)==1;
 %sink reactions going into or out of model
-model.SinkRxnBool=strncmp('sink_', model.rxns, 5) | strncmp('Sink_', model.rxns, 5)==1;
+model.SinkRxnBool=strncmp('sink_', rxns, 5) | strncmp('Sink_', rxns, 5)==1 | strncmp('SINK_', rxns, 5)==1;
 
 %input/output
 SExRxnBoolHeuristic = model.ExchRxnBool | model.DMRxnBool | model.SinkRxnBool;
 
 %remove ATP demand as it is usually mass balanced
-bool=strcmp('ATPM',model.rxns);
+bool=strcmp('ATPM',rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP maintenance reaction is not considered an exchange reaction by default. It should be mass balanced:')
@@ -151,7 +172,7 @@ if any(bool)
     end
     model.DMRxnBool(bool)=0;
 end
-bool=strcmp('DM_atp(c)',model.rxns);
+bool=strcmp('DM_atp(c)',rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. It should be mass balanced')
@@ -159,7 +180,7 @@ if any(bool)
     end
     model.DMRxnBool(bool)=0;
 end
-bool=strcmp('DM_atp_c_',model.rxns);
+bool=strcmp('DM_atp_c_',rxns);
 if any(bool)
     if printLevel>0
         fprintf('%s\n','ATP demand reaction is not considered an exchange reaction by default. It should be mass balanced:')

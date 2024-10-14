@@ -1,0 +1,47 @@
+name: Update Contributors list
+
+on:
+  pull_request_target:
+    types:
+      - closed
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      working-directory: ./docs/source/Contributions
+      run: |
+        pip install -r requirements.txt
+    - name: Update contributors
+      working-directory: ./docs/source/Contributions
+      run: |
+        python UpdateContributorsList.py
+    - name: generate HTML file
+      working-directory: ./docs/source/Contributions
+      run: |
+        python GenerateContributorsHTML.py
+    - name: Deploy to latest/gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/source/Contributions/contributors
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: latest
+    - name: Deploy to stable/gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/source/Contributions/contributors
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: stable
+
+        

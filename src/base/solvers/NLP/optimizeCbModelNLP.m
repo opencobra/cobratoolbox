@@ -111,7 +111,7 @@ else
 end
 
 [nMets,nRxns] = size(model.S);
-NLPproblem = buildLPproblemFromModel(model);
+NLPproblem = buildOptProblemFromModel(model);
 
 NLPproblem.objFunction = objFunction;
 NLPproblem.objArguments = objArgs;

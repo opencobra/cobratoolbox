@@ -26,7 +26,7 @@ numWorkers=4;
 % create the pan-models on species level
 panPath=[pwd filesep 'panSpeciesModels'];
 
-createPanModels(modPath,panPath,'Species',numWorkers);
+createPanModels(modPath,panPath,'Species','AGORA',numWorkers);
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);
@@ -72,7 +72,7 @@ end
 % create the pan-models on genus level
 panPath=[pwd filesep 'panGenusModels'];
 
-createPanModels(modPath,panPath,'Genus',numWorkers);
+createPanModels(modPath,panPath,'Genus','AGORA',numWorkers);
 
 % test that pan-models can grow
 [notGrowing,Biomass_fluxes] = plotBiomassTestResults(panPath, 'pan-models','numWorkers',numWorkers);

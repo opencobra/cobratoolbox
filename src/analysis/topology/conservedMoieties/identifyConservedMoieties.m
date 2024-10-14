@@ -774,7 +774,8 @@ if ~sanityChecks
     if 1
         %graph.Edges cannot be directly edited in a graph object, so extract,
         %edit and regenerate the graph
-        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','rxns'});
+        %Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','OrigTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','rxns'});
+        Edges = removevars(MTG.Edges,{'Trans','TransIndex','TransInstIndex','dirTransInstIndex','HeadAtomIndex','TailAtomIndex','HeadAtom','TailAtom','orientationATM2dATM','IsCanonical','rxns'});%Hadjar Rahou
         %add variables
         Edges = addvars(Edges,MTG.Nodes.Formula(Edges.EndNodes(:,1)),'NewVariableNames','Formula');
         %reorder the variables 
@@ -1139,7 +1140,8 @@ if ~sanityChecks
     % arm.ATG.Edges.orientationATM2dATM - orientation of edge with respect to the reaction from which this atom transition was derived
     % arm.ATG.Edges.rxns - the reaction from which this atom transition was derived
     
-    ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','rxns'}),ATG.Nodes);
+    %ATG = graph(removevars(ATG.Edges,{'OrigTransInstIndex','TransInstIndex','orientationATM2dATM','rxns'}),ATG.Nodes);
+    ATG = graph(removevars(ATG.Edges,{'dirTransInstIndex','TransInstIndex','orientationATM2dATM','rxns'}),ATG.Nodes);%Hadjar Rahou
 end
 
 %for i=1:6 Mk = diag(arm.I2M(i,:))*M; Nk = arm.M2M*Mk*arm.M2R;Nk2=diag(arm.L(i,:))*N; disp(norm(Nk-Nk2)); end

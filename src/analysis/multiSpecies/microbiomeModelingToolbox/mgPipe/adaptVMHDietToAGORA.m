@@ -104,7 +104,7 @@ for i = 1:  size(adaptedDietConstraints,1)
         adaptedDietConstraints{i,2} = '-0.1';
     end
     % folate, L-arabinose, D-xylose, AMP, NH4 uptake need to be at least 1
-    if any(strcmp(adaptedDietConstraints{i,1},{'EX_fol(e)','EX_arab_L(e)','EX_xyl_D(e)','EX_amp(e)','EX_nh4(e)'})) && abs(str2double(adaptedDietConstraints{i,2}))<1
+    if any(strcmp(adaptedDietConstraints{i,1},{'EX_fol(e)','EX_arab_L(e)','EX_xyl_D(e)','EX_amp(e)','EX_nh4(e)','EX_cobalt2(e)'})) && abs(str2double(adaptedDietConstraints{i,2}))<1
         adaptedDietConstraints{i,2} = '-1';
     end
 end

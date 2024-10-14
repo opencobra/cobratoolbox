@@ -28,6 +28,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsLinux`: Whether the test only works on a Linux system (default: false)
 %                   - `needsWebAddress`: Tests, whether the supplied url exists (default: '')
 %                   - `needsWebRead`: Tests, whether webread can be used with the given url
+%                   - `requiredSoftwares`: cell array of required installed softwares (default: {})
 %
 % OUTPUTS:
 %
@@ -100,13 +101,14 @@ parser.addParamValue('needsNLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsQP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMIQP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsEP', false, @(x) islogical(x) || x == 1 || x == 0);
+parser.addParamValue('needsCLP', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsUnix', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsLinux', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWindows', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsMac', false, @(x) islogical(x) || x == 1 || x == 0);
 parser.addParamValue('needsWebAddress', '', @ischar);
 parser.addParamValue('needsWebRead', false, @(x) islogical(x) || x == 1 || x == 0);
-
+parser.addParamValue('requiredSoftwares', {}, @iscell);
 
 parser.parse(varargin{:});
 
@@ -116,6 +118,7 @@ useMIQP = parser.Results.needsMIQP;
 useNLP = parser.Results.needsNLP;
 useMILP = parser.Results.needsMILP;
 useEP = parser.Results.needsEP;
+useCLP = parser.Results.needsCLP;
 
 macOnly = parser.Results.needsMac;
 windowsOnly = parser.Results.needsWindows;
@@ -137,6 +140,7 @@ useMinimalNumberOfSolvers = parser.Results.useMinimalNumberOfSolvers;
 runtype = getenv('CI_RUNTYPE');
 
 minimalMatlabSolverVersion = parser.Results.minimalMatlabSolverVersion;
+requiredSoftwares = parser.Results.requiredSoftwares;
 
 errorMessage = {};
 infoMessage = {};
@@ -279,6 +283,27 @@ for i = 1:numel(toolboxes)
     end
 end
 
+% Initialize error messages for missing software
+missingSoftware = {};
+
+% Generalized Software check
+for i = 1:length(requiredSoftwares)
+    software = requiredSoftwares{i};
+    
+    % Depending on the OS, different system commands may be needed
+    % For Linux/Mac, you can generally use `which` or `command -v`
+    % For Windows, `where` can be used to check if software is available
+
+    if ispc  % Windows
+        [status, ~] = system(['where ' software]);
+    else  % Unix-based (Linux/Mac)
+        [status, ~] = system(['command -v ' software ' > /dev/null']);
+    end
+
+    if status ~= 0
+        missingSoftware{end + 1} = software;
+    end
+end
 
 % append the error message
 if ~isempty(missingTBs.License)
@@ -363,6 +388,22 @@ else
     end
 end
 
+if isempty(solversForTest.CLP)
+    if useCLP
+        errorMessage{end + 1} = 'The test requires at least one CLP solver but no solver is installed';
+    end
+else
+    if ~isempty(solversForTest.CLP)
+        defaultCLPSolver = solversForTest.CLP{1};
+    else
+        defaultCLPSolver = '';
+    end
+end
+
+% If any software is missing, append to error message
+if ~isempty(missingSoftware)
+    errorMessage{end + 1} = sprintf('The following required software is not installed: %s', strjoin(missingSoftware, ', '));
+end
 
 if ~isempty(errorMessage)
     errorString = strjoin(errorMessage, '\n');
@@ -408,4 +449,3 @@ else
         end
     end
 end
-

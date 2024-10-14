@@ -1,4 +1,4 @@
-function [dummyModel, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, TolMaxBoundary, tissueSpecificSolver, coreRxnAbbr, fluxEpsilon)
+function [dummyModel, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, TolMaxBoundary, modelExtractionAlgorithm, coreRxnAbbr, fluxEpsilon)
 % Add one dummy metabolite per active gene and for each reaction that has that
 % active gene in the GPR, create a dummy metabolite, which is destroyed in the
 % corresponding dummy reaction. This enables one to require that at least
@@ -12,7 +12,7 @@ function [dummyModel, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID,
 %
 % OPTIONAL INPUT:
 % TolMaxBoundary:       scalar number giving the default reaction upper and lower bounds magnitude
-% tissueSpecificSolver: {('thermoKernel'),'fastCore'} if 'fastCore' it runs a flux consistency check first
+% modelExtractionAlgorithm: {('thermoKernel'),'fastCore'} if 'fastCore' it runs a flux consistency check first
 % fluxEpsilon:         Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance X 10).
 %
 % OUTPUT:
@@ -26,10 +26,10 @@ if ~exist('TolMaxBoundary','var')
     TolMaxBoundary = max(model.ub);
 end
 
-if ~exist('tissueSpecificSolver','var')
-    tissueSpecificSolver = 'thermoKernel';
+if ~exist('modelExtractionAlgorithm','var')
+    modelExtractionAlgorithm = 'thermoKernel';
 end
-if ~exist('coreRxnAbbr','var') && isequal(tissueSpecificSolver, 'fastCore')
+if ~exist('coreRxnAbbr','var') && isequal(modelExtractionAlgorithm, 'fastCore')
     error('coreRxnAbbr must be provided')
 end
 if ~exist('fluxEpsilon','var')
@@ -37,7 +37,7 @@ if ~exist('fluxEpsilon','var')
 end
 
 
-if isequal(tissueSpecificSolver, 'fastCore') && 0
+if isequal(modelExtractionAlgorithm, 'fastCore') && 0
     paramConsistency.epsilon = fluxEpsilon;
     paramConsistency.method = 'fastcc';
     [fluxConsistentMetBoolOrig, fluxConsistentRxnBoolOrig] = findFluxConsistentSubset(model, paramConsistency, 2);
@@ -248,7 +248,7 @@ end
 model.dummyMetBool = contains(model.mets,'dummy_Met_');
 model.dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
     
-if 0 && isequal(tissueSpecificSolver, 'fastCore') 
+if 0 && isequal(modelExtractionAlgorithm, 'fastCore') 
     model.S = model.S(~model.dummyMetBool,~model.dummyRxnBool);
     model.b = model.b(~model.dummyMetBool,1);
     model.csense = model.csense(~model.dummyMetBool,1);
@@ -312,7 +312,7 @@ if isfield(model,'h0')
     model = rmfield(model,'h0');
 end
 
-if isequal(tissueSpecificSolver, 'fastCore')
+if isequal(modelExtractionAlgorithm, 'fastCore')
     %need to add dummy reactions to set of core reactions for fastCore. Note thermoKernel does it differently, see modelExtraction
     coreRxnAbbr = [coreRxnAbbr; model.rxns(model.dummyRxnBool)];
     

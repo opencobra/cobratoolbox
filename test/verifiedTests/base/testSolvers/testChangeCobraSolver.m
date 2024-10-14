@@ -12,23 +12,30 @@ global OPT_PROB_TYPES;
 currentDir = pwd;
 
 % initialize the test
+fprintf(' -- Running testChangeCobraSolver: ... \n');
 fileDir = fileparts(which('testChangeCobraSolver'));
 cd(fileDir);
 
 % Three arguments
-ok = changeCobraSolver('pdco', 'MINLP', 0);
-assert(ok == false);
+if any(ismember('MINLP',OPT_PROB_TYPES))
+    ok = changeCobraSolver('pdco', 'MINLP', 0);
+    assert(ok == false);
+else
+    fprintf('There is no MINLP in opt problem types')
+end
 
 ok = changeCobraSolver('pdco', 'LP', 0);
 assert(ok == true);
 global CBT_LP_SOLVER
 assert(strcmp(CBT_LP_SOLVER, 'pdco'))
 
-global CBT_MINLP_SOLVER
-CBT_MINLP_SOLVER = [];
-ok = changeCobraSolver('pdco', 'MINLP', 0);
-assert(ok == false);
-assert(isempty(CBT_MINLP_SOLVER))
+if any(ismember('MINLP',OPT_PROB_TYPES))
+    global CBT_MINLP_SOLVER
+    CBT_MINLP_SOLVER = [];
+    ok = changeCobraSolver('pdco', 'MINLP', 0);
+    assert(ok == false);
+    assert(isempty(CBT_MINLP_SOLVER))
+end
 
 try
     ok = changeCobraSolver('gurobi_mex', 'MILP', 1);
@@ -81,5 +88,5 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
-% Zero argument
-changeCobraSolver();
+% output a success message
+fprintf('Done.\n');

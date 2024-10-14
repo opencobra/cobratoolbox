@@ -200,7 +200,7 @@ if ~isfield(model,'b')
     model.b = zeros(size(model.S,1),1);
 end
 % Set up the general problem
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 loopInfo = struct('method', loopMethod, 'printLevel', printLevel);
 

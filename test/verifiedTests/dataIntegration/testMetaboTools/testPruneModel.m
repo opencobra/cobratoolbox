@@ -19,6 +19,8 @@ load('refData_pruneModel.mat')
 % define input
 model = getDistributedModel('ecoli_core_model.mat');
 
+fprintf(' -- Running testPruneModel ... \n');
+
 % retrieve the default biomass reaction
 biomassRxn = checkObjective(model);
 biomassRxn = biomassRxn{1};
@@ -40,3 +42,6 @@ assert(isequal(Ex_Rxns_ref, Ex_Rxns))
 assert(isequal(modelUpdated_ref, modelUpdated_2inputs))
 assert(isequal(modelPruned_ref, modelPruned_2inputs))
 assert(isequal(Ex_Rxns_ref, Ex_Rxns_2inputs))
+
+fprintf('Done.\n');
+cd(currentDir);

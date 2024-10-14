@@ -6,11 +6,15 @@
 %
 % Authors:
 %     - Thomas Pfau
-%Switching to test directory
+
+% Switching to test directory
 currentDir = pwd;
 cd(fileparts(which('testInchi.m')));
 
-%Use ADP glucose as initial test
+% Initiate testing
+fprintf('Testing testInChi ...\n')
+
+% Use ADP glucose as initial test
 adp_alpha_d_glc = 'InChI=1S/C16H25N5O15P2/c17-13-7-14(19-3-18-13)21(4-20-7)15-11(26)9(24)6(33-15)2-32-37(28,29)36-38(30,31)35-16-12(27)10(25)8(23)5(1-22)34-16/h3-6,8-12,15-16,22-27H,1-2H2,(H,28,29)(H,30,31)(H2,17,18,19)/p-2/t5-,6-,8-,9-,10+,11-,12-,15-,16-/m1/s1 ';
 adp_alpha_d_glc_formula = 'C16H23N5O15P2'; %This is fully protonated
 inchicharge = getChargeFromInChI(adp_alpha_d_glc);
@@ -57,6 +61,8 @@ assert(isequal(charge,fixed_H_InChI_Charge));
 assert(isequal(formula,fixed_H_InChI_Formula));
 assert(isequal(chargeWithProtons,fixed_H_InChI_Charge_With_Protons));
 
+% output a success message
+fprintf('Done.\n');
 
 %Returning to original directory
 cd(currentDir)

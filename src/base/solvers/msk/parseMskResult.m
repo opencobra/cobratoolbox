@@ -1,321 +1,243 @@
-function [stat,origStat,x,y,z,s,doty,bas] = parseMskResult(res,A,blc,buc,printLevel,param)
+function [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,printLevel)
 %parse the res structure returned from mosek
+% INPUTS:
+%  res:        mosek results structure returned by mosekopt
+%
+% OPTIONAL INPUTS
+%  prob:        mosek problem structure passed to mosekopt
+%  solverOnlyParams:      Additional parameters provided which are not part
+%                     of the COBRA parameters and are assumed to be part
+%                     of direct solver input structs. For some solvers, it
+%                     is essential to not include any extraneous fields that are 
+%                     outside the solver interface specification.
+%  printLevel:  
+%
+% OUTPUTS:
+%  stat - Solver status in standardized form:
+%   * 0 - Infeasible problem
+%   * 1 - Optimal solution
+%   * 2 - Unbounded solution
+%   * 3 - Almost optimal solution
+%   * -1 - Some other problem (timelimit, numerical problem etc)
+%  origStat: solver status
+%  x:   primal variable vector         
+%  y:   dual variable vector to linear constraints (yl - yu)
+%  yl:  dual variable vector to lower bound on linear constraints
+%  yu:  dual variable vector to upper bound on linear constraints
+%  z:   dual variable vector to box constraints (zl - zu)        
+%  zl:  dual variable vector to lower bounds       
+%  zu:  dual variable vector to upper bounds         
+%  k:   dual variable vector to affine conic constraints
+%  basis  basis returned by mosekopt
+%  pobjval: primal objective value returned by modekopt
+%  dobjval: dual objective value returned by modekopt
+%
+% EXAMPLE:
+%  [~,res]=mosekopt('minimize',prob); 
+%
+% NOTE:
+%
+% Author(s): Ronan Fleming
 
 % initialise variables
 stat =[];
 origStat = [];
 x = [];
 y = [];
+yl = [];
+yu = [];
 z = [];
-s = [];
-doty = [];
-bas = [];
+zl = [];
+zu = [];
+k = [];
+basis = [];
+pobjval =[];
+dobjval =[];
 
 if ~exist('printLevel','var')
     printLevel = 0;
 end
-if ~exist('param','var')
-    param = struct();
+if ~exist('solverOnlyParams','var')
+    solverOnlyParams = struct();
 end
 
+% prosta (string) – Problem status (prosta).
+% prosta
+% Problem status keys
+% 
+% "MSK_PRO_STA_UNKNOWN"
+% Unknown problem status.
+% 
+% "MSK_PRO_STA_PRIM_AND_DUAL_FEAS"
+% The problem is primal and dual feasible.
+% 
+% "MSK_PRO_STA_PRIM_FEAS"
+% The problem is primal feasible.
+% 
+% "MSK_PRO_STA_DUAL_FEAS"
+% The problem is dual feasible.
+% 
+% "MSK_PRO_STA_PRIM_INFEAS"
+% The problem is primal infeasible.
+% 
+% "MSK_PRO_STA_DUAL_INFEAS"
+% The problem is dual infeasible.
+% 
+% "MSK_PRO_STA_PRIM_AND_DUAL_INFEAS"
+% The problem is primal and dual infeasible.
+% 
+% "MSK_PRO_STA_ILL_POSED"
+% The problem is ill-posed. For example, it may be primal and dual feasible but have a positive duality gap.
+% 
+% "MSK_PRO_STA_PRIM_INFEAS_OR_UNBOUNDED"
+% The problem is either primal infeasible or unbounded. This may occur for mixed-integer problems.
 
-% https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
+% solsta (string) – Solution status (solsta).
+% Solution status keys
+% 
+% "MSK_SOL_STA_UNKNOWN"
+% Status of the solution is unknown.
+% 
+% "MSK_SOL_STA_OPTIMAL"
+% The solution is optimal.
+% 
+% "MSK_SOL_STA_PRIM_FEAS"
+% The solution is primal feasible.
+% 
+% "MSK_SOL_STA_DUAL_FEAS"
+% The solution is dual feasible.
+% 
+% "MSK_SOL_STA_PRIM_AND_DUAL_FEAS"
+% The solution is both primal and dual feasible.
+% 
+% "MSK_SOL_STA_PRIM_INFEAS_CER"
+% The solution is a certificate of primal infeasibility.
+% 
+% "MSK_SOL_STA_DUAL_INFEAS_CER"
+% The solution is a certificate of dual infeasibility.
+% 
+% "MSK_SOL_STA_PRIM_ILLPOSED_CER"
+% The solution is a certificate that the primal problem is illposed.
+% 
+% "MSK_SOL_STA_DUAL_ILLPOSED_CER"
+% The solution is a certificate that the dual problem is illposed.
+% 
+% "MSK_SOL_STA_INTEGER_OPTIMAL"
+% The primal solution is integer optimal.
+
+% https://docs.mosek.com/latest/toolbox/accessing-solution.html
+accessSolution=[];
 if isfield(res, 'sol')
-    if isfield(res.sol, 'itr')
+    if isfield(res.sol,'itr') && isfield(res.sol,'bas')
+        if  any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'UNKNOWN'}))
+            accessSolution = 'bas';
+        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'UNKNOWN'}))
+            accessSolution = 'itr';
+        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
+            accessSolution = 'itr';
+        elseif any(strcmp(res.sol.bas.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
+            accessSolution = 'bas';
+        else
+            origStat = res.sol.itr.solsta;
+            accessSolution = 'dontAccess';
+        end
+    elseif isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
+        accessSolution = 'itr';
+    elseif ~isfield(res.sol,'itr') && isfield(res.sol,'bas')
+        accessSolution = 'bas';
+    elseif ~isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
+        error('TODO encode parse of mixed integer optimiser solution')
+    else
+        disp('Report this error to the cobra toolbox google group please')
+        error('Unrecognised combination of res.sol.bas.prosta & res.sol.itr.solsta, see https://docs.mosek.com/latest/toolbox/accessing-solution.html')
+    end
+end
+
+% if strcmp(res.rcodestr,'MSK_RES_TRM_STALL')
+%     warning('Mosek stalling, returning solution as it may be almost optimal')
+% else
+%     stat=-1; %some other problem
+% end
+
+switch accessSolution
+    case 'itr'
         origStat = res.sol.itr.solsta;
-        %disp(origStat)
         switch origStat
-            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}
-                stat = 1; % optimal solution found
+            case {'OPTIMAL','NEAR_OPTIMAL','INTEGER_OPTIMAL'}
+                if any(strcmp(origStat,{'OPTIMAL','INTEGER_OPTIMAL'}))
+                    stat = 1; % optimal solution found
+                else
+                    stat = 3;
+                end
                 x=res.sol.itr.xx; % primal solution.
                 y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
+                yl = res.sol.itr.slc;
+                yu = res.sol.itr.suc;
+                z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
+                zl=res.sol.itr.slx;  %dual to blx <= x
+                zu=res.sol.itr.sux; %dual to   x <= bux
                 if isfield(res.sol.itr,'doty')
                     % Dual variables to affine conic constraints
-                    doty = res.sol.itr.doty;
+                    k = res.sol.itr.doty;
                 end
-                
-%                 % TODO  -work this out with Erling
-%                 % override if specific solver selected
-%                 if isfield(param,'MSK_IPAR_OPTIMIZER')
-%                     switch param.MSK_IPAR_OPTIMIZER
-%                         case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-%                             stat = 1; % optimal solution found
-%                             x=res.sol.bas.xx; % primal solution.
-%                             y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-%                             if isfield(res.sol.itr,'doty')
-%                                 % Dual variables to affine conic constraints
-%                                 doty = res.sol.itr.doty;
-%                             end
-%                         case 'MSK_OPTIMIZER_INTPNT'
-%                             stat = 1; % optimal solution found
-%                             x=res.sol.itr.xx; % primal solution.
-%                             y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-%                             z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-%                             if isfield(res.sol.itr,'doty')
-%                                 % Dual variables to affine conic constraints
-%                                 doty = res.sol.itr.doty;
-%                             end
-%                     end
-%                 end
-%                 if isfield(res.sol,'bas') && 0
-%                     % override
-%                     stat = 1; % optimal solution found
-%                     x=res.sol.bas.xx; % primal solution.
-%                     y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-%                     z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-%                 end
-                
-            case {'MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER','PRIMAL_INFEASIBLE_CER'}
-                stat=0; % infeasible
-            case {'MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER','DUAL_INFEASIBLE_CER'}
-                stat=2; % Unbounded solution
-            case {'UNKNOWN'}
-                stat=-1; %some other problem
+                pobjval = res.sol.itr.pobjval;
+                dobjval = res.sol.itr.dobjval;
             otherwise
-                warning(['Unrecognised solsta: ' origStat])
-                stat=-1; %some other problem
+                accessSolution = 'dontAccess';
         end
-    end
-    
-    if isfield(res.sol,'bas') && ~isequal(res.sol.bas.solsta,'UNKNOWN') %dont overwite interior point solution 
+
+    case 'bas'
         origStat = res.sol.bas.solsta;
         switch origStat
-            case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}
-                stat = 1; % optimal solution found
+            case {'OPTIMAL','NEAR_OPTIMAL','INTEGER_OPTIMAL'}
+                if any(strcmp(origStat,{'OPTIMAL','INTEGER_OPTIMAL'}))
+                    stat = 1; % optimal solution found
+                else
+                    stat = 3;
+                end
                 x=res.sol.bas.xx; % primal solution.
                 y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                if isfield(res.sol.bas,'doty')
+                yl = res.sol.bas.slc; %assuming this exists
+                yu = res.sol.bas.suc;
+                z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
+                zl=res.sol.bas.slx;  %dual to blx <= x
+                zu=res.sol.bas.sux; %dual to   x <= bux
+                if isfield(res.sol.bas,'s')
                     % Dual variables to affine conic constraints
-                    doty = res.sol.bas.doty;
+                    k = res.sol.bas.s;
                 end
+
                 %https://docs.mosek.com/10.0/toolbox/advanced-hotstart.html
                 bas.skc = res.sol.bas.skc;
                 bas.skx = res.sol.bas.skx;
                 bas.xc = res.sol.bas.xc;
                 bas.xx = res.sol.bas.xx;
-                
-            case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
-                stat=0; % infeasible
-            case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
-                stat=2; % Unbounded solution
-            case {'UNKNOWN'}
-                stat=-1; %some other problem
+                pobjval = res.sol.bas.pobjval;
+                dobjval = res.sol.bas.dobjval;
             otherwise
-                warning(['Unrecognised solsta: ' origStat])
-                stat=-1; %some other problem
+                accessSolution = 'dontAccess';
         end
-    end
-    
-    if stat==1
-        % override if specific solver selected
-        if isfield(param,'MSK_IPAR_OPTIMIZER')
-            switch param.MSK_IPAR_OPTIMIZER
-                case {'MSK_OPTIMIZER_PRIMAL_SIMPLEX','MSK_OPTIMIZER_DUAL_SIMPLEX'}
-                    stat = 1; % optimal solution found
-                    x=res.sol.bas.xx; % primal solution.
-                    y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-                    z=res.sol.bas.slx-res.sol.bas.sux; %dual to bux <= x   <= bux
-                    if isfield(res.sol.bas,'doty')
-                        % Dual variables to affine conic constraints
-                        doty = res.sol.bas.doty;
-                    end
-                case 'MSK_OPTIMIZER_INTPNT'
-                    stat = 1; % optimal solution found
-                    x=res.sol.itr.xx; % primal solution.
-                    y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-                    z=res.sol.itr.slx-res.sol.itr.sux; %dual to bux <= x   <= bux
-                    if isfield(res.sol.itr,'doty')
-                        % Dual variables to affine conic constraints
-                        doty = res.sol.itr.doty;
-                    end
-            end
-        end
-    end
-    
-    if stat ==1 && exist('A','var')
-        %slack for blc <= A*x <= buc
-        s = zeros(size(A,1),1);
-        %slack for blc = A*x = buc
-        s(blc==buc) = abs(A(blc==buc,:)*x - blc(blc==buc));
-        %slack for blc <= A*x
-        s(~isfinite(blc)) = A(~isfinite(blc),:)*x - blc(~isfinite(blc));
-        %slack for A*x <= buc
-        s(~isfinite(buc)) = buc(~isfinite(buc)) - A(~isfinite(buc),:)*x;
-        
-        %debugging
-        % if printLevel>2
-        %     res1=A*x + s -b;
-        %     norm(res1(csense == 'G'),inf)
-        %     norm(s(csense == 'G'),inf)
-        %     norm(res1(csense == 'L'),inf)
-        %     norm(s(csense == 'L'),inf)
-        %     norm(res1(csense == 'E'),inf)
-        %     norm(s(csense == 'E'),inf)
-        %     res1(~isfinite(res1))=0;
-        %     norm(res1,inf)
-        
-        %     norm(osense*c -A'*y -z,inf)
-        %     y2=res.sol.itr.slc-res.sol.itr.suc;
-        %     norm(osense*c -A'*y2 -z,inf)
-        % end
-    end
-
-    
-else
-    if printLevel>0
-        fprintf('%s\n',res.rcode)
-        fprintf('%s\n',res.rmsg)
-        fprintf('%s\n',res.rcodestr)
-    end
-    origStat = [];
-    stat = -1;
 end
 
-% % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
-% if isfield(res, 'sol')
-%     if isfield(res.sol, 'itr')
-%         origStat = res.sol.itr.solsta;
-%         if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%             origStat = 1; % optimal solution found
-%         elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             stat=0; % infeasible
-%         end
-%     end
-%     if isfield(res.sol,'bas')
-%         origStat = res.sol.bas.solsta;
-%         if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%             stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             stat=0; % infeasible
-%         end
-%     end
-%     
-% else
-%     %try to solve with default parameters
-%     [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub);
-%     if isfield(res,'sol')
-%         if isfield(res.sol, 'itr')
-%             solutionLP2.origStat = res.sol.itr.solsta;
-%             if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP2.origStat = 1; % optimal solution found
-%             elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP2.stat=0; % infeasible
-%             end
-%         end
-%         if isfield(res.sol,'bas')
-%             solutionLP2.origStat = res.sol.bas.solsta;
-%             if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP2.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP2.stat=0; % infeasible
-%             end
-%         end
-%         if solutionLP2.stat ==0
-%             if problemTypeParams.printLevel>2
-%                 disp(res);
-%             end
-%         end
-%     else
-%         fprintf('%s\n',res.rcode)
-%         fprintf('%s\n',res.rmsg)
-%         fprintf('%s\n',res.rcodestr)
-%         solutionLP2.stat=-1; %some other problem
-%     end
-% end
-
-% % https://docs.mosek.com/8.1/toolbox/data-types.html?highlight=res%20sol%20itr#data-types-and-structures
-% if isfield(res, 'sol')
-%     if isfield(res.sol, 'itr')
-%         solutionLP.origStat = res.sol.itr.solsta;
-%         if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%             solutionLP.stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.itr.solsta,'PRIMAL_INFEASIBLE_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             solutionLP.stat=0; % infeasible
-%         end
-%     end
-%     if isfield(res.sol,'bas')
-%         solutionLP.origStat = res.sol.bas.solsta;
-%         if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%             solutionLP.stat = 1; % optimal solution found
-%         elseif strcmp(res.sol.bas.solsta,'PRIMAL_INFEASIBLE_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                 strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%             solutionLP.stat=0; % infeasible
-%         end
-%     end
-% else
-%     %try to solve with default parameters
-%     [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub);
-%     if isfield(res,'sol')
-%         if isfield(res.sol, 'itr')
-%             solutionLP.origStat = res.sol.itr.solsta;
-%             if strcmp(res.sol.itr.solsta, 'OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.itr.solsta, 'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.itr.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.itr.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP.stat=0; % infeasible
-%             end
-%         end
-%         if isfield(res.sol,'bas')
-%             solutionLP.origStat = res.sol.bas.solsta;
-%             if strcmp(res.sol.bas.solsta,'OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_OPTIMAL') || ...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_OPTIMAL')
-%                 solutionLP.stat = 1; % optimal solution found
-%             elseif strcmp(res.sol.bas.solsta,'MSK_SOL_STA_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_DUAL_INFEAS_CER') ||...
-%                     strcmp(res.sol.bas.solsta,'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER')
-%                 solutionLP.stat=0; % infeasible
-%             end
-%         end
-%         if solutionLP.stat ==0
-%             if problemTypeParams.printLevel>2
-%                 disp(res);
-%             end
-%         end
-%     else
-%         solution.origStat = res.rcodestr;
-%         fprintf('%s\n',res.rcode)
-%         fprintf('%s\n',res.rmsg)
-%         fprintf('%s\n',res.rcodestr)
-%         solutionLP.stat=-1; %some other problem
-%     end
-% end
+if strcmp(accessSolution,'dontAccess')
+    switch origStat
+        case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
+            stat=0; % infeasible
+            origStat = [origStat ' & ' res.rcodestr];
+        case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
+            stat=2; % Unbounded solution
+            origStat = [origStat ' & ' res.rcodestr];
+        case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS'}
+            stat=-1; %some other problem
+            origStat = [origStat ' & ' res.rcodestr];
+        otherwise
+            warning(['Unrecognised res.sol.bas.solsta: ' origStat])
+            stat=-1; %some other problem
+            fprintf('%s\n',res.rcode)
+            fprintf('%s\n',res.rmsg)
+            fprintf('%s\n',res.rcodestr)
+            if strcmp(origStat,'UNKNOWN')
+                origStat = [origStat ' & ' res.rcodestr];
+            end
+    end
+end

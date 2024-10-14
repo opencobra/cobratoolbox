@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Panel Documentation</title>
+<link rel="stylesheet" type="text/css" href="panel.css" />
+</head>
+
+<body>
+
+
+
+
+<div id="main">
+
+<a href="layout.png"><img src='layout_thumb.png' style='float:right; margin:16px'></a>
+
+
+<div>
+<a href="index.html">Overview</a> | <u><a href="layout.html">Layout</a></u> | <a href="export.html">Export</a> | <a href="faq.html">FAQ</a>
+</div>
+
+
+<h1>Panel 2</h1>
+
+
+
+<h2>Layout</h2>
+
+<p>The panels within a figure are arranged in a hierarchy (or tree). The "root panel" is attached to a Matlab graphics object (usually a figure, though see <tt>demopanelD</tt>). Each panel, including the root panel, may have one or more "child panels". This is recursive, so that the entire layout forms a hierarchical "family" of panels, including the root panel and all its descendants. This is shown in the illustration (click to enlarge).</p>
+
+<p>Newly-created panels are "uncommitted", and do nothing but take up space. If you call <tt>select()</tt> on an uncommitted panel, it is committed as an "object panel" - that is, it now looks after a graphics object (if you don't pass it a graphics object, it will create an axis automatically and look after that). If you call <tt>pack()</tt> on an uncommitted panel, it is committed as a "parent panel" - that is, it now contains child panels and looks after their positioning.</p>
+
+
+
+<h2>Packing</h2>
+
+<p>Layout in Panel is governed primarily by "packing". Most panels will be packed in "relative" mode. This means that the space offered by their parent is distributed amongst them according to their packed sizes (fractions of the parent space, fixed physical sizes in millimeters or inches, or 'stretchable'). "Absolute" packing is also available - see <tt>pack()</tt>. Panels can be packed along either the horizontal or vertical dimension, so that arbitrarily complex layouts can be built.</p>
+
+<p class="note"><b><i>Hint</b></i> You can develop "grid" layouts very succinctly by using the syntax <tt>pack(M, N)</tt>. For an example, see <tt>demopanel2</tt>.</p>
+
+
+
+<h2>Margins</h2>
+
+<p>The other lever you have for controlling layout is "margins". Every panel has a margin on each of its four edges. This margin is respected within the panel's parent. For most panels, the parent is the parent panel; for the root panel, the parent is the figure window (or the image file, if exporting).</p>
+
+<p>Note that margins are respected only within the immediate parent. For example, the margin setting of the root panel affects the layout of the whole figure with respect to the figure edge, whilst the margin settings of any child panels, grandchild panels, etc., have no impact on the relationship with the figure edge.</p>
+
+<p>Most likely, you will set margins using <tt>p(...).margin</tt> to set an individual relationship between an individual panel and a sibling, and <tt>p(...).de.margin</tt> to control the relationships amongst all the descendants of <tt>p</tt>.</p>
+
+<p class="note"><b><i>Hint</b></i> I often find it easiest to start with a small or zero margin everywhere, and then increase margins individually as necessary. For an example, see <tt>demopanel9</tt>.</p>
+
+
+
+<h2>Units</h2>
+
+<p>Note that you can get/set margins in a variety of physical units - see the property <tt>units</tt>.</p>
+
+
+
+
+</div>
+
+
+
+</body>
+</html>

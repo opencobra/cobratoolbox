@@ -20,6 +20,7 @@ function [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demand
 % .. Authors:
 %       - IT Jan 2015
 %       - description added by AH July 2017
+%       - modification  YJ Liu Dec 2023
 %
 if nargin<3
     demandTest = 'true';
@@ -27,14 +28,14 @@ end
 tol = 1e-06;
 modelClosed = model;
 % find all reactions that have only one entry in S
-exp = full((sum(model.S ~= 0) == 1) & (sum(model.S < 0) == 1))';
-upt = full((sum(model.S ~= 0) == 1) & (sum(model.S > 0) == 1))';
-count = exp | upt;
-%Exporters should not be able to have a flux lower than zero
-%Importers should not be able to have a flux larger than zero
-
-modelClosed.lb(exp) = 0;
-modelClosed.ub(upt) = 0;
+exp = full((sum(model.S ~= 0) == 1)' & (model.lb > 0 | model.lb == 0)); % export only
+upt = full((sum(model.S ~= 0) == 1)' & (model.ub < 0 | model.ub == 0)); % uptake only
+reversibleEX = full((sum(model.S ~= 0) == 1)' & (model.lb < 0 & model.ub > 0));%reversible external reactions
+count = exp | upt | reversibleEX;
+% %Exporters should not be able to have a flux lower than zero
+% %Importers should not be able to have a flux larger than zero
+% 
+modelClosed.lb(exp|upt|reversibleEX) = 0; % close uptake flux for all external reactions
 
 ExR = modelClosed.rxns(find(count));
 
@@ -49,7 +50,7 @@ if strcmp(demandTest,'true')
 else
     rxnNames = '';
 end
-modelexchangesAbbr = unique([modelexchangesAbbr;rxnNames']);
+modelexchangesAbbr = unique([modelexchangesAbbr;rxnNames']); 
 TestRxnNum = length(modelexchangesAbbr);
 FluxExV =[];
 while cnt == 1

@@ -26,7 +26,7 @@ function model = estimateDfGt0(model, confidenceLevel)
 %                          * .DfG0 - `m x 1` array of standard Gibbs energies of formation.
 %                          * .pKa - `m x 1` structure array with metabolite pKa values.
 %                          * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
-%                            Gibbs energies of formation. uf will be large for
+%                            Gibbs energies of formation. Will be large for
 %                            metabolites that are not covered by component contributions.
 %
 % OPTIONAL INPUT:
