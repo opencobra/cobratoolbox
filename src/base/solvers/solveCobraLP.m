@@ -61,7 +61,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
 %                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
 %                     * .solver:       Solver used to solve LP problem
-%                     * .method:    Algorithm used by solver to solve LP problem
+%                     * .lpmethod:    Algorithm used by solver to solve LP problem
 %                     * .stat:         Solver status in standardized form
 %
 %                       * 0 - Infeasible problem
@@ -222,7 +222,7 @@ w = [];
 stat = 0;
 origStat = [];
 origStatText = [];
-method = '';
+lpmethod = '';
 
 t_start = clock;
 if isempty(solver)
@@ -545,6 +545,12 @@ switch solver
 
     case 'glpk'
         %% GLPK
+        %           msglev (default: 1)
+        %                  Level of messages output by solver routines:
+        %                   0 - No output.
+        %                   1 - Error messages only.
+        %                   2 - Normal output.
+        %                   3 - Full output (includes informational messages).
         param.msglev = problemTypeParams.printLevel;  % level of verbosity
         param.tolbnd = problemTypeParams.feasTol;  % tolerance
         param.toldj = problemTypeParams.optTol;  % tolerance
@@ -630,55 +636,9 @@ switch solver
         w = [];
     case 'mosek'
         % mosek
-        % use msklpopt with full control over all mosek parameters
-        % http://docs.mosek.com/7.0/toolbox/Parameters.html
-        % see also
-        % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#SEC:VIEWSETPARAM
-        % e.g.
-        % http://docs.mosek.com/7.0/toolbox/MSK_IPAR_OPTIMIZER.html
-
-        %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
-        
-        % Remove outer function specific parameters to avoid crashing solver interfaces
-        solverParams = mosekParamStrip(solverParams);
-
-        param = solverParams;
-        % only set the print level if not already set via solverParams structure
-        if ~isfield(solverParams, 'MSK_IPAR_LOG')
-            switch problemTypeParams.printLevel
-                case 0
-                    echolev = 0;
-                case 1
-                    echolev = 3;
-                case 2
-                    solverParams.MSK_IPAR_LOG_INTPNT = 1;
-                    solverParams.MSK_IPAR_LOG_SIM = 1;
-                    echolev = 3;
-                otherwise
-                    echolev = 0;
-            end
-            if echolev == 0
-                solverParams.MSK_IPAR_LOG = 0;
-                cmd = ['minimize echo(' int2str(echolev) ')'];
-            else
-                cmd = 'minimize';
-            end
-        end
-
-        %https://docs.mosek.com/8.1/toolbox/solving-linear.html
-        if ~isfield(solverParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-            solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
-        end
-        if ~isfield(solverParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-            solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
-        end
-        %If the feasibility tolerance is changed by the solverParams
-        %struct, this needs to be forwarded to the cobra Params for the
-        %final consistency test!
-        if isfield(solverParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-            problemTypeParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
-        end
-
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        [cmd,mosekParam] = setMosekParam(param);
+     
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
 
@@ -708,13 +668,12 @@ switch solver
         %              blx and bux. Note -inf is allowed in blc and blx.
         %              Similarly, inf is allowed in buc and bux.
 
-        
+
         blc = b;
         buc = b;
         buc(csense == 'G') = inf;
         blc(csense == 'L') = -inf;
         
-
         prob.c = osense * c;
         prob.a = A;
         prob.blc     = blc;
@@ -729,8 +688,18 @@ switch solver
             prob.sol.bas.xx   = basis.xx;
         end
 
-        [rcode,res] = mosekopt(cmd,prob,solverParams);
+        if param.debug
+            probBeforeMosekopt = prob;
+            save('probBeforeMosekopt','probBeforeMosekopt');
+        end
 
+     
+        [rcode,res] = mosekopt(cmd,prob,mosekParam);
+        if isfield(param,'lpmethod')
+            lpmethod = param.lpmethod;
+        else
+            lpmethod = 'FREE';
+        end
 
         if rcode~=0
             % MSK_RES_TRM_STALL
@@ -745,7 +714,7 @@ switch solver
         end
             
         %parse mosek result structure
-        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
         
         if stat ==1 || stat ==3
             f = c'*x;
@@ -762,10 +731,7 @@ switch solver
             f = NaN;
             s = NaN*ones(size(A,1),1);
         end
-            
-        if isfield(param,'MSK_IPAR_OPTIMIZER')
-            method=param.MSK_IPAR_OPTIMIZER;
-        end
+        
     case 'mosek_linprog'
         %% mosek
         % if mosek is installed, and the paths are added ahead of matlab's
@@ -822,88 +788,8 @@ switch solver
     case 'gurobi'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
-        % resultgurobi = struct('x',[],'objval',[],'pi',[]);
-
-        %  The params struct contains Gurobi parameters. A full list may be
-        %  found on the Parameter page of the reference manual:
-        %  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
-        % MATLAB Parameter Examples
-        % In the MATLAB interface, parameters are passed to Gurobi through a struct. 
-        % To modify a parameter, you create a field in the struct with the appropriate name, 
-        % and set it to the desired value. For example, to set the TimeLimit parameter to 100 you'd do:
-        % 
-        % params.timelimit = 100;
-        % The case of the parameter name is ignored, as are underscores. Thus, you could also do:
-        % params.timeLimit = 100;
-        % ...or...
-        % params.TIME_LIMIT = 100;
-        % All desired parameter changes should be stored in a single struct, which is passed as the second parameter to the gurobi function.
-        param=solverParams;
-
-        % https://www.gurobi.com/documentation/current/refman/method.html
-        % params.method gives the method used to solve continuous models
-        % -1=automatic,
-        %  0=primal simplex,
-        %  1=dual simplex,
-        %  2=barrier,
-        %  3=concurrent,
-        %  4=deterministic concurrent
-        % i.e. params.method     = 1;          % use dual simplex method
-        if isfield(param,'lpmethod')
-            %gurobiAlgorithms = {'AUTOMATIC','PRIMAL','DUAL','BARRIER','CONCURRENT','CONCURRENT_DETERMINISTIC'};
-            % -1=automatic,
-            % 0=primal simplex,
-            % 1=dual simplex,
-            % 2=barrier,
-            % 3=concurrent,
-            % 4=deterministic concurrent
-            switch param.lpmethod
-                case 'AUTOMATIC' 
-                    param.method = -1;
-                case 'PRIMAL'
-                    param.method = 0;
-                case 'DUAL'
-                    param.method = 2;
-                case 'BARRIER'
-                    param.method = 2;
-                case 'CONCURRENT'
-                    param.method = 3;
-                case 'DETERMINISTIC_CONCURRENT'
-                    param.method = 4;
-                otherwise
-                    error('Unrecognised param.lpmethod for gurobi')
-            end
-            param = rmfield(param,'lpmethod');
-        end
-
-        if ~isfield(param,'OutputFlag')
-            switch problemTypeParams.printLevel
-                case 0
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-                case 1
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-                otherwise
-                    % silent
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-            end
-        end
-
-        if isfield(param,'FeasibilityTol')
-            % update tolerance according to actual setting
-            problemTypeParams.feasTol = param.FeasibilityTol;
-        else
-            param.FeasibilityTol = problemTypeParams.feasTol;
-        end
-            
-        if isfield(param,'OptimalityTol')
-            % update tolerance according to actual setting
-            problemTypeParams.optTol = param.OptimalityTol;
-        else      
-            param.OptimalityTol = problemTypeParams.optTol;
-        end
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        gurobiParam = setGurobiParam(param);
 
         gurobiLP.sense(1:length(b),1) = '=';
         gurobiLP.sense(csense == 'L') = '<';
@@ -930,24 +816,14 @@ switch solver
         %gurobi wants a dense double vector as an objective
         gurobiLP.obj = double(c)+0;%full
 
-
         % basis reuse - Ronan
         if ~isempty(basis)
             gurobiLP.cbasis = full(basis.cbasis);
             gurobiLP.vbasis = full(basis.vbasis);
         end
-        % set the solver specific parameters
-        param = updateStructData(param,solverParams);
 
-%         LPproblem = rmfield(LPproblem,'c');
-%         LPproblem = rmfield(LPproblem,'b');
-%         LPproblem = rmfield(LPproblem,'lb');
-%         LPproblem = rmfield(LPproblem,'ub');
-%         LPproblem = rmfield(LPproblem,'osense');
-%         LPproblem = rmfield(LPproblem,'csense');
-        
         % call the solver
-        resultgurobi = gurobi(gurobiLP,param);
+        resultgurobi = gurobi(gurobiLP,gurobiParam);
 
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
@@ -1204,7 +1080,7 @@ switch solver
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,problemTypeParams.printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
-        solution.method = method; % dummy
+        solution.lpmethod = lpmethod; % dummy
      %   solution.slack = [];
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
@@ -1317,7 +1193,7 @@ switch solver
             %this is the dual to the simple ineequality constraints : reduced costs
             w =  lambda.lower - lambda.upper;
             
-            method = output.method;
+            lpmethod = output.method;
             if 0 %debug
                 disp(method)
                 norm(osense * c  - A' * y - w,inf)
@@ -1364,11 +1240,14 @@ switch solver
             x = CplexLPproblem.Solution.x;
             if 1
                 f = c'*x;
+                w = CplexLPproblem.Solution.reducedcost;
+                y = CplexLPproblem.Solution.dual;
             else
                 f = CplexLPproblem.Solution.objval; %do not use as it gives the opposite sign for maximise
+                w = osense*CplexLPproblem.Solution.reducedcost;
+                y = osense*CplexLPproblem.Solution.dual;
             end
-            w = osense*CplexLPproblem.Solution.reducedcost;
-            y = osense*CplexLPproblem.Solution.dual;
+
             %res1 = A*solution.full + solution.slack - b;
             s = b - A * x; % output the slack variables
             
@@ -1417,6 +1296,8 @@ switch solver
             if isfield(CplexLPproblem.Solution ,'dual')
                 y = osense*CplexLPproblem.Solution.dual;
             end
+        elseif origStat==101
+            warning('101')
         else
             stat = -1;
         end
@@ -1645,11 +1526,11 @@ end
 
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     % assign solution
-    t = etime(clock, t_start);
+    time = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
     [solution.full, solution.obj, solution.rcost, solution.dual, solution.slack, ...
-     solution.solver, solution.method, solution.stat, solution.origStat, ...
-     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,method,stat,origStat,origStatText,t,basis);
+     solution.solver, solution.lpmethod, solution.stat, solution.origStat, ...
+     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,lpmethod,stat,origStat,origStatText,time,basis);
 elseif strcmp(solver,'mps')
     solution = [];
 end

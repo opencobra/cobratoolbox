@@ -75,7 +75,7 @@ end
 %always set the problem to minimise, but change the linear objective sign   
 cplexProblem.Model.sense = 'minimize';
 if isfield(Problem,'c')
-    if isfield(Problem,'osense') && isfield(Problem,'c')
+    if isfield(Problem,'osense')
         cplexProblem.Model.obj = Problem.osense*Problem.c;
     else
         cplexProblem.Model.obj = Problem.c;

@@ -62,6 +62,7 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                       * .slack:       slack variable such that :math:`A*x + s = b`
 %                       * .obj:         Objective value
 %                       * .solver:      Solver used to solve QP problem
+%                       * .qpmethod:    Solver qpmethod used to solve QP problem
 %                       * .origStat:    Original status returned by the specific solver
 %                       * .time:        Solve time in seconds
 %                       * .stat:        Solver status in standardized form (see below)
@@ -323,8 +324,9 @@ switch solver
             stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
         else %(origStat >= 10)
             stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end
-        
+        end  
+        origStat = cplexProblem.Solution.statusstring;
+
         %Update Tolerance According to actual setting
         problemTypeParams.feasTol = cplexProblem.Param.simplex.tolerances.feasibility.Cur;
         problemTypeParams.optTol = cplexProblem.Param.simplex.tolerances.optimality.Cur;
@@ -372,12 +374,10 @@ switch solver
         %%
     case 'mosek'
         
-        if problemTypeParams.printLevel>0
-            cmd='minimize';
-        else
-            cmd='minimize echo(0)';
-        end
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        [cmd,mosekParam] = setMosekParam(param);
         
+
         %matching bounds and zero diagonal of F at the same time
         bool = lb == ub & diag(F)==0;
         if any(bool)
@@ -389,38 +389,6 @@ switch solver
             %}
             warning(['There are ' num2str(nnz(bool)) ' variables that have equal lower and upper bounds, and zero on the diagonal of F.'])
         end
-        
-        param = struct();
-        % Set the printLevel, can be overwritten.
-        if ~isfield(param, 'MSK_IPAR_LOG')
-            switch problemTypeParams.printLevel
-                case 0
-                    echolev = 0;
-                case 1
-                    echolev = 3;
-                case 2
-                    param.MSK_IPAR_LOG_INTPNT = 1;
-                    param.MSK_IPAR_LOG_SIM = 1;
-                    echolev = 3;
-                otherwise
-                    echolev = 0;
-            end
-            if echolev == 0
-                param.MSK_IPAR_LOG = 0;
-                cmd = ['minimize echo(' int2str(echolev) ')'];
-            else
-                cmd = 'minimize';
-            end
-        end
-        %remove parameter fields that mosek does not recognise
-        param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = problemTypeParams.optTol;
-        param.MSK_DPAR_INTPNT_QO_TOL_PFEAS = problemTypeParams.feasTol;
-        
-        %Update with solver Specific Parameter struct
-        param = updateStructData(param,solverParams);
-        %problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_NL_TOL_PFEAS;
-        
-        param = mosekParamStrip(param);
 
         blc = b;
         buc = b;
@@ -438,8 +406,15 @@ switch solver
         %https://docs.mosek.com/latest/toolbox/data-types.html#prob
         [prob.qosubi,prob.qosubj,prob.qoval]=find(F);
 
-        [rcode,res] = mosekopt(cmd,prob,param);
-      
+
+        [rcode,res] = mosekopt(cmd,prob,mosekParam);
+
+        if isfield(param,'qpmethod')
+            qpmethod = param.qpmethod;
+        else
+            qpmethod = 'FREE';
+        end
+
         % stat   Solver status
         %           1   Optimal solution found
         %           2   Unbounded solution
@@ -460,7 +435,7 @@ switch solver
         end
 
         %parse mosek result structure
-        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,problemTypeParams.printLevel);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -493,8 +468,7 @@ switch solver
             f = NaN;
             s = NaN*ones(size(A,1),1);
         end
-        
-        
+
     case 'pdco'
         %-----------------------------------------------------------------------
         % pdco.m: Primal-Dual Barrier Method for Convex Objectives (16 Dec 2008)
@@ -633,74 +607,8 @@ switch solver
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
 
-        %  The param struct contains Gurobi parameters. A full list may be
-        %  found on the Parameter page of the reference manual:
-        %  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
-        % MATLAB Parameter Examples
-        % In the MATLAB interface, parameters are passed to Gurobi through a struct. 
-        % To modify a parameter, you create a field in the struct with the appropriate name, 
-        % and set it to the desired value. For example, to set the TimeLimit parameter to 100 you'd do:
-        % 
-        % param.timelimit = 100;
-        % The case of the parameter name is ignored, as are underscores. Thus, you could also do:
-        % param.timeLimit = 100;
-        % ...or...
-        % param.TIME_LIMIT = 100;
-        % All desired parameter changes should be stored in a single struct, which is passed as the second parameter to the gurobi function.
-        param=solverParams;
-
-        % param.method gives the method used to solve continuous models
-        % -1=automatic,
-        %  0=primal simplex,
-        %  1=dual simplex,
-        %  2=barrier,
-        %  3=concurrent,
-        %  4=deterministic concurrent
-        % i.e. param.method     = 1;          % use dual simplex method
-        if isfield(param,'lpmethod')
-            %gurobiAlgorithms = {'AUTOMATIC','PRIMAL','DUAL','BARRIER','CONCURRENT','CONCURRENT_DETERMINISTIC'};
-            % -1=automatic,
-            % 0=primal simplex,
-            % 1=dual simplex,
-            % 2=barrier,
-            % 3=concurrent,
-            % 4=deterministic concurrent
-            switch param.lpmethod
-                case 'AUTOMATIC' 
-                    param.method = -1;
-                case 'PRIMAL'
-                    param.method = 0;
-                case 'DUAL'
-                    param.method = 2;
-                case 'BARRIER'
-                    param.method = 2;
-                otherwise
-                    %https://www.gurobi.com/documentation/current/refman/method.html
-                    %Concurrent methods aren't available for QP and QCP. 
-                    error('Unrecognised param.lpmethod for gurobi')
-            end
-            param = rmfield(param,'lpmethod');
-        end
-
-        switch problemTypeParams.printLevel
-            case 0
-                param.OutputFlag = 0;
-                param.DisplayInterval = 1;
-            case problemTypeParams.printLevel>1
-                param.OutputFlag = 1;
-                param.DisplayInterval = 5;
-            otherwise
-                param.OutputFlag = 0;
-                param.DisplayInterval = 1;
-        end
-
-        param.FeasibilityTol = problemTypeParams.feasTol;
-        param.OptimalityTol = problemTypeParams.optTol;
-        %Update param struct with Solver Specific parameters
-        param = updateStructData(param,solverParams);
-        
-        %Update feasTol in case it is changed by the solver Parameters
-        problemTypeParams.feasTol = param.FeasibilityTol;
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        gurobiParam = setGurobiParam(param);
         
         gurobiQP.sense(1:length(b),1) = '=';
         gurobiQP.sense(csense == 'L') = '<';
@@ -730,7 +638,7 @@ switch solver
         end
         
         try
-            resultgurobi = gurobi(gurobiQP,param);
+            resultgurobi = gurobi(gurobiQP,gurobiParam);
         catch ME
             if contains(ME.message,'Gurobi error 10020: Objective Q not PSD (negative diagonal entry)')
                 warning('%s\n','Gurobi cannot solve a QP problem if it is given a diagonal Q with some of those diagonals equal to zero')
@@ -748,7 +656,7 @@ switch solver
             
             [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
             
-            if problemTypeParams.printLevel>2 %|| 1
+            if param.printLevel>2 %|| 1
                 res1 = A*x + s - b;
                 disp('Check A*x + s - b = 0 (feasiblity):');
                 disp(norm(res1,inf))
@@ -784,7 +692,7 @@ switch solver
             % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
             gurobiQP.obj(:) = 0;
             gurobiQP.F(:,:) = 0;
-            resultgurobi = gurobi(gurobiQP,param);
+            resultgurobi = gurobi(gurobiQP,gurobiParam);
             if strcmp(resultgurobi.status,'OPTIMAL')
                 stat = 2;
             else
@@ -1047,6 +955,11 @@ solution.full = x;
 solution.slack = s;
 solution.dual = y;
 solution.rcost = w;
+if exist('qpmethod','var')
+    solution.qpmethod = qpmethod;
+else
+    solution.qpmethod = '';
+end
 if any(contains(solver,'cplex'))
     [ExitText,~] = cplexStatus(solution.origStat);
     solution.origStatText = ExitText;

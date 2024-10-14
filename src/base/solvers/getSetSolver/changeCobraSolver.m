@@ -1,4 +1,4 @@
-function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
+function [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel)
 % Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
@@ -7,10 +7,10 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 % INPUTS:
 %    solverName:           Solver name
-%    solverType:           Solver type ('LP' by default)
+%    problemType:          Problem type ('LP' by default)
 %                          (a) One of the following: `LP` `MILP`, `QP`, `MIQP` 'EP', 'CLP'
 %                          (b) 'all' attempts to change all applicable solvers to solverName.  This is purely a shorthand convenience.
-%                          (c) Cell array of solverTypes, e.g. {'LP','QP'}   
+%                          (c) Cell array of problemTypes, e.g. {'LP','QP'}   
 %    printLevel:           verbose level
 %
 %                           *   if `0`, warnings and errors are silenced
@@ -21,7 +21,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType,
 %
 %                           *   `-1`: assign only the global variable. Do not assign any path.
 %                           *   `0`: adjust solver paths but don't validate the solver
-%                           *   `1`: validate but remove outputs  (default)
+%                           *   `1`: validate but remove outputs, silent  (default)
 %                           *   `2`: validate and keep any outputs
 %
 % OUTPUT:
@@ -207,7 +207,7 @@ end
 solverInstalled = true;
 
 if validationLevel == -1
-    switch solverType
+    switch problemType
         case 'LP'
             CBT_LP_SOLVER = solverName;
         case 'QP'
@@ -299,9 +299,9 @@ if nargin > 0 && strcmpi(solverName, 'mps')
 end
 
 if nargin < 2
-    solverType = 'LP';
+    problemType = 'LP';
 else
-    solverType = upper(solverType);
+    problemType = upper(problemType);
 end
 
 % print an error message if the solver is not supported
@@ -333,12 +333,12 @@ else
 end
 
 % Attempt to set the user provided solver for all optimization problem types
-if strcmpi(solverType, 'all')
+if strcmpi(problemType, 'all')
     solvedProblems = SOLVERS.(solverName).type;
     for i = 1:length(solvedProblems)
         %this looks to be self referential (calling changeCobraSolver in
         %changeCobraSolver)
-        [solverOK,solverInstalled] = changeCobraSolver(solverName, solvedProblems{i}, printLevel);
+        [solverOK,solverInstalled] = changeCobraSolver(solverName, solvedProblems{i}, printLevel,validationLevel);
         if printLevel > 0
             fprintf([' > changeCobraSolver: Solver for ', solvedProblems{i}, ' problems has been set to ', solverName, '.\n']);
         end
@@ -360,24 +360,24 @@ end
 
 % check if the given solver is able to solve the given problem type.
 solverOK = false;
-if ~contains(solverType, OPT_PROB_TYPES)
+if ~contains(problemType, OPT_PROB_TYPES)
     %This is not done during init, so at this point, the solver is already
     %checked for installation
     solverInstalled = SOLVERS.(solverName).installed;
     if printLevel > 0
-        error('changeCobraSolver: %s  problems cannot be solved in The COBRA Toolbox', solverType);
+        error('changeCobraSolver: %s  problems cannot be solved in The COBRA Toolbox', problemType);
     else
         return
     end
 end
 
 % check if the given solver is able to solve the given problem type.
-if ~contains(solverType, SOLVERS.(solverName).type)
+if ~contains(problemType, SOLVERS.(solverName).type)
     %This is not done during init, so at this point, the solver is already
     %checked for installation
     solverInstalled = SOLVERS.(solverName).installed;
     if printLevel > 0
-        error('Solver %s cannot solve %s problems', solverName, solverType);
+        error('Solver %s cannot solve %s problems', solverName, problemType);
     else
         return
     end
@@ -528,10 +528,10 @@ if solverOK
     if validationLevel > 0
         cwarn = warning;
         warning('off');
-        eval(['oldval = CBT_', solverType, '_SOLVER;']);
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
+        eval(['oldval = CBT_', problemType, '_SOLVER;']);
+        eval(['CBT_', problemType, '_SOLVER = solverName;']);
         % validate with a simple problem.
-        if strcmp(solverName,'mosek') && strcmp(solverType,'CLP') || strcmp(solverType,'all')
+        if strcmp(solverName,'mosek') && strcmp(problemType,'CLP') || strcmp(problemType,'all')
             problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);  
         else
             problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
@@ -540,9 +540,9 @@ if solverOK
             %This is the code that actually tests if a solver is working
             if validationLevel>1
                 %display progress
-                eval(['solveCobra' solverType '(problem,''printLevel'',3);']);
+                eval(['solveCobra' problemType '(problem,''printLevel'',3);']);
             else
-                eval(['solveCobra' solverType '(problem,''printLevel'',0);']);
+                eval(['solveCobra' problemType '(problem,''printLevel'',0);']);
             end
         catch ME
             %This is the code that describes what went wrong if a call to a solver does not work           
@@ -553,12 +553,12 @@ if solverOK
                 rethrow(ME)
             end
             solverOK = false;
-            eval(['CBT_', solverType, '_SOLVER = oldval;']);
+            eval(['CBT_', problemType, '_SOLVER = oldval;']);
         end
         warning(cwarn)
     else
         % if unvalidated, simply set the solver without testing.
-        eval(['CBT_', solverType, '_SOLVER = solverName;']);
+        eval(['CBT_', problemType, '_SOLVER = solverName;']);
     end
 else
     switch solverName

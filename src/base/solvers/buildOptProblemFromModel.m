@@ -155,13 +155,6 @@ if ~isfield(model,'c')
     model.c = zeros(nRxn,1);
 end
 
-if ~isfield(param, 'method')
-    if isfield(model,'F')
-        param.method = 'QP';
-    else
-        param.method = 'LP';
-    end
-end
 
 % case 'LP'
 if ~modelC && ~modelE
@@ -195,86 +188,122 @@ else
     end
 end
 
-switch param.method
-    case 'LP'
-        %nothing to do - done above already
-    case 'QP'
-        if modelE
-            optProblem.F = spdiags(zeros(size(optProblem.A,2),1),0,size(optProblem.A,2),size(optProblem.A,2));
-            %assume that the remainder of the variables are not being quadratically
-            %minimised
-            optProblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
-        else
-            optProblem.F = model.F;
-        end
-    case 'QRLP'
-        [m,n]=size(optProblem.A);
-        optProblem.A = [...
-            %          v           r             p            z
-            optProblem.A,  speye(m,m),  sparse(m,n), sparse(m,n);
-              speye(n,n), sparse(n,m),  -speye(n,n), -speye(n,n)]; % x - p = z;
-
-        optProblem.b  = [optProblem.b;sparse(n,1)];
-        optProblem.lb = [-inf(2*n+m,1); model.lb];
-        optProblem.ub = [ inf(2*n+m,1); model.ub];
-        optProblem.csense = [optProblem.csense;repmat('E',n,1)];
-        optProblem.c = [model.c; sparse(m+2*n,1)];
-        optProblem.F = speye(size(optProblem.A,2),size(optProblem.A,2))*1e-16;%small amound of regularistion makes matrix positive definite numerically
-        optProblem.F(n+1:2*n+m,n+1:2*n+m) = speye(n+m,n+m)*max(abs(model.c))*100; %regularisation must dominate linear objective
-        %dimensions needed to extract non-regularised part of solution
-        optProblem.m = m;
-        optProblem.n = n;
-
-        if 0 %use to test if regularisation enough
-            F2 = optProblem.F;
-            %This line modifies the diagonal elements of F2 by setting them to zero.
-            F2(1:size(optProblem.F,1):end)=0;
-            if all(all(F2)) == 0
-                %only nonzeros in QPproblem.F are on the diagonal
-                try
-                    %try cholesky decomposition
-                    B = chol(optProblem.F);
-                catch
-                    optProblem.F = optProblem.F + diag((diag(optProblem.F)==0)*1e-16);
-                end
-                try
-                    B = chol(optProblem.F);
-                catch
-                    error('QPproblem.F only has non-zeros along the main diagnoal and is still not positive semidefinite after adding 1e-16')
-                end
-            end
-        end
-
-    case 'QRQP'
-        if modelE
-            optProblem.F = spdiags(zeros(size(optProblem.A,2),1),0,size(optProblem.A,2),size(optProblem.A,2));
-            %assume that the remainder of the variables are not being quadratically
-            %minimised
-            optProblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
-        else
-            optProblem.F = model.F;
-        end
-
-        [m,n]=size(optProblem.A);
-        optProblem.A = [...
-            optProblem.A,  speye(m,m),  sparse(m,n), sparse(m,n); % A*x + r <=> b
-              speye(n,n), sparse(n,m),  -speye(n,n), -speye(n,n)]; % x - p = z;
-
-        optProblem.b  = [optProblem.b;sparse(n,1)];
-        optProblem.lb = [-inf(2*n+m,1); model.lb]; % lb <= x - p       ----> lb <= z
-        optProblem.ub = [ inf(2*n+m,1); model.ub]; %       x - p <= ub ---->       z <= ub
-        optProblem.csense = model.csense;
-        optProblem.c = [model.c; sparse(m+2*n,1)];
-        optProblem.F = sparse(size(optProblem.A,2),size(optProblem.A,2));
-        optProblem.F(1:n,1:n) = model.F;
-        optProblem.F(n+1:2*n+m,n+1:2*n+m) = speye(n+m,n+m)*max(abs(model.c))*100;  %regularisation must dominate linear and quadratic objective
-        %dimensions needed to extract non-regularised part of solution
-        optProblem.m = m;
-        optProblem.n = n;
-
-    otherwise
-        error('param.method unrecognised')
+if isfield(model,'F')
+    if modelE
+        optProblem.F = spdiags(zeros(size(optProblem.A,2),1),0,size(optProblem.A,2),size(optProblem.A,2));
+        %assume that the remainder of the variables are not being quadratically
+        %minimised
+        optProblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
+    else
+        optProblem.F = model.F;
+    end
 end
 
+if isfield(param,'solveWBMmethod') && ~isempty(param.solveWBMmethod)
+    switch param.solveWBMmethod
+        case 'LP'
+            %nothing to do - done above already
+        case 'QP'
+            %nothing to do - done above already
+        case 'QRLP'
+            [m,n]=size(optProblem.A);
+            optProblem.A = [...
+                %          v           r             p            z
+                optProblem.A,  speye(m,m),  sparse(m,n), sparse(m,n);
+                speye(n,n), sparse(n,m),  -speye(n,n), -speye(n,n)]; % x - p = z;
+
+            optProblem.b  = [optProblem.b;sparse(n,1)];
+            optProblem.lb = [-inf(2*n+m,1); model.lb];
+            optProblem.ub = [ inf(2*n+m,1); model.ub];
+            optProblem.csense = [optProblem.csense;repmat('E',n,1)];
+            optProblem.c = [model.c; sparse(m+2*n,1)];
+            optProblem.F = speye(size(optProblem.A,2),size(optProblem.A,2))*1e-16;%small amound of regularistion makes matrix positive definite numerically
+            optProblem.F(n+1:2*n+m,n+1:2*n+m) = speye(n+m,n+m)*max(abs(model.c))*100; %regularisation must dominate linear objective
+            %dimensions needed to extract non-regularised part of solution
+            optProblem.m = m;
+            optProblem.n = n;
+
+            if 0 %use to test if regularisation enough
+                F2 = optProblem.F;
+                %This line modifies the diagonal elements of F2 by setting them to zero.
+                F2(1:size(optProblem.F,1):end)=0;
+                if all(all(F2)) == 0
+                    %only nonzeros in QPproblem.F are on the diagonal
+                    try
+                        %try cholesky decomposition
+                        B = chol(optProblem.F);
+                    catch
+                        optProblem.F = optProblem.F + diag((diag(optProblem.F)==0)*1e-16);
+                    end
+                    try
+                        B = chol(optProblem.F);
+                    catch
+                        error('QPproblem.F only has non-zeros along the main diagnoal and is still not positive semidefinite after adding 1e-16')
+                    end
+                end
+            end
+
+        case 'QRQP'
+            if modelE
+                optProblem.F = spdiags(zeros(size(optProblem.A,2),1),0,size(optProblem.A,2),size(optProblem.A,2));
+                %assume that the remainder of the variables are not being quadratically
+                %minimised
+                optProblem.F(1:size(model.F,1),1:size(model.F,1)) = model.F;
+            else
+                optProblem.F = model.F;
+            end
+
+            [m,n]=size(optProblem.A);
+            optProblem.A = [...
+                optProblem.A,  speye(m,m),  sparse(m,n), sparse(m,n); % A*x + r <=> b
+                speye(n,n), sparse(n,m),  -speye(n,n), -speye(n,n)]; % x - p = z;
+
+            optProblem.b  = [optProblem.b;sparse(n,1)];
+            optProblem.lb = [-inf(2*n+m,1); model.lb]; % lb <= x - p       ----> lb <= z
+            optProblem.ub = [ inf(2*n+m,1); model.ub]; %       x - p <= ub ---->       z <= ub
+            optProblem.csense = model.csense;
+            optProblem.c = [model.c; sparse(m+2*n,1)];
+            optProblem.F = sparse(size(optProblem.A,2),size(optProblem.A,2));
+            optProblem.F(1:n,1:n) = model.F;
+            optProblem.F(n+1:2*n+m,n+1:2*n+m) = speye(n+m,n+m)*max(abs(model.c))*100;  %regularisation must dominate linear and quadratic objective
+            %dimensions needed to extract non-regularised part of solution
+            optProblem.m = m;
+            optProblem.n = n;
+
+        otherwise
+            error('param.method unrecognised')
+    end
+end
 
 [~,optProblem.osense] = getObjectiveSense(model);
+
+if isfield(param,'debug') && param.debug
+    switch param.solver
+        case 'mosek'
+            % names
+            % This structure is used to store all the names of individual items in the optimization problem such as the constraints and the variables.
+            %
+            % Fields
+            % name (string) – contains the problem name.
+            %
+            % obj (string) – contains the name of the objective.
+            %
+            % con (cell) – a cell array where names.con{i} contains the name of the
+            % -th constraint.
+            %
+            % var (cell) – a cell array where names.var{j} contains the name of the
+            % -th variable.
+            optProblem.names.name='optimizeCbModel';
+            optProblem.names.obj=model.rxns{model.c~=0};
+            if isfield(model,'ctrs')
+                optProblem.names.con=[model.mets;model.ctrs];
+            else
+                optProblem.names.con=model.mets;
+            end
+            if isfield(model,'evars')
+                optProblem.names.con=[model.mets;model.ctrs];
+            else
+                optProblem.names.con=model.mets;
+            end
+    end
+end

@@ -61,6 +61,13 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
 %
+%                         * `.evars` : evars x 1  Column Cell Array of Strings	IDs of the additional variables
+%                         * `.E`     : n x evars  The additional Variable Matrix
+%                         * `.evarub`: evars x 1  The upper bounds of the variables from E;
+%                         * `.evarlb`: evars x 1  The lower bounds of the variables from E;
+%                         * `.evarc` : evars x 1  The objective coefficients of the variables from E;
+%                         * `.D`     : k x evars  The matrix coupling additional Constraints (form C), with additional Variables (from E);
+%
 %                         * g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
 %                         * g2 - `n x 1` weights on two norm
@@ -152,11 +159,11 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %
 % OUTPUT:
 %    solution:       solution object:
-%
+%                          * obj - Primal objective value (sum of f0,f1,f2 terms, ignoring NaN)
 %                          * f - Linear objective value (from LP problem)
 %                          * f0 - Zero-norm objective value
-%                          * f1 - One-norm objective value 
-%                          * f2 - Two-norm objective value
+%                          * f1 - Linear part of objective value (c'*v or ||v||_1)
+%                          * f2 - Quadratic part of objective value
 %                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
 %                          * y - Dual to the matrix inequality constraints (Shadow prices)
 %                          * w - Dual to the box constraints (Reduced costs)
@@ -222,18 +229,41 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 
 
 % Figure out linear objective sense
-if exist('osenseStr', 'var') 
+if exist('osenseStr', 'var')
     if isempty(osenseStr)
         model.osenseStr = 'max';
     else
-        model.osenseStr = osenseStr;
+        %second argument may be the parameter structure
+        if isstruct(osenseStr)
+            if exist('param','var')
+                error('osenseStr is a structure and param structure is also present')
+            else
+                %second argument is be the parameter structure
+                param = osenseStr;
+                if isfield(param,'osenseStr') && ~isfield(model, 'osenseStr')
+                    model.osenseStr = param.osenseStr;
+                else
+                    model.osenseStr = 'max';
+                end
+                if isfield(param,'minNorm')
+                    minNorm=param.minNorm;
+                else
+                    minNorm=[];
+                end
+                if isfield(param,'allowLoops')
+                    allowLoops=param.allowLoops;
+                else
+                    allowLoops=1;
+                end
+            end
+        end
     end
-else
-    if isfield(model, 'osenseStr')
-        model.osenseStr = model.osenseStr;
-    else
-        model.osenseStr = 'max';
-    end
+    % % override if osenseStr already in the model
+    % if isfield(model, 'osenseStr')
+    %     model.osenseStr = model.osenseStr;
+    % else
+    %     model.osenseStr = 'max';
+    % end
 end
 
 if ~exist('param','var')
@@ -246,7 +276,7 @@ if exist('minNorm', 'var')
         if minNorm == true
             minNorm = 1e-6;
         else
-            minNorm = 0;
+            minNorm = [];
         end
     end
     
@@ -367,31 +397,31 @@ else
 end
 
 %by default, do linear optimisation unless not required
-doLinearOptimisation = 1;
+doLinearOptimisationFirst = 1;
 %if there is no linear objective, do a QP
 if all(model.c==0)
-    doLinearOptimisation = 0;
+    doLinearOptimisationFirst = 0;
 end
 
 % if there is no linear objective and no quadratic objective, do an LP
 if isempty(minNorm)
-    doLinearOptimisation = 1;
+    doLinearOptimisationFirst = 1;
 end
 
 % If there is are linear and quadrative objectives but the bounds on the
 % corresponding reaction are fixed, then there is no need to solve an LP
 % first, so do a QP
 if all( (model.lb == model.ub & model.c~=0) == (model.c~=0)) && ~isempty(minNorm)
-    doLinearOptimisation = 0;
+    doLinearOptimisationFirst = 0;
 end
 
 % If this is a quadratically regularised LP, go straight to QP
 % TODO This is a hack of the param.minNorm to direct solution to QRLP or QRQP
 if isfield(param,'solveWBMmethod')
     if any(strcmp(param.solveWBMmethod,{'QRLP','QRQP'}))
-        doLinearOptimisation = 0;
-        param.minNormWBM = minNorm;
-        minNorm = param.solveWBMmethod;
+        doLinearOptimisationFirst = 0;
+        param.minNormWBM = param.minNorm;
+        param.minNorm = param.solveWBMmethod;
     else
         param.solveWBMmethod = [];
     end
@@ -401,13 +431,15 @@ end
 
 
 % build the optimization problem
-optProblem = buildOptProblemFromModel(model,verify);
+optProblem = buildOptProblemFromModel(model,verify,param);
 % save the original size of the problem
 [~,nTotalVars] = size(optProblem.A); % nTotalVars needed even if optProblem not used for an LP
 
+
+
 %%
 t1 = clock;
-if doLinearOptimisation
+if doLinearOptimisationFirst
     if allowLoops && ~strcmp(minNorm,'optimizeCardinality')
         clear model
     end
@@ -444,7 +476,7 @@ end
 
 %only run if minNorm is not empty, and either there is no linear objective
 %or there is a linear objective and the LP problem solved to optimality
-if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 && solution.stat==1 && ~isempty(minNorm))
+if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationFirst==1 && solution.stat==1 && ~isempty(minNorm))
 
     if strcmp(minNorm, 'optimizeCardinality')
         % DC programming for solving the cardinality optimization problem
@@ -519,7 +551,7 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
         %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
         %                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
         
-        if doLinearOptimisation
+        if doLinearOptimisationFirst
             optProblem2 = optProblem;
             optProblem2.A = [optProblem.A ; optProblem.c'];
             optProblem2.b = [optProblem.b ; objectiveLP];
@@ -555,7 +587,7 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
         %                   lb <= v <= ub
         
         % Define the constraints structure
-        if doLinearOptimisation
+        if doLinearOptimisationFirst
             optProblem2.A = [optProblem.A ; optProblem.c'];
             optProblem2.b = [optProblem.b ; objectiveLP];
             optProblem2.csense = [optProblem.csense;'E'];
@@ -676,8 +708,8 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
         solution = solveCobraLP(optProblem2, param);
 
     elseif strcmp(minNorm, 'QRLP')
-
-        buildOptProblemFromModel_param.method='QRLP';
+        buildOptProblemFromModel_param = param;
+        buildOptProblemFromModel_param.minNorm = param.minNormWBM;
         optProblem = buildOptProblemFromModel(model, 0, buildOptProblemFromModel_param);
         solutionQRLP = solveCobraQP(optProblem,param);
 
@@ -698,8 +730,8 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
         solution.q = -solution.q; % lb + p <= x <= ub + q
 
     elseif strcmp(minNorm, 'QRQP')
-
-        buildOptProblemFromModel_param.method='QRQP';
+        buildOptProblemFromModel_param = param;
+        buildOptProblemFromModel_param.minNorm = param.minNormWBM;
         optProblem = buildOptProblemFromModel(model, 0, buildOptProblemFromModel_param);
         solution = solveCobraQP(optProblem);
 
@@ -737,7 +769,7 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
         end
 
         % quadratic minimization of the norm.
-        if doLinearOptimisation
+        if doLinearOptimisationFirst
             % set previous linear optimum as constraint.
             optProblem2 = optProblem;
             optProblem2.A = [optProblem.A;optProblem.c'];
@@ -757,14 +789,13 @@ if (doLinearOptimisation==0 && ~isempty(minNorm)) || (doLinearOptimisation==1 &&
                 solution = solveCobraMIQP(MIQPproblem);
             end
         else
-
             optProblem.F = spdiags(minNorm,0,nTotalVars,nTotalVars);
             if allowLoops
                 %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
                 %part of a loop. By definition, exchange reactions are not part of these loops, more
                 %properly called stoichiometrically balanced cycles.
 
-                solution = solveCobraQP(optProblem);
+                solution = solveCobraQP(optProblem,param);
             else
                 %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
                 %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
@@ -835,23 +866,35 @@ if solution.stat == 1 || solution.stat == 3
     %the value of the second part of the objective depends on the norm
     switch minNorm
         case 'empty'
+            solution.f0 = NaN;
             solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
+            solution.f2 = NaN;
         case 'zero'
             %zero norm
             solution.f0 = sum(abs(solution.full(1:nTotalVars,1)) > feasTol);
+            solution.f1 = NaN;
+            solution.f2 = NaN;
         case 'one'
+            solution.f0 = NaN;
             %one norm
             solution.f1 = sum(abs(solution.full(1:nTotalVars,1)));
+            solution.f2 = NaN;
         case 'two'
+            solution.f0 = NaN;
             if isfield(optProblem,'c')
                 solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
                 if isfield(solution,'objLinear')
                     solution = rmfield(solution,'objLinear');
                 end
             else
-                solution.f1 = 0;
+                solution.f1 = NaN;
             end
-            solution.f2 = 0.5*solution.full'*optProblem.F*solution.full;
+            if isfield(optProblem,'F')
+                solution.f2 = 0.5*solution.full'*optProblem.F*solution.full;
+            else
+                disp(param)
+                warning('optProblem.F missing')
+            end
             if isfield(solution,'objQuadratic')
                 solution.f2 = solution.objQuadratic;
                 solution = rmfield(solution,'objQuadratic');
@@ -859,12 +902,17 @@ if solution.stat == 1 || solution.stat == 3
         otherwise
             if exist('LPproblem2','var')
                 if isfield(optProblem2,'F')
-                    solution.f0 = 0;
+                    solution.f0 = NaN;
                     solution.f1 = optProblem.c'*solution.full(1:nTotalVars,1);
                     solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
                 end
+            else
+                solution.f0 = NaN;
+                solution.f1 = NaN;
+                solution.f2 = NaN;
             end
     end
+    solution.obj = sum([solution.f0,solution.f1,solution.f2],'omitnan');
     
     %primal optimal variables
     solution.v = solution.full(1:nRxns);
@@ -922,7 +970,7 @@ if solution.stat == 1 || solution.stat == 3
     
     solution.time = etime(clock, t1);
     
-    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'method';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
+    fieldOrder = {'f';'f0';'f1';'f2';'v';'y';'w';'s';'solver';'lpmethod';'qpmethod';'stat';'origStat';'time';'basis';'vars_v';'vars_w';'ctrs_y';'ctrs_s';'x';'full';'obj';'rcost';'dual';'slack'};
     % reorder fields for better readability
     currentfields = fieldnames(solution);
     presentfields = ismember(fieldOrder,currentfields);
@@ -932,6 +980,7 @@ else
     if 0
         %return NaN of correct dimensions if problem does not solve properly
         solution.f = NaN;
+
         solution.v = NaN*ones(nRxns,1);
         solution.y = NaN*ones(nMets,1);
         solution.w = NaN*ones(nRxns,1);
@@ -947,7 +996,11 @@ else
     else
         %return empty fields if problem does not solve properly (backward
         %compatible)
+        solution.obj = NaN;
         solution.f = NaN;
+        solution.f0 = NaN;
+        solution.f1 = NaN;
+        solution.f2 = NaN;
         solution.v = [];
         solution.y = [];
         solution.w = [];
@@ -968,9 +1021,6 @@ end
 if 1 %this may not be very backward compatible
     %remove fields coming from solveCobraLP/QP but not part of the specification
     %of the output from optimizeCbModel
-    if isfield(solution,'obj')
-        solution = rmfield(solution,'obj');
-    end
     if isfield(solution,'full')
         solution = rmfield(solution,'full');
     end

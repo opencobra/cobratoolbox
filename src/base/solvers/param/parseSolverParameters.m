@@ -103,35 +103,34 @@ for i = 1:numel(defaultParams(:,1))
     end
 end
 
-%move following set of parameters from solverOnlyParams to param
-if isfield(solverOnlyParams,'maxConc')
-    param.maxConc = solverOnlyParams.maxConc;
-    solverOnlyParams = rmfield(solverOnlyParams,'maxConc');
-end
-if isfield(solverOnlyParams,'method')
-    param.method = solverOnlyParams.method;
-    solverOnlyParams = rmfield(solverOnlyParams,'method');
-end
-if isfield(solverOnlyParams,'maxUnidirectionalFlux')
-    param.maxUnidirectionalFlux = solverOnlyParams.maxUnidirectionalFlux;
-    solverOnlyParams = rmfield(solverOnlyParams,'maxUnidirectionalFlux');
-end
-if isfield(solverOnlyParams,'minUnidirectionalFlux')
-    param.minUnidirectionalFlux = solverOnlyParams.minUnidirectionalFlux;
-    solverOnlyParams = rmfield(solverOnlyParams,'minUnidirectionalFlux');
-end
-if isfield(solverOnlyParams,'internalNetFluxBounds')
-    param.internalNetFluxBounds = solverOnlyParams.internalNetFluxBounds;
-    solverOnlyParams = rmfield(solverOnlyParams,'internalNetFluxBounds');
-end
-if isfield(solverOnlyParams,'externalNetFluxBounds')
-    param.externalNetFluxBounds = solverOnlyParams.externalNetFluxBounds;
-    solverOnlyParams = rmfield(solverOnlyParams,'externalNetFluxBounds');
-end
-if isfield(solverOnlyParams,'rounding')
-    param.rounding = solverOnlyParams.rounding;
-    solverOnlyParams = rmfield(solverOnlyParams,'rounding');
-end
-if isfield(param,'printLevel')
-    solverOnlyParams.printLevel = param.printLevel -1;
+if 0
+    %move following set of parameters from solverOnlyParams to param
+    if isfield(solverOnlyParams,'maxConc')
+        param.maxConc = solverOnlyParams.maxConc;
+        solverOnlyParams = rmfield(solverOnlyParams,'maxConc');
+    end
+    if isfield(solverOnlyParams,'method')
+        param.method = solverOnlyParams.method;
+        solverOnlyParams = rmfield(solverOnlyParams,'method');
+    end
+    if isfield(solverOnlyParams,'maxUnidirectionalFlux')
+        param.maxUnidirectionalFlux = solverOnlyParams.maxUnidirectionalFlux;
+        solverOnlyParams = rmfield(solverOnlyParams,'maxUnidirectionalFlux');
+    end
+    if isfield(solverOnlyParams,'minUnidirectionalFlux')
+        param.minUnidirectionalFlux = solverOnlyParams.minUnidirectionalFlux;
+        solverOnlyParams = rmfield(solverOnlyParams,'minUnidirectionalFlux');
+    end
+    if isfield(solverOnlyParams,'internalNetFluxBounds')
+        param.internalNetFluxBounds = solverOnlyParams.internalNetFluxBounds;
+        solverOnlyParams = rmfield(solverOnlyParams,'internalNetFluxBounds');
+    end
+    if isfield(solverOnlyParams,'externalNetFluxBounds')
+        param.externalNetFluxBounds = solverOnlyParams.externalNetFluxBounds;
+        solverOnlyParams = rmfield(solverOnlyParams,'externalNetFluxBounds');
+    end
+    if isfield(solverOnlyParams,'rounding')
+        param.rounding = solverOnlyParams.rounding;
+        solverOnlyParams = rmfield(solverOnlyParams,'rounding');
+    end
 end

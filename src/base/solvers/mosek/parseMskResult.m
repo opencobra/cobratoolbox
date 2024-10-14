@@ -1,4 +1,4 @@
-function [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,printLevel)
+function [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res)
 %parse the res structure returned from mosek
 % INPUTS:
 %  res:        mosek results structure returned by mosekopt
@@ -54,12 +54,6 @@ basis = [];
 pobjval =[];
 dobjval =[];
 
-if ~exist('printLevel','var')
-    printLevel = 0;
-end
-if ~exist('solverOnlyParams','var')
-    solverOnlyParams = struct();
-end
 
 % prosta (string) – Problem status (prosta).
 % prosta
@@ -126,7 +120,7 @@ end
 % The primal solution is integer optimal.
 
 % https://docs.mosek.com/latest/toolbox/accessing-solution.html
-accessSolution=[];
+accessSolution='';
 if isfield(res, 'sol')
     if isfield(res.sol,'itr') && isfield(res.sol,'bas')
         if  any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'UNKNOWN'}))
@@ -217,6 +211,8 @@ switch accessSolution
             otherwise
                 accessSolution = 'dontAccess';
         end
+    otherwise
+        accessSolution = 'dontAccess';
 end
 
 if strcmp(accessSolution,'dontAccess')
@@ -241,3 +237,6 @@ if strcmp(accessSolution,'dontAccess')
             end
     end
 end
+
+
+% https://themosekblog.blogspot.com/2014/06/what-if-solver-stall.html
