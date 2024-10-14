@@ -11,147 +11,91 @@ function plotOverlapResults(overlapresults,statistic,savepath)
 %   a heat map plot
 %
 % Author(s):
-%   Xi Luo, 2023/02
+%   Xi Luo, update 2024/10
 %
 %
-%use proportion to create map
+%% use proportion data to create map
 figure('units','normalized','outerposition',[0 0 1 1])
-%mets
-a=statistic.overlapnumber_mets{:,1};
-metsdata=statistic.overlapnumber_mets{:,2:end};
-%find model size
-for i=1:size(metsdata,1)
-[max_a(i),index(i)]=max(metsdata(i,:));
-end
-%generate proportion
-xa=repmat(max_a',[1 length(statistic.overlapnumber_mets{:,1})]);
-pro=round(metsdata./xa*100,2);
-ax = subplot(3,1,1);
-h = imagesc(ax, pro);
-daspect([1 4 1]);
-title(['All Overlapped Mets=' num2str(length(overlapresults.mets.alloverlap))])
-ax.TickLength(1) = 0;
-% Create heatmap's colormap
-n=256;
-cmap = [linspace(.9,0,n)', linspace(.9447,.447,n)', linspace(.9741,.741,n)'];
-colormap(ax, cmap);
-colorbar(ax)
-hold on
-%add text label (proportion (accuracy))
-label1=reshape(pro',[],1);
-% accuracy_mets=accuracy.mets{:,2:end};
-% label2=round(reshape(accuracy_mets,[],1),2);
-% labels=append(string(label1),'%','(',string(label2),')');
-try
-    %labels(find(label1==100))=append(string(max_a'),'(',string(label2(find(label1==100))),')');
-    labels=append(string(label1));
-    labels(find(label1==100))=append(string(max_a'));
-catch ME
-    disp(ME)
-end
-[xTxt, yTxt] = ndgrid(1:size(metsdata,1), 1:size(metsdata,1));
-th = text(xTxt(:), yTxt(:), labels(:), ...
-    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
-set(ax,'XTick',1:size(metsdata,1),'YTick',1:size(metsdata,1))
-xticklabels(a)
-yticklabels(a)
-set(gca,'XTickLabelRotation',0);
 
+%% Mets data
+a=statistic.overlapnumber_mets.Properties.RowNames;
+metsdata = statistic.overlapproportion_mets{:, :};
 
-%rxns
-rxnsdata=statistic.overlapnumber_rxns{:,2:end};
-%find model size
-for i=1:size(rxnsdata,1)
-[max_a(i),index(i)]=max(rxnsdata(i,:));
-end
-%generate proportion
-xa=repmat(max_a',[1 length(statistic.overlapnumber_rxns{:,1})]);
-pro=round(rxnsdata./xa*100,2);
-ax = subplot(3,1,2);
-h = imagesc(ax, pro);
-daspect([1 4 1]);
-title(['All Overlapped Rxns=' num2str(length(overlapresults.rxns.alloverlap))])
-ax.TickLength(1) = 0;
-% Create heatmap's colormap
-n=256;
-cmap = [linspace(.9,0,n)', linspace(.9447,.447,n)', linspace(.9741,.741,n)'];
-colormap(ax, cmap);
-colorbar(ax)
-hold on
-%add text label (proportion (accuracy))
-label1=reshape(pro',[],1);
-% accuracy_rxns=accuracy.rxns{:,2:end};
-% label2=round(reshape(accuracy_rxns,[],1),2);
-% labels=append(string(label1),'%','(',string(label2),')');
-try
-    %labels(find(label1==100))=append(string(max_a'),'(',string(label2(find(label1==100))),')');
-    labels=append(string(label1));
-    labels(find(label1==100))=append(string(max_a'));
-catch ME
-    disp(ME)
-end
-[xTxt, yTxt] = ndgrid(1:size(rxnsdata,1), 1:size(rxnsdata,1));
-th = text(xTxt(:), yTxt(:), labels(:), ...
-    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
-set(ax,'XTick',1:size(metsdata,1),'YTick',1:size(metsdata,1))
-xticklabels(a)
-yticklabels(a)
-set(gca,'XTickLabelRotation',0);
+% Plot Mets Data
+ax1 = subplot(3,1,1);
+plotHeatmapWithLabels(ax1, metsdata, a, 'Mets', overlapresults.mets, 'All Overlapped Mets');
 
-%genes
-genesdata=statistic.overlapnumber_genes{:,2:end};
-%find model size
-for i=1:size(genesdata,1)
-[max_a(i),index(i)]=max(genesdata(i,:));
-end
-%generate proportion
-xa=repmat(max_a',[1 length(statistic.overlapnumber_genes{:,1})]);
-pro=round(genesdata./xa*100,2);
-ax = subplot(3,1,3);
-h = imagesc(ax, pro);
-daspect([1 4 1]);
-title(['All Overlapped Genes=' num2str(length(overlapresults.genes.alloverlap))])
-ax.TickLength(1) = 0;
-% Create heatmap's colormap
-n=256;
-cmap = [linspace(.9,0,n)', linspace(.9447,.447,n)', linspace(.9741,.741,n)'];
-colormap(ax, cmap);
-colorbar(ax)
-hold on
-%add text label (proportion (accuracy))
-label1=reshape(pro',[],1);
-% accuracy_genes=accuracy.genes{:,2:end};
-% label2=round(reshape(accuracy_genes,[],1),2);
-% labels=append(string(label1),'%','(',string(label2),')');
-try
-    %labels(find(label1==100))=append(string(max_a'),'(',string(label2(find(label1==100))),')');
-    labels=append(string(label1));
-    labels(find(label1==100))=append(string(max_a'));
-catch ME
-    disp(ME)
-end
-[xTxt, yTxt] = ndgrid(1:size(genesdata,1), 1:size(genesdata,1));
-th = text(xTxt(:), yTxt(:), labels(:), ...
-    'VerticalAlignment', 'middle','HorizontalAlignment','Center');
-set(ax,'XTick',1:size(genesdata,1),'YTick',1:size(genesdata,1))
-xticklabels(a)
-yticklabels(a)
-set(gca,'XTickLabelRotation',0);
+%% Rxns Heatmap
+rxnsdata = statistic.overlapproportion_rxns{:, :};  
 
-% add annotation
-annotation('textbox',...
-    [0.29 0.90 0.2 0.08],...
-    'String',{'Colorbar = overlapped proportion(%);  textlabel = proportion;  Diagonal number = model size'},...
-    'FontSize',12,'FitBoxToText','on','LineStyle','none');
+% Plot Rxns Data
+ax2 = subplot(3,1,2);
+plotHeatmapWithLabels(ax2, rxnsdata, a, 'Rxns', overlapresults.rxns, 'All Overlapped Rxns');
+
+%% Genes Heatmap
+genesdata = statistic.overlapproportion_genes{:, :};  
+
+% Plot Genes Data
+ax3 = subplot(3,1,3);
+plotHeatmapWithLabels(ax3, genesdata, a, 'Genes', overlapresults.genes, 'All Overlapped Genes');
+
+annotation('textbox', [0.35 0.92 0.3 0.07], ...
+    'String', {'Colorbar = Overlapped Proportion (%), Text Label = Proportion, Diagonal = Model Size'}, ...
+    'FontSize', 12, 'HorizontalAlignment', 'center', 'FitBoxToText', 'on', 'LineStyle', 'none', 'EdgeColor', 'none');
 
 if exist('savepath', 'var')
     iterationMethod=extractAfter(savepath,'models_');
     sgtitle(['Overlapped result of ' iterationMethod])
-    % myAxes=findobj(ax,'Type','Axes');
-    % exportgraphics(myAxes,['overlap.pdf']);
     cd(savepath)
     saveas(ax, ['overlap_' iterationMethod '.fig'])
 end
 
 end
 
+function plotHeatmapWithLabels(ax, data, labels, featureType, overlapData, titleText)
+%plot a heat map of the overlapped number
+
+% Create heatmap
+imagesc(ax, data);
+daspect([1 4 1]);  % Equal aspect ratio for squares
+title([titleText ' = ' num2str(size(overlapData.alloverlap, 1))]);  % Title with all overlapped count
+ax.TickLength(1) = 0;  % No ticks
+
+% Create heatmap's colormap
+n = 256;
+cmap = [linspace(.9,0,n)', linspace(.9447,.447,n)', linspace(.9741,.741,n)'];
+colormap(ax, cmap);
+colorbar(ax);
+hold on;
+
+% Set the diagonal labels with corresponding sizes
+for i = 1:length(labels)
+    modelName = labels{i};
+    if isfield(overlapData, modelName) && isfield(overlapData.(modelName), modelName)
+        modelSize = length(overlapData.(modelName).(modelName));
+        text(i, i, num2str(modelSize), 'HorizontalAlignment', 'center', 'FontSize', 10, 'Color', 'k', 'FontWeight', 'bold');  % Bold size on diagonal
+    end
+end
+
+% Add text labels for each square
+textStrings = num2str(data(:), '%0.2f');  % Convert data to string
+textStrings = strtrim(cellstr(textStrings));  % Remove any padding
+[x, y] = meshgrid(1:size(data, 1));  % Create grid for positions
+
+% Plot the text labels, skipping the diagonal
+for i = 1:size(data, 1)
+    for j = 1:size(data, 2)
+        if i ~= j  % Skip diagonal
+            text(x(i,j), y(i,j), textStrings((i-1)*size(data,1) + j), ...
+                'HorizontalAlignment', 'center', 'FontSize', 10);
+        end
+    end
+end
+
+% Set axes labels and formatting
+set(ax, 'XTick', 1:length(labels), 'YTick', 1:length(labels));
+set(ax, 'XTickLabel', labels, 'YTickLabel', labels);
+set(ax, 'XTickLabelRotation', 0);  % Rotate X-axis labels for readability
+hold off;
+
+end
