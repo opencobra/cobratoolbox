@@ -79,7 +79,11 @@ allDietExch = regexprep(allDietExch,'EX_','Diet_EX_');
 allDietExch = regexprep(allDietExch,'\[fe\]','\[d\]');
 
 % define human-derived metabolites present in the gut: primary bile acids, amines, mucins, host glycans
-HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
+if includeHumanMets
+    HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
+else
+    HumanMets = {};
+end
 
 %% start the simulations
 
@@ -87,7 +91,7 @@ HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe
 skipSim=0;
 if isfile(strcat(resPath, 'simRes.mat'))
     load(strcat(resPath, 'simRes.mat'))
-    
+
     % if any simulations were infeasible, repeat simulations
     if length(infeasModels)>0
         skipSim=0;
@@ -108,7 +112,7 @@ if isfile(strcat(resPath, 'simRes.mat'))
                 end
             end
         end
-    end
+     end
 end
 
 if skipSim==1
@@ -121,7 +125,7 @@ else
     infeasModels = {};
     growthRates = {'','Rich medium','Diet'};
     growthRates(2:length(sampNames)+1,1) = sampNames;
-    
+
     % Auto load for crashed simulations
     mapP = detectOutput(resPath, 'intRes.mat');
     if isempty(mapP)
@@ -130,15 +134,15 @@ else
         disp(s)
         load(strcat(resPath, 'intRes.mat'))
     end
-    
+
     % if simRes file already exists: some simulations may have been
     % incorrectly executed and need to repeat
     if isfile(strcat(resPath, 'simRes.mat'))
         load(strcat(resPath, 'simRes.mat'))
     end
-    
+
     % End of Auto load for crashed simulations
-    
+
     % set parallel pool if no longer active
     if numWorkers > 1
         poolobj = gcp('nocreate');
@@ -146,18 +150,18 @@ else
             parpool(numWorkers)
         end
     end
-    
+
     growthRatesTmp={};
     infeasModelsTmp={};
     netProductionTmp={};
     netUptakeTmp={};
-    
+
     if length(sampNames)-1 > 20
         steps=20;
     else
         steps=length(sampNames);
     end
-    
+
     % Starting personalized simulations
     % proceed in batches for improved effiency
     for s=1:steps:length(sampNames)
@@ -166,11 +170,11 @@ else
         else
             endPnt=length(sampNames)-s;
         end
-        
+
         parfor k=s:s+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
-            
+
             % prepare the variables temporarily storing the simulation results
             netProductionTmp{k}{2} = {};
             netProductionTmp{k}{1} = {};
@@ -178,7 +182,7 @@ else
             netUptakeTmp{k}{2} = {};
             growthRatesTmp{k}{1} = {};
             growthRatesTmp{k}{2} = {};
-            
+
             doSim=1;
             % check first if simulations already exist and were done properly
             if ~isempty(netProduction{2,k})
@@ -190,7 +194,7 @@ else
             if doSim==1
                 % simulations either not done yet or done incorrectly -> go
                 sampleID = sampNames{k,1};
-                
+
                 % get diet(s) to load
                 diet = readInputTableForPipeline(dietFilePath);
                 if ~isempty(intersect(sampNames,diet(:,1)))
@@ -202,7 +206,7 @@ else
                 else
                     loadDiet = dietFilePath;
                 end
-                
+
                 if ~isempty(hostPath)
                     % microbiota_model=readCbModel(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
                     modelStr=load(strcat('host_microbiota_model_samp_', sampleID,'.mat'));
@@ -220,7 +224,7 @@ else
                         model.lb(j) = 0;
                     end
                 end
-                
+
                 % adapt constraints
                 BiomassNumber=find(strcmp(model.rxns,'communityBiomass'));
                 Components = model.mets(find(model.S(:, BiomassNumber)));
@@ -233,7 +237,7 @@ else
                     findSink= model.rxns(find(strncmp(model.rxns,[Components{j} '_sink_'],length([Components{j} '_sink_']))));
                     model = changeRxnBounds(model, findSink, -1, 'l');
                 end
-                
+
                 model = changeObjective(model, 'EX_microbeBiomass[fe]');
                 AllRxn = model.rxns;
                 RxnInd = find(cellfun(@(x) ~isempty(strfind(x, '[d]')), AllRxn));
@@ -245,7 +249,7 @@ else
                 model=changeRxnBounds(model,model.rxns(strmatch('UFEt_',model.rxns)),1000000,'u');
                 model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');
                 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
-                
+
                 % set constraints on host exchanges if present
                 if ~isempty(hostBiomassRxn)
                     hostEXrxns=find(strncmp(model.rxns,'Host_EX_',8));
@@ -317,16 +321,19 @@ else
                     else
                         diet = readInputTableForPipeline(loadDiet);  % load the text file with the diet
                         
-                        for j = 2:length(diet)
+                        for j = 1:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end
                     end
                     [model_sd] = useDiet(model_sd, diet,0);
                     
                     if includeHumanMets
-                        % add the human metabolites
+                        % add the human metabolites if not already included
+                        % in the diet
                         for l=1:length(HumanMets)
-                            model_sd=changeRxnBounds(model_sd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                            if isempty(find(strcmp(diet(:,1),['Diet_EX_',HumanMets{l},'[d]'])))
+                                model_sd=changeRxnBounds(model_sd,['Diet_EX_',HumanMets{l},'[d]'],str2num(HumanMets{l,2}),'l');
+                            end
                         end
                     end
                     

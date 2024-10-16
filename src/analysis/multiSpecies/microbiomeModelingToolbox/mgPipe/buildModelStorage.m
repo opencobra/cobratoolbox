@@ -96,11 +96,14 @@ for i = 1:size(microbeNames, 1)
             end
         end
         model = useDiet(model, diet,0);
-
+        
         if includeHumanMets
-            % add the human metabolites
+            % add the human metabolites if not already included
+            % in the diet
             for l=1:length(HumanMets)
-                model=changeRxnBounds(model,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
+                if isempty(find(strcmp(diet(:,1),['EX_',HumanMets{l},'(e)'])))
+                    model=changeRxnBounds(model,['EX_',HumanMets{l},'(e)'],str2num(HumanMets{l,2}),'l');
+                end
             end
         end
     end
@@ -176,11 +179,14 @@ parfor i = 1:size(microbeNames, 1)
                 end
             end
             model = useDiet(model, diet,0);
-
+            
             if includeHumanMets
-                % add the human metabolites
+                % add the human metabolites if not already included
+                % in the diet
                 for l=1:length(HumanMets)
-                    model=changeRxnBounds(model,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
+                    if isempty(find(strcmp(diet(:,1),['EX_',HumanMets{l},'(e)'])))
+                        model=changeRxnBounds(model,['EX_',HumanMets{l},'(e)'],str2num(HumanMets{l,2}),'l');
+                    end
                 end
             end
         end
