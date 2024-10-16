@@ -105,8 +105,11 @@ if nargin <5
     subplot(1,2,1)
     violinplot(data(:,1:2),{'Reactions','Metabolites'});
     set(gca, 'FontSize', 12)
-    subplot(1,2,2)
-    violinplot(data(:,3),{'Microbes'});
+    % does not work if all data points are the same
+    if ~numel(unique(data(:,3)))==1
+        subplot(1,2,2)
+        violinplot(data(:,3),{'Microbes'});
+    end
     set(gca, 'FontSize', 12)
     sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
     print('MicrobiomeModel_Sizes','-dpng','-r300')
@@ -180,9 +183,12 @@ else
     violinplot(data(:,2),infoFile(:,2));
     title('Metabolites')
     set(gca, 'FontSize', 12)
-    subplot(1,3,3)
-    violinplot(data(:,3),infoFile(:,2));
-    title('Microbes')
+    % does not work if all data points are the same
+    if ~numel(unique(data(:,3)))==1
+        subplot(1,3,3)
+        violinplot(data(:,3),infoFile(:,2));
+        title('Microbes')
+    end
     set(gca, 'FontSize', 12)
     hold on
     sgtitle('Reaction, metabolite and microbe numbers in microbiome models')

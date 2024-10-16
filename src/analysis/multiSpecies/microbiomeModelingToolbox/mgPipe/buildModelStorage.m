@@ -50,6 +50,8 @@ end
 % define human-derived metabolites present in the gut: primary bile acids, amines, mucins, host glycans
 if includeHumanMets
     HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
+else
+    HumanMets={};
 end
 
 % get all exchanges that can carry flux in at least one model on the given
@@ -94,11 +96,14 @@ for i = 1:size(microbeNames, 1)
             end
         end
         model = useDiet(model, diet,0);
-
+        
         if includeHumanMets
-            % add the human metabolites
+            % add the human metabolites if not already included
+            % in the diet
             for l=1:length(HumanMets)
-                model=changeRxnBounds(model,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
+                if isempty(find(strcmp(diet(:,1),['EX_',HumanMets{l},'(e)'])))
+                    model=changeRxnBounds(model,['EX_',HumanMets{l},'(e)'],str2num(HumanMets{l,2}),'l');
+                end
             end
         end
     end
@@ -174,11 +179,14 @@ parfor i = 1:size(microbeNames, 1)
                 end
             end
             model = useDiet(model, diet,0);
-
+            
             if includeHumanMets
-                % add the human metabolites
+                % add the human metabolites if not already included
+                % in the diet
                 for l=1:length(HumanMets)
-                    model=changeRxnBounds(model,strcat('EX_',HumanMets{l},'(e)'),str2num(HumanMets{l,2}),'l');
+                    if isempty(find(strcmp(diet(:,1),['EX_',HumanMets{l},'(e)'])))
+                        model=changeRxnBounds(model,['EX_',HumanMets{l},'(e)'],str2num(HumanMets{l,2}),'l');
+                    end
                 end
             end
         end

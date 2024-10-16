@@ -61,29 +61,26 @@ FNs=union(FNs,FalseNegatives);
 %% gapfill if there are any false negatives
 osenseStr='min';
 
-dataDrivenGapfill={};
 if ~isempty(FNs)
     for j=1:length(FNs)
         metExch=['EX_' database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j})),1} '(e)'];
         % find reactions that could be gap-filled to enable flux
         % seems to try to fix exchanges that are not part of the model,
         % leading it to crash:
-        %         Objective reactions not found in model!
+        %  Objective reactions not found in model!
         %
         % Error in runGapfillingFunctions (line 41)
         % model = changeObjective(model, objectiveFunction);
-     %   add exchange reaction
-     if isempty(find(strcmp(model.rxns,metExch)))
-         met = [database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j}))} '(e)'];
-         model = addExchangeRxn(model,met,-1,1000);
-     end
-     [model,gapfilledRxns] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
-     dataDrivenGapfill=union(dataDrivenGapfill,gapfilledRxns);
-     %  end
+        %   add exchange reaction
+        if isempty(find(strcmp(model.rxns,metExch)))
+            met = [database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j}))} '[e]'];
+            model = addExchangeRxn(model,met,-1000,1000);
+        end
+        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
     end
-    if ~isempty(dataDrivenGapfill)
-        summary.('DataDrivenGapfill')=dataDrivenGapfill;
-    end
+    summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
+    summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
+    summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);
 end
 
 % Fermentation products
@@ -113,10 +110,11 @@ if ~isempty(FNs)
             metExch = FNs{j};
         end
         % find reactions that could be gap-filled to enable flux
-        try
-        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
-        catch
+        if isempty(find(strcmp(model.rxns,metExch)))
+            met = [database.metabolites{find(strcmp(database.metabolites(:,2),FNs{j}))} '[e]'];
+            model = addExchangeRxn(model,met,-1000,1000);
         end
+        [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,metExch,biomassReaction,osenseStr,database);
         summary.('conditionSpecificGapfill') = union(summary.('conditionSpecificGapfill'),condGF);
         summary.('targetedGapfill') = union(summary.('targetedGapfill'),targetGF);
         summary.('relaxFBAGapfill') = union(summary.('relaxFBAGapfill'),relaxGF);

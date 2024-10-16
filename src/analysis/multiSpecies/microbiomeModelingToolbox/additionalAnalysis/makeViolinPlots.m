@@ -54,9 +54,16 @@ end
 cnt=1;
 delArray=[];
 for i=2:size(sampleData,1)
-    if sum(str2double(sampleData(i,2:end)))<0.0001
-        delArray(cnt,1)=i;
-        cnt=cnt+1;
+    if contains(version,'R202') % for MATLAB 2020a or newer
+        if sum(cell2mat(sampleData(i,2:end)))<0.0001
+            delArray(cnt,1)=i;
+            cnt=cnt+1;
+        end
+    else
+        if sum(str2double(sampleData(i,2:end)))<0.0001
+            delArray(cnt,1)=i;
+            cnt=cnt+1;
+        end
     end
 end
 sampleData(delArray,:)=[];
