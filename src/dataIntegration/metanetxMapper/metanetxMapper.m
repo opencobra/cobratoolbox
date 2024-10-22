@@ -3,16 +3,16 @@ function [metData] = metanetxMapper(metInfo, varargin)
 %
 % USAGE:
 %
-%    [metData] = metanetxMapper(metInfo, varargin)
+%    [metData] = metanetxMapper(metInfo, infoType)
 %
 % INPUTS:
-%    name:     string name of the metabolite (Common names, VMH names, CHEBI ids,
-%    swiss lipids id, HMDB ids, and lipidmaps are supported)
+%    metInfo:     string information of the metabolite (Common name, VMH name, CHEBI id,
+%    Swiss Lipid id, HMDB id, Lipidmap, or InChIkey are supported)
 %
 %
 % OPTIONAL INPUT:
-%    outputStyle: same as the input, choose an output option between
-%    'name', 'vmh', and 'chebi' for more accurate respond
+%    infoType: In the cases of searching with common name, VMH, or ChEBI, use 'name', 'vmh',
+%    or 'chebi' respectively as the identifier type for more accurate respond
 %
 % OUTPUT:
 %    metData: A structure variable including fields of metabolite Identifiers: 
