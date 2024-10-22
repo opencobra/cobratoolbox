@@ -28,6 +28,9 @@ function [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, da
 %   finalMidKnockouts   List of reactions that when removed gives optimal
 %                       envelopes for middle envelopes
 %
+% EXAMPLE:
+%   [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(model, data, K, 0, minP, 10, 10, 60)
+%
 % AUTHORS:
 %   created by Kristaps Berzins 31/10/2022
 %
