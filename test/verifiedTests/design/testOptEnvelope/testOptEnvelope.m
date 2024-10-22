@@ -19,7 +19,8 @@ cd(fileDir);
 tol = 1e-6;
 
 % define the solver packages to be used to run this test
-solversPkgs = {'gurobi'};
+requiredSolvers = { 'gurobi' };
+solversPkgs = prepareTest('requiredSolvers', requiredSolvers);
 
 % load the model
 load('testOptEnvelopeData.mat');
