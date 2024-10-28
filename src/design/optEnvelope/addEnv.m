@@ -3,6 +3,9 @@ function line = addEnv(origModel, biomass, desiredProduct, varargin)
 % Algorithm is able to knock out genes as well as reactions to produce
 % production envelope
 %
+% USAGE:
+%   line = addEnv(origModel, biomass, desiredProduct, 'KnockOuts', knockouts, 'colour', 'b', 'prodMol', 46, 'subUptake', 10, 'molarSum', 180)
+%
 % INPUTS:
 %   origModel         COBRA model structure [struct]
 %   biomass           Reaction name of biomass [char]
