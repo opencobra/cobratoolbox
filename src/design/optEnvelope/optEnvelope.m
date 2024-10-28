@@ -3,6 +3,9 @@ function [main, mid] = optEnvelope(model, desiredProduct, varargin)
 % smallest set of reactions in the pool of inactive reactions that offers same production envelope.
 % Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)
 %
+% USAGE:
+%   [main, mid] = optEnvelope(model, desiredProduct, 'protectedRxns', {'EX_ac_e'}, 'numTries', 100, 'numKO', 8, 'prodMol', 46, 'midPoints', 8, 'timeLimit', 60, 'printLevel', 1, 'drawEnvelope', true)
+%
 % INPUTS:
 %   model              COBRA model structure [struct]
 %   desiredProduct     Reaction name of desired product [char]
