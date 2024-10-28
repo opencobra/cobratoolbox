@@ -3,6 +3,9 @@ function [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoi
 % a specific point on production envelope for best possible production
 % envelope
 %
+% USAGE:
+%   [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
+%
 % INPUTS:
 %   model         COBRA model structure in irreversible form [struct]
 %   matchRev      Matching of forward and backward reactions of a reversible
