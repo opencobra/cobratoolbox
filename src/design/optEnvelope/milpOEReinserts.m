@@ -2,6 +2,9 @@ function [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeL
 % This function is creating and calculating MILP to get certain amount
 % of knockouts to achieve best production envelope
 %
+% USAGE:
+%   [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeLimit, printLevel)
+%
 % INPUTS:
 %   model       COBRA model structure in irreversible form [struct]
 %   data        Struct with information about:
