@@ -4,6 +4,9 @@ function [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, da
 % retaining optimal envelope. With numTries parameter this can be done
 % multiple times by randomizing list of inactive reactions
 %
+% USAGE:
+%   [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit)
+%
 % INPUTS:
 %   modelOld            COBRA model structure in irreversible form [struct]
 %   data                Struct with information about:
