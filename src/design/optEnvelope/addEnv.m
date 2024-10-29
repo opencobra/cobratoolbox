@@ -4,7 +4,7 @@ function line = addEnv(origModel, biomass, desiredProduct, varargin)
 % production envelope
 %
 % USAGE:
-%   line = addEnv(origModel, biomass, desiredProduct, 'KnockOuts', knockouts, 'colour', 'b', 'prodMol', 46, 'subUptake', 10, 'molarSum', 180)
+%   line = addEnv(origModel, biomass, desiredProduct, 'KnockOuts', knockouts, 'colour', colour, 'prodMol', prodMol, 'subUptake', subUptake, 'molarSum', molarSum)
 %
 % INPUTS:
 %   origModel         COBRA model structure [struct]
