@@ -142,9 +142,7 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 
 
     % determine the number of metabolites and reactions
-    [nMets, nRxns] = size(A);
-    % Last column is model.b
-    nRxns = nRxns - 1;
+    [nMets, nRxns] = size(model.S);
 
     % determine the row and column scaling factors
     [cscale, rscale] = gmscale(A, 0, scltol);
