@@ -851,7 +851,7 @@ if solution.stat == 1 || solution.stat == 3
             else
                 solution.f1 = 0;
             end
-            solution.f2 = 0.5*solution.full'*optProblem2.F*solution.full;
+            solution.f2 = 0.5*solution.full'*optProblem.F*solution.full;
             if isfield(solution,'objQuadratic')
                 solution.f2 = solution.objQuadratic;
                 solution = rmfield(solution,'objQuadratic');
