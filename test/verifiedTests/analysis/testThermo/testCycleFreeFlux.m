@@ -69,7 +69,7 @@ for k = 1:length(solverPkgs.LP)
         param.relaxBounds = false; % Default
         v2 = cycleFreeFlux(solution.v, model.c, model, isInternalRxn, param);
         d2 = v2 - solution.v;
-        assert(all(d2) <= tol*10);
+        assert(all(d2 <= tol*10));
         
         param.relaxBounds = true; % Relax flux bounds that do not include 0
         v3 = cycleFreeFlux(solution.v, model.c, model, isInternalRxn, param);
