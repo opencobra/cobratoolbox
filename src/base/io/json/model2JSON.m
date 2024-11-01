@@ -1,5 +1,5 @@
 function model2JSON(model,fileName)
-% This function writes a json file from matlab structure.
+% This function writes a JSON file from Matlab structure.
 % JSON files can be validated by isValidJSON function or online tools like
 % https://jsonlint.com/.
 %
@@ -293,4 +293,3 @@ end
 
 fprintf(fid, '}\n'); % close file
 fclose(fid);
-
