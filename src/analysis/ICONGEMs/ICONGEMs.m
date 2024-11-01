@@ -1,4 +1,4 @@
-function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha)
+function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha, numericFlag)
 % Algorithm to Integrate a Gene Co-expression Network and Genome-scale Metabolic Model:
 % This algorithm calculates the reaction flux distribution for each condition by applying 
 % quadratic programming.
@@ -14,6 +14,7 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %                     extract from gene expression profile file
 %    genetxt:         list of gene names that extract from gene expression profile
 %                     file
+%    numericFlag:     1 if using Human Recon  (Default = 0).
 %
 % OPTIONAL INPUTS:
 %    threshold:           The value of the correlation coefficient for constructing 
@@ -46,6 +47,9 @@ if (nargin < 5 || isempty(threshold))
 end
 if (nargin < 6 || isempty(alpha))
       alpha = 0.99;
+end
+if (nargin < 7 || isempty(numericFlag))
+      numericFlag = 0;
 end
 
 % construct the template model
@@ -111,7 +115,7 @@ coGene(:, 2) = geneincoexnet(indCorGene(:, 2), 1);
 
 NameRxn={};
 for i = 1:size(modelIrrev.genes)
-    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes(i, 1), [], 1);
+    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes(i, 1), numericFlag, 1);
 end
 
 % Find reactions that correspond to the gene
@@ -244,7 +248,7 @@ model2.ub = upb;
 model2.A = sparse(Aeq);
 model2.sense = [char('=' * ones(size(model2.A,1) - 1, 1)) ; char('>')]; 
 model2.rhs = beq;
-model2.modelsense = 'min'; 
+model2.modelsense = 'max'; 
 numrxn = [1:length(modelIrrev.rxns)]; 
 j = 1;
 for i = 1:length(model.rxns)
