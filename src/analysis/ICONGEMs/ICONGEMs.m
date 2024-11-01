@@ -115,7 +115,7 @@ coGene(:, 2) = geneincoexnet(indCorGene(:, 2), 1);
 
 NameRxn={};
 for i = 1:size(modelIrrev.genes)
-    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes(i, 1), numericFlag, 1);
+    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes{i, 1}, numericFlag, 1);
 end
 
 % Find reactions that correspond to the gene
