@@ -121,7 +121,7 @@ assert(isequal(model2.S, reducedSMatrix));
 assert(isempty(intersect(model2.mets,model.mets(removedMets))) && isempty(setxor(setdiff(model.mets,model.mets(removedMets)),model2.mets)))
 
 %Now, remove a metabolite
-model = removeMetabolites(model,model.mets{end});
+model = removeMetabolites(model,model.mets{end},'removeRxnFlag', 'legacy');
 % and try this again (same sized rxns and mets)
 model2 = removeFieldEntriesForType(model,removedMets,'mets', length(model.mets));
 reducedSMatrix = model.S;
@@ -165,6 +165,7 @@ assert(isequal(model2.rules{6},'x(4)')); % 4 got removed, and 5 renamed
 assert(isequal(e,e2));
 %Compare irrespective of actual format.
 
-
+fprintf('Done\n')
+fprintf('testDynamicModelFieldModification passed successfully\n')
 %Switch back
 cd(currentDir)
