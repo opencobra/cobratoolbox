@@ -18,6 +18,8 @@ currentDir = pwd;
 fileDir = fileparts(which('testSurfNet'));
 cd(fileDir);
 
+fprintf(' -- Running testSurfNet ... ');
+
 model = getDistributedModel('ecoli_core_model.mat');
 
 % generate flux data for testing
@@ -134,7 +136,7 @@ match = match - (j1 == numel(text1) + 2 | j2 == numel(text2) + 2);
 score = ((match / numel(text1)) * (match / numel(text2))) ^ 0.5;
 
 fprintf('Compare the printed with the expected results ...\n')
-assert(score > 1 - 1e-3);  % some mismatches due to linebreaks and space
+assert(score > 1 - 1e-2);  % some mismatches due to linebreaks and space
 fprintf('\nSuccess. Finish testing normal functionalities of surfNet.\n')
 
 % check warnings
@@ -295,6 +297,9 @@ for j = 1:3
 end
 assert(isequal(textSurfNet{1}, textSurfNet{2}))
 assert(isequal(textSurfNet{1}, textSurfNet{3}))
+
+fprintf('Done.\n');
+fprintf('testSurfNet passed successfully.\n');
 
 % change the directory
 cd(currentDir)

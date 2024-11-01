@@ -1,15 +1,28 @@
-function [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel)
+function [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel, matrixA)
 % checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver
 %
 % USAGE:
 %
 %     [precisionEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
 %
-% INPUTS:
+% INPUT:
+%    model:             (the following fields are required - others can be supplied)
 %
-%    model:                       COBRA model structure
+%                         * S  - `m x n` Stoichiometric matrix
+%                         * lb - `n x 1` Lower bounds on net flux
+%                         * ub - `n x 1` Upper bounds on net flux
+%
 %
 % OPTIONAL INPUTS:
+%    model:
+%                         * c  - `n x 1` Linear objective coefficients
+%                         * b - `m x 1` change in concentration with time
+%                         * csense - `m x 1` character array with entries in {L,E,G}
+%                           (The code is backward compatible with an m + k x 1 csense vector,
+%                           where k is the number of coupling constraints)
+%                         * C - `k x n` Left hand side of C*v <= d
+%                         * d - `k x 1` Right hand side of C*v <= d
+%                         * dsense - `k x 1` character array with entries in {L,E,G}
 %
 %    estLevel:                level of estimation: `crude`, `medium`, `fine` (default)
 %    printLevel:              verbose level (default: 1). Level 0 is quiet.
@@ -22,7 +35,7 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 %
 %                               * .estLevel: `crude`, `medium`, `fine` (default)
 %                               * .scltol: value between 0 and 1 (column or row ratio as large as possible)
-%                               * .matrixAS: name of matrix
+%                               * .matrixA: name of matrix
 %                               * .nMets: number of metabolites
 %                               * .nRxns: number of reactions
 %                               * .minS: minimum of all stoichiometric coefficients
@@ -74,20 +87,65 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
         scltol = 1.0;
     end
 
-    % assume constraint matrix is S if no A provided.
-    if ~isfield(model, 'A') && isfield(model, 'S')
-        S = model.S;
-        matrixAS = 'S';
+    if exist('matrixA','var')
+        switch matrixA
+            case S
+                if isfield(model,'b')
+                    A = [model.S, model.b];
+                    matrixA = 'Sb';
+                else
+                    A = model.S;
+                    matrixA = 'S';
+                end
+            case C
+                if isfield(model,'d')
+                    A = [model.C, model.d];
+                    matrixA = 'Cd';
+                else
+                    A = model.C;
+                    matrixA = 'C';
+                end
+            case A
+                if isfield(model,'C') & isfield(model,'d')
+                    A = [model.S, model.b;model.C,model.d];
+                    matrixA = 'SbCd';
+                else
+                    if isfield(model,'b')
+                        A = [model.S, model.b];
+                        matrixA = 'Sb';
+                    else
+                        A = model.S;
+                        matrixA = 'S';
+                    end
+                end
+        end
     else
-        S = model.A;
-        matrixAS = 'A';
+        % assume constraint matrix is S if no A provided.
+        if ~isfield(model, 'A') && isfield(model, 'S')
+            if isfield(model,'C') & isfield(model,'d')
+                A = [model.S, model.b;model.C,model.d];
+                matrixA = 'SbCd';
+            else
+                if isfield(model,'b')
+                    A = [model.S, model.b];
+                    matrixA = 'Sb';
+                else
+                    A = model.S;
+                    matrixA = 'S';
+                end
+            end
+        else
+            A = model.A;
+            matrixA = 'A';
+        end
     end
 
+
     % determine the number of metabolites and reactions
-    [nMets, nRxns] = size(S);
+    [nMets, nRxns] = size(model.S);
 
     % determine the row and column scaling factors
-    [cscale, rscale] = gmscale(S, 0, scltol);
+    [cscale, rscale] = gmscale(A, 0, scltol);
 
     % determine the minimum and maximum scaling factors
     [rmin, imin] = min(rscale);
@@ -116,8 +174,8 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
     end
 
     % determine the extrema of stoichiometric coefficients
-    minS = full(min(min(abs(S(S ~= 0)))));
-    maxS = full(max(max(abs(S))));
+    minS = full(min(min(abs(A(A ~= 0)))));
+    maxS = full(max(max(abs(A))));
     ratioS = maxS / minS;
 
     % determine extrema of bounds
@@ -137,7 +195,7 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
     % save all calculated scaling quantities as a structure
     scalingProperties = [];
 
-    vars = {'estLevel', 'scltol', 'matrixAS', 'nMets', 'nRxns', 'minS', 'maxS', ...
+    vars = {'estLevel', 'scltol', 'matrixA', 'nMets', 'nRxns', 'minS', 'maxS', ...
             'rmin', 'imin', 'rmax', 'imax', 'cmin', 'jmin', 'cmax', 'jmax'};
 
     % fill the structure with the properties
@@ -152,11 +210,11 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
             fprintf(' Name of model:                                %s\n', model.description);
         end
         fprintf(' Estimation level:                             %s (scltol = %1.2f)\n', estLevel, scltol);
-        fprintf(' Name of matrix:                               %s\n', matrixAS);
+        fprintf(' Name of matrix:                               %s\n', matrixA);
         fprintf(' Size of matrix:\n');
-        fprintf('        * metabolites:                         %d\n', nMets);
-        fprintf('        * reactions:                           %d\n', nRxns);
-        fprintf(' Stoichiometric coefficients:\n');
+        fprintf('        * rows:                           %d\n', nMets);
+        fprintf('        * cols:                           %d\n', nRxns);
+        fprintf(' Coefficients:\n');
         fprintf('        * Minimum (absolute non-zero value):   %1.2e\n', minS);
         fprintf('        * Maximum (absolute non-zero value):   %1.2e\n', maxS);
     end

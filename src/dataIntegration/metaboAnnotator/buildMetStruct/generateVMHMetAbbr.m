@@ -3,11 +3,11 @@ function [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rx
 % predefined rules, as we would generally do it manually
 %
 % INPUT
-% met                           Metabolite name
+% met                           Metabolite name or list of names
 % metabolite_structure_rBioNet  To save time provide rBioNet either as
 %                               1) string to mat file to load, e.g.,: /path/to/metabolite_structure_rBioNet.mat
-%                               2) structure already in memory: metabolite_structure_rBioNet 
-%                                
+%                               2) structure already in memory: metabolite_structure_rBioNet
+%
 % metab                         To save time provide rBioNet (as
 %                               metab.mat file)
 % rxnDB                         To save time provide rBioNet (as
@@ -16,7 +16,7 @@ function [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rx
 %                               uniqueness should also be checked
 %
 % OUTPUT
-% VMHId                         New VMH ID
+% VMHId                         New VMH ID or list of IDs
 %
 % Ines Thiele, 09/2021
 
@@ -43,226 +43,279 @@ else
     load met_strc_rBioNet;
 end
 
-% convert input into lower case
-VMHId = lower(met);
-
-% remove unneeded parts from the input
-[VMHId] = removeJunk(VMHId);
-% keep the original but curated input name
-[met_VMHId] = VMHId;
-
-
-% replace metabolite name with known abbreviations from rBioNet
-for i = 1 : size(metab,1)
-    name = lower(metab(i,2));
-    abbr = lower(metab(i,1));
-    % clean up a bit names
-    [name] = removeJunk(name);
-    nameList_rBioNet(i,1) = name;
-    % check that abbr does not contain HC#
-    if isempty(regexp(abbr{1},'m\d\d\d\d\d')) && isempty(regexp(abbr{1},'hc\d\d\d\d\d'))  && isempty(regexp(abbr{1},'ce\d\d\d\d')) ...
-            && isempty(regexp(abbr{1},'cn\d\d\d\d'))  && isempty(regexp(abbr{1},'c\d\d\d\d\d'))&& ~strcmp(abbr{1},'m') && contains(VMHId,name)
-        
-        if strcmp(name,'sulfate')
-            abbr = 's'; % don't use so4
-        else
-            new = ['(' abbr{1} ')'];
-            VMHId = regexprep(VMHId,name,new);
-        end
-    end
+% check if met is one met or a list
+if ischar(met)
+    met = {met};
 end
 
+metList = met;
+% Initiate aray for IDs
+VMHIdList = metList;
 
-F = fieldnames(metabolite_structure_rBioNet);
-for i= 1: length(F)
-    name = metabolite_structure_rBioNet.(F{i}).metNames;
-    abbr = metabolite_structure_rBioNet.(F{i}).VMHId;
-    [name] = removeJunk(name);
-    nameList_rBioNet_strc{i,1} = name;
-    if isempty(regexp(abbr,'m\d\d\d\d\d')) && isempty(regexp(abbr,'hc\d\d\d\d\d'))  && isempty(regexp(abbr,'ce\d\d\d\d')) ...
-            && isempty(regexp(abbr,'cn\d\d\d\d'))  && isempty(regexp(abbr,'c\d\d\d\d\d'))&& ~strcmp(abbr,'m') && contains(VMHId,name)
-        
-        if strcmp(name,'sulfate')
-            abbr = 's'; % don't use so4
-        else
-
+for m = 1:numel(met)
+    % convert input into lower case
+    met = metList(m);
+    met = char(met);
+    VMHId = lower(met);
+    
+    % remove unneeded parts from the input
+    [VMHId] = removeJunk(VMHId);
+    % keep the original but curated input name
+    [met_VMHId] = VMHId;
+    
+    % replace metabolite name with known abbreviations from rBioNet
+    for i = 1 : size(metab,1)
+        name = lower(metab(i,2));
+        abbr = lower(metab(i,1));
+        % clean up a bit names
+        [name] = removeJunk(name);
+        [name] = lower(name);
+        nameList_rBioNet(i,1) = name;
+        % check that abbr does not match pattern: "M/HC/CN/CE####"
+        if isempty(regexp(abbr{1},'m\d\d\d\d\d')) && isempty(regexp(abbr{1},'hc\d\d\d\d\d'))  && isempty(regexp(abbr{1},'ce\d\d\d\d')) ...
+                && isempty(regexp(abbr{1},'cn\d\d\d\d'))  && isempty(regexp(abbr{1},'c\d\d\d\d\d'))&& ~strcmp(abbr{1},'m') && strcmp(VMHId,name)
+            if strcmp(name,'sulfate')
+                abbr = 's'; % don't use so4
+            else
+                new = ['(' abbr{1} ')'];
+                VMHId = regexprep(VMHId,name,new);
+            end
+        end
+    end
+    
+    
+    F = fieldnames(metabolite_structure_rBioNet);
+    for i= 1: length(F)
+        name = metabolite_structure_rBioNet.(F{i}).metNames;
+        abbr = metabolite_structure_rBioNet.(F{i}).VMHId;
+        [name] = removeJunk(name);
+        [name] = lower(name);
+        abbr = lower(abbr);
+        nameList_rBioNet_strc{i,1} = name;
+        if isempty(regexp(abbr,'m\d\d\d\d\d')) && isempty(regexp(abbr,'hc\d\d\d\d\d'))  && isempty(regexp(abbr,'ce\d\d\d\d')) ...
+                && isempty(regexp(abbr,'cn\d\d\d\d'))  && isempty(regexp(abbr,'c\d\d\d\d\d'))&& ~strcmp(abbr,'m') && strcmp(VMHId,name)
+            %         if strcmp(name,'sulfate')
+            %             abbr = 's'; % don't use so4
+            %         else
             if ischar(abbr)
                 new = ['(' abbr ')'];
             else
                 new = ['(' abbr{1} ')'];
             end
             VMHId = regexprep(VMHId,name,new);
+            %         end
         end
     end
-end
+    
+    
+    
+    
+    % these rules are defined as I would have manually implemented them based
+    % on a metabolite name.
+    transl = {
+        'glucuronide'   '-g-'
+        'monophosphate' '-mp-'
+        'diphosphate'   '-dp-'
+        'triphosphate'   '-tp-'
+        'phosphate' '-p-'
+        'methyl'    '-m-'
+        'uridine'   '-u-'
+        'deoxy' '-d-'
+        'dehydro'   '-d-'
+        'fluoro'    '-f-'
+        'uracil'    '-ura-'
+        'acetyl'    '-ac-'
+        'glutathione'   '-gth-'
+        'quinone'   '-q-'
+        'thio'  '-t-'
+        'pyridil'   'py'
+        'amino' '-am-'
+        'amine' '-am-'
+        'amide' '-ad-'
+        'hydroxy'   '-h-'
+        'alpha' '-a-'
+        'beta'  '-b-'
+        'gamma' '-g-'
+        'formyl'    '-f-'
+        'oxide' '-o-'
+        'carboxyl' '-ca-'
+        'carboxy' '-ca-'
+        'carboxide' '-ca-'
+        'oxi'   '-o-'
+        'oxy'   '-o-'
+        'riboside'  '-rib-'
+        'phospho'   '-p-'
+        'tauro' '-t-'
+        'cheno' '-c-'
+        'deaminated'    '-da-'
+        'deaminate' '-da-'
+        'deamine' '-da-'
+        'acid'  '-a-'
+        'nicotinic' '-ni-'
+        'tadine' 'td'
+        'di'    '-d-'
+        'carbaldehyde'  '-ca-'
+        'carbaldh'  '-ca-'
+        'aldehyde'  '-al-'
+        'oxo'   '-o-'
+        'hydro' '-h-'
+        'azole' '-az-'
+        'tri'   '-t-'
+        'warfarin'  '-warf-'
+        'sulphate' '-s-'
+        'sulfate' '-s-'
+        'glucuronate'   '-glc-'
+        'benzyl'    '-b-'
+        'tetra'    '-t-'
+        'enoyl' '-e-'
+        'trans' 't'
+        'cis' 'c'
+        'mono' 'm'
 
-
-% these rules are defined as I would have manually implemented them based
-% on a metabolite name.
-transl = {
-    'glucuronide'   '-g-'
-    'monophosphate' '-mp-'
-    'diphosphate'   '-dp-'
-    'triphosphate'   '-tp-'
-    'phosphate' '-p-'
-    'methyl'    '-m-'
-    'uridine'   '-u-'
-    'deoxy' '-d-'
-    'dehydro'   '-d-'
-    'fluoro'    '-f-'
-    'uracil'    '-ura-'
-    'acetyl'    '-ac-'
-    'glutathione'   '-gth-'
-    'quinone'   '-q-'
-    'thio'  '-t-'
-    'pyridil'   'py'
-    'amino' '-am-'
-    'amine' '-am-'
-    'amide' '-ad-'
-    'hydroxy'   '-h-'
-    'alpha' '-a-'
-    'beta'  '-b-'
-    'gamma' '-g-'
-    'formyl'    '-f-'
-    'oxide' '-o-'
-    'carboxyl' '-ca-'
-    'carboxy' '-ca-'
-    'carboxide' '-ca-'
-    'oxi'   '-o-'
-    'oxy'   '-o-'
-    'riboside'  '-rib-'
-    'phospho'   '-p-'
-    'tauro' '-t-'
-    'cheno' '-c-'
-    'deaminated'    '-da-'
-    'deaminate' '-da-'
-    'deamine' '-da-'
-    'acid'  '-a-'
-    'nicotinic' '-ni-'
-    'tadine' 'td'
-    'di'    '-d-'
-    'carbaldehyde'  '-ca-'
-    'carbaldh'  '-ca-'
-    'aldehyde'  '-al-'
-    'oxo'   '-o-'
-    'hydro' '-h-'
-    'azole' '-az-'
-    'tri'   '-t-'
-    'warfarin'  '-warf-'
-    'sulphate' '-s-'
-    'glucuronate'   '-glc-'
-    'benzyl'    '-b-'
-    'tetra'    '-t-'
-    'enoyl' '-e-'
-    'trans' 't'
-    'cis' 'c'
-    'mono' 'm'
-    };
-transl = lower(transl);
-for i = 1 : size(transl,1)
-    VMHId = regexprep(VMHId,transl{i,1},transl{i,2});
-end
-
-% no shortening happened
-VMHIdO = VMHId;
-
-% choose the first 4 letters
-VMHId = regexprep(VMHId,'-([a-z])([a-z])([a-z])([a-z])([a-z]+)-','-$1$2$3$4-');
-VMHId = regexprep(VMHId,'-([a-z])([a-z])([a-z])([a-z])([a-z]+)$','-$1$2$3$4-');
-VMHId = regexprep(VMHId,'^([a-z])([a-z])([a-z])([a-z])([a-z]+)-','-$1$2$3$4-');
-VMHId = regexprep(VMHId,'([a-z])([a-z])([a-z])([a-z])([a-z]+)','-$1$2$3$4-');
-% remove numbers between two letters
-VMHIdN = VMHId;
-% not of the form of DG(15:0/18:2(9Z,12Z)/0:0)
-if length(find(strfind(VMHId,'/')))==0
-    VMHId = regexprep(VMHId,'([a-z])(\d\d+)([a-z])','$1$3');
-else
-    VMHId = regexprep(VMHId,'\/','_');
-end
-VMHId = regexprep(VMHId,'\s','');
-VMHId = regexprep(VMHId,'-','');
-VMHId = regexprep(VMHId,'\(','');
-VMHId = regexprep(VMHId,'\)','');
-VMHId = regexprep(VMHId,'\:','');
-VMHId = regexprep(VMHId,',','');
-VMHId = regexprep(VMHId,'+','_');
-VMHId = regexprep(VMHId,'{','');
-VMHId = regexprep(VMHId,'}','_');
-VMHId = regexprep(VMHId,'__','_');
-VMHId = regexprep(VMHId,'^_','');
-VMHId = regexprep(VMHId,'!','');
-VMHId = regexprep(VMHId,'‐','');
-
-% check that this abbr does not exist yet
-[VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-% if the abbr already exists, try the version with the internal numbers
-if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
-    % check whether it is the same metabolite based on name match (not
-    % more)
-    if isempty(find(ismember(nameList_rBioNet_strc,met_VMHId))) &&  isempty(find(ismember(nameList_rBioNet,met_VMHId)))
-        % choose a 5 letter abbr
-        VMHId = VMHIdO;
-        % add 1 to the end
-        VMHId = [VMHId '1'];
-        [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-        if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
-            VMHId = VMHIdO;
-            % add 1 to the end
-            VMHId = [VMHId '2'];
-            [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-        end
-        
-        VMHId = regexprep(VMHId,'\s','');
-        VMHId = regexprep(VMHId,'-','');
-        VMHId = regexprep(VMHId,'\(','');
-        VMHId = regexprep(VMHId,'\)','');
-        VMHId = regexprep(VMHId,'\:','');
-        VMHId = regexprep(VMHId,',','');
-        VMHId = regexprep(VMHId,'+','_');
-        VMHId = regexprep(VMHId,'{','');
-        VMHId = regexprep(VMHId,'}','_');
-VMHId = regexprep(VMHId,'‐','');
-
+        };
+    
+    %reorder by length so longer strings are matched first
+    word_lengths = cellfun(@strlength, transl(:, 1));
+    transl(:, 3) = num2cell(word_lengths);
+    transl = sortrows(transl, -3);
+    transl(:, 3) = [];
+    
+    %If name updated to LLNNNN format from RbioNet, then revert
+    if isempty(regexp(abbr,'m\d\d\d\d\d')) && isempty(regexp(abbr,'hc\d\d\d\d\d'))  && isempty(regexp(abbr,'ce\d\d\d\d')) ...
+            && isempty(regexp(abbr,'cn\d\d\d\d'))  && isempty(regexp(abbr,'c\d\d\d\d\d'))
+    else
+        VMHId = name;
     end
-end
-
-% now check also against the costum metabolite abbr list
-if exist('customMetAbbrList','var')
-    if ~isempty(customMetAbbrList) &&  length(strmatch(VMHId,customMetAbbrList,'exact'))>0
-        % choose a 5 letter abbr
-        VMHId = VMHIdO;
-        % add 1 to the end
-        VMHId = [VMHId '1'];
-        num = 2;
-        [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-        while ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
+    
+    
+    % di, dihydro...what happens there
+    transl = lower(transl);
+    for i = 1 : size(transl,1)
+        VMHId = regexprep(VMHId,transl{i,1},transl{i,2});
+    end
+    
+    % no shortening happened
+    VMHIdO = VMHId;
+    
+    % choose the first 4 letters
+    VMHId = regexprep(VMHId,'-([a-z])([a-z])([a-z])([a-z])([a-z]+)-','-$1$2$3$4-');
+    VMHId = regexprep(VMHId,'-([a-z])([a-z])([a-z])([a-z])([a-z]+)$','-$1$2$3$4-');
+    VMHId = regexprep(VMHId,'^([a-z])([a-z])([a-z])([a-z])([a-z]+)-','-$1$2$3$4-');
+    VMHId = regexprep(VMHId,'([a-z])([a-z])([a-z])([a-z])([a-z]+)','-$1$2$3$4-');
+    % remove numbers between two letters
+    VMHIdN = VMHId;
+    % not of the form of DG(15:0/18:2(9Z,12Z)/0:0)
+    if length(find(strfind(VMHId,'/')))==0
+        VMHId = regexprep(VMHId,'([a-z])(\d\d+)([a-z])','$1$3');
+    else
+        VMHId = regexprep(VMHId,'\/','_');
+    end
+    VMHId = regexprep(VMHId,'\s','');
+    VMHId = regexprep(VMHId,'-','');
+    VMHId = regexprep(VMHId,'\(','');
+    VMHId = regexprep(VMHId,'\)','');
+    VMHId = regexprep(VMHId,'\:','');
+    VMHId = regexprep(VMHId,',','');
+    VMHId = regexprep(VMHId,'+','_');
+    VMHId = regexprep(VMHId,'{','');
+    VMHId = regexprep(VMHId,'}','_');
+    VMHId = regexprep(VMHId,'__','_');
+    VMHId = regexprep(VMHId,'^_','');
+    VMHId = regexprep(VMHId,'!','');
+    VMHId = regexprep(VMHId,'‐','');
+    
+    % check that this abbr does not exist yet
+    [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
+    % check if it already exists in inputted list
+    if m>1
+        VMHIdList_existance = find(strcmp(VMHIdList(:, 2), VMHId));
+    else
+        VMHIdList_existance = [];
+    end
+    
+    if  ~isempty(VMHIdList_existance)
+        x = length(VMHId);
+        character = VMHIdO(x+1);
+        VMHId = [VMHId, character];  
+    else
+    end
+    
+          
+    % if the abbr already exists, try the version with the internal numbers
+    if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1'))) 
+        % check whether it is the same metabolite based on name match (not
+        % more)
+        if isempty(find(ismember(nameList_rBioNet_strc,met_VMHId))) &&  isempty(find(ismember(nameList_rBioNet,met_VMHId)))
+            % choose a 5 letter abbr
             VMHId = VMHIdO;
             % add 1 to the end
-            VMHId = [VMHId num2str(num)];
-            num = num+1;
-            [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
-        end
-        
-        VMHId = regexprep(VMHId,'\s','');
-        VMHId = regexprep(VMHId,'-','');
-        VMHId = regexprep(VMHId,'\(','');
-        VMHId = regexprep(VMHId,'\)','');
-        VMHId = regexprep(VMHId,'\:','');
-        VMHId = regexprep(VMHId,',','');
-        VMHId = regexprep(VMHId,'+','_');
-        VMHId = regexprep(VMHId,'{','');
-        VMHId = regexprep(VMHId,'}','_');
-        VMHId = regexprep(VMHId,'/','_');
-        VMHId = regexprep(VMHId,'‐','');
-
-        % Check here again if it is in customMetAbbrList (needs first
-        % converted with regexprep)
-         while ~isempty(find(ismember(customMetAbbrList,VMHId))>0) 
             VMHId = [VMHId '1'];
-         end
+            [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
+            if ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
+                VMHId = VMHIdO;
+                % add 1 to the end
+                VMHId = [VMHId '2'];
+                [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
+            end
+            
+            VMHId = regexprep(VMHId,'\s','');
+            VMHId = regexprep(VMHId,'-','');
+            VMHId = regexprep(VMHId,'\(','');
+            VMHId = regexprep(VMHId,'\)','');
+            VMHId = regexprep(VMHId,'\:','');
+            VMHId = regexprep(VMHId,',','');
+            VMHId = regexprep(VMHId,'+','_');
+            VMHId = regexprep(VMHId,'{','');
+            VMHId = regexprep(VMHId,'}','_');
+            VMHId = regexprep(VMHId,'‐','');
+            
+        end
     end
+    
+
+    
+    % now check also against the custom metabolite abbr list
+    if exist('customMetAbbrList','var')
+        if ~isempty(customMetAbbrList) &&  length(strmatch(VMHId,customMetAbbrList,'exact'))>0
+            % choose a 5 letter abbr
+            VMHId = VMHIdO;
+            % add 1 to the end
+            VMHId = [VMHId '1'];
+            num = 2;
+            [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
+            while ~isempty(find(contains(VMH_existance(:,3),'1'))) ||  ~isempty(find(contains(rBioNet_existance(:,3),'1')))
+                VMHId = VMHIdO;
+                % add 1 to the end
+                VMHId = [VMHId num2str(num)];
+                num = num+1;
+                [VMH_existance,rBioNet_existance] = checkAbbrExists({VMHId},metab,rxn,metabolite_structure_rBioNet);
+            end
+            
+            VMHId = regexprep(VMHId,'\s','');
+            VMHId = regexprep(VMHId,'-','');
+            VMHId = regexprep(VMHId,'\(','');
+            VMHId = regexprep(VMHId,'\)','');
+            VMHId = regexprep(VMHId,'\:','');
+            VMHId = regexprep(VMHId,',','');
+            VMHId = regexprep(VMHId,'+','_');
+            VMHId = regexprep(VMHId,'{','');
+            VMHId = regexprep(VMHId,'}','_');
+            VMHId = regexprep(VMHId,'/','_');
+            VMHId = regexprep(VMHId,'‐','');
+            
+            % Check here again if it is in customMetAbbrList (needs first
+            % converted with regexprep)
+            while ~isempty(find(ismember(customMetAbbrList,VMHId))>0)
+                VMHId = [VMHId '1'];
+            end
+        end
+    end
+    
+    VMHIdList{m, 2} = VMHId;
 end
 
+VMHId = VMHIdList;
+writecell(VMHIdList, 'generatedVMHMetAbbr.csv')
 
 function [name] = removeJunk(name)
 % remove parts of the metabolite name (in input as well as in rBioNet) that

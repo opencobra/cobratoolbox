@@ -7,8 +7,17 @@
 % Authors:
 %     - Thomas Pfau 2018
 
+% save the current path and initialize the test
+currentDir = cd(fileparts(which(mfilename)));
+
+% determine the test path for references
+testPath = pwd;
+
+% Initiate the test
+fprintf(' -- Running testMergeTwoModels ... ');
+
 % We will create 2 toy models
-%model1
+% model1
 model1 = createModel();
 model1 = addMultipleMetabolites(model1,{'A[c]','B[c]','C[c]','D[c]','E[c]'},'metKEGGID',{'C1','C2','C3','C4','C5'});
 model1 = addGenes(model1,{'G1','G2','G3'},'geneNames',{'Gene1','Gene2','Gene3'});
@@ -77,6 +86,13 @@ assert(isempty(modelJoint.genes));
 %Test appropriate error if there are duplicate ids with distinct
 %stoichiometries:
 model2 = addReaction(model2,'Rcommon','A[c] -> C[c]');
-assert(verifyCobraFunctionError('mergeTwoModels','outputArgCount',1,'inputs',{model1,model2},...
-                         'testMessage','The following reactions were present in both models but had distinct stoichiometries:\nRcommon'));
 
+mergeTwoModels(model1, model2);
+
+assert(strcmp(lastwarn, 'The following reactions were present in both models but had distinct stoichiometries:\nRcommon'))
+
+fprintf('\nDone.\n');
+fprintf('testMergeTwoModels passed successfully.\n');
+
+% change the directory
+cd(currentDir);

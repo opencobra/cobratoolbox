@@ -1,4 +1,4 @@
-function [modelOut, metRemoveList, ctrsRemoveList] = removeRxns(model, rxnRemoveList, varargin)
+function [modelOut, metRemovedList, ctrsRemovedList] = removeRxns(model, rxnRemoveList, varargin)
 % Removes reactions from a model
 %
 % USAGE:
@@ -27,8 +27,8 @@ function [modelOut, metRemoveList, ctrsRemoveList] = removeRxns(model, rxnRemove
 %
 % OUTPUT:
 %    model:             COBRA model w/o selected reactions
-%    metRemoveList:     Cell array of metabolite abbreviations that were removed
-%    ctrsRemoveList:    Cell array of model.ctrs that were removed
+%    metRemovedList:    Cell array of metabolite abbreviations that were removed
+%    ctrsRemovedList:   Cell array of model.ctrs that were removed
 %                       Alternatively, if model.ctrs did not exist, then a
 %                       boolean vector displaying the rows of C*v <=d that were
 %                       removed.
@@ -124,13 +124,13 @@ if metFlag
             removeMets = getCorrespondingRows(model.S,true(size(model.S,1),1),~selectRxns,'inclusive');
     end
 
-    metRemoveList = model.mets(removeMets);
+    metRemovedList = model.mets(removeMets);
     
-    if ~isempty(metRemoveList)
-        modelOut = removeMetabolites(modelOut, metRemoveList, false);
+    if ~isempty(metRemovedList)
+        modelOut = removeMetabolites(modelOut, metRemovedList, false);
     end
 else
-    metRemoveList = {''};
+    metRemovedList = {''};
 end
 
 %Also if there is a C field, remove all empty Constraints (i.e. constraints
@@ -184,9 +184,9 @@ if isfield(modelOut,'C')
         modelOut.dsense = model.dsense(selectConstraints,1);
         if isfield(model,'ctrs')
             modelOut.ctrs = model.ctrs(selectConstraints,1);
-            ctrsRemoveList=model.ctrs(~selectConstraints,1);
+            ctrsRemovedList=model.ctrs(~selectConstraints,1);
         else
-            ctrsRemoveList=~selectConstraints;
+            ctrsRemovedList=~selectConstraints;
         end
         if isfield(model,'ctrNames')
             modelOut.ctrNames = model.ctrNames(selectConstraints,1);
@@ -197,12 +197,12 @@ if isfield(modelOut,'C')
         fprintf('%s\n',[num2str(nnz(~selectConstraints)) ' model.C constraints removed'])
     else
         if isfield(model,'ctrs')
-            ctrsRemoveList={''};
+            ctrsRemovedList={''};
         else
-            ctrsRemoveList = ~selectConstraints;
+            ctrsRemovedList = ~selectConstraints;
         end
     end
 else
-    ctrsRemoveList = {''};
+    ctrsRemovedList = {''};
 end
 

@@ -19,7 +19,7 @@ cd(fileDir);
 tol = 1e-4;
 
 loopToyModel = createToyModelForgapFind();
-LPproblem = buildLPproblemFromModel(loopToyModel);
+LPproblem = buildOptProblemFromModel(loopToyModel);
 nRxns = numel(loopToyModel.rxns);
 solverPkgs = {'tomlab_cplex', 'gurobi', 'ibm_cplex','glpk'};
 methods = [1,2];

@@ -163,8 +163,6 @@ ureacs = unique(modelNew.rxns);
 if ~(numel(modelNew.rxns) == numel(ureacs))
     warning(['The following reactions were present in both models but had distinct stoichiometries:\n',...
     strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
-    error(['The following reactions were present in both models but had distinct stoichiometries:\n',...
-    strjoin(ureacs(cellfun(@(x) sum(ismember(modelNew.rxns,x)) > 1,ureacs)),', ')]);
 end
 
 if mergeGenes && (isfield(model1,'rxnGeneMat') || isfield(model2, 'rxnGeneMat'))

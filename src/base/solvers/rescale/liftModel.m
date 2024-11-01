@@ -44,7 +44,7 @@ if exist('fileName','var') && exist('directory','var') && isempty(model)
 end
 
 %save original model
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 
 % Assume constraint matrix is S if no A provided.

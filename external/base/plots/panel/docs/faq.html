@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Panel Documentation</title>
+<link rel="stylesheet" type="text/css" href="panel.css" />
+</head>
+
+<body>
+
+
+
+
+<div id="main">
+
+<div>
+<a href="index.html">Overview</a> | <a href="layout.html">Layout</a> | <a href="export.html">Export</a> | <u><a href="faq.html">FAQ</a></u>
+</div>
+
+
+<h1>Panel 2</h1>
+
+
+
+
+<h2>FAQ</h2>
+
+<dl>
+
+<dh>How do I get started / find help?</dh>
+
+<dd>At the Matlab prompt, <tt>help panel</tt>, <tt>help panel/panel</tt>, <tt>help panel/demo</tt> or <tt>doc panel</tt>.</dd>
+
+<dh>What's up with <tt>semilogx</tt>, <tt>semilogy</tt>, <tt>loglog</tt>, not producing log scales?</dh>
+
+<dd>If you call <tt>select()</tt> on a new panel, it creates an axis for you. To protect font styling, it sets its "NextPlot" property to "replacechildren" (the default for new axes is "replace"). The high-level plotting functions <tt>semilogx</tt>, <tt>semilogy</tt>, <tt>loglog</tt> will not work correctly after this. There are two workarounds:
+
+<div style='margin-left:32px'>
+
+<div style='margin-top:8px; font-style:italic'>1) Call the plotting function first (to create the axis) and then <tt>select()</tt> the newly-created axis into the panel (rather than allowing Panel to create the new axis for you).</div>
+
+<div class=snippet>
+p = panel;
+semilogx(1:10);
+p.select(gca);
+</div>
+
+<div style='margin-top:8px; font-style:italic'>2) Set the axis scale type manually afterwards (this is all that semilogx does over plot).</div>
+
+<div class=snippet>
+p = panel;
+p.select();
+plot(1:10);
+set(gca, 'xscale', 'log');
+</div>
+
+</div>
+</dd>
+
+<!--
+<p class="note"><b><i>NOTE</b></i>
+It's possible this can be swept away - it's on the To-do list to look into it. What would be the effect on font management? Probably negligible...
+</p>
+-->
+
+<dh>My dashed/dotted lines look tiny and/or grey and/or solid in an exported image file. Why?</dh>
+
+<dd>This is a problem with the Matlab renderer, rather than with Panel itself. However, Panel can help - see <tt>demopanelI</tt> for details (or <tt>help panel/fixdash</tt>).</dd>
+
+</dl>
+
+
+</div>
+
+
+
+</body>
+</html>

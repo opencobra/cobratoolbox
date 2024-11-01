@@ -130,7 +130,7 @@ function solution = solveCobraEP(EPproblem, varargin)
 %
 % Author(s): Ronan M.T. Fleming, 2021
 
-[problemTypeParams, solverParams] = parseSolverParameters('EP', varargin{:});
+[problemTypeParams, solverOnlyParams] = parseSolverParameters('EP', varargin{:});
 
 if ~isfield(problemTypeParams,'debug')
     problemTypeParams.debug = 1;
@@ -138,7 +138,7 @@ end
 
 % Remove outer function specific parameters to avoid crashing solver interfaces
 % Default EP parameters are removed within solveCobraEP, so are not removed here
-solverParams = mosekParamStrip(solverParams);
+solverOnlyParams = mosekParamStrip(solverOnlyParams);
 
 if any(EPproblem.lb>EPproblem.ub)
     error('EPproblem.lb>EPproblem.ub');
@@ -178,29 +178,26 @@ if problemTypeParams.debug
         case 'mosek'
             %https://docs.mosek.com/8.1/toolbox/solving-linear.html
             if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
+                solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
             end
             if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
+                solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
             end
+
+            %remove any fields with names that do not begin with 'MSK_'
+            solverOnlyParams = mosekParamStrip(solverOnlyParams);
+
+            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,'minimize');
+            
             %If the feasibility tolerance is changed by the solverParams
             %struct, this needs to be forwarded to the cobra Params for the
             %final consistency test!
             if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
+                solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
             end
-            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,'minimize');
-            
+
             %parse mosek result structure
-            [solutionLP2.stat,solutionLP2.origStat,x,y,w] = parseMskResult(res);
-%             if stat ==1
-%                 f=c'*x;
-%                 % slack for blc <= A*x <= buc
-%                 s = b - A * x; % output the slack variables
-%             else
-%                 f = NaN;
-%                 s = NaN*ones(size(A,1),1);
-%             end
+            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,EPproblem,solverOnlyParams,problemTypeParams.printLevel);
         
             switch solutionLP2.stat
                 case 0
@@ -337,38 +334,38 @@ switch problemTypeParams.solver
             end
         end
                 
-        if isfield(solverParams,'d1')
-            d1 = solverParams.d1;
+        if isfield(solverOnlyParams,'d1')
+            d1 = solverOnlyParams.d1;
         else
             d1 = 1e-4;
         end
-        if isfield(solverParams,'d2')
-            d2 = solverParams.d2;
+        if isfield(solverOnlyParams,'d2')
+            d2 = solverOnlyParams.d2;
         else
             d2 = 1e-4;
         end
-        if isfield(solverParams,'x0')
-            x0 = solverParams.x0;
+        if isfield(solverOnlyParams,'x0')
+            x0 = solverOnlyParams.x0;
         else
             x0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverParams,'y0')
-            y0 = solverParams.y0;
+        if isfield(solverOnlyParams,'y0')
+            y0 = solverOnlyParams.y0;
         else
             y0 = ones(size(Aeq,1),1);
         end
-        if isfield(solverParams,'z0')
-            z0 = solverParams.z0;
+        if isfield(solverOnlyParams,'z0')
+            z0 = solverOnlyParams.z0;
         else
             z0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverParams,'xsize')
-            xsize = solverParams.xsize;
+        if isfield(solverOnlyParams,'xsize')
+            xsize = solverOnlyParams.xsize;
         else
             xsize = 1;
         end
-        if isfield(solverParams,'zsize')
-            zsize = solverParams.zsize;
+        if isfield(solverOnlyParams,'zsize')
+            zsize = solverOnlyParams.zsize;
         else
             zsize = 1;
         end
@@ -570,7 +567,7 @@ switch problemTypeParams.solver
         %
         %         Assuming Q is positive semidefinite, there exists an F such that Q = F'*F
         %
-        %         min  (d.*x)'*(log(x./y) + c)  + (1/2)*x'*(R'*R)*x
+        %         min  (d.*x)'*(log(x./y) + c)  + (1/2)*x'*(F'*F)*x
         %         s.t. l <= A[x;y] <= u
         %
         %         where d,c,A,l,u,Q are data and x,y are variables, is equivalent to
@@ -585,7 +582,7 @@ switch problemTypeParams.solver
         %         min   d*e + d*c*x + q 
         %         s.t.   (y, x, -e) \in K_{exp}     Exponential cone % MSK_CT_PEXP
         %                (1, s, Fx) \in Q^{k+2}_{r} Quadratic cone % MSK_CT_QUAD
-        %         l <= A[x;y] <= u
+        %         l <= [A, 0, 0]*[x;y;e;s] <= u
         %
         %         Such a problem could be formulated using the Affine conic constraints, as shown in the following code:
         
@@ -630,7 +627,7 @@ switch problemTypeParams.solver
         Oz1 = sparse(size(A,1),quadCone1);
         
         Ox1 = sparse(p,varNotNorm);
-        Ip  = spdiag(ones(p,1));
+        Ip  = spdiags(ones(p,1));
         Opd = sparse(p,nExpCone);
         Opq = sparse(p,nQuadCone);
         Op1 = sparse(p,quadCone1);
@@ -677,10 +674,11 @@ switch problemTypeParams.solver
         else
             [~, res] = mosekopt('symbcon echo(0)');
         end
-%         For affine conic constraints Fx+g∈, where =1×⋯×s, cones is a list consisting of s
-%         concatenated cone descriptions. If a cone requires no additional parameters (quadratic, rotated quadratic, exponential, zero) then its description is
-%         [type,len]
+        % https://docs.mosek.com/9.2/toolbox/data-types.html#cones
+%         For affine conic constraints Fx+g \in K, where K = K_1 * K_2 * ... * K_s, cones is a list consisting of concatenated cone descriptions. 
+%         If a cone requires no additional parameters (quadratic, rotated quadratic, exponential, zero) then its description is [type,len]
 %         where type is the type (conetype) and len is the length (dimension). The length must be present.
+        
         %cone type 
         prob.cones(1:2:2*nExpCone) = res.symbcon.MSK_CT_PEXP;
         nCone = nExpCone+nQuadCone;
@@ -814,23 +812,23 @@ switch problemTypeParams.solver
         %set default mosek parameters for this type of problem
         paramMosek=mosekParamSetEFBA;
         
-        if ~isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-            if isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = solverParams.feasTol;
+        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
+            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
+                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = solverOnlyParams.feasTol;
             else
                 paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = problemTypeParams.feasTol;
             end
         end
-        if ~isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-            if isfield(solverParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = solverParams.optTol;
+        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
+            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
+                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = solverOnlyParams.optTol;
             else
                 paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = problemTypeParams.optTol;
             end
         end
         
         % only set the print level if not already set via solverParams structure
-        if ~isfield(solverParams, 'MSK_IPAR_LOG')
+        if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
             switch problemTypeParams.printLevel
                 case 0
                     echolev = 0;
@@ -851,7 +849,7 @@ switch problemTypeParams.solver
             end
             
         end
-        %overised if in debug mode
+        %overide if in debug mode
         if problemTypeParams.debug
             cmd = 'minimize';
         end
@@ -874,8 +872,10 @@ switch problemTypeParams.solver
         solution.time = toc;
         
         %parse mosek result structure      
-        [stat,origStat,x,y,z,s,doty] = parseMskResult(res,prob.a,prob.blc,prob.buc,problemTypeParams.printLevel,paramMosek);
-        
+       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,printLevel)
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
+       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,printLevel)
+
         solution.stat = stat;
         solution.origStat = origStat;
         switch stat
@@ -890,30 +890,39 @@ switch problemTypeParams.solver
                         fprintf('%8.4g %8.4g %8.4g\n',prob.blx(ind(i)),x(ind(i)),prob.bux(ind(i)));
                     end
                 end
+
+                %slacks
+                sbl = prob.a*x - prob.blc;
+                sbu = prob.buc - prob.a*x;
+                s = sbu - sbl; %TODO -double check this
+                if problemTypeParams.printLevel>1
+                    fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                    fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+                end
                 
                 if problemTypeParams.printLevel > 1
                     % Problem definition here: https://docs.mosek.com/9.2/toolbox/prob-def-affine-conic.html
                     fprintf('%s\n','Optimality conditions (numerical)')
                     % Guide to interpreting the solution summary: https://docs.mosek.com/9.2/toolbox/debugging-log.html#continuous-problem
                     fprintf('%8.2g %s\n',norm(prob.a(prob.blc==prob.buc,:)*x - prob.blc(prob.blc==prob.buc),inf), '|| A*x - b ||_inf');
-                    val = norm(prob.c - prob.a'*y - z - prob.f'*doty,inf);
-                    fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*doty ||_inf');
+                    val = norm(prob.c - prob.a'*y - z - prob.f'*k,inf);
+                    fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*k ||_inf');
                     if val>1e-6 || problemTypeParams.debug
-                        solution.T0 = table(prob.c - prob.a'*y - z - prob.f'*doty,prob.c, prob.a'*y, z,prob.f'*doty,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
+                        solution.T0 = table(prob.c - prob.a'*y - z - prob.f'*k,prob.c, prob.a'*y, z,prob.f'*k,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
                     end
-                    %fprintf('%8.2g %s\n',norm(prob.c - prob.f'*s,inf), '|| c - F''s ||_inf');
+                    %fprintf('%8.2g %s\n',norm(prob.c - prob.f'*s,inf), '|| c - F''k ||_inf');
                     fprintf('%8.2g %s\n',norm(-y + res.sol.itr.slc - res.sol.itr.suc,inf), '|| -y + res.sol.itr.slc - res.sol.itr.suc ||_inf');
                     %fprintf('%8.2g %s\n',prob.c'*x - prob.b'*y, ' c''*x -b''*y');
                     
-                    fprintf('%8.2g %s\n',(prob.f*x + prob.g)'*doty, '(F*x + g)''*s >= 0');
+                    fprintf('%8.2g %s\n',(prob.f*x + prob.g)'*k, '(F*x + g)''*k >= 0');
                 end
                 
                 %%% Reorder
                 % Dual variables to affine conic constraints, based on original order of rows in F matrix
-                y_K = zeros(length(doty),1);
-                y_K(1:nCone,1) = doty(1:3:3*nCone);
-                y_K(nCone+1:2*nCone,1) = doty(2:3:3*nCone);
-                y_K(2*nCone+1:3*nCone,1) = doty(3:3:3*nCone);
+                y_K = zeros(length(k),1);
+                y_K(1:nCone,1) = k(1:3:3*nCone);
+                y_K(nCone+1:2*nCone,1) = k(2:3:3*nCone);
+                y_K(2*nCone+1:3*nCone,1) = k(3:3:3*nCone);
                 
                 %check with the original order of the affine cone constraints
                 val = norm(prob.c - prob.a'*y - z - F'*y_K,inf);
@@ -921,7 +930,7 @@ switch problemTypeParams.solver
                     fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*y_K ||_inf');
                 end
                 if val>1e-6 || problemTypeParams.debug
-                    solution.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*doty,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
+                    solution.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*k,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
                 end
                 
                 if problemTypeParams.printLevel > 1
@@ -1009,7 +1018,7 @@ switch problemTypeParams.solver
                 
             otherwise
                 
-                doty = NaN*ones(size(prob.f,1),1);
+                k = NaN*ones(size(prob.f,1),1);
         end              
     otherwise
         error([problemTypeParams.solver ' is an unrecognised solver'])
@@ -1023,46 +1032,49 @@ switch solution.stat
                 disp(solution.origStat)
                 %solution.origStat: 'PRIMAL_INFEASIBLE_CER'
                 solutionLP = solveCobraLP(EPproblem);
+                statLP=solutionLP.stat;
+                
             case 'mosek'
                 %https://docs.mosek.com/8.1/toolbox/solving-linear.html
                 if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
+                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
                 end
                 if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                    solverParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
+                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
                 end
                 %If the feasibility tolerance is changed by the solverParams
                 %struct, this needs to be forwarded to the cobra Params for the
                 %final consistency test!
                 if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverParams.feasTol = solverParams.MSK_DPAR_INTPNT_TOL_PFEAS;
+                    solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
                 end
 
                 
                 % only set the print level if not already set via solverParams structure
-                if ~isfield(solverParams, 'MSK_IPAR_LOG')
+                if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
                     switch problemTypeParams.printLevel
                         case 0
                             echolev = 0;
                         case 1
                             echolev = 3;
                         case 2
-                            solverParams.MSK_IPAR_LOG_INTPNT = 1;
-                            solverParams.MSK_IPAR_LOG_SIM = 1;
+                            solverOnlyParams.MSK_IPAR_LOG_INTPNT = 1;
+                            solverOnlyParams.MSK_IPAR_LOG_SIM = 1;
                             echolev = 3;
                         otherwise
                             echolev = 0;
                     end
                 end
                 if echolev == 0
-                    solverParams.MSK_IPAR_LOG = 0;
+                    solverOnlyParams.MSK_IPAR_LOG = 0;
                     cmd = ['minimize echo(' int2str(echolev) ')'];
                 else
                     cmd = 'minimize';
                 end
-                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverParams,cmd);
+                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,cmd);
                 
-                [statLP,origStat,x,y,z,s,doty] = parseMskResult(res,EPproblem.A,EPproblem.blc,EPproblem.buc,problemTypeParams.printLevel);
+                %[stat,origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,prob,problemTypeParams.printLevel);
+                [statLP,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
                 
    
         end

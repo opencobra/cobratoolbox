@@ -6,7 +6,7 @@ function addNewMatlabVerToCompatMatrix(fileName)
 % fileName: full filename of compatMatrix.rst including path
 % 
 % USAGE:
-% addNewMatlabVerToCompatMatrix('~/work/sbgCloud/code/fork-cobratoolbox/docs/source/installation/compatMatrix.rst')
+% addNewMatlabVerToCompatMatrix('~/drive/sbgCloud/code/fork-cobratoolbox/docs/source/installation/compatMatrix.rst')
 
 % Ronan 2020
 

@@ -1,4 +1,4 @@
-function [model, rxnRemoveList] = removeMetabolites(model, metRemoveList, removeRxnFlag, rxnRemoveMethod)
+function [model, rxnRemovedList] = removeMetabolites(model, metRemoveList, removeRxnFlag, rxnRemoveMethod)
 % Removes metabolites from a model
 %
 % USAGE:
@@ -58,26 +58,26 @@ if removeRxnFlag
         %removes any reaction corresponding to an empty column
         %danger of stoichiometric inconsistency of other reactions
         removeRxnBool = ~any(modelOut.S ~= 0);
-        rxnRemoveList = modelOut.rxns(removeRxnBool);
+        rxnRemovedList = modelOut.rxns(removeRxnBool);
     elseif strcmp(rxnRemoveMethod,'exclusive')
         %removes any reaction exclusively involving the removed
         %metabolites, i.e. empty column
         %danger of stoichiometric inconsistency of other reactions
         removeRxnBool = getCorrespondingCols(model.S,removeMetBool,true(nRxns,1),'exclusive');
-        rxnRemoveList = model.rxns(removeRxnBool);
+        rxnRemovedList = model.rxns(removeRxnBool);
     elseif strcmp(rxnRemoveMethod,'inclusive')
         %removes any reaction involving at least one of the removed metabolites 
         removeRxnBool = getCorrespondingCols(model.S,removeMetBool,true(nRxns,1),'inclusive');
-        rxnRemoveList = model.rxns(removeRxnBool);
+        rxnRemovedList = model.rxns(removeRxnBool);
     else
         error('rxnRemoveMethod not recognised')
     end
     
-    if (~isempty(rxnRemoveList))
-        modelOut = removeRxns(modelOut,rxnRemoveList,false,false);
+    if (~isempty(rxnRemovedList))
+        modelOut = removeRxns(modelOut,rxnRemovedList,false,false);
     end
 else
-    rxnRemoveList=[];
+    rxnRemovedList=[];
 end
 %return the modified model
 model = modelOut;

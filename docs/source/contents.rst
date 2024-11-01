@@ -16,3 +16,4 @@ The COBRA Toolbox
    funding
    plan
    contact
+   citations

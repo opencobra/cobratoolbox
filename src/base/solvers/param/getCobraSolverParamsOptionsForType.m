@@ -48,14 +48,22 @@ switch problemType
                       'solver'};            % the solver to use
 
    case 'EP'
-        paramNames = {'verify',...          % verify that it is a suitable  QP problem
+        paramNames = {'verify',...          % verify that it is a suitable  EP problem
                       'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'printLevel', ...     % print level
                       'debug', ...          % run debgugging code
                       'feasTol',...         % feasibility tolerance
                       'optTol',...          % optimality tolerance
                       'solver'};            % the solver to use
-                  
+   case 'CLP'
+        paramNames = {'verify',...          % verify that it is a suitable  CLP problem
+                      'printLevel', ...     % print level
+                      'debug', ...          % run debgugging code
+                      'feasTol',...         % feasibility tolerance
+                      'optTol',...          % optimality tolerance
+                      'solver',...          % the solver to use
+                      };            
+                                 
     case 'MILP'
         paramNames = {'intTol', ...         % integer tolerance (accepted derivation from integer numbers)
                       'relMipGapTol', ...   % relative MIP Gap tolerance
@@ -93,7 +101,7 @@ switch problemType
                       'saveInput', ...      % save the input to a file (specified)
                       'solver'};            % the solver to use
     otherwise
-        error('Solver type %s is not supported by the Toolbox');
+        error(['Solver type ' problemType ' is not supported by the COBRA Toolbox']);
 end
 
 

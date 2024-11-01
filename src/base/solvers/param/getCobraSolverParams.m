@@ -1,4 +1,4 @@
-function varargout = getCobraSolverParams(solverType, paramNames, paramStructure)
+function varargout = getCobraSolverParams(problemType, paramNames, paramStructure)
 % This function gets the specified paramStructure in `paramNames` from
 % paramStructure, the global cobra paramters variable or default values set within
 % this script. 
@@ -11,10 +11,10 @@ function varargout = getCobraSolverParams(solverType, paramNames, paramStructure
 %
 % USAGE:
 %
-%    varargout = getCobraSolverParams(solverType, paramNames, paramStructure)
+%    varargout = getCobraSolverParams(problemType, paramNames, paramStructure)
 %
 % INPUTS:
-%    solverType:    Type of solver used: 'LP', 'MILP', 'QP', 'MIQP'
+%    problemType:   Type of problem solved: 'LP', 'MILP', 'QP', 'MIQP', 'EP', 'CLP'
 %    paramNames:    Cell array of strings containing parameter names OR one
 %                   parameter name as string
 %
@@ -76,10 +76,10 @@ valDef.primalOnly = 0;
 valDef.timeLimit = 1e36; 
 valDef.iterationLimit = 1000;
 
-%valDef.logFile = ['Cobra' solverType 'Solver.log'];
+%valDef.logFile = ['Cobra' problemType 'Solver.log'];
 valDef.logFile = []; %log file should be empty to avoid creating it by default
 valDef.saveInput = [];
-valDef.PbName = [solverType 'problem'];
+valDef.PbName = [problemType 'problem'];
 valDef.debug = 0;
 valDef.lifting = 0;
    
@@ -101,7 +101,7 @@ if ~iscell(paramNames)
     paramNames = {paramNames};
 end
 
-switch solverType
+switch problemType
     case 'LP'
         global CBT_LP_PARAMS
         parametersGlobal = CBT_LP_PARAMS;
@@ -116,6 +116,13 @@ switch solverType
         parametersGlobal = CBT_EP_PARAMS;
         valDef.feasTol = 1e-6; % (primal) feasibility tolerance
         valDef.optTol = 1e-6;  % (dual) optimality tolerance
+        valDef.solver='mosek';
+    case 'CLP'
+        global CBT_CLP_PARAMS
+        parametersGlobal = CBT_CLP_PARAMS;
+        valDef.feasTol = 1e-6; % (primal) feasibility tolerance
+        valDef.optTol = 1e-6;  % (dual) optimality tolerance
+        valDef.solver='mosek';
     case 'MIQP'
         global CBT_MIQP_PARAMS
         parametersGlobal = CBT_MIQP_PARAMS;
