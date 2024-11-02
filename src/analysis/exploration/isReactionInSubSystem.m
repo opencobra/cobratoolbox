@@ -27,9 +27,9 @@ end
 if ischar(subSystem)
     subSystem = {subSystem};
 end
-if numel(subSystem) > 1
-    error('This function can support only one subSystem as input')
-end
+% if numel(subSystem) > 1
+%     error('This function can support only one subSystem as input')
+% end
 
 % Set defualt value
 present = false(size(reactions));
@@ -40,8 +40,8 @@ if iscell(reactions)
 end
 
 % Check to see if model already has "rxn2subSystem" fields
-if ~isfield(model, 'rxn2subSystem')
-    warning('The "rxn2subSystem" field has been generated because it was not in the model.')
+if ~isfield(model, 'rxn2subSystem') || ~isfield(model, 'subSystemNames')
+    warning('"rxn2subSystem" or "subSystemNames" fields has been generated because they did not exist in the model.')
     model = buildRxn2subSystem(model);
 end
 
@@ -50,4 +50,4 @@ subSystemID = ismember(model.subSystemNames, subSystem);
 rxn2subSystemMat = model.rxn2subSystem(rxnID, subSystemID);
 
 % Find existing reaction IDs
-present(rxnExists) = logical(rxn2subSystemMat);
+present(rxnExists) = logical(sum(rxn2subSystemMat, 2));
