@@ -15,6 +15,8 @@ currentDir = cd(fileparts(which(mfilename)));
 % determine the test path for references
 testPath = pwd;
 
+fprintf('-- Running testEfmSubmodelExtractionAsSBML ...');
+
 % load the model
 model = readCbModel('testModel.mat','modelName','model_irr'); %For all models which are part of this particular test.
 
@@ -34,3 +36,6 @@ assert(isequal(submodelEFM_woUbMets, submodelEFM_woUbMets_ref));
 % Case 3: Test whether efmSubmodelExtractionAsSBML gives an error with < 3 input and 1 output arguments
 assert(verifyCobraFunctionError('efmSubsystemsExtraction', 'inputs', {model, selectedRxns}, 'outputArgCount', 1));
 assert(verifyCobraFunctionError('efmSubsystemsExtraction', 'inputs', {model}, 'outputArgCount', 1));
+
+fprintf('testEfmSubmodelExtractionAsSBML passed!\n');
+fprintf('Done.\n')
