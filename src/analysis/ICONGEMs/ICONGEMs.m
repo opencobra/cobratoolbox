@@ -228,19 +228,25 @@ solution1 = optimizeCbModel(model3);
 Trans0 = zeros(size(modelIrrev.mets, 1),size(modelIrrev.rxns, 1));
 Trans2 = -1 * eye(size(modelIrrev.rxns, 1));
 S2 = zeros(size(modelIrrev.rxns, 1));
+bn = (-1) * ones(size(modelIrrev.rxns, 1), 1);
 for i = 1:length(modelIrrev.rxns)
-    S2(i, i) = 1 / max(nupb(i, :));
+    if  max(nupb(i, :)) ~= 0
+        S2(i, i) = 1 / max(nupb(i, :));
+    end
+    if max(nupb(i, :)) == 0
+        Trans2(i, i) = 0;
+        bn(i, 1) = 0;
+    end
 end
 
+Obj4 = [modelIrrev.c' zeros(1, size(modelIrrev.rxns, 1))];
 
-Obj4 = [modelIrrev.c' zeros(1, size(modelIrrev.rxns, 1))] ;
-
-lob = [model3.lb; (-1) * inf * ones(size(modelIrrev.rxns, 1), 1)];
-upb = [model3.ub; inf * ones(size(modelIrrev.rxns, 1), 1)];
+lob = [model3.lb;  ones(size(modelIrrev.rxns, 1), 1)];
+upb = [model3.ub; 2 * ones(size(modelIrrev.rxns, 1), 1)];
 
 O = [zeros(size(R)) zeros(size(R)); zeros(size(R)) R]; 
 Aeq = [modelIrrev.S Trans0; S2 Trans2; Obj4]; 
-beq = [zeros(size(modelIrrev.mets, 1), 1); (-1) * ones(size(modelIrrev.rxns,1),1); alpha * solution1.f];
+beq = [zeros(size(modelIrrev.mets, 1), 1); bn; alpha * solution1.f];
 
 model2 = struct;
 model2.lb = lob;
