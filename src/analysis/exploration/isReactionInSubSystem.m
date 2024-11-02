@@ -27,9 +27,6 @@ end
 if ischar(subSystem)
     subSystem = {subSystem};
 end
-% if numel(subSystem) > 1
-%     error('This function can support only one subSystem as input')
-% end
 
 % Set defualt value
 present = false(size(reactions));
