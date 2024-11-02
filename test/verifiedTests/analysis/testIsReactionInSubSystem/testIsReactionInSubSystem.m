@@ -25,7 +25,7 @@ fprintf(' -- Running testIsReactionInSubSystem ... \n');
 
 [present] = isReactionInSubSystem(model, {'Ex_A', 'R4', 'R5'}, {'S3'});
 % set expected output
-presentref = [0 1 1];
+presentref = [0; 1; 1];
 assert(isequal(present, presentref))
 
 % Test vertical input

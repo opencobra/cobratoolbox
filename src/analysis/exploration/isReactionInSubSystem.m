@@ -29,11 +29,19 @@ if ischar(subSystem)
 end
 
 % Set defualt value
-present = false(size(reactions));
+present = false(numel(reactions), 1);
 
 if iscell(reactions)
     [rxnID] = ismember(model.rxns, reactions);
     [rxnExists] = ismember(reactions, model.rxns);
+end
+
+if isnumeric(reactions)
+    if max(reactions) > numel(model.rxns)
+        error('Index of reactions exceeds number of reactions in the model');
+    end
+    rxnID = reactions;
+    rxnExists = true(size(reactions));
 end
 
 % Check to see if model already has "rxn2subSystem" fields
