@@ -57,6 +57,7 @@ end
 if ~isempty(model.rules)
     model.grRules = model.rules;
 end
+
 modelN = model;
 modelN.lb(modelN.lb >= 0) = 0;
 modelN.lb(modelN.lb < 0) = -1000;
