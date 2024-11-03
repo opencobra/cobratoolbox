@@ -1,71 +1,94 @@
-% The COBRAToolbox: testFindRxnsFromGenes.m
+% The COBRAToolbox: testFindRxnsFromMets.m
 %
 % Purpose:
-%     - tests that reactions are found when providing a list of genes.
-%     - tests the correct functionality of findRxnFromGenes function
+%     - Tests the functionality of findRxnFromMets with all available
+%     parameters
 %
 % Authors:
-%     - Original file: Stefania Magnusdottir August 2017
-%                       Samira Ranjbar      -November 2023 (revise)
-
-
-global CBTDIR
+%     - Original file: Thomas Pfau Jan 2018
+%
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testFindRxnsFromGenes'));
+fileDir = fileparts(which('testFindRxnsFromMets'));
 cd(fileDir);
 
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
 
-% convert to new style model
-model = convertOldStyleModel(model);
+% Initialize the test
+fprintf(' -- Running testFindRxnsFromMets ... \n');
 
-% get reactions for gene list, include gene not in model and nested cell
-geneList = {'b0115'; {'b0722'; 'MadeUp'}};
+% First, find all reactions involved with 3pg
+singleTestMet = model.mets{3};
+involvedReacs = {'Biomass_Ecoli_core_w_GAM';'PGK';'PGM'};
+consuming = involvedReacs;
+producing = involvedReacs(2:3);
+reacs = findRxnsFromMets(model,singleTestMet);
+assert(isempty(setxor(involvedReacs,reacs)));
+reacs = findRxnsFromMets(model,singleTestMet,'consumersOnly',true);
+assert(isempty(setxor(consuming,reacs)));
+reacs = findRxnsFromMets(model,singleTestMet,'producersOnly',true);
+assert(isempty(setxor(producing,reacs)));
 
-% Initiate the test
-fprintf(' -- Running testFindRxnsFromGenes ... ');
+% now, we change the bounds of PGK to not function in the forward direction
+modelChanged = changeRxnBounds(model,'PGK',0,'l');
+modelChanged = changeRxnBounds(modelChanged,'PGM',0,'u');
+reacs = findRxnsFromMets(modelChanged,singleTestMet,'producersOnly',true);
+assert(isempty(reacs));
 
-[geneRxnsStruct, geneRxnsArray] = findRxnsFromGenes(model, geneList, 0, 1);
+% now, test the same with consumers and the PGM reaction, only biomass is
+% left.
+modelChanged = changeRxnBounds(model,'PGM',0,'l');
+modelChanged = changeRxnBounds(modelChanged,'PGK',0,'u');
+reacs = findRxnsFromMets(modelChanged,singleTestMet,'consumersOnly',true);
+assert(isempty(setxor(involvedReacs(1),reacs)));
 
-%Check warning message
-warningmessage = lastwarn;
-assert(strfind(warningmessage,'MadeUp')>0);
-assert(isempty(strfind(warningmessage,'b0722')));
-assert(isempty(strfind(warningmessage,'b0115')));
+% lets test 2 metabolites (2pg and 3pg)
+dualTestMet = model.mets(2:3);
+involvedReacs = {'Biomass_Ecoli_core_w_GAM';'ENO';'PGM';'PGK'};
+consuming = involvedReacs;
+producing = involvedReacs(2:4);
+reacs = findRxnsFromMets(model,dualTestMet);
+assert(isempty(setxor(involvedReacs,reacs)));
+reacs = findRxnsFromMets(model,dualTestMet,'consumersOnly',true);
+assert(isempty(setxor(consuming,reacs)));
+reacs = findRxnsFromMets(model,dualTestMet,'producersOnly',true);
+assert(isempty(setxor(producing,reacs)));
+
+% test printout.
+% build comparison text
+res = printRxnFormula(model,'PGM');
+compText = res{1}; % this is sufficient;
+
+% create diary
+diaryFile = 'RxnsFromMetTest';
+diary(diaryFile)
+reacs = findRxnsFromMets(model,dualTestMet,'containsAll',true,'printFlag',1);
+assert(isempty(setxor({'PGM'},reacs)));
+diary off
+text = importdata(diaryFile);
+assert(~isempty(strfind(strrep(text,'\n',''),compText)));
+%cleanup
+delete(diaryFile);
 
 
-% find gene indeces of genes in model
-geneInd = find(ismember(model.genes, {'b0115'; 'b0722'}));
+% test implicit printOut is silent, if no output is created
+diary(diaryFile)
+[reacs,forms] = findRxnsFromMets(model,dualTestMet,'containsAll',true);
+diary off;
+text = importdata(diaryFile);
+% ITs not found in the output
+assert(isempty(strfind(text,compText)));
+% but is equal to printRxnFormula
+assert(isequal(forms,res))
+%cleanup
+delete(diaryFile);
 
-% manually find reactions associated with gene
-rxnInds = [];
-for i = 1:length(geneInd)
-    rxnInds = union(rxnInds, ...
-        find(~cellfun(@isempty, strfind(model.rules, ['x(', num2str(geneInd(i)), ')']))));
-end
-
-% check that result array has correct size and rxns
-assert(size(geneRxnsArray, 1) == length(rxnInds))
-assert(size(geneRxnsArray, 2) == 6)
-assert(isequal(geneRxnsArray(:, 1), model.rxns(rxnInds)))
-assert(isequal(geneRxnsArray(:, 6), strcat('gene_', model.genes(geneInd))))
-
-% check that result structure has correct size and rxns
-for i = 1:length(geneInd)
-    geneRxns = (geneRxnsStruct.(['gene_', model.genes{geneInd(i)}]));
-    rxnInds = find(~cellfun(@isempty, strfind(model.rules, ['x(', num2str(geneInd(i)), ')'])));
-    assert(size(geneRxns, 1) == length(rxnInds))
-    assert(size(geneRxns, 2) == 5)
-    assert(isequal(geneRxns(:, 1), model.rxns(rxnInds)))
-end
+% Print a success message
+fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)
-
-% output a success message
-fprintf('Done.\n');
