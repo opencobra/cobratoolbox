@@ -27,7 +27,7 @@ Many links across the website use absolute paths, referencing specific directori
 - Replace all absolute URLs (e.g., `https://opencobra.github.io/cobratoolbox/stable/...`) with relative URLs.
 - Ensure that links are consistent with the new root structure. For example:
   - Before: `https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorialHostMicrobeInteractions.html`
-  - After: `tutorials/tutorialHostMicrobeInteractions.html`
+  - After: `https://opencobra.github.io/cobratoolbox/tutorials/tutorialHostMicrobeInteractions.html`
 
 ### 4. Workflow and Automation Adjustments
 
