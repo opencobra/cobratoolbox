@@ -31,7 +31,7 @@ The **Code Cov CI** workflow automates testing and code coverage. It ensures tha
 1. **Clone the Repository** (if not already):
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
+   git clone https://github.com/opencobra/cobratoolbox.git   
    ```
 
 2. **Add the Workflow File**:
