@@ -5,7 +5,7 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %
 % USAGE:
 %
-%    [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+%    [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)
 %
 % INPUTS:
 %
