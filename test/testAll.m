@@ -14,10 +14,12 @@ fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
 
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
+% if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
+if contains(getenv('HOME'), 'cobratoolbox')
     % Running in CI environment
-    fprintf('Running test in Jenkins/CI environment\n');
-    
+%    fprintf('Running test in Jenkins/CI environment\n');
+     fprintf('Running test in cobratoolbox/CI environment\n');
+     
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
     restoredefaultpath;
