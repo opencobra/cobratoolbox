@@ -30,7 +30,7 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %
 % EXAMPLES:
 %    % This could be an example that can be copied from the documentation to MATLAB:
-%    solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+%    solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)
 %    % without optional values:
 %    solution = ICONGEMs(model, exp, genetxt)
 %
