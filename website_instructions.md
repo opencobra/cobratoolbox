@@ -51,6 +51,4 @@ After these changes, ensure that:
 - GitHub Pages is configured to serve from the `/docs` folder in the repository settings.
 - Verify that the new site renders correctly on GitHub Pages after pushing the changes.
 
----
 
-Following these steps will transition the `gh-pages` setup to use the new `docs` structure, streamlining the repository and aligning with GitHub’s hosting conventions.
