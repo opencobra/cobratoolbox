@@ -1,5 +1,5 @@
 
-# Code Cov CI - GitHub Actions Workflow
+# TestAll and Code Cov CI - GitHub Actions Workflow
 
 This repository contains the **Code Cov CI** GitHub Actions workflow, which automates the process of running MATLAB tests and generating code coverage reports using Codecov. The workflow is triggered on pushes and pull requests to the `develop` branch.
 
