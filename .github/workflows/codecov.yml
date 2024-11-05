@@ -1,4 +1,4 @@
-name: Code Cov CI
+name: Code Coverage
 
 on:
   push:
@@ -8,31 +8,37 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Replace with 'self-hosted' if using your own runner
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      # Set up MATLAB
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
         with:
           release: R2022a
 
-      # Install MOcov
       - name: Install MOcov
         run: |
           git clone https://github.com/MOcov/MOcov.git /opt/MOcov
           sudo chmod -R 755 /opt/MOcov
 
-      # Run tests and generate coverage with MOcov
-      - name: Run MATLAB tests and generate MOcov coverage
+      - name: Run MATLAB tests with coverage
         run: |
-          matlab -batch "addpath('/opt/MOcov'); mocov('-cover', 'src', '-expression', 'result = runtests(\"test\"); assert(all([result.Passed]), \"Some tests failed.\");', '-cover_xml_file', 'coverage.xml', '-method', 'file');"
+          matlab -batch "
+          addpath(genpath('/opt/MOcov'));
+          addpath(genpath('test'));
+          addpath(genpath('src'));
+          mocov('start');
+          results = runtests('test_myfunction.m');
+          assert(all([results.Passed]), 'Some tests failed');
+          mocov('stop');
+          mocov('-cover', 'src', '-cover_xml_file', 'coverage.xml');
+          exit;"
 
-      # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
-        run: |
-          bash <(curl -s https://codecov.io/bash) -f coverage.xml -F matlab
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: matlab
+          token: ${{ secrets.CODECOV_TOKEN }}
