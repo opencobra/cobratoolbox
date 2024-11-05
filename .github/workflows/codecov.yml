@@ -1,34 +1,36 @@
 name: Code Coverage
-
 on:
   push:
     branches: [develop]
   pull_request:
     branches: [develop]
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
+      
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
         with:
           release: R2022a
-
+      
       - name: Install MOcov
         run: |
           git clone https://github.com/MOxUnit/MOcov.git /opt/MOcov
           sudo chmod -R 755 /opt/MOcov
-
+      
+      - name: Verify MATLAB installation
+        run: matlab -batch "version"
+      
       - name: Run MATLAB tests
-        run: matlab -batch "run('run_coverage_tests.m')"
-
+        run: |
+          matlab -batch "addpath(genpath(pwd)); run_coverage_tests"
+      
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage.xml
           flags: matlab
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
