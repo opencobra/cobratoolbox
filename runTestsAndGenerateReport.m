@@ -1,6 +1,6 @@
 % Run your tests
-testResults = runtests('./test/testAll_ghActions.m');
-
+% testResults = runtests('./test/testAll_ghActions.m');
+testResults = runtests('./test/testAll.m');
 % Open a file for writing
 fid = fopen('test_results.txt', 'w');
 

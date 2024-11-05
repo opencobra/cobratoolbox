@@ -25,7 +25,8 @@ model.csense(couplingPos) = 'G'; %(there has to be at least 0 coupling met.)
 %The model can have at most 0.01 units of CouplingMet.
 model = changeRxnBounds(model,'R4',1e-2,'u');
 if ~Coupling
-    model = removeMetabolites(model,'CouplingMet');
+    removeRxnFlag = 0; % only remove the metabolites but keep the reactions
+    model = removeMetabolites(model,'CouplingMet',removeRxnFlag);
 end
 
 %Add Exchangers

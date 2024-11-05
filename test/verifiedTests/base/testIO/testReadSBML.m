@@ -119,6 +119,7 @@ for jTest = 1:2
     model.genes = {'gene1'; 'gene2'};
     model.rules = {''; ''};
     model.rxnGeneMat = zeros(2, 2);
+    model.subSystems = {'s1'; 's2'}
 
     model = convertOldStyleModel(model);
 

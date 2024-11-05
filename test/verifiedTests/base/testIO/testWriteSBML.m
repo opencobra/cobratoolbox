@@ -14,6 +14,8 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testWriteSBML'));
 cd(fileDir);
+fprintf('-- Running testWriteSBML ...');
+
 
 testModelXML = readCbModel('Ec_iJR904.xml');
 
@@ -33,7 +35,7 @@ testModelXML = rmfield(testModelXML,'rxnNotes');
 testModelXML = rmfield(testModelXML,'rxnReferences');
 
 % check whether both models are the same
- [isSame numDiff fieldNames] = isSameCobraModel(testModelXML, testModelSBML);
+ [isSame numDiff fieldNames] = isSameCobraModel(testModelXML, testModelSBML, 1);
 
 % assess any potential differences
 assert(~any(numDiff))
@@ -65,3 +67,5 @@ try
 catch
     % pass
 end
+
+fprintf('testWriteSBML passed!\n');

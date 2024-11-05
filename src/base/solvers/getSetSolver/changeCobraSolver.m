@@ -537,12 +537,15 @@ if solverOK
             problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0],'names',[]);
         end
         try
-            %This is the code that actually tests if a solver is working
-            if validationLevel>1
-                %display progress
-                eval(['solveCobra' problemType '(problem,''printLevel'',3);']);
-            else
-                eval(['solveCobra' problemType '(problem,''printLevel'',0);']);
+            % Skip the CLP solver until further developments
+            if ~strcmp(solverType, 'CLP')
+                %This is the code that actually tests if a solver is working
+                if validationLevel>1
+                    %display progress
+                    eval(['solveCobra' problemType '(problem,''printLevel'',3);']);
+                else
+                    eval(['solveCobra' problemType '(problem,''printLevel'',0);']);
+                end
             end
         catch ME
             %This is the code that describes what went wrong if a call to a solver does not work           

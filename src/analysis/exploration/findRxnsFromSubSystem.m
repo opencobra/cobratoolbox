@@ -15,18 +15,29 @@ function [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)
 %    rxnPos:                A double array of positions of the reactions in
 %                           reactionNames in the model (same order).
 %
-% USAGE:
-%    %Obtain all reactions with Glycolysis in their respective subSystems
-%     field.
+% EXAMPLE:
+%
+%    Obtain all reactions with Glycolysis in their respective subSystems
+%    field.
 %    [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,'Glycolysis')
 %
-% .. Author: - Thomas Pfau Nov 2017, Ronan MT. Fleming, 2022
+% .. Author: - Thomas Pfau Nov 2017, 
+%            - Ronan MT. Fleming, 2022
+%            - Farid Zare, 2024/08/14     updated the code to support rxn2subSystem field
+%
 
-charBool = cellfun(@(x) ischar(x), model.subSystems);
-if all(charBool)
-    present = strcmp(model.subSystems,subSystem);
-else
-    present = cellfun(@(x) any(ismember(x,subSystem)),model.subSystems);
+% Check to see if model already has these fields
+if ~isfield(model, 'rxn2subSystem')
+    warning('The "rxn2subSystem" field has been generated because it was not in the model.')
+    model = buildRxn2subSystem(model);
 end
-reactionNames = model.rxns(present);
-rxnPos = find(present);
+
+% Get subSystem ids
+subSystemID = ismember(model.subSystemNames, subSystem);
+
+% Get corresponding reactions
+rxn2subSystemMat = model.rxn2subSystem(:, subSystemID);
+rxnID = logical(sum(rxn2subSystemMat, 2));
+
+reactionNames = model.rxns(rxnID);
+rxnPos = find(rxnID);

@@ -1,6 +1,20 @@
+# codecov.yml
+
+# Comment settings
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default  # Shows the comment only on the first push of a pull request
+  require_changes: true  # Only comment if there are coverage changes
+
+# Coverage status checks
 coverage:
   status:
     project:
       default:
-        threshold: 15
-    patch: off
+        target: auto  # Automatically adjust coverage goal
+        threshold: 1%  # Fail PRs that reduce coverage by more than 1%
+    patch:
+      default:
+        target: auto
+        threshold: 1%
+
