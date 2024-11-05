@@ -27,14 +27,10 @@ jobs:
           # Adjust permissions if necessary
           sudo chmod -R 755 /opt/MOcov
 
-      # Run MATLAB tests with MOcov to generate coverage
       - name: Run MATLAB tests and generate MOcov coverage
         run: |
-          matlab -batch "
-            addpath('/opt/MOcov/MOcov'); % Add MOcov to MATLAB path
-            test_suite = testsuite('test/test_myfunction.m');
-            cov_data = mocov('-cover', 'src', '-tests', test_suite, '-quiet', '-cover_xml_file', 'coverage.xml');
-          "
+          matlab -batch "addpath('/opt/MOcov/MOcov'); test_suite = testsuite('test/test_myfunction.m'); cov_data = mocov('-cover', 'src', '-tests', test_suite, '-quiet', '-cover_xml_file', 'coverage.xml');"
+
 
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
