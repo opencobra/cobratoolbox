@@ -21,27 +21,37 @@ jobs:
       - name: Install MOcov
         run: |
           git clone https://github.com/MOxUnit/MOcov.git /opt/MOcov
-          ls -la /opt/MOcov
           sudo chmod -R 755 /opt/MOcov
 
-      - name: Create and run MATLAB script
+      - name: Create MATLAB script
         run: |
-          echo 'addpath(genpath('\''/opt/MOcov'\''));
-          addpath(genpath(''test''));
-          addpath(genpath(''src''));
-          mocov(''start'');
+          cat << 'EOF' > run_tests.m
+          % Add MOcov to path
+          addpath(genpath('/opt/MOcov'));
+          
+          % Add test directories
+          addpath('tests');
+          
+          % Start coverage
+          mocov('start');
+          
           try
-              results = runtests(''test_myfunction.m'');
-              assert(all([results.Passed]), ''Some tests failed'');
-              mocov(''stop'');
-              mocov(''-cover'', ''src'', ''-cover_xml_file'', ''coverage.xml'');
+              % Run the test
+              results = runtests('tests/test_myfunction.m');
+              assert(all([results.Passed]), 'Some tests failed');
+              
+              % Stop coverage and generate report
+              mocov('stop');
+              mocov('-cover', pwd, '-cover_xml_file', 'coverage.xml');
               exit(0);
           catch e
               disp(getReport(e));
               exit(1);
-          end' > run_tests.m
-          
-          matlab -batch "run('run_tests.m')"
+          end
+          EOF
+
+      - name: Run MATLAB tests
+        run: matlab -batch "run('run_tests.m')"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
