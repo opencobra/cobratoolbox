@@ -18,12 +18,17 @@ jobs:
         uses: matlab-actions/setup-matlab@v1
         with:
           release: R2022a  # Specify the MATLAB version
+     
 
-      # Run only the specific test_myfunction.m file from the /tests directory.
-      - name: Run MATLAB tests and generate coverage
+      # Run MATLAB tests with MOcov to generate coverage
+      - name: Run MATLAB tests and generate MOcov coverage
         run: |
-          matlab -batch "import matlab.unittest.TestRunner; import matlab.unittest.plugins.CodeCoveragePlugin; import matlab.unittest.plugins.codecoverage.CoberturaFormat; runner = TestRunner.withTextOutput; runner.addPlugin(CodeCoveragePlugin.forFolder('src', 'Producing', CoberturaFormat('coverage.xml'))); results = runner.run(testsuite('test/test_myfunction.m')); assertSuccess(results);"
-      
+          matlab -batch "
+            addpath('/opt/MOcov/MOcov'); % Add MOcov to MATLAB path
+            test_suite = testsuite('test/test_myfunction.m');
+            cov_data = mocov('-cover', 'src', '-tests', test_suite, '-quiet', '-cover_xml_file', 'coverage.xml');
+          "
+
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
         run: |
