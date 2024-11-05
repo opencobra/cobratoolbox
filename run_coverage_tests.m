@@ -6,18 +6,17 @@ function run_coverage_tests()
         % Run tests and capture results
         disp('Running tests with coverage...');
         
-        % Create the expression to run tests with proper variable assignment
-        test_expression = ['results = runtests(''test/test_myfunction.m'');', ...
-                          'passed = all([results.Passed]);'];
+        % Run tests directly first to capture results
+        results = runtests('test/test_myfunction.m');
+        passed = all([results.Passed]);
         
-        % Run MOcov with the test expression
-        mocov('-cover', '.', ...  % Use '.' instead of pwd for current directory
+        % Now run MOcov with a simpler expression that just runs the tests
+        test_expression = 'runtests(''test/test_myfunction.m'')';
+        
+        % Run MOcov for coverage analysis
+        mocov('-cover', '.', ...
               '-cover_xml_file', 'coverage.xml', ...
               '-expression', test_expression);
-        
-        % Load results from workspace
-        results = evalin('base', 'results');
-        passed = evalin('base', 'passed');
         
         % Check results
         if ~passed
