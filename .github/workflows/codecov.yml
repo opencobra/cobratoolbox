@@ -24,17 +24,22 @@ jobs:
           sudo chmod -R 755 /opt/MOcov
 
       - name: Run MATLAB tests with coverage
-        run: |
+        run: >
           matlab -batch "
-          addpath(genpath('/opt/MOcov'));
-          addpath(genpath('test'));
-          addpath(genpath('src'));
-          mocov('start');
-          results = runtests('test_myfunction.m');
-          assert(all([results.Passed]), 'Some tests failed');
-          mocov('stop');
-          mocov('-cover', 'src', '-cover_xml_file', 'coverage.xml');
-          exit;"
+          try
+            addpath(genpath('/opt/MOcov'));
+            addpath(genpath('test'));
+            addpath(genpath('src'));
+            mocov('start');
+            results = runtests('test_myfunction.m');
+            assert(all([results.Passed]), 'Some tests failed');
+            mocov('stop');
+            mocov('-cover', 'src', '-cover_xml_file', 'coverage.xml');
+            exit(0);
+          catch e
+            disp(getReport(e));
+            exit(1);
+          end"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
