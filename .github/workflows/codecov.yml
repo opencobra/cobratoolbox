@@ -2,35 +2,33 @@ name: Code Cov CI
 
 on:
   push:
-    branches: [develop]  # Trigger workflow on push to develop
+    branches: [develop]
   pull_request:
     branches: [develop]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Replace with 'self-hosted' if using your own runner
 
     steps:
       - uses: actions/checkout@v3
-      
+
       # Set up MATLAB
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
         with:
-          release: R2022a  # Specify the MATLAB version
+          release: R2022a
 
-      # Install MOcov
-      - name: Install MOcov
+      # Install MOxUnit and MOcov
+      - name: Install MOxUnit and MOcov
         run: |
-          # Clone MOcov repository to /opt/MOcov
-          sudo git clone https://github.com/MOxUnit/MOcov.git /opt/MOcov
-          # Adjust permissions if necessary
-          sudo chmod -R 755 /opt/MOcov
+          git clone https://github.com/MOxUnit/MOxUnit.git /opt/MOxUnit
+          git clone https://github.com/MOcov/MOcov.git /opt/MOcov
 
+      # Run MATLAB tests with MOxUnit and generate coverage
       - name: Run MATLAB tests and generate MOcov coverage
         run: |
-          matlab -batch "addpath('/opt/MOcov/MOcov'); test_suite = testsuite('test/test_myfunction.m'); cov_data = mocov('-cover', 'src', '-tests', test_suite, '-quiet', '-cover_xml_file', 'coverage.xml');"
-
+          matlab -batch "addpath('/opt/MOxUnit/MOxUnit'); addpath('/opt/MOcov/MOcov'); moxunit_runtests('test/test_myfunction.m', '-verbose', '-with_coverage', '-cover', 'src', '-cover_xml_file', 'coverage.xml');"
 
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
