@@ -13,7 +13,7 @@ function run_coverage_tests
         import matlab.unittest.plugins.CodeCoveragePlugin;
         
         % Create test suite from the test file
-        suite = TestSuite.fromFile('tests/test_myfunction.m');
+        suite = TestSuite.fromFile('test/test_myfunction.m');
         
         % Create a runner
         runner = TestRunner.withTextOutput('Verbosity', 3);
