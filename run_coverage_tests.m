@@ -3,15 +3,25 @@ function run_coverage_tests
     addpath(genpath('/opt/MOcov'));
     
     try
-        % Run tests directly
-        disp('Running tests...');
-        test_results = test_myfunction;
+        % Run tests and capture results
+        disp('Running tests with coverage...');
         
-        % Generate coverage report
-        disp('Generating coverage report...');
-        mocov('-cover', pwd, '-cover_xml_file', 'coverage.xml');
+        % Create the expression to run tests
+        test_expression = 'results = runtests("tests/test_myfunction.m"); passed = all([results.Passed]);';
         
-        disp('Testing completed successfully.');
+        % Run MOcov with the test expression
+        mocov('-cover', pwd, ...
+              '-cover_xml_file', 'coverage.xml', ...
+              '-expression', test_expression);
+        
+        % Load and display results
+        if ~passed
+            error('Some tests failed. Check the test results for details.');
+        end
+        
+        disp('All tests passed successfully!');
+        disp(['Number of passed tests: ' num2str(sum([results.Passed]))]);
+        
         exit(0);
     catch e
         disp('Error running tests:');
