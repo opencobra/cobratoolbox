@@ -6,23 +6,41 @@ function run_coverage_tests
     current_dir = pwd;
     
     try
-        % Configure MOcov
-        cover_method = '-cover';
-        covered_dir = current_dir;
-        report_file = fullfile(current_dir, 'coverage.xml');
+        % Import necessary components
+        import matlab.unittest.TestRunner;
+        import matlab.unittest.TestSuite;
+        import matlab.unittest.plugins.TestReportPlugin;
+        import matlab.unittest.plugins.CodeCoveragePlugin;
         
-        % Run tests and generate coverage
-        test_suite = testsuite('tests/test_myfunction.m');
-        results = run(test_suite);
+        % Create test suite from the test file
+        suite = TestSuite.fromFile('tests/test_myfunction.m');
         
-        % Check if all tests passed
-        num_failed = nnz([results.Failed]);
-        if num_failed > 0
-            error('Some tests failed');
+        % Create a runner
+        runner = TestRunner.withTextOutput('Verbosity', 3);
+        
+        % Add the coverage plugin
+        coveragePlugin = CodeCoveragePlugin.forFolder(current_dir, ...
+            'IncludingSubfolders', true, ...
+            'Producing', matlab.unittest.plugins.codecoverage.CoverageReport('coverage'));
+        runner.addPlugin(coveragePlugin);
+        
+        % Run the tests
+        results = runner.run(suite);
+        
+        % Display summary
+        disp('Test Summary:');
+        disp(['Number of tests: ' num2str(numel(results))]);
+        disp(['Passed: ' num2str(nnz([results.Passed]))]);
+        disp(['Failed: ' num2str(nnz([results.Failed]))]);
+        disp(['Duration: ' num2str(sum([results.Duration])) ' seconds']);
+        
+        % Generate MOcov coverage report
+        mocov('-cover', current_dir, '-cover_xml_file', 'coverage.xml');
+        
+        % Check if any tests failed
+        if any([results.Failed])
+            error('Some tests failed. Check the test report for details.');
         end
-        
-        % Generate coverage report
-        mocov(cover_method, covered_dir, '-cover_xml_file', report_file);
         
         % Exit with success
         exit(0);
