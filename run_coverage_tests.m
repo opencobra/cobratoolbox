@@ -7,7 +7,7 @@ function run_coverage_tests
         disp('Running tests with coverage...');
         
         % Create the expression to run tests
-        test_expression = 'results = runtests("tests/test_myfunction.m"); passed = all([results.Passed]);';
+        test_expression = 'results == runtests("tests/test_myfunction.m"); passed == all([results.Passed]);';
         
         % Run MOcov with the test expression
         mocov('-cover', pwd, ...
