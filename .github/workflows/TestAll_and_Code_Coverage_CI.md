@@ -13,8 +13,7 @@ This repository contains the **Code Coverage CI** GitHub Actions workflow, which
   - [Jobs Definition](#jobs-definition)
   - [Steps Breakdown](#steps-breakdown)
 - [Project Structure](#project-structure)
-- [Benefits](#benefits)
-- [License](#license)
+
 
 ## Overview
 
@@ -37,13 +36,13 @@ The **Code Coverage CI** workflow automates testing and code coverage reporting.
 
 2. **Add the Workflow File**:
 
-   - Save the provided workflow YAML file as `.github/workflows/codecov.yml` in your repository.
+   - Save the provided workflow YAML file as `.github/workflows/codecov.yml` in the repository.
 
 3. **Store Codecov Token**:
 
    - In the repository, go to **Settings** > **Secrets and variables** > **Actions**.
    - Click on **New repository secret**.
-   - Add `CODECOV_TOKEN` as the name and paste your Codecov token as the value.
+   - Add `CODECOV_TOKEN` as the name and paste the Codecov token as the value.
 
 4. **Add MOcov to Your Project** (Optional for local testing):
 
@@ -61,9 +60,9 @@ The **Code Coverage CI** workflow automates testing and code coverage reporting.
 
 5. **Create `run_coverage_tests.m` Script**:
 
-   - Add the `run_coverage_tests.m` script to the root of your repository. This script runs your tests and generates the coverage report using MOcov.
+   - Add the `run_coverage_tests.m` script to the root of the repository. This script runs tests and generates the coverage report using MOcov.
 
-6. **Organize Your Project**:
+6. **Organize Project**:
 
    - **Source Code**: Place your MATLAB source code in the `src` directory.
    - **Tests**: Place test files in the `test` directory. Ensure `testAll.m` or your main test script is in this directory.
@@ -104,7 +103,7 @@ jobs:
 
 1. **Checkout Repository**
 
-   Checks out your repository code so the workflow can access it.
+   Checks out thr repository code so the workflow can access it.
 
    ```yaml
    - uses: actions/checkout@v3
@@ -197,17 +196,7 @@ jobs:
        comment: true
    ```
 
-6. **Optional Debugging Steps**
 
-   You can include these steps to list files and display the coverage report for debugging purposes.
-
-   ```yaml
-   - name: List workspace files
-     run: ls -R
-     
-   - name: Display coverage.xml
-     run: cat coverage.xml
-   ```
 
 ## Project Structure
 
@@ -226,19 +215,3 @@ your-repository/
 └── (Other project files)
 ```
 
-## Benefits
-
-- **Automated Testing**: Ensures that all code changes are automatically tested.
-- **Code Coverage Metrics**: Provides insights into which parts of your codebase are tested.
-- **Continuous Integration**: Integrates seamlessly with GitHub Actions for CI/CD workflows.
-- **Feedback on Pull Requests**: Codecov can comment on pull requests with coverage reports (requires proper setup and permissions).
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-**Note**: Ensure that your repository has the Codecov GitHub App installed and configured with the necessary permissions to post comments on pull requests. For private repositories, make sure your Codecov account has access to the repository and that the `CODECOV_TOKEN` is correctly set up in your GitHub repository secrets.
-
-If you encounter issues with Codecov not posting comments on pull requests, refer to the [Codecov documentation](https://docs.codecov.com/docs) or contact [Codecov support](https://community.codecov.io/) for assistance.
