@@ -2,7 +2,7 @@ name: Code Cov CI
 
 on:
   push:
-    branches: [develop]  # Trigger workflow on push to develop
+    branches: [develop]
   pull_request:
     branches: [develop]
 
@@ -28,13 +28,7 @@ jobs:
       # Run tests and generate coverage with MOcov
       - name: Run MATLAB tests and generate MOcov coverage
         run: |
-          matlab -batch "
-            addpath('/opt/MOcov'); 
-            mocov('-cover', 'src', ...
-                  '-expression', 'result = runtests("test"); assert(all([result.Passed]), "Some tests failed.");', ...
-                  '-cover_xml_file', 'coverage.xml', ...
-                  '-method', 'file');
-          "
+          matlab -batch "addpath('/opt/MOcov'); mocov('-cover', 'src', '-expression', 'result = runtests(\"test\"); assert(all([result.Passed]), \"Some tests failed.\");', '-cover_xml_file', 'coverage.xml', '-method', 'file');"
 
       # Upload coverage report to Codecov
       - name: Upload coverage to Codecov
