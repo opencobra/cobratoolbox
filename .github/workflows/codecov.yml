@@ -1,7 +1,7 @@
 name: Code Coverage
 on:
   push:
-    branches: [develop]
+    branches: [develop] # on push
   pull_request:
     branches: [develop] # on pr
 jobs:
