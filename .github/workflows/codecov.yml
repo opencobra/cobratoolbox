@@ -18,7 +18,14 @@ jobs:
         uses: matlab-actions/setup-matlab@v1
         with:
           release: R2022a  # Specify the MATLAB version
-     
+
+      # Install MOcov
+      - name: Install MOcov
+        run: |
+          # Clone MOcov repository to /opt/MOcov
+          sudo git clone https://github.com/MOxUnit/MOcov.git /opt/MOcov
+          # Adjust permissions if necessary
+          sudo chmod -R 755 /opt/MOcov
 
       # Run MATLAB tests with MOcov to generate coverage
       - name: Run MATLAB tests and generate MOcov coverage
