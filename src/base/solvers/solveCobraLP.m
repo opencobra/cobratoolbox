@@ -144,7 +144,7 @@ if ~isempty(problemTypeParams.saveInput)
 end
 
 % support for lifting of ill-scaled models
-if problemTypeParams.lifting == 1
+if isfield(solverParams,'lifting') && solverParams.lifting == 1
     largeNb = 1e4;  % suitable for double precision solvers
     [LPproblem] = reformulate(LPproblem, largeNb, printLevel);
 end
@@ -180,6 +180,9 @@ end
 if ~isfield(LPproblem, 'modelID')
     LPproblem.modelID = 'aModelID';
 end
+if ~isfield(LPproblem, 'names')
+    LPproblem.names = [];
+end
 
 %too time consuming
 % if any(~isfinite(LPproblem.A),'all')
@@ -197,7 +200,7 @@ end
 
             
 % extract the problem from the structure
-[A, b, c, lb, ub, csense, osense, modelID] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID);
+[A, b, c, lb, ub, csense, osense, modelID, names] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID,LPproblem.names);
 
 if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
     basis = LPproblem.basis;
@@ -688,13 +691,23 @@ switch solver
             prob.sol.bas.xx   = basis.xx;
         end
 
-        if param.debug
-            probBeforeMosekopt = prob;
-            save('probBeforeMosekopt','probBeforeMosekopt');
+        if isfield(param,'saveProb') && param.saveProb
+            formattedTime = datestr(now, 'yyyymmddHHMMSS');
+            LP.cmd=cmd;
+            LP.prob=prob;
+            LP.param=mosekParam;
+            save([formattedTime '_LP_probBeforeMosekopt'],"LP");
         end
 
-     
-        [rcode,res] = mosekopt(cmd,prob,mosekParam);
+        if isfield(param,'debug') && param.debug==1
+            prob.names = names;
+        end
+
+        if isfield(param,'defaultSolverParam') && param.defaultSolverParam
+            [rcode,res] = mosekopt(cmd,prob);
+        else
+            [rcode,res] = mosekopt(cmd,prob,mosekParam);
+        end
         if isfield(param,'lpmethod')
             lpmethod = param.lpmethod;
         else

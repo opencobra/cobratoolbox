@@ -13,6 +13,20 @@ if isfield(param,'multiscale') && param.multiscale==1
     param.ScaleFlag=0;
 end
 
+if isfield(param,'lifted') && param.lifted==1
+    param.Aggregate=1;
+    % Presolve
+    % Controls the presolve level
+    % Type:	int
+    % Default value:	-1
+    % Minimum value:	-1
+    % Maximum value:	2
+    % Controls the presolve level. A value of -1 corresponds to an automatic setting.
+    % Other options are off (0), conservative (1), or aggressive (2). More aggressive application
+    % of presolve takes more time, but can sometimes lead to a significantly tighter model.
+    param.Presolve=0;
+end
+
 %backward compatibility
 if isfield(param,'method')
     if isempty(param.method)

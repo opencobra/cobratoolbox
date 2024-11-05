@@ -532,9 +532,9 @@ if solverOK
         eval(['CBT_', problemType, '_SOLVER = solverName;']);
         % validate with a simple problem.
         if strcmp(solverName,'mosek') && strcmp(problemType,'CLP') || strcmp(problemType,'all')
-            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);  
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0],'names',[]);  
         else
-            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0]);
+            problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'F',speye(2),'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0],'names',[]);
         end
         try
             %This is the code that actually tests if a solver is working

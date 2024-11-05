@@ -56,7 +56,6 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 % Author(s): Ronan Fleming
 
 %% processing for fluxes
-
 if ~isfield(param,'maxUnidirectionalFlux')
     %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
     param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));
@@ -103,8 +102,8 @@ if isfield(param,'internalBounds')
     error('internalBounds replaced by other parameter options')
 end
 
-if isfield(param,'debug') && param.debug
-    solution_optimizeCbModel = optimizeCbModel(model);
+if isfield(param,'debug') && param.debug && 0
+    solution_optimizeCbModel = optimizeCbModel(model,param);
     switch solution_optimizeCbModel.stat
         case 0
             disp(solution_optimizeCbModel.origStat)
@@ -225,6 +224,7 @@ if isfield(model,'vfl')
     vfl = model.vfl;
 else
     vfl = max(param.minUnidirectionalFlux,vl);
+    %vfl = ones(n,1)*param.minUnidirectionalFlux;
 end
 
 if any(vfl<0)
@@ -272,6 +272,7 @@ if isfield(model,'vrl')
     vrl = model.vrl;
 else
     vrl = max(param.minUnidirectionalFlux,-vu);
+    %vrl = ones(n,1)*param.minUnidirectionalFlux;
 end
 if any(vrl<0)
     error('lower bound on reverse flux cannot be less than zero')

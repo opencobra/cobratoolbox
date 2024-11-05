@@ -1,5 +1,8 @@
 function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
-%% TBC
+% Entropy maximisation of fluxes (or fluxes and concentrations) subject to
+% mass balance, optionally coupling constraints, optionally quadratic
+% penalisation of deviation from given fluxes.
+% 
 % minimize             g.*vf'*(log(vf) -1) + (cf + ci)'*vf 
 % vf,vr,w,x,x0       + g.*vr'*(log(vr) -1) + (cr - ci)'*vr
 %                    + f.*x' *(log(x)  -1) + u0'*x 
@@ -219,13 +222,13 @@ B = model.S(:,~model.SConsistentRxnBool);
 %% processing for fluxes
 [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
-if param.debug
+if param.debug && 0 %TODO - remove this
     modelProcessed = model;
     modelProcessed.lb(model.SConsistentRxnBool)=vl;
     modelProcessed.lb(~model.SConsistentRxnBool)=vel;
     modelProcessed.ub(model.SConsistentRxnBool)=vu;
     modelProcessed.ub(~model.SConsistentRxnBool)=veu;
-    solutionLP = optimizeCbModel(modelProcessed);
+    solutionLP = optimizeCbModel(modelProcessed,param);
 
     switch solutionLP.stat
         case 0

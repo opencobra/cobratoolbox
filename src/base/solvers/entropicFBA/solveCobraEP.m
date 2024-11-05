@@ -97,12 +97,16 @@ function sol = solveCobraEP(EPproblem, varargin)
 %                     *.objLinear      osense*c'*x;
 %                     *.objEntropy     d.*x'*(log(x) -1);
 %                     *.objQuadratic   (1/2)*x'*Q*x;
-%                     * .full:         Primal sol vector
-%                     * .slack:        bl = A*x + s = bu
-%                     * .rcost:        Reduced costs, dual sol to :math:`lb <= x <= ub`
-%                     * .dual:         dual sol to constraints :math: `A*x ('E' | 'G' | 'L') b`
-%
-%                     * .solver:       Solver used to solve EP problem
+%                     *.v:  n+k ×1 double
+%                     *.vf: n × 1 double
+%                     *.vr: n × 1 double
+%                     *.vt: 1'*vt + 1'*vr
+%                     *.y_N: m x 1 double   dual sol to constraints :math: `A*x ('E' | 'G' | 'L') b`
+%                     *.z_dx: 0
+%                     *.z_vf: n × 1 double    dual sol to :math:`lb <= vr <= ub`
+%                     *.z_vr: n × 1 double    dual sol to :math:`lb <= vf <= ub`
+%                     *.z_vi: n × 1 double    dual sol to :math:`lb <= v <= ub`
+%                     *.z_v: n + k × 1 double dual sol to :math:`lb <= w <= ub`
 %                     * .stat:         Solver status in standardized form
 %                       * 0 - Infeasible problem
 %                       * 1 - Optimal sol
@@ -112,7 +116,9 @@ function sol = solveCobraEP(EPproblem, varargin)
 %                     * .origStat:         Original status returned by the specific solver
 %                     * .origStatText:     Original status text returned by the specific solver
 %                     * .time:         Solve time in seconds
-%
+%                     * .solver:       Solver used to solve EP problem
+%                     * .epmethod: solver method used e.g. 'CONIC'
+
 % OPTIONAL OUTPUT (from conic optimisation with mosek):
 %  sol.auxPrimal:  auxiliary primal variable
 %  sol.auxRcost:   dual to auxiliary primal variable
@@ -126,9 +132,8 @@ function sol = solveCobraEP(EPproblem, varargin)
 %
 % EXAMPLE:
 %
-% NOTE: This code is a draft version released for the ELIXIR Fluxomic course and is not yet published and not to be redistributed without express permission of the author.
 %
-% Author(s): Ronan M.T. Fleming, 2021
+% Author(s): Ronan M.T. Fleming, 2024
 
 
 [problemTypeParams, solverParams] = parseSolverParameters('EP', varargin{:});
@@ -166,7 +171,7 @@ if isequal(param.solver,'mosek')
 end
 
 %% if in debug mode, test to see if the LP part of the problem is feasible
-if param.debug
+if param.debug && ~isfield(param,'useTestVKSolution') && ~isfield(param,'VKproblem') %avoid LP if being called in driver_optimiseVKmodel
     switch param.solver
         case 'pdco'
             solutionLP2 = solveCobraLP(EPproblem);
@@ -657,7 +662,7 @@ switch param.solver
         % Specify conic part of the problem
         % https://docs.mosek.com/9.2/toolbox/data-types.html#cones
         if param.printLevel>1 || param.debug
-            [~, res] = mosekopt('symbcon',mosekParam);
+            [~, res] = mosekopt('symbcon echo(0)');
         else
             [~, res] = mosekopt('symbcon echo(0)');
         end
@@ -797,7 +802,14 @@ switch param.solver
         end
         
 
-        
+        if isfield(param,'saveProb') && param.saveProb
+            formattedTime = datestr(now, 'yyyymmddHHMMSS');
+            EP.cmd=cmd;
+            EP.prob=prob;
+            EP.param=mosekParam;
+            save([formattedTime '_EP_probBeforeMosekopt'],"EP");
+        end
+
         %call mosek exponential cone solver
         tic;
         if 0

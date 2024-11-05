@@ -406,6 +406,13 @@ switch solver
         %https://docs.mosek.com/latest/toolbox/data-types.html#prob
         [prob.qosubi,prob.qosubj,prob.qoval]=find(F);
 
+        if isfield(param,'saveProb') && param.saveProb
+            formattedTime = datestr(now, 'yyyymmddHHMMSS');
+            QP.cmd=cmd;
+            QP.prob=prob;
+            QP.param=mosekParam;
+            save([formattedTime '_QP_probBeforeMosekopt'],"QP");
+        end
 
         [rcode,res] = mosekopt(cmd,prob,mosekParam);
 
@@ -981,7 +988,7 @@ if solution.stat==1
                 fprintf('%s\n',['[' solver '] reports ' solution.origStat ' but Primal optimality condition in solveCobraQP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
             else
                 if problemTypeParams.printLevel > 0
-                    fprintf(['\n > [' solver '] Primal optimality condition in solveCobraQP satisfied.']);
+                    fprintf(['\n > [' solver '] Primal optimality condition in solveCobraQP satisfied.\n']);
                 end
             end
         end

@@ -418,10 +418,10 @@ end
 % If this is a quadratically regularised LP, go straight to QP
 % TODO This is a hack of the param.minNorm to direct solution to QRLP or QRQP
 if isfield(param,'solveWBMmethod')
-    if any(strcmp(param.solveWBMmethod,{'QRLP','QRQP'}))
+    if any(strcmp(param.solveWBMmethod,{'QP','QRLP','QRQP'}))%TODO  'QRLP','QRQP' need coded in
+        model.c(:)=0;
         doLinearOptimisationFirst = 0;
-        param.minNormWBM = param.minNorm;
-        param.minNorm = param.solveWBMmethod;
+        minNorm = param.minNorm;
     else
         param.solveWBMmethod = [];
     end
@@ -730,9 +730,8 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
         solution.q = -solution.q; % lb + p <= x <= ub + q
 
     elseif strcmp(minNorm, 'QRQP')
-        buildOptProblemFromModel_param = param;
-        buildOptProblemFromModel_param.minNorm = param.minNormWBM;
-        optProblem = buildOptProblemFromModel(model, 0, buildOptProblemFromModel_param);
+        minNorm = minNormWBM;
+        optProblem = buildOptProblemFromModel(model, 0, param);
         solution = solveCobraQP(optProblem);
 
     elseif length(minNorm)> 1 || minNorm > 0
@@ -781,7 +780,7 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
                 %quadratic optimization will get rid of the loops unless you are maximizing a flux which is
                 %part of a loop. By definition, exchange reactions are not part of these loops, more
                 %properly called stoichiometrically balanced cycles.
-                solution = solveCobraQP(optProblem2);
+                solution = solveCobraQP(optProblem2,param);
             else
                 %this is slow, but more useful than minimizing the Euclidean norm if one is trying to
                 %maximize the flux through a reaction in a loop. e.g. in flux variablity analysis
@@ -806,10 +805,10 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
     end
 end
 
-%TODO fix this Hack in case param.minNorm is used again
-if ~isempty(param.solveWBMmethod)
-    minNorm = param.minNormWBM;
-end
+% %TODO fix this Hack in case param.minNorm is used again
+% if ~isempty(param.solveWBMmethod)
+%     param.minNorm = param.minNormWBM;
+% end
 
 %dummy parts of the solution
 solution.f0 = NaN;

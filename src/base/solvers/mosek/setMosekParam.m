@@ -274,20 +274,6 @@ if isfield(param,'strict')
     end
 end
 
-%     param.lpmethod='BARRIER';
-%     param.qpmethod='BARRIER';
-%     method = param.lpmethod;
-% case 'ibm_cplex'
-%     param.lpmethod='BARRIER';
-%     param.qpmethod='BARRIER';
-%     method = param.lpmethod;
-% case 'mosek'
-%     method = 'FREE';
-%     method = 'INTPNT';
-%     method = 'CONIC';
-%
-
-
 %backward compatibility
 if isfield(param,'method')
     if isempty(param.method)
@@ -324,6 +310,16 @@ switch param.problemType
                 param.MSK_IPAR_OPTIMIZER=['MSK_OPTIMIZER_' param.clpmethod];
             end
         end
+
+        % MSK_IPAR_INTPNT_REGULARIZATION_USE
+        % Description:Controls whether regularization is allowed.
+        % Possible Values: MSK_ON    Switch the option on.
+        %                  MSK_OFF   Switch the option off.
+        % Default value:   MSK_ON
+        if ~isfield(param,'MSK_IPAR_INTPNT_REGULARIZATION_USE')
+            param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_ON';
+        end
+
     case {'EP'}
         if isfield(param,'epmethod')
             if contains(param.epmethod,'MSK_OPTIMIZER_')
@@ -364,6 +360,21 @@ switch param.problemType
         % Example
         % param.MSK_IPAR_SIM_SCALING_METHOD = 'MSK_SCALING_METHOD_POW2'
         % param.MSK_IPAR_SIM_SCALING_METHOD='MSK_SCALING_METHOD_FREE';
+end
+
+
+if ~isfield(param,'MSK_IPAR_LOG_FEAS_REPAIR') && isfield(param,'repairInfeasibility')
+    % MSK_IPAR_LOG_FEAS_REPAIR
+    % Controls the amount of output printed when performing feasibility repair. A value higher than one means extensive logging.
+    % Default
+    % 1
+    % Accepted
+    % [0; +inf]
+    % Example
+    % MSK_putintparam(task, MSK_IPAR_LOG_FEAS_REPAIR, 1)
+    % Groups
+    % Output information, Logging
+    param.MSK_IPAR_LOG_FEAS_REPAIR = param.repairInfeasibility;
 end
 
 % Remove outer function specific parameters to avoid crashing solver interfaces

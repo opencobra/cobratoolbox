@@ -72,6 +72,8 @@ function optProblem = buildOptProblemFromModel(model, verify, param)
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
 %                * `.F`: Positive semidefinite matrix for quadratic part of objective
+% OPTIONAL OUTPUT:
+
 
 [nMet,nRxn]=size(model.S);
 
@@ -294,16 +296,22 @@ if isfield(param,'debug') && param.debug
             % var (cell) – a cell array where names.var{j} contains the name of the
             % -th variable.
             optProblem.names.name='optimizeCbModel';
-            optProblem.names.obj=model.rxns{model.c~=0};
+            if any(model.c~=0)
+                optProblem.names.obj=model.rxns{model.c~=0};
+            else
+                optProblem.names.obj='noLP';
+            end
             if isfield(model,'ctrs')
                 optProblem.names.con=[model.mets;model.ctrs];
             else
                 optProblem.names.con=model.mets;
             end
             if isfield(model,'evars')
-                optProblem.names.con=[model.mets;model.ctrs];
+                optProblem.names.var=[model.rxns;model.evars];
             else
-                optProblem.names.con=model.mets;
+                optProblem.names.var=model.rxns;
             end
     end
+else
+    optProblem.names=[];
 end

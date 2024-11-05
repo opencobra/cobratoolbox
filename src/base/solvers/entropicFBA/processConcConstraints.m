@@ -67,12 +67,15 @@ end
 
 %% processing for concentrations
 if ~isfield(param,'maxConc')
-    param.maxConc=1e4;
+    param.maxConc=inf;
 end
 if ~isfield(param,'minConc')
-    param.minConc=1e-4;
+    param.minConc=0;
 end
-
+% %assume units are in mMol
+% if ~isfield(param,'concUnit')
+%     param.concUnit = 10-3;
+% end
 
 if ~isfield(param,'externalNetFluxBounds')
     if isfield(model,'dcl') || isfield(model,'dcu')
@@ -256,10 +259,7 @@ else
     end
 end
 
-%assume concentrations are in uMol
-if ~isfield(model,'concUnit')
-    concUnit = 10-6;
-end
+
 
 % Define constants
 if isfield(model,'gasConstant') && isfield(model,'T')
@@ -306,12 +306,3 @@ else
         error('f must all be finite')
     end
 end
-
-% %lower and upper bounds on logarithmic concentration
-% pl = -log(param.maxConc*ones(m2,1));
-% if 1
-%     pu =  log(param.maxConc*ones(m2,1));
-% else
-%     %All potentials negative
-%     pu =  zeros(m2,1);
-% end

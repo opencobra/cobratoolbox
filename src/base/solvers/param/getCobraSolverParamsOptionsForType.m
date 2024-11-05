@@ -36,13 +36,11 @@ switch problemType
                       'solver', ...         % solver to use (overriding set solver)
                       'debug', ...          % run debgugging code
                       'logFile', ...        % file (location) to write logs to
-                      'lifting', ...        % whether to lift a problem
-                      'method'};            % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
+                              };            % 
    case 'QP'
         paramNames = {'multiscale'...       % true if problem is multiscale
                       'problemType'...      % problem type
                       'verify',...          % verify that it is a suitable  QP problem
-                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'printLevel', ...     % print level
                       'saveInput', ...      % save the input to a file (specified)
                       'debug', ...          % run debgugging code
@@ -55,7 +53,6 @@ switch problemType
         paramNames = {'multiscale'...       % true if problem is multiscale
                       'problemType'...      % problem type
                       'verify',...          % verify that it is a suitable  EP problem
-                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'printLevel', ...     % print level
                       'debug', ...          % run debgugging code
                       'feasTol',...         % feasibility tolerance

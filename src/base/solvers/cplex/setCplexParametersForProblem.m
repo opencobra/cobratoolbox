@@ -265,6 +265,25 @@ else
     cplexProblem.Param.lpmethod.Cur=4;%BARRIER provided best benchmark performance on Harvetta
 end
 
+if isfield(solverParams,'multiscale') && solverParams.multiscale==1 && 0
+    % Decides how to scale the problem matrix.
+    % Value  Meaning
+    % -1	No scaling
+    % 0	Equilibration scaling; default
+    % 1	More aggressive scaling
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
+    cplexProblem.Param.read.scale.Cur = -1;
+
+    % Emphasizes precision in numerically unstable or difficult problems.
+    % This parameter lets you specify to CPLEX that it should emphasize precision in
+    % numerically difficult or unstable problems, with consequent performance trade-offs in time and memory.
+    % Value Meaning
+    % 0   Do not emphasize numerical precision; default
+    % 1	Exercise extreme caution in computation
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
+    cplexProblem.Param.emphasis.numerical.Cur = 1;
+end
+
 if isfield(solverParams,'scaind')
     % Decides how to scale the problem matrix.
     % Value  Meaning

@@ -1,4 +1,4 @@
-function [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res)
+function [stat,origStat,x,y,yl,yu,z,zl,zu,s,basis,pobjval,dobjval] = parseMskResult(res)
 %parse the res structure returned from mosek
 % INPUTS:
 %  res:        mosek results structure returned by mosekopt
@@ -49,7 +49,7 @@ yu = [];
 z = [];
 zl = [];
 zu = [];
-k = [];
+s = [];
 basis = [];
 pobjval =[];
 dobjval =[];
@@ -172,7 +172,7 @@ switch accessSolution
                 zu=res.sol.itr.sux; %dual to   x <= bux
                 if isfield(res.sol.itr,'doty')
                     % Dual variables to affine conic constraints
-                    k = res.sol.itr.doty;
+                    s = res.sol.itr.doty;
                 end
                 pobjval = res.sol.itr.pobjval;
                 dobjval = res.sol.itr.dobjval;
@@ -198,14 +198,14 @@ switch accessSolution
                 zu=res.sol.bas.sux; %dual to   x <= bux
                 if isfield(res.sol.bas,'s')
                     % Dual variables to affine conic constraints
-                    k = res.sol.bas.s;
+                    s = res.sol.bas.s;
                 end
 
                 %https://docs.mosek.com/10.0/toolbox/advanced-hotstart.html
-                bas.skc = res.sol.bas.skc;
-                bas.skx = res.sol.bas.skx;
-                bas.xc = res.sol.bas.xc;
-                bas.xx = res.sol.bas.xx;
+                basis.skc = res.sol.bas.skc;
+                basis.skx = res.sol.bas.skx;
+                basis.xc = res.sol.bas.xc;
+                basis.xx = res.sol.bas.xx;
                 pobjval = res.sol.bas.pobjval;
                 dobjval = res.sol.bas.dobjval;
             otherwise
@@ -213,6 +213,7 @@ switch accessSolution
         end
     otherwise
         accessSolution = 'dontAccess';
+        origStat = -1;
 end
 
 if strcmp(accessSolution,'dontAccess')
@@ -223,11 +224,11 @@ if strcmp(accessSolution,'dontAccess')
         case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
             stat=2; % Unbounded solution
             origStat = [origStat ' & ' res.rcodestr];
-        case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS'}
+        case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE'}
             stat=-1; %some other problem
             origStat = [origStat ' & ' res.rcodestr];
         otherwise
-            warning(['Unrecognised res.sol.bas.solsta: ' origStat])
+            warning(['Unrecognised res.sol.bas.solsta or res.sol.itr.solsta: ' origStat])
             stat=-1; %some other problem
             fprintf('%s\n',res.rcode)
             fprintf('%s\n',res.rmsg)

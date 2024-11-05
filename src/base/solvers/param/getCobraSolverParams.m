@@ -131,7 +131,7 @@ switch problemType
         valDef.feasTol = 1e-6; % (primal) feasibility tolerance
         valDef.optTol = 1e-6;  % (dual) optimality tolerance
         valDef.solver='mosek';
-        valDef.epmethod='CONIC';
+        
     case 'CLP'
         % This is never used elsewhere except for parameter setting loop
         % for backward compatibility
