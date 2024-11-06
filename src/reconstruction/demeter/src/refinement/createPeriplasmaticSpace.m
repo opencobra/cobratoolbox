@@ -71,6 +71,9 @@ if ~isempty(find(strcmp(infoFile(:,1),microbeID)))
                 transpRxns = findRxnsFromMets(model,exMets{i});
                 % remove exchange reactions
                 transpRxns(find(strncmp(transpRxns,'EX_',3)))=[];
+                % remove reactions that are already periplasmatic
+                forms = printRxnFormula(model,transpRxns);
+                transpRxns(find(contains(forms,'[p]')))=[];
                 for j=1:length(transpRxns)
                     rxnsToAdd{end+1} = [transpRxns{j} 'pp'];
                     rxnNames{end+1} = [model.rxnNames{find(strcmp(model.rxns,transpRxns{j}))} ', periplasmatic'];

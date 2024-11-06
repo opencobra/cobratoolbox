@@ -101,18 +101,18 @@ modelStats(2:end,2:4)=num2cell(data);
 % create violin plot of model stats
 if nargin <5
     % have reactions and metabolites in one plot
-    figure
-    subplot(1,2,1)
-    violinplot(data(:,1:2),{'Reactions','Metabolites'});
-    set(gca, 'FontSize', 12)
     % does not work if all data points are the same
-    if ~numel(unique(data(:,3)))==1
+    if ~numel(unique(data(:,1)))==1 && ~numel(unique(data(:,2)))==1 && ~numel(unique(data(:,3)))==1
+        figure
+        subplot(1,2,1)
+        violinplot(data(:,1:2),{'Reactions','Metabolites'});
+        set(gca, 'FontSize', 12)
         subplot(1,2,2)
         violinplot(data(:,3),{'Microbes'});
+        set(gca, 'FontSize', 12)
+        sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
+        print('MicrobiomeModel_Sizes','-dpng','-r300')
     end
-    set(gca, 'FontSize', 12)
-    sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
-    print('MicrobiomeModel_Sizes','-dpng','-r300')
     
 else
     % perform statistical analysis if file with stratification is provided
