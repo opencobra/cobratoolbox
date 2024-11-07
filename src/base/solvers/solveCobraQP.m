@@ -443,7 +443,8 @@ switch solver
 
         %parse mosek result structure
         [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
-        
+        w = -(zl - zu);
+
         %debugging
         if problemTypeParams.printLevel>2
             res1=A*x + s -b;
