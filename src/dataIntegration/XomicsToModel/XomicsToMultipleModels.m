@@ -10,8 +10,8 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %    modelGenerationConditions: Options to vary or to save the data
 %
 %       * .activeGenesApproach -﻿The different approached to identify the active
-%          genes (Possible options: 'deleteModelGenes' and 'oneRxnPerActiveGene';
-%          default: 'deleteModelGenes');
+%          genes (Possible options: 'allRxnPerActiveGene' and 'oneRxnPerActiveGene';
+%          default: 'oneRxnPerActiveGene');
 %       * .boundsToRelaxExoMet - The type of bounds that can be relaxed, upper bounds,
 %          lower bounds or both ('b'; possible options: 'u', 'l' and 'b';
 %          default: 'b');
@@ -376,20 +376,20 @@ for firstGruoup = 1:length(cobraSolver)
                                                     fprintf('%s\n', ['Prexisting model in ' workingDirectory ])
                                                 else
                                                     fprintf('%s\n', ['Computing new model in ' workingDirectory ])
-                                                    try
+%                                                     try
                                                         [omicsModel, modelGenerationReport] = XomicsToModel(genericModel, specificData, param);
                                                         % Save the model with the correct name
                                                         Model = omicsModel;
                                                         save([workingDirectory filesep 'Model.mat'], 'Model', 'modelGenerationReport')
-                                                    catch ME
-                                                        warning('XomicsToModel failed to run')
-                                                        disp(param)
-                                                        disp(ME)
-                                                        msgText = getReport(ME)
-                                                        % Close the diary if the run crashed
-                                                        fprintf('%s\n', ['Diary written to: ' param.diaryFilename])
-                                                        diary off
-                                                    end
+%                                                     catch ME
+%                                                         warning('XomicsToModel failed to run')
+%                                                         disp(param)
+%                                                         disp(ME)
+%                                                         msgText = getReport(ME)
+%                                                         % Close the diary if the run crashed
+%                                                         fprintf('%s\n', ['Diary written to: ' param.diaryFilename])
+%                                                         diary off
+%                                                     end
                                                 end
                                                
                                                 if any(conditionsBool)

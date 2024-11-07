@@ -10,7 +10,7 @@ function [MinimizedFlux, modelIrrev]= minimizeModelFlux(model, osenseStr, minNor
 %    model:              COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
+%    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'min')
 %    minNorm:           {(0), 'one', 'zero', > 0 , `n x 1` vector}, where `[m,n]=size(S)`;
 %                       0 - Default, normal LP,
 %                       'one'  Minimise the Taxicab Norm using LP.

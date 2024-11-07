@@ -131,7 +131,7 @@ end
 if isfield(model,'modelAnnotation')
     tmp_anno = '<notes> <body xmlns="http://www.w3.org/1999/xhtml"> <div>';
     for i = 1 : length(model.modelAnnotation)
-        tmp_anno = strcat( tmp_anno,' <p>' ,model.modelAnnotation{i}, '</p>');
+        tmp_anno = strcat( tmp_anno,' <p>' ,model.modelAnnotation(i), '</p>');
     end
     tmp_anno = strcat(tmp_anno,'</div>  </body> </notes>');
     sbmlModel.annotation = tmp_anno;

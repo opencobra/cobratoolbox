@@ -1,4 +1,4 @@
-function solution = solveCobraEP(EPproblem, varargin)
+function sol = solveCobraEP(EPproblem, varargin)
 % Solves the following optimisation problem:
 %
 % minimize   osense*(c.*d)'x + d.*x'(log(x) -1) + (1/2)*x'*Q*x
@@ -30,7 +30,7 @@ function solution = solveCobraEP(EPproblem, varargin)
 %
 %
 % USAGE:
-%    solution = solveCobraEP(EPproblem, varargin)
+%    sol = solveCobraEP(EPproblem, varargin)
 %
 % INPUT:
 %    EPproblem:     Structure containing the following fields describing the EP problem to be solved
@@ -92,53 +92,57 @@ function solution = solveCobraEP(EPproblem, varargin)
 %   optTol:         Optimality tolerance
 %
 % OUTPUT:
-%    solution:      Structure containing the following fields describing a LP solution:
-%                     * .obj:          Objective value
+%    sol:      Structure containing the following fields describing a LP sol:
+%                     *.obj:          Objective value
 %                     *.objLinear      osense*c'*x;
 %                     *.objEntropy     d.*x'*(log(x) -1);
 %                     *.objQuadratic   (1/2)*x'*Q*x;
-%                     * .full:         Primal solution vector
-%                     * .slack:        bl = A*x + s = bu
-%                     * .rcost:        Reduced costs, dual solution to :math:`lb <= x <= ub`
-%                     * .dual:         dual solution to constraints :math: `A*x ('E' | 'G' | 'L') b`
-%
-%                     * .solver:       Solver used to solve EP problem
+%                     *.v:  n+k ×1 double
+%                     *.vf: n × 1 double
+%                     *.vr: n × 1 double
+%                     *.vt: 1'*vt + 1'*vr
+%                     *.y_N: m x 1 double   dual sol to constraints :math: `A*x ('E' | 'G' | 'L') b`
+%                     *.z_dx: 0
+%                     *.z_vf: n × 1 double    dual sol to :math:`lb <= vr <= ub`
+%                     *.z_vr: n × 1 double    dual sol to :math:`lb <= vf <= ub`
+%                     *.z_vi: n × 1 double    dual sol to :math:`lb <= v <= ub`
+%                     *.z_v: n + k × 1 double dual sol to :math:`lb <= w <= ub`
 %                     * .stat:         Solver status in standardized form
 %                       * 0 - Infeasible problem
-%                       * 1 - Optimal solution
-%                       * 2 - Unbounded solution
-%                       * 3 - Almost optimal solution
+%                       * 1 - Optimal sol
+%                       * 2 - Unbounded sol
+%                       * 3 - Almost optimal sol
 %                       * -1 - Some other problem (timelimit, numerical problem etc)
 %                     * .origStat:         Original status returned by the specific solver
 %                     * .origStatText:     Original status text returned by the specific solver
 %                     * .time:         Solve time in seconds
-%
+%                     * .solver:       Solver used to solve EP problem
+%                     * .epmethod: solver method used e.g. 'CONIC'
+
 % OPTIONAL OUTPUT (from conic optimisation with mosek):
-%  solution.auxPrimal:  auxiliary primal variable
-%  solution.auxRcost:   dual to auxiliary primal variable
-%  solution.coneF:      affine constraint matrix
-%  solution.coneDual:   dual to affine constraints
-%  solution.dualNorm:   dual to the probability normalisation constraint
+%  sol.auxPrimal:  auxiliary primal variable
+%  sol.auxRcost:   dual to auxiliary primal variable
+%  sol.coneF:      affine constraint matrix
+%  sol.coneDual:   dual to affine constraints
+%  sol.dualNorm:   dual to the probability normalisation constraint
 %
 % OPTIONAL OUTPUT (from optimisation with pdco):
-%  solution.d1:  primal regularisation parameter, see pdco.m
-%  solution.d2:  dual regularisation parameter, see pdco.m
+%  sol.d1:  primal regularisation parameter, see pdco.m
+%  sol.d2:  dual regularisation parameter, see pdco.m
 %
 % EXAMPLE:
 %
-% NOTE: This code is a draft version released for the ELIXIR Fluxomic course and is not yet published and not to be redistributed without express permission of the author.
 %
-% Author(s): Ronan M.T. Fleming, 2021
+% Author(s): Ronan M.T. Fleming, 2024
 
-[problemTypeParams, solverOnlyParams] = parseSolverParameters('EP', varargin{:});
 
-if ~isfield(problemTypeParams,'debug')
-    problemTypeParams.debug = 1;
+[problemTypeParams, solverParams] = parseSolverParameters('EP', varargin{:});
+param = mergeCobraParams(solverParams,problemTypeParams);
+clear problemTypeParams solverParams
+
+if ~isfield(param,'debug')
+    param.debug = 1;
 end
-
-% Remove outer function specific parameters to avoid crashing solver interfaces
-% Default EP parameters are removed within solveCobraEP, so are not removed here
-solverOnlyParams = mosekParamStrip(solverOnlyParams);
 
 if any(EPproblem.lb>EPproblem.ub)
     error('EPproblem.lb>EPproblem.ub');
@@ -153,7 +157,7 @@ if isfield(EPproblem, 'csense')
     end
 end
 
-if isequal(problemTypeParams.solver,'mosek')
+if isequal(param.solver,'mosek')
     if ~(isfield(EPproblem,'blc') || isfield(EPproblem,'blc'))
         % blc <= A*x <= buc
         EPproblem.blc = EPproblem.b;
@@ -167,53 +171,38 @@ if isequal(problemTypeParams.solver,'mosek')
 end
 
 %% if in debug mode, test to see if the LP part of the problem is feasible
-if problemTypeParams.debug
-    switch problemTypeParams.solver
+if param.debug && ~isfield(param,'useTestVKSolution') && ~isfield(param,'VKproblem') %avoid LP if being called in driver_optimiseVKmodel
+    switch param.solver
         case 'pdco'
             solutionLP2 = solveCobraLP(EPproblem);
-            if problemTypeParams.printLevel>2
+            if param.printLevel>2
                 disp(solutionLP2)
             end
             
         case 'mosek'
-            %https://docs.mosek.com/8.1/toolbox/solving-linear.html
-            if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
-            end
-            if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
-            end
+            [cmd,mosekParam] = setMosekParam(param);
 
-            %remove any fields with names that do not begin with 'MSK_'
-            solverOnlyParams = mosekParamStrip(solverOnlyParams);
-
-            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,'minimize');
+            [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,mosekParam,'minimize');
             
-            %If the feasibility tolerance is changed by the solverParams
-            %struct, this needs to be forwarded to the cobra Params for the
-            %final consistency test!
-            if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
-            end
-
             %parse mosek result structure
-            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,EPproblem,solverOnlyParams,problemTypeParams.printLevel);
+           %[            stat,            origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res)
+            [solutionLP2.stat,solutionLP2.origStat,x,y,yl,yu,z,zl,zu,k,  basis,pobjval,dobjval] = parseMskResult(res);
         
             switch solutionLP2.stat
                 case 0
-                    solution = solutionLP2;
-                    message = ['solveCobraEP: LP part of EPproblem is infeasible according to solveCobraLP with ' problemTypeParams.solver '.'];
+                    sol = solutionLP2;
+                    message = ['solveCobraEP: LP part of EPproblem is infeasible according to solveCobraLP with ' param.solver '.'];
                     warning(message)
                     
                     return
                 case 2
-                    solution = solutionLP2;
-                    message = ['solveCobraEP: LP part of EPproblem is unbounded according to solveCobraLP with ' problemTypeParams.solver '.'];
+                    sol = solutionLP2;
+                    message = ['solveCobraEP: LP part of EPproblem is unbounded according to solveCobraLP with ' param.solver '.'];
                     warning(message)
                     
                     return
                 case 1
-                    message =['solveCobraEP: LP part of EPproblem is feasible according to solveCobraLP with ' problemTypeParams.solver '.'];
+                    message =['solveCobraEP: LP part of EPproblem is feasible according to solveCobraLP with ' param.solver '.'];
                     fprintf('%s\n',message)
                 otherwise
                     error('inconclusive solveCobraLP')
@@ -277,7 +266,7 @@ end
 
 [mlt,nlt]=size(A);
 
-switch problemTypeParams.solver
+switch param.solver
     case 'pdco'
         % solves optimization problems of the form
         %
@@ -334,38 +323,38 @@ switch problemTypeParams.solver
             end
         end
                 
-        if isfield(solverOnlyParams,'d1')
-            d1 = solverOnlyParams.d1;
+        if isfield(param,'d1')
+            d1 = param.d1;
         else
             d1 = 1e-4;
         end
-        if isfield(solverOnlyParams,'d2')
-            d2 = solverOnlyParams.d2;
+        if isfield(param,'d2')
+            d2 = param.d2;
         else
             d2 = 1e-4;
         end
-        if isfield(solverOnlyParams,'x0')
-            x0 = solverOnlyParams.x0;
+        if isfield(param,'x0')
+            x0 = param.x0;
         else
             x0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverOnlyParams,'y0')
-            y0 = solverOnlyParams.y0;
+        if isfield(param,'y0')
+            y0 = param.y0;
         else
             y0 = ones(size(Aeq,1),1);
         end
-        if isfield(solverOnlyParams,'z0')
-            z0 = solverOnlyParams.z0;
+        if isfield(param,'z0')
+            z0 = param.z0;
         else
             z0 = ones(size(Aeq,2),1);
         end
-        if isfield(solverOnlyParams,'xsize')
-            xsize = solverOnlyParams.xsize;
+        if isfield(param,'xsize')
+            xsize = param.xsize;
         else
             xsize = 1;
         end
-        if isfield(solverOnlyParams,'zsize')
-            zsize = solverOnlyParams.zsize;
+        if isfield(param,'zsize')
+            zsize = param.zsize;
         else
             zsize = 1;
         end
@@ -374,8 +363,8 @@ switch problemTypeParams.solver
         options = pdcoSet;
         %options.mu0       = 1; %very small only for entropy function
         options.mu0       = 0; %pdco chooses its own
-        options.FeaTol    = problemTypeParams.feasTol;
-        options.OptTol    = problemTypeParams.optTol;
+        options.FeaTol    = param.feasTol;
+        options.OptTol    = param.optTol;
         %   If getting linesearch failures, slacken tolerances
         %   i.e. Linesearch failed (nf too big)
         %options.FeaTol    = 1e-6; %%Ecoli core working at 1e-7
@@ -443,7 +432,7 @@ switch problemTypeParams.solver
         else
             objHandle = @(x) entropyObj(x,ceq,deq);
         end
-        options.Print = problemTypeParams.printLevel-1;
+        options.Print = param.printLevel-1;
         
         saveAndDebug=0;
         if saveAndDebug
@@ -457,7 +446,7 @@ switch problemTypeParams.solver
         logx(deq~=0) = reallog(x(deq~=0));     % error if negative
         grad = ceq + deq.*logx;
         
-        if problemTypeParams.printLevel > 2 || problemTypeParams.debug
+        if param.printLevel > 2 || param.debug
             % determine the residuals
             fprintf('\n%s\n','KKT with pdco signs:')
             fprintf('%8.2g %s\n',norm(Aeq*x - beq,inf), '|| Aeq*x - beq ||_inf');
@@ -473,15 +462,16 @@ switch problemTypeParams.solver
             return
         end
         
-        solution.time = toc;
-        
-        % inform = 0 if a solution is found;
+        sol.time = toc;
+        sol.epmethod = options.Method;
+
+        % inform = 0 if a sol is found;
         %        = 1 if too many iterations were required;
         %        = 2 if the linesearch failed too often;
         %        = 3 if the step lengths became too small;
         %        = 4 if Cholesky said ADDA was not positive definite.
         if (inform == 0)
-            solution.stat = 1;
+            sol.stat = 1;
             
 
             if ~any(csense == 'L' | csense == 'G')
@@ -495,71 +485,73 @@ switch problemTypeParams.solver
                 y(csense == 'G') = -y(csense == 'G');
             end
             
-            solution.slack = slack;
-            solution.full = x(1:nlt,1);
-            solution.dual = -y;
-            solution.rcost = -z(1:nlt,1);
-            solution.origStat = inform;
+            sol.slack = slack;
+            sol.full = x(1:nlt,1);
+            sol.dual = -y;
+            sol.rcost = -z(1:nlt,1);
+            sol.origStat = inform;
 
             %objective
             logx = zeros(size(A,2),1);
-            logx(d~=0) = reallog(solution.full(d~=0));     % error if negative
+            logx(d~=0) = reallog(sol.full(d~=0));     % error if negative
             if isfield(EPproblem,'Q')
-                solution.obj  = c'*solution.full + (d.*solution.full)'*logx + (1/2)*solution.full'*EPproblem.Q*solution.full;
-                grad = c + d.*logx + EPproblem.Q*solution.full;
+                sol.obj  = c'*sol.full + (d.*sol.full)'*logx + (1/2)*sol.full'*EPproblem.Q*sol.full;
+                grad = c + d.*logx + EPproblem.Q*sol.full;
             else
-                solution.obj  = c'*solution.full + (d.*solution.full)'*logx;
+                sol.obj  = c'*sol.full + (d.*sol.full)'*logx;
                 grad = c + d.*logx;
             end
             Aty = -A'*y;
             
-            if problemTypeParams.printLevel > 2 || problemTypeParams.debug
+            if param.printLevel > 2 || param.debug
                 fprintf('\n%s\n','KKT with Rockafellar signs:')
-                fprintf('%8.2g %s\n',norm(A*solution.full + solution.slack - b,inf), '|| A*x + s - b ||_inf');
-                fprintf('%8.2g %s\n',norm(A*solution.full + solution.slack - b - (d2^2)*solution.dual,inf), '|| A*x + s - b - (d2^2)*y ||_inf');
-                res2 = grad  + A'*solution.dual + solution.rcost;
+                fprintf('%8.2g %s\n',norm(A*sol.full + sol.slack - b,inf), '|| A*x + s - b ||_inf');
+                fprintf('%8.2g %s\n',norm(A*sol.full + sol.slack - b - (d2^2)*sol.dual,inf), '|| A*x + s - b - (d2^2)*y ||_inf');
+                res2 = grad  + A'*sol.dual + sol.rcost;
                 fprintf('%8.2g %s\n',norm(res2,inf), '|| grad + A''*y + z ||_inf');
                 
-                fprintf('%8.2g %s\n',norm(grad  + A'*solution.dual + solution.rcost - (d1^2)*solution.full,inf), '|| grad + A''*y + z - (d1^2)*x ||_inf');
-                if problemTypeParams.debug
-                    %res2 = grad  + Aty + solution.rcost;
-                    res2 = grad  + A'*solution.dual + solution.rcost;
-                    solution.T = table(res2,c,d.*logx, -A'*y, solution.rcost,...
+                fprintf('%8.2g %s\n',norm(grad  + A'*sol.dual + sol.rcost - (d1^2)*sol.full,inf), '|| grad + A''*y + z - (d1^2)*x ||_inf');
+                if param.debug
+                    %res2 = grad  + Aty + sol.rcost;
+                    res2 = grad  + A'*sol.dual + sol.rcost;
+                    sol.T = table(res2,c,d.*logx, -A'*y, sol.rcost,...
                         'VariableNames',{'total','c','dlogx','Aty','z'});
                 end
                 if any(~isfinite(res2))
                     warning('Infinite variables in dual optimality condition')
-                    solution.Tinf=solution.T(~isfinite(solution.T.total),:);
-                    ind = find(~isfinite(solution.T.total));
-                    solution.Tinf.ind = ind;
+                    sol.Tinf=sol.T(~isfinite(sol.T.total),:);
+                    ind = find(~isfinite(sol.T.total));
+                    sol.Tinf.ind = ind;
                 end
             end
             
-            solution.d1=d1;
-            solution.d2=d2;
+            sol.d1=d1;
+            sol.d2=d2;
             
         elseif (inform == 1 || inform == 2 || inform == 3)
-            solution.stat = 0;
-            solution.obj = NaN;
+            sol.stat = 0;
+            sol.obj = NaN;
         else
-            solution.stat = -1;
-            solution.obj = NaN;
+            sol.stat = -1;
+            sol.obj = NaN;
         end
-        solution.origStat = inform;
+        sol.origStat = inform;
         
         %update parameters for testing optimality criterion
-        problemTypeParams.feasTol = options.FeaTol;
-        problemTypeParams.optTol = options.OptTol;
-        %                     * .full:         Full LP solution vector
+        param.feasTol = options.FeaTol;
+        param.optTol = options.OptTol;
+        %                     * .full:         Full LP sol vector
         %                     * .obj:          Objective value
-        %                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
-        %                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
+        %                     * .rcost:        Reduced costs, dual sol to :math:`lb <= v <= ub`
+        %                     * .dual:         dual sol to `A*v ('E' | 'G' | 'L') b`
         %                     * .solver:       Solver used to solve LP problem
         %                     * .algorithm:    Algorithm used by solver to solve LP problem
         %                     * .stat:         Solver status in standardized form
                
     case 'mosek'
         %%
+        [cmd, mosekParam] = setMosekParam(param);
+
         %         https://docs.mosek.com/modeling-cookbook/expo.html
         %         https://docs.mosek.com/modeling-cookbook/qcqo.html#conic-reformulation
         %         min  (d.*x)'*(log(x./y) + c)  + (1/2)*x'*Q*x
@@ -669,8 +661,8 @@ switch problemTypeParams.solver
 
         % Specify conic part of the problem
         % https://docs.mosek.com/9.2/toolbox/data-types.html#cones
-        if problemTypeParams.printLevel>1 || problemTypeParams.debug
-            [~, res] = mosekopt('symbcon');
+        if param.printLevel>1 || param.debug
+            [~, res] = mosekopt('symbcon echo(0)');
         else
             [~, res] = mosekopt('symbcon echo(0)');
         end
@@ -809,75 +801,36 @@ switch problemTypeParams.solver
             mosekopt('write(problem.opf)',prob)
         end
         
-        %set default mosek parameters for this type of problem
-        paramMosek=mosekParamSetEFBA;
-        
-        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = solverOnlyParams.feasTol;
-            else
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_PFEAS = problemTypeParams.feasTol;
-            end
-        end
-        if ~isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-            if isfield(solverOnlyParams,'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = solverOnlyParams.optTol;
-            else
-                paramMosek.MSK_DPAR_INTPNT_CO_TOL_DFEAS = problemTypeParams.optTol;
-            end
-        end
-        
-        % only set the print level if not already set via solverParams structure
-        if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
-            switch problemTypeParams.printLevel
-                case 0
-                    echolev = 0;
-                case 1
-                    echolev = 3;
-                case 2
-                    paramMosek.MSK_IPAR_LOG_INTPNT = 1;
-                    paramMosek.MSK_IPAR_LOG_SIM = 1;
-                    echolev = 3;
-                otherwise
-                    echolev = 0;
-            end
-            if echolev == 0
-                paramMosek.MSK_IPAR_LOG = 0;
-                cmd = ['minimize echo(' int2str(echolev) ')'];
-            else
-                cmd = 'minimize';
-            end
-            
-        end
-        %overide if in debug mode
-        if problemTypeParams.debug
-            cmd = 'minimize';
-        end
-            
-        if problemTypeParams.debug && 0
-            probBeforeMosekopt = prob;
-            save('probBeforeMosekopt','probBeforeMosekopt');
+
+        if isfield(param,'saveProb') && param.saveProb
+            formattedTime = datestr(now, 'yyyymmddHHMMSS');
+            EP.cmd=cmd;
+            EP.prob=prob;
+            EP.param=mosekParam;
+            save([formattedTime '_EP_probBeforeMosekopt'],"EP");
         end
 
-        %param = updateStructData(param,solverParams);
-        
         %call mosek exponential cone solver
         tic;
         if 0
             %default
             [~,res]=mosekopt('minimize',prob);
         else
-            [~,res]=mosekopt(cmd,prob,paramMosek);
+            [~,res]=mosekopt(cmd,prob,mosekParam);
         end
-        solution.time = toc;
-        
-        %parse mosek result structure      
-       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverParams,printLevel)
-        [stat,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
-       %[stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,printLevel)
+        sol.time = toc;
+        if isfield(param,'epmethod')
+            sol.epmethod = param.epmethod;
+        else
+            sol.epmethod = 'FREE';
+        end
 
-        solution.stat = stat;
-        solution.origStat = origStat;
+        %parse mosek result structure      
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
+
+        sol.stat = stat;
+        sol.origStat = origStat;
+        sol.obj = pobjval;
         switch stat
             case 1
                 %check for zeros in variables within entropy functions
@@ -895,20 +848,20 @@ switch problemTypeParams.solver
                 sbl = prob.a*x - prob.blc;
                 sbu = prob.buc - prob.a*x;
                 s = sbu - sbl; %TODO -double check this
-                if problemTypeParams.printLevel>1
+                if param.printLevel>1
                     fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
                     fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
                 end
                 
-                if problemTypeParams.printLevel > 1
+                if param.printLevel > 1
                     % Problem definition here: https://docs.mosek.com/9.2/toolbox/prob-def-affine-conic.html
                     fprintf('%s\n','Optimality conditions (numerical)')
-                    % Guide to interpreting the solution summary: https://docs.mosek.com/9.2/toolbox/debugging-log.html#continuous-problem
+                    % Guide to interpreting the sol summary: https://docs.mosek.com/9.2/toolbox/debugging-log.html#continuous-problem
                     fprintf('%8.2g %s\n',norm(prob.a(prob.blc==prob.buc,:)*x - prob.blc(prob.blc==prob.buc),inf), '|| A*x - b ||_inf');
                     val = norm(prob.c - prob.a'*y - z - prob.f'*k,inf);
                     fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*k ||_inf');
-                    if val>1e-6 || problemTypeParams.debug
-                        solution.T0 = table(prob.c - prob.a'*y - z - prob.f'*k,prob.c, prob.a'*y, z,prob.f'*k,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
+                    if val>1e-6 || param.debug
+                        sol.T0 = table(prob.c - prob.a'*y - z - prob.f'*k,prob.c, prob.a'*y, z,prob.f'*k,'VariableNames',{'tot','c','Aty','z','Ftdoty'});
                     end
                     %fprintf('%8.2g %s\n',norm(prob.c - prob.f'*s,inf), '|| c - F''k ||_inf');
                     fprintf('%8.2g %s\n',norm(-y + res.sol.itr.slc - res.sol.itr.suc,inf), '|| -y + res.sol.itr.slc - res.sol.itr.suc ||_inf');
@@ -926,14 +879,14 @@ switch problemTypeParams.solver
                 
                 %check with the original order of the affine cone constraints
                 val = norm(prob.c - prob.a'*y - z - F'*y_K,inf);
-                if problemTypeParams.printLevel > 1
+                if param.printLevel > 1
                     fprintf('%8.2g %s\n',val, '|| c - A''*y - z - F''*y_K ||_inf');
                 end
-                if val>1e-6 || problemTypeParams.debug
-                    solution.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*k,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
+                if val>1e-6 || param.debug
+                    sol.T = table(prob.c - prob.a'*y - z - F'*y_K,prob.c, prob.a'*y, z,prob.f'*k,F'*y_K,'VariableNames',{'tot','c','Aty','z','Ftdoty','Fty_K'});
                 end
                 
-                if problemTypeParams.printLevel > 1
+                if param.printLevel > 1
                     x1 = F(1:nCone,:)*x;
                     x2 = F(nCone+1:2*nCone,:)*x;
                     x3 = F(2*nCone+1:3*nCone,:)*x;
@@ -973,40 +926,40 @@ switch problemTypeParams.solver
                     fprintf('%7.2g\t%s\n',min(y1_K(1:nExpCone) + y3_K(1:nExpCone).*exp(y2_K(1:nExpCone)./y3_K(1:nExpCone))/exp(1)), 'min(y1_k + y3_k.*exp(y2_K./y3_K)/exp(1))  >= 0');
                 end
                 
-                solution.full = x(1:size(A,2));
+                sol.full = x(1:size(A,2));
                 %switch to Rockafellar signs
-                solution.dual = -y(1:size(A,1));
-                solution.dualNorm = -y(size(A,1)+1:size(A,1)+p);
-                solution.rcost = -z(1:size(A,2)+p);
-                solution.slack = s;
+                sol.dual = -y(1:size(A,1));
+                sol.dualNorm = -y(size(A,1)+1:size(A,1)+p);
+                sol.rcost = -z(1:size(A,2)+p);
+                sol.slack = s;
                 
                 %need to zero out the NaN due to log(0) for some variables
-                logSolutionFull = real(log(solution.full));
+                logSolutionFull = real(log(sol.full));
                 logSolutionFull(~isfinite(logSolutionFull))=0;
                 if isfield(EPproblem,'Q')
-                    solution.obj = EPproblem.c'*solution.full + (EPproblem.d.*solution.full)'*(logSolutionFull -1) + (1/2)*solution.full'*EPproblem.Q*solution.full;
-                    solution.objLinear = EPproblem.c'*solution.full;
-                    solution.objEntropy = -(EPproblem.d.*solution.full)'*(logSolutionFull -1);
-                    solution.objQuadratic = (1/2)*solution.full'*EPproblem.Q*solution.full;
+                    sol.obj = EPproblem.c'*sol.full + (EPproblem.d.*sol.full)'*(logSolutionFull -1) + (1/2)*sol.full'*EPproblem.Q*sol.full;
+                    sol.objLinear = EPproblem.c'*sol.full;
+                    sol.objEntropy = -(EPproblem.d.*sol.full)'*(logSolutionFull -1);
+                    sol.objQuadratic = (1/2)*sol.full'*EPproblem.Q*sol.full;
                 else
-                    solution.obj = EPproblem.c'*solution.full + (EPproblem.d.*solution.full)'*(logSolutionFull -1);
-                    solution.objLinear = EPproblem.c'*solution.full;
-                    solution.objEntropy = -(EPproblem.d.*solution.full)'*(logSolutionFull -1);
-                    solution.objQuadratic = 0;
+                    sol.obj = EPproblem.c'*sol.full + (EPproblem.d.*sol.full)'*(logSolutionFull -1);
+                    sol.objLinear = EPproblem.c'*sol.full;
+                    sol.objEntropy = -(EPproblem.d.*sol.full)'*(logSolutionFull -1);
+                    sol.objQuadratic = 0;
 
                 end
                 
-                posRcost = solution.rcost>0;
-                negRcost = solution.rcost<0;
+                posRcost = sol.rcost>0;
+                negRcost = sol.rcost<0;
                 blx = prob.blx(1:size(A,2));
                 bux = prob.bux(1:size(A,2));
-                solution.lagRcost = sum(solution.rcost(negRcost)'*blx(negRcost) + solution.rcost(posRcost)'*bux(posRcost));
+                sol.lagRcost = sum(sol.rcost(negRcost)'*blx(negRcost) + sol.rcost(posRcost)'*bux(posRcost));
                 
                 %pass back the F matrix to check biochemical optimality criteria
-                solution.coneF = F;
-                solution.auxPrimal = x(size(A,2)+p+1:end);
-                solution.auxRcost = -z(size(A,2)+p+1:end);
-                solution.coneDual = -y_K;
+                sol.coneF = F;
+                sol.auxPrimal = x(size(A,2)+p+1:end);
+                sol.auxRcost = -z(size(A,2)+p+1:end);
+                sol.coneDual = -y_K;
                 
                 % variable to determine the residual 1
                 b = prob.blc;
@@ -1021,146 +974,111 @@ switch problemTypeParams.solver
                 k = NaN*ones(size(prob.f,1),1);
         end              
     otherwise
-        error([problemTypeParams.solver ' is an unrecognised solver'])
+        error([param.solver ' is an unrecognised solver'])
 end
 
-switch solution.stat
+sol.solver=param.solver;
+
+switch sol.stat
     case 0
-        switch problemTypeParams.solver
+        switch param.solver
             case 'pdco'
                 %infeasible, debug the situtation
-                disp(solution.origStat)
-                %solution.origStat: 'PRIMAL_INFEASIBLE_CER'
+                disp(sol.origStat)
+                %sol.origStat: 'PRIMAL_INFEASIBLE_CER'
                 solutionLP = solveCobraLP(EPproblem);
                 statLP=solutionLP.stat;
                 
             case 'mosek'
-                %https://docs.mosek.com/8.1/toolbox/solving-linear.html
-                if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
-                end
-                if ~isfield(problemTypeParams, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-                    solverOnlyParams.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
-                end
-                %If the feasibility tolerance is changed by the solverParams
-                %struct, this needs to be forwarded to the cobra Params for the
-                %final consistency test!
-                if isfield(problemTypeParams,'MSK_DPAR_INTPNT_TOL_PFEAS')
-                    solverOnlyParams.feasTol = solverOnlyParams.MSK_DPAR_INTPNT_TOL_PFEAS;
-                end
+                [cmd,mosekParam] = setMosekParam(param);
 
-                
-                % only set the print level if not already set via solverParams structure
-                if ~isfield(solverOnlyParams, 'MSK_IPAR_LOG')
-                    switch problemTypeParams.printLevel
-                        case 0
-                            echolev = 0;
-                        case 1
-                            echolev = 3;
-                        case 2
-                            solverOnlyParams.MSK_IPAR_LOG_INTPNT = 1;
-                            solverOnlyParams.MSK_IPAR_LOG_SIM = 1;
-                            echolev = 3;
-                        otherwise
-                            echolev = 0;
-                    end
-                end
-                if echolev == 0
-                    solverOnlyParams.MSK_IPAR_LOG = 0;
-                    cmd = ['minimize echo(' int2str(echolev) ')'];
-                else
-                    cmd = 'minimize';
-                end
-                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,solverOnlyParams,cmd);
-                
-                %[stat,origStat,x,y,yl,yu,z,zl,zu,s,k,bas,pobjval,dobjval] = parseMskResult(res,prob,problemTypeParams.printLevel);
-                [statLP,origStat,x,y,yl,yu,z,zl,zu,k,bas,pobjval,dobjval] = parseMskResult(res,solverOnlyParams,problemTypeParams.printLevel);
-                
-   
+                [res] = msklpopt(EPproblem.c,EPproblem.A,EPproblem.blc,EPproblem.buc,EPproblem.lb,EPproblem.ub,mosekParam,cmd);
+
+                [statLP,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
         end
         
         switch statLP
             case 1
-                message =['solveCobraEP: EPproblem with ' problemTypeParams.solver ' is infeasible, but corresponding LPproblem is feasible according to solveCobraLP with ' problemTypeParams.solver];
+                message =['solveCobraEP: EPproblem with ' param.solver ' is infeasible, but corresponding LPproblem is feasible according to solveCobraLP with ' param.solver];
                 warning(message)
             otherwise
-                message = ['solveCobraEP: EPproblem with ' problemTypeParams.solver ' is infeasible, because corresponding LPproblem is infeasible according to solveCobraLP with ' problemTypeParams.solver];
+                message = ['solveCobraEP: EPproblem with ' param.solver ' is infeasible, because corresponding LPproblem is infeasible according to solveCobraLP with ' param.solver];
                 warning(message)
         end
         if exist('messages','var')
-            if isfield(solution,'messages')
-                solution.messages = [messages;solution.messages;message];
+            if isfield(sol,'messages')
+                sol.messages = [messages;sol.messages;message];
             else
-                solution.messages = [messages;message];
+                sol.messages = [messages;message];
             end
         else
-            solution.messages = cellstr(message);
+            sol.messages = cellstr(message);
         end
       
     case 1
         % check the optimality conditions for various solvers
-        if ~isempty(solution.slack) && ~isempty(solution.full)
+        if ~isempty(sol.slack) && ~isempty(sol.full)
             % determine the residual 1
-            switch problemTypeParams.solver
+            switch param.solver
                 case 'pdco'
                     feasTol = 1e-3;
-                    res1 = A*solution.full + solution.slack - b;
+                    res1 = A*sol.full + sol.slack - b;
                     res1(~isfinite(res1))=0;
                 case 'mosek'
-                    feasTol = problemTypeParams.feasTol * 1e2;
-                    res1 = A(blc==buc,:)*solution.full - blc(blc==buc);
+                    feasTol = param.feasTol * 1e2;
+                    res1 = A(blc==buc,:)*sol.full - blc(blc==buc);
             end
             tmp1 = norm(res1, inf);
             
             % evaluate the optimality condition 1
             if tmp1 > feasTol
-                if strcmp(problemTypeParams.solver,'pdco')
-                    res1b = norm(A*solution.full + solution.slack - b + (d2^2)*y,inf);
+                if strcmp(param.solver,'pdco')
+                    res1b = norm(A*sol.full + sol.slack - b + (d2^2)*y,inf);
                     tmp1b = norm(res1b, inf);
                     if tmp1b > feasTol
                         displayError = 1;
                     else
                         displayError = 0;
-                        warning(['[' problemTypeParams.solver '] Primal optimality condition in solveCobraEP only approximately satisfied, residual = ' num2str(tmp1) ', regularised residual = ' num2str(tmp1b) ', while problem feasTol = ' num2str(feasTol) '.  origStat = ' solution.origStat])
+                        warning(['[' param.solver '] Primal optimality condition in solveCobraEP only approximately satisfied, residual = ' num2str(tmp1) ', regularised residual = ' num2str(tmp1b) ', while problem feasTol = ' num2str(feasTol) '.  origStat = ' sol.origStat])
                     end
                 else
                     %TODO - debug why solver reporting optimal but unscaled seems less so.
                     displayError = 0;
                 end
                 if displayError
-                    %disp(solution.origStat)
-                    fprintf('%s\n',['[' problemTypeParams.solver '] Primal optimality condition in solveCobraEP not satisfied, residual = ' num2str(tmp1) ', while problem feasTol = ' num2str(feasTol) '.  origStat = ' solution.origStat])
+                    %disp(sol.origStat)
+                    fprintf('%s\n',['[' param.solver '] Primal optimality condition in solveCobraEP not satisfied, residual = ' num2str(tmp1) ', while problem feasTol = ' num2str(feasTol) '.  origStat = ' sol.origStat])
                 end
             else
-                if problemTypeParams.printLevel > 0
-                    fprintf(['\n > [' problemTypeParams.solver '] Primal optimality condition in solveCobraEP satisfied.']);
+                if param.printLevel > 0
+                    fprintf(['\n > [' param.solver '] Primal optimality condition in solveCobraEP satisfied.']);
                 end
             end
         end
         
         %gradient may differ depending on the solver
-        res2 = grad  + Aty + solution.rcost;
+        res2 = grad  + Aty + sol.rcost;
         tmp2 = norm(res2, inf);
         
         if 0
-            optTol = problemTypeParams.optTol * 1e2;
+            optTol = param.optTol * 1e2;
         else
             optTol = 5e-5;
         end
         % evaluate the optimality condition 2
         if tmp2 > optTol
-            disp(solution.origStat)
-            if ~(length(A)==1 && strcmp(problemTypeParams.solver,'pdco')) %todo, why does pdco choke on small A?
-                warning(['[' problemTypeParams.solver '] Dual   optimality condition in solveCobraEP not satisfied, residual = ' num2str(tmp2) ', while problem optTol = ' num2str(optTol)])
+            disp(sol.origStat)
+            if ~(length(A)==1 && strcmp(param.solver,'pdco')) %todo, why does pdco choke on small A?
+                warning(['[' param.solver '] Dual   optimality condition in solveCobraEP not satisfied, residual = ' num2str(tmp2) ', while problem optTol = ' num2str(optTol)])
             end
         else
-            if problemTypeParams.printLevel > 0
-                fprintf(['\n > [' problemTypeParams.solver '] Dual   optimality condition in solveCobraEP satisfied.\n']);
+            if param.printLevel > 0
+                fprintf(['\n > [' param.solver '] Dual   optimality condition in solveCobraEP satisfied.\n']);
             end
         end
 end
 
-solution.solver=problemTypeParams.solver;
+
 
 end
 

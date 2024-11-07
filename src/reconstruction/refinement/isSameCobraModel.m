@@ -20,8 +20,11 @@ function [isSame, nDiff, commonFields] = isSameCobraModel(model1, model2, printL
 % .. Authors:
 %     - Markus Herrgard 9/14/07
 %     - CI integration: Laurent Heirendt
-
-%TODO this function needs updating to use structeq.m
+%     - Farid Zare 2024/08/12: New format of subSystems in the model
+%
+% Note: Notice that this function checks if two models are the same, two 
+% same models does not necessary mean two same structures.
+% use structeq.m to compare two structures
 
 if ~exist('printLevel','var')
     printLevel = 0;
@@ -55,6 +58,12 @@ if (~isempty(onlyIn1) || ~isempty(onlyIn2))
     isSame = false;
 end
 
+% Check if subSystems field is nested cells
+if isfield(model1, 'subSystems') || isfield(model2, 'subSystems')
+    [~, rxnSubSystemMat1, subSystemNames1, nestedCells1] = buildRxn2subSystem(model1);
+    [~, rxnSubSystemMat2, subSystemNames2, nestedCells2] = buildRxn2subSystem(model2);
+end
+
 % initialize variables
 nFields = length(commonFields);
 nDiff = zeros(nFields,1);
@@ -65,43 +74,64 @@ for i = 1:nFields
     value1 = getfield(model1, fieldName);
     value2 = getfield(model2, fieldName);
 
-    if 0 %debugging code
+    % Check if subSystems field is nested cells
+    if strcmp(fieldName, 'subSystems') && (nestedCells1 || nestedCells2)
+        % Compare subSystem names
+        nDiffSubName = sum(~strcmp(subSystemNames1, subSystemNames2));
+        % Compare rxnSubSystem matrix
+        nDiffSubMat = ~isequal(rxnSubSystemMat1, rxnSubSystemMat2);
+
+        if nDiffSubName > 0
+            if printLevel > 0
+                fprintf('Field %s differs in %d positions between the models\n',fieldName,nDiff(i));
+            end
+            nDiff(i) = nDiffSubName;
+        elseif nDiffSubMat > 0
+            if printLevel > 0
+                fprintf('Nested cells in field subSystems: Shared lists, different contents per reaction.\n');
+            end
+            nDiff(i) = nDiffSubMat;
+        end
+    else
+
+        if 0 %debugging code
             if strcmp(fieldName,'rxnConfidenceScores')
                 pause(0.1);
             end
-    end
-    % replace all whitespaces
-    if iscellstr(value1)
-        value1 = regexprep(value1, '[^\w'']', '');
-        value2 = regexprep(value2, '[^\w'']', '');
-    end
+        end
+        % replace all whitespaces
+        if iscellstr(value1)
+            value1 = regexprep(value1, '[^\w'']', '');
+            value2 = regexprep(value2, '[^\w'']', '');
+        end
 
-    if isnumeric(value1)
-        nDiff(i) = sum(sum(~((value1 == value2) | (isnan(value1) & isnan(value2))) ));
-    elseif iscellstr(value1)
-        if 0 %debugging code
-        for i=1:length(value1)
-            if class(value1{i})~=class(value2{i})
-                pause(0.1)
+        if isnumeric(value1)
+            nDiff(i) = sum(sum(~((value1 == value2) | (isnan(value1) & isnan(value2))) ));
+        elseif iscellstr(value1)
+            if 0 %debugging code
+                for i=1:length(value1)
+                    if class(value1{i})~=class(value2{i})
+                        pause(0.1)
+                    end
+                    if length(value1{i})~=length(value2{i})
+                        pause(0.1)
+                    end
+                end
             end
-            if length(value1{i})~=length(value2{i})
-                pause(0.1)
+            nDiff(i) = sum(~strcmp(value1, value2));
+        elseif ischar(value1)
+            nDiff(i) = ~strcmp(value1, value2);
+        end
+
+        if printLevel > 0
+            if nDiff(i) > 0
+                fprintf('Field %s differs in %d positions between the models\n',fieldName,nDiff(i));
             end
         end
-        end
-        nDiff(i) = sum(~strcmp(value1, value2));
-    elseif ischar(value1)
-        nDiff(i) = ~strcmp(value1, value2);
+
     end
 
     if (nDiff(i) > 0)
         isSame = false;
     end
-    if printLevel > 0
-        if nDiff(i) > 0
-            fprintf('Field %s differs in %d positions between the models\n',fieldName,nDiff(i));
-        end
-    end
-
-
 end

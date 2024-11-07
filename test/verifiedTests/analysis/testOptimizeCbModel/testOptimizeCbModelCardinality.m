@@ -21,7 +21,8 @@ if 1
     useSolversIfAvailable ={'gurobi','cplexlp'};
 end
        
-solverPkgs = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
+solverPkgs = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable);
+model = getDistributedModel('ecoli_core_model.mat');
 
 osenseStr = 'max';
 allowLoops = true;
@@ -59,7 +60,7 @@ for k = 1:length(solverPkgs.LP)
         if debug
             sum(abs(L1solution.x))
         end
-        assert(abs(sum(abs(L1solution.x))-6.003485501480500e+02) <tol)
+        assert(abs(sum(abs(L1solution.x))-5.184220855176068e+02) <tol)
         model = rmfield(model,'g1');
         
         % Minimise the zero norm
@@ -119,7 +120,7 @@ for k = 1:length(solverPkgs.LP)
         if debug
             sum(abs(L01solution1.x)>tol)
         end
-        assert(abs(L01solution1.f - 0.736700938697735)<1e-6)
+        assert(abs(L01solution1.f - 0.873921506968431)<1e-6)
         
         % Minimise a weighted combination of the zero and one norm
         minNorm = 'optimizeCardinality';
@@ -135,7 +136,7 @@ for k = 1:length(solverPkgs.LP)
             sum(abs(L01solution2.x)>tol)
         end
         assert(nnz(L01solution1.v~=L01solution2.v)>0)
-        assert(abs(L01solution2.f - 0.736700938697735)<1e-6)
+        assert(abs(L01solution2.f - 0.873921506968431)<1e-6)
         
         % Minimise a weighted combination of the zero and one norm
         minNorm = 'optimizeCardinality';
@@ -153,7 +154,7 @@ for k = 1:length(solverPkgs.LP)
             sum(abs(L01solution3.x)>tol)
         end
         %assert(nnz(L01solution3.v~=L01solution2.v)>0)
-        assert(abs(L01solution3.f - 0.736700938697735)<1e-6)
+        assert(abs(L01solution3.f - 0.873921506968431)<1e-6)
         
         % output a success message
         fprintf('Done.\n');

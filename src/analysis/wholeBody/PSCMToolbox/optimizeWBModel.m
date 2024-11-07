@@ -89,7 +89,9 @@ end
 if ~isfield('param','minNorm')
     param.minNorm = 0;
 end
-
+if ~isfield('param','secondsTimeLimit')
+    param.secondsTimeLimit = 100;
+end
 if isfield(model,'osenseStr')
     if ~any(strcmp(model.osenseStr,{'min','max'}))
         error('model.osenseStr can only be either min or max')
@@ -140,6 +142,16 @@ end
 
 validatedSolvers={'tomlab_cplex','ibm_cplex','cplex_direct', 'gurobi','cplex','mosek'};
 
+[solverName, solverOK] = getCobraSolver('LP');
+if ~any(strcmp(solverName,validatedSolvers))
+    fprintf('%s\n','Note that the solvers validated for use with the PSCM toolbox are:')
+    disp(validatedSolvers)
+    [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', 'LP',1,1);
+    if ~solverOK
+        error([solverName ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+    end
+end
+
 if 1
     %mlb = magnitude of a large bound
     % mlb = max([abs(model.lb);abs(model.ub)]); 
@@ -150,21 +162,96 @@ end
 
 allowLoops = 1;
 
+switch solverName
+    case 'gurobi'
+        % Model scaling
+        %  	Type:	int
+        %  	Default value:	-1
+        %  	Minimum value:	-1
+        %  	Maximum value:	3
+        % Controls model scaling. By default, the rows and columns of the model are scaled in order to improve the numerical
+        % properties of the constraint matrix. The scaling is removed before the final solution is returned. Scaling typically
+        % reduces solution times, but it may lead to larger constraint violations in the original, unscaled model. Turning off
+        % scaling (ScaleFlag=0) can sometimes produce smaller constraint violations. Choosing a different scaling option can
+        % sometimes improve performance for particularly numerically difficult models. Using geometric mean scaling (ScaleFlag=2)
+        % is especially well suited for models with a wide range of coefficients in the constraint matrix rows or columns.
+        % Settings 1 and 3 are not as directly connected to any specific model characteristics, so experimentation with both
+        % settings may be needed to assess performance impact.
+        param.ScaleFlag=0;
+
+    case 'ibm_cplex'
+        % https://www.ibm.com/docs/en/icos/12.10.0?topic=infeasibility-coping-ill-conditioned-problem-handling-unscaled-infeasibilities
+        param.minNorm = 0;
+
+        % Decides how to scale the problem matrix.
+        % Value  Meaning
+        % -1	No scaling
+        % 0	Equilibration scaling; default
+        % 1	More aggressive scaling
+        % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
+        param.scaind = -1;
+
+        % Emphasizes precision in numerically unstable or difficult problems.
+        % This parameter lets you specify to CPLEX that it should emphasize precision in
+        % numerically difficult or unstable problems, with consequent performance trade-offs in time and memory.
+        % Value Meaning
+        % 0   Do not emphasize numerical precision; default
+        % 1	Exercise extreme caution in computation
+        % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
+        param.emphasis_numerical=1;
+    case 'mosek'
+        param.MSK_DPAR_OPTIMIZER_MAX_TIME=param.secondsTimeLimit;
+        param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
+        param.MSK_IPAR_LOG_INTPNT=10;
+        param.MSK_IPAR_LOG_PRESOLVE=10;
+
+        % MSK_IPAR_INTPNT_SCALING
+        % Controls how the problem is scaled before the interior-point optimizer is used.
+        % Default
+        % "FREE"
+        % Accepted
+        % "FREE", "NONE"
+        % param..MSK_IPAR_INTPNT_SCALING = 'MSK_SCALING_FREE';
+        param.MSK_IPAR_INTPNT_SCALING='MSK_SCALING_NONE';
+
+        % MSK_IPAR_SIM_SCALING
+        % Controls how much effort is used in scaling the problem before a simplex optimizer is used.
+        % Default
+        % "FREE"
+        % Accepted
+        % "FREE", "NONE"
+        % Example
+        % param.MSK_IPAR_SIM_SCALING = 'MSK_SCALING_FREE'
+        param.MSK_IPAR_SIM_SCALING='MSK_SCALING_NONE';
+
+        % MSK_IPAR_SIM_SCALING_METHOD
+        % Controls how the problem is scaled before a simplex optimizer is used.
+        % Default
+        % "POW2"
+        % Accepted
+        % "POW2", "FREE"
+        % Example
+        % param.MSK_IPAR_SIM_SCALING_METHOD = 'MSK_SCALING_METHOD_POW2'
+        % param.MSK_IPAR_SIM_SCALING_METHOD='MSK_SCALING_METHOD_FREE';
+end
+
+
 switch param.solveWBMmethod
     case 'LP'
-        [solverName, solverOK] = getCobraSolver('LP');
-        if ~any(strcmp(solverName,validatedSolvers))
-            fprintf('%s\n','Note that the solvers validated for use with the PSCM toolbox are:')
-            disp(validatedSolvers)
-            [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', 'LP',1,1);
-            if ~solverOK
-                error([solverName ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
-            end
-        end
-
         solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
 
     case 'QP'
+        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
+
+    case 'QRLP'
+        % param.solveWBMmethod = 'QRLP' passed to optimizeCbModel
+        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
+
+    case 'QRQP'
+        % param.solveWBMmethod = 'QRLP' passed to optimizeCbModel
+        solution = optimizeCbModel(model, model.osenseStr, param.minNorm, allowLoops, param);
+
+    case 'QPold'
         %quadratic optimisation, proceeds in two steps
 
         %check in case there is no linear objective
@@ -317,15 +404,6 @@ switch param.solveWBMmethod
                 warning(['Second solution.origStatText = ', ExitText])
             end
         end
-    case 'QRLP'
-        minNorm = 'QRLP';
-        solution = optimizeCbModel(model, model.osenseStr, minNorm, allowLoops, param);
-
-    case 'QRQP'
-        
-    case 'LiftedLP'
-        LPproblem = liftModel(model);
-        solution = solveCobraLP(LPproblem,param);
 end
 
 if 1 %this may not be very backward compatible

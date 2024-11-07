@@ -62,11 +62,21 @@ if ~expression.preprocessed
     expr.gene =  expression.target;
     expr.value = expression.value;
     reactionExpression = mapExpressionToReactions(model, expr, minSum);
+    nanIDs = isnan(reactionExpression);
+    if any(nanIDs)
+        warning('eFlux assigns -1 value to No gene-expression data and orphan reaction expression')
+        reactionExpression(nanIDs) = -1;
+    end
 else
     %Default : unconstraint.
     reactionExpression = -ones(size(model.rxns));
     [pres,pos] = ismember(model.rxns,expression.target);
-    reactionExpression(pres) = expression.target(pos(pres));    
+    reactionExpression(pres) = expression.target(pos(pres));
+    nanIDs = isnan(reactionExpression);
+    if any(nanIDs)
+        warning('eFlux assigns -1 value to No gene-expression data and orphan reaction expression')
+        reactionExpression(nanIDs) = -1;
+    end
 end
 
 unconstraintReactions = reactionExpression == -1;
@@ -102,4 +112,3 @@ end
 constraintModel = model;
 
 end
-

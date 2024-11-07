@@ -98,7 +98,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .addSinksexoMet - Logical, should sink reactions be added for metabolites detected in exometabolomic data (if no exchange or sink is already present).
 %   * .activeGenesApproach -﻿String with the name of the active genes approach will be used
 %                           'oneRxnPerActiveGene' adds at least one reaction per active gene (Default)
-%                           'deleteModelGenes' adds all reactions corresponding to an active gene (generates a larger model)
+%                           'allRxnPerActiveGene' adds all reactions corresponding to an active gene (generates a larger model)
 %
 %   * .TolMaxBoundary -﻿The reaction boundary's maximum value (Default: 1000)
 %   * .TolMinBoundary -﻿The reaction boundary's minimum value (Default: -1000)
@@ -2031,8 +2031,8 @@ if ~isempty(activeGenes)
             % Create a createDummyModel for the active genes
             [model, coreRxnAbbr] = createDummyModel(model, activeGenes, param.TolMaxBoundary, param.modelExtractionAlgorithm,coreRxnAbbr, param.fluxEpsilon);
             
-        case 'deleteModelGenes'
-            [~, ~, rxnInGenes, ~] = deleteModelGenes(model, activeGenes);
+        case 'allRxnPerActiveGene'
+            [~, ~, rxnInGenes, ~] = allRxnPerActiveGene(model, activeGenes);
             coreRxnAbbr = unique([coreRxnAbbr; rxnInGenes]);
             
         otherwise
