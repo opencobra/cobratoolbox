@@ -381,7 +381,7 @@ the length of models in the abundance file.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPanModels">
-<span class="sig-name descname"><span class="pre">createPanModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">agoraPath</span></em>, <em class="sig-param"><span class="pre">panPath</span></em>, <em class="sig-param"><span class="pre">taxonLevel</span></em>, <em class="sig-param"><span class="pre">agoraVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/createPanModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPanModels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createPanModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">agoraPath</span></em>, <em class="sig-param"><span class="pre">panPath</span></em>, <em class="sig-param"><span class="pre">taxonLevel</span></em>, <em class="sig-param"><span class="pre">agoraVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em>, <em class="sig-param"><span class="pre">builtTaxa</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/createPanModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.createPanModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function creates pan-models for all unique taxa (e.g., species)
 included in the AGORA resource. If reconstructions of multiple strains
 in a given taxon are present, the reactions in these reconstructions will
@@ -403,12 +403,18 @@ available at a higher level than strain, e.g., species, genus.</p>
 <li><p><strong>agoraPath     String containing the path to the AGORA reconstructions.</strong> – Must end with a file separator.</p></li>
 <li><p><strong>panPath       String containing the path to an empty folder that the</strong> – created pan-models will be stored in. Must end with a file separator.</p></li>
 <li><p><strong>taxonLevel    String with desired taxonomical level of the pan-models.</strong> – Allowed inputs are ‘Species’,’Genus’,’Family’,’Order’, ‘Class’,’Phylum’.</p></li>
-<li><p><strong>agoraVersion  Version of AGORA that will be used (allowed inputs</strong> – ‘AGORA’, ‘AGORA2’)</p></li>
+<li><p><strong>agoraVersion  Version of AGORA that will be used (allowed inputs</strong> – ‘AGORA’, ‘AGORA2’,
+alternatively: path to custom table with reconstruction information)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="simple">
-<dt>OPTIONAL INPUTS</dt><dd><p>numWorkers    Number of workers for parallel pool (default: no pool)</p>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><p>numWorkers    Number of workers for parallel pool (default: no pool)
+builtTaxa     Names of taxa in table that will be built (default:</p>
+<blockquote>
+<div><p>all). Need to be entered as a cell array of strings with names written
+exactly as in the corresponding column in the table.</p>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
