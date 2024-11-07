@@ -335,7 +335,7 @@ minimized flux and an irreversible model</p>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’)</p></li>
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (opt, default = ‘min’)</p></li>
 <li><p><strong>minNorm</strong> – {(0), ‘one’, ‘zero’, &gt; 0 , <cite>n x 1</cite> vector}, where <cite>[m,n]=size(S)</cite>;
 0 - Default, normal LP,
 ‘one’  Minimise the Taxicab Norm using LP.</p>
@@ -450,6 +450,12 @@ where k is the number of coupling constraints)</p></li>
 <li><p>d - <cite>k x 1</cite> Right hand side of C*v &lt;= d</p></li>
 <li><p>ctrs <cite>k x 1</cite> Cell Array of Strings giving IDs of the coupling constraints</p></li>
 <li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
+<li><p><cite>.evars</cite> : evars x 1  Column Cell Array of Strings   IDs of the additional variables</p></li>
+<li><p><cite>.E</cite>     : n x evars  The additional Variable Matrix</p></li>
+<li><p><cite>.evarub</cite>: evars x 1  The upper bounds of the variables from E;</p></li>
+<li><p><cite>.evarlb</cite>: evars x 1  The lower bounds of the variables from E;</p></li>
+<li><p><cite>.evarc</cite> : evars x 1  The objective coefficients of the variables from E;</p></li>
+<li><p><cite>.D</cite>     : k x evars  The matrix coupling additional Constraints (form C), with additional Variables (from E);</p></li>
 <li><p>g0 - <cite>n x 1</cite> weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.</p></li>
 <li><p>g1 - <cite>n x 1</cite> weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.</p></li>
 <li><p>g2 - <cite>n x 1</cite> weights on two norm</p></li>

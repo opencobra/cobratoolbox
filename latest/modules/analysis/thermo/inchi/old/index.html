@@ -307,24 +307,16 @@ inchi                         Structure with following fields:
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.thermo.inchi.old.getFormulaAndChargeFromInChI">
-<span class="sig-name descname"><span class="pre">getFormulaAndChargeFromInChI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">InChI</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/inchi/old/getFormulaAndChargeFromInChI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.inchi.old.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extracts the chemical formula of a given compound from
-the InChI string provided</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[formula, protons] = getFormulaFromInChI</strong> (<em>InChI</em>)</p>
-</dd>
-<dt class="field-even">INPUT</dt>
-<dd class="field-even"><p><strong>InChI</strong> – The Inchi String of the chemical formula (e.g. InChI=
-extract formula from <cite>InChI = 1S/C3H4O3/c1-2(4)3(5)6/h1H3, (H,5,6)/p-1</cite> for pyruvate</p>
-</dd>
-<dt class="field-odd">OUTPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>formula</strong> – The chemical formula (including the protonation state</p></li>
-<li><p><strong>protons</strong> – The total number of protons</p></li>
-</ul>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">getFormulaAndChargeFromInChI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inchi</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/inchi/old/getFormulaAndChargeFromInChI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.inchi.old.getFormulaAndChargeFromInChI" title="Permalink to this definition">¶</a></dt>
+<dd><p>[formula,charge] = getFormulaAndChargeFromInChI(inchi)</p>
+<p>INPUT
+inchi…….Nonstandard IUPAC InChI for a particular pseudoisomer of a</p>
+<blockquote>
+<div><p>metabolite</p>
+</div></blockquote>
+<p>OUTPUTS
+formula….The chemical formula for the input pseudoisomer
+charge…..The charge on the input pseudoisomer</p>
 </dd></dl>
 
 <dl class="mat function">

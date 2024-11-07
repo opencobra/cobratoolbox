@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Msk &mdash; The COBRA Toolbox</title>
+  <title>Mosek &mdash; The COBRA Toolbox</title>
   
 
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Rescale" href="../rescale/index.html"/>
-        <link rel="prev" title="Solvers" href="../index.html"/> 
+        <link rel="next" title="Lindo" href="../lindo/index.html"/>
+        <link rel="prev" title="Lp_solve" href="../lp_solve/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -162,9 +162,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Msk</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
@@ -174,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Mosek</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
 </ul>
 </li>
@@ -226,7 +227,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
-      <li class="breadcrumb-item active">Msk</li>
+      <li class="breadcrumb-item active">Mosek</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -235,11 +236,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="msk">
-<span id="id1"></span><h1>Msk<a class="headerlink" href="#msk" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.base.solvers.msk"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.msk.parseMskResult">
-<span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em>, <em class="sig-param"><span class="pre">solverOnlyParams</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/msk/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.msk.parseMskResult" title="Permalink to this definition">¶</a></dt>
+  <section id="mosek">
+<span id="id1"></span><h1>Mosek<a class="headerlink" href="#mosek" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.mosek"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.mosek.mosekParamStrip">
+<span class="sig-name descname"><span class="pre">mosekParamStrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/mosekParamStrip.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.mosekParamStrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove non-modek parameters to avoid crashing solver interface</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.mosek.parseMskResult">
+<span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.parseMskResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>parse the res structure returned from mosek
 :INPUTS: <strong>res</strong> – mosek results structure returned by mosekopt</p>
 <dl>
@@ -287,6 +294,14 @@ outside the solver interface specification.</p>
 <p>Author(s): Ronan Fleming</p>
 </dd></dl>
 
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.mosek.setMosekParam">
+<span class="sig-name descname"><span class="pre">setMosekParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/setMosekParam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.setMosekParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>set mosek parameters from param fields
+strip any non mosek compatible fields from param and return it as
+mosekParam</p>
+</dd></dl>
+
 </section>
 
 
@@ -299,10 +314,10 @@ outside the solver interface specification.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rescale/index.html" class="btn btn-default float-right" title="Rescale" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../lindo/index.html" class="btn btn-default float-right" title="Lindo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Solvers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../lp_solve/index.html" class="btn btn-default" title="Lp_solve" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

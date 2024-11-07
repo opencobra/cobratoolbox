@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="Msk" href="msk/index.html"/>
+        <link rel="next" title="Rescale" href="rescale/index.html"/>
         <link rel="prev" title="Ci" href="../ci/index.html"/> 
 
   
@@ -162,9 +162,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Solvers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="msk/index.html">Msk</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rescale/index.html">Rescale</a></li>
 <li class="toctree-l4"><a class="reference internal" href="param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gurobi/index.html">Gurobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gams/index.html">Gams</a></li>
@@ -174,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mosek/index.html">Mosek</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lindo/index.html">Lindo</a></li>
 </ul>
 </li>
@@ -238,9 +239,9 @@
 <span id="id1"></span><h1>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="msk/index.html">Msk</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rescale/index.html">Rescale</a></li>
 <li class="toctree-l1"><a class="reference internal" href="param/index.html">Param</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gurobi/index.html">Gurobi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cardOpt/index.html">Cardopt</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cardOpt/smoothConcave/index.html">Smoothconcave</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cardOpt/sparseLP/index.html">Sparselp</a><ul>
@@ -262,6 +263,7 @@
 <li class="toctree-l1"><a class="reference internal" href="NLP/index.html">Nlp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mosek/index.html">Mosek</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lindo/index.html">Lindo</a></li>
 </ul>
 </div>
@@ -313,7 +315,8 @@
                * `.ub`: Upper bound vector
                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
-               * `.F`: Positive semidefinite matrix for quadratic part of objective\end{aligned}\end{align} \]</div>
+               * `.F`: Positive semidefinite matrix for quadratic part of objective
+OPTIONAL OUTPUT:\end{aligned}\end{align} \]</div>
 </dd></dl>
 
 <dl class="mat function">
@@ -485,7 +488,7 @@ that match exactly those in that solvers matlab interface.</p></li>
 * .rcost:        Reduced costs, dual solution to <span class="math notranslate nohighlight">\(lb &lt;= v &lt;= ub\)</span>
 * .dual:         dual solution to <cite>A*v (‘E’ | ‘G’ | ‘L’) b</cite>
 * .solver:       Solver used to solve LP problem
-* .method:    Algorithm used by solver to solve LP problem
+* .lpmethod:    Algorithm used by solver to solve LP problem
 * .stat:         Solver status in standardized form</p>
 <blockquote>
 <div><ul class="simple">
@@ -753,6 +756,7 @@ or as part of the options struct are listed below:</p></li>
 <li><p>.slack:       slack variable such that <span class="math notranslate nohighlight">\(A*x + s = b\)</span></p></li>
 <li><p>.obj:         Objective value</p></li>
 <li><p>.solver:      Solver used to solve QP problem</p></li>
+<li><p>.qpmethod:    Solver qpmethod used to solve QP problem</p></li>
 <li><p>.origStat:    Original status returned by the specific solver</p></li>
 <li><p>.time:        Solve time in seconds</p></li>
 <li><p>.stat:        Solver status in standardized form (see below)</p></li>
@@ -821,7 +825,7 @@ returns 1 if at least one problem type is satisfied</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="msk/index.html" class="btn btn-default float-right" title="Msk" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="rescale/index.html" class="btn btn-default float-right" title="Rescale" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../ci/index.html" class="btn btn-default" title="Ci" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
