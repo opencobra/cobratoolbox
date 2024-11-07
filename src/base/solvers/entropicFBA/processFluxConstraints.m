@@ -26,7 +26,7 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 %  param.printLevel:
 %  param.solver:    {'pdco',('mosek')}
 %  param.debug:     {(0),1} 1 = run in debug mode 
-%  param.method:    {('fluxes'),'fluxesConcentrations'} maximise entropy of fluxes (default) or also concentrations
+%  param.entropicFBAMethod:    {('fluxes'),'fluxesConcentrations'} maximise entropy of fluxes (default) or also concentrations
 %  param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
 %  param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
 %  param.internalNetFluxBounds: ('original')   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds
@@ -56,7 +56,6 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 % Author(s): Ronan Fleming
 
 %% processing for fluxes
-
 if ~isfield(param,'maxUnidirectionalFlux')
     %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
     param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));
@@ -74,8 +73,13 @@ if ~isfield(param,'externalNetFluxBounds')
     param.externalNetFluxBounds='original';
 end
 
-if ~isfield(param,'method')
-    param.method='fluxes';
+if ~isfield(param,'entropicFBAMethod')
+    if isfield(param,'method') && contains(param.method,'flux')
+        param.entropicFBAMethod=param.method;
+        param=rmfield(param,'method');
+    else
+        param.entropicFBAMethod='fluxes';
+    end
 end
 
 %find the maximal set of metabolites and reactions that are stoichiometrically consistent
@@ -98,8 +102,8 @@ if isfield(param,'internalBounds')
     error('internalBounds replaced by other parameter options')
 end
 
-if isfield(param,'debug') && param.debug
-    solution_optimizeCbModel = optimizeCbModel(model);
+if isfield(param,'debug') && param.debug && 0
+    solution_optimizeCbModel = optimizeCbModel(model,param);
     switch solution_optimizeCbModel.stat
         case 0
             disp(solution_optimizeCbModel.origStat)
@@ -220,6 +224,7 @@ if isfield(model,'vfl')
     vfl = model.vfl;
 else
     vfl = max(param.minUnidirectionalFlux,vl);
+    %vfl = ones(n,1)*param.minUnidirectionalFlux;
 end
 
 if any(vfl<0)
@@ -267,6 +272,7 @@ if isfield(model,'vrl')
     vrl = model.vrl;
 else
     vrl = max(param.minUnidirectionalFlux,-vu);
+    %vrl = ones(n,1)*param.minUnidirectionalFlux;
 end
 if any(vrl<0)
     error('lower bound on reverse flux cannot be less than zero')
@@ -353,7 +359,7 @@ else
 end
 
 if ~isfield(model,'g') || isempty(model.g)
-    if isequal(param.method,'fluxes')
+    if isequal(param.entropicFBAMethod,'fluxes')
         model.g='one';
     else
         model.g='two';

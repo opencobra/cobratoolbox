@@ -27,8 +27,6 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,rl,ru] = processConcConstraints(m
 %  model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
 %  model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
 %  model.temperature:              scalar temperature (default 310.15 Kelvin)
-%
-%  param.method:  'fluxConc'
 %  param.maxConc: (1e4) maximim micromolar concentration allowed
 %  param.maxConc: (1e-4) minimum micromolar concentration allowed
 %  param.externalNetFluxBounds:   ('original') =  
@@ -69,12 +67,15 @@ end
 
 %% processing for concentrations
 if ~isfield(param,'maxConc')
-    param.maxConc=1e4;
+    param.maxConc=inf;
 end
 if ~isfield(param,'minConc')
-    param.minConc=1e-4;
+    param.minConc=0;
 end
-
+% %assume units are in mMol
+% if ~isfield(param,'concUnit')
+%     param.concUnit = 10-3;
+% end
 
 if ~isfield(param,'externalNetFluxBounds')
     if isfield(model,'dcl') || isfield(model,'dcu')
@@ -87,8 +88,13 @@ end
 nMetabolitesPerRxn = sum(model.S~=0,1)';
 bool = nMetabolitesPerRxn>1 & ~model.SConsistentRxnBool;
 if any(bool)
-    warning('Exchange reactions involving more than one metabolite, check bounds on x - x0')
-    disp(model.rxns(bool))
+    warning([ int2str(nnz(bool)) ' stoichiometrically inconsistent reactions involving more than one metabolite, check bounds on x - x0'])
+    if nnz(bool)>10
+        ind=find(bool);
+        disp(model.rxns(ind(1:10)))
+    else
+        disp(model.rxns(bool))
+    end
 end
 
 if any(~model.SConsistentRxnBool)
@@ -253,10 +259,7 @@ else
     end
 end
 
-%assume concentrations are in uMol
-if ~isfield(model,'concUnit')
-    concUnit = 10-6;
-end
+
 
 % Define constants
 if isfield(model,'gasConstant') && isfield(model,'T')
@@ -303,12 +306,3 @@ else
         error('f must all be finite')
     end
 end
-
-% %lower and upper bounds on logarithmic concentration
-% pl = -log(param.maxConc*ones(m2,1));
-% if 1
-%     pu =  log(param.maxConc*ones(m2,1));
-% else
-%     %All potentials negative
-%     pu =  zeros(m2,1);
-% end

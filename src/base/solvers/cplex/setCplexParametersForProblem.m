@@ -19,6 +19,12 @@ function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexPr
 %set the default parameters so we can see what they are
 cplexProblem.setDefault;
 
+%TODO ? add these 
+% valDef.DATACHECK = 1;
+% valDef.DEPIND = 1;
+% valDef.checkNaN = 0;
+% valDef.warning = 0;
+
 % set the printLevel to the cobra Parameters
 cplexProblem.Param.output.writelevel.Cur = problemTypeParams.printLevel;
 cplexProblem.Param.barrier.display.Cur = problemTypeParams.printLevel;
@@ -67,11 +73,55 @@ else
 end
 
 % set tolerances
+
+% simplex.tolerances.feasibility
+% Specifies the feasibility tolerance, that is, the degree to which values of the basic variables 
+% calculated by the simplex method may violate their bounds. CPLEX® does not use this tolerance to
+% relax the variable bounds nor to relax right hand side values. This parameter specifies an 
+% allowable violation. Feasibility influences the selection of an optimal basis and can be reset 
+% to a higher value when a problem is having difficulty maintaining feasibility during optimization. 
+% You can also lower this tolerance after finding an optimal solution if there is any doubt 
+% that the solution is truly optimal. If the feasibility tolerance is set too low, CPLEX may falsely
+% conclude that a problem is infeasible. If you encounter reports of infeasibility during Phase II of
+% the optimization, a small adjustment in the feasibility tolerance may improve performance.
+% Values
+% Any number from 1e-9 to 1e-1; default: 1e-06.
 cplexProblem.Param.simplex.tolerances.feasibility.Cur = problemTypeParams.feasTol;
+
+
+% network.tolerances.feasibility
+% Specifies feasibility tolerance for network primal optimization. The feasibility tolerance specifies
+% the degree to which the flow value of a model may violate its bounds. This tolerance influences
+% the selection of an optimal basis and can be reset to a higher value when a problem is having 
+% difficulty maintaining feasibility during optimization. You may also wish to lower this tolerance
+% after finding an optimal solution if there is any doubt that the solution is truly optimal. 
+% If the feasibility tolerance is set too low, CPLEX may falsely conclude that a problem is infeasible.
+% If you encounter reports of infeasibility during Phase II of the optimization, a small adjustment
+% in the feasibility tolerance may improve performance.
+% Values
+% Any number from 1e-11 to 1e-1; default: 1e-6.
+cplexProblem.Param.network.tolerances.feasibility.Cur = problemTypeParams.feasTol;
+
+% Influences the reduced-cost tolerance for optimality. This parameter governs 
+% how closely CPLEX must approach the theoretically optimal solution.
+% The simplex algorithm halts when it has found a basic feasible solution with
+% all reduced costs nonnegative. CPLEX uses this optimality tolerance to make 
+% the decision of whether or not a given reduced cost should be considered nonnegative.
+% CPLEX considers "nonnegative" a negative reduced cost having absolute value less
+% than the optimality tolerance. For example, if your optimality tolerance is set
+% to 1e-6, then CPLEX considers a reduced cost of -1e-9 as nonnegative for 
+% the purpose of deciding whether the solution is optimal.
+% Values
+% Any number from 1e-9 to 1e-1; default: 1e-06.
 cplexProblem.Param.simplex.tolerances.optimality.Cur = problemTypeParams.optTol;
 
-cplexProblem.Param.network.tolerances.feasibility.Cur = problemTypeParams.feasTol;
+% network.tolerances.optimality
+% Specifies the optimality tolerance for network optimization; that is, 
+% the amount a reduced cost may violate the criterion for an optimal solution.
+% Values
+% Any number from 1e-11 to 1e-1; default: 1e-6.
 cplexProblem.Param.network.tolerances.optimality.Cur = problemTypeParams.optTol;
+
 
 %https://www.ibm.com/support/knowledgecenter/SSSA5P_12.7.0/ilog.odms.cplex.help/CPLEX/Parameters/topics/BarEpComp.html
 %Sets the tolerance on complementarity for convergence. The barrier algorithm terminates with an optimal solution if the relative complementarity is smaller than this value.
@@ -213,6 +263,25 @@ if isfield(solverParams,'lpmethod') && strcmp(problemType,'LP')
     end
 else
     cplexProblem.Param.lpmethod.Cur=4;%BARRIER provided best benchmark performance on Harvetta
+end
+
+if isfield(solverParams,'multiscale') && solverParams.multiscale==1 && 0
+    % Decides how to scale the problem matrix.
+    % Value  Meaning
+    % -1	No scaling
+    % 0	Equilibration scaling; default
+    % 1	More aggressive scaling
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
+    cplexProblem.Param.read.scale.Cur = -1;
+
+    % Emphasizes precision in numerically unstable or difficult problems.
+    % This parameter lets you specify to CPLEX that it should emphasize precision in
+    % numerically difficult or unstable problems, with consequent performance trade-offs in time and memory.
+    % Value Meaning
+    % 0   Do not emphasize numerical precision; default
+    % 1	Exercise extreme caution in computation
+    % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
+    cplexProblem.Param.emphasis.numerical.Cur = 1;
 end
 
 if isfield(solverParams,'scaind')

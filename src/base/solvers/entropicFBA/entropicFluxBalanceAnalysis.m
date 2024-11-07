@@ -1,5 +1,8 @@
 function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
-%% TBC
+% Entropy maximisation of fluxes (or fluxes and concentrations) subject to
+% mass balance, optionally coupling constraints, optionally quadratic
+% penalisation of deviation from given fluxes.
+% 
 % minimize             g.*vf'*(log(vf) -1) + (cf + ci)'*vf 
 % vf,vr,w,x,x0       + g.*vr'*(log(vr) -1) + (cr - ci)'*vr
 %                    + f.*x' *(log(x)  -1) + u0'*x 
@@ -219,6 +222,36 @@ B = model.S(:,~model.SConsistentRxnBool);
 %% processing for fluxes
 [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
 
+if param.debug && 0 %TODO - remove this
+    modelProcessed = model;
+    modelProcessed.lb(model.SConsistentRxnBool)=vl;
+    modelProcessed.lb(~model.SConsistentRxnBool)=vel;
+    modelProcessed.ub(model.SConsistentRxnBool)=vu;
+    modelProcessed.ub(~model.SConsistentRxnBool)=veu;
+    solutionLP = optimizeCbModel(modelProcessed,param);
+
+    switch solutionLP.stat
+        case 0
+            solution = solutionLP;
+            message = ['solveCobraEP: LP part of EPproblem is infeasible according to solveCobraLP with ' param.solver '.'];
+            warning(message)
+
+            return
+        case 2
+            solution = solutionLP;
+            message = ['solveCobraEP: LP part of EPproblem is unbounded according to solveCobraLP with ' param.solver '.'];
+            warning(message)
+
+            return
+        case 1
+            message =['solveCobraEP: LP part of EPproblem is feasible according to solveCobraLP with ' param.solver '.'];
+            fprintf('%s\n',message)
+        otherwise
+            error('inconclusive solveCobraLP')
+    end
+    messages = cellstr(message);
+
+end
 %% optionally processing for concentrations
 %processConcConstraints
 if contains(lower(param.entropicFBAMethod),'conc')
@@ -1096,25 +1129,11 @@ switch param.entropicFBAMethod
                 expConeBool = EPproblem.d~=0;
                 nExpCone  = nnz(expConeBool);
                 
-                %
-                if 1
-                    mosekParam=param;
-                    mosekParam.printLevel=param.printLevel-1;
-                    solution = solveCobraEP(EPproblem,mosekParam);
-                else
-                    [verify,method,printLevel,debug,feasTol,optTol,solver,param] =...
-                        getCobraSolverParams('EP',getCobraSolverParamsOptionsForType('EP'),param);
-                    
-                    solution = solveCobraEP(EPproblem,...
-                        'verify',verify,...
-                        'method',method,...
-                        'printLevel',printLevel,...
-                        'debug',debug,...
-                        'feasTol',feasTol,...
-                        'optTol',optTol,...
-                        'solver',solver,...
-                        param);
-                end
+
+                solveCobraEPparam=param;
+                solveCobraEPparam.printLevel=solveCobraEPparam.printLevel-1;
+                solution = solveCobraEP(EPproblem,solveCobraEPparam);
+
                 
                 switch solution.stat
                     case 1
@@ -1606,7 +1625,9 @@ switch solution.stat
             solution.messages = [];
         end
     otherwise
-        solution_optimizeCbModel = optimizeCbModel(model);
+        %solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
+        param.debug=1;
+        solution_optimizeCbModel = optimizeCbModel(model,'min',[],1,param);
         switch solution_optimizeCbModel.stat
             case 0
                 message = 'entropicFluxBalanceAnalysis: EPproblem is not feasible, because LP part of model is not feasible according to optimizeCbModel.';

@@ -298,10 +298,10 @@ for i = 1:ilt
         else
             tmp_rcost = full(solution{i}.rcost(randrcost));
         end
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, tmp_dual, tmp_rcost, solution{i}.solver, solution{i}.method)
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, tmp_dual, tmp_rcost, solution{i}.solver, solution{i}.lpmethod)
         all_obj(i) = solution{i}.obj;
     else
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, NaN, NaN, solution{i}.solver, solution{i}.method)
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, NaN, NaN, solution{i}.solver, solution{i}.lpmethod)
         all_obj(i) = 0.0;
     end
 end

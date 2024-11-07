@@ -7,24 +7,26 @@ function paramNames = getCobraSolverParamsOptionsForType(problemType)
 %
 % INPUT:
 %    problemType :      One of the problem types available in the COBRA
-%                       Toolbox ('LP','QP','MILP','MIQP','NLP')
+%                       Toolbox ('LP','QP','EP','CLP','MILP','MIQP','NLP')
 %
 % OUPTUT:
 %    paramNames:        Cell array of names of parameters that can be set
 %                       for each problem type, independent of the specific
 %                       solver being used.
 
-if iscell(problemType )
+if iscell(problemType)
     paramNames = {};
-    for j = 1:numel(problemType )
-        paramNames = [paramNames, getCobraSolverParamsOptionsForType(problemType {j})];
+    for j = 1:numel(problemType)
+        paramNames = [paramNames, getCobraSolverParamsOptionsForType(problemType{j})];
     end
     paramNames = unique(paramNames);
     return
 end
 switch problemType 
     case 'LP'
-        paramNames = {'verify',...          % verify that it is a suitable  LP problem
+        paramNames = {'multiscale'...       % true if problem is multiscale
+                      'problemType'...      % problem type
+                      'verify',...          % verify that it is a suitable  LP problem
                       'minNorm', ...        % type of normalization used.
                       'printLevel', ...     % print Level
                       'primalOnly', ...     % only solve for primal
@@ -34,11 +36,11 @@ switch problemType
                       'solver', ...         % solver to use (overriding set solver)
                       'debug', ...          % run debgugging code
                       'logFile', ...        % file (location) to write logs to
-                      'lifting', ...        % whether to lift a problem
-                      'method'};            % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
+                              };            % 
    case 'QP'
-        paramNames = {'verify',...          % verify that it is a suitable  QP problem
-                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
+        paramNames = {'multiscale'...       % true if problem is multiscale
+                      'problemType'...      % problem type
+                      'verify',...          % verify that it is a suitable  QP problem
                       'printLevel', ...     % print level
                       'saveInput', ...      % save the input to a file (specified)
                       'debug', ...          % run debgugging code
@@ -48,15 +50,18 @@ switch problemType
                       'solver'};            % the solver to use
 
    case 'EP'
-        paramNames = {'verify',...          % verify that it is a suitable  EP problem
-                      'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
+        paramNames = {'multiscale'...       % true if problem is multiscale
+                      'problemType'...      % problem type
+                      'verify',...          % verify that it is a suitable  EP problem
                       'printLevel', ...     % print level
                       'debug', ...          % run debgugging code
                       'feasTol',...         % feasibility tolerance
                       'optTol',...          % optimality tolerance
                       'solver'};            % the solver to use
    case 'CLP'
-        paramNames = {'verify',...          % verify that it is a suitable  CLP problem
+        paramNames = {'multiscale'...       % true if problem is multiscale
+                      'problemType'...      % problem type
+                      'verify',...          % verify that it is a suitable  CLP problem
                       'printLevel', ...     % print level
                       'debug', ...          % run debgugging code
                       'feasTol',...         % feasibility tolerance
@@ -65,7 +70,8 @@ switch problemType
                       };            
                                  
     case 'MILP'
-        paramNames = {'intTol', ...         % integer tolerance (accepted derivation from integer numbers)
+        paramNames = {'problemType'...      % problem type
+                      'intTol', ...         % integer tolerance (accepted derivation from integer numbers)
                       'relMipGapTol', ...   % relative MIP Gap tolerance
                       'absMipGapTol', ...   % absolute MIP Gap tolerance
                       'timeLimit', ...      % maximum time before stopping computation (if supported by the solver)
@@ -78,7 +84,8 @@ switch problemType
                       'debug'};             % run debgugging code
 
     case 'MIQP'
-        paramNames = {'timeLimit', ...      % maximum time before stopping computation (if supported by the solver)
+        paramNames = {'problemType'...      % problem type
+                      'timeLimit', ...      % maximum time before stopping computation (if supported by the solver)
                       'method', ...         % solver method: -1 = automatic, 0 = primal simplex, 1 = dual simplex, 2 = barrier, 3 = concurrent, 4 = deterministic concurrent, 5 = Network Solver(if supported by the solver)
                       'feasTol',...         % feasibility tolerance
                       'optTol',...          % optimality tolerance
@@ -91,7 +98,8 @@ switch problemType
                       'solver'};            % the solver to use
 
     case 'NLP'
-        paramNames = {'warning', ...        % whether to display warnings
+        paramNames = {'problemType'...      % problem type
+                      'warning', ...        % whether to display warnings
                       'checkNaN', ...       % check for NaN solutions
                       'PbName', ...         % name of the problem
                       'iterationLimit', ... % maximum number of iterations before stopping computation (if supported by the solver)

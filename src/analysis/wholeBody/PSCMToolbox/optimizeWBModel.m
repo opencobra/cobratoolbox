@@ -177,7 +177,7 @@ switch solverName
         % is especially well suited for models with a wide range of coefficients in the constraint matrix rows or columns.
         % Settings 1 and 3 are not as directly connected to any specific model characteristics, so experimentation with both
         % settings may be needed to assess performance impact.
-        param.scaleFlag=0;
+        param.ScaleFlag=0;
 
     case 'ibm_cplex'
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=infeasibility-coping-ill-conditioned-problem-handling-unscaled-infeasibilities

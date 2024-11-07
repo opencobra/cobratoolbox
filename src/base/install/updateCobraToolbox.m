@@ -179,7 +179,7 @@ else
             %disp([codeBaseDir filesep forkNames{j}])
             %disp([toolboxDir filesep dirNames{j}])
             fprintf('%s\n',['> Adding path to ' codeBaseDir filesep forkNames{j} ', and removing path to ' toolboxDir filesep dirNames{j}]);
-            rmpath([toolboxDir filesep dirNames{j}])
+            rmpath(genpath([toolboxDir filesep dirNames{j}]))
             addpath(genpath([codeBaseDir filesep forkNames{j}]))
         end
     end

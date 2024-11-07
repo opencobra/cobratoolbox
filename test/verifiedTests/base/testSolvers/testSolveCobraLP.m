@@ -168,8 +168,8 @@ end
 osenseStr = 'max';
 minNorm = 'zero';
 allowLoops = 1;
-param.zeroNormApprox = 'all';
-solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, param);
+optimizeCbModel_param.zeroNormApprox = 'all';
+solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, optimizeCbModel_param);
 assert(solution.f0==1)
 %%
 % change the directory
