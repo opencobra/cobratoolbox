@@ -1,4 +1,4 @@
-function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = runDEMETER(draftFolder, varargin)
+function [reconVersion,refinedFolder,translatedDraftsFolder,summaryFolder] = runDemeter(draftFolder, varargin)
 % This function runs the DEMETER pipeline consisting of three steps:
 % 1) refining all draft reconstructions, 2) testing the refined
 % reconstructions against the input data, 3) preparing a report
@@ -179,9 +179,8 @@ for i=1:steps:length(models)
     modelsTmp = {};
     draftModelsTmp = {};
     summariesTmp = {};
-   
-  parfor j=i:i+endPnt
- % for j=i:i+endPnt
+    
+    parfor j=i:i+endPnt
         restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
         

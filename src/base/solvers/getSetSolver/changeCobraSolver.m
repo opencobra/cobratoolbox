@@ -3,7 +3,7 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType
 %
 % USAGE:
 %
-%    [solverOK, solverInstalled] = changeCobraSolver(solverName, solverType, printLevel, validationLevel)
+%    [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel)
 %
 % INPUTS:
 %    solverName:           Solver name
@@ -538,7 +538,7 @@ if solverOK
         end
         try
             % Skip the CLP solver until further developments
-            if ~strcmp(solverType, 'CLP')
+            if ~strcmp(problemType, 'CLP')
                 %This is the code that actually tests if a solver is working
                 if validationLevel>1
                     %display progress
