@@ -3,16 +3,16 @@ function [metData] = metanetxMapper(metInfo, varargin)
 %
 % USAGE:
 %
-%    [metData] = metanetxMapper(metInfo, varargin)
+%    [metData] = metanetxMapper(metInfo, infoType)
 %
 % INPUTS:
-%    name:     string name of the metabolite (Common names, VMH names, CHEBI ids,
-%    swiss lipids id, HMDB ids, and lipidmaps are supported)
+%    metInfo:     string information of the metabolite (Common name, VMH name, CHEBI id,
+%    Swiss Lipid id, HMDB id, Lipidmap, or InChIkey are supported)
 %
 %
 % OPTIONAL INPUT:
-%    outputStyle: same as the input, choose an output option between
-%    'name', 'vmh', and 'chebi' for more accurate respond
+%    infoType: In the cases of searching with common name, VMH, or ChEBI, use 'name', 'vmh',
+%    or 'chebi' respectively as the identifier type for more accurate respond
 %
 % OUTPUT:
 %    metData: A structure variable including fields of metabolite Identifiers: 
@@ -72,7 +72,7 @@ function [metData] = metanetxMapper(metInfo, varargin)
 % .. Author:
 %           - Farid Zare, 7/12/2024
 %
-
+global response
 % Change the format to char if it is a cell or string
 if ~ischar(metInfo)
     metInfo = char(metInfo);
@@ -180,13 +180,75 @@ if ~isempty(response)
             metData.metSmiles = SMILES;
         end
 
-        ref = response.xrefs;
+        xref = response.xrefs;
 
+        % Assign Chebi ID
+        chebiID = find(contains(lower(xref), 'chebi'));
+        if ~isempty(chebiID)
+            % First ID is the real ID others might be similar mets
+            chebi = xref(chebiID(1));
+            chebi = string(chebi);
+            chebi = strsplit(chebi, ':');
+            metData.metCheBIID = string(chebi{2});
+        end
+
+        % Assign hmdb ID
+        hmdbID = find(contains(lower(xref), 'hmdb'));
+        if ~isempty(hmdbID)
+            % First ID is the real ID others might be similar mets
+            hmdb = xref(hmdbID(1));
+            hmdb = string(hmdb);
+            hmdb = strsplit(hmdb, ':');
+            metData.metHMDBID = string(hmdb{2});
+        end
+
+        % Assign vmh ID
+        vmhID = find(contains(lower(xref), 'vmhm'));
+        if ~isempty(vmhID)
+            % First ID is the real ID others might be similar mets
+            vmh = xref(vmhID(1));
+            vmh = string(vmh);
+            vmh = strsplit(vmh, ':');
+            metData.metVMHID = string(vmh{2});
+        end
+
+        % Assign swisslipids ID
+        slmID = find(contains(lower(xref), 'slm'));
+        if ~isempty(slmID)
+            % First ID is the real ID others might be similar mets
+            slm = xref(slmID(1));
+            slm = string(slm);
+            metData.metSwissLipidsID = slm;
+        end
+
+        % Assign KEGG ID
+        keggID = find(contains(lower(xref), 'kegg.compound'));
+        if ~isempty(keggID)
+            % First ID is the real ID others might be similar mets
+            kegg = xref(keggID(1));
+            kegg = string(kegg);
+            kegg = strsplit(kegg, ':');
+            metData.metKEGGID = string(kegg{2});
+        end
+
+        % Assign BIGG ID
+        biggID = find(contains(lower(xref), 'bigg.metabolite'));
+        if ~isempty(biggID)
+            % First ID is the real ID others might be similar mets
+            bigg = xref(biggID(1));
+            bigg = string(bigg);
+            bigg = strsplit(bigg, ':');
+            metData.metBiGGID = string(bigg{2});
+        end
+
+
+        % Replace the reference identifier
+
+        ref = response.reference;
         % Assign Chebi ID
         chebiID = find(contains(lower(ref), 'chebi'));
         if ~isempty(chebiID)
-            % First ID is the real ID others might be similar mets
-            chebi = ref(chebiID(1));
+            chebi = ref;
             chebi = string(chebi);
             chebi = strsplit(chebi, ':');
             metData.metCheBIID = string(chebi{2});
@@ -195,8 +257,7 @@ if ~isempty(response)
         % Assign hmdb ID
         hmdbID = find(contains(lower(ref), 'hmdb'));
         if ~isempty(hmdbID)
-            % First ID is the real ID others might be similar mets
-            hmdb = ref(hmdbID(1));
+            hmdb = ref;
             hmdb = string(hmdb);
             hmdb = strsplit(hmdb, ':');
             metData.metHMDBID = string(hmdb{2});
@@ -205,8 +266,7 @@ if ~isempty(response)
         % Assign vmh ID
         vmhID = find(contains(lower(ref), 'vmhm'));
         if ~isempty(vmhID)
-            % First ID is the real ID others might be similar mets
-            vmh = ref(vmhID(1));
+            vmh = ref;
             vmh = string(vmh);
             vmh = strsplit(vmh, ':');
             metData.metVMHID = string(vmh{2});
@@ -215,8 +275,7 @@ if ~isempty(response)
         % Assign swisslipids ID
         slmID = find(contains(lower(ref), 'slm'));
         if ~isempty(slmID)
-            % First ID is the real ID others might be similar mets
-            slm = ref(slmID(1));
+            slm = ref;
             slm = string(slm);
             metData.metSwissLipidsID = slm;
         end
@@ -224,8 +283,7 @@ if ~isempty(response)
         % Assign KEGG ID
         keggID = find(contains(lower(ref), 'kegg.compound'));
         if ~isempty(keggID)
-            % First ID is the real ID others might be similar mets
-            kegg = ref(keggID(1));
+            kegg = ref;
             kegg = string(kegg);
             kegg = strsplit(kegg, ':');
             metData.metKEGGID = string(kegg{2});
@@ -234,8 +292,7 @@ if ~isempty(response)
         % Assign BIGG ID
         biggID = find(contains(lower(ref), 'bigg.metabolite'));
         if ~isempty(biggID)
-            % First ID is the real ID others might be similar mets
-            bigg = ref(biggID(1));
+            bigg = ref;
             bigg = string(bigg);
             bigg = strsplit(bigg, ':');
             metData.metBiGGID = string(bigg{2});
