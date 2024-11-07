@@ -1,11 +1,11 @@
-function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha)
+function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threshold, alpha, numericFlag)
 % Algorithm to Integrate a Gene Co-expression Network and Genome-scale Metabolic Model:
 % This algorithm calculates the reaction flux distribution for each condition by applying 
 % quadratic programming.
 %
 % USAGE:
 %
-%    [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+%    [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)
 %
 % INPUTS:
 %
@@ -14,6 +14,7 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %                     extract from gene expression profile file
 %    genetxt:         list of gene names that extract from gene expression profile
 %                     file
+%    numericFlag:     1 if using Human Recon  (Default = 0).
 %
 % OPTIONAL INPUTS:
 %    threshold:           The value of the correlation coefficient for constructing 
@@ -29,7 +30,7 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %
 % EXAMPLES:
 %    % This could be an example that can be copied from the documentation to MATLAB:
-%    solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+%    solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)
 %    % without optional values:
 %    solution = ICONGEMs(model, exp, genetxt)
 %
@@ -47,8 +48,15 @@ end
 if (nargin < 6 || isempty(alpha))
       alpha = 0.99;
 end
+if (nargin < 7 || isempty(numericFlag))
+      numericFlag = 0;
+end
 
 % construct the template model
+
+if ~isempty(model.rules)
+    model.grRules = model.rules;
+end
 
 modelN = model;
 modelN.lb(modelN.lb >= 0) = 0;
@@ -111,7 +119,7 @@ coGene(:, 2) = geneincoexnet(indCorGene(:, 2), 1);
 
 NameRxn={};
 for i = 1:size(modelIrrev.genes)
-    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes(i, 1), [], 1);
+    [z1, NameRxn{i}] = findRxnsFromGenes(modelIrrev, modelIrrev.genes{i, 1}, numericFlag, 1);
 end
 
 % Find reactions that correspond to the gene
@@ -224,19 +232,25 @@ solution1 = optimizeCbModel(model3);
 Trans0 = zeros(size(modelIrrev.mets, 1),size(modelIrrev.rxns, 1));
 Trans2 = -1 * eye(size(modelIrrev.rxns, 1));
 S2 = zeros(size(modelIrrev.rxns, 1));
+bn = (-1) * ones(size(modelIrrev.rxns, 1), 1);
 for i = 1:length(modelIrrev.rxns)
-    S2(i, i) = 1 / max(nupb(i, :));
+    if  max(nupb(i, :)) ~= 0
+        S2(i, i) = 1 / max(nupb(i, :));
+    end
+    if max(nupb(i, :)) == 0
+        Trans2(i, i) = 0;
+        bn(i, 1) = 0;
+    end
 end
 
+Obj4 = [modelIrrev.c' zeros(1, size(modelIrrev.rxns, 1))];
 
-Obj4 = [modelIrrev.c' zeros(1, size(modelIrrev.rxns, 1))] ;
-
-lob = [model3.lb; (-1) * inf * ones(size(modelIrrev.rxns, 1), 1)];
-upb = [model3.ub; inf * ones(size(modelIrrev.rxns, 1), 1)];
+lob = [model3.lb;  ones(size(modelIrrev.rxns, 1), 1)];
+upb = [model3.ub; 2 * ones(size(modelIrrev.rxns, 1), 1)];
 
 O = [zeros(size(R)) zeros(size(R)); zeros(size(R)) R]; 
 Aeq = [modelIrrev.S Trans0; S2 Trans2; Obj4]; 
-beq = [zeros(size(modelIrrev.mets, 1), 1); (-1) * ones(size(modelIrrev.rxns,1),1); alpha * solution1.f];
+beq = [zeros(size(modelIrrev.mets, 1), 1); bn; alpha * solution1.f];
 
 model2 = struct;
 model2.lb = lob;
@@ -244,7 +258,7 @@ model2.ub = upb;
 model2.A = sparse(Aeq);
 model2.sense = [char('=' * ones(size(model2.A,1) - 1, 1)) ; char('>')]; 
 model2.rhs = beq;
-model2.modelsense = 'min'; 
+model2.modelsense = 'max'; 
 numrxn = [1:length(modelIrrev.rxns)]; 
 j = 1;
 for i = 1:length(model.rxns)
