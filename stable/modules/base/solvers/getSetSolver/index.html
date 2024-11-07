@@ -162,9 +162,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../msk/index.html">Msk</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
@@ -174,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
 </ul>
 </li>
@@ -239,19 +240,19 @@
 <span id="id1"></span><h1>Getsetsolver<a class="headerlink" href="#getsetsolver" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.solvers.getSetSolver"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.getSetSolver.changeCobraSolver">
-<span class="sig-name descname"><span class="pre">changeCobraSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">solverType</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">validationLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/changeCobraSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">changeCobraSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">validationLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/changeCobraSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes the Cobra Toolbox optimization solver(s)</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>solverOK = changeCobraSolver</strong> (<em>solverName, solverType, printLevel, validationLevel</em>)</p>
+<dd class="field-odd"><p><strong>[solverOK, solverInstalled] = changeCobraSolver</strong> (<em>solverName, solverType, printLevel, validationLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>solverName</strong> – Solver name</p></li>
-<li><p><strong>solverType</strong> – Solver type (‘LP’ by default)
+<li><p><strong>problemType</strong> – Problem type (‘LP’ by default)
 (a) One of the following: <cite>LP</cite> <cite>MILP</cite>, <cite>QP</cite>, <cite>MIQP</cite> ‘EP’, ‘CLP’
 (b) ‘all’ attempts to change all applicable solvers to solverName.  This is purely a shorthand convenience.
-(c) Cell array of solverTypes, e.g. {‘LP’,’QP’}</p></li>
+(c) Cell array of problemTypes, e.g. {‘LP’,’QP’}</p></li>
 <li><p><strong>printLevel</strong> – verbose level</p>
 <ul>
 <li><p>if <cite>0</cite>, warnings and errors are silenced</p></li>
@@ -265,7 +266,7 @@
 <ul class="simple">
 <li><p><cite>-1</cite>: assign only the global variable. Do not assign any path.</p></li>
 <li><p><cite>0</cite>: adjust solver paths but don’t validate the solver</p></li>
-<li><p><cite>1</cite>: validate but remove outputs  (default)</p></li>
+<li><p><cite>1</cite>: validate but remove outputs, silent  (default)</p></li>
 <li><p><cite>2</cite>: validate and keep any outputs</p></li>
 </ul>
 </dd>

@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Rescale &mdash; The COBRA Toolbox</title>
+  <title>Gurobi &mdash; The COBRA Toolbox</title>
   
 
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Param" href="../param/index.html"/>
-        <link rel="prev" title="Solvers" href="../index.html"/> 
+        <link rel="next" title="Cardopt" href="../cardOpt/index.html"/>
+        <link rel="prev" title="Param" href="../param/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -162,9 +162,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Gurobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
@@ -227,7 +227,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
-      <li class="breadcrumb-item active">Rescale</li>
+      <li class="breadcrumb-item active">Gurobi</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -236,133 +236,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="rescale">
-<span id="id1"></span><h1>Rescale<a class="headerlink" href="#rescale" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.base.solvers.rescale"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.rescale.liftCouplingConstraints">
-<span class="sig-name descname"><span class="pre">liftCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftCouplingConstraints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reformulates badly-scaled coupling constraints C*v &lt;=&gt; d
-by lifting them to a better scaled problem in a higher dimension by
-introducing dummy variables.</p>
-<p>Assumes <cite>C</cite> does not contain very small entries and transforms constraints
-containing very large entries (entries larger than BIG).</p>
-<p>Reformulation techniques are described in detail in:
-<cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
-Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>model, BIG, printLevel</em>)</p>
-</dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><p><strong>model</strong> –</p>
-<ul class="simple">
-<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
-<li><p>d - <cite>k x 1</cite> Right hand side of C*v &lt;= d</p></li>
-<li><p>ctrs <cite>k x 1</cite> Cell Array of Strings giving IDs of the coupling constraints</p></li>
-<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>OPTIONAL INPUTS</dt><dd><p>‘BIG’                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
-<cite>printLevel</cite>         1 or 0 enables/diables printing respectively.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> –</p>
-<ul>
-<li><p>E                m x evars   Sparse or Full Matrix of Double Matrix of additional, non metabolic variables (e.g. Enzyme capacity variables)</p></li>
-<li><p>evarlb           evars x 1       Column Vector of Doubles    Lower bounds of the additional variables</p></li>
-<li><p>evarub           evars x 1       Column Vector of Doubles    Upper bounds of the additional variables</p></li>
-<li><p>evarc            evars x 1       Column Vector of Doubles    Objective coefficient of the additional variables</p></li>
-<li><p>evars            evars x 1       Column Cell Array of Strings        IDs of the additional variables</p></li>
-<li><p>evarNames    evars x 1           Column Cell Array of Strings        Names of the additional variables</p></li>
-<li><p>C             ctrs x n           Sparse or Full Matrix of Double     Matrix of additional Constraints (e.g. Coupling Constraints)</p></li>
-<li><p>ctrs      ctrs x 1       Column Cell Array of Strings        IDs of the additional Constraints</p></li>
-<li><p>ctrNames      ctrs x 1           Column Cell Array of Strings        Names of the of the additional Constraints</p></li>
-<li><p>d             ctrs x 1           Column Vector of Doubles    Right hand side values of the additional Constraints</p></li>
-<li><p>dsense            ctrs x 1       Column Vector of Chars      Senses of the additional Constraints</p></li>
-<li><p>D            ctrs x evars    Sparse or Full Matrix of Double Matrix to store elements that contain interactions between additional Constraints and additional Variables.</p></li>
-</ul>
-</li>
-<li><p><strong>The linear optimisation problem derived from this model is then of the form</strong> – [S, E; C, D]*x  {L,E,G}  [b;d]</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.rescale.liftModel">
-<span class="sig-name descname"><span class="pre">liftModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">directory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lifts a COBRA model with badly-scaled stoichiometric and
-coupling constraints of the form:
-<span class="math notranslate nohighlight">\(max c*v\)</span>  subject to: <span class="math notranslate nohighlight">\(Sv = 0, x, Cv &lt;= 0\)</span>
-Converts it into a COBRA LPproblem structure, which can be used with
-solveCobraLP. Fluxes for the reactions should stay the same i.e.
-sol.full(1:nRxns) should yield an optimal flux vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>LPproblem = liftModel</strong> (<em>model, BIG, printLevel,fileName,directory</em>)</p>
-</dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><p><strong>model</strong> – COBRA LPproblem Structure containing the original LP to be solved. The format of
-this struct is described in the documentation for <cite>solveCobraLP.m</cite></p>
-</dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>BIG</strong> – A parameter the controls the largest entries that appear in the
-reformulated problem (default = 1000).</p></li>
-<li><p><strong>printLevel</strong> – printLevel = 1 enables printing of problem statistics (default);
-printLevel = 0 silent</p></li>
-<li><p><strong>fileName</strong> – name of th file to load</p></li>
-<li><p><strong>directory</strong> – file directory (if <cite>model</cite> is empty, you can load it using <cite>fileName</cite> and <cite>directory</cite>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">OUTPUTS</dt>
-<dd class="field-even"><p><strong>LPproblem</strong> – COBRA Structure contain the reformulated LP to be solved.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.rescale.reformulate">
-<span class="sig-name descname"><span class="pre">reformulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/reformulate.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.reformulate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reformulates badly-scaled FBA program
-Transforms LPproblems with badly-scaled stoichiometric and
-coupling constraints of the form:
-<span class="math notranslate nohighlight">\(max c*x\)</span> subject to: math:<cite>Ax &lt;= b</cite></p>
-<p>Eliminates the need for scaling and hence prevents infeasibilities
-after unscaling. After using PREFBA to transform a badly-scaled FBA program,
-please turn off scaling and reduce the aggressiveness of presolve.</p>
-<p>Rransforms a badly-scaled LPproblem
-contained in the struct FBA and returns the transformed program in the
-structure FBA. <cite>reformulate</cite> assumes <cite>S</cite> and <cite>C</cite> do not contain very small entries
-and transforms constraints containing very large entries (entries larger than
-BIG). BIG should be set between 1000 and 10000 on double precision machines.
-<cite>printLevel</cite> = 1 or 0 enables/diables printing respectively.</p>
-<p>Reformulation techniques are described in detail in:
-<cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
-Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>LPproblem, BIG, printLevel</em>)</p>
-</dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>LPproblem</strong> – Structure contain the original LP to be solved. The format of
-this struct is described in the documentation for <cite>solveCobraLP.m</cite></p></li>
-<li><p><strong>BIG</strong> – A parameter the controls the largest entries that appear in the
-reformulated problem.</p></li>
-<li><p><strong>printLevel</strong> – 1 enables printing of problem statistics;
-0 = silent</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OUTPUTS</dt>
-<dd class="field-odd"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved.</p>
-</dd>
-</dl>
+  <section id="gurobi">
+<span id="id1"></span><h1>Gurobi<a class="headerlink" href="#gurobi" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.gurobi"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.gurobi.setGurobiParam">
+<span class="sig-name descname"><span class="pre">setGurobiParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/gurobi/setGurobiParam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.gurobi.setGurobiParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>The params struct contains Gurobi parameters. A full list may be
+found on the Parameter page of the reference manual:
+<a class="reference external" href="https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html">https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html</a>
+Parameters must be in TimeLimit not timelimit or timeLimit format, see
+below for full list that are eligible to be passed to the solver.</p>
 </dd></dl>
 
 </section>
@@ -377,10 +260,10 @@ reformulated problem.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../param/index.html" class="btn btn-default float-right" title="Param" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cardOpt/index.html" class="btn btn-default float-right" title="Cardopt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Solvers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../param/index.html" class="btn btn-default" title="Param" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -423,7 +306,6 @@ reformulated problem.</p></li>
     <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
