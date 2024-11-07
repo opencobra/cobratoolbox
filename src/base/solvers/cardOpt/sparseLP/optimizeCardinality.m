@@ -195,8 +195,8 @@ else
     ltp=length(problem.p);
     ltq=length(problem.q);
     ltr=length(problem.r);
-    if ltp==1
-        if ~islogical(problem.p)
+    if ltp==1 && problem.p~=0
+        if length(problem.p)~=1 && ~islogical(problem.p)
             solution.stat = -1;
             error('Error: p should be a logical vector');
         end
@@ -212,7 +212,7 @@ if ~isfield(problem,'q')
     solution.stat = -1;
     error('Error: the size/location of vector y is not defined');
 else
-    if ~islogical(problem.q)
+    if length(problem.q)~=1 && ~islogical(problem.q) && problem.q~=0
         solution.stat = -1;
         error('Error: q should be a logical vector');
     end
@@ -222,7 +222,7 @@ if ~isfield(problem,'r')
     solution.stat = -1;
     error('Error: the size of vector z is not defined');
 else
-    if ~islogical(problem.r)
+    if length(problem.r)~=1 && ~islogical(problem.r)
         solution.stat = -1;
         error('Error: r should be a logical vector');
     end
