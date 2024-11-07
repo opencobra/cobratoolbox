@@ -442,8 +442,8 @@ switch solver
         end
 
         %parse mosek result structure
-        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
-        w = -(zl - zu);
+        [stat,origStat,x,y,yl,yu,z,zl,zu,s,basis,pobjval,dobjval] = parseMskResult(res);
+        w = (zl - zu);
 
         %debugging
         if problemTypeParams.printLevel>2
