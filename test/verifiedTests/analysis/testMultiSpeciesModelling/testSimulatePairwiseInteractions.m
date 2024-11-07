@@ -30,8 +30,8 @@ if ~exist('pairedModelInfo', 'var')
         'Abiotrophia_defectiva_ATCC_49176'
         'Acidaminococcus_fermentans_DSM_20731'
         'Acidaminococcus_intestini_RyC_MR95'
-        'Acidaminococcus_sp_D21'
         'Acinetobacter_calcoaceticus_PHEA_2'
+        'Acinetobacter_baumannii_AB0057'
         };
     for i=1:length(modelList)
         model = getDistributedModel([modelList{i} '.mat']);
