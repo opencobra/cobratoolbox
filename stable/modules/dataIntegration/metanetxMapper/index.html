@@ -226,18 +226,18 @@
 <dd><p>This function maps metabolite IDs to each other using Beta MetaNetX database</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[metData] = metanetxMapper</strong> (<em>metInfo, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[metData] = metanetxMapper</strong> (<em>metInfo, infoType</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>name</strong> – string name of the metabolite (Common names, VMH names, CHEBI ids,</p></li>
-<li><p><strong>swiss lipids id, HMDB ids, and lipidmaps are supported)</strong></p></li>
+<li><p><strong>metInfo</strong> – string information of the metabolite (Common name, VMH name, CHEBI id,</p></li>
+<li><p><strong>Swiss Lipid id, HMDB id, Lipidmap, or InChIkey are supported)</strong></p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>outputStyle</strong> – same as the input, choose an output option between</p></li>
-<li><p><strong>‘name’, ‘vmh’, and ‘chebi’ for more accurate respond</strong></p></li>
+<li><p><strong>infoType</strong> – In the cases of searching with common name, VMH, or ChEBI, use ‘name’, ‘vmh’,</p></li>
+<li><p><strong>or ‘chebi’ respectively as the identifier type for more accurate respond</strong></p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUT</dt>
