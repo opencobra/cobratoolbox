@@ -250,13 +250,13 @@
 <span id="id1"></span><h1>Icongems<a class="headerlink" href="#icongems" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.analysis.ICONGEMs"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.ICONGEMs.ICONGEMs">
-<span class="sig-name descname"><span class="pre">ICONGEMs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">exp</span></em>, <em class="sig-param"><span class="pre">genetxt</span></em>, <em class="sig-param"><span class="pre">condition</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">alpha</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/ICONGEMs/ICONGEMs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.ICONGEMs.ICONGEMs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ICONGEMs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">exp</span></em>, <em class="sig-param"><span class="pre">genetxt</span></em>, <em class="sig-param"><span class="pre">condition</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">numericFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/ICONGEMs/ICONGEMs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.ICONGEMs.ICONGEMs" title="Permalink to this definition">¶</a></dt>
 <dd><dl>
 <dt>Algorithm to Integrate a Gene Co-expression Network and Genome-scale Metabolic Model:</dt><dd><p>This algorithm calculates the reaction flux distribution for each condition by applying
 quadratic programming.</p>
 <p>USAGE:</p>
 <blockquote>
-<div><p>[solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)</p>
+<div><p>[solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)</p>
 </div></blockquote>
 <p>INPUTS:</p>
 <blockquote>
@@ -269,6 +269,7 @@ exp:             expression profile corresponding to the gene names that</p>
 <dt>genetxt:         list of gene names that extract from gene expression profile</dt><dd><p>file</p>
 </dd>
 </dl>
+<p>numericFlag:     1 if using Human Recon  (Default = 0).</p>
 </div></blockquote>
 <dl>
 <dt>OPTIONAL INPUTS:</dt><dd><dl class="simple">
@@ -284,7 +285,7 @@ exp:             expression profile corresponding to the gene names that</p>
 boundEf:                 Upper bound of E-flux.</p>
 </dd>
 <dt>EXAMPLES:</dt><dd><p>% This could be an example that can be copied from the documentation to MATLAB:
-solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha)
+solution = ICONGEMs(model, exp, genetxt, condition, threashold, alpha, numericFlag)
 % without optional values:
 solution = ICONGEMs(model, exp, genetxt)</p>
 </dd>
