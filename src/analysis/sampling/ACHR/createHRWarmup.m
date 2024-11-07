@@ -133,7 +133,7 @@ while i <= nPoints/2
             display ('invalid solution')
             validFlag = false;
             display(status)
-            pause;
+        %   pause;
         end
 
         % Continue if optimal solution is found
