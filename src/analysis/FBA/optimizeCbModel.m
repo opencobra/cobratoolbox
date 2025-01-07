@@ -635,8 +635,8 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
         optProblem2.ub = [optProblem.ub;Inf*ones(2*nRxns,1)];
         if isempty(objectiveLP)
             objectiveLP = 0;
-            optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
         end
+        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
         
         %csense for 3 & 4 above
         optProblem2.csense = [optProblem.csense; repmat('G',2*nRxns,1)];
