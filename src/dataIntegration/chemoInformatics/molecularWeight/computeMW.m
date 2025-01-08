@@ -70,6 +70,18 @@ if ~generalFormula
     for n = 1:length(metIDs)
         i = metIDs(n);
         formula = model.metFormulas(i);
+        
+        % Skip calculations for metabolites containing 'FULLRCO'
+        if contains(formula, 'FULLR')|| contains(formula,'R')
+            MW(n) = NaN; % Assign NaN to indicate R-group
+            identifire = 'R-group';
+            continue;
+        elseif contains(formula, 'X')
+            MW(n) = NaN; % Assign NaN to indicate 'X'
+            identifire = 'X';
+            continue;
+        end
+        
         [compounds, tok] = regexp(formula, '([A-Z][a-z]*)(\d*)', 'match', 'tokens');
         tok = tok{1, 1};
         for j = 1:length(tok)  % go through each token.
