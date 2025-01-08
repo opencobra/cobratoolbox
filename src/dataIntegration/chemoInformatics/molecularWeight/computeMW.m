@@ -62,7 +62,8 @@ if ~generalFormula
     % molecular weight of elements in a structure
     elementMwStruct = struct('H', 1, 'C', 12, 'N', 14, 'O', 16, 'Na', 23, 'Mg', 24, 'P', 31, ...
         'S', 32, 'Cl', 35, 'K', 39, 'Ca', 40, 'Mn', 55, 'Fe', 56, 'Ni', 58, 'Co', 59, ...
-        'Cu', 63, 'Zn', 65, 'As', 75, 'Se', 80, 'Ag', 107, 'Cd', 114, 'W', 184, 'Hg', 202);
+        'Cu', 63, 'Zn', 65, 'As', 75, 'Se', 80, 'Ag', 107, 'Cd', 114, 'W', 184, 'Hg', 202,...
+       'F', 19, 'I', 127, 'Ba', 137, 'Y', 89 );
     elementNames = fieldnames(elementMwStruct);  % elements' names
     MW = zeros(size(metIDs));
 
