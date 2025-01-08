@@ -256,6 +256,9 @@ if exist('osenseStr', 'var')
                     allowLoops=1;
                 end
             end
+        else
+            % Handle osenseStr when it's a string (e.g., 'min' or 'max')
+            model.osenseStr = osenseStr;
         end
     end
     % % override if osenseStr already in the model
